@@ -8,37 +8,60 @@ import org.json.JSONObject
 
 /** Only positive, exact-format capabilities authorize a richer selection. */
 internal object MediaInventory {
-    fun describe(info: MediaCodecInfo, codec: String, width: Int, height: Int, fps: Int): JSONObject? {
+    fun describe(info: MediaCodecInfo, codec: String, width: Int, height: Int, fps: Int,
+        readCapabilities: () -> MediaCodecInfo.CodecCapabilities = { info.getCapabilitiesForType(VideoCodec.types.getValue(codec)) },
+        supports: (MediaCodecInfo.CodecCapabilities, MediaFormat) -> Boolean = { caps, format -> caps.isFormatSupported(format) },
+    ): JSONObject? {
         if (!VideoProfiles.identifier(info.name)) return null
         val row = JSONObject().put("name", info.name).put("codec", codec)
             .put("hardware", nullable { if (Build.VERSION.SDK_INT >= 29) info.isHardwareAccelerated else null })
             .put("low_latency", JSONObject.NULL).put("operating_rate", JSONObject.NULL)
             .put("profiles", JSONArray())
-        try { capabilities(row, info.getCapabilitiesForType(VideoCodec.types.getValue(codec)), codec, width, height, fps) }
+        try { capabilities(row, readCapabilities(), codec, width, height, fps, supports) }
         catch (_: Exception) { /* Unknown optional detail never becomes a positive capability. */ }
         return row
     }
 
-    private fun capabilities(row: JSONObject, caps: MediaCodecInfo.CodecCapabilities, codec: String, width: Int, height: Int, fps: Int) {
+    private fun capabilities(row: JSONObject, caps: MediaCodecInfo.CodecCapabilities, codec: String, width: Int, height: Int, fps: Int,
+        supports: (MediaCodecInfo.CodecCapabilities, MediaFormat) -> Boolean,
+    ) {
         row.put("low_latency", nullable {
             if (Build.VERSION.SDK_INT >= 30) caps.isFeatureSupported(MediaCodecInfo.CodecCapabilities.FEATURE_LowLatency) else null
         })
         row.put("operating_rate", nullable {
             (fps * 2).takeIf { caps.videoCapabilities?.areSizeAndRateSupported(width, height, it.toDouble()) == true }
         })
-        val entries = caps.profileLevels.mapNotNull { pair ->
-            profile(caps, codec, pair, width, height, fps)
-        }.distinctBy { it.toString() }.take(32)
-        row.put("profiles", JSONArray(entries))
+        row.put("profiles", JSONArray(profiles(caps, codec, width, height, fps, supports)))
     }
 
+    private fun profiles(caps: MediaCodecInfo.CodecCapabilities, codec: String, width: Int, height: Int, fps: Int,
+        supports: (MediaCodecInfo.CodecCapabilities, MediaFormat) -> Boolean,
+    ): List<JSONObject> {
+        val entries = ArrayList<JSONObject>()
+        val seen = HashSet<Long>()
+        for (pair in caps.profileLevels) {
+            if (!recognized(codec, pair)) continue
+            val key = (pair.profile.toLong() shl 32) or (pair.level.toLong() and 0xffff_ffffL)
+            if (!seen.add(key)) continue
+            val entry = profile(caps, codec, pair, width, height, fps, supports) ?: continue
+            entries.add(entry)
+            if (entries.size == 32) break
+        }
+        return entries
+    }
+
+    // Recognized wire vocabulary bounds the deduplication set even if native
+    // metadata supplies many distinct unknown profile/level integers.
+    private fun recognized(codec: String, pair: MediaCodecInfo.CodecProfileLevel): Boolean =
+        MediaProfiles.profile(codec, pair.profile) != null && MediaProfiles.level(codec, pair.level) != null
+
     private fun profile(caps: MediaCodecInfo.CodecCapabilities, codec: String,
-                        pair: MediaCodecInfo.CodecProfileLevel, width: Int, height: Int, fps: Int): JSONObject? = try {
-        val description = MediaProfiles.describe(codec, pair)
+                        pair: MediaCodecInfo.CodecProfileLevel, width: Int, height: Int, fps: Int,
+                        supports: (MediaCodecInfo.CodecCapabilities, MediaFormat) -> Boolean): JSONObject? = try {
         val format = MediaFormat.createVideoFormat(VideoCodec.types.getValue(codec), width, height)
         format.setInteger(MediaFormat.KEY_FRAME_RATE, fps)
         format.setInteger(MediaFormat.KEY_PROFILE, pair.profile)
-        description?.takeIf { caps.isFormatSupported(format) }
+        if (supports(caps, format)) MediaProfiles.describe(codec, pair) else null
     } catch (_: Exception) { null }
 
     private fun nullable(query: () -> Any?): Any = try { query() ?: JSONObject.NULL } catch (_: Exception) { JSONObject.NULL }

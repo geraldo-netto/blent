@@ -1,0 +1,906 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "formats": [
+    {
+      "width": 640,
+      "height": 480,
+      "fps": 30,
+      "cold_us": 457170.192,
+      "warm_us_per_report": [
+        18718.02875,
+        18367.7885,
+        18047.68275,
+        18337.74025,
+        18908.029,
+        18087.2115,
+        18660.327,
+        18473.20175,
+        18178.7115,
+        18353.31725,
+        18023.84625,
+        18027.10575
+      ],
+      "report": {
+        "protocol": 1,
+        "width": 640,
+        "height": 480,
+        "fps": 30,
+        "codecs": [
+          "h264",
+          "hevc",
+          "vp9",
+          "av1"
+        ],
+        "hardware": [
+          "h264",
+          "hevc",
+          "vp9"
+        ],
+        "details": [
+          {
+            "name": "c2.unisoc.avc.decoder",
+            "codec": "h264",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.h264.decoder",
+            "codec": "h264",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.avc.decoder",
+            "codec": "h264",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 52
+              }
+            ]
+          },
+          {
+            "name": "OMX.google.h264.decoder",
+            "codec": "h264",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 52
+              }
+            ]
+          },
+          {
+            "name": "c2.unisoc.hevc.decoder",
+            "codec": "hevc",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.hevc.decoder",
+            "codec": "hevc",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.hevc.decoder",
+            "codec": "hevc",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": []
+          },
+          {
+            "name": "OMX.google.hevc.decoder",
+            "codec": "hevc",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": []
+          },
+          {
+            "name": "c2.unisoc.vp9.decoder",
+            "codec": "vp9",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.vp9.decoder",
+            "codec": "vp9",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.vp9.decoder",
+            "codec": "vp9",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 50
+              },
+              {
+                "profile": "profile2",
+                "depth": 10,
+                "level": 50
+              }
+            ]
+          },
+          {
+            "name": "OMX.google.vp9.decoder",
+            "codec": "vp9",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 50
+              },
+              {
+                "profile": "profile2",
+                "depth": 10,
+                "level": 50
+              }
+            ]
+          },
+          {
+            "name": "c2.android.av1-dav1d.decoder",
+            "codec": "av1",
+            "hardware": false,
+            "low_latency": true,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 53
+              },
+              {
+                "profile": "main",
+                "depth": 10,
+                "level": 53
+              }
+            ]
+          },
+          {
+            "name": "c2.android.av1.decoder",
+            "codec": "av1",
+            "hardware": false,
+            "low_latency": true,
+            "operating_rate": 60,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 53
+              },
+              {
+                "profile": "main",
+                "depth": 10,
+                "level": 53
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "fps": 60,
+      "cold_us": 17988.962,
+      "warm_us_per_report": [
+        17824.375,
+        17124.6345,
+        15997.02875,
+        14849.8365,
+        14690.529,
+        15709.50975,
+        14908.048,
+        14731.44225,
+        15090.2885,
+        15268.77875,
+        15246.74975,
+        16400.90375
+      ],
+      "report": {
+        "protocol": 1,
+        "width": 1280,
+        "height": 800,
+        "fps": 60,
+        "codecs": [
+          "h264",
+          "hevc",
+          "vp9",
+          "av1"
+        ],
+        "hardware": [
+          "h264",
+          "hevc",
+          "vp9"
+        ],
+        "details": [
+          {
+            "name": "c2.unisoc.avc.decoder",
+            "codec": "h264",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.h264.decoder",
+            "codec": "h264",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.avc.decoder",
+            "codec": "h264",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 52
+              }
+            ]
+          },
+          {
+            "name": "OMX.google.h264.decoder",
+            "codec": "h264",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 52
+              }
+            ]
+          },
+          {
+            "name": "c2.unisoc.hevc.decoder",
+            "codec": "hevc",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.hevc.decoder",
+            "codec": "hevc",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.hevc.decoder",
+            "codec": "hevc",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": []
+          },
+          {
+            "name": "OMX.google.hevc.decoder",
+            "codec": "hevc",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": []
+          },
+          {
+            "name": "c2.unisoc.vp9.decoder",
+            "codec": "vp9",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.vp9.decoder",
+            "codec": "vp9",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.vp9.decoder",
+            "codec": "vp9",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 50
+              },
+              {
+                "profile": "profile2",
+                "depth": 10,
+                "level": 50
+              }
+            ]
+          },
+          {
+            "name": "OMX.google.vp9.decoder",
+            "codec": "vp9",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 50
+              },
+              {
+                "profile": "profile2",
+                "depth": 10,
+                "level": 50
+              }
+            ]
+          },
+          {
+            "name": "c2.android.av1-dav1d.decoder",
+            "codec": "av1",
+            "hardware": false,
+            "low_latency": true,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 53
+              },
+              {
+                "profile": "main",
+                "depth": 10,
+                "level": 53
+              }
+            ]
+          },
+          {
+            "name": "c2.android.av1.decoder",
+            "codec": "av1",
+            "hardware": false,
+            "low_latency": true,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 53
+              },
+              {
+                "profile": "main",
+                "depth": 10,
+                "level": 53
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "fps": 60,
+      "cold_us": 12839.077,
+      "warm_us_per_report": [
+        13529.904,
+        12689.577,
+        12650.44225,
+        12612.548,
+        12923.5095,
+        12503.85575,
+        12869.9905,
+        12505.61525,
+        12372.4615,
+        12399.35575,
+        13312.85575,
+        12561.08675
+      ],
+      "report": {
+        "protocol": 1,
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "codecs": [
+          "h264",
+          "hevc",
+          "vp9"
+        ],
+        "hardware": [
+          "h264",
+          "hevc",
+          "vp9"
+        ],
+        "details": [
+          {
+            "name": "c2.unisoc.avc.decoder",
+            "codec": "h264",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.h264.decoder",
+            "codec": "h264",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.avc.decoder",
+            "codec": "h264",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 52
+              }
+            ]
+          },
+          {
+            "name": "OMX.google.h264.decoder",
+            "codec": "h264",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "constrained-baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "baseline",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 52
+              },
+              {
+                "profile": "high",
+                "depth": 8,
+                "level": 52
+              }
+            ]
+          },
+          {
+            "name": "c2.unisoc.hevc.decoder",
+            "codec": "hevc",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.hevc.decoder",
+            "codec": "hevc",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": 120,
+            "profiles": [
+              {
+                "profile": "main",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.hevc.decoder",
+            "codec": "hevc",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": []
+          },
+          {
+            "name": "OMX.google.hevc.decoder",
+            "codec": "hevc",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": []
+          },
+          {
+            "name": "c2.unisoc.vp9.decoder",
+            "codec": "vp9",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "OMX.sprd.vp9.decoder",
+            "codec": "vp9",
+            "hardware": true,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 51
+              }
+            ]
+          },
+          {
+            "name": "c2.android.vp9.decoder",
+            "codec": "vp9",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 50
+              },
+              {
+                "profile": "profile2",
+                "depth": 10,
+                "level": 50
+              }
+            ]
+          },
+          {
+            "name": "OMX.google.vp9.decoder",
+            "codec": "vp9",
+            "hardware": false,
+            "low_latency": false,
+            "operating_rate": null,
+            "profiles": [
+              {
+                "profile": "profile0",
+                "depth": 8,
+                "level": 50
+              },
+              {
+                "profile": "profile2",
+                "depth": 10,
+                "level": 50
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "width": 2560,
+      "height": 1600,
+      "fps": 90,
+      "cold_us": 3018.654,
+      "warm_us_per_report": [
+        2105.44225,
+        2271.375,
+        2280.2405,
+        2025.19225,
+        2084.98075,
+        2090.69225,
+        2246.875,
+        2113.19225,
+        2126,
+        2069.3365,
+        2193.904,
+        2369.27875
+      ],
+      "report": {
+        "protocol": 1,
+        "width": 2560,
+        "height": 1600,
+        "fps": 90,
+        "codecs": [],
+        "hardware": [],
+        "details": []
+      }
+    }
+  ],
+  "run_id": "candidate-2"
+}

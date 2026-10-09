@@ -1,0 +1,32 @@
+{
+  "revision": "847b925",
+  "package": "com.blent.capabilitybench.baseline",
+  "apk_sha256": "d80014a55a3a27924cb0b3952ae654429768fd98878f02863b96414b6afd3a20",
+  "sources": {
+    "DecoderOutputWatchdog.kt": "336de8fef198beaa3186ad9391bc7cb573949d8b03078f2a252ca6b1bafadf05",
+    "DecoderSelectionAndroid.kt": "d9310da0fa7594189dbb77e4f82ed4eabd6f69e255092e81400ee5a04b83277e",
+    "MediaInventory.kt": "3cfb9748a4c45673fcf442d95f63742707b15c9d51da7fa51b1ec1c97c8a5013",
+    "VideoContract.kt": "c774196c11047d68fdf1a05f6f6be60fc82c6bcc66b40c3266f0a907ae973038",
+    "DecoderConfiguration.kt": "960789bbe0102222bd7b77419a05fd12e10d7dc4a9a83d9faf1b59bf08686b96",
+    "JsonNumbers.kt": "b9b8bc6d66e0240ae0a6016e7d986a99cfc3d7279a3928cead8381e1c859188b",
+    "DecoderSelection.kt": "65b340c266752fd45827862865b4d61b40550e8d68f2610de70b7c6025e1ec4f",
+    "DecoderSession.kt": "59a7a1b125f923354dd41102a308daebd3933d9cec7f66b250f99b76bd2174e9",
+    "DecoderMailbox.kt": "5b1dc0ca86cd3f45b7e5bae2173d5ad38439c4f786b1002eeff5f18ab1bd27a6",
+    "VideoPacketReader.kt": "65694d400e68847b75ea6ed80ecd302e2a8962c7d7ad2d8af86a7aeeaf2ae21a",
+    "DecoderCapabilities.kt": "d88ae70ce245e408c114784758221221ac17e9b70f45ed9e1fd6fa047d4013b8",
+    "DecoderInput.kt": "0fe86120be990cac0ce12ed42fe6019460518abf8898bef94824f4aab97f9302",
+    "DecoderSelectionJson.kt": "417262758ba92522bd4a0dd94ca424b549db9ec14930f1734713ae24357241e0",
+    "DecodedOutputDrainer.kt": "c1b6a83d7f763ee3cf32c83f054b1f79b81bc6ba4d3713999f9c1326d792be14",
+    "ChannelPacketReader.kt": "3a481d8764999b8c40ef3b6955439750ae7c959b369f388ae658b05adf3bec21",
+    "VideoCodec.kt": "dbd111beb7bc3fd53c14680500ef0aa347d9ccd0143152d5306ebea3c9d8e864",
+    "MediaProfiles.kt": "8dc2aa1a2bdb52ad3359a6df471fcbcc2ed2a6bdebdac1981e85463b4104a0dd",
+    "NativeDeadline.kt": "f276b4c9713d52fad5f6fedae834939e30c816b2c71bbcb192632f91048a5574",
+    "DecoderDiagnostics.kt": "1206e55b67de58392c00f57404dd872f0a07265f10a825e98f2edfa7ba07b5af",
+    "VideoTiming.kt": "5cc6fa85c80690101da008200cb8093b220c53a445179e77b8eca182c01c2dca",
+    "VideoProfiles.kt": "cbbcdb076e79ebd99a1d8e90caf3af4fcdcdfe023f29f0ea67df49e985b30370",
+    "CodecLifetime.kt": "72fa02c9a6e970850aaa9155ce092844fb614201efc27bedbf127621469cf43e",
+    "CallbackDecoder.kt": "99e146a75abca8a5e3eee024adfa50372ca48153fbc7d1623402cfcceff7767a"
+  },
+  "benchmark_sha256": "f5fc409e01a585fbf299bec10c516f19b8ac5904c9f4aacc8819bf215304cccb",
+  "offline": true
+}

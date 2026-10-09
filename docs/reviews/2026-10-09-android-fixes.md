@@ -147,3 +147,24 @@ one polling interval from readiness latency; no steady-state FPS gain is claimed
 
 Full offline validation: 776 tests pass; all 865 maintained Android methods
 reach 80% individually; complexity stays <=9. No downloads or device changes.
+
+## T802: request-scoped decoder metadata
+
+One inventory enumeration per report; compatible entries reuse native capability
+objects for details. Primitive profile/level keys deduplicate before support
+queries; formatting stops at 32 supported profiles and 16 unique decoder rows.
+Unknown/unsupported entries do not consume these limits. MIME arrays avoid tiny
+set allocations; explicit bounded loops avoid sequence overhead. Exact format
+checks, order, unknown optional values and fresh per-request inventory remain.
+
+Counted inventory/profile regressions failed before implementation (four SDK
+cases), then passed alongside exception, invalid integer, duplicate, changed
+format and supported-cap boundaries. Full offline validation: 786 tests pass;
+875/875 production methods reach 80% individually; complexity remains <=9.
+
+[Native measurements](artifacts/2026-10-10-android-metadata/README.md): final
+fresh-process trial warm report medians improve 8.3%, 22.5%, 31.4% and 57.7% for
+four formats, with identical payloads. Cold-start ranges overlap. A sequence-based
+trial regressed the common small format and was replaced before acceptance.
+Isolated local benchmark packages only; no downloads or production app reload.
+The global query isolation problem remains T808.
