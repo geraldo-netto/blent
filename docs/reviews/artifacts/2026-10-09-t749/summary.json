@@ -1,0 +1,13 @@
+{
+  "issue": "T749",
+  "status": "unresolved",
+  "source": "Unmodified stock EVDI1.15.1, commit33b7b3c9f7c77157c2b1b0c5a40cebe19b8ba110, from existing local tag; no download.",
+  "build": "Successfully built against installed7.0.0-38-generic headers. No installation, module reload or host desktop change. Build compatibility is not target runtime acceptance.",
+  "module_sha256": "c145e833fdbb3919593dd95b5d367eedbb2be3f7b9c4354cd4eb730625addbe4",
+  "native": "Mutter51 CPU-copy fixture from T752, kernel7.0.0-34 and stocklibevdi1.15.0. Start helper, wait10s, terminate and wait for clean exit, immediately restart same helper/card; repeat3 times2s apart. Reopen FIFO reader between helper processes. Both drivers use same fixture.",
+  "observed": {
+    "distro1.14.15": "Initial mode/scanout succeeds; all3 reattachments connect card0 but report no mode. Capture stops advancing after initial session.",
+    "stock1.15.1": "Initial and all3 reattachments report640x480XB24 mode; final helper captures scanout again."
+  },
+  "remaining": "Mismatched DMA-BUF/SG-page boundary acceptance, target desktop validation and stock-module rollout. CPU-copy bypasses imports, so this compositor result cannot validate import handling. Permanent Blent lifecycle regressions remain; native dependency probes do not substitute for missing import-boundary coverage."
+}
