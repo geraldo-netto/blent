@@ -1,0 +1,94 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+     Running tests/conversion.rs (target/debug/deps/conversion-25c024ee5fa1f0bf)
+
+running 12 tests
+test t383_conversion_matches_independent_oracle_and_preserves_three_histories ... ok
+test t383_empty_and_tiny_damage_does_not_wake_the_pool ... ok
+test t383_large_pool_balances_clustered_damage_without_waking_idle_workers ... ok
+test t383_large_pool_supports_128_workers_and_joins_them ... ok
+test t383_release_scalar_and_auto_vectorized_kernels_match_the_oracle ... ok
+test t452_extreme_damage_endpoints_clip_without_overflow ... ok
+test t454_empty_damage_intervals_preserve_all_histories ... ok
+test t554_regions_clip_fuzzed_bounds_preserve_pixels_and_follow_buffer_leases ... ok
+test t768_adaptive_spans_skip_large_gaps_and_bound_fragmentation ... ok
+test t769_weighted_jobs_balance_pixels_and_preserve_output ... ok
+test t778_runtime_simd_matches_oracle_and_rejects_unsupported_policies ... ok
+test t782_scaled_simd_preserves_rounding_spans_tails_and_guards ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 54.68s
+
+     Running tests/evdi_helper.rs (target/debug/deps/evdi_helper-7984ff3ac101d2da)
+
+running 55 tests
+test t012_nv12_crops_odd_dimensions_without_overwriting_buffers ... ok
+test t013_mode_changes_announce_actual_stream_dimensions ... ok
+test t047_failed_worker_creation_keeps_conversion_live ... ok
+test t048_rejects_unsupported_framebuffer_formats ... ok
+test t049_poll_timeout_preserves_frame_for_a_live_reader ... ok
+test t050_latency_samples_are_synchronized_with_statistics ... ok
+test t051_picks_lowest_card_including_card_zero ... ok
+test t052_zero_bytes_written_means_device_creation_failed ... ok
+test t081_idle_writer_releases_buffers_before_mode_changes ... ok
+test t082_small_modes_never_exceed_scaled_source_bounds ... ok
+test t083_mode_changes_and_signal_shutdown_are_race_free ... ok
+test t108_helpers_reserve_distinct_cards_and_find_new_devices ... ok
+test t113_stalled_fifo_obeys_deadline_mode_change_and_shutdown ... ok
+test t170_helper_options_preserve_bounds_and_missing_values ... ok
+test t226_partial_fifo_requires_a_replacement_inode ... ok
+test t254_conversion_epochs_wrap_without_overflow_or_stalled_workers ... ok
+test t272_failed_event_channel_exits_without_spinning ... ok
+test t274_delayed_writer_cannot_read_replaced_mode_buffers ... ok
+test t279_failed_mode_allocations_retire_capture ... ok
+test t290_capture_poll_deadlines_survive_long_uptimes ... ok
+test t293_nv12_preserves_neutral_gray_and_bt709_colors ... ok
+test t294_capture_watchdog_recovers_at_poll_deadline ... ok
+test t315_fatal_errors_fail_after_cleanup_and_signals_succeed ... ok
+test t324_mode_retirement_during_pacing_discards_claimed_frame ... ok
+test t340_unreadable_edid_never_acquires_a_display_device ... ok
+test t341_fifo_edid_fails_without_waiting_for_a_writer ... ok
+test t343_capture_destination_must_be_a_fifo ... ok
+test t383_conversion_workers_respect_affinity_and_fallback ... ok
+test t405_capture_waits_for_exact_deadline ... ok
+test t405_idle_writer_waits_for_keepalive_deadline ... ok
+test t405_writable_fifo_avoids_redundant_poll ... ok
+test t415_live_resize_keeps_queued_frames_and_retries_busy_or_denied_requests ... ok
+test t415_report_uses_actual_rounded_kernel_capacity ... ok
+test t415_requested_pipe_sizes_survive_reopen_and_refusal ... ok
+test t418_shared_capture_ownership_pacing_and_control_fuzz ... ok
+test t474_manual_conversion_capacity_ignores_affinity_and_handles_partial_creation ... ok
+test t492_sparse_capture_lease_preserves_fresh_frame_wakeup ... ok
+test t497_capture_callbacks_startup_and_numeric_fuzz ... ok
+test t554_capture_converts_only_chroma_blocks_intersecting_damage ... ok
+test t570_shared_slots_retain_damage_and_skip_idle_conversion ... ok
+test t580_fifo_reader_transitions_are_race_free ... ok
+test t580_no_fifo_reader_skips_conversion_but_keeps_evdi_acknowledgement ... ok
+test t623_watchdog_coalesces_grabs_and_recovers_lost_events ... ok
+test t750_periodic_requests_never_round_above_configured_fps ... ok
+test t751_xorg_capacity_exhaustion_preserves_existing_devices ... ok
+test t752_mutter_cpu_copy_preserves_channel_order_and_damage ... ok
+test t753_cursor_removal_restores_static_background ... ok
+test t760_failed_mode_retains_geometry_and_ignores_queued_callbacks ... ok
+test t762_helper_rejects_malformed_arguments_before_device_access ... ok
+test t767_c_boundaries_reject_bounded_invalid_mutations ... ok
+test t775_timeout_guidance_uses_guarded_setup ... ok
+test t778_invalid_simd_environment_is_rejected_before_capture_resources ... ok
+test t779_overlapping_normalization_has_bounded_work_and_exact_pixels ... ok
+test t780_exact_damage_capacity_normalizes_the_full_frame ... ok
+test t783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime ... ok
+
+test result: ok. 55 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 131.84s
+
+     Running tests/evdi_modules.rs (target/debug/deps/evdi_modules-2c16fbb9e67d39b5)
+
+running 1 test
+test t380_independent_contexts_preserve_frame_and_callback_lifetimes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.91s
+
+     Running tests/frame_retirement.rs (target/debug/deps/frame_retirement-42dd1ace75a22d64)
+
+running 1 test
+test t389_release_notifies_retirement_without_periodic_wakes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.29s
+

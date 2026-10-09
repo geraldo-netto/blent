@@ -1,0 +1,26 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.39s
+     Running tests/evdi_helper.rs (target/debug/deps/evdi_helper-7984ff3ac101d2da)
+
+running 1 test
+test t783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime ... FAILED
+
+failures:
+
+---- t783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime stdout ----
+
+thread 't783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime' (516925) panicked at host/tests/evdi_helper.rs:152:9:
+helper regression T783: signal: 6 (SIGABRT) (core dumped)
+[evdi-helper] Mode: 8x8@60Hz 32bpp fmt=0x34324258
+[evdi-helper] Buffer 0 registered: 8x8 stride=64 (row_bytes=32)
+helper-test: /backups/disk2/projects/blent/host/tests/native_format.c:13: test_t783_native_mode: Assertion `t752_registered.buffer == g_capture.framebuffer && !g_capture.native_framebuffer && "T783: native conversion must retain only one source framebuffer"' failed.
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    t783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 54 filtered out; finished in 3.11s
+
+error: test failed, to rerun pass `-p blent --test evdi_helper`

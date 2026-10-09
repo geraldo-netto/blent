@@ -40,7 +40,7 @@ static void t570_publish(t570_fixture *f, unsigned slot) {
     unsigned char expected[sizeof(f->snapshots[0])];
     mock_monotonic_ms += 200;
     assert(publish_shared_capture(&f->capture));
-    bgra_to_nv12(&f->capture, f->capture.framebuffer, expected, NULL, NULL);
+    capture_to_nv12(&f->capture, f->capture.framebuffer, expected, NULL, NULL);
     assert(memcmp(t570_pixels(f, slot), expected, sizeof(expected)) == 0);
     memcpy(f->snapshots[slot], expected, sizeof(expected));
     t418_drain(f->peer);

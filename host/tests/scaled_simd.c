@@ -13,10 +13,11 @@ static void t782_case(conv_pool_t *pool, int scale, int width, int edge) {
     memset(actual, 0xA5, size + GUARD); memset(expected, 0xA5, size + GUARD);
     pixel_row_t rows[H / 2];
     for (int cy = 0; cy < H / 2; cy++) rows[cy] = (pixel_row_t){.begin=0, .end=width, .gap={edge,width-edge}};
-    conv_job_t job = {source, actual, actual + width * H, sw, sh, stride, width, H, scale, 0, H/2, NULL, edge ? rows : NULL};
+    conv_job_t job = {source, actual, actual + width * H, sw, sh, stride, width, H, scale, 0, H/2, NULL, edge ? rows : NULL, PIXEL_BGRA};
     conv_pool_convert(pool, &job);
     t778_oracle(job, expected, edge);
     assert(!memcmp(actual, expected, size + GUARD) && "T782: box reduction changes rounding, gap pixels or guards");
+    t783_rgba_equivalent(pool, job, source, actual, expected, size + GUARD);
     free(storage); free(actual); free(expected);
 }
 

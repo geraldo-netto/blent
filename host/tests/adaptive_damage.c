@@ -16,7 +16,7 @@ static void t768_case(int scale, int fragmented) {
     }
     conv_pool_t pool = CONV_POOL_INITIALIZER;
     conv_job_t job = {source, f.fill, f.fill + W * H, sw, sh, stride, W, H,
-        scale, 0, H / 2, f.dirty_fill, f.spans_fill};
+        scale, 0, H / 2, f.dirty_fill, f.spans_fill, PIXEL_BGRA};
     conv_pool_convert(&pool, &job);
     job.ydst = expected; job.uvdst = expected + W * H;
     for (int cy = 0; cy < H / 2; cy++) {
@@ -74,7 +74,7 @@ static void t768_threaded(void) {
     assert(source && actual && expected);
     pixel_row_t rows[H/2]; unsigned char dirty[H/16]; memset(dirty,0xFF,sizeof(dirty));
     for (int cy=0;cy<H/2;cy++) rows[cy]=(pixel_row_t){.begin=0,.end=W,.gap={128,W-128}};
-    conv_job_t job={source,actual,actual+W*H,W*SCALE,H*SCALE,W*SCALE*4,W,H,SCALE,0,H/2,dirty,rows};
+    conv_job_t job={source,actual,actual+W*H,W*SCALE,H*SCALE,W*SCALE*4,W,H,SCALE,0,H/2,dirty,rows, PIXEL_BGRA};
     conv_pool_t pool=CONV_POOL_INITIALIZER; conv_pool_start(&pool,4);
     t768_threaded_oracle(job, expected);
     for (int use_mask=0;use_mask<2;use_mask++) {

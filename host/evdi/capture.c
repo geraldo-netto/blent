@@ -28,12 +28,16 @@ static void on_dpms(int dpms_mode, void *user_data) {
     fprintf(stderr, "[evdi-helper] DPMS: %d (%s)\n", dpms_mode, capture->dpms_on ? "ON" : "OFF");
 }
 
-static void bgra_to_nv12(capture_context_t *capture, const unsigned char *src, unsigned char *dst,
+static pixel_order_t capture_pixel_order(const capture_context_t *capture) {
+    return capture->swap_rb && !capture->normalize_rgba ? PIXEL_RGBA : PIXEL_BGRA;
+}
+
+static void capture_to_nv12(capture_context_t *capture, const unsigned char *src, unsigned char *dst,
                          const unsigned char *dirty, const pixel_row_t *spans) {
     conv_job_t frame = {src, dst, dst + (size_t)capture->frames->width * capture->frames->height,
         capture->mode_w, capture->mode_h, capture->mode_stride, capture->frames->width, capture->frames->height,
         capture->scale, 0, capture->frames->height / 2, dirty,
-        spans};
+        spans, capture_pixel_order(capture)};
     conv_pool_convert(capture->conversion, &frame);
 }
 
@@ -82,7 +86,7 @@ static void publish_frame(capture_context_t *capture) {
     if (!frame_exchange_begin(capture->frames, &generation)) return;
     /* Reconnecting FIFO readers need a full refresh, otherwise convert only
      * the chroma-aligned regions this particular buffer is missing. */
-    bgra_to_nv12(capture, capture->framebuffer, capture->frames->fill,
+    capture_to_nv12(capture, capture->framebuffer, capture->frames->fill,
                  capture->frames->dirty_fill, capture->frames->spans_fill);
     frame_exchange_publish(capture->frames, capture->grab_us, generation);
 }
@@ -162,6 +166,7 @@ static int configure_mode_geometry(capture_context_t *capture, struct evdi_mode 
     if (!retire_mode_buffers(capture)) return 0;
 
     capture->swap_rb = new_swap_rb;
+    capture->cursor.order = capture_pixel_order(capture);
     capture->mode_w = new_w;
     capture->mode_h = new_h;
     capture->mode_bpp = new_bpp;
@@ -179,7 +184,7 @@ static void allocate_framebuffer(capture_context_t *capture) {
     free(capture->framebuffer);
     free(capture->native_framebuffer);
     capture->native_framebuffer = NULL;
-    if (capture->swap_rb) {
+    if (capture->swap_rb && capture->normalize_rgba) {
         capture->native_framebuffer = malloc(capture->fb_size);
         if (capture->native_framebuffer) memset(capture->native_framebuffer, 0x18, capture->fb_size);
     }
@@ -221,7 +226,7 @@ static void allocate_stream_buffers(capture_context_t *capture) {
 }
 
 static int mode_buffers_allocated(capture_context_t *capture) {
-    if (capture->swap_rb && !capture->native_framebuffer) return 0;
+    if (capture->swap_rb && capture->normalize_rgba && !capture->native_framebuffer) return 0;
     if (capture->raw_ring) return capture->framebuffer && !capture->capture_failed;
     return capture->framebuffer && frame_exchange_allocated(capture->frames);
 }
@@ -252,7 +257,7 @@ static void on_mode_changed(struct evdi_mode mode, void *user_data) {
 
     struct evdi_buffer buf = {
         .id = 0,
-        .buffer = capture->swap_rb ? capture->native_framebuffer : capture->framebuffer,
+        .buffer = capture->native_framebuffer ? capture->native_framebuffer : capture->framebuffer,
         .width = capture->mode_w,
         .height = capture->mode_h,
         .stride = capture->mode_stride,
@@ -303,7 +308,7 @@ static int normalize_full_frame(const capture_context_t *capture, const struct e
 }
 
 static void normalize_framebuffer(capture_context_t *capture, const struct evdi_rect *rects, int count) {
-    if (!capture->swap_rb || count <= 0) return;
+    if (!capture->swap_rb || !capture->normalize_rgba || count <= 0) return;
     if (normalize_full_frame(capture, rects, count)) {
         normalize_framebuffer_rect(capture, (struct evdi_rect){0, 0, capture->mode_w, capture->mode_h});
         return;
@@ -564,7 +569,7 @@ static int publish_shared_capture(capture_context_t *capture) {
     unsigned char *pixels = raw_ring_acquire(capture->raw_ring, &slot);
     if (!pixels) return 1; /* Keep latest unencoded update pending while all slots are leased. */
     raw_ring_t *ring = capture->raw_ring;
-    bgra_to_nv12(capture, capture->framebuffer, pixels, ring->dirty[slot], ring->spans[slot]);
+    capture_to_nv12(capture, capture->framebuffer, pixels, ring->dirty[slot], ring->spans[slot]);
     raw_ring_converted(ring, slot);
     int result = raw_ring_publish(capture->raw_ring, slot, capture->grab_us);
     if (result < 0) return 0;

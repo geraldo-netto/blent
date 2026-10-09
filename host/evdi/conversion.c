@@ -38,9 +38,9 @@ static inline void write_chroma(unsigned char *uv, int sb, int sg, int sr) {
    source block, and each chroma sample the mean of the 2*scale square it
    covers. Box averaging rather than point sampling — dropping pixels would
    alias hard on desktop content, where single-pixel lines are everywhere. */
-static inline void convert_scaled_span(const conv_job_t *j, int cy, int n, pixel_span_t span) {
+static inline void convert_scaled_span(const conv_job_t *j, int cy, int n, pixel_span_t span, int swap_rb) {
     const int stride = j->stride, ow = j->ow;
-    const int inv = n * n;
+    const int inv = n * n, bi = swap_rb ? 2 : 0, ri = swap_rb ? 0 : 2;
     unsigned char *yo0 = j->ydst + (size_t)(cy * 2) * ow;
     unsigned char *yo1 = yo0 + ow;
     unsigned char *uv  = j->uvdst + (size_t)cy * ow;
@@ -54,9 +54,9 @@ static inline void convert_scaled_span(const conv_job_t *j, int cy, int n, pixel
                 const unsigned char *row =
                     j->src + (size_t)(oyy * n + dy) * stride + (size_t)(oxx * n) * 4;
                 for (int dx = 0; dx < n; dx++) {
-                    sb += row[dx * 4];
+                    sb += row[dx * 4 + bi];
                     sg += row[dx * 4 + 1];
-                    sr += row[dx * 4 + 2];
+                    sr += row[dx * 4 + ri];
                 }
             }
             int b = sb / inv, g = sg / inv, r = sr / inv;
@@ -75,18 +75,18 @@ static inline pixel_span_t row_part(pixel_row_t row, int part, int split) {
     return (pixel_span_t){row.begin, row.gap.begin};
 }
 
-static inline void convert_strip_scaled(const conv_job_t *j, const int n, int adaptive) {
+static inline void convert_strip_scaled(const conv_job_t *j, const int n, int adaptive, int swap_rb) {
     for (int cy = j->cy0; cy < j->cy1; cy++) {
         if (!row_is_dirty(j->dirty, cy)) continue;
         pixel_row_t row = row_span(j, cy);
         int split = adaptive && pixel_row_split(row);
         for (int part = 0; part <= split; part++)
-            convert_scaled_span(j, cy, n, row_part(row, part, split));
+            convert_scaled_span(j, cy, n, row_part(row, part, split), swap_rb);
     }
 }
 
-static inline __attribute__((always_inline)) void convert_native_span(const conv_job_t *j, int cy, pixel_span_t span) {
-    const int w = j->ow, stride = j->stride;
+static inline __attribute__((always_inline)) void convert_native_span(const conv_job_t *j, int cy, pixel_span_t span, int swap_rb) {
+    const int w = j->ow, stride = j->stride, bi = swap_rb ? 2 : 0, ri = swap_rb ? 0 : 2;
     int y0 = cy * 2, y1 = y0 + 1;
     const unsigned char *row0 = j->src + (size_t)y0 * stride;
     const unsigned char *row1 = j->src + (size_t)y1 * stride;
@@ -96,68 +96,61 @@ static inline __attribute__((always_inline)) void convert_native_span(const conv
     for (int x = span.begin; x < span.end; x += 2) {
         const unsigned char *p;
         int b, g, r, sb, sg, sr;
-        p = row0 + (size_t)x * 4;       b = p[0]; g = p[1]; r = p[2];
+        p = row0 + (size_t)x * 4;       b = p[bi]; g = p[1]; r = p[ri];
         yo0[x]   = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
         sb = b; sg = g; sr = r;
-        p = row0 + (size_t)(x+1) * 4;   b = p[0]; g = p[1]; r = p[2];
+        p = row0 + (size_t)(x+1) * 4;   b = p[bi]; g = p[1]; r = p[ri];
         yo0[x+1] = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
         sb += b; sg += g; sr += r;
-        p = row1 + (size_t)x * 4;       b = p[0]; g = p[1]; r = p[2];
+        p = row1 + (size_t)x * 4;       b = p[bi]; g = p[1]; r = p[ri];
         yo1[x]   = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
         sb += b; sg += g; sr += r;
-        p = row1 + (size_t)(x+1) * 4;   b = p[0]; g = p[1]; r = p[2];
+        p = row1 + (size_t)(x+1) * 4;   b = p[bi]; g = p[1]; r = p[ri];
         yo1[x+1] = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
         sb += b; sg += g; sr += r;
         write_chroma(uv + x, sb, sg, sr);
     }
 }
 
-static inline __attribute__((always_inline)) void convert_strip(const conv_job_t *j, int adaptive) {
+static inline __attribute__((always_inline)) void convert_strip(const conv_job_t *j, int adaptive, int swap_rb) {
     for (int cy = j->cy0; cy < j->cy1; cy++) {
         if (!row_is_dirty(j->dirty, cy)) continue;
         pixel_row_t row = row_span(j, cy);
         int split = adaptive && pixel_row_split(row);
         for (int part = 0; part <= split; part++)
-            convert_native_span(j, cy, row_part(row, part, split));
+            convert_native_span(j, cy, row_part(row, part, split), swap_rb);
     }
 }
 
 /* Constant scales let the compiler simplify box sums/divisions without
  * ISA-specific code or changes to the two-stage integer rounding. */
-static void convert_job(const conv_job_t *job) {
+static inline __attribute__((always_inline)) void convert_ordered_job(const conv_job_t *job, int adaptive, int swap_rb) {
     switch (job->scale) {
-        case 1: convert_strip(job, 0); break;
-        case 2: convert_strip_scaled(job, 2, 0); break;
-        case 3: convert_strip_scaled(job, 3, 0); break;
-        case 4: convert_strip_scaled(job, 4, 0); break;
-        default: convert_strip_scaled(job, job->scale, 0); break;
+        case 1: convert_strip(job, adaptive, swap_rb); break;
+        case 2: convert_strip_scaled(job, 2, adaptive, swap_rb); break;
+        case 3: convert_strip_scaled(job, 3, adaptive, swap_rb); break;
+        case 4: convert_strip_scaled(job, 4, adaptive, swap_rb); break;
+        default: convert_strip_scaled(job, job->scale, adaptive, swap_rb); break;
     }
 }
 
-static void convert_adaptive_job(const conv_job_t *job) {
-    switch (job->scale) {
-        case 1: convert_strip(job, 1); break;
-        case 2: convert_strip_scaled(job, 2, 1); break;
-        case 3: convert_strip_scaled(job, 3, 1); break;
-        case 4: convert_strip_scaled(job, 4, 1); break;
-        default: convert_strip_scaled(job, job->scale, 1); break;
-    }
-}
+static void convert_job(const conv_job_t *job) { convert_ordered_job(job, 0, 0); }
+static void convert_adaptive_job(const conv_job_t *job) { convert_ordered_job(job, 1, 0); }
+static void convert_rgba_job(const conv_job_t *job) { convert_ordered_job(job, 0, 1); }
+static void convert_rgba_adaptive_job(const conv_job_t *job) { convert_ordered_job(job, 1, 1); }
 
-/* Keep the arithmetic shared. Inlining specializes only these entry points;
- * generic builds and other architectures retain their original ISA baseline. */
 #ifdef BLENT_AVX2
 #include "conversion_box.h"
-__attribute__((target("avx2"))) static void convert_avx2_job(const conv_job_t *job) {
-    if (job->scale == 1) convert_strip(job, 0);
-    else if (job->scale == 2) convert_box_strip(job, 2, 0);
-    else convert_box_strip(job, 4, 0);
+__attribute__((target("avx2"), always_inline)) static inline void convert_avx2_ordered(
+        const conv_job_t *job, int adaptive, int swap_rb) {
+    if (job->scale == 1) convert_strip(job, adaptive, swap_rb);
+    else if (job->scale == 2) convert_box_strip(job, 2, adaptive, swap_rb);
+    else convert_box_strip(job, 4, adaptive, swap_rb);
 }
-__attribute__((target("avx2"))) static void convert_avx2_adaptive_job(const conv_job_t *job) {
-    if (job->scale == 1) convert_strip(job, 1);
-    else if (job->scale == 2) convert_box_strip(job, 2, 1);
-    else convert_box_strip(job, 4, 1);
-}
+__attribute__((target("avx2"))) static void convert_avx2_job(const conv_job_t *job) { convert_avx2_ordered(job, 0, 0); }
+__attribute__((target("avx2"))) static void convert_avx2_adaptive_job(const conv_job_t *job) { convert_avx2_ordered(job, 1, 0); }
+__attribute__((target("avx2"))) static void convert_avx2_rgba_job(const conv_job_t *job) { convert_avx2_ordered(job, 0, 1); }
+__attribute__((target("avx2"))) static void convert_avx2_rgba_adaptive_job(const conv_job_t *job) { convert_avx2_ordered(job, 1, 1); }
 #endif
 
 int conv_simd_available(conv_simd_t policy) {
@@ -193,10 +186,14 @@ static int use_avx2(const conv_job_t *frame, conv_work_t work, conv_simd_t polic
 
 static conv_kernel_t select_kernel(const conv_job_t *frame, conv_work_t work, conv_simd_t policy) {
 #ifdef BLENT_AVX2
-    if (use_avx2(frame, work, policy)) return work.split ? convert_avx2_adaptive_job : convert_avx2_job;
+    if (use_avx2(frame, work, policy)) {
+        if (frame->order == PIXEL_RGBA) return work.split ? convert_avx2_rgba_adaptive_job : convert_avx2_rgba_job;
+        return work.split ? convert_avx2_adaptive_job : convert_avx2_job;
+    }
 #else
     (void)frame; (void)policy;
 #endif
+    if (frame->order == PIXEL_RGBA) return work.split ? convert_rgba_adaptive_job : convert_rgba_job;
     return work.split ? convert_adaptive_job : convert_job;
 }
 
@@ -311,6 +308,7 @@ static void start_workers(conv_pool_t *pool, int count) {
 }
 
 void conv_pool_convert(conv_pool_t *pool, const conv_job_t *frame) {
+    if (!pixel_order_valid(frame->order)) { pool->last_jobs = 0; return; }
     conv_work_t work = (frame->dirty || frame->spans) ? measure_work(frame) : (conv_work_t){0};
     pool->kernel = select_kernel(frame, work, pool->simd);
     int count = job_count(pool, frame, work);

@@ -85,6 +85,7 @@ impl Harness {
                 | "T780"
                 | "T779"
                 | "T778"
+                | "T783"
                 | "T082"
                 | "T274"
                 | "T340"
@@ -433,4 +434,12 @@ fn t779_overlapping_normalization_has_bounded_work_and_exact_pixels() {
 #[test]
 fn t778_invalid_simd_environment_is_rejected_before_capture_resources() {
     Harness::build("T778").run("T778");
+}
+
+#[test]
+fn t783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime() {
+    let harness = Harness::build("T783");
+    for case in ["T783", "T783-cursor", "T783-shared", "T783-options"] {
+        harness.run(case);
+    }
 }

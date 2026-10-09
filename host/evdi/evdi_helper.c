@@ -460,7 +460,17 @@ static int configure_conversion_simd(const char *value) {
     return 0;
 }
 
+static int configure_capture_format(const char *value) {
+    if (!value || !strcmp(value, "native")) { g_capture.normalize_rgba = 0; return 1; }
+    if (!strcmp(value, "canonical")) { g_capture.normalize_rgba = 1; return 1; }
+    return 0;
+}
+
 int main(int argc, char *argv[]) {
+    if (!configure_capture_format(getenv("BLENT_CAPTURE_FORMAT"))) {
+        fprintf(stderr, "[evdi-helper] Invalid BLENT_CAPTURE_FORMAT; use native or canonical\n");
+        return 2;
+    }
     if (!configure_conversion_simd(getenv("BLENT_CONVERSION_SIMD"))) {
         fprintf(stderr, "[evdi-helper] Invalid or unsupported BLENT_CONVERSION_SIMD; use auto, portable or avx2\n");
         return 2;

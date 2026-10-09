@@ -109,7 +109,7 @@ static void test_t752_shared(void) {
     mock_monotonic_ms=1000;assert(service_shared_capture(&g_capture));
     unsigned char leased[96];memcpy(leased,ring.memory+RAW_CONTROL_BYTES,sizeof(leased));
     for (int y=0;y<8;y++) for (int x=0;x<8;x++)
-        *(uint32_t *)(g_capture.native_framebuffer+y*g_capture.mode_stride+4*x)=0xff0000ff;
+        *(uint32_t *)((unsigned char *)t752_registered.buffer+y*g_capture.mode_stride+4*x)=0xff0000ff;
     t752_grabs=1;t752_count=1;t752_rects[0]=(struct evdi_rect){0,0,8,8};
     grab_now(&g_capture);mock_monotonic_ms=1020;
     assert(service_shared_capture(&g_capture));

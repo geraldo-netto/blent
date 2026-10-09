@@ -64,11 +64,12 @@ static cursor_rect_t cursor_visible(const cursor_overlay_t *cursor, int width, i
     return rect;
 }
 
-static void cursor_blend(unsigned char *destination, const unsigned char *source) {
+static void cursor_blend(unsigned char *destination, const unsigned char *source, pixel_order_t order) {
     unsigned alpha = source[3];
     if (!alpha) return;
     for (int channel = 0; channel < 3; channel++) {
-        unsigned value = source[channel] + (destination[channel] * (255 - alpha) + 127) / 255;
+        int source_channel = order == PIXEL_RGBA ? 2 - channel : channel;
+        unsigned value = source[source_channel] + (destination[channel] * (255 - alpha) + 127) / 255;
         destination[channel] = value > 255 ? 255 : value;
     }
     destination[3] = 255;
@@ -81,11 +82,11 @@ static void cursor_draw_row(cursor_overlay_t *cursor, unsigned char *surface, in
     memcpy(saved + (size_t)(y - rect.y1) * cursor->width * 4, row, (size_t)(rect.x2 - rect.x1) * 4);
     const unsigned char *source = cursor->storage +
         ((size_t)((int64_t)y - cursor->y) * cursor->width + (size_t)((int64_t)rect.x1 - cursor->x)) * 4;
-    for (int x = rect.x1; x < rect.x2; x++, row += 4, source += 4) cursor_blend(row, source);
+    for (int x = rect.x1; x < rect.x2; x++, row += 4, source += 4) cursor_blend(row, source, cursor->order);
 }
 
 cursor_rect_t cursor_overlay_draw(cursor_overlay_t *cursor, unsigned char *surface, int width, int height, int stride) {
-    if (!cursor->storage || !surface) return (cursor_rect_t){0};
+    if (!cursor->storage || !surface || !pixel_order_valid(cursor->order)) return (cursor_rect_t){0};
     cursor->drawn = cursor_visible(cursor, width, height);
     for (int y = cursor->drawn.y1; y < cursor->drawn.y2; y++) cursor_draw_row(cursor, surface, stride, y);
     return cursor->drawn;

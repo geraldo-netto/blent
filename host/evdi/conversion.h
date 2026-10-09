@@ -3,9 +3,10 @@
 #include <pthread.h>
 #include <stddef.h>
 #include "pixel_span.h"
+#include "pixel_format.h"
 
 typedef struct {
-    const unsigned char *src;   /* BGRA, stride-padded */
+    const unsigned char *src;   /* packed pixels in order, stride-padded */
     unsigned char *ydst;        /* Y plane, w bytes/row */
     unsigned char *uvdst;       /* interleaved CbCr, w bytes per chroma row */
     int w, h, stride;           /* source dimensions */
@@ -15,6 +16,7 @@ typedef struct {
     const unsigned char *dirty; /* NULL = all rows; otherwise one bit/chroma row */
     const pixel_row_t *spans;  /* Optional bounded two-span row history; NULL = full width.
                                 * Borrowed, aligned and clipped by frame owner. */
+    pixel_order_t order;       /* zero defaults to BGRA; invalid orders reject the job */
 } conv_job_t;
 
 /* AUTO uses available box kernels for scales 2/4 and wide unscaled work.

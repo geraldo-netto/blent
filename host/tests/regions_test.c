@@ -108,7 +108,7 @@ static void region_lifecycle(int scale) {
     f.buffers_ready = 1;
     conv_pool_t pool = CONV_POOL_INITIALIZER;
     conv_pool_start(&pool, 4);
-    conv_job_t job = {source, NULL, NULL, sw, sh, stride, W, H, scale, 0, H / 2, NULL, NULL};
+    conv_job_t job = {source, NULL, NULL, sw, sh, stride, W, H, scale, 0, H / 2, NULL, NULL, PIXEL_BGRA};
     frame_cursor_t cursor = {0};
     frame_lease_t lease = {0};
     atomic_int running = 1;
@@ -153,7 +153,7 @@ static void region_dispatch(void) {
     unsigned char dirty[H / 16];
     memset(dirty, 0xFF, sizeof(dirty));
     pixel_row_t spans[H / 2];
-    conv_job_t job = {source, actual, actual + W * H, W, H, W * 4, W, H, 1, 0, H / 2, dirty, spans};
+    conv_job_t job = {source, actual, actual + W * H, W, H, W * 4, W, H, 1, 0, H / 2, dirty, spans, PIXEL_BGRA};
     for (int width = 2; width <= 2048; width *= 1024) {
         memset(actual, 0xA5, SIZE); memset(expected, 0xA5, SIZE);
         for (int cy = 0; cy < H / 2; cy++) spans[cy] = (pixel_row_t){.begin=100, .end=100 + width};
@@ -181,7 +181,7 @@ static void region_scaled_workers(conv_pool_t *pool, int scale) {
         spans[cy] = (pixel_row_t){.begin=begin, .end=begin + 2 * (cy % 2)};
     }
     conv_job_t job = {source, actual, actual + ow * oh, SW, SH, STRIDE, ow, oh,
-        scale, 0, oh / 2, NULL, spans};
+        scale, 0, oh / 2, NULL, spans, PIXEL_BGRA};
     conv_pool_convert(pool, &job);
     assert(pool->last_jobs == pool->count);
     job.ydst = expected; job.uvdst = expected + ow * oh;

@@ -80,7 +80,7 @@ static void t580_check_frame(int reader) {
     unsigned char expected[512], actual[512];
     size_t size = (size_t)g_frames.size;
     assert(size <= sizeof(expected));
-    bgra_to_nv12(&g_capture, g_capture.framebuffer, expected, NULL, NULL);
+    capture_to_nv12(&g_capture, g_capture.framebuffer, expected, NULL, NULL);
     size_t received = 0;
     while (received < size) {
         struct pollfd fd = {.fd = reader, .events = POLLIN};

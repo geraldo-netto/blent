@@ -46,6 +46,19 @@ static void reference(const conv_job_t *j) {
     }
 }
 
+/* T783: identical colors in the opposite byte order must produce identical NV12.
+ * Expected bytes are computed before changing input order by the scalar oracle. */
+static void t783_rgba_equivalent(conv_pool_t *pool, conv_job_t job, unsigned char *source,
+        unsigned char *actual, const unsigned char *expected, size_t size) {
+    for (int y = 0; y < job.h; y++) for (int x = 0; x < job.w; x++) {
+        unsigned char *p = source + (size_t)y * job.stride + x * 4;
+        unsigned char b = p[0]; p[0] = p[2]; p[2] = b;
+    }
+    job.order = PIXEL_RGBA; job.ydst = actual; job.uvdst = actual + job.ow * job.oh;
+    memset(actual, 0xA5, size); conv_pool_convert(pool, &job);
+    assert(!memcmp(actual, expected, size) && "T783: native RGBA changes pixels, rounding or guards");
+}
+
 static void dirty_mask(unsigned char *mask, int rows, int pattern) {
     memset(mask, 0, (size_t)(rows + 7) / 8);
     for (int row = 0; row < rows; row++) {
@@ -66,11 +79,12 @@ static void check_conversion(conv_pool_t *pool, int scale, int pattern) {
     unsigned char mask[64];
     dirty_mask(mask, oh / 2, pattern);
     conv_job_t frame = {source, actual, actual + ow * oh, W, H, STRIDE, ow, oh, scale, 0, oh / 2,
-        pattern == 4 ? NULL : mask, NULL};
+        pattern == 4 ? NULL : mask, NULL, PIXEL_BGRA};
     conv_pool_convert(pool, &frame);
     frame.ydst = expected; frame.uvdst = expected + ow * oh;
     reference(&frame);
     assert(memcmp(actual, expected, size + GUARD) == 0 && "T383: conversion/rounding/dirty/guard mismatch");
+    t783_rgba_equivalent(pool, frame, source, actual, expected, size + GUARD);
     free(source); free(actual); free(expected);
 }
 
@@ -150,7 +164,7 @@ static void sparse_dispatch(void) {
     assert(source && output);
     unsigned char dirty[16] = {0};
     conv_job_t job = {source, output, output + 512 * 256, 512, 256, 512 * 4,
-        512, 256, 1, 0, 128, dirty, NULL};
+        512, 256, 1, 0, 128, dirty, NULL, PIXEL_BGRA};
     unsigned initial = pool.generation;
     conv_pool_convert(&pool, &job);
     assert(pool.generation == initial && "T383: empty work woke every worker");
@@ -178,7 +192,7 @@ static void density_dispatch(void) {
     memset(source, 173, W * H * 4);
     unsigned char dirty[H / 16];
     memset(dirty, 0xFF, sizeof(dirty));
-    conv_job_t job = {source, actual, actual + W * H, W, H, W * 4, W, H, 1, 0, H / 2, dirty, NULL};
+    conv_job_t job = {source, actual, actual + W * H, W, H, W * 4, W, H, 1, 0, H / 2, dirty, NULL, PIXEL_BGRA};
     conv_job_t oracle = job;
     oracle.ydst = expected; oracle.uvdst = expected + W * H;
     conv_pool_convert(&pool, &job);

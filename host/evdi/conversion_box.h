@@ -38,7 +38,7 @@ __attribute__((target("avx2"), always_inline)) static inline void box_row(
 /* Two 128-pixel rows stay in L1 and reuse the exact unscaled color arithmetic.
  * Original output stride is retained, while the temporary source stride is fixed. */
 __attribute__((target("avx2"), always_inline)) static inline void convert_box_span(
-        const conv_job_t *job, int cy, pixel_span_t span, int scale) {
+        const conv_job_t *job, int cy, pixel_span_t span, int scale, int swap_rb) {
     enum { TILE = 128, STRIDE = TILE * 4 };
     unsigned char pixels[STRIDE * 2];
     for (int x = span.begin; x < span.end; x += TILE) {
@@ -51,17 +51,17 @@ __attribute__((target("avx2"), always_inline)) static inline void convert_box_sp
         conv_job_t reduced = {.src=pixels, .stride=STRIDE, .ow=job->ow,
             .ydst=job->ydst + (size_t)cy * 2 * job->ow + x,
             .uvdst=job->uvdst + (size_t)cy * job->ow + x};
-        convert_native_span(&reduced, 0, (pixel_span_t){0, count});
+        convert_native_span(&reduced, 0, (pixel_span_t){0, count}, swap_rb);
     }
 }
 
 __attribute__((target("avx2"), always_inline)) static inline void convert_box_strip(
-        const conv_job_t *job, int scale, int adaptive) {
+        const conv_job_t *job, int scale, int adaptive, int swap_rb) {
     for (int cy = job->cy0; cy < job->cy1; cy++) {
         if (!row_is_dirty(job->dirty, cy)) continue;
         pixel_row_t row = row_span(job, cy);
         int split = adaptive && pixel_row_split(row);
-        for (int part = 0; part <= split; part++) convert_box_span(job, cy, row_part(row, part, split), scale);
+        for (int part = 0; part <= split; part++) convert_box_span(job, cy, row_part(row, part, split), scale, swap_rb);
     }
 }
 #endif

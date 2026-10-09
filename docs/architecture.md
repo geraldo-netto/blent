@@ -111,7 +111,7 @@ counts as historical evidence.
 ## Processes and settings
 
 The C helper is assembled from independently linked modules. `capture.c` owns
-the EVDI mode, registered BGRA framebuffer and event callbacks; callbacks receive
+the EVDI mode, registered native pixel framebuffer and event callbacks; callbacks receive
 that capture context through EVDI's `user_data`. `conversion.c` owns a worker
 pool whose jobs borrow input, output, dirty masks and horizontal spans until
 conversion completes.
@@ -816,3 +816,13 @@ contract owns policy and arithmetic; the Linux helper adapter maps the environme
 to that policy. Kernel selection is published with each job batch and cannot
 change while workers hold borrowed frame buffers. Local measurements and scope
 limits are in the [C performance review](reviews/2026-10-09-c-performance.md).
+
+The helper defaults to `BLENT_CAPTURE_FORMAT=native`: conversion reads the
+registered BGRA/RGBA framebuffer directly, using an independent pixel-order
+contract. Cursor images stay premultiplied BGRA; the overlay blends into the
+surface's channel order and restores its original bytes. RGBA capture avoids
+one framebuffer allocation and its normalization pass. `canonical` retains
+the separate RGBA-to-BGRA copy for comparisons and troubleshooting, at the cost
+of extra memory and copying; BGRA capture uses one source buffer in either mode.
+Unknown values fail startup before device access. Neither option changes NV12
+color arithmetic, buffer leases or damage-history ownership.

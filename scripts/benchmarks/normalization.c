@@ -57,7 +57,7 @@ static void measure(capture_context_t *capture, struct evdi_rect *rects, int cou
 int main(int argc, char **argv) {
     assert(argc == 2);
     int kind = benchmark_number(argv[1], 0, 3);
-    capture_context_t capture = {.mode_w=WIDTH, .mode_h=HEIGHT, .mode_stride=STRIDE, .swap_rb=1};
+    capture_context_t capture = {.mode_w=WIDTH, .mode_h=HEIGHT, .mode_stride=STRIDE, .swap_rb=1, .normalize_rgba=1};
     capture.framebuffer = malloc(STRIDE * HEIGHT); capture.native_framebuffer = malloc(STRIDE * HEIGHT);
     assert(capture.framebuffer && capture.native_framebuffer);
     for (size_t i = 0; i < STRIDE * HEIGHT; i++) capture.native_framebuffer[i] = (unsigned char)(i * 17 + i / 997);

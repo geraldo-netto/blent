@@ -305,7 +305,7 @@ static void test_conversion(int width, int height, int scale) {
     unsigned char *dest = malloc(size + 64);
     assert(source && dest);
     memset(dest, 0xa5, size + 64);
-    bgra_to_nv12(&g_capture, source, dest, NULL, NULL);
+    capture_to_nv12(&g_capture, source, dest, NULL, NULL);
     for (size_t i = size; i < size + 64; i++)
         assert(dest[i] == 0xa5 && "T012: conversion wrote beyond packed NV12 buffer");
     for (size_t i = 0; i < pixels; i++)
@@ -497,7 +497,7 @@ static void test_t752(void) {
     t752_rects[0]=(struct evdi_rect){0,0,8,8};t752_rects[1]=t752_rects[0];
     grab_now(&g_capture);
     assert(*(uint32_t*)g_capture.framebuffer==0xffff0000 && "T752: overlapping damage must not double-swap red/blue");
-    unsigned char nv12[96];bgra_to_nv12(&g_capture,g_capture.framebuffer,nv12,NULL,NULL);
+    unsigned char nv12[96];capture_to_nv12(&g_capture,g_capture.framebuffer,nv12,NULL,NULL);
     assert(nv12[0]==63 && nv12[64]==102 && nv12[65]==240 && "T752: red must stay red in NV12");
     on_mode_changed((struct evdi_mode){8,8,60,32,0x34325258}, &g_capture);
     assert(t752_registered.buffer==g_capture.framebuffer && "T752: same-size channel-order changes must replace registration");
@@ -858,12 +858,12 @@ static void test_t254(void) {
     g_capture.scale = 1;
     conv_pool_init();
     assert(g_conversion.count > 1);
-    bgra_to_nv12(&g_capture, source, destination, NULL, NULL);
+    capture_to_nv12(&g_capture, source, destination, NULL, NULL);
     seed_test_pool_epoch(INT_MAX);
-    bgra_to_nv12(&g_capture, source, destination, NULL, NULL); /* UBSan catches signed overflow. */
+    capture_to_nv12(&g_capture, source, destination, NULL, NULL); /* UBSan catches signed overflow. */
     seed_test_pool_epoch(UINT_MAX);
     memset(destination, 0, sizeof(destination));
-    bgra_to_nv12(&g_capture, source, destination, NULL, NULL);
+    capture_to_nv12(&g_capture, source, destination, NULL, NULL);
     assert(g_conversion.generation == 0 && "T254: generation wraps to zero");
     for (size_t i = 0; i < sizeof(destination); i++)
         assert(destination[i] == (i < 64 ? 16 : 128) && "T254: all workers finish the wrapped frame");
@@ -949,7 +949,7 @@ static void t293_uniform_color(int red, int green, int blue, int scale) {
             pixel[0] = blue; pixel[1] = green; pixel[2] = red; pixel[3] = 255;
         }
     }
-    bgra_to_nv12(&g_capture, source, dest, NULL, NULL);
+    capture_to_nv12(&g_capture, source, dest, NULL, NULL);
     /* Independent equations from ITU-R BT.709-6, section 3.2–3.4.
        Input RGB is full-range 8-bit; output Y/Cb/Cr is limited-range. */
     const double luma = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255.0;
@@ -1476,6 +1476,7 @@ static void test_t415_rounding(void) {
 #include "cursor_overlay.c"
 #include "frame_format.c"
 #include "normalization_work.c"
+#include "native_format.c"
 #include "helper_simd.c"
 #include "shared_damage.c"
 #include "fifo_demand.c"
@@ -1484,6 +1485,9 @@ static void test_t415_rounding(void) {
 #include "failed_mode.c"
 #include "helper_arguments.c"
 
+static void canonical_format_fixture(const char *id) {
+    if (!strncmp(id, "T752", 4) || !strcmp(id, "T779") || !strcmp(id, "T780")) g_capture.normalize_rgba = 1;
+}
 #ifndef BLENT_C_FUZZ_DRIVER
 int main(int argc, char **argv) {
     const char *fifo_fixture = getenv("BLENT_T226_ROOT");
@@ -1491,6 +1495,7 @@ int main(int argc, char **argv) {
     const char *root = getenv("BLENT_T330_DRM");
     if (root) return t330_command_lease(argc, argv, root);
     assert(argc == 2);
+    canonical_format_fixture(argv[1]);
     static const struct { const char *id; void (*run)(void); } cases[] = {
         {"T580", test_t580_no_reader},
         {"T580-reconnect", test_t580_reconnect},
@@ -1535,6 +1540,10 @@ int main(int argc, char **argv) {
         {"T780", test_t780_full_rect_capacity},
         {"T779", test_t779_normalization_work},
         {"T778", test_t778_simd_options},
+        {"T783", test_t783_native_mode},
+        {"T783-cursor", test_t783_native_cursor},
+        {"T783-shared", test_t752_shared},
+        {"T783-options", test_t783_format_options},
         {"T752-bounds", test_t752_bounds},
         {"T752-allocation", test_t752_allocation},
         {"T752-cursor", test_t752_cursor},

@@ -2,6 +2,7 @@
 #define BLENT_CURSOR_OVERLAY_H
 #include <stddef.h>
 #include <stdint.h>
+#include "pixel_format.h"
 
 /* Platform-independent, event-thread-owned premultiplied cursor overlay.
  * Images are borrowed only during set(); internal compact pixels are owned.
@@ -23,6 +24,7 @@ typedef struct {
     unsigned width, height;
     int x, y;
     cursor_rect_t drawn;
+    pixel_order_t order; /* borrowed surface byte order; image storage stays BGRA */
 } cursor_overlay_t;
 int cursor_overlay_set(cursor_overlay_t *cursor, const cursor_image_t *image);
 void cursor_overlay_destroy(cursor_overlay_t *cursor);

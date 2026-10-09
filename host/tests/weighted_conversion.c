@@ -49,7 +49,7 @@ static void t769_case(conv_pool_t *pool, int scale, int pattern) {
     memset(actual, 0xA5, size + GUARD); memset(expected, 0xA5, size + GUARD);
     unsigned char dirty[(H / 2 + 7) / 8]; pixel_row_t spans[H / 2];
     conv_job_t job = {source, actual, actual + ow * oh, W, H, STRIDE, ow, oh,
-        scale, 0, oh / 2, dirty, spans};
+        scale, 0, oh / 2, dirty, spans, PIXEL_BGRA};
     t769_pattern(&job, dirty, spans, pattern);
     conv_pool_convert(pool, &job);
     assert(pool->last_jobs <= pool->count);

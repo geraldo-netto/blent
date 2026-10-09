@@ -18,9 +18,10 @@ typedef struct {
     evdi_handle handle;
     int device_index;
     int capture_failed;
-    unsigned char * framebuffer; /* normalized BGRA with local cursor */
-    unsigned char *native_framebuffer; /* owned only for RGBA scanout */
+    unsigned char * framebuffer; /* native pixels, or canonical BGRA fallback, with local cursor */
+    unsigned char *native_framebuffer; /* owned only for canonical RGBA fallback */
     int swap_rb;
+    int normalize_rgba; /* explicit canonical fallback; default uses native order */
     int fb_size;
     int mode_w;
     int mode_h;

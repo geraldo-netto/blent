@@ -1,0 +1,113 @@
+/* T783: production capture/normalize/cursor/convert replay with fake EVDI only. */
+#define BLENT_C_FUZZ_DRIVER
+#include "/backups/disk2/projects/blent/host/tests/evdi_helper_test.c"
+#include "/backups/disk2/projects/blent/scripts/benchmarks/checked_arguments.h"
+#include <inttypes.h>
+struct rgb { int r, g, b; };
+
+static struct rgb mean_pixel(const conv_job_t *j, int x, int y) {
+    struct rgb sum = {0};
+    for (int dy = 0; dy < j->scale; dy++) {
+        for (int dx = 0; dx < j->scale; dx++) {
+            const unsigned char *p = j->src + (size_t)(y * j->scale + dy) * j->stride + (x * j->scale + dx) * 4;
+            sum.b += p[0]; sum.g += p[1]; sum.r += p[2];
+        }
+    }
+    int count = j->scale * j->scale;
+    sum.b /= count; sum.g /= count; sum.r /= count;
+    return sum;
+}
+
+static int floor_256(int value) {
+    return value >= 0 ? value / 256 : -((-value + 255) / 256);
+}
+
+static void reference_block(const conv_job_t *j, int x, int cy) {
+    struct rgb sum = {0};
+    for (int q = 0; q < 4; q++) {
+        int px = x + q % 2, py = 2 * cy + q / 2;
+        struct rgb p = mean_pixel(j, px, py);
+        j->ydst[py * j->ow + px] = (unsigned char)((47 * p.r + 157 * p.g + 16 * p.b + 128) / 256 + 16);
+        sum.b += p.b; sum.g += p.g; sum.r += p.r;
+    }
+    int b = sum.b / 4, g = sum.g / 4, r = sum.r / 4;
+    j->uvdst[cy * j->ow + x] = (unsigned char)(floor_256(-26 * r - 86 * g + 112 * b + 128) + 128);
+    j->uvdst[cy * j->ow + x + 1] = (unsigned char)(floor_256(112 * r - 102 * g - 10 * b + 128) + 128);
+}
+
+static void reference(const conv_job_t *j) {
+    for (int cy = j->cy0; cy < j->cy1; cy++) {
+        if (j->dirty && !(j->dirty[cy / 8] & (1u << (cy % 8)))) continue;
+        for (int x = 0; x < j->ow; x += 2) reference_block(j, x, cy);
+    }
+}
+
+
+static uint64_t stamp(clockid_t clock) {
+    struct timespec ts; assert(!clock_gettime(clock,&ts));
+    return (uint64_t)ts.tv_sec*1000000000 + ts.tv_nsec;
+}
+static int compare_stamp(const void *a,const void *b) {
+    uint64_t x=*(const uint64_t *)a,y=*(const uint64_t *)b;return (x>y)-(x<y);
+}
+static void check_pixels(void) {
+    unsigned char *source=malloc(g_capture.fb_size), *expected=malloc(g_frames.size);
+    assert(source && expected);
+    memcpy(source,g_capture.framebuffer,g_capture.fb_size);
+    if (capture_pixel_order(&g_capture)==PIXEL_RGBA)
+        for (int y=0;y<g_capture.mode_h;y++) conv_copy_rgba_to_bgra(source+y*g_capture.mode_stride,
+            g_capture.framebuffer+y*g_capture.mode_stride,g_capture.mode_w);
+    conv_job_t job={.src=source,.ydst=expected,.uvdst=expected+g_frames.width*g_frames.height,
+        .stride=g_capture.mode_stride,.ow=g_frames.width,.oh=g_frames.height,.scale=g_capture.scale,.cy1=g_frames.height/2};
+    reference(&job);assert(!memcmp(expected,g_frames.latest,g_frames.size));
+    free(source);free(expected);
+}
+static void seed_pixels(void) {
+    unsigned char *source=t752_registered.buffer;
+    for (int y=0;y<1080;y++) for (int x=0;x<1920;x++) {
+        unsigned char *p=source+y*g_capture.mode_stride+4*x;
+        p[0]=(unsigned char)(x*17+y*31);p[1]=(unsigned char)(x*3+y*7);p[2]=(unsigned char)(x*13+y*19);p[3]=255;
+    }
+}
+static void seed_cursor(int cursor) {
+    if (!cursor) return;
+    struct evdi_cursor_set event={.enabled=1,.width=32,.height=32,.stride=128,.buffer_length=4096,.pixel_format=0x34325241};
+    event.buffer=malloc(4096);assert(event.buffer);
+    for (int i=0;i<1024;i++) event.buffer[i]=0x80402010;
+    on_cursor_set(event,&g_capture);
+}
+static void warm(int kind) {
+    t752_grabs=1;t752_count=64;
+    for (int i=0;i<3;i++) grab_now(&g_capture);
+    t752_count=1;t752_rects[0]=(struct evdi_rect){0,0,1920,1080};
+    if (kind==1) t752_rects[0]=(struct evdi_rect){0,0,64,64};
+    if (kind==2) {
+        t752_count=63;
+        for(int i=0;i<63;i++) t752_rects[i]=(struct evdi_rect){0,0,1920,1080};
+    }
+    for (int i=0;i<16;i++) grab_now(&g_capture);
+    check_pixels();
+}
+static void measure(int scale,int workers,int canonical,int kind,int cursor) {
+    enum { SAMPLES=96 };uint64_t samples[SAMPLES];
+    uint64_t cpu=stamp(CLOCK_PROCESS_CPUTIME_ID);
+    for (int i=0;i<SAMPLES;i++) {
+        uint64_t start=stamp(CLOCK_MONOTONIC);grab_now(&g_capture);samples[i]=stamp(CLOCK_MONOTONIC)-start;
+    }
+    cpu=stamp(CLOCK_PROCESS_CPUTIME_ID)-cpu;
+    qsort(samples,SAMPLES,sizeof(*samples),compare_stamp);check_pixels();
+    printf("BENCH {\"scale\":%d,\"workers\":%d,\"canonical\":%d,\"kind\":%d,\"cursor\":%d,\"wall_p50_ns\":%"PRIu64",\"cpu_ns_per_frame\":%"PRIu64"}\n",
+        scale,workers,canonical,kind,cursor,samples[SAMPLES/2],cpu/SAMPLES);
+}
+int main(int argc,char **argv) {
+    assert(argc==6);
+    int scale=benchmark_number(argv[1],1,4),workers=benchmark_number(argv[2],1,8),canonical=benchmark_number(argv[3],0,1);
+    int kind=benchmark_number(argv[4],0,2),cursor=benchmark_number(argv[5],0,1);
+    g_capture.scale=scale;g_capture.normalize_rgba=canonical;frame_exchange_init(&g_frames);g_running=1;
+    conv_pool_start(&g_conversion,workers);
+    on_mode_changed((struct evdi_mode){1920,1080,60,32,0x34324258},&g_capture);
+    assert(g_capture.have_mode);seed_pixels();seed_cursor(cursor);warm(kind);
+    measure(scale,workers,canonical,kind,cursor);
+    cursor_overlay_destroy(&g_capture.cursor);free(g_capture.framebuffer);free(g_capture.native_framebuffer);
+    frame_exchange_free(&g_frames);conv_pool_destroy(&g_conversion);return 0;
+}

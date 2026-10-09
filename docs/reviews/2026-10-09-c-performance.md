@@ -341,3 +341,24 @@ The separate C/Rust I/O review found:
 - Larger FIFO capacity already has a user control and [retained measurements](../benchmarks/2026-09-17-pipe-capacity.md):
   it can reduce write attempts/CPU but increase queued-frame age. The old tests
   do not justify a blanket default increase or frame batching.
+
+## T783 implementation: native channel order
+
+Conversion now takes an independent BGRA/RGBA pixel-order contract and selects
+specialized kernels once per batch. Cursor images remain BGRA; blending respects
+the borrowed surface order and restores original bytes. Default native capture
+registers one source framebuffer. `BLENT_CAPTURE_FORMAT=canonical` retains the
+separate swizzle path for comparison/troubleshooting and its permanent regressions.
+
+[Five paired trials](artifacts/2026-10-09-t783/README.md) include normalization,
+cursor restore/draw, damage, conversion and publication with mocked EVDI readback.
+At 1920×1080 RGBA with cursor and one worker, dense wall medians fall from
+760.178 to 479.230 µs (scale 1), 533.557 to 260.303 µs (scale 2), and 405.390
+to 133.289 µs (scale 4). One 8,294,400-byte allocation is removed. BGRA already
+avoids the pass; its dense comparison ranges from −0.2% to +2.4% with one worker,
+so no BGRA speedup is claimed. Specialized channel kernels increase code size.
+
+The new single-buffer regression failed before the change and passes afterward.
+Permanent scalar-oracle, format/resize/cursor/lease and invalid-order tests pass,
+as do GCC/Clang ASan/UBSan and all 207 individual native coverage checks. T783
+is resolved. These are owned userspace timings, not compositor or tablet FPS.
