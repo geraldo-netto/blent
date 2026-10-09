@@ -1,0 +1,15 @@
+{
+  "baseline_revision": "b1009d0da45861167aab991f6445402cf2cab98c",
+  "candidate_sources": {
+    "CameraCapture.kt": "90dd68b8e336c41b338427f7d79e0dbc9f239e7f4518327eadcb77674179e55b",
+    "CameraLink.kt": "88598498abb995539715b8e33eb225162e69f65cf4d5a3fc320707310dfa55c5",
+    "CameraBufferLease.kt": "0fcf9f3aae42367fce58e8aeadbac511e6a4c5af3508eb61c297a0faa1c83fb6"
+  },
+  "regressions": [
+    "CameraCaptureTest.t805_codecLeaseEndsBeforeDelayedOrInvalidAcknowledgement",
+    "CameraCaptureTest.t805_delayedAckSweepRecordsBufferHold",
+    "CameraCaptureTest.t805_failedNativeReleaseIsNeverRetried",
+    "CameraFeedbackTest.t805_storageBorrowEndsAfterFlushAndNeverOnFailedTransport",
+    "CameraFeedbackTest.t805_missingAckAndSocketStopKeepReleaseAndRetirementBounded"
+  ]
+}

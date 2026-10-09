@@ -321,3 +321,22 @@ encoded-delivery medians were essentially unchanged. Keep stock selection and
 fallback; reject speculative ranking/metadata overhead. Native probe retains
 selected identity, CPU, PSS and per-frame ages. No camera sensor, production app
 reload or download. Production behavior unchanged; benchmark builds offline.
+
+## T805: end codec lease before ACK wait
+
+CameraLink explicitly signals completed transport flush before reading feedback.
+CameraCapture then closes a single-owner buffer lease. Release is claimed before
+native release is attempted, so an ambiguous failure cannot cause a second call.
+Finally covers errors before flush and empty/dropped packets. Wire order, one
+packet in flight, freshness, adaptive bitrate and Stop remain unchanged.
+
+The permanent regression first failed while ACK reads still held the codec
+buffer; delayed/invalid/reordered/truncated feedback now observes release first.
+Flush failure, missing ACK timeout, socket Stop and throwing native release are
+covered alongside existing lifecycle regressions. Full offline suite: 839
+tests pass, 916/916 methods meet individual 80% coverage, complexity <=9.
+
+[Controlled delayed-ACK measurements](artifacts/2026-10-10-android-camera-lease/README.md)
+reduce buffer hold at 50 ms feedback delay from 50.18 ms to 0.077 ms. Full cycle
+remains about 50 ms: no transport throughput claim. No extra frame copy, storage
+or worker; reject speculative overlap without measured end-to-end benefit.

@@ -134,26 +134,27 @@ internal class CameraCapture(context: Context, private val nowUs: () -> Long = {
     }
 
     private fun sendBuffer(codec: MediaCodec, sink: CameraLink, info: MediaCodec.BufferInfo, index: Int, clock: CameraFrameClock, freshness: CameraFreshness, rate: CameraRate) {
+        val lease = CameraBufferLease { codec.releaseOutputBuffer(index, false) }
         try {
             if (info.size > 0) {
                 val buffer = requireNotNull(codec.getOutputBuffer(index))
-                sendFrame(codec, sink, buffer, info, clock, freshness, rate)
+                sendFrame(codec, sink, buffer, info, clock, freshness, rate, lease::close)
             }
             check(info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM == 0) { "Camera encoder stopped" }
-        } finally { codec.releaseOutputBuffer(index, false) }
+        } finally { lease.close() }
     }
 
     private fun sendFrame(codec: MediaCodec, sink: CameraLink, buffer: java.nio.ByteBuffer,
-        info: MediaCodec.BufferInfo, clock: CameraFrameClock, freshness: CameraFreshness, rate: CameraRate) {
+        info: MediaCodec.BufferInfo, clock: CameraFrameClock, freshness: CameraFreshness, rate: CameraRate, copied: () -> Unit) {
         if (info.flags and MediaCodec.BUFFER_FLAG_CODEC_CONFIG != 0) {
-            sink.send(buffer, info.offset, info.size, 0)
+            sink.send(buffer, info.offset, info.size, 0, copied)
             return
         }
         val now = nowUs()
         val age = clock.ageUs(info.presentationTimeUs, now)
         val key = info.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME != 0
         val feedback = when (freshness.choose(age, key, now)) {
-            CameraFreshness.Decision.SEND -> sink.send(buffer, info.offset, info.size, age)
+            CameraFreshness.Decision.SEND -> sink.send(buffer, info.offset, info.size, age, copied)
             CameraFreshness.Decision.DROP -> 0L
             CameraFreshness.Decision.REQUEST_SYNC -> {
                 android.util.Log.i("BlentCamera", "freshnessGap dropped=${freshness.dropped} queueAgeUs=$age")

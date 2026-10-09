@@ -16,12 +16,14 @@ internal class CameraLink(private val sink: BufferedSink, private val input: Buf
 
     init { require(budgetMs in 50..2000) }
 
-    fun send(source: ByteBuffer, offset: Int, size: Int, queueAgeUs: Long): Long {
+    /** copied runs exactly once after transport flush, before ACK reads. The
+     * caller may then release source storage; failure before flush leaves it owned. */
+    fun send(source: ByteBuffer, offset: Int, size: Int, queueAgeUs: Long, copied: () -> Unit = {}): Long {
         check(active) { "Camera connection retired" }
         check(sequence < Long.MAX_VALUE) { "Camera sequence exhausted" }
         require(queueAgeUs in 0..budgetMs * 1000L)
         try {
-            return exchange(source, offset, size, queueAgeUs)
+            return exchange(source, offset, size, queueAgeUs, copied)
         } catch (error: IOException) {
             active = false
             runCatching { close() }
@@ -29,13 +31,14 @@ internal class CameraLink(private val sink: BufferedSink, private val input: Buf
         }
     }
 
-    private fun exchange(source: ByteBuffer, offset: Int, size: Int, queueAgeUs: Long): Long {
+    private fun exchange(source: ByteBuffer, offset: Int, size: Int, queueAgeUs: Long, copied: () -> Unit): Long {
         val started = System.nanoTime()
         val deadline = started + TimeUnit.MILLISECONDS.toNanos(budgetMs.toLong()) - queueAgeUs * 1000
         sink.timeout().deadlineNanoTime(deadline)
         input.timeout().deadlineNanoTime(deadline)
         try {
             CameraWire.packet(sink, source, offset, size)
+            copied()
             if (input.readLong() != sequence + 1) throw IOException("Invalid camera feedback sequence")
             if (System.nanoTime() >= deadline) throw java.net.SocketTimeoutException("Camera feedback exceeded freshness budget")
             sequence++

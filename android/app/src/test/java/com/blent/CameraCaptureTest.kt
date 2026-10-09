@@ -11,6 +11,7 @@ import android.os.Looper
 import android.util.Range
 import android.util.Size
 import android.view.Surface
+import okio.buffer
 import java.net.ServerSocket
 import java.nio.ByteBuffer
 import java.util.concurrent.*
@@ -198,6 +199,80 @@ class CameraCaptureTest {
             Shadows.shadowOf(Looper.getMainLooper()).idle()
             Thread.sleep(5)
         }
+    }
+
+    @Test fun t805_codecLeaseEndsBeforeDelayedOrInvalidAcknowledgement() {
+        for (ack in listOf(1L, 0L, 2L, Long.MAX_VALUE, null)) {
+            CameraEncoderShadow.releases = 0
+            val codec = MediaCodec.createEncoderByType("video/avc")
+            try {
+                val feedback = okio.Buffer().apply { if (ack != null) writeLong(ack) }
+                val source = object : okio.ForwardingSource(feedback) {
+                    override fun read(sink: okio.Buffer, byteCount: Long): Long {
+                        assertEquals("T805 codec buffer held while awaiting ACK", 1, CameraEncoderShadow.releases)
+                        Thread.sleep(10)
+                        return super.read(sink, byteCount)
+                    }
+                }.buffer()
+                val output = okio.Buffer()
+                val link = CameraLink(output, source)
+                val info = MediaCodec.BufferInfo().apply { set(1, 3, 1000, MediaCodec.BUFFER_FLAG_KEY_FRAME) }
+                val result = runCatching { sendOwned(codec, link, info) }
+                if (ack == 1L) result.getOrThrow()
+                else assertTrue(result.exceptionOrNull().toString(), result.exceptionOrNull() is CameraTransportException)
+                assertEquals("T805 lease released twice", 1, CameraEncoderShadow.releases)
+                assertEquals(3, output.readInt())
+                assertArrayEquals(byteArrayOf(1, 2, 3), output.readByteArray())
+            } finally { codec.release() }
+        }
+    }
+
+    @Test fun t805_delayedAckSweepRecordsBufferHold() {
+        for (delay in listOf(0L, 5L, 20L, 50L, 100L)) {
+            repeat(3) {
+                CameraEncoderShadow.releases = 0
+                var released = 0L
+                CameraEncoderShadow.afterPacket = { released = System.nanoTime() }
+                val codec = MediaCodec.createEncoderByType("video/avc")
+                try {
+                    val input = object : okio.ForwardingSource(okio.Buffer().writeLong(1)) {
+                        override fun read(sink: okio.Buffer, byteCount: Long): Long {
+                            Thread.sleep(delay)
+                            return super.read(sink, byteCount)
+                        }
+                    }.buffer()
+                    val output = okio.Buffer()
+                    val info = MediaCodec.BufferInfo().apply { set(1, 3, 1000, MediaCodec.BUFFER_FLAG_KEY_FRAME) }
+                    val started = System.nanoTime()
+                    sendOwned(codec, CameraLink(output, input, 2000), info)
+                    val ended = System.nanoTime()
+                    assertEquals(1, CameraEncoderShadow.releases)
+                    assertEquals(3, output.readInt())
+                    assertArrayEquals(byteArrayOf(1, 2, 3), output.readByteArray())
+                    println("T805 delay_ms=$delay hold_us=${(released - started) / 1000} cycle_us=${(ended - started) / 1000}")
+                } finally { codec.release(); CameraEncoderShadow.afterPacket = {} }
+            }
+        }
+    }
+
+    @Test fun t805_failedNativeReleaseIsNeverRetried() {
+        val codec = MediaCodec.createEncoderByType("video/avc")
+        CameraEncoderShadow.afterPacket = { error("native release failed") }
+        try {
+            val info = MediaCodec.BufferInfo().apply { set(1, 3, 1000, MediaCodec.BUFFER_FLAG_KEY_FRAME) }
+            val failure = runCatching { sendOwned(codec, CameraLink(okio.Buffer(), okio.Buffer().writeLong(1)), info) }.exceptionOrNull()
+            assertEquals("native release failed", failure?.message)
+            assertEquals(1, CameraEncoderShadow.releases)
+        } finally { CameraEncoderShadow.afterPacket = {}; codec.release() }
+    }
+
+    private fun sendOwned(codec: MediaCodec, link: CameraLink, info: MediaCodec.BufferInfo) {
+        val method = CameraCapture::class.java.getDeclaredMethod("sendBuffer", MediaCodec::class.java,
+            CameraLink::class.java, MediaCodec.BufferInfo::class.java, Int::class.javaPrimitiveType,
+            CameraFrameClock::class.java, CameraFreshness::class.java, CameraRate::class.java)
+        method.isAccessible = true
+        try { method.invoke(capture, codec, link, info, 0, CameraFrameClock(), CameraFreshness(150_000), CameraRate(3000, 1000, true, 150_000)) }
+        catch (error: java.lang.reflect.InvocationTargetException) { throw error.targetException }
     }
 
     @Test fun t618_transportRetryStartsNewConfigurationAndFeedbackSequence() {
