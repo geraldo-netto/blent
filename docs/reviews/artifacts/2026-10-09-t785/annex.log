@@ -1,0 +1,19 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.27s
+     Running unittests src/main.rs (target/debug/deps/blent-3d154ee040abf851)
+
+running 12 tests
+test framed_annex_b::batch_profile::t416_dense_packets_publish_singly_before_slow_consumer_admission ... ok
+test framed_annex_b::batch_profile::t416_packet_batch_profile ... ignored, Opt-in T416 synthetic metadata/allocation measurement
+test framed_annex_b::tests::t448_bounds_lines_headers_packet_sizes_and_duplicate_timestamps ... ok
+test framed_annex_b::tests::t448_cancellation_retires_published_generation_mid_packet ... ok
+test framed_annex_b::tests::t448_checksum_uses_ffmpeg_zero_seed ... ok
+test framed_annex_b::tests::t448_fragmented_packets_keep_configuration_sequence_and_generation ... ok
+test framed_annex_b::tests::t448_large_packet_on_tiny_pipe_needs_no_successor_or_eof ... ok
+test framed_annex_b::tests::t448_metadata_only_packet_keeps_prefix_for_the_following_picture ... ok
+test framed_annex_b::tests::t448_rejects_corruption_truncation_and_malformed_metadata ... ok
+test framed_annex_b::tests::t448_stock_h264_hevc_framing_preserves_decoded_pictures_and_join_points ... ok
+test framed_annex_b::tests::t492_annex_b_exposes_only_unreordered_packet_timing ... ok
+test framed_annex_b::tests::t497_extradata_bounds_and_malformed_numbers_are_rejected ... ok
+
+test result: ok. 11 passed; 0 failed; 1 ignored; 0 measured; 401 filtered out; finished in 1.07s
+

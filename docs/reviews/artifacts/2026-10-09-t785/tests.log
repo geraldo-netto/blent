@@ -1,0 +1,14 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.76s
+     Running unittests src/main.rs (target/debug/deps/blent-3d154ee040abf851)
+
+running 3 tests
+test capture::cli_encoder::reader_capacity_tests::benchmark::t785_pipe ... ignored, T785 opt-in pipe capacity benchmark
+test capture::cli_encoder::reader_capacity_tests::t785_capacity_boundaries_publish_without_future_input ... ok
+test capture::cli_encoder::reader_capacity_tests::t785_truncation_and_oversized_packets_remain_rejected ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 410 filtered out; finished in 0.19s
+

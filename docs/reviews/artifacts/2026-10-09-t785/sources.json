@@ -1,0 +1,7 @@
+{
+  "host/src/capture/cli_encoder.rs": "4bd6e3ae22d05ae0702407278412d0bc115a9bf32b53fe88ab8dd21f53fe126c",
+  "host/src/framed_annex_b.rs": "c20b296954d1d2e05ca37f89132b5f03201217efb7ff730a3081b8da6bb1fb79",
+  "host/src/ivf.rs": "040948e8f7945de56586c16fa0a710af5949062ebf7615ce71301d1d0056b8c0",
+  "host/src/capture/reader_capacity_tests.rs": "83a11f52aeb291fa8dede965cb92678b4c5bcb1aa1aa6a6fa17b266b9d0ce631",
+  "scripts/benchmarks/encoded-reader.rs": "5063df1494f05a5bd219ce3ea247d979070d2c725c3380abf48554611648c77e"
+}

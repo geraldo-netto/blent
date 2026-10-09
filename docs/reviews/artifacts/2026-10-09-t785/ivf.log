@@ -1,0 +1,17 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/main.rs (target/debug/deps/blent-3d154ee040abf851)
+
+running 10 tests
+test ivf::av1::tests::t433_av1_keyframes_repeat_current_sequence_after_delimiter ... ok
+test ivf::av1::tests::t433_av1_rejects_invalid_bounds_profiles_and_ambiguous_units ... ok
+test ivf::av1::tests::t433_av1_split_frame_headers_and_still_picture ... ok
+test ivf::tests::t432_ivf_fragmentation_and_eof_do_not_drop_or_join_frames ... ok
+test ivf::tests::t432_ivf_preserves_packet_flags_configuration_and_retirement ... ok
+test ivf::tests::t432_ivf_rejects_truncation_bad_codec_and_sizes ... ok
+test ivf::tests::t432_stock_vp9_ivf_roundtrip ... ok
+test ivf::tests::t433_stock_av1_preserves_decode_hashes_and_late_join_points ... ok
+test ivf::tests::t492_ivf_timestamps_preserve_sparse_gaps_and_reject_unknown_timebase ... ok
+test ivf::tests::t497_ivf_configuration_is_absent_until_validated_and_survives_frames ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 403 filtered out; finished in 0.36s
+

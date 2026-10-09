@@ -791,3 +791,7 @@ mod framed_tests {
         );
     }
 }
+
+#[cfg(test)]
+#[path = "reader_capacity_tests.rs"]
+mod reader_capacity_tests;
