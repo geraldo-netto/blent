@@ -41,10 +41,11 @@ internal data class SettingsValues(
     val checkUpdates: Boolean = true,
     val batterySaver: Boolean = false,
     val streamError: String? = null,
+    val controlQueueBytes: Int = ControlCapacity.DEFAULT,
 ) {
     companion object {
         fun read(prefs: Prefs) = SettingsValues(prefs.bitrateKbps, prefs.fps, prefs.brightnessPercent,
-            prefs.displayRefreshRate, prefs.orientation, prefs.showStats, prefs.checkUpdates, prefs.batterySaver)
+            prefs.displayRefreshRate, prefs.orientation, prefs.showStats, prefs.checkUpdates, prefs.batterySaver, controlQueueBytes = prefs.controlQueueBytes)
     }
 }
 
@@ -57,6 +58,7 @@ internal sealed interface SettingsEvent {
     data class ShowStats(val value: Boolean) : SettingsEvent
     data class BatterySaver(val value: Boolean) : SettingsEvent
     data class CheckUpdates(val value: Boolean) : SettingsEvent
+    data class ControlQueue(val bytes: Int) : SettingsEvent
 }
 
 /** One owner per Activity instance. Rendering observes state and emits events. */
@@ -86,23 +88,34 @@ internal class SessionCoordinator(
     private fun powerFor(saver: Boolean, video: Boolean, pen: Boolean, connection: ControlConnection) =
         StreamingPower(saver, connection.authenticated && (video || pen), connection.transport)
 
-    init { applyToken(false); connectStreamCallbacks() }
+    init { touchCapture?.setQueueBudget(prefs.controlQueueBytes); applyToken(false); connectStreamCallbacks() }
 
     fun handle(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.Stream -> requestStreamSettings(event)
             is SettingsEvent.Mode -> touchCapture?.sendMode(event.penOnly)
+            is SettingsEvent.CheckUpdates -> {
+                prefs.checkUpdates = event.value
+                updates.preferenceChanged()
+            }
+            else -> localPreference(event)
+        }
+        settings = SettingsValues.read(prefs).copy(streamError = settings.streamError)
+    }
+
+    private fun localPreference(event: SettingsEvent) {
+        when (event) {
             is SettingsEvent.Orientation -> prefs.orientation = event.value
             is SettingsEvent.Brightness -> prefs.brightnessPercent = event.value
             is SettingsEvent.RefreshRate -> prefs.displayRefreshRate = event.value
             is SettingsEvent.ShowStats -> prefs.showStats = event.value
             is SettingsEvent.BatterySaver -> prefs.batterySaver = event.value
-            is SettingsEvent.CheckUpdates -> {
-                prefs.checkUpdates = event.value
-                updates.preferenceChanged()
+            is SettingsEvent.ControlQueue -> {
+                prefs.controlQueueBytes = event.bytes
+                touchCapture?.setQueueBudget(prefs.controlQueueBytes)
             }
+            else -> Unit
         }
-        settings = SettingsValues.read(prefs).copy(streamError = settings.streamError)
     }
 
     private fun requestStreamSettings(event: SettingsEvent.Stream) {
@@ -149,8 +162,8 @@ internal class SessionCoordinator(
         // Close the host's latency measurement loop: every acknowledged frame
         // lets the host time encoded-packet readiness to receipt of the
         // render acknowledgement, including the return message path.
-        videoReceiver?.onFrameRendered = { seq, decodeUs ->
-            touchCapture?.sendRendered(seq, decodeUs, videoReceiver?.decoder?.configuredSelectionReceipt)
+        videoReceiver?.onFrameRendered = { receipt ->
+            touchCapture?.sendRendered(receipt)
             // First frame ever on screen: say thanks once, then never again.
             if (!prefs.thankedOnce) {
                 prefs.thankedOnce = true

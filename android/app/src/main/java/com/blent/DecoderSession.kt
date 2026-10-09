@@ -13,7 +13,7 @@ import com.blent.VideoReceiver.Companion.ACK_EVERY
 import com.blent.VideoReceiver.Companion.TAG
 
 internal interface DecoderEvents {
-    fun rendered(sequence: Int, decodeMicros: Int)
+    fun rendered(receipt: RenderAcknowledgement)
     fun invalidated()
 }
 
@@ -154,10 +154,14 @@ internal class DecoderSession(
         // Timing/log work can yield. Validate again at acknowledgement so a
         // callback that overlapped replacement cannot target the new session.
         val decodeMicros = timing.decodeMicrosFor(sequence, codecTiming)
-        synchronized(monitor) {
+        val receipt = synchronized(monitor) {
             if (mediaCodec !== codec || !codecAlive || !running()) return
-            if (renderedCount.incrementAndGet() % ACK_EVERY == 0L) events.rendered(sequence, decodeMicros)
+            if (renderedCount.incrementAndGet() % ACK_EVERY != 0L) return
+            RenderAcknowledgement(sequence, decodeMicros, configuredSelectionReceipt) {
+                mediaCodec === codec && codecAlive && running()
+            }
         }
+        events.rendered(receipt)
     }
 
     private fun callbacks(owner: CodecLifetime, handler: Handler, epoch: FrameTiming.Epoch, selected: DecoderProfile): CallbackDecoder? {

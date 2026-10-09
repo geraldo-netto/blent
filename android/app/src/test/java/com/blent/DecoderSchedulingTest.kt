@@ -56,7 +56,7 @@ class DecoderSchedulingTest {
         private val failure = AtomicReference<Throwable?>()
         private var feed: Thread? = null
         val decoder = DecoderSession(monitor, { true }, FrameTiming(), object : DecoderEvents {
-            override fun rendered(sequence: Int, decodeMicros: Int) {}
+            override fun rendered(receipt: RenderAcknowledgement) {}
             override fun invalidated() {}
         }, { ReceiverStatistics() })
 
@@ -139,7 +139,7 @@ class DecoderSchedulingTest {
             old.decoder.releaseCodec()
             val surface = Surface(SurfaceTexture(2))
             val fresh = DecoderSession(Any(), { true }, FrameTiming(), object : DecoderEvents {
-                override fun rendered(sequence: Int, decodeMicros: Int) {}
+                override fun rendered(receipt: RenderAcknowledgement) {}
                 override fun invalidated() {}
             }, { ReceiverStatistics() })
             var created = 0

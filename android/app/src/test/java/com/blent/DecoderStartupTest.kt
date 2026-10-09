@@ -58,7 +58,7 @@ class DecoderStartupTest {
         val surface = Surface(SurfaceTexture(1))
         val receiver = VideoReceiver { error("T497 uses only local codec callbacks") }
         val acknowledgements = mutableListOf<Int>()
-        receiver.onFrameRendered = { seq, _ -> acknowledgements.add(seq) }
+        receiver.onFrameRendered = { acknowledgements.add(it.sequence) }
         org.robolectric.util.ReflectionHelpers.setField(receiver, "isRunning", true)
         try {
             receiver.decoder.createCodec = { throw IllegalStateException("T497 failed allocation") }

@@ -88,7 +88,7 @@ class CallbackDecoderTest {
         val invalidated = CountDownLatch(1)
         val acknowledgements = LinkedBlockingQueue<Int>()
         val decoder = DecoderSession(Any(), { true }, FrameTiming(), object : DecoderEvents {
-            override fun rendered(sequence: Int, decodeMicros: Int) { acknowledgements.add(sequence) }
+            override fun rendered(receipt: RenderAcknowledgement) { acknowledgements.add(receipt.sequence) }
             override fun invalidated() { invalidated.countDown() }
         }, { ReceiverStatistics() })
         init {

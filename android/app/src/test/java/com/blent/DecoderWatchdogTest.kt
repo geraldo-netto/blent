@@ -54,13 +54,34 @@ class WatchdogCodecShadow : ShadowMediaCodec() {
 @Config(sdk = [27, 34], shadows = [WatchdogCodecShadow::class])
 class DecoderWatchdogTest {
     @get:org.junit.Rule val decoderInventory = DecoderInventoryRule()
+    @Test fun t803_renderCallbackDoesNotOwnReceiverMonitor() {
+        WatchdogCodecShadow.outputs.clear(); WatchdogCodecShadow.callbacks.clear()
+        val monitor = Any()
+        var captured: RenderAcknowledgement? = null
+        val decoder = DecoderSession(monitor, { true }, FrameTiming(), object : DecoderEvents {
+            override fun rendered(receipt: RenderAcknowledgement) {
+                assertFalse("T803 control send holds receiver monitor", Thread.holdsLock(monitor))
+                assertTrue(receipt.current()); captured = receipt
+            }
+            override fun invalidated() {}
+        }, { ReceiverStatistics() })
+        val surface = Surface(SurfaceTexture(1))
+        try {
+            awaitDecoderRetirement(decoder)
+            assertTrue(decoder.setupCodec(surface, DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)))
+            WatchdogCodecShadow.callbacks.last().onFrameRendered(decoder.mediaCodec!!, 1, 0)
+            decoder.releaseCodec()
+            assertFalse(captured!!.current())
+        } finally { decoder.releaseCodec(); awaitDecoderRetirement(decoder); surface.release() }
+    }
+
     @Test fun t484_renderReceiptsFollowPublishedCodecConfiguration() {
         WatchdogCodecShadow.callbacks.clear()
         WatchdogCodecShadow.outputs.clear()
         val receipts = mutableListOf<String?>()
         lateinit var decoder: DecoderSession
         decoder = DecoderSession(Any(), { true }, FrameTiming(), object : DecoderEvents {
-            override fun rendered(sequence: Int, decodeMicros: Int) { receipts.add(decoder.configuredSelectionReceipt) }
+            override fun rendered(receipt: RenderAcknowledgement) { receipts.add(receipt.decoder) }
             override fun invalidated() {}
         }, { ReceiverStatistics() })
         decoder.createCodec = { MediaCodec.createDecoderByType(it.mimeType) }
@@ -91,7 +112,7 @@ class DecoderWatchdogTest {
         var retirements = 0
         val statistics = ReceiverStatistics()
         val decoder = DecoderSession(monitor, { running }, FrameTiming(), object : DecoderEvents {
-            override fun rendered(sequence: Int, decodeMicros: Int) { acknowledgements.add(sequence) }
+            override fun rendered(receipt: RenderAcknowledgement) { acknowledgements.add(receipt.sequence) }
             override fun invalidated() { retirements++ }
         }, { statistics })
         val formats = mutableListOf<String>()
@@ -125,7 +146,7 @@ class DecoderWatchdogTest {
         WatchdogCodecShadow.callbacks.clear()
         val timing = FrameTiming { 100_000L }
         val decoder = DecoderSession(Any(), { true }, timing, object : DecoderEvents {
-            override fun rendered(sequence: Int, decodeMicros: Int) {}
+            override fun rendered(receipt: RenderAcknowledgement) {}
             override fun invalidated() {}
         }, { ReceiverStatistics() })
         val surface = Surface(SurfaceTexture(1))
@@ -157,7 +178,7 @@ class DecoderWatchdogTest {
         }
         val acknowledgements = java.util.concurrent.CopyOnWriteArrayList<Int>()
         val decoder = DecoderSession(Any(), { true }, timing, object : DecoderEvents {
-            override fun rendered(sequence: Int, decodeMicros: Int) { acknowledgements.add(sequence) }
+            override fun rendered(receipt: RenderAcknowledgement) { acknowledgements.add(receipt.sequence) }
             override fun invalidated() {}
         }, { ReceiverStatistics() })
         val surface = Surface(SurfaceTexture(1))
@@ -192,7 +213,7 @@ class DecoderWatchdogTest {
         val entered = CountDownLatch(1)
         val resume = CountDownLatch(1)
         val decoder = DecoderSession(Any(), { true }, FrameTiming(), object : DecoderEvents {
-            override fun rendered(sequence: Int, decodeMicros: Int) {}
+            override fun rendered(receipt: RenderAcknowledgement) {}
             override fun invalidated() {}
         }, { ReceiverStatistics() })
         decoder.outputClock = {

@@ -15,7 +15,9 @@ internal class DecoderReplay(private val surface: Surface, private val profile: 
     private val timings = FrameTiming()
     private val result = JSONObject()
     private val decoder = DecoderSession(Any(), active::get, timings, object : DecoderEvents {
-        override fun rendered(sequence: Int, decodeMicros: Int) {
+        override fun rendered(receipt: RenderAcknowledgement) {
+            if (!receipt.current()) return
+            val sequence = receipt.sequence; val decodeMicros = receipt.decodeMicros
             BenchMetrics.acknowledged(sequence)
             stats.rendered(sequence, decodeMicros)
         }

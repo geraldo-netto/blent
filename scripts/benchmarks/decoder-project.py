@@ -182,7 +182,14 @@ def copy_replay_sources(directory, direct_input):
             continue
         if path.name == 'SocketReplay.kt' and not direct_input:
             continue
-        shutil.copy2(path, directory / 'app/src/main/java' / path.name)
+        text = path.read_text()
+        production = (directory / 'originals/DecoderSession.kt').read_text()
+        if 'fun rendered(receipt: RenderAcknowledgement)' not in production:
+            text = text.replace('override fun rendered(receipt: RenderAcknowledgement) {\n'
+                '            if (!receipt.current()) return\n'
+                '            val sequence = receipt.sequence; val decodeMicros = receipt.decodeMicros',
+                'override fun rendered(sequence: Int, decodeMicros: Int) {')
+        (directory / 'app/src/main/java' / path.name).write_text(text)
 
 
 def main():

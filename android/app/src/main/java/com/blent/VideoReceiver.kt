@@ -64,7 +64,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
      * not a physical-screen timestamp. The host times the round trip on its clock, so
      * no clock synchronisation between the two devices is needed.
      */
-    var onFrameRendered: ((seq: Int, decodeUs: Int) -> Unit)? = null
+    internal var onFrameRendered: ((RenderAcknowledgement) -> Unit)? = null
 
     /// Which bitstream the host is sending. Set from the host's greeting
     /// before the stream starts; the frames carry nothing that says which
@@ -78,8 +78,8 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     internal val transport = VideoTransport(this, ::isCurrent, createSocket)
     internal val timing = FrameTiming()
     internal val decoder = DecoderSession(this, { isRunning }, timing, object : DecoderEvents {
-        override fun rendered(sequence: Int, decodeMicros: Int) {
-            onFrameRendered?.invoke(sequence, decodeMicros)
+        override fun rendered(receipt: RenderAcknowledgement) {
+            onFrameRendered?.invoke(receipt)
         }
         override fun invalidated() {
             transport.interrupt()

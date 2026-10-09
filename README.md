@@ -221,6 +221,14 @@ When `XDG_CONFIG_HOME` is an absolute path, host settings instead use
   refresh rate and stream settings. It releases unnecessary CPU/Wi-Fi locks on
   USB or while waiting, while retaining the network lock for active network
   sessions. It applies immediately; turning it off restores the normal policy.
+- **Control queue limit** — Android Settings, App & diagnostics: 64 KiB by
+  default, with 8 KiB, 256 KiB and 1 MiB options. Smaller limits reconnect
+  congested sessions sooner; larger limits tolerate bursts but retain more
+  input/ACK backlog. The limit applies to new sends, including authentication,
+  settings and decoder reports. An overflowing message retires the entire
+  control connection so the host releases uncertain gestures; events are not
+  replayed on its replacement. This is a byte budget, not a wall-clock latency
+  guarantee. Very small limits may reject large decoder reports.
 - **Updates** — the app, the GUI and the tray tell you when a newer release
   exists; nothing installs itself. `check_updates = false` disables host checks;
   the tablet app has its own update-check switch.

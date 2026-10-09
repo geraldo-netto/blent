@@ -18,3 +18,12 @@ internal interface DecoderInputInfo {
     val configuration: Boolean
     val sequence: Long
 }
+
+/** Immutable render metadata with a lock-free retirement check. Consumers check
+ * current ownership after acquiring their own transport admission lock. */
+internal class RenderAcknowledgement(
+    val sequence: Int,
+    val decodeMicros: Int,
+    val decoder: String? = null,
+    val current: () -> Boolean = { true },
+)

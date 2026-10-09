@@ -82,6 +82,8 @@ internal fun SettingsSheet(
                 Spacer(Modifier.height(16.dp))
                 SettingsSwitch("Check for newer releases", "One request to GitHub when the app opens. Nothing installs itself.", settings.checkUpdates) { onSettingsEvent(SettingsEvent.CheckUpdates(it)) }
                 Spacer(Modifier.height(16.dp))
+                ControlCapacityControls(settings.controlQueueBytes) { onSettingsEvent(SettingsEvent.ControlQueue(it)) }
+                Spacer(Modifier.height(16.dp))
                 DecoderDiagnosticsContent(decoderDiagnostics)
             }
             Spacer(Modifier.height(24.dp))

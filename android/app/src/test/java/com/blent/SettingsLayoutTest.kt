@@ -22,6 +22,31 @@ import org.robolectric.annotation.LooperMode
 class SettingsLayoutTest {
     @get:Rule val compose = createComposeRule()
 
+    @Test fun t803_queueLimitIsUserControlledAndPersistsWithBounds() {
+        val app = org.robolectric.RuntimeEnvironment.getApplication()
+        val prefs = Prefs(app).apply { checkUpdates = false }
+        val session = SessionCoordinator(prefs, { it() }, null, null)
+        compose.setContent { BlentTheme {
+            SettingsSheet(session.settings, null, {}, false, {}, onSettingsEvent = session::handle)
+        } }
+        try {
+            compose.onNodeWithText("App & diagnostics").performScrollTo().performClick()
+            for (kib in listOf(8, 64, 256, 1024)) {
+                compose.onNodeWithText("$kib KiB").performScrollTo().performClick()
+                compose.runOnIdle {
+                    assertEquals(kib * 1024, session.settings.controlQueueBytes)
+                    assertEquals(kib * 1024, Prefs(app).controlQueueBytes)
+                }
+            }
+            compose.runOnIdle {
+                session.handle(SettingsEvent.ControlQueue(Int.MIN_VALUE))
+                assertEquals(8192, prefs.controlQueueBytes)
+                session.handle(SettingsEvent.ControlQueue(Int.MAX_VALUE))
+                assertEquals(1048576, prefs.controlQueueBytes)
+            }
+        } finally { session.stop() }
+    }
+
     @Test fun t332_newRequestBeforeUiCallbackCaptureStillWins() {
         lateinit var listener: WebSocketListener
         val socket = Socket()

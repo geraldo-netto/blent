@@ -58,7 +58,7 @@ internal class DirectInputFixture(callbacks: Boolean = false) : AutoCloseable {
     var closeTransport: () -> Unit = {}
     val invalidations = AtomicInteger()
     val decoder = DecoderSession(monitor, { true }, FrameTiming(), object : DecoderEvents {
-        override fun rendered(sequence: Int, decodeMicros: Int) {}
+        override fun rendered(receipt: RenderAcknowledgement) {}
         override fun invalidated() { invalidations.incrementAndGet(); closeTransport() }
     }, { ReceiverStatistics() })
     val codec: MediaCodec get() = decoder.mediaCodec!!

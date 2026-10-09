@@ -65,7 +65,7 @@ class UsbReplayTest {
         val decoder = field(replay, "decoder") as DecoderSession
         val events = DecoderSession::class.java.getDeclaredField("events").apply { isAccessible = true }
             .get(decoder) as DecoderEvents
-        val callback = Thread { events.rendered(1, 10) }
+        val callback = Thread { events.rendered(RenderAcknowledgement(1, 10)) }
         stats.begin(1)
         try {
             synchronized(stats) {

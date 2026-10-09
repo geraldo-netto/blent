@@ -1,0 +1,16 @@
+{
+  "issue": "T803",
+  "baseline_commit": "cf1dcc6",
+  "runtime": "Robolectric JVM, SDK 27 and 34",
+  "fixture": "ControlCapacityTest.t803_acceptingSlowTransportCannotAccumulateUnboundedInputAndAcks",
+  "tick_ms": 10,
+  "drain_bytes_per_tick": 100,
+  "messages_per_tick": 3,
+  "message_kinds": ["touch", "mouse", "rendered"],
+  "transport_always_accepts": true,
+  "baseline": {"peak_bytes": 574100, "duration_ms": 19990, "retired": false,
+    "max_delivered_age_ms": {"touch": 14830, "mouse": 14810, "rendered": 14820}},
+  "candidate": {"peak_bytes": 65536, "duration_ms": 2280, "retired": true,
+    "max_delivered_age_ms": {"touch": 1680, "mouse": 1700, "rendered": 1680}},
+  "interpretation": "Synthetic slow-drain correctness workload; no live network or physical input latency claim. Whole-session retirement discards uncertain queued gestures and ACKs. Byte budget does not impose a wall-clock latency bound."
+}

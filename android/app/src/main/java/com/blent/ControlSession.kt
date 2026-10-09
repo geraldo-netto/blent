@@ -6,6 +6,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import okhttp3.*
+import okio.utf8Size
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
@@ -44,6 +45,12 @@ internal class ControlSession(
         private set
     private var connectionWanted = false
     private val statistics = ControlStatistics()
+    private var queueBudget = ControlCapacity.DEFAULT
+
+    fun setQueueBudget(bytes: Int): Unit = synchronized(lock) {
+        require(bytes in ControlCapacity.MIN..ControlCapacity.MAX)
+        queueBudget = bytes
+    }
     @Volatile private var isConnected = false
     private val calibration = MutableStateFlow(false)
     val calibrating = calibration.asStateFlow()
@@ -397,21 +404,21 @@ internal class ControlSession(
      * delivery, callback scheduling and the return path, excluding capture and encoding, without
      * either side needing a shared time base.
      */
-    fun sendRendered(seq: Int, decodeUs: Int, decoder: String? = null) {
+    fun sendRendered(seq: Int, decodeUs: Int, decoder: String? = null) =
+        sendRendered(RenderAcknowledgement(seq, decodeUs, decoder))
+
+    fun sendRendered(receipt: RenderAcknowledgement) {
+        val generation = connectionGeneration
         if (!isConnected) return
         val msg = JSONObject().apply {
             put("type", "rendered")
-            decoder?.let { put("decoder", it) }
-            // Sent unsigned: the host's counter is a u32 and Kotlin's Int is
-            // signed, so it wraps negative after ~2^31 frames (~1 year at
-            // 60 fps, but free to get right).
-            put("seq", seq.toLong() and 0xFFFFFFFFL)
-            // Complete packet arrival → render callback execution on this device.
-            // Reported separately from the host's packet-ready → ACK interval.
-            // Their independent medians do not establish a transport duration.
-            if (decodeUs >= 0) put("decode_us", decodeUs)
+            receipt.decoder?.let { put("decoder", it) }
+            put("seq", receipt.sequence.toLong() and 0xFFFFFFFFL)
+            if (receipt.decodeMicros >= 0) put("decode_us", receipt.decodeMicros)
         }
-        sendWhenConnected(msg)
+        synchronized(lock) {
+            if (connectionGeneration == generation && receipt.current()) enqueue(msg)
+        }
     }
 
     /**
@@ -445,7 +452,7 @@ internal class ControlSession(
         val text = message.toString()
         val age = sampleTimeMs?.let { SystemClock.uptimeMillis() - it }
         val before = socket.queueSize()
-        val accepted = socket.send(text)
+        val accepted = ControlCapacity.allows(before, text.utf8Size(), queueBudget) && socket.send(text)
         statistics.record(accepted, before, socket.queueSize(), age)
         if (accepted) return true
         // A refused ordered event makes the whole gesture uncertain. Stop using

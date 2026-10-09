@@ -20,11 +20,11 @@ class SessionSurfaceContractTest {
         val session = SessionCoordinator(prefs, { it() }, receiver, control)
         try {
             assertFalse(session.showThanks)
-            receiver.onFrameRendered!!(1, 123)
+            receiver.onFrameRendered!!(RenderAcknowledgement(1, 123))
             assertTrue(session.showThanks)
             assertTrue(Prefs(app).thankedOnce)
             session.dismissThanks()
-            receiver.onFrameRendered!!(2, 123)
+            receiver.onFrameRendered!!(RenderAcknowledgement(2, 123))
             assertFalse(session.showThanks)
             val view = SurfaceView(app)
             session.surfaceReady(view)

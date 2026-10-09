@@ -192,3 +192,33 @@ boundary/generator tooling passes. Four native report payloads on the SDK36
 USB tablet match T802 exactly (isolated benchmark package). No native hang is
 claimed reproduced; latch-based fault injection proves caller isolation. Native
 process crashes remain outside this thread boundary and are evaluated in T809.
+
+## T803: control capacity and render-lock independence
+
+The accepting slow-drain replay confirmed 574,100 queued bytes and up to 14,830 ms
+delivered event age over 20 simulated seconds. A 64 KiB default budget now retires
+that whole uncertain connection at 2,280 ms, with a 65,536-byte peak and delivered
+age <=1,700 ms. [Deterministic results](artifacts/2026-10-10-android-control/slow-replay.json).
+These are synthetic input/mouse/ACK queue measurements, not a live latency claim.
+
+An independent byte-admission contract uses overflow-safe subtraction and UTF-8
+wire sizes. User-facing limits range from 8 KiB to 1 MiB and persist locally;
+tradeoffs and decoder-report implications are documented. Authentication and
+settings keep their order. Overflow uses existing whole-session retirement,
+which closes transport and releases uncertain host gestures, never replaying
+partial gestures on a new connection. The limit applies on new sends and is not
+a time-based delivery guarantee.
+
+Decoder render notification captures immutable sequence/time/decoder identity
+under its monitor, then invokes consumers outside it. The receipt carries a
+lock-free current-owner check; control admission checks both that owner and the
+captured connection generation after acquiring its own lock. Slow control sends
+therefore cannot hold the receiver monitor. No additional callback worker or
+unbounded message queue is introduced.
+
+Both behavioral regressions failed on SDKs 27/34 before changes. Permanent tests
+cover exact UTF-8 boundaries, invalid/overflow values, retired receipts, reconnect
+while awaiting the control lock, settings persistence/range and existing ordered
+handshakes/rejection recovery. Current and historical replay APKs both build
+through the generation adapter. Full offline validation: 810 tests pass;
+903/903 methods meet individual 80% coverage; complexity <=9. Tooling tests pass.

@@ -20,7 +20,9 @@ internal class UsbReplay(private val surface: Surface, private val active: Atomi
     private val pending = AtomicInteger()
     private val controlledRestart = AtomicBoolean()
     private val decoder = DecoderSession(Any(), active::get, FrameTiming(), object : DecoderEvents {
-        override fun rendered(sequence: Int, decodeMicros: Int) {
+        override fun rendered(receipt: RenderAcknowledgement) {
+            if (!receipt.current()) return
+            val sequence = receipt.sequence; val decodeMicros = receipt.decodeMicros
             // Publish the ACK obligation before exposing render completion (T571).
             send { it.writeByte(1); it.writeInt(sequence); it.writeInt(decodeMicros) }
             stats.rendered(sequence, decodeMicros)

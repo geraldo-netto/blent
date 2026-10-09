@@ -54,6 +54,23 @@ class DecoderBenchmarkTests(unittest.TestCase):
                              'T460: keyguard must not retire the benchmark Surface at launch')
         self.assertEqual(replay.get(android + 'permission'), 'android.permission.DUMP')
 
+    def test_t803_render_receipt_adapter_preserves_historical_replay(self):
+        spec = importlib.util.spec_from_file_location('decoder_project', PATH.with_name('decoder-project.py'))
+        project = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(project)
+        with tempfile.TemporaryDirectory() as directory:
+            output = project.prepare(SimpleNamespace(directory=Path(directory) / 'replay', revision=None,
+                package='com.blent.decoderbench.candidate'))
+            replay = output / 'app/src/main/java/UsbReplay.kt'
+            self.assertIn('override fun rendered(receipt: RenderAcknowledgement)', replay.read_text())
+            self.assertIn('if (!receipt.current()) return', replay.read_text())
+            original = output / 'originals/DecoderSession.kt'
+            original.write_text(original.read_text().replace('fun rendered(receipt: RenderAcknowledgement)',
+                'fun rendered(sequence: Int, decodeMicros: Int)'))
+            project.copy_replay_sources(output, True)
+            self.assertIn('override fun rendered(sequence: Int, decodeMicros: Int)', replay.read_text())
+            self.assertNotIn('receipt.current()', replay.read_text())
+
     def test_t458_generated_replay_includes_current_decoder_dependencies(self):
         path = PATH.with_name('decoder-project.py')
         spec = importlib.util.spec_from_file_location('decoder_project', path)

@@ -36,6 +36,12 @@ class Prefs(context: Context) {
             .coerceIn(MIN_BITRATE_KBPS, MAX_BITRATE_KBPS)
         set(v) = sp.edit().putInt("bitrate_kbps", v).apply()
 
+    /** Control queue capacity. Smaller values retire congested sessions sooner;
+     * larger values tolerate bursts at the cost of retained input/ACK latency. */
+    var controlQueueBytes: Int
+        get() = sp.getInt("control_queue_bytes", ControlCapacity.DEFAULT).coerceIn(ControlCapacity.MIN, ControlCapacity.MAX)
+        set(value) = sp.edit().putInt("control_queue_bytes", value.coerceIn(ControlCapacity.MIN, ControlCapacity.MAX)).apply()
+
     var fps: Int
         get() = sp.getInt("fps", DEFAULT_FPS)
         set(v) = sp.edit().putInt("fps", v).apply()
