@@ -11,13 +11,26 @@ internal class CodecLifetime(val codec: MediaCodec) {
         // retirement must close admission across receiver instances as well.
         private val retiringOwners = ConcurrentHashMap.newKeySet<CodecLifetime>()
         private var starting = false
+        private val startupDeadline = NativeDeadline("Decoder startup")
+        private val retirementDeadline = NativeDeadline("Decoder cleanup")
+        val startupStatus get() = startupDeadline.status
+        val retirementStatus get() = retirementDeadline.status
         fun retirementPending(): Boolean = retiringOwners.isNotEmpty()
         @Synchronized fun beginStartup(): Boolean {
             if (starting || retirementPending()) return false
             starting = true
+            startupDeadline.begin()
             return true
         }
-        @Synchronized fun finishStartup() { starting = false }
+        @Synchronized fun finishStartup() { starting = false; startupDeadline.finish() }
+        @Synchronized private fun retiring(owner: CodecLifetime) {
+            retiringOwners.add(owner)
+            retirementDeadline.begin()
+        }
+        @Synchronized private fun released(owner: CodecLifetime) {
+            retiringOwners.remove(owner)
+            if (!retirementPending()) retirementDeadline.finish()
+        }
     }
     private val gate = Object()
     private var users = 0
@@ -41,11 +54,11 @@ internal class CodecLifetime(val codec: MediaCodec) {
         synchronized(gate) {
             retired = true
             if (cleanup != null) return
-            retiringOwners.add(this)
+            retiring(this)
             cleanup = Thread({
                 if (destroy()) {
                     released = true
-                    retiringOwners.remove(this)
+                    released(this)
                 }
             }, "blent-codec-retire").apply { start() }
         }

@@ -10,7 +10,7 @@ internal class CameraBinding(
     private val rotation: () -> Int,
     private val requestPermission: () -> Unit,
     private val permission: () -> Boolean,
-    private val createRun: (CameraEndpoint, CameraLens, () -> Int) -> LifecycleRun,
+    private val createRun: (CameraEndpoint, CameraLens, () -> Int, (String) -> Unit) -> LifecycleRun,
     private val invitations: StateFlow<CameraEndpoint?>,
     private val scope: CoroutineScope,
     private val backgroundService: (String?) -> Unit,
@@ -31,13 +31,9 @@ internal class CameraBinding(
     private val backgroundRunning get() = backgroundRun != null
     private var pending: Pair<CameraEndpoint, CameraLens>? = null
     private var observer: Job? = null
-    private var worker: Job? = null
-    private val retirementScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private var retirement: Job? = null
-    private var resources: LifecycleRun? = null
     private var generation = 0L
     private var serviceError: Exception? = null
-    private val guard = RetirementGuard()
+    private val guard = ResourceLane(scope, { status = it })
 
     fun start() {
         if (active) return
@@ -57,9 +53,9 @@ internal class CameraBinding(
     }
 
     fun choose(lens: CameraLens?) {
-        val previous = stopCapture()
+        stopCapture()
         pending = null
-        status = guard.error?.let { "Native cleanup incomplete: ${it.message}" } ?: "Camera sharing is off."
+        status = idleStatus()
         if (lens == null) { background(false); return }
         if (!active && !backgroundRunning) return
         val host = endpoint ?: return
@@ -69,7 +65,7 @@ internal class CameraBinding(
             guard.checkAvailable()
             check(serviceError == null) { "Background cleanup incomplete: ${serviceError?.message}" }
             background(host.background)
-            launch(host, lens, previous)
+            launch(host, lens)
         } catch (error: Exception) {
             status = error.message ?: "Camera background service unavailable."
             background(false)
@@ -94,46 +90,28 @@ internal class CameraBinding(
         choose(request.second)
     }
 
-    private fun launch(host: CameraEndpoint, lens: CameraLens, previous: Job?) {
+    private fun launch(host: CameraEndpoint, lens: CameraLens) {
         val revision = generation
-        val owned = createRun(host, lens, rotation)
-        resources = owned
         selected = lens
         status = "${lens.label} camera selected."
-        worker = scope.launch {
-            try {
-                previous?.join()
-                guard.checkAvailable()
-                owned.execute()
-            } catch (error: Exception) {
-                if (generation == revision && error !is CancellationException) status = error.message ?: "Camera sharing failed."
-            } finally {
-                try {
-                    if (generation == revision) { selected = null; background(false) }
-                } finally {
-                    withContext(NonCancellable + Dispatchers.IO) { retire(owned) }
-                }
+        guard.replace({ createRun(host, lens, rotation) { text ->
+            scope.launch { if (revision == generation) status = text }
+        } }, { failure ->
+            if (generation == revision) {
+                if (failure != null) status = failure.message ?: "Camera sharing failed."
+                selected = null
+                background(false)
             }
-        }
+        })
     }
 
-    private fun stopCapture(): Job? {
+    private fun idleStatus(): String = guard.error?.let { "Native cleanup incomplete: ${it.message}" }
+        ?: if (guard.stalled) "Native cleanup stalled; replacement waiting." else "Camera sharing is off."
+
+    private fun stopCapture() {
         generation++
-        val previous = worker
-        val owned = resources
-        val earlier = retirement
-        worker = null
-        resources = null
-        cleanupAll({ owned?.cancel() }, { previous?.cancel() }).firstOrNull()?.let {
-            status = "Cancellation incomplete: ${it.message}"
-        }
-        if (owned != null) retirement = retirementScope.launch {
-            earlier?.join()
-            previous?.join()
-            retire(owned)
-        }
+        guard.stop()
         selected = null
-        return retirement
     }
 
     private fun background(enabled: Boolean) {
@@ -141,10 +119,6 @@ internal class CameraBinding(
         if (!enabled) { stopBackground(); return }
         backgroundRun = java.util.UUID.randomUUID().toString()
         backgroundService(backgroundRun)
-    }
-
-    private suspend fun retire(owned: LifecycleRun) {
-        guard.retire(owned)?.let { status = "Native cleanup incomplete: ${it.message}" }
     }
 
     private fun stopBackground() {
@@ -178,7 +152,7 @@ internal class CameraBinding(
         pending = null
         stopCapture()
         endpoint = null
-        status = guard.error?.let { "Native cleanup incomplete: ${it.message}" } ?: "Camera sharing is off."
+        status = idleStatus()
         background(false)
     }
 }

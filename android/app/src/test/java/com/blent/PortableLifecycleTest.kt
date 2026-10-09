@@ -51,7 +51,7 @@ class PortableLifecycleTest {
         val run = Run()
         var rotation = 1
         var readRotation: (() -> Int)? = null
-        val binding = CameraBinding({ rotation }, {}, { true }, { _, _, angle -> readRotation = angle; run },
+        val binding = CameraBinding({ rotation }, {}, { true }, { _, _, angle, _ -> readRotation = angle; run },
             invitations, scope, {})
         try {
             binding.start()

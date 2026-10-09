@@ -4,7 +4,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CancellationException
 
 /** The capture worker owns native destruction; cancellation only interrupts transport. */
-internal class CameraResources {
+internal class CameraResources(private val startupWait: NativeDeadline = NativeDeadline("Camera startup")) {
+    val startupStatus get() = startupWait.status
+    fun child() = CameraResources(startupWait)
     private val lock = java.lang.Object()
     private var stopping = false
     private var failure: Exception? = null
@@ -40,12 +42,12 @@ internal class CameraResources {
     fun startup(): () -> Unit {
         synchronized(lock) {
             if (stopping) throw CancellationException("Camera session stopped")
-            startups++
+            if (startups++ == 0) startupWait.begin()
         }
         val released = AtomicBoolean()
         return {
             if (released.compareAndSet(false, true)) synchronized(lock) {
-                startups--
+                if (--startups == 0) startupWait.finish()
                 lock.notifyAll()
             }
         }

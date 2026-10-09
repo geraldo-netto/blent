@@ -68,3 +68,32 @@ Full offline Android suite: 749 passing tests; 834/834 maintained methods pass
 individual 80% coverage; production complexity remains <=9. No physical native
 failure was induced. T806 still owns bounded requests/deadline reporting and
 T798 still owns the UI retirement wait.
+
+## T806: bounded admission and observable native waits
+
+Audio and camera share a portable ResourceLane: one active/retiring owner and one
+latest pending request. Superseded requests allocate neither native owners nor
+predecessor jobs. Stop discards the pending request; only confirmed retirement
+admits a successor. Failed cleanup retains the existing quarantine. A five-second
+independent deadline reports stalled cleanup without freeing native memory.
+
+Decoder startup/retirement now publish process-wide pending/stalled observations,
+visible across presentation recreation. Camera callback leases share a startup
+deadline across recovery attempts; missing callbacks remain visible even before
+Stop. The last genuine callback return clears the startup wait. Camera destruction
+stays on the Android adapter's I/O dispatcher. Cleanup deadlines are notifications,
+not guarantees that an in-process native hang or crash can be recovered.
+
+The two original storm regressions failed before the change. They now exercise
+128 replacements, latest-request selection, Stop/shutdown, bounded child jobs
+and no queued resource construction. Separate regressions failed for unobservable
+decoder waits on both SDKs, missing camera callback deadlines, and Stop hiding an
+already-stalled owner. Permanent tests also cover pre-dispatch cancellation,
+failed construction/destruction, timeout bounds, repeated lease returns and
+progress of an independent lane while another remains stalled. Existing T707,
+T732 and cleanup-failure regressions remain enabled.
+
+Offline validation: 767 tests pass; all 864 maintained Android methods reach
+80% individually; production cyclomatic complexity stays <=9. Generated decoder
+Kotlin compilation and source-boundary/dependency tests pass. No downloads or
+physical native hangs were induced. T798 still owns the UI retirement wait.

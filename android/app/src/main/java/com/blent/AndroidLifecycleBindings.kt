@@ -48,11 +48,15 @@ internal fun CameraBinding(context: Context,
     invitations: StateFlow<CameraEndpoint?> = CameraInvitations.endpoint,
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + android.os.Handler(android.os.Looper.getMainLooper()).asCoroutineDispatcher()),
     backgroundService: (String?) -> Unit = {},
-): CameraBinding = CameraBinding(rotation, requestPermission, permission, { endpoint, lens, angle ->
+): CameraBinding = CameraBinding(rotation, requestPermission, permission, { endpoint, lens, angle, report ->
     val owned = CameraResources()
     object : LifecycleRun {
-        override suspend fun execute() = capture(endpoint, lens, angle(), owned)
+        override suspend fun execute() {
+            val observation = CoroutineScope(currentCoroutineContext()).launch { owned.startupStatus.collect { text -> if (text != null) report(text) } }
+            try { capture(endpoint, lens, angle(), owned) }
+            finally { observation.cancel() }
+        }
         override fun cancel() = owned.cancel()
-        override suspend fun retire() = owned.close()
+        override suspend fun retire() = withContext(Dispatchers.IO) { owned.close() }
     }
 }, invitations, scope, backgroundService)

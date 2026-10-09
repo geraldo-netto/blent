@@ -9,7 +9,7 @@ internal object CameraRecovery {
     suspend fun run(owner: CameraResources, attempt: suspend (CameraResources) -> Nothing): Nothing {
         for (retry in 0..2) {
             currentCoroutineContext().ensureActive()
-            val resources = CameraResources()
+            val resources = owner.child()
             owner.own { resources.close() }
             owner.interrupt { resources.cancel() }
             try {

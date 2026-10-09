@@ -105,6 +105,7 @@ internal fun BlentMain(
             Text("⚙", fontSize = 18.sp, color = Color.White)
         }
 
+        DecoderWaitNotice(presentation)
         StreamNotices(showThanks && !calibrating, onDismissThanks, updateAvailable)
         Box(Modifier.align(Alignment.BottomStart)) { inputControls() }
 
@@ -387,4 +388,15 @@ internal fun connectionTitle(penOnly: Boolean, tuning: Boolean, expired: Boolean
     tuning && expired -> "Display optimization timed out. Reconnect to try again."
     tuning -> "Optimizing display…"
     else -> "Waiting for your computer…"
+}
+
+@Composable
+private fun BoxScope.DecoderWaitNotice(presentation: StreamPresentation?) {
+    val startup = presentation?.decoderStartup?.collectAsState()?.value
+    val retirement = presentation?.decoderRetirement?.collectAsState()?.value
+    val message = retirement ?: startup
+    if (message != null) {
+        Text(message, color = Color.White,
+            modifier = Modifier.align(Alignment.TopCenter).background(Color(0xCC20202C)).padding(12.dp))
+    }
 }

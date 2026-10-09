@@ -35,11 +35,9 @@ internal class AudioBinding(
     private var visible = false
     private var generation = 0L
     private var observer: Job? = null
-    private var worker: Job? = null
-    private var resources: LifecycleRun? = null
     private var backgroundRun: String? = null
     private var serviceError: Exception? = null
-    private val retirement = RetirementGuard()
+    private val retirement = ResourceLane(scope, { status = it })
 
     fun start() {
         visible = true
@@ -75,32 +73,24 @@ internal class AudioBinding(
     private fun launch(endpoint: AudioEndpoint) {
         retirement.checkAvailable()
         check(serviceError == null) { "Background cleanup incomplete: ${serviceError?.message}" }
-        val earlier = worker
         val revision = ++generation
-        val owned = createRun(endpoint, preferences) { text ->
-            scope.launch { if (revision == generation) status = text }
-        }
-        resources = owned
+        val settings = preferences
         if (endpoint.background) {
             backgroundRun = java.util.UUID.randomUUID().toString()
             service(backgroundRun)
         }
         sharing = true; status = "Starting $label…"
-        worker = scope.launch {
-            try {
-                // A cancelled waiter must retain the chain to older native owners.
-                withContext(NonCancellable) { earlier?.join() }
-                currentCoroutineContext().ensureActive()
-                retirement.checkAvailable()
-                owned.execute()
-            } catch (error: Exception) {
-                if (revision == generation && error !is CancellationException) status = error.message ?: "Audio stopped."
-            } finally {
-                val failure = withContext(NonCancellable) { retirement.retire(owned) }
-                if (revision == generation) { sharing = false; stopBackground() }
-                if (failure != null) status = "Native cleanup incomplete: ${failure.message}"
+        retirement.replace({
+            createRun(endpoint, settings) { text ->
+                scope.launch { if (revision == generation) status = text }
             }
-        }
+        }, { failure ->
+            if (revision == generation) {
+                if (failure != null) status = failure.message ?: "Audio stopped."
+                sharing = false
+                stopBackground()
+            }
+        })
     }
     private fun stopBackground() {
         if (backgroundRun == null) return
@@ -116,13 +106,13 @@ internal class AudioBinding(
     fun stopSharing() {
         generation++
         pending = null
-        val stopping = resources; resources = null
-        val failures = cleanupAll({ stopping?.cancel() }, { worker?.cancel() })
+        retirement.stop()
         sharing = false
         stopBackground()
-        val failure = retirement.error ?: serviceError ?: failures.firstOrNull()
+        val failure = retirement.error ?: serviceError
         status = failure?.let { "Cleanup incomplete: ${it.message}" }
-            ?: "${label.replaceFirstChar { it.uppercase() }} sharing is off. Start again on your computer."
+            ?: if (retirement.stalled) "Native cleanup stalled; replacement waiting."
+            else "${label.replaceFirstChar { it.uppercase() }} sharing is off. Start again on your computer."
     }
     fun configure(value: AudioPreferences) {
         require(value.valid(direction))
