@@ -132,6 +132,22 @@ static void fuzz_canonical_packets(void) {
     raw_ring_close(&sender);
 }
 
+static void fuzz_edge_fields(void) {
+    const int edges[] = {INT_MIN, -1, 0, 1, 2, 3, 4, 8, 16, 4095, 4096, 4097, INT_MAX};
+    const int positions[] = {INT_MIN, -17, -1, 0, 1, 15, 16, 17, INT_MAX};
+    for (unsigned x = 0; x < sizeof(edges) / sizeof(edges[0]); x++) {
+        for (unsigned y = 0; y < sizeof(edges) / sizeof(edges[0]); y++) {
+            for (unsigned p = 0; p < sizeof(positions) / sizeof(positions[0]); p++) {
+                unsigned char data[128] = {0};
+                int fields[] = {edges[x], edges[y], 64, 1025, positions[p], positions[p]};
+                memcpy(data, fields, sizeof(fields));
+                data[28] = data[29] = data[30] = 1;
+                fuzz_boundary_input(data);
+            }
+        }
+    }
+}
+
 static void test_t767_boundaries(void) {
     uint32_t seed = 767;
     unsigned char data[128];
@@ -143,4 +159,5 @@ static void test_t767_boundaries(void) {
         fuzz_boundary_input(data);
     }
     fuzz_canonical_packets();
+    fuzz_edge_fields();
 }

@@ -61,6 +61,38 @@ they do not establish physical GPU driver compatibility or remove the prototype
 label. CI includes these counters in the combined gate with a second `--gcov`
 input. No real display or render device is used.
 
+## Owned C boundary testing (T767)
+
+The normal Cargo integration tests retain deterministic invalid-input cases and
+bounded mutations. The following map identifies external inputs and the internal
+ownership contracts exercised by the fixtures:
+
+| Boundary | Permanent coverage |
+|---|---|
+| Helper argv, EDID files, device selection, capacity/idle control files and FIFO descriptors | `evdi_helper.rs`, `helper_arguments.c`, `coverage_capture.c`, `fifo_demand.c`: malformed integers, missing fields, file/type/ownership checks, failed initialization and teardown. |
+| EVDI mode/update/cursor callbacks | `c_boundary_fuzz.c`, `cursor_overlay.c`, `failed_mode.c`, `damage_regions.c`: signed extremes, geometry/stride/length, clipped cursor pixels, allocation failures and queued events after failed mode retirement. |
+| Raw control packets, descriptor negotiation and shared frame slots | `c_boundary_fuzz.c`, `raw_producer.c`, `shared_capture.c`, `shared_damage.c`: packet mutations, truncation/ancillary descriptors, bounded layouts, generation changes and leased-slot immutability. |
+| Conversion, damage spans and writer/pool ownership | `conversion_test.c`, `frame_retirement_test.c`, `evdi_modules_test.c`: independent pixel expectations, padded stride, worker failure, bounded rectangles, retirement and shutdown. Internal pixel pointers must address initialized allocations of the declared size; callers validate public geometry first. |
+| Optional GPU argv, X11 events, DRI3 metadata and codec lifecycle | `gpu_options.c`, `gpu_x11.c`, `gpu_lifecycle.c`: invalid options, cursor intersection properties, fragmented damage, metadata bounds and failed native transitions with explicit ownership counters. |
+| Benchmark argv and JNI direct buffers | `benchmark_arguments.c`, `c_benchmarks.rs`, `rect_native.c`: complete numeric parsing, overflow/odd geometry, codec/offset/length/capacity limits, independent hash oracle and unavailable EGL extensions. JNI contexts are NULL or live handles returned by create; forged handles are outside that caller ownership contract. |
+| Retained guest KMS probe | `kms_probe.c`: allocation, plane selection and transition failures using fake DRM interfaces; no real display is opened. |
+
+T767 adds 8,192 deterministic EVDI mutations, 1,521 structured dimension/position
+combinations, single-bit control-packet mutations, and 8,192 JNI argument samples
+plus explicit range endpoints. `c_fuzz_driver.c` exposes the same EVDI input
+boundary to optional local clang libFuzzer campaigns. On 2026-10-09, 100,000
+additional seeded runs passed ASan/UBSan. These are bounded samples, not an
+exhaustive proof for every possible parameter or thread interleaving.
+
+All fixtures preserve valid backing allocations and initialized synchronization
+objects. They do not manufacture dangling pointers or call internal functions
+with invented owner state. Dedicated regressions exercise supported lifetime
+transitions and injected failures instead. JNI tests use installed JDK/EGL
+headers and fake codec/EGL interfaces: they test owned wrapper logic, not codec
+implementations or Android device acceptance. GPU tests use private Xvfb and
+fake native adapters, not physical driver acceptance. External libraries and
+kernel code remain outside this audit; no kernel sanitizer result is claimed.
+
 ## Python and shell collection
 
 ```sh
