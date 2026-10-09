@@ -23,20 +23,41 @@ static XImage *cursor_image(gpu_capture *c, const XFixesCursorImage *cursor) {
     return image;
 }
 
-static void composite(gpu_capture *c, XFixesCursorImage *cursor) {
+static Picture cursor_picture(gpu_capture *c, const XFixesCursorImage *cursor) {
     XImage *image = cursor_image(c, cursor);
     Pixmap pixmap = XCreatePixmap(c->display, c->root, cursor->width, cursor->height, 32);
     GC gc = XCreateGC(c->display, pixmap, 0, NULL);
     XPutImage(c->display, pixmap, gc, image, 0, 0, 0, 0, cursor->width, cursor->height);
     XRenderPictFormat *argb = XRenderFindStandardFormat(c->display, PictStandardARGB32);
-    XRenderPictFormat *rgb = XRenderFindVisualFormat(c->display, DefaultVisual(c->display, DefaultScreen(c->display)));
-    gpu_require(argb && rgb, "cursor render formats");
+    gpu_require(argb != NULL, "cursor source format");
     Picture source = XRenderCreatePicture(c->display, pixmap, argb, 0, NULL);
-    Picture destination = XRenderCreatePicture(c->display, c->pixmap, rgb, 0, NULL);
-    XRenderComposite(c->display, PictOpOver, source, None, destination, 0, 0, 0, 0,
-        cursor->x - cursor->xhot - c->x, cursor->y - cursor->yhot - c->y, cursor->width, cursor->height);
-    XRenderFreePicture(c->display, source); XRenderFreePicture(c->display, destination);
+    /* The Picture retains the server pixmap; temporary upload resources can go. */
     XFreeGC(c->display, gc); XFreePixmap(c->display, pixmap); XDestroyImage(image);
+    return source;
+}
+
+static void cache_cursor(gpu_capture *c, const XFixesCursorImage *cursor) {
+    if (!c->cursor_destination) {
+        XRenderPictFormat *rgb = XRenderFindVisualFormat(c->display, DefaultVisual(c->display, DefaultScreen(c->display)));
+        gpu_require(rgb != NULL, "cursor destination format");
+        c->cursor_destination = XRenderCreatePicture(c->display, c->pixmap, rgb, 0, NULL);
+    }
+    if (c->cursor_source && c->cursor_serial == cursor->cursor_serial) return;
+    if (c->cursor_source) XRenderFreePicture(c->display, c->cursor_source);
+    c->cursor_source = cursor_picture(c, cursor);
+    c->cursor_serial = cursor->cursor_serial;
+}
+
+static void composite(gpu_capture *c, XFixesCursorImage *cursor) {
+    cache_cursor(c, cursor);
+    XRenderComposite(c->display, PictOpOver, c->cursor_source, None, c->cursor_destination, 0, 0, 0, 0,
+        cursor->x - cursor->xhot - c->x, cursor->y - cursor->yhot - c->y, cursor->width, cursor->height);
+}
+
+void gpu_cursor_close(gpu_capture *c) {
+    if (c->cursor_source) XRenderFreePicture(c->display, c->cursor_source);
+    if (c->cursor_destination) XRenderFreePicture(c->display, c->cursor_destination);
+    c->cursor_source = c->cursor_destination = 0;
 }
 
 void gpu_cursor(gpu_capture *c) {

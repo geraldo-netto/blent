@@ -27,6 +27,7 @@ typedef struct {
     XserverRegion region;
     int damage_event, cursor_event, dirty, pointer_x, pointer_y;
     gpu_cursor_shape cursor_shape;
+    unsigned long cursor_serial, cursor_source, cursor_destination;
     int dma_fd;
     int render_fd;
     uint32_t stride, bytes;
@@ -50,6 +51,7 @@ void gpu_capture_take(gpu_capture *capture, const gpu_options *options, unsigned
 void gpu_capture_release(gpu_capture *capture);
 void gpu_capture_close(gpu_capture *capture);
 void gpu_cursor(gpu_capture *capture);
+void gpu_cursor_close(gpu_capture *capture);
 void gpu_events_open(gpu_capture *capture, const gpu_options *options);
 void gpu_events_wait(gpu_capture *capture, uint64_t previous, unsigned fps);
 void gpu_events_close(gpu_capture *capture);

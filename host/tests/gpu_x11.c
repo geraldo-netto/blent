@@ -2,6 +2,7 @@
  * moves the real desktop pointer, changes a monitor, or needs a GPU. */
 #include "../gpu/gpu.h"
 #include <X11/Xutil.h>
+#include <X11/extensions/Xrender.h>
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
@@ -10,6 +11,13 @@
 
 /* T770: inspect only Blent's native boundary, on the private X server. */
 static int fetched_rectangles;
+static unsigned pictures_created;
+Picture __real_XRenderCreatePicture(Display *, Drawable, const XRenderPictFormat *, unsigned long, const XRenderPictureAttributes *);
+Picture __wrap_XRenderCreatePicture(Display *display, Drawable drawable, const XRenderPictFormat *format,
+        unsigned long mask, const XRenderPictureAttributes *attributes) {
+    pictures_created++;
+    return __real_XRenderCreatePicture(display, drawable, format, mask, attributes);
+}
 static int fragmented_region;
 void __real_XDamageSubtract(Display *, Damage, XserverRegion, XserverRegion);
 void __wrap_XDamageSubtract(Display *display, Damage damage, XserverRegion repair, XserverRegion parts) {
@@ -72,20 +80,33 @@ static void verify(gpu_capture *c, int present) {
     assert(image);
     for (int y = 0; y < c->height; y++) {
         for (int x = 0; x < c->width; x++) {
-            unsigned long expected = present && x < 7 && y < 8 ? 0xff0000 : 0;
+            unsigned long color = present == 2 ? 0xff : 0xff0000;
+            unsigned long expected = present && x < 7 && y < 8 ? color : 0;
             assert((XGetPixel(image, x, y) & 0xffffff) == expected);
         }
     }
     XDestroyImage(image);
 }
 
-static Cursor cursor(Display *display, Window root) {
+static Cursor cursor(Display *display, Window root, int blue) {
     char bits[8]; memset(bits, 255, sizeof(bits));
     Pixmap source = XCreateBitmapFromData(display, root, bits, 8, 8);
-    XColor foreground = {.red=65535}, background = {0};
+    XColor foreground = {.red=blue ? 0 : 65535, .blue=blue ? 65535 : 0}, background = {0};
     Cursor cursor = XCreatePixmapCursor(display, source, source, &foreground, &background, 3, 2);
     XFreePixmap(display, source);
     return cursor;
+}
+
+static void changed_cursor(gpu_capture *c, Cursor original) {
+    unsigned before = pictures_created;
+    Cursor blue = cursor(c->display, c->root, 1);
+    XDefineCursor(c->display, c->root, blue); XSync(c->display, False);
+    fill(c); gpu_cursor(c); verify(c, 2);
+    assert(pictures_created == before + 1); /* Replace source, retain destination. */
+    XDefineCursor(c->display, c->root, original); XSync(c->display, False);
+    fill(c); gpu_cursor(c); verify(c, 1);
+    assert(pictures_created == before + 2);
+    XFreeCursor(c->display, blue);
 }
 
 /* T579: native event plumbing on a private X server, without GPU imports. */
@@ -123,24 +144,34 @@ static void cadence(gpu_capture *c) {
     assert(WIFEXITED(status) && WEXITSTATUS(status) == 2);
     XFreeGC(c->display, root_gc);
     gpu_events_close(c);
+    c->damage = 0; /* This test explicitly retired events before capture teardown. */
     unsetenv("BLENT_GPU_CADENCE");
 }
 
 int main(void) {
     codec_error();
-    gpu_capture c = {.x=20, .y=20, .width=32, .height=24};
+    gpu_capture c = {.x=20, .y=20, .width=32, .height=24, .dma_fd=-1, .render_fd=-1};
     c.display = XOpenDisplay(NULL); assert(c.display);
     c.root = DefaultRootWindow(c.display);
     c.pixmap = XCreatePixmap(c.display, c.root, c.width, c.height, 24);
     c.gc = XCreateGC(c.display, c.pixmap, 0, NULL);
-    Cursor shape = cursor(c.display, c.root);
+    c.fence = XSyncCreateFence(c.display, c.pixmap, False);
+    Cursor shape = cursor(c.display, c.root, 0);
     XDefineCursor(c.display, c.root, shape);
     XWarpPointer(c.display, None, c.root, 0, 0, 0, 0, 22, 22); XSync(c.display, False);
     fill(&c); gpu_cursor(&c); verify(&c, 1);
+    unsigned created = pictures_created;
+    for (int i = 0; i < 32; i++) { fill(&c); gpu_cursor(&c); verify(&c, 1); }
+    assert(pictures_created == created && "T772: unchanged shape must reuse cursor Pictures");
+    changed_cursor(&c, shape);
     XWarpPointer(c.display, None, c.root, 0, 0, 0, 0, 100, 100); XSync(c.display, False);
     fill(&c); gpu_cursor(&c); verify(&c, 0);
     cadence(&c);
-    XFreeCursor(c.display, shape); XFreeGC(c.display, c.gc);
-    XFreePixmap(c.display, c.pixmap); XCloseDisplay(c.display);
+    gpu_cursor_close(&c);
+    gpu_cursor_close(&c); /* Empty cache teardown remains safe. */
+    /* Refill and exercise the production capture owner's cache teardown too. */
+    fill(&c); gpu_cursor(&c);
+    XFreeCursor(c.display, shape);
+    gpu_capture_close(&c);
     return 0;
 }
