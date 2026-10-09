@@ -1,9 +1,10 @@
 # Architecture
 
 This describes the Linux host and Android client in the current checkout.
-Windows has an [authenticated USB connection preview](windows-port.md), daemon
-lifecycle and optional per-user autostart. Native fixture tests cover these
-contracts; physical tablet acceptance remains T522, and capture/native input
+Windows has an [authenticated USB/Wi-Fi connection preview](windows-port.md),
+daemon lifecycle, optional per-user autostart and an opt-in native touch/mouse
+preview for a selected monitor. Native fixture tests cover these contracts;
+physical tablet acceptance remains T522. Display capture and full input support
 remain unavailable. Known behavioral
 limits are tracked in [TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md); describing a path does not certify
 it on every desktop or device.
