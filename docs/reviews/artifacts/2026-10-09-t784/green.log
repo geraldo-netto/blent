@@ -1,0 +1,35 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.44s
+     Running unittests src/lib.rs (target/debug/deps/blent-276264e4cf99d16f)
+
+running 27 tests
+test stream::resources::t391_one_two_four_sessions_release_resources ... ok
+test stream::tests::t056_idle_server_does_not_count_as_a_video_client ... ok
+test stream::tests::t071_frame_header_and_payload_share_one_write_and_handle_short_writes ... ok
+test stream::tests::t138_server_shutdown_retires_authenticated_clients ... ok
+test stream::tests::t139_idle_authenticated_disconnect_frees_capture ... ok
+test stream::tests::t139_only_authenticated_clients_request_capture ... ok
+test stream::tests::t139_pending_admission_is_bounded_and_reusable ... ok
+test stream::tests::t227_queued_frame_keeps_its_codec_configuration ... ok
+test stream::tests::t227_retired_batches_are_discarded_across_codec_and_resolution_changes ... ok
+test stream::tests::t267_disabled_auth_bounds_optional_prefix_and_rejects_extra_input ... ok
+test stream::tests::t267_disabled_auth_keeps_legacy_tokenless_video_and_idle_cleanup ... ok
+test stream::tests::t267_enabled_auth_rejects_stale_and_missing_tokens_before_video ... ok
+test stream::tests::t267_saved_android_token_survives_enabled_disabled_enabled_transitions ... ok
+test stream::tests::t391_initial_config_counts_backing_before_first_frame ... ok
+test stream::tests::t391_replay_batch_allocations ... ok
+test stream::tests::t391_stalled_frame_and_config_writes_have_a_deadline ... ok
+test stream::tests::t497_lagged_batch_forgets_old_dependencies_and_uses_the_latest_idr ... ok
+test stream::wake_tests::t405_codec_config_publication_wakes_waiters_immediately ... ok
+test stream::wake_tests::t405_codec_config_wait_has_only_its_final_deadline ... ok
+test stream::wake_tests::t405_idle_listener_has_no_periodic_wakeups ... ok
+test stream::wake_tests::t405_stop_before_first_poll_remains_latched ... ok
+test stream::wake_tests::t405_stop_wakes_listener_without_waiting_for_a_tick ... ok
+test stream::write_tests::benchmark::t784_tcp ... ignored, T784 opt-in local TCP timing benchmark
+test stream::write_tests::t784_configuration_uses_one_write ... ok
+test stream::write_tests::t784_packet_bytes_and_bounded_short_writes ... ok
+test stream::write_tests::t784_scalar_writer_fallback_preserves_bytes ... ok
+test stream::write_tests::t784_transport_failures_are_not_silenced ... ok
+
+test result: ok. 26 passed; 0 failed; 1 ignored; 0 measured; 273 filtered out; finished in 11.47s
+

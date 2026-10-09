@@ -1,5 +1,7 @@
 #[cfg(test)]
 mod wake_tests;
+#[cfg(test)]
+mod write_tests;
 
 #[cfg(all(test, target_os = "linux"))]
 mod resources;
@@ -267,12 +269,10 @@ impl StreamServer {
         packet_type: u8,
         payload: &[u8],
     ) -> Result<()> {
-        let packet_len = payload.len() + 1;
-        let len_buf = (packet_len as u32).to_be_bytes();
-        socket.write_all(&len_buf).await?;
-        socket.write_all(&[packet_type]).await?;
-        socket.write_all(payload).await?;
-        Ok(())
+        let mut header = [0u8; 5];
+        header[..4].copy_from_slice(&((payload.len() + 1) as u32).to_be_bytes());
+        header[4] = packet_type;
+        Self::write_parts(socket, &header, payload).await
     }
 
     /// Frame packets carry a 4-byte big-endian sequence number after the type
@@ -296,8 +296,16 @@ impl StreamServer {
         header[..4].copy_from_slice(&((payload.len() + 5) as u32).to_be_bytes());
         header[4] = PACKET_TYPE_FRAME;
         header[5..].copy_from_slice(&seq.to_be_bytes());
+        Self::write_parts(socket, &header, payload).await
+    }
+
+    async fn write_parts(
+        socket: &mut (impl tokio::io::AsyncWrite + Unpin),
+        header: &[u8],
+        payload: &[u8],
+    ) -> Result<()> {
         let mut slices = [
-            std::io::IoSlice::new(&header),
+            std::io::IoSlice::new(header),
             std::io::IoSlice::new(payload),
         ];
         let mut remaining = &mut slices[..];

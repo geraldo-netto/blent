@@ -1,0 +1,39 @@
+{
+  "scope": "three changed production functions; Linux native LLVM counters",
+  "source_sha256": "a829009be7168aa9f0e6860a48551a32698ef418bb626458cca9f71461ed8262",
+  "functions": [
+    {
+      "file": "host/src/stream.rs",
+      "name": "write_packet_bytes",
+      "line": 267,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "write_frame_bytes",
+      "line": 290,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "write_parts",
+      "line": 302,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

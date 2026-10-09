@@ -1,0 +1,242 @@
+[
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 9489,
+    "receive_p95_ns": 10020,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 4699,
+    "receive_p95_ns": 4749,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 9399,
+    "receive_p95_ns": 11723,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 4719,
+    "receive_p95_ns": 4780,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 9369,
+    "receive_p95_ns": 9489,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 4800,
+    "receive_p95_ns": 4860,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 4640,
+    "receive_p95_ns": 4699,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 9288,
+    "receive_p95_ns": 9379,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 4699,
+    "receive_p95_ns": 4730,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 9348,
+    "receive_p95_ns": 9429,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 4839,
+    "receive_p95_ns": 4870,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 9399,
+    "receive_p95_ns": 9508,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 9298,
+    "receive_p95_ns": 9378,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 4679,
+    "receive_p95_ns": 5821,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 9649,
+    "receive_p95_ns": 9770,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 4880,
+    "receive_p95_ns": 4919,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 9749,
+    "receive_p95_ns": 9839,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 5030,
+    "receive_p95_ns": 5070,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 4850,
+    "receive_p95_ns": 4890,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 9639,
+    "receive_p95_ns": 9730,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 4890,
+    "receive_p95_ns": 4920,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 9769,
+    "receive_p95_ns": 9919,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 5050,
+    "receive_p95_ns": 5090,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 9749,
+    "receive_p95_ns": 11884,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 9639,
+    "receive_p95_ns": 9730,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 64,
+    "receive_p50_ns": 4840,
+    "receive_p95_ns": 4890,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 9749,
+    "receive_p95_ns": 9830,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 512,
+    "receive_p50_ns": 4910,
+    "receive_p95_ns": 4950,
+    "write_syscall_attempts": 3000
+  },
+  {
+    "old": true,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 9749,
+    "receive_p95_ns": 9870,
+    "write_syscall_attempts": 9000
+  },
+  {
+    "old": false,
+    "packets": 3000,
+    "payload_bytes": 4096,
+    "receive_p50_ns": 4980,
+    "receive_p95_ns": 7094,
+    "write_syscall_attempts": 3000
+  }
+]
