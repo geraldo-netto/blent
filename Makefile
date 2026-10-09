@@ -63,7 +63,7 @@ setup-system:
 	@echo "✓ System setup done (EVDI device available now and at every boot)"
 
 run: build
-	sudo modprobe -q evdi || true
+	sudo sh scripts/setup-evdi.sh 2
 	sudo modprobe -q uinput || true
 	./target/release/blent start
 

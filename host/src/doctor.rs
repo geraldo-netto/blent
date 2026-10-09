@@ -111,20 +111,13 @@ fn check_modules_at(r: &mut Report, cfg: &FileConfig, root: &Path) {
                 r.line(Level::Ok, "evdi module", &format!("{} device(s)", count));
             } else {
                 r.line(Level::Fail, "evdi module", "loaded, but no device created");
-                r.hint("for this boot:   echo 1 | sudo tee /sys/devices/evdi/add");
-                // The one-shot write above does not survive a reboot, and
-                // initial_device_count is only read when the module loads —
-                // so writing the modprobe.d file is not enough on a machine
-                // where evdi is already resident. Both halves matter.
-                r.hint(
-                    "for every boot: echo 'options evdi initial_device_count=2' | sudo tee \
-                     /etc/modprobe.d/blent-evdi.conf # takes effect after reboot; keep the live module loaded",
-                );
+                hint_evdi_setup(r, cfg.max_tablets);
             }
         }
         Err(_) => {
             r.line(Level::Fail, "evdi module", "not loaded");
-            r.hint("install evdi-dkms (on Arch it is in the AUR: yay -S evdi-dkms), then: sudo modprobe evdi");
+            r.hint("install a stock EVDI module compatible with the running kernel");
+            hint_evdi_setup(r, cfg.max_tablets);
         }
     }
 
@@ -621,7 +614,7 @@ async fn check_named_virtual_display(
 ) {
     if connectors.is_empty() {
         r.line(Level::Fail, "EVDI connector", "none found in sysfs");
-        r.hint("the evdi module is loaded but exposes no DRM connector — reboot or re-add");
+        r.hint("the evdi module is loaded but exposes no DRM connector — keep the live module loaded; use Blent system setup and reboot");
         return;
     }
     report_connectors(r, connectors);
@@ -1045,6 +1038,15 @@ fn check_tablet_capacity(r: &mut Report, cfg: &FileConfig) {
     }
 }
 
+fn hint_evdi_setup(r: &mut Report, wanted: u32) {
+    r.hint(&format!(
+        "use Blent system setup; check options evdi initial_device_count={} in \
+         /etc/modprobe.d/blent-evdi.conf, then reboot; Xorg device creation is deferred; \
+         keep the live module loaded",
+        wanted.clamp(1, 4)
+    ));
+}
+
 fn report_tablet_capacity(r: &mut Report, wanted: u32, cards: u32) {
     if cards >= wanted {
         r.line(
@@ -1058,12 +1060,7 @@ fn report_tablet_capacity(r: &mut Report, wanted: u32, cards: u32) {
             "tablet slots",
             &format!("{} wanted, but only {} EVDI device(s) exist", wanted, cards),
         );
-        r.hint(&format!(
-            "for this boot: echo 1 | sudo tee /sys/devices/evdi/add   (repeat {} time(s)); \
-                 for every boot: initial_device_count={} in /etc/modprobe.d/blent-evdi.conf",
-            wanted - cards,
-            wanted
-        ));
+        hint_evdi_setup(r, wanted);
     }
 }
 

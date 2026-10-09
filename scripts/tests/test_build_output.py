@@ -56,6 +56,19 @@ def fixture(root, selection, stale):
 
 
 class BuildOutputTest(unittest.TestCase):
+    def test_t757_run_uses_safe_capacity_setup_and_stops_on_failure(self):
+        for status in [0, 1]:
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                env, _ = fixture(root, 'relative', False)
+                write(root, 'tools/sudo', '#!/bin/sh\nprintf "%s\\n" "$*" >> "' + str(root / 'sudo.log') + '"\ncase "$*" in *setup-evdi.sh*) exit ' + str(status) + ';; esac\n', True)
+                result = subprocess.run(['make', 'run'], cwd=root, env=env, capture_output=True, text=True)
+                calls = (root / 'sudo.log').read_text()
+                self.assertIn('sh scripts/setup-evdi.sh 2', calls, 'T757: run bypassed safe setup')
+                self.assertNotIn('modprobe -q evdi', calls)
+                self.assertEqual(result.returncode == 0, status == 0)
+                self.assertEqual('fresh-blent start' in result.stdout, status == 0)
+
     def test_t640_linux_ci_checks_private_namespaces_before_collection(self):
         workflow = (REPO / '.github/workflows/build.yml').read_text()
         preflight = 'unshare --user --map-root-user --mount --pid --fork true'

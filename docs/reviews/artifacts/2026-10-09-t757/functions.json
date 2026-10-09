@@ -1,0 +1,46 @@
+[
+  {
+    "file": "host/src/doctor.rs",
+    "name": "check_modules_at",
+    "line": 106,
+    "language": "rust",
+    "covered": 34,
+    "total": 34,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/doctor.rs",
+    "name": "check_named_virtual_display",
+    "line": 609,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/doctor.rs",
+    "name": "hint_evdi_setup",
+    "line": 1041,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/doctor.rs",
+    "name": "report_tablet_capacity",
+    "line": 1050,
+    "language": "rust",
+    "covered": 16,
+    "total": 16,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]
