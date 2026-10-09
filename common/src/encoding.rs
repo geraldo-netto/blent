@@ -122,11 +122,14 @@ pub fn find(name: &str) -> Option<&'static Encoder> {
     ENCODERS.iter().find(|encoder| encoder.name == canonical)
 }
 
-pub const INPROC_VAAPI_UNSUPPORTED: &str = "VAAPI is unavailable in this in-process build: Blent does not create a hardware-frames context or use vaapi_device here. Build without --features inproc-encoder to use VAAPI, or select libx264/NVENC.";
+pub const INPROC_VAAPI_UNSUPPORTED: &str = "VAAPI is unavailable in this in-process build for this profile: only h264_vaapi_baseline has a validated hardware-frame adapter. Build without --features inproc-encoder for other VAAPI profiles, or select libx264/NVENC.";
 
 impl Encoder {
     pub fn validate_inproc(&self) -> Result<()> {
-        anyhow::ensure!(self.backend != Backend::Vaapi, INPROC_VAAPI_UNSUPPORTED);
+        anyhow::ensure!(
+            self.backend != Backend::Vaapi || self.name == "h264_vaapi_baseline",
+            INPROC_VAAPI_UNSUPPORTED
+        );
         anyhow::ensure!(
             !crate::video::Codec::from_encoder(self.name).framed(),
             "VP9/AV1 require the stock FFmpeg CLI adapter; build without inproc-encoder"
@@ -268,20 +271,40 @@ impl Profile {
     }
 
     fn cli_profile(&self, ten_bit: bool, options: &mut Vec<(String, String)>) {
-        if self.encoder.name == "h264_vaapi_baseline" {
-            options.push(("-profile:v".into(), "constrained_baseline".into()));
-            options.push(("-coder".into(), "cavlc".into()));
+        for &(key, value) in self.baseline_profile() {
+            let key = if key == "profile" {
+                "-profile:v"
+            } else {
+                "-coder"
+            };
+            options.push((key.into(), value.into()));
         }
         if self.encoder.backend == Backend::Nvenc && ten_bit {
             options.push(("-profile:v".into(), "main10".into()));
         }
     }
 
+    fn baseline_profile(&self) -> &'static [(&'static str, &'static str)] {
+        if self.encoder.name == "h264_vaapi_baseline" {
+            &[("profile", "constrained_baseline"), ("coder", "cavlc")]
+        } else {
+            &[]
+        }
+    }
+
     /// Libavcodec receives rate/GOP/B-frame/color fields through its typed context.
-    /// Its input remains 8-bit NV12; VAAPI has no hardware-frame adapter.
+    /// CPU input remains 8-bit NV12; baseline VAAPI uploads to owned surfaces.
     pub fn inproc_options(&self) -> Result<Vec<(&'static str, String)>> {
         self.encoder.validate_inproc()?;
         let mut options = self.codec_options();
+        options.extend(
+            self.baseline_profile()
+                .iter()
+                .map(|&(key, value)| (key, value.into())),
+        );
+        if self.encoder.backend == Backend::Vaapi {
+            options.extend([("async_depth", "1".into()), ("idr_interval", "0".into())]);
+        }
         if let Some(buffer) = self.buffer_kbits {
             options.push(("bufsize", (u64::from(buffer) * 1000).to_string()));
         }
@@ -292,6 +315,30 @@ impl Profile {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t787_shared_vaapi_preserves_explicit_low_latency_policy() {
+        let profile = Profile::new("h264_vaapi_baseline", 60, 20000, 18).unwrap();
+        let options = profile
+            .inproc_options()
+            .expect("T787: hardware-frame adapter admits baseline VAAPI");
+        for (key, value) in [
+            ("profile", "constrained_baseline"),
+            ("coder", "cavlc"),
+            ("async_depth", "1"),
+            ("idr_interval", "0"),
+            ("rc_mode", "CQP"),
+            ("qp", "18"),
+        ] {
+            assert!(options.contains(&(key, value.into())));
+        }
+        for name in ["h264_vaapi", "hevc_vaapi", "av1_vaapi", "vp9_vaapi"] {
+            assert!(Profile::new(name, 60, 20000, 18)
+                .unwrap()
+                .inproc_options()
+                .is_err());
+        }
+    }
 
     #[test]
     fn t612_manual_workers_use_shared_policy_and_preserve_default() {
@@ -365,7 +412,7 @@ mod tests {
             .expect("T400: explicit low-latency profile must be selectable");
         assert_eq!(profile.encoder.backend, Backend::Vaapi);
         assert!(!profile.encoder.hevc);
-        assert!(profile.encoder.validate_inproc().is_err());
+        assert!(profile.encoder.validate_inproc().is_ok());
         assert_eq!(
             crate::ffmpeg_encoder_name("h264_vaapi_baseline"),
             "h264_vaapi"
@@ -385,21 +432,15 @@ mod tests {
         assert_eq!(find("vaapih264enc").unwrap().name, "h264_vaapi");
         assert!(find("unknown").is_none());
         for encoder in ENCODERS {
+            let inproc = ["libx264", "h264_nvenc", "hevc_nvenc", "h264_vaapi_baseline"]
+                .contains(&encoder.name);
             assert_eq!(encoder.hevc, encoder.name.starts_with("hevc"));
-            assert_eq!(
-                encoder.validate_inproc().is_ok(),
-                encoder.backend != Backend::Vaapi
-                    && !crate::video::Codec::from_encoder(encoder.name).framed()
-            );
+            assert_eq!(encoder.validate_inproc().is_ok(), inproc);
             for fps in [0, 10, 90] {
                 let profile = Profile::new(encoder.name, fps, 60000, 32).unwrap();
                 assert_eq!(profile.gop, fps.max(1));
                 assert_eq!(profile.max_rate_bps, 60000000);
-                assert_eq!(
-                    profile.inproc_options().is_ok(),
-                    encoder.backend != Backend::Vaapi
-                        && !crate::video::Codec::from_encoder(encoder.name).framed()
-                );
+                assert_eq!(profile.inproc_options().is_ok(), inproc);
             }
         }
     }

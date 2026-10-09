@@ -1,0 +1,49 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling rustix v1.1.4
+   Compiling linux-raw-sys v0.12.1
+   Compiling quote v1.0.45
+   Compiling libc v0.2.186
+   Compiling memchr v2.8.1
+   Compiling smallvec v1.15.1
+   Compiling tracing-subscriber v0.3.23
+   Compiling serde_json v1.0.150
+   Compiling syn v2.0.117
+   Compiling errno v0.3.14
+   Compiling getrandom v0.4.2
+   Compiling mio v1.2.1
+   Compiling getrandom v0.3.4
+   Compiling signal-hook-registry v1.4.8
+   Compiling tempfile v3.27.0
+   Compiling serde_derive v1.0.228
+   Compiling tokio-macros v2.7.0
+   Compiling tracing-attributes v0.1.31
+   Compiling clap_derive v4.6.1
+   Compiling tokio v1.52.3
+   Compiling tracing v0.1.44
+   Compiling clap v4.6.1
+   Compiling serde v1.0.228
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.72s
+     Running unittests src/lib.rs (/tmp/blent-t787-cov/debug/deps/blent_config-a308feb7759de594)
+
+running 9 tests
+test encoding::tests::t373_registry_preserves_aliases_and_adapter_capabilities ... ok
+test encoding::tests::t400_low_latency_vaapi_is_distinct_from_stock_encoder_name ... ok
+test encoding::tests::t433_av1_profiles_use_framed_stock_cli_and_reject_inproc ... ok
+test encoding::tests::t612_manual_workers_use_shared_policy_and_preserve_default ... ok
+test encoding::tests::t613_x264_defaults_to_one_worker_in_both_adapters ... ok
+test encoding::tests::t787_shared_vaapi_preserves_explicit_low_latency_policy ... ok
+test encoding::windows::tests::t685_bounded_invalid_requests_and_probe_commands ... ok
+test encoding::windows::tests::t685_catalog_profiles_keep_hardware_out_of_live_admission ... ok
+test encoding::windows::tests::t685_options_preserve_defaults_and_distinguish_capacity_from_quality ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 187 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-copy-review/t787-common.lcov

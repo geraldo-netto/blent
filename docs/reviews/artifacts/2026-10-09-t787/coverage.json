@@ -1,0 +1,192 @@
+{
+  "scope": "16 new/changed production functions; Linux native LLVM counters",
+  "source_sha256": {
+    "host/src/encoder_hardware.rs": "872d04aec7cb2455d779451724b2a009f5d944c5e593344dcf87e1cdae040a7b",
+    "host/src/encoder.rs": "61e79f95dd0478799b22d2444c474aec2021b3dd46a09b3424f0efd8cc20f965",
+    "common/src/encoding.rs": "9ea7721ae581bdb89f1385577949ef334db68f8910c1d226f9f3e508e3844532",
+    "host/src/capture/encoding.rs": "443aadcce565a84f0e44a45c2b890339900e7a4595ffaa6c90717a2d9bee462d"
+  },
+  "functions": [
+    {
+      "file": "host/src/encoder_hardware.rs",
+      "name": "drop",
+      "line": 17,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_hardware.rs",
+      "name": "checked",
+      "line": 22,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_hardware.rs",
+      "name": "device",
+      "line": 29,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_hardware.rs",
+      "name": "new",
+      "line": 54,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_hardware.rs",
+      "name": "attach",
+      "line": 78,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_hardware.rs",
+      "name": "upload",
+      "line": 93,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_hardware.rs",
+      "name": "plane_valid",
+      "line": 127,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "with_device",
+      "line": 65,
+      "language": "rust",
+      "covered": 55,
+      "total": 55,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "hardware_frames",
+      "line": 131,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "encode_prepared",
+      "line": 175,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "run",
+      "line": 223,
+      "language": "rust",
+      "covered": 55,
+      "total": 57,
+      "percent": 96.49122807017544,
+      "passes": true,
+      "missing": [
+        252,
+        270
+      ]
+    },
+    {
+      "file": "common/src/encoding.rs",
+      "name": "validate_inproc",
+      "line": 128,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/encoding.rs",
+      "name": "cli_profile",
+      "line": 273,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/encoding.rs",
+      "name": "baseline_profile",
+      "line": 287,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/encoding.rs",
+      "name": "inproc_options",
+      "line": 297,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "spawn_session",
+      "line": 118,
+      "language": "rust",
+      "covered": 42,
+      "total": 43,
+      "percent": 97.67441860465117,
+      "passes": true,
+      "missing": [
+        132
+      ]
+    }
+  ]
+}

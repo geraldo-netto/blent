@@ -1377,12 +1377,7 @@ mod tests {
     fn t284_doctor_rejects_vaapi_even_when_ffmpeg_lists_it() {
         use super::*;
         let inventory = " V....D h264_vaapi H.264/AVC\n V....D hevc_vaapi HEVC\n";
-        for encoder in [
-            "h264_vaapi",
-            "h264_vaapi_baseline",
-            "hevc_vaapi",
-            "vaapih264enc",
-        ] {
+        for encoder in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
             let cfg = FileConfig {
                 encoder: encoder.into(),
                 ..Default::default()
@@ -1396,6 +1391,18 @@ mod tests {
                 .join("\n")
                 .contains("without --features inproc-encoder"));
         }
+    }
+
+    #[cfg(feature = "inproc-encoder")]
+    #[test]
+    fn t787_doctor_admits_baseline_vaapi_stock_codec_name() {
+        let cfg = FileConfig {
+            encoder: "h264_vaapi_baseline".into(),
+            ..Default::default()
+        };
+        let mut report = Report::new();
+        report_encoder_availability(&mut report, &cfg, " V....D h264_vaapi H.264/AVC\n");
+        assert_eq!(report.failures, 0);
     }
 
     mod daemon_fixture {

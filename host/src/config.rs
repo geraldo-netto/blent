@@ -19,15 +19,10 @@ mod tests {
 
     #[test]
     fn t284_encoder_capabilities_preserve_default_vaapi_and_supported_alternatives() {
-        for name in ["h264_nvenc", "hevc_nvenc", "libx264"] {
+        for name in ["h264_nvenc", "hevc_nvenc", "libx264", "h264_vaapi_baseline"] {
             assert!(validate_encoder_for_build(name).is_ok(), "T284: {name}");
         }
-        for name in [
-            "h264_vaapi",
-            "h264_vaapi_baseline",
-            "hevc_vaapi",
-            "vaapih264enc",
-        ] {
+        for name in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
             assert_eq!(
                 validate_encoder_for_build(name).is_ok(),
                 !cfg!(feature = "inproc-encoder"),

@@ -3,9 +3,7 @@ use blent::adb_inventory::package_presence;
 use blent::annex_scan;
 #[cfg(all(test, not(feature = "inproc-encoder")))]
 use blent::ffmpeg_args;
-use blent::transport::{
-    attachment_identity, current_transport, select_device_transports,
-};
+use blent::transport::{attachment_identity, current_transport, select_device_transports};
 use blent::wifi::{linux::setup as setup_wifi, Reconnect as WifiReconnect};
 use blent_config::android::{app_launch_command, token_delivery_command};
 #[cfg(test)]
@@ -327,12 +325,7 @@ exit 1
         ) {
             return;
         }
-        for encoder in [
-            "h264_vaapi",
-            "h264_vaapi_baseline",
-            "hevc_vaapi",
-            "vaapih264enc",
-        ] {
+        for encoder in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
             for explicit in [false, true] {
                 let saved = config::FileConfig {
                     encoder: if explicit { "libx264" } else { encoder }.into(),

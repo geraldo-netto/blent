@@ -1,0 +1,19 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.00s
+     Running unittests src/lib.rs (target/debug/deps/blent_config-a308feb7759de594)
+
+running 1 test
+test encoding::tests::t787_shared_vaapi_preserves_explicit_low_latency_policy ...
+thread 'encoding::tests::t787_shared_vaapi_preserves_explicit_low_latency_policy' (660334) panicked at common/src/encoding.rs:299:48:
+T787: hardware-frame adapter admits baseline VAAPI: VAAPI is unavailable in this in-process build: Blent does not create a hardware-frames context or use vaapi_device here. Build without --features inproc-encoder to use VAAPI, or select libx264/NVENC.
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    encoding::tests::t787_shared_vaapi_preserves_explicit_low_latency_policy
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 195 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent-config --lib`

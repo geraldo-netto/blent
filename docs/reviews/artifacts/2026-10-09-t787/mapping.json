@@ -1,0 +1,16 @@
+[
+  {
+    "device": "/dev/dri/renderD128",
+    "upload": true,
+    "direct_map_status": 0,
+    "description": "Success",
+    "pitch": 1280
+  },
+  {
+    "device": "/dev/dri/renderD129",
+    "upload": true,
+    "direct_map_status": 0,
+    "description": "Success",
+    "pitch": 1280
+  }
+]

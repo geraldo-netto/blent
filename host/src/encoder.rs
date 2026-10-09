@@ -5,7 +5,8 @@
 //! Automatic libx264 input uses the shared adapter validated by T418.
 //! FIFO aligned frames fill writable AVFrame planes; padded widths use staging.
 //! Shared AVBufferRefs retain each slot until the codec's final reference ends.
-//! Neither adapter changes FFmpeg itself or establishes hardware availability.
+//! Baseline VAAPI uploads immutable CPU input into stock hardware-frame surfaces.
+//! Other VAAPI profiles remain unsupported; device availability is checked at open.
 //!
 //! In-process submission can request an IDR on the next captured frame. The
 //! CLI instead schedules periodic wall-clock IDRs. See the raw-input benchmark
@@ -18,6 +19,8 @@ use crate::media::CodecConfig;
 use crate::media_storage::MediaBytes as Bytes;
 use anyhow::{Context, Result};
 
+#[path = "encoder_hardware.rs"]
+mod hardware;
 #[path = "encoder_frame.rs"]
 mod input_frame;
 #[path = "encoder_shared.rs"]
@@ -28,6 +31,7 @@ mod storage;
 pub struct Encoder {
     inner: ffmpeg_next::encoder::Video,
     frame: ffmpeg_next::frame::Video,
+    hardware: Option<hardware::Frames>,
     pts: i64,
     // Fields drop in declaration order: the codec must close/join callbacks
     // before their shared callback context is retired.
@@ -45,11 +49,20 @@ impl Encoder {
         bitrate_kbps: u32,
         quality: u32,
     ) -> Result<Self> {
-        Self::with_workers(name, width, height, fps, bitrate_kbps, quality, 1)
+        Self::with_device(
+            name,
+            width,
+            height,
+            fps,
+            bitrate_kbps,
+            quality,
+            1,
+            "/dev/dri/renderD128",
+        )
     }
 
     #[allow(clippy::too_many_arguments)]
-    pub fn with_workers(
+    pub fn with_device(
         name: &str,
         width: u32,
         height: u32,
@@ -57,13 +70,14 @@ impl Encoder {
         bitrate_kbps: u32,
         quality: u32,
         workers: u32,
+        device: &str,
     ) -> Result<Self> {
         crate::config::validate_encoder_for_build(name)?;
         let profile = blent_config::encoding::Profile::new(name, fps, bitrate_kbps, quality)?
             .with_workers(workers)?;
         ffmpeg_next::init().context("initialise libavcodec")?;
 
-        let codec = ffmpeg_next::encoder::find_by_name(name)
+        let codec = ffmpeg_next::encoder::find_by_name(blent_config::ffmpeg_encoder_name(name))
             .with_context(|| format!("encoder {} not available in this libavcodec", name))?;
 
         // Declare storage first so error paths also close the context first.
@@ -77,6 +91,7 @@ impl Encoder {
         ctx.set_width(width);
         ctx.set_height(height);
         ctx.set_format(ffmpeg_next::format::Pixel::NV12);
+        let hardware = Self::hardware_frames(&profile, device, width, height, &mut ctx)?;
         ctx.set_time_base(ffmpeg_next::Rational(1, fps.max(1) as i32));
         ctx.set_frame_rate(Some(ffmpeg_next::Rational(fps.max(1) as i32, 1)));
         // One nominal second in frames; longer at idle. Client joins can
@@ -107,9 +122,25 @@ impl Encoder {
         Ok(Self {
             inner,
             frame,
+            hardware,
             pts: 0,
             packet_storage,
         })
+    }
+
+    fn hardware_frames(
+        profile: &blent_config::encoding::Profile,
+        device: &str,
+        width: u32,
+        height: u32,
+        encoder: &mut ffmpeg_next::encoder::video::Video,
+    ) -> Result<Option<hardware::Frames>> {
+        if profile.encoder.backend != blent_config::encoding::Backend::Vaapi {
+            return Ok(None);
+        }
+        let frames = hardware::Frames::new(device, width, height)?;
+        frames.attach(encoder)?;
+        Ok(Some(frames))
     }
 
     /// Translate shared policy to libavcodec dictionary values. Context fields stay typed.
@@ -150,7 +181,14 @@ impl Encoder {
             self.frame.set_kind(ffmpeg_next::picture::Type::None);
         }
 
-        self.inner.send_frame(&self.frame).context("send frame")?;
+        if let Some(hardware) = &self.hardware {
+            let uploaded = hardware.upload(&self.frame)?;
+            self.inner
+                .send_frame(&uploaded)
+                .context("send VAAPI frame")?;
+        } else {
+            self.inner.send_frame(&self.frame).context("send frame")?;
+        }
         self.drain()
     }
 
@@ -198,10 +236,11 @@ pub fn run(
     raw_socket: Option<crate::raw_socket::Socket>,
     raw_slots: u32,
     workers: u32,
+    vaapi_device: &str,
 ) -> Result<()> {
     use std::sync::atomic::Ordering;
 
-    let mut enc = Encoder::with_workers(
+    let mut enc = Encoder::with_device(
         encoder_name,
         width,
         height,
@@ -209,6 +248,7 @@ pub fn run(
         bitrate_kbps,
         quality,
         workers,
+        vaapi_device,
     )?;
 
     let mut input = shared::Input::open(fifo_path, raw_socket, (width, height), raw_slots)?;
@@ -310,12 +350,7 @@ mod tests {
 
     #[test]
     fn t284_vaapi_reports_build_limit_before_codec_initialization() {
-        for name in [
-            "h264_vaapi",
-            "h264_vaapi_baseline",
-            "hevc_vaapi",
-            "vaapih264enc",
-        ] {
+        for name in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
             let error = Encoder::new(name, 64, 64, 60, 500, 20)
                 .err()
                 .expect("T284: VAAPI must be rejected");
@@ -406,6 +441,7 @@ mod tests {
             .video()
             .unwrap();
         let mut encoder = Encoder {
+            hardware: None,
             inner: ffmpeg_next::codec::encoder::video::Encoder(context),
             frame: ffmpeg_next::frame::Video::empty(),
             pts: 0,
@@ -467,6 +503,7 @@ mod tests {
                 None,
                 4,
                 1,
+                "/dev/dri/renderD128",
             )
         });
         let mut writer = std::fs::OpenOptions::new()

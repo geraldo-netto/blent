@@ -2422,12 +2422,7 @@ fi
     #[cfg(feature = "inproc-encoder")]
     #[test]
     fn t284_tablet_cannot_switch_inproc_capture_to_vaapi() {
-        for encoder in [
-            "h264_vaapi",
-            "h264_vaapi_baseline",
-            "hevc_vaapi",
-            "vaapih264enc",
-        ] {
+        for encoder in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
             let (tx, rx) = watch::channel(settings("libx264"));
             apply_tablet_config(&Some(tx), Some(2000), Some(45), Some(encoder.into()));
             assert_eq!(
@@ -2437,6 +2432,20 @@ fi
             );
             assert_eq!((rx.borrow().bitrate, rx.borrow().fps), (2000, 45));
         }
+    }
+
+    #[cfg(feature = "inproc-encoder")]
+    #[test]
+    fn t787_tablet_can_select_baseline_vaapi_adapter() {
+        let (tx, rx) = watch::channel(settings("libx264"));
+        apply_tablet_config(
+            &Some(tx),
+            Some(2000),
+            Some(45),
+            Some("h264_vaapi_baseline".into()),
+        );
+        assert_eq!(rx.borrow().encoder, "h264_vaapi_baseline");
+        assert_eq!((rx.borrow().bitrate, rx.borrow().fps), (2000, 45));
     }
 
     #[test]

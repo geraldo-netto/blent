@@ -381,12 +381,13 @@ RPM Fusion's `ffmpeg-devel`) and clang development package. Check that
 container can supply the build environment; the installed binary still needs
 ABI-compatible FFmpeg shared libraries at runtime. `ten_bit` is not available
 on this path. The default FFmpeg subprocess build needs no FFmpeg headers.
-The optional build rejects VAAPI selections (including the legacy
-`vaapih264enc` alias) and VP9/AV1 before daemon resources or capture helpers are
-created. Tablet requests cannot switch a running optional build to these encoders. This adapter
-has no hardware-frames context/render-node integration: use the default build
-for VAAPI, or select libx264/NVENC with the optional build. Compiling the feature
-does not establish hardware availability or validate every encoder on a device.
+The optional build accepts `h264_vaapi_baseline` through a stock VAAPI
+hardware-frame adapter using `vaapi_device`. Other VAAPI profiles (including the
+legacy `vaapih264enc` alias), VP9 and AV1 remain rejected before capture setup.
+The named Encoding GPU selector remains unavailable in this optional build;
+use an empty `encoding_gpu` and an explicit `vaapi_device` for this path.
+Compiling the feature does not establish hardware availability. The selected
+render node, supported dimensions, and stock encoder options must work at runtime.
 
 Raw input is configurable in the host configuration (restart the daemon after
 editing):
@@ -401,7 +402,10 @@ encoder, where a matched USB replay found consistently lower latency. The
 stock FFmpeg CLI build and automatic NVENC input retain FIFO. `fifo` explicitly
 restores the previous transport; `shared_memory` explicitly selects the Linux
 shared adapter in an in-process build. A CLI build rejects that explicit choice
-before starting capture. Shared NVENC capture remains unvalidated on hardware.
+before starting capture. Shared NVENC capture remains unvalidated on hardware. Baseline VAAPI can explicitly
+select `shared_memory`; Auto retains FIFO. The [T787 evaluation](reviews/artifacts/2026-10-09-t787/README.md)
+measured the removed pipe boundary and validates native shared-slot encoding.
+VAAPI still uploads CPU pixels; this is not CPU-to-GPU zero-copy.
 `raw_slots` accepts 2–8 (default 4); more slots allow more retained input frames
 and consume more memory, without guaranteeing lower latency. Full slots coalesce
 pending capture updates instead of overwriting encoder-retained pixels. Switching
@@ -426,7 +430,8 @@ The CLI adapter adds command syntax, periodic wall-clock IDRs, explicit
 `scenecut=0` for x264, VAAPI upload filters and optional HEVC depth conversion.
 The in-process adapter sets bitrate/GOP/B-frame/color fields through the typed
 libavcodec context, passes buffer sizes in bits, and requests IDRs on frames.
-Its input remains 8-bit NV12; VAAPI, VP9 and AV1 are rejected. Both adapters use BT.709
+Its input remains 8-bit NV12; baseline VAAPI uploads immutable CPU planes into
+independently owned surfaces. Other VAAPI profiles, VP9 and AV1 are rejected. Both adapters use BT.709
 limited-range input; CLI color tags stay before `-i` to avoid conversion.
 T373 boundary tests preserve these adapter differences, while the existing
 software encode/decode regressions verify color and rate behavior.

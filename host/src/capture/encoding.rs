@@ -137,6 +137,7 @@ impl EncoderProcess {
         let fifo = super::fifo_path_for(config.instance)?;
         let raw_slots = config.raw_slots;
         let workers = config.worker_count();
+        let vaapi_device = config.vaapi_device.clone();
         let stop = crate::encoder_io::StopSignal::new()?;
         let stopc = stop.clone();
         let handle = tokio::task::spawn_blocking(move || {
@@ -156,6 +157,7 @@ impl EncoderProcess {
                 output.raw_socket,
                 raw_slots,
                 workers,
+                &vaapi_device,
             )
         });
         Ok(EncoderTask { handle, stop })

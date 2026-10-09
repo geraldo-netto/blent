@@ -1,0 +1,198 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.06s
+     Running unittests src/main.rs (/tmp/blent-t787-cov/debug/deps/blent-2d2a1d8d9daf5bc8)
+
+running 39 tests
+test encoder::hardware::tests::t787_bounded_plane_layout_property ... ok
+test encoder::hardware::tests::t787_input_rejection_and_pool_attachment ... ok
+test encoder::hardware::tests::t787_invalid_geometry_and_device_are_rejected_before_upload ... [AVHWDeviceContext @ 0x796fe8002880] No VA display found for device /nonexistent-t787.
+[AVHWDeviceContext @ 0x796fe800c240] No VA display found for device /nonexistent-t787.
+ok
+test encoder::hardware::tests::t787_native_allocation_and_device_failures_release_references ... ok
+test encoder::hardware::tests::t787_plane_bounds_reject_missing_short_negative_and_outside_storage ... ok
+test encoder::hardware::tests::t787_upload_retains_surface_and_metadata ... ok
+test encoder::input_frame::tests::t389_aligned_reads_target_writable_planes_without_staging ... ok
+test encoder::input_frame::tests::t389_cancelled_partial_chroma_does_not_submit_a_frame ... ok
+test encoder::input_frame::tests::t389_direct_and_staged_inputs_encode_the_same_frames ... [libx264 @ 0x796fe8001840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8001840] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe80974c0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe80974c0] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe80974c0] frame I:1     Avg QP:17.00  size:   748
+[libx264 @ 0x796fe80974c0] frame P:3     Avg QP:11.00  size:    63
+[libx264 @ 0x796fe80974c0] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe80974c0] mb P  I16..4: 97.9%  0.0%  0.0%  P16..4:  2.1%  0.0%  0.0%  0.0%  0.0%    skip: 0.0%
+[libx264 @ 0x796fe80974c0] coded y,uvDC,uvAC intra: 0.0% 4.8% 0.0% inter: 100.0% 100.0% 0.0%
+[libx264 @ 0x796fe80974c0] i16 v,h,dc,p: 76%  0% 24%  0%
+[libx264 @ 0x796fe80974c0] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe80974c0] kb/s:112.44
+[libx264 @ 0x796fe8001840] frame I:1     Avg QP:17.00  size:   748
+[libx264 @ 0x796fe8001840] frame P:3     Avg QP:11.00  size:    63
+[libx264 @ 0x796fe8001840] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8001840] mb P  I16..4: 97.9%  0.0%  0.0%  P16..4:  2.1%  0.0%  0.0%  0.0%  0.0%    skip: 0.0%
+[libx264 @ 0x796fe8001840] coded y,uvDC,uvAC intra: 0.0% 4.8% 0.0% inter: 100.0% 100.0% 0.0%
+[libx264 @ 0x796fe8001840] i16 v,h,dc,p: 76%  0% 24%  0%
+[libx264 @ 0x796fe8001840] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe8001840] kb/s:112.44
+[libx264 @ 0x796fe8001840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8001840] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe80974c0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe80974c0] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe80974c0] frame I:1     Avg QP:17.00  size:   750
+[libx264 @ 0x796fe80974c0] frame P:3     Avg QP:10.00  size:    62
+[libx264 @ 0x796fe80974c0] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe80974c0] mb P  I16..4: 97.8%  0.0%  0.0%  P16..4:  2.2%  0.0%  0.0%  0.0%  0.0%    skip: 0.0%
+[libx264 @ 0x796fe80974c0] coded y,uvDC,uvAC intra: 0.0% 5.1% 0.0% inter: 100.0% 100.0% 0.0%
+[libx264 @ 0x796fe80974c0] i16 v,h,dc,p: 68%  0% 32%  0%
+[libx264 @ 0x796fe80974c0] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe80974c0] kb/s:112.32
+[libx264 @ 0x796fe8001840] frame I:1     Avg QP:17.00  size:   750
+[libx264 @ 0x796fe8001840] frame P:3     Avg QP:10.00  size:    62
+[libx264 @ 0x796fe8001840] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8001840] mb P  I16..4: 97.8%  0.0%  0.0%  P16..4:  2.2%  0.0%  0.0%  0.0%  0.0%    skip: 0.0%
+[libx264 @ 0x796fe8001840] coded y,uvDC,uvAC intra: 0.0% 5.1% 0.0% inter: 100.0% 100.0% 0.0%
+[libx264 @ 0x796fe8001840] i16 v,h,dc,p: 68%  0% 32%  0%
+[libx264 @ 0x796fe8001840] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe8001840] kb/s:112.32
+ok
+test encoder::input_frame::tests::t389_direct_read_detaches_retained_encoder_planes ... ok
+test encoder::input_frame::tests::t389_eof_between_planes_restarts_the_entire_frame ... ok
+test encoder::input_frame::tests::t389_padded_planes_preserve_padding_and_packed_pixel_order ... ok
+test encoder::input_frame::tests::t389_plane_copy_keeps_partial_rows_and_padding_untouched ... ok
+test encoder::packet_tests::t402_delayed_bytes_survive_later_encode_and_encoder_retirement ... [libx264 @ 0x796fe8001840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8001840] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe8001840] frame I:1     Avg QP:17.00  size:   748
+[libx264 @ 0x796fe8001840] frame P:32    Avg QP:11.00  size:    45
+[libx264 @ 0x796fe8001840] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8001840] mb P  I16..4: 93.9%  0.0%  0.0%  P16..4:  6.1%  0.0%  0.0%  0.0%  0.0%    skip: 0.0%
+[libx264 @ 0x796fe8001840] coded y,uvDC,uvAC intra: 0.0% 0.2% 0.0% inter: 100.0% 100.0% 0.0%
+[libx264 @ 0x796fe8001840] i16 v,h,dc,p: 80%  0% 20%  0%
+[libx264 @ 0x796fe8001840] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe8001840] kb/s:32.03
+ok
+test encoder::packet_tests::t402_delayed_large_packet_decodes_like_a_detached_copy ... [libx264 @ 0x796fe8001840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8001840] profile Constrained Baseline, level 5.0, 4:2:0, 8-bit
+[libx264 @ 0x796fe8001840] frame I:1     Avg QP:50.75  size:205705
+[libx264 @ 0x796fe8001840] frame P:4     Avg QP:45.08  size:105964
+[libx264 @ 0x796fe8001840] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8001840] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4: 76.7%  0.0%  0.0%  0.0%  0.0%    skip:23.3%
+[libx264 @ 0x796fe8001840] coded y,uvDC,uvAC intra: 100.0% 100.0% 100.0% inter: 53.7% 51.2% 48.5%
+[libx264 @ 0x796fe8001840] i16 v,h,dc,p:  8%  4% 85%  3%
+[libx264 @ 0x796fe8001840] i8c dc,h,v,p: 96%  1%  1%  2%
+[libx264 @ 0x796fe8001840] kb/s:60437.66
+ok
+test encoder::packet_tests::t402_large_encoded_packets_avoid_the_drain_payload_copy ... [libx264 @ 0x796fe8001840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8001840] profile Constrained Baseline, level 5.0, 4:2:0, 8-bit
+[libx264 @ 0x796fe8001840] frame I:1     Avg QP:50.75  size:205705
+[libx264 @ 0x796fe8001840] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8001840] coded y,uvDC,uvAC intra: 100.0% 100.0% 100.0%
+[libx264 @ 0x796fe8001840] i16 v,h,dc,p:  8%  4% 85%  3%
+[libx264 @ 0x796fe8001840] i8c dc,h,v,p: 96%  1%  1%  2%
+[libx264 @ 0x796fe8001840] kb/s:98738.40
+ok
+test encoder::packet_tests::t402_packet_storage_replay ... ignored, T402 optional microbenchmark; does not change production ownership
+test encoder::raw_tests::t418_cancel_partial_startup_and_crash_preserve_retained_pixels ... ok
+test encoder::raw_tests::t418_final_codec_reference_owns_slot_full_ring_and_resize ... ok
+test encoder::raw_tests::t418_malformed_descriptors_stale_slots_and_peer_crash_are_bounded ... ok
+test encoder::raw_tests::t418_real_encoder_accepts_shared_readonly_nv12 ... [libx264 @ 0x796fe8001840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8001840] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe8001840] frame I:1     Avg QP:17.00  size:   748
+[libx264 @ 0x796fe8001840] frame P:11    Avg QP:11.00  size:    46
+[libx264 @ 0x796fe8001840] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8001840] mb P  I16..4: 93.8%  0.0%  0.0%  P16..4:  6.3%  0.0%  0.0%  0.0%  0.0%    skip: 0.0%
+[libx264 @ 0x796fe8001840] coded y,uvDC,uvAC intra: 0.0% 0.6% 0.0% inter: 100.0% 100.0% 0.0%
+[libx264 @ 0x796fe8001840] i16 v,h,dc,p: 80%  0% 20%  0%
+[libx264 @ 0x796fe8001840] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe8001840] kb/s:50.16
+ok
+test encoder::raw_tests::t418_shared_input_uses_requested_capacity_and_stops_without_fifo ... ok
+test encoder::raw_tests::t787_native_vaapi_encodes_readonly_shared_slots_and_fifo_identically ... ok
+test encoder::storage::tests::t402_multiple_packets_keep_independent_charges_during_cancellation ... ok
+test encoder::storage::tests::t402_publication_releases_unrelated_packet_owned_buffers ... ok
+test encoder::storage::tests::t402_slow_broadcast_consumer_cancellation_releases_after_encoder_retirement ... ok
+test encoder::storage::tests::t402_subrange_charges_complete_allocation_and_releases_once_after_retirement ... ok
+test encoder::storage::tests::t402_tiny_buffer_views_detach_without_retaining_large_allocations ... ok
+test encoder::storage::tests::t402_unknown_buffer_views_copy_and_detach ... ok
+test encoder::storage_replay::t402_packet_boundary_replay ... ignored, T402 optional paired allocator/publication boundary benchmark
+test encoder::tests::t119_libx264_respects_vbv_ceiling_on_complex_frames ... [libx264 @ 0x796fe80737c0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe80737c0] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe80737c0] frame I:3     Avg QP:47.78  size:  6489
+[libx264 @ 0x796fe80737c0] frame P:177   Avg QP:51.00  size:   438
+[libx264 @ 0x796fe80737c0] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe80737c0] mb P  I16..4:  3.1%  0.0%  0.0%  P16..4: 71.8%  0.0%  0.0%  0.0%  0.0%    skip:25.0%
+[libx264 @ 0x796fe80737c0] coded y,uvDC,uvAC intra: 43.8% 74.2% 23.6% inter: 0.3% 74.1% 0.1%
+[libx264 @ 0x796fe80737c0] i16 v,h,dc,p: 59%  3% 37%  0%
+[libx264 @ 0x796fe80737c0] i8c dc,h,v,p: 99%  0%  0%  1%
+[libx264 @ 0x796fe80737c0] kb/s:258.60
+ok
+test encoder::tests::t228_inproc_sequences_survive_restart ... [libx264 @ 0x796fd4001380] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fd4001380] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fd4001380] frame I:1     Avg QP:17.00  size:   735
+[libx264 @ 0x796fd4001380] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fd4001380] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0%
+[libx264 @ 0x796fd4001380] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x796fd4001380] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fd4001380] kb/s:352.80
+[libx264 @ 0x796fd4001280] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fd4001280] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fd4001280] frame I:1     Avg QP:17.00  size:   735
+[libx264 @ 0x796fd4001280] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fd4001280] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0%
+[libx264 @ 0x796fd4001280] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x796fd4001280] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fd4001280] kb/s:352.80
+ok
+test encoder::tests::t265_drain_preserves_packets_and_normal_exhaustion ... [libx264 @ 0x796fe8074040] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8074040] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe8074040] frame I:1     Avg QP:17.00  size:   735
+[libx264 @ 0x796fe8074040] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8074040] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0%
+[libx264 @ 0x796fe8074040] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x796fe8074040] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe8074040] kb/s:352.80
+ok
+test encoder::tests::t265_drain_reports_codec_errors ... ok
+test encoder::tests::t266_reused_input_preserves_retained_frame_planes ... [libx264 @ 0x796fe8074040] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8074040] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe8074040] frame I:1     Avg QP:17.00  size:   748
+[libx264 @ 0x796fe8074040] frame P:1     Avg QP:11.00  size:    41
+[libx264 @ 0x796fe8074040] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8074040] mb P  I16..4: 100.0%  0.0%  0.0%  P16..4:  0.0%  0.0%  0.0%  0.0%  0.0%    skip: 0.0%
+[libx264 @ 0x796fe8074040] coded y,uvDC,uvAC intra: 0.0% 6.2% 0.0%
+[libx264 @ 0x796fe8074040] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x796fe8074040] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe8074040] kb/s:189.36
+ok
+test encoder::tests::t284_vaapi_reports_build_limit_before_codec_initialization ... ok
+test encoder::tests::t310_encoded_bitstream_preserves_bt709_color_description ... [libx264 @ 0x796fe8074040] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fe8074040] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fe8074040] frame I:1     Avg QP:17.00  size:   735
+[libx264 @ 0x796fe8074040] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fe8074040] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0%
+[libx264 @ 0x796fe8074040] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x796fe8074040] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fe8074040] kb/s:352.80
+ok
+test encoder::tests::t348_inproc_reads_native_fifo_paths ... [libx264 @ 0x796fd4000f00] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fd4000f00] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fd4000f00] frame I:1     Avg QP:17.00  size:   735
+[libx264 @ 0x796fd4000f00] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fd4000f00] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0%
+[libx264 @ 0x796fd4000f00] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x796fd4000f00] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fd4000f00] kb/s:352.80
+[libx264 @ 0x796fd4000900] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x796fd4000900] profile Constrained Baseline, level 1.3, 4:2:0, 8-bit
+[libx264 @ 0x796fd4000900] frame I:1     Avg QP:17.00  size:   735
+[libx264 @ 0x796fd4000900] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x796fd4000900] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0%
+[libx264 @ 0x796fd4000900] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x796fd4000900] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x796fd4000900] kb/s:352.80
+ok
+test encoder::tests::t373_inproc_dictionary_preserves_boundary_policy_and_adapter_differences ... ok
+
+test result: ok. 37 passed; 0 failed; 2 ignored; 0 measured; 233 filtered out; finished in 2.42s
+
+
+    Finished report saved to /tmp/blent-copy-review/t787.lcov

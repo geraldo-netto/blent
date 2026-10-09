@@ -50,8 +50,11 @@ from the existing implementation.
    See the [codec measurements](benchmarks/2026-09-18-codecs.md).
    B-frames/lookahead are disabled on the low-latency paths. An optional
    in-process libavcodec encoder avoids the child process; it does not support
-   `ten_bit`. The optional build rejects VAAPI, VP9 and AV1 before capture setup and rejects
-   live tablet requests to select them; both use the default FFmpeg child path.
+   `ten_bit`. Its baseline VAAPI adapter accepts immutable NV12 from FIFO or
+   explicitly selected shared slots, then uploads into independently owned
+   hardware surfaces using the configured render node. Automatic VAAPI input
+   retains FIFO. Other VAAPI profiles, VP9 and AV1 remain unavailable in this
+   optional build; use the default FFmpeg child path for those profiles.
 4. **Keyframes and delivery.** The FFmpeg CLI requests a random-access keyframe each second of
    capture wall-clock time, including the five-fps idle floor. Actual recovery
    also waits for capture, encoding, packetization and transport. The software

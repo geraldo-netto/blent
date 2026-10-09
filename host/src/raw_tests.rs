@@ -298,3 +298,80 @@ fn t418_shared_input_uses_requested_capacity_and_stops_without_fifo() {
     assert!(Reader::new(producer.socket.clone(), (1, 64), 4).is_err());
     assert!(Reader::new(producer.socket.clone(), (64, 64), 9).is_err());
 }
+
+// T787: the portable adapter/ownership tests always run; this additionally
+// validates the selected native device when the acceptance environment supplies it.
+#[test]
+fn t787_native_vaapi_encodes_readonly_shared_slots_and_fifo_identically() {
+    let Ok(node) = std::env::var("BLENT_TEST_VAAPI_DEVICE") else {
+        return;
+    };
+    for (width, height) in [(128, 128), (1280, 800), (1282, 802)] {
+        t787_native_case(&node, width, height);
+    }
+}
+
+fn t787_native_case(node: &str, width: u32, height: u32) {
+    let mut producer = Producer::new();
+    assert_eq!(producer.command(&format!("resize {width} {height}")), 1);
+    let mut reader = producer.reader((width, height));
+    let mut shared =
+        super::Encoder::with_device("h264_vaapi_baseline", width, height, 60, 500, 18, 1, node)
+            .unwrap();
+    let mut fifo =
+        super::Encoder::with_device("h264_vaapi_baseline", width, height, 60, 500, 18, 1, node)
+            .unwrap();
+    let codec = ffmpeg_next::decoder::find(ffmpeg_next::codec::Id::H264).unwrap();
+    let mut decoder = ffmpeg_next::codec::context::Context::new()
+        .decoder()
+        .open_as(codec)
+        .unwrap()
+        .video()
+        .unwrap();
+    let mut count = 0;
+    for value in [32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208] {
+        shared.frame = producer.frame(&mut reader, value);
+        assert_eq!(
+            unsafe { ffmpeg_next::ffi::av_frame_is_writable(shared.frame.as_mut_ptr()) },
+            0
+        );
+        let force_idr = value == 32 || value == 128;
+        let packets = shared.encode_prepared(force_idr).unwrap();
+        let copied = fifo
+            .encode(&vec![value; (width * height * 3 / 2) as usize], force_idr)
+            .unwrap();
+        assert!(!packets.is_empty(), "T787: synchronous packet delivery");
+        assert_eq!(packets.len(), copied.len());
+        assert!(shared.frame.data(0).iter().all(|&b| b == value));
+        assert!(shared.frame.data(1).iter().all(|&b| b == value));
+        for ((data, key), (expected, expected_key)) in packets.into_iter().zip(copied) {
+            assert_eq!(
+                data.as_ref(),
+                expected.as_ref(),
+                "T787: FIFO/shared bitstream"
+            );
+            assert_eq!(key, expected_key);
+            if force_idr {
+                assert!(key);
+            }
+            decoder
+                .send_packet(&ffmpeg_next::Packet::copy(&data))
+                .unwrap();
+            let mut decoded = ffmpeg_next::frame::Video::empty();
+            decoder.receive_frame(&mut decoded).unwrap();
+            assert_eq!((decoded.width(), decoded.height()), (width, height));
+            assert_eq!(decoded.color_space(), ffmpeg_next::color::Space::BT709);
+            for row in decoded
+                .data(0)
+                .chunks(decoded.stride(0))
+                .take(height as usize)
+            {
+                assert!(row[..width as usize]
+                    .iter()
+                    .all(|&b| b.abs_diff(value) <= 3));
+            }
+            count += 1;
+        }
+    }
+    assert_eq!(count, 12);
+}

@@ -1,0 +1,16 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.27s
+     Running unittests src/main.rs (target/debug/deps/blent-2d2a1d8d9daf5bc8)
+
+running 7 tests
+test encoder::hardware::tests::t787_bounded_plane_layout_property ... ok
+test encoder::hardware::tests::t787_input_rejection_and_pool_attachment ... ok
+test encoder::hardware::tests::t787_invalid_geometry_and_device_are_rejected_before_upload ... [AVHWDeviceContext @ 0x7036a406e1c0] No VA display found for device /nonexistent-t787.
+[AVHWDeviceContext @ 0x7036a401f280] No VA display found for device /nonexistent-t787.
+ok
+test encoder::hardware::tests::t787_native_allocation_and_device_failures_release_references ... ok
+test encoder::hardware::tests::t787_plane_bounds_reject_missing_short_negative_and_outside_storage ... ok
+test encoder::hardware::tests::t787_upload_retains_surface_and_metadata ... ok
+test encoder::raw_tests::t787_native_vaapi_encodes_readonly_shared_slots_and_fifo_identically ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 264 filtered out; finished in 1.21s
