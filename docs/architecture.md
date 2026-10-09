@@ -245,9 +245,12 @@ sequence, generation and seals are checked before admitting pixels.
 Shared capture runs in the capture loop without the FIFO writer or pixel
 exchange allocations. A full ring retains a pending fresh update and coalesces
 intermediate captures; release notifications wake publication, with a bounded
-fallback when a nonblocking notification cannot be sent. Shared slots currently
-receive full-frame conversion, including idle publications; FIFO's per-buffer
-damage optimization is not applied to these independently retained slots (T570).
+fallback when a nonblocking notification cannot be sent. Each shared slot retains
+its own dirty-row and bounded-span history (T570/T768). Conversion updates only
+that acquired slot's dirty regions and then clears its history; clean-slot idle
+publication reuses its existing pixels. Initial allocation and invalidation mark
+all pixels dirty. Damage can accumulate while a slot is leased, but its pixels
+remain immutable until the final consumer releases it and capture reacquires it.
 Cancellation, peer death and partial startup retire owned descriptors and maps.
 The [T418 replay](benchmarks/2026-09-21-shared-capture/README.md) records the matched
 libx264 latency improvement and lifecycle regressions. `raw_transport=auto`
