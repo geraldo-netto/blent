@@ -1,6 +1,7 @@
 #ifndef BLENT_CONVERSION_H
 #define BLENT_CONVERSION_H
 #include <pthread.h>
+#include <stddef.h>
 #include "pixel_span.h"
 
 typedef struct {
@@ -40,6 +41,9 @@ struct conv_pool {
  * thread owns submission. convert() joins every job before returning, so input,
  * output and dirty masks are borrowed only for the duration of that call.
  * Native/scaled kernels retain distinct hot loops. Destroy after final convert. */
+/* Copy nonoverlapping borrowed RGBA pixels to BGRA; callers validate lengths.
+ * Alpha/X bytes are preserved. Duplicate damage may safely recopy native pixels. */
+void conv_copy_rgba_to_bgra(unsigned char *destination, const unsigned char *source, size_t pixels);
 void conv_pool_start(conv_pool_t *pool, int count);
 void conv_pool_convert(conv_pool_t *pool, const conv_job_t *frame);
 void conv_pool_stop(conv_pool_t *pool);

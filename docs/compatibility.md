@@ -31,15 +31,30 @@ Container installation/build checks are described in [development.md](developmen
   manual configuration may be required or unavailable. Doctor reports manual
   mapping guidance instead of requiring KWin; display-only configurations skip
   input-mapping dependency checks.
-  **GNOME 51/Mutter with a 10-bit EVDI framebuffer is unvalidated and affected by
-  upstream [issue597](https://github.com/DisplayLink/evdi/issues/597) (T752).**
-  A native KMS probe confirmed that Ubuntu EVDI1.14.15 and stock1.15.1 accept
-  AR30/XR30 in ADDFB2 although their planes do not advertise those formats.
-  Blent's helper accepts only XR24/AR24; rejecting an unsupported incoming frame
-  cannot repair a compositor failing before capture starts. Selecting an 8-bit
-  encoder does not change the compositor's framebuffer format. No working Mutter51
-  fallback has been validated; use only a compositor/driver arrangement whose
-  EVDI output has been independently verified.
+  **Mutter 51's default zero-copy EVDI output is affected by
+  [issue597](https://github.com/DisplayLink/evdi/issues/597).** Stock EVDI accepts
+  unsupported 10-bit framebuffer creation, then atomic presentation fails.
+  Selecting an 8-bit encoder does not change this compositor negotiation.
+
+  A tested, opt-in workaround for Mutter 51 is to set
+  `MUTTER_DEBUG_MULTI_GPU_FORCE_COPY_MODE=primary-gpu-cpu` **in the environment
+  that starts GNOME Shell/Mutter**, then start a fresh graphical session.
+  Setting it only on Blent or its service has no effect. Use your distribution's
+  session environment configuration; remove the variable and restart that
+  session to revert. This is a Mutter debug option, so revalidate it when
+  changing compositor versions. It affects all secondary GPUs in that session
+  and trades zero-copy rendering for CPU copying; it may increase CPU use and
+  reduce throughput. Blent does not change the desktop environment automatically.
+
+  The helper now supports XR24/AR24 and explicitly converts XB24/AB24 to its
+  internal BGRA format before cursor composition or NV12 conversion (T752).
+  The latter layouts need one extra `stride × height` capture allocation and a
+  channel conversion for each dirty rectangle. Overlapping rectangles copy from
+  independent native storage; they cannot swap channels twice. Packed 10-bit and
+  non-32-bit formats remain rejected. The workaround requires a helper build
+  containing T752. [Regression and native evidence](reviews/artifacts/2026-10-09-t752/summary.json)
+  covers a bounded Mutter 51/stock-EVDI guest fixture, not general GNOME input
+  mapping or physical-tablet certification.
 - **Encoding:** new configurations use `auto`, which probes compatible stock
   FFmpeg encoders and checks render acknowledgements with H.264 fallback.
   Existing explicit choices remain unchanged. NVENC/VAAPI still require actual

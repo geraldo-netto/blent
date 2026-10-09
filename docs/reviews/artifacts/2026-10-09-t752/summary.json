@@ -1,0 +1,70 @@
+{
+  "issue": "T752",
+  "resolution": "Opt-in stock Mutter51 primary-gpu-cpu workaround plus Blent XB24/AB24 normalization. Stock driver ADDFB2 bug remains; 10-bit rejection retained. No patched dependencies.",
+  "regression": "Permanent host/tests/evdi_helper.rs::t752_mutter_cpu_copy_preserves_channel_order_and_damage, run by normal cargo test with ASan/UBSan: format admission, color, overlapping/clipped/reversed/extreme damage, padding, empty/oversized rectangle counts, cursor hide, same-size channel changes, resize, allocation failure and shared-slot leases. Initial test failed before implementation; same test passes.",
+  "prior_regressions": "T048 still rejects non-32-bit and unsupported 32-bit pixels. Its unsupported-32-bit example changes from XB24 to XR30 because XB24 now has an explicit converter; new T752 tests require correct XB24 colors instead of reinterpretation. No test deleted or skipped.",
+  "coverage": {
+    "capture_functions": 171,
+    "passing_at_least_80_percent": 171,
+    "below_80": 0,
+    "unmeasured": 0,
+    "normal_suite": "46 helper,8 conversion,1 module,1 frame-retirement tests pass"
+  },
+  "native": {
+    "kernel": "7.0.0-34-generic, isolated QEMU/KVM guest, virtio-vga-gl",
+    "stock_modules": [
+      "Ubuntu1.14.15",
+      "upstream1.15.1"
+    ],
+    "libevdi": "stock1.15.0",
+    "mutter": "unmodified51.0, commit 138a14fbeef09d49ebf5be8a0cb83b042dd5c841",
+    "sdk": "preinstalled org.gnome.Sdk51 and Mesa26.08 runtime extension; missing build dependencies acquired before metered-connection instruction; all subsequent work offline",
+    "services": "Mutter upstream DBus test runner mocks login/color/session services inside guest. Native EVDI DRM ioctls, compositor framebuffer selection, capture and FIFO writes are real. Read-only guest shares expose only SDK/build/runtime assets, not the host desktop.",
+    "tracing": "Optional LD_PRELOAD wrapper forwards unmodified drmModeAddFB2/WithModifiers and records return values/formats. Uninstrumented CPU-copy guest also streams.",
+    "measurements": {
+      "default": {
+        "nv12_bytes": 0,
+        "frames_640x480": 0,
+        "atomic_failure": true,
+        "accepted_ar30": true,
+        "accepted_xb24": true
+      },
+      "cpu": {
+        "nv12_bytes": 40089600,
+        "frames_640x480": 87,
+        "atomic_failure": false,
+        "accepted_ar30": false,
+        "accepted_xb24": true
+      },
+      "distro": {
+        "nv12_bytes": 41011200,
+        "frames_640x480": 89,
+        "atomic_failure": false,
+        "accepted_ar30": false,
+        "accepted_xb24": true
+      }
+    },
+    "termination": "Each compositor runs for18 seconds then timeout returns124; guest records status and powers down. Counts include static keepalive frames, not unique updates or a throughput benchmark."
+  },
+  "limits": "No physical-tablet or complete GNOME input/lifecycle certification. Compositor variable must be set before GNOME Shell/Mutter starts; it affects all secondary GPUs. Blent does not mutate the desktop session. No host module/helper installation. T748 watchdog warnings remain observable and are not hidden. T749 import/reconnect acceptance and T750 pacing/state-race findings remain open.",
+  "source_sha256": {
+    "host/evdi/capture.c": "9955c5c0ce9e2c31d13dfe3f4fab84b592e4589a03d5a59a622b58a733d945fa",
+    "host/evdi/capture.h": "060cc1827fcf5c02ea1dad708f326a1f106fae1e1e13b55fd984f9801658b9e9",
+    "host/evdi/conversion.c": "d643397d89d6129898d2491fbe676160e6a41eba44f153b5b29ab157eb1c5ed0",
+    "host/evdi/conversion.h": "d89e75516a4b23e8af7cda770ebea7aa08c75b88d9db4cfbb43a1cb682af20b9",
+    "host/evdi/cursor_overlay.c": "3e26bd06d275b63a437151be452a6bfc77ef5c7a1dff50c535af7f1fce360892",
+    "host/evdi/cursor_overlay.h": "a193137b85a4894b100973f8737d5d1a7af43c63dfdc1bbb684d9464fd4e91d8",
+    "host/evdi/evdi_helper.c": "50941ad9a7716a5d8e8783c3b1b5f2f7557c435dfc15cde41a896f43164c5208",
+    "host/evdi/evdi_lib.h": "ece987245ac3939fe5f12fca894a29c7d586bdbf80796d3f6fa08a7c52bf9128",
+    "host/evdi/fifo_writer.c": "af9c42ce08d807cd303a1627b048200438c50b5444905e3432aebb7ff57e3430",
+    "host/evdi/fifo_writer.h": "c49bc77663b8799680612ac7965d50d8b4ef6ff505f90494f28a1b4ce4246a19",
+    "host/evdi/frame_exchange.c": "e0cdb589b6fb67105c6d65c1f528b35fb4c460629af4a420421e1b4ac51dfc8f",
+    "host/evdi/frame_exchange.h": "ac32fec2edaf118efd9360d95be6a82835da956071670384935bf2aa0cb4f3b5",
+    "host/evdi/pixel_damage.h": "8fa80effd4ad794dbca843cf09edc2b5b1a8b5d9230074d53ba2f0af364d8baf",
+    "host/evdi/pixel_span.h": "0091058b8b82bb915034241283129c32baf9b090fdc0659ad34e0da34ac12752",
+    "host/evdi/raw_ring.c": "d01a37cc989951fcd855c56cf3d9530e7e472c23de14615c37145a7ff51ed53e",
+    "host/evdi/raw_ring.h": "abf2552fa3233db7fbebe600de490fc6cad44499dd3c907e331bab9bac87a3c5",
+    "host/evdi/writer.c": "9bcf7940f3412a76f4a20b98fc43f9c3abb62652aede7c9a4add8ecffb05ed0c",
+    "host/evdi/writer.h": "1f389df1db53b8a01d792befa88a6a5d7fc72f76f9bb64865f13c6eb54ce55c4"
+  }
+}

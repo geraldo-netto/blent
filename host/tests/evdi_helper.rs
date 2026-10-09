@@ -52,7 +52,7 @@ impl Harness {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
-            "T753" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
+            "T752" | "T753" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
         ) {
             compiler.args(["-fsanitize=address,undefined", "-fno-pie", "-no-pie"]);
         }
@@ -354,4 +354,18 @@ fn t753_cursor_removal_restores_static_background() {
     harness.run("T753");
     harness.run("T753-bounds");
     harness.run("T753-shared");
+}
+
+#[test]
+fn t752_mutter_cpu_copy_preserves_channel_order_and_damage() {
+    let harness = Harness::build("T752");
+    for case in [
+        "T752",
+        "T752-bounds",
+        "T752-allocation",
+        "T752-cursor",
+        "T752-shared",
+    ] {
+        harness.run(case);
+    }
 }

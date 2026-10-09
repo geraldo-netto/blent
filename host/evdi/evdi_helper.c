@@ -401,6 +401,7 @@ static void shutdown_capture(evdi_handle handle, pthread_t writer) {
     fifo_writer_close(&g_fifo);
     if (g_capture.raw_ring) raw_ring_close(g_capture.raw_ring);
     cursor_overlay_destroy(&g_capture.cursor);
+    free(g_capture.native_framebuffer);
     free(g_capture.framebuffer);
     frame_exchange_free(&g_frames);
 

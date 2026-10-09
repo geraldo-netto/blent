@@ -97,11 +97,12 @@ static void reject_mode(capture_context_t *capture) {
 }
 
 static int validate_frame_format(capture_context_t *capture, struct evdi_mode mode) {
-    /* Both conversion paths read little-endian XRGB8888/ARGB8888 as BGRA.
-       Stop before registering or reading any buffer with another layout. */
+    /* RGBA scanout is normalized before shared/FIFO conversion or cursor
+       composition. Packed 10-bit and non-32-bit layouts remain unsupported. */
     if (mode.bits_per_pixel != 32 ||
-            (mode.pixel_format != 0x34325258 && mode.pixel_format != 0x34325241)) {
-        fprintf(stderr, "[evdi-helper] Unsupported framebuffer format; need XRGB8888 or ARGB8888\n");
+            (mode.pixel_format != 0x34325258 && mode.pixel_format != 0x34325241 &&
+             mode.pixel_format != 0x34324258 && mode.pixel_format != 0x34324241)) {
+        fprintf(stderr, "[evdi-helper] Unsupported framebuffer format; need XRGB/ARGB/XBGR/ABGR8888\n");
         reject_mode(capture);
         return 0;
     }
@@ -122,6 +123,7 @@ static int validate_mode_dimensions(capture_context_t *capture, struct evdi_mode
 }
 
 static int configure_mode_geometry(capture_context_t *capture, struct evdi_mode mode) {
+    int new_swap_rb = mode.pixel_format == 0x34324258 || mode.pixel_format == 0x34324241;
     int new_w = mode.width;
     int new_h = mode.height;
     int new_bpp = mode.bits_per_pixel / 8;
@@ -130,12 +132,13 @@ static int configure_mode_geometry(capture_context_t *capture, struct evdi_mode 
     /* Same geometry (KWin re-applying the mode)? Keep everything as-is.
        Re-registering on every event is what crashed libevdi before. */
     if (capture->buffer_registered && new_w == capture->mode_w && new_h == capture->mode_h
-            && new_bpp == capture->mode_bpp) {
+            && new_bpp == capture->mode_bpp && new_swap_rb == capture->swap_rb) {
         fprintf(stderr, "[evdi-helper] Mode unchanged, keeping buffer\n");
         capture->update_pending = 0;
         return 0;
     }
 
+    capture->swap_rb = new_swap_rb;
     capture->mode_w = new_w;
     capture->mode_h = new_h;
     capture->mode_bpp = new_bpp;
@@ -172,6 +175,12 @@ static int retire_mode_buffers(capture_context_t *capture) {
 static void allocate_framebuffer(capture_context_t *capture) {
     capture->cursor.drawn = (cursor_rect_t){0};
     free(capture->framebuffer);
+    free(capture->native_framebuffer);
+    capture->native_framebuffer = NULL;
+    if (capture->swap_rb) {
+        capture->native_framebuffer = malloc(capture->fb_size);
+        if (capture->native_framebuffer) memset(capture->native_framebuffer, 0x18, capture->fb_size);
+    }
     /* Page-aligned, prefaulted capture storage. MADV_HUGEPAGE is best-effort:
        accepting the advice does not prove huge-page backing or remove the
        kernel-to-userspace capture copy. Measure actual backing and faults
@@ -210,6 +219,7 @@ static void allocate_stream_buffers(capture_context_t *capture) {
 }
 
 static int mode_buffers_allocated(capture_context_t *capture) {
+    if (capture->swap_rb && !capture->native_framebuffer) return 0;
     if (capture->raw_ring) return capture->framebuffer && !capture->capture_failed;
     return capture->framebuffer && frame_exchange_allocated(capture->frames);
 }
@@ -240,7 +250,7 @@ static void on_mode_changed(struct evdi_mode mode, void *user_data) {
 
     struct evdi_buffer buf = {
         .id = 0,
-        .buffer = capture->framebuffer,
+        .buffer = capture->swap_rb ? capture->native_framebuffer : capture->framebuffer,
         .width = capture->mode_w,
         .height = capture->mode_h,
         .stride = capture->mode_stride,
@@ -263,6 +273,26 @@ static void on_mode_changed(struct evdi_mode mode, void *user_data) {
             capture->mode_w, capture->mode_h, buf.stride, capture->mode_w * capture->mode_bpp);
 }
 
+static void normalize_framebuffer_rect(capture_context_t *capture, struct evdi_rect rect) {
+    pixel_span_t x = pixel_span_clipped(rect.x1, rect.x2, capture->mode_w);
+    pixel_span_t y = pixel_span_clipped(rect.y1, rect.y2, capture->mode_h);
+    if (x.begin == x.end) return;
+    for (int row = y.begin; row < y.end; row++) {
+        size_t offset = (size_t)row * capture->mode_stride + (size_t)x.begin * 4;
+        conv_copy_rgba_to_bgra(capture->framebuffer + offset,
+            capture->native_framebuffer + offset, (size_t)(x.end - x.begin));
+    }
+}
+
+static void normalize_framebuffer(capture_context_t *capture, const struct evdi_rect *rects, int count) {
+    if (!capture->swap_rb || count <= 0) return;
+    if (count > 64) {
+        normalize_framebuffer_rect(capture, (struct evdi_rect){0, 0, capture->mode_w, capture->mode_h});
+        return;
+    }
+    for (int i = 0; i < count; i++) normalize_framebuffer_rect(capture, rects[i]);
+}
+
 static void grab_now(capture_context_t *capture) {
     struct evdi_rect rects[64];
     int num_rects = 64;
@@ -271,6 +301,7 @@ static void grab_now(capture_context_t *capture) {
     evdi_grab_pixels(capture->handle, rects, &num_rects);
     long long grabbed_us = capture_now_us();
     capture->grab_sum_us += grabbed_us - t0;
+    normalize_framebuffer(capture, rects, num_rects);
     draw_cursor(capture);
     capture->grab_n++;
     if (num_rects <= 0) capture->empty_n++;

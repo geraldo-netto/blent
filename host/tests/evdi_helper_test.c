@@ -229,8 +229,14 @@ bool evdi_request_update(evdi_handle handle, int buffer) {
     assert(0 && "failed event channel must not request a capture");
     return false;
 }
+static struct evdi_buffer t752_registered;
+static int t752_grabs, t752_count;
+static struct evdi_rect t752_rects[64];
 void evdi_grab_pixels(evdi_handle handle, struct evdi_rect *rects, int *count) {
     (void)handle;
+    if (t752_grabs) {
+        memcpy(rects, t752_rects, sizeof(t752_rects)); *count=t752_count; return;
+    }
     if (t497_capture_events) {
         assert(*count == 64);
         rects[0] = (struct evdi_rect){.x1 = 0, .x2 = 8, .y1 = INT_MIN, .y2 = INT_MAX};
@@ -266,6 +272,7 @@ static void *sample_latency(void *arg) {
 
 void evdi_register_buffer(evdi_handle handle, struct evdi_buffer buffer) {
     (void)handle;
+    t752_registered = buffer;
     assert(buffer.buffer != NULL);
     assert(buffer.stride >= buffer.width * 4);
 }
@@ -467,6 +474,28 @@ static void test_t108(void) {
         snprintf(path, sizeof(path), "%s/evdi.%d", root, card); rmdir(path);
     }
     assert(rmdir(root) == 0);
+}
+
+/* T752: Mutter51 CPU-copy output uses advertised XBGR8888. */
+static void test_t752(void) {
+    frame_exchange_init(&g_frames); g_running=1;
+    on_mode_changed((struct evdi_mode){8,8,60,32,0x34324258}, &g_capture);
+    assert(g_capture.have_mode && "T752: accept supported 8-bit XBGR through explicit conversion");
+    unsigned char *native=t752_registered.buffer;
+    for (int y=0;y<8;y++) for (int x=0;x<8;x++) {
+        unsigned char *pixel=native+y*t752_registered.stride+4*x;
+        pixel[0]=255;pixel[1]=0;pixel[2]=0;pixel[3]=255;
+    }
+    t752_grabs=1;t752_count=2;
+    t752_rects[0]=(struct evdi_rect){0,0,8,8};t752_rects[1]=t752_rects[0];
+    grab_now(&g_capture);
+    assert(*(uint32_t*)g_capture.framebuffer==0xffff0000 && "T752: overlapping damage must not double-swap red/blue");
+    unsigned char nv12[96];bgra_to_nv12(&g_capture,g_capture.framebuffer,nv12,NULL,NULL);
+    assert(nv12[0]==63 && nv12[64]==102 && nv12[65]==240 && "T752: red must stay red in NV12");
+    on_mode_changed((struct evdi_mode){8,8,60,32,0x34325258}, &g_capture);
+    assert(t752_registered.buffer==g_capture.framebuffer && "T752: same-size channel-order changes must replace registration");
+    free(g_capture.framebuffer);g_capture.framebuffer=NULL;
+    frame_exchange_free(&g_frames);pthread_cond_destroy(&g_frames.ready);
 }
 
 /* T753: event-owned cursor removal must restore a static captured background. */
@@ -839,7 +868,7 @@ static void test_t048(void) {
     on_mode_changed(mode, &g_capture);
     assert(!g_capture.have_mode && !g_frames.buffers_ready && "T048: reject non-BGRA data before conversion");
     mode.bits_per_pixel = 32;
-    mode.pixel_format = 0x34324258; /* XBGR8888 is not XRGB8888. */
+    mode.pixel_format = 0x30335258; /* T752 adds XBGR8888; packed 10-bit is still unsupported. */
     on_mode_changed(mode, &g_capture);
     assert(!g_capture.have_mode && !g_frames.buffers_ready);
 }
@@ -1420,6 +1449,7 @@ static void test_t415_rounding(void) {
 #include "idle_capture.c"
 #include "shared_capture.c"
 #include "cursor_overlay.c"
+#include "frame_format.c"
 #include "shared_damage.c"
 #include "fifo_demand.c"
 
@@ -1465,6 +1495,11 @@ int main(int argc, char **argv) {
         {"T294", test_t294},
         {"T623", test_t623},
         {"T751", test_t751},
+        {"T752", test_t752},
+        {"T752-bounds", test_t752_bounds},
+        {"T752-allocation", test_t752_allocation},
+        {"T752-cursor", test_t752_cursor},
+        {"T752-shared", test_t752_shared},
         {"T753", test_t753},
         {"T753-bounds", test_t753_bounds},
         {"T753-shared", test_t753_shared},

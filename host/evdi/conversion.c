@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 
+void conv_copy_rgba_to_bgra(unsigned char *destination, const unsigned char *source, size_t pixels) {
+    for (size_t x = 0; x < pixels; x++, destination += 4, source += 4) {
+        destination[0] = source[2]; destination[1] = source[1];
+        destination[2] = source[0]; destination[3] = source[3];
+    }
+}
+
 static inline int row_is_dirty(const unsigned char *mask, int cy) {
     return mask == NULL || (mask[cy >> 3] & (1u << (cy & 7)));
 }
