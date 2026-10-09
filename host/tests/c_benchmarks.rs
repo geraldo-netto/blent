@@ -9,6 +9,7 @@ fn t774_benchmarks_forbid_disabling_required_assertions() {
         .to_owned();
     for name in [
         "conversion",
+        "damage_regions", // T777: assertion-side-effect calls must remain enabled.
         "pipe-capacity",
         "raw-ring",
         "io-uring",
@@ -198,4 +199,9 @@ fn t761_producer_rejects_invalid_geometry_before_conversion() {
     );
     assert!(!String::from_utf8_lossy(&output.stderr).contains("Sanitizer"));
     std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn t777_damage_replay_rejects_invalid_numbers_and_retains_valid_replay() {
+    run_conversion_fixture("damage_benchmark_arguments.c");
 }

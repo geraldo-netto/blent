@@ -1,6 +1,7 @@
 /* T554: one-session changed-region replay. No EVDI, encoder or device access.
  * Build against pre-T554 modules with -DROW_BASELINE for paired comparisons. */
 #define _GNU_SOURCE
+#include "checked_arguments.h"
 #include "conversion.h"
 #include "frame_exchange.h"
 #include "conversion_exchange.h"
@@ -117,9 +118,7 @@ static void measure(struct replay *r, int mode) {
 
 int main(int argc, char **argv) {
     assert(argc == 3);
-    int scale = atoi(argv[1]), mode = atoi(argv[2]);
-    assert(scale >= 1 && scale <= 4);
-    assert(mode >= 0 && mode < 5);
+    int scale = benchmark_number(argv[1], 1, 4), mode = benchmark_number(argv[2], 0, 4);
     struct replay r = {.frames = FRAME_EXCHANGE_INITIALIZER, .pool = CONV_POOL_INITIALIZER};
     initialize(&r, scale);
     measure(&r, mode);
