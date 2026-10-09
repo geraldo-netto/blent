@@ -82,6 +82,17 @@ bundles userspace dependencies; it does not install EVDI/DKMS, GPU drivers or
 device permissions. A working EVDI kernel module is still required for an
 extended display. Install the appropriate module package for your kernel.
 
+For fast-reconnect failures, use a distribution-compatible **stock kernel module**
+containing [upstream PR590](https://github.com/DisplayLink/evdi/pull/590);
+[v1.15.1](https://github.com/DisplayLink/evdi/releases/tag/v1.15.1) includes it and
+the import-page sizing fix from v1.14.16. Updating bundled libevdi alone does not
+update the kernel driver. Distribution backports must be checked separately.
+The [isolated stock comparison](reviews/artifacts/2026-10-09-evdi-stock/reproduction.json)
+reproduced a missing scanout after reconnect without a modeset on Ubuntu's 1.14.15;
+the same operation restored the frame on unmodified 1.15.1. This is a driver-level
+result, not validation of every desktop or import boundary. T749 retains those
+checks; no host module was installed or reloaded during this review.
+
 `makepkg -s` installs repository dependencies through pacman; it does not build
 AUR packages. Install [evdi-dkms](https://aur.archlinux.org/packages/evdi-dkms)
 separately first; see [makepkg(8)](https://man.archlinux.org/man/makepkg.8.en).
