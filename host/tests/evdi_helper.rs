@@ -7,6 +7,18 @@ use std::{path::PathBuf, process::Command};
 struct Harness(PathBuf);
 
 #[test]
+fn t775_timeout_guidance_uses_guarded_setup() {
+    let harness = Harness::build("T775");
+    let output = Command::new(harness.0.join("helper-test")).arg("T497-main").output().unwrap();
+    assert!(output.status.success());
+    let text = String::from_utf8(output.stderr).unwrap();
+    assert!(text.contains("scripts/setup-evdi.sh"));
+    assert!(!text.contains("sudo tee"));
+    assert!(!text.contains("echo 1"));
+    assert!(text.contains("Keep the live module loaded"));
+}
+
+#[test]
 fn t762_helper_rejects_malformed_arguments_before_device_access() {
     Harness::build("T762").run("T762");
 }
