@@ -1,0 +1,8 @@
+{
+  "offline": true,
+  "sources": {
+    "CameraProbeReceiver.kt": "8026d431b236575f257321a980c803468c512aeeba95023091a303ac40a6f063"
+  },
+  "apk_sha256": "b9f1568de40996e36e33d8e2368a740df1893f3dc211d2af8179b5196bbe2b82",
+  "camera_capture_sha256": "6313e1e98b540631eae3fa79eb9c2b117792d350c86cbf19d93f88f1c89e59d5"
+}

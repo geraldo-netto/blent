@@ -311,3 +311,13 @@ hardware offload or smaller-buffer claim. All builds offline, app untouched.
 829 tests pass; 913/913 production methods meet individual 80% coverage, all
 complexities <=9. Boundary/generator tooling passes. Physical acceptance remains
 separate under T718/T720.
+
+## T800: hardware selection evaluation
+
+[Paired Surface encoder probe](artifacts/2026-10-10-android-camera-selection/README.md)
+found the same hardware encoder for all default/explicit selections at three
+formats. Explicit cold inventory increased startup from 169–176 ms to 524–532 ms;
+encoded-delivery medians were essentially unchanged. Keep stock selection and
+fallback; reject speculative ranking/metadata overhead. Native probe retains
+selected identity, CPU, PSS and per-frame ages. No camera sensor, production app
+reload or download. Production behavior unchanged; benchmark builds offline.
