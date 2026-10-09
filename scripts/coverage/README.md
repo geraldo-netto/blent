@@ -42,6 +42,25 @@ and `report.json`. Every capture function must have at least 80% executable-line
 coverage. Missing counters fail the gate. These tests simulate EVDI; they do not
 attach a virtual display or validate the unresolved Xorg crash in T222.
 
+## Optional GPU C gate (T766)
+
+```sh
+/tmp/blent-coverage-venv/bin/python scripts/coverage/gpu_check.py /tmp/blent-gpu-coverage
+```
+
+This separate gate includes every `host/gpu/` production function, including
+the opt-in executable. It requires installed FFmpeg/VAAPI/X11 development
+packages, GCC/gcov and Xvfb; it never installs dependencies. `PKG_CONFIG_PATH`,
+`GPU_CFLAGS` and `GPU_LIBS` can select an existing SDK. Sources are fingerprinted
+before execution and must remain unchanged until collection completes.
+
+Policy tests, isolated X11 tests and mocked DRI3/VAAPI/codec lifecycle tests run
+under ASan/UBSan with native GCC counters. Every function must reach 80%; missing
+counters fail. The mock tests validate Blent's boundary calls and ownership;
+they do not establish physical GPU driver compatibility or remove the prototype
+label. CI includes these counters in the combined gate with a second `--gcov`
+input. No real display or render device is used.
+
 ## Python and shell collection
 
 ```sh

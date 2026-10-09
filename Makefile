@@ -14,6 +14,7 @@ CC = gcc
 GPU_PACKAGES = libavcodec libavutil libva libdrm x11 x11-xcb xrandr xfixes xdamage xrender xext xcb-dri3
 GPU_CFLAGS ?= $(shell pkg-config --cflags $(GPU_PACKAGES))
 GPU_LIBS ?= $(shell pkg-config --libs $(GPU_PACKAGES))
+GPU_TEST_WRAPS = $(shell grep -o '__wrap_[A-Za-z0-9_]*' host/tests/gpu_lifecycle.c | sort -u | sed 's/__wrap_/-Wl,--wrap=/')
 ADB = adb
 # Release bundles pin the same libevdi as the portable build. Override its path when needed.
 LIBEVDI ?= $(shell $(CC) -print-file-name=libevdi.so.1.15.0)
@@ -32,6 +33,8 @@ build-gpu-helper:
 test-gpu-helper: build-gpu-helper
 	$(CC) -std=c11 -D_POSIX_C_SOURCE=200809L -O1 -g -Wall -Wextra -Werror $(GPU_CFLAGS) host/tests/gpu_x11.c $(filter-out host/gpu/main.c,$(wildcard host/gpu/*.c)) -o target/gpu-x11-test -Wl,--wrap=XFixesFetchRegion -Wl,--wrap=XDamageSubtract -Wl,--wrap=XRenderCreatePicture $(GPU_LIBS)
 	xvfb-run -a -s '-screen 0 128x128x24' target/gpu-x11-test
+	$(CC) -std=c11 -D_POSIX_C_SOURCE=200809L -O1 -g -Wall -Wextra -Werror $(GPU_CFLAGS) host/tests/gpu_lifecycle.c $(filter-out host/gpu/main.c,$(wildcard host/gpu/*.c)) -o target/gpu-lifecycle-test $(GPU_TEST_WRAPS) $(GPU_LIBS)
+	xvfb-run -a -s '-screen 0 128x128x24' target/gpu-lifecycle-test
 
 # Generic -O3 (no -march=native): release binaries must run on any x86-64 CPU
 build-helper:

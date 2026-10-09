@@ -38,6 +38,7 @@ jobs:
             libxcb-shape0-dev libxcb-xfixes0-dev libssl-dev \
             libclang-dev libavcodec-dev libavformat-dev libavutil-dev \
             libavfilter-dev libavdevice-dev libswresample-dev libswscale-dev \
+            libva-dev libx11-xcb-dev libxcb-dri3-dev libxrandr-dev libxfixes-dev libxdamage-dev libxrender-dev libxext-dev \
             libdrm-dev rpm fakeroot bubblewrap ffmpeg nodejs xvfb xauth x11-utils dbus-x11 at-spi2-core libglib2.0-bin python3-xlib python3-tk python3-numpy python3-pil python3-venv
           sudo apt-get install -y libevdi-dev libpipewire-0.3-dev libclang-dev pipewire-bin
 
@@ -86,6 +87,9 @@ jobs:
       - name: Enforce per-function C capture coverage (T497)
         run: "'${{ runner.temp }}/blent-coverage-venv/bin/python' scripts/coverage/capture_check.py '${{ runner.temp }}/blent-capture-coverage'"
 
+      - name: Enforce optional GPU C function coverage (T766)
+        run: "'${{ runner.temp }}/blent-coverage-venv/bin/python' scripts/coverage/gpu_check.py '${{ runner.temp }}/blent-gpu-coverage'"
+
       - name: Enforce essential installation and packaging function coverage (T497)
         run: "'${{ runner.temp }}/blent-coverage-venv/bin/python' scripts/coverage/script_check.py '${{ runner.temp }}/blent-script-coverage'"
 
@@ -96,6 +100,7 @@ jobs:
           name: host-coverage
           path: |
             ${{ runner.temp }}/blent-capture-coverage
+            ${{ runner.temp }}/blent-gpu-coverage
             ${{ runner.temp }}/blent-rust-coverage
             ${{ runner.temp }}/blent-script-coverage
 
@@ -202,6 +207,7 @@ jobs:
             --native-sources evidence/windows/windows-sources.json \
             --jacoco evidence/android/jacoco.xml \
             --gcov evidence/host/blent-capture-coverage/native \
+            --gcov evidence/host/blent-gpu-coverage/native \
             --python-json evidence/host/blent-script-coverage/python.json \
             --python-calls evidence/host/blent-script-coverage/calls \
             --shell evidence/host/blent-script-coverage/shell \

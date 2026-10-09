@@ -8,6 +8,10 @@ from model import result
 
 
 class InventoryTest(unittest.TestCase):
+    def test_t766_optional_gpu_functions_remain_in_production_scope(self):
+        self.assertTrue(coverage_source(Path('host/gpu/capture.c')))
+        self.assertTrue(coverage_source(Path('host/gpu/options.h')))
+
     def test_t497_combined_inventory_keeps_inline_capture_header_functions(self):
         import subprocess
         from report import snapshot

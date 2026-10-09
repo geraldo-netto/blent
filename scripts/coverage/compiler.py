@@ -30,7 +30,7 @@ def capture_notes(output, destination):
 
 
 def owned_compilation(arguments, root):
-    directories = [root / name for name in ['host/evdi', 'host/tests', 'scripts/benchmarks']]
+    directories = [root / name for name in ['host/evdi', 'host/gpu', 'host/tests', 'scripts/benchmarks']]
     sources = [Path(arg).resolve() for arg in arguments if arg.endswith('.c') and Path(arg).is_file()]
     return any(source.is_relative_to(directory) for source in sources for directory in directories)
 
