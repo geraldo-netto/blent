@@ -7,6 +7,11 @@ use std::{path::PathBuf, process::Command};
 struct Harness(PathBuf);
 
 #[test]
+fn t762_helper_rejects_malformed_arguments_before_device_access() {
+    Harness::build("T762").run("T762");
+}
+
+#[test]
 fn t760_failed_mode_retains_geometry_and_ignores_queued_callbacks() {
     Harness::build("T760").run("T760");
 }
@@ -57,7 +62,7 @@ impl Harness {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
-            "T752" | "T753" | "T760" | "T767" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
+            "T752" | "T753" | "T760" | "T762" | "T767" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
         ) {
             compiler.args(["-fsanitize=address,undefined", "-fno-pie", "-no-pie"]);
         }

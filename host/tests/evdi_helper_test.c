@@ -1473,6 +1473,7 @@ static void test_t415_rounding(void) {
 
 #include "c_boundary_fuzz.c"
 #include "failed_mode.c"
+#include "helper_arguments.c"
 
 #ifndef BLENT_C_FUZZ_DRIVER
 int main(int argc, char **argv) {
@@ -1519,6 +1520,7 @@ int main(int argc, char **argv) {
         {"T750-period", test_t750_period},
         {"T767", test_t767_boundaries},
         {"T760", test_t760_failed_mode},
+        {"T762", test_t762_arguments},
         {"T751", test_t751},
         {"T752", test_t752},
         {"T752-bounds", test_t752_bounds},

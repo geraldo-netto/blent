@@ -226,24 +226,46 @@ typedef struct {
     const char *edid_path;
     const char *fifo_path;
     const char *socket_fd;
+    int invalid;
 } helper_options_t;
 
+static int numeric_argument(const char *text, int *value) {
+    char *end;
+    errno = 0;
+    long number = strtol(text, &end, 10);
+    if (errno || end == text || *end || number < INT_MIN || number > INT_MAX) return 0;
+    *value = (int)number;
+    return 1;
+}
+
+static int numeric_option_known(const char *name) {
+    return !strcmp(name, "--scale") || !strcmp(name, "--card") ||
+        !strcmp(name, "--preferred-card") || !strcmp(name, "--fps");
+}
+
+static int set_card_index(int *target, int number) {
+    if (number < -1) return -1;
+    *target = number;
+    return 1;
+}
+
+static int bounded_scale(int number) {
+    if (number < 1) return 1;
+    return number > 4 ? 4 : number;
+}
+
+static int bounded_fps(int number) {
+    return number < 1 || number > 240 ? 60 : number;
+}
+
 static int set_numeric_option(const char *name, const char *value) {
-    if (strcmp(name, "--scale") == 0) {
-        g_capture.scale = atoi(value);
-        if (g_capture.scale < 1) g_capture.scale = 1;
-        if (g_capture.scale > 4) g_capture.scale = 4;
-    } else if (strcmp(name, "--card") == 0) {
-        /* Pin the assigned card; never borrow another tablet's slot. */
-        g_pin_card = atoi(value);
-    } else if (strcmp(name, "--preferred-card") == 0) {
-        g_preferred_card = atoi(value);
-    } else if (strcmp(name, "--fps") == 0) {
-        g_capture.fps = atoi(value);
-        if (g_capture.fps < 1 || g_capture.fps > 240) g_capture.fps = 60;
-    } else {
-        return 0;
-    }
+    if (!numeric_option_known(name)) return 0;
+    int number;
+    if (!numeric_argument(value, &number)) return -1;
+    if (!strcmp(name, "--card")) return set_card_index(&g_pin_card, number);
+    if (!strcmp(name, "--preferred-card")) return set_card_index(&g_preferred_card, number);
+    if (!strcmp(name, "--scale")) g_capture.scale = bounded_scale(number);
+    else g_capture.fps = bounded_fps(number);
     return 1;
 }
 
@@ -268,7 +290,10 @@ static int set_helper_option(helper_options_t *options, const char *name, const 
 static helper_options_t parse_helper_options(int argc, char *argv[]) {
     helper_options_t options = {0};
     for (int i = 1; i < argc; i++) {
-        if (i + 1 < argc && set_helper_option(&options, argv[i], argv[i + 1])) i++;
+        if (i + 1 == argc) { options.invalid = 1; break; }
+        int result = set_helper_option(&options, argv[i], argv[i + 1]);
+        if (result <= 0) options.invalid = 1;
+        if (result) i++;
     }
     return options;
 }
@@ -432,6 +457,10 @@ static int configure_raw_socket(const char *value) {
 
 int main(int argc, char *argv[]) {
     helper_options_t options = parse_helper_options(argc, argv);
+    if (options.invalid) {
+        fprintf(stderr, "[evdi-helper] Invalid or incomplete command-line option\n");
+        return 2;
+    }
     const char *edid_path = options.edid_path;
     const char *fifo_path = options.fifo_path;
 
