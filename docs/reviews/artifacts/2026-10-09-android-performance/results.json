@@ -1,0 +1,270 @@
+{
+  "scope": "host JVM; synthetic steady audio; no native Android validation",
+  "head": "bb1648e80e51fcc4eb030336cae35b88473d7fa3",
+  "machine": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "java": "openjdk version \"21.0.12.1\" 2026-08-18\nOpenJDK Runtime Environment (build 21.0.12.1+1-1-24.04.4-Ubuntu)\nOpenJDK 64-Bit Server VM (build 21.0.12.1+1-1-24.04.4-Ubuntu, mixed mode, sharing)",
+  "sources": {
+    "AudioPlaybackQueue.kt": "2c055ccfc50ca88e1cde18d5ed9b99c9a8dc9fe08c20b5568fd2109c4a64492a",
+    "AudioClock.kt": "fe00d9b831c7af616ff65163f5c0b18c67251a30bcbbb6db441d35ba496f10f7",
+    "CodecLifetime.kt": "575a5af980d262fb522f67980174d970846ed22868126aeda2c2a981a81a5ef0"
+  },
+  "compiler_jars": {
+    "kotlin-compiler-embeddable-1.9.20.jar": "a25024fe5da8440de01af045c4fcb954a22f078738ec02616085f0cfc57b2702",
+    "kotlin-stdlib-1.9.20.jar": "28a35bcdff46d864f80f346a617e486284b208d17378c41900dfb1de95a90e6c",
+    "trove4j-1.0.20200330.jar": "c5fd725bffab51846bf3c77db1383c60aaaebfe1b7fe2f00d23fe1b7df0a439d",
+    "annotations-13.0.jar": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
+  },
+  "trials": [
+    {
+      "count": 50000,
+      "wall_ns": 1847900,
+      "cpu_ns": 1835330,
+      "allocated_bytes": 3245976,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "candidate",
+      "mode": "queue",
+      "trial": 0
+    },
+    {
+      "count": 50000,
+      "wall_ns": 80677862,
+      "cpu_ns": 79577601,
+      "allocated_bytes": 102445968,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "current",
+      "mode": "queue",
+      "trial": 0
+    },
+    {
+      "count": 500000,
+      "wall_ns": 5806196,
+      "cpu_ns": 4782656,
+      "allocated_bytes": 8001528,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "candidate",
+      "mode": "drift",
+      "trial": 0
+    },
+    {
+      "count": 500000,
+      "wall_ns": 36191393,
+      "cpu_ns": 34708623,
+      "allocated_bytes": 260000744,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "current",
+      "mode": "drift",
+      "trial": 0
+    },
+    {
+      "count": 50000,
+      "wall_ns": 81549687,
+      "cpu_ns": 80343126,
+      "allocated_bytes": 102445968,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "current",
+      "mode": "queue",
+      "trial": 1
+    },
+    {
+      "count": 50000,
+      "wall_ns": 1861246,
+      "cpu_ns": 1868293,
+      "allocated_bytes": 3245976,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "candidate",
+      "mode": "queue",
+      "trial": 1
+    },
+    {
+      "count": 500000,
+      "wall_ns": 33897161,
+      "cpu_ns": 32515008,
+      "allocated_bytes": 260000744,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "current",
+      "mode": "drift",
+      "trial": 1
+    },
+    {
+      "count": 500000,
+      "wall_ns": 4406669,
+      "cpu_ns": 3652509,
+      "allocated_bytes": 8001528,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "candidate",
+      "mode": "drift",
+      "trial": 1
+    },
+    {
+      "count": 50000,
+      "wall_ns": 1913330,
+      "cpu_ns": 1915511,
+      "allocated_bytes": 3245976,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "candidate",
+      "mode": "queue",
+      "trial": 2
+    },
+    {
+      "count": 50000,
+      "wall_ns": 83947001,
+      "cpu_ns": 82773384,
+      "allocated_bytes": 102445968,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "current",
+      "mode": "queue",
+      "trial": 2
+    },
+    {
+      "count": 500000,
+      "wall_ns": 4871915,
+      "cpu_ns": 4069069,
+      "allocated_bytes": 8001528,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "candidate",
+      "mode": "drift",
+      "trial": 2
+    },
+    {
+      "count": 500000,
+      "wall_ns": 33974556,
+      "cpu_ns": 32656743,
+      "allocated_bytes": 260000744,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "current",
+      "mode": "drift",
+      "trial": 2
+    },
+    {
+      "count": 50000,
+      "wall_ns": 80357096,
+      "cpu_ns": 79350698,
+      "allocated_bytes": 102445968,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "current",
+      "mode": "queue",
+      "trial": 3
+    },
+    {
+      "count": 50000,
+      "wall_ns": 1822788,
+      "cpu_ns": 1827977,
+      "allocated_bytes": 3245976,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "candidate",
+      "mode": "queue",
+      "trial": 3
+    },
+    {
+      "count": 500000,
+      "wall_ns": 34858351,
+      "cpu_ns": 33397773,
+      "allocated_bytes": 260000744,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "current",
+      "mode": "drift",
+      "trial": 3
+    },
+    {
+      "count": 500000,
+      "wall_ns": 5457313,
+      "cpu_ns": 4521757,
+      "allocated_bytes": 8001528,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "candidate",
+      "mode": "drift",
+      "trial": 3
+    },
+    {
+      "count": 50000,
+      "wall_ns": 1965275,
+      "cpu_ns": 1971296,
+      "allocated_bytes": 3245976,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "candidate",
+      "mode": "queue",
+      "trial": 4
+    },
+    {
+      "count": 50000,
+      "wall_ns": 80504571,
+      "cpu_ns": 79384038,
+      "allocated_bytes": 102445968,
+      "signature": 12499038939,
+      "checksum": 12499038939,
+      "variant": "current",
+      "mode": "queue",
+      "trial": 4
+    },
+    {
+      "count": 500000,
+      "wall_ns": 4754297,
+      "cpu_ns": 3883351,
+      "allocated_bytes": 8001528,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "candidate",
+      "mode": "drift",
+      "trial": 4
+    },
+    {
+      "count": 500000,
+      "wall_ns": 34931133,
+      "cpu_ns": 33552252,
+      "allocated_bytes": 260000744,
+      "signature": 250000000,
+      "checksum": 250000000,
+      "variant": "current",
+      "mode": "drift",
+      "trial": 4
+    }
+  ],
+  "equivalence": {
+    "current": "3814260477758471697",
+    "candidate": "3814260477758471697"
+  },
+  "retirement_wait_ns": 500122192,
+  "medians": {
+    "queue": {
+      "current": {
+        "wall_ns_per_call": 1613.55724,
+        "cpu_ns_per_call": 1591.55202,
+        "allocated_bytes_per_call": 2048.91936
+      },
+      "candidate": {
+        "wall_ns_per_call": 37.22492,
+        "cpu_ns_per_call": 37.36586,
+        "allocated_bytes_per_call": 64.91952
+      }
+    },
+    "drift": {
+      "current": {
+        "wall_ns_per_call": 69.716702,
+        "cpu_ns_per_call": 66.795546,
+        "allocated_bytes_per_call": 520.001488
+      },
+      "candidate": {
+        "wall_ns_per_call": 9.74383,
+        "cpu_ns_per_call": 8.138138,
+        "allocated_bytes_per_call": 16.003056
+      }
+    }
+  }
+}

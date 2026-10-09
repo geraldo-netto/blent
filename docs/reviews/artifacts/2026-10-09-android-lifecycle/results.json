@@ -1,0 +1,28 @@
+{
+  "scope": "Host JVM; production owners with fake capture/platform adapters",
+  "head": "bb1648e80e51fcc4eb030336cae35b88473d7fa3",
+  "sources": {
+    "AudioBinding.kt": "f3608a0cfcc82c9467fd520d0109fbb51df20b1c7dfc55088a1adc8b8404fd00",
+    "CameraBinding.kt": "50d4cc4b7441594480b3bb0b106e90d096c97f834a6ff481842fdad46bdb0b85",
+    "CameraResources.kt": "520f32ba2200193858a881b08caf894cb0c23c3bf13fc2e2aaed77d45ccd0aa8"
+  },
+  "jars": {
+    "kotlin-compiler-embeddable-1.9.20.jar": "a25024fe5da8440de01af045c4fcb954a22f078738ec02616085f0cfc57b2702",
+    "kotlin-stdlib-1.9.20.jar": "28a35bcdff46d864f80f346a617e486284b208d17378c41900dfb1de95a90e6c",
+    "trove4j-1.0.20200330.jar": "c5fd725bffab51846bf3c77db1383c60aaaebfe1b7fe2f00d23fe1b7df0a439d",
+    "annotations-13.0.jar": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478",
+    "kotlinx-coroutines-core-jvm-1.7.3.jar": "1ab3acc38f3e7355c4f9d1ec62107a46fa73c899f3070d055e5d4373dfe67e12"
+  },
+  "java": "openjdk version \"21.0.12.1\" 2026-08-18\nOpenJDK Runtime Environment (build 21.0.12.1+1-1-24.04.4-Ubuntu)\nOpenJDK 64-Bit Server VM (build 21.0.12.1+1-1-24.04.4-Ubuntu, mixed mode, sharing)",
+  "output": [
+    "audio_waiters\t8\t10\t1",
+    "audio_waiters\t32\t34\t1",
+    "audio_waiters\t128\t130\t1",
+    "audio_stopped\t130\tfalse",
+    "camera_retirements\t8\t9\t1",
+    "camera_retirements\t32\t33\t1",
+    "camera_retirements\t128\t129\t1",
+    "audio_cleanup_unhandled\t1\ttrue",
+    "camera_close_failure_reported\tfalse"
+  ]
+}

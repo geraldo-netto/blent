@@ -1,0 +1,29 @@
+{
+  "scope": "Actual host controllers; injected cooperative stalls/panics and bounded local output fixture",
+  "head": "bb1648e80e51fcc4eb030336cae35b88473d7fa3",
+  "sources": {
+    "camera_control.rs": "31aef9297d207ca98e83cd8208970be2a277a8f8b3d239e9ec032f23653b3d91",
+    "audio_control.rs": "ecc962f3ae297ca59883e786f4c0986a416060e4846890289ab64a9cfca0a068"
+  },
+  "common_commands_sha256": "ec9f5e6821a11ae9fb3ea69188c8d109eca7c714a46232504c6d155fbc4b3c5c",
+  "workspace_lock_sha256": "d7b52a5746b05236c990f40d5274e50e470650d7a4b2ecd0fbcd838712114b8c",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "output": [
+    "audio_drop_waited_past_200ms=true",
+    "camera_drop_waited_past_200ms=true",
+    "audio_after_worker_panic=Starting",
+    "audio_restart_error=Stop audio before changing an active session",
+    "camera_after_worker_panic=Starting",
+    "time_bounded_command_stdout_bytes=4194304",
+    "time_bounded_command_stderr_bytes=4194304"
+  ],
+  "expected_panic_stderr": [
+    "",
+    "thread 'blent-audio-control' (709587) panicked at main.rs:57:53:",
+    "review-only injected worker panic",
+    "note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+    "",
+    "thread 'blent-camera' (709588) panicked at main.rs:57:53:",
+    "review-only injected worker panic"
+  ]
+}
