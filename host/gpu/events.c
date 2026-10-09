@@ -22,6 +22,10 @@ void gpu_events_open(gpu_capture *c, const gpu_options *options) {
 
 static int damaged(gpu_capture *c) {
     XDamageSubtract(c->display, c->damage, None, c->region);
+    /* Bound client allocation/scan to one conservative rectangle even when
+     * thousands of disjoint updates arrive in one damage event. Extents may
+     * include unchanged pixels; they never discard changed pixels. */
+    XFixesRegionExtents(c->display, c->region, c->region);
     int count = 0, changed = 0;
     XRectangle *rectangles = XFixesFetchRegion(c->display, c->region, &count);
     gpu_require(count == 0 || rectangles != NULL, "damage rectangles");

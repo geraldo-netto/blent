@@ -8,6 +8,36 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+/* T770: inspect only Blent's native boundary, on the private X server. */
+static int fetched_rectangles;
+static int fragmented_region;
+void __real_XDamageSubtract(Display *, Damage, XserverRegion, XserverRegion);
+void __wrap_XDamageSubtract(Display *display, Damage damage, XserverRegion repair, XserverRegion parts) {
+    __real_XDamageSubtract(display, damage, repair, parts);
+    if (!fragmented_region) return;
+    XRectangle rectangles[192];
+    for (int i = 0; i < 192; i++) rectangles[i] = (XRectangle){20 + i % 16 * 2, 20 + i / 16 * 2, 1, 1};
+    XFixesSetRegion(display, parts, rectangles, 192);
+}
+XRectangle *__real_XFixesFetchRegion(Display *, XserverRegion, int *);
+XRectangle *__wrap_XFixesFetchRegion(Display *display, XserverRegion region, int *count) {
+    XRectangle *result = __real_XFixesFetchRegion(display, region, count);
+    if (*count > fetched_rectangles) fetched_rectangles = *count;
+    return result;
+}
+
+static void fragmented_damage(gpu_capture *c, GC gc) {
+    fetched_rectangles = 0;
+    fragmented_region = 1;
+    for (int y = 0; y < c->height; y += 2)
+        for (int x = 0; x < c->width; x += 2)
+            XFillRectangle(c->display, c->root, gc, c->x + x, c->y + y, 1, 1);
+    XSync(c->display, False);
+    gpu_events_wait(c, 0, 30);
+    fragmented_region = 0;
+    assert(fetched_rectangles == 1 && "T770: fragmented damage must have bounded transfer and scan");
+}
+
 static void codec_error(void) {
     pid_t pid = fork(); assert(pid >= 0);
     if (!pid) { gpu_av(AVERROR(EINVAL), "T575 forced codec rejection"); _exit(0); }
@@ -69,6 +99,7 @@ static void cadence(gpu_capture *c) {
     start = gpu_now_ns();
     gpu_events_wait(c, start, 30);
     assert(gpu_now_ns() - start >= 190000000); /* Foreign output damage ignored. */
+    fragmented_damage(c, root_gc);
     pid_t child = fork(); assert(child >= 0);
     if (!child) { c->leased = 1; gpu_events_wait(c, 0, 30); _exit(0); }
     int status; assert(waitpid(child, &status, 0) == child);
