@@ -43,7 +43,14 @@ static int mock_pthread_cond_timedwait(pthread_cond_t *, pthread_mutex_t *, cons
 #include "../evdi/fifo_writer.c"
 #include "../evdi/raw_ring.c"
 #include "../evdi/cursor_overlay.c"
+static size_t t779_normalized_pixels;
+static void t779_counted_copy(unsigned char *destination, const unsigned char *source, size_t pixels) {
+    t779_normalized_pixels += pixels;
+    conv_copy_rgba_to_bgra(destination, source, pixels);
+}
+#define conv_copy_rgba_to_bgra t779_counted_copy
 #include "../evdi/capture.c"
+#undef conv_copy_rgba_to_bgra
 #undef add_period
 #include "../evdi/writer.c"
 #include "../evdi/evdi_helper.c"
@@ -1468,6 +1475,7 @@ static void test_t415_rounding(void) {
 #include "shared_capture.c"
 #include "cursor_overlay.c"
 #include "frame_format.c"
+#include "normalization_work.c"
 #include "shared_damage.c"
 #include "fifo_demand.c"
 
@@ -1524,6 +1532,7 @@ int main(int argc, char **argv) {
         {"T751", test_t751},
         {"T752", test_t752},
         {"T780", test_t780_full_rect_capacity},
+        {"T779", test_t779_normalization_work},
         {"T752-bounds", test_t752_bounds},
         {"T752-allocation", test_t752_allocation},
         {"T752-cursor", test_t752_cursor},

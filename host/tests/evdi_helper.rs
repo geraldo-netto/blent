@@ -83,6 +83,7 @@ impl Harness {
                 | "T762"
                 | "T767"
                 | "T780"
+                | "T779"
                 | "T082"
                 | "T274"
                 | "T340"
@@ -421,4 +422,9 @@ fn t780_exact_damage_capacity_normalizes_the_full_frame() {
 #[test]
 fn t767_c_boundaries_reject_bounded_invalid_mutations() {
     Harness::build("T767").run("T767");
+}
+
+#[test]
+fn t779_overlapping_normalization_has_bounded_work_and_exact_pixels() {
+    Harness::build("T779").run("T779");
 }

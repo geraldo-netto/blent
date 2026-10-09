@@ -223,3 +223,45 @@ One additional review-only finding, T777, records unchecked `atoi` arguments and
 NDEBUG assertion-side-effect hazards in the older `damage_regions.c` benchmark.
 The new replay uses the checked argument/build contract. Required failing
 regressions and the older benchmark fix remain separately tracked.
+
+## Nested loops and data structures: follow-up
+
+Scale conversion visits each required source sample: O(output pixels × scale²),
+which is O(source pixels) for a fixed source frame. The nested loops are not an
+extra quadratic scan over the image. Replacing them with summed-area tables would
+add a full-frame construction pass, storage and memory traffic even for tiny
+damage; no measured benefit justifies that change. Scale-specialized kernels
+already expose constant box sizes to the compiler.
+
+Dirty history uses a row bitmap and T768's constant-size two-span representation:
+O(1) merge per affected row, O(rows) scheduling, no per-damage allocation. Worker
+partitioning scans contiguous rows once, rather than searching each job's prefix.
+Raw shared slots have a fixed capacity of eight; their short linear scans avoid
+an index whose maintenance would add complexity. Frame ownership changes use
+pointer swaps. GPU event batches are capped at 256 and damage fetches use one
+conservative extent. Cursor upload is already cached by serial. No evidence here
+supports replacing these bounded structures with trees or hash tables.
+
+T779 identifies the avoidable nested pass: each overlapping RGBA damage rectangle
+previously repeated the pixel swizzle. A clipped-area budget now switches to one
+full-frame swizzle when total requested work reaches the framebuffer area. This
+bounds pixel work by O(frame pixels), plus at most 63 rectangle checks, without
+allocations. The retained native image makes conservative copies valid; cursor
+restoration precedes normalization. T779 regressions count actual copied pixels
+and compare full channel order and padding under 256 bounded randomized rectangle
+sets, including extreme and reversed endpoints.
+
+T773 was rechecked against `host/gpu/events.c` and `capture.c`: periodic mode
+still skips event initialization, and damage mode still lacks RandR invalidation.
+The measured request cost is real, but a cache satisfying the required copy-order
+and identity contracts has not been established. The owner's conditional approval
+(less time without correctness drawbacks) is therefore not met. Existing checks
+remain; T773 retains the exact research and acceptance prerequisites in TODO.md.
+
+T779's [five paired trials](artifacts/2026-10-09-t779/README.md) at 1920×1080
+reduce 63 full-overlap rectangles from 18,019.955 to 279.655 µs median wall time
+(about 64×). Sparse 64×64 changes take 0.751 versus 0.771 µs; full frames take
+280.136 versus 282.089 µs. The explicit tradeoff is fragmented bookkeeping:
+63 narrow fragments take 10.370 versus 11.963 µs (+1.593 µs). There are no new
+allocations. The full capture gate passes 185/185 individual functions at ≥80%;
+ASan/UBSan and the red/green regression pass. T779 is resolved.

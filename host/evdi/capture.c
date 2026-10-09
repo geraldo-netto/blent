@@ -286,9 +286,25 @@ static void normalize_framebuffer_rect(capture_context_t *capture, struct evdi_r
     }
 }
 
+/* Bound repeated swizzles by a full-frame pass without allocating a union.
+ * The native framebuffer retains unchanged pixels, so conservative copies are safe.
+ * Subtract clipped areas from a budget to avoid accumulation overflow. */
+static int normalize_full_frame(const capture_context_t *capture, const struct evdi_rect *rects, int count) {
+    if (count >= 64) return 1;
+    size_t remaining = (size_t)capture->mode_w * capture->mode_h;
+    for (int i = 0; i < count; i++) {
+        pixel_span_t x = pixel_span_clipped(rects[i].x1, rects[i].x2, capture->mode_w);
+        pixel_span_t y = pixel_span_clipped(rects[i].y1, rects[i].y2, capture->mode_h);
+        size_t pixels = (size_t)(x.end - x.begin) * (y.end - y.begin);
+        if (pixels >= remaining) return 1;
+        remaining -= pixels;
+    }
+    return 0;
+}
+
 static void normalize_framebuffer(capture_context_t *capture, const struct evdi_rect *rects, int count) {
     if (!capture->swap_rb || count <= 0) return;
-    if (count >= 64) {
+    if (normalize_full_frame(capture, rects, count)) {
         normalize_framebuffer_rect(capture, (struct evdi_rect){0, 0, capture->mode_w, capture->mode_h});
         return;
     }

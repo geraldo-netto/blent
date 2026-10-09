@@ -1,0 +1,16 @@
+{
+  "baseline_commit": "82f4b2a",
+  "trials": 5,
+  "samples_per_process": 32,
+  "width": 1920,
+  "height": 1080,
+  "stride": 7744,
+  "benchmark": "scripts/benchmarks/normalization.c",
+  "build_flags": "-O3 -ffunction-sections -fdata-sections -Wl,--gc-sections -pthread",
+  "production_sha256": {
+    "host/evdi/capture.c": "585ea454ecf9fb10f5c2d14b17d638a62a901ede656a4c3760fc03011875252c",
+    "host/evdi/conversion.c": "6450cb0e1b7a7406a33a6f130100cdf90e3c5c45055be82c9733d82d0b384d9f"
+  },
+  "coverage_functions": 185,
+  "coverage_passing": 185
+}
