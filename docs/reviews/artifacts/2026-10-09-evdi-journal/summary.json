@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-09",
+  "timezone": "Europe/Rome",
+  "source_snapshot_sha256": "5a2cd4e0c3f785cccef782f59b1651569e5b11ca5460cbf84df3c3bcfdea779c",
+  "source_snapshot_description": "Read-only troubleshooting dmesg/journal/systemd review; selected non-secret counters retained here for repository portability.",
+  "source_boot_ids": {
+    "-1": "ba3a8ae8be4646a297ed45e044332ef7",
+    "-2": "891b52e06d7c443e9e2967b70da60973"
+  },
+  "kernel": "7.0.0-38-generic",
+  "warning_groups": {
+    "-1": [
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,",
+        "count": 26757,
+        "first_timestamp": "1791455180398437",
+        "last_timestamp": "1791500577985426"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.",
+        "count": 26757,
+        "first_timestamp": "1791455180398524",
+        "last_timestamp": "1791500577985487"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring",
+        "count": 25904,
+        "first_timestamp": "1791455180398543",
+        "last_timestamp": "1791500577985503"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_i2c_data_notify:1469 Ignored ddc/ci data for address 0x50",
+        "count": 192,
+        "first_timestamp": "1791455178486470",
+        "last_timestamp": "1791491143678575"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_gem_mmap:490 Don't allow imported objects to be mapped: owner: amdgpu",
+        "count": 8,
+        "first_timestamp": "1791455178194408",
+        "last_timestamp": "1791491141681410"
+      }
+    ],
+    "-2": [
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,",
+        "count": 1940,
+        "first_timestamp": "1791401014044635",
+        "last_timestamp": "1791415288029598"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.",
+        "count": 1940,
+        "first_timestamp": "1791401014044753",
+        "last_timestamp": "1791415288029766"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring",
+        "count": 1935,
+        "first_timestamp": "1791401014044786",
+        "last_timestamp": "1791415288029783"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_painter_i2c_data_notify:1469 Ignored ddc/ci data for address 0x50",
+        "count": 96,
+        "first_timestamp": "1791401010473524",
+        "last_timestamp": "1791402130464676"
+      },
+      {
+        "unit": "kernel",
+        "message": "evdi: [W] evdi_gem_mmap:490 Don't allow imported objects to be mapped: owner: amdgpu",
+        "count": 3,
+        "first_timestamp": "1791401010169565",
+        "last_timestamp": "1791402128529531"
+      }
+    ]
+  },
+  "reproduce": [
+    "journalctl -b ba3a8ae8be4646a297ed45e044332ef7 -k -o json --no-pager",
+    "Filter MESSAGE for evdi_painter_grabpix_ioctl and evdi_painter_request_update_ioctl; count each full message separately. The grab warning spans two lines."
+  ],
+  "current_source_locations": [
+    "host/evdi/capture.c:251",
+    "host/evdi/capture.c:272",
+    "host/evdi/capture.c:361",
+    "host/tests/evdi_helper_test.c:221",
+    "host/tests/evdi_helper_test.c:228"
+  ],
+  "limits": [
+    "79,418 is log lines, not unique bad frames or lost updates.",
+    "No causal display-lag/blackout measurement or installed-helper-to-checkout identity was established.",
+    "No live display/Blent/module settings changed. Existing T558 stock-libevdi policy and declined broad performance scope remain."
+  ],
+  "boot_order_followup": {
+    "boot_id": "fd39b98efccd4a43821d14e2f3fb166d",
+    "early_amdgpu": true,
+    "lightdm_restarts": 0,
+    "host_suite": {
+      "command": "python3 -m unittest discover -s tests -v",
+      "exit_code": 0,
+      "tests_run": 13,
+      "duration_seconds": 21.83,
+      "result": "OK; all tests passed; tests unchanged"
+    },
+    "independent_configuration": "/etc/initramfs-tools/modules includes amdgpu; rebuilt initramfs is validated by unchanged troubleshooting suite. This is distinct from Blent softdep-file installation.",
+    "missing_acceptance": "Physical 610M/RX/Blent display and hotplug acceptance, other native driver arrangements."
+  }
+}
