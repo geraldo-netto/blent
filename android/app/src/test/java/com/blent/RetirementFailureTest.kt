@@ -1,0 +1,100 @@
+package com.blent
+
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.junit.Assert.*
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
+import java.util.concurrent.atomic.AtomicInteger
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [27, 34])
+class RetirementFailureTest {
+    @Test fun t807_nativeCloseFailureIsReportedWithoutRetryingUncertainRelease() {
+        val resources = CameraResources()
+        var successful = 0
+        var attempts = 0
+        resources.own { successful++ }
+        resources.own { attempts++; error("native close failed") }
+        val failure = runCatching { resources.close() }.exceptionOrNull()
+        assertNotNull("T807 incomplete destruction reported success", failure)
+        assertEquals(1, successful)
+        assertEquals(1, attempts)
+        assertSame("T807 unknown native state must remain quarantined", failure,
+            runCatching { resources.close() }.exceptionOrNull())
+        assertEquals("T807 uncertain destruction retried", 1, attempts)
+    }
+
+    @Test fun t807_audioServiceStopFailureStaysInsideOwner() = runBlocking {
+        val errors = mutableListOf<Throwable>()
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined + CoroutineExceptionHandler { _, e -> errors.add(e) })
+        val finish = CompletableDeferred<Unit>()
+        val commands = MutableStateFlow<AudioEndpoint?>(null)
+        var runId: String? = null
+        val binding = AudioBinding(RuntimeEnvironment.getApplication(), {}, { true }, { _, _, _, _ -> finish.await() },
+            commands, scope, { run -> if (run == null) error("service stop failed") else runId = run })
+        try {
+            binding.configure(AudioPreferences(background = true))
+            binding.start()
+            commands.value = AudioEndpoint("a".repeat(64), 1234, 1, 1, 20, true)
+            val worker = scope.coroutineContext[Job]!!.children.last()
+            finish.complete(Unit)
+            withTimeout(2000) { worker.join() }
+            assertTrue("T807 cleanup escaped root coroutine: $errors", errors.isEmpty())
+            assertFalse(binding.sharing)
+            assertTrue(binding.status.contains("service stop failed"))
+            assertTrue("T807 unconfirmed service ownership discarded", binding.ownsBackground(runId))
+            assertTrue(runCatching { binding.stopSharing() }.isSuccess)
+        } finally { runCatching { binding.shutdown() }; scope.cancel() }
+    }
+
+    @Test fun t807_cameraServiceStopFailureStillRetiresNativeOwner() = runBlocking {
+        val errors = mutableListOf<Throwable>()
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined + CoroutineExceptionHandler { _, e -> errors.add(e) })
+        val finish = CompletableDeferred<Unit>()
+        val commands = MutableStateFlow<CameraEndpoint?>(null)
+        val closed = AtomicInteger()
+        val binding = CameraBinding(RuntimeEnvironment.getApplication(), { 0 }, {}, { true },
+            { _, _, _, owned -> owned.own { closed.incrementAndGet() }; finish.await() }, commands, scope,
+            { run -> if (run == null) error("service stop failed") })
+        try {
+            binding.start()
+            commands.value = CameraEndpoint("a".repeat(64), 1234, 640, 480, 30, 1000, CameraLens.FRONT, true)
+            val worker = scope.coroutineContext[Job]!!.children.last()
+            finish.complete(Unit)
+            withTimeout(2000) { worker.join() }
+            assertTrue("T807 cleanup escaped root coroutine: $errors", errors.isEmpty())
+            assertEquals(1, closed.get())
+            assertNull(binding.selected)
+            assertTrue(binding.status.contains("service stop failed"))
+            assertTrue(runCatching { binding.shutdown() }.isSuccess)
+        } finally { runCatching { binding.shutdown() }; scope.cancel() }
+    }
+
+    @Test fun t807_activityStopContinuesAfterIndependentServiceFailure() {
+        val app = RuntimeEnvironment.getApplication()
+        Prefs(app).checkUpdates = false
+        val controller = Robolectric.buildActivity(MainActivity::class.java).create()
+        val activity = controller.get()
+        fun field(target: Any, name: String) = target.javaClass.getDeclaredField(name).apply { isAccessible = true }
+        field(activity.session, "touchCapture").set(activity.session, null)
+        field(activity.session, "videoReceiver").set(activity.session, null)
+        val broken = StreamingPowerBinding(object : ContextWrapper(app) {
+            override fun stopService(intent: Intent): Boolean = error("power stop failed")
+        })
+        try {
+            controller.start()
+            field(broken, "active").setBoolean(broken, true)
+            field(activity, "powerBinding").set(activity, broken)
+            controller.stop()
+            assertFalse("T807 one failure skipped session retirement", field(activity.session, "started").getBoolean(activity.session))
+        } finally { controller.destroy() }
+    }
+}

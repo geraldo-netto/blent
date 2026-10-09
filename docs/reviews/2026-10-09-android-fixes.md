@@ -42,3 +42,29 @@ without Android or Compose. The full offline Android suite passes, including
 existing ownership/permission/service/recreation tests. All 813 maintained
 Android methods pass individual 80% coverage; production complexity stays <=9.
 T807/T806 retain the known cleanup-error and unbounded-waiter behavior to fix next.
+
+## T807: contained cleanup failures and uncertain retirement
+
+Independent Activity teardown actions continue after ordinary failures. Audio
+and camera service-stop errors remain visible in their owner state without
+escaping a root coroutine; unconfirmed background-service identity is retained.
+Native camera close attempts retain reverse order, report incomplete cleanup,
+retain uncertain handles and do not automatically retry their destruction.
+A portable retirement guard keeps a failed native owner reachable and rejects
+replacement. Atomic state updates preserve concurrent cleanup observations.
+
+Decoder retirement had the same admission flaw: swallowed release errors removed
+the process-wide gate. Failed MediaCodec release now retains that owner/gate;
+confirmed release after a failed stop still permits replacement. Fatal errors
+are not consumed by the new cleanup boundaries.
+
+Eight new owner/Activity/native-close regression cases failed before the fix.
+The added codec test failed on both SDKs when release failure reopened admission;
+normal release controls already passed. All now pass. Existing reverse-order,
+late-startup and T707 tests retain their cleanup assertions and additionally
+require visible errors and contained exceptions. Plain-JVM tests cover admission,
+late/interrupt failures, independent cleanup and fatal-error propagation.
+Full offline Android suite: 749 passing tests; 834/834 maintained methods pass
+individual 80% coverage; production complexity remains <=9. No physical native
+failure was induced. T806 still owns bounded requests/deadline reporting and
+T798 still owns the UI retirement wait.

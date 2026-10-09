@@ -121,19 +121,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         CameraOwner.permissionRequest = null
-        cameras.stop()
         AudioOwner.permissionRequest = null
-        microphone.stop()
-        speakers.stop()
-        super.onStop()
-        windowPolicy.stop()
-        powerBinding.stop()
-        session.stop()
+        reportCleanup(cleanupAll({ cameras.stop() }, { microphone.stop() }, { speakers.stop() },
+            { super.onStop() }, { windowPolicy.stop() }, { powerBinding.stop() }, { session.stop() }))
     }
 
     override fun onDestroy() {
-        if (::powerBinding.isInitialized) powerBinding.stop()
-        super.onDestroy()
-        windowPolicy.stop()
+        reportCleanup(cleanupAll({ if (::powerBinding.isInitialized) powerBinding.stop() },
+            { super.onDestroy() }, { windowPolicy.stop() }))
+    }
+
+    private fun reportCleanup(failures: List<Exception>) {
+        failures.forEach { android.util.Log.w("BlentLifecycle", "Cleanup incomplete", it) }
     }
 }

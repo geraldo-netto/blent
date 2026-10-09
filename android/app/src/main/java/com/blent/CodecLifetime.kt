@@ -23,7 +23,8 @@ internal class CodecLifetime(val codec: MediaCodec) {
     private var users = 0
     @Volatile var retired = false; private set
     @Volatile private var cleanup: Thread? = null
-    val finished: Boolean get() = cleanup?.isAlive == false
+    @Volatile private var released = false
+    val finished: Boolean get() = released && cleanup?.isAlive == false
 
     fun <T> use(block: () -> T): T? {
         synchronized(gate) {
@@ -42,8 +43,10 @@ internal class CodecLifetime(val codec: MediaCodec) {
             if (cleanup != null) return
             retiringOwners.add(this)
             cleanup = Thread({
-                try { destroy() }
-                finally { retiringOwners.remove(this) }
+                if (destroy()) {
+                    released = true
+                    retiringOwners.remove(this)
+                }
             }, "blent-codec-retire").apply { start() }
         }
     }
@@ -59,9 +62,14 @@ internal class CodecLifetime(val codec: MediaCodec) {
         }
     }
 
-    private fun destroy() {
+    private fun destroy(): Boolean {
         awaitUsers()
-        try { codec.stop() } catch (_: Exception) {}
-        try { codec.release() } catch (_: Exception) {}
+        try { codec.stop() } catch (error: Exception) {
+            android.util.Log.w("BlentVideo", "Decoder stop failed; attempting release", error)
+        }
+        return try { codec.release(); true } catch (error: Exception) {
+            android.util.Log.e("BlentVideo", "Decoder release failed; replacement remains disabled", error)
+            false
+        }
     }
 }

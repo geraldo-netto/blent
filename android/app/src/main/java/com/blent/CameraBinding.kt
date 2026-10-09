@@ -3,6 +3,7 @@ package com.blent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 /** Portable host-command, permission and resource ownership policy. */
 internal class CameraBinding(
@@ -18,13 +19,13 @@ internal class CameraBinding(
     val state = mutableState.asStateFlow()
     var endpoint: CameraEndpoint?
         get() = mutableState.value.endpoint
-        private set(value) { mutableState.value = mutableState.value.copy(endpoint = value) }
+        private set(value) { mutableState.update { it.copy(endpoint = value) } }
     var selected: CameraLens?
         get() = mutableState.value.selected
-        private set(value) { mutableState.value = mutableState.value.copy(selected = value) }
+        private set(value) { mutableState.update { it.copy(selected = value) } }
     var status: String
         get() = mutableState.value.status
-        private set(value) { mutableState.value = mutableState.value.copy(status = value) }
+        private set(value) { mutableState.update { it.copy(status = value) } }
     private var active = false
     private var backgroundRun: String? = null
     private val backgroundRunning get() = backgroundRun != null
@@ -35,6 +36,8 @@ internal class CameraBinding(
     private var retirement: Job? = null
     private var resources: LifecycleRun? = null
     private var generation = 0L
+    private var serviceError: Exception? = null
+    private val guard = RetirementGuard()
 
     fun start() {
         if (active) return
@@ -56,13 +59,15 @@ internal class CameraBinding(
     fun choose(lens: CameraLens?) {
         val previous = stopCapture()
         pending = null
-        status = "Camera sharing is off."
+        status = guard.error?.let { "Native cleanup incomplete: ${it.message}" } ?: "Camera sharing is off."
         if (lens == null) { background(false); return }
         if (!active && !backgroundRunning) return
         val host = endpoint ?: return
         if (!active && !host.background) { background(false); return }
         if (!allowCapture(host, lens)) return
         try {
+            guard.checkAvailable()
+            check(serviceError == null) { "Background cleanup incomplete: ${serviceError?.message}" }
             background(host.background)
             launch(host, lens, previous)
         } catch (error: Exception) {
@@ -98,6 +103,7 @@ internal class CameraBinding(
         worker = scope.launch {
             try {
                 previous?.join()
+                guard.checkAvailable()
                 owned.execute()
             } catch (error: Exception) {
                 if (generation == revision && error !is CancellationException) status = error.message ?: "Camera sharing failed."
@@ -105,7 +111,7 @@ internal class CameraBinding(
                 try {
                     if (generation == revision) { selected = null; background(false) }
                 } finally {
-                    withContext(NonCancellable + Dispatchers.IO) { owned.retire() }
+                    withContext(NonCancellable + Dispatchers.IO) { retire(owned) }
                 }
             }
         }
@@ -118,12 +124,13 @@ internal class CameraBinding(
         val earlier = retirement
         worker = null
         resources = null
-        owned?.cancel()
-        previous?.cancel()
+        cleanupAll({ owned?.cancel() }, { previous?.cancel() }).firstOrNull()?.let {
+            status = "Cancellation incomplete: ${it.message}"
+        }
         if (owned != null) retirement = retirementScope.launch {
             earlier?.join()
             previous?.join()
-            owned.retire()
+            retire(owned)
         }
         selected = null
         return retirement
@@ -131,8 +138,24 @@ internal class CameraBinding(
 
     private fun background(enabled: Boolean) {
         if (backgroundRunning == enabled) return
-        backgroundRun = if (enabled) java.util.UUID.randomUUID().toString() else null
+        if (!enabled) { stopBackground(); return }
+        backgroundRun = java.util.UUID.randomUUID().toString()
         backgroundService(backgroundRun)
+    }
+
+    private suspend fun retire(owned: LifecycleRun) {
+        guard.retire(owned)?.let { status = "Native cleanup incomplete: ${it.message}" }
+    }
+
+    private fun stopBackground() {
+        try {
+            backgroundService(null)
+            backgroundRun = null
+            serviceError = null
+        } catch (error: Exception) {
+            serviceError = error
+            status = "Background cleanup incomplete: ${error.message}"
+        }
     }
 
     fun stop() {
@@ -155,7 +178,7 @@ internal class CameraBinding(
         pending = null
         stopCapture()
         endpoint = null
-        status = "Camera sharing is off."
+        status = guard.error?.let { "Native cleanup incomplete: ${it.message}" } ?: "Camera sharing is off."
         background(false)
     }
 }

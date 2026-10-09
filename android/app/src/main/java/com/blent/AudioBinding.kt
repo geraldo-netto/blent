@@ -3,6 +3,7 @@ package com.blent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 /** Portable consent/admission/retirement policy. Platform adapters supply runs. */
 internal class AudioBinding(
@@ -21,22 +22,24 @@ internal class AudioBinding(
     val state = mutableState.asStateFlow()
     var preferences: AudioPreferences
         get() = mutableState.value.preferences
-        private set(value) { mutableState.value = mutableState.value.copy(preferences = value) }
+        private set(value) { mutableState.update { it.copy(preferences = value) } }
     var status: String
         get() = mutableState.value.status
-        private set(value) { mutableState.value = mutableState.value.copy(status = value) }
+        private set(value) { mutableState.update { it.copy(status = value) } }
     var sharing: Boolean
         get() = mutableState.value.sharing
-        private set(value) { mutableState.value = mutableState.value.copy(sharing = value) }
+        private set(value) { mutableState.update { it.copy(sharing = value) } }
     var pending: AudioEndpoint?
         get() = mutableState.value.pending
-        private set(value) { mutableState.value = mutableState.value.copy(pending = value) }
+        private set(value) { mutableState.update { it.copy(pending = value) } }
     private var visible = false
     private var generation = 0L
     private var observer: Job? = null
     private var worker: Job? = null
     private var resources: LifecycleRun? = null
     private var backgroundRun: String? = null
+    private var serviceError: Exception? = null
+    private val retirement = RetirementGuard()
 
     fun start() {
         visible = true
@@ -70,6 +73,8 @@ internal class AudioBinding(
         } catch (error: Exception) { stopSharing(); status = error.message ?: "Audio unavailable." }
     }
     private fun launch(endpoint: AudioEndpoint) {
+        retirement.checkAvailable()
+        check(serviceError == null) { "Background cleanup incomplete: ${serviceError?.message}" }
         val earlier = worker
         val revision = ++generation
         val owned = createRun(endpoint, preferences) { text ->
@@ -86,27 +91,38 @@ internal class AudioBinding(
                 // A cancelled waiter must retain the chain to older native owners.
                 withContext(NonCancellable) { earlier?.join() }
                 currentCoroutineContext().ensureActive()
+                retirement.checkAvailable()
                 owned.execute()
             } catch (error: Exception) {
                 if (revision == generation && error !is CancellationException) status = error.message ?: "Audio stopped."
             } finally {
-                withContext(NonCancellable) { owned.retire() }
+                val failure = withContext(NonCancellable) { retirement.retire(owned) }
                 if (revision == generation) { sharing = false; stopBackground() }
+                if (failure != null) status = "Native cleanup incomplete: ${failure.message}"
             }
         }
     }
     private fun stopBackground() {
         if (backgroundRun == null) return
-        backgroundRun = null; service(null)
+        try {
+            service(null)
+            backgroundRun = null
+            serviceError = null
+        } catch (error: Exception) {
+            serviceError = error
+            status = "Background cleanup incomplete: ${error.message}"
+        }
     }
     fun stopSharing() {
         generation++
         pending = null
-        resources?.cancel(); resources = null
-        worker?.cancel()
+        val stopping = resources; resources = null
+        val failures = cleanupAll({ stopping?.cancel() }, { worker?.cancel() })
         sharing = false
         stopBackground()
-        status = "${label.replaceFirstChar { it.uppercase() }} sharing is off. Start again on your computer."
+        val failure = retirement.error ?: serviceError ?: failures.firstOrNull()
+        status = failure?.let { "Cleanup incomplete: ${it.message}" }
+            ?: "${label.replaceFirstChar { it.uppercase() }} sharing is off. Start again on your computer."
     }
     fun configure(value: AudioPreferences) {
         require(value.valid(direction))

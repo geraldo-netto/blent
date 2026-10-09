@@ -89,7 +89,8 @@ class CameraStartupTest {
         assertTrue(runCatching { resources.interrupt { interruptions++ } }.exceptionOrNull() is kotlinx.coroutines.CancellationException)
         assertEquals(2, interruptions)
         release(); release()
-        resources.close()
+        assertEquals("T807 transport cleanup uncertainty must survive retirement", "socket close failed",
+            runCatching { resources.close() }.exceptionOrNull()?.message)
     }
 
     @Test fun t707_concurrentClosersWaitForTheSameNativeDestruction() {

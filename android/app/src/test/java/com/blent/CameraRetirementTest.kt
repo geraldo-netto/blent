@@ -106,9 +106,9 @@ class CameraRetirementTest {
             binding.start()
             commands.value = CameraEndpoint("a".repeat(64), 12345, 1280, 720, 30, 3000, CameraLens.FRONT, true)
             finish.complete(Unit)
-            assertTrue(failed.await(2, TimeUnit.SECONDS))
-            assertEquals("service stop failed", failure.get()?.message)
-            assertEquals("T707 service failure skipped native destruction", 0L, closed.count)
+            assertTrue("T707 service failure skipped native destruction", closed.await(2, TimeUnit.SECONDS))
+            assertNull("T807 cleanup must stay inside its resource owner", failure.get())
+            assertTrue(binding.status.contains("service stop failed"))
         } finally { binding.shutdown(); scope.cancel() }
     }
 

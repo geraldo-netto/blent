@@ -112,7 +112,9 @@ class CameraContractTest {
         val order = mutableListOf<Int>()
         resources.own { order.add(1) }
         resources.own { order.add(2); error("release failure") }
-        resources.close(); resources.close()
+        val failure = runCatching { resources.close() }.exceptionOrNull()
+        assertEquals("T807 release uncertainty must be visible", "release failure", failure?.message)
+        assertSame(failure, runCatching { resources.close() }.exceptionOrNull())
         assertEquals(listOf(2, 1), order)
         assertTrue(runCatching { resources.own { order.add(3) } }.exceptionOrNull() is CancellationException)
         assertEquals(listOf(2, 1, 3), order)
