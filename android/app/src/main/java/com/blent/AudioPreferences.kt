@@ -1,7 +1,7 @@
 package com.blent
 
 internal data class AudioPreferences(val processing: Int = 0, val background: Boolean = false,
-    val gain: Int = 100, val builtIn: Boolean = true) {
+    val gain: Int = 100, val builtIn: Boolean = true, val speakerLowLatency: Boolean = false) {
     fun valid(direction: Int = 1): Boolean = direction in 1..2 && processing in 0..2 && gain in 0..(if (direction == 1) 200 else 100)
     fun effective(endpoint: AudioEndpoint): AudioEndpoint {
         require(valid(endpoint.direction))

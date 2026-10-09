@@ -33,6 +33,14 @@ internal fun AudioControls(binding: AudioBinding) {
             modifier = Modifier.semantics { contentDescription = "Use built-in ${binding.label}" })
         Text("Use built-in ${binding.label}")
     }
+    if (binding.direction == 2) {
+        Row {
+            Checkbox(state.preferences.speakerLowLatency, { binding.configure(state.preferences.copy(speakerLowLatency = it)) },
+                modifier = Modifier.semantics { contentDescription = "Request low-latency speaker mode" })
+            Text("Request low-latency speaker mode")
+        }
+        Text("May reduce output delay at higher power cost. Android may decline; the active session reports the granted mode.", style = MaterialTheme.typography.bodySmall)
+    }
     Text("${if (binding.direction == 1) "Microphone gain" else "Speaker volume"}: ${state.preferences.gain}%")
     Slider(state.preferences.gain.toFloat(), { binding.configure(state.preferences.copy(gain = it.roundToInt())) }, valueRange = 0f..(if (binding.direction == 1) 200f else 100f))
     Text(if (binding.direction == 1) "Raw capture requires native support and can contain speaker echo. Speech requests AEC; availability does not prove echo removal."

@@ -2,12 +2,16 @@ package com.blent
 
 import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import org.junit.Assert.*
 import org.junit.Test
 
 class AudioOutputTest {
     private class Focus : OutputFocus {
-        var pause = false; var closes = 0
+        private val paused = MutableStateFlow(false)
+        var pause: Boolean get() = paused.value; set(value) { paused.value = value }
+        var closes = 0
+        override suspend fun awaitReady() { paused.first { !it } }
         override fun paused() = pause
         override fun close() { closes++ }
     }
@@ -41,6 +45,24 @@ class AudioOutputTest {
     private suspend fun rejects(action: suspend () -> Unit) {
         try { action(); fail("T719 invalid playback accepted") } catch (_: IllegalArgumentException) {}
     }
+    @Test fun t801_pauseFlushesOnceAndWaitsUntilFocusResumesOrCallerCancels() = runBlocking {
+        val track = Track(); val focus = Focus()
+        val output = AudioOutput({ track }, focus) { 0 }
+        try {
+            output.start(); output.awaitReady(); focus.pause = true
+            val parked = launch(start = CoroutineStart.UNDISPATCHED) { output.awaitReady() }
+            assertTrue(parked.isActive); assertEquals(1, track.flushes)
+            focus.pause = false; parked.join()
+            assertEquals(SpeakerWrite.Written, output.write(chunk()))
+            assertEquals(2, track.plays)
+            focus.pause = true
+            val cancelled = launch(start = CoroutineStart.UNDISPATCHED) { output.awaitReady() }
+            cancelled.cancelAndJoin(); assertTrue(cancelled.isCancelled)
+            assertEquals(2, track.flushes)
+        } finally { output.close() }
+        try { output.awaitReady(); fail("T801 closed output waited") } catch (_: IllegalStateException) {}
+    }
+
     @Test fun t797_outputBorrowsOwnedSamplesAndCancellationStopsZeroProgress() = runBlocking {
         val track = Track()
         val focus = Focus()

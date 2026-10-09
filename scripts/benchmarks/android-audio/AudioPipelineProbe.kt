@@ -13,7 +13,7 @@ import org.json.JSONObject
 
 internal object AudioPipelineProbe {
     private fun allocated() = Debug.getRuntimeStat("art.gc.bytes-allocated")!!.toLong()
-    private val focus = object : OutputFocus { override fun paused() = false; override fun close() {} }
+    private val focus = object : OutputFocus { override fun paused() = false; override suspend fun awaitReady() {}; override fun close() {} }
 
     fun measure(): JSONObject = runBlocking {
         val rows = JSONArray()
@@ -52,9 +52,9 @@ internal object AudioPipelineProbe {
     }
 
     /** Silent native AudioTrack only; no microphone permission or capture. */
-    fun native(context: Context): JSONObject = runBlocking {
+    fun native(context: Context, lowLatency: Boolean = false): JSONObject = runBlocking {
         val native = AndroidSpeakerTrack(context, AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build(),
-            AudioPreferences(gain = 0, builtIn = false))
+            pipelinePreferences(lowLatency))
         val output = AudioOutput({ native }, focus, SystemClock::elapsedRealtime)
         try {
             output.start()

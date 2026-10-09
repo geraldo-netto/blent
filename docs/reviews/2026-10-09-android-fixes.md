@@ -290,3 +290,24 @@ portable output 63.639 to 54.585 µs. Per-sample parsing regressed ~44% against 
 accepted bulk path. Silent native output shows 500.659 to 412.508 ms median thread
 CPU per 100 blocks, equal native buffer/played counters and zero underruns. No
 physical latency or end-to-end zero-copy claim; no downloads or app reload.
+
+## T801: event-driven focus and optional native low latency
+
+Paused speaker rendering now awaits focus events through the portable OutputFocus
+contract. Local socket Stop/reader completion cancels the wait. Terminal focus
+cannot be revived by late callbacks; native timestamp polling stops while paused.
+The regression failed before the change (10 calls/50 ms) and passes with zero.
+Cancellation, immediate startup Stop, transient focus and permanent loss remain
+covered. A leaked invalid buffer minimum in the native test fixture was restored
+in finally without weakening its rejection assertion.
+
+Speaker-only persisted low-latency request defaults off; diagnostics show actual
+granted mode. Buffer request and 2 ms zero-progress retries stay unchanged.
+[Native measurements](artifacts/2026-10-10-android-audio-scheduling/README.md) show
+about 67 ms less timestamp-estimated queued audio with equal buffer size and zero
+underruns. Alternating trials establish no CPU improvement. No acoustic latency,
+hardware offload or smaller-buffer claim. All builds offline, app untouched.
+
+829 tests pass; 913/913 production methods meet individual 80% coverage, all
+complexities <=9. Boundary/generator tooling passes. Physical acceptance remains
+separate under T718/T720.

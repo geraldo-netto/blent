@@ -23,6 +23,8 @@ class AudioQueueReceiver : BroadcastReceiver() {
                     "drift" -> measureDrift()
                     "pipeline" -> AudioPipelineProbe.measure()
                     "native-output" -> AudioPipelineProbe.native(context)
+                    "native-output-low" -> AudioPipelineProbe.native(context, true)
+                    "modes" -> AudioModeProbe.measure(intent.getBooleanExtra("reverse", false))
                     else -> measure()
                 } } catch (error: Exception) { JSONObject().put("error", error.stackTraceToString()) }
                 result.put("run_id", intent.getStringExtra("run_id"))

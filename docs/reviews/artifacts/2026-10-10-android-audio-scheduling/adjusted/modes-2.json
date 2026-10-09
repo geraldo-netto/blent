@@ -1,0 +1,41 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "modes": [
+    {
+      "requested_mode": 1,
+      "granted_mode": 1,
+      "minimum_bytes": 15392,
+      "buffer_frames": 3848,
+      "underruns": 0,
+      "write_calls": 487,
+      "zero_writes": 386,
+      "elapsed_ns": 914248346,
+      "cpu_ns": 75795911,
+      "timestamp_available": true,
+      "timestamp_frame": 42720,
+      "written_frames": 48000,
+      "queue_ms_from_counter": 110,
+      "timestamp_age_ms": 2.367577,
+      "estimated_queue_ms": 107.632423
+    },
+    {
+      "requested_mode": 0,
+      "granted_mode": 0,
+      "minimum_bytes": 15392,
+      "buffer_frames": 3848,
+      "underruns": 0,
+      "write_calls": 502,
+      "zero_writes": 401,
+      "elapsed_ns": 916143384,
+      "cpu_ns": 61809376,
+      "timestamp_available": true,
+      "timestamp_frame": 39480,
+      "written_frames": 48000,
+      "queue_ms_from_counter": 177.5,
+      "timestamp_age_ms": 2.073961,
+      "estimated_queue_ms": 175.426039
+    }
+  ],
+  "run_id": "adjusted-2"
+}

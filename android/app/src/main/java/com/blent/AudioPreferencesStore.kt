@@ -7,7 +7,8 @@ internal object AudioPreferencesStore {
         require(value.valid(direction))
         context.getSharedPreferences(namespace(direction), Context.MODE_PRIVATE).edit()
             .putInt("processing", value.processing).putBoolean("background", value.background)
-            .putInt("gain", value.gain).putBoolean("built_in", value.builtIn).apply()
+            .putInt("gain", value.gain).putBoolean("built_in", value.builtIn)
+            .putBoolean("speaker_low_latency", value.speakerLowLatency).apply()
     }
     private fun namespace(direction: Int): String {
         require(direction in 1..2)
@@ -16,7 +17,7 @@ internal object AudioPreferencesStore {
     fun load(context: Context, direction: Int = 1): AudioPreferences {
         val prefs = context.getSharedPreferences(namespace(direction), Context.MODE_PRIVATE)
         return AudioPreferences(prefs.getInt("processing", 0).coerceIn(0, 2), prefs.getBoolean("background", false),
-            prefs.getInt("gain", 100).coerceIn(0, if (direction == 1) 200 else 100), prefs.getBoolean("built_in", true))
+            prefs.getInt("gain", 100).coerceIn(0, if (direction == 1) 200 else 100), prefs.getBoolean("built_in", true), prefs.getBoolean("speaker_low_latency", false))
     }
 }
 

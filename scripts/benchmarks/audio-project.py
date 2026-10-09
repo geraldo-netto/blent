@@ -58,9 +58,18 @@ internal class PipelineTrack : OutputTrack {
     }
 }
 """.replace('PARAMETER', parameter).replace('VALUE', value)
+    preferences = (directory / 'originals/AudioPreferences.kt').read_text()
+    if 'speakerLowLatency' in preferences:
+        track += '\ninternal fun pipelinePreferences(lowLatency: Boolean) = AudioPreferences(gain = 0, builtIn = false, speakerLowLatency = lowLatency)\n'
+    else:
+        track += '\ninternal fun pipelinePreferences(lowLatency: Boolean): AudioPreferences { require(!lowLatency); return AudioPreferences(gain = 0, builtIn = false) }\n'
     (directory / 'app/src/main/java/PipelineTrack.kt').write_text(track)
     (directory / 'originals/PipelineTrack.kt').write_text(track)
-    shutil.copy2(ROOT / 'scripts/benchmarks/android-audio/AudioPipelineProbe.kt', directory / 'app/src/main/java/AudioPipelineProbe.kt')
+    for name in ['AudioPipelineProbe.kt', 'AudioModeProbe.kt']:
+        text = (ROOT / 'scripts/benchmarks/android-audio' / name).read_text()
+        if 'suspend fun awaitReady()' not in (directory / 'originals/AudioOutput.kt').read_text():
+            text = text.replace('override suspend fun awaitReady() {}; ', '')
+        (directory / 'app/src/main/java' / name).write_text(text)
     receiver = ROOT / 'scripts/benchmarks/android-audio/AudioQueueReceiver.kt'
     shutil.copy2(receiver, directory / 'app/src/main/java/AudioQueueReceiver.kt')
     manifest = directory / 'app/src/main/AndroidManifest.xml'
@@ -76,6 +85,7 @@ internal class PipelineTrack : OutputTrack {
     result = dict(revision=args.revision or 'working-tree', package=args.package, offline=True,
         apk_sha256=hashlib.sha256(apk.read_bytes()).hexdigest(),
         benchmark_sha256=hashlib.sha256(receiver.read_bytes()).hexdigest(),
+        mode_sha256=hashlib.sha256((ROOT / "scripts/benchmarks/android-audio/AudioModeProbe.kt").read_bytes()).hexdigest(),
         pipeline_sha256=hashlib.sha256((ROOT / "scripts/benchmarks/android-audio/AudioPipelineProbe.kt").read_bytes()).hexdigest(),
         sources={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (directory / 'originals').glob('*.kt')})
     (directory / 'audio-provenance.json').write_text(json.dumps(result, indent=2) + '\n')

@@ -15,10 +15,15 @@ internal interface OutputTrack : AutoCloseable {
     fun clockSample(): AudioClockSample? = null
     fun description(): String
 }
-internal interface OutputFocus : AutoCloseable { fun paused(): Boolean }
+internal interface OutputFocus : AutoCloseable {
+    fun paused(): Boolean
+    /** Cancellable wait for focus; permanent loss/closure must fail the wait. */
+    suspend fun awaitReady()
+}
 internal enum class SpeakerWrite { Written, Reset, Paused }
 internal interface SpeakerDevice : AutoCloseable {
     val paused: Boolean
+    suspend fun awaitReady()
     fun start()
     fun clockSample(): AudioClockSample? = null
     fun description(): String
@@ -35,6 +40,11 @@ internal class AudioOutput(private val open: () -> OutputTrack, private val focu
     init { try { track = open() } catch (error: Exception) { focus.close(); throw error } }
     override val paused get() = focus.paused()
     override fun start() { check(!closed); synchronizeFocus() }
+    override suspend fun awaitReady() {
+        check(!closed)
+        synchronizeFocus()
+        focus.awaitReady()
+    }
     override fun description() = checkNotNull(track).description()
     override fun clockSample() = checkNotNull(track).clockSample()?.copy(epoch = clockEpoch)
     private var clockEpoch = 1L

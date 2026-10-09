@@ -12,9 +12,10 @@ import okio.source
 
 /** Independent socket reader and bounded renderer. No IO on Android callbacks. */
 internal class AudioPlayback(private val context: Context,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val open: (AudioEndpoint, AudioPreferences) -> SpeakerDevice = { endpoint, prefs -> AudioSpeaker.open(context, endpoint, prefs) }) {
     suspend fun run(endpoint: AudioEndpoint, preferences: AudioPreferences, connected: (Socket?) -> Unit,
-        status: (String) -> Unit) = withContext(Dispatchers.IO) {
+        status: (String) -> Unit) = withContext(dispatcher) {
         Socket().use { socket ->
             connected(socket)
             try {
@@ -38,7 +39,7 @@ internal class AudioPlayback(private val context: Context,
     }
     private suspend fun stream(socket: Socket, wire: AudioWire, source: okio.BufferedSource,
         player: SpeakerDevice, queue: AudioPlaybackQueue, status: (String) -> Unit) = coroutineScope {
-        val reader = launch(Dispatchers.IO) {
+        val reader = launch(dispatcher) {
             try {
                 while (isActive && !socket.isClosed) {
                     val block = wire.receive(source)
@@ -52,7 +53,10 @@ internal class AudioPlayback(private val context: Context,
                 throw error
             } finally { socket.close() }
         }
-        try { render(socket, player, queue, status) } finally { reader.cancel(); socket.close(); queue.clear() }
+        val renderer = launch { render(socket, player, queue, status) }
+        // A local socket-only Stop also wakes a renderer parked on focus.
+        reader.invokeOnCompletion { renderer.cancel() }
+        try { renderer.join() } finally { reader.cancel(); socket.close(); queue.clear() }
     }
     private suspend fun render(socket: Socket, player: SpeakerDevice, queue: AudioPlaybackQueue, status: (String) -> Unit) {
         val silence = ShortArray(960)
@@ -68,8 +72,8 @@ internal class AudioPlayback(private val context: Context,
                 reportAt = now + 1000
             }
             previous = paused
-            renderFrame(socket, player, queue, silence)
-            if (paused) delay(5)
+            if (paused) { queue.clear(); player.awaitReady() }
+            else renderFrame(socket, player, queue, silence)
         }
     }
     private suspend fun renderFrame(socket: Socket, player: SpeakerDevice, queue: AudioPlaybackQueue, silence: ShortArray) {

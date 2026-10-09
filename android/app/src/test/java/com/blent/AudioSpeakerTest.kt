@@ -2,7 +2,7 @@ package com.blent
 
 import android.Manifest
 import android.media.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,7 +20,7 @@ class AudioSpeakerTest {
     // separately checked on the tablet; this fixture exercises our adapter.
     @Implements(AudioTrack::class)
     class RoutedTrack : ShadowAudioTrack() {
-        companion object { var shortWrites = 0; var reply: Int? = null; var received: ShortArray? = null }
+        companion object { var shortWrites = 0; var reply: Int? = null; var received: ShortArray? = null; var mode = 0 }
         @Implementation protected fun native_write_short(data: ShortArray, offset: Int, count: Int, format: Int, blocking: Boolean): Int {
             assertFalse("T797 typed write became blocking", blocking)
             assertEquals(AudioFormat.ENCODING_PCM_16BIT, format)
@@ -35,8 +35,52 @@ class AudioSpeakerTest {
             return if (written >= 0) written / 2 else written
         }
         @Implementation protected fun native_setOutputDevice(id: Int) = true
+        @Implementation protected fun getPerformanceMode() = mode
     }
     private fun attributes() = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build()
+    @Test fun t801_lowLatencyRequestIsOptionalAndDescriptionUsesGrantedMode() {
+        val app = RuntimeEnvironment.getApplication()
+        for (requested in listOf(false, true)) {
+            AndroidSpeakerTrack(app, attributes(), AudioPreferences(builtIn = false, speakerLowLatency = requested)).use { adapter ->
+                val track = ReflectionHelpers.getField<AudioTrack>(adapter, "track")
+                val configured = ReflectionHelpers.getField<AudioAttributes>(track, "mAttributes")
+                val flags = ReflectionHelpers.callInstanceMethod<Int>(configured, "getAllFlags")
+                val low = ReflectionHelpers.getStaticField<Int>(AudioAttributes::class.java, "FLAG_LOW_LATENCY")
+                assertEquals("T801 request did not reach native builder", requested, flags and low != 0)
+                try {
+                    for ((mode, name) in listOf(0 to "standard", 1 to "low latency", 2 to "power saving", Int.MAX_VALUE to "unknown")) {
+                        RoutedTrack.mode = mode
+                        assertTrue(adapter.description().contains("$name mode"))
+                    }
+                } finally { RoutedTrack.mode = 0 }
+            }
+        }
+    }
+
+    @Test fun t801_focusWaitIsEventDrivenCancellableAndTerminalAfterLoss() = runBlocking {
+        val manager = RuntimeEnvironment.getApplication().getSystemService(AudioManager::class.java)
+        val shadow = Shadows.shadowOf(manager)
+        shadow.setNextFocusRequestResponse(AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
+        val focus = AudioFocus(manager, attributes())
+        val listener = shadow.lastAudioFocusRequest.listener!!
+        try {
+            focus.awaitReady()
+            listener.onAudioFocusChange(AudioManager.AUDIOFOCUS_LOSS_TRANSIENT)
+            val waiting = launch(start = CoroutineStart.UNDISPATCHED) { focus.awaitReady() }
+            assertTrue(waiting.isActive)
+            listener.onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN)
+            waiting.join(); assertFalse(focus.paused())
+            listener.onAudioFocusChange(AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
+            val cancelled = launch(start = CoroutineStart.UNDISPATCHED) { focus.awaitReady() }
+            cancelled.cancelAndJoin(); assertTrue(cancelled.isCancelled)
+            listener.onAudioFocusChange(AudioManager.AUDIOFOCUS_LOSS)
+            try { focus.awaitReady(); fail("T801 permanent loss resumed") } catch (_: IllegalStateException) {}
+            listener.onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN)
+            try { focus.awaitReady(); fail("T801 late gain revived terminal focus") } catch (_: IllegalStateException) {}
+        } finally { focus.close() }
+        try { focus.awaitReady(); fail("T801 closed focus resumed") } catch (_: IllegalStateException) {}
+    }
+
     @Test fun t797_nativeTypedWritesKeepSampleUnitsAndDeadCounts() {
         val app = RuntimeEnvironment.getApplication()
         AndroidSpeakerTrack(app, attributes(), AudioPreferences(builtIn = false)).use { native ->
@@ -110,7 +154,10 @@ class AudioSpeakerTest {
         ShadowAudioTrack.setRoutedDevice(null)
         Shadows.shadowOf(manager).setOutputDevices(emptyList())
         try { AndroidSpeakerTrack(app, attributes(), AudioPreferences()); fail("missing built-in speaker") } catch (_: IllegalStateException) {}
+        val previousMinimum = AudioTrack.getMinBufferSize(48000, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT)
         ShadowAudioTrack.setMinBufferSize(AudioTrack.ERROR_BAD_VALUE)
-        try { AndroidSpeakerTrack(app, attributes(), AudioPreferences()); fail("invalid native buffer") } catch (_: IllegalStateException) {}
+        try {
+            try { AndroidSpeakerTrack(app, attributes(), AudioPreferences()); fail("invalid native buffer") } catch (_: IllegalStateException) {}
+        } finally { ShadowAudioTrack.setMinBufferSize(previousMinimum) }
     }
 }

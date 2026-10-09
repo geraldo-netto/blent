@@ -27,6 +27,7 @@ class AudioPlaybackTest {
     private class Player : SpeakerDevice {
         var starts = 0; var closes = 0; val audible = AtomicBoolean(false)
         override val paused = false
+        override suspend fun awaitReady() {}
         override fun start() { starts++ }
         override fun description() = "fixture speakers"
         override suspend fun write(chunk: PlaybackChunk): SpeakerWrite {
@@ -38,6 +39,63 @@ class AudioPlaybackTest {
         }
         override fun close() { closes++ }
     }
+    @Test fun t801_stopDuringNativeStartCompletesWithoutLaunchingAudioWork() = runBlocking(Dispatchers.Unconfined) {
+        ServerSocket(0).use { server ->
+            val endpoint = endpoint(server.localPort)
+            var attached: Socket? = null
+            var closed = 0
+            val peer = async(Dispatchers.IO) { server.accept().use { socket ->
+                socket.getInputStream().readNBytes(76); socket.getOutputStream().write(grant(endpoint))
+                assertEquals(-1, socket.getInputStream().read())
+            } }
+            val player = object : SpeakerDevice {
+                override val paused = false
+                override fun start() { attached!!.close() }
+                override suspend fun awaitReady() { error("T801 closed stream awaited focus") }
+                override fun description(): String = error("T801 closed stream sampled device")
+                override suspend fun write(chunk: PlaybackChunk): SpeakerWrite = error("T801 closed stream wrote PCM")
+                override fun close() { closed++ }
+            }
+            val inline = object : CoroutineDispatcher() {
+                override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) = block.run()
+            }
+            AudioPlayback(RuntimeEnvironment.getApplication(), inline) { _, _ -> player }
+                .run(endpoint, AudioPreferences(), { attached = it }, { error("T801 closed stream published status") })
+            peer.await()
+            assertNull(attached); assertEquals(1, closed)
+        }
+    }
+
+    @Test fun t801_pausedPlaybackDoesNotPollNativeClockAndLocalStopStillCompletes() = runBlocking(Dispatchers.IO) {
+        withTimeout(3000) { ServerSocket(0).use { server ->
+            val endpoint = endpoint(server.localPort)
+            val attached = CompletableDeferred<Socket>()
+            val paused = CompletableDeferred<Unit>()
+            val reads = java.util.concurrent.atomic.AtomicInteger()
+            var closes = 0
+            val player = object : SpeakerDevice {
+                override val paused = true
+                override suspend fun awaitReady() { awaitCancellation() }
+                override fun start() {}
+                override fun description() = "paused fixture"
+                override fun clockSample(): AudioClockSample? { reads.incrementAndGet(); return null }
+                override suspend fun write(chunk: PlaybackChunk) = SpeakerWrite.Paused
+                override fun close() { closes++ }
+            }
+            val peer = async { server.accept().use { socket ->
+                socket.getInputStream().readNBytes(76); socket.getOutputStream().write(grant(endpoint))
+                assertEquals(-1, socket.getInputStream().read())
+            } }
+            val playback = AudioPlayback(RuntimeEnvironment.getApplication()) { _, _ -> player }
+            val run = async { playback.run(endpoint, AudioPreferences(), { if (it != null) attached.complete(it) }, { if (it.contains("paused")) paused.complete(Unit) }) }
+            paused.await(); delay(50)
+            attached.await().close()
+            run.await(); peer.await()
+            assertEquals("T801 native timestamp polled while paused", 0, reads.get())
+            assertEquals(1, closes)
+        } }
+    }
+
     @Test fun t719_localStopReturnsNormallyAndReleasesNativePlayback() = runBlocking(Dispatchers.IO) {
         ServerSocket(0).use { server ->
             val endpoint = endpoint(server.localPort); var attached: Socket? = null; var writes = 0
@@ -126,6 +184,7 @@ class AudioPlaybackTest {
             var sawPause = false; var closes = 0
             val player = object : SpeakerDevice {
                 override var paused = true
+                override suspend fun awaitReady() { delay(10); paused = false }
                 override fun start() {}
                 override fun description() = "resumed fixture"
                 override suspend fun write(chunk: PlaybackChunk): SpeakerWrite {

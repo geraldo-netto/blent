@@ -1,0 +1,11 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "count": 100,
+  "elapsed_ns": 979955768,
+  "cpu_ns": 445876087,
+  "allocated_bytes": 327680,
+  "before": "RugKing Pad 2 Pro \u00b7 low latency mode \u00b7 native buffer 3848 frames \u00b7 played 0 frames \u00b7 underruns 0",
+  "after": "RugKing Pad 2 Pro \u00b7 low latency mode \u00b7 native buffer 3848 frames \u00b7 played 44160 frames \u00b7 underruns 0",
+  "run_id": "production-low"
+}

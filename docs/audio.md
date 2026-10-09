@@ -232,9 +232,18 @@ explicit Start; a dead AudioTrack is recreated within its existing authorization
 discarding the interrupted block. Native buffer minima can exceed the requested
 application buffering.
 
+Android's speaker controls include **Request low-latency speaker mode**, off by
+default. Android may decline the request; session diagnostics report the granted
+standard, low latency or power saving mode. Low latency may consume more power.
+The native buffer request is unchanged. Muted tablet tests showed about 67 ms less
+counter-estimated queued audio, not measured acoustic latency; other routes may
+behave differently.
+
 Audio focus denial prevents playback. Transient loss, including duck requests,
 pauses and flushes sound; focus regain can resume only the same active session.
-Permanent focus loss stops it. Foreground-only playback stops when the app hides.
+While paused, rendering waits for focus events without polling native timestamps;
+Stop and transport completion cancel that wait. Permanent focus loss stops it.
+Foreground-only playback stops when the app hides.
 Consented background playback owns its mediaPlayback foreground service and Stop
 notification independently of microphone, camera and display services. Changing
 tablet settings stops that direction. App launch or reconnection never resumes it.

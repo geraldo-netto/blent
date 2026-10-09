@@ -5,11 +5,11 @@ import android.media.*
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.flow.*
 
 /** OS focus notifications only update state; native playback stays on its IO owner. */
 internal class AudioFocus(private val manager: AudioManager, attributes: AudioAttributes) : OutputFocus {
-    private val state = AtomicInteger(0)
+    private val state = MutableStateFlow(0)
     private val request = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
         .setAudioAttributes(attributes).setWillPauseWhenDucked(true)
         .setOnAudioFocusChangeListener(::changed, Handler(Looper.getMainLooper())).build()
@@ -25,15 +25,19 @@ internal class AudioFocus(private val manager: AudioManager, attributes: AudioAt
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> 2
             else -> 3
         }
-        state.updateAndGet { current -> if (current >= 3) current else next }
+        state.update { current -> if (current >= 3) current else next }
     }
     override fun paused(): Boolean {
-        val current = state.get()
+        val current = state.value
         check(current < 3) { "Speaker audio focus lost. Start again on your computer." }
         return current != 1
     }
+    override suspend fun awaitReady() {
+        val ready = state.first { it != 0 && it != 2 }
+        check(ready < 3) { "Speaker audio focus lost. Start again on your computer." }
+    }
     override fun close() {
-        if (state.getAndSet(4) != 4) manager.abandonAudioFocusRequest(request)
+        if (state.getAndUpdate { 4 } != 4) manager.abandonAudioFocusRequest(request)
     }
 }
 
@@ -51,7 +55,8 @@ internal class AndroidSpeakerTrack(context: Context, attributes: AudioAttributes
             val format = AudioFormat.Builder().setSampleRate(48000).setEncoding(AudioFormat.ENCODING_PCM_16BIT)
                 .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO).build()
             track = AudioTrack.Builder().setAudioAttributes(attributes).setAudioFormat(format)
-                .setTransferMode(AudioTrack.MODE_STREAM).setBufferSizeInBytes(maxOf(minimum, 7680)).build()
+                .setTransferMode(AudioTrack.MODE_STREAM).setBufferSizeInBytes(maxOf(minimum, 7680))
+                .setPerformanceMode(if (preferences.speakerLowLatency) AudioTrack.PERFORMANCE_MODE_LOW_LATENCY else AudioTrack.PERFORMANCE_MODE_NONE).build()
             check(track!!.state == AudioTrack.STATE_INITIALIZED) { "Speaker initialization failed." }
             check(track!!.setVolume(preferences.gain / 100f) == AudioTrack.SUCCESS)
             if (preferences.builtIn) preferBuiltIn()
@@ -86,7 +91,13 @@ internal class AndroidSpeakerTrack(context: Context, attributes: AudioAttributes
         val native = checkNotNull(track)
         val route = native.routedDevice?.productName ?: "route pending"
         val played = native.playbackHeadPosition.toLong() and 0xffffffffL
-        return "$route · native buffer ${native.bufferSizeInFrames} frames · played $played frames · underruns ${native.underrunCount}"
+        return "$route · ${performanceMode(native.performanceMode)} mode · native buffer ${native.bufferSizeInFrames} frames · played $played frames · underruns ${native.underrunCount}"
+    }
+    private fun performanceMode(mode: Int): String = when (mode) {
+        AudioTrack.PERFORMANCE_MODE_NONE -> "standard"
+        AudioTrack.PERFORMANCE_MODE_LOW_LATENCY -> "low latency"
+        AudioTrack.PERFORMANCE_MODE_POWER_SAVING -> "power saving"
+        else -> "unknown"
     }
     override fun close() {
         val native = track; track = null

@@ -42,6 +42,14 @@ class AudioControlsTest {
             compose.onNodeWithText("Use host setting").performScrollTo().performClick()
             compose.onNodeWithContentDescription("Use built-in $label").performScrollTo().performClick()
             compose.onNodeWithContentDescription("Allow background $label").performScrollTo().performClick()
+            if (direction == 2) {
+                compose.onNodeWithContentDescription("Request low-latency speaker mode").performScrollTo().performClick()
+                compose.runOnIdle {
+                    assertTrue(binding.preferences.speakerLowLatency)
+                    assertTrue(AudioPreferencesStore.load(RuntimeEnvironment.getApplication(), 2).speakerLowLatency)
+                    assertFalse(AudioPreferencesStore.load(RuntimeEnvironment.getApplication(), 1).speakerLowLatency)
+                }
+            } else compose.onNodeWithContentDescription("Request low-latency speaker mode").assertDoesNotExist()
             compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsActions.SetProgress)).onLast().performScrollTo().performSemanticsAction(SemanticsActions.SetProgress) { it(gain.toFloat()) }
             compose.runOnIdle { assertEquals(gain, binding.preferences.gain); assertEquals(0, opened)
                 invitations.value = AudioEndpoint("a".repeat(64), 12345, direction, 1, 40, false); permission = true }
