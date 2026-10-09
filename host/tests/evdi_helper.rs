@@ -48,7 +48,7 @@ impl Harness {
         let mut compiler = Command::new("cc");
         if matches!(case, "T083" | "T580-tsan") {
             compiler.args(["-fsanitize=thread", "-fno-pie", "-no-pie"]);
-        } else if case == "T254" {
+        } else if matches!(case, "T254" | "T750-period") {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
@@ -368,4 +368,9 @@ fn t752_mutter_cpu_copy_preserves_channel_order_and_damage() {
     ] {
         harness.run(case);
     }
+}
+
+#[test]
+fn t750_periodic_requests_never_round_above_configured_fps() {
+    Harness::build("T750-period").run("T750-period");
 }

@@ -392,9 +392,11 @@ static void on_cursor_move(struct evdi_cursor_move event, void *user_data) {
 }
 
 static long capture_period_ms(capture_context_t *capture) {
-    long request_period_ms = 1000 / (capture->fps > 0 ? capture->fps : 60);
-    if (request_period_ms < 1) request_period_ms = 1;
-    return request_period_ms;
+    /* Round up: 16ms requests would permit 62.5fps for a configured60fps.
+       Keep arithmetic wide for malformed/extreme inputs; ready-event pipeline
+       behavior is separate and still requires T750 driver-race validation. */
+    long long fps = capture->fps > 0 ? capture->fps : 60;
+    return (long)((1000 + fps - 1) / fps);
 }
 
 static int capture_poll_timeout(capture_context_t *capture, long request_period_ms) {

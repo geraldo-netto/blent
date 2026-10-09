@@ -1,0 +1,77 @@
+{
+  "issue": "T750",
+  "status": "Partial mitigation; broader asynchronous pipeline/painter-state race remains open.",
+  "change": "Round periodic request intervals upward. A configured 60 FPS previously used 16 ms (up to 62.5 requests/s); it now uses 17 ms. Wide arithmetic handles malformed and extreme FPS without overflow. This is a maximum periodic request rate, not exact fractional cadence or a cap on ready-event submissions.",
+  "regression": "Permanent normal-suite host/tests/evdi_helper.rs::t750_periodic_requests_never_round_above_configured_fps executes C test T750-period under UBSan. Exhaustive 1..240 FPS bounds, minimal non-overshooting integer period, INT_MIN/-1/0 fallback, INT_MAX. Test failed before production change and passes afterward; logs retained.",
+  "coverage": {
+    "functions": 171,
+    "passing_at_least_80_percent": 171,
+    "below_80": 0,
+    "unmeasured": 0,
+    "suite": "47 helper, 8 conversion, 1 module, 1 frame-retirement tests pass"
+  },
+  "complexity": {
+    "functions": 7478,
+    "above_9": 0
+  },
+  "native": {
+    "environment": "Isolated QEMU/KVM guest, kernel 7.0.0-34-generic, stock EVDI 1.15.1 and libevdi 1.15.0, Weston 13.0.0 GL renderer, virtio primary GPU, only EVDI 640x480@60 output enabled. Production helper FIFO drained to /dev/null. No network device or host module installation.",
+    "client": "Stock weston-simple-egl -f; two consecutive five-second frame-count intervals per run. Counts are client-rendered frames, not physical presentation timestamps.",
+    "before": {
+      "client_frames_per_5s": [
+        313,
+        311
+      ],
+      "client_fps": [
+        62.6,
+        62.2
+      ],
+      "helper_grabs_per_second": [
+        62.1,
+        62.0
+      ]
+    },
+    "after": {
+      "client_frames_per_5s": [
+        297,
+        293
+      ],
+      "client_fps": [
+        59.4,
+        58.6
+      ],
+      "helper_grabs_per_second": [
+        58.5,
+        58.5
+      ]
+    },
+    "fixture": "Retained command/config/init snapshots use local absolute paths and existing SDK/runtime assets; they are evidence for this guest, not portable installation scripts. Inherited guest labels mention T752/Mutter although run-weston.sh executes Weston. Timeout exit 124 after 17 seconds is expected. Earlier setup attempts and pixman output-to-RAM run are excluded from acceptance.",
+    "limits": "One bounded single-output comparison verifies rounding overshoot only. It does not prove atomic painter state, damage ordering, exact refresh cadence, or behavior of immediate post-GRABPIX asynchronous requests. T593 declined cadence candidate and T382 performance-campaign exclusion remain unchanged."
+  },
+  "downloads": {
+    "approval": "Exactly the three packages approved by the maintainer; privately extracted, not installed on the host. All other assets reused locally.",
+    "packages": [
+      {
+        "name": "weston",
+        "version": "13.0.0-4build3",
+        "bytes": 953400
+      },
+      {
+        "name": "libweston-13-0",
+        "version": "13.0.0-4build3",
+        "bytes": 415184
+      },
+      {
+        "name": "libseat1",
+        "version": "0.8.0-1",
+        "bytes": 28266
+      }
+    ],
+    "total_bytes": 1396850
+  },
+  "source_sha256": {
+    "host/evdi/capture.c": "ff2812a967629899c3194298a7eb85ab367d9662038f159c8b851e3cbef4893c",
+    "host/tests/evdi_helper.rs": "07945d0771833c6433c7f38b606d7c13afd421226508683ca617d6995cb1192c",
+    "host/tests/evdi_helper_test.c": "f72136e6c7b87573685b3432a44fab40ec6ac3962975bd4ef568265240c37e0a"
+  }
+}

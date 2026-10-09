@@ -965,6 +965,22 @@ static void test_t293(void) {
     }
 }
 
+/* T750: periodic requests must not exceed their configured integer rate. */
+static void test_t750_period(void) {
+    for (int fps=1;fps<=240;fps++) {
+        g_capture.fps=fps;
+        long period=capture_period_ms(&g_capture);
+        assert((long long)period*fps >= 1000 && "T750: truncated period exceeds configured FPS");
+        assert((long long)(period-1)*fps < 1000);
+    }
+    const int invalid[]={INT_MIN,-1,0};
+    for (unsigned i=0;i<3;i++) {
+        g_capture.fps=invalid[i];
+        assert(capture_period_ms(&g_capture)==17);
+    }
+    g_capture.fps=INT_MAX;assert(capture_period_ms(&g_capture)==1);
+}
+
 /* T623: preserve retry recovery, but coalesce watchdog/fallback on one tick. */
 static void test_t623(void) {
     g_capture.have_mode = 1;
@@ -1494,6 +1510,7 @@ int main(int argc, char **argv) {
         {"T324", test_t324},
         {"T294", test_t294},
         {"T623", test_t623},
+        {"T750-period", test_t750_period},
         {"T751", test_t751},
         {"T752", test_t752},
         {"T752-bounds", test_t752_bounds},
