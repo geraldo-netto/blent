@@ -31,6 +31,15 @@ Container installation/build checks are described in [development.md](developmen
   manual configuration may be required or unavailable. Doctor reports manual
   mapping guidance instead of requiring KWin; display-only configurations skip
   input-mapping dependency checks.
+  **GNOME 51/Mutter with a 10-bit EVDI framebuffer is unvalidated and affected by
+  upstream [issue597](https://github.com/DisplayLink/evdi/issues/597) (T752).**
+  A native KMS probe confirmed that Ubuntu EVDI1.14.15 and stock1.15.1 accept
+  AR30/XR30 in ADDFB2 although their planes do not advertise those formats.
+  Blent's helper accepts only XR24/AR24; rejecting an unsupported incoming frame
+  cannot repair a compositor failing before capture starts. Selecting an 8-bit
+  encoder does not change the compositor's framebuffer format. No working Mutter51
+  fallback has been validated; use only a compositor/driver arrangement whose
+  EVDI output has been independently verified.
 - **Encoding:** new configurations use `auto`, which probes compatible stock
   FFmpeg encoders and checks render acknowledgements with H.264 fallback.
   Existing explicit choices remain unchanged. NVENC/VAAPI still require actual
