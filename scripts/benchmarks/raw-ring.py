@@ -18,6 +18,7 @@ def build(folder):
     folder.mkdir()
     source = folder / 'raw-ring.c'
     shutil.copy2(ROOT / 'scripts/benchmarks/raw-ring.c', source)
+    shutil.copy2(ROOT / 'scripts/benchmarks/checked_arguments.h', folder / 'checked_arguments.h')
     binary = folder / 'raw-ring'
     subprocess.run(['cc', '-O3', '-Wall', '-Wextra', '-Werror', '-std=c11', str(source), '-o', str(binary)], check=True)
     return binary

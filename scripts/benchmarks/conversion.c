@@ -1,5 +1,6 @@
 /* T383: isolated conversion-pool/triple-buffer replay; never opens EVDI. */
 #define _GNU_SOURCE
+#include "checked_arguments.h"
 #include "conversion.h"
 #include "frame_exchange.h"
 #include "conversion_exchange.h"
@@ -178,15 +179,15 @@ static void report(struct lane *lanes, int sessions, const struct rusage *before
 static int arguments(int argc, char **argv, int *sessions, int *workers,
                      int *scale, int *damage, int *samples) {
     if (argc < 6) return 0;
-    *sessions = atoi(argv[1]); *workers = atoi(argv[2]); *scale = atoi(argv[3]);
-    *damage = atoi(argv[4]); *samples = atoi(argv[5]);
+    *sessions = benchmark_number(argv[1], INT_MIN, INT_MAX); *workers = benchmark_number(argv[2], INT_MIN, INT_MAX); *scale = benchmark_number(argv[3], INT_MIN, INT_MAX);
+    *damage = benchmark_number(argv[4], INT_MIN, INT_MAX); *samples = benchmark_number(argv[5], INT_MIN, INT_MAX);
     return *sessions >= 1 && *sessions <= MAX_SESSIONS && *workers >= 1
         && *workers <= 128 && *scale >= 1 && *scale <= 4 && *damage >= 0 && *damage <= 3;
 }
 
 int main(int argc, char **argv) {
     assert(argc == 6 || argc == 7);
-    int multiplier = argc == 7 ? atoi(argv[6]) : 1;
+    int multiplier = argc == 7 ? benchmark_number(argv[6], INT_MIN, INT_MAX) : 1;
     assert(multiplier >= 1 && multiplier <= 4);
     int sessions, workers, scale, damage, samples;
     assert(arguments(argc, argv, &sessions, &workers, &scale, &damage, &samples));

@@ -1,6 +1,7 @@
 /* T575: timestamped X11 scene with a per-frame barcode. Own window only;
  * no input focus, pointer movement, EVDI ownership or device configuration. */
 #define _POSIX_C_SOURCE 200809L
+#include "checked_arguments.h"
 #include <X11/Xlib.h>
 #include <assert.h>
 #include <errno.h>
@@ -27,7 +28,7 @@ static void paint(Display *display, Window window, GC gc, unsigned sequence) {
 
 int main(int argc, char **argv) {
     assert(argc == 4);
-    int x = atoi(argv[1]), y = atoi(argv[2]), fps = atoi(argv[3]);
+    int x = benchmark_number(argv[1], INT_MIN, INT_MAX), y = benchmark_number(argv[2], INT_MIN, INT_MAX), fps = benchmark_number(argv[3], INT_MIN, INT_MAX);
     assert(x >= 0 && x <= 16000);
     assert(y >= 0 && y <= 16000);
     assert(fps >= 1 && fps <= 60);

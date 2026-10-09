@@ -1,5 +1,6 @@
 /* T418: actual conversion and raw transport, without attaching a display. */
 #define _GNU_SOURCE
+#include "checked_arguments.h"
 #include "raw_ring.h"
 #include "conversion.h"
 #include <assert.h>

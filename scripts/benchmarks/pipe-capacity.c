@@ -1,6 +1,7 @@
 /* T405/T389: isolated raw-pipe capacity experiment; no EVDI, ADB or FFmpeg.
  * Each session has its own producer/reader, as in the capture pipeline. */
 #define _GNU_SOURCE
+#include "checked_arguments.h"
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -131,14 +132,14 @@ static void initialize(struct session *session, pthread_barrier_t *barrier, char
     assert(pipe2(pipe, O_CLOEXEC) == 0);
     session->reader = pipe[0]; session->writer = pipe[1]; session->start = barrier;
     session->sample_pending = sample;
-    int requested = atoi(argv[1]) * 1024 * 1024;
+    int requested = benchmark_number(argv[1], INT_MIN, INT_MAX) * 1024 * 1024;
     session->capacity = fcntl(pipe[1], F_SETPIPE_SZ, requested);
     /* Do not silently label a capped fallback as a successful larger-pipe trial. */
     if (session->capacity < 0) { perror("F_SETPIPE_SZ"); exit(77); }
     assert(session->capacity == fcntl(pipe[1], F_GETPIPE_SZ));
     assert(fcntl(pipe[1], F_SETFL, O_NONBLOCK) == 0);
-    session->size = (size_t)strtoul(argv[3], NULL, 10);
-    session->frames = atoi(argv[4]); session->paced = atoi(argv[5]); session->delay_ms = atoi(argv[6]);
+    session->size = (size_t)benchmark_number(argv[3], 0, INT_MAX);
+    session->frames = benchmark_number(argv[4], INT_MIN, INT_MAX); session->paced = benchmark_number(argv[5], 0, 1); session->delay_ms = benchmark_number(argv[6], INT_MIN, INT_MAX);
     session->payload = malloc(session->size);
     assert(session->payload);
     for (size_t i = 0; i < session->size; i++) session->payload[i] = (unsigned char)(i * 37 + i / 997);
@@ -187,24 +188,24 @@ static void measure(struct session *sessions, int count, pthread_barrier_t *barr
 }
 
 static void validate(char **argv) {
-    int capacity = atoi(argv[1]), count = atoi(argv[2]), frames = atoi(argv[4]);
-    size_t size = (size_t)strtoul(argv[3], NULL, 10);
+    int capacity = benchmark_number(argv[1], INT_MIN, INT_MAX), count = benchmark_number(argv[2], INT_MIN, INT_MAX), frames = benchmark_number(argv[4], INT_MIN, INT_MAX);
+    size_t size = (size_t)benchmark_number(argv[3], 0, INT_MAX);
     assert(capacity >= 1 && capacity <= 32);
     assert(count >= 1 && count <= MAX_SESSIONS);
     assert(size >= 16 && size <= 32 * 1024 * 1024);
     assert(frames >= 1 && frames <= MAX_FRAMES);
-    assert(atoi(argv[6]) >= 0 && atoi(argv[6]) <= 100);
+    assert(benchmark_number(argv[6], INT_MIN, INT_MAX) >= 0 && benchmark_number(argv[6], INT_MIN, INT_MAX) <= 100);
 }
 
 int main(int argc, char **argv) {
     assert(argc == 7 || argc == 8);
     validate(argv);
-    int count = atoi(argv[2]);
+    int count = benchmark_number(argv[2], INT_MIN, INT_MAX);
     pthread_barrier_t barrier;
     assert(pthread_barrier_init(&barrier, NULL, (unsigned)count * 2 + 1) == 0);
     struct session *sessions = calloc((size_t)count, sizeof(*sessions));
     assert(sessions);
-    int sample = argc == 7 ? 1 : atoi(argv[7]);
+    int sample = argc == 7 ? 1 : benchmark_number(argv[7], 0, 1);
     for (int i = 0; i < count; i++) initialize(&sessions[i], &barrier, argv, sample);
     measure(sessions, count, &barrier);
     for (int i = 0; i < count; i++) {

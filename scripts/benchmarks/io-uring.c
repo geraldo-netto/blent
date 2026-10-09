@@ -1,6 +1,7 @@
 /* T405: isolated FIFO-like pipe/TCP replay; never opens EVDI or ADB.
  * Optional benchmark dependency: liburing. Production does not depend on it. */
 #define _GNU_SOURCE
+#include "checked_arguments.h"
 #include <liburing.h>
 #include <arpa/inet.h>
 #include <assert.h>
@@ -209,9 +210,9 @@ static void run(struct channel *channels, int count, struct io_uring *ring, int 
 
 int main(int argc, char **argv) {
     assert(argc == 7);
-    int use_uring = atoi(argv[1]), tcp = atoi(argv[2]), count = atoi(argv[3]);
-    size_t size = (size_t)strtoul(argv[4], NULL, 10);
-    int frames = atoi(argv[5]), paced = atoi(argv[6]);
+    int use_uring = benchmark_number(argv[1], 0, 1), tcp = benchmark_number(argv[2], 0, 1), count = benchmark_number(argv[3], INT_MIN, INT_MAX);
+    size_t size = (size_t)benchmark_number(argv[4], 0, INT_MAX);
+    int frames = benchmark_number(argv[5], INT_MIN, INT_MAX), paced = benchmark_number(argv[6], 0, 1);
     assert(count >= 1 && count <= MAX_CHANNELS);
     assert(size >= 8 && size <= 32 * 1024 * 1024);
     assert(frames >= 1 && frames <= MAX_FRAMES);

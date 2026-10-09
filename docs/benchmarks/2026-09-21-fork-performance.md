@@ -1,5 +1,13 @@
 # Performance work since the fork
 
+Harness safety update (T774, 2026-10-09): maintained C executables under
+`scripts/benchmarks/` reject incomplete/overflowing numeric strings and reject
+`NDEBUG` builds because assertions execute required checks and system calls.
+Copied C sources under dated `docs/benchmarks/` directories remain historical
+evidence, not current runnable tooling. Use the maintained harnesses for new
+trials; archived results do not establish safety of malformed arguments or
+assertion-disabled builds.
+
 Evidence inventory through 2026-09-21. The local upstream merge base is
 `96fce89c2b3e57e092d59a4890235aec9ae777c3` (upstream 1.2.3); the first fork
 commit is `6fc24c5`, dated 2026-09-16. The comparisons below come from the fork's

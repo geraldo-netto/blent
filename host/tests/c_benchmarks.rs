@@ -2,14 +2,35 @@
 use std::{path::PathBuf, process::Command};
 
 #[test]
+fn t774_benchmarks_forbid_disabling_required_assertions() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_owned();
+    for name in ["conversion", "pipe-capacity", "raw-ring", "io-uring", "gpu-scene", "shared-encode-producer"] {
+        let output = Command::new("cc").current_dir(&root)
+            .args(["-E", "-DNDEBUG", "-Ihost/evdi"])
+            .arg(format!("scripts/benchmarks/{name}.c")).output().unwrap();
+        assert!(!output.status.success(), "T774: {name} accepted NDEBUG");
+        assert!(String::from_utf8_lossy(&output.stderr).contains("require assertions"));
+    }
+}
+
+#[test]
 fn t764_conversion_uses_actual_padded_stride() {
+    run_conversion_fixture("benchmark_stride.c");
+}
+
+#[test]
+fn t774_benchmarks_reject_malformed_numeric_fields() {
+    run_conversion_fixture("benchmark_arguments.c");
+}
+
+fn run_conversion_fixture(source: &str) {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let dir = tempfile::tempdir().unwrap();
     let binary = dir.path().join("stride-test");
     let output = Command::new("cc").args([
         "-std=c11", "-O1", "-g", "-pthread", "-fsanitize=address,undefined",
         "-fno-sanitize-recover=all", "-fno-pie", "-no-pie", "-I",
-    ]).arg(root.join("evdi")).arg(root.join("tests/benchmark_stride.c"))
+    ]).arg(root.join("evdi")).arg(root.join("tests").join(source))
         .arg(root.join("evdi/conversion.c")).arg(root.join("evdi/frame_exchange.c"))
         .arg("-o").arg(&binary).output().unwrap();
     assert!(output.status.success(), "{}", String::from_utf8_lossy(&output.stderr));

@@ -1,5 +1,6 @@
 /* T389 isolated raw transport prototype: stock Linux APIs, no EVDI/FFmpeg. */
 #define _GNU_SOURCE
+#include "checked_arguments.h"
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -248,8 +249,8 @@ static void consumer(int socket, int pipe_fd, size_t size, uint64_t count, int r
 }
 int main(int argc, char **argv) {
     assert(argc == 5);
-    size_t size = strtoull(argv[1], NULL, 10);
-    uint64_t count = strtoull(argv[2], NULL, 10);
+    size_t size = benchmark_number(argv[1], 0, INT_MAX);
+    uint64_t count = benchmark_number(argv[2], 0, INT_MAX);
     int ring = strcmp(argv[3], "ring") == 0;
     assert(size > 0 && size <= 64 * 1024 * 1024 && count >= SLOTS && count <= 10000);
     assert(ring || strcmp(argv[3], "fifo") == 0);
