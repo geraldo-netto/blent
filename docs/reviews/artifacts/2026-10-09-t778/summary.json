@@ -1,0 +1,30 @@
+{
+  "baseline_conversion_commit": "82f4b2a",
+  "trials": 5,
+  "processes": 240,
+  "samples_per_process": 96,
+  "warmups": 16,
+  "flags": [
+    "-O3",
+    "-pthread"
+  ],
+  "timings": "t778-final-paired.json.gz",
+  "production_sha256": {
+    "host/evdi/conversion.c": "eebb0fd9c8a1e897bbacf6105771f4fc4e484fb86026e6ead6b7567adb9cc009",
+    "host/evdi/conversion.h": "bfaea30f1387650045ec5f1d56d984a9c0b5825447a1f79740c8f267078bdaf8",
+    "host/evdi/evdi_helper.c": "6e45fb9dc3ad837e555eb4e8bd06564e6c318a83b9b2dc356107601598308d32"
+  },
+  "ymm_instruction_lines": {
+    "convert_job": 0,
+    "convert_adaptive_job": 0,
+    "convert_avx2_job": 927,
+    "convert_avx2_adaptive_job": 927
+  },
+  "coverage_functions": 192,
+  "coverage_passing": 192,
+  "sanitizers": [
+    "GCC ASan/UBSan",
+    "Clang ASan/UBSan"
+  ],
+  "fallback_test": "BLENT_NO_AVX2 build executes the same permanent oracle suite"
+}

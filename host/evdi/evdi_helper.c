@@ -453,7 +453,18 @@ static int configure_raw_socket(const char *value) {
     return 1;
 }
 
+static int configure_conversion_simd(const char *value) {
+    if (!value || !strcmp(value, "auto")) return conv_pool_set_simd(&g_conversion, CONV_SIMD_AUTO);
+    if (!strcmp(value, "portable")) return conv_pool_set_simd(&g_conversion, CONV_SIMD_PORTABLE);
+    if (!strcmp(value, "avx2")) return conv_pool_set_simd(&g_conversion, CONV_SIMD_AVX2);
+    return 0;
+}
+
 int main(int argc, char *argv[]) {
+    if (!configure_conversion_simd(getenv("BLENT_CONVERSION_SIMD"))) {
+        fprintf(stderr, "[evdi-helper] Invalid or unsupported BLENT_CONVERSION_SIMD; use auto, portable or avx2\n");
+        return 2;
+    }
     helper_options_t options = parse_helper_options(argc, argv);
     if (options.invalid) {
         fprintf(stderr, "[evdi-helper] Invalid or incomplete command-line option\n");

@@ -92,3 +92,10 @@ fn t769_weighted_jobs_balance_pixels_and_preserve_output() {
 fn t768_adaptive_spans_skip_large_gaps_and_bound_fragmentation() {
     run("adaptive");
 }
+
+#[test]
+fn t778_runtime_simd_matches_oracle_and_rejects_unsupported_policies() {
+    run("simd");
+    run_with_flags("simd", &[]);
+    run_with_flags("simd", &["-DBLENT_NO_AVX2", "-fsanitize=address,undefined"]);
+}

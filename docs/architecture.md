@@ -793,3 +793,21 @@ found two-second CLI keyframe gaps at one input/s and about one-second ACK
 delay for H.264 High; Constrained Baseline stayed responsive. Lower idle work
 therefore needs coordinated keyframe scheduling and profile-aware validation.
 This does not enable arbitrary encoded-reference dropping.
+
+## CPU conversion dispatch
+
+The Linux EVDI helper inherits `BLENT_CONVERSION_SIMD` from the host process.
+Default `auto` selects runtime-checked AVX2 for unscaled conversion when average
+work per dirty chroma row is at least 256 pixels; short spans and scaled
+conversion retain the portable kernels. CPU and OS AVX2 support are both required.
+`portable` disables the wider dispatch while retaining ordinary compiler SIMD.
+`avx2` forces the AVX2 unscaled kernel even for narrow spans; scaled conversion
+still uses the shared portable kernel. Unsupported or unknown values fail helper
+startup before opening capture resources. Values are case-sensitive.
+
+The setting trades wider-vector throughput against CPU-specific frequency and
+short-span overhead. Release flags retain their portable baseline. The conversion
+contract owns policy and arithmetic; the Linux helper adapter maps the environment
+to that policy. Kernel selection is published with each job batch and cannot
+change while workers hold borrowed frame buffers. Local measurements and scope
+limits are in the [C performance review](reviews/2026-10-09-c-performance.md).

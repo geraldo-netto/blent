@@ -84,6 +84,7 @@ impl Harness {
                 | "T767"
                 | "T780"
                 | "T779"
+                | "T778"
                 | "T082"
                 | "T274"
                 | "T340"
@@ -427,4 +428,9 @@ fn t767_c_boundaries_reject_bounded_invalid_mutations() {
 #[test]
 fn t779_overlapping_normalization_has_bounded_work_and_exact_pixels() {
     Harness::build("T779").run("T779");
+}
+
+#[test]
+fn t778_invalid_simd_environment_is_rejected_before_capture_resources() {
+    Harness::build("T778").run("T778");
 }

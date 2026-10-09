@@ -265,3 +265,36 @@ reduce 63 full-overlap rectangles from 18,019.955 to 279.655 µs median wall tim
 63 narrow fragments take 10.370 versus 11.963 µs (+1.593 µs). There are no new
 allocations. The full capture gate passes 185/185 individual functions at ≥80%;
 ASan/UBSan and the red/green regression pass. T779 is resolved.
+
+## T778 implementation follow-up: runtime AVX2
+
+Runtime CPU/OS admission now selects AVX2 for unscaled work averaging at least
+256 pixels per dirty chroma row. Portable and scaled kernels remain available;
+shared arithmetic is inlined into ISA-specific entry points. There is no global
+`-march=native`, allocation or duplicated pixel algorithm. The helper maps
+`BLENT_CONVERSION_SIMD=auto|portable|avx2` into the independent conversion policy;
+invalid/unsupported requests fail before capture resources open. The default is
+auto; portable lets users avoid CPU-specific wider-vector tradeoffs.
+
+[Final paired evidence](artifacts/2026-10-09-t778/README.md), five trials and 240
+processes, gives these median microseconds at 1920×1080:
+
+| Workload | Before wall | After wall | Before CPU | After CPU |
+|---|---:|---:|---:|---:|
+| Full frame, scale 1, one worker | 644.865 | 474.374 | 648.181 | 487.665 |
+| Full frame, scale 1, four workers | 226.371 | 136.516 | 825.343 | 513.524 |
+| Skewed damage, scale 1, one worker | 342.186 | 259.195 | 347.182 | 260.235 |
+| Distant damage, scale 1, one worker | 3.216 | 3.246 | 3.418 | 3.410 |
+| Full frame, scale 2, one worker | 1220.174 | 1230.695 | 1232.361 | 1256.726 |
+
+The unscaled full-frame wall reduction is about 26% with one worker and 40%
+with four. Scale 2 has no demonstrated improvement; it retains the same kernel
+and shows small run-to-run differences. Narrow strips remain portable. This is a
+conversion measurement on this CPU, not an app FPS or universal hardware claim.
+Forced-path and disabled-AVX2 regressions, GCC/Clang ASan/UBSan, assembly checks
+and the 192/192 individual production-function coverage gate pass. T778 is resolved.
+
+T777's older damage replay now uses the shared checked numeric parser and rejects
+NDEBUG builds. Permanent malformed/range/build-contract regressions and a valid
+scale-4 replay pass in the normal benchmark test target; [red/green evidence](artifacts/2026-10-09-t777/README.md)
+is retained. T777 is resolved; the earlier research-only description is historical.

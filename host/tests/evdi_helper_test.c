@@ -1476,6 +1476,7 @@ static void test_t415_rounding(void) {
 #include "cursor_overlay.c"
 #include "frame_format.c"
 #include "normalization_work.c"
+#include "helper_simd.c"
 #include "shared_damage.c"
 #include "fifo_demand.c"
 
@@ -1533,6 +1534,7 @@ int main(int argc, char **argv) {
         {"T752", test_t752},
         {"T780", test_t780_full_rect_capacity},
         {"T779", test_t779_normalization_work},
+        {"T778", test_t778_simd_options},
         {"T752-bounds", test_t752_bounds},
         {"T752-allocation", test_t752_allocation},
         {"T752-cursor", test_t752_cursor},

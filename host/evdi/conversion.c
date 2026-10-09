@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#if (defined(__x86_64__) || defined(__i386__)) && !defined(BLENT_NO_AVX2)
+#define BLENT_AVX2 1
+#endif
+
 void conv_copy_rgba_to_bgra(unsigned char *destination, const unsigned char *source, size_t pixels) {
     for (size_t x = 0; x < pixels; x++, destination += 4, source += 4) {
         destination[0] = source[2]; destination[1] = source[1];
@@ -81,7 +85,7 @@ static inline void convert_strip_scaled(const conv_job_t *j, const int n, int ad
     }
 }
 
-static inline void convert_native_span(const conv_job_t *j, int cy, pixel_span_t span) {
+static inline __attribute__((always_inline)) void convert_native_span(const conv_job_t *j, int cy, pixel_span_t span) {
     const int w = j->ow, stride = j->stride;
     int y0 = cy * 2, y1 = y0 + 1;
     const unsigned char *row0 = j->src + (size_t)y0 * stride;
@@ -108,7 +112,7 @@ static inline void convert_native_span(const conv_job_t *j, int cy, pixel_span_t
     }
 }
 
-static inline void convert_strip(const conv_job_t *j, int adaptive) {
+static inline __attribute__((always_inline)) void convert_strip(const conv_job_t *j, int adaptive) {
     for (int cy = j->cy0; cy < j->cy1; cy++) {
         if (!row_is_dirty(j->dirty, cy)) continue;
         pixel_row_t row = row_span(j, cy);
@@ -140,7 +144,52 @@ static void convert_adaptive_job(const conv_job_t *job) {
     }
 }
 
+/* Keep the arithmetic shared. Inlining specializes only these entry points;
+ * generic builds and other architectures retain their original ISA baseline. */
+#ifdef BLENT_AVX2
+__attribute__((target("avx2"))) static void convert_avx2_job(const conv_job_t *job) {
+    convert_strip(job, 0);
+}
+__attribute__((target("avx2"))) static void convert_avx2_adaptive_job(const conv_job_t *job) {
+    convert_strip(job, 1);
+}
+#endif
+
+int conv_simd_available(conv_simd_t policy) {
+    if (policy == CONV_SIMD_AUTO || policy == CONV_SIMD_PORTABLE) return 1;
+#ifdef BLENT_AVX2
+    return policy == CONV_SIMD_AVX2 && __builtin_cpu_supports("avx2");
+#else
+    return 0;
+#endif
+}
+
+int conv_pool_set_simd(conv_pool_t *pool, conv_simd_t policy) {
+    if (!conv_simd_available(policy)) return 0;
+    pool->simd = policy;
+    return 1;
+}
+
 typedef struct { int rows; size_t width; int split; } conv_work_t;
+
+#ifdef BLENT_AVX2
+static int use_avx2(const conv_job_t *frame, conv_work_t work, conv_simd_t policy) {
+    if (frame->scale != 1 || policy == CONV_SIMD_PORTABLE) return 0;
+    if (!conv_simd_available(CONV_SIMD_AVX2)) return 0;
+    if (policy == CONV_SIMD_AVX2) return 1;
+    if (frame->dirty || frame->spans) return work.rows > 0 && work.width >= (size_t)work.rows * 256;
+    return frame->ow >= 256;
+}
+#endif
+
+static conv_kernel_t select_kernel(const conv_job_t *frame, conv_work_t work, conv_simd_t policy) {
+#ifdef BLENT_AVX2
+    if (use_avx2(frame, work, policy)) return work.split ? convert_avx2_adaptive_job : convert_avx2_job;
+#else
+    (void)frame; (void)policy;
+#endif
+    return work.split ? convert_adaptive_job : convert_job;
+}
 
 static size_t row_work(const conv_job_t *frame, int cy) {
     if (!row_is_dirty(frame->dirty, cy)) return 0;
@@ -254,7 +303,7 @@ static void start_workers(conv_pool_t *pool, int count) {
 
 void conv_pool_convert(conv_pool_t *pool, const conv_job_t *frame) {
     conv_work_t work = (frame->dirty || frame->spans) ? measure_work(frame) : (conv_work_t){0};
-    pool->kernel = work.split ? convert_adaptive_job : convert_job;
+    pool->kernel = select_kernel(frame, work, pool->simd);
     int count = job_count(pool, frame, work);
     pool->last_jobs = count;
     if (count == 0) return;
