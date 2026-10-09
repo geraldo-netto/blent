@@ -222,3 +222,23 @@ while awaiting the control lock, settings persistence/range and existing ordered
 handshakes/rejection recovery. Current and historical replay APKs both build
 through the generation adapter. Full offline validation: 810 tests pass;
 903/903 methods meet individual 80% coverage; complexity <=9. Tooling tests pass.
+
+## T795: identity PCM ownership transfer
+
+Aligned zero-ppm blocks transfer their removed PCM array directly to the output;
+fractional phase, partial offset and signed-rate correction keep interpolation.
+Offer explicitly transfers ownership; poll removes the complete block before
+returning its mutable array. Timestamp/discontinuity semantics are unchanged.
+
+Three permanent tests failed before the optimization, then passed: exact sample
+and ownership transfer, seeded flat-sample interpolation reference with signed
+rates/phase/offset, and overflow/expiry/discontinuity/invalid lengths. Existing
+native-clock reset/epoch/boundary tests remain. Full offline validation: 813
+tests pass, 904/904 methods meet 80% individually, complexity <=9.
+
+[ART measurements](artifacts/2026-10-10-android-audio/README.md) on SDK36: compiled
+isolated debug-APK median drops from 194.163 to 55.435 µs/aligned block and from
+2211.840 to 98.304 allocated bytes/block, with identical checksums. Signed-rate
+replays count actual transfer frequency and preserve the fractional fallback.
+These synthetic CPU/allocation results do not measure native playback or physical
+clock-session frequency. No dependency downloads or production app reload.

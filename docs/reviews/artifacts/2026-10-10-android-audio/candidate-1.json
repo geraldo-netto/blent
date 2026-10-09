@@ -1,0 +1,95 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "identity_trials": [
+    {
+      "count": 2000,
+      "elapsed_ns": 113712385,
+      "cpu_ns": 112520263,
+      "allocated_bytes": 229376,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 113492423,
+      "cpu_ns": 112186651,
+      "allocated_bytes": 196608,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 113358500,
+      "cpu_ns": 112121233,
+      "allocated_bytes": 229376,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 113180615,
+      "cpu_ns": 112011586,
+      "allocated_bytes": 196608,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 113126731,
+      "cpu_ns": 111987923,
+      "allocated_bytes": 196608,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 68342385,
+      "cpu_ns": 67420495,
+      "allocated_bytes": 229376,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 33958461,
+      "cpu_ns": 33716497,
+      "allocated_bytes": 196608,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 31300538,
+      "cpu_ns": 31075041,
+      "allocated_bytes": 196608,
+      "checksum": 20027889
+    }
+  ],
+  "synthetic_frequencies": [
+    {
+      "ppm": -1000,
+      "outputs": 1197,
+      "transferred_arrays": 197,
+      "checksum": -7777258593184799987
+    },
+    {
+      "ppm": -500,
+      "outputs": 1197,
+      "transferred_arrays": 197,
+      "checksum": -880338819059337882
+    },
+    {
+      "ppm": 0,
+      "outputs": 1197,
+      "transferred_arrays": 1197,
+      "checksum": 5602669356105387700
+    },
+    {
+      "ppm": 500,
+      "outputs": 1197,
+      "transferred_arrays": 197,
+      "checksum": 2212876225284399495
+    },
+    {
+      "ppm": 1000,
+      "outputs": 1197,
+      "transferred_arrays": 197,
+      "checksum": -2021633226973648127
+    }
+  ],
+  "run_id": "candidate-1"
+}

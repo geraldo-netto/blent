@@ -13,6 +13,7 @@ internal class AudioPlaybackQueue(targetMs: Int, private val clock: () -> Long) 
     private var ppm = 0
     private var measured: Int? = null
     init { require(targetMs in 20..200 && targetMs % 10 == 0) }
+    /** Transfers PCM ownership to the queue; callers must not mutate it. */
     @Synchronized fun offer(block: AudioBlock) {
         require(block.samples.size == 960)
         val now = advance()
@@ -38,12 +39,17 @@ internal class AudioPlaybackQueue(targetMs: Int, private val clock: () -> Long) 
         val needed = (phase + 479 * step + 999_999) / 1_000_000 + 1
         if (blocks.size * 480 - offset < maxOf(needed, end / 1_000_000)) { clear(); return null }
         val at = blocks.first.at
-        val result = PlaybackChunk(interpolate(step), at, discontinuity)
+        val result = PlaybackChunk(outputSamples(step), at, discontinuity)
         consume((end / 1_000_000).toInt())
         phase = end % 1_000_000
         discontinuity = false
         return result
     }
+    // Identity consumes the entire first block before poll returns. No remaining
+    // queue entry may borrow this mutable array; fractional/offset paths copy.
+    private fun outputSamples(step: Long): ShortArray =
+        if (ppm == 0 && phase == 0L && offset == 0) blocks.first.samples else interpolate(step)
+
     private fun interpolate(step: Long): ShortArray {
         val samples = ShortArray(960)
         // Snapshot at most 20 references; the arrays remain queue-owned during this call.

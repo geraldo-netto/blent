@@ -1,0 +1,95 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "identity_trials": [
+    {
+      "count": 2000,
+      "elapsed_ns": 391160423,
+      "cpu_ns": 387624456,
+      "allocated_bytes": 4423680,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 388014654,
+      "cpu_ns": 384519113,
+      "allocated_bytes": 4390912,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 388284230,
+      "cpu_ns": 384697350,
+      "allocated_bytes": 4423680,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 391223423,
+      "cpu_ns": 387016381,
+      "allocated_bytes": 4423680,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 391672384,
+      "cpu_ns": 387718182,
+      "allocated_bytes": 4390912,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 388924808,
+      "cpu_ns": 385308617,
+      "allocated_bytes": 4423680,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 387080615,
+      "cpu_ns": 383613000,
+      "allocated_bytes": 4423680,
+      "checksum": 20027889
+    },
+    {
+      "count": 2000,
+      "elapsed_ns": 383418423,
+      "cpu_ns": 380041343,
+      "allocated_bytes": 4423680,
+      "checksum": 20027889
+    }
+  ],
+  "synthetic_frequencies": [
+    {
+      "ppm": -1000,
+      "outputs": 1197,
+      "transferred_arrays": 0,
+      "checksum": -7777258593184799987
+    },
+    {
+      "ppm": -500,
+      "outputs": 1197,
+      "transferred_arrays": 0,
+      "checksum": -880338819059337882
+    },
+    {
+      "ppm": 0,
+      "outputs": 1197,
+      "transferred_arrays": 0,
+      "checksum": 5602669356105387700
+    },
+    {
+      "ppm": 500,
+      "outputs": 1197,
+      "transferred_arrays": 0,
+      "checksum": 2212876225284399495
+    },
+    {
+      "ppm": 1000,
+      "outputs": 1197,
+      "transferred_arrays": 0,
+      "checksum": -2021633226973648127
+    }
+  ],
+  "run_id": "baseline-3"
+}
