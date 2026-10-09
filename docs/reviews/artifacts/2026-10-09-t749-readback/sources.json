@@ -1,0 +1,7 @@
+{
+  "scripts/benchmarks/evdi_snapshot/gbm_readback.c": "c009bba34a0f27d1369ee657428a82ff2e9cd98120a8a4753d0ae216b2aa8e92",
+  "scripts/benchmarks/evdi_snapshot/pattern.h": "c539433deeb17573c102e944ab01fbdcafe645f0cff55bb3843000916031fecf",
+  "scripts/benchmarks/evdi_snapshot/wayland.c": "0d6c792cdf7ead6e0822f49835173c9965f5a2b7cd51e05101de8897931e94d2",
+  "scripts/benchmarks/evdi_snapshot/observe.c": "33405e1b728746980271c3e397ae7c623c4754a5589fc8103f35ca8d25e90daa",
+  "scripts/benchmarks/evdi_snapshot/consume.c": "6e2d14088ed2796041378fb8c337b10c4cde63ca81a44ec5e7077cd6d389c397"
+}

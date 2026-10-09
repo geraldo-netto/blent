@@ -94,9 +94,11 @@ Both GL runs produce no recognizable frame ID at the stock libevdi output.
 Diagnostic samples from seven rows and 40 columns are all zero in the inspected
 blue byte. Pixman's corresponding samples carry the intended identifiers and
 tile values. Thus the GL result cannot validate snapshot ordering, and a Blent
-NV12 conversion change cannot recover the absent source pattern. The precise
-render/export/import/readback cause is unassigned. T749 retains this concrete
-failure for investigation; it is not silently called an issue511 reproduction.
+NV12 conversion change cannot recover the absent source pattern. At the time of these runs the precise render/export/import/readback cause was
+unassigned. The [subsequent T749 controls](../2026-10-09-t749-readback/README.md)
+isolate virtual GPU CPU visibility: full GBM readback passes and partial readback
+exposes only the mapped rows. That active intervention does not certify the
+original path or establish an issue511 reproduction.
 
 ## Permanent owned-code regression and limits
 
@@ -112,7 +114,7 @@ Changed/new fixture functions satisfy cyclomatic complexity ≤9. Native fixture
 programs also reject execution on this unmarked host with exit 64.
 
 No result proves the absence of every kernel interleaving or imported-GPU race.
-The exact remaining prerequisite is a working GL/import readback path (T749),
+The exact remaining prerequisite is a working unassisted GL/import path (T749),
 then repetition of the frame-identity test on that path. Current evidence supports
 the tested CPU-backed paths; it does not justify a blanket release-failure claim
 based only on an unconfirmed upstream race. No heuristics or external patches

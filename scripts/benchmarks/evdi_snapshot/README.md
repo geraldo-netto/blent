@@ -47,3 +47,14 @@ It does not require a guest, libdrm, libevdi or Wayland.
 
 Native run configurations, observed results and limitations:
 [2026-10-09 evidence](../../../docs/reviews/artifacts/2026-10-09-t750-snapshot/README.md).
+
+`gbm_readback.c` is a separate **active** T749 diagnostic for a disposable GL
+compositor guest. Build with `cc -O2 -shared -fPIC gbm_readback.c -lgbm -ldl -o
+snapshot-gbm.so`. Apply its `LD_PRELOAD` only to Weston; set `SNAP_READBACK=wait`,
+`strip` or `full`. These respectively delay 2 ms, map only the 16-row identifier
+strip, or map the full 640×480 GBM front buffer with `GBM_BO_TRANSFER_READ`.
+Readback can change CPU visibility and synchronization. Never treat a successful
+full-map run as passive validation of the original path or deploy the preload
+as a production workaround. The strict consumer intentionally rejects the
+wait/partial-map controls; keep those failures visible. See the
+[T749 readback attribution and remaining prerequisites](../../../docs/reviews/artifacts/2026-10-09-t749-readback/README.md).

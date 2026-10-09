@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+base=/backups/disk2/blent-work/2026-10-09-evdi-second
+work=/backups/disk2/blent-work/2026-10-09-t750-snapshot
+sdk=/var/lib/flatpak/runtime/org.gnome.Sdk/x86_64/51/9283544305146d753f620e8b92976537033a439a942687c7c601e4b0a12a2df9/files
+gl=/home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.GL.default/x86_64/26.08/badc1097c419e73781cf098413ffa8e7bf7db3528572c11712265b9193921842/files
+cp /usr/share/OVMF/OVMF_VARS_4M.fd "$work/vars-$1.fd"
+timeout 50s qemu-system-x86_64 -name blent-t750-snapshot-isolated -machine q35,accel=kvm -cpu host -m 2048 -smp 2 -nodefaults -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file="$work/vars-$1.fd" -kernel /backups/disk2/blent-work/t700-fix/kernel/boot/vmlinuz-7.0.0-34-generic -initrd "$work/${2:-guest}.cpio.gz" -append "console=ttyS0 rdinit=/init loglevel=4 blent-evdi-review=1 blent-variant=${3:-$1}" -device virtio-vga-gl -display egl-headless,rendernode=/dev/dri/renderD128 -serial "file:$work/$1.log" -virtfs "local,path=$sdk,mount_tag=sdk,security_model=none,readonly=on" -virtfs "local,path=$base,mount_tag=work,security_model=none,readonly=on" -virtfs "local,path=$gl,mount_tag=gl,security_model=none,readonly=on" -no-reboot > "$work/$1-qemu.log" 2>&1

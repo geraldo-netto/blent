@@ -1,0 +1,21 @@
+#define _GNU_SOURCE
+#include "/backups/disk2/projects/blent/scripts/benchmarks/evdi_snapshot/pattern.h"
+#include <gbm.h>
+#include <dlfcn.h>
+#include <errno.h>
+struct gbm_bo *gbm_surface_lock_front_buffer(struct gbm_surface *surface) {
+    guest_only();
+    struct gbm_bo *(*real)(struct gbm_surface *)=dlsym(RTLD_NEXT,"gbm_surface_lock_front_buffer");assert(real);
+    struct gbm_bo *bo=real(surface);assert(bo);
+    unsigned w=gbm_bo_get_width(bo),h=gbm_bo_get_height(bo),format=gbm_bo_get_format(bo);
+    fprintf(stderr,"T749_BO width=%u height=%u format=%.4s\n",w,h,(char *)&format);
+    if(w==SW && h==SH) {
+        uint32_t stride;void *map;
+        unsigned char *pixels=gbm_bo_map(bo,0,0,w,h,GBM_BO_TRANSFER_READ,&stride,&map);
+        assert(pixels && stride>=SW*4);
+        int frame,bad=check_image(pixels,stride,4,&frame);
+        fprintf(stderr,"T749_GBM %lld id=%d bad=%d stride=%u first=%u\n",stamp_us(),frame,bad,stride,pixels[0]);
+        gbm_bo_unmap(bo,map);
+    }
+    return bo;
+}

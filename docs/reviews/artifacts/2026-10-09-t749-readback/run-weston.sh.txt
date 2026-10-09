@@ -1,0 +1,22 @@
+#!/bin/sh
+base=/backups/disk2/blent-work/2026-10-09-evdi-second
+weston="$base/weston/usr"
+export PATH=/usr/bin:/bin
+export LD_LIBRARY_PATH="$weston/lib/x86_64-linux-gnu/weston:$weston/lib/x86_64-linux-gnu:$base/deps/usr/lib:$base/deps/usr/lib/x86_64-linux-gnu:/gl/lib"
+export LIBGL_DRIVERS_PATH=/gl/lib/dri
+export GBM_BACKENDS_PATH=/gl/lib/gbm
+export __EGL_VENDOR_LIBRARY_DIRS=/gl/glvnd/egl_vendor.d
+export XDG_RUNTIME_DIR=/tmp/weston
+export WAYLAND_DISPLAY=wayland-0
+export LIBSEAT_BACKEND=builtin
+export SEATD_VTBOUND=0
+export WESTON_MODULE_MAP="drm-backend.so=$weston/lib/x86_64-linux-gnu/libweston-13/drm-backend.so;gl-renderer.so=$weston/lib/x86_64-linux-gnu/libweston-13/gl-renderer.so"
+export WESTON_DATA_DIR="$weston/share/weston"
+mkdir -p "$XDG_RUNTIME_DIR"
+chmod 700 "$XDG_RUNTIME_DIR"
+SNAP_READBACK=full LD_PRELOAD=/snapshot-gbm.so timeout 22 "$weston/bin/weston" --backend=drm --renderer=gl --drm-device=card1 --additional-devices=card0 --continue-without-input --shell="$weston/lib/x86_64-linux-gnu/weston/kiosk-shell.so" --config="$base/weston.ini" --idle-time=0 --socket=wayland-0 &
+compositor=$!
+sleep 3
+timeout 18 /snapshot-client
+printf "SNAP_CLIENT_STATUS %s\n" "$?"
+wait "$compositor"

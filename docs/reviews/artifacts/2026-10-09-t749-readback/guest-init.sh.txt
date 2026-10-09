@@ -1,0 +1,34 @@
+#!/bin/sh
+[ "$$" -eq 1 ] || exit 64
+export PATH=/usr/bin:/bin:/usr/sbin
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+mkdir -p /dev/pts /run/udev /tmp/.X11-unix
+mount -t devpts devpts /dev/pts
+/usr/lib/systemd/systemd-udevd --daemon
+/bin/modprobe virtio_pci
+/bin/modprobe virtio_gpu
+/bin/modprobe 9pnet_virtio
+/bin/modprobe 9p
+/bin/modprobe evdi initial_device_count=2
+sleep 1
+mount -t 9p -o trans=virtio,version=9p2000.L,ro sdk /gnome/usr
+mount -t 9p -o trans=virtio,version=9p2000.L,ro work /gnome/backups/disk2/blent-work/2026-10-09-evdi-second
+mount -t 9p -o trans=virtio,version=9p2000.L,ro gl /gnome/gl
+for dir in dev proc sys run; do mount -o bind /$dir /gnome/$dir; done
+/bin/busybox mkfifo /tmp/video
+LD_PRELOAD=/observe.so /helper --fps 60 --edid /edid.bin --capture-fifo /tmp/video > /tmp/helper.log 2>&1 &
+helper=$!
+SNAP_COMPOSITOR=1 /consume > /tmp/consumer.log 2>&1 &
+consumer=$!
+sleep 1
+chroot /gnome /bin/sh /run-snapshot-weston.sh
+wait "$consumer"
+consumer_status=$?
+kill "$helper"
+wait "$helper"
+cat /tmp/helper.log /tmp/consumer.log
+printf 'SNAP_STATUS consumer=%s\n' "$consumer_status"
+dmesg | tail -20
+poweroff -f
