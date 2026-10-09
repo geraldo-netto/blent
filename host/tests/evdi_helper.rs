@@ -9,7 +9,10 @@ struct Harness(PathBuf);
 #[test]
 fn t775_timeout_guidance_uses_guarded_setup() {
     let harness = Harness::build("T775");
-    let output = Command::new(harness.0.join("helper-test")).arg("T497-main").output().unwrap();
+    let output = Command::new(harness.0.join("helper-test"))
+        .arg("T497-main")
+        .output()
+        .unwrap();
     assert!(output.status.success());
     let text = String::from_utf8(output.stderr).unwrap();
     assert!(text.contains("scripts/setup-evdi.sh"));
@@ -74,7 +77,19 @@ impl Harness {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
-            "T752" | "T753" | "T760" | "T762" | "T767" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
+            "T752"
+                | "T753"
+                | "T760"
+                | "T762"
+                | "T767"
+                | "T082"
+                | "T274"
+                | "T340"
+                | "T497"
+                | "T554"
+                | "T492"
+                | "T570"
+                | "T580"
         ) {
             compiler.args(["-fsanitize=address,undefined", "-fno-pie", "-no-pie"]);
         }
