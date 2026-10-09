@@ -1,0 +1,5 @@
+{
+  "revision": "7ae577f22f20bd21109b660c1358a4ada946ca1c",
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "scope": "Synthetic packet write through anonymous pipe to a draining child; excludes encoding and display; syscall runs separate from timings"
+}
