@@ -1,0 +1,46 @@
+{
+  "before": {
+    "requests": 511,
+    "readies": 486,
+    "below_34ms": 372,
+    "min_request_ms": 1,
+    "median_request_ms": 30.0,
+    "ready_without_grab_before_next_request": 0,
+    "publications": 488,
+    "trace_events": 3018,
+    "helper_stats": [
+      "[evdi-helper] 6.4 grabs/s (total 32), mode:1 dpms:1 pending:1",
+      "[evdi-helper] cycle: request\u2192ready avg 26.1ms (31 waited, 1 immediate), grab avg 0.2ms (44, 12 empty)",
+      "[evdi-helper] 47.3 grabs/s (total 270), mode:1 dpms:1 pending:1",
+      "[evdi-helper] cycle: request\u2192ready avg 20.7ms (238 waited, 0 immediate), grab avg 0.3ms (238, 0 empty)",
+      "[evdi-helper] 35.7 grabs/s (total 449), mode:1 dpms:1 pending:1",
+      "[evdi-helper] cycle: request\u2192ready avg 27.5ms (179 waited, 0 immediate), grab avg 0.3ms (179, 0 empty)"
+    ],
+    "client_intervals": [
+      "118 frames in 5 seconds: 23.600000 fps",
+      "94 frames in 5 seconds: 18.799999 fps"
+    ]
+  },
+  "after": {
+    "requests": 371,
+    "readies": 5,
+    "below_34ms": 0,
+    "min_request_ms": 34,
+    "median_request_ms": 34.0,
+    "ready_without_grab_before_next_request": 0,
+    "publications": 350,
+    "trace_events": 1861,
+    "helper_stats": [
+      "[evdi-helper] 4.8 grabs/s (total 24), mode:1 dpms:1 pending:0",
+      "[evdi-helper] cycle: request\u2192ready avg 37.8ms (5 waited, 19 immediate), grab avg 0.2ms (36, 12 empty)",
+      "[evdi-helper] 29.3 grabs/s (total 171), mode:1 dpms:1 pending:0",
+      "[evdi-helper] cycle: request\u2192ready avg 0.0ms (0 waited, 147 immediate), grab avg 0.3ms (152, 5 empty)",
+      "[evdi-helper] 29.3 grabs/s (total 318), mode:1 dpms:1 pending:0",
+      "[evdi-helper] cycle: request\u2192ready avg 0.0ms (0 waited, 147 immediate), grab avg 0.2ms (152, 5 empty)"
+    ],
+    "client_intervals": [
+      "97 frames in 5 seconds: 19.400000 fps",
+      "103 frames in 5 seconds: 20.600000 fps"
+    ]
+  }
+}

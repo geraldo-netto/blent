@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running tests/evdi_helper.rs (target/debug/deps/evdi_helper-7984ff3ac101d2da)
+
+running 2 tests
+test t750_periodic_requests_never_round_above_configured_fps ... ok
+test t750_ready_callbacks_acknowledge_without_erasing_rate_deadlines ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 54 filtered out; finished in 5.84s
+

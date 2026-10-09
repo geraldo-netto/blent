@@ -1,0 +1,19 @@
+from pathlib import Path
+import shutil
+work=Path('/backups/disk2/blent-work/2026-10-09-t750-pacing')
+old=Path('/backups/disk2/blent-work/2026-10-09-evdi-second')
+init=(work/'guest/init').read_text()
+init=init.replace('/evdi-helper --edid', '''variant=before
+case " $(cat /proc/cmdline) " in *" blent-variant=after "*) variant=after;; esac
+/helper-$variant --fps 30 --edid''')
+init=init.replace('chroot /gnome /bin/sh /backups/disk2/blent-work/2026-10-09-evdi-second/run-weston.sh', 'chroot /gnome /bin/sh /run-t750-weston.sh')
+init=init.replace("printf 'T752 Mutter guest status=%s\\n'", "printf 'T750 pacing guest status=%s\\n'")
+(work/'guest/init').write_text(init)
+weston=(old/'run-weston.sh').read_text().replace('timeout 12 "$weston/bin/weston-simple-egl" -f','WAYLAND_DEBUG=1 timeout 12 "$weston/bin/weston-simple-egl" -f -d 40000')
+(work/'guest/gnome/run-t750-weston.sh').write_text(weston)
+run=(old/'run-guest.sh').read_text().replace('base=/backups/disk2/blent-work/2026-10-09-evdi-second','base=/backups/disk2/blent-work/2026-10-09-evdi-second\nwork=/backups/disk2/blent-work/2026-10-09-t750-pacing')
+run=run.replace('-name blent-mutter-isolated','-name blent-t750-pacing-isolated').replace('file=/backups/disk2/blent-work/2026-10-09-evdi-fixes/guest-vars.fd','file="$work/vars-$1.fd"')
+run=run.replace('"$base/mutter-guest.cpio.gz"','"$work/guest.cpio.gz"').replace("'console=ttyS0 rdinit=/init loglevel=4 blent-evdi-review=1'",'"console=ttyS0 rdinit=/init loglevel=4 blent-evdi-review=1 blent-variant=$1"')
+run=run.replace('file:$base/$1.log','file:$work/$1.log').replace('"$base/$1-qemu.log"','"$work/$1-qemu.log"')
+run=run.replace('timeout 50s', 'cp /usr/share/OVMF/OVMF_VARS_4M.fd "$work/vars-$1.fd"\ntimeout 50s')
+(work/'run-guest.sh').write_text(run)

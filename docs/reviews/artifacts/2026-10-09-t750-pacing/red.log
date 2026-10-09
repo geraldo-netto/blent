@@ -1,0 +1,24 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.35s
+     Running tests/evdi_helper.rs (target/debug/deps/evdi_helper-7984ff3ac101d2da)
+
+running 1 test
+test t750_ready_callbacks_acknowledge_without_erasing_rate_deadlines ... FAILED
+
+failures:
+
+---- t750_ready_callbacks_acknowledge_without_erasing_rate_deadlines stdout ----
+
+thread 't750_ready_callbacks_acknowledge_without_erasing_rate_deadlines' (534550) panicked at host/tests/evdi_helper.rs:153:9:
+helper regression T750-async: signal: 6 (SIGABRT) (core dumped)
+helper-test: /backups/disk2/projects/blent/host/tests/async_pacing.c:14: t750_async_case: Assertion `g_capture.last_request_ms == 1000 && "T750: early ready callback erased the capture rate deadline"' failed.
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    t750_ready_callbacks_acknowledge_without_erasing_rate_deadlines
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 55 filtered out; finished in 3.86s
+
+error: test failed, to rerun pass `-p blent --test evdi_helper`

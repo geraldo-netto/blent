@@ -826,3 +826,12 @@ the separate RGBA-to-BGRA copy for comparisons and troubleshooting, at the cost
 of extra memory and copying; BGRA capture uses one source buffer in either mode.
 Unknown values fail startup before device access. Neither option changes NV12
 color arithmetic, buffer leases or damage-history ownership.
+
+EVDI request pacing uses the configured FPS's ceiling millisecond period for
+both immediate and asynchronous results. A ready callback acknowledges GRAB
+immediately and preserves the original request deadline; only overdue requests
+can follow without waiting. The former `BLENT_NO_PIPELINE` switch is obsolete:
+request-rate enforcement is always enabled. This prevents callbacks bypassing
+Blent's rate cap; it does not guarantee stock-driver snapshot atomicity or exact
+presentation cadence. [T750's evidence and remaining acceptance](reviews/artifacts/2026-10-09-t750-pacing/README.md)
+keep those boundaries explicit.

@@ -362,3 +362,19 @@ The new single-buffer regression failed before the change and passes afterward.
 Permanent scalar-oracle, format/resize/cursor/lease and invalid-order tests pass,
 as do GCC/Clang ASan/UBSan and all 207 individual native coverage checks. T783
 is resolved. These are owned userspace timings, not compositor or tablet FPS.
+
+## T750 asynchronous pacing mitigation
+
+Ready callbacks preserve the original request deadline after acknowledging GRAB.
+The permanent rate regression failed before this change and now passes for
+1–240 FPS and early/late/duplicate callbacks. Existing watchdog, lost-event,
+damage-history and ownership regressions still pass; all 207 functions meet
+coverage and GCC/Clang ASan/UBSan pass.
+
+[The isolated stock-EVDI comparison](artifacts/2026-10-09-t750-pacing/README.md)
+at configured 30 FPS found 372 request intervals below 34 ms before, zero after.
+Steady nonempty capture rates changed from 47.3/35.7 to 29.3/29.3 per second;
+GRAB still precedes every subsequent request after readiness. This removes extra
+capture work and enforces the requested cap, without claiming a client-FPS gain.
+Driver atomicity, frame identity and presentation/damage ordering remain unproven;
+T750 retains those acceptance requirements. Stock dependencies are unchanged.

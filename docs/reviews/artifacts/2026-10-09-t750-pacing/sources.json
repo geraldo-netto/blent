@@ -1,0 +1,7 @@
+{
+  "host/evdi/capture.c": "561c3af34da9a5e05f2de2fbd75cd4bc97fd9342fbd44d7465b6378db873d3c2",
+  "host/evdi/capture.h": "3570a0f01e24c7662d1d65368a67a4157705fcca64bba34995bda9f8ec2e86b8",
+  "host/tests/evdi_helper_test.c": "34cf78871369700fd95ab80ced2ff41672c6382da099eb5369633f5b3e81dda8",
+  "host/tests/evdi_helper.rs": "58438a86e043297359517ab4595ed9e9d4391b86d6e05dbd07b39d869b03b502",
+  "host/tests/async_pacing.c": "ffd066d622e6a557a6fa816bf548cf38d35d6ef490db98c6e5ab38c039b25729"
+}

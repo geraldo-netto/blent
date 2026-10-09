@@ -86,6 +86,7 @@ impl Harness {
                 | "T779"
                 | "T778"
                 | "T783"
+                | "T750-async"
                 | "T082"
                 | "T274"
                 | "T340"
@@ -442,4 +443,9 @@ fn t783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime() {
     for case in ["T783", "T783-cursor", "T783-shared", "T783-options"] {
         harness.run(case);
     }
+}
+
+#[test]
+fn t750_ready_callbacks_acknowledge_without_erasing_rate_deadlines() {
+    Harness::build("T750-async").run("T750-async");
 }

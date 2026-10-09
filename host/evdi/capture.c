@@ -355,15 +355,9 @@ static void on_update_ready(int buffer_to_be_updated, void *user_data) {
     }
     capture->update_pending = 0;
     grab_now(capture);
-    /* Pipeline mode requests again after GRABPIX without adding a helper
-       period to the driver/compositor handshake. GRABPIX completes a pending
-       flip (T599); requesting before copying can expose the same damage again.
-       Historical cadence observations motivated this ordering, but mode refresh
-       does not universally bound compositor submissions (upstream issue512).
-       Shared publication pacing limits Blent output, not compositor rendering.
-       T750 retains native pacing/race validation; this preserves current policy. */
-    if (capture->pipeline)
-        capture->last_request_ms = 0;
+    /* GRABPIX acknowledges the pending flip before any subsequent request
+       (T599). Keep the request's deadline: an early ready callback must not
+       bypass the configured rate (T750). Overdue requests remain immediate. */
 }
 
 static void on_crtc_state(int state, void *user_data) {
@@ -422,8 +416,8 @@ static void on_cursor_move(struct evdi_cursor_move event, void *user_data) {
 
 static long capture_period_ms(capture_context_t *capture) {
     /* Round up: 16ms requests would permit 62.5fps for a configured60fps.
-       Keep arithmetic wide for malformed/extreme inputs; ready-event pipeline
-       behavior is separate and still requires T750 driver-race validation. */
+       Keep arithmetic wide for malformed/extreme inputs. The same deadline
+       applies to immediate and asynchronous request completion. */
     long long fps = capture->fps > 0 ? capture->fps : 60;
     return (long)((1000 + fps - 1) / fps);
 }
@@ -454,8 +448,8 @@ static int capture_poll_timeout(capture_context_t *capture, long request_period_
         timeout_ms = left < 0 ? 0 : (left > 250 ? 250 : (int)left);
     } else {
         long long due = capture->last_request_ms + request_period_ms;
-        /* Keep overdue deadlines wide until bounded: pipeline callbacks reset
-           the request time to zero, even after weeks of system uptime. */
+        /* Keep overdue deadlines wide until bounded, including a first
+           request after weeks of system uptime. */
         timeout_ms = due - capture_now_ms();
         if (timeout_ms < 0) timeout_ms = 0;
         if (timeout_ms > INT_MAX) timeout_ms = INT_MAX;
@@ -627,7 +621,6 @@ int capture_run(capture_context_t *capture, evdi_handle handle) {
 
     long long last_stats_ms = capture_now_ms();
     long long last_fallback_grab_ms = 0;
-    if (getenv("BLENT_NO_PIPELINE")) capture->pipeline = 0;
     long long stats_grab_base = 0;
     long request_period_ms = capture_period_ms(capture);
 

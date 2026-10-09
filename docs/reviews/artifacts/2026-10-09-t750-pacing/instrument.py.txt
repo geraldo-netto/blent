@@ -1,0 +1,24 @@
+from pathlib import Path
+import subprocess,shutil
+root=Path('/tmp/blent-next-20261009')
+work=Path('/backups/disk2/blent-work/2026-10-09-t750-pacing')
+for variant in ['before','after']:
+ source=root/('t750-'+variant)
+ p=source/'capture.c';s=p.read_text()
+ marker='static long long capture_now_ms(void) { return capture_now_us() / 1000; }'
+ s=s.replace(marker,marker+'''
+/* Bounded observation only, isolated native fixture; not production logging. */
+static void trace_phase(capture_context_t *capture, const char *phase, int value) {
+    static unsigned count;
+    if (count++ < 6000) fprintf(stderr, "T750_TRACE %s %lld %lld %d %d\\n", phase,
+        capture_now_us(), capture->last_request_ms, capture->update_pending, value);
+}
+''')
+ s=s.replace('    evdi_grab_pixels(capture->handle, rects, &num_rects);','    trace_phase(capture, "grab-begin", 0);\n    evdi_grab_pixels(capture->handle, rects, &num_rects);\n    trace_phase(capture, "grab-end", num_rects);')
+ s=s.replace('    (void)buffer_to_be_updated;','    trace_phase(capture, "ready", buffer_to_be_updated);\n    (void)buffer_to_be_updated;')
+ s=s.replace('        if (evdi_request_update(handle, 0)) {','        trace_phase(capture, "request", 0);\n        int ready = evdi_request_update(handle, 0);\n        trace_phase(capture, "result", ready);\n        if (ready) {')
+ s=s.replace('    frame_exchange_publish(capture->frames, capture->grab_us, generation);','    frame_exchange_publish(capture->frames, capture->grab_us, generation);\n    trace_phase(capture, "publish", 0);')
+ p.write_text(s)
+ files=['evdi_helper.c','conversion.c','frame_exchange.c','fifo_writer.c','capture.c','cursor_overlay.c','raw_ring.c','writer.c']
+ subprocess.run(['cc','-O3',*map(str,[source/f for f in files]),'-lpthread','-I'+str(source),str(work/'guest/usr/lib/libevdi.so.1'),'-o',str(work/('helper-'+variant))],check=True)
+ shutil.copy2(work/('helper-'+variant),work/'guest'/('helper-'+variant))

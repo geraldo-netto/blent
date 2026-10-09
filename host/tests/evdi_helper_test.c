@@ -1105,7 +1105,7 @@ static void test_t290(void) {
         mock_monotonic_ms = uptimes[i];
         g_capture.have_mode = 1;
         g_capture.update_pending = 0;
-        g_capture.last_request_ms = 0; /* on_update_ready requests an immediate capture */
+        g_capture.last_request_ms = 0; /* first request, or an overdue request after a long wait */
         assert(capture_poll_timeout(&g_capture, 16) == 0 && "T290: overdue pipeline capture gained a poll delay");
         g_capture.last_request_ms = mock_monotonic_ms;
         assert(capture_poll_timeout(&g_capture, 16) == 16); /* T405: exact deadline, still wide before clamping. */
@@ -1477,6 +1477,7 @@ static void test_t415_rounding(void) {
 #include "frame_format.c"
 #include "normalization_work.c"
 #include "native_format.c"
+#include "async_pacing.c"
 #include "helper_simd.c"
 #include "shared_damage.c"
 #include "fifo_demand.c"
@@ -1532,6 +1533,7 @@ int main(int argc, char **argv) {
         {"T294", test_t294},
         {"T623", test_t623},
         {"T750-period", test_t750_period},
+        {"T750-async", test_t750_async},
         {"T767", test_t767_boundaries},
         {"T760", test_t760_failed_mode},
         {"T762", test_t762_arguments},

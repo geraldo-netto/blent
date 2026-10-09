@@ -41,7 +41,6 @@ typedef struct {
     int grab_n;
     int immediate_n;
     int empty_n;
-    int pipeline;
     long long last_request_ms;
     int buffer_registered;
     raw_ring_t *raw_ring;
@@ -50,7 +49,7 @@ typedef struct {
 } capture_context_t;
 #define CAPTURE_INITIALIZER(exchange, pool, stop) { .frames = (exchange), \
     .conversion = (pool), .running = (stop), .handle = EVDI_INVALID_HANDLE, \
-    .device_index = -1, .mode_bpp = 4, .scale = 1, .fps = 60, .pipeline = 1 }
+    .device_index = -1, .mode_bpp = 4, .scale = 1, .fps = 60 }
 
 int capture_run(capture_context_t *capture, evdi_handle handle);
 #endif
