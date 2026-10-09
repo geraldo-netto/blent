@@ -51,16 +51,26 @@ internal class AudioClockWindow {
 
 /** Compare rates through normalized durations, never subtract endpoint clocks. */
 internal class AudioClockDrift {
+    private var sourceCache: Pair<Long, Long>? = null
+    private var destinationCache: Pair<Long, Long>? = null
+    private var resultCache = 0
     val source = AudioClockWindow()
     val destination = AudioClockWindow()
-    fun clear() { source.clear(); destination.clear() }
+    fun clear() {
+        source.clear(); destination.clear()
+        sourceCache = null; destinationCache = null
+    }
     fun correction(now: Long): Int? {
         val sourceRate = source.rate(now) ?: return null
         val destinationRate = destination.rate(now) ?: return null
+        // Validate freshness above on every call, even when window values match.
+        if (sourceRate == sourceCache && destinationRate == destinationCache) return resultCache
         val numerator = BigInteger.valueOf(sourceRate.first * destinationRate.second)
         val denominator = BigInteger.valueOf(destinationRate.first * sourceRate.second)
         val difference = (numerator - denominator) * BigInteger.valueOf(1_000_000)
         require(difference.abs() <= denominator * BigInteger.valueOf(1000)) { "Native audio clock drift exceeds 1000 ppm." }
-        return (difference / denominator).toInt()
+        val result = (difference / denominator).toInt()
+        sourceCache = sourceRate; destinationCache = destinationRate; resultCache = result
+        return result
     }
 }

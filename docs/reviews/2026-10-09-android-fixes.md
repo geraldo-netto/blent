@@ -242,3 +242,20 @@ isolated debug-APK median drops from 194.163 to 55.435 µs/aligned block and fro
 replays count actual transfer frequency and preserve the fractional fallback.
 These synthetic CPU/allocation results do not measure native playback or physical
 clock-session frequency. No dependency downloads or production app reload.
+
+## T796: unchanged-window drift cache
+
+AudioClockDrift retains the last successfully validated source/destination rate
+pair and integer correction. Freshness is checked before cache lookup on every
+call; clear resets both windows and cache keys. One-sided updates recompute exact
+BigInteger arithmetic, including the rational 1000 ppm rejection bound. Invalid
+results are never cached. No unchecked wider multiplication was introduced.
+
+Permanent expiry-without-progress, one-sided window, unavailable, epoch/reset,
+clear and repeated exact-boundary/rejection tests passed before this optimization
+and after it. Full offline validation: 816 tests pass, 904/904 methods meet
+80% individually, complexity <=9.
+
+[ART replay](artifacts/2026-10-10-android-drift/README.md): wall median improves
+13.224 to 9.967 µs/call and allocation 632.422 to 16.384 bytes/call with equal
+checksums. Absolute CPU saving is small; no physical audio latency gain claimed.

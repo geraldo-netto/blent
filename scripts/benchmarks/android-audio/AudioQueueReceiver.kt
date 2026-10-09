@@ -19,11 +19,43 @@ class AudioQueueReceiver : BroadcastReceiver() {
         val completion = goAsync()
         Thread({
             try {
-                val result = try { measure() } catch (error: Exception) { JSONObject().put("error", error.stackTraceToString()) }
+                val result = try { if (intent.getStringExtra("probe") == "drift") measureDrift() else measure() } catch (error: Exception) { JSONObject().put("error", error.stackTraceToString()) }
                 result.put("run_id", intent.getStringExtra("run_id"))
                 File(context.filesDir, "audio-queue.json").writeText(result.toString(2))
             } finally { active.set(false); completion.finish() }
         }, "blent-audio-probe").start()
+    }
+
+    private fun measureDrift(): JSONObject {
+        repeat(3) { drift(1000) }
+        val rows = JSONArray()
+        repeat(8) {
+            val before = allocated()
+            val cpu = Debug.threadCpuTimeNanos()
+            val started = System.nanoTime()
+            val checksum = drift(5000)
+            val elapsed = System.nanoTime() - started
+            val usedCpu = Debug.threadCpuTimeNanos() - cpu
+            val after = allocated()
+            rows.put(JSONObject().put("count", 5000).put("elapsed_ns", elapsed).put("cpu_ns", usedCpu)
+                .put("allocated_bytes", if (before != null && after != null) after - before else JSONObject.NULL)
+                .put("checksum", checksum))
+        }
+        return JSONObject().put("sdk", Build.VERSION.SDK_INT).put("fingerprint", Build.FINGERPRINT).put("drift_trials", rows)
+    }
+
+    private fun drift(count: Int): Long {
+        val drift = AudioClockDrift()
+        drift.source.observe(AudioClockSample(1, 0, 1), 0)
+        drift.destination.observe(AudioClockSample(2, 0, 1), 0)
+        drift.source.observe(AudioClockSample(1, 192096, 4_000_000_001), 4000)
+        drift.destination.observe(AudioClockSample(2, 192000, 4_000_000_001), 4000)
+        var sum = 0L
+        repeat(count) { sum += checkNotNull(drift.correction(4000L + it % 2000)) }
+        check(drift.correction(7001) == null)
+        drift.clear()
+        check(drift.correction(4000) == null)
+        return sum
     }
 
     private fun allocated() = Debug.getRuntimeStat("art.gc.bytes-allocated")?.toLongOrNull()

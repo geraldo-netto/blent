@@ -1,0 +1,63 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "drift_trials": [
+    {
+      "count": 5000,
+      "elapsed_ns": 49815653,
+      "cpu_ns": 49409500,
+      "allocated_bytes": 98304,
+      "checksum": 2500000
+    },
+    {
+      "count": 5000,
+      "elapsed_ns": 49782231,
+      "cpu_ns": 49387464,
+      "allocated_bytes": 65536,
+      "checksum": 2500000
+    },
+    {
+      "count": 5000,
+      "elapsed_ns": 49824846,
+      "cpu_ns": 49401616,
+      "allocated_bytes": 98304,
+      "checksum": 2500000
+    },
+    {
+      "count": 5000,
+      "elapsed_ns": 50050731,
+      "cpu_ns": 49510842,
+      "allocated_bytes": 65536,
+      "checksum": 2500000
+    },
+    {
+      "count": 5000,
+      "elapsed_ns": 49846154,
+      "cpu_ns": 49441463,
+      "allocated_bytes": 98304,
+      "checksum": 2500000
+    },
+    {
+      "count": 5000,
+      "elapsed_ns": 46586462,
+      "cpu_ns": 46195961,
+      "allocated_bytes": 65536,
+      "checksum": 2500000
+    },
+    {
+      "count": 5000,
+      "elapsed_ns": 44770192,
+      "cpu_ns": 44378387,
+      "allocated_bytes": 98304,
+      "checksum": 2500000
+    },
+    {
+      "count": 5000,
+      "elapsed_ns": 44849423,
+      "cpu_ns": 44469808,
+      "allocated_bytes": 65536,
+      "checksum": 2500000
+    }
+  ],
+  "run_id": "candidate-2"
+}
