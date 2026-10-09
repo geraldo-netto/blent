@@ -122,6 +122,11 @@ static void t497_writer_startup(void) {
     assert(!writer && g_fifo.fd == -1);
     conv_pool_destroy(&g_conversion);
     t497_fail_writer = 0;
+    memset(&g_conversion, 0, sizeof(g_conversion));
+    g_conversion.count = g_conversion.last_jobs = 1;
+    assert(pthread_mutex_init(&g_conversion.mutex, NULL) == 0);
+    assert(pthread_cond_init(&g_conversion.done, NULL) == 0);
+    assert(!g_conversion.shutdown && "T763: each startup owns a fresh conversion pool");
     assert(start_capture_writer("/unopened-t497-fifo", &writer));
     assert(pthread_join(writer, NULL) == 0 && g_fifo.fd == -1);
     conv_pool_destroy(&g_conversion);
