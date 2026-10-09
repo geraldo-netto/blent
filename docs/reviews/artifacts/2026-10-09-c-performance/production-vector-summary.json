@@ -1,0 +1,37 @@
+{
+  "host/evdi/capture.c": [],
+  "host/evdi/conversion.c": [
+    "host/evdi/conversion.c:56:41: optimized: loop vectorized using 16 byte vectors",
+    "host/evdi/conversion.c:56:41: optimized: loop vectorized using 8 byte vectors",
+    "host/evdi/conversion.c:85:36: optimized: loop vectorized using 16 byte vectors",
+    "host/evdi/conversion.c:85:36: optimized: loop vectorized using 8 byte vectors",
+    "host/evdi/conversion.c:6:26: optimized: loop vectorized using 16 byte vectors",
+    "host/evdi/conversion.c:6:26: optimized: loop vectorized using 8 byte vectors"
+  ],
+  "host/evdi/cursor_overlay.c": [
+    "host/evdi/cursor_overlay.c:23:32: optimized: loop vectorized using 16 byte vectors",
+    "host/evdi/cursor_overlay.c:23:32: optimized: loop vectorized using 8 byte vectors",
+    "host/evdi/cursor_overlay.c:23:32: optimized: loop vectorized using 16 byte vectors",
+    "host/evdi/cursor_overlay.c:23:32: optimized: loop vectorized using 8 byte vectors"
+  ],
+  "host/evdi/evdi_helper.c": [],
+  "host/evdi/fifo_writer.c": [],
+  "host/evdi/frame_exchange.c": [
+    "host/evdi/frame_exchange.c:65:25: optimized: loop vectorized using 16 byte vectors",
+    "host/evdi/frame_exchange.c:65:25: optimized: loop vectorized using 16 byte vectors",
+    "host/evdi/frame_exchange.c:65:25: optimized: loop vectorized using 16 byte vectors"
+  ],
+  "host/evdi/raw_ring.c": [],
+  "host/evdi/writer.c": [],
+  "host/gpu/cadence.c": [],
+  "host/gpu/capture.c": [],
+  "host/gpu/cursor.c": [],
+  "host/gpu/encode.c": [],
+  "host/gpu/events.c": [],
+  "host/gpu/identity.c": [],
+  "host/gpu/main.c": [],
+  "host/gpu/options.c": [
+    "host/gpu/options.c:50:30: optimized: loop vectorized using 16 byte vectors"
+  ],
+  "host/gpu/output.c": []
+}

@@ -1,0 +1,97 @@
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":0,"scale":1,"workers":4,"variant":0,"samples":96,"convert_p50_ns":1183,"convert_p95_ns":2224,"mark_p50_ns":40,"cpu_ns_per_frame":1469,"converted_source_pixels":0,"job_source_pixels":[]}
+{"kind":0,"scale":1,"workers":4,"variant":0,"schedule_p50_ns":1170}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":0,"scale":1,"workers":1,"variant":1,"samples":96,"convert_p50_ns":2826,"convert_p95_ns":4950,"mark_p50_ns":70,"cpu_ns_per_frame":3360,"converted_source_pixels":0}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":0,"scale":1,"workers":4,"variant":2,"samples":96,"convert_p50_ns":1173,"convert_p95_ns":1273,"mark_p50_ns":40,"cpu_ns_per_frame":1437,"converted_source_pixels":0,"job_source_pixels":[]}
+{"kind":0,"scale":1,"workers":4,"variant":2,"schedule_p50_ns":1160}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":1,"scale":1,"workers":4,"variant":0,"samples":96,"convert_p50_ns":427556,"convert_p95_ns":432226,"mark_p50_ns":280,"cpu_ns_per_frame":429695,"converted_source_pixels":122880,"job_source_pixels":[122880]}
+{"kind":1,"scale":1,"workers":4,"variant":0,"schedule_p50_ns":1211}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":1,"scale":1,"workers":1,"variant":1,"samples":96,"convert_p50_ns":18115,"convert_p95_ns":21632,"mark_p50_ns":160,"cpu_ns_per_frame":18699,"converted_source_pixels":4096}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":1,"scale":1,"workers":4,"variant":2,"samples":96,"convert_p50_ns":427816,"convert_p95_ns":433749,"mark_p50_ns":270,"cpu_ns_per_frame":429634,"converted_source_pixels":122880,"job_source_pixels":[122880]}
+{"kind":1,"scale":1,"workers":4,"variant":2,"schedule_p50_ns":1197}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":2,"scale":1,"workers":4,"variant":0,"samples":96,"convert_p50_ns":1854634,"convert_p95_ns":1999704,"mark_p50_ns":2165,"cpu_ns_per_frame":7405777,"converted_source_pixels":2073600,"job_source_pixels":[518400,518400,518400,518400]}
+{"kind":2,"scale":1,"workers":4,"variant":0,"schedule_p50_ns":2931}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":2,"scale":1,"workers":1,"variant":1,"samples":96,"convert_p50_ns":7161529,"convert_p95_ns":7226595,"mark_p50_ns":691,"cpu_ns_per_frame":7164385,"converted_source_pixels":2073600}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":2,"scale":1,"workers":4,"variant":2,"samples":96,"convert_p50_ns":1848953,"convert_p95_ns":3466279,"mark_p50_ns":2194,"cpu_ns_per_frame":7640997,"converted_source_pixels":2073600,"job_source_pixels":[518400,518400,518400,518400]}
+{"kind":2,"scale":1,"workers":4,"variant":2,"schedule_p50_ns":3624}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":3,"scale":1,"workers":4,"variant":0,"samples":96,"convert_p50_ns":1801952,"convert_p95_ns":1870375,"mark_p50_ns":2134,"cpu_ns_per_frame":3696461,"converted_source_pixels":1054080,"job_source_pixels":[518400,518400,8640,8640]}
+{"kind":3,"scale":1,"workers":4,"variant":0,"schedule_p50_ns":2878}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":3,"scale":1,"workers":1,"variant":1,"samples":96,"convert_p50_ns":3646126,"convert_p95_ns":3671335,"mark_p50_ns":691,"cpu_ns_per_frame":3648771,"converted_source_pixels":1054080}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":3,"scale":1,"workers":4,"variant":2,"samples":96,"convert_p50_ns":953252,"convert_p95_ns":973812,"mark_p50_ns":2194,"cpu_ns_per_frame":3754943,"converted_source_pixels":1054080,"job_source_pixels":[264960,264960,261120,263040]}
+{"kind":3,"scale":1,"workers":4,"variant":2,"schedule_p50_ns":3617}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":4,"scale":1,"workers":4,"variant":0,"samples":96,"convert_p50_ns":64615,"convert_p95_ns":68953,"mark_p50_ns":2034,"cpu_ns_per_frame":67223,"converted_source_pixels":17280,"job_source_pixels":[17280]}
+{"kind":4,"scale":1,"workers":4,"variant":0,"schedule_p50_ns":1835}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":4,"scale":1,"workers":1,"variant":1,"samples":96,"convert_p50_ns":131323,"convert_p95_ns":136233,"mark_p50_ns":661,"cpu_ns_per_frame":132944,"converted_source_pixels":34560}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":4,"scale":1,"workers":4,"variant":2,"samples":96,"convert_p50_ns":65467,"convert_p95_ns":70015,"mark_p50_ns":2014,"cpu_ns_per_frame":67967,"converted_source_pixels":17280,"job_source_pixels":[17280]}
+{"kind":4,"scale":1,"workers":4,"variant":2,"schedule_p50_ns":1881}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":5,"scale":1,"workers":4,"variant":0,"samples":96,"convert_p50_ns":402919,"convert_p95_ns":407958,"mark_p50_ns":3056,"cpu_ns_per_frame":407951,"converted_source_pixels":118912,"job_source_pixels":[118912]}
+{"kind":5,"scale":1,"workers":4,"variant":0,"schedule_p50_ns":1217}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":5,"scale":1,"workers":1,"variant":1,"samples":96,"convert_p50_ns":226878,"convert_p95_ns":234003,"mark_p50_ns":1202,"cpu_ns_per_frame":229029,"converted_source_pixels":61440}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":5,"scale":1,"workers":4,"variant":2,"samples":96,"convert_p50_ns":410313,"convert_p95_ns":414662,"mark_p50_ns":3006,"cpu_ns_per_frame":415051,"converted_source_pixels":118912,"job_source_pixels":[118912]}
+{"kind":5,"scale":1,"workers":4,"variant":2,"schedule_p50_ns":1202}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":0,"scale":2,"workers":4,"variant":0,"samples":96,"convert_p50_ns":641,"convert_p95_ns":1633,"mark_p50_ns":40,"cpu_ns_per_frame":817,"converted_source_pixels":0,"job_source_pixels":[]}
+{"kind":0,"scale":2,"workers":4,"variant":0,"schedule_p50_ns":632}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":0,"scale":2,"workers":1,"variant":1,"samples":96,"convert_p50_ns":2645,"convert_p95_ns":4559,"mark_p50_ns":80,"cpu_ns_per_frame":3081,"converted_source_pixels":0}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":0,"scale":2,"workers":4,"variant":2,"samples":96,"convert_p50_ns":602,"convert_p95_ns":631,"mark_p50_ns":30,"cpu_ns_per_frame":793,"converted_source_pixels":0,"job_source_pixels":[]}
+{"kind":0,"scale":2,"workers":4,"variant":2,"schedule_p50_ns":594}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":1,"scale":2,"workers":4,"variant":0,"samples":96,"convert_p50_ns":948432,"convert_p95_ns":952381,"mark_p50_ns":291,"cpu_ns_per_frame":950003,"converted_source_pixels":245760,"job_source_pixels":[245760]}
+{"kind":1,"scale":2,"workers":4,"variant":0,"schedule_p50_ns":658}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":1,"scale":2,"workers":1,"variant":1,"samples":96,"convert_p50_ns":66549,"convert_p95_ns":99833,"mark_p50_ns":161,"cpu_ns_per_frame":69795,"converted_source_pixels":16384}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":1,"scale":2,"workers":4,"variant":2,"samples":96,"convert_p50_ns":948723,"convert_p95_ns":954094,"mark_p50_ns":300,"cpu_ns_per_frame":949730,"converted_source_pixels":245760,"job_source_pixels":[245760]}
+{"kind":1,"scale":2,"workers":4,"variant":2,"schedule_p50_ns":640}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":2,"scale":2,"workers":4,"variant":0,"samples":96,"convert_p50_ns":2062175,"convert_p95_ns":2088636,"mark_p50_ns":1172,"cpu_ns_per_frame":8152755,"converted_source_pixels":2073600,"job_source_pixels":[514560,522240,514560,522240]}
+{"kind":2,"scale":2,"workers":4,"variant":0,"schedule_p50_ns":1516}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":2,"scale":2,"workers":1,"variant":1,"samples":96,"convert_p50_ns":7906589,"convert_p95_ns":7985692,"mark_p50_ns":421,"cpu_ns_per_frame":7916405,"converted_source_pixels":2073600}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":2,"scale":2,"workers":4,"variant":2,"samples":96,"convert_p50_ns":2064540,"convert_p95_ns":2342767,"mark_p50_ns":1183,"cpu_ns_per_frame":8238814,"converted_source_pixels":2073600,"job_source_pixels":[522240,514560,522240,514560]}
+{"kind":2,"scale":2,"workers":4,"variant":2,"schedule_p50_ns":1859}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":3,"scale":2,"workers":4,"variant":0,"samples":96,"convert_p50_ns":2025013,"convert_p95_ns":2082134,"mark_p50_ns":1312,"cpu_ns_per_frame":4204636,"converted_source_pixels":1071360,"job_source_pixels":[514560,522240,17152,17408]}
+{"kind":3,"scale":2,"workers":4,"variant":0,"schedule_p50_ns":1488}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":3,"scale":2,"workers":1,"variant":1,"samples":96,"convert_p50_ns":4085946,"convert_p95_ns":4110423,"mark_p50_ns":420,"cpu_ns_per_frame":4090348,"converted_source_pixels":1071360}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":3,"scale":2,"workers":4,"variant":2,"samples":96,"convert_p50_ns":1061441,"convert_p95_ns":1132699,"mark_p50_ns":1162,"cpu_ns_per_frame":4210336,"converted_source_pixels":1071360,"job_source_pixels":[268800,268800,268800,264960]}
+{"kind":3,"scale":2,"workers":4,"variant":2,"schedule_p50_ns":1862}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":4,"scale":2,"workers":4,"variant":0,"samples":96,"convert_p50_ns":135281,"convert_p95_ns":139429,"mark_p50_ns":1042,"cpu_ns_per_frame":137198,"converted_source_pixels":34560,"job_source_pixels":[34560]}
+{"kind":4,"scale":2,"workers":4,"variant":0,"schedule_p50_ns":948}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":4,"scale":2,"workers":1,"variant":1,"samples":96,"convert_p50_ns":270943,"convert_p95_ns":277186,"mark_p50_ns":391,"cpu_ns_per_frame":272664,"converted_source_pixels":69120}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":4,"scale":2,"workers":4,"variant":2,"samples":96,"convert_p50_ns":134049,"convert_p95_ns":138618,"mark_p50_ns":1032,"cpu_ns_per_frame":135903,"converted_source_pixels":34560,"job_source_pixels":[34560]}
+{"kind":4,"scale":2,"workers":4,"variant":2,"schedule_p50_ns":953}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":5,"scale":2,"workers":4,"variant":0,"samples":96,"convert_p50_ns":877276,"convert_p95_ns":887636,"mark_p50_ns":1583,"cpu_ns_per_frame":880463,"converted_source_pixels":229888,"job_source_pixels":[229888]}
+{"kind":5,"scale":2,"workers":4,"variant":0,"schedule_p50_ns":655}
+[evdi-helper] NV12 conversion using 1 thread(s)
+{"kind":5,"scale":2,"workers":1,"variant":1,"samples":96,"convert_p50_ns":477854,"convert_p95_ns":482192,"mark_p50_ns":662,"cpu_ns_per_frame":477914,"converted_source_pixels":122880}
+[evdi-helper] NV12 conversion using 4 thread(s)
+{"kind":5,"scale":2,"workers":4,"variant":2,"samples":96,"convert_p50_ns":876283,"convert_p95_ns":878798,"mark_p50_ns":1593,"cpu_ns_per_frame":878083,"converted_source_pixels":229888,"job_source_pixels":[229888]}
+{"kind":5,"scale":2,"workers":4,"variant":2,"schedule_p50_ns":641}
+36 ASan/UBSan independent-oracle cases passed.

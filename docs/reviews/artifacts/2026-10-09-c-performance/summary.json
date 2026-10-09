@@ -1,0 +1,3470 @@
+[
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 0,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 441,
+      "min": 431,
+      "max": 450
+    },
+    "convert_p95_ns": {
+      "median": 451,
+      "min": 431,
+      "max": 451
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 525,
+      "min": 516,
+      "max": 538
+    },
+    "schedule_p50_ns": {
+      "median": 440,
+      "min": 422,
+      "max": 446
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 0,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 251,
+      "min": 250,
+      "max": 451
+    },
+    "convert_p95_ns": {
+      "median": 270,
+      "min": 261,
+      "max": 501
+    },
+    "mark_p50_ns": {
+      "median": 40,
+      "min": 40,
+      "max": 60
+    },
+    "cpu_ns_per_frame": {
+      "median": 359,
+      "min": 355,
+      "max": 603
+    },
+    "converted_source_pixels": 0
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 37633,
+      "min": 37002,
+      "max": 37863
+    },
+    "convert_p95_ns": {
+      "median": 41020,
+      "min": 38554,
+      "max": 50637
+    },
+    "mark_p50_ns": {
+      "median": 61,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 37999,
+      "min": 37436,
+      "max": 39495
+    },
+    "schedule_p50_ns": {
+      "median": 434,
+      "min": 432,
+      "max": 449
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 5421,
+      "min": 5410,
+      "max": 5541
+    },
+    "convert_p95_ns": {
+      "median": 5480,
+      "min": 5450,
+      "max": 5571
+    },
+    "mark_p50_ns": {
+      "median": 50,
+      "min": 50,
+      "max": 51
+    },
+    "cpu_ns_per_frame": {
+      "median": 5599,
+      "min": 5549,
+      "max": 5698
+    },
+    "converted_source_pixels": 4096
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 627963,
+      "min": 619096,
+      "max": 651810
+    },
+    "convert_p95_ns": {
+      "median": 639175,
+      "min": 623966,
+      "max": 701435
+    },
+    "mark_p50_ns": {
+      "median": 360,
+      "min": 351,
+      "max": 381
+    },
+    "cpu_ns_per_frame": {
+      "median": 629568,
+      "min": 619565,
+      "max": 659733
+    },
+    "schedule_p50_ns": {
+      "median": 487,
+      "min": 481,
+      "max": 504
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 634917,
+      "min": 629326,
+      "max": 642281
+    },
+    "convert_p95_ns": {
+      "median": 649195,
+      "min": 636851,
+      "max": 653603
+    },
+    "mark_p50_ns": {
+      "median": 121,
+      "min": 120,
+      "max": 140
+    },
+    "cpu_ns_per_frame": {
+      "median": 636130,
+      "min": 631025,
+      "max": 642498
+    },
+    "converted_source_pixels": 2073600
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 3,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 334437,
+      "min": 331711,
+      "max": 345708
+    },
+    "convert_p95_ns": {
+      "median": 340999,
+      "min": 338374,
+      "max": 357210
+    },
+    "mark_p50_ns": {
+      "median": 361,
+      "min": 361,
+      "max": 380
+    },
+    "cpu_ns_per_frame": {
+      "median": 336545,
+      "min": 333330,
+      "max": 349993
+    },
+    "schedule_p50_ns": {
+      "median": 486,
+      "min": 478,
+      "max": 494
+    },
+    "converted_source_pixels": 1054080,
+    "job_source_pixels": [
+      1054080
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 3,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 342742,
+      "min": 339977,
+      "max": 355377
+    },
+    "convert_p95_ns": {
+      "median": 348604,
+      "min": 345327,
+      "max": 362300
+    },
+    "mark_p50_ns": {
+      "median": 130,
+      "min": 120,
+      "max": 131
+    },
+    "cpu_ns_per_frame": {
+      "median": 343727,
+      "min": 340073,
+      "max": 356366
+    },
+    "converted_source_pixels": 1054080
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24688,
+      "min": 24507,
+      "max": 25469
+    },
+    "convert_p95_ns": {
+      "median": 26020,
+      "min": 24858,
+      "max": 28384
+    },
+    "mark_p50_ns": {
+      "median": 350,
+      "min": 340,
+      "max": 351
+    },
+    "cpu_ns_per_frame": {
+      "median": 25274,
+      "min": 25126,
+      "max": 25996
+    },
+    "schedule_p50_ns": {
+      "median": 483,
+      "min": 482,
+      "max": 498
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 42081,
+      "min": 41370,
+      "max": 42542
+    },
+    "convert_p95_ns": {
+      "median": 45398,
+      "min": 45127,
+      "max": 45789
+    },
+    "mark_p50_ns": {
+      "median": 100,
+      "min": 100,
+      "max": 100
+    },
+    "cpu_ns_per_frame": {
+      "median": 42454,
+      "min": 41821,
+      "max": 42957
+    },
+    "converted_source_pixels": 34560
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 5,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 34787,
+      "min": 34036,
+      "max": 35638
+    },
+    "convert_p95_ns": {
+      "median": 36030,
+      "min": 35880,
+      "max": 38905
+    },
+    "mark_p50_ns": {
+      "median": 802,
+      "min": 772,
+      "max": 821
+    },
+    "cpu_ns_per_frame": {
+      "median": 35810,
+      "min": 35116,
+      "max": 36713
+    },
+    "schedule_p50_ns": {
+      "median": 451,
+      "min": 446,
+      "max": 457
+    },
+    "converted_source_pixels": 118912,
+    "job_source_pixels": [
+      118912
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 1,
+    "kind": 5,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 73051,
+      "min": 72600,
+      "max": 76267
+    },
+    "convert_p95_ns": {
+      "median": 88481,
+      "min": 76858,
+      "max": 115373
+    },
+    "mark_p50_ns": {
+      "median": 191,
+      "min": 190,
+      "max": 201
+    },
+    "cpu_ns_per_frame": {
+      "median": 76216,
+      "min": 73471,
+      "max": 79053
+    },
+    "converted_source_pixels": 61440
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 0,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 441,
+      "min": 421,
+      "max": 441
+    },
+    "convert_p95_ns": {
+      "median": 441,
+      "min": 431,
+      "max": 451
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 514,
+      "min": 499,
+      "max": 517
+    },
+    "schedule_p50_ns": {
+      "median": 434,
+      "min": 420,
+      "max": 441
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 0,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 230,
+      "min": 220,
+      "max": 331
+    },
+    "convert_p95_ns": {
+      "median": 231,
+      "min": 221,
+      "max": 341
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 306,
+      "min": 292,
+      "max": 444
+    },
+    "schedule_p50_ns": {
+      "median": 220,
+      "min": 215,
+      "max": 229
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 1,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 39166,
+      "min": 37512,
+      "max": 39387
+    },
+    "convert_p95_ns": {
+      "median": 42392,
+      "min": 40909,
+      "max": 59024
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 39582,
+      "min": 37856,
+      "max": 42874
+    },
+    "schedule_p50_ns": {
+      "median": 451,
+      "min": 432,
+      "max": 456
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 1,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 37383,
+      "min": 36931,
+      "max": 37823
+    },
+    "convert_p95_ns": {
+      "median": 41030,
+      "min": 37803,
+      "max": 42061
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 61,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 37958,
+      "min": 37541,
+      "max": 38352
+    },
+    "schedule_p50_ns": {
+      "median": 233,
+      "min": 231,
+      "max": 237
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 2,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 222359,
+      "min": 219485,
+      "max": 331420
+    },
+    "convert_p95_ns": {
+      "median": 262397,
+      "min": 247879,
+      "max": 343894
+    },
+    "mark_p50_ns": {
+      "median": 741,
+      "min": 491,
+      "max": 781
+    },
+    "cpu_ns_per_frame": {
+      "median": 811277,
+      "min": 802522,
+      "max": 975388
+    },
+    "schedule_p50_ns": {
+      "median": 919,
+      "min": 884,
+      "max": 920
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      518400,
+      518400,
+      518400,
+      518400
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 2,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 223362,
+      "min": 221198,
+      "max": 224724
+    },
+    "convert_p95_ns": {
+      "median": 322684,
+      "min": 246987,
+      "max": 338104
+    },
+    "mark_p50_ns": {
+      "median": 761,
+      "min": 661,
+      "max": 772
+    },
+    "cpu_ns_per_frame": {
+      "median": 813802,
+      "min": 796128,
+      "max": 855555
+    },
+    "schedule_p50_ns": {
+      "median": 695,
+      "min": 690,
+      "max": 708
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      518400,
+      518400,
+      518400,
+      518400
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 3,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 215396,
+      "min": 212581,
+      "max": 221468
+    },
+    "convert_p95_ns": {
+      "median": 240104,
+      "min": 219995,
+      "max": 245084
+    },
+    "mark_p50_ns": {
+      "median": 781,
+      "min": 651,
+      "max": 832
+    },
+    "cpu_ns_per_frame": {
+      "median": 412323,
+      "min": 408016,
+      "max": 415204
+    },
+    "schedule_p50_ns": {
+      "median": 885,
+      "min": 872,
+      "max": 929
+    },
+    "converted_source_pixels": 1054080,
+    "job_source_pixels": [
+      518400,
+      518400,
+      8640,
+      8640
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 3,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 131494,
+      "min": 130241,
+      "max": 134921
+    },
+    "convert_p95_ns": {
+      "median": 148347,
+      "min": 135993,
+      "max": 175830
+    },
+    "mark_p50_ns": {
+      "median": 902,
+      "min": 811,
+      "max": 982
+    },
+    "cpu_ns_per_frame": {
+      "median": 433815,
+      "min": 431887,
+      "max": 439740
+    },
+    "schedule_p50_ns": {
+      "median": 712,
+      "min": 696,
+      "max": 736
+    },
+    "converted_source_pixels": 1054080,
+    "job_source_pixels": [
+      264960,
+      264960,
+      261120,
+      263040
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 4,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24508,
+      "min": 24407,
+      "max": 25258
+    },
+    "convert_p95_ns": {
+      "median": 24848,
+      "min": 24547,
+      "max": 25730
+    },
+    "mark_p50_ns": {
+      "median": 340,
+      "min": 331,
+      "max": 341
+    },
+    "cpu_ns_per_frame": {
+      "median": 25104,
+      "min": 24926,
+      "max": 25807
+    },
+    "schedule_p50_ns": {
+      "median": 484,
+      "min": 477,
+      "max": 497
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 4,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 25279,
+      "min": 24337,
+      "max": 25389
+    },
+    "convert_p95_ns": {
+      "median": 25489,
+      "min": 24508,
+      "max": 27053
+    },
+    "mark_p50_ns": {
+      "median": 350,
+      "min": 331,
+      "max": 351
+    },
+    "cpu_ns_per_frame": {
+      "median": 25814,
+      "min": 24874,
+      "max": 25967
+    },
+    "schedule_p50_ns": {
+      "median": 350,
+      "min": 339,
+      "max": 351
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 0,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 431,
+      "min": 421,
+      "max": 431
+    },
+    "convert_p95_ns": {
+      "median": 431,
+      "min": 431,
+      "max": 622
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 10,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 507,
+      "min": 498,
+      "max": 532
+    },
+    "schedule_p50_ns": {
+      "median": 423,
+      "min": 420,
+      "max": 426
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 0,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 230,
+      "min": 230,
+      "max": 341
+    },
+    "convert_p95_ns": {
+      "median": 231,
+      "min": 231,
+      "max": 351
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 312,
+      "min": 305,
+      "max": 462
+    },
+    "schedule_p50_ns": {
+      "median": 226,
+      "min": 223,
+      "max": 335
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 1,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 37793,
+      "min": 37533,
+      "max": 38315
+    },
+    "convert_p95_ns": {
+      "median": 39346,
+      "min": 38284,
+      "max": 42232
+    },
+    "mark_p50_ns": {
+      "median": 61,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 38221,
+      "min": 37909,
+      "max": 38769
+    },
+    "schedule_p50_ns": {
+      "median": 434,
+      "min": 431,
+      "max": 437
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 1,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 39136,
+      "min": 38805,
+      "max": 39677
+    },
+    "convert_p95_ns": {
+      "median": 40940,
+      "min": 39116,
+      "max": 43294
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 39495,
+      "min": 39195,
+      "max": 39992
+    },
+    "schedule_p50_ns": {
+      "median": 241,
+      "min": 240,
+      "max": 242
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 2,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 129300,
+      "min": 127346,
+      "max": 130382
+    },
+    "convert_p95_ns": {
+      "median": 137295,
+      "min": 135081,
+      "max": 148477
+    },
+    "mark_p50_ns": {
+      "median": 902,
+      "min": 711,
+      "max": 912
+    },
+    "cpu_ns_per_frame": {
+      "median": 908385,
+      "min": 898709,
+      "max": 913032
+    },
+    "schedule_p50_ns": {
+      "median": 950,
+      "min": 916,
+      "max": 952
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      257280,
+      261120,
+      257280,
+      261120,
+      257280,
+      261120,
+      257280,
+      261120
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 2,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 127286,
+      "min": 124621,
+      "max": 199516
+    },
+    "convert_p95_ns": {
+      "median": 148377,
+      "min": 137796,
+      "max": 213503
+    },
+    "mark_p50_ns": {
+      "median": 892,
+      "min": 732,
+      "max": 912
+    },
+    "cpu_ns_per_frame": {
+      "median": 891894,
+      "min": 887567,
+      "max": 969528
+    },
+    "schedule_p50_ns": {
+      "median": 741,
+      "min": 721,
+      "max": 750
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      261120,
+      257280,
+      261120,
+      257280,
+      261120,
+      257280,
+      261120,
+      257280
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 3,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 171421,
+      "min": 170800,
+      "max": 180629
+    },
+    "convert_p95_ns": {
+      "median": 183635,
+      "min": 180308,
+      "max": 195357
+    },
+    "mark_p50_ns": {
+      "median": 822,
+      "min": 742,
+      "max": 892
+    },
+    "cpu_ns_per_frame": {
+      "median": 423905,
+      "min": 418970,
+      "max": 430656
+    },
+    "schedule_p50_ns": {
+      "median": 902,
+      "min": 901,
+      "max": 915
+    },
+    "converted_source_pixels": 1054080,
+    "job_source_pixels": [
+      414720,
+      414720,
+      210816,
+      6912,
+      6912
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 3,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 111806,
+      "min": 110534,
+      "max": 115643
+    },
+    "convert_p95_ns": {
+      "median": 117828,
+      "min": 116085,
+      "max": 148697
+    },
+    "mark_p50_ns": {
+      "median": 902,
+      "min": 752,
+      "max": 912
+    },
+    "cpu_ns_per_frame": {
+      "median": 450909,
+      "min": 444846,
+      "max": 456408
+    },
+    "schedule_p50_ns": {
+      "median": 714,
+      "min": 706,
+      "max": 739
+    },
+    "converted_source_pixels": 1054080,
+    "job_source_pixels": [
+      211200,
+      211200,
+      211200,
+      211200,
+      209280
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 4,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24547,
+      "min": 24497,
+      "max": 24818
+    },
+    "convert_p95_ns": {
+      "median": 24788,
+      "min": 24618,
+      "max": 31631
+    },
+    "mark_p50_ns": {
+      "median": 340,
+      "min": 331,
+      "max": 341
+    },
+    "cpu_ns_per_frame": {
+      "median": 25104,
+      "min": 25030,
+      "max": 26723
+    },
+    "schedule_p50_ns": {
+      "median": 485,
+      "min": 474,
+      "max": 491
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 1,
+    "kind": 4,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 25299,
+      "min": 24568,
+      "max": 25509
+    },
+    "convert_p95_ns": {
+      "median": 25590,
+      "min": 24718,
+      "max": 25890
+    },
+    "mark_p50_ns": {
+      "median": 351,
+      "min": 341,
+      "max": 351
+    },
+    "cpu_ns_per_frame": {
+      "median": 25943,
+      "min": 25096,
+      "max": 26544
+    },
+    "schedule_p50_ns": {
+      "median": 350,
+      "min": 339,
+      "max": 353
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 38114,
+      "min": 37232,
+      "max": 39146
+    },
+    "convert_p95_ns": {
+      "median": 42161,
+      "min": 38093,
+      "max": 58743
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 61,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 38998,
+      "min": 37639,
+      "max": 42978
+    },
+    "schedule_p50_ns": {
+      "median": 438,
+      "min": 434,
+      "max": 455
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "scalar",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 146584,
+      "min": 144629,
+      "max": 151552
+    },
+    "convert_p95_ns": {
+      "median": 153828,
+      "min": 148627,
+      "max": 209515
+    },
+    "mark_p50_ns": {
+      "median": 60,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 150573,
+      "min": 145341,
+      "max": 153347
+    },
+    "schedule_p50_ns": {
+      "median": 444,
+      "min": 444,
+      "max": 463
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "native",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 19969,
+      "min": 19308,
+      "max": 20690
+    },
+    "convert_p95_ns": {
+      "median": 20390,
+      "min": 19368,
+      "max": 20860
+    },
+    "mark_p50_ns": {
+      "median": 61,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 20263,
+      "min": 19529,
+      "max": 20888
+    },
+    "schedule_p50_ns": {
+      "median": 462,
+      "min": 440,
+      "max": 465
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "avx2",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 28035,
+      "min": 27604,
+      "max": 29247
+    },
+    "convert_p95_ns": {
+      "median": 28996,
+      "min": 28605,
+      "max": 31591
+    },
+    "mark_p50_ns": {
+      "median": 61,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 28394,
+      "min": 28022,
+      "max": 29478
+    },
+    "schedule_p50_ns": {
+      "median": 446,
+      "min": 439,
+      "max": 456
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "avx512",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 27503,
+      "min": 27363,
+      "max": 28695
+    },
+    "convert_p95_ns": {
+      "median": 29246,
+      "min": 27793,
+      "max": 31301
+    },
+    "mark_p50_ns": {
+      "median": 61,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 27830,
+      "min": 27747,
+      "max": 28950
+    },
+    "schedule_p50_ns": {
+      "median": 446,
+      "min": 444,
+      "max": 465
+    },
+    "converted_source_pixels": 122880,
+    "job_source_pixels": [
+      122880
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 628033,
+      "min": 622974,
+      "max": 654826
+    },
+    "convert_p95_ns": {
+      "median": 653703,
+      "min": 628725,
+      "max": 666789
+    },
+    "mark_p50_ns": {
+      "median": 361,
+      "min": 360,
+      "max": 381
+    },
+    "cpu_ns_per_frame": {
+      "median": 639819,
+      "min": 623384,
+      "max": 655128
+    },
+    "schedule_p50_ns": {
+      "median": 483,
+      "min": 480,
+      "max": 510
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "scalar",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 2416569,
+      "min": 2409134,
+      "max": 2419165
+    },
+    "convert_p95_ns": {
+      "median": 2451647,
+      "min": 2425547,
+      "max": 2487166
+    },
+    "mark_p50_ns": {
+      "median": 351,
+      "min": 351,
+      "max": 370
+    },
+    "cpu_ns_per_frame": {
+      "median": 2420822,
+      "min": 2412847,
+      "max": 2432955
+    },
+    "schedule_p50_ns": {
+      "median": 476,
+      "min": 474,
+      "max": 479
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "native",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 322844,
+      "min": 319086,
+      "max": 332443
+    },
+    "convert_p95_ns": {
+      "median": 331691,
+      "min": 327623,
+      "max": 338594
+    },
+    "mark_p50_ns": {
+      "median": 361,
+      "min": 351,
+      "max": 361
+    },
+    "cpu_ns_per_frame": {
+      "median": 323892,
+      "min": 321471,
+      "max": 335739
+    },
+    "schedule_p50_ns": {
+      "median": 483,
+      "min": 478,
+      "max": 501
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "avx2",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 467343,
+      "min": 463576,
+      "max": 485227
+    },
+    "convert_p95_ns": {
+      "median": 479967,
+      "min": 474867,
+      "max": 509705
+    },
+    "mark_p50_ns": {
+      "median": 351,
+      "min": 351,
+      "max": 370
+    },
+    "cpu_ns_per_frame": {
+      "median": 468599,
+      "min": 466008,
+      "max": 489131
+    },
+    "schedule_p50_ns": {
+      "median": 481,
+      "min": 477,
+      "max": 485
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "avx512",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 462434,
+      "min": 459638,
+      "max": 479436
+    },
+    "convert_p95_ns": {
+      "median": 470048,
+      "min": 465269,
+      "max": 554462
+    },
+    "mark_p50_ns": {
+      "median": 351,
+      "min": 351,
+      "max": 370
+    },
+    "cpu_ns_per_frame": {
+      "median": 463239,
+      "min": 460652,
+      "max": 489843
+    },
+    "schedule_p50_ns": {
+      "median": 481,
+      "min": 475,
+      "max": 483
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24608,
+      "min": 24277,
+      "max": 25560
+    },
+    "convert_p95_ns": {
+      "median": 25740,
+      "min": 24717,
+      "max": 38555
+    },
+    "mark_p50_ns": {
+      "median": 340,
+      "min": 331,
+      "max": 351
+    },
+    "cpu_ns_per_frame": {
+      "median": 25866,
+      "min": 24818,
+      "max": 26694
+    },
+    "schedule_p50_ns": {
+      "median": 482,
+      "min": 477,
+      "max": 500
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "scalar",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24247,
+      "min": 23786,
+      "max": 24798
+    },
+    "convert_p95_ns": {
+      "median": 24818,
+      "min": 24297,
+      "max": 24978
+    },
+    "mark_p50_ns": {
+      "median": 341,
+      "min": 331,
+      "max": 350
+    },
+    "cpu_ns_per_frame": {
+      "median": 24779,
+      "min": 24516,
+      "max": 25323
+    },
+    "schedule_p50_ns": {
+      "median": 488,
+      "min": 474,
+      "max": 496
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "native",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 25870,
+      "min": 25189,
+      "max": 26010
+    },
+    "convert_p95_ns": {
+      "median": 26381,
+      "min": 26170,
+      "max": 27183
+    },
+    "mark_p50_ns": {
+      "median": 350,
+      "min": 340,
+      "max": 351
+    },
+    "cpu_ns_per_frame": {
+      "median": 26438,
+      "min": 25836,
+      "max": 26573
+    },
+    "schedule_p50_ns": {
+      "median": 493,
+      "min": 474,
+      "max": 498
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "avx2",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 23726,
+      "min": 23446,
+      "max": 24627
+    },
+    "convert_p95_ns": {
+      "median": 24858,
+      "min": 24577,
+      "max": 35739
+    },
+    "mark_p50_ns": {
+      "median": 340,
+      "min": 331,
+      "max": 351
+    },
+    "cpu_ns_per_frame": {
+      "median": 25101,
+      "min": 24163,
+      "max": 25252
+    },
+    "schedule_p50_ns": {
+      "median": 487,
+      "min": 480,
+      "max": 500
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 1,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "avx512",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24818,
+      "min": 24688,
+      "max": 25038
+    },
+    "convert_p95_ns": {
+      "median": 25149,
+      "min": 24758,
+      "max": 26371
+    },
+    "mark_p50_ns": {
+      "median": 340,
+      "min": 331,
+      "max": 340
+    },
+    "cpu_ns_per_frame": {
+      "median": 25367,
+      "min": 25174,
+      "max": 25594
+    },
+    "schedule_p50_ns": {
+      "median": 484,
+      "min": 479,
+      "max": 495
+    },
+    "converted_source_pixels": 17280,
+    "job_source_pixels": [
+      17280
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 0,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 231,
+      "min": 230,
+      "max": 240
+    },
+    "convert_p95_ns": {
+      "median": 241,
+      "min": 240,
+      "max": 241
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 10,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 310,
+      "min": 305,
+      "max": 317
+    },
+    "schedule_p50_ns": {
+      "median": 228,
+      "min": 227,
+      "max": 235
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 0,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 140,
+      "min": 130,
+      "max": 150
+    },
+    "convert_p95_ns": {
+      "median": 160,
+      "min": 150,
+      "max": 160
+    },
+    "mark_p50_ns": {
+      "median": 40,
+      "min": 40,
+      "max": 50
+    },
+    "cpu_ns_per_frame": {
+      "median": 245,
+      "min": 228,
+      "max": 257
+    },
+    "converted_source_pixels": 0
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 161613,
+      "min": 156111,
+      "max": 162334
+    },
+    "convert_p95_ns": {
+      "median": 166201,
+      "min": 160651,
+      "max": 168165
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 163047,
+      "min": 157187,
+      "max": 164917
+    },
+    "schedule_p50_ns": {
+      "median": 241,
+      "min": 234,
+      "max": 244
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 10741,
+      "min": 10661,
+      "max": 11192
+    },
+    "convert_p95_ns": {
+      "median": 10790,
+      "min": 10691,
+      "max": 12834
+    },
+    "mark_p50_ns": {
+      "median": 60,
+      "min": 51,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 10877,
+      "min": 10843,
+      "max": 11404
+    },
+    "converted_source_pixels": 16384
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 1280003,
+      "min": 1274804,
+      "max": 1282679
+    },
+    "convert_p95_ns": {
+      "median": 1296495,
+      "min": 1287818,
+      "max": 1337995
+    },
+    "mark_p50_ns": {
+      "median": 201,
+      "min": 200,
+      "max": 210
+    },
+    "cpu_ns_per_frame": {
+      "median": 1281608,
+      "min": 1276939,
+      "max": 1298988
+    },
+    "schedule_p50_ns": {
+      "median": 244,
+      "min": 239,
+      "max": 246
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 1283400,
+      "min": 1277779,
+      "max": 1283861
+    },
+    "convert_p95_ns": {
+      "median": 1290253,
+      "min": 1282709,
+      "max": 1301545
+    },
+    "mark_p50_ns": {
+      "median": 100,
+      "min": 90,
+      "max": 100
+    },
+    "cpu_ns_per_frame": {
+      "median": 1284846,
+      "min": 1279034,
+      "max": 1285741
+    },
+    "converted_source_pixels": 2073600
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 3,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 663412,
+      "min": 661348,
+      "max": 664424
+    },
+    "convert_p95_ns": {
+      "median": 668682,
+      "min": 666077,
+      "max": 686987
+    },
+    "mark_p50_ns": {
+      "median": 211,
+      "min": 210,
+      "max": 220
+    },
+    "cpu_ns_per_frame": {
+      "median": 663948,
+      "min": 661222,
+      "max": 668174
+    },
+    "schedule_p50_ns": {
+      "median": 242,
+      "min": 241,
+      "max": 246
+    },
+    "converted_source_pixels": 1071360,
+    "job_source_pixels": [
+      1071360
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 3,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 666237,
+      "min": 663732,
+      "max": 666658
+    },
+    "convert_p95_ns": {
+      "median": 670375,
+      "min": 665967,
+      "max": 674033
+    },
+    "mark_p50_ns": {
+      "median": 90,
+      "min": 90,
+      "max": 100
+    },
+    "cpu_ns_per_frame": {
+      "median": 665613,
+      "min": 662824,
+      "max": 667565
+    },
+    "converted_source_pixels": 1071360
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24117,
+      "min": 23645,
+      "max": 24407
+    },
+    "convert_p95_ns": {
+      "median": 24417,
+      "min": 24377,
+      "max": 25139
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 190,
+      "max": 191
+    },
+    "cpu_ns_per_frame": {
+      "median": 24479,
+      "min": 23909,
+      "max": 24787
+    },
+    "schedule_p50_ns": {
+      "median": 254,
+      "min": 242,
+      "max": 256
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 46580,
+      "min": 46139,
+      "max": 47982
+    },
+    "convert_p95_ns": {
+      "median": 50488,
+      "min": 49225,
+      "max": 54415
+    },
+    "mark_p50_ns": {
+      "median": 80,
+      "min": 80,
+      "max": 90
+    },
+    "cpu_ns_per_frame": {
+      "median": 47394,
+      "min": 46714,
+      "max": 49230
+    },
+    "converted_source_pixels": 69120
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 5,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 143517,
+      "min": 141674,
+      "max": 145751
+    },
+    "convert_p95_ns": {
+      "median": 149148,
+      "min": 145942,
+      "max": 155360
+    },
+    "mark_p50_ns": {
+      "median": 421,
+      "min": 411,
+      "max": 441
+    },
+    "cpu_ns_per_frame": {
+      "median": 145905,
+      "min": 142947,
+      "max": 149937
+    },
+    "schedule_p50_ns": {
+      "median": 237,
+      "min": 235,
+      "max": 243
+    },
+    "converted_source_pixels": 229888,
+    "job_source_pixels": [
+      229888
+    ]
+  },
+  {
+    "group": "tiles",
+    "scale": 2,
+    "kind": 5,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 1,
+    "convert_p50_ns": {
+      "median": 79193,
+      "min": 78161,
+      "max": 81458
+    },
+    "convert_p95_ns": {
+      "median": 84904,
+      "min": 82970,
+      "max": 101145
+    },
+    "mark_p50_ns": {
+      "median": 130,
+      "min": 120,
+      "max": 130
+    },
+    "cpu_ns_per_frame": {
+      "median": 80305,
+      "min": 79063,
+      "max": 81882
+    },
+    "converted_source_pixels": 122880
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 0,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 231,
+      "min": 230,
+      "max": 240
+    },
+    "convert_p95_ns": {
+      "median": 241,
+      "min": 241,
+      "max": 461
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 314,
+      "min": 307,
+      "max": 347
+    },
+    "schedule_p50_ns": {
+      "median": 233,
+      "min": 229,
+      "max": 234
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 0,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 121,
+      "min": 120,
+      "max": 130
+    },
+    "convert_p95_ns": {
+      "median": 131,
+      "min": 130,
+      "max": 131
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 197,
+      "min": 194,
+      "max": 206
+    },
+    "schedule_p50_ns": {
+      "median": 126,
+      "min": 119,
+      "max": 128
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 1,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 158626,
+      "min": 156182,
+      "max": 162294
+    },
+    "convert_p95_ns": {
+      "median": 164939,
+      "min": 160209,
+      "max": 170680
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 161450,
+      "min": 157025,
+      "max": 164108
+    },
+    "schedule_p50_ns": {
+      "median": 235,
+      "min": 233,
+      "max": 244
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 1,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 160931,
+      "min": 155530,
+      "max": 162324
+    },
+    "convert_p95_ns": {
+      "median": 166982,
+      "min": 162343,
+      "max": 242579
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 163483,
+      "min": 157885,
+      "max": 172111
+    },
+    "schedule_p50_ns": {
+      "median": 136,
+      "min": 131,
+      "max": 138
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 2,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 343373,
+      "min": 338244,
+      "max": 348624
+    },
+    "convert_p95_ns": {
+      "median": 353783,
+      "min": 349606,
+      "max": 461933
+    },
+    "mark_p50_ns": {
+      "median": 481,
+      "min": 430,
+      "max": 491
+    },
+    "cpu_ns_per_frame": {
+      "median": 1333736,
+      "min": 1325058,
+      "max": 1344336
+    },
+    "schedule_p50_ns": {
+      "median": 460,
+      "min": 447,
+      "max": 469
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      514560,
+      522240,
+      514560,
+      522240
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 2,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 340778,
+      "min": 335448,
+      "max": 342261
+    },
+    "convert_p95_ns": {
+      "median": 432085,
+      "min": 346599,
+      "max": 503763
+    },
+    "mark_p50_ns": {
+      "median": 481,
+      "min": 221,
+      "max": 531
+    },
+    "cpu_ns_per_frame": {
+      "median": 1330409,
+      "min": 1320249,
+      "max": 1335701
+    },
+    "schedule_p50_ns": {
+      "median": 363,
+      "min": 356,
+      "max": 366
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      522240,
+      514560,
+      522240,
+      514560
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 3,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 334155,
+      "min": 332903,
+      "max": 336330
+    },
+    "convert_p95_ns": {
+      "median": 349575,
+      "min": 338944,
+      "max": 365947
+    },
+    "mark_p50_ns": {
+      "median": 491,
+      "min": 451,
+      "max": 551
+    },
+    "cpu_ns_per_frame": {
+      "median": 693731,
+      "min": 691613,
+      "max": 700263
+    },
+    "schedule_p50_ns": {
+      "median": 453,
+      "min": 449,
+      "max": 471
+    },
+    "converted_source_pixels": 1071360,
+    "job_source_pixels": [
+      514560,
+      522240,
+      17152,
+      17408
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 3,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 180989,
+      "min": 175058,
+      "max": 183384
+    },
+    "convert_p95_ns": {
+      "median": 221759,
+      "min": 200097,
+      "max": 260544
+    },
+    "mark_p50_ns": {
+      "median": 411,
+      "min": 221,
+      "max": 541
+    },
+    "cpu_ns_per_frame": {
+      "median": 694611,
+      "min": 687644,
+      "max": 704163
+    },
+    "schedule_p50_ns": {
+      "median": 348,
+      "min": 343,
+      "max": 355
+    },
+    "converted_source_pixels": 1071360,
+    "job_source_pixels": [
+      268800,
+      268800,
+      268800,
+      264960
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 4,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24237,
+      "min": 23195,
+      "max": 24587
+    },
+    "convert_p95_ns": {
+      "median": 24407,
+      "min": 24156,
+      "max": 24708
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 181,
+      "max": 200
+    },
+    "cpu_ns_per_frame": {
+      "median": 24567,
+      "min": 23602,
+      "max": 24909
+    },
+    "schedule_p50_ns": {
+      "median": 251,
+      "min": 243,
+      "max": 368
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 4,
+    "workers": 4,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 23646,
+      "min": 23315,
+      "max": 24227
+    },
+    "convert_p95_ns": {
+      "median": 25028,
+      "min": 23595,
+      "max": 25880
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 181,
+      "max": 200
+    },
+    "cpu_ns_per_frame": {
+      "median": 24329,
+      "min": 23721,
+      "max": 24659
+    },
+    "schedule_p50_ns": {
+      "median": 170,
+      "min": 169,
+      "max": 173
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 0,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 231,
+      "min": 230,
+      "max": 231
+    },
+    "convert_p95_ns": {
+      "median": 241,
+      "min": 231,
+      "max": 241
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 309,
+      "min": 300,
+      "max": 342
+    },
+    "schedule_p50_ns": {
+      "median": 230,
+      "min": 228,
+      "max": 235
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 0,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 121,
+      "min": 121,
+      "max": 130
+    },
+    "convert_p95_ns": {
+      "median": 131,
+      "min": 131,
+      "max": 131
+    },
+    "mark_p50_ns": {
+      "median": 20,
+      "min": 20,
+      "max": 20
+    },
+    "cpu_ns_per_frame": {
+      "median": 202,
+      "min": 197,
+      "max": 204
+    },
+    "schedule_p50_ns": {
+      "median": 122,
+      "min": 119,
+      "max": 126
+    },
+    "converted_source_pixels": 0,
+    "job_source_pixels": []
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 1,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 157023,
+      "min": 156983,
+      "max": 162084
+    },
+    "convert_p95_ns": {
+      "median": 163606,
+      "min": 162304,
+      "max": 169898
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 158362,
+      "min": 157991,
+      "max": 164582
+    },
+    "schedule_p50_ns": {
+      "median": 235,
+      "min": 234,
+      "max": 244
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 1,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 162333,
+      "min": 156873,
+      "max": 163325
+    },
+    "convert_p95_ns": {
+      "median": 166482,
+      "min": 163035,
+      "max": 167193
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 61,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 163178,
+      "min": 157934,
+      "max": 164236
+    },
+    "schedule_p50_ns": {
+      "median": 137,
+      "min": 133,
+      "max": 138
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 2,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 187703,
+      "min": 184166,
+      "max": 189506
+    },
+    "convert_p95_ns": {
+      "median": 263339,
+      "min": 193413,
+      "max": 320069
+    },
+    "mark_p50_ns": {
+      "median": 531,
+      "min": 491,
+      "max": 541
+    },
+    "cpu_ns_per_frame": {
+      "median": 1402579,
+      "min": 1383757,
+      "max": 1456329
+    },
+    "schedule_p50_ns": {
+      "median": 457,
+      "min": 452,
+      "max": 462
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      253440,
+      261120,
+      261120,
+      261120,
+      253440,
+      261120,
+      261120,
+      261120
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 2,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 186270,
+      "min": 184787,
+      "max": 186480
+    },
+    "convert_p95_ns": {
+      "median": 254091,
+      "min": 196098,
+      "max": 261666
+    },
+    "mark_p50_ns": {
+      "median": 511,
+      "min": 441,
+      "max": 531
+    },
+    "cpu_ns_per_frame": {
+      "median": 1385686,
+      "min": 1377193,
+      "max": 1394292
+    },
+    "schedule_p50_ns": {
+      "median": 348,
+      "min": 340,
+      "max": 356
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      261120,
+      261120,
+      261120,
+      253440,
+      261120,
+      261120,
+      261120,
+      253440
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 3,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 270002,
+      "min": 265553,
+      "max": 277105
+    },
+    "convert_p95_ns": {
+      "median": 278528,
+      "min": 275142,
+      "max": 376026
+    },
+    "mark_p50_ns": {
+      "median": 521,
+      "min": 441,
+      "max": 541
+    },
+    "cpu_ns_per_frame": {
+      "median": 704718,
+      "min": 695414,
+      "max": 729284
+    },
+    "schedule_p50_ns": {
+      "median": 463,
+      "min": 461,
+      "max": 478
+    },
+    "converted_source_pixels": 1071360,
+    "job_source_pixels": [
+      414720,
+      414720,
+      214272,
+      13824,
+      13824
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 3,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 150010,
+      "min": 146553,
+      "max": 150671
+    },
+    "convert_p95_ns": {
+      "median": 157083,
+      "min": 152194,
+      "max": 164508
+    },
+    "mark_p50_ns": {
+      "median": 561,
+      "min": 531,
+      "max": 601
+    },
+    "cpu_ns_per_frame": {
+      "median": 708450,
+      "min": 700936,
+      "max": 712271
+    },
+    "schedule_p50_ns": {
+      "median": 345,
+      "min": 343,
+      "max": 356
+    },
+    "converted_source_pixels": 1071360,
+    "job_source_pixels": [
+      215040,
+      215040,
+      215040,
+      215040,
+      211200
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 4,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24247,
+      "min": 23605,
+      "max": 24577
+    },
+    "convert_p95_ns": {
+      "median": 26181,
+      "min": 24347,
+      "max": 27914
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 181,
+      "max": 200
+    },
+    "cpu_ns_per_frame": {
+      "median": 24666,
+      "min": 24084,
+      "max": 25200
+    },
+    "schedule_p50_ns": {
+      "median": 252,
+      "min": 245,
+      "max": 257
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "scheduling",
+    "scale": 2,
+    "kind": 4,
+    "workers": 8,
+    "compiler": "generic",
+    "variant": 2,
+    "convert_p50_ns": {
+      "median": 24247,
+      "min": 23215,
+      "max": 24948
+    },
+    "convert_p95_ns": {
+      "median": 24347,
+      "min": 23535,
+      "max": 28385
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 181,
+      "max": 200
+    },
+    "cpu_ns_per_frame": {
+      "median": 24616,
+      "min": 23716,
+      "max": 25317
+    },
+    "schedule_p50_ns": {
+      "median": 172,
+      "min": 167,
+      "max": 176
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 157133,
+      "min": 156643,
+      "max": 163286
+    },
+    "convert_p95_ns": {
+      "median": 166041,
+      "min": 162524,
+      "max": 177303
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 158888,
+      "min": 158189,
+      "max": 163866
+    },
+    "schedule_p50_ns": {
+      "median": 236,
+      "min": 235,
+      "max": 243
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "scalar",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 165650,
+      "min": 159688,
+      "max": 165710
+    },
+    "convert_p95_ns": {
+      "median": 169948,
+      "min": 164227,
+      "max": 188995
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 60,
+      "max": 70
+    },
+    "cpu_ns_per_frame": {
+      "median": 166504,
+      "min": 160728,
+      "max": 169012
+    },
+    "schedule_p50_ns": {
+      "median": 231,
+      "min": 229,
+      "max": 239
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "native",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 158015,
+      "min": 156312,
+      "max": 161221
+    },
+    "convert_p95_ns": {
+      "median": 165199,
+      "min": 162103,
+      "max": 168125
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 60,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 160246,
+      "min": 156887,
+      "max": 164856
+    },
+    "schedule_p50_ns": {
+      "median": 230,
+      "min": 229,
+      "max": 240
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "avx2",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 153336,
+      "min": 152385,
+      "max": 159539
+    },
+    "convert_p95_ns": {
+      "median": 159498,
+      "min": 156623,
+      "max": 175990
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 154336,
+      "min": 153413,
+      "max": 162358
+    },
+    "schedule_p50_ns": {
+      "median": 224,
+      "min": 222,
+      "max": 232
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 1,
+    "workers": 1,
+    "compiler": "avx512",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 151293,
+      "min": 146934,
+      "max": 152926
+    },
+    "convert_p95_ns": {
+      "median": 156883,
+      "min": 155069,
+      "max": 159739
+    },
+    "mark_p50_ns": {
+      "median": 70,
+      "min": 70,
+      "max": 80
+    },
+    "cpu_ns_per_frame": {
+      "median": 152469,
+      "min": 149094,
+      "max": 153626
+    },
+    "schedule_p50_ns": {
+      "median": 231,
+      "min": 229,
+      "max": 238
+    },
+    "converted_source_pixels": 245760,
+    "job_source_pixels": [
+      245760
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 1279262,
+      "min": 1275224,
+      "max": 1280694
+    },
+    "convert_p95_ns": {
+      "median": 1286826,
+      "min": 1285544,
+      "max": 1292117
+    },
+    "mark_p50_ns": {
+      "median": 201,
+      "min": 201,
+      "max": 210
+    },
+    "cpu_ns_per_frame": {
+      "median": 1280567,
+      "min": 1277612,
+      "max": 1283198
+    },
+    "schedule_p50_ns": {
+      "median": 243,
+      "min": 242,
+      "max": 247
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "scalar",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 1308548,
+      "min": 1302456,
+      "max": 1356240
+    },
+    "convert_p95_ns": {
+      "median": 1359346,
+      "min": 1307667,
+      "max": 1362492
+    },
+    "mark_p50_ns": {
+      "median": 210,
+      "min": 200,
+      "max": 220
+    },
+    "cpu_ns_per_frame": {
+      "median": 1316527,
+      "min": 1303962,
+      "max": 1358305
+    },
+    "schedule_p50_ns": {
+      "median": 244,
+      "min": 242,
+      "max": 258
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "native",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 1259934,
+      "min": 1257770,
+      "max": 1264002
+    },
+    "convert_p95_ns": {
+      "median": 1275074,
+      "min": 1267940,
+      "max": 1332054
+    },
+    "mark_p50_ns": {
+      "median": 201,
+      "min": 200,
+      "max": 201
+    },
+    "cpu_ns_per_frame": {
+      "median": 1264225,
+      "min": 1260790,
+      "max": 1274311
+    },
+    "schedule_p50_ns": {
+      "median": 244,
+      "min": 241,
+      "max": 245
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "avx2",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 1244344,
+      "min": 1243603,
+      "max": 1247951
+    },
+    "convert_p95_ns": {
+      "median": 1254894,
+      "min": 1249294,
+      "max": 1260666
+    },
+    "mark_p50_ns": {
+      "median": 201,
+      "min": 200,
+      "max": 210
+    },
+    "cpu_ns_per_frame": {
+      "median": 1246411,
+      "min": 1245747,
+      "max": 1250088
+    },
+    "schedule_p50_ns": {
+      "median": 243,
+      "min": 241,
+      "max": 245
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 2,
+    "workers": 1,
+    "compiler": "avx512",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 1195971,
+      "min": 1190110,
+      "max": 1197083
+    },
+    "convert_p95_ns": {
+      "median": 1203055,
+      "min": 1200810,
+      "max": 1236329
+    },
+    "mark_p50_ns": {
+      "median": 210,
+      "min": 210,
+      "max": 220
+    },
+    "cpu_ns_per_frame": {
+      "median": 1198234,
+      "min": 1196920,
+      "max": 1205050
+    },
+    "schedule_p50_ns": {
+      "median": 243,
+      "min": 241,
+      "max": 244
+    },
+    "converted_source_pixels": 2073600,
+    "job_source_pixels": [
+      2073600
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "generic",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 23556,
+      "min": 23446,
+      "max": 24939
+    },
+    "convert_p95_ns": {
+      "median": 24387,
+      "min": 23977,
+      "max": 27483
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 181,
+      "max": 190
+    },
+    "cpu_ns_per_frame": {
+      "median": 24087,
+      "min": 23907,
+      "max": 25209
+    },
+    "schedule_p50_ns": {
+      "median": 242,
+      "min": 240,
+      "max": 251
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "scalar",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24888,
+      "min": 24447,
+      "max": 25460
+    },
+    "convert_p95_ns": {
+      "median": 27653,
+      "min": 25400,
+      "max": 28265
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 190,
+      "max": 190
+    },
+    "cpu_ns_per_frame": {
+      "median": 25366,
+      "min": 25063,
+      "max": 25828
+    },
+    "schedule_p50_ns": {
+      "median": 251,
+      "min": 242,
+      "max": 253
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "native",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 24367,
+      "min": 23966,
+      "max": 24838
+    },
+    "convert_p95_ns": {
+      "median": 25920,
+      "min": 24297,
+      "max": 28075
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 181,
+      "max": 190
+    },
+    "cpu_ns_per_frame": {
+      "median": 25102,
+      "min": 24288,
+      "max": 25154
+    },
+    "schedule_p50_ns": {
+      "median": 244,
+      "min": 240,
+      "max": 252
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "avx2",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 23976,
+      "min": 23916,
+      "max": 24327
+    },
+    "convert_p95_ns": {
+      "median": 26481,
+      "min": 24347,
+      "max": 27002
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 190,
+      "max": 200
+    },
+    "cpu_ns_per_frame": {
+      "median": 24581,
+      "min": 24053,
+      "max": 24813
+    },
+    "schedule_p50_ns": {
+      "median": 249,
+      "min": 239,
+      "max": 255
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "simd",
+    "scale": 2,
+    "kind": 4,
+    "workers": 1,
+    "compiler": "avx512",
+    "variant": 0,
+    "convert_p50_ns": {
+      "median": 22504,
+      "min": 22123,
+      "max": 23174
+    },
+    "convert_p95_ns": {
+      "median": 23415,
+      "min": 22674,
+      "max": 25910
+    },
+    "mark_p50_ns": {
+      "median": 190,
+      "min": 181,
+      "max": 191
+    },
+    "cpu_ns_per_frame": {
+      "median": 23046,
+      "min": 22590,
+      "max": 23616
+    },
+    "schedule_p50_ns": {
+      "median": 243,
+      "min": 241,
+      "max": 250
+    },
+    "converted_source_pixels": 34560,
+    "job_source_pixels": [
+      34560
+    ]
+  },
+  {
+    "group": "metadata",
+    "identity": 0,
+    "metadata_pair_p50_ns": {
+      "median": 86738,
+      "min": 83812,
+      "max": 87319
+    },
+    "metadata_pair_p95_ns": {
+      "median": 91937,
+      "min": 91206,
+      "max": 95314
+    },
+    "x_requests_per_pair": {
+      "median": 8.0,
+      "min": 8.0,
+      "max": 8.0
+    }
+  },
+  {
+    "group": "metadata",
+    "identity": 1,
+    "metadata_pair_p50_ns": {
+      "median": 105504,
+      "min": 105214,
+      "max": 109151
+    },
+    "metadata_pair_p95_ns": {
+      "median": 137395,
+      "min": 110904,
+      "max": 139078
+    },
+    "x_requests_per_pair": {
+      "median": 10.0,
+      "min": 10.0,
+      "max": 10.0
+    }
+  }
+]
