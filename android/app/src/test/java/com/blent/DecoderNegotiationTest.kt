@@ -1,6 +1,6 @@
 package com.blent
 
-import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.*
 import okhttp3.*
 import okio.ByteString
 import org.json.JSONObject
@@ -16,6 +16,36 @@ import java.util.concurrent.TimeUnit
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class DecoderNegotiationTest {
+    @Test fun t808_stopAndReconnectDoNotWaitOrPublishRetiredNativeResult() {
+        val sockets = CopyOnWriteArrayList<Socket>()
+        val entered = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        val control = ControlSession(Any(), Input, WebSocket.Factory { _, listener -> Socket(listener).also { sockets.add(it) } }) {
+            width, height, fps -> DecoderCapabilities.report(width, height, fps, {
+                entered.countDown(); release.await(); emptyArray<android.media.MediaCodecInfo>()
+            }, { _, _ -> error("empty") })
+        }
+        try {
+            control.connect(); sockets[0].open(); sockets[0].greeting()
+            assertTrue(entered.await(2, TimeUnit.SECONDS))
+            control.disconnect()
+            assertFalse(control.controlConnected.value)
+            control.connect(); sockets[1].open(); sockets[1].greeting(1280)
+            val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(2)
+            while (sockets[1].sent.none { it.contains("capabilities") } && System.nanoTime() < deadline) Thread.sleep(5)
+            assertTrue(sockets[0].sent.none { it.contains("capabilities") })
+            val report = JSONObject(sockets[1].sent.single { it.contains("capabilities") }).getJSONObject("capabilities")
+            assertEquals(1280, report.getInt("width"))
+            assertEquals("unavailable", report.getString("status"))
+            release.countDown()
+            runBlocking { withTimeout(2_000) { while (MetadataQueries.lane.busy) delay(1) } }
+            assertTrue(sockets[0].sent.none { it.contains("capabilities") })
+        } finally {
+            release.countDown(); control.disconnect()
+            runBlocking { withTimeout(2_000) { while (MetadataQueries.lane.busy) delay(1) } }
+        }
+    }
+
     @Test fun t478_lateInventoryCannotPublishAcrossIdenticalFormatScopes() {
         lateinit var socket: Socket
         val entered = CountDownLatch(1)

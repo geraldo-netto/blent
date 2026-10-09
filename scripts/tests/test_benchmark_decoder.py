@@ -68,7 +68,7 @@ class DecoderBenchmarkTests(unittest.TestCase):
             self.assertIn('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3',
                           (output / 'app/build.gradle.kts').read_text())
             for name in ['MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'VideoContract.kt',
-                         'VideoProfiles.kt', 'DecoderCapabilities.kt', 'DecoderSelectionJson.kt',
+                         'VideoProfiles.kt', 'DecoderCapabilities.kt', 'NativeQueryLane.kt', 'DecoderSelectionJson.kt',
                          'DecoderSelectionAndroid.kt']:
                 self.assertEqual((output / 'app/src/main/java' / name).read_text(),
                                  (project.SOURCE / name).read_text(), 'T478: missing production negotiation dependency')

@@ -168,3 +168,27 @@ four formats, with identical payloads. Cold-start ranges overlap. A sequence-bas
 trial regressed the common small format and was replaced before acceptance.
 Isolated local benchmark packages only; no downloads or production app reload.
 The global query isolation problem remains T808.
+
+## T808: bounded native metadata admission
+
+A portable NativeQueryLane admits one finite native call and no waiting queue.
+The shell inventory receiver and control capability reports share that lane.
+Coroutine cancellation and the independent five-second deadline stop waiting,
+while the actual native owner retains admission until it returns. Busy/expired
+control reports are explicitly unavailable with no positive capabilities; shell
+reports retain their versioned unknown response. BroadcastReceiver uses goAsync,
+and always finishes its pending result. ControlSession retains its socket/request
+checks before publishing, so late native results cannot reach replacements.
+
+Cancellation and blocked broadcast dispatch regressions failed on both SDKs
+before the change; both now pass. Permanent tests cover blocked native ownership,
+200 rejected replacement requests, timeout, cancellation, recovery, exceptions,
+executor rejection, invalid deadlines, Stop/reconnect and late generations.
+Existing ordered-broadcast assertions now await asynchronous completion.
+
+Full offline validation: 798 tests pass; 889/889 methods meet 80% individually;
+complexity <=9. Generated replay/metadata APK compiles with the new dependency;
+boundary/generator tooling passes. Four native report payloads on the SDK36
+USB tablet match T802 exactly (isolated benchmark package). No native hang is
+claimed reproduced; latch-based fault injection proves caller isolation. Native
+process crashes remain outside this thread boundary and are evaluated in T809.

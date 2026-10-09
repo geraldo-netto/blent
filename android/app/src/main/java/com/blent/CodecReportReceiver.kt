@@ -6,11 +6,19 @@ import android.content.Intent
 import android.media.MediaCodecInfo
 import android.media.MediaCodecList
 import android.os.Build
+import kotlinx.coroutines.*
 
 /** Read-only decoder inventory for `adb shell am broadcast`; DUMP restricts callers to shell/system. */
-class CodecReportReceiver : BroadcastReceiver() {
+class CodecReportReceiver(private val query: (Int) -> String = { decoderReport(it) }) : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        resultData = decoderReport(intent.getIntExtra("blent_codecs_version", 1))
+        val version = intent.getIntExtra("blent_codecs_version", 1)
+        val completion = goAsync()
+        CoroutineScope(Dispatchers.Default).launch {
+            try {
+                completion.resultData = MetadataQueries.lane.query { query(version) }
+                    ?: formatDecoderReport(version, null)
+            } finally { completion.finish() }
+        }
     }
 }
 
@@ -19,6 +27,10 @@ internal fun decoderReport(
     codecs: () -> Array<MediaCodecInfo> = { MediaCodecList(MediaCodecList.REGULAR_CODECS).codecInfos },
 ): String {
     val inventory = try { codecs() } catch (_: Exception) { null }
+    return formatDecoderReport(version, inventory)
+}
+
+internal fun formatDecoderReport(version: Int, inventory: Array<MediaCodecInfo>?): String {
     if (version == 2) {
         return "BLENT_CODECS_V2:" + VideoCodec.types.entries.joinToString(";") { (name, mime) ->
             "$name=${decoderInventory(inventory, mime)}"

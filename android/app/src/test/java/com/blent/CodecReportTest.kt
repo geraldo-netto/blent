@@ -79,7 +79,11 @@ class CodecReportTest {
         }
         val intent = android.content.Intent(context, CodecReportReceiver::class.java).putExtra("blent_codecs_version", 2)
         context.sendOrderedBroadcast(intent, null, completion, null, 0, null, null)
-        org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+        val deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(3)
+        while (result == null && System.nanoTime() < deadline) {
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            Thread.sleep(5)
+        }
         assertEquals("BLENT_CODECS_V2:h264=none;hevc=none;vp9=none;av1=none", result)
     }
 

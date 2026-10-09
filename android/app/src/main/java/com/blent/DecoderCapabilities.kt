@@ -4,15 +4,12 @@ import android.media.MediaCodecList
 import android.media.MediaCodecInfo
 import android.media.MediaFormat
 import android.os.Build
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import org.json.JSONArray
 import org.json.JSONObject
 
-/** Serialized off the Activity/control locks. Snapshots live for one request;
+/** Bounded query work off Activity/control locks. Snapshots live for one request;
  * advertised support is not a speed measurement. */
 internal object DecoderCapabilities {
-    private val admission = Mutex()
     private data class Entry(val info: MediaCodecInfo, val types: Array<String>)
     private data class Compatible(val info: MediaCodecInfo, val caps: MediaCodecInfo.CodecCapabilities)
 
@@ -22,12 +19,23 @@ internal object DecoderCapabilities {
     suspend fun report(width: Int, height: Int, fps: Int,
         readInventory: () -> Array<MediaCodecInfo>,
         readCapabilities: (MediaCodecInfo, String) -> MediaCodecInfo.CodecCapabilities,
-    ): JSONObject = admission.withLock {
+    ): JSONObject = MetadataQueries.lane.query {
+        snapshotReport(width, height, fps, readInventory, readCapabilities)
+    } ?: unavailable(width, height, fps)
+
+    private fun unavailable(width: Int, height: Int, fps: Int): JSONObject =
+        describe(width, height, fps) { _, _, _, _ -> false }
+            .put("hardware", JSONArray()).put("details", JSONArray()).put("status", "unavailable")
+
+    private fun snapshotReport(width: Int, height: Int, fps: Int,
+        readInventory: () -> Array<MediaCodecInfo>,
+        readCapabilities: (MediaCodecInfo, String) -> MediaCodecInfo.CodecCapabilities,
+    ): JSONObject {
         val inventory = snapshot(readInventory)
         val decoders = VideoCodec.types.values.associateWith { mime ->
             compatible(mime, width, height, fps, inventory, readCapabilities)
         }
-        describe(width, height, fps) { mime, _, _, _ -> decoders[mime]?.isNotEmpty() == true }.apply {
+        return describe(width, height, fps) { mime, _, _, _ -> decoders[mime]?.isNotEmpty() == true }.apply {
             put("hardware", JSONArray(VideoCodec.types.filterValues { mime ->
                 decoders[mime]?.any { hardware(it.info) } == true
             }.keys.toList()))
