@@ -1,0 +1,537 @@
+{
+  "sources": {
+    "host/gpu/options.h": "4a6eb73ad585683ddbd66f5bd34d150e1d4ad132e58ed45a1c452264432d56a0",
+    "host/gpu/events.c": "7768385520b62e29dcc29d7509a56dfba41d54400ade311c38603cbf1a65ca37",
+    "host/gpu/main.c": "c0a1a9fd94e4ee3d7496d588cc96c2cf5f4c0b13772519d3d5ac4eb82115552f",
+    "host/gpu/output.c": "21e0cf26d5b0402edb844a94ce1b571471b3e91aa7234d7ea4030a1d55e15663",
+    "host/gpu/identity.c": "55b1b82ddb32c76fbaad82586626905e96f49cdaa8a040e5f0b5539890ef7a69",
+    "host/gpu/gpu.h": "fd30a8b24c2ae51a97ed44c934ff5ef382da9693a0d09d07d61897fc05ccd41f",
+    "host/gpu/cursor.c": "bdde5272fabb51c0fb4a07c5c31cf7a353c3ba357ac547b51c70c0839e633ed9",
+    "host/gpu/encode.c": "dbbb3128eba4e2330db336ac9893ac9d283e22e87513576c1f075bfe069961cd",
+    "host/gpu/cadence.c": "d468086223f7080f626c6116233f4a120d1ae2a141bf8dd3d075aea8990447f0",
+    "host/gpu/options.c": "c587fcc1e920c6ab38912f31296a21e8f6e3a66c363eb23da2fb498c824c785b",
+    "host/gpu/capture.c": "643ba2b8b5d909d8986950a84c634349072601c0c35920a52f6096a6697b610a"
+  },
+  "functions": [
+    {
+      "file": "host/gpu/cadence.c",
+      "name": "gpu_cursor_intersects",
+      "first": 3,
+      "last": 10,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cadence.c",
+      "name": "gpu_capture_deadline",
+      "first": 13,
+      "last": 17,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cadence.c",
+      "name": "gpu_intersects",
+      "first": 19,
+      "last": 22,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cadence.c",
+      "name": "gpu_refresh_due",
+      "first": 24,
+      "last": 26,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "check_transform",
+      "first": 9,
+      "last": 19,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "geometry",
+      "first": 21,
+      "last": 33,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "locate_output",
+      "first": 35,
+      "last": 53,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "check_geometry",
+      "first": 55,
+      "last": 64,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "export_pixmap",
+      "first": 66,
+      "last": 79,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "gpu_capture_open",
+      "first": 81,
+      "last": 98,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "pattern",
+      "first": 100,
+      "last": 106,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "gpu_capture_take",
+      "first": 108,
+      "last": 124,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "gpu_capture_release",
+      "first": 126,
+      "last": 130,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/capture.c",
+      "name": "gpu_capture_close",
+      "first": 132,
+      "last": 141,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cursor.c",
+      "name": "intersects",
+      "first": 7,
+      "last": 11,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cursor.c",
+      "name": "cursor_image",
+      "first": 13,
+      "last": 24,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cursor.c",
+      "name": "cursor_picture",
+      "first": 26,
+      "last": 37,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cursor.c",
+      "name": "cache_cursor",
+      "first": 39,
+      "last": 49,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cursor.c",
+      "name": "composite",
+      "first": 51,
+      "last": 55,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cursor.c",
+      "name": "gpu_cursor_close",
+      "first": 57,
+      "last": 61,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/cursor.c",
+      "name": "gpu_cursor",
+      "first": 63,
+      "last": 70,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "gpu_av",
+      "first": 10,
+      "last": 15,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "import_rgb",
+      "first": 17,
+      "last": 36,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "frame_pool",
+      "first": 38,
+      "last": 46,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "codec_open",
+      "first": 48,
+      "last": 68,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "gpu_encoder_open",
+      "first": 70,
+      "last": 84,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "convert",
+      "first": 86,
+      "last": 102,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "drain",
+      "first": 104,
+      "last": 110,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "gpu_encode",
+      "first": 112,
+      "last": 126,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/encode.c",
+      "name": "gpu_encoder_close",
+      "first": 128,
+      "last": 134,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/events.c",
+      "name": "gpu_events_open",
+      "first": 8,
+      "last": 21,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/events.c",
+      "name": "damaged",
+      "first": 23,
+      "last": 38,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/events.c",
+      "name": "events",
+      "first": 40,
+      "last": 47,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/events.c",
+      "name": "cursor_affects_output",
+      "first": 49,
+      "last": 54,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/events.c",
+      "name": "sample_pointer",
+      "first": 56,
+      "last": 66,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/events.c",
+      "name": "gpu_events_wait",
+      "first": 68,
+      "last": 82,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/events.c",
+      "name": "gpu_events_close",
+      "first": 84,
+      "last": 88,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/identity.c",
+      "name": "gpu_render_device",
+      "first": 11,
+      "last": 25,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/identity.c",
+      "name": "gpu_identity_load",
+      "first": 27,
+      "last": 39,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/identity.c",
+      "name": "gpu_output_matches",
+      "first": 41,
+      "last": 55,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/main.c",
+      "name": "pace",
+      "first": 10,
+      "last": 13,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/main.c",
+      "name": "stream",
+      "first": 15,
+      "last": 35,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/main.c",
+      "name": "main",
+      "first": 37,
+      "last": 48,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/options.c",
+      "name": "gpu_require",
+      "first": 9,
+      "last": 13,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/options.c",
+      "name": "gpu_now_ns",
+      "first": 15,
+      "last": 19,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/options.c",
+      "name": "number",
+      "first": 21,
+      "last": 26,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/options.c",
+      "name": "gpu_parse",
+      "first": 28,
+      "last": 41,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/options.c",
+      "name": "gpu_edid_valid",
+      "first": 43,
+      "last": 54,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/options.c",
+      "name": "gpu_same_render_node",
+      "first": 56,
+      "last": 58,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/options.c",
+      "name": "gpu_identity_transform",
+      "first": 60,
+      "last": 66,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/output.c",
+      "name": "gpu_emit_header",
+      "first": 6,
+      "last": 11,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/gpu/output.c",
+      "name": "gpu_emit_packet",
+      "first": 13,
+      "last": 20,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

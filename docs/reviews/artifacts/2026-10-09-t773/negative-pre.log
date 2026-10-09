@@ -1,0 +1,2 @@
+t773-pre: /backups/disk2/projects/blent/host/tests/gpu_lifecycle.c:227: transition_case: Assertion `WIFEXITED(status) && WEXITSTATUS(status)==2' failed.
+Aborted (core dumped)

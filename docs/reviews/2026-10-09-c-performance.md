@@ -395,3 +395,12 @@ conversion. Their cause belongs to T749 render/import/readback investigation;
 they cannot validate damage order. T750 is blocked on that concrete prerequisite,
 not on speculative extra NV12 copying. No EVDI or libevdi changes, new Blent runtime
 heuristics, downloads or live-host changes were made.
+
+### T773 evaluation closure
+
+[Follow-up measurements and permanent transition tests](artifacts/2026-10-09-t773/README.md)
+close the cache evaluation with no cache adopted. Successful EDID atom lookups
+already cost zero requests after warmup. Retaining both full checks satisfies the
+existing correctness contract; current event handling cannot safely invalidate
+a metadata cache. Earlier open-research notes above are historical. No runtime
+metadata speedup or physical-driver acceptance is claimed.

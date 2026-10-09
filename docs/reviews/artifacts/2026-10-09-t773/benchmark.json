@@ -1,0 +1,92 @@
+[
+  {
+    "identity": 0,
+    "samples": 256,
+    "metadata_pair_p50_ns": 88803,
+    "metadata_pair_p95_ns": 94724,
+    "x_requests_per_pair": 8.0,
+    "atom_requests_after_warmup": 256,
+    "trial": 0
+  },
+  {
+    "identity": 1,
+    "samples": 256,
+    "metadata_pair_p50_ns": 110566,
+    "metadata_pair_p95_ns": 119443,
+    "x_requests_per_pair": 10.0,
+    "atom_requests_after_warmup": 0,
+    "trial": 0
+  },
+  {
+    "identity": 0,
+    "samples": 256,
+    "metadata_pair_p50_ns": 88262,
+    "metadata_pair_p95_ns": 93201,
+    "x_requests_per_pair": 8.0,
+    "atom_requests_after_warmup": 256,
+    "trial": 1
+  },
+  {
+    "identity": 1,
+    "samples": 256,
+    "metadata_pair_p50_ns": 105946,
+    "metadata_pair_p95_ns": 111658,
+    "x_requests_per_pair": 10.0,
+    "atom_requests_after_warmup": 0,
+    "trial": 1
+  },
+  {
+    "identity": 0,
+    "samples": 256,
+    "metadata_pair_p50_ns": 89986,
+    "metadata_pair_p95_ns": 95516,
+    "x_requests_per_pair": 8.0,
+    "atom_requests_after_warmup": 256,
+    "trial": 2
+  },
+  {
+    "identity": 1,
+    "samples": 256,
+    "metadata_pair_p50_ns": 107960,
+    "metadata_pair_p95_ns": 119794,
+    "x_requests_per_pair": 10.0,
+    "atom_requests_after_warmup": 0,
+    "trial": 2
+  },
+  {
+    "identity": 0,
+    "samples": 256,
+    "metadata_pair_p50_ns": 88493,
+    "metadata_pair_p95_ns": 110815,
+    "x_requests_per_pair": 8.0,
+    "atom_requests_after_warmup": 256,
+    "trial": 3
+  },
+  {
+    "identity": 1,
+    "samples": 256,
+    "metadata_pair_p50_ns": 108080,
+    "metadata_pair_p95_ns": 119623,
+    "x_requests_per_pair": 10.0,
+    "atom_requests_after_warmup": 0,
+    "trial": 3
+  },
+  {
+    "identity": 0,
+    "samples": 256,
+    "metadata_pair_p50_ns": 88813,
+    "metadata_pair_p95_ns": 94054,
+    "x_requests_per_pair": 8.0,
+    "atom_requests_after_warmup": 256,
+    "trial": 4
+  },
+  {
+    "identity": 1,
+    "samples": 256,
+    "metadata_pair_p50_ns": 110184,
+    "metadata_pair_p95_ns": 117930,
+    "x_requests_per_pair": 10.0,
+    "atom_requests_after_warmup": 0,
+    "trial": 4
+  }
+]

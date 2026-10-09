@@ -35,8 +35,12 @@ static void measure(gpu_capture *c,const gpu_options *options,int identity) {
         values[i]=gpu_now_ns()-start;requests+=NextRequest(c->display)-before;
     }
     qsort(values,SAMPLES,sizeof(*values),compare);
-    printf("{\"identity\":%d,\"samples\":%d,\"metadata_pair_p50_ns\":%"PRIu64",\"metadata_pair_p95_ns\":%"PRIu64",\"x_requests_per_pair\":%.3f}\n",
-        identity,SAMPLES,values[SAMPLES/2],values[SAMPLES*95/100],(double)requests/SAMPLES);
+    /* Xlib caches successful atom lookups on this Display already. */
+    unsigned long atom_before=NextRequest(c->display);
+    for (int i=0;i<SAMPLES;i++) (void)XInternAtom(c->display,"EDID",True);
+    unsigned long atom_requests=NextRequest(c->display)-atom_before;
+    printf("{\"identity\":%d,\"samples\":%d,\"metadata_pair_p50_ns\":%"PRIu64",\"metadata_pair_p95_ns\":%"PRIu64",\"x_requests_per_pair\":%.3f,\"atom_requests_after_warmup\":%lu}\n",
+        identity,SAMPLES,values[SAMPLES/2],values[SAMPLES*95/100],(double)requests/SAMPLES,atom_requests);
 }
 int main(int argc,char **argv) {
     const char *isolated=getenv("BLENT_C_REVIEW_ISOLATED");

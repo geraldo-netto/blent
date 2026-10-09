@@ -21,6 +21,37 @@
 
 static int exported_fd, producer_fd, pending_packet, synchronized;
 static int fault, pictures, imports, conversions, submitted;
+static int transition, copied, after_copy;
+
+static int changed(int kind) {
+    return transition == kind && copied == after_copy;
+}
+
+int __real_XCopyArea(Display *, Drawable, Drawable, GC, int, int, unsigned, unsigned, int, int);
+int __wrap_XCopyArea(Display *d, Drawable src, Drawable dst, GC gc, int x, int y, unsigned w, unsigned h, int dx, int dy) {
+    int result=__real_XCopyArea(d,src,dst,gc,x,y,w,h,dx,dy);
+    copied=1; return result;
+}
+
+XRROutputInfo *__real_XRRGetOutputInfo(Display *, XRRScreenResources *, RROutput);
+XRROutputInfo *__wrap_XRRGetOutputInfo(Display *d, XRRScreenResources *r, RROutput output) {
+    XRROutputInfo *info=__real_XRRGetOutputInfo(d,r,output); assert(info);
+    if (changed(2)) info->crtc++;
+    if (changed(3)) info->connection=RR_Disconnected;
+    if (changed(4)) info->crtc=None;
+    return info;
+}
+
+XRRCrtcInfo *__real_XRRGetCrtcInfo(Display *, XRRScreenResources *, RRCrtc);
+XRRCrtcInfo *__wrap_XRRGetCrtcInfo(Display *d, XRRScreenResources *r, RRCrtc crtc) {
+    XRRCrtcInfo *info=__real_XRRGetCrtcInfo(d,r,crtc); assert(info);
+    if (changed(5)) info->rotation=RR_Rotate_90;
+    if (changed(6)) info->x++;
+    if (changed(7)) info->y++;
+    if (changed(8)) info->width-=2;
+    if (changed(9)) info->height-=2;
+    return info;
+}
 static unsigned char identity[128] = {0,255,255,255,255,255,255,0};
 
 xcb_dri3_open_cookie_t __wrap_xcb_dri3_open(xcb_connection_t *c, xcb_drawable_t root, uint32_t provider) {
@@ -53,7 +84,7 @@ Status __wrap_XRRGetCrtcTransform(Display *display, RRCrtc crtc, XRRCrtcTransfor
     (void)display; (void)crtc;
     *attributes=calloc(1,sizeof(**attributes)); assert(*attributes);
     for (int i=0;i<3;i++) (*attributes)->currentTransform.matrix[i][i]=65536;
-    if (fault==2) (*attributes)->currentTransform.matrix[0][1]=1;
+    if (fault==2 || changed(10)) (*attributes)->currentTransform.matrix[0][1]=1;
     return 1;
 }
 int __wrap_XRRGetOutputProperty(Display *d, RROutput output, Atom property, long offset, long length,
@@ -62,7 +93,7 @@ int __wrap_XRRGetOutputProperty(Display *d, RROutput output, Atom property, long
     (void)d; (void)output; (void)property; (void)offset; (void)length; (void)delete_value; (void)pending; (void)requested;
     *type=XA_INTEGER; *format=8; *count=128; *remaining=0;
     *bytes=malloc(128); assert(*bytes); memcpy(*bytes,identity,128);
-    if (fault==3) (*bytes)[10]^=1;
+    if (fault==3 || changed(1)) (*bytes)[10]^=1;
     return Success;
 }
 
@@ -170,8 +201,46 @@ static void rejected_export(int which) {
     assert(WIFEXITED(status) && WEXITSTATUS(status)==2);
 }
 
+/* T773: full checks must reject transitions even with unchanged dimensions,
+ * after a prior successful capture and without useful RandR events. */
+static void transition_child(int kind, int post, int backlog) {
+    gpu_capture c={0};
+    gpu_options options={.connector="screen",.device="/dev/null",.width=128,.height=128,.scale=1};
+    gpu_capture_open(&c,&options);
+    memcpy(c.edid,identity,128); c.edid_length=128;
+    XInternAtom(c.display,"EDID",False);
+    gpu_capture_take(&c,&options,0); gpu_capture_release(&c);
+    /* More queued events than the damage consumer's per-pass budget. */
+    for (int i=0;i<backlog;i++) {
+        XEvent event={.type=ClientMessage}; event.xclient.display=c.display;
+        XPutBackEvent(c.display,&event);
+    }
+    copied=0; transition=kind; after_copy=post;
+    gpu_capture_take(&c,&options,1);
+    gpu_capture_release(&c); gpu_capture_close(&c);
+}
+
+static void transition_case(int kind, int post, int backlog) {
+    pid_t child=fork(); assert(child>=0);
+    if (!child) { transition_child(kind,post,backlog); _exit(0); }
+    int status; assert(waitpid(child,&status,0)==child);
+    assert(WIFEXITED(status) && WEXITSTATUS(status)==2);
+}
+
+static void t773_transitions(void) {
+    for (int kind=1;kind<=10;kind++) {
+        for (int post=0;post<2;post++) {
+            transition_case(kind,post,0);
+            transition_case(kind,post,513);
+        }
+    }
+    /* Repeated fresh connections cannot inherit old capture metadata. */
+    for (int i=0;i<3;i++) stream_case("desktop",0);
+}
+
 int main(void) {
     identity_case();
+    t773_transitions();
     stream_case("pattern",0); stream_case("desktop",0); stream_case("desktop",1);
     rejected_export(1); rejected_export(2);
     for (int error=4; error<=10; error++) rejected_export(error);

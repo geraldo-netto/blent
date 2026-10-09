@@ -1,0 +1,103 @@
+[gpu-capture] unchanged output identity failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged output identity failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged output identity failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged output identity failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged CRTC ownership failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged CRTC ownership failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged CRTC ownership failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged CRTC ownership failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] active capture output failed; use EVDI/FIFO fallback
+[gpu-capture] unrotated capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] unrotated capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] unrotated capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] unrotated capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture position failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] unchanged capture dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] untransformed capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] untransformed capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] untransformed capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] untransformed capture CRTC failed; use EVDI/FIFO fallback
+#software: Blent GPU capture, stock FFmpeg 6.1.1-3ubuntu5
+#tb 0: 1/1000000
+#media_type 0: video
+#codec_id 0: h264
+#dimensions 0: 128x128
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 0 27308388976637 27308389503263
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 1 27308393145614 27308393311307
+#software: Blent GPU capture, stock FFmpeg 6.1.1-3ubuntu5
+#tb 0: 1/1000000
+#media_type 0: video
+#codec_id 0: h264
+#dimensions 0: 128x128
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 0 27308418436085 27308418693486
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 1 27308422599832 27308422713774
+#software: Blent GPU capture, stock FFmpeg 6.1.1-3ubuntu5
+#tb 0: 1/1000000
+#media_type 0: video
+#codec_id 0: h264
+#dimensions 0: 128x128
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 0 27308446267313 27308446507551
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 1 27308450436230 27308450616320
+#software: Blent GPU capture, stock FFmpeg 6.1.1-3ubuntu5
+#tb 0: 1/1000000
+#media_type 0: video
+#codec_id 0: h264
+#dimensions 0: 128x128
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 0 27308474005178 27308474039295
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 1 27308478201549 27308478233471
+#software: Blent GPU capture, stock FFmpeg 6.1.1-3ubuntu5
+#tb 0: 1/1000000
+#media_type 0: video
+#codec_id 0: h264
+#dimensions 0: 128x128
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 0 27308502204502 27308502505829
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 1 27308506372918 27308506531657
+#software: Blent GPU capture, stock FFmpeg 6.1.1-3ubuntu5
+#tb 0: 1/1000000
+#media_type 0: video
+#codec_id 0: h264
+#dimensions 0: 128x128
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 0 27308530320484 27308530586863
+0, 100, 100, 1, 4, 0x03840168
+ZZZZ[gpu-frame] 1 27308730629445 27308730921463
+[gpu-capture] export memory bounds failed; use EVDI/FIFO fallback
+[gpu-capture] untransformed capture CRTC failed; use EVDI/FIFO fallback
+[gpu-capture] X11 rendering device identity failed; use EVDI/FIFO fallback
+[gpu-capture] DRI3 single-object pixmap export failed; use EVDI/FIFO fallback
+[gpu-capture] export dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] export dimensions failed; use EVDI/FIFO fallback
+[gpu-capture] XRGB8888 export format failed; use EVDI/FIFO fallback
+[gpu-capture] XRGB8888 export format failed; use EVDI/FIFO fallback
+[gpu-capture] export memory bounds failed; use EVDI/FIFO fallback
