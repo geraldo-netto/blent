@@ -66,6 +66,15 @@ capabilities, but only a real stream validates the selected configuration.
 
 ## Current fork limitations
 
+- **T753:** stock EVDI software cursor composition can leave the last cursor image
+  on a static output after cursor-plane removal. The
+  [isolated KMS fixture](reviews/artifacts/2026-10-09-evdi-stock/reproduction.json)
+  reproduces this on Ubuntu1.14.15 and upstream1.15.1. The upstream
+  [cursor-damage fix](https://github.com/DisplayLink/evdi/pull/589) was merged after
+  1.15.1; that release alone does not fix it. No Blent-side cursor-removal workaround
+  or complete desktop/tablet acceptance is claimed. This concerns mouse support,
+  independently of declined stylus work.
+
 The full actionable list is [TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md). In particular:
 
 - **T222:** Cinnamon/Xorg crashed during virtual-display attachment; cause and
