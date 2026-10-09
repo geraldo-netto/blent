@@ -58,6 +58,23 @@ static void test_t752_allocation(void) {
     frame_exchange_free(&g_frames);pthread_cond_destroy(&g_frames.ready);
 }
 
+static void test_t780_full_rect_capacity(void) {
+    frame_exchange_init(&g_frames); g_running=1;
+    on_mode_changed((struct evdi_mode){6,6,60,32,0x34324258},&g_capture);
+    assert(g_capture.have_mode);
+    for (int y=0;y<6;y++) for (int x=0;x<6;x++)
+        *(uint32_t *)(g_capture.native_framebuffer+y*g_capture.mode_stride+4*x)=0x7f145ac8;
+    memset(g_capture.framebuffer,0x18,g_capture.fb_size);
+    struct evdi_rect rectangles[64];
+    for (unsigned i=0;i<64;i++) rectangles[i]=(struct evdi_rect){0,0,1,1};
+    normalize_framebuffer(&g_capture,rectangles,64);
+    assert(*(uint32_t *)(g_capture.framebuffer+5*g_capture.mode_stride+20)==0x7fc85a14u
+           && "T780: exact rectangle capacity requires full-frame normalization");
+    t752_check_region((struct evdi_rect){0,0,6,6});
+    free(g_capture.framebuffer); free(g_capture.native_framebuffer);
+    frame_exchange_free(&g_frames); pthread_cond_destroy(&g_frames.ready);
+}
+
 static void test_t752_cursor(void) {
     frame_exchange_init(&g_frames);g_running=1;
     on_mode_changed((struct evdi_mode){8,8,60,32,0x34324258},&g_capture);

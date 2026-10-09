@@ -1523,6 +1523,7 @@ int main(int argc, char **argv) {
         {"T762", test_t762_arguments},
         {"T751", test_t751},
         {"T752", test_t752},
+        {"T780", test_t780_full_rect_capacity},
         {"T752-bounds", test_t752_bounds},
         {"T752-allocation", test_t752_allocation},
         {"T752-cursor", test_t752_cursor},

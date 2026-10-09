@@ -288,7 +288,7 @@ static void normalize_framebuffer_rect(capture_context_t *capture, struct evdi_r
 
 static void normalize_framebuffer(capture_context_t *capture, const struct evdi_rect *rects, int count) {
     if (!capture->swap_rb || count <= 0) return;
-    if (count > 64) {
+    if (count >= 64) {
         normalize_framebuffer_rect(capture, (struct evdi_rect){0, 0, capture->mode_w, capture->mode_h});
         return;
     }

@@ -82,6 +82,7 @@ impl Harness {
                 | "T760"
                 | "T762"
                 | "T767"
+                | "T780"
                 | "T082"
                 | "T274"
                 | "T340"
@@ -410,6 +411,11 @@ fn t752_mutter_cpu_copy_preserves_channel_order_and_damage() {
 #[test]
 fn t750_periodic_requests_never_round_above_configured_fps() {
     Harness::build("T750-period").run("T750-period");
+}
+
+#[test]
+fn t780_exact_damage_capacity_normalizes_the_full_frame() {
+    Harness::build("T780").run("T780");
 }
 
 #[test]

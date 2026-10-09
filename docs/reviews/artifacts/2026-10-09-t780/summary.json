@@ -1,0 +1,18 @@
+{
+  "finding": "T780",
+  "result": "The exact-capacity permanent regression fails before count >=64 and passes afterward under ASan/UBSan. Other zero/negative/oversized format cases remain in the normal suite.",
+  "coverage": [
+    {
+      "file": "host/evdi/capture.c",
+      "name": "normalize_framebuffer",
+      "line": 289,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "scope": "Coverage collected on the combined T768/T780 working tree; no external EVDI or physical display validation claimed."
+}
