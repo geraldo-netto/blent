@@ -52,7 +52,7 @@ impl Harness {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
-            "T752" | "T753" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
+            "T752" | "T753" | "T767" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
         ) {
             compiler.args(["-fsanitize=address,undefined", "-fno-pie", "-no-pie"]);
         }
@@ -373,4 +373,9 @@ fn t752_mutter_cpu_copy_preserves_channel_order_and_damage() {
 #[test]
 fn t750_periodic_requests_never_round_above_configured_fps() {
     Harness::build("T750-period").run("T750-period");
+}
+
+#[test]
+fn t767_c_boundaries_reject_bounded_invalid_mutations() {
+    Harness::build("T767").run("T767");
 }

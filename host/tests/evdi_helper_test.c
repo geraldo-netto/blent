@@ -1469,6 +1469,9 @@ static void test_t415_rounding(void) {
 #include "shared_damage.c"
 #include "fifo_demand.c"
 
+#include "c_boundary_fuzz.c"
+
+#ifndef BLENT_C_FUZZ_DRIVER
 int main(int argc, char **argv) {
     const char *fifo_fixture = getenv("BLENT_T226_ROOT");
     if (fifo_fixture) return t226_command(argc, argv, fifo_fixture);
@@ -1511,6 +1514,7 @@ int main(int argc, char **argv) {
         {"T294", test_t294},
         {"T623", test_t623},
         {"T750-period", test_t750_period},
+        {"T767", test_t767_boundaries},
         {"T751", test_t751},
         {"T752", test_t752},
         {"T752-bounds", test_t752_bounds},
@@ -1555,3 +1559,4 @@ int main(int argc, char **argv) {
     assert(0 && "unknown regression case");
     return 0;
 }
+#endif
