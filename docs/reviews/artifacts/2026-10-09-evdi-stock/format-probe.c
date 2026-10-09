@@ -8,23 +8,25 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-int main(void) {
- char cmdline[4096] = {0}; FILE *f=fopen("/proc/cmdline","r");
- if (!f || !fgets(cmdline,sizeof(cmdline),f) || !strstr(cmdline,"blent-evdi-review=1")) return 64;
- fclose(f);
- int fd=-1, card=0; drmVersionPtr v=NULL; for(;card<8;card++){char path[64];snprintf(path,sizeof(path),"/dev/dri/card%d",card);fd=open(path,O_RDWR);v=drmGetVersion(fd);if(v&&!strcmp(v->name,"evdi"))break;if(v)drmFreeVersion(v);v=NULL;if(fd>=0)close(fd);}
- if (!v || strcmp(v->name,"evdi")) return 65;
- printf("T752 driver=%s %d.%d.%d\n",v->name,v->version_major,v->version_minor,v->version_patchlevel);
- drmFreeVersion(v); drmSetClientCap(fd,DRM_CLIENT_CAP_UNIVERSAL_PLANES,1);
- drmModePlaneResPtr ps=drmModeGetPlaneResources(fd);
- if (!ps) return 66;
- for (unsigned i=0;i<ps->count_planes;i++) {
-  drmModePlanePtr p=drmModeGetPlane(fd,ps->planes[i]);
-  if (!p) return 67;
+#include "probe_device.h"
+static void probe_planes(int fd) {
+ drmSetClientCap(fd,DRM_CLIENT_CAP_UNIVERSAL_PLANES,1);
+ drmModePlaneResPtr planes=drmModeGetPlaneResources(fd);
+ if (!planes) exit(66);
+ for (unsigned i=0;i<planes->count_planes;i++) {
+  drmModePlanePtr p=drmModeGetPlane(fd,planes->planes[i]);
+  if (!p) exit(67);
   printf("T752 plane=%u formats=",p->plane_id);
   for(unsigned j=0;j<p->count_formats;j++) printf("%.4s ",(char*)&p->formats[j]);
   puts("");drmModeFreePlane(p);
  }
+ drmModeFreePlaneResources(planes);
+}
+int main(void) {
+ probe_require_guest();
+ int card; drmVersionPtr v=NULL;int fd=probe_open_evdi(&card,&v);
+ printf("T752 driver=%s %d.%d.%d\n",v->name,v->version_major,v->version_minor,v->version_patchlevel);
+ drmFreeVersion(v);probe_planes(fd);
  struct drm_mode_create_dumb b={.width=64,.height=64,.bpp=32};
  if (drmIoctl(fd,DRM_IOCTL_MODE_CREATE_DUMB,&b)) return 68;
  uint32_t handles[4]={b.handle},pitches[4]={b.pitch},offsets[4]={0};
@@ -35,5 +37,5 @@ int main(void) {
   if(!rc)drmModeRmFB(fd,fb);
  }
  struct drm_mode_destroy_dumb d={.handle=b.handle};drmIoctl(fd,DRM_IOCTL_MODE_DESTROY_DUMB,&d);
- drmModeFreePlaneResources(ps);close(fd);return 0;
+ close(fd);return 0;
 }

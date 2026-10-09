@@ -18,12 +18,24 @@ static struct evdi_event_context events={.mode_changed_handler=mode_cb,.update_r
 static void drain(evdi_handle h,int ms){struct pollfd p={evdi_get_event_ready(h),POLLIN,0};while(poll(&p,1,ms)>0){evdi_handle_events(h,&events);ms=0;}}
 static void grab(evdi_handle h,const char *label,uint32_t *pixels){struct evdi_rect rects[64];int n=64;evdi_grab_pixels(h,rects,&n);printf("%s rects=%d modes=%d ready=%d pixel=%08x\n",label,n,modes,ready,pixels[10*640+10]);}
 static struct drm_mode_create_dumb buffer(int fd,int w,int h,uint32_t color){struct drm_mode_create_dumb b={.width=w,.height=h,.bpp=32};if(drmIoctl(fd,DRM_IOCTL_MODE_CREATE_DUMB,&b))exit(70);struct drm_mode_map_dumb map={.handle=b.handle};if(drmIoctl(fd,DRM_IOCTL_MODE_MAP_DUMB,&map))exit(71);uint32_t *p=mmap(NULL,b.size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,map.offset);if(p==MAP_FAILED)exit(72);for(unsigned i=0;i<b.size/4;i++)p[i]=color;munmap(p,b.size);return b;}
+#include "probe_device.h"
+static void probe_read_edid(unsigned char edid[128]) {
+ FILE *file=fopen("/edid.bin","rb");
+ if (!file || fread(edid,1,128,file)!=128) exit(66);
+ fclose(file);
+}
+static drmModeResPtr probe_resources(int fd) {
+ drmModeResPtr resources=drmModeGetResources(fd);
+ if (!resources || !resources->count_connectors || !resources->count_crtcs) exit(68);
+ return resources;
+}
 int main(void){
- setbuf(stdout,NULL);char cmd[4096]={0};FILE*f=fopen("/proc/cmdline","r");if(!f||!fgets(cmd,sizeof(cmd),f)||!strstr(cmd,"blent-evdi-review=1"))return 64;fclose(f);
- int fd=-1,card=0;drmVersionPtr v=NULL;for(;card<8;card++){char path[64];snprintf(path,sizeof(path),"/dev/dri/card%d",card);fd=open(path,O_RDWR);v=drmGetVersion(fd);if(v&&!strcmp(v->name,"evdi"))break;if(v)drmFreeVersion(v);v=NULL;if(fd>=0)close(fd);}if(!v||strcmp(v->name,"evdi"))return 65;printf("KMS stock %d.%d.%d\n",v->version_major,v->version_minor,v->version_patchlevel);drmFreeVersion(v);
- unsigned char edid[128];f=fopen("/edid.bin","rb");if(!f||fread(edid,1,128,f)!=128)return 66;fclose(f);
+ setbuf(stdout,NULL);probe_require_guest();
+ int card;drmVersionPtr v=NULL;int fd=probe_open_evdi(&card,&v);
+ printf("KMS stock %d.%d.%d\n",v->version_major,v->version_minor,v->version_patchlevel);drmFreeVersion(v);
+ unsigned char edid[128];probe_read_edid(edid);
  evdi_handle h=evdi_open(card);if(!h)return 67;evdi_connect(h,edid,128,0);
- drmModeResPtr res=drmModeGetResources(fd);if(!res||!res->count_connectors||!res->count_crtcs)return 68;
+ drmModeResPtr res=probe_resources(fd);
  drmModeConnectorPtr c=drmModeGetConnector(fd,res->connectors[0]);if(!c||!c->count_modes)return 69;
  printf("connector modes=%d first=%dx%d\n",c->count_modes,c->modes[0].hdisplay,c->modes[0].vdisplay);
  struct drm_mode_create_dumb b=buffer(fd,640,480,0xff000080);uint32_t handles[4]={b.handle},pitches[4]={b.pitch},offsets[4]={0},fb=0;

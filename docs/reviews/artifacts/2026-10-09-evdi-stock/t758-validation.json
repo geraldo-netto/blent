@@ -1,0 +1,11 @@
+{
+  "issue": "T758",
+  "change": "Extract shared guest check/device discovery and separate plane/EDID/resource phases. No complexity exclusions.",
+  "before": {
+    "format-probe.c::main": 18,
+    "kms-probe.c::main": 21
+  },
+  "after": "7459 functions checked, none exceed9",
+  "native": "Refactored probes rebuilt and executed inside isolated kernel7.0.0-34 guest with unmodified EVDI1.15.1. Probe status0; framebuffer admission mismatch, cursor ghost and restored reconnect observations unchanged. Production T753 cursor probe also passes. Historical logs retain original source observations.",
+  "compile": "Include probe_device.h beside probe sources; existing libdrm/libevdi build arguments unchanged."
+}
