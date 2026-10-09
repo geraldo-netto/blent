@@ -20,10 +20,12 @@ def build(directory, baseline):
             (old / Path(name).name).write_bytes(subprocess.check_output(
                 ['git', 'show', f'{baseline}:{name}'], cwd=ROOT))
     for variant, sources in [('full', old), ('damage', ROOT / 'host/evdi')]:
+        cursor = sources / 'cursor_overlay.c'
+        cursor_sources = [str(cursor)] if cursor.exists() else []
         subprocess.run(['cc', '-std=c11', '-O3', '-pthread', '-Wall', '-Wextra', '-Werror',
                         '-ffunction-sections', '-fdata-sections', '-Wl,--gc-sections',
                         '-I', str(sources), str(ROOT / 'scripts/benchmarks/shared-damage.c'),
-                        *[str(sources / name) for name in ['conversion.c', 'frame_exchange.c', 'raw_ring.c']],
+                        *[str(sources / name) for name in ['conversion.c', 'frame_exchange.c', 'raw_ring.c']], *cursor_sources,
                         '-o', str(directory / variant)], check=True)
 
 

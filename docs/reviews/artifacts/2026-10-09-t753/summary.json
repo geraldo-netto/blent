@@ -1,0 +1,23 @@
+{
+  "issue": "T753",
+  "mitigation": "Compose owned cursor images in Blent over stock EVDI cursor-free scanout; restore previous background and publish cursor-only damage on move/hide. Shared and FIFO paths use the same capture adapter.",
+  "regression": "host/tests/evdi_helper.rs::t753_cursor_removal_restores_static_background (T753, T753-bounds, T753-shared); fails before implementation, passes after. Permanent sanitizer and independent-module suites retained.",
+  "coverage": {
+    "capture_functions": 167,
+    "passing_at_least_80_percent": 167,
+    "missing": 0,
+    "scope": "All maintained C capture helper functions; changed Arch build function100%. GPU code unchanged, existing native GPU suite passed."
+  },
+  "native": [
+    "Isolated QEMU kernel7.0.0-34 with distro EVDI1.14.15 and stock1.15.1, libevdi1.15.0. Actual production capture callbacks publish white cursor then restore ff000080 static background on removal. Both pass.",
+    "Existing same-GPU native suite rebuilt with host FFmpeg6 headers and passed in isolated Xvfb."
+  ],
+  "limitations": "No tablet/physical desktop end-to-end acceptance; no host module/helper installation. Stock drivers still exhibit the original automatic-composition defect. Native probe ran before the subsequent ioctl-only timing-accounting adjustment; final permanent tests/coverage include it.",
+  "complexity": "7459 functions checked, none above9; source probes separately refactored under T758.",
+  "source_sha256": {
+    "host/evdi/capture.c": "a31279a824cce83be6d775ac65c82b258547b1011e054fdc33a13792ac8a51bd",
+    "host/evdi/cursor_overlay.c": "3e26bd06d275b63a437151be452a6bfc77ef5c7a1dff50c535af7f1fce360892",
+    "host/evdi/cursor_overlay.h": "a193137b85a4894b100973f8737d5d1a7af43c63dfdc1bbb684d9464fd4e91d8",
+    "host/tests/cursor_overlay.c": "e256857adff0623f88f0da38cacf3e37f2656b809f85c7130841b66cf2b2ff20"
+  }
+}

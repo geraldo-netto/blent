@@ -42,6 +42,7 @@ static int mock_pthread_cond_timedwait(pthread_cond_t *, pthread_mutex_t *, cons
 #include "../evdi/frame_exchange.c"
 #include "../evdi/fifo_writer.c"
 #include "../evdi/raw_ring.c"
+#include "../evdi/cursor_overlay.c"
 #include "../evdi/capture.c"
 #undef add_period
 #include "../evdi/writer.c"
@@ -213,6 +214,7 @@ void evdi_connect(evdi_handle handle, const unsigned char *edid, unsigned int le
     if (t497_capture_events) { assert(edid && length == 128 && limit == 0); return; }
     assert(0 && "startup validation must not connect a display");
 }
+void evdi_enable_cursor_events(evdi_handle handle, bool enable) { (void)handle; assert(enable); }
 evdi_selectable evdi_get_event_ready(evdi_handle handle) { return handle->fd; }
 
 void evdi_handle_events(evdi_handle handle, struct evdi_event_context *context) {
@@ -465,6 +467,28 @@ static void test_t108(void) {
         snprintf(path, sizeof(path), "%s/evdi.%d", root, card); rmdir(path);
     }
     assert(rmdir(root) == 0);
+}
+
+/* T753: event-owned cursor removal must restore a static captured background. */
+static void test_t753(void) {
+    frame_exchange_init(&g_frames);
+    t497_capture_events = 1;
+    g_running = 1;
+    on_mode_changed((struct evdi_mode){8, 8, 60, 32, 0x34325258}, &g_capture);
+    struct evdi_cursor_set cursor = {.width=2, .height=2, .enabled=1,
+        .buffer_length=16, .stride=8, .pixel_format=0x34325241};
+    cursor.buffer = malloc(16); assert(cursor.buffer);
+    for (int i=0;i<4;i++) cursor.buffer[i] = 0xffffffff;
+    on_cursor_set(cursor, &g_capture);
+    assert(*(uint32_t *)g_capture.framebuffer == 0xffffffff && "T753: cursor events must be composed");
+    on_cursor_move((struct evdi_cursor_move){3, 2}, &g_capture);
+    assert(*(uint32_t *)g_capture.framebuffer == 0x18181818 && "T753: old cursor area must be restored");
+    assert(*(uint32_t *)(g_capture.framebuffer+2*g_capture.mode_stride+12) == 0xffffffff);
+    on_cursor_set((struct evdi_cursor_set){0}, &g_capture);
+    for (int i=0;i<g_capture.fb_size;i++) assert(g_capture.framebuffer[i]==0x18 && "T753: hide must restore background without new desktop damage");
+    free(g_capture.framebuffer);g_capture.framebuffer=NULL;
+    frame_exchange_free(&g_frames);conv_pool_destroy(&g_conversion);
+    pthread_cond_destroy(&g_frames.ready);
 }
 
 /* T751: capacity exhaustion must not hot-add a DRM card under Xorg. */
@@ -1395,6 +1419,7 @@ static void test_t415_rounding(void) {
 #include "damage_regions.c"
 #include "idle_capture.c"
 #include "shared_capture.c"
+#include "cursor_overlay.c"
 #include "shared_damage.c"
 #include "fifo_demand.c"
 
@@ -1440,6 +1465,9 @@ int main(int argc, char **argv) {
         {"T294", test_t294},
         {"T623", test_t623},
         {"T751", test_t751},
+        {"T753", test_t753},
+        {"T753-bounds", test_t753_bounds},
+        {"T753-shared", test_t753_shared},
         {"T293", test_t293},
         {"T290", test_t290},
         {"T279", test_t279},

@@ -52,7 +52,7 @@ impl Harness {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
-            "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
+            "T753" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
         ) {
             compiler.args(["-fsanitize=address,undefined", "-fno-pie", "-no-pie"]);
         }
@@ -346,4 +346,12 @@ fn t623_watchdog_coalesces_grabs_and_recovers_lost_events() {
 #[test]
 fn t751_xorg_capacity_exhaustion_preserves_existing_devices() {
     Harness::build("T751").run("T751");
+}
+
+#[test]
+fn t753_cursor_removal_restores_static_background() {
+    let harness = Harness::build("T753");
+    harness.run("T753");
+    harness.run("T753-bounds");
+    harness.run("T753-shared");
 }

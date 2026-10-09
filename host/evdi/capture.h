@@ -4,12 +4,14 @@
 #include "frame_exchange.h"
 #include "conversion.h"
 #include "raw_ring.h"
+#include "cursor_overlay.h"
 
 /* Event-loop-owned mode, registered framebuffer and capture statistics.
  * EVDI callbacks borrow this context via user_data and never outlive run().
  * The exchange/pool/stop flag must outlive it; conversion completes before
  * publishing, and mode retirement waits for the writer before reallocating. */
 typedef struct {
+    cursor_overlay_t cursor;
     frame_exchange_t *frames;
     conv_pool_t *conversion;
     atomic_int *running;

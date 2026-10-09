@@ -53,6 +53,23 @@ static void mark_damage(capture_context_t *capture, const struct evdi_rect *rect
     }
 }
 
+static void cursor_damage(capture_context_t *capture, cursor_rect_t rect) {
+    if (rect.x1 >= rect.x2 || rect.y1 >= rect.y2) return;
+    struct evdi_rect damage = {rect.x1, rect.y1, rect.x2, rect.y2};
+    pthread_mutex_lock(&capture->frames->mutex);
+    mark_damage(capture, &damage, 1);
+    pthread_mutex_unlock(&capture->frames->mutex);
+}
+
+static void restore_cursor(capture_context_t *capture) {
+    cursor_damage(capture, cursor_overlay_restore(&capture->cursor, capture->framebuffer, capture->mode_stride));
+}
+
+static void draw_cursor(capture_context_t *capture) {
+    cursor_damage(capture, cursor_overlay_draw(&capture->cursor, capture->framebuffer,
+        capture->mode_w, capture->mode_h, capture->mode_stride));
+}
+
 static void publish_frame(capture_context_t *capture) {
     if (!capture->frames->buffers_ready || !capture->framebuffer)
         return;
@@ -153,6 +170,7 @@ static int retire_mode_buffers(capture_context_t *capture) {
 }
 
 static void allocate_framebuffer(capture_context_t *capture) {
+    capture->cursor.drawn = (cursor_rect_t){0};
     free(capture->framebuffer);
     /* Page-aligned, prefaulted capture storage. MADV_HUGEPAGE is best-effort:
        accepting the advice does not prove huge-page backing or remove the
@@ -236,6 +254,7 @@ static void on_mode_changed(struct evdi_mode mode, void *user_data) {
     capture->frames->buffers_ready = 1;
     pthread_cond_signal(&capture->frames->ready);
     pthread_mutex_unlock(&capture->frames->mutex);
+    draw_cursor(capture);
     publish_frame(capture);
 
     capture->have_mode = 1;
@@ -247,14 +266,17 @@ static void on_mode_changed(struct evdi_mode mode, void *user_data) {
 static void grab_now(capture_context_t *capture) {
     struct evdi_rect rects[64];
     int num_rects = 64;
+    restore_cursor(capture);
     long long t0 = capture_now_us();
     evdi_grab_pixels(capture->handle, rects, &num_rects);
-    capture->grab_sum_us += capture_now_us() - t0;
+    long long grabbed_us = capture_now_us();
+    capture->grab_sum_us += grabbed_us - t0;
+    draw_cursor(capture);
     capture->grab_n++;
     if (num_rects <= 0) capture->empty_n++;
     if (num_rects > 0) {
         capture->grab_count++;
-        capture->grab_us = capture_now_us();
+        capture->grab_us = grabbed_us;
         /* Under the swap lock: the writer thread reassigns the mask pointers
            when it takes a frame, so touching them unlocked would race.
            If the driver returned more rectangles than we gave it room for,
@@ -294,14 +316,48 @@ static void on_crtc_state(int state, void *user_data) {
     fprintf(stderr, "[evdi-helper] CRTC state: %d\n", state);
 }
 
-static void on_cursor_set(struct evdi_cursor_set cursor_set, void *user_data) {
-    (void)user_data;
-    (void)cursor_set;
+static int cursor_event_image(struct evdi_cursor_set event, cursor_image_t *image) {
+    switch (event.pixel_format) {
+    case 0x34325241: image->alpha = 1; break; /* AR24 */
+    case 0x34325258: break; /* XR24 */
+    case 0x34324241: image->alpha = 1; image->swap_rb = 1; break; /* AB24 */
+    case 0x34324258: image->swap_rb = 1; break; /* XB24 */
+    default: return 0;
+    }
+    image->pixels = (const unsigned char *)event.buffer;
+    image->length = event.buffer_length;
+    image->width = event.width; image->height = event.height; image->stride = event.stride;
+    return 1;
 }
 
-static void on_cursor_move(struct evdi_cursor_move cursor_move, void *user_data) {
-    (void)user_data;
-    (void)cursor_move;
+static void publish_cursor(capture_context_t *capture) {
+    draw_cursor(capture);
+    capture->grab_us = capture_now_us();
+    publish_frame(capture);
+}
+
+static void on_cursor_set(struct evdi_cursor_set event, void *user_data) {
+    capture_context_t *capture = user_data;
+    restore_cursor(capture);
+    cursor_image_t image = {0};
+    int valid = !event.enabled || cursor_event_image(event, &image);
+    if (valid) valid = cursor_overlay_set(&capture->cursor, event.enabled ? &image : NULL);
+    /* libevdi transfers its allocated cursor image to this callback. */
+    free(event.buffer);
+    if (!valid) {
+        fprintf(stderr, "[evdi-helper] Invalid or unavailable cursor image; stopping capture\n");
+        reject_mode(capture);
+        return;
+    }
+    publish_cursor(capture);
+}
+
+static void on_cursor_move(struct evdi_cursor_move event, void *user_data) {
+    capture_context_t *capture = user_data;
+    restore_cursor(capture);
+    /* EVDI events already report the plane top-left; do not subtract hotspot. */
+    capture->cursor.x = event.x; capture->cursor.y = event.y;
+    publish_cursor(capture);
 }
 
 static long capture_period_ms(capture_context_t *capture) {
@@ -490,6 +546,7 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long req
 }
 
 int capture_run(capture_context_t *capture, evdi_handle handle) {
+    evdi_enable_cursor_events(handle, true);
     struct evdi_event_context evtctx = {
         .dpms_handler = on_dpms,
         .mode_changed_handler = on_mode_changed,

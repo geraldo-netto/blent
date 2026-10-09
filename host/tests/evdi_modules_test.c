@@ -121,6 +121,7 @@ static void independent_fifo_epochs(void) {
 
 /* A fake EVDI source dispatches one mode into the supplied capture context. */
 struct evdi_device_context { int fd; capture_context_t *capture; };
+void evdi_enable_cursor_events(evdi_handle handle, bool enable) { (void)handle; assert(enable); }
 evdi_selectable evdi_get_event_ready(evdi_handle handle) { return handle->fd; }
 void evdi_register_buffer(evdi_handle handle, struct evdi_buffer buffer) {
     assert(buffer.buffer == handle->capture->framebuffer);

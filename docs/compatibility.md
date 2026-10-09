@@ -45,6 +45,14 @@ Container installation/build checks are described in [development.md](developmen
   Existing explicit choices remain unchanged. NVENC/VAAPI still require actual
   GPU encoding support; an advertised wrapper is insufficient. See
   [selection policy and measurement limits](video-codecs.md#automatic-selection).
+- **Cursor:** the EVDI helper composes stock cursor events locally and restores
+  the previous background on move/hide, including updates with no desktop damage
+  (T753). FIFO and shared-buffer paths retain cursor damage across frame leases;
+  the experimental X11 GPU adapter keeps its independent XFixes compositor.
+  AR24/XR24/AB24/XB24 images are supported up to one million pixels. Malformed or
+  unallocatable images stop capture explicitly. A source build containing T753 is
+  required; stock kernel1.14.15/1.15.1 automatic composition still has the upstream
+  cursor-removal defect. [Regression and native evidence](reviews/artifacts/2026-10-09-t753/summary.json).
 - **Kernel:** a compatible EVDI module is needed for an extended output.
   Package/image availability varies; see [installation.md](installation.md).
 
@@ -65,17 +73,6 @@ that. MediaCodec may choose software decoding. `blent doctor` reports codec
 capabilities, but only a real stream validates the selected configuration.
 
 ## Current fork limitations
-
-- **T753:** stock EVDI software cursor composition can leave the last cursor image
-  on a static output after cursor-plane removal. The
-  [isolated KMS fixture](reviews/artifacts/2026-10-09-evdi-stock/reproduction.json)
-  reproduces this on Ubuntu1.14.15 and upstream1.15.1. The upstream
-  [cursor-damage fix](https://github.com/DisplayLink/evdi/pull/589) was merged after
-  1.15.1; that release alone does not fix it. No Blent-side cursor-removal workaround
-  or complete desktop/tablet acceptance is claimed. This concerns mouse support,
-  independently of declined stylus work.
-
-The full actionable list is [TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md). In particular:
 
 - **T222:** Cinnamon/Xorg crashed during virtual-display attachment; cause and
   mitigation remain unverified. See the [incident report](reviews/2026-09-17-cinnamon-restart.md).

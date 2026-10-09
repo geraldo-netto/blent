@@ -400,6 +400,7 @@ static void shutdown_capture(evdi_handle handle, pthread_t writer) {
     conv_pool_destroy(&g_conversion);
     fifo_writer_close(&g_fifo);
     if (g_capture.raw_ring) raw_ring_close(g_capture.raw_ring);
+    cursor_overlay_destroy(&g_capture.cursor);
     free(g_capture.framebuffer);
     frame_exchange_free(&g_frames);
 
@@ -459,6 +460,7 @@ int main(int argc, char *argv[]) {
     g_capture.handle = handle;
 
     fprintf(stderr, "[evdi-helper] Connecting with EDID (%ld bytes)...\n", edid_size);
+    evdi_enable_cursor_events(handle, true);
     evdi_connect(handle, edid, (unsigned int)edid_size, 0);
     free(edid);
 

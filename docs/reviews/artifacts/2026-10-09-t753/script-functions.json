@@ -1,0 +1,17 @@
+{
+  "scope": "T753 changed Arch build function",
+  "passes": true,
+  "functions": [
+    {
+      "file": "packaging/arch/PKGBUILD",
+      "name": "build",
+      "line": 19,
+      "language": "shell",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

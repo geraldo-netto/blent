@@ -35,7 +35,7 @@ test-gpu-helper: build-gpu-helper
 
 # Generic -O3 (no -march=native): release binaries must run on any x86-64 CPU
 build-helper:
-	$(CC) -O3 -o host/evdi/evdi_helper host/evdi/evdi_helper.c host/evdi/conversion.c host/evdi/frame_exchange.c host/evdi/fifo_writer.c host/evdi/capture.c host/evdi/raw_ring.c host/evdi/writer.c -levdi -lpthread -Ihost/evdi -Wl,-rpath,'$$ORIGIN'
+	$(CC) -O3 -o host/evdi/evdi_helper host/evdi/evdi_helper.c host/evdi/conversion.c host/evdi/frame_exchange.c host/evdi/fifo_writer.c host/evdi/capture.c host/evdi/cursor_overlay.c host/evdi/raw_ring.c host/evdi/writer.c -levdi -lpthread -Ihost/evdi -Wl,-rpath,'$$ORIGIN'
 	@echo "✓ EVDI helper: host/evdi/evdi_helper"
 
 build: build-helper

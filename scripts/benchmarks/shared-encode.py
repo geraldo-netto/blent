@@ -50,7 +50,7 @@ blent-config = { path = ''' + json.dumps(str(ROOT / 'common')) + ' }\n')
     subprocess.run(['cargo', 'build', '--offline', '--release'], cwd=folder, check=True)
     subprocess.run(['cc', '-O3', '-pthread', '-I', str(ROOT / 'host/evdi'),
         str(ROOT / 'scripts/benchmarks/shared-encode-producer.c'),
-        str(ROOT / 'host/evdi/raw_ring.c'), str(ROOT / 'host/evdi/conversion.c'),
+        str(ROOT / 'host/evdi/raw_ring.c'), str(ROOT / 'host/evdi/conversion.c'), str(ROOT / 'host/evdi/cursor_overlay.c'),
         '-o', str(folder / 'producer')], check=True)
     (folder / 'source-hashes.json').write_text(json.dumps(manifest, indent=2) + '\n')
 
