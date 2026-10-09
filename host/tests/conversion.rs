@@ -82,3 +82,8 @@ fn t554_regions_clip_fuzzed_bounds_preserve_pixels_and_follow_buffer_leases() {
     run("regions");
     run_with_flags("regions", &[]);
 }
+
+#[test]
+fn t769_weighted_jobs_balance_pixels_and_preserve_output() {
+    run("weighted");
+}

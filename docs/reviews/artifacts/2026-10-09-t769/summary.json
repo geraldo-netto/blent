@@ -1,0 +1,33 @@
+{
+  "baseline": "a3c053e",
+  "trials": 5,
+  "processes": 300,
+  "scales": [
+    1,
+    2
+  ],
+  "workers": [
+    1,
+    4,
+    8
+  ],
+  "cases": [
+    "empty",
+    "distant",
+    "dense",
+    "skew",
+    "narrow"
+  ],
+  "source_sha256": {
+    "host/evdi/conversion.c": "0385b211a01c1dd4729cdfc6080a44f4b9f1640552ddccce3989aed2b7ee78e0",
+    "host/evdi/conversion.h": "d89e75516a4b23e8af7cda770ebea7aa08c75b88d9db4cfbb43a1cb682af20b9"
+  },
+  "result": "Permanent T769 regression fails before fix; passes after. Existing conversion tests pass. All 176 production C functions >=80% lines.",
+  "timing_us": {
+    "skew_scale1_before": 222.122,
+    "skew_scale1_after": 133.446,
+    "skew_scale2_before": 338.523,
+    "skew_scale2_after": 182.724
+  },
+  "limitations": "Single-host warm conversion microbenchmark with independent full-output oracle; CPU rises about 7% in scale1 skew, about unchanged in scale2; not whole-app speedup."
+}

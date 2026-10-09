@@ -114,32 +114,31 @@ static void convert_job(const conv_job_t *job) {
     }
 }
 
-static int dirty_row_count(const conv_job_t *frame) {
-    int rows = 0;
-    for (int cy = frame->cy0; cy < frame->cy1; cy++) rows += !!row_is_dirty(frame->dirty, cy);
-    return rows;
+typedef struct { int rows; size_t width; } conv_work_t;
+
+static size_t row_work(const conv_job_t *frame, int cy) {
+    if (!row_is_dirty(frame->dirty, cy)) return 0;
+    pixel_span_t span = row_span(frame, cy);
+    return (size_t)(span.end - span.begin);
 }
 
-static size_t dirty_source_pixels(const conv_job_t *frame) {
-    size_t width = 0;
+static conv_work_t measure_work(const conv_job_t *frame) {
+    conv_work_t work = {0};
     for (int cy = frame->cy0; cy < frame->cy1; cy++) {
         if (!row_is_dirty(frame->dirty, cy)) continue;
-        pixel_span_t span = row_span(frame, cy);
-        width += (size_t)(span.end - span.begin);
+        work.rows++;
+        work.width += row_work(frame, cy);
     }
-    return width * 2 * frame->scale * frame->scale;
+    return work;
 }
 
-/* Explicit NULL masks retain fixed-width dispatch for callers measuring the
- * pool itself. Capture always supplies its per-buffer stale-row history. */
-static int job_count(const conv_pool_t *pool, const conv_job_t *frame) {
+/* Explicit NULL masks retain row-count dispatch for pool measurements and
+ * callers supplying empty spans. Capture uses its per-buffer dirty history. */
+static int job_count(const conv_pool_t *pool, const conv_job_t *frame, conv_work_t work) {
     if (!frame->dirty) return pool->count;
-    int dirty_rows = dirty_row_count(frame);
-    size_t pixels = dirty_source_pixels(frame);
-    /* Target 256 Ki source pixels per job, rounded up. Sparse damage stays on
-     * the caller; large surfaces can use more than the former eight workers. */
+    size_t pixels = work.width * 2 * frame->scale * frame->scale;
     size_t count = (pixels + 262143) / 262144;
-    if (count > (size_t)dirty_rows) count = (size_t)dirty_rows;
+    if (count > (size_t)work.rows) count = (size_t)work.rows;
     if (count > (size_t)pool->count) count = (size_t)pool->count;
     return (int)count;
 }
@@ -187,23 +186,26 @@ void conv_pool_start(conv_pool_t *pool, int count) {
     fprintf(stderr, "[evdi-helper] NV12 conversion using %d thread(s)\n", pool->count);
 }
 
-static int job_end(const conv_job_t *frame, int begin, int dirty_rows) {
-    int end = begin;
-    while (end < frame->cy1 && dirty_rows > 0) {
-        dirty_rows -= !!row_is_dirty(frame->dirty, end);
-        end++;
+static int weighted_end(const conv_job_t *frame, int begin, size_t target, size_t *accumulated) {
+    while (begin < frame->cy1 && *accumulated < target) {
+        *accumulated += row_work(frame, begin);
+        begin++;
     }
-    return end;
+    return begin;
 }
 
-static void prepare_jobs(conv_pool_t *pool, const conv_job_t *frame, int count) {
-    int rows = dirty_row_count(frame), begin = frame->cy0;
+static void prepare_jobs(conv_pool_t *pool, const conv_job_t *frame, int count, conv_work_t work) {
+    int begin = frame->cy0;
+    size_t accumulated = 0;
     for (int i = 0; i < count; i++) {
-        int owned = rows * (i + 1) / count - rows * i / count;
-        int end = i == count - 1 ? frame->cy1 : job_end(frame, begin, owned);
+        int end = frame->cy0 + (frame->cy1 - frame->cy0) * (i + 1) / count;
+        if (frame->dirty) {
+            size_t target = (work.width * (i + 1) + count - 1) / count;
+            end = weighted_end(frame, begin, target, &accumulated);
+        }
         pool->jobs[i] = *frame;
         pool->jobs[i].cy0 = begin;
-        pool->jobs[i].cy1 = end;
+        pool->jobs[i].cy1 = i == count - 1 ? frame->cy1 : end;
         begin = end;
     }
 }
@@ -220,11 +222,12 @@ static void start_workers(conv_pool_t *pool, int count) {
 }
 
 void conv_pool_convert(conv_pool_t *pool, const conv_job_t *frame) {
-    int count = job_count(pool, frame);
+    conv_work_t work = frame->dirty ? measure_work(frame) : (conv_work_t){0};
+    int count = job_count(pool, frame, work);
     pool->last_jobs = count;
     if (count == 0) return;
     if (count == 1) { convert_job(frame); return; }
-    prepare_jobs(pool, frame, count);
+    prepare_jobs(pool, frame, count, work);
     start_workers(pool, count);
     convert_job(&pool->jobs[0]);   /* caller does its own strip */
     pthread_mutex_lock(&pool->mutex);

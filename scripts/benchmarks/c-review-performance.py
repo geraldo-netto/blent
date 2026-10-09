@@ -11,13 +11,28 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'scripts/benchmarks'
+BASELINE = 'a3c053e'
 
 
 def run(command, environment=None):
     return subprocess.check_output(command, cwd=ROOT, text=True, stderr=subprocess.PIPE, env=environment)
 
 
-def build(directory):
+def snapshot(directory):
+    """The original experiment uses private conversion helpers; pin their ABI."""
+    paths = run(['git', 'ls-tree', '-r', '--name-only', BASELINE, 'host/evdi', 'host/gpu']).splitlines()
+    paths = [path for path in paths if path.endswith(('.c', '.h'))]
+    paths += ['scripts/benchmarks/' + name for name in
+              ('c-review-conversion.c', 'c-review-gpu.c', 'checked_arguments.h')]
+    target = directory / 'baseline'
+    for path in paths:
+        destination = target / path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(subprocess.check_output(['git', 'show', f'{BASELINE}:{path}'], cwd=ROOT))
+    return target
+
+
+def build(directory, snapshot_root):
     # This comparison intentionally includes ISA-specific binaries. Fail before
     # executing them on a host without the required CPU/OS capabilities.
     flags = set(next(line.split(':', 1)[1] for line in Path('/proc/cpuinfo').read_text().splitlines()
@@ -30,7 +45,7 @@ def build(directory):
     commands = []
     for name, flags in variants.items():
         command = base + flags + [f'-fopt-info-vec-all={directory / (name + ".vector.txt")}',
-                                 str(SOURCE / 'c-review-conversion.c'), '-o', str(directory / name)]
+                                 str(snapshot_root / 'scripts/benchmarks/c-review-conversion.c'), '-o', str(directory / name)]
         run(command)
         commands.append(command)
     packages = ['libavcodec', 'libavutil', 'libva', 'libdrm', 'x11', 'x11-xcb', 'xrandr', 'xcb-dri3']
@@ -38,7 +53,7 @@ def build(directory):
     libraries = shlex.split(run(['pkg-config', '--libs', 'x11', 'x11-xcb', 'xrandr', 'xcb-dri3', 'xext']))
     command = base + ['-D_POSIX_C_SOURCE=200809L', '-ffunction-sections', '-fdata-sections',
                       '-Wl,--gc-sections', *shlex.split(os.environ.get('GPU_CFLAGS', '')), *flags,
-                      str(SOURCE / 'c-review-gpu.c'), str(ROOT / 'host/gpu/options.c'),
+                      str(snapshot_root / 'scripts/benchmarks/c-review-gpu.c'), str(snapshot_root / 'host/gpu/options.c'),
                       '-o', str(directory / 'gpu'), *libraries]
     run(command)
     commands.append(command)
@@ -78,15 +93,15 @@ def gpu_trial(directory, trial):
     return results
 
 
-def metadata(commands):
-    sources = list((ROOT / 'host/evdi').glob('*.[ch]')) + list((ROOT / 'host/gpu').glob('*.[ch]'))
-    sources += list(SOURCE.glob('c-review-*')) + [SOURCE / 'checked_arguments.h']
+def metadata(commands, snapshot_root):
+    sources = list(snapshot_root.rglob('*.c')) + list(snapshot_root.rglob('*.h'))
     cpu = next(line.split(':', 1)[1].strip() for line in Path('/proc/cpuinfo').read_text().splitlines()
                if line.startswith('model name'))
-    return dict(revision=run(['git', 'rev-parse', 'HEAD']).strip(), kernel=platform.release(),
+    return dict(revision=run(['git', 'rev-parse', BASELINE]).strip(), kernel=platform.release(),
                 cpu=cpu, affinity=sorted(os.sched_getaffinity(0)), compiler=run(['cc', '--version']).splitlines()[0],
                 load=os.getloadavg(), commands=commands,
-                source_sha256={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},
+                source_sha256={str(p.relative_to(snapshot_root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},
+                runner_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Single host synthetic workloads, not end-to-end latency or physical GPU acceptance.',
                              'Tiles and weighted scheduling are unshipped hypotheses.',
                              'Every conversion process checks an independent full-frame scalar pixel oracle.',
@@ -100,8 +115,9 @@ def main():
     args = parser.parse_args()
     directory = args.output.resolve()
     directory.mkdir(parents=True, exist_ok=False)
-    commands = build(directory)
-    (directory / 'metadata.json').write_text(json.dumps(metadata(commands), indent=2) + '\n')
+    snapshot_root = snapshot(directory)
+    commands = build(directory, snapshot_root)
+    (directory / 'metadata.json').write_text(json.dumps(metadata(commands, snapshot_root), indent=2) + '\n')
     results = []
     for trial in range(args.trials):
         results.extend(conversion_trial(directory, trial))

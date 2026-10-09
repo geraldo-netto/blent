@@ -1,5 +1,9 @@
 # Owned C performance checks: T768, T769, T773, T778
 
+This document records the initial research snapshot at `a3c053e`; its prototype
+and open-item descriptions are historical unless an implementation follow-up is
+explicitly identified below.
+
 The measurements support improving conversion scheduling and evaluating portable
 SIMD dispatch. They do **not** support replacing all spans with tiles or removing
 GPU metadata checks. Production sources and release compiler flags are unchanged.
@@ -92,6 +96,18 @@ after permanent regressions for exactly-once row coverage, empty masks, one row,
 sparse gaps, unequal widths, all scales, NULL-mask semantics, capacity limits and
 worker-creation failure. Preserve user-configured worker capacity and benchmark
 both wall latency and CPU cost. T769 remains open until those requirements pass.
+
+Implementation follow-up: T769 now uses fused accounting and weighted contiguous
+partitions, preserving NULL-mask row dispatch and user capacity. The permanent
+T769 regression fails on the original code and passes after the change; existing
+conversion regressions and the 176/176 per-function capture gate pass.
+[Paired implementation measurements](artifacts/2026-10-09-t769/summary.json)
+cover 300 independent-oracle processes: skew latency falls from 222.122 to
+133.446 µs at scale 1 and from 338.523 to 182.724 µs at scale 2 (four workers).
+Scale 1 process CPU rises about 7%; scale 2 CPU is nearly unchanged. Dense work
+has no demonstrated general gain. The T769 TODO row is resolved. The original
+research runner now restores its pinned `a3c053e` sources from local Git so
+private helper changes cannot silently alter the historical comparison.
 
 ## T773: ten requests per frame, but checks enforce real contracts
 
