@@ -1,0 +1,28 @@
+{
+  "revision": "8aaeec0e978c51af4c40d3d117a4ab32aafa3868",
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "cpu": "AMD Ryzen 9 7945HX with Radeon Graphics",
+  "kernel": "7.0.0-38-generic",
+  "source_sha256": {
+    "host/evdi/fifo_writer.c": "af9c42ce08d807cd303a1627b048200438c50b5444905e3432aebb7ff57e3430",
+    "host/evdi/pixel_damage.h": "ce7a5e58d932f5f1d6b589b1a84ef161e12bfa8aaf8dad8f013ad1236b1583ca",
+    "host/evdi/conversion.h": "e2328c9baccf5ac5c47201b7e8097812ba233e046ddb343eab2453dcbaf69ac4",
+    "host/evdi/frame_exchange.h": "15e74ff0e8cd970c0e697df15b647bb5a471143e27f373f282c2d9280178e8f6",
+    "host/evdi/evdi_lib.h": "ece987245ac3939fe5f12fca894a29c7d586bdbf80796d3f6fa08a7c52bf9128",
+    "host/evdi/cursor_overlay.c": "22ae859fdd114dbe70bf054cd9c77cc1310bbd600e1ddb0d450c1fd745f25ed5",
+    "host/evdi/conversion.c": "da23122137f6ef075356d7b257e6eca922a94b47d6dcdb6333996feda321fdd5",
+    "host/evdi/evdi_helper.c": "328ec26b8ad0e2ec4928ca5ebc84779247dcd494512be8e5439b2df88212bddd",
+    "host/evdi/conversion_box.h": "61be8fd17735533b3fbc017c2f0a121b28e4872df548f8acec2c6c4e2ae9f3b4",
+    "host/evdi/cursor_overlay.h": "7f6182914fd73f3a2bd3319cf92d1a8acc43b01dc4146f9285b227fab0664597",
+    "host/evdi/writer.c": "9bcf7940f3412a76f4a20b98fc43f9c3abb62652aede7c9a4add8ecffb05ed0c",
+    "host/evdi/frame_exchange.c": "f32104c41051a8f41d7c313e5e5815a1799d5741d10256204090e62b34303c4e",
+    "host/evdi/pixel_span.h": "c3ae238e24069ffd2bd6988676917bb253a1b524286f666eb76f48e50c7de214",
+    "host/evdi/pixel_format.h": "3f70e82260a75af041cce532a0c1d16beb5fb3f51444d95f681c285b37217e95",
+    "host/evdi/capture.h": "3570a0f01e24c7662d1d65368a67a4157705fcca64bba34995bda9f8ec2e86b8",
+    "host/evdi/writer.h": "1f389df1db53b8a01d792befa88a6a5d7fc72f76f9bb64865f13c6eb54ce55c4",
+    "host/evdi/raw_ring.c": "867e3b3aec9f777e63d89423485053cd7b0e56b99a102b1be81c6312ee4d13c0",
+    "host/evdi/capture.c": "2b06d5777d19247259eacf68bffb8fb4d1deacfd65d694129c3c39a364b5a096",
+    "host/evdi/raw_ring.h": "57859a364ed6cdd8fad088866e0bcf22b5f487066dade6867337039b92917276",
+    "host/evdi/fifo_writer.h": "c49bc77663b8799680612ac7965d50d8b4ef6ff505f90494f28a1b4ce4246a19"
+  }
+}
