@@ -1,27 +1,30 @@
 package com.blent
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import androidx.compose.runtime.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.android.asCoroutineDispatcher
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-/** Host-command/permission owner. A camera foreground service may extend its lifetime. */
+/** Portable host-command, permission and resource ownership policy. */
 internal class CameraBinding(
-    context: Context,
     private val rotation: () -> Int,
     private val requestPermission: () -> Unit,
-    private val permission: () -> Boolean = { context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED },
-    private val capture: suspend (CameraEndpoint, CameraLens, Int, CameraResources) -> Unit = CameraCapture(context)::run,
-    private val invitations: StateFlow<CameraEndpoint?> = CameraInvitations.endpoint,
-    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + android.os.Handler(android.os.Looper.getMainLooper()).asCoroutineDispatcher()),
-    private val backgroundService: (String?) -> Unit = {},
+    private val permission: () -> Boolean,
+    private val createRun: (CameraEndpoint, CameraLens, () -> Int) -> LifecycleRun,
+    private val invitations: StateFlow<CameraEndpoint?>,
+    private val scope: CoroutineScope,
+    private val backgroundService: (String?) -> Unit,
 ) {
-    var endpoint by mutableStateOf<CameraEndpoint?>(null); private set
-    var selected by mutableStateOf<CameraLens?>(null); private set
-    var status by mutableStateOf("Start camera sharing on your computer."); private set
+    private val mutableState = kotlinx.coroutines.flow.MutableStateFlow(CameraLifecycleState())
+    val state = mutableState.asStateFlow()
+    var endpoint: CameraEndpoint?
+        get() = mutableState.value.endpoint
+        private set(value) { mutableState.value = mutableState.value.copy(endpoint = value) }
+    var selected: CameraLens?
+        get() = mutableState.value.selected
+        private set(value) { mutableState.value = mutableState.value.copy(selected = value) }
+    var status: String
+        get() = mutableState.value.status
+        private set(value) { mutableState.value = mutableState.value.copy(status = value) }
     private var active = false
     private var backgroundRun: String? = null
     private val backgroundRunning get() = backgroundRun != null
@@ -30,7 +33,7 @@ internal class CameraBinding(
     private var worker: Job? = null
     private val retirementScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var retirement: Job? = null
-    private var resources: CameraResources? = null
+    private var resources: LifecycleRun? = null
     private var generation = 0L
 
     fun start() {
@@ -88,21 +91,21 @@ internal class CameraBinding(
 
     private fun launch(host: CameraEndpoint, lens: CameraLens, previous: Job?) {
         val revision = generation
-        val owned = CameraResources()
+        val owned = createRun(host, lens, rotation)
         resources = owned
         selected = lens
         status = "${lens.label} camera selected."
         worker = scope.launch {
             try {
                 previous?.join()
-                capture(host, lens, rotation(), owned)
+                owned.execute()
             } catch (error: Exception) {
                 if (generation == revision && error !is CancellationException) status = error.message ?: "Camera sharing failed."
             } finally {
                 try {
                     if (generation == revision) { selected = null; background(false) }
                 } finally {
-                    withContext(NonCancellable + Dispatchers.IO) { owned.close() }
+                    withContext(NonCancellable + Dispatchers.IO) { owned.retire() }
                 }
             }
         }
@@ -120,7 +123,7 @@ internal class CameraBinding(
         if (owned != null) retirement = retirementScope.launch {
             earlier?.join()
             previous?.join()
-            owned.close()
+            owned.retire()
         }
         selected = null
         return retirement

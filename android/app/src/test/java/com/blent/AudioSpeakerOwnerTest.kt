@@ -28,7 +28,7 @@ class AudioSpeakerOwnerTest {
             val speakers = AudioOwner.get(app, 2)
             assertSame(speakers, AudioOwner.get(app, 2)); assertNotSame(microphone, speakers)
             speakers.configure(AudioPreferences(2, true, 25, false))
-            assertEquals(25, AudioPreferences.load(app, 2).gain)
+            assertEquals(25, AudioPreferencesStore.load(app, 2).gain)
             assertEquals(100, microphone.preferences.gain)
             assertFalse(microphone.preferences.background)
             val permission = ReflectionHelpers.getField<() -> Boolean>(speakers, "permission")
@@ -36,7 +36,7 @@ class AudioSpeakerOwnerTest {
             for (gain in -5..205) assertEquals(gain in 0..100, AudioPreferences(gain = gain).valid(2))
             for (direction in listOf(Int.MIN_VALUE, -1, 0, 3, Int.MAX_VALUE)) {
                 try { AudioOwner.get(app, direction); fail("invalid direction") } catch (_: IllegalStateException) {}
-                try { AudioPreferences.load(app, direction); fail("invalid preference namespace") } catch (_: IllegalArgumentException) {}
+                try { AudioPreferencesStore.load(app, direction); fail("invalid preference namespace") } catch (_: IllegalArgumentException) {}
             }
             assertFalse(AudioOwner.owns("unknown", 2)); AudioOwner.stopSharing(2); AudioOwner.stopped("unknown", 2)
         } finally { AudioOwner.reset() }

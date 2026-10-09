@@ -1,46 +1,41 @@
 package com.blent
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import androidx.compose.runtime.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.android.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.net.Socket
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
+import kotlinx.coroutines.flow.asStateFlow
 
-internal class AudioResources {
-    private val stopped = AtomicBoolean(false)
-    private val socket = AtomicReference<Socket?>(null)
-    fun attach(value: Socket?) {
-        socket.set(value)
-        if (stopped.get()) runCatching { socket.getAndSet(null)?.close() }
-    }
-    fun cancel() { stopped.set(true); runCatching { socket.getAndSet(null)?.close() } }
-}
-
-/** Main-thread consent/settings owner. Native retirement runs on its IO worker. */
-internal class AudioBinding(private val context: Context,
+/** Portable consent/admission/retirement policy. Platform adapters supply runs. */
+internal class AudioBinding(
+    initial: AudioPreferences,
     private val requestPermission: () -> Unit,
-    private val permission: () -> Boolean = { context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED },
-    private val capture: suspend (AudioEndpoint, AudioPreferences, (Socket?) -> Unit, (String) -> Unit) -> Unit = AudioCapture(context)::run,
-    private val invitations: MutableStateFlow<AudioEndpoint?> = AudioInvitations.microphone,
-    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + android.os.Handler(android.os.Looper.getMainLooper()).asCoroutineDispatcher()),
-    private val service: (String?) -> Unit = {},
-    val direction: Int = 1,
+    private val permission: () -> Boolean,
+    private val createRun: (AudioEndpoint, AudioPreferences, (String) -> Unit) -> LifecycleRun,
+    private val invitations: MutableStateFlow<AudioEndpoint?>,
+    private val scope: CoroutineScope,
+    private val service: (String?) -> Unit,
+    val direction: Int,
+    private val save: (AudioPreferences) -> Unit,
 ) {
     val label = if (direction == 1) "microphone" else "speakers"
-    var preferences by mutableStateOf(AudioPreferences.load(context, direction)); private set
-    var status by mutableStateOf("Start $label on your computer."); private set
-    var sharing by mutableStateOf(false); private set
-    var pending by mutableStateOf<AudioEndpoint?>(null); private set
+    private val mutableState = MutableStateFlow(AudioLifecycleState(initial, "Start $label on your computer."))
+    val state = mutableState.asStateFlow()
+    var preferences: AudioPreferences
+        get() = mutableState.value.preferences
+        private set(value) { mutableState.value = mutableState.value.copy(preferences = value) }
+    var status: String
+        get() = mutableState.value.status
+        private set(value) { mutableState.value = mutableState.value.copy(status = value) }
+    var sharing: Boolean
+        get() = mutableState.value.sharing
+        private set(value) { mutableState.value = mutableState.value.copy(sharing = value) }
+    var pending: AudioEndpoint?
+        get() = mutableState.value.pending
+        private set(value) { mutableState.value = mutableState.value.copy(pending = value) }
     private var visible = false
     private var generation = 0L
     private var observer: Job? = null
     private var worker: Job? = null
-    private var resources: AudioResources? = null
+    private var resources: LifecycleRun? = null
     private var backgroundRun: String? = null
 
     fun start() {
@@ -77,8 +72,10 @@ internal class AudioBinding(private val context: Context,
     private fun launch(endpoint: AudioEndpoint) {
         val earlier = worker
         val revision = ++generation
-        val owned = AudioResources(); resources = owned
-        val settings = preferences
+        val owned = createRun(endpoint, preferences) { text ->
+            scope.launch { if (revision == generation) status = text }
+        }
+        resources = owned
         if (endpoint.background) {
             backgroundRun = java.util.UUID.randomUUID().toString()
             service(backgroundRun)
@@ -89,13 +86,11 @@ internal class AudioBinding(private val context: Context,
                 // A cancelled waiter must retain the chain to older native owners.
                 withContext(NonCancellable) { earlier?.join() }
                 currentCoroutineContext().ensureActive()
-                capture(endpoint, settings, owned::attach) { text ->
-                    scope.launch { if (revision == generation) status = text }
-                }
+                owned.execute()
             } catch (error: Exception) {
                 if (revision == generation && error !is CancellationException) status = error.message ?: "Audio stopped."
             } finally {
-                owned.cancel()
+                withContext(NonCancellable) { owned.retire() }
                 if (revision == generation) { sharing = false; stopBackground() }
             }
         }
@@ -115,7 +110,7 @@ internal class AudioBinding(private val context: Context,
     }
     fun configure(value: AudioPreferences) {
         require(value.valid(direction))
-        stopSharing(); value.save(context, direction); preferences = value
+        stopSharing(); save(value); preferences = value
     }
     fun stop() {
         visible = false

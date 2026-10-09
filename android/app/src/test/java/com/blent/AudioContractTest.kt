@@ -49,16 +49,16 @@ class AudioContractTest {
     }
     @Test fun t718_preferencesNeverPersistSessionAndInvalidSettingsReject() {
         val app = RuntimeEnvironment.getApplication()
-        assertEquals(AudioPreferences(), AudioPreferences.load(app))
+        assertEquals(AudioPreferences(), AudioPreferencesStore.load(app))
         val selected = AudioPreferences(2, true, 200, false); selected.save(app)
-        assertEquals(selected, AudioPreferences.load(app))
+        assertEquals(selected, AudioPreferencesStore.load(app))
         assertEquals(2, selected.effective(endpoint()).processing)
         assertEquals(endpoint(), AudioPreferences().effective(endpoint()))
         rejected { AudioPreferences().effective(endpoint().copy(background = true)) }
         rejected { selected.copy(gain = 201).save(app) }
         for (gain in -5..205) assertEquals(gain in 0..200, selected.copy(gain = gain).valid())
         app.getSharedPreferences("audio", 0).edit().putInt("processing", -1).putInt("gain", Int.MAX_VALUE).commit()
-        assertTrue(AudioPreferences.load(app).valid())
+        assertTrue(AudioPreferencesStore.load(app).valid())
     }
     @Test fun t718_handshakeBindsProfileAndPacketLayoutMatchesRust() {
         val endpoint = endpoint()

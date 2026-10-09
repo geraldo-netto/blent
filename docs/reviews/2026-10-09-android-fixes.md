@@ -25,3 +25,20 @@ Offline Android suite: 731 tests, zero failures; JaCoCo/PSI gate: 786/786
 maintained methods reach at least 80% individually. Production Kotlin cyclomatic
 complexity remains at most 9. Generated decoder Kotlin compilation and benchmark
 source-dependency regressions pass. No native installation or download.
+
+## T810: portable resource lifecycle policy
+
+Audio/camera bindings now depend on independent endpoint/preferences/state values
+and a LifecycleRun interface. Android construction adapters own Context,
+permission checks, native capture/resource types, services and preference storage.
+Compose observes immutable StateFlow snapshots. Cancellation remains distinct
+from confirmed retirement; generation checks and borrowed native lifetime gates
+remain. Camera rotation is sampled at actual execution, after earlier retirement.
+
+The architecture regression fails on the previous Android/Compose dependencies
+and passes now. Plain-JVM lifecycle tests exercise resource delegation, state,
+late status rejection and Stop; policies also compile against Kotlin/coroutines
+without Android or Compose. The full offline Android suite passes, including
+existing ownership/permission/service/recreation tests. All 813 maintained
+Android methods pass individual 80% coverage; production complexity stays <=9.
+T807/T806 retain the known cleanup-error and unbounded-waiter behavior to fix next.
