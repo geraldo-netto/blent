@@ -200,6 +200,11 @@ static evdi_handle open_session_device_in(const char *root, int pinned, int pref
 }
 
 static int request_evdi_device(void) {
+    if (Xorg_running()) {
+        fprintf(stderr, "[evdi-helper] No free pre-created EVDI device; refusing DRM hot-add while Xorg is running.\n"
+                        "[evdi-helper] Increase evdi initial_device_count in your boot configuration and reboot.\n");
+        return 0;
+    }
     int written = evdi_add_device();
     if (written <= 0) {
         fprintf(stderr, "[evdi-helper] Failed to add EVDI device (result=%d); check module and sysfs permissions with blent doctor\n", written);

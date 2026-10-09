@@ -81,7 +81,7 @@ pub(crate) fn apply_tablet_sessions(
 }
 
 /// One-time privileged setup via the desktop's graphical password prompt:
-/// pre-create an EVDI device now and at every boot.
+/// Persist boot capacity; reuse devices or provision only when Xorg is absent.
 pub(crate) fn system_setup_script(root: &std::path::Path, max_tablets: u32) -> String {
     let count = max_tablets.clamp(1, 4);
     let script = format!(
@@ -89,14 +89,15 @@ pub(crate) fn system_setup_script(root: &std::path::Path, max_tablets: u32) -> S
 mkdir -p /etc/modprobe.d /etc/modules-load.d
 echo 'options evdi initial_device_count={count}' > /etc/modprobe.d/blent-evdi.conf
 printf 'evdi\nuinput\n' > /etc/modules-load.d/blent.conf
-modprobe evdi || true
-modprobe uinput || true
-existing=$(cat /sys/devices/evdi/count 2>/dev/null || echo 0)
-if [ "$existing" -lt {count} ]; then
-    echo "$(({count} - existing))" > /sys/devices/evdi/add
-fi"#
+blent_evdi_status=0
+(
+set -- {count}
+{setup}
+) || blent_evdi_status=$?
+modprobe uinput || true"#,
+        setup = include_str!("../../../scripts/setup-evdi.sh")
     );
-    let script = format!("{}\nmkdir -p /etc/udev/rules.d\ncat > /etc/udev/rules.d/60-blent-uinput.rules <<'BLENT_RULE'\n{}BLENT_RULE\nudevadm control --reload\nudevadm trigger --name-match=uinput\n", script,
+    let script = format!("{}\nmkdir -p /etc/udev/rules.d\ncat > /etc/udev/rules.d/60-blent-uinput.rules <<'BLENT_RULE'\n{}BLENT_RULE\nudevadm control --reload\nudevadm trigger --name-match=uinput\nexit \"$blent_evdi_status\"\n", script,
         include_str!("../../../packaging/60-blent-uinput.rules"));
     script
         .replace("/etc/", &format!("{}/etc/", root.display()))

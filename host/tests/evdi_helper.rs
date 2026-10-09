@@ -342,3 +342,8 @@ fn t418_shared_capture_ownership_pacing_and_control_fuzz() {
 fn t623_watchdog_coalesces_grabs_and_recovers_lost_events() {
     Harness::build("T623").run("T623");
 }
+
+#[test]
+fn t751_xorg_capacity_exhaustion_preserves_existing_devices() {
+    Harness::build("T751").run("T751");
+}

@@ -24,6 +24,9 @@ elif name == 'lsmod':
 elif name == 'cat' and args == ['/sys/devices/evdi/count']:
     if not count.exists(): sys.exit(1)
     print(count.read_text())
+elif name == 'pgrep':
+    if os.environ.get('XORG_QUERY_FAIL'): sys.exit(2)
+    sys.exit(0 if os.environ.get('XORG_PRESENT') else 1)
 elif name == 'modprobe':
     if args == ['evdi'] and not count.exists():
         if os.environ.get('FAIL_LOAD'): sys.exit(1)
@@ -33,7 +36,7 @@ elif name == 'tee' and args == ['/sys/devices/evdi/add']:
     if os.environ.get('FAIL_ADD'): sys.exit(1)
     if os.environ.get('INVALID_AFTER_ADD'): count.write_text('invalid')
     elif not os.environ.get('IGNORE_ADD'): count.write_text(str(int(count.read_text()) + int(value)))
-elif name not in ['touch', 'udevadm', 'gtk-update-icon-cache']:
+elif name not in ['touch', 'udevadm', 'gtk-update-icon-cache', 'pgrep']:
     raise RuntimeError('Unexpected fixture command: ' + repr([name] + args))
 '''
 
@@ -61,7 +64,7 @@ class EvdiSetupTest(unittest.TestCase):
             if count is not None:
                 (root / 'count').write_text(str(count))
             for name in ['sudo', 'lsmod', 'modprobe', 'cat', 'tee', 'touch',
-                         'udevadm', 'gtk-update-icon-cache']:
+                         'udevadm', 'gtk-update-icon-cache', 'pgrep']:
                 program = root / 'bin' / name
                 program.write_text(MOCK)
                 program.chmod(0o755)
@@ -86,6 +89,31 @@ bash() {
             trace = [json.loads(row) for row in (root / 'commands').read_text().splitlines()]
             final = (root / 'count').read_text() if (root / 'count').exists() else None
             return result, trace, final
+
+    def test_t751_xorg_defers_module_loading_and_capacity_growth(self):
+        for entry in ['script', 'installer', 'deb', 'rpm', 'post_install', 'post_upgrade']:
+            for count in [None, 0, 1]:
+                with self.subTest(entry=entry, count=count):
+                    result, trace, final = self.run_setup(entry, count, 'XORG_PRESENT')
+                    self.assertNotIn(['modprobe', 'evdi'], trace, 'T751: Xorg must not gain a DRM driver')
+                    self.assertNotIn(['tee', '/sys/devices/evdi/add'], trace, 'T751: Xorg must not gain a DRM card')
+                    self.assertEqual(final, None if count is None else str(count))
+                    self.assertIn('reboot', result.stdout + result.stderr)
+
+    def test_t751_existing_capacity_needs_no_process_probe(self):
+        for count in [2, 3, 4]:
+            result, trace, final = self.run_setup('script', count, 'XORG_QUERY_FAIL')
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertFalse(any(command[0] in ['pgrep', 'modprobe', 'tee'] for command in trace))
+            self.assertEqual(final, str(count))
+
+    def test_t751_failed_process_inventory_defers_device_mutation(self):
+        for count in [None, 0, 1]:
+            result, trace, final = self.run_setup('script', count, 'XORG_QUERY_FAIL')
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(any(command[0] in ['modprobe', 'tee'] for command in trace))
+            self.assertEqual(final, None if count is None else str(count))
+            self.assertIn('reboot', result.stderr)
 
     def test_t269_install_and_upgrade_never_unload_and_add_only_missing_capacity(self):
         for entry in ['script', 'installer', 'deb', 'rpm', 'post_install', 'post_upgrade']:

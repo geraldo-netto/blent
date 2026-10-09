@@ -2705,6 +2705,48 @@ esac"#
     }
 
     #[test]
+    fn t751_gui_defers_hot_add_but_persists_boot_capacity() {
+        for process_status in [0, 2, 127] {
+            let sandbox = Sandbox::new();
+            std::fs::create_dir_all(sandbox.0.join("sys/devices/evdi")).unwrap();
+            std::fs::write(sandbox.0.join("sys/devices/evdi/count"), "1").unwrap();
+            sandbox.script("bin/pgrep", &format!("exit {process_status}"));
+            sandbox.script(
+                "bin/modprobe",
+                "echo \"$*\" >> \"$BLENT_TEST_ROOT/modules\"",
+            );
+            sandbox.script("bin/udevadm", "exit 0");
+            let output = Command::new("sh")
+                .args(["-c", &system_setup_script(&sandbox.0, 3)])
+                .env("BLENT_TEST_ROOT", &sandbox.0)
+                .env(
+                    "PATH",
+                    format!("{}:/usr/bin:/bin", sandbox.0.join("bin").display()),
+                )
+                .output()
+                .unwrap();
+            assert!(
+                !sandbox.0.join("sys/devices/evdi/add").exists(),
+                "T751: no hot-add under Xorg or unknown process state"
+            );
+            assert!(!output.status.success());
+            assert!(String::from_utf8_lossy(&output.stderr).contains("reboot"));
+            assert_eq!(
+                std::fs::read_to_string(sandbox.0.join("etc/modprobe.d/blent-evdi.conf"))
+                    .unwrap()
+                    .trim(),
+                "options evdi initial_device_count=3"
+            );
+            assert_eq!(
+                std::fs::read_to_string(sandbox.0.join("modules"))
+                    .unwrap()
+                    .trim(),
+                "uinput"
+            );
+        }
+    }
+
+    #[test]
     fn t136_setup_adds_missing_devices_and_persists_capacity() {
         for (existing, wanted) in [(2, 4), (0, 3), (4, 2)] {
             let sandbox = Sandbox::new();
@@ -2716,6 +2758,15 @@ esac"#
             .unwrap();
             sandbox.script("bin/modprobe", "exit 0");
             sandbox.script("bin/udevadm", "exit 0");
+            sandbox.script("bin/pgrep", "exit 1");
+            sandbox.script(
+                "bin/tee",
+                r#"read delta
+printf '%s' "$delta" > "$1"
+count="${1%/*}/count"
+existing=$(cat "$count")
+printf '%s' "$((existing + delta))" > "$count""#,
+            );
             let output = Command::new("sh")
                 .args(["-c", &system_setup_script(&sandbox.0, wanted)])
                 .env(

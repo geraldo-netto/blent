@@ -17,12 +17,25 @@ evdi_add_capacity() {
         || evdi_setup_deferred "could not add the missing EVDI devices"
 }
 
-evdi_setup() {
+evdi_safe_creation() {
+    # A system-wide process check also covers setup launched outside the X session.
+    # Missing/failed process inventory is not evidence that DRM hot-add is safe.
+    pgrep -x 'Xorg|Xorg.wrap|X' >/dev/null 2>&1
+    case "$?" in
+        1) return 0 ;;
+        0) evdi_setup_deferred "Xorg is running; configure initial_device_count for the next boot" ;;
+        *) evdi_setup_deferred "cannot establish whether Xorg is running" ;;
+    esac
+}
+
+evdi_capacity_ready() {
+    blent_existing=$(evdi_device_count) || return 1
+    [ "$blent_existing" -ge "$1" ] || return 1
+    echo "blent: EVDI devices ready (count=$blent_existing); existing devices preserved"
+}
+
+evdi_complete_capacity() {
     blent_wanted=$1
-    modprobe evdi 2>/dev/null || {
-        evdi_setup_deferred "evdi module is unavailable"
-        return 1
-    }
     blent_existing=$(evdi_device_count) || {
         evdi_setup_deferred "cannot read the EVDI device count"
         return 1
@@ -39,6 +52,16 @@ evdi_setup() {
         return 1
     fi
     echo "blent: EVDI devices ready (count=$blent_existing); existing devices preserved"
+}
+
+evdi_setup() {
+    if evdi_capacity_ready "$1"; then return 0; fi
+    evdi_safe_creation || return 1
+    modprobe evdi 2>/dev/null || {
+        evdi_setup_deferred "evdi module is unavailable"
+        return 1
+    }
+    evdi_complete_capacity "$1"
 }
 
 case "${1:-2}" in

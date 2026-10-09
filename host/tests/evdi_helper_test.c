@@ -97,6 +97,8 @@ static int stall_once = 0;
 static int mock_poll_calls;
 static int add_result = 0;
 static int mock_add_calls;
+static int t751_xorg_running;
+bool Xorg_running(void) { return t751_xorg_running; }
 static int mock_discovery_calls;
 static int allocation_countdown = 0;
 static long long mock_monotonic_ms = -1;
@@ -462,6 +464,28 @@ static void test_t108(void) {
         snprintf(path, sizeof(path), "%s/evdi.%d/drm", root, card); rmdir(path);
         snprintf(path, sizeof(path), "%s/evdi.%d", root, card); rmdir(path);
     }
+    assert(rmdir(root) == 0);
+}
+
+/* T751: capacity exhaustion must not hot-add a DRM card under Xorg. */
+static void test_t751(void) {
+    char root[] = "/tmp/blent-t751-XXXXXX", path[4096];
+    assert(mkdtemp(root));
+    snprintf(mock_card_root, sizeof(mock_card_root), "%s", root);
+    t751_xorg_running = 1;
+    int index = -1;
+    assert(acquire_capture_device_in(root, &index) == EVDI_INVALID_HANDLE);
+    assert(mock_add_calls == 0 && "T751: exhausted Xorg capacity must not add a DRM card");
+    make_test_card(root, 17);
+    evdi_handle reused = acquire_capture_device_in(root, &index);
+    assert(reused && index == 17 && mock_add_calls == 0);
+    assert(acquire_capture_device_in(root, &index) == EVDI_INVALID_HANDLE);
+    assert(mock_add_calls == 0 && "T751: leased Xorg capacity must not trigger hot-add");
+    evdi_close(reused);
+    snprintf(path, sizeof(path), "%s/card17", root); unlink(path);
+    snprintf(path, sizeof(path), "%s/evdi.17/drm/card17", root); rmdir(path);
+    snprintf(path, sizeof(path), "%s/evdi.17/drm", root); rmdir(path);
+    snprintf(path, sizeof(path), "%s/evdi.17", root); rmdir(path);
     assert(rmdir(root) == 0);
 }
 
@@ -1415,6 +1439,7 @@ int main(int argc, char **argv) {
         {"T324", test_t324},
         {"T294", test_t294},
         {"T623", test_t623},
+        {"T751", test_t751},
         {"T293", test_t293},
         {"T290", test_t290},
         {"T279", test_t279},

@@ -9,15 +9,25 @@ artifacts produced locally or available in a future [fork release](https://githu
 Before attaching a display, check [current limitations](compatibility.md#current-fork-limitations).
 A Cinnamon/Xorg session crash during EVDI attachment remains unresolved (T222).
 The full installer and native package hooks preserve loaded EVDI devices.
-They load the module if needed and add missing capacity up to two devices;
-failed provisioning reports that setup must be checked and deferred to reboot.
+They reuse sufficient capacity immediately. When Xorg is absent, they load the
+module if needed and add missing capacity up to two devices. Under Xorg, or when
+the process inventory fails, loading/growth is deferred to reboot (T751).
+Failed provisioning also reports that setup must be checked and deferred to reboot.
 Boot configuration changes take effect on the next module load.
 Source/tarball reinstallation and `make setup-system` preserve an existing
 `blent-evdi.conf` verbatim, including capacity provisioned through GUI setup and other module options.
 Both create the two-device boot default only when that file is absent; existing
 empty, invalid or externally managed configurations require manual review.
-`make setup-system` uses the same provisioning script. GUI setup also adds
-only missing devices, using its configured tablet count.
+`make setup-system` and GUI setup use the same provisioning script. GUI setup
+persists its configured tablet count (one to four) for the next boot; it reports
+failure/reboot when live capacity cannot safely be increased, while still
+configuring input permissions. The capture helper reuses free pre-created devices
+under Xorg and refuses automatic hot-add when none are available. Review
+`initial_device_count` in `/etc/modprobe.d/blent-evdi.conf` and reboot to provision
+more devices before starting Xorg. Existing leases and displays are preserved.
+This avoids Blent-triggered hot-add under a detected Xorg session; it does not
+establish safety for an external display server starting concurrently or cure
+unrelated driver/compositor faults.
 
 ## GPU ordering before EVDI (T700)
 
