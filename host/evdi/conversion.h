@@ -17,10 +17,10 @@ typedef struct {
                                 * Borrowed, aligned and clipped by frame owner. */
 } conv_job_t;
 
-/* AUTO uses available wide kernels only for sufficiently wide unscaled work.
+/* AUTO uses available box kernels for scales 2/4 and wide unscaled work.
  * PORTABLE retains compiler-vectorized baseline code; AVX2 requires CPU/OS
- * support and forces that unscaled kernel even for short spans. All policies
- * use the same scaled kernels. Unsupported/invalid requests leave state intact. */
+ * support and forces its unscaled kernel even for short spans. Scale 3 uses
+ * the portable kernel. Unsupported/invalid requests leave state intact. */
 typedef enum { CONV_SIMD_AUTO, CONV_SIMD_PORTABLE, CONV_SIMD_AVX2 } conv_simd_t;
 
 typedef void (*conv_kernel_t)(const conv_job_t *job);

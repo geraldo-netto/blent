@@ -147,11 +147,16 @@ static void convert_adaptive_job(const conv_job_t *job) {
 /* Keep the arithmetic shared. Inlining specializes only these entry points;
  * generic builds and other architectures retain their original ISA baseline. */
 #ifdef BLENT_AVX2
+#include "conversion_box.h"
 __attribute__((target("avx2"))) static void convert_avx2_job(const conv_job_t *job) {
-    convert_strip(job, 0);
+    if (job->scale == 1) convert_strip(job, 0);
+    else if (job->scale == 2) convert_box_strip(job, 2, 0);
+    else convert_box_strip(job, 4, 0);
 }
 __attribute__((target("avx2"))) static void convert_avx2_adaptive_job(const conv_job_t *job) {
-    convert_strip(job, 1);
+    if (job->scale == 1) convert_strip(job, 1);
+    else if (job->scale == 2) convert_box_strip(job, 2, 1);
+    else convert_box_strip(job, 4, 1);
 }
 #endif
 
@@ -173,10 +178,14 @@ int conv_pool_set_simd(conv_pool_t *pool, conv_simd_t policy) {
 typedef struct { int rows; size_t width; int split; } conv_work_t;
 
 #ifdef BLENT_AVX2
+static int avx2_scale(int scale) {
+    return scale == 1 || scale == 2 || scale == 4;
+}
+
 static int use_avx2(const conv_job_t *frame, conv_work_t work, conv_simd_t policy) {
-    if (frame->scale != 1 || policy == CONV_SIMD_PORTABLE) return 0;
+    if (!avx2_scale(frame->scale) || policy == CONV_SIMD_PORTABLE) return 0;
     if (!conv_simd_available(CONV_SIMD_AVX2)) return 0;
-    if (policy == CONV_SIMD_AVX2) return 1;
+    if (policy == CONV_SIMD_AVX2 || frame->scale != 1) return 1;
     if (frame->dirty || frame->spans) return work.rows > 0 && work.width >= (size_t)work.rows * 256;
     return frame->ow >= 256;
 }

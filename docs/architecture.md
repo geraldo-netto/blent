@@ -801,11 +801,13 @@ This does not enable arbitrary encoded-reference dropping.
 
 The Linux EVDI helper inherits `BLENT_CONVERSION_SIMD` from the host process.
 Default `auto` selects runtime-checked AVX2 for unscaled conversion when average
-work per dirty chroma row is at least 256 pixels; short spans and scaled
-conversion retain the portable kernels. CPU and OS AVX2 support are both required.
+work per dirty chroma row is at least 256 pixels. Scales 2 and 4 use AVX2 box
+reduction, including short spans; scale 3 retains the portable kernel. CPU and OS
+AVX2 support are both required.
 `portable` disables the wider dispatch while retaining ordinary compiler SIMD.
-`avx2` forces the AVX2 unscaled kernel even for narrow spans; scaled conversion
-still uses the shared portable kernel. Unsupported or unknown values fail helper
+`avx2` also forces the AVX2 unscaled kernel for narrow spans. Box reduction uses
+a fixed 1 KB scratch tile per worker and preserves integer rounding before chroma
+averaging. Unsupported or unknown values fail helper
 startup before opening capture resources. Values are case-sensitive.
 
 The setting trades wider-vector throughput against CPU-specific frequency and

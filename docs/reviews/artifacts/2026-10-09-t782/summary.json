@@ -1,0 +1,26 @@
+{
+  "baseline_commit": "021e6a9",
+  "trials": 5,
+  "processes": 360,
+  "samples_per_process": 96,
+  "warmups": 16,
+  "flags": [
+    "-O3",
+    "-pthread"
+  ],
+  "tile_sweep_processes": 300,
+  "tile_bytes": [
+    1024,
+    2048,
+    4096,
+    8192,
+    16384
+  ],
+  "chosen_tile_bytes": 1024,
+  "coverage_functions": 198,
+  "coverage_passing": 198,
+  "source_sha256": {
+    "host/evdi/conversion.c": "70a08c67d6033c78d9c696c19bafd9e9c2458af1d00a2b54e6c08e83086087ad",
+    "host/evdi/conversion_box.h": "9075cfb049c4174e1b9b9a83c735773293f8ededfc5bfdb9d376e21edb1fa753"
+  }
+}

@@ -298,3 +298,46 @@ T777's older damage replay now uses the shared checked numeric parser and reject
 NDEBUG builds. Permanent malformed/range/build-contract regressions and a valid
 scale-4 replay pass in the normal benchmark test target; [red/green evidence](artifacts/2026-10-09-t777/README.md)
 is retained. T777 is resolved; the earlier research-only description is historical.
+
+## T782 implementation and larger-block review
+
+AVX2 now reduces scale-2/4 boxes into two 128-pixel rows of worker-local scratch
+(1 KB), then applies the existing color kernel. Each RGB output average truncates
+before the four-pixel chroma average, preserving the independent oracle exactly.
+Auto uses these reducers even for narrow spans; scale 3 remains portable.
+
+[Five final paired trials](artifacts/2026-10-09-t782/README.md), median microseconds:
+
+| Dense frame | Before wall | After wall | Before CPU | After CPU |
+|---|---:|---:|---:|---:|
+| Scale 2, one worker | 1222.759 | 257.679 | 1231.325 | 263.376 |
+| Scale 2, four workers | 327.259 | 78.133 | 1275.512 | 289.857 |
+| Scale 4, one worker | 955.701 | 132.807 | 961.134 | 136.283 |
+| Scale 4, four workers | 258.922 | 45.758 | 1001.578 | 159.553 |
+
+Scale 1 remains near baseline (469.672 versus 472.838 us, one worker). Gains
+are conversion costs, not tablet FPS claims. All 198 individual native functions
+pass coverage; permanent oracle and GCC/Clang ASan/UBSan tests pass. T782 resolved.
+
+The requested 1/2/4/8/16 KB tile sweep found roughly 2–5% better dense medians
+in some larger-tile cases, with overlapping trial ranges and no consistent sparse
+benefit. The tile is stack memory accessed by ordinary loads/stores: there are
+**no per-tile syscalls** to amortize. The selected default remains 1 KB. Increasing
+it changes loop overhead, stack use and cache behavior, not an I/O transfer size.
+
+The separate C/Rust I/O review found:
+
+- C `fifo_writer.c::write_fifo_bytes` already requests the entire remaining frame;
+  Rust `raw_transfer.rs::FrameWriter` likewise calls `write_all(frame)`. Short
+  writes reflect backpressure, not a fixed 1 KB application chunk.
+- C shared memory sends small slot descriptors through `sendmsg`; pixels remain
+  in leased shared slots. Batching descriptors across frames adds waiting.
+- Rust `stream.rs::write_frame_bytes` already uses vectored header/payload writes.
+  Configuration packets still use three writes; that limited opportunity is T784.
+- Rust's production framed/IVF packet readers request complete payloads through
+  `BufReader`; large reads can bypass an empty buffer. Its 512 KB streaming
+  Annex B reader is test-only. A measured 8/32/64 KB reader comparison is T785,
+  not a proven bottleneck or an instruction to wait until buffers fill.
+- Larger FIFO capacity already has a user control and [retained measurements](../benchmarks/2026-09-17-pipe-capacity.md):
+  it can reduce write attempts/CPU but increase queued-frame age. The old tests
+  do not justify a blanket default increase or frame batching.

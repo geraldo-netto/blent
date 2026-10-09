@@ -99,3 +99,13 @@ fn t778_runtime_simd_matches_oracle_and_rejects_unsupported_policies() {
     run_with_flags("simd", &[]);
     run_with_flags("simd", &["-DBLENT_NO_AVX2", "-fsanitize=address,undefined"]);
 }
+
+#[test]
+fn t782_scaled_simd_preserves_rounding_spans_tails_and_guards() {
+    run("scaled-simd");
+    run_with_flags("scaled-simd", &[]);
+    run_with_flags(
+        "scaled-simd",
+        &["-DBLENT_NO_AVX2", "-fsanitize=address,undefined"],
+    );
+}
