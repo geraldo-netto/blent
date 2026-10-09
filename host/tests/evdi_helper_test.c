@@ -1553,6 +1553,7 @@ int main(int argc, char **argv) {
         {"T752-cursor", test_t752_cursor},
         {"T752-shared", test_t752_shared},
         {"T753", test_t753},
+        {"T789", test_t789_owned_cursor},
         {"T753-bounds", test_t753_bounds},
         {"T753-shared", test_t753_shared},
         {"T293", test_t293},

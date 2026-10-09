@@ -1,0 +1,21 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.42s
+     Running tests/evdi_helper.rs (target/debug/deps/evdi_helper-7984ff3ac101d2da)
+
+running 1 test
+test t789_owned_cursor_retains_native_pixels ... 
+thread 't789_owned_cursor_retains_native_pixels' (636907) panicked at host/tests/evdi_helper.rs:159:9:
+helper regression T789: signal: 6 (SIGABRT) (core dumped)
+helper-test: /backups/disk2/projects/blent/host/tests/cursor_overlay.c:8: test_t789_owned_cursor: Assertion `g_capture.cursor.storage == (unsigned char *)event.buffer && "T789: packed native cursor must retain the transferred allocation"' failed.
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    t789_owned_cursor_retains_native_pixels
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 57 filtered out; finished in 4.12s
+
+error: test failed, to rerun pass `-p blent --test evdi_helper`

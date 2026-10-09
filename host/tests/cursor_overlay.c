@@ -1,4 +1,72 @@
 /* T753: independent cursor contract, bounded malformed inputs and adapter life. */
+static void t789_take_variants(void) {
+    cursor_overlay_t cursor = {0};
+    for (unsigned variant = 0; variant < 8; variant++) {
+        size_t size = variant == 2 ? 24 : 20;
+        unsigned char *pixels = malloc(size); assert(pixels); memset(pixels, 127, size);
+        cursor_image_t image = {pixels, size, 2, 2, variant == 2 ? 12 : 8,
+            variant != 0, variant == 1};
+        if (variant >= 4) image.length = variant - 4; /* Reject truncated ownership transfers. */
+        int valid = variant < 4;
+        unsigned char *previous = cursor.storage;
+        assert(cursor_overlay_take(&cursor, &image) == valid && !image.pixels);
+        if (valid) assert(cursor.storage != pixels); /* Normalized or excess allocation detached. */
+        else assert(cursor.storage == previous);
+    }
+    cursor_overlay_destroy(&cursor);
+}
+
+static void t789_take_failures(void) {
+    cursor_overlay_t cursor = {0};
+    unsigned char previous[16] = {0};
+    cursor_image_t borrowed = {previous, sizeof(previous), 2, 2, 8, 1, 0};
+    assert(cursor_overlay_set(&cursor, &borrowed));
+    unsigned char *retained = cursor.storage;
+    for (int attempt = 0; attempt < 2; attempt++) {
+        unsigned char *pixels = malloc(16); assert(pixels); memset(pixels, 127, 16);
+        cursor_image_t image = {pixels, 16, 2, 2, 8, 1, attempt != 0};
+        allocation_countdown = 1;
+        assert(!cursor_overlay_take(&cursor, &image));
+        assert(!image.pixels && cursor.storage == retained);
+        allocation_countdown = 0;
+    }
+    cursor_overlay_destroy(&cursor);
+}
+
+static void t789_adoption_boundary(void) {
+    cursor_overlay_t cursor = {0};
+    const unsigned widths[] = {128, 129, 1024};
+    for (unsigned i = 0; i < 3; i++) {
+        unsigned n = widths[i]; size_t bytes = (size_t)n * n * 4;
+        unsigned char *pixels = malloc(bytes); assert(pixels); memset(pixels, 127, bytes);
+        cursor_image_t image = {pixels, bytes, n, n, n*4, 1, 0};
+        assert(cursor_overlay_take(&cursor, &image));
+        assert((cursor.storage == pixels) == (n == 128));
+        assert(cursor.separate_background == (n == 128));
+    }
+    cursor_overlay_destroy(&cursor);
+}
+
+static void test_t789_owned_cursor(void) {
+    t789_take_variants();
+    t789_take_failures();
+    t789_adoption_boundary();
+    struct evdi_cursor_set event = {.width=2, .height=2, .stride=8, .buffer_length=16,
+        .pixel_format=0x34325241, .enabled=1};
+    event.buffer = malloc(16); assert(event.buffer);
+    memset(event.buffer, 127, 16);
+    on_cursor_set(event, &g_capture);
+    assert(g_capture.cursor.storage == (unsigned char *)event.buffer &&
+        "T789: packed native cursor must retain the transferred allocation");
+    unsigned char background[16], original[16];
+    memset(background, 31, sizeof(background)); memcpy(original, background, sizeof(original));
+    cursor_overlay_draw(&g_capture.cursor, background, 2, 2, 8);
+    cursor_overlay_restore(&g_capture.cursor, background, 8);
+    assert(!memcmp(background, original, sizeof(background)));
+    on_cursor_set((struct evdi_cursor_set){0}, &g_capture);
+    assert(!g_capture.cursor.storage);
+}
+
 static void t753_invalid_images(void) {
     cursor_overlay_t cursor = {0};
     unsigned char bytes[64] = {0};

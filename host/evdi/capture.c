@@ -394,7 +394,10 @@ static void on_cursor_set(struct evdi_cursor_set event, void *user_data) {
     restore_cursor(capture);
     cursor_image_t image = {0};
     int valid = !event.enabled || cursor_event_image(event, &image);
-    if (valid) valid = cursor_overlay_set(&capture->cursor, event.enabled ? &image : NULL);
+    if (valid && event.enabled) {
+        valid = cursor_overlay_take(&capture->cursor, &image);
+        event.buffer = NULL;
+    } else if (valid) valid = cursor_overlay_set(&capture->cursor, NULL);
     /* libevdi transfers its allocated cursor image to this callback. */
     free(event.buffer);
     if (!valid) {

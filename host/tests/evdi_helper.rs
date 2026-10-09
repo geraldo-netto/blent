@@ -7,6 +7,11 @@ use std::{path::PathBuf, process::Command};
 struct Harness(PathBuf);
 
 #[test]
+fn t789_owned_cursor_retains_native_pixels() {
+    Harness::build("T753").run("T789");
+}
+
+#[test]
 fn t775_timeout_guidance_uses_guarded_setup() {
     let harness = Harness::build("T775");
     let output = Command::new(harness.0.join("helper-test"))

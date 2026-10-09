@@ -12,7 +12,10 @@ static int cursor_image_valid(const cursor_image_t *image) {
 
 void cursor_overlay_destroy(cursor_overlay_t *cursor) {
     free(cursor->storage);
+    if (cursor->separate_background) free(cursor->background);
     cursor->storage = NULL;
+    cursor->background = NULL;
+    cursor->separate_background = 0;
     cursor->width = cursor->height = 0;
     cursor->drawn = (cursor_rect_t){0};
 }
@@ -30,22 +33,53 @@ static void cursor_copy_image(unsigned char *destination, const cursor_image_t *
     }
 }
 
+static int replace_image(cursor_overlay_t *cursor, unsigned char *storage, const cursor_image_t *image) {
+    unsigned char *background = malloc((size_t)image->width * image->height * 4);
+    if (!background) { free(storage); return 0; }
+    cursor_overlay_destroy(cursor);
+    cursor->storage = storage;
+    cursor->background = background;
+    cursor->separate_background = 1;
+    cursor->width = image->width; cursor->height = image->height;
+    return 1;
+}
+
 int cursor_overlay_set(cursor_overlay_t *cursor, const cursor_image_t *image) {
     if (!image) { cursor_overlay_destroy(cursor); return 1; }
     if (!cursor_image_valid(image)) return 0;
-    unsigned char *storage = malloc((size_t)image->width * image->height * 8);
+    size_t bytes = (size_t)image->width * image->height * 4;
+    unsigned char *storage = malloc(bytes * 2);
     if (!storage) return 0;
     cursor_copy_image(storage, image);
     cursor_overlay_destroy(cursor);
     cursor->storage = storage;
+    cursor->background = storage + bytes;
     cursor->width = image->width; cursor->height = image->height;
     return 1;
+}
+
+static int can_adopt(const cursor_image_t *image) {
+    if (!cursor_image_valid(image)) return 0;
+    return image->length <= 65536 && image->alpha && !image->swap_rb && image->stride == image->width * 4 &&
+        image->length == (size_t)image->stride * image->height;
+}
+
+int cursor_overlay_take(cursor_overlay_t *cursor, cursor_image_t *image) {
+    unsigned char *owned = (unsigned char *)image->pixels;
+    int result;
+    if (can_adopt(image)) result = replace_image(cursor, owned, image);
+    else {
+        result = cursor_overlay_set(cursor, image);
+        free(owned);
+    }
+    image->pixels = NULL;
+    return result;
 }
 
 cursor_rect_t cursor_overlay_restore(cursor_overlay_t *cursor, unsigned char *surface, int stride) {
     cursor_rect_t rect = cursor->drawn;
     if (!surface || !cursor->storage) return (cursor_rect_t){0};
-    const unsigned char *saved = cursor->storage + (size_t)cursor->width * cursor->height * 4;
+    const unsigned char *saved = cursor->background;
     for (int y = rect.y1; y < rect.y2; y++) {
         size_t offset = ((size_t)(y - rect.y1) * cursor->width) * 4;
         memcpy(surface + (size_t)y * stride + (size_t)rect.x1 * 4,
@@ -78,7 +112,7 @@ static void cursor_blend(unsigned char *destination, const unsigned char *source
 static void cursor_draw_row(cursor_overlay_t *cursor, unsigned char *surface, int stride, int y) {
     cursor_rect_t rect = cursor->drawn;
     unsigned char *row = surface + (size_t)y * stride + (size_t)rect.x1 * 4;
-    unsigned char *saved = cursor->storage + (size_t)cursor->width * cursor->height * 4;
+    unsigned char *saved = cursor->background;
     memcpy(saved + (size_t)(y - rect.y1) * cursor->width * 4, row, (size_t)(rect.x2 - rect.x1) * 4);
     const unsigned char *source = cursor->storage +
         ((size_t)((int64_t)y - cursor->y) * cursor->width + (size_t)((int64_t)rect.x1 - cursor->x)) * 4;
