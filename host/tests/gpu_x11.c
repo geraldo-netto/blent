@@ -12,6 +12,12 @@
 /* T770: inspect only Blent's native boundary, on the private X server. */
 static int fetched_rectangles;
 static unsigned pictures_created;
+static unsigned cursor_images;
+XFixesCursorImage *__real_XFixesGetCursorImage(Display *);
+XFixesCursorImage *__wrap_XFixesGetCursorImage(Display *display) {
+    cursor_images++;
+    return __real_XFixesGetCursorImage(display);
+}
 Picture __real_XRenderCreatePicture(Display *, Drawable, const XRenderPictFormat *, unsigned long, const XRenderPictureAttributes *);
 Picture __wrap_XRenderCreatePicture(Display *display, Drawable drawable, const XRenderPictFormat *format,
         unsigned long mask, const XRenderPictureAttributes *attributes) {
@@ -109,6 +115,27 @@ static void changed_cursor(gpu_capture *c, Cursor original) {
     XFreeCursor(c->display, blue);
 }
 
+static void t791_offscreen_shape(gpu_capture *c, Cursor original) {
+    Cursor blue = cursor(c->display, c->root, 1);
+    XWarpPointer(c->display, None, c->root, 0, 0, 0, 0, 100, 100);
+    XDefineCursor(c->display, c->root, blue); XSync(c->display, False);
+    fill(c); gpu_cursor(c); verify(c, 0);
+    XWarpPointer(c->display, None, c->root, 0, 0, 0, 0, 22, 22); XSync(c->display, False);
+    fill(c); gpu_cursor(c); verify(c, 2); /* T791: old Picture cannot outlive new metadata. */
+    XDefineCursor(c->display, c->root, original); XSync(c->display, False);
+    fill(c); gpu_cursor(c); verify(c, 1);
+    XFreeCursor(c->display, blue);
+}
+
+static void t791_event_flood(gpu_capture *c) {
+    XEvent event = {.type=PropertyNotify};
+    for (int i = 0; i < 300; i++) XPutBackEvent(c->display, &event);
+    unsigned before = cursor_images;
+    fill(c); gpu_cursor(c); verify(c, 1);
+    assert(cursor_images == before + 1 && "T791: unfinished event drain requires fresh cursor pixels");
+    fill(c); gpu_cursor(c); verify(c, 1);
+}
+
 /* T579: native event plumbing on a private X server, without GPU imports. */
 static void cadence(gpu_capture *c) {
     gpu_options options = {.fps=30};
@@ -161,9 +188,13 @@ int main(void) {
     XWarpPointer(c.display, None, c.root, 0, 0, 0, 0, 22, 22); XSync(c.display, False);
     fill(&c); gpu_cursor(&c); verify(&c, 1);
     unsigned created = pictures_created;
+    unsigned images = cursor_images;
     for (int i = 0; i < 32; i++) { fill(&c); gpu_cursor(&c); verify(&c, 1); }
     assert(pictures_created == created && "T772: unchanged shape must reuse cursor Pictures");
+    assert(cursor_images == images && "T791: unchanged shape must not fetch cursor pixels again");
     changed_cursor(&c, shape);
+    t791_offscreen_shape(&c, shape);
+    t791_event_flood(&c);
     XWarpPointer(c.display, None, c.root, 0, 0, 0, 0, 100, 100); XSync(c.display, False);
     fill(&c); gpu_cursor(&c); verify(&c, 0);
     cadence(&c);

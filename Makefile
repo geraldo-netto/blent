@@ -31,7 +31,7 @@ build-gpu-helper:
 	$(CC) -std=c11 -D_POSIX_C_SOURCE=200809L -O3 -Wall -Wextra -Werror $(GPU_CFLAGS) host/gpu/*.c -o target/blent-gpu-capture $(GPU_LIBS)
 
 test-gpu-helper: build-gpu-helper
-	$(CC) -std=c11 -D_POSIX_C_SOURCE=200809L -O1 -g -Wall -Wextra -Werror $(GPU_CFLAGS) host/tests/gpu_x11.c $(filter-out host/gpu/main.c,$(wildcard host/gpu/*.c)) -o target/gpu-x11-test -Wl,--wrap=XFixesFetchRegion -Wl,--wrap=XDamageSubtract -Wl,--wrap=XRenderCreatePicture $(GPU_LIBS)
+	$(CC) -std=c11 -D_POSIX_C_SOURCE=200809L -O1 -g -Wall -Wextra -Werror $(GPU_CFLAGS) host/tests/gpu_x11.c $(filter-out host/gpu/main.c,$(wildcard host/gpu/*.c)) -o target/gpu-x11-test -Wl,--wrap=XFixesFetchRegion -Wl,--wrap=XDamageSubtract -Wl,--wrap=XRenderCreatePicture -Wl,--wrap=XFixesGetCursorImage $(GPU_LIBS)
 	xvfb-run -a -s '-screen 0 128x128x24' target/gpu-x11-test
 	$(CC) -std=c11 -D_POSIX_C_SOURCE=200809L -O1 -g -Wall -Wextra -Werror $(GPU_CFLAGS) host/tests/gpu_lifecycle.c $(filter-out host/gpu/main.c,$(wildcard host/gpu/*.c)) -o target/gpu-lifecycle-test $(GPU_TEST_WRAPS) $(GPU_LIBS)
 	xvfb-run -a -s '-screen 0 128x128x24' target/gpu-lifecycle-test

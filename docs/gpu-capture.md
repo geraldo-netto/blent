@@ -72,6 +72,14 @@ Libavcodec retains each NV12 surface through its final frame reference.
 Cursor pixels are composited using XFixes/XRender and can pass through CPU
 memory. The desktop pixel path performs GPU copies and conversion.
 
+Cursor Pictures and shape metadata are cached. Unchanged shapes use a position
+query; its reply orders earlier shape notifications before cache reuse. Shape
+changes, an empty cache or an unfinished bounded event drain require a fresh
+image. A changed off-output shape retires its old Picture before updating cached
+metadata. Both cadence modes retain this contract. [T791 measurements](reviews/artifacts/2026-10-09-t791/README.md)
+show reduced stable-shape cursor cost, with a small shape-churn overhead; these
+are isolated Xvfb results, not whole-stream latency measurements.
+
 Startup has a five-second native deadline; each frame's native waits and
 output have a two-second deadline. Child cancellation terminates the process.
 Native errors or EOF disable further GPU attempts for that capture owner and

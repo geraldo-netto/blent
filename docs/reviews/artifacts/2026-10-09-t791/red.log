@@ -1,0 +1,8 @@
+mkdir -p target
+gcc -std=c11 -D_POSIX_C_SOURCE=200809L -O3 -Wall -Wextra -Werror -I/usr/include/xcb -I/backups/disk2/blent-work/2026-10-09-evdi-fixes/sdk/root/usr/include -I/backups/disk2/blent-work/2026-10-09-evdi-fixes/sdk/root/usr/include/x86_64-linux-gnu -I/usr/include/libdrm host/gpu/*.c -o target/blent-gpu-capture -lavcodec -lavutil -lva -ldrm -lX11-xcb -lxcb -lXrandr -lXdamage -lXfixes -lXrender -lX11 -lXext -lxcb-dri3 
+gcc -std=c11 -D_POSIX_C_SOURCE=200809L -O1 -g -Wall -Wextra -Werror -I/usr/include/xcb -I/backups/disk2/blent-work/2026-10-09-evdi-fixes/sdk/root/usr/include -I/backups/disk2/blent-work/2026-10-09-evdi-fixes/sdk/root/usr/include/x86_64-linux-gnu -I/usr/include/libdrm host/tests/gpu_x11.c host/gpu/cadence.c host/gpu/capture.c host/gpu/cursor.c host/gpu/encode.c host/gpu/events.c host/gpu/identity.c host/gpu/options.c host/gpu/output.c -o target/gpu-x11-test -Wl,--wrap=XFixesFetchRegion -Wl,--wrap=XDamageSubtract -Wl,--wrap=XRenderCreatePicture -Wl,--wrap=XFixesGetCursorImage -lavcodec -lavutil -lva -ldrm -lX11-xcb -lxcb -lXrandr -lXdamage -lXfixes -lXrender -lX11 -lXext -lxcb-dri3 
+xvfb-run -a -s '-screen 0 128x128x24' target/gpu-x11-test
+[gpu-capture] T575 forced codec rejection: Invalid argument
+gpu-x11-test: host/tests/gpu_x11.c:173: main: Assertion `cursor_images == images && "T791: unchanged shape must not fetch cursor pixels again"' failed.
+Aborted (core dumped)
+make: *** [Makefile:35: test-gpu-helper] Error 134

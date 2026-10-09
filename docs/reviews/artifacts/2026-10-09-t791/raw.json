@@ -1,0 +1,642 @@
+[
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11653.002,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 10826.909,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 26394.038,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 26857.462,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 14620.224,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 11375.668,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 32191.152,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 33626.989,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 20206.301,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 11833.995,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 48990.975,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 50295.462,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 60713.564,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 14251.822,
+    "requests": 2049,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 130565.682,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 134694.976,
+    "requests": 11258,
+    "trial": 0,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11066.547,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11994.696,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 30002.449,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 26719.14,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 10900.661,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 13626.543,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 34516.456,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 33422.727,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 12767.146,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 20718.334,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 49268.836,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 49465.697,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 14307.229,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 65739.285,
+    "requests": 2049,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 134995.479,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 128144.999,
+    "requests": 11258,
+    "trial": 1,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11550.45,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11098.591,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 27630.886,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 27494.42,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 14559.107,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 11644.034,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 32494.961,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 34721.11,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 20618.53,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 12156.083,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 50184.838,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 53163.525,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 61067.605,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 15181.688,
+    "requests": 2049,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 134633.301,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 133647.123,
+    "requests": 11258,
+    "trial": 2,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11157.696,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11887.771,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 27176.641,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 27027.798,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 11798.718,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 13900.691,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 33019.077,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 34764.73,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 12495.204,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 20071.926,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 50625.425,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 49865.773,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 13978.2,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 60873.953,
+    "requests": 2049,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 135767.726,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 135878.0,
+    "requests": 11258,
+    "trial": 3,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11625.623,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 0,
+    "ns": 11405.739,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "after"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 28636.725,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 16,
+    "churn": 1,
+    "ns": 28185.63,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 13565.302,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 0,
+    "ns": 11444.837,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "after"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 32778.829,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 32,
+    "churn": 1,
+    "ns": 33892.374,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 20370.299,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 0,
+    "ns": 12058.688,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "after"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 49903.455,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 64,
+    "churn": 1,
+    "ns": 54574.504,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 60967.481,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 0,
+    "ns": 14305.238,
+    "requests": 2049,
+    "trial": 4,
+    "mode": "after"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 126161.047,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "before"
+  },
+  {
+    "size": 128,
+    "churn": 1,
+    "ns": 130904.591,
+    "requests": 11258,
+    "trial": 4,
+    "mode": "after"
+  }
+]

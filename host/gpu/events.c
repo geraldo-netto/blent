@@ -16,6 +16,7 @@ void gpu_events_open(gpu_capture *c, const gpu_options *options) {
     c->damage = XDamageCreate(c->display, c->root, XDamageReportNonEmpty);
     c->region = XFixesCreateRegion(c->display, NULL, 0);
     XFixesSelectCursorInput(c->display, c->root, XFixesDisplayCursorNotifyMask);
+    c->cursor_subscribed = c->cursor_invalid = 1;
     c->dirty = 1;
     XFlush(c->display);
 }
@@ -37,13 +38,14 @@ static int damaged(gpu_capture *c) {
     return changed;
 }
 
-static void events(gpu_capture *c) {
+int gpu_events_drain(gpu_capture *c) {
     /* Bound queue work even while other desktop clients produce events. */
-    for (unsigned i = 0; i < 256 && XPending(c->display); i++) {
+    for (unsigned i = 0; i < 256 && XEventsQueued(c->display, QueuedAlready); i++) {
         XEvent event; XNextEvent(c->display, &event);
-        if (event.type == c->damage_event + XDamageNotify) c->dirty |= damaged(c);
-        if (event.type == c->cursor_event + XFixesCursorNotify) c->dirty = 1;
+        if (c->damage && event.type == c->damage_event + XDamageNotify) c->dirty |= damaged(c);
+        if (event.type == c->cursor_event + XFixesCursorNotify) c->dirty = c->cursor_invalid = 1;
     }
+    return XEventsQueued(c->display, QueuedAlready) == 0;
 }
 
 static int cursor_affects_output(const gpu_capture *c, int x, int y) {
@@ -68,7 +70,8 @@ static void sample_pointer(gpu_capture *c) {
 void gpu_events_wait(gpu_capture *c, uint64_t previous, unsigned fps) {
     gpu_require(!c->leased, "event wait after final GPU consumer");
     for (;;) {
-        events(c); sample_pointer(c);
+        (void)XPending(c->display);
+        gpu_events_drain(c); sample_pointer(c);
         uint64_t now = gpu_now_ns();
         uint64_t deadline = gpu_capture_deadline(previous, fps, c->dirty);
         if (!previous || now >= deadline) { c->dirty = 0; return; }

@@ -32,7 +32,7 @@ def sdk_flags():
 def cases(flags):
     sources = sorted(str(path) for path in (ROOT/'host/gpu').glob('*.c'))
     policies = [str(ROOT/name) for name in ['host/gpu/options.c', 'host/gpu/cadence.c', 'host/tests/gpu_options.c']]
-    wraps = ['-Wl,--wrap=' + name for name in ['XFixesFetchRegion', 'XDamageSubtract', 'XRenderCreatePicture']]
+    wraps = ['-Wl,--wrap=' + name for name in ['XFixesFetchRegion', 'XDamageSubtract', 'XRenderCreatePicture', 'XFixesGetCursorImage']]
     native = [str(ROOT/'host/tests/gpu_x11.c')] + [path for path in sources if not path.endswith('/main.c')]
     lifecycle = ROOT/'host/tests/gpu_lifecycle.c'
     lifecycle_wraps = ['-Wl,--wrap=' + name for name in sorted(set(re.findall(r'__wrap_([A-Za-z0-9_]+)', lifecycle.read_text())))]

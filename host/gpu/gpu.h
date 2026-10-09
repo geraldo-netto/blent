@@ -26,6 +26,7 @@ typedef struct {
     Damage damage;
     XserverRegion region;
     int damage_event, cursor_event, dirty, pointer_x, pointer_y;
+    int cursor_subscribed, cursor_invalid;
     gpu_cursor_shape cursor_shape;
     unsigned long cursor_serial, cursor_source, cursor_destination;
     int dma_fd;
@@ -54,6 +55,9 @@ void gpu_cursor(gpu_capture *capture);
 void gpu_cursor_close(gpu_capture *capture);
 void gpu_events_open(gpu_capture *capture, const gpu_options *options);
 void gpu_events_wait(gpu_capture *capture, uint64_t previous, unsigned fps);
+/* Drain only events already queued by Xlib, with bounded work. A false return
+ * requires conservative cursor refresh; it never certifies a stale cache. */
+int gpu_events_drain(gpu_capture *capture);
 void gpu_events_close(gpu_capture *capture);
 void gpu_identity_load(gpu_capture *capture, const gpu_options *options);
 void gpu_render_device(gpu_capture *capture, const gpu_options *options);
