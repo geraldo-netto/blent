@@ -30,16 +30,36 @@ static inline pixel_span_t pixel_chroma_range(int begin, int end, int scale, int
     return (pixel_span_t){(int)(first / divisor), (int)((last + divisor - 1) / divisor)};
 }
 
-static inline void pixel_damage_merge(unsigned char *mask, pixel_span_t *spans, pixel_span_t rows, pixel_span_t x) {
+static inline pixel_span_t pixel_larger_gap(pixel_span_t a, pixel_span_t b) {
+    return b.end - b.begin > a.end - a.begin ? b : a;
+}
+
+static inline pixel_span_t pixel_remaining_gap(pixel_span_t gap, pixel_span_t x) {
+    int left_end = x.begin < gap.end ? x.begin : gap.end;
+    int right_begin = x.end > gap.begin ? x.end : gap.begin;
+    pixel_span_t left = pixel_larger_gap((pixel_span_t){0}, (pixel_span_t){gap.begin, left_end});
+    return pixel_larger_gap(left, (pixel_span_t){right_begin, gap.end});
+}
+
+static inline void pixel_row_merge(pixel_row_t *row, pixel_span_t x) {
+    pixel_span_t gap = pixel_remaining_gap(row->gap, x);
+    gap = pixel_larger_gap(gap, (pixel_span_t){row->end, x.begin});
+    gap = pixel_larger_gap(gap, (pixel_span_t){x.end, row->begin});
+    if (x.begin < row->begin) row->begin = x.begin;
+    if (x.end > row->end) row->end = x.end;
+    row->gap = gap;
+}
+
+static inline void pixel_damage_merge(unsigned char *mask, pixel_row_t *spans, pixel_span_t rows, pixel_span_t x) {
     if (!spans) return;
     for (int cy = rows.begin; cy < rows.end; cy++) {
-        if (!(mask[cy / 8] & (1u << (cy % 8)))) spans[cy] = x;
-        if (x.begin < spans[cy].begin) spans[cy].begin = x.begin;
-        if (x.end > spans[cy].end) spans[cy].end = x.end;
+        if (!(mask[cy / 8] & (1u << (cy % 8))))
+            spans[cy] = (pixel_row_t){.begin=x.begin, .end=x.end};
+        else pixel_row_merge(&spans[cy], x);
     }
 }
 
-static inline void pixel_damage_region(unsigned char *mask, pixel_span_t *spans,
+static inline void pixel_damage_region(unsigned char *mask, pixel_row_t *spans,
                                         pixel_span_t rows, pixel_span_t x) {
     pixel_damage_merge(mask, spans, rows, x);
     pixel_damage_range(mask, rows.begin, rows.end);

@@ -27,7 +27,7 @@ typedef struct {
     /* Producer-private damage follows each slot across final-reference release.
      * Never stored in peer-writable memory or used to authorize pixel writes. */
     unsigned char *dirty[RAW_MAX_SLOTS];
-    pixel_span_t *spans[RAW_MAX_SLOTS];
+    pixel_row_t *spans[RAW_MAX_SLOTS];
 } raw_ring_t;
 #define RAW_RING_INITIALIZER { .socket = -1, .fd = -1, .slots = RAW_SLOTS }
 

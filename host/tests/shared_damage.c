@@ -8,22 +8,22 @@ typedef struct {
     capture_context_t capture;
     raw_ring_t ring;
     int peer;
-    unsigned char snapshots[RAW_SLOTS][18 * 10 * 3 / 2];
+    unsigned char snapshots[RAW_SLOTS][512 * 10 * 3 / 2];
 } t570_fixture;
 
 static void t570_init(t570_fixture *f, int scale) {
     int pair[2]; assert(socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_NONBLOCK, 0, pair) == 0);
     f->ring = (raw_ring_t)RAW_RING_INITIALIZER;
     f->ring.nonce = 57;
-    assert(raw_ring_init(&f->ring, pair[0]) && raw_ring_resize(&f->ring, 18, 10));
+    assert(raw_ring_init(&f->ring, pair[0]) && raw_ring_resize(&f->ring, 512, 10));
     f->peer = pair[1];
     f->frames = (frame_exchange_t)FRAME_EXCHANGE_INITIALIZER;
     frame_exchange_init(&f->frames);
-    f->frames.width = 18; f->frames.height = 10; f->frames.buffers_ready = 1;
+    f->frames.width = 512; f->frames.height = 10; f->frames.buffers_ready = 1;
     f->pool = (conv_pool_t)CONV_POOL_INITIALIZER;
     f->capture = (capture_context_t)CAPTURE_INITIALIZER(&f->frames, &f->pool, &f->running);
     f->capture.scale = scale; f->capture.raw_ring = &f->ring;
-    f->capture.mode_w = 18 * scale + 1; f->capture.mode_h = 10 * scale + 1;
+    f->capture.mode_w = 512 * scale + 1; f->capture.mode_h = 10 * scale + 1;
     f->capture.mode_stride = f->capture.mode_w * 4 + 32;
     f->capture.fb_size = f->capture.mode_stride * f->capture.mode_h;
     f->capture.framebuffer = calloc(1, f->capture.fb_size);
@@ -55,8 +55,12 @@ static void t570_mutate(t570_fixture *f, unsigned step) {
     int x = step * 7 % (f->capture.mode_w - 1);
     int y = step * 11 % (f->capture.mode_h - 1);
     memset(f->capture.framebuffer + y * f->capture.mode_stride + x * 4, step, 8);
-    struct evdi_rect rect = {.x1=x, .x2=x+2, .y1=y, .y2=y+1};
-    mark_damage(&f->capture, &rect, 1);
+    /* T768: two distant changes exercise split histories in retained slots. */
+    int far = f->capture.mode_w - 3;
+    memset(f->capture.framebuffer + y * f->capture.mode_stride + far * 4, step, 8);
+    struct evdi_rect rectangles[] = {{.x1=x, .x2=x+2, .y1=y, .y2=y+1},
+        {.x1=far, .x2=far+2, .y1=y, .y2=y+1}};
+    mark_damage(&f->capture, rectangles, 2);
     publish_frame(&f->capture);
 }
 
@@ -94,12 +98,12 @@ static void t570_generation(t570_fixture *f) {
     uint64_t generation = f->ring.generation;
     for (unsigned failure = 1; failure <= RAW_SLOTS * 2; failure++) {
         allocation_countdown = failure;
-        assert(!raw_ring_resize(&f->ring, 18, 10));
+        assert(!raw_ring_resize(&f->ring, 512, 10));
         assert(f->ring.generation == generation);
         assert(memcmp(t570_pixels(f, 0), f->snapshots[0], sizeof(f->snapshots[0])) == 0);
     }
     allocation_countdown = 0;
-    assert(raw_ring_resize(&f->ring, 18, 10));
+    assert(raw_ring_resize(&f->ring, 512, 10));
     assert(f->ring.generation == generation + 1);
     atomic_store_explicit((_Atomic uint32_t *)old, RAW_FREE, memory_order_release);
     t570_publish(f, 0);

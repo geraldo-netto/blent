@@ -7,7 +7,7 @@
 #include "pixel_span.h"
 
 #define LAT_SAMPLES 256
-/* Buffer, dirty-mask and span pointers always travel together. A span is valid
+/* Buffer, dirty-mask and two-span row histories always travel together. A row is valid
  * only while its row's dirty bit is set. The capture owner alone converts fill;
  * the writer may borrow write until release(). */
 typedef struct {
@@ -15,7 +15,7 @@ typedef struct {
     pthread_cond_t ready;
     unsigned char *fill, *latest, *write;
     unsigned char *dirty_fill, *dirty_latest, *dirty_write;
-    pixel_span_t *spans_fill, *spans_latest, *spans_write;
+    pixel_row_t *spans_fill, *spans_latest, *spans_write;
     int width, height, size, chroma_rows, dirty_bytes;
     int buffers_ready, latest_valid;
     int demand_fd, reader_connected, refresh_needed;

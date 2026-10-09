@@ -65,6 +65,22 @@ fragmentation fallback, scales 1–4, clipping/extreme coordinates, history
 rotation and leased-slot immutability; require the same full-frame pixel oracle.
 T768 remains open for implementation/evaluation of that tradeoff.
 
+Implementation follow-up: T768 now keeps one enclosing interval and its largest
+retained unchanged gap per row. It converts two exact spans only when the gap
+is at least 128 output pixels and at least half the interval; otherwise it uses
+one contiguous span. Histories remain bounded, producer-owned and attached to
+their buffers/slots. A per-job kernel choice avoids gap checks on ordinary rows.
+[Five implementation trials](artifacts/2026-10-09-t768/summary.json) improve distant
+updates from 38.816 to 3.136 µs at scale 1 and 162.226 to 5.701 µs at scale 2
+(one worker). Dense/narrow medians stay close to baseline; fragmentation adds
+some metadata work. This is not an improvement claim for every workload.
+Metadata grows from 8 to 16 bytes per chroma row: 4,320 extra bytes per 1080p
+history, with no per-damage allocation. Permanent tests cover gap preservation,
+bounded random unions, fragmented fallback, scales 1–4, threaded conversion,
+padding, FIFO history rotation and retained shared slots. The initial large-gap
+regression fails before the change and passes afterward.
+The combined capture gate passes for all 184 maintained functions; T768 is resolved.
+
 ## T769: unequal row widths create unequal worker loads
 
 `job_count` scans dirty rows and pixel widths separately, then `prepare_jobs`

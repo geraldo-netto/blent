@@ -98,7 +98,7 @@ static void fuzz_damage(const unsigned char *data) {
         fuzz_integer(data, 2), fuzz_integer(data, 3), scale);
     for (int row = 0; row < frames.chroma_rows; row++) {
         if (!(frames.dirty_fill[row / 8] & (1u << (row % 8)))) continue;
-        pixel_span_t span = frames.spans_fill[row];
+        pixel_row_t span = frames.spans_fill[row];
         assert(span.begin >= 0 && span.begin < span.end && span.end <= frames.width);
         assert(!((span.begin | span.end) & 1));
     }

@@ -199,6 +199,7 @@ static void density_dispatch(void) {
 
 #include "regions_test.c"
 #include "weighted_conversion.c"
+#include "adaptive_damage.c"
 
 static void equivalence_suite(void) { conversion_matrix(); damage_matrix(); }
 
@@ -209,6 +210,7 @@ int main(int argc, char **argv) {
         {"density", density_dispatch}, {"dispatch", sparse_dispatch},
         {"large", large_pool}, {"equivalence", equivalence_suite}, {"regions", region_suite},
         {"weighted", t769_suite},
+        {"adaptive", t768_suite},
     };
     for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
         if (strcmp(argv[1], cases[i].name) == 0) { cases[i].run(); return 0; }

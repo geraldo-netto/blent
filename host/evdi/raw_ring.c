@@ -122,7 +122,7 @@ void raw_ring_converted(raw_ring_t *ring, uint32_t slot) {
 static int raw_allocate_histories(raw_ring_t *ring) {
     for (unsigned slot = 0; slot < ring->slots; slot++) {
         ring->dirty[slot] = malloc((ring->height / 2 + 7) / 8);
-        ring->spans[slot] = malloc(ring->height / 2 * sizeof(pixel_span_t));
+        ring->spans[slot] = malloc(ring->height / 2 * sizeof(pixel_row_t));
         if (!ring->dirty[slot] || !ring->spans[slot]) return 0;
         raw_ring_converted(ring, slot);
     }

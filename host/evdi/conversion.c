@@ -13,8 +13,8 @@ static inline int row_is_dirty(const unsigned char *mask, int cy) {
     return mask == NULL || (mask[cy >> 3] & (1u << (cy & 7)));
 }
 
-static inline pixel_span_t row_span(const conv_job_t *job, int cy) {
-    return job->spans ? job->spans[cy] : (pixel_span_t){0, job->ow};
+static inline pixel_row_t row_span(const conv_job_t *job, int cy) {
+    return job->spans ? job->spans[cy] : (pixel_row_t){.begin=0, .end=job->ow};
 }
 
 static inline unsigned char clamp_byte(int value) {
@@ -34,71 +34,87 @@ static inline void write_chroma(unsigned char *uv, int sb, int sg, int sr) {
    source block, and each chroma sample the mean of the 2*scale square it
    covers. Box averaging rather than point sampling — dropping pixels would
    alias hard on desktop content, where single-pixel lines are everywhere. */
-static inline void convert_strip_scaled(const conv_job_t *j, const int n) {
+static inline void convert_scaled_span(const conv_job_t *j, int cy, int n, pixel_span_t span) {
     const int stride = j->stride, ow = j->ow;
     const int inv = n * n;
-    for (int cy = j->cy0; cy < j->cy1; cy++) {
-        if (!row_is_dirty(j->dirty, cy))
-            continue;
-        unsigned char *yo0 = j->ydst + (size_t)(cy * 2) * ow;
-        unsigned char *yo1 = yo0 + ow;
-        unsigned char *uv  = j->uvdst + (size_t)cy * ow;
-        pixel_span_t span = row_span(j, cy);
-        for (int ox = span.begin; ox < span.end; ox += 2) {
-            int csb = 0, csg = 0, csr = 0;      /* chroma: whole 2n x 2n block */
-            for (int q = 0; q < 4; q++) {       /* four output luma pixels */
-                int oxx = ox + (q & 1);
-                int oyy = cy * 2 + (q >> 1);
-                int sb = 0, sg = 0, sr = 0;
-                for (int dy = 0; dy < n; dy++) {
-                    const unsigned char *row =
-                        j->src + (size_t)(oyy * n + dy) * stride + (size_t)(oxx * n) * 4;
-                    for (int dx = 0; dx < n; dx++) {
-                        sb += row[dx * 4];
-                        sg += row[dx * 4 + 1];
-                        sr += row[dx * 4 + 2];
-                    }
+    unsigned char *yo0 = j->ydst + (size_t)(cy * 2) * ow;
+    unsigned char *yo1 = yo0 + ow;
+    unsigned char *uv  = j->uvdst + (size_t)cy * ow;
+    for (int ox = span.begin; ox < span.end; ox += 2) {
+        int csb = 0, csg = 0, csr = 0;      /* chroma: whole 2n x 2n block */
+        for (int q = 0; q < 4; q++) {       /* four output luma pixels */
+            int oxx = ox + (q & 1);
+            int oyy = cy * 2 + (q >> 1);
+            int sb = 0, sg = 0, sr = 0;
+            for (int dy = 0; dy < n; dy++) {
+                const unsigned char *row =
+                    j->src + (size_t)(oyy * n + dy) * stride + (size_t)(oxx * n) * 4;
+                for (int dx = 0; dx < n; dx++) {
+                    sb += row[dx * 4];
+                    sg += row[dx * 4 + 1];
+                    sr += row[dx * 4 + 2];
                 }
-                int b = sb / inv, g = sg / inv, r = sr / inv;
-                unsigned char yv =
-                    (unsigned char)(((47 * r + 157 * g + 16 * b + 128) >> 8) + 16);
-                if (q < 2) yo0[oxx] = yv; else yo1[oxx] = yv;
-                csb += b; csg += g; csr += r;
             }
-            write_chroma(uv + ox, csb, csg, csr);
+            int b = sb / inv, g = sg / inv, r = sr / inv;
+            unsigned char yv =
+                (unsigned char)(((47 * r + 157 * g + 16 * b + 128) >> 8) + 16);
+            if (q < 2) yo0[oxx] = yv; else yo1[oxx] = yv;
+            csb += b; csg += g; csr += r;
         }
+        write_chroma(uv + ox, csb, csg, csr);
     }
 }
 
-static inline void convert_strip(const conv_job_t *j) {
-    const int w = j->ow, stride = j->stride;
+static inline pixel_span_t row_part(pixel_row_t row, int part, int split) {
+    if (!split) return (pixel_span_t){row.begin, row.end};
+    if (part) return (pixel_span_t){row.gap.end, row.end};
+    return (pixel_span_t){row.begin, row.gap.begin};
+}
+
+static inline void convert_strip_scaled(const conv_job_t *j, const int n, int adaptive) {
     for (int cy = j->cy0; cy < j->cy1; cy++) {
-        if (!row_is_dirty(j->dirty, cy))
-            continue;
-        int y0 = cy * 2, y1 = y0 + 1;
-        const unsigned char *row0 = j->src + (size_t)y0 * stride;
-        const unsigned char *row1 = j->src + (size_t)y1 * stride;
-        unsigned char *yo0 = j->ydst + (size_t)y0 * w;
-        unsigned char *yo1 = j->ydst + (size_t)y1 * w;
-        unsigned char *uv  = j->uvdst + (size_t)cy * w;
-        pixel_span_t span = row_span(j, cy);
-        for (int x = span.begin; x < span.end; x += 2) {
-            const unsigned char *p;
-            int b, g, r, sb, sg, sr;
-            p = row0 + (size_t)x * 4;       b = p[0]; g = p[1]; r = p[2];
-            yo0[x]   = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
-            sb = b; sg = g; sr = r;
-            p = row0 + (size_t)(x+1) * 4;   b = p[0]; g = p[1]; r = p[2];
-            yo0[x+1] = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
-            sb += b; sg += g; sr += r;
-            p = row1 + (size_t)x * 4;       b = p[0]; g = p[1]; r = p[2];
-            yo1[x]   = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
-            sb += b; sg += g; sr += r;
-            p = row1 + (size_t)(x+1) * 4;   b = p[0]; g = p[1]; r = p[2];
-            yo1[x+1] = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
-            sb += b; sg += g; sr += r;
-            write_chroma(uv + x, sb, sg, sr);
-        }
+        if (!row_is_dirty(j->dirty, cy)) continue;
+        pixel_row_t row = row_span(j, cy);
+        int split = adaptive && pixel_row_split(row);
+        for (int part = 0; part <= split; part++)
+            convert_scaled_span(j, cy, n, row_part(row, part, split));
+    }
+}
+
+static inline void convert_native_span(const conv_job_t *j, int cy, pixel_span_t span) {
+    const int w = j->ow, stride = j->stride;
+    int y0 = cy * 2, y1 = y0 + 1;
+    const unsigned char *row0 = j->src + (size_t)y0 * stride;
+    const unsigned char *row1 = j->src + (size_t)y1 * stride;
+    unsigned char *yo0 = j->ydst + (size_t)y0 * w;
+    unsigned char *yo1 = j->ydst + (size_t)y1 * w;
+    unsigned char *uv  = j->uvdst + (size_t)cy * w;
+    for (int x = span.begin; x < span.end; x += 2) {
+        const unsigned char *p;
+        int b, g, r, sb, sg, sr;
+        p = row0 + (size_t)x * 4;       b = p[0]; g = p[1]; r = p[2];
+        yo0[x]   = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
+        sb = b; sg = g; sr = r;
+        p = row0 + (size_t)(x+1) * 4;   b = p[0]; g = p[1]; r = p[2];
+        yo0[x+1] = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
+        sb += b; sg += g; sr += r;
+        p = row1 + (size_t)x * 4;       b = p[0]; g = p[1]; r = p[2];
+        yo1[x]   = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
+        sb += b; sg += g; sr += r;
+        p = row1 + (size_t)(x+1) * 4;   b = p[0]; g = p[1]; r = p[2];
+        yo1[x+1] = (unsigned char)(((47*r + 157*g + 16*b + 128) >> 8) + 16);
+        sb += b; sg += g; sr += r;
+        write_chroma(uv + x, sb, sg, sr);
+    }
+}
+
+static inline void convert_strip(const conv_job_t *j, int adaptive) {
+    for (int cy = j->cy0; cy < j->cy1; cy++) {
+        if (!row_is_dirty(j->dirty, cy)) continue;
+        pixel_row_t row = row_span(j, cy);
+        int split = adaptive && pixel_row_split(row);
+        for (int part = 0; part <= split; part++)
+            convert_native_span(j, cy, row_part(row, part, split));
     }
 }
 
@@ -106,20 +122,32 @@ static inline void convert_strip(const conv_job_t *j) {
  * ISA-specific code or changes to the two-stage integer rounding. */
 static void convert_job(const conv_job_t *job) {
     switch (job->scale) {
-        case 1: convert_strip(job); break;
-        case 2: convert_strip_scaled(job, 2); break;
-        case 3: convert_strip_scaled(job, 3); break;
-        case 4: convert_strip_scaled(job, 4); break;
-        default: convert_strip_scaled(job, job->scale); break;
+        case 1: convert_strip(job, 0); break;
+        case 2: convert_strip_scaled(job, 2, 0); break;
+        case 3: convert_strip_scaled(job, 3, 0); break;
+        case 4: convert_strip_scaled(job, 4, 0); break;
+        default: convert_strip_scaled(job, job->scale, 0); break;
     }
 }
 
-typedef struct { int rows; size_t width; } conv_work_t;
+static void convert_adaptive_job(const conv_job_t *job) {
+    switch (job->scale) {
+        case 1: convert_strip(job, 1); break;
+        case 2: convert_strip_scaled(job, 2, 1); break;
+        case 3: convert_strip_scaled(job, 3, 1); break;
+        case 4: convert_strip_scaled(job, 4, 1); break;
+        default: convert_strip_scaled(job, job->scale, 1); break;
+    }
+}
+
+typedef struct { int rows; size_t width; int split; } conv_work_t;
 
 static size_t row_work(const conv_job_t *frame, int cy) {
     if (!row_is_dirty(frame->dirty, cy)) return 0;
-    pixel_span_t span = row_span(frame, cy);
-    return (size_t)(span.end - span.begin);
+    pixel_row_t span = row_span(frame, cy);
+    size_t width = (size_t)(span.end - span.begin);
+    if (pixel_row_split(span)) width -= (size_t)(span.gap.end - span.gap.begin);
+    return width;
 }
 
 static conv_work_t measure_work(const conv_job_t *frame) {
@@ -127,7 +155,10 @@ static conv_work_t measure_work(const conv_job_t *frame) {
     for (int cy = frame->cy0; cy < frame->cy1; cy++) {
         if (!row_is_dirty(frame->dirty, cy)) continue;
         work.rows++;
-        work.width += row_work(frame, cy);
+        size_t width = row_work(frame, cy);
+        pixel_row_t row = row_span(frame, cy);
+        work.width += width;
+        work.split |= width != (size_t)(row.end - row.begin);
     }
     return work;
 }
@@ -155,7 +186,7 @@ static void *conv_worker(void *arg) {
         worker->pending = 0;
         pthread_mutex_unlock(&pool->mutex);
 
-        convert_job(&pool->jobs[id]);
+        pool->kernel(&pool->jobs[id]);
 
         pthread_mutex_lock(&pool->mutex);
         if (--pool->active == 0)
@@ -222,14 +253,15 @@ static void start_workers(conv_pool_t *pool, int count) {
 }
 
 void conv_pool_convert(conv_pool_t *pool, const conv_job_t *frame) {
-    conv_work_t work = frame->dirty ? measure_work(frame) : (conv_work_t){0};
+    conv_work_t work = (frame->dirty || frame->spans) ? measure_work(frame) : (conv_work_t){0};
+    pool->kernel = work.split ? convert_adaptive_job : convert_job;
     int count = job_count(pool, frame, work);
     pool->last_jobs = count;
     if (count == 0) return;
-    if (count == 1) { convert_job(frame); return; }
+    if (count == 1) { pool->kernel(frame); return; }
     prepare_jobs(pool, frame, count, work);
     start_workers(pool, count);
-    convert_job(&pool->jobs[0]);   /* caller does its own strip */
+    pool->kernel(&pool->jobs[0]);   /* caller does its own strip */
     pthread_mutex_lock(&pool->mutex);
     while (pool->active > 0)
         pthread_cond_wait(&pool->done, &pool->mutex);

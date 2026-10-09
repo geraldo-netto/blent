@@ -13,7 +13,7 @@ static pixel_span_t expected_axis(int first, int last, int scale, int blocks) {
 }
 
 static void check_region_history(const frame_exchange_t *f, const unsigned char *mask,
-                                 const pixel_span_t *spans, pixel_span_t x, pixel_span_t y) {
+                                 const pixel_row_t *spans, pixel_span_t x, pixel_span_t y) {
     for (int cy = 0; cy < f->chroma_rows; cy++) {
         int dirty = x.begin < x.end && cy >= y.begin && cy < y.end;
         assert(!!(mask[cy / 8] & (1u << (cy % 8))) == dirty && "T554: dirty rows differ from block intersections");
@@ -97,7 +97,8 @@ static void convert_region_frame(conv_pool_t *pool, frame_exchange_t *f, conv_jo
 }
 
 static void region_lifecycle(int scale) {
-    enum { W = 62, H = 46, SIZE = W * H * 3 / 2 };
+    /* T768: enough horizontal space to retain a gap across writer leases. */
+    enum { W = 510, H = 46, SIZE = W * H * 3 / 2 };
     int sw = W * scale + 1, sh = H * scale + 1, stride = sw * 4 + 32;
     unsigned char *source = calloc(stride, sh), expected[SIZE], held[SIZE];
     assert(source);
@@ -151,11 +152,11 @@ static void region_dispatch(void) {
     assert(actual && expected);
     unsigned char dirty[H / 16];
     memset(dirty, 0xFF, sizeof(dirty));
-    pixel_span_t spans[H / 2];
+    pixel_row_t spans[H / 2];
     conv_job_t job = {source, actual, actual + W * H, W, H, W * 4, W, H, 1, 0, H / 2, dirty, spans};
     for (int width = 2; width <= 2048; width *= 1024) {
         memset(actual, 0xA5, SIZE); memset(expected, 0xA5, SIZE);
-        for (int cy = 0; cy < H / 2; cy++) spans[cy] = (pixel_span_t){100, 100 + width};
+        for (int cy = 0; cy < H / 2; cy++) spans[cy] = (pixel_row_t){.begin=100, .end=100 + width};
         conv_pool_convert(&pool, &job);
         assert(pool.last_jobs == (width == 2 ? 1 : 2) && "T554: dispatch must account for horizontal work");
         conv_job_t oracle = job;
@@ -172,12 +173,12 @@ static void region_scaled_workers(conv_pool_t *pool, int scale) {
     enum { SW = 127, SH = 99, STRIDE = SW * 4 + 32, GUARD = 32 };
     int ow = (SW / scale) & ~1, oh = (SH / scale) & ~1, size = ow * oh * 3 / 2;
     unsigned char source[STRIDE * SH], actual[SW * SH * 3 / 2 + GUARD], expected[sizeof(actual)];
-    pixel_span_t spans[SH / 2];
+    pixel_row_t spans[SH / 2];
     for (size_t i = 0; i < sizeof(source); i++) source[i] = (unsigned char)(i * 53 + i / 997);
     memset(actual, 0xA5, sizeof(actual)); memset(expected, 0xA5, sizeof(expected));
     for (int cy = 0; cy < oh / 2; cy++) {
         int begin = 2 * (cy * 7 % (ow / 2));
-        spans[cy] = (pixel_span_t){begin, begin + 2 * (cy % 2)};
+        spans[cy] = (pixel_row_t){.begin=begin, .end=begin + 2 * (cy % 2)};
     }
     conv_job_t job = {source, actual, actual + ow * oh, SW, SH, STRIDE, ow, oh,
         scale, 0, oh / 2, NULL, spans};

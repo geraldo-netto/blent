@@ -30,10 +30,10 @@ static void t769_partitions(const conv_pool_t *pool, const conv_job_t *job) {
     assert(begin == job->cy1 && "T769: every row belongs to exactly one job");
 }
 
-static void t769_pattern(conv_job_t *job, unsigned char *dirty, pixel_span_t *spans, int pattern) {
+static void t769_pattern(conv_job_t *job, unsigned char *dirty, pixel_row_t *spans, int pattern) {
     memset(dirty, 0, (size_t)(job->cy1 + 7) / 8);
     for (int cy = 0; cy < job->cy1; cy++) {
-        spans[cy] = (pixel_span_t){0, cy < job->cy1 / 2 ? job->ow : 32};
+        spans[cy] = (pixel_row_t){.begin=0, .end=cy < job->cy1 / 2 ? job->ow : 32};
         if (pattern == 1 && cy % 3) continue;
         if (pattern == 2 && cy != job->cy1 / 2) continue;
         dirty[cy / 8] |= (unsigned char)(1u << (cy % 8));
@@ -47,7 +47,7 @@ static void t769_case(conv_pool_t *pool, int scale, int pattern) {
     assert(source && actual && expected);
     for (size_t n = 0; n < (size_t)STRIDE * H; n++) source[n] = (unsigned char)(n * 37 + n / 997);
     memset(actual, 0xA5, size + GUARD); memset(expected, 0xA5, size + GUARD);
-    unsigned char dirty[(H / 2 + 7) / 8]; pixel_span_t spans[H / 2];
+    unsigned char dirty[(H / 2 + 7) / 8]; pixel_row_t spans[H / 2];
     conv_job_t job = {source, actual, actual + ow * oh, W, H, STRIDE, ow, oh,
         scale, 0, oh / 2, dirty, spans};
     t769_pattern(&job, dirty, spans, pattern);

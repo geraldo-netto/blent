@@ -87,3 +87,8 @@ fn t554_regions_clip_fuzzed_bounds_preserve_pixels_and_follow_buffer_leases() {
 fn t769_weighted_jobs_balance_pixels_and_preserve_output() {
     run("weighted");
 }
+
+#[test]
+fn t768_adaptive_spans_skip_large_gaps_and_bound_fragmentation() {
+    run("adaptive");
+}

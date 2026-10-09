@@ -60,9 +60,9 @@ int frame_exchange_begin(frame_exchange_t *frames, unsigned *generation) {
     return wanted;
 }
 
-static void full_spans(pixel_span_t *spans, int rows, int width) {
+static void full_spans(pixel_row_t *spans, int rows, int width) {
     if (!spans) return;
-    for (int cy = 0; cy < rows; cy++) spans[cy] = (pixel_span_t){0, width};
+    for (int cy = 0; cy < rows; cy++) spans[cy] = (pixel_row_t){.begin=0, .end=width};
 }
 
 void frame_exchange_mark_all(frame_exchange_t *frames) {
@@ -115,7 +115,7 @@ void frame_exchange_resize(frame_exchange_t *frames, int width, int height) {
     free(frames->dirty_fill);   frames->dirty_fill   = malloc((size_t)frames->dirty_bytes);
     free(frames->dirty_latest); frames->dirty_latest = malloc((size_t)frames->dirty_bytes);
     free(frames->dirty_write);  frames->dirty_write  = malloc((size_t)frames->dirty_bytes);
-    size_t spans_size = (size_t)frames->chroma_rows * sizeof(pixel_span_t);
+    size_t spans_size = (size_t)frames->chroma_rows * sizeof(pixel_row_t);
     free(frames->spans_fill);   frames->spans_fill = malloc(spans_size);
     free(frames->spans_latest); frames->spans_latest = malloc(spans_size);
     free(frames->spans_write);  frames->spans_write = malloc(spans_size);
@@ -156,7 +156,7 @@ void frame_exchange_publish(frame_exchange_t *frames, long long grabbed_us, unsi
     unsigned char *dirty = frames->dirty_latest;
     frames->dirty_latest = frames->dirty_fill;
     frames->dirty_fill = dirty;
-    pixel_span_t *spans = frames->spans_latest;
+    pixel_row_t *spans = frames->spans_latest;
     frames->spans_latest = frames->spans_fill;
     frames->spans_fill = spans;
     frames->latest_valid = 1;
@@ -202,7 +202,7 @@ int frame_exchange_claim(frame_exchange_t *frames, frame_cursor_t *cursor,
         unsigned char *dtmp = frames->dirty_write;
         frames->dirty_write = frames->dirty_latest;
         frames->dirty_latest = dtmp;
-        pixel_span_t *stmp = frames->spans_write;
+        pixel_row_t *stmp = frames->spans_write;
         frames->spans_write = frames->spans_latest;
         frames->spans_latest = stmp;
         frames->latest_valid = 0;

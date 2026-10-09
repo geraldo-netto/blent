@@ -13,9 +13,11 @@ typedef struct {
     int scale;                  /* 1 = no downscale */
     int cy0, cy1;               /* chroma-row range [cy0, cy1) this job owns */
     const unsigned char *dirty; /* NULL = all rows; otherwise one bit/chroma row */
-    const pixel_span_t *spans;  /* Optional per-chroma-row bounds, NULL = full width.
+    const pixel_row_t *spans;  /* Optional bounded two-span row history; NULL = full width.
                                 * Borrowed, aligned and clipped by frame owner. */
 } conv_job_t;
+
+typedef void (*conv_kernel_t)(const conv_job_t *job);
 
 #define MAX_CONV_THREADS 128
 typedef struct conv_pool conv_pool_t;
@@ -26,6 +28,7 @@ typedef struct {
 } conv_worker_arg_t;
 struct conv_pool {
     int count, last_jobs;
+    conv_kernel_t kernel; /* selected before publishing worker jobs */
     pthread_t threads[MAX_CONV_THREADS];
     conv_job_t jobs[MAX_CONV_THREADS];
     conv_worker_arg_t workers[MAX_CONV_THREADS];

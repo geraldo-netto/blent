@@ -29,7 +29,7 @@ static void on_dpms(int dpms_mode, void *user_data) {
 }
 
 static void bgra_to_nv12(capture_context_t *capture, const unsigned char *src, unsigned char *dst,
-                         const unsigned char *dirty, const pixel_span_t *spans) {
+                         const unsigned char *dirty, const pixel_row_t *spans) {
     conv_job_t frame = {src, dst, dst + (size_t)capture->frames->width * capture->frames->height,
         capture->mode_w, capture->mode_h, capture->mode_stride, capture->frames->width, capture->frames->height,
         capture->scale, 0, capture->frames->height / 2, dirty,
