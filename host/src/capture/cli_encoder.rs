@@ -99,27 +99,7 @@ impl CliEncoder<'_> {
         )
     }
 
-    pub(super) fn encoder_quality_args(
-        &self,
-        args: &mut Vec<String>,
-        encoder: &str,
-        ten_bit: bool,
-    ) -> Result<()> {
-        let profile = blent_config::encoding::Profile::new(
-            encoder,
-            self.config.fps,
-            self.config.bitrate,
-            self.config.quality,
-        )?
-        .with_workers(self.config.worker_count())?;
-        args.extend(
-            profile
-                .cli_options(ten_bit)
-                .into_iter()
-                .flat_map(|(key, value)| [key, value]),
-        );
-        Ok(())
-    }
+
 }
 
 /// T400: distribution FFmpeg options vary; probe the selected stock encoder.
@@ -318,6 +298,32 @@ fn report_encoder_throughput(frames: &mut u64, total: &mut u64, last_log: &mut I
         *frames = 0;
         *total = 0;
         *last_log = Instant::now();
+    }
+}
+
+// T755: characterization helper shared only by the two test modules below.
+#[cfg(test)]
+impl CliEncoder<'_> {
+    pub(super) fn encoder_quality_args(
+        &self,
+        args: &mut Vec<String>,
+        encoder: &str,
+        ten_bit: bool,
+    ) -> Result<()> {
+        let profile = blent_config::encoding::Profile::new(
+            encoder,
+            self.config.fps,
+            self.config.bitrate,
+            self.config.quality,
+        )?
+        .with_workers(self.config.worker_count())?;
+        args.extend(
+            profile
+                .cli_options(ten_bit)
+                .into_iter()
+                .flat_map(|(key, value)| [key, value]),
+        );
+        Ok(())
     }
 }
 
@@ -522,7 +528,7 @@ mod encoder_policy_tests {
             assert_eq!(value("-f"), Some("tee"));
             assert_eq!(
                 args.last().copied(),
-                Some(crate::framed_annex_b::TEE_OUTPUT)
+                Some(crate::ffmpeg_args::TEE_OUTPUT)
             );
         }
     }

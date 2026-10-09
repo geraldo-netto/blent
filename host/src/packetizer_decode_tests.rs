@@ -38,13 +38,7 @@ pub(crate) fn encode_output(codec: Codec, framed: bool) -> Vec<u8> {
         options,
     ]);
     if framed {
-        command.args([
-            "-map",
-            "0:v:0",
-            "-f",
-            "tee",
-            crate::framed_annex_b::TEE_OUTPUT,
-        ]);
+        command.args(["-map", "0:v:0", "-f", "tee", crate::ffmpeg_args::TEE_OUTPUT]);
     } else {
         command.args(["-f", codec.muxer(), "pipe:1"]);
     }

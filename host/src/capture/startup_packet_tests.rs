@@ -44,7 +44,7 @@ async fn wait_first(encoder: &str, output: tokio::process::ChildStdout) {
                 input.read_buf(&mut bytes).await.unwrap() > 0,
                 "T447: no initial picture"
             );
-            if crate::encoder_io::annex_b_offsets(&bytes)
+            if crate::annex_scan::annex_b_offsets(&bytes)
                 .any(|(_, header)| bytes.get(header).is_some_and(|value| value & 0x1f == 5))
             {
                 break;

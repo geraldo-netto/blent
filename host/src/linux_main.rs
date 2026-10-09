@@ -1,9 +1,10 @@
 use blent::adb_inventory;
 use blent::adb_inventory::package_presence;
 use blent::annex_scan;
+#[cfg(all(test, not(feature = "inproc-encoder")))]
 use blent::ffmpeg_args;
 use blent::transport::{
-    attachment_identity, current_transport, parse_tablet_ip, select_device_transports,
+    attachment_identity, current_transport, select_device_transports,
 };
 use blent::wifi::{linux::setup as setup_wifi, Reconnect as WifiReconnect};
 use blent_config::android::{app_launch_command, token_delivery_command};
@@ -127,6 +128,16 @@ fn effective_config(cli: &Cli, saved: &config::FileConfig) -> config::FileConfig
 
 #[cfg(test)]
 mod cli_tests {
+    // T755: fixture adapter; production discovery uses the shared selection path.
+    async fn wifi_device_with(devices: &[String], adb: &str) -> Option<String> {
+        let usb: Vec<_> = devices
+            .iter()
+            .filter(|s| transport_of(s) == Transport::Usb)
+            .cloned()
+            .collect();
+        app_devices_with(&usb, adb).await.into_iter().next()
+    }
+
     #[test]
     fn t250_activity_and_token_targets_use_fork_package_and_original_classes() {
         let with_token = super::app_launch_command(Some(&"a".repeat(64)));
@@ -2488,15 +2499,6 @@ async fn app_devices_with(devices: &[String], adb: &str) -> Vec<String> {
         .into_iter()
         .flatten()
         .collect()
-}
-
-async fn wifi_device_with(devices: &[String], adb: &str) -> Option<String> {
-    let usb: Vec<_> = devices
-        .iter()
-        .filter(|s| transport_of(s) == Transport::Usb)
-        .cloned()
-        .collect();
-    app_devices_with(&usb, adb).await.into_iter().next()
 }
 
 fn select_tablet(devices: &[String], current: Option<&str>) -> Option<String> {

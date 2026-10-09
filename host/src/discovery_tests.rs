@@ -1,5 +1,6 @@
 //! T390: deterministic device stalls must not block unrelated tablets.
 use super::*;
+use blent::transport::parse_tablet_ip;
 use std::os::unix::fs::PermissionsExt;
 use std::time::Duration;
 

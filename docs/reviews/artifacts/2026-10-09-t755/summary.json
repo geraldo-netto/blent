@@ -1,0 +1,19 @@
+{
+  "issue": "T755",
+  "result": "resolved",
+  "change": "Remove unused aliases; import directly from owning modules. Retain helpers with exclusively test consumers inside test compilation. No production behavior changes, coverage exemptions, suppressed warnings, deleted tests or new ignored tests.",
+  "validation": {
+    "default_build": "cargo check --locked -p blent --bins: passed, no warnings",
+    "features_build": "cargo check --locked -p blent --all-features --bins: passed, no warnings",
+    "default_tests": "cargo test --locked -p blent --bin blent: 406 passed, 3 existing ignored",
+    "feature_tests": "cargo test --locked -p blent --all-features --bin blent cli_tests: 46 passed, no warnings"
+  },
+  "sdk": "All-feature check/tests used private extracted Ubuntu FFmpeg 6.1.1 and PipeWire headers/pkg-config with installed runtime libraries; no system package installation.",
+  "logs": [
+    "t755-before.log.gz",
+    "t755-default-check.log.gz",
+    "t755-features-check.log.gz",
+    "t755-tests.log.gz",
+    "t755-feature-tests.log.gz"
+  ]
+}

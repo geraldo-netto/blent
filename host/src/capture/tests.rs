@@ -661,7 +661,7 @@ async fn t055_hevc_vaapi_supports_eight_and_ten_bit_output() {
         assert!(args.windows(2).any(|p| p == ["-f", "tee"]));
         assert_eq!(
             args.last().map(String::as_str),
-            Some(crate::framed_annex_b::TEE_OUTPUT)
+            Some(crate::ffmpeg_args::TEE_OUTPUT)
         );
         let filters: Vec<_> = args
             .windows(2)

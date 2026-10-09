@@ -181,14 +181,7 @@ impl Programs {
             request.probe_arguments(key.decoders.width, key.decoders.height, FRAMES as u32)?;
         args.truncate(args.len() - 3);
         args.extend(
-            [
-                "-map",
-                "0:v:0",
-                "-f",
-                "tee",
-                crate::framed_annex_b::TEE_OUTPUT,
-            ]
-            .map(String::from),
+            ["-map", "0:v:0", "-f", "tee", crate::ffmpeg_args::TEE_OUTPUT].map(String::from),
         );
         let mut command = Command::new(&self.ffmpeg);
         command

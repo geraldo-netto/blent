@@ -82,7 +82,7 @@ pub(crate) fn read_frame_into<T: FrameTarget + ?Sized>(
     Ok(true)
 }
 
-pub(crate) use crate::annex_scan::{annex_b_offsets, annex_b_prefix_len, annex_b_starts};
+use crate::annex_scan::annex_b_starts;
 
 fn parameter_set_slot(header: u8, codec: Codec) -> Option<usize> {
     let (kind, types): (u8, &[u8]) = match codec {
