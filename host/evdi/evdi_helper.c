@@ -42,7 +42,7 @@ static raw_ring_t g_raw_ring = RAW_RING_INITIALIZER;
 
 static fifo_writer_t g_fifo = FIFO_WRITER_INITIALIZER(&g_running, &g_frames.generation);
 
-static writer_context_t g_writer = {&g_frames, &g_fifo, &g_running, 60};
+static writer_context_t g_writer = { .frames = &g_frames, .fifo = &g_fifo, .running = &g_running, .fps = 60 };
 static int g_pin_card = -1;
 static int g_preferred_card = -1;
 static int g_conversion_threads; /* zero preserves Auto's affinity budget */

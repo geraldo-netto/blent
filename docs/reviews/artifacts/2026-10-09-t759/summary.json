@@ -1,0 +1,7 @@
+{
+  "issue": "T759",
+  "change": "Name the four initialized writer fields explicitly; all remaining fields retain static zero initialization. No behavior change.",
+  "before": "gcc -O2 -Wall -Wextra reports -Wmissing-field-initializers for g_writer.idle_control",
+  "after": "Same helper build with -Werror succeeds; 45 helper tests and independent context test pass.",
+  "coverage": "No maintained function changed; initializer-only warning fix."
+}
