@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-09",
+  "scope": "Read-only-to-host, disposable native guest KMS probes. Direct DRM producer replaces compositor for deterministic protocol tests. This is not full Blent/tablet acceptance or Mutter51 validation.",
+  "versions": {
+    "guest_kernel": "Ubuntu7.0.0-34-generic",
+    "old_driver": "Ubuntu EVDI1.14.15",
+    "new_driver": "Unmodified upstream v1.15.1, commit33b7b3c9f7c77157c2b1b0c5a40cebe19b8ba110",
+    "library": "Installed AppDir libevdi1.15.0, identical in both tests",
+    "host_package": "linux-main-modules-evdi-7.0.0-38-generic 7.0.0-38.38~24.04.4 (source linux-main-signed-hwe-7.0)"
+  },
+  "isolation": "Initramfs guest only, no host disk/network/input passthrough; virtio-vga-gl uses host render node. Probes require blent-evdi-review=1 in guest kernel command line. No host EVDI attachment, driver load/reload, installation or source patch.",
+  "method": [
+    "Archive upstream tag into separate scratch directory; make -C /lib/modules/7.0.0-34-generic/build M=<archive>/module modules.",
+    "Reuse T700 guest root preparation; install real libdrm/libevdi and probe dynamic dependencies; include 640x480 EDID generated with scripts/gen-edid.py make_edid.",
+    "Compile probes with cc -O2 -I/usr/include/libdrm -Ihost/evdi, -ldrm and exact AppDir/libevdi.so.1 for kms-probe.",
+    "Boot once with distro evdi.ko.zst and once with compressed unmodified1.15.1 module at same guest path; both roots precreate two devices before Xorg.",
+    "Run native-init.sh as PID1. KMS probe scans card index by DRM driver identity, selects640x480 XR24, captures known background, tests idle watchdog sequence, cursor show/hide, and immediate disconnect/connect with no producer modeset.",
+    "QEMU arguments: -machine q35,accel=kvm -cpu host -m2048 -smp2 -nodefaults; OVMF_CODE_4M.fd and scratch writable VARS; kernel7.0.0-34-generic; generated initrd; console=ttyS0 rdinit=/init loglevel=4 blent-evdi-review=1; -device virtio-vga-gl -display egl-headless,rendernode=/dev/dri/renderD128 -serial file:<log> -no-reboot; outer timeout45s."
+  ],
+  "observations": {
+    "T748": "Idle request returns false. After300ms without producer damage, GRABPIX returns0 rects; retry false. Kernel emits grab-before-ready and duplicate-request warnings. Subsequent cursor damage delivers readiness and one rect with changed pixel on both versions. This reproduces the warning mechanism without frame corruption in this bounded sample; not attribution of all historical warnings.",
+    "T749": "Distro1.14.15 reconnect: no second mode event, false request, GRABPIX error Scanout buffer not set,0 rects, old cursor pixel remains. Stock1.15.1 reconnect: second mode event, true request, one rect and restored background ff000080. Same library/probe; no producer modeset between disconnect/connect. Import-size invalid boundaries were not exercised. Host module disassembly allocates page-pointer array using SG-page count without a maximum with dma-buf length, consistent with pre-#563 implementation.",
+    "T752": "Both drivers advertise XR24/AR24/XB24/AB24 on primary and cursor planes but ADDFB2 also succeeds for XR30/AR30. This reproduces framebuffer admission mismatch; no atomic AR30 commit or Mutter51 runtime was tested.",
+    "T753": "Both drivers: background ff000080; cursor set succeeds; capture one rect and pixel00ffffff. Cursor plane removal succeeds; request false, no readiness, GRABPIX0 rects; pixel remains00ffffff. On1.15.1 reconnect full refresh restores ff000080, confirming underlying background intact.",
+    "T750": "No concurrent compositor pacing/race or actual presentation timing measured; direct KMS fixture cannot establish absence of those faults."
+  },
+  "limitations": [
+    "First kms-distro.log used legacy cursor setter which returnedEINVAL; cursor conclusions use kms-distro-cursor.log and kms-stock.log only.",
+    "Temporary probes are retained evidence, not permanent normal-suite regressions and not a behavioral fix.",
+    "No claimed host/tablet end-to-end result or performance improvement.",
+    "Maintainer reaffirmed stock EVDI only; no locally maintained kernel/libevdi patches."
+  ],
+  "hashes": {
+    "/backups/disk2/blent-work/2026-10-09-evdi-fixes/stock-1.15.1/module/evdi.ko": "d970a7983a13b863e000319a8a1e3d100aa1072ec6a3dec0878fe94d470e4130",
+    "/backups/disk2/blent-work/2026-10-09-evdi-fixes/guest-original-evdi.ko.zst": "a81717820e3ff4212447861da813abb5a1b6c64a9b0c6cecb103672b0e931db1",
+    "/backups/disk2/blent-work/2026-10-09-evdi-fixes/distro-evdi.ko": "96ed3efd4a0df3f6a8fe72e0aea09d20cd88f2239dc97ee17d05576e35f6d027",
+    "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/libevdi.so.1": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a"
+  }
+}

@@ -42,3 +42,21 @@ call-site trace and are not individually attributed.
 retain the observations and hashes. Residual connector-query traffic during
 repeated input mapping is a separate follow-up, T625. No native display or camera
 session is left running by these checks.
+
+## Stock-driver check on 2026-10-09 (T748)
+
+A [disposable KMS fixture](artifacts/2026-10-09-evdi-stock/reproduction.json)
+reproduced this sequence on Ubuntu's EVDI 1.14.15 and unmodified upstream 1.15.1,
+using the same stock libevdi 1.15.0. An idle request remained pending; after
+300 ms, grabbing returned zero rectangles and retrying produced the two warning
+classes. Subsequent cursor damage delivered readiness and new pixels on both
+versions. This establishes a warning mechanism that can occur without corruption
+in the bounded fixture. It does not identify every historical process/call site,
+count lost frames, or explain imported-buffer mmap rejection.
+
+The stock-only dependency policy was reaffirmed. No supported pending-query or
+cancel operation was found; removing the watchdog retry would violate the retained
+lost-event recovery contract. T748 therefore remains blocked on a compatible stock
+API/recovery contract, with no logging suppression or cadence change. These native
+probes supplement the permanent T623/T294 regressions; they are not new behavioral
+fixes or substitutes for normal-suite coverage.
