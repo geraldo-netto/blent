@@ -1,0 +1,405 @@
+{
+  "checked_date": "2026-10-09",
+  "timezone": "Europe/Rome",
+  "scope": "Read-only upstream issue/PR/release triage against Blent source, retained logs and current installed identities. No driver or display experiments.",
+  "source_revision": "4faaac5486bcb1507f47d053e191e677b3e7d926",
+  "search": {
+    "api": "https://api.github.com/repos/DisplayLink/evdi/issues?state=all&sort=updated&direction=desc&per_page=100",
+    "pages_reviewed": [
+      1,
+      2
+    ],
+    "selection": "Titles and bodies screened; relevant issue bodies and selected comments compared with local code. Not an exhaustive historical issue audit.",
+    "exact_phrase_queries": [
+      {
+        "query": "repo:DisplayLink/evdi \"Update ready not sent\"",
+        "results": 0
+      },
+      {
+        "query": "repo:DisplayLink/evdi \"Update was already requested\"",
+        "results": 0
+      }
+    ],
+    "limits": "No exact phrase result is not proof that no related issue or comment exists."
+  },
+  "host": {
+    "kernel": "7.0.0-38-generic",
+    "session": "X11 / X-Cinnamon",
+    "gpus": [
+      "AMD Navi23 / amdgpu",
+      "AMD Raphael / amdgpu"
+    ],
+    "loaded_evdi": "1.14.15",
+    "loaded_evdi_evidence": "journalctl -b -k: DRM initialization identifies 1.14.15 for evdi.0 and evdi.1",
+    "module_srcversion": "C477D84009DFBE1A8FCE08C",
+    "module_file": "/lib/modules/7.0.0-38-generic/ubuntu/dkms/evdi/evdi.ko.zst",
+    "initial_device_count": 2,
+    "module_version_field": "Absent in modinfo/sysfs; not evidence that the module is unloaded.",
+    "bundled_libevdi": "1.15.0",
+    "library_evidence": "evdi_get_lib_version called on installed AppDir/usr/bin/libevdi.so.1",
+    "helper_sha256": "e05f68f3c2bc18febf1eb17662eb66b9a6725ceb3b74119702f03a731e728605",
+    "installed_helper_matches_checkout_binary": true,
+    "library_sha256": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a",
+    "identity_limits": "Current installed binary equals checkout binary. This is not a rebuild/source attestation and does not identify the historical process responsible for each warning. No evdi_helper process observed during this read."
+  },
+  "latest_release": {
+    "version": "v1.15.1",
+    "published_at": "2026-09-15T08:20:21Z",
+    "url": "https://github.com/DisplayLink/evdi/releases/tag/v1.15.1",
+    "kernel_fix": "PR590 reconnect without a new modeset",
+    "library_source_changed_since_1_15_0": false,
+    "version_limit": "Kernel module and libevdi are separate components. Their differing version numbers alone do not prove incompatibility."
+  },
+  "warning_analysis": {
+    "tracking": "T748",
+    "retained_evidence": "docs/reviews/artifacts/2026-10-09-evdi-journal/summary.json",
+    "warning_lines": 79418,
+    "grab_warning_pairs": 26757,
+    "duplicate_requests": 25904,
+    "imported_mmap_warnings": 8,
+    "ignored_ddcci_warnings": 192,
+    "prior_analysis": "docs/reviews/2026-09-26-evdi-recovery.md (T623)",
+    "local_source": [
+      "host/evdi/capture.c:361-381",
+      "host/tests/evdi_helper_test.c:221-240",
+      "host/tests/evdi_helper_test.c:891-942"
+    ],
+    "upstream_source": [
+      "https://github.com/DisplayLink/evdi/blob/v1.14.15/module/evdi_painter.c#L1082-L1088",
+      "https://github.com/DisplayLink/evdi/blob/v1.14.15/module/evdi_painter.c#L1191-L1218",
+      "https://github.com/DisplayLink/evdi/blob/v1.15.1/module/evdi_painter.c#L1165-L1171",
+      "https://github.com/DisplayLink/evdi/blob/v1.15.1/module/evdi_painter.c#L1274-L1301"
+    ],
+    "mechanism": "After 250 ms Blent clears its local pending flag and grabs. Kernel pending state is not cleared by that grab, so another request can be ignored with a warning. Normal ready delivery clears kernel pending state. Both warning conditions remain in 1.15.1.",
+    "qualification": "This source mechanism was already documented in T623. It explains a possible warning sequence, not the historical warning count, lost frames, a blackout or idle blinking. Permanent retries protect against a genuinely lost ready event. The existing mock does not model kernel pending state.",
+    "next": "Attribute helper request/event/grab timing including idle and DPMS-off cases; preserve lost-event/no-spin regressions and add kernel-state-aware regression coverage before any change. Do not remove retries or patch libevdi based only on log volume."
+  },
+  "relevant_candidates": [
+    {
+      "sources": [
+        {
+          "number": 590,
+          "url": "https://github.com/DisplayLink/evdi/pull/590",
+          "state": "closed",
+          "title": "Restore the painter pipeline when a reconnect arrives without a modeset",
+          "updated_at": "2026-08-19T08:22:31Z"
+        },
+        {
+          "number": 563,
+          "url": "https://github.com/DisplayLink/evdi/issues/563",
+          "state": "closed",
+          "title": "ternary logic typo introduced in evdi_prime_import_sg_table()",
+          "updated_at": "2026-06-22T07:54:25Z"
+        }
+      ],
+      "tracking": "T749",
+      "assessment": "Strong architectural relevance; reconnect/import failure not reproduced locally. PR590 is merged and released in 1.15.1. The import-page typo was fixed in 1.14.16.",
+      "local_evidence": [
+        "host/evdi/evdi_helper.c:457",
+        "host/evdi/evdi_helper.c uses evdi_disconnect on retirement",
+        "Loaded kernel baseline 1.14.15; distro backport inventory still required."
+      ],
+      "resolution_evidence_needed": "Use an isolated compositor to test quick disconnect/reconnect without a new modeset and invalid/boundary import sizes against stock drivers; retain a permanent failing regression for any Blent fix."
+    },
+    {
+      "sources": [
+        {
+          "number": 512,
+          "url": "https://github.com/DisplayLink/evdi/issues/512",
+          "state": "open",
+          "title": "evdi_painter: vblank timing incorrect",
+          "updated_at": "2025-03-28T12:48:31Z"
+        },
+        {
+          "number": 511,
+          "url": "https://github.com/DisplayLink/evdi/issues/511",
+          "state": "open",
+          "title": "evdi_painter: Access to scanout FB, vblank event, dirty rects racy",
+          "updated_at": "2025-03-28T11:06:30Z"
+        },
+        {
+          "number": 562,
+          "url": "https://github.com/DisplayLink/evdi/pull/562",
+          "state": "open",
+          "title": "drm: implement hrtimer-based vblank for proper frame pacing",
+          "updated_at": "2026-10-06T15:12:28Z"
+        },
+        {
+          "number": 594,
+          "url": "https://github.com/DisplayLink/evdi/pull/594",
+          "state": "open",
+          "title": "drm: extend hrtimer vblank pacing with update gating and max_fps",
+          "updated_at": "2026-10-02T10:39:24Z"
+        }
+      ],
+      "tracking": "T750",
+      "assessment": "Plausible capture timing/tearing or stalled-rendering leads. PR562/594 remain open and unmerged. Upstream maintainer reproduced pacing on Weston but reported different Mutter behavior; not a universal compositor outcome.",
+      "local_evidence": [
+        "host/evdi/capture.h:48 defaults pipeline=1",
+        "host/evdi/capture.c:272-294 resets capture request deadline",
+        "host/evdi/capture.c:445-459 limits publication after grabbing",
+        "docs/reviews/2026-09-26-evdi-ownership.md requires EVDI acknowledgement"
+      ],
+      "resolution_evidence_needed": "First attribute T748. In a bounded single-output fixture measure commits, ready events, grabs and presentation, preserving T593/T599 policy and T382 exclusion. Do not apply unmerged driver patches."
+    },
+    {
+      "sources": [
+        {
+          "number": 575,
+          "url": "https://github.com/DisplayLink/evdi/issues/575",
+          "state": "closed",
+          "title": "Xorg freezes when evdi module is loaded at runtime (modprobe while X is running)",
+          "updated_at": "2026-06-25T14:24:28Z"
+        },
+        {
+          "number": 270,
+          "url": "https://github.com/DisplayLink/evdi/issues/270",
+          "state": "open",
+          "title": "evdi_device_add hangs and freezes the display",
+          "updated_at": null
+        }
+      ],
+      "tracking": "T751; context T700/T746",
+      "assessment": "Relevant to runtime module/device addition under Xorg. Issue575 is closed after upstream advised loading pre-created devices before Xorg. It does not establish the cause of the distinct late-glamor assertion or idle blinking.",
+      "local_evidence": [
+        "scripts/setup-evdi.sh:13-15",
+        "host/evdi/evdi_helper.c:202-210",
+        "Current configuration pre-creates two devices",
+        "T700 reproduced its signature with EVDI absent"
+      ],
+      "resolution_evidence_needed": "Use isolated Xorg to test device-pool exhaustion and capacity growth; verify safe supported behavior or an explicit failure/reboot contract without touching active desktop devices."
+    },
+    {
+      "sources": [
+        {
+          "number": 597,
+          "url": "https://github.com/DisplayLink/evdi/issues/597",
+          "state": "open",
+          "title": "ADDFB2 accepts 32 bpp formats the planes don't support (e.g. AR30), so compositors can't fall back",
+          "updated_at": "2026-10-06T04:29:34Z"
+        },
+        {
+          "number": 595,
+          "url": "https://github.com/DisplayLink/evdi/issues/595",
+          "state": "closed",
+          "title": "DisplayLink shows no output on Fedora 45 beta (Mutter 51~rc)",
+          "updated_at": "2026-09-19T20:45:01Z"
+        }
+      ],
+      "tracking": "T752",
+      "assessment": "Relevant to maintained Wayland configurations, not a match to current X11 session. Upstream reports 10-bit framebuffer creation accepted before atomic format rejection prevents compositor fallback.",
+      "local_evidence": [
+        "host/evdi/capture.c:82-93 rejects formats other than XR24/AR24",
+        "Safe helper rejection cannot fix a compositor failing before capture starts."
+      ],
+      "resolution_evidence_needed": "Inspect driver admission and reproduce on isolated Mutter51; verify fallback or explicit unsupported reporting before claiming compatibility. Keep permanent invalid-format tests."
+    },
+    {
+      "sources": [
+        {
+          "number": 588,
+          "url": "https://github.com/DisplayLink/evdi/issues/588",
+          "state": "closed",
+          "title": "Cursor leftover when leaving the screen",
+          "updated_at": "2026-10-02T10:10:29Z"
+        },
+        {
+          "number": 589,
+          "url": "https://github.com/DisplayLink/evdi/pull/589",
+          "state": "closed",
+          "title": "modeset: Dirty the last cursor sprite on unassign",
+          "updated_at": "2026-10-02T10:10:28Z"
+        }
+      ],
+      "tracking": "T753",
+      "assessment": "Mouse-cursor damage path is relevant. PR589 merged 2026-10-02, after latest release 1.15.1; no local ghost-cursor report or reproduction.",
+      "local_evidence": [
+        "Blent uses automatic cursor composition; no evdi_enable_cursor_events call",
+        "host/evdi/capture.c:42-56 forwards damage to capture buffers"
+      ],
+      "resolution_evidence_needed": "Test cursor hiding/leaving a static virtual display; verify stock release/backport inclusion and permanent cursor-removal/damage regressions before a fix."
+    },
+    {
+      "sources": [
+        {
+          "number": 554,
+          "url": "https://github.com/DisplayLink/evdi/issues/554",
+          "state": "open",
+          "title": "Issue between evdi and Lunar Lake's xe: evdi: [W] evdi_gem_mmap:490 Don't allow imported objects to be mapped: owner: xe",
+          "updated_at": "2026-06-17T14:27:08Z"
+        },
+        {
+          "number": 591,
+          "url": "https://github.com/DisplayLink/evdi/issues/591",
+          "state": "open",
+          "title": "Failed to map scanout buffer on Wayland: EVDI-owned DMA-BUF returns -EOPNOTSUPP from vmap",
+          "updated_at": "2026-08-28T00:09:47Z"
+        }
+      ],
+      "tracking": "T748",
+      "assessment": "Issue554 contains the same imported-object mmap rejection class, initially xe and later i915; local owner is amdgpu. Issue591 instead reports a failed vmap for EVDI-owned DMA-BUF under virtio/Wayland. Matching a warning class does not establish failed frame capture.",
+      "local_evidence": [
+        "8 local imported-mmap warnings in retained Oct8-9 evidence",
+        "https://github.com/DisplayLink/evdi/blob/v1.14.15/module/evdi_gem.c#L488-L494"
+      ],
+      "resolution_evidence_needed": "Correlate each warning with subsequent capture success, actual grab errors and presented frames; distinguish mmap rejection from vmap failure and owners."
+    }
+  ],
+  "weaker_or_nonmatching_candidates": [
+    {
+      "sources": [
+        {
+          "number": 557,
+          "url": "https://github.com/DisplayLink/evdi/issues/557",
+          "state": "open",
+          "title": "Hard kernel freeze triggered by \"Double connect\" warning on USB reconnect (Fedora 43, kernel 6.18.x)",
+          "updated_at": "2026-07-14T10:23:45Z"
+        }
+      ],
+      "tracking": "T749 context only",
+      "assessment": "An upstream reporter correlates double-connect warnings and later freezes on Intel/NVIDIA; no causal proof or matching local signature. PR590 also documents benign repeated connects by DisplayLinkManager.",
+      "local_evidence": [
+        "Blent has exclusive device leasing and connected-output rechecks."
+      ],
+      "resolution_evidence_needed": "Escalate only with matched duplicate-connect/ownership evidence; a warning alone is insufficient."
+    },
+    {
+      "sources": [
+        {
+          "number": 581,
+          "url": "https://github.com/DisplayLink/evdi/pull/581",
+          "state": "open",
+          "title": "Fixes",
+          "updated_at": "2026-10-07T09:22:29Z"
+        }
+      ],
+      "tracking": "No new finding",
+      "assessment": "Open USB-parent teardown patch concerns dynamically USB-parent-linked EVDI devices. Blent opens numbered virtual cards, not evdi_open_attached_to. It does not explain an Android tablet missing from USB/ADB enumeration.",
+      "local_evidence": [
+        "host/evdi/evdi_helper.c:170-210",
+        "T747 already tracks missing hub enumeration evidence."
+      ],
+      "resolution_evidence_needed": "Reconsider only if Blent uses the affected USB-parent attachment path or a native trace demonstrates that path."
+    },
+    {
+      "sources": [
+        {
+          "number": 582,
+          "url": "https://github.com/DisplayLink/evdi/issues/582",
+          "state": "closed",
+          "title": "segfault in evdi_open_attached_to(NULL)",
+          "updated_at": "2026-07-17T18:16:04Z"
+        },
+        {
+          "number": 593,
+          "url": "https://github.com/DisplayLink/evdi/pull/593",
+          "state": "closed",
+          "title": "Guard evdi_open_attached_to() against a NULL parent device",
+          "updated_at": "2026-10-02T14:30:16Z"
+        }
+      ],
+      "tracking": "No new finding",
+      "assessment": "NULL-parent library-open fix is outside Blent numbered-card open path.",
+      "local_evidence": [
+        "host/evdi/evdi_helper.c:176"
+      ],
+      "resolution_evidence_needed": "No Blent change indicated by this report."
+    },
+    {
+      "sources": [
+        {
+          "number": 584,
+          "url": "https://github.com/DisplayLink/evdi/pull/584",
+          "state": "open",
+          "title": "Add software GAMMA_LUT/CTM color management on the CRTC",
+          "updated_at": "2026-10-02T10:39:24Z"
+        }
+      ],
+      "tracking": "T222 remains separate",
+      "assessment": "Proposed software gamma/CTM feature is not a demonstrated fix for the archived ProcRRSetCrtcGamma crash.",
+      "local_evidence": [
+        "T222 lacks symbol-matched original core/reproduction."
+      ],
+      "resolution_evidence_needed": "Keep T222 original-signature evidence requirement."
+    },
+    {
+      "sources": [
+        {
+          "number": 295,
+          "url": "https://github.com/DisplayLink/evdi/issues/295",
+          "state": "open",
+          "title": "Xorg sometimes segfaults on monitor setup",
+          "updated_at": "2024-12-23T11:34:24Z"
+        }
+      ],
+      "tracking": "T222/T700 remain separate",
+      "assessment": "Older monitor-setup crash shows ProcRRSetCrtcConfig/RRCrtcSet, not the gamma or late-glamor signatures tracked locally.",
+      "local_evidence": [
+        "TODO.md T222 and T700"
+      ],
+      "resolution_evidence_needed": "Do not merge distinct crash signatures without matching native evidence."
+    },
+    {
+      "sources": [
+        {
+          "number": 578,
+          "url": "https://github.com/DisplayLink/evdi/issues/578",
+          "state": "open",
+          "title": "initial_device_count=4 pre-creates evdi connectors that report connected with a zero-length EDID before any monitor is attached",
+          "updated_at": "2026-06-25T22:59:09Z"
+        }
+      ],
+      "tracking": "T700 context only",
+      "assessment": "Reported pre-created empty-EDID heads interact with a Plymouth fault; different signature from local Xorg late-glamor crash.",
+      "local_evidence": [
+        "Current pre-created outputs do not by themselves establish a connected empty-EDID fault."
+      ],
+      "resolution_evidence_needed": "Do not set initial_device_count=0 blindly: upstream Xorg hot-add guidance points the other way."
+    },
+    {
+      "sources": [
+        {
+          "number": 564,
+          "url": "https://github.com/DisplayLink/evdi/issues/564",
+          "state": "closed",
+          "title": "Memory Leak in copy_primary_pixels_on_xe",
+          "updated_at": "2026-06-22T07:52:00Z"
+        }
+      ],
+      "tracking": "No AMD-path finding",
+      "assessment": "Fixed Xe-specific allocation cleanup is not a match to current AMD hardware.",
+      "local_evidence": [
+        "Current native GPUs both use amdgpu."
+      ],
+      "resolution_evidence_needed": "Include in future Intel/Xe dependency acceptance, not as current AMD diagnosis."
+    }
+  ],
+  "review_findings": {
+    "T754": "Corrected stale latest-release statement in the September27 acquisition review; original JSON metadata retained explicitly as an erroneous historical observation. T558 remains blocked: v1.15.1 does not change evdi_lib.c or add bounded acquisition.",
+    "T755": "Existing Rust warnings surfaced by the unchanged T623 regression run; separately recorded in TODO."
+  },
+  "validation": [
+    {
+      "command": "cargo test -p blent --test evdi_helper t623_watchdog_coalesces_grabs_and_recovers_lost_events -- --exact",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "filtered_out": 42,
+      "tests_changed": false,
+      "limits": "Confirms existing watchdog/lost-event regression only; does not reproduce new candidates or establish native coverage."
+    }
+  ],
+  "constraints": [
+    "No production code, driver, services, display settings or USB state changed.",
+    "No new tests added during review; missing regression work is attached to the tracked findings.",
+    "No new per-function coverage or native display acceptance claimed.",
+    "T558 stock-library policy and declined stylus/macOS/large-machine scopes remain.",
+    "No upstream comments or messages posted."
+  ],
+  "source_fingerprints": {
+    "painter-old": "41510c435ab9e1c6a3f413ccd510461fe10f08c1eacffcb972046e50169ada88",
+    "painter-new": "452eb54fb44f7a69eb7db760a393e362a240a2595a25ca50a8f7b89297bf00ee",
+    "gem-old": "1d468680f9955eb9acffe86ef8003f8c8b45a3d162280180d11ceb14f92b70c3",
+    "library-new": "98f00baa06c9f7e24c052ed3936c91eca252c2539113f7f8215d1706bcce68aa"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "time": "2026-10-04T14:45:09.442790+02:00",
+  "service": {
+    "stdout": "MainPID=0\nActiveState=inactive\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  "kernel": {
+    "stdout": "-- No entries --\n",
+    "stderr": "",
+    "returncode": 1
+  }
+}

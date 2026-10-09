@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-04",
+  "timezone": "Europe/Rome",
+  "reported_symptom": "Screen blinks intermittently while desktop is idle; maintainer described \"the screen just blinks from times to times\".",
+  "boot": {
+    "issue": "T700",
+    "kernel": "7.0.0-38-generic",
+    "evdi_version": "1.14.15",
+    "evdi_initialization_seconds": 15.46,
+    "first_xorg_seconds": 17.85,
+    "amd_discrete_ready_seconds": 19.97,
+    "amd_integrated_ready_seconds": 20.14,
+    "amd_crtc_timeout_seconds": 20.35757,
+    "xorg_abort_seconds": 20.49,
+    "xorg_abort_pid": 1921,
+    "stack": [
+      "dixRegisterPrivateKey",
+      "glamor_init",
+      "AddGPUScreen"
+    ],
+    "lightdm_restart_seconds": 21.29,
+    "blent_service_start_seconds": 40.332106,
+    "mitigation_installed": false,
+    "evdi_boot_configuration_owner": "Installed uscreen package; /usr/lib/modprobe.d/uscreen-evdi.conf and /usr/lib/modules-load.d/uscreen.conf",
+    "staged_rule": "softdep evdi pre: amdgpu",
+    "interpretation": "Recurrence of T700 startup failure before Blent daemon starts. Existing isolated evidence reproduces failure without EVDI. AMD timeout alone does not establish the cause of ongoing idle flicker."
+  },
+  "idle": {
+    "issue": "T746",
+    "capture_helper_present": false,
+    "blent_drm_file_descriptors": [],
+    "evdi_outputs": "Both disconnected",
+    "physical_display": "AMD Radeon 610M; HDMI-A-1; 3840x2160 at 60 Hz",
+    "last_evdi_kernel_message_seconds": 21.980603,
+    "passive_observation": "45 seconds; no RandR events or DRM uevents; no correlated user flash timestamp",
+    "limits": [
+      "Disconnected outputs and a quiet daemon do not rule out effects of loaded EVDI/Xorg providers.",
+      "Zero events without a matched visible flash is not proof that flickering stopped.",
+      "Some EDID re-probes coincide with our xrandr provider/property queries; these cannot be treated as spontaneous hotplug evidence."
+    ],
+    "next_evidence": "A maintainer-observed blink with a timestamp. The 60-second pause was not watched and is inconclusive; do not infer absence of blinking. Correlate the next reported event before arranging another observed comparison.",
+    "daemon_pause": {
+      "artifact": "daemon-pause.json",
+      "duration_seconds": 60,
+      "confirmed_inactive": true,
+      "restored": true,
+      "new_pid": 39902,
+      "user_observation": {
+        "observed": false,
+        "reported": "I was not following it, so, I do not know but I assume no",
+        "result": "inconclusive",
+        "reason": "No visual observation; an assumed absence of blinking is not a measured negative."
+      },
+      "randr_events": 0,
+      "drm_uevents": 0
+    },
+    "blent_pid_at_initial_snapshot": 3495
+  },
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s scripts/tests -p test_installer_gpu_order.py",
+      "tests": 15,
+      "result": "pass",
+      "scope": "Existing T700 boot-order regressions; not an idle-flicker regression or native reboot acceptance."
+    }
+  ],
+  "changes": "Repository ledger/artifacts plus a 60-second idle blent.service stop/start comparison; daemon restored and running. No module, boot or display configuration changes."
+}

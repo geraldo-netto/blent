@@ -1,0 +1,19 @@
+{
+  "test": "T746: 60-second idle daemon pause, automatically restored",
+  "user_observation": {
+    "observed": false,
+    "reported": "I was not following it, so, I do not know but I assume no",
+    "result": "inconclusive",
+    "reason": "No visual observation; an assumed absence of blinking is not a measured negative."
+  },
+  "started": "2026-10-04T14:44:36.818769+02:00",
+  "paused_at": "2026-10-04T14:44:36.900360+02:00",
+  "state_during_pause": "inactive",
+  "daemon-paused-randr.txt_returncode": 124,
+  "daemon-paused-drm.txt_returncode": 124,
+  "restore_requested_at": "2026-10-04T14:45:36.905437+02:00",
+  "restore_returncode": 0,
+  "restore_stderr": "",
+  "state_after": "MainPID=39902\nActiveState=active",
+  "completed_at": "2026-10-04T14:45:36.930336+02:00"
+}

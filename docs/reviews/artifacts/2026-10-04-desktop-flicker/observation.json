@@ -1,0 +1,11 @@
+{
+  "start": "2026-10-04T14:40:15.962873+02:00",
+  "start_uptime": "669.06",
+  "duration_seconds": 45,
+  "kind": "passive RandR and DRM udev observation",
+  "user_flash_timestamp": null,
+  "randr-events.txt_returncode": 124,
+  "drm-events.txt_returncode": 124,
+  "end": "2026-10-04T14:41:01.018786+02:00",
+  "end_uptime": "714.11"
+}

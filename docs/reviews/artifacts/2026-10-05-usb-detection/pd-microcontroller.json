@@ -1,0 +1,7 @@
+{
+  "recorded_at": "2026-10-05T00:39:05.299673+02:00",
+  "user_report": "Generic hub, unknown make/model, PD input connected, microcontroller also attached.",
+  "observed": "No Android device or USB serial-by-id node; USB inventory unchanged. Visible VIA 2109:2822/0822 hub branches have only a Realtek Bluetooth adapter as a listed downstream device.",
+  "attribution_correction": "Earlier commentary and T747 called the visible VIA hub the current generic hub. The physical mapping is unconfirmed; no hub model or controlled mapping observation connects these identities. An attached microcontroller is not identified; it might expose a non-serial interface.",
+  "next_check": "Observe tablet-only reconnect on hub data port and Android USB notification. Unknown model alone does not prevent diagnosis; physical port mapping is needed."
+}

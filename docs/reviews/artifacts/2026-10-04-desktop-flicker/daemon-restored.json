@@ -1,0 +1,18 @@
+{
+  "service": {
+    "stdout": "MainPID=39902\nExecMainStartTimestamp=Sun 2026-10-04 14:45:36 CEST\nActiveState=active\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  "kernel": {
+    "stdout": "-- No entries --\n",
+    "stderr": "",
+    "returncode": 1
+  },
+  "service_log": {
+    "stdout": "2026-10-04T14:44:36+02:00 morpheus systemd[2991]: Stopping blent.service - Blent - USB Second Display Server...\n2026-10-04T14:44:36+02:00 morpheus env[3495]: 2026-10-04T12:44:36.877462Z  INFO blent: 1777: Shutting down...\n2026-10-04T14:44:36+02:00 morpheus env[3495]: 2026-10-04T12:44:36.879425Z  INFO blent: 1813: blent daemon stopped\n2026-10-04T14:44:36+02:00 morpheus env[39286]: 2026-10-04T12:44:36.898497Z  INFO blent: 2586: blent daemon stopped\n2026-10-04T14:44:36+02:00 morpheus systemd[2991]: Stopped blent.service - Blent - USB Second Display Server.\n2026-10-04T14:44:36+02:00 morpheus systemd[2991]: blent.service: Consumed 3.028s CPU time, 23.0M memory peak, 0B memory swap peak.\n2026-10-04T14:45:36+02:00 morpheus systemd[2991]: Started blent.service - Blent - USB Second Display Server.\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.930533Z  INFO blent: 82: Starting blent daemon\n2026-10-04T14:45:36+02:00 morpheus env[39902]: Blent scheduling: High; CPUWeight=1000 (/user.slice/user-1000.slice/user@1000.service/app.slice/blent.service); all threads and new children\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955809Z  INFO blent: 1668: === blent daemon starting ===\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955818Z  INFO blent: 1669:   Resolution: 1280x800 @ 60fps\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955820Z  INFO blent: 1670:   Encoder: h264_vaapi_baseline\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955823Z  INFO blent: 1671:   Bitrate: 20000 kbps\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955825Z  INFO blent: 1672:   Stream port: 8890\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955828Z  INFO blent: 1673:   Input port: 8891\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955829Z  INFO blent: 1674:   Input devices: touch=true pen=true pointer=true\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955863Z  INFO blent::stream: 85: Stream server on tcp://127.0.0.1:8890\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.955871Z  INFO blent::input: 175: Input server on ws://127.0.0.1:8891\n2026-10-04T14:45:36+02:00 morpheus env[39902]: ================================================\n2026-10-04T14:45:36+02:00 morpheus env[39902]:   blent daemon running (PID: 39902)\n2026-10-04T14:45:36+02:00 morpheus env[39902]: ================================================\n2026-10-04T14:45:36+02:00 morpheus env[39902]:   On your tablet, open the Blent app\n2026-10-04T14:45:36+02:00 morpheus env[39902]:   ADB ports will be auto-forwarded if possible.\n2026-10-04T14:45:36+02:00 morpheus env[39902]:   Otherwise, run:\n2026-10-04T14:45:36+02:00 morpheus env[39902]:     adb reverse tcp:8890 tcp:8890\n2026-10-04T14:45:36+02:00 morpheus env[39902]:     adb reverse tcp:8891 tcp:8891\n2026-10-04T14:45:36+02:00 morpheus env[39902]: ================================================\n2026-10-04T14:45:36+02:00 morpheus env[39902]: 2026-10-04T12:45:36.958185Z  INFO blent::tray: 252: Tray icon registered\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  "verified_at": "2026-10-04T14:46:04.161930+02:00"
+}

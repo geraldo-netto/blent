@@ -1,0 +1,17 @@
+[   17.829661] morpheus systemd[1]: Starting lightdm.service - Light Display Manager...
+[   17.847091] morpheus systemd[1]: Started lightdm.service - Light Display Manager.
+[   18.557215] morpheus lightdm[2146]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=113) by (uid=0)
+[   18.768761] morpheus lightdm[2146]: gkr-pam: couldn't unlock the login keyring.
+[   19.164650] morpheus lightdm[2260]: pam_succeed_if(lightdm:auth): requirement "user ingroup nopasswdlogin" not met by user "netto"
+[   20.942759] morpheus systemd[1]: lightdm.service: Main process exited, code=exited, status=1/FAILURE
+[   20.942810] morpheus systemd[1]: lightdm.service: Failed with result 'exit-code'.
+[   21.293767] morpheus systemd[1]: lightdm.service: Scheduled restart job, restart counter is at 1.
+[   21.449198] morpheus systemd[1]: Starting lightdm.service - Light Display Manager...
+[   21.463644] morpheus systemd[1]: Started lightdm.service - Light Display Manager.
+[   22.365761] morpheus lightdm[2618]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=113) by (uid=0)
+[   22.372376] morpheus lightdm[2618]: gkr-pam: couldn't unlock the login keyring.
+[   22.615300] morpheus lightdm[2660]: pam_succeed_if(lightdm:auth): requirement "user ingroup nopasswdlogin" not met by user "netto"
+[   37.972740] morpheus lightdm[2660]: gkr-pam: unable to locate daemon control file
+[   37.973199] morpheus lightdm[2660]: gkr-pam: stashed password to try later in open session
+[   37.996020] morpheus lightdm[2660]: pam_unix(lightdm:session): session opened for user netto(uid=1000) by (uid=0)
+[   38.410677] morpheus lightdm[2660]: gkr-pam: unlocked login keyring

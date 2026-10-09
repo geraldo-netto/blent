@@ -1,0 +1,5 @@
+Providers: number : 4
+Provider 0: id: 0x55 cap: 0x9, Source Output, Sink Offload crtcs: 4 outputs: 3 associated providers: 3 name:AMD Radeon 610M @ pci:0000:08:00.0
+Provider 1: id: 0xe8 cap: 0x2, Sink Output crtcs: 1 outputs: 1 associated providers: 1 name:modesetting
+Provider 2: id: 0xc7 cap: 0x2, Sink Output crtcs: 1 outputs: 1 associated providers: 1 name:modesetting
+Provider 3: id: 0xa6 cap: 0x6, Sink Output, Source Offload crtcs: 5 outputs: 4 associated providers: 1 name:AMD Radeon RX 6600 XT @ pci:0000:03:00.0

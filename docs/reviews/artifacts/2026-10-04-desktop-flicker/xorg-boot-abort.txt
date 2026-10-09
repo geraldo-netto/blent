@@ -1,0 +1,51 @@
+[    20.482] (II) modeset(G2): glamor X acceleration enabled on AMD Radeon 610M (radeonsi, raphael_mendocino, ACO, DRM 3.64, 7.0.0-38-generic)
+[    20.482] (II) modeset(G2): glamor initialized
+[    20.482] (II) modeset(G2): Output DP-3-4 has no monitor section
+[    20.484] (II) modeset(G2): Output HDMI-3-2 has no monitor section
+[    20.484] (II) modeset(G2): Output DP-3-5 has no monitor section
+[    20.486] (--) modeset(G2): HDMI max TMDS frequency 340000KHz
+[    20.487] (==) modeset(G2): Using gamma correction (1.0, 1.0, 1.0)
+[    20.487] (==) modeset(G2): DPI set to (96, 96)
+[    20.487] (II) Loading sub module "fb"
+[    20.487] (II) LoadModule: "fb"
+[    20.487] (II) Module "fb" already built-in
+[    20.487] (EE) 
+[    20.487] (EE) Backtrace:
+[    20.488] (EE) 0: /usr/lib/xorg/Xorg (OsLookupColor+0x14c) [0x5f90e5e7719c]
+[    20.488] (EE) 1: /lib/x86_64-linux-gnu/libc.so.6 (__sigaction+0x50) [0x7f6d1bc45330]
+[    20.488] (EE) 2: /lib/x86_64-linux-gnu/libc.so.6 (pthread_kill+0x11c) [0x7f6d1bc9ec0c]
+[    20.489] (EE) 3: /lib/x86_64-linux-gnu/libc.so.6 (gsignal+0x1e) [0x7f6d1bc4527e]
+[    20.489] (EE) 4: /lib/x86_64-linux-gnu/libc.so.6 (abort+0xdf) [0x7f6d1bc288ff]
+[    20.489] (EE) unw_get_proc_name failed: no unwind info found [-10]
+[    20.489] (EE) 5: /lib/x86_64-linux-gnu/libc.so.6 (?+0x0) [0x7f6d1bc2881b]
+[    20.489] (EE) 6: /lib/x86_64-linux-gnu/libc.so.6 (__assert_fail+0x47) [0x7f6d1bc3b517]
+[    20.490] (EE) 7: /usr/lib/xorg/Xorg (dixRegisterPrivateKey+0x1e4) [0x5f90e5d19464]
+[    20.490] (EE) 8: /usr/lib/xorg/modules/libglamoregl.so (glamor_init+0xcb) [0x7f6d1b4fe70b]
+[    20.490] (EE) unw_get_proc_name failed: no unwind info found [-10]
+[    20.490] (EE) 9: /usr/lib/xorg/modules/drivers/modesetting_drv.so (?+0x0) [0x7f6d1b9097d8]
+[    20.490] (EE) unw_get_proc_name failed: no unwind info found [-10]
+[    20.490] (EE) 10: /usr/lib/xorg/modules/drivers/modesetting_drv.so (?+0x0) [0x7f6d1b8ff35f]
+[    20.490] (EE) 11: /usr/lib/xorg/Xorg (AddGPUScreen+0x100) [0x5f90e5cf7f30]
+[    20.490] (EE) 12: /usr/lib/xorg/Xorg (xf86PlatformMatchDriver+0xb20) [0x5f90e5d579c0]
+[    20.490] (EE) 13: /usr/lib/xorg/Xorg (xf86PlatformDeviceCheckBusID+0x288) [0x5f90e5d5dac8]
+[    20.490] (EE) 14: /usr/lib/xorg/Xorg (config_fini+0x1072) [0x5f90e5d59d32]
+[    20.490] (EE) 15: /usr/lib/xorg/Xorg (config_fini+0x1650) [0x5f90e5d5a310]
+[    20.491] (EE) 16: /usr/lib/xorg/Xorg (OsCleanup+0x64a) [0x5f90e5e77c6a]
+[    20.491] (EE) 17: /usr/lib/xorg/Xorg (WaitForSomething+0x185) [0x5f90e5e705c5]
+[    20.491] (EE) 18: /usr/lib/xorg/Xorg (SendErrorToClient+0x11a) [0x5f90e5cf788a]
+[    20.491] (EE) 19: /usr/lib/xorg/Xorg (InitFonts+0x3ca) [0x5f90e5cfbefa]
+[    20.491] (EE) 20: /lib/x86_64-linux-gnu/libc.so.6 (__libc_init_first+0x8a) [0x7f6d1bc2a1ca]
+[    20.491] (EE) 21: /lib/x86_64-linux-gnu/libc.so.6 (__libc_start_main+0x8b) [0x7f6d1bc2a28b]
+[    20.491] (EE) 22: /usr/lib/xorg/Xorg (_start+0x25) [0x5f90e5ce43b5]
+[    20.491] (EE) 
+[    20.491] (EE) 
+Fatal server error:
+[    20.491] (EE) Caught signal 6 (Aborted). Server aborting
+[    20.491] (EE) 
+[    20.491] (EE) 
+Please consult the The X.Org Foundation support 
+	 at http://wiki.x.org
+ for help. 
+[    20.491] (EE) Please also check the log file at "/var/log/Xorg.0.log" for additional information.
+[    20.491] (EE) 
+[    20.508] (EE) Server terminated with error (1). Closing log file.

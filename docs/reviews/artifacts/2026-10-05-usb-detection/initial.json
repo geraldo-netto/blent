@@ -1,0 +1,54 @@
+{
+  "observed_at": "2026-10-05T00:35:30.544047+02:00",
+  "user_report": "Blent open on Android and desktop; no tablet display. User confirms hub is plugged into desktop.",
+  "assessment": "Desktop service active; no tablet enumerated in USB inventory or ADB. Cable/port/hub/Android role cause is not established.",
+  "next_evidence": "Direct desktop-to-tablet data-cable comparison, tablet USB/debugging notification, and hub port identification.",
+  "usb_inventory": {
+    "command": [
+      "lsusb"
+    ],
+    "exit_code": 0,
+    "stdout": "Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 001 Device 002: ID 046d:c548 Logitech, Inc. Logi Bolt Receiver\nBus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 003 Device 003: ID 2109:2822 VIA Labs, Inc. USB2.0 Hub             \nBus 003 Device 004: ID 0bda:a760 Realtek Semiconductor Corp. Bluetooth 6.0 Radio\nBus 003 Device 006: ID 258a:01e3 SINO WEALTH Keyboard\nBus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 004 Device 002: ID 2109:0822 VIA Labs, Inc. USB3.1 Hub             \nBus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 005 Device 002: ID 8087:0032 Intel Corp. AX210 Bluetooth\n",
+    "stderr": ""
+  },
+  "usb_topology": {
+    "command": [
+      "lsusb",
+      "-t"
+    ],
+    "exit_code": 0,
+    "stdout": "/:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M\n    |__ Port 002: Dev 002, If 0, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 002: Dev 002, If 1, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 002: Dev 002, If 2, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 002: Dev 002, If 3, Class=Human Interface Device, Driver=usbhid, 12M\n/:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M\n/:  Bus 003.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M\n    |__ Port 001: Dev 006, If 0, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 001: Dev 006, If 1, Class=Human Interface Device, Driver=usbhid, 12M\n    |__ Port 002: Dev 003, If 0, Class=Hub, Driver=hub/4p, 480M\n        |__ Port 003: Dev 004, If 0, Class=Wireless, Driver=btusb, 12M\n        |__ Port 003: Dev 004, If 1, Class=Wireless, Driver=btusb, 12M\n/:  Bus 004.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M\n    |__ Port 002: Dev 002, If 0, Class=Hub, Driver=hub/4p, 5000M\n/:  Bus 005.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/1p, 480M\n    |__ Port 001: Dev 002, If 0, Class=Wireless, Driver=btusb, 12M\n    |__ Port 001: Dev 002, If 1, Class=Wireless, Driver=btusb, 12M\n",
+    "stderr": ""
+  },
+  "adb_devices": {
+    "command": [
+      "adb",
+      "devices",
+      "-l"
+    ],
+    "exit_code": 0,
+    "stdout": "List of devices attached\n\n",
+    "stderr": ""
+  },
+  "service_state": {
+    "command": [
+      "systemctl",
+      "--user",
+      "show",
+      "blent",
+      "--property=ActiveState,SubState,MainPID"
+    ],
+    "exit_code": 0,
+    "stdout": "MainPID=2875\nActiveState=active\nSubState=running\n",
+    "stderr": ""
+  },
+  "doctor": {
+    "command": [
+      "blent",
+      "doctor"
+    ],
+    "exit_code": 0,
+    "stdout": "=== blent doctor ===\n\nKernel modules\n--------------\n[  ok  ] evdi module                        2 device(s)\n[  ok  ] uinput device                      writable\n\nTools\n-----\n[  ok  ] evdi_helper                        /home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/evdi_helper\n[  ok  ] ffmpeg                             found\n[  ok  ] adb                                found\n[  ok  ] ffprobe                            found\n[ warn ] kscreen-doctor                     not installed (KDE only)\n[  ok  ] configured encoder                 h264_vaapi_baseline available in FFmpeg inventory; execution not verified\n\nProcesses\n---------\n[  ok  ] daemon                             running, PID 2875\n[  ok  ] evdi_helper processes              0\n[  ok  ] ffmpeg on /run/user/1000/blent/capture.fifo 0\n\nTablet\n------\n[ warn ] tablet                             no active tablet session\n\nVirtual display\n---------------\n[ warn ] EVDI connector                     DVI-I-1 (disconnected \u2014 helper not running)\n[ warn ] EVDI connector                     DVI-I-2 (disconnected \u2014 helper not running)\n\nAutostart\n---------\n[  ok  ] start with the desktop             enabled\n\nDesktop\n-------\n[  ok  ] xinput                             available for X11 input mapping\n[  ok  ] xrandr                             available for X11 input mapping\n\nColour\n------\n\nConfiguration\n-------------\n[  ok  ] version                            1.2.3 (could not check for updates)\n[  ok  ] config file                        /home/netto/.config/blent/config.toml\n[  ok  ] screen position                    right of the other screens\n[  ok  ] mode                               second screen (switchable from the tablet)\n[  ok  ] resolution                         1280x800 (auto, follows the tablet)\n[  ok  ] input devices                      touch, pen, pointer (created while a tablet is attached)\n[  ok  ] bitrate                            20 Mbps\n[  ok  ] fps                                60\n\nNo blocking problems, 4 warning(s).\n",
+    "stderr": ""
+  }
+}

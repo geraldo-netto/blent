@@ -1,0 +1,22 @@
+[   40.332270] morpheus systemd[2991]: Started blent.service - Blent - USB Second Display Server.
+[   40.480163] morpheus env[3495]: 2026-10-04T12:29:04.420230Z  INFO blent: 82: Starting blent daemon
+[   40.525057] morpheus env[3495]: Blent scheduling: High; CPUWeight=1000 (/user.slice/user-1000.slice/user@1000.service/app.slice/blent.service); all threads and new children
+[   40.592262] morpheus env[3495]: 2026-10-04T12:29:04.532316Z  INFO blent: 1668: === blent daemon starting ===
+[   40.592262] morpheus env[3495]: 2026-10-04T12:29:04.532330Z  INFO blent: 1669:   Resolution: 1280x800 @ 60fps
+[   40.592262] morpheus env[3495]: 2026-10-04T12:29:04.532334Z  INFO blent: 1670:   Encoder: h264_vaapi_baseline
+[   40.592262] morpheus env[3495]: 2026-10-04T12:29:04.532337Z  INFO blent: 1671:   Bitrate: 20000 kbps
+[   40.592262] morpheus env[3495]: 2026-10-04T12:29:04.532340Z  INFO blent: 1672:   Stream port: 8890
+[   40.592262] morpheus env[3495]: 2026-10-04T12:29:04.532343Z  INFO blent: 1673:   Input port: 8891
+[   40.592262] morpheus env[3495]: 2026-10-04T12:29:04.532345Z  INFO blent: 1674:   Input devices: touch=true pen=true pointer=true
+[   40.600545] morpheus env[3495]: 2026-10-04T12:29:04.540624Z  INFO blent::stream: 85: Stream server on tcp://127.0.0.1:8890
+[   40.600545] morpheus env[3495]: 2026-10-04T12:29:04.540636Z  INFO blent::input: 175: Input server on ws://127.0.0.1:8891
+[   40.604913] morpheus env[3495]: ================================================
+[   40.604913] morpheus env[3495]:   blent daemon running (PID: 3495)
+[   40.604913] morpheus env[3495]: ================================================
+[   40.604913] morpheus env[3495]:   On your tablet, open the Blent app
+[   40.604913] morpheus env[3495]:   ADB ports will be auto-forwarded if possible.
+[   40.604913] morpheus env[3495]:   Otherwise, run:
+[   40.604913] morpheus env[3495]:     adb reverse tcp:8890 tcp:8890
+[   40.604987] morpheus env[3495]:     adb reverse tcp:8891 tcp:8891
+[   40.604987] morpheus env[3495]: ================================================
+[   40.702629] morpheus env[3495]: 2026-10-04T12:29:04.642707Z  INFO blent::tray: 252: Tray icon registered

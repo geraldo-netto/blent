@@ -1,0 +1,43 @@
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+[    21.824] (EE) open /dev/dri/card0: No such file or directory
+[    21.869] (II) Loading sub module "glamoregl"
+[    21.869] (II) LoadModule: "glamoregl"
+[    21.869] (II) Loading /usr/lib/xorg/modules/libglamoregl.so
+[    21.873] (II) Module glamoregl: vendor="X.Org Foundation"
+[    21.888] (II) AMDGPU(0): glamor X acceleration enabled on AMD Radeon 610M (radeonsi, raphael_mendocino, ACO, DRM 3.64, 7.0.0-38-generic)
+[    21.888] (II) AMDGPU(0): glamor detected, initialising EGL layer.
+[    21.888] (==) AMDGPU(0): TearFree property default: auto
+[    21.888] (==) AMDGPU(0): VariableRefresh: disabled
+[    21.918] (II) Loading sub module "glamoregl"
+[    21.918] (II) LoadModule: "glamoregl"
+[    21.918] (II) Loading /usr/lib/xorg/modules/libglamoregl.so
+[    21.918] (II) Module glamoregl: vendor="X.Org Foundation"
+[    21.932] (II) AMDGPU(G0): glamor X acceleration enabled on AMD Radeon RX 6600 XT (radeonsi, navi23, ACO, DRM 3.64, 7.0.0-38-generic)
+[    21.932] (II) AMDGPU(G0): glamor detected, initialising EGL layer.
+[    21.932] (==) AMDGPU(G0): TearFree property default: auto
+[    21.933] (II) Loading sub module "glamoregl"
+[    21.933] (II) LoadModule: "glamoregl"
+[    21.933] (II) Loading /usr/lib/xorg/modules/libglamoregl.so
+[    21.933] (II) Module glamoregl: vendor="X.Org Foundation"
+[    21.975] (II) modeset(G1): Refusing to try glamor on llvmpipe
+[    21.977] (II) modeset(G1): glamor initialization failed
+[    21.978] (II) Loading sub module "glamoregl"
+[    21.978] (II) LoadModule: "glamoregl"
+[    21.978] (II) Loading /usr/lib/xorg/modules/libglamoregl.so
+[    21.978] (II) Module glamoregl: vendor="X.Org Foundation"
+[    22.016] (II) modeset(G2): Refusing to try glamor on llvmpipe
+[    22.018] (II) modeset(G2): glamor initialization failed
+[    22.034] (II) AMDGPU(0): Set up textured video (glamor)
+[    22.096] (II) AMDGPU(0): Setting screen physical size to 1016 x 571
+[    38.766] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[    38.771] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[    38.998] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[    39.000] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[    40.256] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[    40.258] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[   574.863] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[   574.868] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[   574.874] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[   669.035] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[   669.041] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987
+[   669.047] (II) AMDGPU(0): EDID vendor "AOC", prod id 9987

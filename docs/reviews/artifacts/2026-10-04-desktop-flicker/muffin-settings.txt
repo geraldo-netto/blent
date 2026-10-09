@@ -1,0 +1,22 @@
+org.cinnamon.muffin attach-modal-dialogs false
+org.cinnamon.muffin auto-maximize false
+org.cinnamon.muffin background-transition 'blend'
+org.cinnamon.muffin bring-windows-to-current-workspace false
+org.cinnamon.muffin center-new-windows false
+org.cinnamon.muffin check-alive-timeout uint32 5000
+org.cinnamon.muffin draggable-border-width 10
+org.cinnamon.muffin dynamic-workspaces false
+org.cinnamon.muffin edge-tiling true
+org.cinnamon.muffin experimental-features @as []
+org.cinnamon.muffin focus-change-on-pointer-rest false
+org.cinnamon.muffin invert-workspace-flip-direction false
+org.cinnamon.muffin locate-pointer-key ['Control_L']
+org.cinnamon.muffin no-tab-popup false
+org.cinnamon.muffin overlay-key ''
+org.cinnamon.muffin placement-mode 'automatic'
+org.cinnamon.muffin tile-maximize false
+org.cinnamon.muffin unredirect-fullscreen-windows false
+org.cinnamon.muffin workspace-cycle false
+org.cinnamon.muffin workspaces-only-on-primary false
+org.cinnamon.muffin.keybindings tab-popup-cancel @as []
+org.cinnamon.muffin.keybindings tab-popup-select @as []

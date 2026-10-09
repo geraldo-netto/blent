@@ -1,0 +1,83 @@
+[    0.000000] morpheus kernel: Command line: BOOT_IMAGE=/boot/vmlinuz-7.0.0-38-generic root=UUID=e15a551d-6644-4975-83ea-ddf23d710a38 ro iommu=pt usbcore.autosuspend=-1 amdgpu.dcperformance=1 amdgpu.dcdebugmask=0x10 ttm.pages_limit=20971520 amdgpu.gttsize=81920
+[    0.073363] morpheus kernel: Kernel command line: BOOT_IMAGE=/boot/vmlinuz-7.0.0-38-generic root=UUID=e15a551d-6644-4975-83ea-ddf23d710a38 ro iommu=pt usbcore.autosuspend=-1 amdgpu.dcperformance=1 amdgpu.dcdebugmask=0x10 ttm.pages_limit=20971520 amdgpu.gttsize=81920
+[    0.563237] morpheus kernel: [drm] Initialized simpledrm 1.0.0 for simple-framebuffer.0 on minor 0
+[    0.564038] morpheus kernel: simple-framebuffer simple-framebuffer.0: [drm] fb0: simpledrmdrmfb frame buffer device
+[   15.456336] morpheus kernel: evdi: [I] Initialising logging on level 4
+[   15.456464] morpheus kernel: evdi: [I] Atomic driver: yes
+[   15.457417] morpheus kernel: evdi: [I] Increasing device count to 2
+[   15.459701] morpheus kernel: [drm] Initialized evdi 1.14.15 for evdi.0 on minor 1
+[   15.460056] morpheus kernel: evdi: [I] Evdi platform_device create
+[   15.461145] morpheus kernel: [drm] Initialized evdi 1.14.15 for evdi.1 on minor 2
+[   15.461399] morpheus kernel: evdi: [I] Evdi platform_device create
+[   17.252426] morpheus kernel: amdgpu: unknown parameter 'dcperformance' ignored
+[   17.284237] morpheus kernel: amdgpu 0000:03:00.0: [drm] Configuring gttsize via module parameter is deprecated, please use ttm.pages_limit
+[   17.404096] morpheus kernel: evdi: [I] (card2) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404123] morpheus kernel: evdi: [I] (card2) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404133] morpheus kernel: evdi: [I] (card1) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404141] morpheus kernel: evdi: [I] (card1) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404287] morpheus kernel: evdi: [I] (card2) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404295] morpheus kernel: evdi: [I] (card2) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404302] morpheus kernel: evdi: [I] (card1) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404309] morpheus kernel: evdi: [I] (card1) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404438] morpheus kernel: evdi: [I] (card2) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404446] morpheus kernel: evdi: [I] (card2) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404453] morpheus kernel: evdi: [I] (card1) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404460] morpheus kernel: evdi: [I] (card1) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404601] morpheus kernel: evdi: [I] (card2) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404610] morpheus kernel: evdi: [I] (card2) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404624] morpheus kernel: evdi: [I] (card1) Opened by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.404631] morpheus kernel: evdi: [I] (card1) Closed by Task 1557 (gpu-manager) of process 1557 (gpu-manager)
+[   17.849996] morpheus kernel: evdi: [I] (card1) Opened by Task 1921 (Xorg.wrap) of process 1921 (Xorg.wrap)
+[   17.850008] morpheus kernel: evdi: [I] (card1) Closed by Task 1921 (Xorg.wrap) of process 1921 (Xorg.wrap)
+[   17.850018] morpheus kernel: evdi: [I] (card2) Opened by Task 1921 (Xorg.wrap) of process 1921 (Xorg.wrap)
+[   17.850026] morpheus kernel: evdi: [I] (card2) Closed by Task 1921 (Xorg.wrap) of process 1921 (Xorg.wrap)
+[   17.864284] morpheus kernel: evdi: [I] (card1) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   17.864293] morpheus kernel: evdi: [I] (card1) Closed by Task 1921 (Xorg) of process 1921 (Xorg)
+[   17.864379] morpheus kernel: evdi: [I] (card2) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   17.864386] morpheus kernel: evdi: [I] (card2) Closed by Task 1921 (Xorg) of process 1921 (Xorg)
+[   17.873173] morpheus kernel: evdi: [I] (card1) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   17.873182] morpheus kernel: evdi: [I] (card1) Closed by Task 1921 (Xorg) of process 1921 (Xorg)
+[   17.873190] morpheus kernel: evdi: [I] (card2) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   17.873197] morpheus kernel: evdi: [I] (card2) Closed by Task 1921 (Xorg) of process 1921 (Xorg)
+[   18.109402] morpheus kernel: evdi: [I] (card1) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   18.109419] morpheus kernel: evdi: [I] (card1) Closed by Task 1921 (Xorg) of process 1921 (Xorg)
+[   18.109434] morpheus kernel: evdi: [I] (card2) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   18.109442] morpheus kernel: evdi: [I] (card2) Closed by Task 1921 (Xorg) of process 1921 (Xorg)
+[   18.279742] morpheus kernel: evdi: [I] (card1) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   18.295948] morpheus kernel: evdi: [I] (card2) Opened by Task 1921 (Xorg) of process 1921 (Xorg)
+[   19.966697] morpheus kernel: [drm] Initialized amdgpu 3.64.0 for 0000:03:00.0 on minor 3
+[   19.999075] morpheus kernel: amdgpu 0000:08:00.0: [drm] Configuring gttsize via module parameter is deprecated, please use ttm.pages_limit
+[   20.135146] morpheus kernel: [drm] Initialized amdgpu 3.64.0 for 0000:08:00.0 on minor 4
+[   20.357570] morpheus kernel: amdgpu 0000:08:00.0: [drm] REG_WAIT timeout 1us * 100000 tries - optc31_disable_crtc line:145
+[   20.939615] morpheus kernel: evdi: [I] (card2) Closed by Task 2395 (Xorg:sh0) of process 1921 (Xorg)
+[   20.939702] morpheus kernel: evdi: [I] (card1) Closed by Task 2395 (Xorg:sh0) of process 1921 (Xorg)
+[   21.408050] morpheus kernel: evdi: [I] (card2) Opened by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.408065] morpheus kernel: evdi: [I] (card2) Closed by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.408077] morpheus kernel: evdi: [I] (card1) Opened by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.408088] morpheus kernel: evdi: [I] (card1) Closed by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.423307] morpheus kernel: evdi: [I] (card2) Opened by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.423320] morpheus kernel: evdi: [I] (card2) Closed by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.423329] morpheus kernel: evdi: [I] (card1) Opened by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.423339] morpheus kernel: evdi: [I] (card1) Closed by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.439929] morpheus kernel: evdi: [I] (card2) Opened by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.439945] morpheus kernel: evdi: [I] (card2) Closed by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.439958] morpheus kernel: evdi: [I] (card1) Opened by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.439969] morpheus kernel: evdi: [I] (card1) Closed by Task 2417 (gpu-manager) of process 2417 (gpu-manager)
+[   21.466108] morpheus kernel: evdi: [I] (card1) Opened by Task 2445 (Xorg.wrap) of process 2445 (Xorg.wrap)
+[   21.466126] morpheus kernel: evdi: [I] (card1) Closed by Task 2445 (Xorg.wrap) of process 2445 (Xorg.wrap)
+[   21.466139] morpheus kernel: evdi: [I] (card2) Opened by Task 2445 (Xorg.wrap) of process 2445 (Xorg.wrap)
+[   21.466150] morpheus kernel: evdi: [I] (card2) Closed by Task 2445 (Xorg.wrap) of process 2445 (Xorg.wrap)
+[   21.540168] morpheus kernel: evdi: [I] (card1) Opened by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.540206] morpheus kernel: evdi: [I] (card1) Closed by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.540447] morpheus kernel: evdi: [I] (card2) Opened by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.540467] morpheus kernel: evdi: [I] (card2) Closed by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.565512] morpheus kernel: evdi: [I] (card1) Opened by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.565543] morpheus kernel: evdi: [I] (card1) Closed by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.565565] morpheus kernel: evdi: [I] (card2) Opened by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.565583] morpheus kernel: evdi: [I] (card2) Closed by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.830448] morpheus kernel: evdi: [I] (card1) Opened by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.830477] morpheus kernel: evdi: [I] (card1) Closed by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.830558] morpheus kernel: evdi: [I] (card2) Opened by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.830577] morpheus kernel: evdi: [I] (card2) Closed by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.935546] morpheus kernel: evdi: [I] (card1) Opened by Task 2445 (Xorg) of process 2445 (Xorg)
+[   21.980603] morpheus kernel: evdi: [I] (card2) Opened by Task 2445 (Xorg) of process 2445 (Xorg)

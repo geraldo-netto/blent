@@ -1,0 +1,96 @@
+{
+  "observed_at": "2026-10-05T00:37:35.173470+02:00",
+  "user_clarification": {
+    "goal": "Use USB-C hub connected to desktop, including USB 2.0 tablet data support.",
+    "direct_connection": "Reported to work from past experience, not a new direct-cable observation.",
+    "tablet_battery": "User says tablet is charged; active charging through hub is not established.",
+    "tablet_port": "User reports USB 2.0 despite USB-C connector."
+  },
+  "usb_sysfs": [
+    {
+      "path": "3-2",
+      "product": "USB2.0 Hub",
+      "idVendor": "2109",
+      "idProduct": "2822",
+      "speed": "480",
+      "authorized": "1",
+      "bConfigurationValue": "1",
+      "power/control": "auto",
+      "power/runtime_status": "active",
+      "power/autosuspend_delay_ms": "-1000"
+    },
+    {
+      "path": "4-2",
+      "product": "USB3.1 Hub",
+      "idVendor": "2109",
+      "idProduct": "0822",
+      "speed": "5000",
+      "authorized": "1",
+      "bConfigurationValue": "1",
+      "power/control": "auto",
+      "power/runtime_status": "active",
+      "power/autosuspend_delay_ms": "-1000"
+    }
+  ],
+  "ports": [
+    {
+      "path": "3-2-port1",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    },
+    {
+      "path": "3-2-port2",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    },
+    {
+      "path": "3-2-port3",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    },
+    {
+      "path": "3-2-port4",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    },
+    {
+      "path": "4-2-port1",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    },
+    {
+      "path": "4-2-port2",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    },
+    {
+      "path": "4-2-port3",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    },
+    {
+      "path": "4-2-port4",
+      "connect_type": "hotplug",
+      "disable": "0",
+      "power/runtime_status": "active",
+      "power/control": "auto"
+    }
+  ],
+  "prior_usb2_evidence": "docs/benchmarks/2026-09-18-usb2-compatibility.md: RugKing Pad 2 Pro on path 1-1.4 through a 480 Mb/s hub; prior 1280x800/60 FPS H.264 trials passed. Not acceptance of present wiring.",
+  "usb_inventory": "Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 001 Device 002: ID 046d:c548 Logitech, Inc. Logi Bolt Receiver\nBus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 003 Device 003: ID 2109:2822 VIA Labs, Inc. USB2.0 Hub             \nBus 003 Device 004: ID 0bda:a760 Realtek Semiconductor Corp. Bluetooth 6.0 Radio\nBus 003 Device 006: ID 258a:01e3 SINO WEALTH Keyboard\nBus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 004 Device 002: ID 2109:0822 VIA Labs, Inc. USB3.1 Hub             \nBus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 005 Device 002: ID 8087:0032 Intel Corp. AX210 Bluetooth\n",
+  "adb_inventory": "List of devices attached\n\n"
+}

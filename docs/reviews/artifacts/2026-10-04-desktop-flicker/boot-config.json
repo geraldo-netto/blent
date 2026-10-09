@@ -1,0 +1,5 @@
+{
+  "/etc/modprobe.d/blent-gpu-order.conf": null,
+  "/usr/lib/modprobe.d/uscreen-evdi.conf": "# Two virtual displays available from boot: one per tablet slot. Creating\n# one later needs root, so it is cheaper to have them ready.\noptions evdi initial_device_count=2\n",
+  "/usr/lib/modules-load.d/uscreen.conf": "evdi\nuinput\n"
+}

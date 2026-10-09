@@ -1,0 +1,12 @@
+{
+  "started_at": "2026-10-05T00:39:44.148012+02:00",
+  "user_report": "Android recognizes power from the cable; user is changing tablet cable.",
+  "observations": [
+    {
+      "observed_at": "2026-10-05T00:39:44.166672+02:00",
+      "usb": "Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 001 Device 002: ID 046d:c548 Logitech, Inc. Logi Bolt Receiver\nBus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 003 Device 003: ID 2109:2822 VIA Labs, Inc. USB2.0 Hub             \nBus 003 Device 004: ID 0bda:a760 Realtek Semiconductor Corp. Bluetooth 6.0 Radio\nBus 003 Device 006: ID 258a:01e3 SINO WEALTH Keyboard\nBus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 004 Device 002: ID 2109:0822 VIA Labs, Inc. USB3.1 Hub             \nBus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 005 Device 002: ID 8087:0032 Intel Corp. AX210 Bluetooth\n",
+      "adb": "List of devices attached\n\n"
+    }
+  ],
+  "ended_at": "2026-10-05T00:41:45.080446+02:00"
+}

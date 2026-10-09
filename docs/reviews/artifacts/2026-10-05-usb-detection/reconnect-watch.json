@@ -1,0 +1,89 @@
+{
+  "ended_at": "2026-10-05T00:39:44.001792+02:00",
+  "observations": [
+    {
+      "observed_at": "2026-10-05T00:38:43.811634+02:00",
+      "usb": [
+        {
+          "path": "1-2",
+          "idVendor": "046d",
+          "idProduct": "c548",
+          "product": "USB Receiver",
+          "speed": "12"
+        },
+        {
+          "path": "3-1",
+          "idVendor": "258a",
+          "idProduct": "01e3",
+          "product": "Keyboard",
+          "speed": "12"
+        },
+        {
+          "path": "3-2",
+          "idVendor": "2109",
+          "idProduct": "2822",
+          "product": "USB2.0 Hub",
+          "speed": "480"
+        },
+        {
+          "path": "3-2.3",
+          "idVendor": "0bda",
+          "idProduct": "a760",
+          "product": "Bluetooth 6.0 Radio",
+          "speed": "12"
+        },
+        {
+          "path": "4-2",
+          "idVendor": "2109",
+          "idProduct": "0822",
+          "product": "USB3.1 Hub",
+          "speed": "5000"
+        },
+        {
+          "path": "5-1",
+          "idVendor": "8087",
+          "idProduct": "0032",
+          "speed": "12"
+        },
+        {
+          "path": "usb1",
+          "idVendor": "1d6b",
+          "idProduct": "0002",
+          "product": "xHCI Host Controller",
+          "speed": "480"
+        },
+        {
+          "path": "usb2",
+          "idVendor": "1d6b",
+          "idProduct": "0003",
+          "product": "xHCI Host Controller",
+          "speed": "10000"
+        },
+        {
+          "path": "usb3",
+          "idVendor": "1d6b",
+          "idProduct": "0002",
+          "product": "xHCI Host Controller",
+          "speed": "480"
+        },
+        {
+          "path": "usb4",
+          "idVendor": "1d6b",
+          "idProduct": "0003",
+          "product": "xHCI Host Controller",
+          "speed": "10000"
+        },
+        {
+          "path": "usb5",
+          "idVendor": "1d6b",
+          "idProduct": "0002",
+          "product": "xHCI Host Controller",
+          "speed": "480"
+        }
+      ],
+      "adb": "List of devices attached\n\n",
+      "adb_exit": 0
+    }
+  ],
+  "note": "Read-only watch after asking for tablet-only reconnect. No physical reconnect is assumed without user confirmation or an observed event."
+}
