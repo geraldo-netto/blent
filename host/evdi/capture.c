@@ -278,18 +278,13 @@ static void on_update_ready(int buffer_to_be_updated, void *user_data) {
     }
     capture->update_pending = 0;
     grab_now(capture);
-    /* Ask for the next frame straight away rather than at the next tick of
-       the target period. The cycle is serial by the driver's design — the
-       compositor's flip only completes once we have copied the frame out,
-       and it renders the next one after that — so at 2960x1848 the two
-       halves (about 9 ms in KWin, 6 ms in the grab) already take a frame
-       period or more. Gating the request on the period as well pushed the
-       next request past the compositor's vblank slot, so a 30 fps target
-       delivered 24 and a 90 fps target 50-ish. The mode's refresh rate is
-       what paces the compositor; nothing here needs to hold it back. Asking
-       first from inside this handler, before the grab, was tried and is
-       worse (16 fps): the driver answers at once with the not-yet-grabbed
-       damage and the cycle falls apart. */
+    /* Pipeline mode requests again after GRABPIX without adding a helper
+       period to the driver/compositor handshake. GRABPIX completes a pending
+       flip (T599); requesting before copying can expose the same damage again.
+       Historical cadence observations motivated this ordering, but mode refresh
+       does not universally bound compositor submissions (upstream issue512).
+       Shared publication pacing limits Blent output, not compositor rendering.
+       T750 retains native pacing/race validation; this preserves current policy. */
     if (capture->pipeline)
         capture->last_request_ms = 0;
 }
