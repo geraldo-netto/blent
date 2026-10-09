@@ -2,6 +2,22 @@
 use std::{path::PathBuf, process::Command};
 
 #[test]
+fn t764_conversion_uses_actual_padded_stride() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let dir = tempfile::tempdir().unwrap();
+    let binary = dir.path().join("stride-test");
+    let output = Command::new("cc").args([
+        "-std=c11", "-O1", "-g", "-pthread", "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all", "-fno-pie", "-no-pie", "-I",
+    ]).arg(root.join("evdi")).arg(root.join("tests/benchmark_stride.c"))
+        .arg(root.join("evdi/conversion.c")).arg(root.join("evdi/frame_exchange.c"))
+        .arg("-o").arg(&binary).output().unwrap();
+    assert!(output.status.success(), "{}", String::from_utf8_lossy(&output.stderr));
+    let output = Command::new(binary).output().unwrap();
+    assert!(output.status.success(), "{}", String::from_utf8_lossy(&output.stderr));
+}
+
+#[test]
 fn t761_producer_rejects_invalid_geometry_before_conversion() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).parent().unwrap().to_owned();
     let dir = std::env::temp_dir().join(format!("blent-t761-{}", std::process::id()));

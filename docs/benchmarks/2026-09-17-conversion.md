@@ -1,5 +1,12 @@
 # C conversion and worker budgets — 2026-09-17
 
+Historical replay caveat (T764, corrected 2026-10-09): the replay allocated
+64 bytes of padding per source row but submitted a packed stride to conversion.
+The recorded timings/checksums therefore describe that mismatched layout, not
+a correctly padded source. Archived measurements remain historical; rerun the
+corrected harness before drawing padded-layout performance conclusions. The
+independent conversion correctness suite is separate from these measurements.
+
 T383 retains portable compiler vectorization and specializes the scale-2/3/4
 box filters. Dirty ranges use byte-range OR/memset operations across all three
 buffer histories. Empty damage skips dispatch; sparse damage runs on the caller.

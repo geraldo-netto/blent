@@ -55,7 +55,7 @@ static void mark_work(struct lane *lane) {
 static void convert(struct lane *lane) {
     frame_exchange_t *f = &lane->frames;
     conv_job_t frame = {.src=lane->source, .ydst=f->fill, .uvdst=f->fill + f->width * f->height,
-        .w=lane->width, .h=lane->height, .stride=lane->width * 4,
+        .w=lane->width, .h=lane->height, .stride=lane->stride,
         .ow=f->width, .oh=f->height, .scale=lane->scale,
         .cy0=0, .cy1=f->chroma_rows, .dirty=f->dirty_fill};
     conv_pool_convert(&lane->pool, &frame);
