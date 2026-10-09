@@ -1,0 +1,4 @@
+[evdi-helper] Mode: 640x480@60Hz 32bpp fmt=0x34325258
+MODE_CHANGED 640 480 60
+STREAM_SIZE 640 480
+[evdi-helper] Buffer 0 registered: 640x480 stride=2560 (row_bytes=2560)

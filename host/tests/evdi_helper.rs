@@ -87,6 +87,7 @@ impl Harness {
                 | "T778"
                 | "T783"
                 | "T750-async"
+                | "T750-snapshot"
                 | "T082"
                 | "T274"
                 | "T340"
@@ -448,4 +449,9 @@ fn t783_native_framebuffer_avoids_swizzle_and_preserves_mode_lifetime() {
 #[test]
 fn t750_ready_callbacks_acknowledge_without_erasing_rate_deadlines() {
     Harness::build("T750-async").run("T750-async");
+}
+
+#[test]
+fn t750_coalesced_snapshots_preserve_pixels_order_and_retained_leases() {
+    Harness::build("T750-snapshot").run("T750-snapshot");
 }

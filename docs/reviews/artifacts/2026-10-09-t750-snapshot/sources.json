@@ -1,0 +1,12 @@
+{
+  "host/evdi/capture.c": "2b06d5777d19247259eacf68bffb8fb4d1deacfd65d694129c3c39a364b5a096",
+  "host/evdi/raw_ring.c": "867e3b3aec9f777e63d89423485053cd7b0e56b99a102b1be81c6312ee4d13c0",
+  "host/tests/snapshot_order.c": "21dca9dfa8f84081d89384deca29f0de66708f8a761607c38032943ea1c7223a",
+  "host/tests/evdi_helper.rs": "cd51d117f952eee9413b95603af919619107daf4262e2a8b5fbc769abd1bb987",
+  "host/tests/evdi_helper_test.c": "f81c247d442b39e8c04ef22469185f86f5a22702b1b9267f5c383171842c9946",
+  "scripts/benchmarks/evdi_snapshot/wayland.c": "0d6c792cdf7ead6e0822f49835173c9965f5a2b7cd51e05101de8897931e94d2",
+  "scripts/benchmarks/evdi_snapshot/consume.c": "6e2d14088ed2796041378fb8c337b10c4cde63ca81a44ec5e7077cd6d389c397",
+  "scripts/benchmarks/evdi_snapshot/observe.c": "33405e1b728746980271c3e397ae7c623c4754a5589fc8103f35ca8d25e90daa",
+  "scripts/benchmarks/evdi_snapshot/pattern.h": "c539433deeb17573c102e944ab01fbdcafe645f0cff55bb3843000916031fecf",
+  "scripts/benchmarks/evdi_snapshot/produce.c": "65bd46197091143f7c529eac7b6d8de339e9b5c6abe97dbfdb55fe07327bcd1c"
+}

@@ -1478,6 +1478,7 @@ static void test_t415_rounding(void) {
 #include "normalization_work.c"
 #include "native_format.c"
 #include "async_pacing.c"
+#include "snapshot_order.c"
 #include "helper_simd.c"
 #include "shared_damage.c"
 #include "fifo_demand.c"
@@ -1534,6 +1535,7 @@ int main(int argc, char **argv) {
         {"T623", test_t623},
         {"T750-period", test_t750_period},
         {"T750-async", test_t750_async},
+        {"T750-snapshot", test_t750_snapshot_order},
         {"T767", test_t767_boundaries},
         {"T760", test_t760_failed_mode},
         {"T762", test_t762_arguments},

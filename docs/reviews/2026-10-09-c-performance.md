@@ -378,3 +378,20 @@ GRAB still precedes every subsequent request after readiness. This removes extra
 capture work and enforces the requested cap, without claiming a client-FPS gain.
 Driver atomicity, frame identity and presentation/damage ordering remain unproven;
 T750 retains those acceptance requirements. Stock dependencies are unchanged.
+
+
+## T750 snapshot research follow-up
+
+[Deterministic snapshot tests](artifacts/2026-10-09-t750-snapshot/README.md)
+reproduce no mixed or backward snapshots through stock1.15.1/distro1.14.15
+CPU-backed KMS or Weston13 pixman. All four passing runs reach frame240, with
+1,165 correct NV12 outputs including keepalives. A permanent normal-suite test
+now covers coalesced/reordered/duplicate damage and retained writer leases.
+GCC/Clang ASan/UBSan and all 207 individual coverage checks pass.
+
+Weston's presentation timestamps/sequences are zero; Blent uses its own capture
+clock. Two GL runs instead fail to deliver a recognizable source pattern before
+conversion. Their cause belongs to T749 render/import/readback investigation;
+they cannot validate damage order. T750 is blocked on that concrete prerequisite,
+not on speculative extra NV12 copying. No EVDI or libevdi changes, new Blent runtime
+heuristics, downloads or live-host changes were made.
