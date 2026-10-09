@@ -9,7 +9,7 @@ import org.json.JSONObject
 /** Only positive, exact-format capabilities authorize a richer selection. */
 internal object MediaInventory {
     fun describe(info: MediaCodecInfo, codec: String, width: Int, height: Int, fps: Int): JSONObject? {
-        if (!identifier(info.name)) return null
+        if (!VideoProfiles.identifier(info.name)) return null
         val row = JSONObject().put("name", info.name).put("codec", codec)
             .put("hardware", nullable { if (Build.VERSION.SDK_INT >= 29) info.isHardwareAccelerated else null })
             .put("low_latency", JSONObject.NULL).put("operating_rate", JSONObject.NULL)
@@ -42,5 +42,4 @@ internal object MediaInventory {
     } catch (_: Exception) { null }
 
     private fun nullable(query: () -> Any?): Any = try { query() ?: JSONObject.NULL } catch (_: Exception) { JSONObject.NULL }
-    internal fun identifier(value: String): Boolean = value.isNotEmpty() && value.length <= 128 && value.all { it.code in 33..126 }
 }

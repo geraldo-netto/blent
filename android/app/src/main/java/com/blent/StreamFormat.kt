@@ -6,12 +6,12 @@ import org.json.JSONObject
 internal object StreamFormat {
     fun read(message: JSONObject, previous: DecoderFormat?, nativeWidth: Int, nativeHeight: Int, defaultFps: Int): DecoderFormat? = try {
         val mime = if (message.has("codec")) VideoCodec.types[message.getString("codec")]
-            else previous?.mimeType ?: VideoReceiver.MIME_TYPE
+            else previous?.mimeType ?: VideoWire.MIME_TYPE
         requireNotNull(mime) { "Unsupported host codec" }
         val (width, height) = dimensions(message, previous, nativeWidth, nativeHeight)
         val fps = JsonNumbers.optional(message, "fps", previous?.fps ?: defaultFps, 10, 90)
         require(fps in 10..90) { "Invalid stream FPS" }
-        val selection = DecoderSelection.read(message)
+        val selection = DecoderSelectionJson.read(message)
         require(selection == null || VideoCodec.types[selection.codec] == mime) { "Decoder selection codec mismatch" }
         DecoderFormat(mime, width, height, fps, selection = selection)
     } catch (_: Exception) { null }

@@ -34,8 +34,8 @@ class AudioContractTest {
         org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
         assertEquals(endpoint(), AudioInvitations.microphone.value)
         for (value in listOf(Int.MIN_VALUE, -1, 0, 1, 2, 3, Int.MAX_VALUE)) {
-            assertEquals(value in 1..2, AudioEndpoint.read(Intent(base).putExtra("direction", value)) != null)
-            assertEquals(value in 1..2, AudioEndpoint.read(Intent(base).putExtra("processing", value)) != null)
+            assertEquals(value in 1..2, AudioEndpointIntent.read(Intent(base).putExtra("direction", value)) != null)
+            assertEquals(value in 1..2, AudioEndpointIntent.read(Intent(base).putExtra("processing", value)) != null)
         }
         for (value in 0..220) assertEquals(value in 20..200 && value % 10 == 0, endpoint().copy(bufferMs = value).valid())
         for (value in listOf(-1, 0, 1, 65535, 65536, Int.MAX_VALUE)) assertEquals(value in 1..65535, endpoint().copy(port = value).valid())

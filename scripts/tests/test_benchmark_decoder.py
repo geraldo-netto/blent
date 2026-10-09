@@ -67,9 +67,13 @@ class DecoderBenchmarkTests(unittest.TestCase):
                              (project.SOURCE / 'VideoCodec.kt').read_text())
             self.assertIn('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3',
                           (output / 'app/build.gradle.kts').read_text())
-            for name in ['MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt']:
+            for name in ['MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'VideoContract.kt',
+                         'VideoProfiles.kt', 'DecoderCapabilities.kt', 'DecoderSelectionJson.kt',
+                         'DecoderSelectionAndroid.kt']:
                 self.assertEqual((output / 'app/src/main/java' / name).read_text(),
                                  (project.SOURCE / name).read_text(), 'T478: missing production negotiation dependency')
+            self.assertIn('DecoderSelectionJson.read(selection)',
+                          (output / 'app/src/main/java/ProfileBridge.kt').read_text(), 'T822: replay must use JSON adapter')
             probe = output / 'app/src/main/java/NegotiatedInventory.kt'
             self.assertTrue(probe.exists())
             probe.unlink()

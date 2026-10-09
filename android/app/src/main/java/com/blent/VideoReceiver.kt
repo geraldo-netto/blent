@@ -15,15 +15,15 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     companion object {
         const val HOST = "127.0.0.1"
         const val PORT = 8890
-        const val MIME_TYPE = "video/avc"
-        const val MIME_TYPE_HEVC = "video/hevc"
+        const val MIME_TYPE = VideoWire.MIME_TYPE
+        const val MIME_TYPE_HEVC = VideoWire.MIME_TYPE_HEVC
         const val TAG = "BlentVideo"
-        const val MAX_FRAME_SIZE = 8 * 1024 * 1024
-        const val PACKET_TYPE_CONFIG = 0
-        const val PACKET_TYPE_FRAME = 1
+        const val MAX_FRAME_SIZE = VideoWire.MAX_FRAME_SIZE
+        const val PACKET_TYPE_CONFIG = VideoWire.PACKET_TYPE_CONFIG
+        const val PACKET_TYPE_FRAME = VideoWire.PACKET_TYPE_FRAME
 
         /** type byte + 4-byte big-endian sequence number */
-        const val FRAME_HEADER_SIZE = 5
+        const val FRAME_HEADER_SIZE = VideoWire.FRAME_HEADER_SIZE
 
         /**
          * Acknowledge every Nth rendered frame.
@@ -264,7 +264,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     private fun receivePackets(
         generation: Long, connection: Socket, input: InputStream, sessionStatistics: ReceiverStatistics
     ) {
-        val reader = VideoPacketReader(input)
+        val reader = VideoPacketReader(input) { Log.w(TAG, it) }
         val packets = VideoPackets(generation)
         while (isCurrent(generation) && !connection.isClosed) {
             val codec = synchronized(this@VideoReceiver) {

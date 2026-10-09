@@ -39,16 +39,16 @@ class FormatBoundaryCorpusTest {
         for (depth in listOf(8, 9, 10)) {
             val message = selection()
             message.getJSONObject("decoder_selection").getJSONObject("stream").put("profile", "unknown").put("depth", depth)
-            assertThrows(IllegalArgumentException::class.java) { DecoderSelection.read(message) }
+            assertThrows(IllegalArgumentException::class.java) { DecoderSelectionJson.read(message) }
         }
         for (level in listOf(14, 19, 23, 33, 43, 53, 63, 70, 73)) {
             val message = selection()
             message.getJSONObject("decoder_selection").getJSONObject("stream").put("level", level)
-            assertThrows(IllegalArgumentException::class.java) { DecoderSelection.read(message) }
+            assertThrows(IllegalArgumentException::class.java) { DecoderSelectionJson.read(message) }
         }
         val message = selection()
         message.getJSONObject("decoder_selection").getJSONObject("stream").put("codec", "unsupported")
-        assertThrows(IllegalArgumentException::class.java) { DecoderSelection.read(message) }
+        assertThrows(IllegalArgumentException::class.java) { DecoderSelectionJson.read(message) }
     }
 
     @Test fun t497_profileLookupMutationCorpusNeverInventsAnAndroidProfile() {

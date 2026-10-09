@@ -40,7 +40,7 @@ class NumericFormatBoundsTest {
         for ((field, normal) in listOf("decoder_protocol" to 2, "depth" to 8, "level" to 41, "operating_rate" to 120)) {
             for (value in listOf<Any>(normal.toLong() + (1L shl 32), normal - (1L shl 32),
                 normal + 0.5, "$normal", Long.MIN_VALUE, Long.MAX_VALUE)) {
-                val error = runCatching { DecoderSelection.read(mutatedSelection(field, value)) }.exceptionOrNull()
+                val error = runCatching { DecoderSelectionJson.read(mutatedSelection(field, value)) }.exceptionOrNull()
                 assertTrue("T517 accepted $field=$value or failed unexpectedly: $error", error is IllegalArgumentException)
             }
         }
@@ -57,8 +57,8 @@ class NumericFormatBoundsTest {
         val previous = DecoderFormat("video/hevc", 1280, 800, 30)
         assertEquals(previous, StreamFormat.read(JSONObject(), previous, 0, 0, 60))
         assertEquals(DecoderFormat("video/avc", 1920, 1080, 60), StreamFormat.read(JSONObject(), null, 0, 0, 60))
-        for (rate in listOf(10, 180)) assertEquals(rate, DecoderSelection.read(mutatedSelection("operating_rate", rate))!!.operatingRate)
-        assertNull(DecoderSelection.read(mutatedSelection("operating_rate", JSONObject.NULL))!!.operatingRate)
+        for (rate in listOf(10, 180)) assertEquals(rate, DecoderSelectionJson.read(mutatedSelection("operating_rate", rate))!!.operatingRate)
+        assertNull(DecoderSelectionJson.read(mutatedSelection("operating_rate", JSONObject.NULL))!!.operatingRate)
     }
 
     @Test fun t517_seededOutOfRangeJsonNumbersCannotReenterTheValidRange() {
@@ -69,7 +69,7 @@ class NumericFormatBoundsTest {
             for (number in listOf(high + valid, valid - high)) {
                 assertNull(StreamFormat.read(greeting().put("fps", number), null, 1920, 1080, 60))
                 assertThrows(IllegalArgumentException::class.java) {
-                    DecoderSelection.read(mutatedSelection("operating_rate", number))
+                    DecoderSelectionJson.read(mutatedSelection("operating_rate", number))
                 }
             }
         }

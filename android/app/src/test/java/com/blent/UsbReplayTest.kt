@@ -19,7 +19,7 @@ import org.robolectric.annotation.Config
 
 // The generated APK bridge binds the same production format/receipt APIs.
 internal fun requestFormat(mime: String, width: Int, height: Int, fps: Int, selection: JSONObject?) =
-    DecoderFormat(mime, width, height, fps, selection = selection?.let(DecoderSelection::read))
+    DecoderFormat(mime, width, height, fps, selection = selection?.let(DecoderSelectionJson::read))
 internal fun replayReceipt(decoder: DecoderSession) = decoder.configuredSelectionReceipt
 
 @RunWith(RobolectricTestRunner::class)

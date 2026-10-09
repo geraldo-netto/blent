@@ -171,7 +171,7 @@ class CameraHostControlTest {
         val base = Intent(app, CameraReceiver::class.java).putExtra("token", "b".repeat(64))
             .putExtra("port", 12345).putExtra("width", 1280).putExtra("height", 720).putExtra("fps", 30).putExtra("bitrate", 3000)
         for (lens in listOf(Int.MIN_VALUE, -2, -1, 0, 1, 2, Int.MAX_VALUE)) {
-            val read = CameraEndpoint.read(Intent(base).putExtra("lens", lens).putExtra("background", true))
+            val read = CameraEndpointIntent.read(Intent(base).putExtra("lens", lens).putExtra("background", true))
             assertEquals(lens in -1..1, read != null)
             if (read != null) {
                 assertTrue(read.background)

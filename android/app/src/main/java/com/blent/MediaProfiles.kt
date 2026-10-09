@@ -14,22 +14,15 @@ internal object MediaProfiles {
         "vp9" to listOf(Profile("profile0", 8, Levels.VP9Profile0), Profile("profile2", 10, Levels.VP9Profile2)),
         "av1" to listOf(Profile("main", 8, Levels.AV1ProfileMain8), Profile("main", 10, Levels.AV1ProfileMain10)),
     )
-    private val levels = mapOf(
-        "h264" to listOf(10, 9, 11, 12, 13, 20, 21, 22, 30, 31, 32, 40, 41, 42, 50, 51, 52, 60, 61, 62),
-        "hevc" to listOf(10, 20, 21, 30, 31, 40, 41, 50, 51, 52, 60, 61, 62),
-        "vp9" to listOf(10, 11, 20, 21, 30, 31, 40, 41, 50, 51, 52, 60, 61, 62),
-        "av1" to (2..7).flatMap { major -> (0..3).map { major * 10 + it } },
-    )
     fun profile(codec: String, android: Int): Profile? = profiles[codec]?.firstOrNull { it.android == android }
     fun profile(codec: String, name: String, depth: Int): Profile? = profiles[codec]?.firstOrNull { it.name == name && it.depth == depth }
-    fun validLevel(codec: String, level: Int) = levels[codec]?.contains(level) == true
 
     fun level(codec: String, android: Int): Int? {
         if (android <= 0 || Integer.bitCount(android) != 1) return null
         val bit = Integer.numberOfTrailingZeros(android)
         // High-tier HEVC capability alone does not authorize main-tier output.
         if (codec == "hevc" && bit % 2 != 0) return null
-        return levels[codec]?.getOrNull(if (codec == "hevc") bit / 2 else bit)
+        return VideoProfiles.levels[codec]?.getOrNull(if (codec == "hevc") bit / 2 else bit)
     }
 
     fun describe(codec: String, pair: Levels): JSONObject? {

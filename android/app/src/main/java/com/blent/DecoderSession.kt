@@ -12,9 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import com.blent.VideoReceiver.Companion.ACK_EVERY
 import com.blent.VideoReceiver.Companion.TAG
 
-internal data class DecoderFormat(val mimeType: String, val width: Int, val height: Int, val fps: Int,
-                                  val codecPrivate: ByteArray? = null, val selection: DecoderSelection? = null)
-
 internal interface DecoderEvents {
     fun rendered(sequence: Int, decodeMicros: Int)
     fun invalidated()

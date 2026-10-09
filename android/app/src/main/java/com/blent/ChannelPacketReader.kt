@@ -18,7 +18,7 @@ internal data class ChannelPacketHeader(
 
 /** Experimental framed input. Only the tiny wire prefix is staged; payload is
  * read into the caller's buffer. Owns its channel/selector, including cancellation.
- * The current VideoReceiver still selects its reusable InputStream/heap path. */
+ * The current receiver still selects its reusable InputStream/heap path. */
 internal class ChannelPacketReader(
     private val channel: SocketChannel,
     timeoutMillis: Long = 10_000,
@@ -45,7 +45,7 @@ internal class ChannelPacketReader(
         prefix.clear().limit(4)
         readExact(prefix)
         val wireSize = prefix.getInt(0)
-        if (wireSize <= 1 || wireSize > VideoReceiver.MAX_FRAME_SIZE + 1) {
+        if (wireSize <= 1 || wireSize > VideoWire.MAX_FRAME_SIZE + 1) {
             throw ProtocolException("Invalid packet size: $wireSize")
         }
         prefix.clear().limit(minOf(wireSize, 5))
@@ -57,10 +57,10 @@ internal class ChannelPacketReader(
     }
 
     private fun parseHeader(size: Int): ChannelPacketHeader = when (val type = prefix.get().toInt() and 0xff) {
-        VideoReceiver.PACKET_TYPE_CONFIG -> ChannelPacketHeader(size - 1, true, 0)
-        VideoReceiver.PACKET_TYPE_FRAME -> {
-            if (size <= VideoReceiver.FRAME_HEADER_SIZE) throw ProtocolException("Truncated frame: $size")
-            ChannelPacketHeader(size - VideoReceiver.FRAME_HEADER_SIZE, false, prefix.int.toLong() and 0xffff_ffffL)
+        VideoWire.PACKET_TYPE_CONFIG -> ChannelPacketHeader(size - 1, true, 0)
+        VideoWire.PACKET_TYPE_FRAME -> {
+            if (size <= VideoWire.FRAME_HEADER_SIZE) throw ProtocolException("Truncated frame: $size")
+            ChannelPacketHeader(size - VideoWire.FRAME_HEADER_SIZE, false, prefix.int.toLong() and 0xffff_ffffL)
         }
         else -> throw ProtocolException("Unknown packet type: $type")
     }

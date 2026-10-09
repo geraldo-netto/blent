@@ -1,13 +1,11 @@
 package com.blent
 
-import android.util.Log
 import java.io.EOFException
 import java.io.InputStream
-import com.blent.VideoReceiver.Companion.FRAME_HEADER_SIZE
-import com.blent.VideoReceiver.Companion.MAX_FRAME_SIZE
-import com.blent.VideoReceiver.Companion.PACKET_TYPE_CONFIG
-import com.blent.VideoReceiver.Companion.PACKET_TYPE_FRAME
-import com.blent.VideoReceiver.Companion.TAG
+import com.blent.VideoWire.FRAME_HEADER_SIZE
+import com.blent.VideoWire.MAX_FRAME_SIZE
+import com.blent.VideoWire.PACKET_TYPE_CONFIG
+import com.blent.VideoWire.PACKET_TYPE_FRAME
 
 /** Synchronous consumers must finish using the borrowed bytes before read(). */
 internal interface VideoPacketSink {
@@ -17,7 +15,7 @@ internal interface VideoPacketSink {
 
 /** Length/type/sequence framing, independent of codec, Surface and session state.
  * Storage belongs to this connection and is reused without per-frame allocation. */
-internal class VideoPacketReader(private val input: InputStream) {
+internal class VideoPacketReader(private val input: InputStream, private val diagnostic: (String) -> Unit = {}) {
     private val header = ByteArray(4)
     private var data = ByteArray(512 * 1024)
     var size = 0; private set
@@ -26,7 +24,7 @@ internal class VideoPacketReader(private val input: InputStream) {
         readExact(header, 4)
         size = bigEndianInt(header, 0)
         if (size <= 1 || size > MAX_FRAME_SIZE + 1) {
-            Log.w(TAG, "Invalid packet size: $size, reconnecting")
+            diagnostic("Invalid packet size: $size, reconnecting")
             return false
         }
         // T587: retain growth headroom only where a future legal packet can use it.
@@ -40,13 +38,13 @@ internal class VideoPacketReader(private val input: InputStream) {
             PACKET_TYPE_CONFIG -> sink.configuration(data, 1, size - 1)
             PACKET_TYPE_FRAME -> {
                 if (size <= FRAME_HEADER_SIZE) {
-                    Log.w(TAG, "Truncated frame packet: $size, reconnecting")
+                    diagnostic("Truncated frame packet: $size, reconnecting")
                     return false
                 }
                 sink.frame(bigEndianInt(data, 1), data, FRAME_HEADER_SIZE, size - FRAME_HEADER_SIZE)
             }
             else -> {
-                Log.w(TAG, "Unknown packet type: $type, reconnecting")
+                diagnostic("Unknown packet type: $type, reconnecting")
                 return false
             }
         }

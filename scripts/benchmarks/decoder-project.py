@@ -13,7 +13,9 @@ SOURCE = ROOT / 'android/app/src/main/java/com/blent'
 SHARED = ['DecoderSession.kt', 'VideoTiming.kt', 'DecoderOutputWatchdog.kt', 'CodecLifetime.kt',
           'DecoderDiagnostics.kt', 'DecoderInput.kt', 'DecoderMailbox.kt', 'CallbackDecoder.kt', 'DecoderConfiguration.kt',
           'ChannelPacketReader.kt', 'VideoPacketReader.kt', 'DecodedOutputDrainer.kt', 'VideoCodec.kt',
-          'MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'JsonNumbers.kt']
+          'MediaProfiles.kt', 'MediaInventory.kt', 'DecoderSelection.kt', 'JsonNumbers.kt',
+          'VideoContract.kt', 'VideoProfiles.kt', 'DecoderCapabilities.kt',
+          'DecoderSelectionJson.kt', 'DecoderSelectionAndroid.kt']
 MANIFEST = '''<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 <uses-permission android:name="android.permission.INTERNET" />
 <application android:theme="@android:style/Theme.Material.Light.NoActionBar" android:label="Blent decoder replay">
@@ -128,7 +130,8 @@ internal fun observeReplayCodec(decoder: DecoderSession, observe: (android.media
 
 def selection_bridge(directory):
     rich = (directory / 'originals/DecoderSelection.kt').exists()
-    expression = 'base.copy(selection = DecoderSelection.read(selection))' if rich else 'error("Revision lacks rich negotiation")'
+    reader = 'DecoderSelectionJson' if (directory / 'originals/DecoderSelectionJson.kt').exists() else 'DecoderSelection'
+    expression = f'base.copy(selection = {reader}.read(selection))' if rich else 'error("Revision lacks rich negotiation")'
     receipt = 'decoder.configuredSelectionReceipt' if 'configuredSelectionReceipt' in (directory / 'originals/DecoderSession.kt').read_text() else 'null'
     return '''
 internal fun replayFormat(clip: ReplayClip, selection: org.json.JSONObject?): DecoderFormat {
