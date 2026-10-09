@@ -1,0 +1,199 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "pipeline_trials": [
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 73897770,
+      "cpu_ns": 72505538,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 73588577,
+      "cpu_ns": 72377409,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 70702884,
+      "cpu_ns": 69641996,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 69008192,
+      "cpu_ns": 67879346,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 68734231,
+      "cpu_ns": 67795695,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 68538692,
+      "cpu_ns": 67606507,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 68877077,
+      "cpu_ns": 67830891,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "packet",
+      "count": 500,
+      "elapsed_ns": 68761500,
+      "cpu_ns": 67819000,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 418876769,
+      "cpu_ns": 416329493,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 109733115,
+      "cpu_ns": 109181268,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 103498308,
+      "cpu_ns": 102772686,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 100418693,
+      "cpu_ns": 99754269,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 99793884,
+      "cpu_ns": 99279268,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 100188615,
+      "cpu_ns": 99486386,
+      "allocated_bytes": 1114112,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 99526038,
+      "cpu_ns": 99071423,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "direct-parser-trial",
+      "count": 500,
+      "elapsed_ns": 100065269,
+      "cpu_ns": 99447077,
+      "allocated_bytes": 1081344,
+      "checksum": 9088000
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 31555769,
+      "cpu_ns": 31224844,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 30381230,
+      "cpu_ns": 30146154,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 28006923,
+      "cpu_ns": 27859461,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 27243692,
+      "cpu_ns": 27128116,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 27094231,
+      "cpu_ns": 26983344,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 27087846,
+      "cpu_ns": 26989231,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 27308692,
+      "cpu_ns": 27129229,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    },
+    {
+      "mode": "output",
+      "count": 500,
+      "elapsed_ns": 27093885,
+      "cpu_ns": 26972692,
+      "allocated_bytes": 32768,
+      "checksum": 0
+    }
+  ],
+  "run_id": "pipeline-candidate-1"
+}

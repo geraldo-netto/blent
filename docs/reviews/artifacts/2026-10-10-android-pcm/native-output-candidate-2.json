@@ -1,0 +1,11 @@
+{
+  "sdk": 36,
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "count": 100,
+  "elapsed_ns": 901818423,
+  "cpu_ns": 440425922,
+  "allocated_bytes": 262144,
+  "before": "RugKing Pad 2 Pro \u00b7 native buffer 3848 frames \u00b7 played 0 frames \u00b7 underruns 0",
+  "after": "RugKing Pad 2 Pro \u00b7 native buffer 3848 frames \u00b7 played 44160 frames \u00b7 underruns 0",
+  "run_id": "native-output-candidate-2"
+}

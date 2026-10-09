@@ -11,6 +11,26 @@ class AudioPacketsTest {
         repeat(480 * direction) { buffer.writeShortLe(if (it % 2 == 0) 1234 else -4321) }
         return buffer.readByteArray()
     }
+    @Test fun t797_payloadStagingDoesNotAllocatePerPacketOrAliasOwnedPcm() {
+        val source = Buffer().write(packet(0, 1)).write(packet(1, 2))
+        var payloadCopies = 0
+        val counted = java.lang.reflect.Proxy.newProxyInstance(okio.BufferedSource::class.java.classLoader,
+            arrayOf(okio.BufferedSource::class.java)) { _, method, args ->
+            if (method.name == "readByteArray" && args?.firstOrNull() == 1920L) payloadCopies++
+            try { method.invoke(source, *(args ?: emptyArray())) }
+            catch (error: java.lang.reflect.InvocationTargetException) { throw error.targetException }
+        } as okio.BufferedSource
+        val reader = AudioPackets(7, 2)
+        val first = reader.read(counted)
+        val saved = first.samples.clone()
+        val second = reader.read(counted)
+        assertArrayEquals(saved, first.samples)
+        assertNotSame(first.samples, second.samples)
+        second.samples.fill(0)
+        assertArrayEquals(saved, first.samples)
+        assertEquals("T797 allocates payload bytes before owned PCM", 0, payloadCopies)
+    }
+
     @Test fun t719_frameBoundsReplayGapsAndUnsignedClocks() {
         for (direction in 1..2) {
             val reader = AudioPackets(7, direction)

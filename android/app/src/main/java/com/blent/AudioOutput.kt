@@ -4,11 +4,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlin.coroutines.coroutineContext
 
-internal data class OutputWrite(val bytes: Int, val dead: Boolean = false)
+/** Counts/offsets use signed PCM samples; stereo writes contain complete pairs. */
+internal data class OutputWrite(val samples: Int, val dead: Boolean = false)
 internal interface OutputTrack : AutoCloseable {
     fun play()
     fun flush()
-    fun write(bytes: ByteArray, offset: Int, count: Int): OutputWrite
+    /** Nonblocking borrow for this call only; never retain or mutate samples. */
+    fun write(samples: ShortArray, offset: Int, count: Int): OutputWrite
     fun route(): Int?
     fun clockSample(): AudioClockSample? = null
     fun description(): String
@@ -30,7 +32,6 @@ internal class AudioOutput(private val open: () -> OutputTrack, private val focu
     private var closed = false
     private var nativePaused = true
     private var route = AudioRoute()
-    private val bytes = ByteArray(1920)
     init { try { track = open() } catch (error: Exception) { focus.close(); throw error } }
     override val paused get() = focus.paused()
     override fun start() { check(!closed); synchronizeFocus() }
@@ -53,25 +54,22 @@ internal class AudioOutput(private val open: () -> OutputTrack, private val focu
         check(now >= chunk.at) { "Audio clock moved backwards." }
         if (now - chunk.at > 200) { flush(); return SpeakerWrite.Reset }
         if (chunk.discontinuity) flush()
-        chunk.samples.forEachIndexed { index, sample ->
-            bytes[index * 2] = sample.toByte(); bytes[index * 2 + 1] = (sample.toInt() shr 8).toByte()
-        }
-        return transfer()
+        return transfer(chunk.samples)
     }
-    private suspend fun transfer(): SpeakerWrite {
+    private suspend fun transfer(samples: ShortArray): SpeakerWrite {
         val began = clock()
         var offset = 0
-        while (offset < bytes.size) {
+        while (offset < samples.size) {
             coroutineContext.ensureActive()
             if (synchronizeFocus()) return SpeakerWrite.Paused
             checkWriteDeadline(began)
             val native = checkNotNull(track)
             route.observe(native.route())
-            val result = native.write(bytes, offset, bytes.size - offset)
-            if (result.dead) { require(result.bytes == 0); return recreate() }
-            require(result.bytes in 0..(bytes.size - offset) && result.bytes % 4 == 0) { "Invalid native speaker write." }
-            offset += result.bytes
-            if (result.bytes == 0) delay(2)
+            val result = native.write(samples, offset, samples.size - offset)
+            if (result.dead) { require(result.samples == 0); return recreate() }
+            require(result.samples in 0..(samples.size - offset) && result.samples % 2 == 0) { "Invalid native speaker write." }
+            offset += result.samples
+            if (result.samples == 0) delay(2)
         }
         return SpeakerWrite.Written
     }

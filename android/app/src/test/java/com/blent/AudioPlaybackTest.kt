@@ -12,7 +12,7 @@ import org.robolectric.*
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [27, 34])
+@Config(sdk = [27, 34], shadows = [AudioSpeakerTest.RoutedTrack::class])
 class AudioPlaybackTest {
     private fun endpoint(port: Int) = AudioEndpoint("a".repeat(64), port, 2, 1, 40, false)
     private fun grant(endpoint: AudioEndpoint): ByteArray = endpoint.token.toByteArray() +

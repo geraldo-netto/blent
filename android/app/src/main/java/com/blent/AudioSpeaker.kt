@@ -43,6 +43,7 @@ internal class AndroidSpeakerTrack(context: Context, attributes: AudioAttributes
     private val manager = context.getSystemService(AudioManager::class.java)
     private var track: AudioTrack? = null
     private var preferred: Int? = null
+    private val timestamp = AudioTimestamp()
     init {
         try {
             val minimum = AudioTrack.getMinBufferSize(48000, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT)
@@ -66,8 +67,8 @@ internal class AndroidSpeakerTrack(context: Context, attributes: AudioAttributes
         check(track!!.playState == AudioTrack.PLAYSTATE_PLAYING) { "Speaker playback did not start." }
     }
     override fun flush() { checkNotNull(track).pause(); track!!.flush() }
-    override fun write(bytes: ByteArray, offset: Int, count: Int): OutputWrite {
-        val result = checkNotNull(track).write(bytes, offset, count, AudioTrack.WRITE_NON_BLOCKING)
+    override fun write(samples: ShortArray, offset: Int, count: Int): OutputWrite {
+        val result = checkNotNull(track).write(samples, offset, count, AudioTrack.WRITE_NON_BLOCKING)
         if (result == AudioTrack.ERROR_DEAD_OBJECT) return OutputWrite(0, true)
         check(result >= 0) { "Speaker write failed ($result)." }
         return OutputWrite(result)
@@ -78,9 +79,8 @@ internal class AndroidSpeakerTrack(context: Context, attributes: AudioAttributes
         return actual
     }
     override fun clockSample(): AudioClockSample? {
-        val stamp = AudioTimestamp()
-        if (!checkNotNull(track).getTimestamp(stamp)) return null
-        return AudioClockSample(1, stamp.framePosition, stamp.nanoTime).takeIf { it.valid() }
+        if (!checkNotNull(track).getTimestamp(timestamp)) return null
+        return AudioClockSample(1, timestamp.framePosition, timestamp.nanoTime).takeIf { it.valid() }
     }
     override fun description(): String {
         val native = checkNotNull(track)

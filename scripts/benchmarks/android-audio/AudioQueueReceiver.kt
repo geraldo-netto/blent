@@ -19,7 +19,12 @@ class AudioQueueReceiver : BroadcastReceiver() {
         val completion = goAsync()
         Thread({
             try {
-                val result = try { if (intent.getStringExtra("probe") == "drift") measureDrift() else measure() } catch (error: Exception) { JSONObject().put("error", error.stackTraceToString()) }
+                val result = try { when (intent.getStringExtra("probe")) {
+                    "drift" -> measureDrift()
+                    "pipeline" -> AudioPipelineProbe.measure()
+                    "native-output" -> AudioPipelineProbe.native(context)
+                    else -> measure()
+                } } catch (error: Exception) { JSONObject().put("error", error.stackTraceToString()) }
                 result.put("run_id", intent.getStringExtra("run_id"))
                 File(context.filesDir, "audio-queue.json").writeText(result.toString(2))
             } finally { active.set(false); completion.finish() }

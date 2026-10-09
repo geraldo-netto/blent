@@ -1,7 +1,7 @@
 package com.blent
 
 import java.io.ByteArrayOutputStream
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -16,15 +16,22 @@ class AudioOutputTest {
         var stamp: AudioClockSample? = null
         override fun clockSample() = stamp ?: super<OutputTrack>.clockSample()
         var closing: (() -> Unit)? = null
-        var result: (Int) -> OutputWrite = { OutputWrite(minOf(it, 120)) }
+        var result: (Int) -> OutputWrite = { OutputWrite(minOf(it, 60)) }
         val data = ByteArrayOutputStream()
+        var borrowed: ShortArray? = null
         override fun play() { plays++ }
         override fun flush() { flushes++ }
         override fun route() = routeId
         override fun description() = "fixture track"
-        override fun write(bytes: ByteArray, offset: Int, count: Int): OutputWrite {
+        override fun write(samples: ShortArray, offset: Int, count: Int): OutputWrite {
+            borrowed = samples
             val answer = result(count)
-            if (answer.bytes in 0..count) data.write(bytes, offset, answer.bytes)
+            if (answer.samples in 0..count) {
+                for (index in offset until offset + answer.samples) {
+                    data.write(samples[index].toInt() and 255)
+                    data.write(samples[index].toInt() shr 8 and 255)
+                }
+            }
             return answer
         }
         override fun close() { closes++; closing?.invoke() }
@@ -34,6 +41,30 @@ class AudioOutputTest {
     private suspend fun rejects(action: suspend () -> Unit) {
         try { action(); fail("T719 invalid playback accepted") } catch (_: IllegalArgumentException) {}
     }
+    @Test fun t797_outputBorrowsOwnedSamplesAndCancellationStopsZeroProgress() = runBlocking {
+        val track = Track()
+        val focus = Focus()
+        val samples = chunk()
+        val original = samples.samples.clone()
+        AudioOutput({ track }, focus) { 0 }.use { output ->
+            assertEquals(SpeakerWrite.Written, output.write(samples))
+            assertSame("T797 portable output staged a PCM copy", samples.samples, track.borrowed)
+            assertArrayEquals(original, samples.samples)
+            val actual = ShortArray(960)
+            java.nio.ByteBuffer.wrap(track.data.toByteArray()).order(java.nio.ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(actual)
+            assertArrayEquals(original, actual)
+            val entered = CompletableDeferred<Unit>()
+            track.result = { entered.complete(Unit); OutputWrite(0) }
+            val writer = launch { output.write(samples) }
+            entered.await()
+            writer.cancelAndJoin()
+            assertTrue(writer.isCancelled)
+            assertArrayEquals(original, samples.samples)
+        }
+        assertEquals(1, track.closes)
+        assertEquals(1, focus.closes)
+    }
+
     @Test fun t720_nativeEpochChangesOnFlushPauseAndRecreation() = runBlocking {
         val focus = Focus(); val first = Track(); val second = Track(); var opens = 0
         first.stamp = AudioClockSample(8, 480, 10_000_001); second.stamp = first.stamp
@@ -82,7 +113,7 @@ class AudioOutputTest {
         assertEquals(1, replacement.closes); assertEquals(1, focus.closes)
     }
     @Test fun t719_invalidNativeCountsClockAndCompleteWriteDeadline() = runBlocking {
-        for (count in listOf(Int.MIN_VALUE, -1, 1, 2, 3, 1919, 1921, Int.MAX_VALUE)) {
+        for (count in listOf(Int.MIN_VALUE, -1, 1, 3, 959, 961, Int.MAX_VALUE)) {
             val track = Track(); track.result = { OutputWrite(count) }
             AudioOutput({ track }, Focus()) { 0 }.use { output -> rejects { output.write(chunk()) } }
         }
@@ -91,16 +122,16 @@ class AudioOutputTest {
             for (size in listOf(0, 1, 959, 961, 1920)) rejects { output.write(chunk().copy(samples = ShortArray(size))) }
             rejects { output.write(chunk(-1)) }
             try { output.write(chunk(1)); fail("future block accepted") } catch (_: IllegalStateException) {}
-            track.result = { now += 50; OutputWrite(4) }
+            track.result = { now += 50; OutputWrite(2) }
             try { output.write(chunk()); fail("partial progress restarted deadline") }
             catch (error: IllegalStateException) { assertEquals("Speaker playback stalled.", error.message) }
             now = 0; var writes = 0
             track.result = { if (writes++ == 0) OutputWrite(0) else OutputWrite(it) }
             assertEquals(SpeakerWrite.Written, output.write(chunk())); assertEquals(2, writes)
-            track.result = { now = -1; OutputWrite(4) }
+            track.result = { now = -1; OutputWrite(2) }
             try { output.write(chunk()); fail("backwards write clock") } catch (_: IllegalStateException) {}
         }
-        val badDead = Track(); badDead.result = { OutputWrite(4, true) }
+        val badDead = Track(); badDead.result = { OutputWrite(2, true) }
         AudioOutput({ badDead }, Focus()) { 0 }.use { output -> rejects { output.write(chunk()) } }
     }
     @Test fun t719_openAndCloseFailuresStillReleaseFocus() {

@@ -45,10 +45,11 @@ internal class AudioWire(private val endpoint: AudioEndpoint, private val reques
         require(generation != 0L && sequence < Long.MAX_VALUE)
         require(pcm.size == 480 * endpoint.direction && gain in 0..200)
         require(timestampUs > lastTime)
-        val counter = if (clocked) (clock?.bytes() ?: ByteArray(24)) else byteArrayOf()
+        require(!clocked || clock?.valid() != false)
+        val counterBytes = if (clocked) 24 else 0
         sink.writeLong(generation).writeLong(sequence).writeLong(timestampUs)
-            .writeShort(pcm.size * 2 + counter.size).writeByte(endpoint.direction).writeByte(0)
-        sink.write(counter)
+            .writeShort(pcm.size * 2 + counterBytes).writeByte(endpoint.direction).writeByte(0)
+        if (clocked) sink.writeLong(clock?.epoch ?: 0).writeLong(clock?.frames ?: 0).writeLong(clock?.nanos ?: 0)
         for (sample in pcm) sink.writeShortLe((sample.toInt() * gain / 100).coerceIn(-32768, 32767))
         sink.flush(); sequence++; lastTime = timestampUs
     }

@@ -22,6 +22,7 @@ internal class AudioMicrophone(private val context: Context, private val endpoin
     preferences: AudioPreferences) : MicrophoneDevice {
     private val manager = context.getSystemService(AudioManager::class.java)
     private var record: AudioRecord? = null
+    private val timestamp = AudioTimestamp()
     private var aec: AcousticEchoCanceler? = null
     private val route = AudioRoute()
     override val capabilities: Int
@@ -48,9 +49,8 @@ internal class AudioMicrophone(private val context: Context, private val endpoin
         if (endpoint.processing == 1) enableAec()
     }
     override fun clockSample(): AudioClockSample? {
-        val stamp = AudioTimestamp()
-        if (checkNotNull(record).getTimestamp(stamp, AudioTimestamp.TIMEBASE_MONOTONIC) != AudioRecord.SUCCESS) return null
-        return AudioClockSample(1, stamp.framePosition, stamp.nanoTime).takeIf { it.valid() }
+        if (checkNotNull(record).getTimestamp(timestamp, AudioTimestamp.TIMEBASE_MONOTONIC) != AudioRecord.SUCCESS) return null
+        return AudioClockSample(1, timestamp.framePosition, timestamp.nanoTime).takeIf { it.valid() }
     }
     override fun start() {
         record!!.startRecording()

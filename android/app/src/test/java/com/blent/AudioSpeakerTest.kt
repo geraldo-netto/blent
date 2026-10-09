@@ -20,9 +20,41 @@ class AudioSpeakerTest {
     // separately checked on the tablet; this fixture exercises our adapter.
     @Implements(AudioTrack::class)
     class RoutedTrack : ShadowAudioTrack() {
+        companion object { var shortWrites = 0; var reply: Int? = null; var received: ShortArray? = null }
+        @Implementation protected fun native_write_short(data: ShortArray, offset: Int, count: Int, format: Int, blocking: Boolean): Int {
+            assertFalse("T797 typed write became blocking", blocking)
+            assertEquals(AudioFormat.ENCODING_PCM_16BIT, format)
+            received = data.copyOfRange(offset, offset + count)
+            shortWrites++
+            reply?.let { return it }
+            // Robolectric has only the byte JNI implementation. Adapt sample
+            // writes into that fixture so listeners/head counters still run.
+            val bytes = java.nio.ByteBuffer.allocate(count * 2).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+            for (index in offset until offset + count) bytes.putShort(data[index])
+            val written = super.native_write_byte(bytes.array(), 0, bytes.capacity(), format, blocking)
+            return if (written >= 0) written / 2 else written
+        }
         @Implementation protected fun native_setOutputDevice(id: Int) = true
     }
     private fun attributes() = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build()
+    @Test fun t797_nativeTypedWritesKeepSampleUnitsAndDeadCounts() {
+        val app = RuntimeEnvironment.getApplication()
+        AndroidSpeakerTrack(app, attributes(), AudioPreferences(builtIn = false)).use { native ->
+            try {
+                val samples = shortArrayOf(Short.MIN_VALUE, -1, 0, Short.MAX_VALUE, 99, -99)
+                RoutedTrack.reply = 2
+                assertEquals(OutputWrite(2), native.write(samples, 2, 4))
+                assertArrayEquals(samples.copyOfRange(2, 6), RoutedTrack.received)
+                RoutedTrack.reply = 0
+                assertEquals(OutputWrite(0), native.write(samples, 0, 2))
+                RoutedTrack.reply = AudioTrack.ERROR_DEAD_OBJECT
+                assertEquals(OutputWrite(0, true), native.write(samples, 0, 2))
+                RoutedTrack.reply = AudioTrack.ERROR_INVALID_OPERATION
+                assertThrows(IllegalStateException::class.java) { native.write(samples, 0, 2) }
+            } finally { RoutedTrack.reply = null }
+        }
+    }
+
     @Test fun t719_focusDenialTransientDuckPermanentLossAndLateCallbacks() {
         val manager = RuntimeEnvironment.getApplication().getSystemService(AudioManager::class.java)
         val shadow = Shadows.shadowOf(manager)
@@ -46,6 +78,7 @@ class AudioSpeakerTest {
         try { focus.paused(); fail("closed focus resumed") } catch (_: IllegalStateException) {}
     }
     @Test fun t719_nativeStereoPlaybackNeedsNoRecordPermissionAndReleases() = runBlocking {
+        RoutedTrack.shortWrites = 0
         val app = RuntimeEnvironment.getApplication()
         Shadows.shadowOf(app).denyPermissions(Manifest.permission.RECORD_AUDIO)
         val endpoint = AudioEndpoint("a".repeat(64), 12345, 2, 1, 40, false)
@@ -54,6 +87,7 @@ class AudioSpeakerTest {
             assertTrue(player.description().contains("native buffer"))
             assertEquals(SpeakerWrite.Written, player.write(PlaybackChunk(ShortArray(960), android.os.SystemClock.elapsedRealtime(), false)))
         }
+        assertTrue("T797 speaker serialized PCM instead of typed write", RoutedTrack.shortWrites > 0)
         try { AudioSpeaker.open(app, endpoint.copy(direction = 1), AudioPreferences()); fail("microphone sent to output") } catch (_: IllegalArgumentException) {}
         try { AudioSpeaker.open(app, endpoint, AudioPreferences(gain = 101)); fail("invalid volume") } catch (_: IllegalArgumentException) {}
     }
@@ -69,8 +103,8 @@ class AudioSpeakerTest {
             assertNull(native.route()); native.play(); native.flush()
             ShadowAudioTrack.setRoutedDevice(device)
             assertEquals(device.id, native.route()); assertTrue(native.description().contains("native buffer"))
-            assertEquals(4, native.write(byteArrayOf(1, 2, 3, 4), 0, 4).bytes)
-            try { native.write(ByteArray(4), -1, 4); fail("invalid native write") } catch (_: IllegalStateException) {}
+            assertEquals(2, native.write(shortArrayOf(513, 1027), 0, 2).samples)
+            try { native.write(ShortArray(2), -1, 2); fail("invalid native write") } catch (_: IllegalStateException) {}
             native.close(); native.close()
         }
         ShadowAudioTrack.setRoutedDevice(null)

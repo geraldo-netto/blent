@@ -11,18 +11,26 @@ internal data class AudioBlock(val samples: ShortArray, val discontinuity: Boole
 internal class AudioPackets(private val generation: Long, private val direction: Int, private val clocked: Boolean = false) {
     private var previous: Pair<Long, Long>? = null
     init { require(generation != 0L && direction in 1..2) }
+    private val payload = ByteArray(960 * direction)
+    private val pcm = ByteBuffer.wrap(payload).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer()
     fun read(source: BufferedSource): AudioBlock {
         source.timeout().timeout(250, TimeUnit.MILLISECONDS).deadline(250, TimeUnit.MILLISECONDS)
         try {
             val fields = header(source.readByteArray(28))
-            val clock = if (clocked) AudioClockSample.read(source.readByteArray(24)) else null
-            val bytes = source.readByteArray(960L * direction)
-            val samples = ShortArray(480 * direction)
-            ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(samples)
+            val clock = if (clocked) AudioClockSample.fromCounters(source.readLong(), source.readLong(), source.readLong()) else null
+            val samples = readSamples(source)
             previous = fields.first to fields.second
             return AudioBlock(samples, fields.third, clock)
         } finally { source.timeout().clearDeadline() }
     }
+    private fun readSamples(source: BufferedSource): ShortArray {
+        source.readFully(payload)
+        val samples = ShortArray(480 * direction)
+        pcm.clear()
+        pcm.get(samples)
+        return samples
+    }
+
     private fun header(bytes: ByteArray): Triple<Long, Long, Boolean> {
         val header = ByteBuffer.wrap(bytes).order(ByteOrder.BIG_ENDIAN)
         require(header.long == generation) { "Stale audio session." }

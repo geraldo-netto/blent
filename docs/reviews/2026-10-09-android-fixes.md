@@ -259,3 +259,34 @@ and after it. Full offline validation: 816 tests pass, 904/904 methods meet
 [ART replay](artifacts/2026-10-10-android-drift/README.md): wall median improves
 13.224 to 9.967 µs/call and allocation 632.422 to 16.384 bytes/call with equal
 checksums. Absolute CPU saving is small; no physical audio latency gain claimed.
+
+## T797: PCM staging, typed output and metadata scratch
+
+AudioPackets reuses its bounded byte staging/view per connection, bulk-converting
+into a fresh owned ShortArray only after complete payload receipt. Failed reads
+do not publish packet sequence state or partial PCM. Direct per-sample parsing
+was measured and rejected. The portable OutputTrack contract now explicitly uses
+sample counts/offsets and a nonblocking array borrow; AndroidSpeakerTrack uses the
+stock typed AudioTrack write. AudioOutput no longer serializes PCM into a second
+byte array, and still validates stereo-aligned partial/zero/dead writes.
+
+Native speaker/microphone owners reuse AudioTimestamp scratch while returning
+immutable samples. Clock metadata reads/writes use three network-order counters
+directly; validity is checked before publishing outbound packet bytes. Existing
+byte-format helpers and wire compatibility remain covered.
+
+Five SDK regression cases failed before these changes (payload staging, typed
+native writes and timestamp scratch). Permanent ownership, full-sample equality,
+unit/boundary, cancellation, invalid-native-count and existing fragmented/atomic
+packet regressions pass. Robolectric lacks short-array JNI support: its fixture
+now routes typed writes into its existing byte listener/head-counter model,
+retaining the native Stop/release assertions. Actual typed writes also pass on
+the tablet. Full offline validation: 820 tests pass; 906/906 methods meet
+80% individually; complexity <=9. Boundary/generator tooling passes.
+
+[Incremental ART measurements](artifacts/2026-10-10-android-pcm/README.md), after
+T795/T796: packet median 168.112 to 139.464 µs and 4358.144 to 2195.456 bytes;
+portable output 63.639 to 54.585 µs. Per-sample parsing regressed ~44% against the
+accepted bulk path. Silent native output shows 500.659 to 412.508 ms median thread
+CPU per 100 blocks, equal native buffer/played counters and zero underruns. No
+physical latency or end-to-end zero-copy claim; no downloads or app reload.

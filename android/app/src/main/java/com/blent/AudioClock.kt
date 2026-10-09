@@ -11,11 +11,14 @@ internal data class AudioClockSample(val epoch: Long, val frames: Long, val nano
         return ByteBuffer.allocate(24).putLong(epoch).putLong(frames).putLong(nanos).array()
     }
     companion object {
+        fun fromCounters(epoch: Long, frames: Long, nanos: Long): AudioClockSample? {
+            if (epoch == 0L && frames == 0L && nanos == 0L) return null
+            return AudioClockSample(epoch, frames, nanos).also { require(it.valid()) }
+        }
         fun read(bytes: ByteArray): AudioClockSample? {
             require(bytes.size == 24)
-            if (bytes.all { it == 0.toByte() }) return null
             val input = ByteBuffer.wrap(bytes)
-            return AudioClockSample(input.long, input.long, input.long).also { require(it.valid()) }
+            return fromCounters(input.long, input.long, input.long)
         }
     }
 }

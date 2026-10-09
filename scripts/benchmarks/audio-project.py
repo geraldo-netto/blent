@@ -23,12 +23,44 @@ def main():
     builder = module.decoder_builder()
     directory = builder.prepare(args)
     shutil.copy2(ROOT / 'android/local.properties', directory / 'local.properties')
-    for name in ['AudioPlaybackQueue.kt', 'AudioClock.kt', 'AudioPackets.kt']:
+    for name in ['AudioPlaybackQueue.kt', 'AudioClock.kt', 'AudioPackets.kt', 'AudioOutput.kt', 'AudioRoute.kt', 'AudioSpeaker.kt', 'AudioPreferences.kt', 'AudioEndpoint.kt']:
         source = builder.source(name, args.revision)
         if source is None:
             raise SystemExit('Missing audio source: ' + name)
         (directory / 'originals' / name).write_text(source)
         (directory / 'app/src/main/java' / name).write_text(source)
+    import re
+    packets = (directory / 'originals/AudioPackets.kt').read_text()
+    direct = packets.replace('class AudioPackets', 'class DirectAudioPackets')
+    direct = re.sub(r'^internal data class (AudioBlock|PlaybackChunk).*\n', '', direct, flags=re.M)
+    if 'val bytes = source.readByteArray(960L * direction)' in direct:
+        direct = re.sub(r'            val bytes = source.readByteArray\(960L \* direction\).*?            previous =',
+            '            val samples = ShortArray(480 * direction) { source.readShortLe() }\n            previous =', direct, flags=re.S)
+    else:
+        direct = direct.replace('val samples = readSamples(source)', 'val samples = ShortArray(480 * direction) { source.readShortLe() }')
+    (directory / 'app/src/main/java/DirectAudioPackets.kt').write_text(direct)
+    (directory / 'originals/DirectAudioPackets.kt').write_text(direct)
+    typed = 'fun write(samples: ShortArray' in (directory / 'originals/AudioOutput.kt').read_text()
+    parameter = 'samples: ShortArray' if typed else 'samples: ByteArray'
+    value = 'samples[offset].toLong()' if typed else '((samples[offset].toInt() and 255) or ((samples[offset + 1].toInt() and 255) shl 8)).toShort().toLong()'
+    track = """package com.blent.benchmark
+import com.blent.*
+internal class PipelineTrack : OutputTrack {
+    var checksum = 0L
+    override fun play() {}
+    override fun flush() {}
+    override fun route(): Int? = null
+    override fun description() = "CPU fixture"
+    override fun close() {}
+    override fun write(PARAMETER, offset: Int, count: Int): OutputWrite {
+        checksum += VALUE
+        return OutputWrite(count)
+    }
+}
+""".replace('PARAMETER', parameter).replace('VALUE', value)
+    (directory / 'app/src/main/java/PipelineTrack.kt').write_text(track)
+    (directory / 'originals/PipelineTrack.kt').write_text(track)
+    shutil.copy2(ROOT / 'scripts/benchmarks/android-audio/AudioPipelineProbe.kt', directory / 'app/src/main/java/AudioPipelineProbe.kt')
     receiver = ROOT / 'scripts/benchmarks/android-audio/AudioQueueReceiver.kt'
     shutil.copy2(receiver, directory / 'app/src/main/java/AudioQueueReceiver.kt')
     manifest = directory / 'app/src/main/AndroidManifest.xml'
@@ -44,6 +76,7 @@ def main():
     result = dict(revision=args.revision or 'working-tree', package=args.package, offline=True,
         apk_sha256=hashlib.sha256(apk.read_bytes()).hexdigest(),
         benchmark_sha256=hashlib.sha256(receiver.read_bytes()).hexdigest(),
+        pipeline_sha256=hashlib.sha256((ROOT / "scripts/benchmarks/android-audio/AudioPipelineProbe.kt").read_bytes()).hexdigest(),
         sources={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (directory / 'originals').glob('*.kt')})
     (directory / 'audio-provenance.json').write_text(json.dumps(result, indent=2) + '\n')
     print(apk)
