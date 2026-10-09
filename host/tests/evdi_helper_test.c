@@ -546,6 +546,7 @@ static void assert_small_scaled_modes(int scale) {
     for (int small = 1; small < 2 * scale; small++) {
         for (int axis = 0; axis < 2; axis++) {
             g_running = 1;
+            g_capture.capture_failed = 0; /* Independent mode-validation scenario. */
             struct evdi_mode mode = {axis ? 2 * scale : small, axis ? small : 2 * scale, 60, 32, 0x34325258};
             on_mode_changed(mode, &g_capture);
             assert(!g_capture.have_mode && !g_frames.buffers_ready && !g_running && "T082: undersized mode reaches conversion");
@@ -559,6 +560,7 @@ static void test_t082(void) {
         g_capture.scale = scale;
         assert_small_scaled_modes(scale);
         g_running = 1;
+        g_capture.capture_failed = 0;
         struct evdi_mode mode = {2 * scale, 2 * scale, 60, 32, 0x34325258};
         on_mode_changed(mode, &g_capture);
         assert(g_frames.width == 2 && g_frames.height == 2 && g_capture.have_mode);
@@ -1470,6 +1472,7 @@ static void test_t415_rounding(void) {
 #include "fifo_demand.c"
 
 #include "c_boundary_fuzz.c"
+#include "failed_mode.c"
 
 #ifndef BLENT_C_FUZZ_DRIVER
 int main(int argc, char **argv) {
@@ -1515,6 +1518,7 @@ int main(int argc, char **argv) {
         {"T623", test_t623},
         {"T750-period", test_t750_period},
         {"T767", test_t767_boundaries},
+        {"T760", test_t760_failed_mode},
         {"T751", test_t751},
         {"T752", test_t752},
         {"T752-bounds", test_t752_bounds},

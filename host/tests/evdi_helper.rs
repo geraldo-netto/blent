@@ -7,6 +7,11 @@ use std::{path::PathBuf, process::Command};
 struct Harness(PathBuf);
 
 #[test]
+fn t760_failed_mode_retains_geometry_and_ignores_queued_callbacks() {
+    Harness::build("T760").run("T760");
+}
+
+#[test]
 fn t580_no_fifo_reader_skips_conversion_but_keeps_evdi_acknowledgement() {
     let harness = Harness::build("T580");
     for case in [
@@ -52,7 +57,7 @@ impl Harness {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
-            "T752" | "T753" | "T767" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
+            "T752" | "T753" | "T760" | "T767" | "T082" | "T274" | "T340" | "T497" | "T554" | "T492" | "T570" | "T580"
         ) {
             compiler.args(["-fsanitize=address,undefined", "-fno-pie", "-no-pie"]);
         }

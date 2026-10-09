@@ -122,35 +122,6 @@ static int validate_mode_dimensions(capture_context_t *capture, struct evdi_mode
     return 1;
 }
 
-static int configure_mode_geometry(capture_context_t *capture, struct evdi_mode mode) {
-    int new_swap_rb = mode.pixel_format == 0x34324258 || mode.pixel_format == 0x34324241;
-    int new_w = mode.width;
-    int new_h = mode.height;
-    int new_bpp = mode.bits_per_pixel / 8;
-    if (new_bpp < 1) new_bpp = 4;
-
-    /* Same geometry (KWin re-applying the mode)? Keep everything as-is.
-       Re-registering on every event is what crashed libevdi before. */
-    if (capture->buffer_registered && new_w == capture->mode_w && new_h == capture->mode_h
-            && new_bpp == capture->mode_bpp && new_swap_rb == capture->swap_rb) {
-        fprintf(stderr, "[evdi-helper] Mode unchanged, keeping buffer\n");
-        capture->update_pending = 0;
-        return 0;
-    }
-
-    capture->swap_rb = new_swap_rb;
-    capture->mode_w = new_w;
-    capture->mode_h = new_h;
-    capture->mode_bpp = new_bpp;
-
-    int row_bytes = capture->mode_w * capture->mode_bpp;
-    int aligned_stride = (row_bytes + 63) & ~63;  /* DRM buffers are 64-byte aligned */
-    capture->mode_stride = aligned_stride;
-    capture->fb_size = capture->mode_stride * capture->mode_h;
-
-    return 1;
-}
-
 static int retire_mode_buffers(capture_context_t *capture) {
     if (!frame_exchange_retire(capture->frames)) {
         fprintf(stderr, "[evdi-helper] Writer stuck during mode change — stopping capture\n");
@@ -169,6 +140,37 @@ static int retire_mode_buffers(capture_context_t *capture) {
         evdi_unregister_buffer(capture->handle, 0);
         capture->buffer_registered = 0;
     }
+    return 1;
+}
+
+static int configure_mode_geometry(capture_context_t *capture, struct evdi_mode mode) {
+    int new_swap_rb = mode.pixel_format == 0x34324258 || mode.pixel_format == 0x34324241;
+    int new_w = mode.width;
+    int new_h = mode.height;
+    int new_bpp = mode.bits_per_pixel / 8;
+    if (new_bpp < 1) new_bpp = 4;
+
+    /* Same geometry (KWin re-applying the mode)? Keep everything as-is.
+       Re-registering on every event is what crashed libevdi before. */
+    if (capture->buffer_registered && new_w == capture->mode_w && new_h == capture->mode_h
+            && new_bpp == capture->mode_bpp && new_swap_rb == capture->swap_rb) {
+        fprintf(stderr, "[evdi-helper] Mode unchanged, keeping buffer\n");
+        capture->update_pending = 0;
+        return 0;
+    }
+
+    if (!retire_mode_buffers(capture)) return 0;
+
+    capture->swap_rb = new_swap_rb;
+    capture->mode_w = new_w;
+    capture->mode_h = new_h;
+    capture->mode_bpp = new_bpp;
+
+    int row_bytes = capture->mode_w * capture->mode_bpp;
+    int aligned_stride = (row_bytes + 63) & ~63;  /* DRM buffers are 64-byte aligned */
+    capture->mode_stride = aligned_stride;
+    capture->fb_size = capture->mode_stride * capture->mode_h;
+
     return 1;
 }
 
@@ -226,6 +228,7 @@ static int mode_buffers_allocated(capture_context_t *capture) {
 
 static void on_mode_changed(struct evdi_mode mode, void *user_data) {
     capture_context_t *capture = user_data;
+    if (capture->capture_failed) return;
     fprintf(stderr, "[evdi-helper] Mode: %dx%d@%dHz %dbpp fmt=0x%x\n",
             mode.width, mode.height, mode.refresh_rate,
             mode.bits_per_pixel, mode.pixel_format);
@@ -235,7 +238,6 @@ static void on_mode_changed(struct evdi_mode mode, void *user_data) {
 
     if (!configure_mode_geometry(capture, mode)) return;
 
-    if (!retire_mode_buffers(capture)) return;
     allocate_framebuffer(capture);
     allocate_stream_buffers(capture);
 
@@ -325,6 +327,7 @@ static void grab_now(capture_context_t *capture) {
 static void on_update_ready(int buffer_to_be_updated, void *user_data) {
     capture_context_t *capture = user_data;
     (void)buffer_to_be_updated;
+    if (capture->capture_failed) return;
     if (capture->update_pending) {
         capture->wait_sum_us += capture_now_us() - capture->req_us;
         capture->wait_n++;
@@ -369,6 +372,10 @@ static void publish_cursor(capture_context_t *capture) {
 
 static void on_cursor_set(struct evdi_cursor_set event, void *user_data) {
     capture_context_t *capture = user_data;
+    if (capture->capture_failed) {
+        free(event.buffer);
+        return;
+    }
     restore_cursor(capture);
     cursor_image_t image = {0};
     int valid = !event.enabled || cursor_event_image(event, &image);
@@ -385,6 +392,7 @@ static void on_cursor_set(struct evdi_cursor_set event, void *user_data) {
 
 static void on_cursor_move(struct evdi_cursor_move event, void *user_data) {
     capture_context_t *capture = user_data;
+    if (capture->capture_failed) return;
     restore_cursor(capture);
     /* EVDI events already report the plane top-left; do not subtract hotspot. */
     capture->cursor.x = event.x; capture->cursor.y = event.y;
