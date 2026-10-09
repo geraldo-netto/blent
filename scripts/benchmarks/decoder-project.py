@@ -146,6 +146,13 @@ internal fun replayReceipt(decoder: DecoderSession): String? = RECEIPT
 '''.replace('EXPRESSION', expression).replace('RECEIPT', receipt)
 
 
+def retirement_bridge(directory):
+    lifetime = directory / 'originals/CodecLifetime.kt'
+    pending = lifetime.exists() and 'fun retirementPending()' in lifetime.read_text()
+    expression = 'CodecLifetime.retirementPending()' if pending else 'false'
+    return '\ninternal fun replayRetirementPending(): Boolean = ' + expression + '\n'
+
+
 def prepare(args):
     directory = args.directory.resolve()
     directory.mkdir()
@@ -164,6 +171,7 @@ def prepare(args):
     bridge += '\ninternal fun discardedOutputs(decoder: DecoderSession): Long = ' + ('decoder.discardedOutputs' if latest else '0L') + '\n'
     bridge += codec_observer(directory)
     bridge += selection_bridge(directory)
+    bridge += retirement_bridge(directory)
     (directory / 'app/src/main/java/ProfileBridge.kt').write_text(bridge)
     return directory
 

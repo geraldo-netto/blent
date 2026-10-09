@@ -37,7 +37,8 @@ internal class CodecLifetime(val codec: MediaCodec) {
     @Volatile var retired = false; private set
     @Volatile private var cleanup: Thread? = null
     @Volatile private var released = false
-    val finished: Boolean get() = released && cleanup?.isAlive == false
+    // Completion means confirmed native release; thread bookkeeping may still unwind.
+    val finished: Boolean get() = released
 
     fun <T> use(block: () -> T): T? {
         synchronized(gate) {

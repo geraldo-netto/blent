@@ -15,6 +15,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34], shadows = [StartupCodecShadow::class])
 class FramedDecoderTest {
+    @org.junit.After fun awaitFixtureRetirement() = awaitDecoderRetirement()
     @Suppress("UNCHECKED_CAST")
     @Test fun t627_surfaceSetupPreservesNegotiatedDecoderAndReceiptAcrossReconnect() {
         StartupCodecShadow.stage = ""
@@ -36,6 +37,7 @@ class FramedDecoderTest {
                 assertEquals("T627: live surface setup discarded the negotiated decoder", selected, attempted.last().selection)
                 assertEquals(selected?.receipt(), receiver.decoder.configuredSelectionReceipt)
                 receiver.stop()
+                awaitDecoderRetirement(receiver.decoder)
             }
             assertEquals(3, attempted.size)
         } finally { receiver.stop(); surface.release() }

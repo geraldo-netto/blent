@@ -21,6 +21,7 @@ import org.robolectric.annotation.Config
 internal fun requestFormat(mime: String, width: Int, height: Int, fps: Int, selection: JSONObject?) =
     DecoderFormat(mime, width, height, fps, selection = selection?.let(DecoderSelectionJson::read))
 internal fun replayReceipt(decoder: DecoderSession) = decoder.configuredSelectionReceipt
+internal fun replayRetirementPending() = CodecLifetime.retirementPending()
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34], shadows = [WatchdogCodecShadow::class])

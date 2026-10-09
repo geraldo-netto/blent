@@ -51,6 +51,7 @@ class StartupCodecShadow : ShadowMediaCodec() {
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34], shadows = [StartupCodecShadow::class])
 class DecoderStartupTest {
+    @org.junit.After fun awaitFixtureRetirement() = awaitDecoderRetirement()
     @Test fun t497_factoryFailureRetiresStartupAndAcknowledgementsIgnoreRetiredCodec() {
         StartupCodecShadow.stage = ""
         StartupCodecShadow.renderedListener = null

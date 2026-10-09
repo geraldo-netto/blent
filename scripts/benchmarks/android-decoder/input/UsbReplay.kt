@@ -74,6 +74,7 @@ internal class UsbReplay(private val surface: Surface, private val active: Atomi
 
     private fun setup(format: DecoderFormat) {
         val started = System.nanoTime()
+        awaitReplayRetirement(active::get, ::replayRetirementPending)
         check(decoder.setupCodec(surface, format))
         val receipt = replayReceipt(decoder).orEmpty()
         val duration = (System.nanoTime() - started) / 1000

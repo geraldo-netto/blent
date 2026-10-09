@@ -69,7 +69,7 @@ internal class DirectInputFixture(callbacks: Boolean = false) : AutoCloseable {
         decoder.profile = DecoderProfile(callbacks = callbacks)
         assertTrue(decoder.setupCodec(surface, DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)))
     }
-    override fun close() { closeTransport(); decoder.releaseCodec(); surface.release() }
+    override fun close() { closeTransport(); decoder.releaseCodec(); awaitDecoderRetirement(decoder); surface.release() }
 }
 
 @RunWith(RobolectricTestRunner::class)
@@ -177,6 +177,7 @@ class DirectDecoderInputTest {
                     stopped.get(750, TimeUnit.MILLISECONDS)
                     assertFalse(feed.get(750, TimeUnit.MILLISECONDS))
                     assertTrue(DirectInputCodecShadow.queued.isEmpty())
+                    awaitDecoderRetirement(fixture.decoder)
                     assertEquals(1, DirectInputCodecShadow.released.get())
                 }
             }

@@ -250,6 +250,7 @@ class DecoderSetupTest {
                 else receiver.feedDecoder(0L, codec, byteArrayOf(1, 2), 0, 2, false, 1L)
                 assertTrue("$stage retained a stream without fresh codec headers", socket.isClosed)
                 assertNull("$stage must let reconnect create the replacement decoder", get(receiver, "mediaCodec"))
+                awaitDecoderRetirement(receiver.decoder)
                 assertEquals("$stage leaked or double-released its codec", 1, FailingCodecShadow.releases)
             } finally { receiver.stop(); surface.release(); socket.close() }
         }

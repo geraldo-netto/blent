@@ -113,6 +113,26 @@ class DecoderSchedulingTest {
             assertTrue(SchedulingCodecShadow.released.await(2, TimeUnit.SECONDS))
         }
     }
+    @Test fun t798_mainLooperRetirementReturnsPromptlyWhileNativeBorrowRemainsHeld() {
+        Fixture().use { fixture ->
+            fixture.blockedInput()
+            val main = android.os.Looper.getMainLooper()
+            val progressed = CountDownLatch(1)
+            Handler(main).post { fixture.decoder.releaseCodec() }
+            Handler(main).post { progressed.countDown() }
+            val before = System.nanoTime()
+            org.robolectric.Shadows.shadowOf(main).idle()
+            val elapsedMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - before)
+            assertEquals("T798 later UI work never ran", 0L, progressed.count)
+            println("T798 UI retirement: $elapsedMs ms; native borrower still held")
+            assertTrue("T798 UI retirement took $elapsedMs ms with native borrow held", elapsedMs < 200)
+            assertNull(fixture.decoder.mediaCodec)
+            assertTrue(CodecLifetime.retirementPending())
+            assertFalse(CodecLifetime.beginStartup())
+            assertEquals("T798 storage freed before borrower returned", 1L, SchedulingCodecShadow.released.count)
+        }
+    }
+
     @Test fun t386_recreatedReceiverWaitsForRetiredNativeOwner() {
         Fixture().use { old ->
             old.blockedInput()

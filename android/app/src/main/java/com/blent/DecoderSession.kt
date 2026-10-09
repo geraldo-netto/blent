@@ -339,7 +339,6 @@ internal class DecoderSession(
             if (owner != null) {
                 retiring = owner
                 owner.retire()
-                owner.awaitRetirement(500)
             }
         }
     }

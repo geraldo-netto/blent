@@ -13,7 +13,7 @@ class DecoderInventoryRule : ExternalResource() {
         add("video/avc", MediaCodecInfo.CodecProfileLevel.AVCProfileHigh, MediaCodecInfo.CodecProfileLevel.AVCLevel52)
         add("video/hevc", MediaCodecInfo.CodecProfileLevel.HEVCProfileMain, MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel52)
     }
-    override fun after() = ShadowMediaCodecList.reset()
+    override fun after() { awaitDecoderRetirement(); ShadowMediaCodecList.reset() }
     private fun add(mime: String, profile: Int, level: Int) {
         val capability = MediaCodecInfoBuilder.CodecCapabilitiesBuilder.newBuilder()
             .setMediaFormat(MediaFormat.createVideoFormat(mime, 1920, 1080))

@@ -97,3 +97,34 @@ Offline validation: 767 tests pass; all 864 maintained Android methods reach
 80% individually; production cyclomatic complexity stays <=9. Generated decoder
 Kotlin compilation and source-boundary/dependency tests pass. No downloads or
 physical native hangs were induced. T798 still owns the UI retirement wait.
+
+## T798: asynchronous decoder retirement from UI paths
+
+DecoderSession.releaseCodec no longer joins the native retirement thread while
+holding the receiver monitor. It still detaches the decoder, closes admission,
+retires timing/callback state and delegates destruction to CodecLifetime.
+Borrowed operations retain ownership, and the process-wide gate continues to
+reject replacement until actual release. Failed setup may still await cleanup
+on its existing I/O worker; that wait is outside the UI path.
+
+The permanent main-looper regression failed at 502 ms on SDKs 27 and 34 before
+the change. The same test returned in under 1 ms after the change, with its
+borrower still held and replacement admission closed. These are host Robolectric
+measurements, not a physical-device latency claim. Existing native-release-count
+and replacement fixtures now explicitly await actual retirement before checking
+completed destruction or reusing a fixture; no lifetime assertions were removed.
+The focused decoder/callback/direct-input suite passes all 134 cases.
+
+Replay workers also used the former synchronous retirement contract. Their
+controlled-restart/receipt regressions failed after the UI join was removed;
+replay now waits for process-wide retirement with cancellation and a five-second
+deadline before native setup. Release completion means confirmed native release,
+not the final bookkeeping instruction on its cleanup thread. The global gate
+still stays closed until bookkeeping removes that owner. Replay setup timing
+now includes any pending retirement wait; historical setup-only samples must
+not be compared as if that waiting interval had always been included. Generated
+bridges preserve older synchronous decoder sources.
+
+Full offline validation: 770 tests pass; all 864 maintained Android methods
+reach 80% individually; complexity stays <=9. Generated replay Kotlin compiles,
+and replay/boundary tooling tests pass. No downloads or device installation.

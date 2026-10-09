@@ -59,6 +59,7 @@ internal class DecoderReplay(private val surface: Surface, private val profile: 
         val started = System.nanoTime()
         applyProfile(decoder, profile) // Generated bridge: legacy source lacks profile selection.
         observeReplayCodec(decoder) { codec, mime -> result.put("codec", inventory(codec, mime, clip)) }
+        awaitReplayRetirement(active::get, ::replayRetirementPending)
         check(decoder.setupCodec(surface, replayFormat(clip, selection)))
         result.put("setup_us", (System.nanoTime() - started) / 1000)
             .put("selection", selection).put("selection_receipt", replayReceipt(decoder))

@@ -99,7 +99,10 @@ class CallbackDecoderTest {
             decoder.profile = DecoderProfile(callbacks = true)
             start()
         }
-        fun start() = assertTrue(decoder.setupCodec(surface, DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)))
+        fun start() {
+            awaitDecoderRetirement(decoder)
+            assertTrue(decoder.setupCodec(surface, DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)))
+        }
         fun callback(): MediaCodec.Callback = CallbackCodecShadow.callbacks.poll(1, TimeUnit.SECONDS)!!
         fun feed(data: ByteArray, configuration: Boolean = false, sequence: Long = 9) {
             decoder.feedDecoder(decoder.mediaCodec!!, data, 0, data.size, configuration, sequence)

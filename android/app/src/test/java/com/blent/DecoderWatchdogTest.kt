@@ -68,11 +68,13 @@ class DecoderWatchdogTest {
         val selection = DecoderSelection("vendor.avc", "h264", "baseline", 41, 8, false, 120)
         val format = DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60, selection = selection)
         try {
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format))
             val old = decoder.mediaCodec!!
             val callback = WatchdogCodecShadow.callbacks.last()
             callback.onFrameRendered(old, 1, 0)
             decoder.resetCodec()
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format.copy(selection = null)))
             callback.onFrameRendered(old, 2, 0)
             WatchdogCodecShadow.callbacks.last().onFrameRendered(decoder.mediaCodec!!, 3, 0)
@@ -97,12 +99,14 @@ class DecoderWatchdogTest {
         val surface = Surface(SurfaceTexture(1))
         val format = DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)
         try {
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format))
             val oldCodec = decoder.mediaCodec!!
             val oldCallback = WatchdogCodecShadow.callbacks.last()
             decoder.resetCodec()
             assertEquals(1, retirements)
             assertTrue(surface.isValid)
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format))
             val current = decoder.mediaCodec!!
             val callback = WatchdogCodecShadow.callbacks.last()
@@ -127,10 +131,12 @@ class DecoderWatchdogTest {
         val surface = Surface(SurfaceTexture(1))
         val format = DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)
         try {
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format))
             timing.noteArrival(7)
             decoder.resetCodec()
             assertEquals("T404: retirement retained old timing", -1, timing.decodeMicrosFor(7))
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format))
             assertEquals(-1, timing.decodeMicrosFor(7))
         } finally { decoder.releaseCodec(); surface.release() }
@@ -158,6 +164,7 @@ class DecoderWatchdogTest {
         val format = DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)
         var worker: Thread? = null
         try {
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format))
             val old = decoder.mediaCodec!!
             val callback = WatchdogCodecShadow.callbacks.last()
@@ -167,6 +174,7 @@ class DecoderWatchdogTest {
             }, "t404-held-callback").apply { start() }
             assertTrue(entered.await(3, TimeUnit.SECONDS))
             decoder.resetCodec()
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, format))
         } finally {
             resume.countDown()
@@ -198,12 +206,14 @@ class DecoderWatchdogTest {
         val parameters = DecoderFormat(VideoReceiver.MIME_TYPE, 1280, 800, 60)
         var oldWorker: Thread? = null
         try {
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, parameters))
             oldWorker = decoder.javaClass.getDeclaredField("outputThread")
                 .apply { isAccessible = true }.get(decoder) as Thread
             WatchdogCodecShadow.outputs.put(WatchdogCodecShadow.Output(7))
             assertTrue(entered.await(2, TimeUnit.SECONDS))
             decoder.resetCodec()
+            awaitDecoderRetirement(decoder)
             assertTrue(decoder.setupCodec(surface, parameters))
             resume.countDown()
             oldWorker.join(2_000)
@@ -235,6 +245,7 @@ class DecoderWatchdogTest {
             socket.close()
             socket = Socket()
             set("socket", socket)
+            awaitDecoderRetirement(receiver.decoder)
             assertEquals(true, receiver.setupCodec(surface))
         }
         fun output(elapsedNanos: Long = 0) {
