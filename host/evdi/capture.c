@@ -101,8 +101,8 @@ static void reject_mode(capture_context_t *capture) {
 }
 
 static int validate_frame_format(capture_context_t *capture, struct evdi_mode mode) {
-    /* RGBA scanout is normalized before shared/FIFO conversion or cursor
-       composition. Packed 10-bit and non-32-bit layouts remain unsupported. */
+    /* Validated byte order is passed to conversion/cursor composition; only
+       canonical fallback normalizes RGBA. Packed 10-bit layouts are unsupported. */
     if (mode.bits_per_pixel != 32 ||
             (mode.pixel_format != 0x34325258 && mode.pixel_format != 0x34325241 &&
              mode.pixel_format != 0x34324258 && mode.pixel_format != 0x34324241)) {
