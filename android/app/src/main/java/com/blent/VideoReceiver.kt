@@ -5,6 +5,9 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import java.io.InputStream
 import java.net.Socket
 import java.util.concurrent.atomic.AtomicBoolean
@@ -118,6 +121,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     val currentFps get() = statistics.fps
     val currentMbps get() = statistics.mbps
 
+    private val surfaceChanges = MutableStateFlow(0L)
     private val surfaceReady = AtomicBoolean(false)
     private val pendingSurface = AtomicReference<Surface?>(null)
 
@@ -141,6 +145,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
         }
         pendingSurface.set(surface)
         surfaceReady.set(true)
+        surfaceChanges.update { it + 1 }
         Log.i(TAG, "Surface stored, ready for codec setup")
 
         // The I/O worker observes this Surface. Never enter native decoder
@@ -155,6 +160,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     @Synchronized fun onSurfaceDestroyed() {
         surfaceReady.set(false)
         pendingSurface.set(null)
+        surfaceChanges.update { it + 1 }
         decoder.resetCodec()
     }
 
@@ -164,6 +170,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
             isRunning = true
             videoConnected = false
             val generation = sessionGeneration.incrementAndGet()
+            surfaceChanges.update { it + 1 }
             val sessionToken = token
             val sessionStatistics = ReceiverStatistics()
             statistics = sessionStatistics
@@ -230,10 +237,9 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     }
 
     private suspend fun awaitSurface(generation: Long) {
-        while (isCurrent(generation) && !surfaceReady.get()) {
-            Log.d(TAG, "Waiting for surface...")
-            delay(200)
-        }
+        // StateFlow replays changes that precede subscription and conflates
+        // wakeups; every wake validates current readiness/generation again.
+        surfaceChanges.first { !isCurrent(generation) || surfaceReady.get() }
     }
 
     private fun ensureSurfaceCodec(generation: Long): Boolean {
@@ -349,6 +355,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
         val wasRunning = isRunning
         sessionGeneration.incrementAndGet()
         isRunning = false
+        surfaceChanges.update { it + 1 }
         videoConnected = false
         decoder.retireOutput()
         // Close socket first to unblock a pending connect or read.

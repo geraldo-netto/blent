@@ -128,3 +128,22 @@ bridges preserve older synchronous decoder sources.
 Full offline validation: 770 tests pass; all 864 maintained Android methods
 reach 80% individually; complexity stays <=9. Generated replay Kotlin compiles,
 and replay/boundary tooling tests pass. No downloads or device installation.
+
+## T799: generation-aware Surface wakeup
+
+VideoReceiver now waits on a conflated StateFlow notification instead of a
+200 ms timer. Readiness, destruction and session Start/Stop publish changes;
+every observer checks current generation and readiness, including immediately
+on subscription. Native setup remains on the I/O worker with its existing
+Surface-identity and retirement checks.
+
+All six deterministic regression cases failed before the fix on SDKs 27/34.
+Their scheduler never advances timers: readiness-after-wait, readiness-before-
+wait, destruction before dispatched wakeup, recreation and Stop now complete
+correctly. Invalid/stale generation boundaries do not park a waiter. The existing
+sampler fixture's synthetic private generation change now publishes a normal
+lifecycle wakeup; its job/state assertions remain unchanged. This removes up to
+one polling interval from readiness latency; no steady-state FPS gain is claimed.
+
+Full offline validation: 776 tests pass; all 865 maintained Android methods
+reach 80% individually; complexity stays <=9. No downloads or device changes.

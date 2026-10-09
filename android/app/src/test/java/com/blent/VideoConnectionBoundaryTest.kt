@@ -36,6 +36,9 @@ class VideoConnectionBoundaryTest {
             assertEquals(2, workers.size)
             val generation: java.util.concurrent.atomic.AtomicLong = ReflectionHelpers.getField(receiver, "sessionGeneration")
             generation.incrementAndGet()
+            // T799: the synthetic private generation change needs a lifecycle
+            // wakeup; production Start/Stop publishes one without polling.
+            receiver.onSurfaceDestroyed()
             val retainedFps = receiver.getFps()
             val retainedMbps = receiver.getMbps()
             withTimeout(5000) { workers.forEach { it.join() } }
