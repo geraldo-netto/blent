@@ -26,6 +26,7 @@ typedef struct {
     Damage damage;
     XserverRegion region;
     int damage_event, cursor_event, dirty, pointer_x, pointer_y;
+    gpu_cursor_shape cursor_shape;
     int dma_fd;
     int render_fd;
     uint32_t stride, bytes;

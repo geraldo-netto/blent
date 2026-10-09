@@ -38,6 +38,22 @@ static void fragmented_damage(gpu_capture *c, GC gc) {
     assert(fetched_rectangles == 1 && "T770: fragmented damage must have bounded transfer and scan");
 }
 
+static void outside_pointer(gpu_capture *c) {
+    XWarpPointer(c->display, None, c->root, 0, 0, 0, 0, 100, 100);
+    XSync(c->display, False);
+    gpu_events_wait(c, 0, 30); /* Exit clears the previous visible cursor. */
+    XWarpPointer(c->display, None, c->root, 0, 0, 0, 0, 104, 104);
+    XSync(c->display, False);
+    uint64_t start = gpu_now_ns();
+    gpu_events_wait(c, start, 30);
+    assert(gpu_now_ns() - start >= 190000000 && "T771: unrelated pointer motion must retain idle cadence");
+    XWarpPointer(c->display, None, c->root, 0, 0, 0, 0, 24, 24);
+    XSync(c->display, False);
+    start = gpu_now_ns();
+    gpu_events_wait(c, start - 40000000, 30);
+    assert(gpu_now_ns() - start < 150000000); /* Re-entry still wakes capture. */
+}
+
 static void codec_error(void) {
     pid_t pid = fork(); assert(pid >= 0);
     if (!pid) { gpu_av(AVERROR(EINVAL), "T575 forced codec rejection"); _exit(0); }
@@ -100,6 +116,7 @@ static void cadence(gpu_capture *c) {
     gpu_events_wait(c, start, 30);
     assert(gpu_now_ns() - start >= 190000000); /* Foreign output damage ignored. */
     fragmented_damage(c, root_gc);
+    outside_pointer(c);
     pid_t child = fork(); assert(child >= 0);
     if (!child) { c->leased = 1; gpu_events_wait(c, 0, 30); _exit(0); }
     int status; assert(waitpid(child, &status, 0) == child);

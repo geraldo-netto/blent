@@ -46,6 +46,13 @@ static void events(gpu_capture *c) {
     }
 }
 
+static int cursor_affects_output(const gpu_capture *c, int x, int y) {
+    /* Before the first image, conservatively capture. Shape notifications
+     * already mark dirty; the next frame refreshes the cached footprint. */
+    if (!c->cursor_shape.width) return 1;
+    return gpu_cursor_intersects(c->x, c->y, c->width, c->height, x, y, &c->cursor_shape);
+}
+
 static void sample_pointer(gpu_capture *c) {
     Window root, child;
     int x, y, local_x, local_y; unsigned mask;
@@ -53,7 +60,8 @@ static void sample_pointer(gpu_capture *c) {
                             &local_x, &local_y, &mask), "cursor position");
     /* Shape notifications do not include motion. Bounded polling also catches
      * cursor entry/exit without selecting or stealing another client's input. */
-    if (x != c->pointer_x || y != c->pointer_y) c->dirty = 1;
+    if (x != c->pointer_x || y != c->pointer_y)
+        c->dirty |= cursor_affects_output(c, x, y) || cursor_affects_output(c, c->pointer_x, c->pointer_y);
     c->pointer_x = x; c->pointer_y = y;
 }
 

@@ -52,6 +52,33 @@ static void transforms(void) {
     }
 }
 
+static int cursor_pixel_oracle(int x, int y, const gpu_cursor_shape *shape) {
+    for (int cy = 0; cy < shape->height; cy++) {
+        for (int cx = 0; cx < shape->width; cx++) {
+            int px = x - shape->xhot + cx, py = y - shape->yhot + cy;
+            if (px >= 0 && px < 8 && py >= 0 && py < 8) return 1;
+        }
+    }
+    return 0;
+}
+
+static void cursor_bounds(void) {
+    unsigned seed = 771;
+    for (int i = 0; i < 4096; i++) {
+        int fields[6];
+        for (int j = 0; j < 6; j++) {
+            seed = seed * 1664525u + 1013904223u;
+            fields[j] = (int)(seed >> 24) % 25 - 12;
+        }
+        gpu_cursor_shape shape = {fields[2] % 7, fields[3] % 7, fields[4], fields[5]};
+        assert(gpu_cursor_intersects(0, 0, 8, 8, fields[0], fields[1], &shape) == cursor_pixel_oracle(fields[0], fields[1], &shape));
+    }
+    gpu_cursor_shape shape = {2, 2, INT32_MIN, INT32_MAX};
+    assert(!gpu_cursor_intersects(0, 0, 8, 8, INT32_MAX, INT32_MIN, &shape));
+    assert(!gpu_cursor_intersects(0, 0, 0, 8, 0, 0, &shape));
+    assert(!gpu_cursor_intersects(0, 0, 8, -1, 0, 0, &shape));
+}
+
 int main(void) {
     char *args[] = {"gpu", "DVI-I-2", "/native/render", "1280", "800", "1", "30", "18", "60000", "0", "desktop"};
     gpu_options options = gpu_parse(11, args);
@@ -60,6 +87,7 @@ int main(void) {
     bounds(args);
     edid();
     transforms();
+    cursor_bounds();
     /* T579: damage obeys maximum FPS; idle never starves the decoder. */
     for (unsigned fps = 1; fps <= 240; fps++) {
         uint64_t period = 1000000000 / fps;

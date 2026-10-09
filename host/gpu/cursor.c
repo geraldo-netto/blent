@@ -43,6 +43,7 @@ void gpu_cursor(gpu_capture *c) {
     /* Only cursor pixels traverse CPU memory. Desktop RGB remains GPU-backed. */
     XFixesCursorImage *cursor = XFixesGetCursorImage(c->display);
     gpu_require(cursor != NULL, "XFixes cursor image");
+    c->cursor_shape = (gpu_cursor_shape){cursor->width, cursor->height, cursor->xhot, cursor->yhot};
     if (intersects(c, cursor)) composite(c, cursor);
     XFree(cursor);
 }

@@ -7,6 +7,9 @@ typedef struct {
     unsigned width, height, scale, fps, quality, bitrate, limit;
     int pattern;
 } gpu_options;
+typedef struct { int width, height, xhot, yhot; } gpu_cursor_shape;
+int gpu_cursor_intersects(int x, int y, int width, int height,
+    int pointer_x, int pointer_y, const gpu_cursor_shape *shape);
 void gpu_require(int condition, const char *operation);
 uint64_t gpu_now_ns(void);
 gpu_options gpu_parse(int argc, char **argv);
