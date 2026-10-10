@@ -1,0 +1,18 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.01s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 10 tests
+test accessory::linux::discovery::tests::t876_bounded_mutations_and_maximum_inventory_never_escape_limits ... ok
+test accessory::linux::discovery::tests::t876_fixed_inventory_validates_candidates_and_unknown_support ... ok
+test accessory::linux::discovery::tests::t876_invalid_scan_configuration_never_starts_native_work ... ok
+test accessory::linux::discovery::tests::t876_inventory_extent_metadata_and_duplicate_rejections ... ok
+test accessory::linux::discovery::tests::t876_output_overflow_malformed_record_and_failed_exit_retire_native_helper ... ok
+test accessory::linux::discovery::tests::t876_supervised_inventory_requires_valid_output_and_actual_exit ... ok
+test accessory::linux::discovery::tests::t876_timeout_and_cancel_preserve_completion_until_actual_exit ... ok
+test accessory::linux::tests::t846_native_owner_duplex_and_actual_process_retirement ... ok
+test accessory::linux::tests::t846_native_target_bounds_reject_before_spawning ... ok
+test accessory::linux::tests::t879_selected_snapshot_reaches_helper_as_bounded_exact_arguments ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 507 filtered out; finished in 0.09s
+

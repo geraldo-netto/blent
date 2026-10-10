@@ -23,6 +23,10 @@ static int fake_thread(pthread_t *thread,const pthread_attr_t *attr,void *(*star
 #undef read
 int accessory_list(const char *limit) { assert(scenario==24 && !strcmp(limit,"64"));return 0; }
 void accessory_open(accessory_usb *usb,accessory_target target) { (void)target;usb->input=128;usb->output_packet=512; }
+void accessory_open_selected(accessory_usb *usb,accessory_target target,accessory_selection selected) {
+    assert(scenario==25 && selected.address==7 && selected.vendor==6353 && selected.product==201);
+    accessory_open(usb,target);
+}
 void accessory_transfer(accessory_usb *usb,int receive,unsigned char *bytes,int length) {
     (void)usb;assert(!receive);transfers++;
     if(scenario>=15) {assert(length==(scenario==18?513:512));pending_packet=scenario!=18;return;}
@@ -79,6 +83,9 @@ static void send_scenario(accessory_usb *usb) {
     send_bytes(usb);assert(!pending_packet);
 }
 static int entry_scenario(void) {
+    if(scenario==25) {
+        char *arguments[]={"fixture","--selected","254","255","7","6353","201",NULL};return adapter_main(7,arguments);
+    }
     if(scenario==24) {
         char *arguments[]={"fixture","--list","64",NULL};return adapter_main(3,arguments);
     }
@@ -93,7 +100,7 @@ static void pipe_scenario(accessory_usb *usb) {
 }
 int main(int argc,char **argv) {
     assert(argc==2);scenario=atoi(argv[1]);accessory_usb usb={.input=128,.output_packet=512};
-    if(scenario==24 || (scenario>=12 && scenario<=14)) return entry_scenario();
+    if(scenario>=24 || (scenario>=12 && scenario<=14)) return entry_scenario();
     if(scenario<=6) read_scenario(&usb);
     else if(scenario>=15) send_scenario(&usb);
     else pipe_scenario(&usb);

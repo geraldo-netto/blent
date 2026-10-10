@@ -94,13 +94,23 @@ static void claim_accessory(accessory_usb *usb) {
     accessory_require(libusb_claim_interface(usb->handle,usb->interface)==0,"accessory interface busy or unavailable");
     usb->claimed=1;
 }
-void accessory_open(accessory_usb *usb, accessory_target target) {
+static void check_selection(libusb_device_handle *handle,const accessory_selection *selected) {
+    if(!selected) return;
+    libusb_device *device=libusb_get_device(handle);
+    struct libusb_device_descriptor desc;
+    accessory_require(libusb_get_device_descriptor(device,&desc)==0,"selected device descriptor");
+    accessory_require(libusb_get_device_address(device)==selected->address &&
+                      desc.idVendor==selected->vendor && desc.idProduct==selected->product,
+                      "selected device changed; refresh inventory before retrying");
+}
+static void open_target(accessory_usb *usb, accessory_target target,const accessory_selection *selected) {
     int open_error=0;
     usb->interface=-1;
     accessory_require(libusb_init(&usb->context)==0,"libusb initialization");
     usb->handle=find_device(usb,target,&open_error);
     accessory_require(open_error==0,"cannot open target; check USB permission");
     accessory_require(usb->handle!=NULL,"target absent");
+    check_selection(usb->handle,selected);
     if (!is_accessory(usb->handle)) {
         start_accessory(usb->handle); libusb_close(usb->handle); usb->handle=NULL;
         wait_accessory(usb,target);
@@ -110,6 +120,11 @@ void accessory_open(accessory_usb *usb, accessory_target target) {
     accessory_require(libusb_get_device_descriptor(libusb_get_device(usb->handle),&desc)==0,"accessory identity");
     fprintf(stderr,"Accessory %04x:%04x interface %d; approve Blent USB Probe on tablet.\n",desc.idVendor,desc.idProduct,usb->interface);
     fprintf(stderr,"ADB interface advertised: %s\n",desc.idProduct==0x2d01?"yes":"no");
+}
+void accessory_open(accessory_usb *usb,accessory_target target) { open_target(usb,target,NULL); }
+void accessory_open_selected(accessory_usb *usb,accessory_target target,accessory_selection selected) {
+    accessory_require(selected.address>0 && selected.address<=127,"invalid selected USB address");
+    open_target(usb,target,&selected);
 }
 static void check_transfer(int status,int count,int remaining,int receive) {
     int valid=status==0 && count>=0 && count<=remaining;

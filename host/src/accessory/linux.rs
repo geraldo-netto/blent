@@ -53,13 +53,32 @@ impl Owner for Process {
 /// peer message. Its inherited per-port lock survives until actual process exit.
 /// No TLS state or application permission is implied by spawning this process.
 pub fn open(helper: &Path, target: &Target) -> Result<Resource> {
+    open_arguments(helper, &target.arguments())
+}
+/// Recheck observed metadata on the opened handle before any AOA transfer.
+/// This binds a UI selection, never trust; TLS still proves the peer identity.
+pub fn open_selected(helper: &Path, selected: &discovery::Candidate) -> Result<Resource> {
+    ensure!(
+        (1..=127).contains(&selected.address),
+        "invalid selected USB address"
+    );
+    let mut arguments = vec!["--selected".to_owned()];
+    arguments.extend(selected.target.arguments());
+    arguments.extend([
+        selected.address.to_string(),
+        selected.vendor.to_string(),
+        selected.product.to_string(),
+    ]);
+    open_arguments(helper, &arguments)
+}
+fn open_arguments(helper: &Path, arguments: &[String]) -> Result<Resource> {
     ensure!(
         helper.is_absolute(),
         "USB helper must use an absolute installed path"
     );
     let mut command = Command::new(helper);
     command
-        .args(target.arguments())
+        .args(arguments)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::inherit());
@@ -78,6 +97,37 @@ pub fn open(helper: &Path, target: &Target) -> Result<Resource> {
 mod tests {
     use super::*;
     use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    #[tokio::test]
+    async fn t879_selected_snapshot_reaches_helper_as_bounded_exact_arguments() {
+        use std::os::unix::fs::PermissionsExt;
+        let root = tempfile::tempdir().unwrap();
+        let helper = root.path().join("selected-helper");
+        std::fs::write(&helper, b"#!/bin/sh\nprintf '%s\\n' \"$@\"\n").unwrap();
+        std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o700)).unwrap();
+        let mut selected = discovery::Candidate {
+            target: Target::new(3, &[2, 4, 4]).unwrap(),
+            address: 7,
+            vendor: 6353,
+            product: 201,
+            device_class: 0,
+            support: discovery::Support::Unknown,
+        };
+        for address in [0, 128, 255] {
+            selected.address = address;
+            assert!(open_selected(&helper, &selected).is_err());
+        }
+        selected.address = 7;
+        assert!(open_selected(Path::new("relative"), &selected).is_err());
+        let Resource { mut stream, owner } = open_selected(&helper, &selected).unwrap();
+        let mut bytes = Vec::new();
+        tokio::time::timeout(Duration::from_secs(3), stream.read_to_end(&mut bytes))
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(bytes, b"--selected\n3\n2.4.4\n7\n6353\n201\n");
+        drop(stream);
+        owner.retire().await.unwrap();
+    }
     #[test]
     fn t846_native_target_bounds_reject_before_spawning() {
         for (bus, ports) in [(0, vec![1]), (1, vec![]), (1, vec![0]), (1, vec![1; 8])] {

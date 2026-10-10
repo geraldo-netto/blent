@@ -35,6 +35,21 @@ accessory_target accessory_parse_target(const char *bus, const char *ports) {
     } while (1);
     return result;
 }
+static uint16_t selected_number(const char *text,unsigned long maximum) {
+    accessory_require(text && *text>='0' && *text<='9',"numeric selection required");
+    accessory_require(*text!='0' || !text[1],"noncanonical selection number");
+    errno=0; char *end; unsigned long value=strtoul(text,&end,10);
+    accessory_require(!errno && !*end && value<=maximum,"selection outside range");
+    return (uint16_t)value;
+}
+accessory_selection accessory_parse_selection(const char *address,const char *vendor,const char *product) {
+    accessory_selection result={0};
+    result.address=(uint8_t)selected_number(address,127);
+    accessory_require(result.address>0,"selected address outside 1..127");
+    result.vendor=selected_number(vendor,65535);
+    result.product=selected_number(product,65535);
+    return result;
+}
 
 int accessory_lock(accessory_target target) {
     char name[160];

@@ -1,0 +1,16 @@
+F
+======================================================================
+FAIL: test_t879_replaced_selection_never_sends_control_transfers (scripts.tests.test_aoa_probe.AoaProbeEnumerationTest.test_t879_replaced_selection_never_sends_control_transfers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_aoa_probe.py", line 147, in test_t879_replaced_selection_never_sends_control_transfers
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: 0 != 2 : Accessory 18d1:2d00 interface 0; approve Blent USB Probe on tablet.
+ADB interface advertised: no
+attempts=3 sleeps=2 controls=8
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.168s
+
+FAILED (failures=1)

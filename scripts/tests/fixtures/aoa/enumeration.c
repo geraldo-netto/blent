@@ -13,6 +13,7 @@ static struct libusb_device device;
 static struct libusb_context context;
 static struct libusb_device_handle handle;
 static int switched, attempts, sleeps, error, persistent, strict, absent;
+static int selection, controls;
 static struct libusb_endpoint_descriptor endpoints[]={{2,0x81,512},{2,0x02,512}};
 static struct libusb_interface_descriptor descriptor={255,255,0,2,0,0,endpoints};
 static struct libusb_interface interface={&descriptor,1};
@@ -20,6 +21,7 @@ static struct libusb_config_descriptor config={1,&interface};
 int libusb_init(libusb_context **out) { *out=&context; return 0; }
 void libusb_exit(libusb_context *value) { assert(value==&context); }
 uint8_t libusb_get_bus_number(libusb_device *value) { assert(value==&device); return 3; }
+uint8_t libusb_get_device_address(libusb_device *value) { assert(value==&device); return switched?8:7; }
 int libusb_get_port_numbers(libusb_device *value,uint8_t *ports,int count) {
     assert(value==&device && count>=1); ports[0]=2; return 1;
 }
@@ -43,7 +45,7 @@ int libusb_get_device_descriptor(libusb_device *value,struct libusb_device_descr
 int libusb_control_transfer(libusb_device_handle *value,uint8_t type,uint8_t request,
     uint16_t val,uint16_t index,unsigned char *data,uint16_t length,unsigned int timeout) {
     assert(value==&handle && val==0 && timeout==1000);
-    (void)type; (void)index;
+    (void)type; (void)index; controls++;
     if (request==51) { assert(length==2); data[0]=2; data[1]=0; }
     if (request==53) switched=1;
     return length;
@@ -63,10 +65,18 @@ int nanosleep(const struct timespec *duration,struct timespec *remaining) {
     (void)remaining; assert(duration->tv_sec==0 && duration->tv_nsec==100000000);
     assert(++sleeps<=100); return 0;
 }
-static void report(void) { fprintf(stderr,"attempts=%d sleeps=%d\n",attempts,sleeps); }
+static void report(void) { fprintf(stderr,"attempts=%d sleeps=%d controls=%d\n",attempts,sleeps,controls); }
 int main(int argc,char **argv) {
-    assert(argc==5); error=atoi(argv[1]); persistent=atoi(argv[2]); strict=atoi(argv[3]); absent=atoi(argv[4]);
+    assert(argc==5 || argc==6); error=atoi(argv[1]); persistent=atoi(argv[2]); strict=atoi(argv[3]); absent=atoi(argv[4]);
+    if(argc==6) selection=atoi(argv[5]);
     assert(!atexit(report));
     accessory_usb usb={0}; accessory_target target={.bus=3,.ports={2},.count=1};
-    accessory_open(&usb,target); assert(usb.claimed); accessory_close(&usb); return 0;
+    if(selection) {
+        accessory_selection selected={.address=7,.vendor=0x18d1,.product=0x4ee8};
+        if(selection==1) selected.address=6;
+        if(selection==2) selected.vendor=0x1234;
+        if(selection==3) selected.product=0x1234;
+        accessory_open_selected(&usb,target,selected);
+    } else accessory_open(&usb,target);
+    assert(usb.claimed); accessory_close(&usb); return 0;
 }

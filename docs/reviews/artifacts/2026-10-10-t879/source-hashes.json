@@ -1,0 +1,12 @@
+{
+  "host/accessory/accessory.c": "574bd75ae6f63fad00c45821bd0c84d70ae65237c23d6c96484058d5219319a7",
+  "host/accessory/contract.c": "74d550ecec37985fba9a6f2df64a5408aff35d1bdf198f23abba189238bd813c",
+  "host/accessory/stream.c": "1fe4705cd4df408ab7bbb3207f46cc2992287365f49dacde8203cdd0591a6498",
+  "host/accessory/accessory.h": "0e769914e1e77567de79c8f79ef135cde5b7f5c3663bcf61310d12c01158bd6d",
+  "host/src/accessory/linux.rs": "9416a186c0d1e693cafe51e282f2e57de4adac17ce59d8a8a4f9f9d6f27e811f",
+  "scripts/tests/test_aoa_probe.py": "805dbd5eeaaeb7d96c7c047ef019b76c758985943bc485276a97a90456a9d487",
+  "scripts/tests/test_accessory_selection.py": "56fd872139d3ec68b6b78842e5cf3184701751b7933515b627a1f2cf24719814",
+  "scripts/tests/fixtures/aoa/enumeration.c": "f116ec33f0d40905177239b5efbb76c4fceb9f15557a918cab934f30b8b16a20",
+  "scripts/tests/fixtures/aoa/stream_fixture.c": "58b71301272257e70cbd8bf70c1f104fa8226003a2ba675a42ddb5c25c77af27",
+  "scripts/tests/fixtures/aoa/selection.c": "6d50ccfc6829b440dcc8b59e8cd357392288762b6aa9000c0f86443cfbb837ed"
+}

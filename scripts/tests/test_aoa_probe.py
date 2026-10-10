@@ -140,6 +140,19 @@ class AoaProbeEnumerationTest(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertIn(f'attempts=3 sleeps={2 + absent}', result.stderr)
 
+    def test_t879_replaced_selection_never_sends_control_transfers(self):
+        for changed in [1, 2, 3]:
+            result = subprocess.run([self.binary, '0', '0', '0', '0', str(changed)],
+                                    capture_output=True, text=True, timeout=2)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertIn('controls=0', result.stderr)
+
+    def test_t879_exact_selection_allows_expected_reenumeration(self):
+        result = subprocess.run([self.binary, '0', '0', '0', '0', '4'],
+                                capture_output=True, text=True, timeout=2)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('controls=8', result.stderr)
+
     def test_t846_persistent_open_error_is_bounded(self):
         for error in [-3, -4]:
             result = self.run_probe(error, persistent=1)
@@ -172,6 +185,10 @@ class AccessoryStreamTest(unittest.TestCase):
 
     def test_t876_inventory_dispatch_does_not_enter_usb_streaming(self):
         result = subprocess.run([self.binary, '24'], capture_output=True, timeout=3)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_t879_stream_entry_preserves_selected_descriptor_arguments(self):
+        result = subprocess.run([self.binary, '25'], capture_output=True, timeout=3)
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_t846_packet_aligned_usb_writes_terminate_pending_device_read(self):
