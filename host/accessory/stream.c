@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 /* Opaque transport bytes only. Parent owns TLS/approval/deadlines. Process exit
@@ -57,6 +58,7 @@ static void send_bytes(accessory_usb *usb) {
     }
 }
 int main(int argc,char **argv) {
+    if (argc==3 && !strcmp(argv[1],"--list")) return accessory_list(argv[2]);
     accessory_require(argc==3,"usage: blent-usb-io BUS PORT.PATH");
     accessory_target target=accessory_parse_target(argv[1],argv[2]);
     int lock=accessory_lock(target);

@@ -1,5 +1,6 @@
 //! Linux adapter: stock libusb runs only in a supervised opaque-byte helper.
 use super::{Owner, Resource};
+pub mod discovery;
 use anyhow::{ensure, Context, Result};
 use blent_config::{commands::OwnedChild, retirement::Completion};
 use std::{future::Future, path::Path, pin::Pin, process::Stdio, time::Duration};

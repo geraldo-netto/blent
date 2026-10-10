@@ -1,0 +1,11 @@
+{
+  "host/accessory/discovery.c": "724477110060105b0c90a5b9ec1fde97dcf42dd90da4b89e18f3966d1e8033e5",
+  "host/accessory/stream.c": "d7c10f4d4c89d78d69ce3dae9b9636609b86cb2cd63982242de0b85054f0968a",
+  "host/accessory/contract.c": "176066faa27261f64b61f0ea3179faa3f9b5868ebb8e55bbd7f09641a2ff576b",
+  "host/accessory/accessory.h": "b247b21de80b1aa106b2c0bfa0f06c39a97b2b0ed3a42b93a66f4d7448cf220c",
+  "scripts/tests/fixtures/aoa/libusb.h": "7ba26b3fcb3ad48fb13e3c6b423c4ebf6ac7761a8fd1dca7d0e699b23b41b9a2",
+  "scripts/tests/fixtures/aoa/discovery.c": "d92c3b4e89965920d925d2357047ddde56abc9b1871508d90432b9dc1e2471f4",
+  "scripts/tests/fixtures/aoa/stream_fixture.c": "ca9f45a246d7ad0e55892768048a0ef5256c52777aabf4819c9a6fd210bf7c84",
+  "scripts/tests/test_accessory_discovery.py": "ae0c4dca1a2af0c6360d5c3cb70b17e3d074928628b7d1bb2d0fcd9e9dfb58d8",
+  "scripts/tests/test_aoa_probe.py": "1d7e6700c37ea150cf3ea3d019bd9e7f828bd047509b7928e37f10f7a1feeb92"
+}

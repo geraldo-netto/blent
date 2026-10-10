@@ -14,4 +14,5 @@ void accessory_transfer(accessory_usb *usb, int receive, unsigned char *data, in
 void accessory_close(accessory_usb *usb);
 void accessory_require(int condition, const char *message);
 uint64_t accessory_clock(void);
+int accessory_list(const char *limit);
 #endif

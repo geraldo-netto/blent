@@ -703,3 +703,16 @@ invalidates cached IDs; clients must not replay commands against a fresh owner.
 Snapshot Begin/End revisions must match before presentation uses the result.
 These codecs do not themselves approve, connect or revoke anything. T855 consumes
 this contract for production presentation after T853 orchestration exists.
+
+### T876 read-only Linux discovery
+
+`blent-usb-io --list LIMIT` provides bounded inventory without ADB, device opens,
+string queries, interface claims or accessory mode switches. The stock libusb
+adapter emits BLUI v1: 16-byte header (eight-byte magic, big-endian count u16, six
+zero reserved bytes), then 16-byte records (bus, address, port depth, device class,
+VID/PID as big-endian u16, seven zero-padded port numbers, final zero reserved byte).
+The maximum is 512 candidates; capacity overflow fails instead of truncating.
+Root controllers and hubs are excluded. Other devices have unknown support unless
+already reporting the stock accessory VID/PID; this observation grants no trust.
+The Rust Scan adapter bounds bytes/time and retains independent native Completion.
+T853 still maps this native data to opaque IDs and revalidates explicit selections.

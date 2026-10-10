@@ -12,7 +12,7 @@ typedef struct libusb_device_handle libusb_device_handle;
 #define LIBUSB_TRANSFER_TYPE_MASK 3
 #define LIBUSB_TRANSFER_TYPE_BULK 2
 #define LIBUSB_ENDPOINT_IN 128
-struct libusb_device_descriptor { uint16_t idVendor, idProduct; };
+struct libusb_device_descriptor { uint16_t idVendor, idProduct; uint8_t bDeviceClass; };
 struct libusb_endpoint_descriptor { uint8_t bmAttributes, bEndpointAddress; uint16_t wMaxPacketSize; };
 struct libusb_interface_descriptor {
     uint8_t bInterfaceClass, bInterfaceSubClass, bInterfaceProtocol;
@@ -24,6 +24,7 @@ struct libusb_config_descriptor { uint8_t bNumInterfaces; const struct libusb_in
 int libusb_init(libusb_context **context);
 void libusb_exit(libusb_context *context);
 uint8_t libusb_get_bus_number(libusb_device *device);
+uint8_t libusb_get_device_address(libusb_device *device);
 int libusb_get_port_numbers(libusb_device *device, uint8_t *ports, int count);
 ssize_t libusb_get_device_list(libusb_context *context, libusb_device ***list);
 void libusb_free_device_list(libusb_device **list, int unref);

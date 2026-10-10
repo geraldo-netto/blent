@@ -170,6 +170,10 @@ class AccessoryStreamTest(unittest.TestCase):
                         str(ROOT / 'scripts/tests/fixtures/aoa/stream_fixture.c'),
                         str(ROOT / 'host/accessory/contract.c'), '-pthread', '-o', str(cls.binary)], check=True)
 
+    def test_t876_inventory_dispatch_does_not_enter_usb_streaming(self):
+        result = subprocess.run([self.binary, '24'], capture_output=True, timeout=3)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_t846_packet_aligned_usb_writes_terminate_pending_device_read(self):
         for scenario in range(15, 24):
             result = subprocess.run([self.binary, str(scenario)], capture_output=True, timeout=3)
