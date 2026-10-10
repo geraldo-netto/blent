@@ -1,0 +1,5 @@
+{
+  "common/src/connection/window.rs": "13edc6cb667f3520a82b9245b0e6dbf18e04d83fc8ed5b2ddbd318a3a0fc0b87",
+  "host/src/broker/window.rs": "f1e12ccd87cda78f67cf7fa5e1d9fdb64ef3ddadaeeb1c4ba41534b9ec146f22",
+  "host/src/broker/window/tests.rs": "fdbbb931796889e0976108a42f951c1533a116ab32ba055ace318b9ee9d0a509"
+}

@@ -657,3 +657,24 @@ borrowed listener descriptors until atomic send, and close received descriptors
 on malformed packets. Shutdown revokes I/O; actual descriptor ownership ends
 only when the wrapper and outstanding borrows drop. Runtime-directory selection,
 on-demand process startup and registration orchestration remain T853.
+
+### T875 authenticated runtime-window agreement
+
+Before either endpoint constructs its production multiplexed Session or sends
+CREDIT, the already mutually authenticated TLS stream exchanges exactly 12 bytes
+per side: `BLCP`, version byte 1, role byte (host 1, tablet 0), two zero reserved
+bytes and a big-endian u32 capacity. Host sends its configured capacity first.
+Tablet chooses the smaller of that proposal and its configured capacity and
+replies with the selection. Both use that selection in both directions. Valid
+capacities are 4096..1048576 bytes. Host rejects a selection exceeding its proposal.
+No fallback or implicit equality is permitted. The existing production wire
+namespace remains 1 inside each fresh TLS stream.
+
+The host adapter uses one absolute I/O deadline (configured 1 ns..60 seconds,
+default five seconds) covering proposal write, flush and complete reply. Error
+or cancellation invalidates the setup stream; its owner must drop it, retain
+native retirement evidence and recheck the pairing lease before installation.
+Remaining queue/quantum/deadline settings stay local. Parsing this record grants
+no approval or media authority. T853 must invoke this adapter; T854 implements
+the matching Android exchange. Tests use isolated byte streams; production media
+and debugging-off acceptance remain T855/T857 and subsequent media items.

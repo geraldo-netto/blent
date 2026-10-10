@@ -15,3 +15,4 @@ pub mod routes;
 pub mod trust;
 
 pub mod registration;
+pub mod window;
