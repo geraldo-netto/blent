@@ -4,29 +4,9 @@
 use anyhow::{ensure, Result};
 use blent_config::connection::pairing::PeerId;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum Owner {
-    Adb(String),
-    Peer(PeerId),
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct Ticket {
-    instance: u32,
-    revision: u64,
-}
-impl Ticket {
-    pub fn instance(self) -> u32 {
-        self.instance
-    }
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Plan {
-    None,
-    Ready(u32),
-    Current(Ticket),
-    Replace(Ticket),
-    Wait,
-}
+mod contract;
+pub use contract::{Owner, Plan, Reservations, Ticket};
+
 struct Entry {
     owner: Owner,
     ticket: Ticket,
@@ -56,6 +36,10 @@ impl Slots {
     }
     pub fn owner(&self, ticket: Ticket) -> Option<&Owner> {
         self.entry(ticket).map(|entry| &entry.owner)
+    }
+    /// Reservation lifecycle only; an open ticket is not media admission.
+    pub fn closing(&self, ticket: Ticket) -> Option<bool> {
+        self.entry(ticket).map(|entry| entry.closing)
     }
     pub fn ticket(&self, owner: &Owner) -> Option<Ticket> {
         self.entries
@@ -194,5 +178,12 @@ impl Slots {
         Ok(())
     }
 }
+impl Reservations for Slots {
+    fn open_peer(&self, ticket: Ticket, peer: &PeerId) -> bool {
+        self.owner(ticket) == Some(&Owner::Peer(peer.clone()))
+            && self.closing(ticket) == Some(false)
+    }
+}
+
 #[cfg(test)]
 mod tests;

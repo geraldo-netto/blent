@@ -21,6 +21,8 @@ pub mod adb_inventory;
 pub mod display_slots;
 pub mod display_discovery;
 pub mod registered_display;
+pub mod registered_session;
+pub mod session_work;
 pub mod attachment;
 pub mod config;
 pub mod ffmpeg_args;

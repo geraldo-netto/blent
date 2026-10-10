@@ -1572,3 +1572,25 @@ absolute roots and sibling executables; release discovery remains deferred T861.
 regressions, bounded candidate/clock tests, native client retirement, per-function
 counters and offline Windows checking. T925 joins retained display resources;
 T908 connects the source and ownership policy to the production daemon.
+
+## T925 joined registration and session retirement
+
+`registered_session::Session` retains one candidate, capacity ticket, registration
+owner and native work binding. A separate reservation contract validates preflight
+and revalidates after native startup; cancelled startup retains cleanup without
+touching replacement attachment authority. Status appears only for the exact Active
+registration with healthy native work. Registration renewal preserves geometry and
+capture ownership while requiring fresh credentials.
+
+Whole-session close is prompt and idempotent. Capacity remains reserved until both
+registration and native work actually retire, and composition must drop retained
+listener capabilities before releasing the ticket. Extra runtime bindings wait for
+supervisor and native completion. Primary bindings leave daemon-owned capture alive.
+The Linux registration adapter pins original listeners while supplying duplicates
+to the native broker. Neither portable lifecycle interface exposes OS handles or
+concrete capture/UI/storage internals.
+
+[Permanent regression and counter evidence](artifacts/2026-10-11-t925/README.md)
+includes two draft fail-before-fix cases, native port ownership, real broker TLS,
+bounded invalid inputs and individual coverage. Production daemon composition
+remains T908; physical joined display/touch acceptance remains T857.

@@ -11,6 +11,15 @@ use blent_config::connection::{
 
 #[tokio::test]
 async fn t911_registration_client_uses_real_broker_tls_and_retained_descriptors() {
+    registration_fixture(false).await;
+}
+
+#[tokio::test]
+async fn t925_bound_registration_uses_real_broker_tls_and_retained_ports() {
+    registration_fixture(true).await;
+}
+
+async fn registration_fixture(bound: bool) {
     let auth = authenticated().await;
     let settings = registration_client::Settings::new(Launch {
         executable: "/bin/false".into(),
@@ -18,7 +27,7 @@ async fn t911_registration_client_uses_real_broker_tls_and_retained_descriptors(
         state: auth.fixture.server.settings.state.clone(),
         helper: auth.fixture.server.settings.helper.clone(),
     });
-    let factory = registration_client::Factory::new(settings).unwrap();
+    let factory = std::sync::Arc::new(registration_client::Factory::new(settings).unwrap());
     let (stop, done) = tokio::sync::oneshot::channel();
     let running = tokio::spawn(async move {
         let mut fixture = auth.fixture;
@@ -26,17 +35,34 @@ async fn t911_registration_client_uses_real_broker_tls_and_retained_descriptors(
         fixture
     });
     let (video, control) = listeners();
-    let client = factory
-        .start(
-            Request {
-                peer: auth.pin,
-                resource: Resource::DisplaySession,
-                credential: Credential::new([9; 32]),
-                profile: Profile::Display,
-            },
-            vec![video.try_clone().unwrap(), control.try_clone().unwrap()],
+    let request = Request {
+        peer: auth.pin,
+        resource: Resource::DisplaySession,
+        credential: Credential::new([9; 32]),
+        profile: Profile::Display,
+    };
+    let client: Box<dyn Client> = if bound {
+        use crate::registered_display::Registration;
+        let (retained, _video, _control) = crate::session_network::RetainedListeners::retain(
+            tokio::net::TcpListener::from_std(video.try_clone().unwrap()).unwrap(),
+            tokio::net::TcpListener::from_std(control.try_clone().unwrap()).unwrap(),
         )
         .unwrap();
+        let mut bound = crate::broker::linux::display_registration::Bound::new(
+            factory,
+            std::sync::Arc::new(retained),
+        );
+        bound.start(request).unwrap()
+    } else {
+        Box::new(
+            factory
+                .start(
+                    request,
+                    vec![video.try_clone().unwrap(), control.try_clone().unwrap()],
+                )
+                .unwrap(),
+        )
+    };
     let tablet = tokio::spawn(crate::broker::session::tests::tls::tablet(auth.tablet));
     let (_sockets, tablet) =
         bounded(async { tokio::join!(exchange(video, control), tablet) }).await;

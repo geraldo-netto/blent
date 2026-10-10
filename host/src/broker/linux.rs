@@ -11,6 +11,7 @@ pub mod client;
 mod launch;
 pub mod presentation;
 pub mod registration_client;
+pub mod display_registration;
 mod endpoints;
 pub mod entry;
 pub mod inventory;

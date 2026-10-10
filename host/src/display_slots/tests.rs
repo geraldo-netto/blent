@@ -141,3 +141,34 @@ fn t917_exhaustion_preserves_working_display_instead_of_preempting() {
     assert_eq!(slots.owner(working), Some(&adb("working")));
     assert!(slots.adb_allowed(0));
 }
+
+#[test]
+fn t925_reservation_phase_rejects_stale_and_out_of_bounds_tickets() {
+    let mut slots = Slots::new(1).unwrap();
+    let peer = PeerId::parse("ab".repeat(32)).unwrap();
+    slots.select(Some(peer.clone()));
+    let ticket = slots.reserve(Owner::Peer(peer), 0).unwrap();
+    assert_eq!(slots.closing(ticket), Some(false));
+    for instance in (1..=128).chain([u32::MAX]) {
+        assert_eq!(
+            slots.closing(Ticket {
+                instance,
+                revision: ticket.revision
+            }),
+            None
+        );
+    }
+    for revision in [0, 2, u64::MAX] {
+        assert_eq!(
+            slots.closing(Ticket {
+                instance: 0,
+                revision
+            }),
+            None
+        );
+    }
+    slots.close(ticket).unwrap();
+    assert_eq!(slots.closing(ticket), Some(true));
+    slots.retired(ticket).unwrap();
+    assert_eq!(slots.closing(ticket), None);
+}

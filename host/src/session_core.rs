@@ -213,6 +213,9 @@ impl Runtime {
             state,
         }
     }
+    pub fn finished(&self) -> bool {
+        self.supervisor.is_finished()
+    }
     pub async fn stop(mut self) -> blent_config::retirement::Completion {
         self.tablet_tx.retire();
         self.stop_tx.send_replace(true);
