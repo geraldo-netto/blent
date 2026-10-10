@@ -1,0 +1,29 @@
+{
+  "reviewed_commit": "e5a1d8198e7495fed4b80d812e44fac76a29271e",
+  "upstream_revision": "96fce89c2b3e57e092d59a4890235aec9ae777c3",
+  "source_notices": {
+    "LICENSE": {
+      "sha256": "a56b3410502afc790faa75e4d430147bd35a3dda330129efd9ac4a798c6d308c",
+      "matches_inherited_revision": true
+    },
+    "host/evdi/evdi_lib.h": {
+      "sha256": "ece987245ac3939fe5f12fca894a29c7d586bdbf80796d3f6fa08a7c52bf9128",
+      "matches_inherited_revision": true
+    }
+  },
+  "apk": {
+    "path": "android/app/build/outputs/apk/release/app-release.apk",
+    "sha256": "7847ea6882875c0f32596d3eb9bffc961a53fc4e46208651196c0e41b153f075",
+    "notice_named_entries": [
+      "okhttp3/internal/publicsuffix/NOTICE"
+    ],
+    "text_marker_hits": {
+      "majmichu1": [],
+      "Permission is hereby granted": [],
+      "Geraldo Netto": [],
+      "Apache License": [],
+      "Licensed under the Apache": []
+    }
+  },
+  "scope": "Local source and cached APK only; no web verification or publication audit."
+}
