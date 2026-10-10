@@ -77,6 +77,16 @@ impl PeerCertificate {
     pub fn fingerprint(&self) -> [u8; 32] {
         Sha256::digest(self.0.as_ref()).into()
     }
+    pub fn peer_id(&self) -> blent_config::connection::pairing::PeerId {
+        const DIGITS: &[u8] = b"0123456789abcdef";
+        let mut text = String::with_capacity(64);
+        for value in self.fingerprint() {
+            text.push(DIGITS[(value >> 4) as usize] as char);
+            text.push(DIGITS[(value & 15) as usize] as char);
+        }
+        blent_config::connection::pairing::PeerId::parse(text)
+            .expect("SHA-256 formatting produces a valid peer ID")
+    }
 }
 fn checked_certificate(bytes: Vec<u8>) -> Result<CertificateDer<'static>> {
     ensure!(

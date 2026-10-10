@@ -1,0 +1,2146 @@
+{
+  "rust_platforms": [
+    "linux"
+  ],
+  "excluded_platform_functions": [
+    {
+      "file": "host/src/bin/usb_broker.rs",
+      "name": "main",
+      "line": 6,
+      "language": "rust",
+      "covered": 0,
+      "total": 0,
+      "percent": null,
+      "passes": false,
+      "missing": []
+    }
+  ],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/broker/control",
+    "host/src/broker/authority_worker.rs",
+    "host/src/broker/bridges.rs",
+    "host/src/broker/link",
+    "host/src/broker/linux/client.rs",
+    "host/src/broker/linux/state.rs",
+    "host/src/broker/linux/peer.rs",
+    "host/src/broker/linux/inventory.rs",
+    "host/src/broker/linux/server",
+    "host/src/broker/linux/entry.rs",
+    "host/src/broker/linux/endpoints.rs",
+    "host/src/accessory/setup.rs",
+    "host/src/secure_connection/mod.rs",
+    "host/src/bin/usb_broker.rs",
+    "common/src/connection/trust.rs"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 185,
+      "passing": 185,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "open",
+      "line": 36,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "healthy",
+      "line": 64,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "approved_peers",
+      "line": 68,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "trusted",
+      "line": 72,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "find",
+      "line": 75,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "begin",
+      "line": 82,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "authenticated",
+      "line": 96,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "remember",
+      "line": 118,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "revoke",
+      "line": 140,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "persist",
+      "line": 150,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/setup.rs",
+      "name": "peer",
+      "line": 25,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/setup.rs",
+      "name": "authenticate_with_timeout",
+      "line": 28,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/setup.rs",
+      "name": "authenticate",
+      "line": 59,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/setup.rs",
+      "name": "reject",
+      "line": 64,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/setup.rs",
+      "name": "synchronize",
+      "line": 70,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/setup.rs",
+      "name": "discover",
+      "line": 79,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/setup.rs",
+      "name": "exchange",
+      "line": 100,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/bin/usb_broker.rs",
+      "name": "main",
+      "line": 2,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/authority_worker.rs",
+      "name": "start",
+      "line": 40,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/authority_worker.rs",
+      "name": "submit",
+      "line": 59,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/authority_worker.rs",
+      "name": "close",
+      "line": 67,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/authority_worker.rs",
+      "name": "next",
+      "line": 70,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/authority_worker.rs",
+      "name": "completion",
+      "line": 73,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/authority_worker.rs",
+      "name": "public",
+      "line": 77,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/authority_worker.rs",
+      "name": "run",
+      "line": 87,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "new",
+      "line": 46,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "register",
+      "line": 61,
+      "language": "rust",
+      "covered": 25,
+      "total": 26,
+      "percent": 96.15384615384616,
+      "passes": true,
+      "missing": [
+        77
+      ]
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "state",
+      "line": 88,
+      "language": "rust",
+      "covered": 30,
+      "total": 30,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "poll",
+      "line": 127,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "disconnect",
+      "line": 153,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "poll",
+      "line": 165,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "install",
+      "line": 188,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "retire",
+      "line": 209,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/bridges.rs",
+      "name": "members",
+      "line": 222,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "operation",
+      "line": 47,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "run",
+      "line": 50,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "operation",
+      "line": 72,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "prepare_authentication",
+      "line": 79,
+      "language": "rust",
+      "covered": 44,
+      "total": 44,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "next_authority",
+      "line": 132,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "revoke_pairing",
+      "line": 158,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "complete_authority",
+      "line": 172,
+      "language": "rust",
+      "covered": 32,
+      "total": 32,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "admit_proven",
+      "line": 210,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "remember_saved",
+      "line": 232,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        242
+      ]
+    },
+    {
+      "file": "host/src/broker/control/authority.rs",
+      "name": "close_all",
+      "line": 245,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "command",
+      "line": 4,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "connect",
+      "line": 21,
+      "language": "rust",
+      "covered": 37,
+      "total": 37,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "decide",
+      "line": 63,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "disconnect",
+      "line": 93,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "revoke",
+      "line": 104,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "identified",
+      "line": 128,
+      "language": "rust",
+      "covered": 33,
+      "total": 33,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "close",
+      "line": 169,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "attach",
+      "line": 5,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "start_failed",
+      "line": 18,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "failed",
+      "line": 32,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "quarantine",
+      "line": 41,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "native_finished",
+      "line": 56,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "tick",
+      "line": 67,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "collect_retired",
+      "line": 82,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "expires",
+      "line": 101,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control/lifecycle.rs",
+      "name": "ready",
+      "line": 107,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "default",
+      "line": 28,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "validate",
+      "line": 39,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "new",
+      "line": 101,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "fresh",
+      "line": 123,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "changed",
+      "line": 129,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "editable",
+      "line": 134,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "admitting",
+      "line": 138,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "admit_client",
+      "line": 145,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "drop_client",
+      "line": 156,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "replace_devices",
+      "line": 159,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "snapshot",
+      "line": 178,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "pairing",
+      "line": 207,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "lease",
+      "line": 213,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "closing",
+      "line": 220,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link/start.rs",
+      "name": "poll_complete",
+      "line": 9,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link/start.rs",
+      "name": "drop",
+      "line": 20,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link/start.rs",
+      "name": "completion",
+      "line": 28,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link/start.rs",
+      "name": "retire",
+      "line": 31,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link/start.rs",
+      "name": "open",
+      "line": 41,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "start_factory",
+      "line": 63,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "start",
+      "line": 87,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "submit",
+      "line": 100,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "stop",
+      "line": 105,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "native_completion",
+      "line": 108,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "task_completion",
+      "line": 111,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "next",
+      "line": 116,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        125
+      ]
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "emit",
+      "line": 132,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "run",
+      "line": 137,
+      "language": "rust",
+      "covered": 28,
+      "total": 30,
+      "percent": 93.33333333333333,
+      "passes": true,
+      "missing": [
+        146,
+        154
+      ]
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "media",
+      "line": 169,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "dispatch",
+      "line": 188,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "poll_media",
+      "line": 205,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/link.rs",
+      "name": "now",
+      "line": 222,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "validate",
+      "line": 18,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "spawn",
+      "line": 27,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "connect",
+      "line": 44,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "new",
+      "line": 60,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "connect",
+      "line": 71,
+      "language": "rust",
+      "covered": 9,
+      "total": 11,
+      "percent": 81.81818181818181,
+      "passes": true,
+      "missing": [
+        80,
+        81
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "start",
+      "line": 85,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "start_with",
+      "line": 89,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "wait",
+      "line": 102,
+      "language": "rust",
+      "covered": 7,
+      "total": 8,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        108
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "missing",
+      "line": 114,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/client.rs",
+      "name": "busy",
+      "line": 120,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "validate",
+      "line": 18,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "addresses",
+      "line": 49,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "connect",
+      "line": 54,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "reserve",
+      "line": 67,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "retire",
+      "line": 80,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "valid_address",
+      "line": 91,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "listener",
+      "line": 94,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "option",
+      "line": 102,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/endpoints.rs",
+      "name": "validate_options",
+      "line": 120,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/entry.rs",
+      "name": "settings",
+      "line": 45,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/entry.rs",
+      "name": "run",
+      "line": 62,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/entry.rs",
+      "name": "serve",
+      "line": 73,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/entry.rs",
+      "name": "stop_signal",
+      "line": 85,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/inventory.rs",
+      "name": "start",
+      "line": 23,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/inventory.rs",
+      "name": "next",
+      "line": 41,
+      "language": "rust",
+      "covered": 14,
+      "total": 17,
+      "percent": 82.3529411764706,
+      "passes": true,
+      "missing": [
+        55,
+        56,
+        57
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/inventory.rs",
+      "name": "retired",
+      "line": 63,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/inventory.rs",
+      "name": "finished",
+      "line": 68,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/inventory.rs",
+      "name": "scan",
+      "line": 72,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "start",
+      "line": 17,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        27
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "reply",
+      "line": 36,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "stop",
+      "line": 45,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "completion",
+      "line": 48,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "next",
+      "line": 51,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "read",
+      "line": 64,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "write",
+      "line": 73,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/peer.rs",
+      "name": "send_batch",
+      "line": 83,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "request",
+      "line": 3,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "control_command",
+      "line": 30,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "action",
+      "line": 55,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "start",
+      "line": 64,
+      "language": "rust",
+      "covered": 26,
+      "total": 29,
+      "percent": 89.65517241379311,
+      "passes": true,
+      "missing": [
+        80,
+        81,
+        82
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "send_link",
+      "line": 97,
+      "language": "rust",
+      "covered": 10,
+      "total": 12,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        104,
+        105
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "scan",
+      "line": 109,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "inventory_result",
+      "line": 123,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/events.rs",
+      "name": "link_event",
+      "line": 3,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/events.rs",
+      "name": "authorize_next",
+      "line": 21,
+      "language": "rust",
+      "covered": 26,
+      "total": 28,
+      "percent": 92.85714285714286,
+      "passes": true,
+      "missing": [
+        44,
+        45
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/events.rs",
+      "name": "authority_event",
+      "line": 54,
+      "language": "rust",
+      "covered": 16,
+      "total": 18,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        56,
+        68
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/events.rs",
+      "name": "admit",
+      "line": 73,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/events.rs",
+      "name": "revoke_replies",
+      "line": 82,
+      "language": "rust",
+      "covered": 14,
+      "total": 16,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        95,
+        96
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "register",
+      "line": 5,
+      "language": "rust",
+      "covered": 58,
+      "total": 61,
+      "percent": 95.08196721311475,
+      "passes": true,
+      "missing": [
+        45,
+        46,
+        47
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "unregister",
+      "line": 74,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "cancel_route",
+      "line": 83,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "registered",
+      "line": 97,
+      "language": "rust",
+      "covered": 17,
+      "total": 18,
+      "percent": 94.44444444444444,
+      "passes": true,
+      "missing": [
+        111
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "route_state",
+      "line": 121,
+      "language": "rust",
+      "covered": 19,
+      "total": 21,
+      "percent": 90.47619047619048,
+      "passes": true,
+      "missing": [
+        136,
+        142
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "status",
+      "line": 147,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "retire_route",
+      "line": 159,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "retire_link_routes",
+      "line": 177,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/settings.rs",
+      "name": "new",
+      "line": 17,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/settings.rs",
+      "name": "validate",
+      "line": 29,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/settings.rs",
+      "name": "directories",
+      "line": 54,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/shutdown.rs",
+      "name": "shutdown",
+      "line": 5,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/shutdown.rs",
+      "name": "request_stop",
+      "line": 22,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/shutdown.rs",
+      "name": "quiet",
+      "line": 33,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/shutdown.rs",
+      "name": "drain",
+      "line": 41,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "open",
+      "line": 85,
+      "language": "rust",
+      "covered": 38,
+      "total": 40,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        96,
+        103
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "run",
+      "line": 126,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        140
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "accept",
+      "line": 141,
+      "language": "rust",
+      "covered": 15,
+      "total": 18,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        155,
+        156,
+        157
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "input",
+      "line": 161,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        167
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "reply",
+      "line": 174,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "reject",
+      "line": 184,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "snapshot",
+      "line": 187,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "close_client",
+      "line": 197,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "close_requested",
+      "line": 216,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "tick",
+      "line": 227,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "collect_clients",
+      "line": 234,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "collect_links",
+      "line": 243,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "next",
+      "line": 263,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server.rs",
+      "name": "inventory_next",
+      "line": 284,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/state.rs",
+      "name": "open",
+      "line": 16,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "generate",
+      "line": 30,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "load",
+      "line": 43,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "certificate",
+      "line": 64,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "parse",
+      "line": 74,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "fingerprint",
+      "line": 77,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "peer_id",
+      "line": 80,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "checked_certificate",
+      "line": 91,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "provider",
+      "line": 102,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "roots",
+      "line": 105,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "server_config",
+      "line": 110,
+      "language": "rust",
+      "covered": 15,
+      "total": 16,
+      "percent": 93.75,
+      "passes": true,
+      "missing": [
+        122
+      ]
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "client_config",
+      "line": 127,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        134
+      ]
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "verify_peer",
+      "line": 139,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "protocol",
+      "line": 159,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "accept",
+      "line": 172,
+      "language": "rust",
+      "covered": 18,
+      "total": 19,
+      "percent": 94.73684210526316,
+      "passes": true,
+      "missing": [
+        185
+      ]
+    },
+    {
+      "file": "host/src/secure_connection/mod.rs",
+      "name": "connect",
+      "line": 191,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        205
+      ]
+    }
+  ]
+}

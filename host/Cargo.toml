@@ -14,6 +14,11 @@ name = "blent-audio"
 path = "src/bin/audio.rs"
 required-features = ["native-audio"]
 
+[[bin]]
+name = "blent-usb-broker"
+path = "src/bin/usb_broker.rs"
+required-features = ["accessory-transport"]
+
 [features]
 # T846 remains experimental until native pairing/media acceptance passes.
 accessory-transport = ["dep:rustls", "dep:tokio-rustls", "dep:rcgen"]

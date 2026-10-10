@@ -13,7 +13,7 @@ struct Io {
     flush_blocked: bool,
     quantum: usize,
 }
-struct Script(Arc<Mutex<Io>>);
+pub(crate) struct Script(Arc<Mutex<Io>>);
 impl AsyncRead for Script {
     fn poll_read(
         self: Pin<&mut Self>,
@@ -53,12 +53,13 @@ impl AsyncWrite for Script {
         Poll::Ready(Ok(()))
     }
 }
-struct Rig {
-    host: Session<Script>,
+pub(crate) struct Rig {
+    pub(crate) host: Session<Script>,
     io: Arc<Mutex<Io>>,
-    peer: Multiplexer,
+    pub(crate) peer: Multiplexer,
     decoder: Decoder,
     messages: Vec<Message>,
+    pub(crate) received: Vec<(Channel, Vec<u8>)>,
 }
 fn ticket() -> Ticket {
     Ticket {
@@ -67,7 +68,7 @@ fn ticket() -> Ticket {
     }
 }
 impl Rig {
-    fn new() -> Self {
+    pub(crate) fn new() -> Self {
         let io = Arc::new(Mutex::new(Io {
             quantum: 7,
             ..Default::default()
@@ -87,13 +88,14 @@ impl Rig {
             peer: Multiplexer::new(1, 1, 4096, 64, 64).unwrap(),
             decoder: Decoder::new(),
             messages: Vec::new(),
+            received: Vec::new(),
         }
     }
-    fn poll(&mut self, now: i64) -> Poll<Result<Event>> {
+    pub(crate) fn poll(&mut self, now: i64) -> Poll<Result<Event>> {
         self.host
             .poll_event(&mut Context::from_waker(std::task::Waker::noop()), now)
     }
-    fn pump(&mut self, now: i64) -> Result<Vec<Event>> {
+    pub(crate) fn pump(&mut self, now: i64) -> Result<Vec<Event>> {
         let mut events = Vec::new();
         for _ in 0..2000 {
             if let Poll::Ready(event) = self.poll(now) {
@@ -132,6 +134,9 @@ impl Rig {
         if deliver && header.channel == Channel::Management {
             self.decode(&bytes[40..])?;
         }
+        if deliver && header.channel != Channel::Management {
+            self.received.push((header.channel, bytes[40..].to_vec()));
+        }
         if deliver {
             self.peer.release(header.channel, header.length)?;
         }
@@ -153,7 +158,7 @@ impl Rig {
         }
         Ok(())
     }
-    fn message(&mut self, message: Message) {
+    pub(crate) fn message(&mut self, message: Message) {
         let mut bytes = [0; 284];
         let count = message.encode(&mut bytes).unwrap();
         self.peer
@@ -406,6 +411,6 @@ mod consumer;
 
 mod barriers;
 
-mod tls;
+pub(crate) mod tls;
 
 mod pump;

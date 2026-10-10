@@ -64,6 +64,11 @@ impl<S: TrustStorage> Trust<S> {
     pub fn healthy(&self) -> bool {
         self.healthy
     }
+    /// Startup presentation only; persisted approval never replaces TLS proof.
+    pub fn approved_peers(&self) -> Result<&[PeerId]> {
+        ensure!(self.healthy, "trust storage unavailable");
+        Ok(&self.snapshot.peers)
+    }
     pub fn trusted(&self, peer: &PeerId) -> bool {
         self.healthy && self.find(peer).is_ok()
     }

@@ -35,6 +35,18 @@ fn approved(peer: PeerId, remember: bool) -> (Pairing, Lease) {
     (pairing, lease)
 }
 #[test]
+fn t853_approved_snapshot_requires_healthy_durable_store() {
+    let memory = Memory::default();
+    let mut trust = Trust::open(memory.clone(), peer('0'), 1).unwrap();
+    assert!(trust.approved_peers().unwrap().is_empty());
+    let (mut pairing, lease) = approved(peer('1'), true);
+    trust.remember(&pairing, &lease).unwrap();
+    assert_eq!(trust.approved_peers().unwrap(), &[peer('1')]);
+    memory.0.borrow_mut().fail = true;
+    assert!(trust.revoke(&mut pairing, &peer('1')).is_err());
+    assert!(trust.approved_peers().is_err());
+}
+#[test]
 fn t868_remember_restart_sorted_peers_and_revoke_without_implicit_authority() {
     let memory = Memory::default();
     let mut trust = Trust::open(memory.clone(), peer('0'), DEFAULT_CAPACITY).unwrap();

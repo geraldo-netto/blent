@@ -17,13 +17,13 @@ use std::{
 };
 use tokio::io::{AsyncRead, AsyncWrite};
 mod channels;
+mod endpoint;
 mod lifecycle;
 mod management;
 mod readiness;
-mod endpoint;
-pub use endpoint::Endpoint;
 pub use blent_config::connection::endpoint::Read;
 use channels::Channels;
+pub use endpoint::Endpoint;
 use management::{Effect, Publication};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -285,4 +285,4 @@ fn ensure_poll_time(now: i64) -> Result<()> {
     Ok(())
 }
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;

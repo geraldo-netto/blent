@@ -34,7 +34,7 @@ fn command<S: AsyncRead + AsyncWrite + Unpin>(wire: &mut Transport<S>, message: 
         ),
     }
 }
-async fn tablet<S: AsyncRead + AsyncWrite + Unpin>(stream: S) -> S {
+pub(crate) async fn tablet<S: AsyncRead + AsyncWrite + Unpin>(stream: S) -> S {
     let mut wire = Transport::new(
         stream,
         Multiplexer::new(1, 1, 4096, 64, 64).unwrap(),

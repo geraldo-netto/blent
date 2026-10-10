@@ -6,9 +6,15 @@ use blent_config::linux::packet;
 use std::os::fd::{AsRawFd, OwnedFd, RawFd};
 use std::os::unix::ffi::OsStrExt;
 use std::{io, path::Path};
-pub mod owner;
 pub mod async_io;
+pub mod client;
 mod endpoints;
+pub mod entry;
+pub mod inventory;
+pub mod owner;
+pub mod peer;
+pub mod server;
+pub mod state;
 pub use endpoints::Endpoints;
 
 pub struct Socket(OwnedFd);

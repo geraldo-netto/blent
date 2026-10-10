@@ -49,6 +49,21 @@ impl Endpoints {
     pub fn addresses(&self) -> &[SocketAddr] {
         &self.addresses
     }
+    /// Lazy connector; Bridges polls it only after current media admission.
+    /// Every address came from retained listening descriptors, never peer bytes.
+    pub fn connect(&self) -> Result<crate::broker::bridges::Connect> {
+        ensure!(self.route.is_some(), "endpoint not registered");
+        let addresses = self.addresses.clone();
+        Ok(Box::pin(async move {
+            let mut streams: Vec<Box<dyn crate::accessory::Stream>> = Vec::new();
+            for address in addresses {
+                let stream = tokio::net::TcpStream::connect(address).await?;
+                stream.set_nodelay(true)?;
+                streams.push(Box::new(stream));
+            }
+            Ok(streams)
+        }))
+    }
     pub fn reserve(&mut self, claims: &mut RouteClaims, owner: u64) -> Result<RouteId> {
         ensure!(self.route.is_none(), "endpoint already registered");
         let ports = self

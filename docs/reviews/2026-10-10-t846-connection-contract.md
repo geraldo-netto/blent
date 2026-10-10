@@ -134,7 +134,7 @@ with mutual certificate authentication, exact approved leaf-certificate pins,
 and an authenticated protocol preface; API 29+ also requires `blent-usb/1` ALPN. These adapters require an approved certificate from their
 caller; parsing a certificate does not grant approval. Persistent trust, explicit
 revocation policy and authenticated admission are implemented under T868/T852 below.
-Production approval UI and broker/service runtime wiring remain unimplemented. The optional Cargo
+The Linux broker runtime is implemented under T853 below. Production approval UI and Android service wiring remain pending. The optional Cargo
 feature uses cached dependencies; all pre-existing locked package versions are
 preserved. New cached crypto dependency notices and archive checksums are retained in
 `licenses/accessory-transport/`, included by the existing distribution-docs list.
@@ -229,7 +229,7 @@ activation prerequisite with its own regressions and commit.
 | T871 | Local registration contract and Linux descriptor adapter (implemented) | T856 |
 | T873 | Cancellation-safe bounded frame driver (implemented) | T849 |
 | T872 | Authenticated host resource runtime and retirement barriers (implemented) | T849–T852, T871, T873 |
-| T853 | On-demand host broker and client composition | T852, T871, T872 |
+| T853 | On-demand Linux host broker and client composition (implemented) | T852, T871–T879 |
 | T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
@@ -250,12 +250,12 @@ qualification under T862 before final measured acceptance. Packaging T861 was de
 not block local-build implementation or acceptance; no release packaging pass is
 claimed. API 27/28 JVM tests do not satisfy T863; its missing physical provider
 validation is explicit. No completion percentage or release date is inferred from
-item counts: broker/lifecycle/media wiring is substantial remaining work.
+item counts: Android service, presentation, lifecycle and media integration remain substantial work.
 
 ### Implemented management activation policy (T851)
 
 The T850 management record schema and T851 portable resource policy are implemented;
-production broker/worker adapters remain pending. The schema carries
+the host broker adapter is implemented under T853; Android worker integration remains pending. The schema carries
 bounded capability, Offer, Prepared, Commit, Result and Revoke records; remote
 records never contain arbitrary host addresses, ports or paths. Each resource
 has at most one bounded pending transaction. A display resource jointly owns its
@@ -578,8 +578,8 @@ a separate broker or UI dependency to the contracts.
 [Integration evidence](artifacts/2026-10-10-t852/README.md) demonstrates persisted host
 identity reuse through real mutual TLS, restart/reconnect, explicit revoke and wrong
 certificate rejection. Android's stock adapter interoperates with Rust while saving
-and reopening trust on API27/34 JVM fixtures. Production broker/service/UI and media
-remain T853–T858; no current ADB-free production-display support is claimed.
+and reopening trust on API27/34 JVM fixtures. The host broker is implemented under T853. Android service/UI and media
+remain T854–T858; no current ADB-free production-display support is claimed.
 
 ## T871 local registration boundary
 
@@ -642,7 +642,7 @@ idle `tick` deadlines. Capacity configuration alone is not that agreement.
 
 [Validation and retained regressions](artifacts/2026-10-10-t872/README.md) include
 stock TLS duplex admission/control and actual isolated helper exit. The broker
-executable/client/bridge composition and Android service remain unimplemented;
+executable/client/bridge composition is implemented under T853; Android service remains pending;
 production display/touch remains the next native acceptance milestone.
 
 ### T874 private host IPC owner
@@ -655,8 +655,8 @@ The lock file is never unlinked. This does not sandbox hostile same-user code.
 Async packet adapters permit one reader and one writer concurrently, retain
 borrowed listener descriptors until atomic send, and close received descriptors
 on malformed packets. Shutdown revokes I/O; actual descriptor ownership ends
-only when the wrapper and outstanding borrows drop. Runtime-directory selection,
-on-demand process startup and registration orchestration remain T853.
+only when the wrapper and outstanding borrows drop. T853 implements explicit private runtime/state paths,
+on-demand process startup and registration orchestration.
 
 ### T875 authenticated runtime-window agreement
 
@@ -675,7 +675,7 @@ default five seconds) covering proposal write, flush and complete reply. Error
 or cancellation invalidates the setup stream; its owner must drop it, retain
 native retirement evidence and recheck the pairing lease before installation.
 Remaining queue/quantum/deadline settings stay local. Parsing this record grants
-no approval or media authority. T853 must invoke this adapter; T854 implements
+no approval or media authority. T853 invokes this adapter; T854 supplies
 the matching Android exchange. Tests use isolated byte streams; production media
 and debugging-off acceptance remain T855/T857 and subsequent media items.
 
@@ -702,7 +702,7 @@ publication and reject stale callbacks. A new IPC connection after broker restar
 invalidates cached IDs; clients must not replay commands against a fresh owner.
 Snapshot Begin/End revisions must match before presentation uses the result.
 These codecs do not themselves approve, connect or revoke anything. T855 consumes
-this contract for production presentation after T853 orchestration exists.
+this contract for production presentation using the T853 orchestration boundary.
 
 ### T876 read-only Linux discovery
 
@@ -715,7 +715,7 @@ The maximum is 512 candidates; capacity overflow fails instead of truncating.
 Root controllers and hubs are excluded. Other devices have unknown support unless
 already reporting the stock accessory VID/PID; this observation grants no trust.
 The Rust Scan adapter bounds bytes/time and retains independent native Completion.
-T853 still maps this native data to opaque IDs and revalidates explicit selections.
+T853 maps this native data to opaque IDs and uses the T879 selected-device metadata gate before any accessory switch.
 
 ### T878 local endpoint pumping
 
@@ -734,3 +734,55 @@ The T853 reactor must poll pumps after local socket readiness AND Session progre
 stall. It must schedule idle resource ticks. A constructor, buffer drop, cancelled
 wait or kill request cannot establish native resource retirement. These library
 boundaries are tested but do not themselves enable production media without ADB.
+
+## T853 on-demand Linux broker composition
+
+`blent-usb-broker` now composes the discovery, private local IPC, persisted
+identity/trust, stock mutual TLS, receive-window negotiation and bounded resource
+bridges. Build locally with `cargo build --offline --locked -p blent --features
+accessory-transport --bin blent-usb-broker`. Launch requires absolute `--runtime`,
+`--state` and `--helper` paths. Runtime/state directories must be private and owned
+by the user; the broker creates missing directories with mode 0700. The helper
+must be the locally built `blent-usb-io` executable. No helper is downloaded,
+installed or selected from peer input. Packaging remains deferred under T861.
+
+The client `linux::client::Connector` starts the executable on demand and shares
+one elected owner across callers. Caller loss revokes only that caller's routes;
+it does not terminate the shared USB connection or other callers. Discovery runs
+without switching device mode. A current explicit Connect selects an opaque
+inventory target; the native helper rechecks its observed address/VID/PID before
+switching. Only current approval plus fresh TLS proof grants media authority.
+
+The portable Controller owns tickets and lifecycle policy. A separate bounded
+native worker exclusively owns trust storage, so blocked persistence cannot stall
+existing media. Revocation immediately closes matching live links, and its IPC
+completion waits for durable deletion. Saved notices continue reflecting durable
+storage until that operation succeeds. Each link has its own asynchronous owner
+and native helper admission. Cancellation does not release native capacity; task
+completion and actual helper completion are independent retirement conditions.
+
+Only authenticated local registrations can provide loopback listener descriptors.
+Connections to those listeners begin after the corresponding resource becomes
+current. Display uses ordered video/control listeners; camera, microphone and
+speakers each use one. Bounded pumps continue independently when another local
+endpoint stalls. Sockets close before route capability retirement. The broker's
+control IPC carries metadata and descriptors, never media payloads.
+
+Capacity options and defaults are: `--clients 16`, `--links 4`, `--devices 64`,
+`--registrations 64`, `--trust-peers 64`, `--block-bytes 65536`,
+`--channel-bytes 262144`, `--queued-messages 64`, and `--quantum 65536`.
+Higher limits permit more concurrent work and retained memory. Receive windows
+are negotiated to the smaller peer limit; producer blocks respect that window.
+Deadlines are `--io-timeout-ms 5000`, `--setup-ms 60000`, and
+`--approval-ms 120000`; approval permits up to 600000 ms and reaches native READY
+coordination, while the controller retains the original absolute deadline.
+Inventory refresh is two seconds with one five-second native scan at a time.
+Failed scans explicitly report unavailable inventory. SIGINT/SIGTERM stop new
+work and allow five seconds for actual retirement before process exit.
+
+Permanent isolated tests exercise the executable, owner election, client loss,
+identity restart, real mutual TLS, durable trust/revoke, descriptor-only routing,
+duplex control bytes and stuck native shutdown. These tests do not establish
+debugging-off production media acceptance: Android service T854, pairing UI T855
+and display/touch T857 remain required. Linux is the implemented broker backend;
+Windows runtime support is unavailable, and macOS remains declined.

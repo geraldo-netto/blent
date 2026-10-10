@@ -25,10 +25,16 @@ impl Candidate {
     pub fn peer(&self) -> &PeerId {
         &self.peer
     }
-    /// Caller starts this only after approval. The result is TLS proof, not a
-    /// media lease: Pairing::authenticated must accept its ticket/proven peer
-    /// after the await, rejecting intervening revocation, timeout or replacement.
-    pub async fn authenticate(self, identity: &Identity, ticket: Ticket) -> Result<Verified> {
+    pub async fn authenticate_with_timeout(
+        self,
+        identity: &Identity,
+        ticket: Ticket,
+        approval_timeout: Duration,
+    ) -> Result<Verified> {
+        ensure!(
+            !approval_timeout.is_zero() && approval_timeout <= Duration::from_secs(600),
+            "invalid approval coordination timeout"
+        );
         ensure!(
             ticket.peer == self.peer,
             "approval names a different identity"
@@ -36,7 +42,7 @@ impl Candidate {
         let Resource { mut stream, owner } = self.resource;
         // Human approval can take longer than TLS's ten-second setup budget.
         // This untrusted marker coordinates scheduling, never peer authority.
-        tokio::time::timeout(Duration::from_secs(120), synchronize(&mut *stream)).await??;
+        tokio::time::timeout(approval_timeout, synchronize(&mut *stream)).await??;
         let stream = secure_connection::accept(stream, identity, &self.certificate).await?;
         Ok(Verified {
             resource: Resource {
@@ -46,6 +52,13 @@ impl Candidate {
             ticket,
             peer: self.peer,
         })
+    }
+    /// Caller starts this only after approval. The result is TLS proof, not a
+    /// media lease: Pairing::authenticated must accept its ticket/proven peer
+    /// after the await, rejecting intervening revocation, timeout or replacement.
+    pub async fn authenticate(self, identity: &Identity, ticket: Ticket) -> Result<Verified> {
+        self.authenticate_with_timeout(identity, ticket, Duration::from_secs(120))
+            .await
     }
     /// Denial must observe actual native retirement; Drop alone only requests it.
     pub async fn reject(self) -> Result<()> {
@@ -77,22 +90,12 @@ pub async fn discover(
         exchange(&mut *resource.stream, identity.certificate()),
     )
     .await??;
-    let fingerprint = certificate.fingerprint();
-    let peer = PeerId::parse(hex(&fingerprint))?;
+    let peer = certificate.peer_id();
     Ok(Candidate {
         resource,
         certificate,
         peer,
     })
-}
-fn hex(bytes: &[u8; 32]) -> String {
-    const DIGITS: &[u8] = b"0123456789abcdef";
-    let mut text = String::with_capacity(64);
-    for value in bytes {
-        text.push(DIGITS[(value >> 4) as usize] as char);
-        text.push(DIGITS[(value & 15) as usize] as char);
-    }
-    text
 }
 async fn exchange(stream: &mut dyn Stream, certificate: &[u8]) -> Result<PeerCertificate> {
     let header = Hello {
@@ -112,7 +115,7 @@ async fn exchange(stream: &mut dyn Stream, certificate: &[u8]) -> Result<PeerCer
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     use crate::accessory::Owner;
     use crate::secure_connection::IdentityRecord;
@@ -149,7 +152,62 @@ mod tests {
     fn identity() -> Identity {
         Identity::load(IdentityRecord::generate().unwrap()).unwrap()
     }
-    async fn remote_hello(remote: &mut tokio::io::DuplexStream, certificate: &[u8]) {
+    #[tokio::test(start_paused = true)]
+    async fn t853_configured_approval_window_survives_peer_approval_after_two_minutes() {
+        let (resource, mut remote, _) = resources();
+        let host = identity();
+        let tablet = identity();
+        let (candidate, _) = tokio::join!(
+            discover(resource, &host, Duration::from_secs(1)),
+            remote_hello(&mut remote, tablet.certificate())
+        );
+        let candidate = candidate.unwrap();
+        let ticket = Ticket {
+            epoch: 1,
+            peer: candidate.peer().clone(),
+        };
+        let certificate = PeerCertificate::parse(host.certificate().to_vec()).unwrap();
+        let (verified, client) = tokio::join!(
+            candidate.authenticate_with_timeout(&host, ticket, Duration::from_secs(300)),
+            async {
+                tokio::time::sleep(Duration::from_secs(121)).await;
+                let mut marker = [0; ready::BYTES];
+                remote.read_exact(&mut marker).await?;
+                ready::decode(&marker, true)?;
+                remote.write_all(&ready::encode(false)).await?;
+                secure_connection::connect(remote, &tablet, &certificate).await
+            }
+        );
+        assert!(
+            verified.is_ok(),
+            "configured approval window ignored: {:?}",
+            verified.err()
+        );
+        assert!(client.is_ok());
+    }
+    #[tokio::test]
+    async fn t853_invalid_approval_coordination_timeout_retires_candidate() {
+        let host = identity();
+        let tablet = identity();
+        for timeout in [Duration::ZERO, Duration::from_secs(601), Duration::MAX] {
+            let (resource, mut remote, completion) = resources();
+            let (candidate, _) = tokio::join!(
+                discover(resource, &host, Duration::from_secs(1)),
+                remote_hello(&mut remote, tablet.certificate())
+            );
+            let candidate = candidate.unwrap();
+            let ticket = Ticket {
+                epoch: 1,
+                peer: candidate.peer().clone(),
+            };
+            assert!(candidate
+                .authenticate_with_timeout(&host, ticket, timeout)
+                .await
+                .is_err());
+            assert!(completion.is_complete());
+        }
+    }
+    pub(crate) async fn remote_hello(remote: &mut tokio::io::DuplexStream, certificate: &[u8]) {
         let mut header = [0; HEADER_BYTES];
         remote.read_exact(&mut header).await.unwrap();
         let length = Hello::decode(&header, true).unwrap().certificate_bytes;

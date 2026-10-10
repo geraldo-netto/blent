@@ -8,5 +8,10 @@ pub mod transport;
 pub mod session;
 
 pub mod connection;
-pub mod window;
 pub mod pump;
+pub mod window;
+
+pub mod authority_worker;
+pub mod bridges;
+pub mod control;
+pub mod link;
