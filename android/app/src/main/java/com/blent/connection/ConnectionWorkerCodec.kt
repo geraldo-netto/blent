@@ -26,11 +26,6 @@ internal object ConnectionWorkerCodec {
     private fun string(input: DataInputStream, limit: Int): String = input.readUTF().also {
         require(it.length <= limit && '\u0000' !in it)
     }
-    private fun bool(input: DataInputStream): Boolean = when (input.readUnsignedByte()) {
-        0 -> false
-        1 -> true
-        else -> error("Invalid control boolean")
-    }
     fun spec(value: ConnectionWorkerSpec): ByteArray = encode(2) { out ->
         string(out, value.device, 512)
         out.writeInt(value.session.capacity); out.writeInt(value.session.messages); out.writeInt(value.session.quantum)
@@ -51,13 +46,14 @@ internal object ConnectionWorkerCodec {
                 out.writeByte(1); ConnectionAuthorityCodec.ticket(out, value.ticket); out.writeBoolean(value.approved); out.writeBoolean(value.remember)
             }
             is ConnectionWorkerCommand.Revoke -> { out.writeByte(2); ConnectionAuthorityCodec.peer(out, value.peer) }
+            is ConnectionWorkerCommand.Camera -> ConnectionCameraCodec.command(out, value)
         }
     }
     fun command(bytes: ByteArray): ConnectionWorkerCommand = decode(bytes) { input ->
-        when (input.readUnsignedByte()) {
-            1 -> ConnectionWorkerCommand.Decide(ConnectionAuthorityCodec.ticket(input), bool(input), bool(input))
+        when (val code = input.readUnsignedByte()) {
+            1 -> ConnectionWorkerCommand.Decide(ConnectionAuthorityCodec.ticket(input), ConnectionControlFields.bool(input), ConnectionControlFields.bool(input))
             2 -> ConnectionWorkerCommand.Revoke(ConnectionAuthorityCodec.peer(input))
-            else -> error("Unknown connection command")
+            else -> ConnectionCameraCodec.command(input, code)
         }
     }
     fun event(value: ConnectionWorkerEvent): ByteArray = encode { out ->
@@ -68,8 +64,7 @@ internal object ConnectionWorkerCodec {
             is ConnectionWorkerEvent.Pairing -> { out.writeByte(1); ConnectionAuthorityCodec.ticket(out, value.ticket); ConnectionAuthorityCodec.peer(out, value.local) }
             is ConnectionWorkerEvent.State -> { out.writeByte(2); out.writeByte(value.phase.ordinal) }
             is ConnectionWorkerEvent.Trust -> { out.writeByte(3); ConnectionAuthorityCodec.peer(out, value.peer); out.writeBoolean(value.remembered) }
-            is ConnectionWorkerEvent.Display -> { out.writeByte(6); ConnectionDisplayCodec.write(out, value.route) }
-            is ConnectionWorkerEvent.DisplayClosed -> { out.writeByte(7); ConnectionAuthorityCodec.lease(out, value.lease) }
+            is ConnectionWorkerEvent.Media -> ConnectionMediaCodec.write(out, value)
             is ConnectionWorkerEvent.Ended -> {
                 out.writeByte(4); out.writeBoolean(value.failure != null)
                 value.failure?.let { string(out, it, 512) }
@@ -77,20 +72,18 @@ internal object ConnectionWorkerCodec {
         }
     }
     fun event(bytes: ByteArray): ConnectionWorkerEvent = decode(bytes) { input ->
-        when (input.readUnsignedByte()) {
-            6 -> ConnectionWorkerEvent.Display(ConnectionDisplayCodec.read(input))
-            7 -> ConnectionWorkerEvent.DisplayClosed(ConnectionAuthorityCodec.lease(input))
-            5 -> ConnectionWorkerEvent.Peer(ConnectionAuthorityCodec.ticket(input), ConnectionAuthorityCodec.peer(input), bool(input))
+        when (val code = input.readUnsignedByte()) {
+            5 -> ConnectionWorkerEvent.Peer(ConnectionAuthorityCodec.ticket(input), ConnectionAuthorityCodec.peer(input), ConnectionControlFields.bool(input))
             1 -> ConnectionWorkerEvent.Pairing(ConnectionAuthorityCodec.ticket(input), ConnectionAuthorityCodec.peer(input))
             2 -> {
-                val code = input.readUnsignedByte(); require(code in ConnectionWorkerPhase.entries.indices)
-                ConnectionWorkerEvent.State(ConnectionWorkerPhase.entries[code])
+                val phase = input.readUnsignedByte(); require(phase in ConnectionWorkerPhase.entries.indices)
+                ConnectionWorkerEvent.State(ConnectionWorkerPhase.entries[phase])
             }
-            3 -> ConnectionWorkerEvent.Trust(ConnectionAuthorityCodec.peer(input), bool(input))
+            3 -> ConnectionWorkerEvent.Trust(ConnectionAuthorityCodec.peer(input), ConnectionControlFields.bool(input))
             4 -> ended(input)
-            else -> error("Unknown connection event")
+            else -> ConnectionMediaCodec.read(input, code)
         }
     }
-    private fun ended(input: DataInputStream) = ConnectionWorkerEvent.Ended(if (bool(input)) string(input, 512) else null)
+    private fun ended(input: DataInputStream) = ConnectionWorkerEvent.Ended(if (ConnectionControlFields.bool(input)) string(input, 512) else null)
 
 }

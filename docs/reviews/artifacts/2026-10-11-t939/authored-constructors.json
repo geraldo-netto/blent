@@ -1,0 +1,172 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionRuntimeOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSetup;Lcom/blent/connection/ConnectionRunFactory;Lkotlin/jvm/functions/Function0;)V",
+    "line": 4,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Ended",
+    "name": "<init>",
+    "signature": "(Ljava/lang/String;)V",
+    "line": 60,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Pairing",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;)V",
+    "line": 43,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$CameraPermission",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;ZLcom/blent/connection/CameraConsentChoice;)V",
+    "line": 31,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$CameraChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/CameraConsentChoice;)V",
+    "line": 27,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$CameraConsumerRetired",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 35,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$State",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerPhase;)V",
+    "line": 44,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Decide",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;ZZ)V",
+    "line": 23,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$CameraOffered",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraOffer;)V",
+    "line": 54,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$CameraClosed",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 56,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Peer",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;Z)V",
+    "line": 42,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$DisplayClosed",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 50,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Trust",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionPeer;Z)V",
+    "line": 46,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Revoke",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionPeer;)V",
+    "line": 24,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Camera",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraRoute;)V",
+    "line": 55,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "<init>",
+    "signature": "(Ljava/lang/String;Lcom/blent/connection/ConnectionSessionLimits;Lcom/blent/connection/ConnectionRunLimits;JJIIJ)V",
+    "line": 6,
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Display",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalDisplayRoute;)V",
+    "line": 49,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  }
+]

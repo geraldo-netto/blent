@@ -1701,3 +1701,17 @@ works; a stalled camera consumer quarantines camera while display continues.
 covers 662 connection tests. Private worker/IPC integration is T936; actual isolated
 hardware-worker proof and capture enablement are T932. Production camera support
 and physical acceptance remain incomplete under T858.
+
+## T939 private camera metadata schema
+
+Camera offers carry validated lease/profile/pending metadata without credentials.
+Admitted route metadata carries one local port and private credential; consent,
+permission-result and actual consumer-retirement commands retain exact camera
+leases. Canonical management profiles and shared lease validation own bounds.
+Existing display tags/bytes remain unchanged; no media travels through Binder.
+
+[Permanent bounded invalid-input, real Binder/Parcel and native counter evidence](artifacts/2026-10-11-t939/README.md)
+covers 673 connection tests. These parsed values grant no native permission or
+original worker authority. Camera runtime dispatch remains unsupported until
+T940; main-process presentation is T941 and joined private integration T936.
+Hardware capture/capability enablement and physical acceptance remain T932/T858.

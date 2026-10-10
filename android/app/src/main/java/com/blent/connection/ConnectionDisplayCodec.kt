@@ -15,16 +15,16 @@ internal object ConnectionAuthorityCodec {
         val epoch = input.readLong(); require(epoch > 0)
         return ConnectionTicket(epoch, peer(input))
     }
-    fun lease(output: DataOutputStream, value: ConnectionResourceLease) {
-        ConnectionDisplayLease.validate(value)
+    fun lease(output: DataOutputStream, value: ConnectionResourceLease, resource: ConnectionManagement.Resource = ConnectionManagement.Resource.DISPLAY) {
+        ConnectionLocalLease.validate(value, resource)
         ticket(output, value.connection)
         output.writeLong(value.owner); output.writeLong(value.key.request); output.writeLong(value.key.generation)
     }
-    fun lease(input: DataInputStream): ConnectionResourceLease {
+    fun lease(input: DataInputStream, resource: ConnectionManagement.Resource = ConnectionManagement.Resource.DISPLAY): ConnectionResourceLease {
         val connection = ticket(input)
         val owner = input.readLong()
-        val key = ConnectionManagement.Key(ConnectionManagement.Resource.DISPLAY, input.readLong(), input.readLong())
-        return ConnectionResourceLease(connection, key, owner).also(ConnectionDisplayLease::validate)
+        val key = ConnectionManagement.Key(resource, input.readLong(), input.readLong())
+        return ConnectionResourceLease(connection, key, owner).also { ConnectionLocalLease.validate(it, resource) }
     }
 }
 

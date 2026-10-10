@@ -100,6 +100,7 @@ internal class ConnectionRuntimeOwner(
         val accepted = when (command) {
             is ConnectionWorkerCommand.Decide -> !stopped && setup.decide(command.ticket, command.approved, command.remember)
             is ConnectionWorkerCommand.Revoke -> setup.revoke(command.peer)
+            is ConnectionWorkerCommand.Camera -> false // Enabled by the retained camera runtime adapter in T940.
         }
         live()
         return accepted
@@ -117,7 +118,7 @@ internal class ConnectionRuntimeOwner(
         is ConnectionWorkerEvent.Pairing, is ConnectionWorkerEvent.Peer -> !stopped
         is ConnectionWorkerEvent.State -> !stopped || event.phase == ConnectionWorkerPhase.CLOSING
         is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended -> true
-        is ConnectionWorkerEvent.Display, is ConnectionWorkerEvent.DisplayClosed -> false // Only guarded runner snapshots publish media.
+        is ConnectionWorkerEvent.Media -> false // Only guarded runner snapshots publish media.
     }
     override fun display(): LocalDisplayRoute? {
         time()

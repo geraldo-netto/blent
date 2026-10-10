@@ -22,6 +22,19 @@ internal data class ConnectionWorkerSpec(
 internal sealed interface ConnectionWorkerCommand {
     data class Decide(val ticket: ConnectionTicket, val approved: Boolean, val remember: Boolean) : ConnectionWorkerCommand
     data class Revoke(val peer: ConnectionPeer) : ConnectionWorkerCommand
+    sealed interface Camera : ConnectionWorkerCommand { val lease: ConnectionResourceLease }
+    /** Local context must be sampled again by the native adapter before capture. */
+    data class CameraChoice(override val lease: ConnectionResourceLease, val choice: CameraConsentChoice) : Camera {
+        init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA) }
+    }
+    /** The original worker resolves this to its retained opaque pending prompt. */
+    data class CameraPermission(override val lease: ConnectionResourceLease, val granted: Boolean, val choice: CameraConsentChoice) : Camera {
+        init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA) }
+    }
+    /** Native capture completion/no-start proof, never stop, timeout or socket EOF. */
+    data class CameraConsumerRetired(override val lease: ConnectionResourceLease) : Camera {
+        init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA) }
+    }
 }
 internal enum class ConnectionWorkerPhase { OPENING, WAITING_APPROVAL, AUTHENTICATED, CLOSING }
 internal sealed interface ConnectionWorkerEvent {
@@ -32,9 +45,16 @@ internal sealed interface ConnectionWorkerEvent {
     /** Emitted only after durable trust mutation, never an optimistic UI promise. */
     data class Trust(val peer: ConnectionPeer, val remembered: Boolean) : ConnectionWorkerEvent
     /** Only private same-UID metadata; encoded video never travels over Binder. */
-    data class Display(val route: LocalDisplayRoute) : ConnectionWorkerEvent
-    data class DisplayClosed(val lease: ConnectionResourceLease) : ConnectionWorkerEvent {
+    sealed interface Media : ConnectionWorkerEvent
+    data class Display(val route: LocalDisplayRoute) : Media
+    data class DisplayClosed(val lease: ConnectionResourceLease) : Media {
         init { ConnectionDisplayLease.validate(lease) }
+    }
+    /** Offer contains no credential or endpoint; permission remains separate. */
+    data class CameraOffered(val offer: LocalCameraOffer) : Media
+    data class Camera(val route: LocalCameraRoute) : Media
+    data class CameraClosed(val lease: ConnectionResourceLease) : Media {
+        init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA) }
     }
     /** Execution ended; neither native retirement nor process death is implied. */
     data class Ended(val failure: String?) : ConnectionWorkerEvent
