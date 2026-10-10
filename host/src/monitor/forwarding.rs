@@ -135,6 +135,8 @@ if [ -f "$0.rebind-fail" ]; then exit 1; fi
         let mut state = super::super::tests::fixture();
         state.current = Some("USB".into());
         state.ready.extend(["USB".into(), "unassigned".into()]);
+        state.slots.reserve(DisplayOwner::Adb("USB".into()), 0).unwrap();
+        state.slots.reserve(DisplayOwner::Adb("unassigned".into()), 1).unwrap();
         assert_eq!(state.forwarding_ports("unassigned"), None);
         state
             .mutations
@@ -173,6 +175,7 @@ if [ -f "$0.rebind-fail" ]; then exit 1; fi
         let ports = (session.video_port, session.input_port);
         state.extras.insert("EXTRA".into(), session);
         state.ready.insert("EXTRA".into());
+        state.slots.reserve(DisplayOwner::Adb("EXTRA".into()), 1).unwrap();
         assert_eq!(state.forwarding_ports("EXTRA"), Some(ports));
         state.check_forwarding();
         let (serial, result) = state.mutations.next().await;

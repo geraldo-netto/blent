@@ -10,6 +10,9 @@ mod launch_policy;
 mod preparation;
 mod retirement;
 mod routes;
+mod admission;
+use blent::display_slots::{Slots, Owner as DisplayOwner, Ticket as DisplayTicket, Plan as DisplayPlan};
+type RetiredDisplay = (String, u32, DisplayTicket);
 pub(crate) use routes::RouteOwner;
 
 pub(crate) struct Config {
@@ -48,7 +51,7 @@ enum Event {
         std::result::Result<Mutation, tokio::task::JoinError>,
     ),
     Inventory(Option<std::result::Result<Inventory, tokio::task::JoinError>>),
-    Retired(Option<std::result::Result<(String, u32), tokio::task::JoinError>>),
+    Retired(Option<std::result::Result<RetiredDisplay, tokio::task::JoinError>>),
     PrimaryToken,
     ExtraToken(String),
 }
@@ -65,7 +68,8 @@ struct Monitor {
     extras: HashMap<String, ExtraSession>,
     pending: HashMap<String, Pending>,
     retiring_slots: HashSet<u32>,
-    retiring: JoinSet<(String, u32)>,
+    retiring: JoinSet<RetiredDisplay>,
+    slots: Slots,
     retiring_routes: HashMap<String, u32>,
     routes: HashMap<String, RouteOwner>,
     discovery: discovery::Discovery,
@@ -83,6 +87,7 @@ impl Monitor {
     fn new(config: Config) -> Self {
         let now = Instant::now();
         Self {
+            slots: Slots::new(config.extra.max_tablets).expect("validated display capacity"),
             config,
             current: None,
             ready: HashSet::new(),
@@ -227,7 +232,7 @@ impl Monitor {
     }
 
     fn change_primary(&mut self, found: &Option<String>) {
-        if self.current == *found {
+        if self.current == *found || (found.is_some() && !self.slots.adb_allowed(0)) {
             return;
         }
         // Invalidate before a forwarding operation can deliver new metadata.
@@ -295,6 +300,9 @@ impl Monitor {
         else {
             return;
         };
+        if self.slots.reserve(DisplayOwner::Adb(serial.clone()), 0).is_err() {
+            return;
+        }
         self.config.tablet.begin_with_transport(
             Some(attachment_identity(&serial, &self.identities)),
             Some(blent_config::adb::transport_of(&serial)),
@@ -310,14 +318,7 @@ impl Monitor {
     }
 
     fn available_slot(&self) -> Option<u32> {
-        let used: HashSet<_> = self
-            .extras
-            .values()
-            .map(|session| session.instance)
-            .chain(self.pending.values().map(|pending| pending.instance))
-            .chain(self.retiring_slots.iter().copied())
-            .collect();
-        (1..self.config.extra.max_tablets).find(|slot| !used.contains(slot))
+        self.slots.next_adb_extra()
     }
 
     async fn prepare_extra(&mut self, serial: String) {
@@ -327,11 +328,16 @@ impl Monitor {
         let Some(instance) = self.available_slot() else {
             return;
         };
+        let Ok(ticket) = self.slots.reserve(DisplayOwner::Adb(serial.clone()), instance) else {
+            return;
+        };
         // Only local listener binding awaits here. Device commands run in the
         // owned mutation job, while this owner retains the unactivated runtime.
         let session = match spawn_extra_session(&self.config.extra, instance).await {
             Ok(session) => session,
             Err(error) => {
+                self.slots.close(ticket).expect("owned startup ticket");
+                self.slots.retired(ticket).expect("unpublished startup failed");
                 warn!("Could not start tablet {}: {error}", instance + 1);
                 self.forwarding
                     .entry(serial)
@@ -356,6 +362,7 @@ impl Monitor {
     }
 
     async fn reconcile(&mut self) {
+        self.preempt_for_usb();
         if self.discovery.initial_probes_finished() {
             self.launches.retain(self.discovery.inventory());
         }
@@ -365,7 +372,8 @@ impl Monitor {
             &self.identities,
         );
         let preferred = current_transport(&devices, self.current.as_deref(), &self.identities);
-        let found = select_tablet(&devices, preferred.as_deref());
+        let found = select_tablet(&devices, preferred.as_deref())
+            .filter(|_| self.slots.adb_allowed(0));
         self.change_primary(&found);
         let others = extra_devices(&devices, found.as_deref());
         self.remove_gone(&others);
@@ -635,6 +643,7 @@ mod tests {
         state.current = Some("OLD".into());
         state.ready.insert("SURVIVOR".into());
         state.extras.insert("SURVIVOR".into(), runtime);
+        state.slots.reserve(DisplayOwner::Adb("SURVIVOR".into()), 1).unwrap();
         state.change_primary(&Some("SURVIVOR".into()));
         assert!(
             !state.extras.contains_key("SURVIVOR"),

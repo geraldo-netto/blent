@@ -32,8 +32,10 @@ async fn inventory_case(mode: &str) -> (bool, bool) {
     let mut state = super::tests::fixture();
     state.config.adb = adb.to_str().unwrap().into();
     state.config.extra.max_tablets = 1;
+    state.slots = Slots::new(1).unwrap();
     state.current = Some("OLD".into());
     state.ready.insert("OLD".into());
+    state.slots.reserve(DisplayOwner::Adb("OLD".into()), 0).unwrap();
     state.config.tablet.begin(Some("old-identity".into()));
     state.checked_adb = true;
     state

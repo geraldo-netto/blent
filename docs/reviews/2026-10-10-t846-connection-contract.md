@@ -1445,3 +1445,36 @@ runs before this final wait, and independent retirement jobs continue. The daemo
 keeps its existing bounded shutdown behavior. [Regression and counters](artifacts/2026-10-10-t919/README.md)
 prove blocked-native retention, sibling progress and final release. This closes
 the pre-existing slot-reuse gap before shared ADB/USB admission under T917.
+
+## T917 shared display slot admission
+
+One portable `display_slots::Slots` owner now bounds the existing host monitor's
+ADB preparations, assignments and retirements. Authenticated peers use a distinct
+typed owner; an ADB serial spelling a certificate fingerprint remains an ADB
+identity. The existing `max_tablets` range (1–4, default 1) remains the capacity
+control. The bounded slot scan needs no extra indexes or native capture types.
+
+Owner decision, 2026-10-10: explicitly selected USB uses free capacity first;
+otherwise it automatically replaces one ADB display. With multiple ADB displays,
+the highest occupied extra slot is preferred, preserving the primary when
+possible. An existing retirement is awaited before displacing more displays.
+Native peers never displace one another implicitly. Pairing or a descriptive
+snapshot alone grants no display authority; T908 supplies selected connection
+intent and exact registration proof.
+
+Reservations precede native startup. Cancellation, changed selection and peer
+loss do not free a ticket. Existing ADB retirement waits for its owned mutation,
+route cleanup and extra-session native completion before returning the exact
+non-wrapping ticket. Late completion cannot release a replacement. Primary ADB
+handoff reuses the daemon-owned primary runtime; it does not create a second
+capture owner. USB registration retirement and capture gates must still be joined
+by T908 before native slot reuse. Counter exhaustion preserves working displays
+instead of evicting an owner that cannot be replaced.
+
+Legacy primary selection cannot invalidate a slot reserved for native display.
+A failed unpublished extra-session startup releases only its own reservation.
+Tests cover selection changes, mixed owners, full capacity, invalid indices and
+identities, delayed cleanup, stale completion, reconnect and existing ADB
+behavior. [Evidence](artifacts/2026-10-10-t917/README.md) includes two draft
+fail-before-fix regressions and per-function counters. Live USB production
+composition remains T908; no tablet acceptance or resource-use gain is claimed.

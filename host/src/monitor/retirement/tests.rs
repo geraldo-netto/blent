@@ -47,6 +47,10 @@ async fn t919_blocked_native_fixture() {
         (0, 0),
     );
     let completion = runtime.retirement.clone();
+    state
+        .slots
+        .reserve(DisplayOwner::Adb("blocked".into()), 1)
+        .unwrap();
     state.retire("blocked".into(), 1, Some(runtime), None);
     let early = tokio::time::timeout(Duration::from_millis(100), state.retiring.join_next()).await;
     let premature = early.is_ok();
@@ -55,6 +59,10 @@ async fn t919_blocked_native_fixture() {
     }
     let held = state.available_slot().is_none();
     assert!(!completion.is_complete());
+    state
+        .slots
+        .reserve(DisplayOwner::Adb("sibling".into()), 0)
+        .unwrap();
     state.retire("sibling".into(), 0, None, None);
     let sibling = tokio::time::timeout(Duration::from_secs(1), state.retiring.join_next())
         .await

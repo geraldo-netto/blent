@@ -71,8 +71,10 @@ async fn t413_unknown_package_probe_preserves_assignment_and_geometry() {
     let mut state = super::tests::fixture();
     state.config.adb = adb.to_str().unwrap().into();
     state.config.extra.max_tablets = 1;
+    state.slots = Slots::new(1).unwrap();
     state.current = Some("OLD".into());
     state.ready.insert("OLD".into());
+    state.slots.reserve(DisplayOwner::Adb("OLD".into()), 0).unwrap();
     let prepared = session::Spec {
         capture: Default::default(),
         ports: (0, 0),

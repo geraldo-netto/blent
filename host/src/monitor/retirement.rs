@@ -12,6 +12,12 @@ impl Monitor {
         if let Some(session) = &session {
             let _ = session.tablet_tx.send(false);
         }
+        let ticket = self
+            .slots
+            .ticket(&DisplayOwner::Adb(serial.clone()))
+            .expect("assigned display ticket");
+        assert_eq!(ticket.instance(), instance);
+        self.slots.close(ticket).expect("current display ticket");
         self.retiring_slots.insert(instance);
         self.retiring_routes.insert(serial.clone(), instance);
         let adb = self.config.adb.clone();
@@ -38,15 +44,21 @@ impl Monitor {
                     tokio::time::sleep(Duration::from_millis(10)).await;
                 }
             }
-            (serial, instance)
+            (serial, instance, ticket)
         });
     }
 
-    pub(super) fn retired(&mut self, (serial, instance): (String, u32)) {
-        self.retiring_routes.remove(&serial);
-        if !self.retiring_routes.values().any(|slot| *slot == instance) {
-            self.retiring_slots.remove(&instance);
+    pub(super) fn retired(&mut self, (serial, instance, ticket): RetiredDisplay) {
+        if ticket.instance() != instance
+            || self.slots.owner(ticket) != Some(&DisplayOwner::Adb(serial.clone()))
+        {
+            return;
         }
+        if self.slots.retired(ticket).is_err() {
+            return;
+        }
+        self.retiring_routes.remove(&serial);
+        self.retiring_slots.remove(&instance);
     }
 
     pub(super) fn remove_assignment(&mut self, serial: &str) {
@@ -59,7 +71,10 @@ impl Monitor {
         let session = pending
             .and_then(|pending| pending.session)
             .or_else(|| self.extras.remove(serial));
-        let instance = session.as_ref().map_or(0, |session| session.instance);
+        let instance = self
+            .slots
+            .ticket(&DisplayOwner::Adb(serial.into()))
+            .map_or(0, DisplayTicket::instance);
         if (assigned || session.is_some()) && !self.retiring_routes.contains_key(serial) {
             self.retire(serial.into(), instance, session, task);
         }

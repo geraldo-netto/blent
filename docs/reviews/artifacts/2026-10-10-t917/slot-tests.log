@@ -1,0 +1,17 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.12s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/deps/blent-276264e4cf99d16f)
+
+running 6 tests
+test display_slots::tests::t917_bounded_invalid_inputs_and_identity_separation ... ok
+test display_slots::tests::t917_exhaustion_preserves_working_display_instead_of_preempting ... ok
+test display_slots::tests::t917_keeps_primary_and_waits_for_existing_retirement ... ok
+test display_slots::tests::t917_revision_exhaustion_never_wraps ... ok
+test display_slots::tests::t917_selected_usb_uses_free_capacity_then_replaces_one_adb ... ok
+test display_slots::tests::t917_selection_changes_do_not_release_native_ownership ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 348 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-t917-model.lcov
