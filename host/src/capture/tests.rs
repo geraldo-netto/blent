@@ -1,9 +1,10 @@
 use super::*;
 use crate::media::Codec;
+use blent_config::commands::OwnedChild as Child;
 use std::path::Path;
 use std::process::Stdio;
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
-use tokio::process::{Child, Command};
+use tokio::process::Command;
 fn manager_settings(manager: &CaptureManager) -> EncoderSettings {
     let c = &manager.config;
     EncoderSettings {
@@ -392,13 +393,14 @@ async fn t116_idle_stream_provides_regular_decodable_join_points() {
                 let mut args: Vec<_> = command.as_std().get_args().map(|a| a.to_owned()).collect();
                 let input = args.iter().position(|a| a == "-i").unwrap() + 1;
                 args[input] = "pipe:0".into();
-                Command::new("ffmpeg")
-                    .args(args)
-                    .stdin(Stdio::piped())
-                    .stdout(Stdio::piped())
-                    .stderr(Stdio::null())
-                    .kill_on_drop(true)
-                    .spawn()
+                Child::spawn(
+                    Command::new("ffmpeg")
+                        .args(args)
+                        .stdin(Stdio::piped())
+                        .stdout(Stdio::piped())
+                        .stderr(Stdio::null())
+                        .kill_on_drop(true),
+                )
             })
             .unwrap();
         let child = manager.encoder.child.as_mut().unwrap();
@@ -504,15 +506,16 @@ fn test_manager() -> CaptureManager {
     manager
 }
 async fn fake_helper() -> (Child, BufReader<tokio::process::ChildStdout>) {
-    let mut child = Command::new("sh")
-        .args([
-            "-c",
-            "trap 'echo stopped; exit 0' TERM; echo ready; while :; do sleep 0.02; done",
-        ])
-        .stdout(Stdio::piped())
-        .kill_on_drop(true)
-        .spawn()
-        .unwrap();
+    let mut child = Child::spawn(
+        Command::new("sh")
+            .args([
+                "-c",
+                "trap 'echo stopped; exit 0' TERM; echo ready; while :; do sleep 0.02; done",
+            ])
+            .stdout(Stdio::piped())
+            .kill_on_drop(true),
+    )
+    .unwrap();
     let mut output = BufReader::new(child.stdout.take().unwrap());
     let mut ready = String::new();
     output.read_line(&mut ready).await.unwrap();
@@ -520,12 +523,13 @@ async fn fake_helper() -> (Child, BufReader<tokio::process::ChildStdout>) {
     (child, output)
 }
 fn fake_encoder(duration: &str) -> Child {
-    Command::new("sleep")
-        .arg(duration)
-        .stdout(Stdio::piped())
-        .kill_on_drop(true)
-        .spawn()
-        .unwrap()
+    Child::spawn(
+        Command::new("sleep")
+            .arg(duration)
+            .stdout(Stdio::piped())
+            .kill_on_drop(true),
+    )
+    .unwrap()
 }
 async fn drive_session(manager: &mut CaptureManager, display: bool, change_mode: bool) {
     let c = &manager.config;

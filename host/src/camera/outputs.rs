@@ -139,15 +139,14 @@ fn current_frame<'a>(frame: Option<&'a Vec<u8>>, black: &'a [u8], age: Duration)
     }
 }
 
-pub async fn retire(child: &mut Child) {
-    if tokio::time::timeout(Duration::from_secs(1), child.wait())
-        .await
-        .is_ok()
-    {
-        return;
+pub async fn retire(
+    child: blent_config::commands::OwnedChild,
+) -> blent_config::commands::Retirement {
+    let retired = child.retire(Duration::from_secs(1)).await;
+    if !retired.completion.is_complete() {
+        tracing::warn!("Camera process retirement incomplete; capacity retained");
     }
-    let _ = child.kill().await;
-    let _ = child.wait().await;
+    retired
 }
 
 #[cfg(test)]

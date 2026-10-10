@@ -1,7 +1,8 @@
 use anyhow::{Context, Result};
 use blent_config::audio::{AudioProfile, Direction};
+use blent_config::commands::OwnedChild as Child;
 use std::{path::Path, process::Stdio, time::Duration};
-use tokio::process::{Child, Command};
+use tokio::process::Command;
 
 #[cfg(test)]
 pub(super) fn spawn(helper: &Path, profile: AudioProfile, token: &str) -> Result<Child> {
@@ -27,13 +28,14 @@ pub(super) fn spawn_with_clock(
     if clocked {
         command.arg("clocked");
     }
-    let child = command
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::inherit())
-        .kill_on_drop(true)
-        .spawn()
-        .context("Start native PipeWire audio adapter")?;
+    let child = Child::spawn(
+        command
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::inherit())
+            .kill_on_drop(true),
+    )
+    .context("Start native PipeWire audio adapter")?;
     use std::os::fd::AsRawFd;
     if let Some(input) = &child.stdin {
         // Minimize stale kernel backlog; child continuously drains into an age-bounded ring.
@@ -48,14 +50,12 @@ pub(super) fn spawn_with_clock(
     }
     Ok(child)
 }
-pub(super) async fn retire(child: &mut Child) {
-    drop(child.stdin.take());
-    if tokio::time::timeout(Duration::from_millis(500), child.wait())
-        .await
-        .is_err()
-    {
-        let _ = child.kill().await;
+pub(super) async fn retire(child: Child) -> blent_config::commands::Retirement {
+    let retired = child.retire(Duration::from_millis(500)).await;
+    if !retired.completion.is_complete() {
+        tracing::warn!("Audio process retirement incomplete; capacity retained");
     }
+    retired
 }
 
 pub(super) async fn ready(child: &mut Child) -> Result<()> {

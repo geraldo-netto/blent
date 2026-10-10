@@ -8,18 +8,18 @@ use std::process::{Command, ExitStatus, Output, Stdio};
 use std::time::Duration;
 
 mod owned;
+mod retirement;
 #[cfg(windows)]
 mod windows;
-pub use owned::OwnedChild;
+pub use owned::{OwnedChild, Retirement, RetirementPhase};
 
 pub fn spawn_reaped(command: &mut std::process::Command) -> std::io::Result<u32> {
     #[cfg(windows)]
     windows::child_priority(command, 0);
-    let mut child = command.spawn()?;
+    let admission = retirement::reserve()?;
+    let child = command.spawn()?;
     let pid = child.id();
-    std::thread::spawn(move || {
-        let _ = child.wait();
-    });
+    admission.retain(retirement::SyncChild(child));
     Ok(pid)
 }
 
@@ -114,37 +114,37 @@ fn terminate_group(pid: u32) {
     let _ = pid;
 }
 
-fn retire_sync(mut child: std::process::Child) {
+fn retire_sync(mut child: std::process::Child, admission: crate::retirement::Admission) {
     terminate_group(child.id());
     let signalled = child.kill();
-    reap_after_signal(child, signalled);
+    reap_reserved(child, signalled, admission);
 }
-
-fn reap_after_signal(mut child: std::process::Child, signalled: io::Result<()>) {
-    if signalled.is_ok() {
-        let _ = child.wait();
-    } else {
-        // A pkexec child may have changed UID. Waiting here would turn a
-        // deadline into a wait for work we have no right to terminate.
-        std::thread::spawn(move || {
-            let _ = child.wait();
-        });
-    }
+#[cfg(test)]
+fn reap_after_signal(child: std::process::Child, signalled: io::Result<()>) {
+    reap_reserved(child, signalled, retirement::reserve().unwrap());
 }
-
-struct RunningAsync(tokio::process::Child);
-impl Drop for RunningAsync {
-    fn drop(&mut self) {
-        // Tokio clears id() on wait/reap, avoiding signals to a recycled PID.
-        // On cancellation signal the group before kill_on_drop retires child.
-        if let Some(pid) = self.0.id() {
-            terminate_group(pid);
+fn reap_reserved(
+    mut child: std::process::Child,
+    signalled: io::Result<()>,
+    admission: crate::retirement::Admission,
+) {
+    // Poll only through the configured control budget, even after a successful
+    // signal. A failed signal never authorizes an unbounded wait either.
+    let budget = crate::retirement_limits::reap_budget().unwrap_or(Duration::from_millis(100));
+    let end = std::time::Instant::now() + budget;
+    while signalled.is_ok() && std::time::Instant::now() < end {
+        if matches!(child.try_wait(), Ok(Some(_))) {
+            return;
         }
+        std::thread::sleep(Duration::from_millis(1));
     }
+    admission.retain(retirement::SyncChild(child));
 }
 
 impl SyncCommandExt for Command {
     fn output_timeout(&mut self, timeout: Duration) -> io::Result<Output> {
+        let admission = retirement::reserve()?;
+        crate::retirement_limits::reap_budget()?;
         let output = CapturedOutput::new()?;
         #[cfg(windows)]
         let job = windows::Job::new()?;
@@ -158,7 +158,7 @@ impl SyncCommandExt for Command {
         {
             use std::os::windows::io::AsRawHandle;
             if let Err(error) = job.start(child.id(), child.as_raw_handle()) {
-                retire_sync(child);
+                retire_sync(child, admission);
                 return Err(error);
             }
         }
@@ -170,7 +170,7 @@ impl SyncCommandExt for Command {
                     std::thread::sleep(Duration::from_millis(5))
                 }
                 result => {
-                    retire_sync(child);
+                    retire_sync(child, admission);
                     return Err(result.err().unwrap_or_else(timed_out));
                 }
             }
@@ -219,17 +219,15 @@ impl AsyncCommandExt for tokio::process::Command {
                 stdin.write_all(input).await?;
                 stdin.shutdown().await?;
             }
-            child.inner.0.wait().await
+            child.wait().await
         };
         match tokio::time::timeout(timeout, operation).await {
             Ok(status) => output.finish(status?),
             Err(_) => {
-                if let Some(pid) = child.id() {
-                    terminate_group(pid);
+                let retirement = child.retire(Duration::ZERO).await;
+                if !retirement.completion.is_complete() {
+                    tracing::warn!("Command retirement incomplete; capacity remains reserved");
                 }
-                // Await kill reaps when permitted. Permission failure returns
-                // immediately; Tokio then owns eventual direct-child reaping.
-                let _ = child.inner.0.kill().await;
                 Err(timed_out())
             }
         }

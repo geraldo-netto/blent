@@ -39,7 +39,9 @@ impl Identity {
 
 /// Own a particular inode, not a slot name. O_PATH pins identity without opening
 /// a reader/writer endpoint or affecting FIFO connection and EOF semantics.
-pub(super) struct Owned {
+#[derive(Clone)]
+pub(super) struct Owned(std::sync::Arc<Inode>);
+struct Inode {
     path: PathBuf,
     identity: Identity,
     _inode: std::fs::File,
@@ -47,10 +49,10 @@ pub(super) struct Owned {
 
 impl Owned {
     pub(super) fn rotate(&mut self) -> Result<()> {
-        let retired = self.identity;
+        let retired = self.0.identity;
         self.replace_retired(retired)?;
         anyhow::ensure!(
-            self.identity != retired,
+            self.0.identity != retired,
             "capture FIFO ownership changed before restart"
         );
         Ok(())
@@ -63,39 +65,39 @@ impl Owned {
             .open(path)
             .context("pin owned capture FIFO")?;
         let identity = Identity::from_metadata(&inode.metadata()?)?;
-        Ok(Self {
+        Ok(Self(std::sync::Arc::new(Inode {
             path: path.into(),
             identity,
             _inode: inode,
-        })
+        })))
     }
 
     /// Caller has retired the old reader. Allocate before replacing the FIFO
     /// so an old writer/reset report cannot authorize writes to the fresh one.
     pub(super) fn replace_retired(&mut self, retired: Identity) -> Result<()> {
-        if retired != self.identity || !retired.matches(&self.path)? {
+        if retired != self.0.identity || !retired.matches(&self.0.path)? {
             return Ok(());
         }
-        let parent = self.path.parent().context("capture FIFO has no parent")?;
+        let parent = self.0.path.parent().context("capture FIFO has no parent")?;
         let staging = tempfile::Builder::new()
             .prefix("fifo-reset-")
             .tempdir_in(parent)?;
         let mut replacement = Self::create(&staging.path().join("frames"))?;
         anyhow::ensure!(
-            replacement.identity != retired,
+            replacement.0.identity != retired,
             "replacement reused the retired FIFO"
         );
-        if retired.matches(&self.path)? {
-            std::fs::rename(&replacement.path, &self.path)
+        if retired.matches(&self.0.path)? {
+            std::fs::rename(&replacement.0.path, &self.0.path)
                 .context("replace retired capture FIFO")?;
-            replacement.path = self.path.clone();
+            std::sync::Arc::get_mut(&mut replacement.0).unwrap().path = self.0.path.clone();
             *self = replacement;
         }
         Ok(())
     }
 }
 
-impl Drop for Owned {
+impl Drop for Inode {
     fn drop(&mut self) {
         if self.identity.matches(&self.path).unwrap_or(false) {
             let _ = std::fs::remove_file(&self.path);
@@ -108,21 +110,45 @@ mod tests {
     use super::*;
 
     #[test]
+    fn t814_fifo_lease_preserves_inode_until_final_owner_retires() {
+        let root = tempfile::tempdir().unwrap();
+        let path = root.path().join("frames");
+        let owner = Owned::create(&path).unwrap();
+        let lease = owner.clone();
+        drop(owner);
+        assert!(lease.0.identity.matches(&path).unwrap());
+        drop(lease);
+        assert!(!path.exists());
+
+        let mut owner = Owned::create(&path).unwrap();
+        let retired = owner.clone();
+        owner.rotate().unwrap();
+        assert_ne!(retired.0.identity, owner.0.identity);
+        drop(retired);
+        assert!(owner.0.identity.matches(&path).unwrap());
+        drop(owner);
+        assert!(!path.exists());
+    }
+
+    #[test]
     fn t498_rotation_preserves_replacements_and_rejects_missing_ownership() {
         let root = tempfile::tempdir().unwrap();
         let path = root.path().join("frames");
         let mut owned = Owned::create(&path).unwrap();
-        let retired = owned.identity;
+        let retired = owned.0.identity;
         owned.rotate().unwrap();
-        let fresh = owned.identity;
+        let fresh = owned.0.identity;
         owned.replace_retired(retired).unwrap();
-        assert_eq!(owned.identity, fresh, "T498: late reset rotated fresh FIFO");
+        assert_eq!(
+            owned.0.identity, fresh,
+            "T498: late reset rotated fresh FIFO"
+        );
         std::fs::remove_file(&path).unwrap();
         assert!(owned.rotate().is_err());
         let replacement = Owned::create(&path).unwrap();
         assert!(owned.rotate().is_err());
         drop(owned);
-        assert!(replacement.identity.matches(&path).unwrap());
+        assert!(replacement.0.identity.matches(&path).unwrap());
     }
 
     #[test]

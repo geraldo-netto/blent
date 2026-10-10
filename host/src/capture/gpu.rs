@@ -1,7 +1,8 @@
 //! Opt-in Linux X11/VAAPI process adapter; portable sessions only see packets.
 use super::CaptureConfig;
+use blent_config::commands::OwnedChild as Child;
 use std::{ffi::OsStr, path::PathBuf, process::Stdio};
-use tokio::process::{Child, Command};
+use tokio::process::Command;
 
 pub(super) struct Adapter {
     helper: Option<PathBuf>,
@@ -85,9 +86,7 @@ impl Adapter {
         desktop: crate::desktop::Desktop,
     ) -> anyhow::Result<Child> {
         let connector = supported_connector(config, card, connectors, desktop)?;
-        command(program, config, mode, &connector)
-            .spawn()
-            .map_err(Into::into)
+        Child::spawn(&mut command(program, config, mode, &connector)).map_err(Into::into)
     }
 
     /// A native EOF/error is a one-way fallback for this session owner. No

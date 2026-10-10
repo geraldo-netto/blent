@@ -43,21 +43,30 @@ impl Writer {
 pub struct Worker {
     writer: Writer,
     cancelled: Arc<AtomicBool>,
-    thread: Option<std::thread::JoinHandle<()>>,
+    thread: Option<blent::control_workers::Worker>,
+    reap_budget: std::time::Duration,
 }
 
 impl Worker {
     pub fn new(store: impl Transactions + 'static) -> std::io::Result<Self> {
+        Self::with_pool(store, blent::control_workers::WorkerPool::shared()?)
+    }
+    fn with_pool(
+        store: impl Transactions + 'static,
+        pool: blent::control_workers::WorkerPool,
+    ) -> std::io::Result<Self> {
+        let reap_budget = blent_config::retirement_limits::reap_budget()?;
         let (sender, receiver) = mpsc::channel(1);
         let cancelled = Arc::new(AtomicBool::new(false));
         let stop = cancelled.clone();
-        let thread = std::thread::Builder::new()
-            .name("blent-config".into())
-            .spawn(move || run(store, stop, receiver))?;
+        let thread = blent::control_workers::Worker::spawn(pool, "blent-config", move || {
+            run(store, stop, receiver)
+        })?;
         Ok(Self {
             writer: Writer(sender),
             cancelled,
             thread: Some(thread),
+            reap_budget,
         })
     }
 
@@ -65,22 +74,33 @@ impl Worker {
         self.writer.clone()
     }
 
-    pub async fn shutdown(mut self) {
-        self.cancelled.store(true, Ordering::Release);
-        let _ = self.writer.0.send(Message::Stop).await;
-        // Cancel lock acquisition, then join the owned thread. Do not pretend
-        // cancelling an async waiter stops an already committing transaction.
+    pub async fn shutdown(mut self) -> blent_config::retirement::Completion {
+        self.cancel();
         let thread = self.thread.take().unwrap();
-        let _ = tokio::task::spawn_blocking(move || thread.join()).await;
+        let completion = thread.completion();
+        drop(thread);
+        let _ = tokio::time::timeout(self.reap_budget, async {
+            while !completion.is_complete() {
+                tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+            }
+        })
+        .await;
+        if !completion.is_complete() {
+            tracing::warn!("Config retirement incomplete; worker capacity retained until joined");
+        }
+        completion
+    }
+    fn cancel(&self) {
+        self.cancelled.store(true, Ordering::Release);
+        // A full queue will wake the worker when its current transaction exits;
+        // cancellation is checked before any queued transaction can start.
+        let _ = self.writer.0.try_send(Message::Stop);
     }
 }
 
 impl Drop for Worker {
     fn drop(&mut self) {
-        // Startup failure/early future drop still wakes an idle or lock-waiting
-        // worker. Normal daemon shutdown additionally joins it above.
-        self.cancelled.store(true, Ordering::Release);
-        let _ = self.writer.0.try_send(Message::Stop);
+        self.cancel();
     }
 }
 
@@ -211,3 +231,6 @@ mod tests {
         worker.shutdown().await;
     }
 }
+
+#[cfg(test)]
+mod retirement_tests;

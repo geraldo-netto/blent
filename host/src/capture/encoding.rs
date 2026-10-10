@@ -2,17 +2,20 @@
 use super::{process, CaptureConfig};
 use crate::media::CodecConfig;
 use anyhow::Result;
+use blent_config::commands::OwnedChild as Child;
 use std::sync::Arc;
-use tokio::process::Child;
 
 #[derive(Default)]
 pub(super) struct EncoderProcess {
     pub(super) child: Option<Child>,
+    pub(super) pending: Option<blent_config::retirement::Completion>,
     #[cfg(not(feature = "inproc-encoder"))]
     pub(super) gpu: super::gpu::Adapter,
 }
 
 pub(super) struct EncoderOutput {
+    #[cfg(feature = "inproc-encoder")]
+    pub(super) fifo: Option<super::fifo::Owned>,
     #[cfg(feature = "inproc-encoder")]
     pub(super) raw_socket: Option<crate::raw_socket::Socket>,
     pub(super) tx: blent::capture_contract::VideoOutput,
@@ -36,7 +39,9 @@ impl EncoderProcess {
         let encoder = crate::config::ffmpeg_encoder_name(&config.encoder);
         let async_depth =
             super::cli_encoder::supports_async_depth(std::ffi::OsStr::new("ffmpeg"), encoder).await;
-        self.start_with(config, mode, async_depth, |mut command| command.spawn())
+        self.start_with(config, mode, async_depth, |mut command| {
+            Child::spawn(&mut command)
+        })
     }
 
     #[cfg(feature = "inproc-encoder")]
@@ -58,6 +63,7 @@ impl EncoderProcess {
         spawn: impl FnOnce(tokio::process::Command) -> std::io::Result<Child>,
     ) -> Result<(u32, u32)> {
         use anyhow::Context;
+        process::ensure_retired(&self.pending)?;
         let adapter = super::cli_encoder::CliEncoder { config };
         let (w, h) = mode;
         adapter.log_encoder_dimensions(w, h);
@@ -102,7 +108,7 @@ impl EncoderProcess {
             output.latency.clone(),
             output.tx.viewers(),
         );
-        let handle = tokio::spawn(super::cli_encoder::read_loop_with_idle(
+        let handle = blent::owned_task::Task::spawn(super::cli_encoder::read_loop_with_idle(
             stdout,
             output.tx,
             output.codec_config,
@@ -110,7 +116,7 @@ impl EncoderProcess {
             codec,
             evidence,
             idle,
-        ));
+        ))?;
         Ok(EncoderTask { handle })
     }
 
@@ -140,7 +146,8 @@ impl EncoderProcess {
         let vaapi_device = config.vaapi_device.clone();
         let stop = crate::encoder_io::StopSignal::new()?;
         let stopc = stop.clone();
-        let handle = tokio::task::spawn_blocking(move || {
+        let handle = blent::owned_task::Task::spawn_blocking(move || {
+            let _fifo = output.fifo;
             crate::encoder::run(
                 &fifo,
                 &name,
@@ -159,7 +166,7 @@ impl EncoderProcess {
                 workers,
                 &vaapi_device,
             )
-        });
+        })?;
         Ok(EncoderTask { handle, stop })
     }
 
@@ -167,6 +174,7 @@ impl EncoderProcess {
         #[cfg(not(feature = "inproc-encoder"))]
         self.gpu.stopped();
         if let Some(mut child) = self.child.take() {
+            self.pending = Some(child.completion());
             let _ = child.start_kill();
         }
     }
@@ -174,14 +182,15 @@ impl EncoderProcess {
     pub(super) async fn shutdown(&mut self) {
         #[cfg(not(feature = "inproc-encoder"))]
         self.gpu.stopped();
-        if let Some(mut child) = self.child.take() {
-            process::terminate(&mut child, "ffmpeg").await;
+        if let Some(child) = self.child.take() {
+            self.pending = Some(child.completion());
+            process::terminate(child, "ffmpeg").await;
         }
     }
 }
 
 pub(super) struct EncoderTask {
-    pub(super) handle: tokio::task::JoinHandle<Result<()>>,
+    pub(super) handle: blent::owned_task::Task,
     #[cfg(feature = "inproc-encoder")]
     stop: Arc<crate::encoder_io::StopSignal>,
 }
@@ -193,7 +202,7 @@ impl EncoderTask {
         self.handle.abort();
     }
 
-    pub(super) async fn finish(&mut self, already_finished: bool) {
+    pub(super) async fn finish(&mut self, already_finished: bool) -> Result<()> {
         #[cfg(feature = "inproc-encoder")]
         self.stop.request();
         #[cfg(not(feature = "inproc-encoder"))]
@@ -201,9 +210,23 @@ impl EncoderTask {
         // Observe task destruction before rebuilding: the packetizer's
         // generation guard must retire every queued old access unit first.
         if !already_finished {
-            let _ = (&mut self.handle).await;
+            let budget = std::time::Duration::from_millis(
+                blent_config::retirement_limits::configured("BLENT_ENCODER_STOP_MS", 1000, 60_000)?
+                    as u64,
+            );
+            let outcome = tokio::time::timeout(budget, &mut self.handle)
+                .await
+                .map_err(|_| {
+                    anyhow::anyhow!("encoder task retirement incomplete; replacement forbidden")
+                })?;
+            match outcome {
+                Ok(result) => result?,
+                Err(error) if error.is_cancelled() => {}
+                Err(error) => return Err(error.into()),
+            }
         }
         self.handle.abort();
+        Ok(())
     }
 }
 
@@ -212,5 +235,30 @@ impl EncoderTask {
 impl Drop for EncoderTask {
     fn drop(&mut self) {
         self.stop.request();
+    }
+}
+
+#[cfg(test)]
+mod retirement_tests {
+    use super::*;
+    #[tokio::test]
+    async fn t814_encoder_cleanup_errors_and_panics_are_not_success() {
+        for panic in [false, true] {
+            let handle = blent::owned_task::Task::spawn(async move {
+                assert!(!panic, "T814 cleanup panic");
+                anyhow::bail!("T814 cleanup error")
+            })
+            .unwrap();
+            let mut task = EncoderTask {
+                handle,
+                #[cfg(feature = "inproc-encoder")]
+                stop: crate::encoder_io::StopSignal::new().unwrap(),
+            };
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+            assert!(
+                task.finish(false).await.is_err(),
+                "T814: encoder cleanup failure erased"
+            );
+        }
     }
 }

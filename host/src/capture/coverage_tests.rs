@@ -15,13 +15,14 @@ struct Fixture {
     _shutdown: watch::Sender<bool>,
 }
 
-fn idle_child() -> tokio::process::Child {
-    Command::new("/bin/sleep")
-        .arg("60")
-        .stdout(std::process::Stdio::piped())
-        .kill_on_drop(true)
-        .spawn()
-        .unwrap()
+fn idle_child() -> blent_config::commands::OwnedChild {
+    blent_config::commands::OwnedChild::spawn(
+        Command::new("/bin/sleep")
+            .arg("60")
+            .stdout(std::process::Stdio::piped())
+            .kill_on_drop(true),
+    )
+    .unwrap()
 }
 
 impl Fixture {

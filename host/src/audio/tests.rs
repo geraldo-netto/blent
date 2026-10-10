@@ -33,19 +33,20 @@ async fn t718_partial_frame_has_one_deadline() {
         tokio::time::sleep(Duration::from_millis(180)).await;
         let _ = client.write_all(&packet[28..]).await;
     });
-    let mut child = Command::new("/bin/cat")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::null())
-        .kill_on_drop(true)
-        .spawn()
-        .unwrap();
+    let mut child = blent_config::commands::OwnedChild::spawn(
+        Command::new("/bin/cat")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::null())
+            .kill_on_drop(true),
+    )
+    .unwrap();
     let mut reader = grant.authenticate(&grant.hello()).unwrap();
     let result = tokio::time::timeout(
         Duration::from_millis(320),
         microphone(&mut server, &mut child, &mut reader),
     )
     .await;
-    process::retire(&mut child).await;
+    process::retire(child).await;
     sender.abort();
     assert!(
         matches!(result, Ok(Err(_))),
@@ -158,21 +159,22 @@ async fn t718_packet_bounds_native_retirement_and_readiness() {
         "printf 'WRONG!'; cat >/dev/null",
         "sleep 10",
     ] {
-        let mut child = Command::new("sh")
-            .args(["-c", body])
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .kill_on_drop(true)
-            .spawn()
-            .unwrap();
+        let mut child = blent_config::commands::OwnedChild::spawn(
+            Command::new("sh")
+                .args(["-c", body])
+                .stdin(Stdio::piped())
+                .stdout(Stdio::piped())
+                .kill_on_drop(true),
+        )
+        .unwrap();
         if !body.starts_with("sleep") {
             assert_eq!(
                 process::ready(&mut child).await.is_ok(),
                 body.contains("READY")
             );
         }
-        process::retire(&mut child).await;
-        assert!(child.try_wait().unwrap().is_some());
+        let retired = process::retire(child).await;
+        assert!(retired.completion.is_complete());
     }
     assert!(executable("blent-t718-never-installed").is_err());
     assert!(process::spawn(
@@ -216,12 +218,13 @@ async fn t719_speaker_transport_preserves_stereo_and_native_gaps() {
         )
         .unwrap();
     let mut reader = grant.authenticate(&grant.hello()).unwrap();
-    let mut child = Command::new("/bin/cat")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .kill_on_drop(true)
-        .spawn()
-        .unwrap();
+    let mut child = blent_config::commands::OwnedChild::spawn(
+        Command::new("/bin/cat")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .kill_on_drop(true),
+    )
+    .unwrap();
     let mut input = child.stdin.take().unwrap();
     for flag in [0, 1] {
         let mut bytes = vec![flag];
@@ -250,7 +253,7 @@ async fn t719_speaker_transport_preserves_stereo_and_native_gaps() {
     .await
     .unwrap();
     assert!(result.is_err()); // EOF retires this session.
-    process::retire(&mut child).await;
+    process::retire(child).await;
 }
 
 #[test]
@@ -351,12 +354,13 @@ async fn t720_clocked_speaker_transport_preserves_native_counter_and_stereo() {
         frames: 480,
         nanos: 10_000_001,
     };
-    let mut child = Command::new("/bin/cat")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .kill_on_drop(true)
-        .spawn()
-        .unwrap();
+    let mut child = blent_config::commands::OwnedChild::spawn(
+        Command::new("/bin/cat")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .kill_on_drop(true),
+    )
+    .unwrap();
     let mut input = child.stdin.take().unwrap();
     input
         .write_all(
@@ -384,5 +388,5 @@ async fn t720_clocked_speaker_transport_preserves_native_counter_and_stereo() {
     .await
     .unwrap();
     assert!(result.is_err());
-    process::retire(&mut child).await;
+    process::retire(child).await;
 }

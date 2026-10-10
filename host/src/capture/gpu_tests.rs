@@ -84,7 +84,7 @@ async fn t575_gpu_command_preserves_user_settings_without_shell_parsing() {
     assert!(adapter.try_start(&config, (640, 400), Some(7)).is_none());
     adapter.failed = true;
     assert!(adapter.try_start(&config, (640, 400), Some(7)).is_none());
-    let child = adapter
+    let mut child = adapter
         .start_with(
             OsStr::new("/bin/echo"),
             &config,
@@ -94,7 +94,7 @@ async fn t575_gpu_command_preserves_user_settings_without_shell_parsing() {
             Desktop::X11,
         )
         .unwrap();
-    assert!(child.wait_with_output().await.unwrap().status.success());
+    assert!(child.wait().await.unwrap().success());
     assert!(adapter
         .start_with(
             OsStr::new("/missing/blent-gpu-capture"),
@@ -140,7 +140,7 @@ async fn t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state() {
         helper: Some("/bin/echo".into()),
         ..Default::default()
     };
-    let child = adapter
+    let mut child = adapter
         .try_start_using(
             &configuration(),
             (1280, 800),
@@ -150,7 +150,7 @@ async fn t575_successful_gpu_spawn_and_failed_retry_preserve_adapter_state() {
         )
         .unwrap();
     assert!(adapter.active && !adapter.failed);
-    assert!(child.wait_with_output().await.unwrap().status.success());
+    assert!(child.wait().await.unwrap().success());
     adapter.stopped();
     let directory = tempfile::tempdir().unwrap();
     let missing_helper = directory.path().join("missing-blent-gpu");
@@ -203,9 +203,13 @@ async fn t575_capture_supervisor_starts_gpu_with_owned_monitor_identity() {
         ..Default::default()
     };
     assert_eq!(manager.start_session_encoder().await.unwrap(), (1280, 800));
-    let child = manager.encoder.child.take().unwrap();
-    let output = child.wait_with_output().await.unwrap();
-    assert!(String::from_utf8(output.stdout)
+    let mut child = manager.encoder.child.take().unwrap();
+    let mut stdout = Vec::new();
+    tokio::io::AsyncReadExt::read_to_end(&mut child.stdout.take().unwrap(), &mut stdout)
+        .await
+        .unwrap();
+    assert!(child.wait().await.unwrap().success());
+    assert!(String::from_utf8(stdout)
         .unwrap()
         .starts_with("/sys/class/drm/card7-DVI-I-2/edid "));
     assert_eq!(manager.helper.card, Some(7));

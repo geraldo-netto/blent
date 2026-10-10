@@ -1,11 +1,12 @@
 //! EVDI helper process, FIFO creation, negotiated geometry and card announcements.
 use super::{fifo, fifo_path_for, process, CaptureConfig};
 use anyhow::{Context, Result};
+use blent_config::commands::OwnedChild as Child;
 use std::os::unix::ffi::OsStrExt;
 use std::path::Path;
 use std::process::Stdio;
 use tokio::io::{AsyncBufReadExt, BufReader};
-use tokio::process::{Child, Command};
+use tokio::process::Command;
 use tokio::sync::watch;
 use tracing::{info, warn};
 type HelperLines = tokio::io::Lines<BufReader<tokio::process::ChildStdout>>;
@@ -64,10 +65,11 @@ pub(super) struct DetectedMode {
 
 pub(super) struct HelperProcess {
     pub(super) child: Option<Child>,
+    pub(super) pending: Option<blent_config::retirement::Completion>,
     pub(super) fifo: Option<fifo::Owned>,
     #[cfg(feature = "inproc-encoder")]
     pub(super) raw_socket: Option<crate::raw_socket::Socket>,
-    stdout_task: Option<tokio::task::JoinHandle<()>>,
+    stdout_task: Option<blent::owned_task::Task>,
     /// Retained across restarts as a preference, never a reservation.
     pub(super) card: Option<u32>,
     pub(super) mode_tx: watch::Sender<Option<DetectedMode>>,
@@ -86,6 +88,7 @@ impl HelperProcess {
         let (stream_tx, stream_rx) = watch::channel(None);
         Self {
             child: None,
+            pending: None,
             fifo: None,
             #[cfg(feature = "inproc-encoder")]
             raw_socket: None,
@@ -138,12 +141,16 @@ impl HelperProcess {
     pub(super) fn stop(&mut self) {
         self.abort_stdout();
         if let Some(mut child) = self.child.take() {
+            child.keep_alive(self.fifo.clone());
+            self.pending = Some(child.completion());
             let _ = child.start_kill();
         }
     }
     pub(super) async fn terminate(&mut self) {
         if let Some(mut child) = self.child.take() {
-            process::terminate(&mut child, "evdi_helper").await;
+            child.keep_alive(self.fifo.clone());
+            self.pending = Some(child.completion());
+            process::terminate(child, "evdi_helper").await;
         }
     }
     /// Frame size the encoder must be configured for.
@@ -184,18 +191,20 @@ impl HelperProcess {
     }
 
     pub(super) async fn start(&mut self, config: &CaptureConfig) -> Result<()> {
+        process::ensure_retired(&self.pending)?;
         crate::config::validate_encoder_for_build(&config.encoder)?;
         if config.shared_raw() {
             blent_config::raw_frame::Layout::new(2, 2, config.raw_slots)?;
         }
         anyhow::ensure!(!config.shared_raw() || cfg!(feature = "inproc-encoder"), "shared_memory raw transport requires --features inproc-encoder; use fifo with stock FFmpeg CLI/VAAPI");
         let fifo = fifo_path_for(config.instance)?;
-        self.fifo = Some(fifo::Owned::create(&fifo)?);
         process::retire_orphan_capture(&fifo).await?;
+        self.fifo = Some(fifo::Owned::create(&fifo)?);
         let mut command = self.command(config, &fifo)?;
         #[cfg(feature = "inproc-encoder")]
         self.attach_raw_socket(config, &mut command)?;
-        let mut child = command.spawn().context("Failed to spawn evdi-helper")?;
+        let mut child = Child::spawn(&mut command).context("Failed to spawn evdi-helper")?;
+        child.keep_alive(self.fifo.clone());
         let stdout = child
             .stdout
             .take()
@@ -209,7 +218,7 @@ impl HelperProcess {
         let _ = self.fifo_reset_tx.send(None);
         let _ = self.stream_tx.send(None);
         self.abort_stdout();
-        self.stdout_task = Some(tokio::spawn(Self::drain_helper_stdout(
+        let drain = Self::drain_helper_stdout(
             lines,
             self.mode_tx.clone(),
             self.stream_tx.clone(),
@@ -218,7 +227,11 @@ impl HelperProcess {
                 fifo,
                 child.id().context("helper has no PID")?,
             )?,
-        )));
+        );
+        self.stdout_task = Some(blent::owned_task::Task::spawn(async move {
+            drain.await;
+            Ok(())
+        })?);
         self.child = Some(child);
         Ok(())
     }

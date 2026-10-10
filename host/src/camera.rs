@@ -14,8 +14,10 @@ mod tests;
 
 use anyhow::{Context, Result};
 use blent_config::camera::{CameraOptions, CameraProfile};
-use std::path::PathBuf;
-use tokio::{net::TcpListener, sync::watch, task::JoinSet};
+use futures_util::{stream::FuturesUnordered, StreamExt};
+use std::{path::PathBuf, sync::Arc};
+type Producers = FuturesUnordered<crate::owned_task::Task>;
+use tokio::{net::TcpListener, sync::watch};
 
 pub async fn run(options: &CameraOptions) -> Result<()> {
     let (stop, stopped) = watch::channel(false);
@@ -57,8 +59,8 @@ async fn run_native(
 ) -> Result<()> {
     options.validate()?;
     let devices = [
-        outputs::open_device(&options.front_device, "Blent Front")?,
-        outputs::open_device(&options.rear_device, "Blent Rear")?,
+        Arc::new(outputs::open_device(&options.front_device, "Blent Front")?),
+        Arc::new(outputs::open_device(&options.rear_device, "Blent Rear")?),
     ];
     let ffmpeg = executable("ffmpeg")?;
     let adb = executable("adb")?;
@@ -71,7 +73,7 @@ async fn run_native(
     )
     .await?;
     let result = serve(
-        &listener, &bridge, &token, &ffmpeg, &options, &mut stop, &status,
+        &listener, &bridge, &token, &ffmpeg, &options, &mut stop, &status, &devices,
     )
     .await;
     if let Err(error) = bridge.close().await {
@@ -94,26 +96,34 @@ async fn serve(
     options: &CameraOptions,
     stop: &mut watch::Receiver<bool>,
     status: &Report,
+    devices: &[Arc<std::fs::File>; 2],
 ) -> Result<()> {
     if *stop.borrow() {
         return Ok(());
     }
     let (front, front_rx) = watch::channel(None);
     let (rear, rear_rx) = watch::channel(None);
-    let mut producers = JoinSet::new();
-    for (device, frames) in [
+    let mut producers = Producers::new();
+    let mut completions = Vec::with_capacity(2);
+    for (index, (device, frames)) in [
         (&options.front_device, front_rx),
         (&options.rear_device, rear_rx),
-    ] {
-        let mut child = outputs::producer(ffmpeg, device, options)
-            .spawn()
-            .context("start virtual camera producer")?;
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let mut child = blent_config::commands::OwnedChild::spawn(&mut outputs::producer(
+            ffmpeg, device, options,
+        ))
+        .context("start virtual camera producer")?;
+        child.keep_alive(devices[index].clone());
+        completions.push(child.completion());
         let options = options.clone();
-        producers.spawn(async move {
+        producers.push(crate::owned_task::Task::spawn(async move {
             let result = outputs::feed(&mut child, frames, &options).await;
-            outputs::retire(&mut child).await;
+            outputs::retire(child).await;
             result
-        });
+        })?);
     }
     let frames = [front, rear];
     let session = Session {
@@ -126,13 +136,17 @@ async fn serve(
     let result = session.invited(&frames, &mut producers, stop, status).await;
     drop(frames);
     if tokio::time::timeout(std::time::Duration::from_secs(3), async {
-        while producers.join_next().await.is_some() {}
+        while producers.next().await.is_some() {}
     })
     .await
     .is_err()
     {
-        producers.shutdown().await;
+        producers.clear();
     }
+    anyhow::ensure!(
+        completions.iter().all(|ticket| ticket.is_complete()),
+        "camera output retirement incomplete; device locks retained"
+    );
     result
 }
 
@@ -148,7 +162,7 @@ impl Session<'_> {
     async fn invited(
         &self,
         frames: &[outputs::Frames; 2],
-        producers: &mut JoinSet<Result<()>>,
+        producers: &mut Producers,
         stop: &mut watch::Receiver<bool>,
         status: &Report,
     ) -> Result<()> {
@@ -159,7 +173,7 @@ impl Session<'_> {
             result = sessions(self.listener, self.token, self.ffmpeg, self.options, frames) => result,
             _ = control::cancelled(stop) => Ok(()),
             _ = frame_status(frames, self.options, status) => Ok(()),
-            result = producers.join_next() => { result.context("camera producers stopped")???; anyhow::bail!("camera producer stopped") }
+            result = producers.next() => { result.context("camera producers stopped")???; anyhow::bail!("camera producer stopped") }
         }
     }
 }

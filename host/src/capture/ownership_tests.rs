@@ -204,6 +204,89 @@ fn restart_run(manager: &CaptureManager) -> CaptureRun {
 }
 
 #[tokio::test]
+async fn t814_capture_replacement_requires_confirmed_retirement() {
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    for encoder in [false, true] {
+        let mut manager = CaptureManager::new(Default::default());
+        let slot = pool.reserve().unwrap();
+        let ticket = slot.completion();
+        let pending = if encoder {
+            &mut manager.encoder.pending
+        } else {
+            &mut manager.helper.pending
+        };
+        *pending = Some(ticket.clone());
+        if encoder {
+            assert!(manager
+                .start_session_encoder()
+                .await
+                .unwrap_err()
+                .to_string()
+                .contains("still retiring"));
+        } else {
+            assert!(manager
+                .start_helper()
+                .await
+                .unwrap_err()
+                .to_string()
+                .contains("still retiring"));
+        }
+        let mut run = restart_run(&manager);
+        let changes = SessionChanges {
+            settings_changed: false,
+            mode_changed: false,
+            display_dropped: true,
+            fifo_reset: false,
+            gpu_fallback: false,
+        };
+        assert!(manager
+            .finish_encoder_session(changes, &mut run)
+            .await
+            .is_err());
+        assert_eq!(run.encoder_mode, Some((1280, 800)));
+        drop(slot);
+        assert!(ticket.is_complete());
+        super::process::ensure_retired(&Some(ticket)).unwrap();
+    }
+    super::process::ensure_retired(&None).unwrap();
+}
+
+#[tokio::test]
+async fn t814_synchronous_stop_retains_process_tickets_and_fifo_ownership() {
+    if isolated("capture::ownership_tests::t814_synchronous_stop_retains_process_tickets_and_fifo_ownership") {
+        return;
+    }
+    let mut manager = owner().await;
+    let path = fifo_path_for(0).unwrap();
+    let helper_pid = manager.helper.child.as_ref().unwrap().id().unwrap();
+    manager.encoder.child = Some(
+        blent_config::commands::OwnedChild::spawn(tokio::process::Command::new("sleep").arg("60"))
+            .unwrap(),
+    );
+    let encoder_pid = manager.encoder.child.as_ref().unwrap().id().unwrap();
+    manager.stop();
+    assert!(manager.helper.child.is_none() && manager.encoder.child.is_none());
+    assert!(
+        path.exists(),
+        "T814: stop discarded the manager's FIFO ownership"
+    );
+    let helper = manager.helper.pending.clone().unwrap();
+    let encoder = manager.encoder.pending.clone().unwrap();
+    tokio::time::timeout(std::time::Duration::from_secs(2), async {
+        while !helper.is_complete() || !encoder.is_complete() {
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    for pid in [helper_pid, encoder_pid] {
+        assert!(!std::path::Path::new(&format!("/proc/{pid}")).exists());
+    }
+    drop(manager);
+    assert!(!path.exists());
+}
+
+#[tokio::test]
 async fn t498_encoder_restart_retires_reader_and_queued_frame_suffix() {
     use std::{
         io::{Read, Write},
@@ -223,11 +306,12 @@ async fn t498_encoder_restart_retires_reader_and_queued_frame_suffix() {
             .unwrap();
         old.write_all(&[128; 4096]).unwrap();
         let old_inode = old.metadata().unwrap().ino();
-        let child = tokio::process::Command::new("sleep")
-            .arg("60")
-            .kill_on_drop(true)
-            .spawn()
-            .unwrap();
+        let child = blent_config::commands::OwnedChild::spawn(
+            tokio::process::Command::new("sleep")
+                .arg("60")
+                .kill_on_drop(true),
+        )
+        .unwrap();
         let pid = child.id().unwrap();
         manager.encoder.child = Some(child);
         let mut run = restart_run(&manager);

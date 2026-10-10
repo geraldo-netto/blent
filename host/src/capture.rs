@@ -70,18 +70,24 @@ impl CaptureManager {
         self.helper.active_mode(&self.config)
     }
     async fn start_session_encoder(&mut self) -> Result<(u32, u32)> {
+        process::ensure_retired(&self.encoder.pending)?;
         self.helper.recover_fifo()?;
         let mode = self.active_mode();
         #[cfg(not(feature = "inproc-encoder"))]
-        if let Some(child) = self
+        if let Some(mut child) = self
             .encoder
             .gpu
             .try_start(&self.config, mode, self.helper.card)
         {
+            child.keep_alive(self.helper.fifo.clone());
             self.encoder.child = Some(child);
             return Ok(mode);
         }
-        self.encoder.start(&self.config, mode).await
+        let result = self.encoder.start(&self.config, mode).await;
+        if let Some(child) = self.encoder.child.as_mut() {
+            child.keep_alive(self.helper.fifo.clone());
+        }
+        result
     }
     /// Which EVDI card the helper opened; None until it has.
     pub fn card_rx(&self) -> watch::Receiver<Option<u32>> {
@@ -407,6 +413,8 @@ impl CaptureManager {
     ) -> Result<Option<SessionChanges>> {
         let output = EncoderOutput {
             #[cfg(feature = "inproc-encoder")]
+            fifo: self.helper.fifo.clone(),
+            #[cfg(feature = "inproc-encoder")]
             raw_socket: self.helper.raw_socket.clone(),
             tx: tx.clone(),
             codec_config: self.codec_config.clone(),
@@ -540,7 +548,7 @@ impl CaptureManager {
             }
 
             // Retire the reader before the supervisor rebuilds the pipeline.
-            encode_task.finish(encode_finished).await;
+            encode_task.finish(encode_finished).await?;
 
             break;
         }
@@ -568,6 +576,8 @@ impl CaptureManager {
         // Every replacement reader needs a whole-frame boundary, even when
         // the writer has not yet reported a partial write. Reap before rotation.
         self.encoder.shutdown().await;
+        process::ensure_retired(&self.encoder.pending)?;
+        process::ensure_retired(&self.helper.pending)?;
         if changes.keep_helper() {
             self.helper.rotate_fifo()?;
         }
@@ -585,12 +595,12 @@ impl CaptureManager {
         self.encoder.stop();
     }
 
-    /// Stop the pipeline and wait for the children to actually be gone.
+    /// Stop the pipeline within bounded grace/reap budgets.
     ///
     /// The synchronous [`stop`] only *sends* signals, so the daemon could exit
     /// while ffmpeg was still holding the capture FIFO. That window collides
-    /// with an immediate restart — which is exactly what "Apply & restart" in
-    /// the GUI does — and two processes on one FIFO produce torn frames.
+    /// with an immediate restart. Unconfirmed children retain their FIFO leases
+    /// and completion tickets; replacement must check those tickets.
     pub async fn shutdown(&mut self) {
         self.helper.abort_stdout();
         self.encoder.shutdown().await;

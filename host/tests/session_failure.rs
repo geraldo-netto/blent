@@ -206,6 +206,7 @@ fn controlled(
     let tablet = Attachment::with_token(settings, None);
     tablet.begin(Some(format!("device:{instance}")));
     let (stop_tx, mut stop) = watch::channel(false);
+    let admission = Workers::reserve().unwrap();
     let capture = tokio::spawn(async move {
         let _ = stop.wait_for(|stop| *stop).await;
         Ok(())
@@ -225,7 +226,7 @@ fn controlled(
             tablet,
             Arc::new(tokio::sync::Notify::new()),
             stop_tx,
-            Workers::new(capture, vec![(name, task)]),
+            Workers::new(admission, capture, vec![(name, task)]),
             (0, 0),
         ),
         trigger,
@@ -379,6 +380,7 @@ async fn t813_normal_shutdown_aborts_unresponsive_async_capture_after_grace() {
     let tablet = Attachment::new(watch::channel(spec(0).settings).0);
     let done = Arc::new(AtomicBool::new(false));
     let guard = Complete(done.clone());
+    let admission = Workers::reserve().unwrap();
     let capture = tokio::spawn(async move {
         let _guard = guard;
         std::future::pending::<anyhow::Result<()>>().await
@@ -388,7 +390,7 @@ async fn t813_normal_shutdown_aborts_unresponsive_async_capture_after_grace() {
         tablet,
         Arc::new(tokio::sync::Notify::new()),
         watch::channel(false).0,
-        Workers::new(capture, vec![]),
+        Workers::new(admission, capture, vec![]),
         (0, 0),
     );
     let status = runtime.status.clone();
@@ -476,6 +478,7 @@ async fn t813_worker_panic_during_generation_action_still_retires_session() {
     let tablet = Attachment::new(watch::channel(spec(0).settings).0);
     tablet.begin(Some("device:panicking-action".into()));
     let lease = tablet.lease();
+    let admission = Workers::reserve().unwrap();
     let capture = tokio::spawn(async move {
         lease.apply(|| panic!("T813 action panic"));
         Ok(())
@@ -485,7 +488,7 @@ async fn t813_worker_panic_during_generation_action_still_retires_session() {
         tablet,
         Arc::new(tokio::sync::Notify::new()),
         watch::channel(false).0,
-        Workers::new(capture, vec![]),
+        Workers::new(admission, capture, vec![]),
         (0, 0),
     );
     let mut status = runtime.status.clone();

@@ -87,12 +87,16 @@ pub async fn connection(
         header.lens == selected,
         "camera lens was not selected by host"
     );
-    let mut decoder = command(ffmpeg, header.rotation, options)
-        .spawn()
-        .context("start camera decoder")?;
+    let mut decoder =
+        blent_config::commands::OwnedChild::spawn(&mut command(ffmpeg, header.rotation, options))
+            .context("start camera decoder")?;
     let result = transfer(&mut socket, &mut decoder, options, &outputs[header.lens]).await;
     outputs[header.lens].send_replace(None);
-    outputs::retire(&mut decoder).await;
+    let retired = outputs::retire(decoder).await;
+    anyhow::ensure!(
+        retired.completion.is_complete(),
+        "Camera decoder retirement incomplete; capacity retained"
+    );
     result
 }
 

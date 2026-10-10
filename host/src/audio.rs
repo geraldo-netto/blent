@@ -103,7 +103,11 @@ async fn invited(
         result = stream => result,
         _ = cancelled(stop) => Ok(()),
     };
-    process::retire(&mut child).await;
+    let retired = process::retire(child).await;
+    ensure!(
+        retired.completion.is_complete(),
+        "Audio process retirement incomplete; capacity retained"
+    );
     result
 }
 

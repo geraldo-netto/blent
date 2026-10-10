@@ -1499,6 +1499,7 @@ printf '%s\n' "$2" >> "$0.log"
 
     #[tokio::test]
     async fn t068_extra_session_waits_for_capture_cleanup() {
+        let admission = blent::session::Workers::reserve().unwrap();
         use std::sync::{
             atomic::{AtomicBool, Ordering},
             Arc,
@@ -1525,7 +1526,7 @@ printf '%s\n' "$2" >> "$0.log"
             tablet_tx,
             Default::default(),
             stop_tx,
-            blent::session::Workers::new(capture, vec![]),
+            blent::session::Workers::new(admission, capture, vec![]),
             (0, 0),
         )
         .stop()

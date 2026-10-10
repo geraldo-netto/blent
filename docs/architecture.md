@@ -114,6 +114,64 @@ counts as historical evidence.
 
 ## Processes and settings
 
+
+### Host retirement bounds
+
+Host control waits and resource lifetimes are separate. Process, session, native
+control-worker and capture-task owners reserve capacity before spawning work.
+Timeout, cancellation or owner drop transfers unfinished ownership to a bounded
+retirement pool; capacity becomes reusable only after actual reap/join and
+associated cleanup. A stuck item therefore consumes its slot instead of allowing
+unlimited replacement. Other admitted items can still finish. Admission errors
+are explicit and do not trigger automatic retries.
+
+Native thread joins and dependent-resource destruction run on isolated cleanup
+threads, at most one per retiring admitted owner. This matters because a thread's
+`is_finished` can precede its thread-local destruction. Cleanup panic retains the
+slot as quarantined; sibling retirement continues. The shared observer polls
+pending records every 5 ms. These are control deadlines, not real-time guarantees
+against a stalled executor, kernel or filesystem.
+
+Environment settings apply to the host process. Capacity pools read their setting
+on first use; restart the host after changing capacity. Invalid, zero and
+out-of-range values are rejected. Set these through the launch environment or a
+systemd user-service environment override.
+
+| Setting | Default | Accepted range | Tradeoff |
+| --- | --- | --- | --- |
+| `BLENT_CONTROL_WORKERS` | 8 | 1..64 | Shared camera/audio/config control threads, including retiring owners. |
+| `BLENT_PROCESS_LIMIT` | 128 | 1..4096 | Owned command/media children, including unreaped children and dependent cleanup. |
+| `BLENT_SESSION_LIMIT` | 64 | 1..4096 | Session supervisors, including unfinished worker handles. |
+| `BLENT_TASK_LIMIT` | 64 | 1..4096 | Independently owned capture/media tasks, including started blocking work. |
+| `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
+| `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
+| `BLENT_ENCODER_STOP_MS` | 1000 ms | 1..60000 ms | Encoder-task completion wait before refusing replacement. |
+
+Larger capacities allow more concurrent work and retain more memory/handles when
+resources stall. Shorter waits return control sooner but can report incomplete
+retirement during ordinary cleanup. Process retirement reports graceful exit,
+exit after signalling, or incomplete retirement, together with a completion
+ticket and any signal error. Audio uses a 500 ms grace, camera children 1 second,
+and capture children 1.5 seconds after SIGTERM; the reap budget follows. Camera
+producer collection has a separate 3-second bound. Camera device locks and
+capture FIFO inode leases survive unconfirmed native retirement. FIFO replacement
+requires the previous capture retirement tickets to be complete.
+
+Session state can be `Retiring` after control returns, followed by `Stopped` when
+all owned session task handles finish. Cleanup failures publish `Failed`, including
+late failures observed by retirement ownership; a prior failure is preserved.
+These tickets describe their particular owner: nested native children/tasks retain
+their own admissions and completion tickets. An already-committing configuration
+transaction retains its atomicity and result after its control wait expires;
+queued transactions are cancelled.
+
+Started blocking work cannot be stopped by task abort. Optional in-process native
+encoding still shares the daemon's address space, and final Tokio runtime
+destruction may wait for started blocking calls; isolation and final-exit work
+remain T819. Windows job/reaper acceptance and native counters remain T737.
+Command output byte/collection bounds remain T815.
+
+
 The C helper is assembled from independently linked modules. `capture.c` owns
 the EVDI mode, registered native pixel framebuffer and event callbacks; callbacks receive
 that capture context through EVDI's `user_data`. `conversion.c` owns a worker

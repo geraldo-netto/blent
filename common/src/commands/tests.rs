@@ -295,3 +295,177 @@ async fn t609_cancelled_stdin_writer_is_reaped() {
     tokio::time::sleep(Duration::from_millis(50)).await;
     assert_reaped(&path);
 }
+
+#[test]
+fn t814_accepted_signal_does_not_make_reaping_unbounded() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("pid");
+    let child = fixture(&path, "denied").spawn().unwrap();
+    let pid = child.id();
+    let start = std::time::Instant::now();
+    // A successful signal request does not prove completion. The fixture stays
+    // alive for 400 ms; unlike a truly unkillable process it always self-retires.
+    reap_after_signal(child, Ok(()));
+    let elapsed = start.elapsed();
+    std::thread::sleep(Duration::from_millis(500));
+    assert_exited(pid);
+    assert!(
+        elapsed < Duration::from_millis(200),
+        "T814: successful signal caused an unbounded wait: {elapsed:?}"
+    );
+}
+
+#[cfg(target_os = "linux")]
+#[test]
+fn t814_unconfirmed_async_exit_retains_admission_after_control_deadline() {
+    const NAME: &str =
+        "commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline";
+    if std::env::var_os("BLENT_T814_HELD_REAP").is_none() {
+        let output = Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", NAME, "--nocapture"])
+            .env("BLENT_T814_HELD_REAP", "1")
+            .env("BLENT_PROCESS_LIMIT", "1")
+            .env("BLENT_REAP_TIMEOUT_MS", "20")
+            .output_timeout(Duration::from_secs(5))
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        return;
+    }
+    // This disposable process alone makes kill(2) report success without sending
+    // a signal. The owned fixture always exits itself after 400 ms.
+    let mut instructions = [
+        libc::sock_filter {
+            code: (libc::BPF_LD | libc::BPF_W | libc::BPF_ABS) as u16,
+            jt: 0,
+            jf: 0,
+            k: 0,
+        },
+        libc::sock_filter {
+            code: (libc::BPF_JMP | libc::BPF_JEQ | libc::BPF_K) as u16,
+            jt: 0,
+            jf: 1,
+            k: libc::SYS_kill as u32,
+        },
+        libc::sock_filter {
+            code: (libc::BPF_RET | libc::BPF_K) as u16,
+            jt: 0,
+            jf: 0,
+            k: libc::SECCOMP_RET_ERRNO,
+        },
+        libc::sock_filter {
+            code: (libc::BPF_RET | libc::BPF_K) as u16,
+            jt: 0,
+            jf: 0,
+            k: libc::SECCOMP_RET_ALLOW,
+        },
+    ];
+    let filter = libc::sock_fprog {
+        len: instructions.len() as u16,
+        filter: instructions.as_mut_ptr(),
+    };
+    unsafe {
+        assert_eq!(libc::prctl(libc::PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0), 0);
+        assert_eq!(
+            libc::prctl(libc::PR_SET_SECCOMP, libc::SECCOMP_MODE_FILTER, &filter),
+            0
+        );
+    }
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            let dir = tempfile::tempdir().unwrap();
+            let path = dir.path().join("pid");
+            let child =
+                OwnedChild::spawn(&mut tokio::process::Command::from(fixture(&path, "denied")))
+                    .unwrap();
+            let pid = child.id().unwrap();
+            let report = child.retire(Duration::ZERO).await;
+            assert_eq!(report.phase, RetirementPhase::Incomplete);
+            assert!(!report.completion.is_complete());
+            assert_eq!(
+                OwnedChild::spawn(&mut tokio::process::Command::from(fixture(&path, "denied")))
+                    .err()
+                    .unwrap()
+                    .kind(),
+                io::ErrorKind::WouldBlock
+            );
+            tokio::time::timeout(Duration::from_secs(2), async {
+                while !report.completion.is_complete() {
+                    tokio::time::sleep(Duration::from_millis(5)).await;
+                }
+            })
+            .await
+            .unwrap();
+            assert_exited(pid);
+            let child =
+                OwnedChild::spawn(&mut tokio::process::Command::from(fixture(&path, "denied")))
+                    .unwrap();
+            assert_eq!(
+                child.retire(Duration::from_secs(1)).await.phase,
+                RetirementPhase::Exited
+            );
+        });
+}
+
+#[test]
+fn t814_dependent_lease_cleanup_cannot_hold_control_deadline() {
+    struct Held {
+        entered: std::sync::mpsc::Sender<()>,
+        release: std::sync::Mutex<std::sync::mpsc::Receiver<()>>,
+    }
+    impl Drop for Held {
+        fn drop(&mut self) {
+            self.entered.send(()).unwrap();
+            self.release.lock().unwrap().recv().unwrap();
+        }
+    }
+    let (started, entered) = std::sync::mpsc::channel();
+    let (release, hold) = std::sync::mpsc::channel();
+    let (returned, finished) = std::sync::mpsc::channel();
+    let worker = std::thread::spawn(move || {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let dir = tempfile::tempdir().unwrap();
+                let mut child = OwnedChild::spawn(&mut tokio::process::Command::from(fixture(
+                    &dir.path().join("pid"),
+                    "input",
+                )))
+                .unwrap();
+                child.keep_alive(Held {
+                    entered: started,
+                    release: std::sync::Mutex::new(hold),
+                });
+                returned
+                    .send(child.retire(Duration::from_millis(100)).await)
+                    .unwrap();
+            });
+    });
+    entered.recv_timeout(Duration::from_secs(2)).unwrap();
+    let result = finished.recv_timeout(Duration::from_millis(500));
+    let pending = result.as_ref().is_ok_and(|report| {
+        report.phase == RetirementPhase::Incomplete && !report.completion.is_complete()
+    });
+    release.send(()).unwrap();
+    worker.join().unwrap();
+    assert!(
+        result.is_ok(),
+        "T814: dependent lease destructor held control shutdown"
+    );
+    assert!(pending, "T814: live dependent resource reported complete");
+    let report = result.unwrap();
+    let end = std::time::Instant::now() + Duration::from_secs(2);
+    while !report.completion.is_complete() {
+        assert!(std::time::Instant::now() < end);
+        std::thread::sleep(Duration::from_millis(1));
+    }
+}

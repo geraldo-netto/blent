@@ -1,52 +1,147 @@
-//! Owned streaming children. Native process/job APIs stay in command adapters.
-use super::{prepare_group, timed_out, RunningAsync};
-use std::{io, process::ExitStatus, time::Duration};
-use tokio::process::{ChildStdin, ChildStdout, Command};
-
-pub struct OwnedChild {
-    pub(super) inner: RunningAsync,
-    // The job outlives the running child and every borrowed wait operation.
-    #[cfg(windows)]
-    _job: super::windows::Job,
+//! Owned native children. Capacity includes active and unconfirmed retirement.
+use super::{prepare_group, retirement, terminate_group, timed_out};
+use crate::retirement::{Admission, Completion};
+use std::{
+    io,
+    ops::{Deref, DerefMut},
+    process::ExitStatus,
+    time::Duration,
+};
+use tokio::process::{Child, ChildStdin, ChildStdout, Command};
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum RetirementPhase {
+    Exited,
+    ReapedAfterSignal,
+    Incomplete,
 }
-
+#[derive(Clone, Debug)]
+pub struct Retirement {
+    pub phase: RetirementPhase,
+    pub completion: Completion,
+    pub signal_error: Option<String>,
+}
+pub struct OwnedChild {
+    child: Option<Child>,
+    admission: Option<Admission>,
+    reap_budget: Duration,
+    leases: Vec<Box<dyn Send + Sync>>,
+    #[cfg(windows)]
+    job: Option<super::windows::Job>,
+}
 impl OwnedChild {
-    /// Preserve caller-selected stdio. On Windows, no child thread runs before
-    /// job assignment. Drop/cancellation retires the owned process tree.
     pub fn spawn(command: &mut Command) -> io::Result<Self> {
+        let admission = retirement::reserve()?;
+        let reap_budget = crate::retirement_limits::reap_budget()?;
         #[cfg(windows)]
         let job = super::windows::Job::new()?;
         prepare_group(command.as_std_mut());
-        let inner = RunningAsync(command.kill_on_drop(true).spawn()?);
-        #[cfg(windows)]
-        job.start(
-            inner.0.id().expect("new child"),
-            inner.0.raw_handle().expect("new child handle"),
-        )?;
-        Ok(Self {
-            inner,
+        let child = command.kill_on_drop(true).spawn()?;
+        let owner = Self {
+            child: Some(child),
+            admission: Some(admission),
+            reap_budget,
+            leases: Vec::new(),
             #[cfg(windows)]
-            _job: job,
-        })
+            job: Some(job),
+        };
+        #[cfg(windows)]
+        owner.job.as_ref().unwrap().start(
+            owner.id().expect("new child"),
+            owner.raw_handle().expect("new child handle"),
+        )?;
+        Ok(owner)
     }
-
     pub fn id(&self) -> Option<u32> {
-        self.inner.0.id()
+        self.child.as_ref().unwrap().id()
     }
-
     pub fn take_stdin(&mut self) -> Option<ChildStdin> {
-        self.inner.0.stdin.take()
+        self.stdin.take()
     }
-
     pub fn take_stdout(&mut self) -> Option<ChildStdout> {
-        self.inner.0.stdout.take()
+        self.stdout.take()
     }
-
-    /// Consume ownership. Expiry or cancellation drops the native owner and
-    /// lets Tokio reap the direct child; callers cannot reuse a retired child.
+    /// Keep dependent locks/buffers alive until the direct child is reaped.
+    pub fn keep_alive(&mut self, lease: impl Send + Sync + 'static) {
+        self.leases.push(Box::new(lease));
+    }
+    pub fn completion(&self) -> Completion {
+        self.admission.as_ref().unwrap().completion()
+    }
+    /// Consume the child. On expiry, signal and transfer ownership to the reaper;
+    /// completion refers to the direct child, never delegated service work.
     pub async fn finish(mut self, timeout: Duration) -> io::Result<ExitStatus> {
-        tokio::time::timeout(timeout, self.inner.0.wait())
+        tokio::time::timeout(timeout, self.wait())
             .await
             .map_err(|_| timed_out())?
+    }
+    fn signal(&mut self) -> io::Result<()> {
+        #[cfg(windows)]
+        drop(self.job.take()); // kill-on-close covers the Windows job tree
+        if let Some(pid) = self.id() {
+            terminate_group(pid);
+        }
+        self.start_kill()
+    }
+    /// Grace, signal, bounded reap, then retain any unconfirmed native owner.
+    pub async fn retire(mut self, grace: Duration) -> Retirement {
+        let completion = self.completion();
+        let deadline = tokio::time::Instant::now() + grace + self.reap_budget;
+        drop(self.stdin.take());
+        let mut signal_error = None;
+        let mut phase = if matches!(tokio::time::timeout(grace, self.wait()).await, Ok(Ok(_))) {
+            RetirementPhase::Exited
+        } else {
+            signal_error = self.signal().err().map(|error| error.to_string());
+            let budget = self.reap_budget;
+            if matches!(tokio::time::timeout(budget, self.wait()).await, Ok(Ok(_))) {
+                RetirementPhase::ReapedAfterSignal
+            } else {
+                RetirementPhase::Incomplete
+            }
+        };
+        drop(self);
+        let _ = tokio::time::timeout_at(deadline, async {
+            while !completion.is_complete() {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await;
+        if !completion.is_complete() {
+            phase = RetirementPhase::Incomplete;
+        }
+        Retirement {
+            phase,
+            completion,
+            signal_error,
+        }
+    }
+}
+impl Deref for OwnedChild {
+    type Target = Child;
+    fn deref(&self) -> &Self::Target {
+        self.child.as_ref().unwrap()
+    }
+}
+impl DerefMut for OwnedChild {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.child.as_mut().unwrap()
+    }
+}
+impl Drop for OwnedChild {
+    fn drop(&mut self) {
+        let _ = self.signal();
+        let mut child = self.child.take().unwrap();
+        let admission = self.admission.take().unwrap();
+        drop(child.stdin.take());
+        drop(child.stdout.take());
+        drop(child.stderr.take());
+        if child.id().is_some() || !self.leases.is_empty() {
+            admission.retain(retirement::AsyncChild {
+                child,
+                leases: std::mem::take(&mut self.leases),
+                cleanup: None,
+            });
+        }
+        // Reaped children release their admission here; unreaped ones retain it.
     }
 }

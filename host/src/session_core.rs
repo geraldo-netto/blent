@@ -10,7 +10,7 @@ use tokio::task::JoinHandle;
 use tracing::error;
 
 pub use crate::capture_contract::{CaptureBackend, CaptureContext, CaptureWorkers};
-pub use crate::session_supervision::Workers;
+pub use crate::session_supervision::{SessionAdmission, Workers};
 
 /// Composition-owned bindings for the current stream/input implementations.
 /// These are deliberately outside the capture backend contract.
@@ -109,6 +109,7 @@ pub struct Prepared {
 
 impl Prepared {
     pub async fn start(self, daemon_stop: watch::Receiver<bool>) -> Result<Runtime> {
+        let admission = Workers::reserve()?;
         let (video, _) = video_queue::channel(
             video_queue::QUEUE_PACKETS,
             self.resources.idr_wanted.clone(),
@@ -149,7 +150,7 @@ impl Prepared {
             self.tablet,
             self.relaunch,
             stop_tx,
-            Workers::new(spawn_server("Capture", workers.capture), tasks),
+            Workers::new(admission, spawn_server("Capture", workers.capture), tasks),
             self.ports,
         ))
     }
@@ -164,6 +165,7 @@ pub struct Runtime {
     pub video_port: u16,
     pub input_port: u16,
     pub status: watch::Receiver<crate::session_state::State>,
+    pub retirement: blent_config::retirement::Completion,
     supervisor: JoinHandle<()>,
     state: watch::Sender<crate::session_state::State>,
 }
@@ -176,6 +178,7 @@ impl Runtime {
         workers: Workers,
         ports: (u16, u16),
     ) -> Self {
+        let retirement = workers.completion();
         let (state, status) = watch::channel(crate::session_state::State::Running);
         let supervisor = tokio::spawn(crate::session_supervision::run(
             workers,
@@ -191,14 +194,16 @@ impl Runtime {
             video_port: ports.0,
             input_port: ports.1,
             status,
+            retirement,
             supervisor,
             state,
         }
     }
-    pub async fn stop(mut self) {
+    pub async fn stop(mut self) -> blent_config::retirement::Completion {
         self.tablet_tx.retire();
         self.stop_tx.send_replace(true);
         let _ = (&mut self.supervisor).await;
+        self.retirement.clone()
     }
 }
 impl Drop for Runtime {

@@ -212,3 +212,45 @@ the changed session, supervision, attachment and input modules exceed or meet
 80% individual executable-line coverage and have complexity <=9. Source hashes
 match the collection manifest. Four existing architecture guards also pass.
 [Retained red/green and coverage evidence](artifacts/2026-10-10-t813/).
+
+## T814: bound control waits and retain unfinished ownership
+
+Owned commands/media children, session supervisors, capture tasks and native
+control/config workers reserve capacity before spawn. Every control retirement
+phase now has a deadline. Unknown completion transfers the owner to bounded
+retirement observation instead of detaching it or freeing its admission. Capacity
+is released only after actual completion and dependent cleanup. Capture FIFO
+leases and camera device locks remain owned through incomplete native retirement;
+replacement capture checks its pending completion tickets first. In-process
+encoder tasks retain their input lease and buffers even after task abort.
+
+The shared observer does not join native threads or destroy potentially blocking
+dependent guards itself. Each retiring owner may use one isolated cleanup worker,
+retaining the same admission. A permanent regression demonstrates why this is
+needed: `JoinHandle::is_finished` can precede thread-local destruction. Held TLS
+cleanup and held lease destruction no longer block sibling retirements or control
+return. Cleanup panic quarantines the slot. Session/encoder cleanup errors and
+panics propagate instead of being reported as successful stop; late session
+cleanup publishes failure while preserving an earlier failure.
+
+Persistence cancellation uses nonblocking stop admission. A transaction already
+committing keeps its atomic operation/result while control shutdown returns;
+queued transactions are cancelled. Camera producer collection has its own bound.
+Settings and tradeoffs are documented in [host retirement bounds](../architecture.md#host-retirement-bounds).
+
+Seven permanent regressions were observed red before their fixes; additional
+capacity, replacement, cancellation, lease, sibling-progress and malformed-limit
+properties remain in normal suites. Default collection passes 954 tests with
+seven existing ignores; the added stop test, 38 optional capture tests, ten audio
+unit tests, two private native-audio acceptance tests, 128 no-default common
+tests and four architecture guards also pass. All 213 scoped production functions
+meet individual 80% executable-line coverage and complexity <=9. The installed
+SDK lacks the PipeWire executable, so native-audio-only binaries built there ran
+the existing private acceptance suite with installed host tools. No downloads,
+external-code changes or production reloads were needed.
+
+These are control-side bounds. Started blocking work still cannot be aborted;
+optional codec process isolation and final Tokio runtime destruction remain T819.
+Command output limits remain T815; Windows-native job/retirement evidence remains
+T737 and broad SDK native-fixture prerequisites remain T835.
+[Red/green logs, source hashes and per-function evidence](artifacts/2026-10-10-t814/).

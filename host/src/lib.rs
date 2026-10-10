@@ -9,6 +9,7 @@ pub mod capture_contract;
 pub mod config_jobs;
 mod control_outcome;
 pub mod control_workers;
+pub mod owned_task;
 pub mod persistence_port;
 mod session_adapters;
 pub mod session_state;

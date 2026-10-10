@@ -56,12 +56,12 @@ async fn t539_graceful_output_stop_allows_final_blank_to_flush() {
     let root = tempfile::tempdir().unwrap();
     let marker = root.path().join("flushed");
     let tool = script(root.path(), "writer", &format!("import sys, pathlib, time\nsys.stdin.buffer.read()\ntime.sleep(0.02)\npathlib.Path({:?}).write_text('flushed')", marker));
-    let mut child = tokio::process::Command::new(tool)
-        .stdin(std::process::Stdio::piped())
-        .spawn()
-        .unwrap();
+    let mut child = blent_config::commands::OwnedChild::spawn(
+        tokio::process::Command::new(tool).stdin(std::process::Stdio::piped()),
+    )
+    .unwrap();
     drop(child.stdin.take());
-    outputs::retire(&mut child).await;
+    outputs::retire(child).await;
     assert!(
         marker.exists(),
         "T539 output killed before final frame was flushed"
@@ -153,9 +153,12 @@ async fn t539_virtual_camera_writes_black_on_start_and_stop() {
         ),
     );
     let profile = options();
-    let mut child = outputs::producer(&tool, Path::new("/unused"), &profile)
-        .spawn()
-        .unwrap();
+    let mut child = blent_config::commands::OwnedChild::spawn(&mut outputs::producer(
+        &tool,
+        Path::new("/unused"),
+        &profile,
+    ))
+    .unwrap();
     let (frames, receiver) = watch::channel(None);
     let stop = async {
         tokio::time::sleep(Duration::from_millis(100)).await;
@@ -163,7 +166,7 @@ async fn t539_virtual_camera_writes_black_on_start_and_stop() {
     };
     let (result, _) = tokio::join!(outputs::feed(&mut child, receiver, &profile), stop);
     assert!(result.is_err());
-    outputs::retire(&mut child).await;
+    outputs::retire(child).await;
     let bytes = std::fs::read(capture).unwrap();
     assert!(bytes.len() >= profile.frame_bytes() * 2);
     assert_eq!(
@@ -410,6 +413,10 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
             &profile,
             &mut stopped,
             &status,
+            &[
+                std::sync::Arc::new(tempfile::tempfile().unwrap()),
+                std::sync::Arc::new(tempfile::tempfile().unwrap()),
+            ],
         ),
         clients,
     )

@@ -9,6 +9,8 @@ pub enum State {
     Running,
     Failed(Failure),
     Stopped,
+    /// Control deadline expired; actual resource owners retain admission.
+    Retiring,
     /// Owner dropped; cancellation requested, native retirement not confirmed.
     Cancelled,
 }

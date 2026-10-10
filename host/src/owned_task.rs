@@ -1,0 +1,163 @@
+//! Native/async capture tasks retain admission through actual task destruction.
+use anyhow::Result;
+use blent_config::retirement::{Admission, Completion, Observe, Pool};
+use futures_util::FutureExt;
+use std::{
+    future::Future,
+    io,
+    pin::Pin,
+    sync::OnceLock,
+    task::{Context, Poll},
+};
+use tokio::task::{JoinError, JoinHandle};
+pub struct Task {
+    handle: Option<JoinHandle<Result<()>>>,
+    admission: Option<Admission>,
+    completion: Completion,
+}
+impl Task {
+    fn reserve() -> io::Result<Admission> {
+        static POOL: OnceLock<io::Result<Pool>> = OnceLock::new();
+        POOL.get_or_init(|| {
+            Pool::new(blent_config::retirement_limits::configured(
+                "BLENT_TASK_LIMIT",
+                64,
+                4096,
+            )?)
+        })
+        .as_ref()
+        .map_err(|error| io::Error::new(error.kind(), error.to_string()))?
+        .reserve()
+    }
+    fn owned(admission: Admission, handle: JoinHandle<Result<()>>) -> Self {
+        Self {
+            completion: admission.completion(),
+            handle: Some(handle),
+            admission: Some(admission),
+        }
+    }
+    pub fn spawn(work: impl Future<Output = Result<()>> + Send + 'static) -> io::Result<Self> {
+        let admission = Self::reserve()?;
+        Ok(Self::owned(admission, tokio::spawn(work)))
+    }
+    pub fn spawn_blocking(work: impl FnOnce() -> Result<()> + Send + 'static) -> io::Result<Self> {
+        let admission = Self::reserve()?;
+        Ok(Self::owned(admission, tokio::task::spawn_blocking(work)))
+    }
+    pub fn abort(&self) {
+        if let Some(handle) = &self.handle {
+            handle.abort();
+        }
+    }
+    pub fn completion(&self) -> Completion {
+        self.completion.clone()
+    }
+}
+impl Future for Task {
+    type Output = Result<Result<()>, JoinError>;
+    fn poll(mut self: Pin<&mut Self>, context: &mut Context<'_>) -> Poll<Self::Output> {
+        let result = self.handle.as_mut().unwrap().poll_unpin(context);
+        if result.is_ready() {
+            self.handle.take();
+            self.admission.take();
+        }
+        result
+    }
+}
+impl Drop for Task {
+    fn drop(&mut self) {
+        if let Some(handle) = self.handle.take() {
+            handle.abort();
+            self.admission.take().unwrap().retain(Retiring(handle));
+        }
+    }
+}
+struct Retiring(JoinHandle<Result<()>>);
+impl Observe for Retiring {
+    fn poll_complete(&mut self) -> bool {
+        if !self.0.is_finished() {
+            return false;
+        }
+        let Some(result) = (&mut self.0).now_or_never() else {
+            return false;
+        };
+        match result {
+            Ok(Err(error)) => tracing::error!("Retired capture task failed: {error:#}"),
+            Err(error) if !error.is_cancelled() => {
+                tracing::error!("Retired capture task panicked: {error}")
+            }
+            _ => {}
+        }
+        true
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::Duration;
+    #[tokio::test]
+    async fn t814_owned_task_keeps_native_capacity_until_real_completion() {
+        let pool = Pool::new(1).unwrap();
+        let admission = pool.reserve().unwrap();
+        let (start, entered) = tokio::sync::oneshot::channel();
+        let (release, hold) = std::sync::mpsc::channel();
+        let native = Task::owned(
+            admission,
+            tokio::task::spawn_blocking(move || {
+                start.send(()).unwrap();
+                hold.recv().unwrap();
+                Ok(())
+            }),
+        );
+        let completed = native.completion();
+        entered.await.unwrap();
+        drop(native);
+        assert!(!completed.is_complete());
+        assert!(pool.reserve().is_err());
+        release.send(()).unwrap();
+        tokio::time::timeout(Duration::from_secs(2), async {
+            while !completed.is_complete() {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .unwrap();
+        assert!(pool.reserve().is_ok());
+    }
+    #[tokio::test]
+    async fn t814_owned_task_observes_success_errors_and_panics() {
+        let good = Task::spawn(async { Ok(()) }).unwrap();
+        let ticket = good.completion();
+        good.await.unwrap().unwrap();
+        assert!(ticket.is_complete());
+        assert!(Task::spawn_blocking(|| anyhow::bail!("T814 failure"))
+            .unwrap()
+            .await
+            .unwrap()
+            .is_err());
+        for outcome in [0, 1, 2] {
+            let task = Task::spawn(async move {
+                match outcome {
+                    0 => Ok(()),
+                    1 => anyhow::bail!("T814 late error"),
+                    _ => panic!("T814 late panic"),
+                }
+            })
+            .unwrap();
+            let ticket = task.completion();
+            tokio::time::sleep(Duration::from_millis(1)).await;
+            drop(task);
+            tokio::time::timeout(Duration::from_secs(2), async {
+                while !ticket.is_complete() {
+                    tokio::time::sleep(Duration::from_millis(1)).await;
+                }
+            })
+            .await
+            .unwrap();
+        }
+        let mut task = Task::spawn(std::future::pending()).unwrap();
+        task.abort();
+        assert!((&mut task).await.unwrap_err().is_cancelled());
+        task.abort();
+    }
+}

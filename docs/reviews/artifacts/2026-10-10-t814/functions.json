@@ -1,0 +1,3768 @@
+{
+  "sources": {
+    "common/src/commands.rs": "87d8e2082b01f16c3ce2257b826ef93dc1ae4e3a5233460e69a8fc61f5c32e4d",
+    "common/src/commands/owned.rs": "4c5fe7cfcf20035879f98581155fec17ebd8232653042a759afa7a8fa42e5dbd",
+    "common/src/commands/tests.rs": "99a4b1869e4c3eef1dac604ec9ed1322c638eebbec93201e35584cc58da05ad3",
+    "host/src/audio.rs": "ca4eb5925794d557927895c7f7ca125c7e5c68d0a2af170d299dda673c68c6a8",
+    "host/src/audio/process.rs": "94602acfa099d5937561d3e92fe02fcbc5c3d952c41ba929bcc56463758ebb8d",
+    "host/src/audio/tests.rs": "0e2b63811912ab182672c18ae1f0598c7883db8f335b889e269022700c296907",
+    "host/src/camera.rs": "1e82536d210fe4671fa42e2669302bea374cb93356d60111bbec70ad99de2699",
+    "host/src/camera/decoder.rs": "2cccf4804c29e81c44157de3f35c05faf5b2a0cb1706e30bcb97930123ceaff9",
+    "host/src/camera/outputs.rs": "fa5744339106e3281f0c3153759e47bffbccbefab0fd12d57a7ba17d79a30b31",
+    "host/src/camera/tests.rs": "d93a2182396d6e118a2c320e1d8d4bbb04d87919888758368dceddf5f948acda",
+    "host/src/capture.rs": "e4818b8c015d7eae0ebd45dd80074cc8d2e8b98df5f2a087d1a9d13a9c1add75",
+    "host/src/capture/coverage_tests.rs": "b7b94e85b496693bcb9a91b2e1015e68674d27d26aa634649acd5ed20daee868",
+    "host/src/capture/encoding.rs": "79aa5f299bc7c9a7e333df9a9aa88abfd5e2aa75f8340216f22f9b540f5bba46",
+    "host/src/capture/fifo.rs": "104f32931d9bd6a6e7452c558478ad899190b9ef95dd5d59752b958169fc6a4d",
+    "host/src/capture/gpu.rs": "162818c9d676523c1ed48646fb2cde20c64fb145938600dee7d79bcd9f250c10",
+    "host/src/capture/gpu_tests.rs": "1aea328c99cf10e6fccc8cdb8c8d6b5610b824d99251489e5f9e5f17d8fd15d7",
+    "host/src/capture/helper.rs": "778163eb91b07b35c77574994e0925deb246b36cdaf358584a38c22b5363644f",
+    "host/src/capture/ownership_tests.rs": "be35b4c16b66b336e2043df9304598c22e313c3a388488e6342c6ca01ccf00ca",
+    "host/src/capture/process.rs": "0054f345349ba144cf1eba3b0691b007f492f4adcf9c94eb2351c1d1521dfb96",
+    "host/src/capture/tests.rs": "5fecae8cee160f3dff72a1c3f5087dcdaea6cdc836ab297b5df4a5af81ab3824",
+    "host/src/control_workers.rs": "267ed49145653792ef122fab2d6644ebb8f9df3e1af70454bf0e03b16290a27a",
+    "host/src/persistence.rs": "e0c37c719478d54345b8927b65cd6f8d18dcde6d8cabf33c76078929c177f3cd",
+    "host/src/session_core.rs": "994c1eebb58d971b72362132d8c50748ef2e3daf6928282002e4e7a333f00915",
+    "host/src/session_state.rs": "5c3715721140d1fc965817e1e83505608191cf8d1d517f78452cd7dbf29cddbd",
+    "host/src/session_supervision.rs": "d2912a3f537889d266bfb27e6c06d42f0a813687a1937fa1f8cbadc2efe0db73",
+    "host/tests/session_failure.rs": "37fde53979047255ea1d2c6af6da219ca99ebfa302259dcef814f3af1672ce2c",
+    "common/src/commands/retirement.rs": "0c288f5d1de425c02eb79f69daf8fc24285038d6a5cb6afe7aa036361f81576d",
+    "common/src/retirement.rs": "044a86b52213f715f602051365a0c9901a9f692780eefdb6da26ba8f3f60d575",
+    "common/src/retirement_limits.rs": "a20e1d8485ab2173f420ef19bccc541be5252de0e9cfb31a31dcfe1982a989f3",
+    "common/src/retirement_work.rs": "08e8b9f74d6779929e751e016389142edea379f4049c122d5ddd2bd63065e5c4",
+    "host/src/owned_task.rs": "f11dd326e735c7654b10aa7bfeb493fe2943bfe37a378834d333e74d5502f22f",
+    "host/src/persistence/retirement_tests.rs": "0158784e6f2e137450dc32675ec911f33f6afe2a6623f44b2279a52e940b49e2",
+    "host/tests/shutdown_deadline.rs": "4593fe64f1f29d16471ad9c0806f519f9278b6e470011519e88c8ea7bb86af79"
+  },
+  "functions": [
+    {
+      "file": "common/src/commands.rs",
+      "name": "spawn_reaped",
+      "line": 16,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "daemon_command_timeout",
+      "line": 35,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_bounded",
+      "line": 44,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "new",
+      "line": 56,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "finish",
+      "line": 62,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "timed_out",
+      "line": 76,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "prepare_group",
+      "line": 83,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "terminate_group",
+      "line": 100,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "retire_sync",
+      "line": 117,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "reap_reserved",
+      "line": 126,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_timeout",
+      "line": 145,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_bounded",
+      "line": 182,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_timeout",
+      "line": 197,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_input_timeout",
+      "line": 201,
+      "language": "rust",
+      "covered": 27,
+      "total": 28,
+      "percent": 96.42857142857143,
+      "passes": true,
+      "missing": [
+        229
+      ]
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "spawn",
+      "line": 32,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "id",
+      "line": 54,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "take_stdin",
+      "line": 57,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "take_stdout",
+      "line": 60,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "keep_alive",
+      "line": 64,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "completion",
+      "line": 67,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "finish",
+      "line": 72,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "signal",
+      "line": 77,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "retire",
+      "line": 86,
+      "language": "rust",
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "deref",
+      "line": 121,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "deref_mut",
+      "line": 126,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "drop",
+      "line": 131,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run",
+      "line": 19,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "executable",
+      "line": 39,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "helper",
+      "line": 43,
+      "language": "rust",
+      "covered": 9,
+      "total": 11,
+      "percent": 81.81818181818181,
+      "passes": true,
+      "missing": [
+        51,
+        52
+      ]
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "invited",
+      "line": 55,
+      "language": "rust",
+      "covered": 46,
+      "total": 48,
+      "percent": 95.83333333333333,
+      "passes": true,
+      "missing": [
+        87,
+        101
+      ]
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "invite",
+      "line": 114,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "microphone",
+      "line": 133,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "speakers_with_clock",
+      "line": 156,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run_cli",
+      "line": 179,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/process.rs",
+      "name": "spawn_with_clock",
+      "line": 12,
+      "language": "rust",
+      "covered": 35,
+      "total": 37,
+      "percent": 94.5945945945946,
+      "passes": true,
+      "missing": [
+        45,
+        50
+      ]
+    },
+    {
+      "file": "host/src/audio/process.rs",
+      "name": "retire",
+      "line": 53,
+      "language": "rust",
+      "covered": 6,
+      "total": 7,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [
+        56
+      ]
+    },
+    {
+      "file": "host/src/audio/process.rs",
+      "name": "ready",
+      "line": 61,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "run",
+      "line": 22,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "run_controlled",
+      "line": 39,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "run_native",
+      "line": 55,
+      "language": "rust",
+      "covered": 27,
+      "total": 28,
+      "percent": 96.42857142857143,
+      "passes": true,
+      "missing": [
+        80
+      ]
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "executable",
+      "line": 86,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "serve",
+      "line": 91,
+      "language": "rust",
+      "covered": 55,
+      "total": 57,
+      "percent": 96.49122807017544,
+      "passes": true,
+      "missing": [
+        143,
+        144
+      ]
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "invited",
+      "line": 162,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "sessions",
+      "line": 181,
+      "language": "rust",
+      "covered": 11,
+      "total": 13,
+      "percent": 84.61538461538461,
+      "passes": true,
+      "missing": [
+        193,
+        195
+      ]
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "frame_status",
+      "line": 197,
+      "language": "rust",
+      "covered": 32,
+      "total": 33,
+      "percent": 96.96969696969697,
+      "passes": true,
+      "missing": [
+        235
+      ]
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "filters",
+      "line": 14,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "command",
+      "line": 27,
+      "language": "rust",
+      "covered": 43,
+      "total": 43,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "connection",
+      "line": 73,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "transfer",
+      "line": 103,
+      "language": "rust",
+      "covered": 42,
+      "total": 42,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "name": "open_device",
+      "line": 23,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "name": "blank",
+      "line": 57,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "name": "producer",
+      "line": 64,
+      "language": "rust",
+      "covered": 34,
+      "total": 34,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "name": "feed",
+      "line": 99,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "name": "write_frames",
+      "line": 111,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "name": "current_frame",
+      "line": 135,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "name": "retire",
+      "line": 142,
+      "language": "rust",
+      "covered": 8,
+      "total": 9,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        147
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "new",
+      "line": 51,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "start_helper",
+      "line": 66,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "active_mode",
+      "line": 69,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "start_session_encoder",
+      "line": 72,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "card_rx",
+      "line": 93,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "latency_tracker",
+      "line": 99,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "idr_request_flag",
+      "line": 106,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "codec_config",
+      "line": 110,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "while_active",
+      "line": 114,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "while_settings_current",
+      "line": 137,
+      "language": "rust",
+      "covered": 23,
+      "total": 24,
+      "percent": 95.83333333333333,
+      "passes": true,
+      "missing": [
+        157
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "stream_frames",
+      "line": 168,
+      "language": "rust",
+      "covered": 38,
+      "total": 38,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "helper_settings_changed",
+      "line": 210,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "stream_settings_changed",
+      "line": 223,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "apply_stream_settings",
+      "line": 233,
+      "language": "rust",
+      "covered": 29,
+      "total": 32,
+      "percent": 90.625,
+      "passes": true,
+      "missing": [
+        241,
+        242,
+        243
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "idle_until_screen_change",
+      "line": 279,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "ensure_capture_helper",
+      "line": 297,
+      "language": "rust",
+      "covered": 20,
+      "total": 21,
+      "percent": 95.23809523809524,
+      "passes": true,
+      "missing": [
+        310
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "prepare_capture_pipeline",
+      "line": 330,
+      "language": "rust",
+      "covered": 25,
+      "total": 26,
+      "percent": 96.15384615384616,
+      "passes": true,
+      "missing": [
+        351
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "ensure_session_encoder",
+      "line": 380,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "run_encoder_session",
+      "line": 409,
+      "language": "rust",
+      "covered": 95,
+      "total": 101,
+      "percent": 94.05940594059406,
+      "passes": true,
+      "missing": [
+        457,
+        459,
+        508,
+        509,
+        510,
+        513
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "finish_encoder_session",
+      "line": 565,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "stop",
+      "line": 593,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "shutdown",
+      "line": 604,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "stopped",
+      "line": 627,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "pause",
+      "line": 634,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "back_off",
+      "line": 643,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "explain_evdi_failure",
+      "line": 648,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "explain_evdi_failure_with",
+      "line": 652,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "adjust_backoff",
+      "line": 661,
+      "language": "rust",
+      "covered": 6,
+      "total": 7,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [
+        663
+      ]
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "keep_helper",
+      "line": 679,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "crashed",
+      "line": 682,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture.rs",
+      "name": "drop",
+      "line": 688,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "is_running",
+      "line": 29,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "start",
+      "line": 34,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "start",
+      "line": 48,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "start_with",
+      "line": 58,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "spawn_session",
+      "line": 78,
+      "language": "rust",
+      "covered": 37,
+      "total": 39,
+      "percent": 94.87179487179488,
+      "passes": true,
+      "missing": [
+        101,
+        119
+      ]
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "spawn_session",
+      "line": 124,
+      "language": "rust",
+      "covered": 43,
+      "total": 44,
+      "percent": 97.72727272727273,
+      "passes": true,
+      "missing": [
+        138
+      ]
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "stop",
+      "line": 173,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "shutdown",
+      "line": 182,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "abort",
+      "line": 199,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "finish",
+      "line": 205,
+      "language": "rust",
+      "covered": 17,
+      "total": 19,
+      "percent": 89.47368421052632,
+      "passes": true,
+      "missing": [
+        220,
+        221
+      ]
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "drop",
+      "line": 236,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "from_reset_line",
+      "line": 13,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "at",
+      "line": 22,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "from_metadata",
+      "line": 27,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "matches",
+      "line": 35,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "rotate",
+      "line": 51,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "create",
+      "line": 60,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "replace_retired",
+      "line": 77,
+      "language": "rust",
+      "covered": 18,
+      "total": 19,
+      "percent": 94.73684210526316,
+      "passes": true,
+      "missing": [
+        95
+      ]
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "name": "drop",
+      "line": 101,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "native_target",
+      "line": 14,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "default",
+      "line": 22,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "from_environment",
+      "line": 33,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "try_start",
+      "line": 42,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "try_start_using",
+      "line": 52,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "start_with",
+      "line": 79,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "encoder_finished",
+      "line": 94,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "stopped",
+      "line": 104,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "supported_connector",
+      "line": 109,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "name": "command",
+      "line": 136,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "evdi_setup_problem",
+      "line": 17,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "evdi_setup_problem_in",
+      "line": 24,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "new",
+      "line": 85,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "fifo_reset_pending",
+      "line": 106,
+      "language": "rust",
+      "covered": 4,
+      "total": 5,
+      "percent": 80.0,
+      "passes": true,
+      "missing": [
+        109
+      ]
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "recover_fifo",
+      "line": 112,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "rotate_fifo",
+      "line": 121,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "is_running",
+      "line": 127,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "wait",
+      "line": 130,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "abort_stdout",
+      "line": 136,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "stop",
+      "line": 141,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "terminate",
+      "line": 149,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "active_mode",
+      "line": 161,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        165
+      ]
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "wait_stream_size",
+      "line": 175,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        185
+      ]
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "start",
+      "line": 193,
+      "language": "rust",
+      "covered": 41,
+      "total": 42,
+      "percent": 97.61904761904762,
+      "passes": true,
+      "missing": [
+        229
+      ]
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "attach_raw_socket",
+      "line": 240,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "command",
+      "line": 250,
+      "language": "rust",
+      "covered": 38,
+      "total": 39,
+      "percent": 97.43589743589743,
+      "passes": true,
+      "missing": [
+        264
+      ]
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "await_helper_card",
+      "line": 299,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "drain_helper_stdout",
+      "line": 321,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        330
+      ]
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "publish_helper_line",
+      "line": 340,
+      "language": "rust",
+      "covered": 33,
+      "total": 33,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "name": "ensure_fifo",
+      "line": 384,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/process.rs",
+      "name": "terminate",
+      "line": 10,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        20
+      ]
+    },
+    {
+      "file": "host/src/capture/process.rs",
+      "name": "ensure_retired",
+      "line": 24,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/process.rs",
+      "name": "retire_orphan_capture",
+      "line": 34,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "new",
+      "line": 10,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "active",
+      "line": 14,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "shared",
+      "line": 17,
+      "language": "rust",
+      "covered": 10,
+      "total": 12,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        21,
+        23
+      ]
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "validate_capacity",
+      "line": 32,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "parse_capacity",
+      "line": 41,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "new",
+      "line": 54,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "poll_complete",
+      "line": 62,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "spawn",
+      "line": 82,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "completion",
+      "line": 93,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "drop",
+      "line": 98,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "update",
+      "line": 23,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "new",
+      "line": 51,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "with_pool",
+      "line": 54,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "writer",
+      "line": 73,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "shutdown",
+      "line": 77,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "cancel",
+      "line": 93,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "drop",
+      "line": 102,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "name": "run",
+      "line": 107,
+      "language": "rust",
+      "covered": 14,
+      "total": 15,
+      "percent": 93.33333333333333,
+      "passes": true,
+      "missing": [
+        122
+      ]
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "input_config",
+      "line": 33,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "prepare",
+      "line": 50,
+      "language": "rust",
+      "covered": 42,
+      "total": 42,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "start",
+      "line": 111,
+      "language": "rust",
+      "covered": 44,
+      "total": 44,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "from_workers",
+      "line": 173,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "stop",
+      "line": 202,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "drop",
+      "line": 210,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "forward_shutdown",
+      "line": 225,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "start_servers",
+      "line": 240,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "bind",
+      "line": 255,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "start",
+      "line": 265,
+      "language": "rust",
+      "covered": 13,
+      "total": 14,
+      "percent": 92.85714285714286,
+      "passes": true,
+      "missing": [
+        273
+      ]
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "spawn_server",
+      "line": 281,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "spawn_display_gate",
+      "line": 294,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "poll",
+      "line": 29,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "drop",
+      "line": 36,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "reserve",
+      "line": 52,
+      "language": "rust",
+      "covered": 14,
+      "total": 16,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        59,
+        69
+      ]
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "new",
+      "line": 73,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "completion",
+      "line": 88,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "first",
+      "line": 91,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "abort",
+      "line": 98,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "drain",
+      "line": 105,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "retire",
+      "line": 110,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "drop",
+      "line": 122,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "poll_complete",
+      "line": 138,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "publish_cleanup",
+      "line": 151,
+      "language": "rust",
+      "covered": 18,
+      "total": 20,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        162,
+        170
+      ]
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "publish_retirement",
+      "line": 172,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "failure",
+      "line": 193,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        195
+      ]
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "name": "run",
+      "line": 206,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/retirement.rs",
+      "name": "reserve",
+      "line": 7,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        14
+      ]
+    },
+    {
+      "file": "common/src/commands/retirement.rs",
+      "name": "poll_complete",
+      "line": 22,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/retirement.rs",
+      "name": "poll_complete",
+      "line": 32,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "is_complete",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "new",
+      "line": 34,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "capacity",
+      "line": 51,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "active",
+      "line": 54,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "reserve",
+      "line": 57,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "completion",
+      "line": 81,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "retain",
+      "line": 84,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "drop",
+      "line": 100,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "poll",
+      "line": 111,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "reap",
+      "line": 132,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "name": "reap_ready",
+      "line": 150,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_limits.rs",
+      "name": "configured",
+      "line": 3,
+      "language": "rust",
+      "covered": 5,
+      "total": 6,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        7
+      ]
+    },
+    {
+      "file": "common/src/retirement_limits.rs",
+      "name": "parse",
+      "line": 10,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_limits.rs",
+      "name": "reap_budget",
+      "line": 22,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "new",
+      "line": 22,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "start",
+      "line": 32,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "poll_complete",
+      "line": 54,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "reserve",
+      "line": 19,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        26
+      ]
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "owned",
+      "line": 32,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "spawn",
+      "line": 39,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "spawn_blocking",
+      "line": 43,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "abort",
+      "line": 47,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "completion",
+      "line": 52,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "poll",
+      "line": 58,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "drop",
+      "line": 68,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "name": "poll_complete",
+      "line": 77,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        82
+      ]
+    }
+  ],
+  "complexity": [
+    {
+      "file": "common/src/commands.rs",
+      "line": 16,
+      "name": "spawn_reaped",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 35,
+      "name": "daemon_command_timeout",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 44,
+      "name": "output_bounded",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 56,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 62,
+      "name": "finish",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 76,
+      "name": "timed_out",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 83,
+      "name": "prepare_group",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 100,
+      "name": "terminate_group",
+      "score": 3
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 117,
+      "name": "retire_sync",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 126,
+      "name": "reap_reserved",
+      "score": 4
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 145,
+      "name": "output_timeout",
+      "score": 6
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 182,
+      "name": "output_bounded",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 197,
+      "name": "output_timeout",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 201,
+      "name": "output_input_timeout",
+      "score": 6
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 32,
+      "name": "spawn",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 54,
+      "name": "id",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 57,
+      "name": "take_stdin",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 60,
+      "name": "take_stdout",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 64,
+      "name": "keep_alive",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 67,
+      "name": "completion",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 72,
+      "name": "finish",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 77,
+      "name": "signal",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 86,
+      "name": "retire",
+      "score": 6
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 121,
+      "name": "deref",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 126,
+      "name": "deref_mut",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 131,
+      "name": "drop",
+      "score": 3
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 19,
+      "name": "run",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 39,
+      "name": "executable",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 43,
+      "name": "helper",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 55,
+      "name": "invited",
+      "score": 3
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 114,
+      "name": "invite",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 133,
+      "name": "microphone",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 156,
+      "name": "speakers_with_clock",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 179,
+      "name": "run_cli",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio/process.rs",
+      "line": 12,
+      "name": "spawn_with_clock",
+      "score": 6
+    },
+    {
+      "file": "host/src/audio/process.rs",
+      "line": 53,
+      "name": "retire",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio/process.rs",
+      "line": 61,
+      "name": "ready",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 22,
+      "name": "run",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 39,
+      "name": "run_controlled",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 55,
+      "name": "run_native",
+      "score": 2
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 86,
+      "name": "executable",
+      "score": 2
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 91,
+      "name": "serve",
+      "score": 5
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 162,
+      "name": "invited",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 181,
+      "name": "sessions",
+      "score": 3
+    },
+    {
+      "file": "host/src/camera.rs",
+      "line": 197,
+      "name": "frame_status",
+      "score": 5
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 14,
+      "name": "filters",
+      "score": 6
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 27,
+      "name": "command",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 73,
+      "name": "connection",
+      "score": 3
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 103,
+      "name": "transfer",
+      "score": 3
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "line": 23,
+      "name": "open_device",
+      "score": 2
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "line": 57,
+      "name": "blank",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "line": 64,
+      "name": "producer",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "line": 99,
+      "name": "feed",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "line": 111,
+      "name": "write_frames",
+      "score": 2
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "line": 135,
+      "name": "current_frame",
+      "score": 3
+    },
+    {
+      "file": "host/src/camera/outputs.rs",
+      "line": 142,
+      "name": "retire",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 51,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 66,
+      "name": "start_helper",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 69,
+      "name": "active_mode",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 72,
+      "name": "start_session_encoder",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 93,
+      "name": "card_rx",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 99,
+      "name": "latency_tracker",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 106,
+      "name": "idr_request_flag",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 110,
+      "name": "codec_config",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 114,
+      "name": "while_active",
+      "score": 6
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 137,
+      "name": "while_settings_current",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 168,
+      "name": "stream_frames",
+      "score": 7
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 210,
+      "name": "helper_settings_changed",
+      "score": 7
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 223,
+      "name": "stream_settings_changed",
+      "score": 7
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 233,
+      "name": "apply_stream_settings",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 279,
+      "name": "idle_until_screen_change",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 297,
+      "name": "ensure_capture_helper",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 330,
+      "name": "prepare_capture_pipeline",
+      "score": 5
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 380,
+      "name": "ensure_session_encoder",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 409,
+      "name": "run_encoder_session",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 565,
+      "name": "finish_encoder_session",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 593,
+      "name": "stop",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 604,
+      "name": "shutdown",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 627,
+      "name": "stopped",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 634,
+      "name": "pause",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 643,
+      "name": "back_off",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 648,
+      "name": "explain_evdi_failure",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 652,
+      "name": "explain_evdi_failure_with",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 661,
+      "name": "adjust_backoff",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 679,
+      "name": "keep_helper",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 682,
+      "name": "crashed",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture.rs",
+      "line": 688,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 29,
+      "name": "is_running",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 34,
+      "name": "start",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 48,
+      "name": "start",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 58,
+      "name": "start_with",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 78,
+      "name": "spawn_session",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 124,
+      "name": "spawn_session",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 173,
+      "name": "stop",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 182,
+      "name": "shutdown",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 199,
+      "name": "abort",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 205,
+      "name": "finish",
+      "score": 5
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 236,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 13,
+      "name": "from_reset_line",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 22,
+      "name": "at",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 27,
+      "name": "from_metadata",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 35,
+      "name": "matches",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 51,
+      "name": "rotate",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 60,
+      "name": "create",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 77,
+      "name": "replace_retired",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture/fifo.rs",
+      "line": 101,
+      "name": "drop",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 14,
+      "name": "native_target",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 22,
+      "name": "default",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 33,
+      "name": "from_environment",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 42,
+      "name": "try_start",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 52,
+      "name": "try_start_using",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 79,
+      "name": "start_with",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 94,
+      "name": "encoder_finished",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 104,
+      "name": "stopped",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 109,
+      "name": "supported_connector",
+      "score": 5
+    },
+    {
+      "file": "host/src/capture/gpu.rs",
+      "line": 136,
+      "name": "command",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 17,
+      "name": "evdi_setup_problem",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 24,
+      "name": "evdi_setup_problem_in",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 85,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 106,
+      "name": "fifo_reset_pending",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 112,
+      "name": "recover_fifo",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 121,
+      "name": "rotate_fifo",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 127,
+      "name": "is_running",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 130,
+      "name": "wait",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 136,
+      "name": "abort_stdout",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 141,
+      "name": "stop",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 149,
+      "name": "terminate",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 161,
+      "name": "active_mode",
+      "score": 7
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 175,
+      "name": "wait_stream_size",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 193,
+      "name": "start",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 240,
+      "name": "attach_raw_socket",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 250,
+      "name": "command",
+      "score": 8
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 299,
+      "name": "await_helper_card",
+      "score": 6
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 321,
+      "name": "drain_helper_stdout",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 340,
+      "name": "publish_helper_line",
+      "score": 8
+    },
+    {
+      "file": "host/src/capture/helper.rs",
+      "line": 384,
+      "name": "ensure_fifo",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/process.rs",
+      "line": 10,
+      "name": "terminate",
+      "score": 5
+    },
+    {
+      "file": "host/src/capture/process.rs",
+      "line": 24,
+      "name": "ensure_retired",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/process.rs",
+      "line": 34,
+      "name": "retire_orphan_capture",
+      "score": 3
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 10,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 14,
+      "name": "active",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 17,
+      "name": "shared",
+      "score": 6
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 32,
+      "name": "validate_capacity",
+      "score": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 41,
+      "name": "parse_capacity",
+      "score": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 54,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 62,
+      "name": "poll_complete",
+      "score": 4
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 82,
+      "name": "spawn",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 93,
+      "name": "completion",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 98,
+      "name": "drop",
+      "score": 2
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 23,
+      "name": "update",
+      "score": 2
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 51,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 54,
+      "name": "with_pool",
+      "score": 2
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 73,
+      "name": "writer",
+      "score": 1
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 77,
+      "name": "shutdown",
+      "score": 3
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 93,
+      "name": "cancel",
+      "score": 1
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 102,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "host/src/persistence.rs",
+      "line": 107,
+      "name": "run",
+      "score": 7
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 33,
+      "name": "input_config",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 50,
+      "name": "prepare",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 111,
+      "name": "start",
+      "score": 4
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 173,
+      "name": "from_workers",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 202,
+      "name": "stop",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 210,
+      "name": "drop",
+      "score": 3
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 225,
+      "name": "forward_shutdown",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 240,
+      "name": "start_servers",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 255,
+      "name": "bind",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 265,
+      "name": "start",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 281,
+      "name": "spawn_server",
+      "score": 2
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "line": 294,
+      "name": "spawn_display_gate",
+      "score": 4
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 29,
+      "name": "poll",
+      "score": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 36,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 52,
+      "name": "reserve",
+      "score": 3
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 73,
+      "name": "new",
+      "score": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 88,
+      "name": "completion",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 91,
+      "name": "first",
+      "score": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 98,
+      "name": "abort",
+      "score": 4
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 105,
+      "name": "drain",
+      "score": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 110,
+      "name": "retire",
+      "score": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 122,
+      "name": "drop",
+      "score": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 138,
+      "name": "poll_complete",
+      "score": 3
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 151,
+      "name": "publish_cleanup",
+      "score": 8
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 172,
+      "name": "publish_retirement",
+      "score": 5
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 193,
+      "name": "failure",
+      "score": 6
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 206,
+      "name": "run",
+      "score": 3
+    },
+    {
+      "file": "common/src/commands/retirement.rs",
+      "line": 7,
+      "name": "reserve",
+      "score": 3
+    },
+    {
+      "file": "common/src/commands/retirement.rs",
+      "line": 22,
+      "name": "poll_complete",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/retirement.rs",
+      "line": 32,
+      "name": "poll_complete",
+      "score": 4
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 21,
+      "name": "is_complete",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 34,
+      "name": "new",
+      "score": 3
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 51,
+      "name": "capacity",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 54,
+      "name": "active",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 57,
+      "name": "reserve",
+      "score": 3
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 81,
+      "name": "completion",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 84,
+      "name": "retain",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 100,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 111,
+      "name": "poll",
+      "score": 6
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 132,
+      "name": "reap",
+      "score": 6
+    },
+    {
+      "file": "common/src/retirement.rs",
+      "line": 150,
+      "name": "reap_ready",
+      "score": 3
+    },
+    {
+      "file": "common/src/retirement_limits.rs",
+      "line": 3,
+      "name": "configured",
+      "score": 4
+    },
+    {
+      "file": "common/src/retirement_limits.rs",
+      "line": 10,
+      "name": "parse",
+      "score": 4
+    },
+    {
+      "file": "common/src/retirement_limits.rs",
+      "line": 22,
+      "name": "reap_budget",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 22,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 32,
+      "name": "start",
+      "score": 5
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 54,
+      "name": "poll_complete",
+      "score": 1
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 19,
+      "name": "reserve",
+      "score": 3
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 32,
+      "name": "owned",
+      "score": 1
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 39,
+      "name": "spawn",
+      "score": 1
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 43,
+      "name": "spawn_blocking",
+      "score": 1
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 47,
+      "name": "abort",
+      "score": 2
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 52,
+      "name": "completion",
+      "score": 1
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 58,
+      "name": "poll",
+      "score": 2
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 68,
+      "name": "drop",
+      "score": 2
+    },
+    {
+      "file": "host/src/owned_task.rs",
+      "line": 77,
+      "name": "poll_complete",
+      "score": 4
+    }
+  ],
+  "scope": "Changed Linux production modules, default plus optional encoder/audio. Windows native branches remain T737. Entry/module export files only change test wiring or exports.",
+  "collection": "Source bytes remained unchanged during production counter collection. A new permanent stop test was added to ownership_tests.rs afterward and run separately with cumulative counters; no production source changed.",
+  "validation": {
+    "default": {
+      "passed": 954,
+      "ignored_existing": 7
+    },
+    "added_stop_regression": 1,
+    "sdk_optional_capture": 38,
+    "sdk_audio_unit": 10,
+    "host_isolated_pipewire_acceptance": 2,
+    "common_no_default": 128,
+    "architecture": 4,
+    "sdk_native_audio": "Cannot execute there: pipewire executable missing; same native-audio acceptance passed using installed host tools and SDK-built binaries."
+  }
+}
