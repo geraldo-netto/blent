@@ -6,6 +6,8 @@ fn app(store: ConfigStore) -> App {
     App {
         scheduling_status: "This process: High priority unavailable; using OS settings".into(),
         camera: camera_settings::Panel::default(),
+        microphone: audio_settings::Panel::default(),
+        speakers: audio_settings::Panel::default(),
         _status_worker: None,
         store,
         save: None,
