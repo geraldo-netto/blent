@@ -149,10 +149,27 @@ pub struct Profile {
     workers: u32,
 }
 
+fn validate_numbers(fps: u32, bitrate_kbps: u32, quality: u32) -> Result<()> {
+    anyhow::ensure!((1..=crate::MAX_FPS).contains(&fps), "Invalid encoder FPS");
+    anyhow::ensure!(
+        (1..=crate::MAX_BITRATE_KBPS).contains(&bitrate_kbps),
+        "Invalid encoder bitrate"
+    );
+    anyhow::ensure!(
+        (crate::MIN_QUALITY..=crate::MAX_QUALITY).contains(&quality),
+        "Invalid encoder quality"
+    );
+    Ok(())
+}
+
 impl Profile {
+    /// Low-level profiles accept positive rates up to the shared configuration
+    /// ceilings, including small replay bitrates below the UI minimum. Quality
+    /// uses the shared supported range. Invalid inputs are rejected, not clamped.
     pub fn new(name: &str, fps: u32, bitrate_kbps: u32, quality: u32) -> Result<Self> {
         let encoder = find(name).with_context(|| format!("Unknown encoder: {name}"))?;
-        let gop = fps.max(1);
+        validate_numbers(fps, bitrate_kbps, quality)?;
+        let gop = fps;
         let buffer_kbits = match encoder.backend {
             Backend::Nvenc => Some((bitrate_kbps / gop).max(200)),
             Backend::X264 => Some((bitrate_kbps * 2 / gop).max(200)),
@@ -317,6 +334,68 @@ mod tests {
     use super::*;
 
     #[test]
+    fn t839_profile_rejects_bitrate_overflow_before_arithmetic() {
+        assert!(Profile::new("libx264", 60, u32::MAX, 20).is_err());
+    }
+
+    #[test]
+    fn t839_numeric_boundaries_match_low_level_profile_contract() {
+        // Low-level replay profiles may use less than the UI bitrate minimum.
+        let rates = [
+            0,
+            1,
+            200,
+            500,
+            crate::MIN_BITRATE_KBPS,
+            crate::MAX_BITRATE_KBPS,
+            crate::MAX_BITRATE_KBPS + 1,
+            u32::MAX / 2,
+            u32::MAX / 2 + 1,
+            u32::MAX,
+        ];
+        let frames = [
+            0,
+            1,
+            crate::MIN_FPS,
+            crate::MAX_FPS,
+            crate::MAX_FPS + 1,
+            u32::MAX,
+        ];
+        let qualities = [
+            0,
+            crate::MIN_QUALITY - 1,
+            crate::MIN_QUALITY,
+            crate::MAX_QUALITY,
+            crate::MAX_QUALITY + 1,
+            u32::MAX,
+        ];
+        for encoder in ENCODERS {
+            for fps in frames {
+                for bitrate in rates {
+                    for quality in qualities {
+                        let expected = (1..=crate::MAX_FPS).contains(&fps)
+                            && (1..=crate::MAX_BITRATE_KBPS).contains(&bitrate)
+                            && (crate::MIN_QUALITY..=crate::MAX_QUALITY).contains(&quality);
+                        let result = Profile::new(encoder.name, fps, bitrate, quality);
+                        assert_eq!(
+                            result.is_ok(),
+                            expected,
+                            "T839: {} fps={fps} bitrate={bitrate} quality={quality}",
+                            encoder.name
+                        );
+                        if let Ok(profile) = result {
+                            assert_eq!(profile.gop, fps);
+                            assert_eq!(profile.max_rate_bps, u64::from(bitrate) * 1000);
+                            assert!(!profile.cli_options(false).is_empty());
+                        }
+                    }
+                }
+            }
+        }
+        assert!(Profile::new("unknown", 60, 20000, 18).is_err());
+    }
+
+    #[test]
     fn t787_shared_vaapi_preserves_explicit_low_latency_policy() {
         let profile = Profile::new("h264_vaapi_baseline", 60, 20000, 18).unwrap();
         let options = profile
@@ -436,9 +515,9 @@ mod tests {
                 .contains(&encoder.name);
             assert_eq!(encoder.hevc, encoder.name.starts_with("hevc"));
             assert_eq!(encoder.validate_inproc().is_ok(), inproc);
-            for fps in [0, 10, 90] {
+            for fps in [1, 10, 90] {
                 let profile = Profile::new(encoder.name, fps, 60000, 32).unwrap();
-                assert_eq!(profile.gop, fps.max(1));
+                assert_eq!(profile.gop, fps);
                 assert_eq!(profile.max_rate_bps, 60000000);
                 assert_eq!(profile.inproc_options().is_ok(), inproc);
             }

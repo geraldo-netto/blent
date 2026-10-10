@@ -1,0 +1,39 @@
+{
+  "source_sha256": "c833e8a3ae0938f362334903fc92d4707eba04ad2855caeb63a84659df330e2c",
+  "functions": [
+    {
+      "file": "common/src/encoding.rs",
+      "name": "validate_numbers",
+      "line": 152,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/encoding.rs",
+      "name": "new",
+      "line": 169,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      152,
+      "validate_numbers",
+      1
+    ],
+    [
+      169,
+      "new",
+      5
+    ]
+  ]
+}
