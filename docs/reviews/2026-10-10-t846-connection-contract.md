@@ -221,23 +221,25 @@ activation prerequisite with its own regressions and commit.
 | T849 | Explicit channel activation and replacement gate | Transport foundation |
 | T850 | Bounded typed management records and incremental parsing | Existing framing |
 | T851 | Resource transactions, leases and revocation policy | T849, T850 |
-| T852 | Durable host identity and peer trust on both sides | Existing TLS/pairing contracts |
 | T856 | Transport-independent peer identities and leased local routes | Existing attachment/media contracts |
+| T852 | Durable host identity and peer trust on both sides | Existing TLS/pairing contracts |
 | T853 | Shared host broker and authenticated local registration | T849–T852, T856 |
 | T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
-| T858 | Independent camera integration | T857 routing and consent patterns |
-| T859 | Independent microphone integration | T858 consent pattern |
-| T860 | Independent speaker integration | T859 shared audio adapter |
-| T861 | Deferred by maintainer: native helper/broker and APK packaging | Resume only on explicit request |
+| T860 | Independent speaker integration | T857 routing; establishes shared audio adapter |
+| T859 | Independent microphone integration | T860 shared audio adapter |
+| T858 | Independent camera integration | T857 routing, T859 consent/uplink patterns |
 | T862 | Integrated failure, isolation and reconnect qualification | T855–T860 |
 | T846 | Local-build debugging-off media acceptance and matched measurements | Above integration and qualification; T861 not required |
+| T861 | Deferred by maintainer: native helper/broker and APK packaging | Resume only on explicit request |
 | T863 | API 27/28 native accessory/TLS qualification | Missing suitable native device/runner |
 
 The next user-visible milestone is production display plus touch without ADB
-(T857). Camera and audio follow, then integrated fault recovery and final measured
-acceptance. Packaging T861 was deferred by the maintainer on October 10 and does
+(T857). Speakers follow to establish audio delivery without microphone permission;
+microphone then validates the shared audio uplink and consent path before camera.
+Run lifecycle/failure regressions with each feature and finish concurrent-resource
+qualification under T862 before final measured acceptance. Packaging T861 was deferred by the maintainer on October 10 and does
 not block local-build implementation or acceptance; no release packaging pass is
 claimed. API 27/28 JVM tests do not satisfy T863; its missing physical provider
 validation is explicit. No completion percentage or release date is inferred from
@@ -347,8 +349,9 @@ check the connection lease. Preserve `Attachment::Lease`, `ResourceLane`,
 `AndroidWorkerRun` and worker-death quarantine rather than admitting replacements
 on timeouts alone.
 
-Integrate display/control first, then camera, then microphone/speaker, followed
-by independent and concurrent acceptance with debugging disabled. Keep optional
+Integrate display/control first, then speakers, microphone and camera. Each item
+includes independent lifecycle and debugging-off acceptance; T862 completes
+concurrent-resource failure acceptance and T846 matched final measurements. Keep optional
 ADB selection; native backend acceptance and full feature parity remain pending.
 
 
