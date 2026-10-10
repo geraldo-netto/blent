@@ -231,7 +231,7 @@ activation prerequisite with its own regressions and commit.
 | T872 | Authenticated host resource runtime and retirement barriers (implemented) | T849–T852, T871, T873 |
 | T853 | On-demand Linux host broker and client composition (implemented) | T852, T871–T879 |
 | T881 | Android bounded framing and BLCP negotiation (implemented) | T849, T875 |
-| T882 | Android tablet resource session and leased local endpoints | T881, T849–T851 |
+| T882 | Android tablet resource-session and leased-buffer boundary (implemented) | T881, T849–T851 |
 | T854 | Isolated Android connection service and local bridges | T881, T882, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
@@ -820,3 +820,55 @@ and Android TLS adapters exchange BLCP plus management CREDIT/DATA using the new
 framing on API27/34 JVM fixtures. Production resource dispatch is T882; native
 service ownership is T854. JVM interoperability does not satisfy physical-device
 acceptance or the API27/28 native-provider gap T863.
+
+## T882 Android resource-session boundary
+
+`ConnectionTicket`, `ConnectionApproval` and `ConnectionResourceLease` are now
+independent contract values. Pairing, persisted trust and resource policy use
+those values without exposing their implementation classes in session/endpoint
+signatures. Constructing a value still supplies no authentication proof.
+
+The portable `ConnectionSession` contract is implemented by `TabletSession`.
+Its single serialized owner composes management decoding, resource policy and
+multiplexing after authenticated pairing and the completed BLCP window agreement.
+Only the trusted native adapter may supply that authenticated ticket. Offer
+publication reports a validated profile and owned credential; permission wait,
+preparation and host Commit remain distinct transitions. Media authority begins
+only after Commit admission. Declined or timed-out resources close independently;
+a late Commit installs a draining generation without granting DATA credit.
+
+Display owns video and control together. Camera, microphone and speakers have
+independent lanes. Five lazily allocated receive rings each use the agreed window;
+a contiguous consumer read borrows existing storage rather than copying it.
+Credit returns only after the exact consumer receipt completes. Outbound array
+admission transfers ownership to the session; the caller must not mutate or reuse
+an accepted array. Queue byte/message limits provide backpressure independently
+of inbound credit. Self-aliased ring pushes are rejected before any mutation.
+
+Management output has 16 bounded publication slots, with one complete record
+admitted to the mux at a time. A Revoke ACK takes effect only after every fragment
+and the actual writer completion. One replacement Offer may wait behind that
+barrier: the host can receive the ACK before the tablet's flush callback runs.
+Channel generation replacement also requires peer terminal, writer and local
+consumer retirement. Disconnect revokes authority immediately but does not free
+native loans; transport exit and each local endpoint's actual retirement remain
+separate, explicit evidence. Failed exact writer completions poison the session;
+foreign or duplicate completion receipts fail before changing ownership.
+
+Normal state-event admission stops at 28 events. Eight reserved cleanup positions
+permit Closing and Retired for every resource even if the event consumer stalls;
+the hard bound is 36. Readable notifications instead coalesce in five fixed slots
+and rotate across channels. Resource scans iterate the fixed four-slot array,
+without allocating a temporary collection per received/written frame.
+
+Capacity defaults are a 256 KiB window, 64 queued messages per lane, 64 KiB
+scheduling quantum and 120-second resource setup timeout. Supported ranges are
+4 KiB–1 MiB, 1–1024 messages, 1–65536 bytes and 1–600000 milliseconds respectively.
+Larger windows retain more bytes when consumers stall; smaller quanta increase
+scheduling/framing work. These are bounded configuration choices, not throughput
+claims. No new performance timings or physical-device acceptance are implied.
+
+Native accessory/service ownership, locally allocated listeners, process-death
+quarantine and Binder presentation remain T854. Production media adoption and
+actual debugging-off acceptance remain T855/T857–T860. The portable session alone
+does not enable the production application's ADB-free connection.

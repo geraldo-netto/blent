@@ -1,0 +1,14 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionSession.kt": "0d3606a00ae68f1fb86788e2002dab71d997c674bcc397a1ef576ec8aaadbc1d",
+  "android/app/src/main/java/com/blent/connection/TabletSession.kt": "5078468756c2ec214bfd1de908c86ef5975c62b5e198c58c25cfefb39489b332",
+  "android/app/src/main/java/com/blent/connection/ConnectionPublications.kt": "28637019fbfaa65db407f8660db9e100453e89de16a787d5fe6187169f314a9e",
+  "android/app/src/main/java/com/blent/connection/ConnectionChannels.kt": "f1cfb46b50148e668a0702a01fc59f695c157b85ad019c777ff8e7db059050bd",
+  "android/app/src/main/java/com/blent/connection/ConnectionChannelBuffers.kt": "bf5cd29620ecc0afc4347346927ff065e04037a8115bc7ac43dad6d220e31e43",
+  "android/app/src/main/java/com/blent/connection/ConnectionContracts.kt": "94068bb00498968766b52b2bb3904cd13c75985e708cfeaaf3d9fded5acc6a31",
+  "android/app/src/main/java/com/blent/connection/ConnectionMux.kt": "540d012c402b97622d665c91498b1d41192d161ad0be23d092514fd428ccc74d",
+  "android/app/src/main/java/com/blent/connection/ConnectionPairing.kt": "c249636916f27627c3fad562a1216badab585a10bbdb9d6213a5937afb48dfe8",
+  "android/app/src/main/java/com/blent/connection/ConnectionResources.kt": "7e4664019f607406acb9f89e1904bdeaea5be541e7aa0754dffc21eee5cd57db",
+  "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt": "234b1f8c5eaa003ad5d07ac965d1d723a7b6973182258ad062ac76ac79798c30",
+  "host/examples/secure_connection_fixture.rs": "360db0174bdf55f4e7caf3ef1f94f5439e1a8adb72ebf7be2b8e0ccd1dde1650",
+  "android/app/src/tlsInterop/tests/com/blent/connection/SecureConnectionInteropTest.kt": "fb8019aea136fdd468b124a76b7e3b124251faab1af785464bfd05c2d804c8af"
+}

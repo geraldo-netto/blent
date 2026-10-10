@@ -1,5 +1,6 @@
 package com.blent.connection
 
+import com.blent.connection.ConnectionResourceLease as Lease
 import com.blent.connection.ConnectionManagement.Key
 import com.blent.connection.ConnectionManagement.Outcome
 import com.blent.connection.ConnectionManagement.Resource
@@ -8,10 +9,9 @@ import com.blent.connection.ConnectionManagement.Resource
  * Reserve bounded management output before an outgoing transition; preserve FIFO
  * through cancellation. Commit/revokeWritten mean whole-record write completion.
  * Queue peer events behind those barriers. Failed writes disconnect; never undo. */
-internal class ConnectionResources(private val role: Role, private val connection: ConnectionPairing.Ticket) {
+internal class ConnectionResources(private val role: Role, private val connection: ConnectionTicket) {
     enum class Role { HOST, TABLET }
     enum class Install { ACTIVATE, DRAIN }
-    data class Lease(val connection: ConnectionPairing.Ticket, val key: Key, val owner: Long)
     private enum class Stage { OFFERED, PREPARED, COMMITTING, COMMITTED, ADMITTED }
     private class Slot(val lease: Lease, val deadline: Long) {
         var stage = Stage.OFFERED

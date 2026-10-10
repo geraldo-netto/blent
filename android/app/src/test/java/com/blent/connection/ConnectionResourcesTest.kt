@@ -4,13 +4,13 @@ import com.blent.connection.ConnectionManagement.Key
 import com.blent.connection.ConnectionManagement.Outcome
 import com.blent.connection.ConnectionManagement.Resource
 import com.blent.connection.ConnectionResources.Install
-import com.blent.connection.ConnectionResources.Lease
+import com.blent.connection.ConnectionResourceLease as Lease
 import com.blent.connection.ConnectionResources.Role
 import org.junit.Assert.*
 import org.junit.Test
 
 class ConnectionResourcesTest {
-    private fun connection(epoch: Long = 1) = ConnectionPairing.Ticket(epoch, ConnectionPeer.parse("ab".repeat(32)))
+    private fun connection(epoch: Long = 1) = ConnectionTicket(epoch, ConnectionPeer.parse("ab".repeat(32)))
     private fun pair() = ConnectionResources(Role.HOST, connection()) to ConnectionResources(Role.TABLET, connection())
     private fun rejected(work: () -> Unit) { assertThrows(Exception::class.java) { work() } }
     private fun offer(h: ConnectionResources, t: ConnectionResources, resource: Resource): Pair<Lease, Lease> {

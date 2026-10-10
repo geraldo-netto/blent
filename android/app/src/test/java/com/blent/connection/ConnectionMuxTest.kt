@@ -154,4 +154,19 @@ class ConnectionMuxTest {
         rejected { inactive.activate(2, 9) }
     }
 
+    @Test fun t882DataAdmissionTracksExactLiveGeneration() {
+        val owner = ConnectionMux(7, 9, 64, 16, 4)
+        assertFalse(owner.acceptsData(1, 9)); assertTrue(owner.acceptsData(6, 9))
+        owner.activate(1, 9); assertTrue(owner.acceptsData(1, 9))
+        for (generation in listOf(Long.MIN_VALUE, 0L, 8L, 10L, Long.MAX_VALUE)) {
+            assertFalse(owner.acceptsData(1, generation))
+        }
+        for (channel in listOf(Int.MIN_VALUE, 0, 7, Int.MAX_VALUE)) {
+            rejected { owner.acceptsData(channel, 9) }
+        }
+        owner.close(1, ConnectionWire.CLOSE); assertFalse(owner.acceptsData(1, 9))
+        assertNotNull(owner.next()); owner.finish(false)
+        assertFalse(owner.acceptsData(6, 9))
+    }
+
 }

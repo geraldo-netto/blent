@@ -68,21 +68,26 @@ class SecureConnectionInteropTest {
                 client(peer).connect(socket).use { secure ->
                     verified(secure)
                     admitted = true
-                    secure.getOutputStream().write("fixture".toByteArray()); secure.getOutputStream().flush()
-                    val reply = ByteArray(8)
-                    java.io.DataInputStream(secure.getInputStream()).readFully(reply)
-                    assertArrayEquals("accepted".toByteArray(), reply)
+                    if (mode != "session") rawExchange(secure)
                 }
             }
             if (peer != "host" || mode == "wrong-preface") assertFalse("Unapproved stream escaped authentication gate", admitted)
             if (result.isFailure) assertTrue(socket.isClosed)
             assertTrue("Rust fixture failed to retire: ${log.readText()}", process.waitFor(5, TimeUnit.SECONDS))
             if (mode == "wrong-preface") assertEquals("Fault injector must complete TLS and write bad preface", 0, process.exitValue())
+            if (mode == "session") result.getOrThrow()
             return result.isSuccess && process.exitValue() == 0
         } finally {
             if (process.isAlive) process.destroyForcibly()
             check(process.waitFor(2, TimeUnit.SECONDS)) { "Rust fixture still owns resources" }
         }
+    }
+
+    private fun rawExchange(socket: Socket) {
+        socket.getOutputStream().write("fixture".toByteArray()); socket.getOutputStream().flush()
+        val reply = ByteArray(8)
+        java.io.DataInputStream(socket.getInputStream()).readFully(reply)
+        assertArrayEquals("accepted".toByteArray(), reply)
     }
 
     private fun pin(bytes: ByteArray): ConnectionPeer {
@@ -95,7 +100,7 @@ class SecureConnectionInteropTest {
         val ticket = trust.begin(pairing, pin(fixture("host.der")), 0, 100)
         assertEquals(expected, pairing.phase)
         if (expected == ConnectionPairing.Phase.PENDING) pairing.approve(ticket, remember, 1)
-        var lease: ConnectionPairing.Lease? = null
+        var lease: ConnectionApproval? = null
         assertTrue(trial { socket ->
             val certificate = (socket as javax.net.ssl.SSLSocket).session.peerCertificates.first().encoded
             lease = trust.authenticated(pairing, ticket, pin(certificate), 2)
@@ -176,7 +181,6 @@ class SecureConnectionInteropTest {
         assertEquals(4096, negotiation.flushed(receipt, now()))
         assertEquals(4096, negotiation.selected())
         assertFalse(negotiation.nativePending())
-        framed(socket)
     }
 
     private fun framed(socket: Socket) {
@@ -239,7 +243,85 @@ class SecureConnectionInteropTest {
     }
 
     @Test @Config(sdk = [27, 34]) fun t881RealTlsWindowNegotiationMatchesHostRuntimeBeforeApplicationData() {
-        assertTrue(trial(mode = "window", verified = ::window))
+        assertTrue(trial(mode = "window") { socket -> window(socket); framed(socket) })
+    }
+
+    private fun resourceSession(socket: Socket) {
+        window(socket)
+        val certificate = (socket as javax.net.ssl.SSLSocket).session.peerCertificates.first().encoded
+        val pairing = ConnectionPairing()
+        val ticket = pairing.begin(pin(certificate), true, 0, 3000)
+        val authority = pairing.authenticated(ticket, pin(certificate), 0)
+        assertTrue(pairing.current(authority))
+        val session = TabletSession(ticket, ConnectionSessionLimits(4096, 64, 64, 3000), 15)
+        val reader = ConnectionFrameReader(3000)
+        val writer = ConnectionFrameWriter(3000)
+        val origin = System.nanoTime()
+        val clock = { TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin) }
+        var retired = 0
+        repeat(256) {
+            drainSession(socket, session, writer, clock)
+            val events = resourceEvents(session, clock())
+            retired += events.second
+            if (retired == 2) return
+            if (events.first) return@repeat
+            val frame = readFrame(socket, reader, clock)
+            session.receive(frame, clock()); reader.release(frame)
+        }
+        error("T882 resource session turn limit exceeded")
+    }
+
+    private fun drainSession(socket: Socket, session: ConnectionSession, writer: ConnectionFrameWriter, now: () -> Long) {
+        repeat(32) {
+            val frame = session.nextFrame(now()) ?: return
+            writer.begin(frame, now()); writeFrame(socket, writer, now)
+            val receipt = checkNotNull(writer.flush(now()))
+            socket.getOutputStream().flush()
+            assertSame(frame, writer.flushComplete(receipt, now()))
+            session.written(frame, now())
+        }
+        error("T882 unbounded resource output")
+    }
+
+    private fun resourceEvents(session: ConnectionSession, now: Long): Pair<Boolean, Int> {
+        var progress = false
+        var retired = 0
+        repeat(32) {
+            val event = session.nextEvent() ?: return progress to retired
+            progress = true
+            when (event) {
+                is ConnectionSessionEvent.Offered -> {
+                    assertEquals(ConnectionManagement.Resource.DISPLAY, event.lease.key.resource)
+                    assertTrue(event.lease.key.generation in 1..2)
+                    assertArrayEquals(ByteArray(32) { 7 }, event.credential.bytes())
+                    session.prepared(event.lease, now)
+                }
+                is ConnectionSessionEvent.Readable -> resourceEcho(session, event)
+                is ConnectionSessionEvent.State -> retired += resourceState(session, event)
+            }
+        }
+        error("T882 unbounded resource events")
+    }
+
+    private fun resourceState(session: ConnectionSession, event: ConnectionSessionEvent.State): Int {
+        when (event.state) {
+            ConnectionResourceState.ADMITTED -> assertTrue(session.current(event.lease))
+            ConnectionResourceState.CLOSING -> session.nativeRetired(event.lease)
+            ConnectionResourceState.RETIRED -> { assertFalse(session.current(event.lease)); return 1 }
+        }
+        return 0
+    }
+
+    private fun resourceEcho(session: ConnectionSession, event: ConnectionSessionEvent.Readable) {
+        val read = checkNotNull(session.read(event.lease, event.channel, 3))
+        val bytes = read.bytes.copyOfRange(read.offset, read.offset + read.length)
+        assertArrayEquals(byteArrayOf(event.lease.key.generation.toByte(), event.channel.toByte(), 42), bytes)
+        session.consumed(event.lease, event.channel, read)
+        assertTrue(session.offer(event.lease, event.channel, bytes))
+    }
+
+    @Test @Config(sdk = [27, 34]) fun t882RealTlsResourceAdmissionDuplexRetirementAndReplacement() {
+        assertTrue(trial(mode = "session", verified = ::resourceSession))
     }
 
 }

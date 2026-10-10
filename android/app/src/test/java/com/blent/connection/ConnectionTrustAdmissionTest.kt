@@ -42,7 +42,7 @@ class ConnectionTrustAdmissionTest {
         pairing.approve(ticket, true, 1); store.fail = true
         rejected { trust.authenticated(pairing, ticket, peer('b'), 2) }
         assertEquals(ConnectionPairing.Phase.CLOSING, pairing.phase)
-        assertFalse(pairing.current(ConnectionPairing.Lease(ticket, true)))
+        assertFalse(pairing.current(ConnectionApproval(ticket, true)))
         assertFalse(trust.trusted(peer('b'))); assertNull(store.bytes)
         rejected { trust.begin(ConnectionPairing(), peer('b'), 3, 10) }
         pairing.retired(ticket)
@@ -78,7 +78,7 @@ class ConnectionTrustAdmissionTest {
         rejected { trust.authenticated(first, a, peer('b'), 2) }
         rejected { trust.authenticated(second, b, peer('c'), 2) }
         assertEquals(ConnectionPairing.Phase.CLOSING, second.phase)
-        assertFalse(second.current(ConnectionPairing.Lease(b, false)))
+        assertFalse(second.current(ConnectionApproval(b, false)))
     }
     @Test fun t852BoundedInvalidAdmissionValuesNeverPublishTrust() {
         val trust = ConnectionTrust(Store(), peer('a'))

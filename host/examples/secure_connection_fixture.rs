@@ -63,7 +63,7 @@ async fn serve(directory: &Path, ready: &Path, mode: &str) -> Result<()> {
         return wrong_preface(socket, directory).await;
     }
     let mut stream = accept(socket, &identity, &peer).await?;
-    if mode == "window" {
+    if matches!(mode, "window" | "session") {
         let limits = blent::broker::session::Limits {
             channel_bytes: 65536,
             io_timeout: Duration::from_secs(3),
@@ -74,6 +74,9 @@ async fn serve(directory: &Path, ready: &Path, mode: &str) -> Result<()> {
             selected.channel_bytes == 4096,
             "tablet window selection mismatch"
         );
+        if mode == "session" {
+            return resource_session(stream, &peer, selected).await;
+        }
         stream = framed(stream).await?;
     }
     let mut request = [0; 7];
@@ -140,13 +143,129 @@ async fn framed<S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin>(stream:
     anyhow::bail!("fixture framing turn limit exceeded")
 }
 
+// T882 real host resource policy against the maintained Kotlin tablet session.
+async fn resource_session<S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin>(
+    stream: S,
+    peer: &PeerCertificate,
+    limits: blent::broker::session::Limits,
+) -> Result<()> {
+    use blent_config::connection::pairing::{Pairing, PeerId};
+    let fingerprint = peer
+        .fingerprint()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect();
+    let proven = PeerId::parse(fingerprint)?;
+    let mut pairing = Pairing::default();
+    let ticket = pairing.begin(proven.clone(), true, 0, 3000)?;
+    let authority = pairing.authenticated(&ticket, &proven, 0)?;
+    ensure!(pairing.current(&authority), "fixture TLS authority missing");
+    let mut session = blent::broker::session::Session::new(stream, ticket, limits)?;
+    for generation in 1..=2 {
+        resource_generation(&mut session, generation).await?;
+    }
+    ensure!(
+        session.capabilities() == Some(15),
+        "tablet capabilities mismatch"
+    );
+    Ok(())
+}
+
+async fn resource_generation<S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin>(
+    session: &mut blent::broker::session::Session<S>,
+    generation: u64,
+) -> Result<()> {
+    use blent::broker::session::{Event, State};
+    use blent_config::connection::management::{Credential, Profile, Reason, Resource};
+    let lease = session.register(
+        Resource::DisplaySession,
+        generation,
+        Credential::new([7; 32]),
+        Profile::Display,
+        0,
+        3000,
+    )?;
+    ensure!(
+        lease.key.generation == generation,
+        "replacement generation mismatch"
+    );
+    let mut received = 0;
+    for _ in 0..128 {
+        match session.next(0).await? {
+            Event::State(current, State::Admitted) => {
+                ensure!(current == lease, "wrong admitted lease");
+                session_payloads(session, &lease)?;
+            }
+            Event::Readable(key, channel) => {
+                ensure!(key == lease.key, "wrong readable generation");
+                received |= session_echo(session, &lease, channel)?;
+                if received == 3 {
+                    session.cancel(&lease, Reason::Requested)?;
+                    session.native_retired(&lease)?;
+                }
+            }
+            Event::State(current, State::Retired) => {
+                ensure!(
+                    current == lease && received == 3,
+                    "incomplete resource retirement"
+                );
+                return Ok(());
+            }
+            _ => (),
+        }
+    }
+    anyhow::bail!("fixture resource turn limit exceeded")
+}
+
+fn session_payloads<S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin>(
+    session: &mut blent::broker::session::Session<S>,
+    lease: &blent_config::connection::resources::Lease,
+) -> Result<()> {
+    use blent_config::connection::wire::Channel;
+    for channel in [Channel::Control, Channel::Display] {
+        ensure!(
+            session
+                .offer(
+                    lease,
+                    channel,
+                    vec![lease.key.generation as u8, channel as u8, 42]
+                )
+                .is_ok(),
+            "fixture resource output refused"
+        );
+    }
+    Ok(())
+}
+
+fn session_echo<S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin>(
+    session: &mut blent::broker::session::Session<S>,
+    lease: &blent_config::connection::resources::Lease,
+    channel: blent_config::connection::wire::Channel,
+) -> Result<u8> {
+    use blent_config::connection::wire::Channel;
+    ensure!(
+        matches!(channel, Channel::Control | Channel::Display),
+        "unexpected fixture lane"
+    );
+    let mut bytes = [0; 3];
+    let read = session
+        .read(lease, channel, &mut bytes)?
+        .context("missing fixture echo")?;
+    ensure!(
+        read.count == 3 && bytes == [lease.key.generation as u8, channel as u8, 42],
+        "fixture echo changed"
+    );
+    session.consumed(lease, channel, read)?;
+    Ok(1 << (channel as u8 - 1))
+}
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     let args: Vec<_> = std::env::args_os().collect();
-    ensure!(args.len() == 4, "usage: secure_connection_fixture PUBLIC_FIXTURE_DIRECTORY NEW_READY_FILE accept|wrong-preface|window");
+    ensure!(args.len() == 4, "usage: secure_connection_fixture PUBLIC_FIXTURE_DIRECTORY NEW_READY_FILE accept|wrong-preface|window|session");
     let mode = args[3].to_str().context("invalid mode")?;
     ensure!(
-        matches!(mode, "accept" | "wrong-preface" | "window"),
+        matches!(mode, "accept" | "wrong-preface" | "window" | "session"),
         "invalid fixture mode"
     );
     tokio::time::timeout(

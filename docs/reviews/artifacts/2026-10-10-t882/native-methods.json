@@ -1,0 +1,1682 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "<init>",
+    "descriptor": "(I)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "install",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Resource;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "ring",
+    "descriptor": "(I)Lcom/blent/connection/ConnectionChannelBuffers$Ring;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "push",
+    "descriptor": "(I[BII)V",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "push$default",
+    "descriptor": "(Lcom/blent/connection/ConnectionChannelBuffers;I[BIIILjava/lang/Object;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "read",
+    "descriptor": "(II)Lcom/blent/connection/ConnectionChannelRead;",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "consumed",
+    "descriptor": "(ILcom/blent/connection/ConnectionChannelRead;)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "readable",
+    "descriptor": "(I)Z",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers",
+    "name": "retire",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Resource;)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing$Phase",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResourceLease",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionManagement$Key;J)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResourceLease",
+    "name": "getConnection",
+    "descriptor": "()Lcom/blent/connection/ConnectionTicket;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResourceLease",
+    "name": "getKey",
+    "descriptor": "()Lcom/blent/connection/ConnectionManagement$Key;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResourceLease",
+    "name": "getOwner",
+    "descriptor": "()J",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Stage",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPeer",
+    "name": "<init>",
+    "descriptor": "(Ljava/lang/String;)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPeer",
+    "name": "getFingerprint",
+    "descriptor": "()Ljava/lang/String;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$State",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionResourceState;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$State",
+    "name": "getLease",
+    "descriptor": "()Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$State",
+    "name": "getState",
+    "descriptor": "()Lcom/blent/connection/ConnectionResourceState;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Role",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "<init>",
+    "descriptor": "()V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "room",
+    "descriptor": "(I)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "room$default",
+    "descriptor": "(Lcom/blent/connection/ConnectionPublications;IILjava/lang/Object;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "queue",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Message;Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "queue$default",
+    "descriptor": "(Lcom/blent/connection/ConnectionPublications;Lcom/blent/connection/ConnectionManagement$Message;Lcom/blent/connection/ConnectionResourceLease;ILjava/lang/Object;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "publish",
+    "descriptor": "(Lcom/blent/connection/ConnectionMux;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "written",
+    "descriptor": "(Lcom/blent/connection/ConnectionWire$Header;)Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications",
+    "name": "clear",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "<init>",
+    "descriptor": "(JJIII)V",
+    "covered": 11,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "activate",
+    "descriptor": "(IJ)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "offer",
+    "descriptor": "(I[B)Z",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "acceptsData",
+    "descriptor": "(IJ)Z",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "receive",
+    "descriptor": "(Lcom/blent/connection/ConnectionWire$Header;)Z",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "release",
+    "descriptor": "(II)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "close",
+    "descriptor": "(II)V",
+    "covered": 11,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "metadata",
+    "descriptor": "()Lcom/blent/connection/ConnectionWire$Header;",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "takeMetadata",
+    "descriptor": "(I)Lcom/blent/connection/ConnectionWire$Header;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "next",
+    "descriptor": "()Lcom/blent/connection/ConnectionMux$Frame;",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "finish",
+    "descriptor": "(Z)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "consumerRetired",
+    "descriptor": "(IJ)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "replaceChannel",
+    "descriptor": "(IJ)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux",
+    "name": "retired",
+    "descriptor": "(I)Z",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications$Pending",
+    "name": "<init>",
+    "descriptor": "([BLcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications$Pending",
+    "name": "getBytes",
+    "descriptor": "()[B",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications$Pending",
+    "name": "getAcknowledged",
+    "descriptor": "()Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications$Pending",
+    "name": "getRemaining",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPublications$Pending",
+    "name": "setRemaining",
+    "descriptor": "(I)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Install",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPeer$Companion",
+    "name": "parse",
+    "descriptor": "(Ljava/lang/String;)Lcom/blent/connection/ConnectionPeer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionLimits",
+    "name": "<init>",
+    "descriptor": "(IIIJ)V",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionLimits",
+    "name": "<init>",
+    "descriptor": "(IIIJILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionLimits",
+    "name": "getCapacity",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionLimits",
+    "name": "getMessages",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionLimits",
+    "name": "getQuantum",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionLimits",
+    "name": "getResourceTimeoutMs",
+    "descriptor": "()J",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResourceState",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannels",
+    "name": "members",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Resource;)Ljava/util/List;",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannels",
+    "name": "belongs",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Resource;I)Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannels",
+    "name": "resource",
+    "descriptor": "(I)Lcom/blent/connection/ConnectionManagement$Resource;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannels",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTicket",
+    "name": "<init>",
+    "descriptor": "(JLcom/blent/connection/ConnectionPeer;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTicket",
+    "name": "getEpoch",
+    "descriptor": "()J",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTicket",
+    "name": "getPeer",
+    "descriptor": "()Lcom/blent/connection/ConnectionPeer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelRead",
+    "name": "<init>",
+    "descriptor": "([BII)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelRead",
+    "name": "getBytes",
+    "descriptor": "()[B",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelRead",
+    "name": "getOffset",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelRead",
+    "name": "getLength",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionSessionLimits;I)V",
+    "covered": 14,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "binding",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)Lcom/blent/connection/TabletSession$Binding;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "lease",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Key;)Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "room",
+    "descriptor": "()V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "notice",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionResourceState;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "current",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "receive",
+    "descriptor": "(Lcom/blent/connection/ConnectionFrame;J)V",
+    "covered": 11,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "management",
+    "descriptor": "(Lcom/blent/connection/ConnectionFrame;ZJ)V",
+    "covered": 11,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "message",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Message;J)V",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "offered",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Offer;J)V",
+    "covered": 12,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "defer",
+    "descriptor": "(Lcom/blent/connection/TabletSession$Binding;Lcom/blent/connection/ConnectionManagement$Offer;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "prepared",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "permissionRequired",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "reject",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Outcome;)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "install",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)V",
+    "covered": 15,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "media",
+    "descriptor": "(Lcom/blent/connection/ConnectionFrame;Z)V",
+    "covered": 11,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "cancel",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Reason;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "close",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "nextFrame",
+    "descriptor": "(J)Lcom/blent/connection/ConnectionFrame;",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "written",
+    "descriptor": "(Lcom/blent/connection/ConnectionFrame;J)V",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "acknowledged",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "offer",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;I[B)Z",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "read",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;II)Lcom/blent/connection/ConnectionChannelRead;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "consumed",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;ILcom/blent/connection/ConnectionChannelRead;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "nativeRetired",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "retireConsumers",
+    "descriptor": "(Lcom/blent/connection/TabletSession$Binding;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "tick",
+    "descriptor": "(J)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "settle",
+    "descriptor": "(J)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "settleOne",
+    "descriptor": "(Lcom/blent/connection/TabletSession$Binding;J)V",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "queueAcknowledgement",
+    "descriptor": "(Lcom/blent/connection/TabletSession$Binding;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "finishChannels",
+    "descriptor": "(Lcom/blent/connection/TabletSession$Binding;)Z",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "disconnect",
+    "descriptor": "()V",
+    "covered": 12,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "transportRetired",
+    "descriptor": "()V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "nextEvent",
+    "descriptor": "()Lcom/blent/connection/ConnectionSessionEvent;",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/PeerTrustStore;Lcom/blent/connection/ConnectionPeer;I)V",
+    "covered": 13,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/PeerTrustStore;Lcom/blent/connection/ConnectionPeer;IILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "restore",
+    "descriptor": "()V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "trusted",
+    "descriptor": "(Lcom/blent/connection/ConnectionPeer;)Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "begin",
+    "descriptor": "(Lcom/blent/connection/ConnectionPairing;Lcom/blent/connection/ConnectionPeer;JJ)Lcom/blent/connection/ConnectionTicket;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "authenticated",
+    "descriptor": "(Lcom/blent/connection/ConnectionPairing;Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;J)Lcom/blent/connection/ConnectionApproval;",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "remember",
+    "descriptor": "(Lcom/blent/connection/ConnectionPairing;Lcom/blent/connection/ConnectionApproval;)Z",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "revoke",
+    "descriptor": "(Lcom/blent/connection/ConnectionPairing;Lcom/blent/connection/ConnectionPeer;)Z",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "persist",
+    "descriptor": "(Ljava/util/Set;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionTrust",
+    "name": "close",
+    "descriptor": "()V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionResources$Role;Lcom/blent/connection/ConnectionTicket;)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "begin",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Resource;JJJ)Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "offer",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Key;JJJ)Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "insert",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Key;JJJ)Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "slot",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)Lcom/blent/connection/ConnectionResources$Slot;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "online",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)Lcom/blent/connection/ConnectionResources$Slot;",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "current",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)Z",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "revoke",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)Z",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "expire",
+    "descriptor": "(J)[Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "disconnect",
+    "descriptor": "()V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "nativeRetired",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "channelsRetired",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "finish",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "prepared",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)Z",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "permissionRequired",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)Z",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "reject",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Outcome;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "startCommit",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "commit",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)Lcom/blent/connection/ConnectionResources$Install;",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "admitted",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)Z",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "peerRevoke",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "revokeWritten",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "acknowledge",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "readyToAck",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)Z",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getLease",
+    "descriptor": "()Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getInstalled",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setInstalled",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getClosing",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setClosing",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getNativeRetired",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setNativeRetired",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getConsumersRetired",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setConsumersRetired",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getChannelsRetired",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setChannelsRetired",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getAckQueued",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setAckQueued",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getAcknowledged",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setAcknowledged",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "getDeferred",
+    "descriptor": "()Lcom/blent/connection/ConnectionManagement$Offer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "setDeferred",
+    "descriptor": "(Lcom/blent/connection/ConnectionManagement$Offer;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "<init>",
+    "descriptor": "()V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "getPhase",
+    "descriptor": "()Lcom/blent/connection/ConnectionPairing$Phase;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "begin",
+    "descriptor": "(Lcom/blent/connection/ConnectionPeer;ZJJ)Lcom/blent/connection/ConnectionTicket;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "approve",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;ZJ)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "authenticated",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;J)Lcom/blent/connection/ConnectionApproval;",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "current",
+    "descriptor": "(Lcom/blent/connection/ConnectionApproval;)Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "cancel",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;)Z",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "revoke",
+    "descriptor": "(Lcom/blent/connection/ConnectionPeer;)Z",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "expire",
+    "descriptor": "(J)Z",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPairing",
+    "name": "retired",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;J)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getLease",
+    "descriptor": "()Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getDeadline",
+    "descriptor": "()J",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getStage",
+    "descriptor": "()Lcom/blent/connection/ConnectionResources$Stage;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setStage",
+    "descriptor": "(Lcom/blent/connection/ConnectionResources$Stage;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getClosing",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setClosing",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getPermissionReported",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setPermissionReported",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getRejected",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setRejected",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getPeerRevoke",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setPeerRevoke",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getRevokeWritten",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setRevokeWritten",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getSettled",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setSettled",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getInstalled",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setInstalled",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getNativeRetired",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setNativeRetired",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "getChannelsRetired",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "setChannelsRetired",
+    "descriptor": "(Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "live",
+    "descriptor": "(J)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$Readable",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;I)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$Readable",
+    "name": "getLease",
+    "descriptor": "()Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$Readable",
+    "name": "getChannel",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux$Frame",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionWire$Header;[BII)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux$Frame",
+    "name": "getHeader",
+    "descriptor": "()Lcom/blent/connection/ConnectionWire$Header;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux$Frame",
+    "name": "getBytes",
+    "descriptor": "()[B",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux$Frame",
+    "name": "getOffset",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMux$Frame",
+    "name": "getLength",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$Offered",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Credential;Lcom/blent/connection/ConnectionManagement$Profile;)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$Offered",
+    "name": "getLease",
+    "descriptor": "()Lcom/blent/connection/ConnectionResourceLease;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$Offered",
+    "name": "getCredential",
+    "descriptor": "()Lcom/blent/connection/ConnectionManagement$Credential;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionSessionEvent$Offered",
+    "name": "getProfile",
+    "descriptor": "()Lcom/blent/connection/ConnectionManagement$Profile;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "<init>",
+    "descriptor": "(I)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "getBytes",
+    "descriptor": "()[B",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "getHead",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "setHead",
+    "descriptor": "(I)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "getRetained",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "setRetained",
+    "descriptor": "(I)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "getPending",
+    "descriptor": "()Lcom/blent/connection/ConnectionChannelRead;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChannelBuffers$Ring",
+    "name": "setPending",
+    "descriptor": "(Lcom/blent/connection/ConnectionChannelRead;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionApproval",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionApproval",
+    "name": "getTicket",
+    "descriptor": "()Lcom/blent/connection/ConnectionTicket;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionApproval",
+    "name": "getRemember",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  }
+]

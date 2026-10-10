@@ -17,7 +17,7 @@ class ConnectionTrustTest {
         override fun replace(record: ByteArray) { check(!failure); bytes = record.copyOf() }
         override fun close() { closed++; check(!failure) }
     }
-    private fun lease(pairing: ConnectionPairing, peer: ConnectionPeer, remember: Boolean = true): ConnectionPairing.Lease {
+    private fun lease(pairing: ConnectionPairing, peer: ConnectionPeer, remember: Boolean = true): ConnectionApproval {
         val ticket = pairing.begin(peer, false, 0, 100)
         pairing.approve(ticket, remember, 1)
         return pairing.authenticated(ticket, peer, 2)
@@ -82,9 +82,9 @@ class ConnectionTrustTest {
         val store = Store(); val pairing = ConnectionPairing(); val trust = ConnectionTrust(store, peer('a'))
         assertFalse(trust.trusted(peer('b')))
         val ticket = pairing.begin(peer('b'), false, 0, 100)
-        rejected { trust.remember(pairing, ConnectionPairing.Lease(ticket, true)) }
+        rejected { trust.remember(pairing, ConnectionApproval(ticket, true)) }
         pairing.approve(ticket, true, 1)
-        rejected { trust.remember(pairing, ConnectionPairing.Lease(ticket, true)) }
+        rejected { trust.remember(pairing, ConnectionApproval(ticket, true)) }
         val lease = pairing.authenticated(ticket, peer('b'), 2)
         assertTrue(trust.remember(pairing, lease)); assertFalse(trust.remember(pairing, lease))
         assertTrue(trust.trusted(peer('b')))

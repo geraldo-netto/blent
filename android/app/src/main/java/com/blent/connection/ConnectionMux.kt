@@ -36,6 +36,13 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
         return queue.offer(channel, bytes)
     }
 
+    /** Closing one member of a resource must not close its terminal twice. */
+    fun acceptsData(channel: Int, generation: Long): Boolean {
+        require(channel in 1..ConnectionWire.CHANNELS)
+        val index = channel - 1
+        return !failed && enabled[index] && !closing[index] && generations[index] == generation
+    }
+
     /** False DATA must be drained, never delivered. Complete the bounded body
      * before accepting another header or replacing a retired channel owner. */
     fun receive(header: ConnectionWire.Header): Boolean {

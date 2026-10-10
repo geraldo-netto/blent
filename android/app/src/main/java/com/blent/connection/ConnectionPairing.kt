@@ -1,16 +1,11 @@
 package com.blent.connection
 
-/** SHA-256 of exact certificate DER, computed by the stock TLS boundary. */
-internal data class ConnectionPeer private constructor(val fingerprint: String) {
-    init { require(fingerprint.length == 64 && fingerprint.all { it in '0'..'9' || it in 'a'..'f' }) }
-    companion object { fun parse(value: String): ConnectionPeer = ConnectionPeer(value) }
-}
+import com.blent.connection.ConnectionTicket as Ticket
+import com.blent.connection.ConnectionApproval as Lease
 
 /** Independent single-owner authority policy; no native I/O, crypto or UI work.
  * TLS proof is a trusted adapter event, never an incoming management command. */
 internal class ConnectionPairing {
-    data class Ticket(val epoch: Long, val peer: ConnectionPeer)
-    data class Lease(val ticket: Ticket, val remember: Boolean)
     enum class Phase { IDLE, PENDING, APPROVED, AUTHENTICATED, CLOSING }
     var phase = Phase.IDLE; private set
     private var epoch = 0L
