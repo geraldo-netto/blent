@@ -132,8 +132,9 @@ integration remains open.
 Opt-in host `accessory-transport` and Android `SecureConnection` use stock TLS
 with mutual certificate authentication, exact approved leaf-certificate pins,
 and an authenticated protocol preface; API 29+ also requires `blent-usb/1` ALPN. These adapters require an approved certificate from their
-caller; parsing a certificate does not grant approval. Approval UI, persistent
-trust, revocation and runtime wiring remain unimplemented. The optional Cargo
+caller; parsing a certificate does not grant approval. Persistent trust, explicit
+revocation policy and authenticated admission are implemented under T868/T852 below.
+Production approval UI and broker/service runtime wiring remain unimplemented. The optional Cargo
 feature uses cached dependencies; all pre-existing locked package versions are
 preserved. New cached crypto dependency notices and archive checksums are retained in
 `licenses/accessory-transport/`, included by the existing distribution-docs list.
