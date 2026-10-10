@@ -350,23 +350,25 @@ throughput. Static scenes may use much less bandwidth.
 Automatic selection and its measurement limits are described in
 [video codecs](video-codecs.md#automatic-selection).
 
-## Optional in-process encoder
+## Optional native encoder worker
 
 ```bash
 cargo build --release --manifest-path host/Cargo.toml --features inproc-encoder
 ```
 
-Encoded output retains known large packet allocations through stock public
-libavcodec APIs, with copying for small or unknown storage. This requires no
-FFmpeg patches. See [packet ownership and measurements](benchmarks/2026-09-17-packet-storage.md)
-for retained-memory accounting, regression coverage and measurement limits.
+The historical feature name remains `inproc-encoder`, but native libavcodec now
+runs in a private, supervised Blent child. Shared raw slots cross exec by descriptor
+without another raw-frame copy. Compressed access units cross a bounded stdout
+pipe into the parent's existing packet budget; native packet retention remains
+local to the worker. Stock FFmpeg needs no patches. The earlier
+[packet ownership measurements](benchmarks/2026-09-17-packet-storage.md) describe
+the former same-process path, not current cross-process packet delivery.
 
-Encodes through libavcodec in-process instead of an `ffmpeg` child. Automatic
-calibration currently uses CLI profiles; `auto` therefore uses `libx264` in this
-optional build. Select a supported explicit encoder to override it. Measured
-encoded-packet-to-acknowledgement latency was similar, with about one CPU
-core less and keyframes on demand; that metric excludes encoding time. Needs
-the development libraries enabled by `ffmpeg-next` default features, plus
+Automatic calibration uses CLI profiles; `auto` uses `libx264` in this optional
+build. Select a supported explicit encoder to override it. Keyframe requests are
+coalesced over stdin. Isolation adds startup and memory cost; see the
+[T819 paired measurements](reviews/2026-10-10-native-encoder-isolation.md).
+The worker needs the development libraries enabled by `ffmpeg-next` default features, plus
 `pkg-config` and libclang for bindgen. On Debian/Ubuntu, in addition to the
 normal build prerequisites:
 

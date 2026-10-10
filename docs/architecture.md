@@ -28,7 +28,7 @@ from the existing implementation.
 2. **Capture.** The helper requests updates, grabs BGRA pixels, converts damaged
    chroma-aligned regions to NV12 (BT.709, limited range) and sends raw frames
    through a FIFO in the runtime directory for the stock FFmpeg CLI path.
-   Optional in-process libx264 defaults to the shared-slot adapter described below.
+   Optional native-worker libx264 defaults to the shared-slot adapter described below.
    After a partial FIFO write the helper quarantines that
    FIFO inode and reports `FIFO_RESET <device> <inode>`. The host retires the
    encoder reader and replaces the FIFO before encoding resumes. A retained,
@@ -50,7 +50,7 @@ from the existing implementation.
    Constrained Baseline/CAVLC; existing selections retain their profile policy.
    See the [codec measurements](benchmarks/2026-09-18-codecs.md).
    B-frames/lookahead are disabled on the low-latency paths. An optional
-   in-process libavcodec encoder avoids the child process; it does not support
+   native libavcodec encoder runs in a private Blent child; it does not support
    `ten_bit`. Its baseline VAAPI adapter accepts immutable NV12 from FIFO or
    explicitly selected shared slots, then uploads into independently owned
    hardware surfaces using the configured render node. Automatic VAAPI input
@@ -59,7 +59,7 @@ from the existing implementation.
 4. **Keyframes and delivery.** The FFmpeg CLI requests a random-access keyframe each second of
    capture wall-clock time, including the five-fps idle floor. Actual recovery
    also waits for capture, encoding, packetization and transport. The software
-   regression checks recovery under 1.6 seconds at idle. The optional in-process
+   regression checks recovery under 1.6 seconds at idle. The optional native
    encoder can honor a next-frame keyframe request; its periodic GOP counts
    frames. The TCP server skips a lagging client's backlog to a retained IDR,
    or waits for another IDR if necessary.
@@ -147,6 +147,7 @@ systemd user-service environment override.
 | `BLENT_TASK_LIMIT` | 64 | 1..4096 | Independently owned capture/media tasks, including started blocking work. |
 | `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
+| `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after control returns. |
 | `BLENT_ENCODER_STOP_MS` | 1000 ms | 1..60000 ms | Encoder-task completion wait before refusing replacement. |
 
 Larger capacities allow more concurrent work and retain more memory/handles when
@@ -169,10 +170,14 @@ their own admissions and completion tickets. An already-committing configuration
 transaction retains its atomicity and result after its control wait expires;
 queued transactions are cancelled.
 
-Started blocking work cannot be stopped by task abort. Optional in-process native
-encoding still shares the daemon's address space, and final Tokio runtime
-destruction may wait for started blocking calls; isolation and final-exit work
-remain T819. Windows job/reaper acceptance and native counters remain T737.
+Started blocking work cannot be stopped by task abort. Optional native encoding
+runs in a supervised process, with parent-death signalling, generation checks and
+bounded compressed packets. Shared raw leases survive until codec final reference
+release inside the worker; replacement waits for actual child retirement. A stuck
+worker retains capacity until reaped. This does not recover a GPU/kernel-wide hang.
+The Linux entry point explicitly bounds final Tokio shutdown; remaining native
+threads are terminated by process exit, not reported as successfully completed.
+Windows job/reaper acceptance and native counters remain T737.
 Command output also has the byte and collection bounds below.
 
 
@@ -308,8 +313,8 @@ for measured scope and lifecycle coverage.
 The Rust `capture` module supervises settings changes, startup cancellation,
 encoder sessions and retry ordering. `capture::helper` owns the helper child,
 FIFO creation, preferred-card identity and geometry announcements;
-`capture::encoding` owns encoder children/tasks and the in-process cancellation
-event. `capture::cli_encoder` translates policy to FFmpeg arguments and drains its
+`capture::encoding` owns encoder children/tasks; `encoder_worker` adapts the
+independent private protocol to native execution and compressed packet delivery. `capture::cli_encoder` translates policy to FFmpeg arguments and drains its
 encoded output. `capture::placement` handles desktop placement, while
 `capture::process` provides bounded termination and validated orphan retirement.
 The `media` module owns codec, packet, generation and live-settings contracts,
@@ -369,14 +374,16 @@ libx264 latency improvement and lifecycle regressions. `raw_transport=auto`
 defaults to shared memory only for that validated in-process encoder; the stock
 CLI/VAAPI path and automatic NVENC input keep FIFO.
 
-For the optional in-process encoder, `encoder_storage` owns the public stock
+Inside the optional native worker, `encoder_storage` owns the public stock
 libavcodec DR1 allocation callback and its synchronized allocation registry.
 Large known buffers publish an immutable packet owner; small or unknown buffer
 views copy. Publication releases unrelated packet side data and charges the
 complete retained allocation, including padding, to the session's encoded-data
 budget. A stable callback context outlives the codec, while delayed consumers
 can outlive both. The [packet-storage report](benchmarks/2026-09-17-packet-storage.md)
-describes the ownership tests, fallback and measured stage costs.
+describes the ownership tests, fallback and historical same-process stage costs.
+The worker sends compressed bytes through stdout; the parent allocates the bounded
+packet and applies its delivery budget. Raw shared-slot transport is unchanged.
 
 `blent-config::model` owns the portable settings schema, sanitization and edit
 merging. Saves compare each field with the editor's original snapshot, including

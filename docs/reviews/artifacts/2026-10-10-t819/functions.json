@@ -1,0 +1,1199 @@
+{
+  "sources": {
+    "host/src/encoder_worker.rs": "095b9d930129eddb43c94d228a453adc19eac142103c6d3f26b1ed4ae9ff6a38",
+    "host/src/encoder_worker_contract.rs": "c53dfb69d2df53084525e8a95f3339e9c13abd3af01d96325bfe14d3212159b2",
+    "host/src/runtime_owner.rs": "b9125db8e181e868ad69e938b5bdc13ed8dcdc2e9cf8221b6e3c025d5727228d",
+    "host/src/capture/encoding.rs": "fba80d517fcf56031b203660e4c84c17cefd809dd59c20f7f6b4a4c5d112ad6b",
+    "host/src/raw_socket.rs": "9af7245971a97cdd231473997be6cdb5445246d8296006100ebb06af0155b569",
+    "host/src/raw_memory.rs": "8ddca0274d5a9658bfdcf549b1f14ba920af5a0c816315c25ec3346f9ed23a71",
+    "host/src/encoder_shared.rs": "22dbd7f89f3401689cdc56f2c7948299f19a9551bcf616b12e0597fd188fb27a",
+    "host/src/encoder.rs": "b9261c4ed816700d28b5c1c180d39d3db459991198200df4f2499eeea727c94a"
+  },
+  "functions": [
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "nonce",
+      "line": 22,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "spawn",
+      "line": 27,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "spawn_at",
+      "line": 44,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "receive",
+      "line": 72,
+      "language": "rust",
+      "covered": 13,
+      "total": 16,
+      "percent": 81.25,
+      "passes": true,
+      "missing": [
+        82,
+        83,
+        89
+      ]
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "packets",
+      "line": 92,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "publish",
+      "line": 120,
+      "language": "rust",
+      "covered": 29,
+      "total": 29,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "dispatch",
+      "line": 149,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "arguments",
+      "line": 155,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "parent_guard",
+      "line": 181,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "run",
+      "line": 192,
+      "language": "rust",
+      "covered": 33,
+      "total": 33,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "control",
+      "line": 227,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "epoch",
+      "line": 247,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "send",
+      "line": 252,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "receiver_count",
+      "line": 263,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "viewers",
+      "line": 266,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "name": "write_packet",
+      "line": 270,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "name": "validate",
+      "line": 23,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "name": "encode",
+      "line": 50,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "name": "decode",
+      "line": 56,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "name": "packet_header",
+      "line": 63,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "name": "packet_size",
+      "line": 73,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "name": "run",
+      "line": 3,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "is_running",
+      "line": 29,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "start",
+      "line": 34,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "start",
+      "line": 48,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "start_with",
+      "line": 58,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "spawn_session",
+      "line": 78,
+      "language": "rust",
+      "covered": 37,
+      "total": 39,
+      "percent": 94.87179487179488,
+      "passes": true,
+      "missing": [
+        101,
+        119
+      ]
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "spawn_session",
+      "line": 124,
+      "language": "rust",
+      "covered": 37,
+      "total": 39,
+      "percent": 94.87179487179488,
+      "passes": true,
+      "missing": [
+        133,
+        162
+      ]
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "stop",
+      "line": 167,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "shutdown",
+      "line": 176,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "abort",
+      "line": 191,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "name": "finish",
+      "line": 195,
+      "language": "rust",
+      "covered": 16,
+      "total": 18,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        207,
+        208
+      ]
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "owned",
+      "line": 10,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "from_inherited",
+      "line": 20,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "pair",
+      "line": 43,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        56
+      ]
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "attach",
+      "line": 65,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "send",
+      "line": 78,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "send_bytes",
+      "line": 82,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "receive",
+      "line": 113,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "wait",
+      "line": 140,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        157
+      ]
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "inherit_descriptor",
+      "line": 164,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "poll_result",
+      "line": 178,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "as_raw_fd",
+      "line": 190,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "receive_error",
+      "line": 195,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "name": "received_fds",
+      "line": 207,
+      "language": "rust",
+      "covered": 13,
+      "total": 14,
+      "percent": 92.85714285714286,
+      "passes": true,
+      "missing": [
+        220
+      ]
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "open",
+      "line": 23,
+      "language": "rust",
+      "covered": 33,
+      "total": 35,
+      "percent": 94.28571428571429,
+      "passes": true,
+      "missing": [
+        55,
+        72
+      ]
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "state",
+      "line": 77,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "sequence",
+      "line": 88,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "lease",
+      "line": 98,
+      "language": "rust",
+      "covered": 18,
+      "total": 20,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        116,
+        117
+      ]
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "drop",
+      "line": 127,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "bytes",
+      "line": 143,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "drop",
+      "line": 156,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "new",
+      "line": 181,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "with_nonce",
+      "line": 190,
+      "language": "rust",
+      "covered": 27,
+      "total": 28,
+      "percent": 96.42857142857143,
+      "passes": true,
+      "missing": [
+        209
+      ]
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "next",
+      "line": 219,
+      "language": "rust",
+      "covered": 19,
+      "total": 21,
+      "percent": 90.47619047619048,
+      "passes": true,
+      "missing": [
+        222,
+        241
+      ]
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "name": "frame",
+      "line": 247,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        256
+      ]
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "name": "open_with_nonce",
+      "line": 24,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "name": "read",
+      "line": 51,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "name": "release_slot",
+      "line": 65,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "name": "wrap",
+      "line": 70,
+      "language": "rust",
+      "covered": 30,
+      "total": 34,
+      "percent": 88.23529411764706,
+      "passes": true,
+      "missing": [
+        83,
+        84,
+        91,
+        92
+      ]
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "with_device",
+      "line": 65,
+      "language": "rust",
+      "covered": 55,
+      "total": 55,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "hardware_frames",
+      "line": 131,
+      "language": "rust",
+      "covered": 12,
+      "total": 14,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [
+        142,
+        143
+      ]
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "low_latency_options",
+      "line": 147,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "encode_prepared",
+      "line": 175,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "drain",
+      "line": 195,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "run_with_nonce",
+      "line": 264,
+      "language": "rust",
+      "covered": 57,
+      "total": 59,
+      "percent": 96.61016949152543,
+      "passes": true,
+      "missing": [
+        294,
+        313
+      ]
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "name": "refresh_codec_config",
+      "line": 338,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 22,
+      "name": "nonce",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 27,
+      "name": "spawn",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 44,
+      "name": "spawn_at",
+      "score": 2
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 72,
+      "name": "receive",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 92,
+      "name": "packets",
+      "score": 2
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 120,
+      "name": "publish",
+      "score": 4
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 149,
+      "name": "dispatch",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 155,
+      "name": "arguments",
+      "score": 4
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 181,
+      "name": "parent_guard",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 192,
+      "name": "run",
+      "score": 2
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 227,
+      "name": "control",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 247,
+      "name": "epoch",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 252,
+      "name": "send",
+      "score": 2
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 263,
+      "name": "receiver_count",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 266,
+      "name": "viewers",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "line": 270,
+      "name": "write_packet",
+      "score": 4
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "line": 23,
+      "name": "validate",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "line": 50,
+      "name": "encode",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "line": 56,
+      "name": "decode",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "line": 63,
+      "name": "packet_header",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_worker_contract.rs",
+      "line": 73,
+      "name": "packet_size",
+      "score": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 3,
+      "name": "run",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 29,
+      "name": "is_running",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 34,
+      "name": "start",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 48,
+      "name": "start",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 58,
+      "name": "start_with",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 78,
+      "name": "spawn_session",
+      "score": 4
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 124,
+      "name": "spawn_session",
+      "score": 3
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 167,
+      "name": "stop",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 176,
+      "name": "shutdown",
+      "score": 2
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 191,
+      "name": "abort",
+      "score": 1
+    },
+    {
+      "file": "host/src/capture/encoding.rs",
+      "line": 195,
+      "name": "finish",
+      "score": 5
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 10,
+      "name": "owned",
+      "score": 2
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 20,
+      "name": "from_inherited",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 43,
+      "name": "pair",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 65,
+      "name": "attach",
+      "score": 2
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 78,
+      "name": "send",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 82,
+      "name": "send_bytes",
+      "score": 2
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 113,
+      "name": "receive",
+      "score": 2
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 140,
+      "name": "wait",
+      "score": 3
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 164,
+      "name": "inherit_descriptor",
+      "score": 3
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 178,
+      "name": "poll_result",
+      "score": 3
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 190,
+      "name": "as_raw_fd",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 195,
+      "name": "receive_error",
+      "score": 2
+    },
+    {
+      "file": "host/src/raw_socket.rs",
+      "line": 207,
+      "name": "received_fds",
+      "score": 3
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 23,
+      "name": "open",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 77,
+      "name": "state",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 88,
+      "name": "sequence",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 98,
+      "name": "lease",
+      "score": 2
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 127,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 143,
+      "name": "bytes",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 156,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 181,
+      "name": "new",
+      "score": 3
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 190,
+      "name": "with_nonce",
+      "score": 1
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 219,
+      "name": "next",
+      "score": 5
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "line": 247,
+      "name": "frame",
+      "score": 2
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "line": 24,
+      "name": "open_with_nonce",
+      "score": 4
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "line": 51,
+      "name": "read",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "line": 65,
+      "name": "release_slot",
+      "score": 1
+    },
+    {
+      "file": "host/src/encoder_shared.rs",
+      "line": 70,
+      "name": "wrap",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "line": 65,
+      "name": "with_device",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "line": 131,
+      "name": "hardware_frames",
+      "score": 2
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "line": 147,
+      "name": "low_latency_options",
+      "score": 2
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "line": 175,
+      "name": "encode_prepared",
+      "score": 3
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "line": 195,
+      "name": "drain",
+      "score": 6
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "line": 264,
+      "name": "run_with_nonce",
+      "score": 7
+    },
+    {
+      "file": "host/src/encoder.rs",
+      "line": 338,
+      "name": "refresh_codec_config",
+      "score": 2
+    }
+  ],
+  "test_only_followup": "Invalid-job cases moved from a match to a value table to keep the retained test CC <= 9; production bytes/line locations are unchanged. Numeric boundary cases extended; focused test passed."
+}

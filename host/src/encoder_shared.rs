@@ -12,16 +12,29 @@ pub(super) enum Input {
 }
 
 impl Input {
+    #[cfg(test)]
     pub fn open(
         path: &std::path::Path,
         socket: Option<crate::raw_socket::Socket>,
         dimensions: (u32, u32),
         slots: u32,
     ) -> Result<Self> {
+        Self::open_with_nonce(path, socket, dimensions, slots, None)
+    }
+    pub fn open_with_nonce(
+        path: &std::path::Path,
+        socket: Option<crate::raw_socket::Socket>,
+        dimensions: (u32, u32),
+        slots: u32,
+        nonce: Option<u64>,
+    ) -> Result<Self> {
         if let Some(socket) = socket {
-            return Ok(Self::Shared(crate::raw_memory::Reader::new(
-                socket, dimensions, slots,
-            )?));
+            return Ok(Self::Shared(match nonce {
+                Some(nonce) => {
+                    crate::raw_memory::Reader::with_nonce(socket, dimensions, slots, nonce)?
+                }
+                None => crate::raw_memory::Reader::new(socket, dimensions, slots)?,
+            }));
         }
         // Nonblocking open lets cancellation work even without an active tablet.
         use std::os::unix::fs::OpenOptionsExt;

@@ -75,10 +75,19 @@ async fn t284_vaapi_is_rejected_before_fifo_or_helper_creation() {
 }
 
 fn fifo_is_open(path: &std::path::Path) -> bool {
-    std::fs::read_dir("/proc/self/fd")
-        .unwrap()
-        .flatten()
-        .any(|entry| std::fs::read_link(entry.path()).is_ok_and(|target| target == path))
+    let mut processes = vec![std::process::id().to_string()];
+    for task in std::fs::read_dir("/proc/self/task").unwrap().flatten() {
+        if let Ok(children) = std::fs::read_to_string(task.path().join("children")) {
+            processes.extend(children.split_whitespace().map(str::to_owned));
+        }
+    }
+    processes.iter().any(|pid| {
+        std::fs::read_dir(format!("/proc/{pid}/fd"))
+            .into_iter()
+            .flatten()
+            .flatten()
+            .any(|entry| std::fs::read_link(entry.path()).is_ok_and(|target| target == path))
+    })
 }
 
 async fn wait_for_fifo(path: &std::path::Path, open: bool) -> bool {

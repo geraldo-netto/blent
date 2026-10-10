@@ -220,6 +220,7 @@ impl Encoder {
 /// ownership belong to the input adapter, independently of codec submission.
 // Blocking thread boundary takes owned session settings and channel handles.
 #[allow(clippy::too_many_arguments)]
+#[cfg(test)]
 pub fn run(
     fifo_path: &std::path::Path,
     encoder_name: &str,
@@ -238,6 +239,47 @@ pub fn run(
     workers: u32,
     vaapi_device: &str,
 ) -> Result<()> {
+    run_with_nonce(
+        fifo_path,
+        encoder_name,
+        width,
+        height,
+        fps,
+        bitrate_kbps,
+        quality,
+        tx,
+        codec_config,
+        idr_wanted,
+        stop,
+        latency,
+        raw_socket,
+        raw_slots,
+        workers,
+        vaapi_device,
+        None,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn run_with_nonce(
+    fifo_path: &std::path::Path,
+    encoder_name: &str,
+    width: u32,
+    height: u32,
+    fps: u32,
+    bitrate_kbps: u32,
+    quality: u32,
+    tx: blent::capture_contract::VideoOutput,
+    codec_config: CodecConfig,
+    idr_wanted: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    stop: std::sync::Arc<StopSignal>,
+    latency: crate::latency::LatencyTracker,
+    raw_socket: Option<crate::raw_socket::Socket>,
+    raw_slots: u32,
+    workers: u32,
+    vaapi_device: &str,
+    nonce: Option<u64>,
+) -> Result<()> {
     use std::sync::atomic::Ordering;
 
     let mut enc = Encoder::with_device(
@@ -251,7 +293,8 @@ pub fn run(
         vaapi_device,
     )?;
 
-    let mut input = shared::Input::open(fifo_path, raw_socket, (width, height), raw_slots)?;
+    let mut input =
+        shared::Input::open_with_nonce(fifo_path, raw_socket, (width, height), raw_slots, nonce)?;
     tracing::info!(
         "In-process encoder running: {} at {}x{}",
         encoder_name,
@@ -305,7 +348,7 @@ fn refresh_codec_config(data: &[u8], encoder_name: &str, codec_config: &CodecCon
 mod packet_tests;
 #[cfg(test)]
 #[path = "raw_tests.rs"]
-mod raw_tests;
+pub(crate) mod raw_tests;
 
 #[cfg(test)]
 #[path = "encoder_storage_replay.rs"]

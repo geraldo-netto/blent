@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
         unsigned width, height, value;
         int result = -1;
         if (strcmp(line, "service\n") == 0) result = raw_ring_service(&ring);
+        else if (strcmp(line, "generation\n") == 0) result = (int)ring.generation;
         else if (sscanf(line, "resize %u %u", &width, &height) == 2)
             result = raw_ring_resize(&ring, width, height);
         else if (sscanf(line, "frame %u", &value) == 1) {

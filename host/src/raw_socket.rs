@@ -16,6 +16,30 @@ fn owned(fd: RawFd) -> std::io::Result<OwnedFd> {
 }
 
 impl Socket {
+    /// Take the one inherited descriptor before worker threads start.
+    pub fn from_inherited(fd: RawFd) -> Result<Self> {
+        ensure!(
+            fd >= 3 && unsafe { libc::fcntl(fd, libc::F_GETFD) } >= 0,
+            "Invalid inherited raw descriptor"
+        );
+        let descriptor = owned(fd)?;
+        let mut kind = 0i32;
+        let mut len = std::mem::size_of::<i32>() as libc::socklen_t;
+        ensure!(
+            unsafe {
+                libc::getsockopt(
+                    fd,
+                    libc::SOL_SOCKET,
+                    libc::SO_TYPE,
+                    (&mut kind as *mut i32).cast(),
+                    &mut len,
+                )
+            } == 0
+                && kind == libc::SOCK_SEQPACKET,
+            "Inherited raw descriptor is not a packet socket"
+        );
+        Ok(Self(Arc::new(descriptor)))
+    }
     pub fn pair() -> Result<(Self, Self)> {
         let mut pair = [-1; 2];
         let result = unsafe {

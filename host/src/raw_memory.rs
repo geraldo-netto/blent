@@ -185,6 +185,15 @@ impl Reader {
                 value.checked_add(1)
             })
             .map_err(|_| anyhow::anyhow!("raw handshake nonce exhausted"))?;
+        Self::with_nonce(socket, dimensions, slots, nonce)
+    }
+    pub fn with_nonce(
+        socket: Socket,
+        dimensions: (u32, u32),
+        slots: u32,
+        nonce: u64,
+    ) -> Result<Self> {
+        ensure!(nonce != 0, "invalid raw nonce");
         let layout = Layout::new(dimensions.0, dimensions.1, slots)?;
         socket.send(
             Message {

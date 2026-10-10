@@ -8,16 +8,16 @@ use std::io::{BufRead, BufReader, Write};
 use std::os::fd::{AsRawFd, FromRawFd, OwnedFd};
 use std::process::{Child, ChildStdin, ChildStdout, Command, Stdio};
 
-struct Producer {
+pub(crate) struct Producer {
     child: Child,
     input: ChildStdin,
     output: BufReader<ChildStdout>,
-    socket: Socket,
+    pub(crate) socket: Socket,
     _directory: tempfile::TempDir,
 }
 
 impl Producer {
-    fn new() -> Self {
+    pub(crate) fn new() -> Self {
         let directory = tempfile::tempdir().unwrap();
         let binary = directory.path().join("producer");
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
@@ -56,7 +56,7 @@ impl Producer {
         }
     }
 
-    fn command(&mut self, command: &str) -> i32 {
+    pub(crate) fn command(&mut self, command: &str) -> i32 {
         writeln!(self.input, "{command}").unwrap();
         self.input.flush().unwrap();
         let mut line = String::new();

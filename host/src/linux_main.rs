@@ -22,6 +22,8 @@ mod doctor;
 mod edid;
 #[cfg(feature = "inproc-encoder")]
 mod encoder;
+#[cfg(feature = "inproc-encoder")]
+mod encoder_worker;
 #[cfg_attr(not(feature = "inproc-encoder"), allow(dead_code))]
 mod encoder_io;
 #[cfg(not(feature = "inproc-encoder"))]
@@ -72,8 +74,12 @@ use tokio::signal;
 use tokio::sync::watch;
 use tracing::{error, info, warn};
 
-#[tokio::main]
-async fn main() -> Result<()> {
+fn main() -> Result<()> {
+    #[cfg(feature = "inproc-encoder")]
+    if let Some(result) = encoder_worker::dispatch(std::env::args_os().skip(1)) { return result; }
+    blent::runtime_owner::run(run_cli())?
+}
+async fn run_cli() -> Result<()> {
     let cli = Cli::parse();
     setup_logging();
 

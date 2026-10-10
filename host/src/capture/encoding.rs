@@ -127,47 +127,41 @@ impl EncoderProcess {
         mode: Option<(u32, u32)>,
         output: EncoderOutput,
     ) -> Result<EncoderTask> {
-        let (w, h) = mode.expect("encoder size was selected before starting");
-        let (name, fps, bitrate, quality) = (
-            config.encoder.clone(),
-            config.fps,
-            config.bitrate,
-            config.quality,
-        );
+        process::ensure_retired(&self.pending)?;
+        let (w, h) = mode.ok_or_else(|| anyhow::anyhow!("Encoder size unavailable"))?;
         if config.ten_bit {
             tracing::warn!(
-                "10-bit is not supported by the in-process encoder — \
-                encoding 8-bit. Build without --features inproc-encoder for 10-bit."
+                "Native encoder worker uses 8-bit; build without inproc-encoder for 10-bit"
             );
         }
+        let job = blent::encoder_worker_contract::Job {
+            encoder: config.encoder.clone(),
+            width: w,
+            height: h,
+            fps: config.fps,
+            bitrate: config.bitrate,
+            quality: config.quality,
+            slots: config.raw_slots,
+            workers: config.worker_count(),
+            device: config.vaapi_device.clone(),
+            nonce: crate::encoder_worker::nonce()?,
+            parent: std::process::id(),
+        };
         let fifo = super::fifo_path_for(config.instance)?;
-        let raw_slots = config.raw_slots;
-        let workers = config.worker_count();
-        let vaapi_device = config.vaapi_device.clone();
-        let stop = crate::encoder_io::StopSignal::new()?;
-        let stopc = stop.clone();
-        let handle = blent::owned_task::Task::spawn_blocking(move || {
-            let _fifo = output.fifo;
-            crate::encoder::run(
-                &fifo,
-                &name,
-                w,
-                h,
-                fps,
-                bitrate,
-                quality,
-                output.tx,
-                output.codec_config,
-                output.idr_wanted,
-                stopc,
-                output.latency,
-                output.raw_socket,
-                raw_slots,
-                workers,
-                &vaapi_device,
-            )
-        })?;
-        Ok(EncoderTask { handle, stop })
+        let (child, handle) = crate::encoder_worker::spawn(
+            job,
+            &fifo,
+            output.raw_socket,
+            crate::encoder_worker::Output {
+                video: output.tx,
+                headers: output.codec_config,
+                latency: output.latency,
+                refresh: output.idr_wanted,
+            },
+            output.fifo,
+        )?;
+        self.child = Some(child);
+        Ok(EncoderTask { handle })
     }
 
     pub(super) fn stop(&mut self) {
@@ -191,21 +185,14 @@ impl EncoderProcess {
 
 pub(super) struct EncoderTask {
     pub(super) handle: blent::owned_task::Task,
-    #[cfg(feature = "inproc-encoder")]
-    stop: Arc<crate::encoder_io::StopSignal>,
 }
 
 impl EncoderTask {
     pub(super) fn abort(&mut self) {
-        #[cfg(feature = "inproc-encoder")]
-        self.stop.request();
         self.handle.abort();
     }
 
     pub(super) async fn finish(&mut self, already_finished: bool) -> Result<()> {
-        #[cfg(feature = "inproc-encoder")]
-        self.stop.request();
-        #[cfg(not(feature = "inproc-encoder"))]
         self.handle.abort();
         // Observe task destruction before rebuilding: the packetizer's
         // generation guard must retire every queued old access unit first.
@@ -230,14 +217,6 @@ impl EncoderTask {
     }
 }
 
-// Blocking tasks cannot be aborted. Retire their reader on cancellation too.
-#[cfg(feature = "inproc-encoder")]
-impl Drop for EncoderTask {
-    fn drop(&mut self) {
-        self.stop.request();
-    }
-}
-
 #[cfg(test)]
 mod retirement_tests {
     use super::*;
@@ -249,16 +228,56 @@ mod retirement_tests {
                 anyhow::bail!("T814 cleanup error")
             })
             .unwrap();
-            let mut task = EncoderTask {
-                handle,
-                #[cfg(feature = "inproc-encoder")]
-                stop: crate::encoder_io::StopSignal::new().unwrap(),
-            };
+            let mut task = EncoderTask { handle };
             tokio::time::sleep(std::time::Duration::from_millis(10)).await;
             assert!(
                 task.finish(false).await.is_err(),
                 "T814: encoder cleanup failure erased"
             );
         }
+    }
+    #[tokio::test]
+    async fn t819_async_encoder_task_cancellation_and_completion_are_observed() {
+        let mut done = EncoderTask {
+            handle: blent::owned_task::Task::spawn(async { Ok(()) }).unwrap(),
+        };
+        tokio::task::yield_now().await;
+        done.finish(false).await.unwrap();
+        let mut pending = EncoderTask {
+            handle: blent::owned_task::Task::spawn(std::future::pending()).unwrap(),
+        };
+        pending.abort();
+        pending.finish(false).await.unwrap();
+        pending.finish(true).await.unwrap();
+    }
+    #[cfg(feature = "inproc-encoder")]
+    #[tokio::test]
+    async fn t819_native_encoder_process_tracks_start_and_reaped_shutdown() {
+        let mut process = EncoderProcess::default();
+        assert!(!process.is_running());
+        let config = CaptureConfig {
+            encoder: "libx264".into(),
+            ..Default::default()
+        };
+        assert_eq!(process.start(&config, (64, 64)).await.unwrap(), (64, 64));
+        for explicit in [false, true] {
+            process.child =
+                Some(Child::spawn(tokio::process::Command::new("/bin/sleep").arg("30")).unwrap());
+            assert!(process.is_running());
+            if explicit {
+                process.shutdown().await;
+            } else {
+                process.stop();
+            }
+            assert!(!process.is_running());
+            tokio::time::timeout(std::time::Duration::from_secs(2), async {
+                while !process.pending.as_ref().unwrap().is_complete() {
+                    tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+                }
+            })
+            .await
+            .unwrap();
+        }
+        process.shutdown().await;
     }
 }
