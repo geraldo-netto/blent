@@ -1,6 +1,11 @@
 //! Fixed, bounded envelopes shared with the Android connection adapter.
 use anyhow::{ensure, Result};
 
+/// Production v1 agrees this namespace for each fresh mutually authenticated
+/// TLS stream. Local pairing epochs never cross the wire: peers retry separately.
+/// Fresh TLS keys prevent cross-stream byte replay; callbacks additionally carry
+/// the complete local pairing/resource lease. TLS resumption remains disabled.
+pub const AUTHENTICATED_SESSION: u64 = 1;
 pub const HEADER_BYTES: usize = 40;
 pub const CHANNELS: u8 = 6;
 pub const MAX_PAYLOAD: u32 = 65_536;

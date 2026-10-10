@@ -33,11 +33,17 @@ impl Input {
         mut stream: Pin<&mut S>,
         mux: &mut Multiplexer,
         timeout: Duration,
+        held: &[Option<u64>; 5],
     ) -> Poll<Result<(Header, bool)>> {
         self.timer.poll(cx, "receive frame deadline")?;
         if self.header.is_none() {
             std::task::ready!(self.read_header(cx, stream.as_mut(), timeout))?;
             let header = Header::decode(&self.header_bytes)?;
+            if header.channel != Channel::Management
+                && held[header.channel as usize - 1] == Some(header.generation)
+            {
+                return Poll::Pending;
+            }
             let deliver = mux.receive(header)?;
             self.header = Some((header, deliver));
             self.offset = 0;

@@ -1,0 +1,16 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.60s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 7 tests
+test accessory::linux::tests::t846_native_owner_duplex_and_actual_process_retirement ... ok
+test accessory::linux::tests::t846_native_target_bounds_reject_before_spawning ... ok
+test accessory::setup::tests::t846_candidate_approval_tls_and_revocation_are_separate_boundaries ... ok
+test accessory::setup::tests::t846_candidate_denial_or_wrong_ticket_retires_owner ... ok
+test accessory::setup::tests::t846_discovery_deadline_invalid_lengths_and_truncation_are_bounded ... ok
+test accessory::setup::tests::t846_human_approval_skew_does_not_consume_tls_handshake_deadline ... ok
+test accessory::setup::tests::t846_readiness_silence_invalid_roles_and_truncation_retire_owner ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 420 filtered out; finished in 0.01s
+

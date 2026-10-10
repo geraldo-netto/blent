@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.16s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::session::tests::consumer::t872_readiness_memory_is_bounded_when_consumer_does_not_poll_events ... FAILED
+
+failures:
+
+---- broker::session::tests::consumer::t872_readiness_memory_is_bounded_when_consumer_does_not_poll_events stdout ----
+
+thread 'broker::session::tests::consumer::t872_readiness_memory_is_bounded_when_consumer_does_not_poll_events' (1888363) panicked at host/src/broker/session/tests/consumer.rs:57:5:
+T872 consumer accumulated duplicate readiness events: 127
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::session::tests::consumer::t872_readiness_memory_is_bounded_when_consumer_does_not_poll_events
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 419 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent --lib`

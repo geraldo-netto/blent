@@ -1,0 +1,60 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.01s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 9 tests
+test broker::session::tests::t872_awaited_event_uses_current_time_for_resource_deadline ... FAILED
+test broker::session::tests::t872_disconnect_retains_resource_until_native_callback ... ok
+test broker::session::tests::t872_disconnect_settles_already_retired_native_consumer ... FAILED
+test broker::session::tests::t872_display_and_camera_have_independent_bounded_consumers ... ok
+test broker::session::tests::t872_expired_commit_drains_without_double_close ... FAILED
+test broker::session::tests::t872_peer_media_terminal_revokes_resource ... FAILED
+test broker::session::tests::t872_pre_admission_payload_becomes_readable_on_admission ... FAILED
+test broker::session::tests::t872_premature_media_terminal_cannot_corrupt_inactive_generation ... FAILED
+test broker::session::tests::t872_revoke_waits_for_peer_and_actual_native_retirement ... ok
+
+failures:
+
+---- broker::session::tests::t872_awaited_event_uses_current_time_for_resource_deadline stdout ----
+
+thread 'broker::session::tests::t872_awaited_event_uses_current_time_for_resource_deadline' (1879506) panicked at host/src/broker/session/tests.rs:374:5:
+T872 wait reused pre-expiry clock
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- broker::session::tests::t872_disconnect_settles_already_retired_native_consumer stdout ----
+
+thread 'broker::session::tests::t872_disconnect_settles_already_retired_native_consumer' (1879508) panicked at host/src/broker/session/tests.rs:345:5:
+T872 disconnect retained fully retired resource
+
+---- broker::session::tests::t872_expired_commit_drains_without_double_close stdout ----
+
+thread 'broker::session::tests::t872_expired_commit_drains_without_double_close' (1879510) panicked at host/src/broker/session/tests.rs:300:5:
+T872 expired Commit double-close: Some(channel already closing)
+
+---- broker::session::tests::t872_peer_media_terminal_revokes_resource stdout ----
+
+thread 'broker::session::tests::t872_peer_media_terminal_revokes_resource' (1879511) panicked at host/src/broker/session/tests.rs:314:5:
+T872 peer terminal left resource admitted
+
+---- broker::session::tests::t872_pre_admission_payload_becomes_readable_on_admission stdout ----
+
+thread 'broker::session::tests::t872_pre_admission_payload_becomes_readable_on_admission' (1879512) panicked at host/src/broker/session/tests.rs:332:5:
+T872 pre-admission bytes lost readiness notification
+
+---- broker::session::tests::t872_premature_media_terminal_cannot_corrupt_inactive_generation stdout ----
+
+thread 'broker::session::tests::t872_premature_media_terminal_cannot_corrupt_inactive_generation' (1879513) panicked at host/src/broker/session/tests.rs:385:5:
+T872 pre-Commit terminal silently closed uninstalled generation
+
+
+failures:
+    broker::session::tests::t872_awaited_event_uses_current_time_for_resource_deadline
+    broker::session::tests::t872_disconnect_settles_already_retired_native_consumer
+    broker::session::tests::t872_expired_commit_drains_without_double_close
+    broker::session::tests::t872_peer_media_terminal_revokes_resource
+    broker::session::tests::t872_pre_admission_payload_becomes_readable_on_admission
+    broker::session::tests::t872_premature_media_terminal_cannot_corrupt_inactive_generation
+
+test result: FAILED. 3 passed; 6 failed; 0 ignored; 0 measured; 396 filtered out; finished in 0.04s
+
+error: test failed, to rerun pass `-p blent --lib`

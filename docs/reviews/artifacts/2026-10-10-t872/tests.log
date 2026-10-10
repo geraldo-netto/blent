@@ -1,0 +1,63 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.16s
+     Running unittests src/lib.rs (/tmp/blent-t846-alpn-coverage/debug/deps/blent-592b3b54ab5a39c1)
+
+running 52 tests
+test broker::connection::tests::t872_failed_native_retirement_does_not_release_link_ownership ... ok
+test broker::connection::tests::t872_native_helper_retirement_observes_actual_child_exit ... ok
+test broker::connection::tests::t872_verified_setup_rechecks_current_pairing_before_install ... ok
+test broker::linux::endpoints::tests::t871_socket_metadata_never_substitutes_another_protocol_or_shared_listener ... ok
+test broker::linux::tests::t871_clients_have_distinct_authenticated_lifetimes ... ok
+test broker::linux::tests::t871_failed_retirement_retains_the_only_listener_capability ... ok
+test broker::linux::tests::t871_invalid_local_socket_selection_fails_before_resource_use ... ok
+test broker::linux::tests::t871_native_authenticated_registration_transfers_pinned_display_listeners ... ok
+test broker::linux::tests::t871_nonlisteners_foreign_addresses_and_duplicate_descriptors_are_rejected ... ok
+test broker::linux::tests::t871_shared_port_is_not_an_exclusive_endpoint_capability ... ok
+test broker::linux::tests::t871_typed_boundary_rejects_malformed_messages_and_unexpected_descriptor_ownership ... ok
+test broker::session::channels::tests::t872_consumer_boundaries_wraparound_and_exhaustion ... ok
+test broker::session::tests::barriers::t872_early_admitted_waits_for_complete_commit_publication ... ok
+test broker::session::tests::barriers::t872_early_media_credit_waits_for_commit_flush ... ok
+test broker::session::tests::barriers::t872_early_revoked_waits_for_complete_revoke_publication ... ok
+test broker::session::tests::barriers::t872_fragmented_capabilities_and_malformed_management_fail_closed ... ok
+test broker::session::tests::barriers::t872_invalid_runtime_bounds_are_rejected_before_admission ... ok
+test broker::session::tests::barriers::t872_permission_then_preparation_keeps_authority_ungranted ... ok
+test broker::session::tests::barriers::t872_prepared_after_local_cancel_never_installs_channels ... ok
+test broker::session::tests::barriers::t872_rejections_retire_without_consuming_mux_generation ... ok
+test broker::session::tests::barriers::t872_stale_management_keys_never_mutate_live_authority ... ok
+test broker::session::tests::consumer::t872_audio_channels_and_peer_revoke_remain_independent ... ok
+test broker::session::tests::consumer::t872_consumer_completion_reannounces_buffered_remainder ... ok
+test broker::session::tests::consumer::t872_idle_tick_and_stale_readiness_preserve_retirement ... ok
+test broker::session::tests::consumer::t872_local_pairing_retries_do_not_change_peer_wire_namespace ... ok
+test broker::session::tests::consumer::t872_readiness_memory_is_bounded_when_consumer_does_not_poll_events ... ok
+test broker::session::tests::consumer::t872_stale_equal_length_completion_cannot_release_new_borrow ... ok
+test broker::session::tests::consumer::t872_tiny_consumption_does_not_starve_peer_revocation ... ok
+test broker::session::tests::t872_awaited_event_uses_current_time_for_resource_deadline ... ok
+test broker::session::tests::t872_disconnect_retains_resource_until_native_callback ... ok
+test broker::session::tests::t872_disconnect_settles_already_retired_native_consumer ... ok
+test broker::session::tests::t872_display_and_camera_have_independent_bounded_consumers ... ok
+test broker::session::tests::t872_expired_commit_drains_without_double_close ... ok
+test broker::session::tests::t872_peer_media_terminal_revokes_resource ... ok
+test broker::session::tests::t872_pre_admission_payload_becomes_readable_on_admission ... ok
+test broker::session::tests::t872_premature_media_terminal_cannot_corrupt_inactive_generation ... ok
+test broker::session::tests::t872_revoke_waits_for_peer_and_actual_native_retirement ... ok
+test broker::session::tests::tls::t872_stock_mutual_tls_carries_admitted_duplex_control ... ok
+test broker::transport::tests::t872_receive_gate_rejects_invalid_generations_without_mutation ... ok
+test broker::transport::tests::t873_borrowed_reservation_preserves_original_buffer_and_revocation ... ok
+test broker::transport::tests::t873_bounded_invalid_declared_lengths_never_reach_allocation ... ok
+test broker::transport::tests::t873_cancellation_does_not_restart_partial_read_deadline ... ok
+test broker::transport::tests::t873_deadline_bounds_and_closed_channel_drain_are_explicit ... ok
+test broker::transport::tests::t873_fragmented_reads_writes_preserve_reservations_and_payload ... ok
+test broker::transport::tests::t873_idle_read_has_no_deadline_but_partial_body_does ... ok
+test broker::transport::tests::t873_invalid_headers_eof_and_native_errors_poison_connection ... ok
+test broker::transport::tests::t873_payload_is_unavailable_until_complete_frame_event ... ok
+test broker::transport::tests::t873_pending_write_services_read_and_pending_consumer_services_write ... ok
+test broker::transport::tests::t873_real_duplex_handles_bidirectional_fragmentation ... ok
+test broker::transport::tests::t873_revocation_during_body_must_drain_completed_frame ... ok
+test broker::transport::tests::t873_stopping_transfers_stream_for_explicit_shutdown ... ok
+test broker::transport::tests::t873_writer_deadline_includes_flush_and_cancelled_waits ... ok
+
+test result: ok. 52 passed; 0 failed; 0 ignored; 0 measured; 375 filtered out; finished in 0.29s
+
+
+    Finished report saved to /tmp/blent-t872-evidence/rust.lcov

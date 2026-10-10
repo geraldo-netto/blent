@@ -228,7 +228,7 @@ activation prerequisite with its own regressions and commit.
 | T852 | Compose stored identities and trust with authenticated pairing | T867, T868 |
 | T871 | Local registration contract and Linux descriptor adapter (implemented) | T856 |
 | T873 | Cancellation-safe bounded frame driver (implemented) | T849 |
-| T872 | Authenticated link runtime and retirement barriers | T849–T852, T871, T873 |
+| T872 | Authenticated host resource runtime and retirement barriers (implemented) | T849–T852, T871, T873 |
 | T853 | On-demand host broker and client composition | T852, T871, T872 |
 | T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
@@ -618,3 +618,29 @@ is rechecked after partial-body revocation.
 these frame events into whole management-record publication barriers and resource
 leases, including inbound events arriving while TLS flush remains pending. The
 driver alone does not perform admission, native-owner retirement or media routing.
+
+## T872 host resource runtime
+
+The host Session now composes framed I/O, the management decoder and Resources.
+Whole-record Commit/Revoke write completions precede the associated transitions.
+Media flow validation for a committing generation waits behind that barrier,
+while management credit continues; matching early results have one deferred slot
+per resource. Invalid/stale protocol events disconnect the link.
+
+Bounded per-channel receive rings and generation-scoped consumer borrow IDs keep
+credit charged until actual output completion. Five coalesced readiness slots
+avoid notification growth and transport is polled before notifications, preserving
+revocation progress during tiny reads. Full resource leases validate callbacks;
+local cancellation never substitutes for native retirement. Connection retains
+native completion independently and rechecks the current verified pairing.
+
+Production wire session ID is 1 inside each fresh mutually authenticated TLS
+stream. Local Pairing epochs are independent on each device and never become
+wire session IDs. TLS resumption remains disabled. T853/T854 must agree the
+symmetric receive window over authenticated TLS before initial CREDIT and drive
+idle `tick` deadlines. Capacity configuration alone is not that agreement.
+
+[Validation and retained regressions](artifacts/2026-10-10-t872/README.md) include
+stock TLS duplex admission/control and actual isolated helper exit. The broker
+executable/client/bridge composition and Android service remain unimplemented;
+production display/touch remains the next native acceptance milestone.

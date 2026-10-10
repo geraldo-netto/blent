@@ -4,7 +4,7 @@
 use anyhow::{ensure, Result};
 use blent_config::connection::{
     mux::Multiplexer,
-    wire::{Header, HEADER_BYTES, MAX_PAYLOAD},
+    wire::{Channel, Header, HEADER_BYTES, MAX_PAYLOAD},
 };
 use std::{
     pin::Pin,
@@ -41,6 +41,7 @@ pub struct Transport<S> {
     failed: bool,
     ready: bool,
     read_first: bool,
+    held: [Option<u64>; 5],
 }
 impl<S: AsyncRead + AsyncWrite + Unpin> Transport<S> {
     pub fn new(stream: S, mux: Multiplexer, timeout: Duration) -> Result<Self> {
@@ -57,6 +58,7 @@ impl<S: AsyncRead + AsyncWrite + Unpin> Transport<S> {
             failed: false,
             ready: false,
             read_first: false,
+            held: [None; 5],
         })
     }
     /// Stop dispatch and transfer stream ownership for bounded TLS shutdown.
@@ -69,6 +71,22 @@ impl<S: AsyncRead + AsyncWrite + Unpin> Transport<S> {
     /// must not call next/finish itself: this driver owns writer reservations.
     pub fn multiplexer(&mut self) -> &mut Multiplexer {
         &mut self.mux
+    }
+    /// Hold a newly committed media generation until whole management-record
+    /// publication completes. Management credit must keep flowing meanwhile.
+    pub fn hold(&mut self, channel: Channel, generation: Option<u64>) -> Result<()> {
+        ensure!(
+            channel != Channel::Management,
+            "cannot gate management credit"
+        );
+        ensure!(
+            generation.is_none_or(
+                |value| (1..=blent_config::connection::wire::MAX_COUNTER).contains(&value)
+            ),
+            "invalid held generation"
+        );
+        self.held[channel as usize - 1] = generation;
+        Ok(())
     }
     pub fn payload(&self) -> &[u8] {
         if self.ready && !self.failed {
@@ -120,7 +138,8 @@ impl<S: AsyncRead + AsyncWrite + Unpin> Transport<S> {
             cx,
             Pin::new(&mut self.stream),
             &mut self.mux,
-            self.timeout
+            self.timeout,
+            &self.held
         ))?;
         self.ready = true;
         self.read_first = false;

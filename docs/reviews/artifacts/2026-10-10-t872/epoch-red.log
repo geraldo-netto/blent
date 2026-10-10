@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.22s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::session::tests::consumer::t872_local_pairing_retries_do_not_change_peer_wire_namespace ... FAILED
+
+failures:
+
+---- broker::session::tests::consumer::t872_local_pairing_retries_do_not_change_peer_wire_namespace stdout ----
+
+thread 'broker::session::tests::consumer::t872_local_pairing_retries_do_not_change_peer_wire_namespace' (1896555) panicked at host/src/broker/session/tests.rs:196:22:
+called `Result::unwrap()` on an `Err` value: stale or misrouted channel
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::session::tests::consumer::t872_local_pairing_retries_do_not_change_peer_wire_namespace
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 426 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

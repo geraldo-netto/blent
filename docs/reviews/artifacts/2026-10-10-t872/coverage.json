@@ -1,0 +1,956 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/broker/session",
+    "host/src/broker/connection",
+    "host/src/broker/transport"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 82,
+      "passing": 82,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/broker/connection.rs",
+      "name": "new",
+      "line": 18,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/connection.rs",
+      "name": "session",
+      "line": 38,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/connection.rs",
+      "name": "completion",
+      "line": 41,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/connection.rs",
+      "name": "retire",
+      "line": 47,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "members",
+      "line": 3,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "belongs",
+      "line": 11,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "resource",
+      "line": 14,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "new",
+      "line": 33,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "install",
+      "line": 39,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "buffer",
+      "line": 48,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "readable",
+      "line": 54,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "push",
+      "line": 60,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "read",
+      "line": 70,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "consumed",
+      "line": 94,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/channels.rs",
+      "name": "retire",
+      "line": 104,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "notice",
+      "line": 3,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "cancel",
+      "line": 8,
+      "language": "rust",
+      "covered": 20,
+      "total": 21,
+      "percent": 95.23809523809524,
+      "passes": true,
+      "missing": [
+        26
+      ]
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "tick",
+      "line": 30,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "native_retired",
+      "line": 39,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "retire_consumers",
+      "line": 48,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "disconnect",
+      "line": 59,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "settle",
+      "line": 83,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "settle_one",
+      "line": 99,
+      "language": "rust",
+      "covered": 11,
+      "total": 13,
+      "percent": 84.61538461538461,
+      "passes": true,
+      "missing": [
+        102,
+        105
+      ]
+    },
+    {
+      "file": "host/src/broker/session/lifecycle.rs",
+      "name": "finish_channels",
+      "line": 112,
+      "language": "rust",
+      "covered": 17,
+      "total": 20,
+      "percent": 85.0,
+      "passes": true,
+      "missing": [
+        114,
+        122,
+        128
+      ]
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "room",
+      "line": 14,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "queue",
+      "line": 22,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "publish",
+      "line": 34,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "written",
+      "line": 48,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "published",
+      "line": 66,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "install",
+      "line": 83,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        102
+      ]
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "management_frame",
+      "line": 106,
+      "language": "rust",
+      "covered": 24,
+      "total": 25,
+      "percent": 96.0,
+      "passes": true,
+      "missing": [
+        128
+      ]
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "lease_for",
+      "line": 134,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "blocked",
+      "line": 141,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        148
+      ]
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "defer",
+      "line": 151,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "message",
+      "line": 163,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "prepared",
+      "line": 188,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "readable",
+      "line": 200,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/management.rs",
+      "name": "outcome",
+      "line": 205,
+      "language": "rust",
+      "covered": 16,
+      "total": 18,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        211,
+        219
+      ]
+    },
+    {
+      "file": "host/src/broker/session/readiness.rs",
+      "name": "mark_readable",
+      "line": 3,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/readiness.rs",
+      "name": "next_notice",
+      "line": 8,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session/readiness.rs",
+      "name": "readiness_at",
+      "line": 21,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        31
+      ]
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "default",
+      "line": 47,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "new",
+      "line": 89,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "transport",
+      "line": 116,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "binding",
+      "line": 121,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "current",
+      "line": 128,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "capabilities",
+      "line": 131,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "register",
+      "line": 134,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "offer",
+      "line": 161,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        172
+      ]
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "read",
+      "line": 177,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "consumed",
+      "line": 189,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        201
+      ]
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "next",
+      "line": 204,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "poll_event",
+      "line": 214,
+      "language": "rust",
+      "covered": 8,
+      "total": 9,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        218
+      ]
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "poll_step",
+      "line": 223,
+      "language": "rust",
+      "covered": 16,
+      "total": 18,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        227,
+        228
+      ]
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "received",
+      "line": 247,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "peer_terminal",
+      "line": 257,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "media_frame",
+      "line": 266,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        278
+      ]
+    },
+    {
+      "file": "host/src/broker/session.rs",
+      "name": "ensure_poll_time",
+      "line": 286,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/deadline.rs",
+      "name": "active",
+      "line": 12,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/deadline.rs",
+      "name": "start",
+      "line": 15,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/deadline.rs",
+      "name": "disarm",
+      "line": 22,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/deadline.rs",
+      "name": "poll",
+      "line": 25,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/input.rs",
+      "name": "new",
+      "line": 12,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/input.rs",
+      "name": "payload",
+      "line": 21,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/input.rs",
+      "name": "clear",
+      "line": 25,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/input.rs",
+      "name": "poll",
+      "line": 30,
+      "language": "rust",
+      "covered": 31,
+      "total": 31,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/input.rs",
+      "name": "read_header",
+      "line": 64,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/input.rs",
+      "name": "read_part",
+      "line": 78,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/output.rs",
+      "name": "default",
+      "line": 10,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/output.rs",
+      "name": "poll",
+      "line": 20,
+      "language": "rust",
+      "covered": 37,
+      "total": 37,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport/output.rs",
+      "name": "write_part",
+      "line": 59,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "new",
+      "line": 47,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "into_stream",
+      "line": 67,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "multiplexer",
+      "line": 72,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "hold",
+      "line": 77,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "payload",
+      "line": 91,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "consume",
+      "line": 98,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "next",
+      "line": 105,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "poll_event",
+      "line": 108,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "poll_fair",
+      "line": 121,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "poll_read",
+      "line": 133,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/transport.rs",
+      "name": "poll_write",
+      "line": 148,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

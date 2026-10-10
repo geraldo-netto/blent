@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.65s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::session::tests::consumer::t872_stale_equal_length_completion_cannot_release_new_borrow ... FAILED
+
+failures:
+
+---- broker::session::tests::consumer::t872_stale_equal_length_completion_cannot_release_new_borrow stdout ----
+
+thread 'broker::session::tests::consumer::t872_stale_equal_length_completion_cannot_release_new_borrow' (1881779) panicked at host/src/broker/session/tests/consumer.rs:11:5:
+T872 stale completion released new equal-length borrow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::session::tests::consumer::t872_stale_equal_length_completion_cannot_release_new_borrow
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 405 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent --lib`

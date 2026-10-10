@@ -393,3 +393,17 @@ async fn t873_borrowed_reservation_preserves_original_buffer_and_revocation() {
     mux.finish(true).unwrap();
     assert!(mux.reserved().is_none());
 }
+#[tokio::test]
+async fn t872_receive_gate_rejects_invalid_generations_without_mutation() {
+    let mut driver = driver();
+    assert!(driver.hold(Channel::Management, None).is_err());
+    for value in [0, blent_config::connection::wire::MAX_COUNTER + 1, u64::MAX] {
+        assert!(
+            driver.hold(Channel::Camera, Some(value)).is_err(),
+            "T872 invalid receive gate generation accepted"
+        );
+        assert_eq!(driver.held[Channel::Camera as usize - 1], None);
+    }
+    driver.hold(Channel::Camera, Some(1)).unwrap();
+    driver.hold(Channel::Camera, None).unwrap();
+}
