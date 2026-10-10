@@ -227,17 +227,18 @@ activation prerequisite with its own regressions and commit.
 | T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
+| T858 | Independent camera integration; second user-visible milestone | T857 routing; maintainer priority after working display |
 | T860 | Independent speaker integration | T857 routing; establishes shared audio adapter |
-| T859 | Independent microphone integration | T860 shared audio adapter |
-| T858 | Independent camera integration | T857 routing, T859 consent/uplink patterns |
+| T859 | Independent microphone integration | T860 shared audio adapter, T858 consent/uplink patterns |
 | T862 | Integrated failure, isolation and reconnect qualification | T855–T860 |
 | T846 | Local-build debugging-off media acceptance and matched measurements | Above integration and qualification; T861 not required |
 | T861 | Deferred by maintainer: native helper/broker and APK packaging | Resume only on explicit request |
 | T863 | API 27/28 native accessory/TLS qualification | Missing suitable native device/runner |
 
 The next user-visible milestone is production display plus touch without ADB
-(T857). Speakers follow to establish audio delivery without microphone permission;
-microphone then validates the shared audio uplink and consent path before camera.
+(T857). The maintainer explicitly selected webcam second (T858), followed by
+speakers (T860) and microphone (T859). Speaker delivery establishes the shared
+audio adapter; microphone reuses it and the camera consent/uplink pattern.
 Run lifecycle/failure regressions with each feature and finish concurrent-resource
 qualification under T862 before final measured acceptance. Packaging T861 was deferred by the maintainer on October 10 and does
 not block local-build implementation or acceptance; no release packaging pass is
@@ -349,7 +350,8 @@ check the connection lease. Preserve `Attachment::Lease`, `ResourceLane`,
 `AndroidWorkerRun` and worker-death quarantine rather than admitting replacements
 on timeouts alone.
 
-Integrate display/control first, then speakers, microphone and camera. Each item
+Integrate working display/control first, webcam second, then speakers and microphone,
+following the maintainer’s October 10 priority. Each item
 includes independent lifecycle and debugging-off acceptance; T862 completes
 concurrent-resource failure acceptance and T846 matched final measurements. Keep optional
 ADB selection; native backend acceptance and full feature parity remain pending.
