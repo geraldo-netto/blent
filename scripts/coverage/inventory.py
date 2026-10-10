@@ -130,7 +130,9 @@ def file_functions(path, source, kind):
 
 
 def owned_functions(root):
-    all_paths = source_files(root)
+    # Apply the established coverage scope before parsing: archived benchmark
+    # fragments are not compilation units and cannot certify maintained code.
+    all_paths = [path for path in source_files(root) if coverage_source(path)]
     paths = [path for path in all_paths if not fixture(path)]
     app_run = Path('packaging/appimage/AppRun')
     if (root / app_run).is_file():

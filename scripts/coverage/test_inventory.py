@@ -8,6 +8,25 @@ from model import result
 
 
 class InventoryTest(unittest.TestCase):
+    def test_t831_exempt_artifacts_cannot_break_production_inventory(self):
+        import subprocess
+        from report import snapshot
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            for name, source in [('host/src/main.rs', 'fn main() {}'),
+                                 ('docs/reviews/candidate.c', 'invalid {{{'),
+                                 ('scripts/benchmarks/probe.rs', 'invalid {{{')]:
+                path = root/name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(source)
+            manifest = snapshot(root)
+            self.assertEqual(list(manifest['sources']), ['host/src/main.rs'])
+            self.assertEqual([fn['name'] for fn in manifest['functions']], ['main'])
+            (root/'host/src/main.rs').write_text('invalid {{{')
+            with self.assertRaisesRegex(ValueError, 'parse error'):
+                snapshot(root)
+
     def test_t766_optional_gpu_functions_remain_in_production_scope(self):
         self.assertTrue(coverage_source(Path('host/gpu/capture.c')))
         self.assertTrue(coverage_source(Path('host/gpu/options.h')))
