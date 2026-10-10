@@ -9,7 +9,7 @@ fn recorded_write(config: &FileConfig, path: &Path) -> (Result<()>, String) {
         .with_ansi(false)
         .with_writer(move || writer.try_clone().unwrap())
         .finish();
-    let result = tracing::subscriber::with_default(subscriber, || config.write_at(path));
+    let result = tracing::subscriber::with_default(subscriber, || write_at(&config, path));
     (result, std::fs::read_to_string(log.path()).unwrap())
 }
 
@@ -43,14 +43,14 @@ fn t566_success_reports_only_committed_changes_and_noop_stays_quiet() {
     let directory = tempfile::tempdir().unwrap();
     let path = directory.path().join("config.toml");
     let original = FileConfig::default();
-    original.write_at(&path).unwrap();
+    write_at(&original, &path).unwrap();
     let changed = FileConfig {
         fps: 30,
         ..original
     };
     let (result, log) = recorded_write(&changed, &path);
     result.unwrap();
-    assert_eq!(FileConfig::load_at(&path).fps, 30);
+    assert_eq!(crate::storage::load_at(&path).fps, 30);
     assert!(
         log.contains("Config written: fps = 30 (was 60)"),
         "T566: {log}"

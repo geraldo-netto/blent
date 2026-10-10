@@ -35,7 +35,7 @@ pub(super) fn run() -> Result<()> {
             .build()?
             .block_on(serve(
                 &path,
-                cli.connection_settings(blent_config::FileConfig::load())?,
+                cli.connection_settings(blent_config::storage::ConfigStore::default().load())?,
             )),
         Some(Commands::Wifi { off }) => tokio::runtime::Builder::new_current_thread()
             .enable_all()

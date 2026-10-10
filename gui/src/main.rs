@@ -163,7 +163,7 @@ fn check_for_update() -> Option<String> {
 
 impl App {
     fn new(cc: &eframe::CreationContext<'_>, scheduling_status: String) -> Self {
-        let cfg = FileConfig::load();
+        let cfg = blent_config::storage::ConfigStore::default().load();
         let status = Arc::new(Mutex::new(Status::default()));
 
         let update = Arc::new(Mutex::new(None));

@@ -331,7 +331,9 @@ exit 1
                     encoder: if explicit { "libx264" } else { encoder }.into(),
                     ..Default::default()
                 };
-                saved.save().unwrap();
+                blent_config::storage::ConfigStore::default()
+                    .save(&saved)
+                    .unwrap();
                 let mut args = vec!["blent", "--helper", "/nonexistent-t284-helper"];
                 if explicit {
                     args.extend(["--encoder", encoder]);
@@ -352,7 +354,9 @@ exit 1
     async fn assert_persistence_keeps_runtime_responsive(
         writer: impl std::future::Future<Output = ()> + Send + 'static,
     ) {
-        config::FileConfig::default().save().unwrap();
+        blent_config::storage::ConfigStore::default()
+            .save(&config::FileConfig::default())
+            .unwrap();
         let lock =
             std::fs::File::open(config::config_path().unwrap().with_extension("lock")).unwrap();
         lock.lock().unwrap();
@@ -383,7 +387,11 @@ exit 1
         sender.send(true).unwrap();
         drop(sender);
         assert_persistence_keeps_runtime_responsive(persistence.run()).await;
-        assert!(config::FileConfig::load().pen_only);
+        assert!(
+            blent_config::storage::ConfigStore::default()
+                .load()
+                .pen_only
+        );
     }
 
     #[tokio::test(flavor = "current_thread")]
@@ -414,7 +422,7 @@ exit 1
             .unwrap();
         drop(sender);
         assert_persistence_keeps_runtime_responsive(writer).await;
-        assert_eq!(config::FileConfig::load().fps, 30);
+        assert_eq!(blent_config::storage::ConfigStore::default().load().fps, 30);
     }
 
     #[tokio::test]
@@ -423,7 +431,9 @@ exit 1
             return;
         }
         let saved = config::FileConfig::default();
-        saved.save().unwrap();
+        blent_config::storage::ConfigStore::default()
+            .save(&saved)
+            .unwrap();
         let initial = media::EncoderSettings {
             encoder: saved.encoder.clone(),
             fps: saved.fps,
@@ -458,12 +468,12 @@ exit 1
             std::fs::read_to_string(config::config_path().unwrap()).unwrap(),
             "invalid = ["
         );
-        config::FileConfig {
-            position: "left".into(),
-            ..saved.clone()
-        }
-        .save()
-        .unwrap();
+        blent_config::storage::ConfigStore::default()
+            .save(&config::FileConfig {
+                position: "left".into(),
+                ..saved.clone()
+            })
+            .unwrap();
         sender
             .send(media::EncoderSettings { fps: 30, ..unsaved })
             .unwrap();
@@ -471,7 +481,7 @@ exit 1
         writer.await;
         worker.shutdown().await;
         assert_eq!(
-            config::FileConfig::load(),
+            blent_config::storage::ConfigStore::default().load(),
             config::FileConfig {
                 bitrate: 12000,
                 fps: 30,
@@ -493,12 +503,12 @@ exit 1
             (false, true, &[][..], false), // unchanged temporary --pen-only
             (false, true, &[false, true][..], true), // deliberate round trip
         ] {
-            config::FileConfig {
-                pen_only: saved,
-                ..Default::default()
-            }
-            .save()
-            .unwrap();
+            blent_config::storage::ConfigStore::default()
+                .save(&config::FileConfig {
+                    pen_only: saved,
+                    ..Default::default()
+                })
+                .unwrap();
             let (sender, persistence) = mode_channel(initial);
             let input_observer = sender.subscribe();
             // Model messages arriving after the control handlers start, before
@@ -510,7 +520,9 @@ exit 1
             drop(sender);
             persistence.run().await;
             assert_eq!(
-                config::FileConfig::load().pen_only,
+                blent_config::storage::ConfigStore::default()
+                    .load()
+                    .pen_only,
                 expected,
                 "T296: mode changes {changes:?} from {initial} with saved {saved}"
             );
@@ -526,7 +538,9 @@ exit 1
             encoder: "libx264".into(),
             ..Default::default()
         };
-        saved.save().unwrap();
+        blent_config::storage::ConfigStore::default()
+            .save(&saved)
+            .unwrap();
         let initial = media::EncoderSettings {
             encoder: "h264_vaapi".into(),
             fps: 60,
@@ -546,11 +560,12 @@ exit 1
         let cli = Cli::try_parse_from(["blent", "--encoder", "h264_vaapi"]).unwrap();
         let persist = persist_settings(rx, CliOverrides::new(&cli));
         // A GUI edit to an unrelated field must also survive the delayed writer.
-        config::FileConfig::update(|cfg| {
-            cfg.pen_only = true;
-            Ok(())
-        })
-        .unwrap();
+        blent_config::storage::ConfigStore::default()
+            .update(|cfg| {
+                cfg.pen_only = true;
+                Ok(())
+            })
+            .unwrap();
         tx.send(media::EncoderSettings {
             encoder: "h264_nvenc".into(),
             fps: 30,
@@ -579,7 +594,7 @@ exit 1
             ..saved
         };
         assert_eq!(
-            config::FileConfig::load(),
+            blent_config::storage::ConfigStore::default().load(),
             expected,
             "T292: a queued first update must not become the persistence baseline"
         );
@@ -1570,7 +1585,7 @@ printf '%s\n' "$2" >> "$0.log"
 
 async fn run_daemon(cli: Cli) -> Result<()> {
     // Validate the complete effective range before claiming resources.
-    let file_cfg = config::FileConfig::load();
+    let file_cfg = blent_config::storage::ConfigStore::default().load();
     let effective = effective_config(&cli, &file_cfg);
     effective.validate()?;
     config::validate_encoder_for_build(capture::initial_encoder(
@@ -1867,7 +1882,7 @@ fn heal_config(file_cfg: &config::FileConfig) {
         .and_then(|path| std::fs::read_to_string(path).ok())
         .and_then(|t| toml::from_str(&t).ok());
     if raw.is_some_and(|r| &r != file_cfg) {
-        match config::FileConfig::update(|_| Ok(())) {
+        match blent_config::storage::ConfigStore::default().update(|_| Ok(())) {
             Ok(_) => info!(
                 "Rewrote out-of-range settings in {:?}",
                 config::config_path()

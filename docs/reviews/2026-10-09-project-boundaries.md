@@ -5,6 +5,14 @@ Review-only; no production refactor, download or native deployment. Findings are
 tracked in [TODO.md](../../TODO.md), alongside the [Android](2026-10-09-resource-lifecycle.md)
 and [host](2026-10-09-host-performance-lifecycle.md) resource reviews.
 
+## Implementation follow-up (2026-10-10)
+
+T821 now defines selection values independently of their media consumer. T824
+moves filesystem methods off FileConfig and makes persistence workers depend on
+focused snapshot/transaction/publication contracts. The sections below retain the
+original review baseline; [current fixes and validation](2026-10-10-host-fixes.md)
+record implemented behavior and remaining platform limits.
+
 ## Assessment
 
 Decoupling is partially implemented, not complete. Shared Rust protocol/model

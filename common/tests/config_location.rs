@@ -52,7 +52,9 @@ fn t497_default_adapters_publish_only_the_isolated_current_preference() {
             pipe_capacity_mib: 8,
             ..baseline.clone()
         };
-        let stored = edited.save_edits(&baseline).unwrap();
+        let stored = blent_config::storage::ConfigStore::default()
+            .save_edits(&edited, &baseline)
+            .unwrap();
         assert_eq!(stored.pipe_capacity_mib, 8);
         let request = blent_config::linux::pipe::request_path().unwrap();
         assert!(request.starts_with(std::env::var_os("XDG_RUNTIME_DIR").unwrap()));

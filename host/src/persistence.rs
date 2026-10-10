@@ -1,7 +1,7 @@
 //! One daemon-owned filesystem worker; a bounded queue admits at most one
 //! waiting transaction. Settings/mode watch channels coalesce later updates.
 use anyhow::{Context, Result};
-use blent_config::{model::FileConfig, storage::ConfigStore};
+use blent_config::{model::FileConfig, persistence_contract::Transactions};
 use std::sync::{
     atomic::{AtomicBool, Ordering},
     Arc,
@@ -47,7 +47,7 @@ pub struct Worker {
 }
 
 impl Worker {
-    pub fn new(store: ConfigStore) -> std::io::Result<Self> {
+    pub fn new(store: impl Transactions + 'static) -> std::io::Result<Self> {
         let (sender, receiver) = mpsc::channel(1);
         let cancelled = Arc::new(AtomicBool::new(false));
         let stop = cancelled.clone();
@@ -84,7 +84,7 @@ impl Drop for Worker {
     }
 }
 
-fn run(store: ConfigStore, cancelled: Arc<AtomicBool>, mut queue: mpsc::Receiver<Message>) {
+fn run(store: impl Transactions, cancelled: Arc<AtomicBool>, mut queue: mpsc::Receiver<Message>) {
     while let Some(message) = queue.blocking_recv() {
         if cancelled.load(Ordering::Acquire) {
             break;
@@ -92,7 +92,7 @@ fn run(store: ConfigStore, cancelled: Arc<AtomicBool>, mut queue: mpsc::Receiver
         match message {
             Message::Update(edit, reply) => {
                 if !reply.is_closed() {
-                    let _ = reply.send(store.update_cancellable(&cancelled, edit));
+                    let _ = reply.send(store.transact(&cancelled, edit));
                 }
             }
             #[cfg(test)]
@@ -107,7 +107,39 @@ fn run(store: ConfigStore, cancelled: Arc<AtomicBool>, mut queue: mpsc::Receiver
 #[cfg(test)]
 mod tests {
     use super::*;
+    use blent_config::storage::ConfigStore;
     use std::time::Duration;
+
+    #[tokio::test]
+    async fn t824_owned_writer_uses_an_independent_transaction_adapter() {
+        struct Memory(std::sync::Mutex<FileConfig>);
+        impl Transactions for Memory {
+            fn transact(
+                &self,
+                cancelled: &AtomicBool,
+                edit: blent_config::persistence_contract::Edit<'_>,
+            ) -> Result<FileConfig> {
+                anyhow::ensure!(!cancelled.load(Ordering::Acquire), "cancelled");
+                let mut config = self.0.lock().unwrap();
+                edit(&mut config)?;
+                Ok(config.clone())
+            }
+        }
+        let worker = Worker::new(Memory(std::sync::Mutex::new(FileConfig::default()))).unwrap();
+        assert_eq!(
+            worker
+                .writer()
+                .update(|config| {
+                    config.fps = 30;
+                    Ok(())
+                })
+                .await
+                .unwrap()
+                .fps,
+            30
+        );
+        worker.shutdown().await;
+    }
 
     #[tokio::test(flavor = "current_thread")]
     async fn t385_shutdown_cancels_lock_wait_and_queued_work_then_joins() {

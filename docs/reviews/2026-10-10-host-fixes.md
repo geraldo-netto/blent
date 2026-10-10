@@ -81,3 +81,26 @@ now includes that unit; both permanent distribution tests pass offline. Producti
 code and packaging assertions are unchanged. Full-workspace RPM notice validation
 still needs local `rpmbuild` (T833); no dependencies were downloaded.
 [Red/green evidence](artifacts/2026-10-10-t832/).
+
+## T824: independent persistence contracts
+
+`persistence_contract` defines focused snapshot, transaction/cancellation and
+settings merge/publication ports without paths, files or native service types.
+FileConfig retains validation and merging; filesystem methods now belong to the
+ConfigStore adapter. Host edit workers and GUI save/restart policy accept the
+ports, permitting independent memory-store tests. Serialization, atomic replace,
+merge-over-latest and publish-under-lock semantics remain intact. Restart occurs
+after successful commit/publication and lock release. Cancellation before commit
+rejects work; cancellation cannot roll back a commit already in progress.
+
+Permanent structural checks first failed on model I/O and concrete consumer
+dependencies. They now pass, alongside the same contract exercised against memory
+and filesystem adapters, no-default-feature compilation, existing concurrent
+merge/atomicity/cancellation regressions and GUI failed-save/restart-order tests.
+A child-process test verifies live resolution preference reads from an isolated
+store. The actual GUI starts and closes successfully under private Xvfb.
+Linux functions in affected files meet individual 80% coverage and complexity <=9;
+Windows-only functions remain visibly unmeasured under T737. Full workspace
+library/binary tests pass; the broader integration run exposed the separately
+fixed T832 fixture and missing RPM tool T833. No full-workspace pass is claimed.
+[Source-attested coverage and red/green logs](artifacts/2026-10-10-t824/).

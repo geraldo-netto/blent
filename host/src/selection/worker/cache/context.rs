@@ -110,7 +110,8 @@ fn host_stamp(base: &CaptureConfig) -> Option<String> {
     }
     digest.update(version.stdout);
     digest.update(
-        blent_config::FileConfig::load()
+        blent_config::storage::ConfigStore::default()
+            .load()
             .pipe_capacity_mib
             .to_le_bytes(),
     );

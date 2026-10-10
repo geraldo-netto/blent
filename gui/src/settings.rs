@@ -1,6 +1,6 @@
 //! One owned save at a time. File locks/fsync and an optional restart run off
 //! the render thread; completion carries the exact submitted/saved snapshots.
-use blent_config::{model::FileConfig, storage::ConfigStore};
+use blent_config::{model::FileConfig, persistence_contract::SettingsEdits};
 use std::thread::JoinHandle;
 
 pub type PipeApply = Box<dyn FnOnce(u32) -> Result<(), String> + Send>;
@@ -52,7 +52,7 @@ pub struct PendingSave {
 
 impl PendingSave {
     pub fn start(
-        store: ConfigStore,
+        store: impl SettingsEdits + 'static,
         submitted: FileConfig,
         baseline: FileConfig,
         restart: Option<Restart>,
@@ -67,7 +67,7 @@ impl PendingSave {
     }
 
     fn start_with_pipe(
-        store: ConfigStore,
+        store: impl SettingsEdits + 'static,
         submitted: FileConfig,
         baseline: FileConfig,
         restart: Option<Restart>,
@@ -75,11 +75,16 @@ impl PendingSave {
     ) -> Self {
         let edited = submitted.clone();
         let worker = std::thread::spawn(move || {
-            let (config, pipe) = store
-                .save_edits_then(&edited, &baseline, |config| {
-                    (config.pipe_capacity_mib != baseline.pipe_capacity_mib)
-                        .then(|| apply_pipe(config.pipe_capacity_mib))
-                })
+            let mut pipe = None;
+            let config = store
+                .merge_and_publish(
+                    &edited,
+                    &baseline,
+                    Box::new(|config| {
+                        pipe = (config.pipe_capacity_mib != baseline.pipe_capacity_mib)
+                            .then(|| apply_pipe(config.pipe_capacity_mib));
+                    }),
+                )
                 .map_err(|error| format!("Save failed: {error}"))?;
             // Exactly one restart, only after the transaction has committed.
             let restart = restart.map(|action| action());
@@ -106,6 +111,66 @@ impl PendingSave {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use blent_config::storage::ConfigStore;
+
+    #[test]
+    fn t824_save_accepts_independent_adapter_and_restarts_only_after_commit() {
+        struct Memory {
+            failed: bool,
+            events: std::sync::Arc<std::sync::Mutex<Vec<&'static str>>>,
+        }
+        impl SettingsEdits for Memory {
+            fn merge_and_publish(
+                &self,
+                edited: &FileConfig,
+                _: &FileConfig,
+                publish: blent_config::persistence_contract::Publication<'_>,
+            ) -> blent_config::persistence_contract::PersistenceResult<FileConfig> {
+                if self.failed {
+                    return Err(std::io::Error::other("fixture rejected").into());
+                }
+                self.events.lock().unwrap().push("commit");
+                publish(edited);
+                self.events.lock().unwrap().push("unlock");
+                Ok(edited.clone())
+            }
+        }
+        for failed in [false, true] {
+            let events = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
+            let restart = events.clone();
+            let pipe = events.clone();
+            let initial = FileConfig::default();
+            let mut edited = initial.clone();
+            edited.pipe_capacity_mib = 8;
+            let outcome = PendingSave::start_with_pipe(
+                Memory {
+                    failed,
+                    events: events.clone(),
+                },
+                edited,
+                initial,
+                Some(Box::new(move || {
+                    restart.lock().unwrap().push("restart");
+                    Ok(())
+                })),
+                Box::new(move |_| {
+                    pipe.lock().unwrap().push("publish");
+                    Ok(())
+                }),
+            )
+            .finish();
+            if failed {
+                assert!(outcome.is_err());
+                assert!(events.lock().unwrap().is_empty());
+            } else {
+                assert!(outcome.is_ok());
+                assert_eq!(
+                    *events.lock().unwrap(),
+                    ["commit", "publish", "unlock", "restart"]
+                );
+            }
+        }
+    }
 
     #[test]
     fn t474_save_preserves_capacity_and_restarts_once_after_commit() {

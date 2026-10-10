@@ -60,16 +60,18 @@ impl ConfigStore {
     }
 
     pub fn load(&self) -> FileConfig {
-        self.path()
-            .map(FileConfig::load_at)
-            .unwrap_or_else(|error| {
-                tracing::warn!("Cannot locate configuration: {error}");
-                FileConfig::default()
-            })
+        self.path().map(load_at).unwrap_or_else(|error| {
+            tracing::warn!("Cannot locate configuration: {error}");
+            FileConfig::default()
+        })
+    }
+
+    pub fn save(&self, config: &FileConfig) -> Result<()> {
+        save_at(config, self.path()?)
     }
 
     pub fn update(&self, edit: impl FnOnce(&mut FileConfig) -> Result<()>) -> Result<FileConfig> {
-        FileConfig::update_at(self.path()?, edit)
+        update_at(self.path()?, edit)
     }
 
     /// Cooperative cancellation while waiting for a lock. Once filesystem
@@ -82,12 +84,12 @@ impl ConfigStore {
     ) -> Result<FileConfig> {
         use std::sync::atomic::Ordering;
         let path = self.path()?;
-        let lock = FileConfig::open_lock_at(path)?;
+        let lock = open_lock_at(path)?;
         while !cancelled.load(Ordering::Acquire) {
             match lock.try_lock() {
                 Ok(()) => {
                     anyhow::ensure!(!cancelled.load(Ordering::Acquire), "config save cancelled");
-                    return FileConfig::update_locked_at(path, edit);
+                    return update_locked_at(path, edit);
                 }
                 Err(std::fs::TryLockError::WouldBlock) => {
                     std::thread::sleep(std::time::Duration::from_millis(10));
@@ -112,8 +114,8 @@ impl ConfigStore {
         publish: impl FnOnce(&FileConfig) -> T,
     ) -> Result<(FileConfig, T)> {
         let path = self.path()?;
-        let _lock = FileConfig::lock_at(path)?;
-        let config = FileConfig::update_locked_at(path, |latest| {
+        let _lock = lock_at(path)?;
+        let config = update_locked_at(path, |latest| {
             *latest = edited.merge_edits(baseline, latest.clone())?;
             Ok(())
         })?;
@@ -124,106 +126,116 @@ impl ConfigStore {
     /// Read and act on the current persisted snapshot under the same lock used
     /// by saves. The callback must not recursively start a config transaction.
     pub fn read_locked<T>(&self, action: impl FnOnce(&FileConfig) -> Result<T>) -> Result<T> {
-        let _lock = FileConfig::lock_at(self.path()?)?;
+        let _lock = lock_at(self.path()?)?;
         action(&self.load())
     }
 }
 
-impl FileConfig {
-    pub fn load() -> Self {
-        ConfigStore::default().load()
+impl crate::persistence_contract::Snapshots for ConfigStore {
+    fn snapshot(&self) -> FileConfig {
+        self.load()
     }
+}
+impl crate::persistence_contract::Transactions for ConfigStore {
+    fn transact(
+        &self,
+        cancelled: &std::sync::atomic::AtomicBool,
+        edit: crate::persistence_contract::Edit<'_>,
+    ) -> Result<FileConfig> {
+        self.update_cancellable(cancelled, edit)
+    }
+}
+impl crate::persistence_contract::SettingsEdits for ConfigStore {
+    fn merge_and_publish(
+        &self,
+        edited: &FileConfig,
+        baseline: &FileConfig,
+        publish: crate::persistence_contract::Publication<'_>,
+    ) -> Result<FileConfig> {
+        self.save_edits_then(edited, baseline, publish)
+            .map(|(config, ())| config)
+    }
+}
 
-    pub fn load_at(path: &Path) -> Self {
-        let mut cfg = match std::fs::read_to_string(path) {
-            Ok(text) => toml::from_str(&text).unwrap_or_else(|e| {
-                tracing::warn!("Invalid config at {:?}: {} — using defaults", path, e);
-                Self::default()
-            }),
-            Err(_) => Self::default(),
-        };
-        cfg.sanitize();
-        cfg
-    }
+pub fn load_at(path: &Path) -> FileConfig {
+    let mut cfg = match std::fs::read_to_string(path) {
+        Ok(text) => toml::from_str(&text).unwrap_or_else(|e| {
+            tracing::warn!("Invalid config at {:?}: {} — using defaults", path, e);
+            FileConfig::default()
+        }),
+        Err(_) => FileConfig::default(),
+    };
+    cfg.sanitize();
+    cfg
+}
 
-    pub fn save(&self) -> Result<()> {
-        self.save_at(&config_path()?)
-    }
+fn lock_at(path: &Path) -> Result<std::fs::File> {
+    let lock = open_lock_at(path)?;
+    lock.lock().context("lock config transaction")?;
+    Ok(lock)
+}
 
-    /// Serialize the entire read/modify/write operation across processes.
-    pub fn update(edit: impl FnOnce(&mut Self) -> Result<()>) -> Result<Self> {
-        ConfigStore::default().update(edit)
+fn open_lock_at(path: &Path) -> Result<std::fs::File> {
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent)?;
     }
+    let lock = std::fs::OpenOptions::new()
+        .create(true)
+        .truncate(false)
+        .read(true)
+        .write(true)
+        .open(path.with_extension("lock"))?;
+    Ok(lock)
+}
 
-    pub fn save_edits(&self, baseline: &Self) -> Result<Self> {
-        ConfigStore::default().save_edits(self, baseline)
-    }
+fn update_at(path: &Path, edit: impl FnOnce(&mut FileConfig) -> Result<()>) -> Result<FileConfig> {
+    let _lock = lock_at(path)?;
+    update_locked_at(path, edit)
+}
 
-    fn lock_at(path: &Path) -> Result<std::fs::File> {
-        let lock = Self::open_lock_at(path)?;
-        lock.lock().context("lock config transaction")?;
-        Ok(lock)
-    }
+fn update_locked_at(
+    path: &Path,
+    edit: impl FnOnce(&mut FileConfig) -> Result<()>,
+) -> Result<FileConfig> {
+    // A partial edit must never replace unreadable preferences with defaults.
+    // Only a genuinely absent file starts a new configuration.
+    let mut config: FileConfig = match std::fs::read_to_string(path) {
+        Ok(text) => toml::from_str(&text).context("parse config before update")?,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => FileConfig::default(),
+        Err(error) => return Err(error).context("read config before update"),
+    };
+    config.sanitize();
+    edit(&mut config)?;
+    config.sanitize_requested();
+    write_at(&config, path)?;
+    Ok(config)
+}
 
-    fn open_lock_at(path: &Path) -> Result<std::fs::File> {
-        if let Some(parent) = path.parent() {
-            std::fs::create_dir_all(parent)?;
-        }
-        let lock = std::fs::OpenOptions::new()
-            .create(true)
-            .truncate(false)
-            .read(true)
-            .write(true)
-            .open(path.with_extension("lock"))?;
-        Ok(lock)
-    }
+pub fn save_at(config: &FileConfig, path: &Path) -> Result<()> {
+    let _lock = lock_at(path)?;
+    write_at(config, path)
+}
 
-    fn update_at(path: &Path, edit: impl FnOnce(&mut Self) -> Result<()>) -> Result<Self> {
-        let _lock = Self::lock_at(path)?;
-        Self::update_locked_at(path, edit)
+fn write_at(config: &FileConfig, path: &Path) -> Result<()> {
+    config.validate()?;
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent)?;
     }
-
-    fn update_locked_at(path: &Path, edit: impl FnOnce(&mut Self) -> Result<()>) -> Result<Self> {
-        // A partial edit must never replace unreadable preferences with defaults.
-        // Only a genuinely absent file starts a new configuration.
-        let mut config: Self = match std::fs::read_to_string(path) {
-            Ok(text) => toml::from_str(&text).context("parse config before update")?,
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => Self::default(),
-            Err(error) => return Err(error).context("read config before update"),
-        };
-        config.sanitize();
-        edit(&mut config)?;
-        config.sanitize_requested();
-        config.write_at(path)?;
-        Ok(config)
+    let text = toml::to_string_pretty(config).context("serialize config")?;
+    let changed = std::fs::read_to_string(path)
+        .map(|old| diff::changes(&old, &text))
+        .unwrap_or_default();
+    // Write-then-rename: a reader must never see a half-written file.
+    use std::io::Write;
+    let mut tmp = tempfile::NamedTempFile::new_in(path.parent().context("config directory")?)?;
+    tmp.write_all(text.as_bytes())
+        .context("write config file")?;
+    tmp.as_file().sync_all()?;
+    tmp.persist(path).context("replace config file")?;
+    if !changed.is_empty() {
+        tracing::info!("Config written: {}", changed.join(", "));
     }
-
-    fn save_at(&self, path: &Path) -> Result<()> {
-        let _lock = Self::lock_at(path)?;
-        self.write_at(path)
-    }
-
-    fn write_at(&self, path: &Path) -> Result<()> {
-        self.validate()?;
-        if let Some(parent) = path.parent() {
-            std::fs::create_dir_all(parent)?;
-        }
-        let text = toml::to_string_pretty(self).context("serialize config")?;
-        let changed = std::fs::read_to_string(path)
-            .map(|old| diff::changes(&old, &text))
-            .unwrap_or_default();
-        // Write-then-rename: a reader must never see a half-written file.
-        use std::io::Write;
-        let mut tmp = tempfile::NamedTempFile::new_in(path.parent().context("config directory")?)?;
-        tmp.write_all(text.as_bytes())
-            .context("write config file")?;
-        tmp.as_file().sync_all()?;
-        tmp.persist(path).context("replace config file")?;
-        if !changed.is_empty() {
-            tracing::info!("Config written: {}", changed.join(", "));
-        }
-        Ok(())
-    }
+    Ok(())
 }
 
 #[cfg(test)]
@@ -234,10 +246,10 @@ mod tests {
     fn t321_missing_or_malformed_saved_configuration_has_supported_default_timing() {
         let root = tempfile::tempdir().unwrap();
         let path = root.path().join("config.toml");
-        let missing = FileConfig::load_at(&path);
+        let missing = load_at(&path);
         assert!(missing.validate().is_ok());
         std::fs::write(&path, "fps = [not a number").unwrap();
-        let malformed = FileConfig::load_at(&path);
+        let malformed = load_at(&path);
         assert!(malformed.validate().is_ok());
         assert_eq!(missing, malformed);
         assert_eq!(
@@ -256,7 +268,7 @@ mod tests {
             fps: 30,
             ..Default::default()
         };
-        initial.save_at(&path).unwrap();
+        save_at(&initial, &path).unwrap();
         let before = std::fs::read(&path).unwrap();
         let store = ConfigStore::new(path.clone());
         let edited = FileConfig {
@@ -267,14 +279,14 @@ mod tests {
             store.save_edits(&edited, &initial).is_err(),
             "T321: explicit save silently raised requested refresh"
         );
-        assert!(FileConfig::update_at(&path, |config| {
+        assert!(update_at(&path, |config| {
             config.fps = 10;
             Ok(())
         })
         .is_err());
         assert_eq!(std::fs::read(&path).unwrap(), before);
         std::fs::write(&path, "width = 640\nheight = 480\nfps = 10\n").unwrap();
-        assert_eq!(FileConfig::load_at(&path).fps, 25);
+        assert_eq!(load_at(&path).fps, 25);
     }
 
     #[test]
@@ -350,7 +362,7 @@ mod tests {
             ("typo", "right"),
         ] {
             std::fs::write(&path, format!("position = {input:?}\n")).unwrap();
-            let config = FileConfig::load_at(&path);
+            let config = load_at(&path);
             // GUI and doctor consume this canonical value; runtime parsing
             // must select the same direction before and after persistence.
             assert_eq!(config.position, expected, "T264: {input:?}");
@@ -358,8 +370,8 @@ mod tests {
                 crate::Position::parse_or_default(&config.position),
                 crate::Position::parse_or_default(input)
             );
-            config.save_at(&path).unwrap();
-            assert_eq!(FileConfig::load_at(&path).position, expected);
+            save_at(&config, &path).unwrap();
+            assert_eq!(load_at(&path).position, expected);
         }
     }
     #[cfg(not(windows))]
@@ -374,13 +386,14 @@ mod tests {
                     expected,
                     "config must stay inside test's XDG directory"
                 );
-                assert!(!FileConfig::load().check_updates);
-                FileConfig::update(|config| {
-                    config.fps = 30;
-                    Ok(())
-                })
-                .unwrap();
-                assert_eq!(FileConfig::load().fps, 30);
+                assert!(!crate::storage::ConfigStore::default().load().check_updates);
+                crate::storage::ConfigStore::default()
+                    .update(|config| {
+                        config.fps = 30;
+                        Ok(())
+                    })
+                    .unwrap();
+                assert_eq!(crate::storage::ConfigStore::default().load().fps, 30);
             } else {
                 let expected = PathBuf::from(std::env::var_os("HOME").unwrap())
                     .join(".config/blent/config.toml");
@@ -417,10 +430,7 @@ mod tests {
                 String::from_utf8_lossy(&result.stderr)
             );
         }
-        assert_eq!(
-            FileConfig::load_at(&temp.path().join("blent/config.toml")).fps,
-            30
-        );
+        assert_eq!(load_at(&temp.path().join("blent/config.toml")).fps, 30);
     }
 
     #[test]
@@ -429,7 +439,7 @@ mod tests {
         let path = dir.path().join("config.toml");
         let original = "encoder = 'libx264'\nbitrate = broken\n";
         std::fs::write(&path, original).unwrap();
-        let result = FileConfig::update_at(&path, |config| {
+        let result = update_at(&path, |config| {
             config.fps = 30;
             Ok(())
         });
@@ -439,7 +449,7 @@ mod tests {
         std::fs::remove_file(&path).unwrap();
         std::fs::create_dir(&path).unwrap();
         let mut edited = false;
-        assert!(FileConfig::update_at(&path, |_| {
+        assert!(update_at(&path, |_| {
             edited = true;
             Ok(())
         })
@@ -448,13 +458,13 @@ mod tests {
         assert!(path.is_dir());
 
         std::fs::remove_dir(&path).unwrap();
-        let initialized = FileConfig::update_at(&path, |config| {
+        let initialized = update_at(&path, |config| {
             config.fps = 30;
             Ok(())
         })
         .unwrap();
         assert_eq!(initialized.fps, 30);
-        assert_eq!(FileConfig::load_at(&path).fps, 30);
+        assert_eq!(load_at(&path).fps, 30);
     }
 
     // T104: concurrent transactions retain every edit; readers never see partial TOML.
@@ -463,7 +473,7 @@ mod tests {
         let dir = std::env::temp_dir().join(format!("blent-t104-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("config.toml");
-        FileConfig::default().save_at(&path).unwrap();
+        save_at(&FileConfig::default(), &path).unwrap();
         let barrier = std::sync::Barrier::new(8);
         std::thread::scope(|scope| {
             let barrier = &barrier;
@@ -472,7 +482,7 @@ mod tests {
                 scope.spawn(move || {
                     barrier.wait();
                     for _ in 0..4 {
-                        FileConfig::update_at(path, |config| {
+                        update_at(path, |config| {
                             let old = config.bitrate;
                             std::thread::sleep(std::time::Duration::from_millis(5));
                             config.bitrate = old + 100;
@@ -485,7 +495,7 @@ mod tests {
                 });
             }
         });
-        assert_eq!(FileConfig::load_at(&path).bitrate, 23_200);
+        assert_eq!(load_at(&path).bitrate, 23_200);
         std::fs::remove_dir_all(dir).unwrap();
     }
 }

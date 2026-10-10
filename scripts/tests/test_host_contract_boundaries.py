@@ -12,6 +12,16 @@ class HostContractBoundariesTest(unittest.TestCase):
         self.assertIsNone(re.search(r'\b(crate::media|EncoderSettings|tokio|JoinHandle)\b', text),
                           'T821 selection data depends on its implementation/consumer')
 
+    def test_t824_file_model_has_no_filesystem_extension_methods(self):
+        source = (ROOT / 'common/src/storage.rs').read_text()
+        self.assertNotRegex(source, r'impl\s+FileConfig\s*\{',
+                            'T824 filesystem adapter adds I/O to domain values')
+
+    def test_t824_consumers_depend_on_persistence_contracts(self):
+        for name in ['gui/src/settings.rs', 'host/src/persistence.rs']:
+            source = (ROOT / name).read_text().split('\n#[cfg(test)]\nmod tests')[0]
+            self.assertNotIn('ConfigStore', source, 'T824 concrete storage dependency: ' + name)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -55,7 +55,7 @@ impl Fixture {
         command.output().unwrap()
     }
     fn address(&self) -> String {
-        blent_config::FileConfig::load_at(&self.config()).wifi_address
+        blent_config::storage::load_at(&self.config()).wifi_address
     }
 }
 

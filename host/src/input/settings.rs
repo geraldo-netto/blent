@@ -38,7 +38,11 @@ impl<'a> SessionSettings<'a> {
             pen_enabled,
             fixed_mode: None,
             // Preserve live persistent-policy reads on resolution messages.
-            auto_resolution: || crate::config::FileConfig::load().auto_resolution,
+            auto_resolution: || {
+                blent_config::storage::ConfigStore::default()
+                    .load()
+                    .auto_resolution
+            },
             rejection: Default::default(),
         }
     }
@@ -358,5 +362,34 @@ mod coverage_tests {
         assert_eq!((current.width_mm, current.height_mm), (220, 138));
         adapter.resolution((640, 480), (220, 138));
         assert!(!updates.has_changed().unwrap());
+    }
+}
+
+#[cfg(test)]
+mod persistence_contract_tests {
+    use super::*;
+
+    #[test]
+    fn t824_native_resolution_preference_reads_current_store() {
+        const NAME: &str = "input::settings::persistence_contract_tests::t824_native_resolution_preference_reads_current_store";
+        if std::env::var_os("BLENT_T824_SETTINGS_CHILD").is_some() {
+            let none = None;
+            let (mode, _) = watch::channel(false);
+            let adapter = SessionSettings::new(&none, &mode, false);
+            let store = blent_config::storage::ConfigStore::default();
+            for enabled in [false, true, false] {
+                store.update(|config| { config.auto_resolution = enabled; Ok(()) }).unwrap();
+                assert_eq!((adapter.auto_resolution)(), enabled, "T824: preference was cached or read from another location");
+            }
+            return;
+        }
+        let root = tempfile::tempdir().unwrap();
+        let output = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", NAME, "--nocapture"])
+            .env("BLENT_T824_SETTINGS_CHILD", "1")
+            .env("XDG_CONFIG_HOME", root.path())
+            .env("HOME", root.path())
+            .output().unwrap();
+        assert!(output.status.success(), "{}{}", String::from_utf8_lossy(&output.stdout), String::from_utf8_lossy(&output.stderr));
     }
 }

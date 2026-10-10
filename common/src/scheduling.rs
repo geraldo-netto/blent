@@ -31,7 +31,9 @@ pub fn apply_current(priority: Priority) -> anyhow::Result<String> {
 
 #[cfg(feature = "platform")]
 pub fn apply_configured() -> String {
-    let priority = crate::FileConfig::load().scheduling_priority;
+    let priority = crate::storage::ConfigStore::default()
+        .load()
+        .scheduling_priority;
     match apply_current(priority) {
         Ok(effective) => {
             eprintln!("Blent scheduling: {priority:?}; {effective}");

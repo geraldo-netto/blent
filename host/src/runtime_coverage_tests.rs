@@ -85,7 +85,7 @@ fn config_contract() {
     let path = config::config_path().unwrap();
     std::fs::create_dir_all(path.parent().unwrap()).unwrap();
     std::fs::write(&path, "fps = 0\n").unwrap();
-    let settings = config::FileConfig::load();
+    let settings = blent_config::storage::ConfigStore::default().load();
     heal_config(&settings);
     let raw: config::FileConfig = toml::from_str(&std::fs::read_to_string(&path).unwrap()).unwrap();
     assert_eq!(raw.fps, settings.fps);
@@ -137,7 +137,7 @@ fi
             .is_none()
     );
     assert_eq!(
-        config::FileConfig::load_at(&path).wifi_address,
+        blent_config::storage::load_at(&path).wifi_address,
         "192.0.2.10:5555"
     );
     assert_eq!(

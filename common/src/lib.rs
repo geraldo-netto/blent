@@ -14,6 +14,7 @@ pub mod idle;
 pub mod input_mapping;
 pub mod model;
 pub mod negotiation;
+pub mod persistence_contract;
 pub mod raw_frame;
 pub mod release;
 pub mod scheduling;

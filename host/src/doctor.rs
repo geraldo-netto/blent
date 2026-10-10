@@ -1190,7 +1190,7 @@ pub async fn run() -> Result<()> {
     let mut r = Report::new();
     // Loaded once: every load logs a warning when it clamps a stale value, and
     // repeating that between report sections buries the report itself.
-    let cfg = FileConfig::load();
+    let cfg = blent_config::storage::ConfigStore::default().load();
 
     section("Kernel modules");
     check_modules(&mut r, &cfg);
