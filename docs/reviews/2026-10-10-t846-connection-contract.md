@@ -232,7 +232,9 @@ activation prerequisite with its own regressions and commit.
 | T853 | On-demand Linux host broker and client composition (implemented) | T852, T871–T879 |
 | T881 | Android bounded framing and BLCP negotiation (implemented) | T849, T875 |
 | T882 | Android tablet resource-session and leased-buffer boundary (implemented) | T881, T849–T851 |
-| T854 | Isolated Android connection service and local bridges | T881, T882, T856 |
+| T883 | Bounded Android native session runner (implemented) | T881, T882 |
+| T884 | Private Android connection process and IPC | T883 |
+| T854 | Production Android accessory/setup composition | T883, T884, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
 | T858 | Independent camera integration; second user-visible milestone | T857 routing; maintainer priority after working display |
@@ -872,3 +874,48 @@ Native accessory/service ownership, locally allocated listeners, process-death
 quarantine and Binder presentation remain T854. Production media adoption and
 actual debugging-off acceptance remain T855/T857–T860. The portable session alone
 does not enable the production application's ADB-free connection.
+
+## T883 bounded Android native session runner
+
+`ConnectionEndpoints` separates resource commands and buffer loans from the
+framed protocol interface. `ConnectionRun` exposes that endpoint interface plus
+transport progress, failure, stop and retirement state. `ConnectionIo` defines
+exact native requests/completions independently of stock streams or Android
+services. The protocol owner and its native adapter remain separate modules.
+
+`ConnectionSessionRunner` serializes framing and session progress. One read and
+one write/flush may be outstanding; each completion names its exact request.
+Partial/zero progress preserves the active frame's absolute deadline. Invalid
+counts, malformed frames, foreign callbacks and native failures stop protocol
+admission. Completed writes reach session publication only after actual flush
+completion. The owner handles at most two native completions per advance.
+
+`StreamConnectionIo` owns three reusable daemon workers: read, write/flush and
+close. Each direction retains one bounded slot through completion consumption;
+there is no executor queue or new thread per chunk. Native close never runs on
+the protocol owner. A blocked direction cannot stop the sibling or supervisor
+clock. The optional concurrent `ready` callback is an enqueue-only wake hint;
+it must not invoke the serialized reactor directly and may run during startup.
+A bounded conflated wake plus an independent timer avoids adding timer latency
+to every header/body/flush and still observes blocked operations.
+
+Cancellation immediately revokes session authority and native admission. Exact
+callbacks after cancellation retire ownership without delivering media. A final
+callback racing actual native exit cannot restart protocol processing or falsely
+fail a clean stop. Interrupted idle workers fail closed instead of silently losing
+a direction. Partial worker-start failures remain observable and owned; inability
+to start the closer leaves an explicitly unretired owner.
+
+The default active-frame timeout and cleanup deadline are each five seconds,
+configurable from 1–60000 milliseconds. Cleanup timeout sets a process-termination
+request; it never marks native I/O retired. Retirement requires actual read,
+write and close worker exits. A close failure also requests process termination,
+even after the calls have exited. The containing service must retain physical
+admission until actual process death; this runner cannot establish OS handle
+release, local endpoint exit, or Binder death on its own.
+
+Private process/IPC supervision remains T884; USB discovery/permission,
+identity/trust, TLS setup and production service composition remain T854.
+Locally allocated endpoint pumps and debugging-off display acceptance remain
+T857. These boundaries are still pending, not established by portable or JVM
+native-stream tests.

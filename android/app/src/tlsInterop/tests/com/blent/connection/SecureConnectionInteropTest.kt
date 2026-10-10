@@ -246,14 +246,18 @@ class SecureConnectionInteropTest {
         assertTrue(trial(mode = "window") { socket -> window(socket); framed(socket) })
     }
 
-    private fun resourceSession(socket: Socket) {
-        window(socket)
+    private fun authenticatedSession(socket: Socket): TabletSession {
         val certificate = (socket as javax.net.ssl.SSLSocket).session.peerCertificates.first().encoded
         val pairing = ConnectionPairing()
         val ticket = pairing.begin(pin(certificate), true, 0, 3000)
         val authority = pairing.authenticated(ticket, pin(certificate), 0)
         assertTrue(pairing.current(authority))
-        val session = TabletSession(ticket, ConnectionSessionLimits(4096, 64, 64, 3000), 15)
+        return TabletSession(ticket, ConnectionSessionLimits(4096, 64, 64, 3000), 15)
+    }
+
+    private fun resourceSession(socket: Socket) {
+        window(socket)
+        val session = authenticatedSession(socket)
         val reader = ConnectionFrameReader(3000)
         val writer = ConnectionFrameWriter(3000)
         val origin = System.nanoTime()
@@ -283,7 +287,7 @@ class SecureConnectionInteropTest {
         error("T882 unbounded resource output")
     }
 
-    private fun resourceEvents(session: ConnectionSession, now: Long): Pair<Boolean, Int> {
+    private fun resourceEvents(session: ConnectionEndpoints, now: Long): Pair<Boolean, Int> {
         var progress = false
         var retired = 0
         repeat(32) {
@@ -303,7 +307,7 @@ class SecureConnectionInteropTest {
         error("T882 unbounded resource events")
     }
 
-    private fun resourceState(session: ConnectionSession, event: ConnectionSessionEvent.State): Int {
+    private fun resourceState(session: ConnectionEndpoints, event: ConnectionSessionEvent.State): Int {
         when (event.state) {
             ConnectionResourceState.ADMITTED -> assertTrue(session.current(event.lease))
             ConnectionResourceState.CLOSING -> session.nativeRetired(event.lease)
@@ -312,7 +316,7 @@ class SecureConnectionInteropTest {
         return 0
     }
 
-    private fun resourceEcho(session: ConnectionSession, event: ConnectionSessionEvent.Readable) {
+    private fun resourceEcho(session: ConnectionEndpoints, event: ConnectionSessionEvent.Readable) {
         val read = checkNotNull(session.read(event.lease, event.channel, 3))
         val bytes = read.bytes.copyOfRange(read.offset, read.offset + read.length)
         assertArrayEquals(byteArrayOf(event.lease.key.generation.toByte(), event.channel.toByte(), 42), bytes)
@@ -322,6 +326,50 @@ class SecureConnectionInteropTest {
 
     @Test @Config(sdk = [27, 34]) fun t882RealTlsResourceAdmissionDuplexRetirementAndReplacement() {
         assertTrue(trial(mode = "session", verified = ::resourceSession))
+    }
+
+    private fun nativeResourceSession(socket: Socket) {
+        window(socket)
+        val session = authenticatedSession(socket)
+        val wakes = java.util.concurrent.ArrayBlockingQueue<Unit>(1)
+        val io = StreamConnectionIo(socket.getInputStream(), socket.getOutputStream(),
+            closer = java.io.Closeable { socket.close() }, ready = { wakes.offer(Unit); Unit })
+        val runner = ConnectionSessionRunner(session, io, ConnectionRunLimits(3000, 1000))
+        val origin = System.nanoTime()
+        val clock = { TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin) }
+        try { driveNativeSession(runner, wakes, clock) }
+        finally { retireNativeSession(runner, wakes, clock) }
+        assertTrue(io.retired()); assertNull(io.closeFailure()); assertTrue(socket.isClosed)
+    }
+
+    private fun driveNativeSession(runner: ConnectionRun, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>, now: () -> Long) {
+        var retired = 0
+        val deadline = now() + 5000
+        while (now() < deadline) {
+            runner.advance(now())
+            val events = resourceEvents(runner.endpoints(), now())
+            retired += events.second
+            if (retired == 2) return
+            check(!runner.retired()) { "T883 premature native retirement: ${runner.failure()}" }
+            // Local endpoint commands may queue output without a native wake.
+            if (!events.first) wakes.poll(10, TimeUnit.MILLISECONDS)
+        }
+        error("T883 native resource exchange deadline: ${runner.failure()}")
+    }
+
+    private fun retireNativeSession(runner: ConnectionRun, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>, now: () -> Long) {
+        runner.stop(now())
+        val deadline = now() + 2000
+        while (!runner.retired()) {
+            check(now() < deadline) { "T883 actual native retirement missing: ${runner.failure()}" }
+            runner.advance(now())
+            wakes.poll(10, TimeUnit.MILLISECONDS)
+        }
+        assertFalse(runner.terminationRequired())
+    }
+
+    @Test @Config(sdk = [27, 34]) fun t883RealTlsNativeRunnerDuplexGenerationsAndActualRetirement() {
+        assertTrue(trial(mode = "session", verified = ::nativeResourceSession))
     }
 
 }

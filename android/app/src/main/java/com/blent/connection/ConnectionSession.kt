@@ -22,24 +22,11 @@ internal sealed interface ConnectionSessionEvent {
     data class Readable(val lease: ConnectionResourceLease, val channel: Int) : ConnectionSessionEvent
 }
 
-internal interface ConnectionSession {
+internal interface ConnectionSession : ConnectionEndpoints {
     /** Consume a complete validated frame synchronously; no input loan retained. */
     fun receive(frame: ConnectionFrame, now: Long)
     fun nextFrame(now: Long): ConnectionFrame?
     fun written(frame: ConnectionFrame, now: Long)
-    fun nextEvent(): ConnectionSessionEvent?
-    fun prepared(lease: ConnectionResourceLease, now: Long)
-    fun permissionRequired(lease: ConnectionResourceLease, now: Long)
-    fun reject(lease: ConnectionResourceLease, outcome: ConnectionManagement.Outcome)
-    fun cancel(lease: ConnectionResourceLease, reason: ConnectionManagement.Reason)
-    fun current(lease: ConnectionResourceLease): Boolean
-    /** True transfers the array to this owner. Caller must never mutate/reuse it.
-     * False retains caller ownership; bounded capacity supplies backpressure. */
-    fun offer(lease: ConnectionResourceLease, channel: Int, bytes: ByteArray): Boolean
-    /** Borrow one contiguous slice until consumed or actual native retirement. */
-    fun read(lease: ConnectionResourceLease, channel: Int, maxBytes: Int): ConnectionChannelRead?
-    fun consumed(lease: ConnectionResourceLease, channel: Int, receipt: ConnectionChannelRead)
-    fun nativeRetired(lease: ConnectionResourceLease)
     fun tick(now: Long)
     fun disconnect()
     fun transportRetired()
