@@ -25,7 +25,10 @@ distributed copies as the project promises. That text does not require a header
 in every source file. Third-party files with their own terms remain separately
 attributed; this conclusion does not replace those terms.
 
-## Verified evidence and unresolved finding
+## Verified evidence and original finding
+
+T845 was subsequently fixed; see [APK notice packaging and validation](2026-10-10-t845-android-notices.md).
+The findings below describe the cached APK inspected before that fix.
 
 - LICENSE and `host/evdi/evdi_lib.h` remain byte-identical to inherited revision
   `96fce89c2b3e57e092d59a4890235aec9ae777c3`.
@@ -37,7 +40,7 @@ attributed; this conclusion does not replace those terms.
   fork-author, MIT permission or Apache license marker. Android Gradle has no
   project-notice asset generation. The publisher separately distributes the APK,
   so documentation in a Linux archive does not ensure APK recipients get it.
-- Cached OkHttp 4.12.0, Kotlin stdlib 1.9.20 and coroutines-android 1.7.3 POMs
+- Cached OkHttp 4.12.0, Kotlin stdlib 1.9.21 and coroutines-android 1.7.3 POMs
   identify Apache-2.0 licenses. The same APK scan finds no Apache license text.
   Full runtime dependency/NOTICE inventory remains part of T845; a POM alone
   does not establish all artifact-specific obligations.

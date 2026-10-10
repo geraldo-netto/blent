@@ -1,4 +1,10 @@
 # Third-party components
+- Android APKs carry project notices, the Apache-2.0 runtime dependency license,
+  the MPL-2.0 public-suffix data license and its upstream source notice in
+  `assets/licenses/`. The reviewed dependency coordinates and artifact hashes
+  are in `runtime-dependencies.json` in that APK directory.
+  APKs are ZIP archives; these files are readable without installing the app.
+  Review the inventory and applicable notices whenever Android dependencies change.
 - libevdi (host/evdi/evdi_lib.h, and libevdi.so.1 shipped next to the helper
   in release packages) is copyright DisplayLink (UK) Ltd. and licensed under
   the GNU Lesser General Public License v2.1 or later. It is used unmodified as

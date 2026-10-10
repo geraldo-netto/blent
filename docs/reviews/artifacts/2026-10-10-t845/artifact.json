@@ -1,0 +1,17 @@
+{
+  "apk": "android/app/build/outputs/apk/release/app-release-unsigned.apk",
+  "apk_sha256": "e2bde664533eb15bd17b948bb32b3168ad9f6b32fe41311aba7e2f9ee25b6f1a",
+  "signing": "unsigned local release-variant packaging check; not an official release",
+  "assets": {
+    "Apache-2.0.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "COPYRIGHT.md": "87fd87dea0d2d75be20946acaca203c37845fb0305382cf403eb08dbe9710ade",
+    "LICENSE": "a56b3410502afc790faa75e4d430147bd35a3dda330129efd9ac4a798c6d308c",
+    "MPL-2.0.txt": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+    "README.txt": "b29b69cbfe0f7d585f188857ceedbeb3118571a81a19beba239885631b95fab7",
+    "THIRD_PARTY_LICENSES.md": "86d94e09ba60ede267df93d61a1dbedd6a3ee823a2de4c1e339d9546c6973c3c",
+    "publicsuffix-NOTICE.txt": "8a9c58fbded5ea3474315e4a9824ca8b1486098a1a03e897e0b19419d5e1876a",
+    "runtime-dependencies.json": "45028954f44bc7e8d0c6ef263dfccbbfdbe57150963c833ffa06514bd9c0a47b"
+  },
+  "runtime_modules": 85,
+  "original_publicsuffix_notice_retained": true
+}
