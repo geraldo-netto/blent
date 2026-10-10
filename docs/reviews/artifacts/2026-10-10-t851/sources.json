@@ -1,0 +1,8 @@
+{
+  "common/src/connection/resources.rs": "adaa9f46ef6ea4bce5374bb2361ff92b3aa6a22e7047eda0f918e6ccb89a1ad3",
+  "common/src/connection/resources/transitions.rs": "5684af6fd9564af11de0693f53c0e0c6f9d97b7250a448890fe21a484b601b6d",
+  "common/tests/connection_resources.rs": "2c331a6788b159736d00f0f302ef134fe051a65e7ce2fcc0cd7d211f327ef5db",
+  "common/tests/connection_resource_mux.rs": "65e4d5d599838aaf526b6a13fa01bb658c05a53456ed27cac1e49a95eaf8a195",
+  "android/app/src/main/java/com/blent/connection/ConnectionResources.kt": "df46ff7fc7c29b88632c9be87ba66fa999e6b3f19f2ecba5dedc51c97fa7ae8c",
+  "android/app/src/test/java/com/blent/connection/ConnectionResourcesTest.kt": "46271bd4c152bac76e4f7f4ecd3e899496a72a75fde47f16646c266c82431eac"
+}

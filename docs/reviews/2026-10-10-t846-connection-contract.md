@@ -246,10 +246,10 @@ claimed. API 27/28 JVM tests do not satisfy T863; its missing physical provider
 validation is explicit. No completion percentage or release date is inferred from
 item counts: broker/lifecycle/media wiring is substantial remaining work.
 
-### Proposed management activation ordering
+### Implemented management activation policy (T851)
 
-The T850 management record schema is implemented; its transaction/authority state
-machine remains T851 work. The schema carries
+The T850 management record schema and T851 portable resource policy are implemented;
+production broker/worker adapters remain pending. The schema carries
 bounded capability, Offer, Prepared, Commit, Result and Revoke records; remote
 records never contain arbitrary host addresses, ports or paths. Each resource
 has at most one bounded pending transaction. A display resource jointly owns its
@@ -258,13 +258,59 @@ A local lease binds authenticated peer, local connection epoch, resource,
 channel generation and registration owner. Wire IDs alone grant no authority.
 
 Prepared enables no traffic. On the sender, the entire Commit record must finish
-writing and its borrow must retire before the serialized owner installs the lease
-and activates channels. On the receiver, processing the complete Commit installs
-the lease and activates channels before another envelope is dispatched. Peer
+writing and its borrow must retire before the serialized owner installs the agreed
+generation and activates channels. On the receiver, processing the complete Commit
+installs that generation before another envelope is dispatched. Revoked/expired
+transactions install it closed for draining, without granting credit or authority. Peer
 events arriving before sender completion handling stay bounded and queued; an
 independent completion callback must not race activation. New-generation CREDIT
 cannot overtake this barrier. Revocation invalidates authority before worker
 cleanup; replacement still requires actual ownership retirement.
+
+`common/src/connection/resources{.rs,/}` and Android `ConnectionResources` retain
+exactly four slots. Each lease binds the authenticated connection ticket (peer and
+local epoch), resource, host-allocated request/generation, and local registration
+owner. Adapters construct the policy only after verified pairing, recheck the exact
+lease after asynchronous work, and disconnect it before dispatching callbacks after
+link/trust loss. Wire identifiers alone cannot supply local registration authority.
+
+The host offers a resource. The tablet may report PermissionRequired once without
+extending the original 1..600,000 ms negotiation deadline. After local permission
+and preparation, it commits Prepared to bounded FIFO management output. The host
+starts Commit only after receiving Prepared. A separate whole-record completion
+callback establishes the installation barrier. The tablet's Result(Admitted) grants
+a current lease; this is not evidence that rendering or media playback works.
+Pre-Prepared rejection uses Unavailable, PermissionDenied, Busy or Failed. Failure
+after Prepared uses Revoke. Duplicate/out-of-order operations and stale callbacks
+are rejected before mutating authority; valid late peer responses drain without
+restoring a revoked lease.
+
+The host coordinates terminal settlement. Either side can revoke immediately, but
+the host must finish any started Commit before sending its Revoke. A tablet that
+already cancelled still accepts the preceding expected Commit, installs its agreed
+generation closed, and drains in-flight credit. It never starts media. Once the
+tablet receives host Revoke, no later Commit is valid. Result(Revoked) is reserved
+exclusively for the tablet's final acknowledgement; using it as an unsolicited
+rejection could confuse an earlier queued result with settlement proof.
+
+The tablet may queue that acknowledgement only after its native owner and, when
+installed, all resource channel consumers/writers and both terminals actually
+retire. It retains its tombstone until the entire acknowledgement finishes writing.
+The host processes that response behind its own whole-Revoke write barrier and
+also waits for local actual retirement before freeing its slot. Display includes
+both control and display channels. A kill request, deadline or UI dismissal does
+not establish retirement. A stuck owner retains only its resource's slot; other
+resources continue. Link loss waives peer settlement, but still requires actual
+local native/borrow retirement. The disconnected policy cannot admit another offer.
+
+Never-installed attempts retain the mux's untouched inactive generation; only the
+request advances. Installed and fully retired attempts advance the generation.
+Counters exhaust without wrapping. Adapter output admission must be reserved before
+outgoing transitions, earlier records cannot be reordered through cancellation,
+and failed/partial writes disconnect rather than roll back possibly transmitted
+state. These are explicit production adapter obligations under T853/T854.
+[Retained T851 validation](artifacts/2026-10-10-t851/README.md) includes actual
+mux composition in both languages; it does not establish production media support.
 
 ### Implemented management record version 1 (T850)
 
