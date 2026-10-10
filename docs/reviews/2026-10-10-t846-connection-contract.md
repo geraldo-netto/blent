@@ -1655,3 +1655,17 @@ before output ownership; T933 supplies that adapter and T858 production controls
 fail-before-fix target validation, bounded invalid inputs and preserved actual
 codec/feedback and private native cleanup fixtures. Android consent is T934;
 Android uplink/worker integration is T932. Prerequisites do not complete T858.
+
+## T934 camera consent ownership
+
+One policy owns each offered camera lease and retained permission prompt. Opening
+requires current local intent, OS permission and original runtime authority;
+capture additionally requires actual protocol admission. A callback must match
+the exact prompt and current foreground context. Local stop, denial, permission
+loss and connection loss emit explicit reject/cancel while retaining cleanup
+ownership. Background capture requires both host request and local allowance.
+
+[Permanent invalid-input, lifecycle and native counter evidence](artifacts/2026-10-11-t934/README.md) covers 639 connection tests, including equal-counter
+replacement and preparation/capture revalidation. Local endpoint/IPC adapters are
+T935/T936; isolated capture/capability composition is T932. Production camera
+support and physical acceptance remain incomplete under T858.

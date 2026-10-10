@@ -1,0 +1,2 @@
+c34f8fc65661e6bfcfd1e36f02fb10bbe2b5a61a2f9ea748557c23e1af5ef8ff  android/app/src/main/java/com/blent/connection/ConnectionCameraConsent.kt
+c8c26cf7ea38087ad223e79726f35868d08bef6b523427f3163a6334a4061631  android/app/src/test/java/com/blent/connection/ConnectionCameraConsentTest.kt
