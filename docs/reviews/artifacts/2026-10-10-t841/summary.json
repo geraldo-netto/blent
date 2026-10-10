@@ -1,0 +1,19 @@
+{
+  "issue": "T841",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo_llvm_cov": "cargo-llvm-cov 0.8.7",
+  "sources": {
+    "common/src/retirement.rs": "c9e2a096a8ca8268ea58f16f3c13a37962697a1350d91f5a9c97c984f91add2b",
+    "scripts/coverage/test_retirement_counters.py": "cc33f97956b7cca6c303cd693555ecd667a0ed331954292f78f2de830b73e389"
+  },
+  "before_retirement_sha256": "044a86b52213f715f602051365a0c9901a9f692780eefdb6da26ba8f3f60d575",
+  "strict_old_export_rejected": true,
+  "atomic_updates_also_rejected": true,
+  "strict_new_export_accepted": true,
+  "production_functions": 12,
+  "minimum_line_coverage_percent": 100,
+  "maximum_cyclomatic_complexity": 6,
+  "retirement_filtered_tests": 11,
+  "coverage_tool_tests": 70,
+  "full_project_coverage_claim": false
+}

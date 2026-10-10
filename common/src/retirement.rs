@@ -139,13 +139,25 @@ fn reap(receiver: mpsc::Receiver<Record>) {
         } else {
             receiver.recv_timeout(Duration::from_millis(5))
         };
-        match message {
-            Ok(record) => pending.push(record),
-            Err(mpsc::RecvTimeoutError::Disconnected) => return,
-            Err(mpsc::RecvTimeoutError::Timeout) => {}
+        if !reap_message(message, &mut pending) {
+            return;
         }
-        reap_ready(&mut pending);
     }
+}
+// Dispatch only completed receives. Keeping this boundary after the blocking
+// receive also makes live observer coverage snapshots consistent: an unfinished
+// receive must not count as entry into the following match's inferred arms.
+fn reap_message(
+    message: Result<Record, mpsc::RecvTimeoutError>,
+    pending: &mut Vec<Record>,
+) -> bool {
+    match message {
+        Ok(record) => pending.push(record),
+        Err(mpsc::RecvTimeoutError::Disconnected) => return false,
+        Err(mpsc::RecvTimeoutError::Timeout) => {}
+    }
+    reap_ready(pending);
+    true
 }
 fn reap_ready(pending: &mut Vec<Record>) {
     for index in (0..pending.len()).rev() {
@@ -170,6 +182,57 @@ mod tests {
             assert!(std::time::Instant::now() < end);
             std::thread::sleep(Duration::from_millis(1));
         }
+    }
+    #[test]
+    fn t841_completed_messages_preserve_retirement_ownership() {
+        let pool = Pool::new(2).unwrap();
+        let held = Arc::new(AtomicBool::new(false));
+        let admission = pool.reserve().unwrap();
+        let completion = admission.completion();
+        let record = Record {
+            resource: Some(Box::new(Held(held.clone()))),
+            _admission: admission,
+            poisoned: false,
+        };
+        let mut pending = Vec::new();
+        assert!(reap_message(Ok(record), &mut pending));
+        assert_eq!(pending.len(), 1);
+        assert!(!completion.is_complete());
+        assert!(reap_message(
+            Err(mpsc::RecvTimeoutError::Timeout),
+            &mut pending
+        ));
+        assert!(!completion.is_complete());
+        held.store(true, Ordering::Release);
+        assert!(reap_message(
+            Err(mpsc::RecvTimeoutError::Timeout),
+            &mut pending
+        ));
+        assert!(completion.is_complete());
+        assert!(pending.is_empty());
+
+        let admission = pool.reserve().unwrap();
+        let quarantined = admission.completion();
+        let broken = Record {
+            resource: Some(Box::new(Broken)),
+            _admission: admission,
+            poisoned: false,
+        };
+        assert!(reap_message(Ok(broken), &mut pending));
+        assert!(reap_message(
+            Err(mpsc::RecvTimeoutError::Timeout),
+            &mut pending
+        ));
+        assert_eq!(pending.len(), 1);
+        assert!(!quarantined.is_complete());
+        assert!(!reap_message(
+            Err(mpsc::RecvTimeoutError::Disconnected),
+            &mut pending
+        ));
+        assert!(!quarantined.is_complete());
+        // Production never disconnects while records own admissions. Retain the
+        // deliberately poisoned owner in this direct-dispatch test as well.
+        std::mem::forget(pending);
     }
     #[test]
     fn t814_retirement_retains_capacity_and_siblings_progress() {
