@@ -5,7 +5,7 @@ use blent_config::connection::{
     routes::{RouteClaims, RouteId},
 };
 use std::net::{IpAddr, SocketAddr, TcpListener};
-use std::os::fd::{AsRawFd, OwnedFd};
+use std::os::fd::{AsFd, AsRawFd, BorrowedFd, OwnedFd};
 
 pub struct Endpoints {
     // Never accept from these duplicates. Retaining them pins the bound ports
@@ -45,6 +45,9 @@ impl Endpoints {
             addresses,
             route: None,
         })
+    }
+    pub(super) fn descriptors(&self) -> Vec<BorrowedFd<'_>> {
+        self.listeners.iter().map(AsFd::as_fd).collect()
     }
     pub fn addresses(&self) -> &[SocketAddr] {
         &self.addresses

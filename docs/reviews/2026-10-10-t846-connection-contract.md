@@ -1369,3 +1369,28 @@ capacity. Native descriptors remain outside the portable model. T911 supplies th
 Linux adapter; T912 provides retained session listeners before T908 integration.
 [Validation](artifacts/2026-10-10-t910/README.md) covers bounded transitions and
 invalid inputs with native per-function counters. No physical acceptance claimed.
+
+## T911 retained Linux registration adapter
+
+The process-owned factory uses authenticated local packet IPC, configurable
+capacity (default 16, range 1–256), startup (10 s), admission (30 s) and cleanup
+(5 s) deadlines. Deadlines must be positive and at most 60 s. More capacity retains
+more workers/listeners; longer deadlines tolerate slower work while retaining its
+resources. User-facing controls remain T898.
+
+Each resource has one retained native thread and IPC lifetime. Exclusive IPv4
+loopback listeners are validated using the existing adapter, sent atomically and
+retained independently of caller handles. Logical close immediately revokes
+admission and wakes Unregister; the IPC cleanup path stays open for exact broker
+proof. Repeated close or malformed replies cannot extend cleanup deadlines.
+Active idle routes have no arbitrary media-read deadline.
+
+Capacity releases only after remote retirement (or proof of no registration) AND
+actual native thread/runtime retirement. Failed IPC, timeout or panic retains
+uncertain ownership/listeners while siblings progress. Lost IPC currently leaves
+that slot quarantined for the application lifetime; no transparent replay occurs.
+Safe recovery requires independent proof of the original broker's native death.
+
+[Validation](artifacts/2026-10-10-t911/README.md) covers isolated broker/TLS traffic,
+descriptor lifetime and bounded failures. T912/T908 still own session-listener
+publication and host integration; T855/T857 physical acceptance remains pending.

@@ -1,0 +1,10 @@
+{
+  "host/src/broker/linux.rs": "3d57a34f403b4fdb2fd9a4b7842924dee3bb4c99380bdd465fac6f1f3e342209",
+  "host/src/broker/linux/endpoints.rs": "4181bb4fa69cb617619ca80760f5966ce939570e6cb12af391c56a48b0175c5b",
+  "host/src/broker/linux/registration_client.rs": "1e3b4d9f7ebf45ac1a60c1a5c7dbdd8fb96bac6753ccef5304647cad65196b96",
+  "host/src/broker/linux/registration_client/worker.rs": "584686d3cf48f7daac688073fd3b8963f08f4cb3a5d01ddd26369b956504e4a8",
+  "host/src/broker/linux/registration_client/tests.rs": "c1b3640d03170700c9ff9b893538e8ba2a621f5f9bb940a03c0c7d4fce122b69",
+  "host/src/broker/linux/server/tests.rs": "7c5282e58ea60e78172c6f1bebcde2c29559c582c3cac6c6e0374ad641f0a588",
+  "host/src/broker/linux/server/tests/registration.rs": "9e276abd12e0dd310c9850b577ef3dfa53688d4b8c5808d4d1bf66a465330357",
+  "host/src/broker/linux/server/tests/media_client.rs": "66e5406b6cf716aa06c7ee878c92d9db52bc09e2edff2c629fba8c0d692f9126"
+}

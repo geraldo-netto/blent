@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.69s
+     Running unittests src/lib.rs (target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 14 tests
+test broker::linux::registration_client::tests::t911_cancel_during_registration_preserves_descriptors_until_exact_retirement ... ok
+test broker::linux::registration_client::tests::t911_close_while_idle_sends_unregister_without_waiting_for_another_reply ... ok
+test broker::linux::registration_client::tests::t911_drop_sends_cancellation_and_retains_owner_until_broker_proof ... ok
+test broker::linux::registration_client::tests::t911_foreign_reply_revokes_and_keeps_cleanup_channel_for_exact_proof ... ok
+test broker::linux::registration_client::tests::t911_lost_ipc_quarantines_capacity_and_listener_ownership ... ok
+test broker::linux::registration_client::tests::t911_missing_broker_cancels_before_exposure_and_releases_after_native_exit ... ok
+test broker::linux::registration_client::tests::t911_rejected_registration_releases_without_claiming_active ... ok
+test broker::linux::registration_client::tests::t911_remote_retirement_alone_does_not_release_a_blocked_native_owner ... ok
+test broker::linux::registration_client::tests::t911_settings_and_endpoint_inputs_reject_invalid_boundaries ... ok
+test broker::linux::registration_client::tests::t911_timeout_and_repeated_close_cannot_release_uncertain_registration ... ok
+test broker::linux::registration_client::tests::t911_unexpected_descriptor_packet_cannot_replace_the_registered_route ... ok
+test broker::linux::registration_client::worker::tests::t911_panic_revokes_before_blocked_native_runtime_cleanup_exits ... ok
+test broker::linux::registration_client::worker::tests::t911_wake_cannot_extend_a_blocked_send_cleanup_deadline ... ok
+test broker::linux::server::tests::media_client::t911_registration_client_uses_real_broker_tls_and_retained_descriptors ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 559 filtered out; finished in 0.32s
+

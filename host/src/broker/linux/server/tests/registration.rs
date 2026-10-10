@@ -4,7 +4,7 @@ use blent_config::connection::management::{Credential, Profile};
 use std::os::fd::AsFd;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
-fn listeners() -> (TcpListener, TcpListener) {
+pub(super) fn listeners() -> (TcpListener, TcpListener) {
     let video = TcpListener::bind("127.0.0.1:0").unwrap();
     let control = TcpListener::bind("127.0.0.1:0").unwrap();
     video.set_nonblocking(true).unwrap();
@@ -34,7 +34,7 @@ async fn active(remote: &AsyncSocket) -> RouteId {
     }
     panic!("resource never admitted");
 }
-async fn exchange(
+pub(super) async fn exchange(
     video: TcpListener,
     control: TcpListener,
 ) -> (tokio::net::TcpStream, tokio::net::TcpStream) {

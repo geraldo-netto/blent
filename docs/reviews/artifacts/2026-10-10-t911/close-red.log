@@ -1,0 +1,32 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: unused import: `Rejection`
+ --> host/src/broker/linux/registration_client/tests.rs:9:29
+  |
+9 |     registration::{Message, Rejection, State as RouteState},
+  |                             ^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `blent` (lib test) generated 1 warning (run `cargo fix --lib -p blent --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.18s
+     Running unittests src/lib.rs (target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::linux::registration_client::tests::t911_close_while_idle_sends_unregister_without_waiting_for_another_reply ... FAILED
+
+failures:
+
+---- broker::linux::registration_client::tests::t911_close_while_idle_sends_unregister_without_waiting_for_another_reply stdout ----
+
+thread 'broker::linux::registration_client::tests::t911_close_while_idle_sends_unregister_without_waiting_for_another_reply' (2363336) panicked at host/src/broker/linux/registration_client/tests.rs:37:10:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::linux::registration_client::tests::t911_close_while_idle_sends_unregister_without_waiting_for_another_reply
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 559 filtered out; finished in 3.01s
+
+error: test failed, to rerun pass `-p blent --lib`

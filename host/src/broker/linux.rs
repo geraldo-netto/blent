@@ -9,6 +9,7 @@ use std::{io, path::Path};
 pub mod async_io;
 pub mod client;
 pub mod presentation;
+pub mod registration_client;
 mod endpoints;
 pub mod entry;
 pub mod inventory;
