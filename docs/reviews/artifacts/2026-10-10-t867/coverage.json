@@ -1,0 +1,155 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/secure_connection/identity_store"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 12,
+      "passing": 12,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "open",
+      "line": 21,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "read_identity",
+      "line": 36,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "no_pending",
+      "line": 48,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "load",
+      "line": 58,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "reserve",
+      "line": 63,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        70
+      ]
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "publish",
+      "line": 83,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "child",
+      "line": 121,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "private",
+      "line": 135,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "load_or_create",
+      "line": 21,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "lengths",
+      "line": 36,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "encode",
+      "line": 47,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "decode",
+      "line": 57,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

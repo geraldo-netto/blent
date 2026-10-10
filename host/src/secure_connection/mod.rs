@@ -8,6 +8,8 @@ use sha2::{Digest, Sha256};
 use std::{sync::Arc, time::Duration};
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
+pub mod identity_store;
+
 pub const MAX_CERTIFICATE: usize = 4096;
 pub const MAX_PRIVATE_KEY: usize = 4096;
 const HANDSHAKE_TIMEOUT: Duration = Duration::from_secs(10);

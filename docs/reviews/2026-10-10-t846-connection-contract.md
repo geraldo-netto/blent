@@ -222,7 +222,9 @@ activation prerequisite with its own regressions and commit.
 | T850 | Bounded typed management records and incremental parsing | Existing framing |
 | T851 | Resource transactions, leases and revocation policy | T849, T850 |
 | T856 | Transport-independent peer identities and leased local routes | Existing attachment/media contracts |
-| T852 | Durable host identity and peer trust on both sides | Existing TLS/pairing contracts |
+| T867 | Durable host identity (implemented Linux adapter) | Existing stock TLS identity validation |
+| T868 | Bounded authenticated peer-trust persistence on both sides | T867 storage patterns, existing pairing contracts |
+| T852 | Compose stored identities and trust with authenticated pairing | T867, T868 |
 | T853 | Shared host broker and authenticated local registration | T849–T852, T856 |
 | T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
@@ -524,3 +526,18 @@ No production APK includes the fixture or integration class.
 This establishes real Rust/JSSE adapter interoperability, not physical Android
 TLS-provider or USB acceptance. Native API 27/28 checks, persisted trust/UI,
 revocation and full channel/media integration remain T846 work.
+
+## T867 durable host identity
+
+`secure_connection::identity_store` implements bounded certificate/key persistence
+behind an independent storage interface. Its Linux adapter holds an exclusive stable
+lock in a descriptor-pinned private directory. A durable pending record precedes
+generation; complete state is synced and atomically published without replacement.
+Malformed, unsafe or interrupted state fails closed and remains available for explicit
+repair. Existing keys never silently rotate. [Validation](artifacts/2026-10-10-t867/README.md)
+covers restart, concurrent ownership, bounded invalid input and crash/failure boundaries.
+
+This is storage readiness only: T868 supplies peer trust, T852 composes TLS/pairing,
+and T853 owns the production broker lifecycle and directory selection. Windows has
+no implementation of this storage adapter yet. Working display/touch remains first
+production milestone, followed immediately by webcam, then speakers and microphone.
