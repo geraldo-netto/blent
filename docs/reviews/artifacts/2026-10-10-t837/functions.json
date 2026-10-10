@@ -1,0 +1,213 @@
+{
+  "sources": {
+    "common/src/commands/owned.rs": "81723a2fd86364c0d8e0a74e47df151ca61c08baf54a3e2c0aeb0838cb5aaef2"
+  },
+  "functions": [
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "spawn",
+      "line": 38,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "id",
+      "line": 60,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "take_stdin",
+      "line": 63,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "take_stdout",
+      "line": 66,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "keep_alive",
+      "line": 70,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "completion",
+      "line": 73,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "finish",
+      "line": 78,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "signal",
+      "line": 83,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "retire",
+      "line": 94,
+      "language": "rust",
+      "covered": 37,
+      "total": 37,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "deref",
+      "line": 141,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "deref_mut",
+      "line": 146,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "name": "drop",
+      "line": 151,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 38,
+      "name": "spawn",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 60,
+      "name": "id",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 63,
+      "name": "take_stdin",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 66,
+      "name": "take_stdout",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 70,
+      "name": "keep_alive",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 73,
+      "name": "completion",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 78,
+      "name": "finish",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 83,
+      "name": "signal",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 94,
+      "name": "retire",
+      "score": 7
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 141,
+      "name": "deref",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 146,
+      "name": "deref_mut",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/owned.rs",
+      "line": 151,
+      "name": "drop",
+      "score": 3
+    }
+  ]
+}

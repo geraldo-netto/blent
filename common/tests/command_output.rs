@@ -31,6 +31,14 @@ fn t815_output_fixture() {
     });
     let _ = io::stdout().write_all(&vec![b'O'; stdout]);
     writer.join().unwrap();
+    // Overflow tests intentionally kill this producer. Keep it out of exit-time
+    // coverage flushing until retirement; never race SIGKILL with profile writes.
+    if std::env::var_os("BLENT_T837_AWAIT_RETIREMENT").is_some() {
+        if let Some(path) = std::env::var_os("BLENT_T837_QUIET_READY") {
+            std::fs::write(path, b"ready").unwrap();
+        }
+        std::thread::sleep(Duration::from_secs(10));
+    }
     if std::env::var_os("BLENT_T815_HOLD_INPUT").is_some() {
         std::thread::sleep(Duration::from_secs(1));
     }
@@ -124,6 +132,31 @@ fn t815_unrepresentable_deadline_is_rejected_without_panic_or_spawn() {
 }
 
 #[test]
+fn t837_overflow_fixture_remains_live_until_owned_retirement() {
+    let root = tempfile::tempdir().unwrap();
+    let ready = root.path().join("quiet");
+    let mut child = fixture(1, 1)
+        .env("BLENT_T837_AWAIT_RETIREMENT", "1")
+        .env("BLENT_T837_QUIET_READY", &ready)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn()
+        .unwrap();
+    let end = std::time::Instant::now() + Duration::from_secs(2);
+    while !ready.exists() && child.try_wait().unwrap().is_none() && std::time::Instant::now() < end
+    {
+        std::thread::sleep(Duration::from_millis(1));
+    }
+    let waiting = ready.exists() && child.try_wait().unwrap().is_none();
+    let _ = child.kill();
+    let _ = child.wait();
+    assert!(
+        waiting,
+        "T837: overflow producer entered process-exit/profile-flush before parent retirement"
+    );
+}
+
+#[test]
 fn t815_overflow_interrupts_blocked_stdin_delivery() {
     if isolated("t815_overflow_interrupts_blocked_stdin_delivery") {
         return;
@@ -191,6 +224,9 @@ fn t815_exact_over_limit_and_simultaneous_streams_are_bounded() {
             (110000, 110000, false),
         ] {
             let mut command = fixture(stdout - prefix.len(), stderr);
+            if !accepted {
+                command.env("BLENT_T837_AWAIT_RETIREMENT", "1");
+            }
             let result = if asynchronous {
                 runtime.block_on(
                     tokio::process::Command::from(command).output_timeout(Duration::from_secs(3)),
