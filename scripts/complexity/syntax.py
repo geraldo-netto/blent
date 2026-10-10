@@ -4,6 +4,7 @@ from tree_sitter import Language, Parser
 import tree_sitter_bash
 import tree_sitter_c
 import tree_sitter_rust
+from c_headers import parser_source
 
 PARSERS = {name: Parser(Language(module.language())) for name, module in
            [('rust', tree_sitter_rust), ('c', tree_sitter_c), ('shell', tree_sitter_bash)]}
@@ -18,7 +19,8 @@ def walk(node):
 
 
 def parse(source, language):
-    tree = PARSERS[language].parse(source.encode())
+    data = source.encode()
+    tree = PARSERS[language].parse(parser_source(data) if language == 'c' else data)
     if tree.root_node.has_error:
         raise ValueError(f'{language} parse error: audit cannot certify this file')
     return tree.root_node

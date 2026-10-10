@@ -76,9 +76,9 @@ not replace those measurements with new performance claims.
 The existing C benchmark regression suite also passes all five tests, including
 ASan/UBSan invalid-argument and stride checks. Each of the ten producer function
 bodies independently parses and stays at complexity nine or below; the new
-`finish_shared` scores two. The whole-file parser rejects the existing valid
-`__has_include` header guard; T843 tracks that reporting gap, so no whole-project
-complexity pass is claimed. Benchmark code remains outside the maintained
+`finish_shared` scores two. At T793 validation, the whole-file parser rejected the existing valid
+`__has_include` header guard. T843 subsequently repaired that guard handling;
+the T793 result itself does not claim a whole-project complexity pass. Benchmark code remains outside the maintained
 production per-function coverage requirement; all existing tests are retained.
 
 [Raw red/green logs, sanitizer results, source hashes, and function-body metrics](artifacts/2026-10-10-t793/)

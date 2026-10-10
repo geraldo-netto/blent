@@ -54,3 +54,12 @@ selected rule differences, parser rejection, embedded Python/package coverage,
 and source exclusion. Rust macro opacity has an explicit fixture so it cannot
 be mistaken for expansion-aware coverage. Architecture and responsibility
 reviews remain necessary even when every function passes.
+
+T843: before C syntax analysis, literal `__has_include` operands inside `#if`
+and `#elif` directives become same-length numeric placeholders. No guard is
+evaluated and both branches remain in the inventory. Source byte offsets and
+line numbers remain unchanged; comments, ordinary string literals and executable
+function tokens are untouched. Quoted/angle headers, continuations and nested
+conditions are covered by permanent bounded tests. Malformed conditions/bodies
+still fail closed. This adaptation addresses the pinned grammar's inability to
+parse header-name tokens as preprocessor call arguments; it is not a C compiler.
