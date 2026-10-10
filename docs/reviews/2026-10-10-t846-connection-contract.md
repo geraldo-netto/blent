@@ -1520,3 +1520,29 @@ T908 must also filter ambiguous candidates before preempting an ADB display.
 [Real TLS fixture evidence](artifacts/2026-10-10-t921/README.md) retains the permanent
 fail-before-fix regression, independent-peer and single-link recovery checks,
 actual native shutdown, and per-function counters. No physical USB trial occurred.
+
+## T922 transport-independent display status
+
+Display assignment status now distinguishes `Identity::Adb(serial)` from
+`Identity::UsbPeer(peer)`. Existing ADB JSON retains its `serial` field and port/slot
+shape; native records carry `peer` instead. The shared boundary rejects missing or
+ambiguous identities, unknown fields, invalid certificate fingerprints, control
+characters and oversized ADB serials, slots outside 0–3, and zero/equal ports.
+Serialization borrows identity text instead of allocating another copy.
+
+Linux GUI status reports native assignments independently of ADB installation,
+inventory success or matching aliases. Native-only assignments never invoke ADB.
+Mixed lists preserve native status when ADB inventory fails, while ADB entries
+still require a reachable inventory record. Tray transport classification and
+doctor dispatch inspect the typed identity; native peers never become Wi-Fi/ADB
+candidates or receive ADB device commands. Labels abbreviate fingerprints for
+presentation only; status is descriptive and grants no registration authority.
+
+Native publication and display composition remain T908. Windows consumers migrate
+to the shared schema, but Windows native USB remains unsupported; its native
+status-adapter validation remains tracked under T902. The pre-existing Linux
+snapshot byte/batch-boundary gap is separately tracked under T923.
+
+[Regression and counter evidence](artifacts/2026-10-10-t922/README.md) covers the
+shared schema and changed Linux consumers. Native Windows test checking exposed
+an older fixture initializer defect, retained separately as T926.

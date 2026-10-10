@@ -30,7 +30,7 @@ fn dynamic_at(path: Option<&std::path::Path>, capabilities: &Capabilities) -> St
         tablet_connected: owner.is_some() && !sessions.is_empty(),
         tablet_model: sessions
             .iter()
-            .map(|session| session.serial.as_str())
+            .map(|session| session.identity.label())
             .collect::<Vec<_>>()
             .join(", "),
         daemon_running: owner.is_some(),
@@ -63,7 +63,7 @@ mod tests {
         let session = blent_config::windows::lifecycle::Session::start(&path).unwrap();
         session
             .publish_sessions(&[blent_config::tablets::TabletSession {
-                serial: "USB café".into(),
+                identity: blent_config::tablets::Identity::Adb("USB café".into()),
                 instance: 0,
                 video_port: 8890,
                 input_port: 8891,

@@ -1,0 +1,135 @@
+{
+  "scope": "T922 changed production functions",
+  "passes": true,
+  "functions": [
+    {
+      "file": "host/src/doctor.rs",
+      "name": "check_tablet_with",
+      "line": 416,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        428
+      ]
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "tablet_inventory",
+      "line": 439,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "tablet_devices",
+      "line": 462,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "report_empty_tablets",
+      "line": 476,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "report_tablet_session",
+      "line": 485,
+      "language": "rust",
+      "covered": 34,
+      "total": 34,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "diagnostic_sessions",
+      "line": 524,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "check_tablet_session",
+      "line": 555,
+      "language": "rust",
+      "covered": 54,
+      "total": 67,
+      "percent": 80.59701492537313,
+      "passes": true,
+      "missing": [
+        571,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625
+      ]
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "publish",
+      "line": 499,
+      "language": "rust",
+      "covered": 24,
+      "total": 26,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        501,
+        525
+      ]
+    },
+    {
+      "file": "host/src/tray_state.rs",
+      "name": "connections",
+      "line": 24,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "sessions",
+      "line": 50,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

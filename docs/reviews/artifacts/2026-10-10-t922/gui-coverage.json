@@ -1,0 +1,39 @@
+{
+  "scope": "T922 changed production functions",
+  "passes": true,
+  "functions": [
+    {
+      "file": "gui/src/platform/linux.rs",
+      "name": "apply_tablet_sessions",
+      "line": 58,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/linux.rs",
+      "name": "tablet_label",
+      "line": 72,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/status_poll/linux.rs",
+      "name": "query_tablets",
+      "line": 80,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

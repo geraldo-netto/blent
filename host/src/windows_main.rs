@@ -199,8 +199,13 @@ fn status(path: &Path) -> Result<()> {
     for session in sessions {
         println!(
             "{} prepared: {} (slot {}, ports {}/{})",
-            blent_config::adb::transport_of(&session.serial).label(),
-            session.serial,
+            session
+                .identity
+                .adb_serial()
+                .map(blent_config::adb::transport_of)
+                .unwrap_or(blent_config::adb::Transport::Usb)
+                .label(),
+            session.identity.label(),
             session.instance,
             session.video_port,
             session.input_port

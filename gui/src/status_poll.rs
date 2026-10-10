@@ -3,6 +3,8 @@ use crate::Status;
 use std::time::{Duration, Instant};
 
 #[cfg(all(test, target_os = "linux"))]
+mod native_tests;
+#[cfg(all(test, target_os = "linux"))]
 mod regression_tests;
 
 const CAPABILITY_TTL: Duration = Duration::from_secs(10);
@@ -141,7 +143,7 @@ mod tests {
         }
         assert_eq!(calls.get(), 0);
         let session = runtime::TabletSession {
-            serial: "TABLET".into(),
+            identity: blent_config::tablets::Identity::Adb("TABLET".into()),
             instance: 0,
             video_port: 19000,
             input_port: 20000,

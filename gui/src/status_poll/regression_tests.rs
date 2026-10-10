@@ -50,7 +50,7 @@ fn t516_dynamic_inventory_requires_success_and_recovers() {
     let mut ledger = SessionLedger::new(path.clone()).unwrap();
     ledger
         .update(vec![TabletSession {
-            serial: "TABLET".into(),
+            identity: blent_config::tablets::Identity::Adb("TABLET".into()),
             instance: 0,
             video_port: 19000,
             input_port: 20000,

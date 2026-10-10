@@ -83,10 +83,14 @@ pub(super) fn query_tablets(
     adb_available: bool,
     devices: impl FnOnce() -> std::io::Result<String>,
 ) {
-    if !adb_available || sessions.is_empty() {
-        return;
-    }
-    if let Ok(text) = devices() {
-        apply_tablet_sessions(status, &text, sessions);
-    }
+    let needs_adb = adb_available
+        && sessions
+            .iter()
+            .any(|session| session.identity.adb_serial().is_some());
+    let text = if needs_adb {
+        devices().unwrap_or_default()
+    } else {
+        String::new()
+    };
+    apply_tablet_sessions(status, &text, sessions);
 }

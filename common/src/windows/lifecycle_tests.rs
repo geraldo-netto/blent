@@ -144,7 +144,7 @@ fn t525_session_status_requires_current_owner_and_bounded_snapshot() {
     let session = Session::start(&path).unwrap();
     assert_eq!(load_sessions(&path), None);
     let tablets = vec![crate::tablets::TabletSession {
-        serial: "USB".into(),
+        identity: crate::tablets::Identity::Adb("USB".into()),
         instance: 0,
         video_port: 8890,
         input_port: 8891,

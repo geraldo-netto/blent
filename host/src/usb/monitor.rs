@@ -54,7 +54,9 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
             .filter_map(|(index, slot)| {
                 let active = slot.as_ref()?;
                 Some(TabletSession {
-                    serial: active.connection.serial()?.into(),
+                    identity: blent_config::tablets::Identity::Adb(
+                        active.connection.serial()?.into(),
+                    ),
                     instance: index as u32,
                     video_port: self.ports[index].0,
                     input_port: self.ports[index].1,

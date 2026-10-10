@@ -25,8 +25,10 @@ impl State {
         match Self::usb(sessions.len()) {
             Self::Prepared(count)
                 if sessions.iter().any(|s| {
-                    blent_config::adb::transport_of(&s.serial)
-                        == blent_config::adb::Transport::Network
+                    s.identity.adb_serial().is_some_and(|serial| {
+                        blent_config::adb::transport_of(serial)
+                            == blent_config::adb::Transport::Network
+                    })
                 }) =>
             {
                 Self::Network(count)
@@ -132,6 +134,28 @@ mod tests {
         fn quit(&self) {
             self.quits.set(self.quits.get() + 1);
         }
+    }
+    #[test]
+    fn t922_native_usb_and_network_adb_remain_distinct() {
+        use blent_config::{
+            connection::pairing::PeerId,
+            tablets::{Identity, TabletSession},
+        };
+        let native = TabletSession {
+            identity: Identity::UsbPeer(PeerId::parse("ab".repeat(32)).unwrap()),
+            instance: 0,
+            video_port: 8890,
+            input_port: 8891,
+        };
+        assert_eq!(State::connections(&[native.clone()]), State::Prepared(1));
+        let mut adb = native.clone();
+        adb.identity = Identity::Adb("192.0.2.1:5555".into());
+        assert_eq!(
+            State::connections(&[native.clone(), adb]),
+            State::Network(2)
+        );
+        assert_eq!(State::connections(&[]), State::Waiting);
+        assert_eq!(State::connections(&vec![native; 5]), State::Unavailable);
     }
     #[test]
     fn t531_status_preserves_backend_truth_and_invalid_bounds() {

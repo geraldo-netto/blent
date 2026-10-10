@@ -63,21 +63,26 @@ pub(crate) fn apply_tablet_sessions(
     sessions.sort_by_key(|session| session.instance);
     let models: Vec<_> = sessions
         .iter()
-        .filter_map(|session| {
-            let line = text.lines().find(|line| {
-                let mut fields = line.split_whitespace();
-                fields.next() == Some(session.serial.as_str()) && fields.next() == Some("device")
-            })?;
-            Some(
-                line.split_whitespace()
-                    .find_map(|field| field.strip_prefix("model:"))
-                    .unwrap_or(&session.serial)
-                    .replace('_', " "),
-            )
-        })
+        .filter_map(|session| tablet_label(&session.identity, text))
         .collect();
     s.tablet_connected = !models.is_empty();
     s.tablet_model = models.join(", ");
+}
+
+fn tablet_label(identity: &blent_config::tablets::Identity, text: &str) -> Option<String> {
+    let Some(serial) = identity.adb_serial() else {
+        return Some(identity.label());
+    };
+    let line = text.lines().find(|line| {
+        let mut fields = line.split_whitespace();
+        fields.next() == Some(serial) && fields.next() == Some("device")
+    })?;
+    Some(
+        line.split_whitespace()
+            .find_map(|field| field.strip_prefix("model:"))
+            .unwrap_or(serial)
+            .replace('_', " "),
+    )
 }
 
 /// One-time privileged setup via the desktop's graphical password prompt:

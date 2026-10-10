@@ -421,7 +421,13 @@ async fn t525_monitor_reconnect_uses_shared_authenticated_protocol_and_retires_o
     use futures_util::StreamExt;
     let (adb, mut monitor, _stop, ports) = monitor_fixture().await;
     monitor.poll().await;
-    assert_eq!(monitor.sessions()[0].serial, "USB");
+    assert_eq!(
+        monitor.sessions()[0]
+            .identity
+            .adb_serial()
+            .expect("ADB assignment"),
+        "USB"
+    );
     let token = delivered(&adb);
     let mut socket = control(ports.1, &token).await;
     let greeting = socket.next().await.unwrap().unwrap().into_text().unwrap();
@@ -483,7 +489,7 @@ async fn t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownershi
         monitor
             .sessions()
             .iter()
-            .map(|s| s.serial.as_str())
+            .map(|s| s.identity.adb_serial().expect("ADB assignment"))
             .collect::<Vec<_>>(),
         ["B"],
         "T702: failed offline cleanup must not retain session capacity"
@@ -517,7 +523,13 @@ async fn t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownershi
         adb.0 .0.lock().unwrap().routes,
         BTreeMap::from([(8890, 12345), (9999, 12346)])
     );
-    assert_eq!(monitor.sessions()[0].serial, "B");
+    assert_eq!(
+        monitor.sessions()[0]
+            .identity
+            .adb_serial()
+            .expect("ADB assignment"),
+        "B"
+    );
     monitor.shutdown().await.unwrap();
     for port in [ports.0, ports.1] {
         tokio::net::TcpListener::bind(("127.0.0.1", port))
@@ -695,7 +707,10 @@ async fn t525_failed_device_does_not_starve_next_eligible_usb_device() {
     monitor.poll().await;
     monitor.poll().await;
     assert_eq!(
-        monitor.sessions().first().map(|s| s.serial.as_str()),
+        monitor
+            .sessions()
+            .first()
+            .map(|s| s.identity.adb_serial().expect("ADB assignment")),
         Some("USB"),
         "T525: one failing device monopolized all attempts"
     );
@@ -718,8 +733,14 @@ async fn t525_two_slots_preserve_assignments_and_cleanup_independently() {
     monitor.poll().await;
     let sessions = monitor.sessions();
     assert_eq!(sessions.len(), 2);
-    assert_eq!(sessions[0].serial, "USB");
-    assert_eq!(sessions[1].serial, "OTHER");
+    assert_eq!(
+        sessions[0].identity.adb_serial().expect("ADB assignment"),
+        "USB"
+    );
+    assert_eq!(
+        sessions[1].identity.adb_serial().expect("ADB assignment"),
+        "OTHER"
+    );
     assert_eq!(
         (sessions[1].video_port, sessions[1].input_port),
         (ports.0 + 2, ports.1 + 2)
@@ -783,14 +804,26 @@ async fn t691_network_usb_migration_retires_routes_through_proven_alias() {
     }
     monitor.poll().await;
     let first = delivered(&adb);
-    assert_eq!(monitor.sessions()[0].serial, "192.0.2.1:5555");
+    assert_eq!(
+        monitor.sessions()[0]
+            .identity
+            .adb_serial()
+            .expect("ADB assignment"),
+        "192.0.2.1:5555"
+    );
     {
         let mut s = adb.0 .0.lock().unwrap();
         s.inventory = "List of devices attached\nUSB\tdevice\n".into();
         s.fail = Some("-s 192.0.2.1:5555".into());
     }
     monitor.poll().await;
-    assert_eq!(monitor.sessions()[0].serial, "USB");
+    assert_eq!(
+        monitor.sessions()[0]
+            .identity
+            .adb_serial()
+            .expect("ADB assignment"),
+        "USB"
+    );
     assert_ne!(delivered(&adb), first);
     let launches = adb
         .0
@@ -871,7 +904,13 @@ async fn t691_network_reconnect_rereads_saved_address_and_bounds_inventory() {
     adb.0 .0.lock().unwrap().inventory = "List of devices attached\n".into();
     let mut monitor = monitor.with_network(store.clone());
     monitor.poll().await;
-    assert_eq!(monitor.sessions()[0].serial, "192.0.2.2:5555");
+    assert_eq!(
+        monitor.sessions()[0]
+            .identity
+            .adb_serial()
+            .expect("ADB assignment"),
+        "192.0.2.2:5555"
+    );
     assert!(adb
         .0
          .0

@@ -505,7 +505,7 @@ impl Monitor {
             .iter()
             .filter(|serial| self.ready.contains(*serial))
             .map(|serial| runtime::TabletSession {
-                serial: serial.clone(),
+                identity: blent_config::tablets::Identity::Adb(serial.clone()),
                 instance: 0,
                 video_port: self.config.ports.0,
                 input_port: self.config.ports.1,
@@ -515,7 +515,7 @@ impl Monitor {
             self.extras
                 .iter()
                 .map(|(serial, session)| runtime::TabletSession {
-                    serial: serial.clone(),
+                    identity: blent_config::tablets::Identity::Adb(serial.clone()),
                     instance: session.instance,
                     video_port: session.video_port,
                     input_port: session.input_port,

@@ -419,10 +419,47 @@ async fn check_tablet_with(
     adb: &str,
     sessions: Option<Vec<crate::runtime::TabletSession>>,
 ) -> Vec<String> {
-    let Some(list) = output_of(adb, &["devices"]).await else {
-        r.line(Level::Warn, "adb", "could not run");
+    let Some(list) = tablet_inventory(r, adb, &sessions).await else {
         return Vec::new();
     };
+    let devices = tablet_devices(&list);
+    let sessions = diagnostic_sessions(r, cfg, adb, &devices, sessions).await;
+    if sessions.is_empty() {
+        report_empty_tablets(r, &list);
+    }
+    let mut selected = Vec::new();
+    for session in sessions {
+        if let Some(serial) = report_tablet_session(r, cfg, adb, &devices, &session).await {
+            selected.push(serial);
+        }
+    }
+    selected
+}
+
+async fn tablet_inventory(
+    r: &mut Report,
+    adb: &str,
+    sessions: &Option<Vec<crate::runtime::TabletSession>>,
+) -> Option<String> {
+    if sessions.as_ref().is_some_and(|sessions| {
+        !sessions.is_empty() && sessions.iter().all(|s| s.identity.peer().is_some())
+    }) {
+        return Some(String::new());
+    }
+    let list = output_of(adb, &["devices"]).await;
+    if list.is_none() {
+        r.line(Level::Warn, "adb", "could not run");
+        if sessions
+            .as_ref()
+            .is_some_and(|sessions| sessions.iter().any(|s| s.identity.peer().is_some()))
+        {
+            return Some(String::new());
+        }
+    }
+    list
+}
+
+fn tablet_devices(list: &str) -> Vec<String> {
     let mut devices: Vec<String> = list
         .lines()
         .skip(1)
@@ -433,41 +470,55 @@ async fn check_tablet_with(
         })
         .collect();
     devices.sort_by_key(|serial| transport_of(serial) != Transport::Usb);
-    let sessions = diagnostic_sessions(r, cfg, adb, &devices, sessions).await;
-    if sessions.is_empty() {
-        if list.contains("unauthorized") {
-            r.line(Level::Fail, "tablet", "attached but unauthorized");
-            r.hint("accept the 'Allow USB debugging' prompt on the tablet");
-        } else {
-            r.line(Level::Warn, "tablet", "no active tablet session");
-        }
+    devices
+}
+
+fn report_empty_tablets(r: &mut Report, list: &str) {
+    if list.contains("unauthorized") {
+        r.line(Level::Fail, "tablet", "attached but unauthorized");
+        r.hint("accept the 'Allow USB debugging' prompt on the tablet");
+    } else {
+        r.line(Level::Warn, "tablet", "no active tablet session");
     }
-    let mut selected = Vec::new();
-    for session in sessions {
+}
+
+async fn report_tablet_session(
+    r: &mut Report,
+    cfg: &FileConfig,
+    adb: &str,
+    devices: &[String],
+    session: &crate::runtime::TabletSession,
+) -> Option<String> {
+    r.line(
+        Level::Ok,
+        "tablet session",
+        &format!(
+            "slot {}: {} (video {}, input {})",
+            session.instance + 1,
+            session.identity.label(),
+            session.video_port,
+            session.input_port
+        ),
+    );
+    let Some(serial) = session.identity.adb_serial() else {
         r.line(
             Level::Ok,
-            "tablet session",
-            &format!(
-                "slot {}: {} (video {}, input {})",
-                session.instance + 1,
-                session.serial,
-                session.video_port,
-                session.input_port
-            ),
+            "tablet transport",
+            "direct USB; daemon-owned display assignment",
         );
-        if !devices.contains(&session.serial) {
-            r.line(
-                Level::Warn,
-                "tablet",
-                "active transport no longer reachable; waiting for daemon refresh",
-            );
-            continue;
-        }
-        report_transport(r, &session.serial);
-        check_tablet_session(r, cfg, adb, &session).await;
-        selected.push(session.serial);
+        return None;
+    };
+    if !devices.iter().any(|device| device == serial) {
+        r.line(
+            Level::Warn,
+            "tablet",
+            "active transport no longer reachable; waiting for daemon refresh",
+        );
+        return None;
     }
-    selected
+    report_transport(r, serial);
+    check_tablet_session(r, cfg, adb, session).await;
+    Some(serial.to_owned())
 }
 
 async fn diagnostic_sessions(
@@ -491,7 +542,7 @@ async fn diagnostic_sessions(
                 .await
                 .into_iter()
                 .map(|serial| crate::runtime::TabletSession {
-                    serial,
+                    identity: blent_config::tablets::Identity::Adb(serial),
                     instance: 0,
                     video_port: cfg.video_port,
                     input_port: cfg.input_port,
@@ -507,13 +558,16 @@ async fn check_tablet_session(
     adb: &str,
     session: &crate::runtime::TabletSession,
 ) {
+    let Some(serial) = session.identity.adb_serial() else {
+        return;
+    };
     let cfg = &FileConfig {
         video_port: session.video_port,
         input_port: session.input_port,
         ..cfg.clone()
     };
-    match output_of(adb, &["-s", &session.serial, "reverse", "--list"]).await {
-        Some(reverse) => report_forwarding(r, cfg, &session.serial, &reverse),
+    match output_of(adb, &["-s", serial, "reverse", "--list"]).await {
+        Some(reverse) => report_forwarding(r, cfg, serial, &reverse),
         None => r.line(Level::Warn, "adb reverse", "could not query"),
     }
     // dumpsys media.player lists active playback, not decoder capabilities.
@@ -521,7 +575,7 @@ async fn check_tablet_session(
     let codec_output = tokio::process::Command::new(adb)
         .args([
             "-s",
-            &session.serial,
+            serial,
             "shell",
             "am",
             "broadcast",
@@ -542,7 +596,7 @@ async fn check_tablet_session(
     report_live_encoder(r, cfg, session.instance).await;
     report_codec(r, cfg, codec_output.as_deref());
 
-    let mut pm_args: Vec<&str> = vec!["-s", &session.serial];
+    let mut pm_args: Vec<&str> = vec!["-s", serial];
     pm_args.extend_from_slice(&[
         "shell",
         "pm",
@@ -565,7 +619,7 @@ async fn check_tablet_session(
             r.hint(&format!(
                 "download blent.apk from {} then: adb -s {} install -r -g blent.apk",
                 crate::update::RELEASES_PAGE,
-                session.serial
+                serial
             ));
         }
     }
@@ -1935,13 +1989,13 @@ exit 0
         let mut report = Report::new();
         let sessions = vec![
             crate::runtime::TabletSession {
-                serial: "192.0.2.1:5555".into(),
+                identity: blent_config::tablets::Identity::Adb("192.0.2.1:5555".into()),
                 instance: 0,
                 video_port: 19000,
                 input_port: 19100,
             },
             crate::runtime::TabletSession {
-                serial: "EXTRA".into(),
+                identity: blent_config::tablets::Identity::Adb("EXTRA".into()),
                 instance: 2,
                 video_port: 19004,
                 input_port: 19104,
@@ -2093,3 +2147,6 @@ exit 0
         assert!(!messages.contains("enable --now"));
     }
 }
+
+#[cfg(test)]
+mod native_status_tests;

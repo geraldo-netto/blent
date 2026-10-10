@@ -268,7 +268,7 @@ fn t691_transport_policy_preserves_known_usb_and_unknown_devices() {
 fn t691_tray_distinguishes_network_and_usb_and_bounds_session_counts() {
     use crate::tray_state::State;
     let session = blent_config::tablets::TabletSession {
-        serial: "192.0.2.1:5555".into(),
+        identity: blent_config::tablets::Identity::Adb("192.0.2.1:5555".into()),
         instance: 0,
         video_port: 8890,
         input_port: 8891,
@@ -283,7 +283,7 @@ fn t691_tray_distinguishes_network_and_usb_and_bounds_session_counts() {
         .contains("Network ADB"));
     assert_eq!(State::connections(&vec![session; 5]), State::Unavailable);
     let usb = blent_config::tablets::TabletSession {
-        serial: "USB".into(),
+        identity: blent_config::tablets::Identity::Adb("USB".into()),
         instance: 0,
         video_port: 8890,
         input_port: 8891,

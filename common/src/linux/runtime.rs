@@ -397,7 +397,7 @@ mod tests {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("sessions.json");
         let session = TabletSession {
-            serial: "TABLET".into(),
+            identity: crate::tablets::Identity::Adb("TABLET".into()),
             instance: 1,
             video_port: 19002,
             input_port: 19102,

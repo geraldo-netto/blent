@@ -464,9 +464,11 @@ async fn scaling_case(root: &std::path::Path, count: u32) {
     wait_file(&adb.with_extension("slow-started")).await;
     let sessions = wait_sessions(count as usize, &adb).await;
     let connected = start.elapsed();
-    assert!(sessions
-        .iter()
-        .all(|session| session.serial.starts_with("FAST")));
+    assert!(sessions.iter().all(|session| session
+        .identity
+        .adb_serial()
+        .expect("ADB assignment")
+        .starts_with("FAST")));
     assert_eq!(
         sessions.iter().map(|s| s.instance).collect::<Vec<_>>(),
         (0..count).collect::<Vec<_>>()
@@ -501,18 +503,25 @@ async fn scaling_case(root: &std::path::Path, count: u32) {
 fn assert_forward_pair(log: &str, session: &runtime::TabletSession) {
     let entries: Vec<_> = log
         .lines()
-        .filter(|line| line.starts_with(&format!("-s {} reverse --no-rebind ", session.serial)))
+        .filter(|line| {
+            line.starts_with(&format!(
+                "-s {} reverse --no-rebind ",
+                session.identity.adb_serial().expect("ADB assignment")
+            ))
+        })
         .collect();
     assert_eq!(
         entries,
         [
             format!(
                 "-s {} reverse --no-rebind tcp:8890 tcp:{}",
-                session.serial, session.video_port
+                session.identity.adb_serial().expect("ADB assignment"),
+                session.video_port
             ),
             format!(
                 "-s {} reverse --no-rebind tcp:8891 tcp:{}",
-                session.serial, session.input_port
+                session.identity.adb_serial().expect("ADB assignment"),
+                session.input_port
             )
         ]
     );

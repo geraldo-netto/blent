@@ -1,0 +1,257 @@
+{
+  "scope": "T922 maintained shared and changed Linux production functions",
+  "minimum_percent": 80,
+  "passes": true,
+  "functions": [
+    {
+      "file": "common/src/tablets.rs",
+      "name": "adb_serial",
+      "line": 13,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/tablets.rs",
+      "name": "peer",
+      "line": 19,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/tablets.rs",
+      "name": "label",
+      "line": 25,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/tablets.rs",
+      "name": "validate",
+      "line": 31,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/tablets.rs",
+      "name": "validate",
+      "line": 49,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/tablets.rs",
+      "name": "try_from",
+      "line": 84,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/tablets.rs",
+      "name": "serialize",
+      "line": 101,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/tablets.rs",
+      "name": "deserialize",
+      "line": 117,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "check_tablet_with",
+      "line": 416,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        428
+      ]
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "tablet_inventory",
+      "line": 439,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "tablet_devices",
+      "line": 462,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "report_empty_tablets",
+      "line": 476,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "report_tablet_session",
+      "line": 485,
+      "language": "rust",
+      "covered": 34,
+      "total": 34,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "diagnostic_sessions",
+      "line": 524,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/doctor.rs",
+      "name": "check_tablet_session",
+      "line": 555,
+      "language": "rust",
+      "covered": 54,
+      "total": 67,
+      "percent": 80.59701492537313,
+      "passes": true,
+      "missing": [
+        571,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625
+      ]
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "publish",
+      "line": 499,
+      "language": "rust",
+      "covered": 24,
+      "total": 26,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        501,
+        525
+      ]
+    },
+    {
+      "file": "host/src/tray_state.rs",
+      "name": "connections",
+      "line": 24,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "sessions",
+      "line": 50,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/linux.rs",
+      "name": "apply_tablet_sessions",
+      "line": 58,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/linux.rs",
+      "name": "tablet_label",
+      "line": 72,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/status_poll/linux.rs",
+      "name": "query_tablets",
+      "line": 80,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}
