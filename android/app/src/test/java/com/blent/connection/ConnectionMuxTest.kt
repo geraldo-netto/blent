@@ -4,7 +4,9 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ConnectionMuxTest {
-    private fun mux() = ConnectionMux(7, 9, 64, 16, 4)
+    private fun mux() = ConnectionMux(7, 9, 64, 16, 4).also { owner ->
+        for (channel in 1 until ConnectionWire.CHANNELS) owner.activate(channel, 9)
+    }
     private fun rejected(work: () -> Unit) { assertThrows(Exception::class.java) { work() } }
     private fun frame(owner: ConnectionMux): Pair<ConnectionWire.Header, ByteArray>? {
         val value = owner.next() ?: return null
@@ -20,6 +22,11 @@ class ConnectionMuxTest {
             assertFalse(left.receive(checkNotNull(frame(right)).first))
         }
         assertNull(frame(left)); assertNull(frame(right))
+    }
+    @Test fun t849UnleasedChannelsNeverGrantInitialCredit() {
+        val owner = ConnectionMux(7, 9, 64, 16, 4)
+        assertEquals(6, checkNotNull(frame(owner)).first.channel)
+        assertNull(frame(owner)); assertFalse(owner.offer(2, byteArrayOf(1)))
     }
     @Test fun t846MetadataBootstrapsAndCoalescesCredit() {
         val left = mux(); val right = mux(); grant(left, right)
@@ -110,6 +117,8 @@ class ConnectionMuxTest {
         for (generation in listOf(Long.MIN_VALUE, 0L, 9L)) rejected { left.replaceChannel(3, generation) }
         left.replaceChannel(3, 10); right.replaceChannel(3, 10)
         assertFalse(left.retired(3)); rejected { left.consumerRetired(3, 9) }; rejected { left.receive(ack) }
+        assertNull("T849: replacement remains inactive", frame(left)); assertNull(frame(right))
+        left.activate(3, 10); right.activate(3, 10)
         val credit = checkNotNull(frame(left)).first; assertEquals(10L, credit.generation); assertEquals(0L, credit.sequence)
         right.receive(credit); left.receive(checkNotNull(frame(right)).first)
         assertTrue(left.offer(3, ByteArray(4) { 7 })); val (header, bytes) = checkNotNull(frame(left))
@@ -119,4 +128,30 @@ class ConnectionMuxTest {
             rejected { left.consumerRetired(channel, 10) }; rejected { left.replaceChannel(channel, 11) }
         }
     }
+    @Test fun t849ActivationRejectsStaleDuplicateClosedAndFailedWithoutMutation() {
+        val owner = ConnectionMux(7, 9, 64, 16, 4)
+        val management = checkNotNull(frame(owner)).first
+        assertEquals(6, management.channel)
+        for (channel in listOf(Int.MIN_VALUE, 0, 7, Int.MAX_VALUE)) rejected { owner.activate(channel, 9) }
+        for (channel in 1 until ConnectionWire.CHANNELS) {
+            for (generation in listOf(Long.MIN_VALUE, 0L, 8L, 10L, Long.MAX_VALUE)) rejected { owner.activate(channel, generation) }
+            val credit = management.copy(channel = channel)
+            rejected { owner.receive(credit) }
+            rejected { owner.receive(credit.copy(kind = ConnectionWire.DATA, length = 1, credit = 0)) }
+            rejected { owner.release(channel, 1) }; assertFalse(owner.offer(channel, byteArrayOf(1)))
+            assertNull(frame(owner)); owner.activate(channel, 9); rejected { owner.activate(channel, 9) }
+            val emitted = checkNotNull(frame(owner)).first
+            assertEquals(channel, emitted.channel); assertEquals(0L, emitted.sequence); assertEquals(64, emitted.credit)
+            assertNull(frame(owner)); owner.receive(credit)
+            assertTrue(owner.offer(channel, byteArrayOf(1))); assertEquals(1L, checkNotNull(frame(owner)).first.sequence)
+        }
+        rejected { owner.activate(6, 9) }; owner.close(3, ConnectionWire.RESET); rejected { owner.activate(3, 9) }
+        assertNotNull(frame(owner)); owner.receive(management); assertTrue(owner.offer(6, byteArrayOf(1)))
+        assertEquals(6, checkNotNull(frame(owner)).first.channel)
+        val inactive = ConnectionMux(7, 9, 64, 16, 4)
+        inactive.receive(management.copy(channel = 1, kind = ConnectionWire.CLOSE, credit = 0))
+        rejected { inactive.activate(1, 9) }; assertNotNull(inactive.next()); inactive.finish(false)
+        rejected { inactive.activate(2, 9) }
+    }
+
 }

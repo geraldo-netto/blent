@@ -93,6 +93,7 @@ mod linux {
     }
     async fn exchange(stream: &mut dyn Stream) -> Result<()> {
         let mut mux = Multiplexer::new(7, 9, 1048576, 64, 65536)?;
+        for id in 1..CHANNELS { mux.activate(Channel::try_from(id)?, 9)?; }
         flush(stream, &mut mux).await?;
         for _ in 0..CHANNELS {
             let (header, _) = receive(stream, &mut mux).await?;

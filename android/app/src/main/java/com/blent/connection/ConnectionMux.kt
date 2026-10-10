@@ -8,7 +8,8 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
     private val consumerRetired = BooleanArray(ConnectionWire.CHANNELS)
     private val flows = Array(ConnectionWire.CHANNELS) { ConnectionFlow(session, generation, it + 1, capacity) }
     private val queue = ConnectionQueue(capacity, messages, quantum)
-    private val credit = IntArray(ConnectionWire.CHANNELS) { capacity }
+    private val enabled = BooleanArray(ConnectionWire.CHANNELS) { it == ConnectionWire.CHANNELS - 1 }
+    private val credit = IntArray(ConnectionWire.CHANNELS) { if (enabled[it]) capacity else 0 }
     private val terminal = arrayOfNulls<ConnectionWire.Header>(ConnectionWire.CHANNELS)
     private val closing = BooleanArray(ConnectionWire.CHANNELS)
     private var active: ConnectionWire.Header? = null
@@ -17,9 +18,21 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
     private var failed = false
     private val empty = ByteArray(0)
 
+    /** Caller serializes authenticated management commit completion with this
+     * operation: sender finishes the whole COMMIT record before activation;
+     * receiver installs the lease and activates while handling COMMIT, before
+     * accepting another envelope. A generation alone is never authority. */
+    fun activate(channel: Int, generation: Long) {
+        require(channel in 1..ConnectionWire.CHANNELS)
+        val index = channel - 1
+        check(!failed && !closing[index] && !enabled[index] && generations[index] == generation)
+        enabled[index] = true
+        credit[index] = capacity
+    }
+
     fun offer(channel: Int, bytes: ByteArray): Boolean {
         require(channel in 1..ConnectionWire.CHANNELS)
-        if (failed || closing[channel - 1]) return false
+        if (failed || closing[channel - 1] || !enabled[channel - 1]) return false
         return queue.offer(channel, bytes)
     }
 
@@ -30,6 +43,7 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
         ConnectionWire.validate(header)
         val index = header.channel - 1
         if (closing[index]) { flows[index].drain(header); return false }
+        check(enabled[index] || header.kind == ConnectionWire.CLOSE || header.kind == ConnectionWire.RESET)
         flows[index].receive(header)
         if (header.kind == ConnectionWire.CLOSE || header.kind == ConnectionWire.RESET) close(header.channel, header.kind)
         return header.kind == ConnectionWire.DATA
@@ -38,7 +52,7 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
     fun release(channel: Int, bytes: Int) {
         require(channel in 1..ConnectionWire.CHANNELS)
         val index = channel - 1
-        check(!failed && !closing[index])
+        check(!failed && !closing[index] && enabled[index])
         flows[index].release(bytes)
         credit[index] += bytes
     }
@@ -53,6 +67,7 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
         val header = flows[index].terminal(kind)
         terminal[index] = header
         closing[index] = true
+        enabled[index] = false
         credit[index] = 0
         if (active?.channel != channel) queue.clear(channel)
     }
@@ -114,7 +129,7 @@ internal class ConnectionMux(private val session: Long, generation: Long, privat
         check(retired(channel) && generation > generations[index])
         val flow = ConnectionFlow(session, generation, channel, capacity)
         flows[index] = flow; generations[index] = generation
-        consumerRetired[index] = false; closing[index] = false; credit[index] = capacity
+        consumerRetired[index] = false; closing[index] = false; enabled[index] = false; credit[index] = 0
     }
 
     fun retired(channel: Int): Boolean {

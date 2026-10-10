@@ -1,0 +1,9 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionMux.kt": "8a4017fb587a9c561be2311859358801cfc930f007f8c8957110aeb19f82f7a4",
+  "android/app/src/test/java/com/blent/AoaSecureEchoTest.kt": "a883a6dc198d0362886af4d48e27c7c5e0cc905a3bad4684c63e30415b653582",
+  "android/app/src/test/java/com/blent/connection/ConnectionMuxTest.kt": "e0dd23effe48d81d0b2c2530384b704d8d27415351d0b4abaeeb10b1b610975b",
+  "common/src/connection/mux.rs": "729dc790a9e81b99425495be51fcf7f9df6723a3852b535ae40a5649fc54158a",
+  "common/tests/connection_mux.rs": "438949e2dc42b1481d48517e2c9dce1bfc0762987aba1e7c563b2ce730ea7c78",
+  "host/examples/accessory_probe.rs": "b031f5bcfb3ea034b3505df73e364671dcf7f9bae2c33aefce84fc669c8f95f2",
+  "scripts/benchmarks/android-accessory-contract/AoaSecureEcho.kt": "6a98d6bb061b49d460fcf7c3e3aaa02b7ced10a7d2b48ef0a70b8cc959f49a13"
+}

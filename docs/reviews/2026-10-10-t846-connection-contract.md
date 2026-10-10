@@ -75,7 +75,12 @@ retirement is rejected. A blocked media consumer exhausts only its own credits;
 other channels remain eligible. Physical USB failure still affects the shared
 link and requires bounded native supervision, not a claim of independent cables.
 
-The scheduler carries DATA only. The multiplexer reserves one coalesced credit
+The scheduler carries DATA only. T849 starts only the Management channel active.
+Each resource channel rejects offers, releases and incoming DATA/CREDIT until its
+current generation is explicitly activated. Terminal closure/drain remains valid;
+replacement resets activation and grants no credit. The synthetic probe explicitly
+activates its test channels after authentication; this is not production media
+consent. The multiplexer reserves one coalesced credit
 and terminal notification per channel independently of DATA credit. It alternates
 metadata and DATA and rotates metadata across channels. Sequences are assigned at
 reservation; metadata cannot reorder already committed payloads. Failed writes
@@ -201,6 +206,59 @@ These are stop-and-wait synthetic measurements, not rendering latency or maximum
 throughput. An earlier 71-echo partial run had 40–80 ms delays and then timed out
 reading a payload. TCP_NODELAY and USB termination were changed together; this
 trial does not isolate their individual performance effects or compare against ADB.
+
+## Delivery milestones after decomposition
+
+T846 previously combined transport research, security, production routing, all media,
+packaging and acceptance. These are separate deliverables in `TODO.md`; splitting
+them does not count as finishing them. Current production still uses ADB. The
+transport foundation is committed at `ffdef93b`; native evidence proves encrypted
+synthetic transfer without debugging, not media integration. T849 adds the explicit
+activation prerequisite with its own regressions and commit.
+
+| Item | Deliverable | Main prerequisites |
+| --- | --- | --- |
+| T849 | Explicit channel activation and replacement gate | Transport foundation |
+| T850 | Bounded typed management records and incremental parsing | Existing framing |
+| T851 | Resource transactions, leases and revocation policy | T849, T850 |
+| T852 | Durable host identity and peer trust on both sides | Existing TLS/pairing contracts |
+| T856 | Transport-independent peer identities and leased local routes | Existing attachment/media contracts |
+| T853 | Shared host broker and authenticated local registration | T849–T852, T856 |
+| T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
+| T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
+| T857 | Display and touch/mouse integration | T853–T856 |
+| T858 | Independent camera integration | T857 routing and consent patterns |
+| T859 | Independent microphone integration | T858 consent pattern |
+| T860 | Independent speaker integration | T859 shared audio adapter |
+| T861 | Native helper/broker and production APK packaging | T853, T854 |
+| T862 | Integrated failure, isolation and reconnect qualification | T855–T861 |
+| T846 | Packaged debugging-off media acceptance and matched measurements | Above integration and qualification |
+| T863 | API 27/28 native accessory/TLS qualification | Missing suitable native device/runner |
+
+The next user-visible milestone is production display plus touch without ADB
+(T857). Camera and audio follow, then integrated fault recovery and final measured
+acceptance. API 27/28 JVM tests do not satisfy T863; its missing physical provider
+validation is explicit. No completion percentage or release date is inferred from
+item counts: broker/lifecycle/media wiring is substantial remaining work.
+
+### Proposed management activation ordering
+
+The management schema/state machine is still planned under T850/T851. It carries
+bounded capability, Offer, Prepared, Commit, Result and Revoke records; remote
+records never contain arbitrary host addresses, ports or paths. Each resource
+has at most one bounded pending transaction. A display resource jointly owns its
+control and display channels; camera, microphone and speaker own separate leases.
+A local lease binds authenticated peer, local connection epoch, resource,
+channel generation and registration owner. Wire IDs alone grant no authority.
+
+Prepared enables no traffic. On the sender, the entire Commit record must finish
+writing and its borrow must retire before the serialized owner installs the lease
+and activates channels. On the receiver, processing the complete Commit installs
+the lease and activates channels before another envelope is dispatched. Peer
+events arriving before sender completion handling stay bounded and queued; an
+independent completion callback must not race activation. New-generation CREDIT
+cannot overtake this barrier. Revocation invalidates authority before worker
+cleanup; replacement still requires actual ownership retirement.
 
 ## Remaining integration and acceptance
 

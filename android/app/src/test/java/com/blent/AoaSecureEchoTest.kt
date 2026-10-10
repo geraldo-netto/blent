@@ -28,7 +28,9 @@ class AoaSecureEchoTest {
         return result
     }
     private fun prefix(frames: Int = 1): ByteArray {
-        val mux = ConnectionMux(7, 9, 1048576, 64, 65536)
+        val mux = ConnectionMux(7, 9, 1048576, 64, 65536).also { owner ->
+            for (channel in 1 until ConnectionWire.CHANNELS) owner.activate(channel, 9)
+        }
         val result = ByteArrayOutputStream().apply { write(drain(mux)) }
         repeat(frames) { sequence ->
             val length = intArrayOf(1, 64, 512, 4096, 16384, 65536)[(sequence / 6) % 6]

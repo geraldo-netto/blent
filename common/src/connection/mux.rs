@@ -19,6 +19,7 @@ pub struct Multiplexer {
     generations: [u64; CHANNELS as usize],
     capacity: u32,
     consumer_retired: [bool; CHANNELS as usize],
+    enabled: [bool; CHANNELS as usize],
     flows: [Flow; CHANNELS as usize],
     queue: Scheduler,
     credit: [u32; CHANNELS as usize],
@@ -52,7 +53,8 @@ impl Multiplexer {
             consumer_retired: [false; CHANNELS as usize],
             flows,
             queue: Scheduler::new(capacity, messages, quantum)?,
-            credit: [capacity; CHANNELS as usize],
+            credit: [0, 0, 0, 0, 0, capacity],
+            enabled: [false, false, false, false, false, true],
             terminal: [None; CHANNELS as usize],
             closing: [false; CHANNELS as usize],
             active: None,
@@ -61,8 +63,23 @@ impl Multiplexer {
             failed: false,
         })
     }
+    /// Caller serializes this with authenticated management commit completion.
+    /// On the sender, finish the entire COMMIT record before activating; on the
+    /// receiver, install the lease and activate while handling that record,
+    /// before receiving the next envelope. Wire generation is not authority.
+    pub fn activate(&mut self, channel: Channel, generation: u64) -> Result<()> {
+        let index = channel as usize - 1;
+        ensure!(
+            !self.failed && !self.closing[index] && !self.enabled[index]
+                && self.generations[index] == generation,
+            "channel unavailable or stale activation"
+        );
+        self.enabled[index] = true;
+        self.credit[index] = self.capacity;
+        Ok(())
+    }
     pub fn offer(&mut self, channel: Channel, bytes: Vec<u8>) -> std::result::Result<(), Vec<u8>> {
-        if self.failed || self.closing[channel as usize - 1] {
+        if self.failed || self.closing[channel as usize - 1] || !self.enabled[channel as usize - 1] {
             return Err(bytes);
         }
         self.queue.offer(channel, bytes)
@@ -76,6 +93,10 @@ impl Multiplexer {
             self.flows[index].drain(header)?;
             return Ok(false);
         }
+        ensure!(
+            self.enabled[index] || matches!(header.kind, Kind::Close | Kind::Reset),
+            "channel not activated"
+        );
         self.flows[index].receive(header)?;
         if matches!(header.kind, Kind::Close | Kind::Reset) {
             self.close(header.channel, header.kind)?;
@@ -84,7 +105,7 @@ impl Multiplexer {
     }
     pub fn release(&mut self, channel: Channel, bytes: u32) -> Result<()> {
         let index = channel as usize - 1;
-        ensure!(!self.failed && !self.closing[index], "channel unavailable");
+        ensure!(!self.failed && !self.closing[index] && self.enabled[index], "channel unavailable");
         self.flows[index].release(bytes)?;
         self.credit[index] += bytes;
         Ok(())
@@ -99,6 +120,7 @@ impl Multiplexer {
         let terminal = self.flows[index].terminal(kind)?;
         self.terminal[index] = Some(terminal);
         self.closing[index] = true;
+        self.enabled[index] = false;
         self.credit[index] = 0;
         if self.active.is_none_or(|active| active.channel != channel) {
             self.queue.clear(channel)?;
@@ -190,7 +212,8 @@ impl Multiplexer {
         self.generations[index] = generation;
         self.consumer_retired[index] = false;
         self.closing[index] = false;
-        self.credit[index] = self.capacity;
+        self.enabled[index] = false;
+        self.credit[index] = 0;
         Ok(())
     }
     pub fn retired(&self, channel: Channel) -> bool {

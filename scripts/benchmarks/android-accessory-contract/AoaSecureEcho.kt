@@ -13,7 +13,9 @@ internal class AoaSecureEcho(
 ) {
     init { require(frames in 1..4096) }
     fun exchange(source: java.io.InputStream, output: OutputStream): Long {
-        val mux = ConnectionMux(7, 9, 1048576, 64, 65536)
+        val mux = ConnectionMux(7, 9, 1048576, 64, 65536).also { owner ->
+            for (channel in 1 until ConnectionWire.CHANNELS) owner.activate(channel, 9)
+        }
         val input = DataInputStream(source)
         var bytes = 0L
         var sequence = 0
