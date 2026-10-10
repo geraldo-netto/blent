@@ -1,7 +1,8 @@
 //! Bounded control-thread ownership using the shared retirement budget.
 pub use blent_config::retirement::Completion;
-use blent_config::retirement::{Admission, Observe, Pool};
-use std::{io, sync::OnceLock, thread::JoinHandle};
+use blent_config::retirement::{Admission, Pool};
+use blent_config::retirement_work::Thread;
+use std::{io, sync::OnceLock};
 #[cfg(test)]
 use std::{sync::mpsc, time::Duration};
 #[derive(Clone, Debug)]
@@ -44,35 +45,6 @@ fn parse_capacity(value: &str) -> io::Result<usize> {
         .map_err(|error| io::Error::new(io::ErrorKind::InvalidInput, error))?;
     validate_capacity(capacity)?;
     Ok(capacity)
-}
-
-struct Thread {
-    handle: Option<JoinHandle<()>>,
-    cleanup: Option<blent_config::retirement_work::Cleanup>,
-}
-impl Thread {
-    fn new(handle: JoinHandle<()>) -> Self {
-        Self {
-            handle: Some(handle),
-            cleanup: None,
-        }
-    }
-}
-impl Observe for Thread {
-    fn poll_complete(&mut self) -> bool {
-        if let Some(handle) = &self.handle {
-            if !handle.is_finished() {
-                return false;
-            }
-            // is_finished precedes native TLS destruction. Never join on the
-            // shared reaper; this cleanup retains the original worker's slot.
-            let handle = self.handle.take().unwrap();
-            self.cleanup = Some(blent_config::retirement_work::Cleanup::new(move || {
-                let _ = handle.join();
-            }));
-        }
-        self.cleanup.as_mut().unwrap().poll_complete()
-    }
 }
 
 pub struct Worker {

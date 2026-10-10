@@ -254,3 +254,40 @@ optional codec process isolation and final Tokio runtime destruction remain T819
 Command output limits remain T815; Windows-native job/retirement evidence remains
 T737 and broad SDK native-fixture prerequisites remain T835.
 [Red/green logs, source hashes and per-function evidence](artifacts/2026-10-10-t814/).
+
+## T815: bound command output while collecting
+
+Commands collect through bounded kernel pipes and one admitted native worker,
+alternating 16 KiB reads between stdout/stderr. Independent stream and combined
+byte budgets are checked before buffer growth; overflow is an explicit error.
+There are no unlimited temporary output files and async callers do not perform
+synchronous final reads or allocation. The shared native-thread retirement
+adapter is now reused by both control workers and collectors; held collection
+retains its slot through actual cleanup without holding its caller.
+
+Collector errors race stdin delivery as well as child completion, so a child
+that ignores stdin cannot hide output overflow behind a blocked input write.
+After direct-child exit, a final available-byte drain avoids waiting for inherited
+writer handles. Reaped children are never signalled by a late collection error.
+The read pass observes child completion before probing pipes, preventing a final
+write/exit between the idle probe and completion observation from losing bytes.
+Interrupted reads retry; failures/panics preserve explicit errors. Existing process
+tree cancellation and successful-descendant behavior remain tested.
+
+Defaults are 4 MiB stdout, 1 MiB stderr, 5 MiB combined and 128 active/retiring
+collectors, all configurable with validated bounds. Buffers grow on demand and
+outputs are moved to callers. Allocation-capacity and inherited-output tradeoffs
+are documented in [command output limits](../architecture.md#command-output-limits).
+Unrepresentable command deadlines and malformed byte/capacity settings fail before
+child creation. The separate public retirement-grace overflow discovered during
+boundary checking is T836, with its own fix/commit to follow.
+
+Five permanent regressions were observed failing before their corresponding fixes;
+held collection restores old caller-thread behavior through the new reader port
+for its red check. The final default collection passes 977 tests with seven
+existing ignores. All 47 scoped production functions meet individual 80% coverage
+and complexity <=9. The 128 no-default common tests, four architecture guards and
+Windows GNU cross-check also pass offline; native Windows acceptance/counters remain
+T737. No production reload or downloaded resource was needed. No measured throughput
+or end-to-end latency improvement is claimed.
+[Red/green and source-attested coverage](artifacts/2026-10-10-t815/).

@@ -169,8 +169,54 @@ Started blocking work cannot be stopped by task abort. Optional in-process nativ
 encoding still shares the daemon's address space, and final Tokio runtime
 destruction may wait for started blocking calls; isolation and final-exit work
 remain T819. Windows job/reaper acceptance and native counters remain T737.
-Command output byte/collection bounds remain T815.
+Command output also has the byte and collection bounds below.
 
+
+### Command output limits
+
+`SyncCommandExt` and `AsyncCommandExt` collect stdout/stderr through two bounded
+kernel pipes and one admitted native collector. The collector alternates 16 KiB
+reads between streams, checks byte limits before extending either result buffer,
+and returns an explicit `InvalidData` error on overflow. No temporary output
+files grow on disk. Async callers receive moved buffers through a one-shot
+channel; pipe reading and buffer allocation happen off their executor. Both
+stdin delivery and child completion are watched alongside collector failures.
+Overflow therefore interrupts a child that is blocked while ignoring stdin.
+
+| Setting | Default | Accepted range |
+| --- | --- | --- |
+| `BLENT_COMMAND_STDOUT_BYTES` | 4 MiB | 1..64 MiB, in bytes |
+| `BLENT_COMMAND_STDERR_BYTES` | 1 MiB | 1..64 MiB, in bytes |
+| `BLENT_COMMAND_TOTAL_BYTES` | 5 MiB | 1..128 MiB, in bytes |
+| `BLENT_COMMAND_COLLECTORS` | 128 | 1..4096 active plus retiring collectors |
+
+Byte limits are read per command; collector capacity is read on first use and
+requires a host restart to change. A total limit smaller than a stream limit is
+valid and imposes the stricter combined bound. Invalid settings and
+unrepresentable command deadlines fail before child creation. Buffers grow on
+demand; each allocation's requested capacity is at most the smaller of its stream
+and total limits. The sum of the two capacities can exceed the combined *used-byte*
+limit when unused buffer capacity is retained, but cannot exceed the sum of those
+two per-buffer bounds. Kernel pipe storage and the 16 KiB scratch buffer are
+additional bounded storage. Higher limits support larger diagnostics at the cost
+of more retained memory; output beyond any limit is an error, not silent truncation.
+
+After the direct child exits, collection drains available buffered bytes without
+waiting for inherited writer handles to close. It does not capture an indefinitely
+running descendant's later output. Successful child exit preserves its status and
+does not signal descendants. Timeout, cancellation or collection failure retains
+the existing owned process-tree retirement policy; an already-reaped child's PID
+is never signalled again. Delegated or privileged work can still outlive that
+process tree. Intentional background launches use `spawn_reaped` instead of output
+capture.
+
+The command deadline includes collection, with the configured reap budget
+following failure. A held native read cannot block the control executor: its
+collector admission and handles remain owned until actual thread cleanup. Unix
+uses nonblocking pipe reads; Windows uses its explicit pipe-readiness adapter.
+Windows cross-compilation is checked; native Windows execution/counters remain
+T737. Collection start/spawn still involves native OS calls, so this is not a
+hard real-time guarantee against a stalled kernel.
 
 The C helper is assembled from independently linked modules. `capture.c` owns
 the EVDI mode, registered native pixel framebuffer and event callbacks; callbacks receive

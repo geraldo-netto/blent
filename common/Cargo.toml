@@ -21,7 +21,7 @@ windows-sys = { version = "0.61", features = [
     "Win32_Security_Cryptography", "Win32_Storage_FileSystem",
     "Win32_System_Com", "Win32_System_Diagnostics_ToolHelp",
     "Win32_System_JobObjects", "Win32_System_Memory",
-    "Win32_System_Threading", "Win32_UI_Shell",
+    "Win32_System_Threading", "Win32_System_Pipes", "Win32_UI_Shell",
     "Win32_System_Registry", "Win32_Graphics_Gdi", "Win32_UI_HiDpi",
     "Win32_UI_Shell_Common", "Win32_UI_Controls", "Win32_UI_Input_Pointer",
     "Win32_UI_Input_KeyboardAndMouse", "Win32_UI_WindowsAndMessaging",
@@ -37,7 +37,7 @@ serde = { version = "1", features = ["derive"] }
 toml = "0.8"
 tracing = "0.1"
 tempfile = { version = "3", optional = true }
-tokio = { version = "1", optional = true, features = ["process", "time", "rt", "io-util", "macros"] }
+tokio = { version = "1", optional = true, features = ["process", "time", "rt", "sync", "io-util", "macros"] }
 
 [dev-dependencies]
 getrandom = { version = "0.3", features = ["std"] }

@@ -3,11 +3,15 @@
 //! members and reaps the direct child when permitted. Windows commands enter
 //! an owned kill-on-close job before their suspended initial thread resumes.
 //! Work delegated to another service can outlive the owned process tree.
-use std::io::{self, Read, Seek};
+use std::io;
 use std::process::{Command, ExitStatus, Output, Stdio};
 use std::time::Duration;
 
+mod output;
+mod output_limits;
+mod output_pipe;
 mod owned;
+use output::CapturedOutput;
 mod retirement;
 #[cfg(windows)]
 mod windows;
@@ -46,33 +50,17 @@ pub trait SyncCommandExt {
     }
     fn output_timeout(&mut self, timeout: Duration) -> io::Result<Output>;
 }
-// Anonymous files avoid pipe-capacity deadlocks and inherited pipe handles
-// keeping output collection alive after the command itself has terminated.
-struct CapturedOutput {
-    stdout: std::fs::File,
-    stderr: std::fs::File,
-}
-impl CapturedOutput {
-    fn new() -> io::Result<Self> {
-        Ok(Self {
-            stdout: tempfile::tempfile()?,
-            stderr: tempfile::tempfile()?,
+fn command_deadline(timeout: Duration) -> io::Result<std::time::Instant> {
+    std::time::Instant::now()
+        .checked_add(timeout)
+        .ok_or_else(|| {
+            io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "command timeout is out of range",
+            )
         })
-    }
-    fn finish(mut self, status: ExitStatus) -> io::Result<Output> {
-        self.stdout.rewind()?;
-        self.stderr.rewind()?;
-        let mut stdout = Vec::new();
-        let mut stderr = Vec::new();
-        self.stdout.read_to_end(&mut stdout)?;
-        self.stderr.read_to_end(&mut stderr)?;
-        Ok(Output {
-            status,
-            stdout,
-            stderr,
-        })
-    }
 }
+
 fn timed_out() -> io::Error {
     io::Error::new(
         io::ErrorKind::TimedOut,
@@ -115,6 +103,9 @@ fn terminate_group(pid: u32) {
 }
 
 fn retire_sync(mut child: std::process::Child, admission: crate::retirement::Admission) {
+    if matches!(child.try_wait(), Ok(Some(_))) {
+        return;
+    }
     terminate_group(child.id());
     let signalled = child.kill();
     reap_reserved(child, signalled, admission);
@@ -145,15 +136,12 @@ impl SyncCommandExt for Command {
     fn output_timeout(&mut self, timeout: Duration) -> io::Result<Output> {
         let admission = retirement::reserve()?;
         crate::retirement_limits::reap_budget()?;
-        let output = CapturedOutput::new()?;
+        let deadline = command_deadline(timeout)?;
+        let mut output = CapturedOutput::new(self, deadline)?;
         #[cfg(windows)]
         let job = windows::Job::new()?;
         prepare_group(self);
-        let mut child = self
-            .stdin(Stdio::null())
-            .stdout(output.stdout.try_clone()?)
-            .stderr(output.stderr.try_clone()?)
-            .spawn()?;
+        let mut child = self.stdin(Stdio::null()).spawn()?;
         #[cfg(windows)]
         {
             use std::os::windows::io::AsRawHandle;
@@ -162,19 +150,31 @@ impl SyncCommandExt for Command {
                 return Err(error);
             }
         }
-        let start = std::time::Instant::now();
-        loop {
-            match child.try_wait() {
-                Ok(Some(status)) => return output.finish(status),
-                Ok(None) if start.elapsed() < timeout => {
-                    std::thread::sleep(Duration::from_millis(5))
-                }
-                result => {
-                    retire_sync(child, admission);
-                    return Err(result.err().unwrap_or_else(timed_out));
-                }
-            }
+        let result = wait_collected(&mut child, &mut output, deadline);
+        if result.is_err() {
+            retire_sync(child, admission);
         }
+        result
+    }
+}
+fn wait_collected(
+    child: &mut std::process::Child,
+    output: &mut CapturedOutput,
+    deadline: std::time::Instant,
+) -> io::Result<Output> {
+    loop {
+        if let Some(result) = output.poll_result() {
+            return Err(result
+                .err()
+                .unwrap_or_else(|| io::Error::other("collector completed before child")));
+        }
+        if let Some(status) = child.try_wait()? {
+            return output.finish_sync(status, deadline);
+        }
+        if std::time::Instant::now() >= deadline {
+            return Err(timed_out());
+        }
+        std::thread::sleep(Duration::from_millis(1));
     }
 }
 
@@ -203,35 +203,42 @@ impl AsyncCommandExt for tokio::process::Command {
         input: Option<&[u8]>,
         timeout: Duration,
     ) -> io::Result<Output> {
-        let output = CapturedOutput::new()?;
+        let deadline = command_deadline(timeout)?;
+        let mut output = CapturedOutput::new(self.as_std_mut(), deadline)?;
         self.stdin(if input.is_some() {
             Stdio::piped()
         } else {
             Stdio::null()
-        })
-        .stdout(output.stdout.try_clone()?)
-        .stderr(output.stderr.try_clone()?);
+        });
         let mut child = OwnedChild::spawn(self)?;
         let operation = async {
-            use tokio::io::AsyncWriteExt;
-            if let Some(input) = input {
-                let mut stdin = child.take_stdin().expect("piped command input");
-                stdin.write_all(input).await?;
-                stdin.shutdown().await?;
-            }
-            child.wait().await
+            let status = tokio::select! {
+                status = feed_and_wait(&mut child,input) => status?,
+                result = output.result() => return Err(result.err().unwrap_or_else(|| io::Error::other("collector completed before child"))),
+            };
+            output.finish_async(status).await
         };
-        match tokio::time::timeout(timeout, operation).await {
-            Ok(status) => output.finish(status?),
-            Err(_) => {
-                let retirement = child.retire(Duration::ZERO).await;
-                if !retirement.completion.is_complete() {
-                    tracing::warn!("Command retirement incomplete; capacity remains reserved");
-                }
-                Err(timed_out())
+        let result = tokio::time::timeout_at(tokio::time::Instant::from_std(deadline), operation)
+            .await
+            .unwrap_or_else(|_| Err(timed_out()));
+        if result.is_err() {
+            let retirement = child.retire(Duration::ZERO).await;
+            if !retirement.completion.is_complete() {
+                tracing::warn!("Command retirement incomplete; capacity remains reserved");
             }
         }
+        result
     }
+}
+
+async fn feed_and_wait(child: &mut OwnedChild, input: Option<&[u8]>) -> io::Result<ExitStatus> {
+    use tokio::io::AsyncWriteExt;
+    if let Some(input) = input {
+        let mut stdin = child.take_stdin().expect("piped command input");
+        stdin.write_all(input).await?;
+        stdin.shutdown().await?;
+    }
+    child.wait().await
 }
 
 #[cfg(test)]

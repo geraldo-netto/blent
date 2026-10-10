@@ -1,4 +1,5 @@
 use super::*;
+use std::io::Read;
 
 // T496: re-exec the native test executable; no shell or external sleep program.
 fn fixture(path: &std::path::Path, role: &str) -> Command {
@@ -244,6 +245,48 @@ fn t590_denied_group_signal_reports_unretired_work() {
     assert!(std::fs::read_to_string(log.path())
         .unwrap()
         .contains("Command group could not be terminated; delegated work may continue"));
+}
+
+#[cfg(target_os = "linux")]
+#[test]
+fn t815_collection_failure_after_reap_never_signals_a_reusable_pid() {
+    const NAME: &str =
+        "commands::tests::t815_collection_failure_after_reap_never_signals_a_reusable_pid";
+    if std::env::var_os("BLENT_T815_REAP_SIGNAL").is_none() {
+        let output = Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", NAME, "--nocapture"])
+            .env("BLENT_T815_REAP_SIGNAL", "1")
+            .output_timeout(Duration::from_secs(5))
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        return;
+    }
+    let log = tempfile::NamedTempFile::new().unwrap();
+    let subscriber = tracing_subscriber::fmt()
+        .without_time()
+        .with_ansi(false)
+        .with_writer(log.reopen().unwrap())
+        .finish();
+    let root = tempfile::tempdir().unwrap();
+    let mut child = fixture(&root.path().join("pid"), "input")
+        .stdin(Stdio::null())
+        .spawn()
+        .unwrap();
+    child.wait().unwrap();
+    let admission = retirement::reserve().unwrap();
+    deny_kill_in_test_thread();
+    tracing::subscriber::with_default(subscriber, || retire_sync(child, admission));
+    assert!(
+        !std::fs::read_to_string(log.path())
+            .unwrap()
+            .contains("could not be terminated"),
+        "T815: attempted group signal after direct child was already reaped"
+    );
 }
 
 #[tokio::test]

@@ -56,6 +56,35 @@ impl Observe for Cleanup {
         self.shared.done.load(Ordering::Acquire)
     }
 }
+
+/// Observe a native worker without joining on the shared retirement thread.
+/// Native TLS teardown may still be running after is_finished becomes true.
+pub struct Thread {
+    handle: Option<std::thread::JoinHandle<()>>,
+    cleanup: Option<Cleanup>,
+}
+impl Thread {
+    pub fn new(handle: std::thread::JoinHandle<()>) -> Self {
+        Self {
+            handle: Some(handle),
+            cleanup: None,
+        }
+    }
+}
+impl Observe for Thread {
+    fn poll_complete(&mut self) -> bool {
+        if let Some(handle) = &self.handle {
+            if !handle.is_finished() {
+                return false;
+            }
+            let handle = self.handle.take().unwrap();
+            self.cleanup = Some(Cleanup::new(move || {
+                let _ = handle.join();
+            }));
+        }
+        self.cleanup.as_mut().unwrap().poll_complete()
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;

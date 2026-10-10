@@ -1,0 +1,828 @@
+{
+  "sources": {
+    "common/src/commands.rs": "1d703b6761795630b259a8cef1267ee1cc949a91b2dd728a92efffae6d4e3139",
+    "common/src/commands/output.rs": "66b3936518acd0d3e2320a975a6b38633edff69fd7d6403c2a40eeec5862a8c1",
+    "common/src/commands/output_limits.rs": "8e9aab5a6d29c10ae090304c3b2ab322c32e7d4e15280f39ba3bcec326766afe",
+    "common/src/commands/output_pipe.rs": "e0ccd89297a5b0a4c5592e8933b11fe3866f513b18c3b0b75b647e3a5ff6c421",
+    "common/src/retirement_work.rs": "05779af529aa6288ce92e364362ee564a8b432e199d9f5f7b0cd5a1063369eeb",
+    "host/src/control_workers.rs": "9cfdcb15da65fa51d7316827350d496c8910c4d75a6cc4acba48aa858d37f4df"
+  },
+  "functions": [
+    {
+      "file": "common/src/commands.rs",
+      "name": "spawn_reaped",
+      "line": 20,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "daemon_command_timeout",
+      "line": 39,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_bounded",
+      "line": 48,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "command_deadline",
+      "line": 53,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "timed_out",
+      "line": 64,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "prepare_group",
+      "line": 71,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "terminate_group",
+      "line": 88,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "retire_sync",
+      "line": 105,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "reap_reserved",
+      "line": 117,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_timeout",
+      "line": 136,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "wait_collected",
+      "line": 160,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_bounded",
+      "line": 182,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_timeout",
+      "line": 197,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "output_input_timeout",
+      "line": 201,
+      "language": "rust",
+      "covered": 27,
+      "total": 28,
+      "percent": 96.42857142857143,
+      "passes": true,
+      "missing": [
+        227
+      ]
+    },
+    {
+      "file": "common/src/commands.rs",
+      "name": "feed_and_wait",
+      "line": 234,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "reserve",
+      "line": 26,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "new",
+      "line": 47,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "start",
+      "line": 59,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "child_exited",
+      "line": 84,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "poll_result",
+      "line": 89,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "result",
+      "line": 96,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "finish_sync",
+      "line": 99,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "finish_async",
+      "line": 111,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "drop",
+      "line": 117,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "output",
+      "line": 121,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "collector_lost",
+      "line": 128,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "collect",
+      "line": 135,
+      "language": "rust",
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "read_available",
+      "line": 165,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "name": "poll_source",
+      "line": 184,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output_limits.rs",
+      "name": "environment",
+      "line": 9,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output_limits.rs",
+      "name": "new",
+      "line": 26,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output_limits.rs",
+      "name": "append",
+      "line": 33,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/commands/output_pipe.rs",
+      "name": "new",
+      "line": 5,
+      "language": "rust",
+      "covered": 8,
+      "total": 9,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        14
+      ]
+    },
+    {
+      "file": "common/src/commands/output_pipe.rs",
+      "name": "read",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "new",
+      "line": 22,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "start",
+      "line": 32,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "poll_complete",
+      "line": 54,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "new",
+      "line": 67,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "name": "poll_complete",
+      "line": 75,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "new",
+      "line": 11,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "active",
+      "line": 15,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "shared",
+      "line": 18,
+      "language": "rust",
+      "covered": 10,
+      "total": 12,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        22,
+        24
+      ]
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "validate_capacity",
+      "line": 33,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "parse_capacity",
+      "line": 42,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "spawn",
+      "line": 54,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "completion",
+      "line": 65,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "name": "drop",
+      "line": 70,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    {
+      "file": "common/src/commands.rs",
+      "line": 20,
+      "name": "spawn_reaped",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 39,
+      "name": "daemon_command_timeout",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 48,
+      "name": "output_bounded",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 53,
+      "name": "command_deadline",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 64,
+      "name": "timed_out",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 71,
+      "name": "prepare_group",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 88,
+      "name": "terminate_group",
+      "score": 3
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 105,
+      "name": "retire_sync",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 117,
+      "name": "reap_reserved",
+      "score": 4
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 136,
+      "name": "output_timeout",
+      "score": 3
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 160,
+      "name": "wait_collected",
+      "score": 6
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 182,
+      "name": "output_bounded",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 197,
+      "name": "output_timeout",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 201,
+      "name": "output_input_timeout",
+      "score": 5
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 234,
+      "name": "feed_and_wait",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 26,
+      "name": "reserve",
+      "score": 3
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 47,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 59,
+      "name": "start",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 84,
+      "name": "child_exited",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 89,
+      "name": "poll_result",
+      "score": 4
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 96,
+      "name": "result",
+      "score": 2
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 99,
+      "name": "finish_sync",
+      "score": 5
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 111,
+      "name": "finish_async",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 117,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 121,
+      "name": "output",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 128,
+      "name": "collector_lost",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 135,
+      "name": "collect",
+      "score": 7
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 165,
+      "name": "read_available",
+      "score": 6
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 184,
+      "name": "poll_source",
+      "score": 4
+    },
+    {
+      "file": "common/src/commands/output_limits.rs",
+      "line": 9,
+      "name": "environment",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output_limits.rs",
+      "line": 26,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/commands/output_limits.rs",
+      "line": 33,
+      "name": "append",
+      "score": 4
+    },
+    {
+      "file": "common/src/commands/output_pipe.rs",
+      "line": 5,
+      "name": "new",
+      "score": 3
+    },
+    {
+      "file": "common/src/commands/output_pipe.rs",
+      "line": 21,
+      "name": "read",
+      "score": 4
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 22,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 32,
+      "name": "start",
+      "score": 5
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 54,
+      "name": "poll_complete",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 67,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/retirement_work.rs",
+      "line": 75,
+      "name": "poll_complete",
+      "score": 4
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 11,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 15,
+      "name": "active",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 18,
+      "name": "shared",
+      "score": 6
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 33,
+      "name": "validate_capacity",
+      "score": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 42,
+      "name": "parse_capacity",
+      "score": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 54,
+      "name": "spawn",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 65,
+      "name": "completion",
+      "score": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 70,
+      "name": "drop",
+      "score": 2
+    }
+  ],
+  "scope": "Changed Linux production functions. Windows-specific pipe readiness counters and acceptance remain T737; cross-compilation is not runtime evidence.",
+  "validation": {
+    "tests_passed": 977,
+    "existing_ignored": 7,
+    "no_default_common": 128,
+    "host_boundary_guards": 4,
+    "windows_gnu_cross_check": "passed offline; native runtime unavailable"
+  }
+}
