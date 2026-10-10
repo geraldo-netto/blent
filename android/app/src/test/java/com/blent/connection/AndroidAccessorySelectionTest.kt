@@ -215,13 +215,18 @@ class AndroidAccessorySelectionTest {
         val inventory = AndroidAccessoryInventory(manager, accessoryProfile, list = { arrayOf(device) })
         val permission = AndroidAccessoryPermission(app, manager, inventory, { it() }) { _, _, _ -> fail("No permission result") }
         permission.start()
-        AccessoryUsbShadow.failure = IOException("Native request failed")
-        assertThrows(IOException::class.java) { permission.request(accessorySelection(device)) }
-        assertTrue(shadowOf(checkNotNull(AccessoryUsbShadow.requested)).isCanceled)
-        permission.close()
-        val unused = AndroidAccessoryPermission(app, manager, inventory, { it() }) { _, _, _ -> fail() }
-        unused.close()
-        assertThrows(IllegalStateException::class.java) { unused.start() }
+        try {
+            AccessoryUsbShadow.failure = IOException("Native request failed")
+            assertThrows(IOException::class.java) { permission.request(accessorySelection(device)) }
+            assertTrue(shadowOf(checkNotNull(AccessoryUsbShadow.requested)).isCanceled)
+            permission.close()
+            val unused = AndroidAccessoryPermission(app, manager, inventory, { it() }) { _, _, _ -> fail() }
+            unused.close()
+            assertThrows(IllegalStateException::class.java) { unused.start() }
+        } finally {
+            AccessoryUsbShadow.failure = null
+            permission.close()
+        }
     }
     @Test fun t887OpeningOwnsDescriptorBridgeAndRejectsRepeatedAdmission() {
         val device = nativeAccessory()
