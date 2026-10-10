@@ -16,7 +16,7 @@ struct State {
 }
 #[derive(Clone, Default)]
 struct Fake(Arc<Mutex<State>>);
-fn output(code: u32, text: &str) -> Output {
+pub(super) fn output(code: u32, text: &str) -> Output {
     #[cfg(unix)]
     let status = {
         use std::os::unix::process::ExitStatusExt;
@@ -414,4 +414,107 @@ async fn t826_failed_commit_preserves_an_existing_network_route() {
             .any(|args| args[0] == "disconnect"),
         "T826: failed save disconnected an existing route"
     );
+}
+
+struct HeldReads {
+    reads: std::sync::atomic::AtomicUsize,
+    entered: tokio::sync::Notify,
+}
+impl crate::persistence_port::AsyncSnapshots for HeldReads {
+    fn snapshot(&self) -> crate::persistence_port::Reply<'_> {
+        Box::pin(async move {
+            if self.reads.fetch_add(1, std::sync::atomic::Ordering::SeqCst) > 0 {
+                self.entered.notify_one();
+                std::future::pending::<()>().await;
+            }
+            Ok(blent_config::FileConfig {
+                wifi_address: "192.0.2.1:5555".into(),
+                ..Default::default()
+            })
+        })
+    }
+}
+#[tokio::test]
+async fn t834_cancelled_post_connect_snapshot_retires_new_route() {
+    let (_root, _store, adb) = fixture();
+    let reads = HeldReads {
+        reads: std::sync::atomic::AtomicUsize::new(0),
+        entered: tokio::sync::Notify::new(),
+    };
+    let mut attempt = Box::pin(policy::reconnect(&adb, &reads));
+    tokio::select! {
+        _ = &mut attempt => panic!("T834: expected held snapshot"),
+        _ = reads.entered.notified() => {}
+    }
+    drop(attempt);
+    let cleaned = tokio::time::timeout(std::time::Duration::from_secs(2), async {
+        loop {
+            if adb
+                .0
+                 .0
+                .lock()
+                .unwrap()
+                .calls
+                .iter()
+                .any(|a| a[0] == "disconnect")
+            {
+                break;
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+    })
+    .await;
+    assert!(
+        cleaned.is_ok(),
+        "T834: cancelling post-connect storage leaked the new route"
+    );
+    super::attempt::tests::quiet_global().await;
+}
+
+impl crate::persistence_port::AsyncTransactions for HeldReads {
+    fn transact(
+        &self,
+        _: blent_config::persistence_contract::Edit<'static>,
+    ) -> crate::persistence_port::Reply<'_> {
+        Box::pin(async move {
+            self.entered.notify_one();
+            std::future::pending().await
+        })
+    }
+}
+#[tokio::test(start_paused = true)]
+async fn t834_cancelled_post_connect_commit_retires_route_without_editing_store() {
+    let (_root, store, adb) = fixture();
+    let held = HeldReads {
+        reads: std::sync::atomic::AtomicUsize::new(0),
+        entered: tokio::sync::Notify::new(),
+    };
+    let mut attempt = Box::pin(policy::setup(&adb, &held, false));
+    tokio::select! {
+        _ = &mut attempt => panic!("T834 expected held commit"),
+        _ = held.entered.notified() => {}
+    }
+    drop(attempt);
+    // Native ownership uses real time; resume before waiting on worker retirement.
+    tokio::time::resume();
+    tokio::time::timeout(std::time::Duration::from_secs(2), async {
+        loop {
+            if adb
+                .0
+                 .0
+                .lock()
+                .unwrap()
+                .calls
+                .iter()
+                .any(|a| a[0] == "disconnect")
+            {
+                break;
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .expect("T834 post-connect commit cancellation leaked route");
+    super::attempt::tests::quiet_global().await;
+    assert!(store.load().wifi_address.is_empty());
 }

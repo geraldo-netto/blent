@@ -1,0 +1,9 @@
+{
+  "host/src/wifi.rs": "2c2bf0f12b7e404a2b54a45dde11d46085020ac8e2ee38c953e06b2863d34906",
+  "host/src/wifi/policy.rs": "79ee9d836244b97ea6efb05aa41cfb06f37594707cd8db231bce4920621f760a",
+  "host/src/wifi/attempt.rs": "892d1b1ede8745992993aef28d471ab6ce0045fc2047a9092cfafbaf4eeb6fd4",
+  "host/src/usb.rs": "de213c9516394bf79259a031a719d6f17e9ce079c0e4957ad97690e8bdbfadeb",
+  "host/src/usb/route_lock.rs": "cd1480a9c4daa871bcba8bb1f88c3c3e2f503394aed8abfe41361b084283f07f",
+  "host/src/usb/network.rs": "512240684dd32e30979e94f3172495badb86c3149a8a31f84b037f1ee7f72b16",
+  "host/src/usb/monitor.rs": "c340c67f2ef51b2441426bbc379d3ef7ec31869cf8237e190633c3d83f5d965f"
+}

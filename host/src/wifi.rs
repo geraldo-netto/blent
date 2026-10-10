@@ -2,19 +2,23 @@
 use crate::usb::{Adb, Commands};
 use anyhow::Result;
 use blent_config::persistence_contract::{Snapshots, Transactions};
+mod attempt;
 mod policy;
 #[cfg(test)]
 use policy::connected;
 pub use policy::valid_address;
 
-pub async fn reconnect<C: Commands, S: Snapshots + Transactions + Clone + 'static>(
+pub async fn reconnect<
+    C: Commands + Clone + 'static,
+    S: Snapshots + Transactions + Clone + 'static,
+>(
     adb: &Adb<C>,
     store: &S,
 ) -> Option<String> {
     let owner = crate::config_jobs::Store::new(store.clone()).ok()?;
     policy::reconnect(adb, &owner).await
 }
-pub async fn setup<C: Commands, S: Snapshots + Transactions + Clone + 'static>(
+pub async fn setup<C: Commands + Clone + 'static, S: Snapshots + Transactions + Clone + 'static>(
     adb: &Adb<C>,
     store: &S,
     off: bool,

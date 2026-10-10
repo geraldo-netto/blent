@@ -21,7 +21,7 @@ pub struct Monitor<C> {
     network: Option<super::network::Network>,
     store: blent_config::storage::ConfigStore,
 }
-impl<C: Commands> Monitor<C> {
+impl<C: Commands + Clone + 'static> Monitor<C> {
     pub fn new(adb: Adb<C>, config: FileConfig, stop: watch::Receiver<bool>) -> Result<Self> {
         ensure!(
             config.require_token,

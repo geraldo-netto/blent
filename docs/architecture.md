@@ -139,6 +139,7 @@ systemd user-service environment override.
 
 | Setting | Default | Accepted range | Tradeoff |
 | --- | --- | --- | --- |
+| `BLENT_WIFI_ATTEMPTS` | 8 | 1..64 | Active/retiring Wi-Fi attempts; one owner per address until native join. |
 | `BLENT_CONTROL_WORKERS` | 8 | 1..64 | Shared camera/audio/config control threads, including retiring owners. |
 | `BLENT_PROCESS_LIMIT` | 128 | 1..4096 | Owned command/media children, including unreaped children and dependent cleanup. |
 | `BLENT_SESSION_LIMIT` | 64 | 1..4096 | Session supervisors, including unfinished worker handles. |

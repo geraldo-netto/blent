@@ -37,24 +37,23 @@ fn valid_label(label: &str) -> bool {
             .all(|b| b.is_ascii_alphanumeric() || b == b'-')
 }
 
-pub async fn reconnect<C: Commands>(adb: &Adb<C>, store: &impl AsyncSnapshots) -> Option<String> {
+pub async fn reconnect<C: Commands + Clone + 'static>(
+    adb: &Adb<C>,
+    store: &impl AsyncSnapshots,
+) -> Option<String> {
     let address = store.snapshot().await.ok()?.wifi_address;
     if !valid_address(&address) {
         return None;
     }
-    let output = adb
-        .checked(vec!["connect".into(), address.clone()], None)
+    let attempt = super::attempt::Attempt::start(adb, &address, true)
         .await
         .ok()?;
-    if !store
+    let current = store
         .snapshot()
         .await
-        .is_ok_and(|config| config.wifi_address == address)
-    {
-        let _ = adb.checked(vec!["disconnect".into(), address], None).await;
-        return None;
-    }
-    connected(&output, &address).then_some(address)
+        .is_ok_and(|config| config.wifi_address == address);
+    attempt.finish(current).await.ok()?;
+    current.then_some(address)
 }
 pub(super) fn connected(bytes: &[u8], address: &str) -> bool {
     let text = String::from_utf8_lossy(bytes);
@@ -63,7 +62,7 @@ pub(super) fn connected(bytes: &[u8], address: &str) -> bool {
         || text.trim() == format!("connected to {address}")
         || text.trim() == format!("already connected to {address}")
 }
-pub async fn setup<C: Commands>(
+pub async fn setup<C: Commands + Clone + 'static>(
     adb: &Adb<C>,
     store: &impl AsyncPersistence,
     off: bool,
@@ -77,7 +76,9 @@ pub async fn setup<C: Commands>(
             }))
             .await?;
         if valid_address(&old) {
-            let _ = adb.checked(vec!["disconnect".into(), old], None).await;
+            if let Ok(attempt) = super::attempt::Attempt::start(adb, &old, false).await {
+                let _ = attempt.finish(true).await;
+            }
         }
         return Ok(None);
     }
@@ -92,13 +93,7 @@ pub async fn setup<C: Commands>(
         .context("Tablet address unavailable after enabling network ADB")?;
     let address = format!("{ip}:5555");
     ensure!(valid_address(&address), "Invalid tablet address");
-    let bytes = adb
-        .checked(vec!["connect".into(), address.clone()], None)
-        .await?;
-    ensure!(
-        connected(&bytes, &address),
-        "ADB did not confirm network connection"
-    );
+    let attempt = super::attempt::Attempt::start(adb, &address, true).await?;
     let saved = address.clone();
     if let Err(error) = store
         .transact(Box::new(move |config| {
@@ -107,14 +102,16 @@ pub async fn setup<C: Commands>(
         }))
         .await
     {
-        if String::from_utf8_lossy(&bytes).trim() != format!("already connected to {address}") {
-            let _ = adb.checked(vec!["disconnect".into(), address], None).await;
-        }
+        let _ = attempt.finish(false).await;
         return Err(error);
     }
+    attempt.finish(true).await?;
     Ok(Some(address))
 }
-async fn usb_tablet<C: Commands>(adb: &Adb<C>, devices: &[String]) -> Option<String> {
+async fn usb_tablet<C: Commands + Clone + 'static>(
+    adb: &Adb<C>,
+    devices: &[String],
+) -> Option<String> {
     for serial in devices {
         if transport_of(serial) == Transport::Usb && adb.installed(serial).await == Some(true) {
             return Some(serial.clone());
@@ -122,7 +119,7 @@ async fn usb_tablet<C: Commands>(adb: &Adb<C>, devices: &[String]) -> Option<Str
     }
     None
 }
-async fn tablet_ip<C: Commands>(adb: &Adb<C>, serial: &str) -> Option<String> {
+async fn tablet_ip<C: Commands + Clone + 'static>(adb: &Adb<C>, serial: &str) -> Option<String> {
     for command in [
         vec!["shell", "ip", "-f", "inet", "addr", "show", "wlan0"],
         vec!["shell", "ip", "route", "get", "1.1.1.1"],

@@ -58,7 +58,7 @@ impl Network {
         // foreign. Recheck physical identity before touching its owned mapping.
         adb.identity(routes.serial()).await.as_ref() == identity
     }
-    pub async fn devices<C: Commands>(
+    pub async fn devices<C: Commands + Clone + 'static>(
         &mut self,
         adb: &Adb<C>,
         current: &[String],

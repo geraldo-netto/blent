@@ -10,18 +10,30 @@ pub mod connection;
 pub mod monitor;
 mod network;
 mod preview;
+mod route_lock;
 mod routes;
 pub use routes::Routes;
 
 pub type CommandFuture<'a> = Pin<Box<dyn Future<Output = Result<Output>> + Send + 'a>>;
 pub trait Commands: Send + Sync {
+    /// Lease the adapter's route namespace. Native adapters also coordinate
+    /// across processes; in-memory adapters have no external namespace.
+    fn route_lease(&self, _address: &str) -> Result<Box<dyn Send>> {
+        Ok(Box::new(()))
+    }
+
     fn execute(&self, arguments: Vec<String>, input: Option<Vec<u8>>) -> CommandFuture<'_>;
 }
 
 /// Uses the common native adapter: argument arrays and Windows job ownership,
 /// never a host shell. Only Android shell commands are sent through stdin.
+#[derive(Clone)]
 pub struct NativeCommands(pub PathBuf);
 impl Commands for NativeCommands {
+    fn route_lease(&self, address: &str) -> Result<Box<dyn Send>> {
+        route_lock::acquire(address)
+    }
+
     fn execute(&self, arguments: Vec<String>, input: Option<Vec<u8>>) -> CommandFuture<'_> {
         Box::pin(async move {
             Ok(tokio::process::Command::new(&self.0)
@@ -32,6 +44,7 @@ impl Commands for NativeCommands {
     }
 }
 
+#[derive(Clone)]
 pub struct Adb<C>(pub C);
 impl<C: Commands> Adb<C> {
     pub async fn inventory(&self) -> Option<Vec<String>> {
@@ -129,6 +142,13 @@ mod tests;
 
 /// A missing optional executable still permits local configuration retirement.
 impl<C: Commands> Commands for Option<C> {
+    fn route_lease(&self, address: &str) -> Result<Box<dyn Send>> {
+        match self {
+            Some(commands) => commands.route_lease(address),
+            None => anyhow::bail!("ADB executable unavailable"),
+        }
+    }
+
     fn execute(&self, arguments: Vec<String>, input: Option<Vec<u8>>) -> CommandFuture<'_> {
         match self {
             Some(commands) => commands.execute(arguments, input),

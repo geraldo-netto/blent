@@ -1,0 +1,1091 @@
+{
+  "sources": {
+    "host/src/wifi.rs": "2c2bf0f12b7e404a2b54a45dde11d46085020ac8e2ee38c953e06b2863d34906",
+    "host/src/wifi/policy.rs": "79ee9d836244b97ea6efb05aa41cfb06f37594707cd8db231bce4920621f760a",
+    "host/src/wifi/attempt.rs": "892d1b1ede8745992993aef28d471ab6ce0045fc2047a9092cfafbaf4eeb6fd4",
+    "host/src/usb.rs": "de213c9516394bf79259a031a719d6f17e9ce079c0e4957ad97690e8bdbfadeb",
+    "host/src/usb/route_lock.rs": "cd1480a9c4daa871bcba8bb1f88c3c3e2f503394aed8abfe41361b084283f07f",
+    "host/src/usb/network.rs": "512240684dd32e30979e94f3172495badb86c3149a8a31f84b037f1ee7f72b16",
+    "host/src/usb/monitor.rs": "c340c67f2ef51b2441426bbc379d3ef7ec31869cf8237e190633c3d83f5d965f"
+  },
+  "functions": [
+    {
+      "file": "host/src/wifi.rs",
+      "name": "reconnect",
+      "line": 11,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi.rs",
+      "name": "setup",
+      "line": 21,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi.rs",
+      "name": "new",
+      "line": 38,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi.rs",
+      "name": "connect",
+      "line": 41,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "valid_address",
+      "line": 9,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "valid_port",
+      "line": 23,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "valid_host",
+      "line": 27,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "valid_label",
+      "line": 30,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "reconnect",
+      "line": 40,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "connected",
+      "line": 58,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "setup",
+      "line": 65,
+      "language": "rust",
+      "covered": 44,
+      "total": 45,
+      "percent": 97.77777777777777,
+      "passes": true,
+      "missing": [
+        82
+      ]
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "usb_tablet",
+      "line": 111,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "tablet_ip",
+      "line": 122,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        132
+      ]
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "new",
+      "line": 21,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "shared",
+      "line": 27,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "reserve",
+      "line": 37,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "drop",
+      "line": 59,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "poll_complete",
+      "line": 68,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "start",
+      "line": 78,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "with_owner",
+      "line": 85,
+      "language": "rust",
+      "covered": 33,
+      "total": 33,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "finish",
+      "line": 121,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "run",
+      "line": 132,
+      "language": "rust",
+      "covered": 19,
+      "total": 22,
+      "percent": 86.36363636363636,
+      "passes": true,
+      "missing": [
+        153,
+        154,
+        155
+      ]
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "execute_attempt",
+      "line": 160,
+      "language": "rust",
+      "covered": 21,
+      "total": 23,
+      "percent": 91.30434782608695,
+      "passes": true,
+      "missing": [
+        168,
+        176
+      ]
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "command",
+      "line": 185,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "route_lease",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "route_lease",
+      "line": 33,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "execute",
+      "line": 37,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "inventory",
+      "line": 50,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "all_devices",
+      "line": 58,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "identity",
+      "line": 65,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "installed",
+      "line": 77,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "checked",
+      "line": 91,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "routes",
+      "line": 102,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "deliver",
+      "line": 109,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "args",
+      "line": 125,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "valid_serial",
+      "line": 133,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "route_lease",
+      "line": 145,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "execute",
+      "line": 152,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "name": "acquire",
+      "line": 8,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "name": "stripe",
+      "line": 18,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "name": "at",
+      "line": 30,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "new",
+      "line": 13,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "identity",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "attachment_identity",
+      "line": 24,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "ticket",
+      "line": 27,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "retarget",
+      "line": 31,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "can_retire",
+      "line": 45,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "devices",
+      "line": 61,
+      "language": "rust",
+      "covered": 28,
+      "total": 34,
+      "percent": 82.3529411764706,
+      "passes": true,
+      "missing": [
+        81,
+        84,
+        85,
+        86,
+        87,
+        88
+      ]
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "observe",
+      "line": 96,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "new",
+      "line": 25,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "with_network",
+      "line": 45,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "sessions",
+      "line": 50,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "poll",
+      "line": 66,
+      "language": "rust",
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "update",
+      "line": 99,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "candidate",
+      "line": 119,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        122
+      ]
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "available",
+      "line": 130,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "assigned",
+      "line": 141,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "attach",
+      "line": 147,
+      "language": "rust",
+      "covered": 35,
+      "total": 36,
+      "percent": 97.22222222222223,
+      "passes": true,
+      "missing": [
+        156
+      ]
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "maintain",
+      "line": 186,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "retire",
+      "line": 198,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "retry_routes",
+      "line": 218,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "shutdown",
+      "line": 240,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    {
+      "file": "host/src/wifi.rs",
+      "line": 11,
+      "name": "reconnect",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi.rs",
+      "line": 21,
+      "name": "setup",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi.rs",
+      "line": 38,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi.rs",
+      "line": 41,
+      "name": "connect",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 9,
+      "name": "valid_address",
+      "score": 7
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 23,
+      "name": "valid_port",
+      "score": 4
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 27,
+      "name": "valid_host",
+      "score": 3
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 30,
+      "name": "valid_label",
+      "score": 7
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 40,
+      "name": "reconnect",
+      "score": 3
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 58,
+      "name": "connected",
+      "score": 3
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 65,
+      "name": "setup",
+      "score": 7
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 111,
+      "name": "usb_tablet",
+      "score": 4
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "line": 122,
+      "name": "tablet_ip",
+      "score": 4
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 21,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 27,
+      "name": "shared",
+      "score": 3
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 37,
+      "name": "reserve",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 59,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 68,
+      "name": "poll_complete",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 78,
+      "name": "start",
+      "score": 1
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 85,
+      "name": "with_owner",
+      "score": 5
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 121,
+      "name": "finish",
+      "score": 2
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 132,
+      "name": "run",
+      "score": 5
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 160,
+      "name": "execute_attempt",
+      "score": 7
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "line": 185,
+      "name": "command",
+      "score": 3
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 21,
+      "name": "route_lease",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 33,
+      "name": "route_lease",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 37,
+      "name": "execute",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 50,
+      "name": "inventory",
+      "score": 3
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 58,
+      "name": "all_devices",
+      "score": 3
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 65,
+      "name": "identity",
+      "score": 5
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 77,
+      "name": "installed",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 91,
+      "name": "checked",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 102,
+      "name": "routes",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 109,
+      "name": "deliver",
+      "score": 2
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 125,
+      "name": "args",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 133,
+      "name": "valid_serial",
+      "score": 4
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 145,
+      "name": "route_lease",
+      "score": 3
+    },
+    {
+      "file": "host/src/usb.rs",
+      "line": 152,
+      "name": "execute",
+      "score": 3
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "line": 8,
+      "name": "acquire",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "line": 18,
+      "name": "stripe",
+      "score": 4
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "line": 30,
+      "name": "at",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 13,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 21,
+      "name": "identity",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 24,
+      "name": "attachment_identity",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 27,
+      "name": "ticket",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 31,
+      "name": "retarget",
+      "score": 4
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 45,
+      "name": "can_retire",
+      "score": 3
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 61,
+      "name": "devices",
+      "score": 9
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "line": 96,
+      "name": "observe",
+      "score": 4
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 25,
+      "name": "new",
+      "score": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 45,
+      "name": "with_network",
+      "score": 1
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 50,
+      "name": "sessions",
+      "score": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 66,
+      "name": "poll",
+      "score": 7
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 99,
+      "name": "update",
+      "score": 9
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 119,
+      "name": "candidate",
+      "score": 5
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 130,
+      "name": "available",
+      "score": 5
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 141,
+      "name": "assigned",
+      "score": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 147,
+      "name": "attach",
+      "score": 4
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 186,
+      "name": "maintain",
+      "score": 3
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 198,
+      "name": "retire",
+      "score": 7
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 218,
+      "name": "retry_routes",
+      "score": 9
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 240,
+      "name": "shutdown",
+      "score": 2
+    }
+  ]
+}
