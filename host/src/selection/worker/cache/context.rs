@@ -56,7 +56,7 @@ pub(super) fn fingerprint(
         identity,
         host,
         caps,
-        super::super::super::Key::new(snapshot).format,
+        snapshot.selection_key().format,
         (
             &base.vaapi_device,
             base.gpu_policy,

@@ -126,7 +126,7 @@ async fn cancellation_contract(base: CaptureConfig, snapshot: EncoderSettings) {
         let current = settings.borrow();
         latency.encoder_started_with_budget(
             current.effective_encoder(),
-            Key::new(&current).format,
+            current.selection_key().format,
             current.decoder_choice().cloned(),
             current.selected_workers(),
             None,

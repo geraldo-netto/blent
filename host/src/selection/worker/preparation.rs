@@ -39,7 +39,7 @@ async fn optimize_with(
         let Some(prepared) = prepare(probes, settings, snapshot, latency, reuse).await else {
             publish(
                 settings,
-                &Key::new(snapshot),
+                &snapshot.selection_key(),
                 fallback_encoder(snapshot),
                 "Calibration interrupted; restored fallback",
             );
@@ -51,10 +51,16 @@ async fn optimize_with(
                 return;
             }
             Prepared::Cached(candidate) => {
-                watch_cached(reuse.unwrap(), latency, &Key::new(snapshot), &candidate).await;
+                watch_cached(
+                    reuse.unwrap(),
+                    latency,
+                    &snapshot.selection_key(),
+                    &candidate,
+                )
+                .await;
                 publish(
                     settings,
-                    &Key::new(snapshot),
+                    &snapshot.selection_key(),
                     fallback_encoder(snapshot),
                     "Historical profile failed; measuring current candidates",
                 );
@@ -110,7 +116,7 @@ async fn cached(
 ) -> Option<Candidate> {
     let cache = cache?;
     let candidate = cache.load(cache::now(), snapshot)?;
-    let key = Key::new(snapshot);
+    let key = snapshot.selection_key();
     let choice = candidate.decoder.clone();
     let workers = candidate.measurement.workers_requested;
     let mut retirement = Box::pin(cache.retired());

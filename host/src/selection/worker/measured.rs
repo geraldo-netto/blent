@@ -80,7 +80,7 @@ pub(super) async fn benchmark(
     latency: &LatencyTracker,
     candidates: Vec<Candidate>,
 ) -> Vec<Candidate> {
-    let key = Key::new(snapshot);
+    let key = snapshot.selection_key();
     if !super::super::trial::capture_ready(latency, &key).await {
         tracing::info!("Automatic trials skipped: capture did not become ready within 15s");
         return Vec::new();
@@ -107,7 +107,7 @@ async fn benchmark_with<F: Future<Output = Option<Observation>>>(
     candidates: Vec<Candidate>,
     mut measure: impl FnMut(Candidate) -> F,
 ) -> Vec<Candidate> {
-    let key = Key::new(snapshot);
+    let key = snapshot.selection_key();
     let deadline = tokio::time::Instant::now() + Duration::from_secs(36);
     let require_one = candidates
         .iter()
@@ -279,7 +279,7 @@ mod tests {
             "T627: trial budget started before capture was ready"
         );
         assert!(!work.is_finished());
-        let evidence = tracker.encoder_started("libx264", Key::new(&snapshot).format);
+        let evidence = tracker.encoder_started("libx264", snapshot.selection_key().format);
         tokio::task::yield_now().await;
         assert!(
             tx.borrow().selection.is_none(),

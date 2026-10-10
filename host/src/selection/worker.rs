@@ -40,7 +40,7 @@ async fn run(
             return;
         }
         let snapshot = updates.borrow_and_update().clone();
-        let key = Key::new(&snapshot);
+        let key = snapshot.selection_key();
         if eligible(&snapshot, *display.borrow()) && completed.as_ref() != Some(&key) {
             let finished = until_changed(
                 &key,
@@ -89,7 +89,7 @@ async fn until_changed<T>(
 ) -> Option<T> {
     tokio::pin!(work);
     loop {
-        if stopped(stop) || !*display.borrow() || !key.matches(&updates.borrow()) {
+        if stopped(stop) || !*display.borrow() || !updates.borrow().selection_matches(key) {
             return None;
         }
         tokio::select! {
@@ -108,7 +108,7 @@ async fn supervise(
     candidates: Vec<Candidate>,
     cache: Option<Arc<cache::Cache>>,
 ) {
-    let key = Key::new(snapshot);
+    let key = snapshot.selection_key();
     let mut pending = candidates;
     let mut fallback = fallback_encoder(snapshot).to_string();
     while let Some((candidate, remaining)) = choose(settings, &key, &fallback, pending, |name| {
@@ -120,7 +120,10 @@ async fn supervise(
     .await
     {
         let name = candidate.measurement.encoder.clone();
-        if let Some(cache) = cache.as_ref().filter(|_| key.matches(&settings.borrow())) {
+        if let Some(cache) = cache
+            .as_ref()
+            .filter(|_| settings.borrow().selection_matches(&key))
+        {
             cache.remember(&candidate).await;
         }
         let decoder = settings.borrow().decoder_choice().cloned();
@@ -176,7 +179,7 @@ async fn choose<F: Future<Output = bool>>(
                 },
             );
             settings.send_if_modified(|current| {
-                if !key.matches(current) {
+                if !current.selection_matches(key) {
                     return false;
                 }
                 current.selection = Some(Selected {
@@ -229,7 +232,7 @@ fn publish_choice(
     workers: u32,
 ) -> bool {
     settings.send_if_modified(|current| {
-        if !key.matches(current) {
+        if !current.selection_matches(key) {
             return false;
         }
         current.selection = Some(Selected {
@@ -467,7 +470,7 @@ fn fallback_encoder(settings: &EncoderSettings) -> &str {
     settings
         .selection
         .as_ref()
-        .filter(|s| s.verified && s.key.matches(settings))
+        .filter(|s| s.verified && settings.selection_matches(&s.key))
         .map(|s| s.encoder.as_str())
         .unwrap_or("libx264")
 }

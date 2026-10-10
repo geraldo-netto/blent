@@ -50,7 +50,7 @@ async fn t484_old_decoder_acks_cannot_certify_a_new_decoder_only_trial() {
     let snapshot = settings();
     let (tx, mut updates) = watch::channel(snapshot.clone());
     let latency = LatencyTracker::new();
-    let old = latency.encoder_started("libx264", Key::new(&snapshot).format);
+    let old = latency.encoder_started("libx264", snapshot.selection_key().format);
     let mut trial = candidate("libx264", true, 100.0, 10);
     trial.decoder = Some(blent_config::negotiation::DecoderChoice {
         name: "vendor.avc".into(),
@@ -145,7 +145,7 @@ fn t434_ranking_uses_measured_capacity_then_decoder_class_and_tail_cadence() {
 #[test]
 fn t434_old_peers_stale_formats_and_explicit_choices_do_not_select_candidates() {
     let good = settings();
-    let key = Key::new(&good);
+    let key = good.selection_key();
     let (tx, _rx) = watch::channel(good.clone());
     assert!(publish(&tx, &key, "libvpx-vp9", "fixture"));
     assert_eq!(tx.borrow().effective_encoder(), "libvpx-vp9");
@@ -183,7 +183,7 @@ fn t434_old_peers_stale_formats_and_explicit_choices_do_not_select_candidates() 
 #[tokio::test]
 async fn t434_failed_render_trials_fall_through_and_preserve_fallback() {
     let (tx, _rx) = watch::channel(settings());
-    let key = Key::new(&tx.borrow());
+    let key = tx.borrow().selection_key();
     let candidates = vec![
         candidate("libaom-av1", false, 120.0, 4),
         candidate("libvpx-vp9", true, 120.0, 6),
@@ -212,13 +212,13 @@ async fn t434_failed_render_trials_fall_through_and_preserve_fallback() {
 #[tokio::test]
 async fn t434_peer_change_cancels_pending_work_but_selection_updates_do_not() {
     let (tx, mut rx) = watch::channel(settings());
-    let key = Key::new(&tx.borrow());
+    let key = tx.borrow().selection_key();
     let (_visible, mut display) = watch::channel(true);
     let (_stop, mut stop) = watch::channel(false);
     let work = async {
         assert!(publish(&tx, &key, "libx264", "measuring"));
         tokio::task::yield_now().await;
-        assert!(key.matches(&rx_snapshot(&tx)));
+        assert!(rx_snapshot(&tx).selection_matches(&key));
         tx.send_modify(|s| {
             s.clear_decoders();
         });
@@ -266,7 +266,7 @@ async fn t434_closed_display_watch_terminates_selector() {
 #[test]
 fn t434_unverified_candidate_is_never_a_rollback_target() {
     let (tx, _rx) = watch::channel(settings());
-    let key = Key::new(&tx.borrow());
+    let key = tx.borrow().selection_key();
     publish(&tx, &key, "libaom-av1", "trial");
     assert_eq!(fallback_encoder(&tx.borrow()), "libx264");
     tx.send_modify(|s| s.selection.as_mut().unwrap().verified = true);
@@ -278,7 +278,7 @@ fn t434_unverified_candidate_is_never_a_rollback_target() {
 #[test]
 fn t434_only_fresh_acks_from_matching_encoder_certify_a_trial() {
     let latency = LatencyTracker::new();
-    let key = Key::new(&settings());
+    let key = settings().selection_key();
     let old = latency.encoder_started("libx264", key.format);
     for seq in 0..3 {
         latency.on_encoded_for(seq, &old);
@@ -324,7 +324,7 @@ fn t434_only_fresh_acks_from_matching_encoder_certify_a_trial() {
 #[tokio::test(start_paused = true)]
 async fn t465_verified_stream_failure_advances_without_control_reconnect() {
     let initial = settings();
-    let key = Key::new(&initial);
+    let key = initial.selection_key();
     let (tx, mut rx) = watch::channel(initial.clone());
     let latency = LatencyTracker::new();
     let observed = latency.clone();
@@ -371,7 +371,7 @@ async fn t465_verified_stream_failure_advances_without_control_reconnect() {
 #[tokio::test(start_paused = true)]
 async fn t465_exhaustion_keeps_fallback_without_retrying_failed_candidates() {
     let initial = settings();
-    let key = Key::new(&initial);
+    let key = initial.selection_key();
     let (tx, mut rx) = watch::channel(initial.clone());
     let latency = LatencyTracker::new();
     let observed = latency.clone();
@@ -415,7 +415,7 @@ async fn t465_exhaustion_keeps_fallback_without_retrying_failed_candidates() {
 #[test]
 fn t465_retired_encoder_cannot_certify_a_trial_after_late_acks() {
     let latency = LatencyTracker::new();
-    let key = Key::new(&settings());
+    let key = settings().selection_key();
     let old = latency.encoder_started("libx264", key.format);
     for seq in 0..3 {
         latency.on_encoded_for(seq, &old);
@@ -436,7 +436,7 @@ fn t465_retired_encoder_cannot_certify_a_trial_after_late_acks() {
 #[tokio::test(start_paused = true)]
 async fn t612_previous_worker_receipts_cannot_verify_a_new_budget() {
     let tracker = LatencyTracker::new();
-    let key = Key::new(&settings());
+    let key = settings().selection_key();
     let old = tracker.encoder_started_with_budget("libx264", key.format, None, 1, None);
     let task = tokio::spawn({
         let tracker = tracker.clone();
@@ -476,7 +476,7 @@ fn t612_legacy_peer_keeps_one_worker_and_manual_budget_is_fixed() {
 async fn t715_startup_wait_rejects_missing_wrong_and_retired_evidence() {
     for case in 0..6 {
         let tracker = LatencyTracker::new();
-        let key = Key::new(&settings());
+        let key = settings().selection_key();
         if case != 0 {
             let mut format = key.format;
             if case == 3 {
@@ -508,7 +508,7 @@ async fn t715_startup_wait_rejects_missing_wrong_and_retired_evidence() {
 #[tokio::test(start_paused = true)]
 async fn t715_matching_start_keeps_six_second_render_deadline() {
     let tracker = LatencyTracker::new();
-    let key = Key::new(&settings());
+    let key = settings().selection_key();
     let started = tokio::time::Instant::now();
     let work = rendered(&tracker, &key, "libx264", None, 2);
     let driver = async {

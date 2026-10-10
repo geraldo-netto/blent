@@ -1,7 +1,4 @@
-use super::super::{
-    tests::{candidate, settings},
-    Key,
-};
+use super::super::tests::{candidate, settings};
 use super::*;
 use crate::{attachment::Attachment, capture::CaptureConfig};
 use blent_config::adb::Transport;
@@ -280,7 +277,7 @@ async fn t480_historical_choice_is_not_ranked_as_this_session_and_requires_fresh
     let (snapshot, mut row) = setup();
     row.cached = true;
     let (tx, _) = tokio::sync::watch::channel(snapshot.clone());
-    let key = Key::new(&snapshot);
+    let key = snapshot.selection_key();
     let chosen = super::super::choose(&tx, &key, "libx264", vec![row.clone()], |_| {
         std::future::ready(false)
     })

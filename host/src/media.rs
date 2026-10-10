@@ -106,6 +106,29 @@ pub struct EncoderSettings {
 pub use blent_config::negotiation::DecoderCapabilities;
 
 impl EncoderSettings {
+    /// Immutable identity for a measured selection. Matching below borrows the
+    /// existing metadata rather than cloning it on every frame/settings check.
+    pub fn selection_key(&self) -> crate::selection::Key {
+        crate::selection::Key {
+            format: self.selection_format(),
+            epoch: self.decoder_epoch,
+            decoders: self.decoders.clone(),
+        }
+    }
+
+    fn selection_format(&self) -> (u32, u32, u32, u32, u32) {
+        let (width, height) = self.video_dimensions();
+        (width, height, self.fps, self.bitrate, self.quality)
+    }
+
+    pub fn selection_matches(&self, key: &crate::selection::Key) -> bool {
+        self.encoder == "auto"
+            && self.geometry_ready
+            && key.format == self.selection_format()
+            && key.epoch == self.decoder_epoch
+            && key.decoders == self.decoders
+    }
+
     pub fn calibrating(&self) -> bool {
         if self.encoder != "auto" || cfg!(feature = "inproc-encoder") {
             return false;
@@ -119,14 +142,14 @@ impl EncoderSettings {
         }
         self.selection
             .as_ref()
-            .filter(|s| s.key.matches(self))
+            .filter(|s| self.selection_matches(&s.key))
             .is_none_or(|s| s.calibrating)
     }
 
     pub fn selected_workers(&self) -> u32 {
         self.selection
             .as_ref()
-            .filter(|s| s.key.matches(self))
+            .filter(|s| self.selection_matches(&s.key))
             .map_or(0, |s| s.workers)
     }
 
@@ -163,14 +186,14 @@ impl EncoderSettings {
         }
         self.selection
             .as_ref()
-            .filter(|s| s.key.matches(self))
+            .filter(|s| self.selection_matches(&s.key))
             .map(|s| s.reason.as_str())
             .unwrap_or("H.264 fallback while awaiting compatible encoder measurements")
     }
     pub fn decoder_choice(&self) -> Option<&blent_config::negotiation::DecoderChoice> {
         self.selection
             .as_ref()
-            .filter(|s| s.key.matches(self))?
+            .filter(|s| self.selection_matches(&s.key))?
             .decoder
             .as_ref()
     }
@@ -179,7 +202,7 @@ impl EncoderSettings {
             return self
                 .selection
                 .as_ref()
-                .filter(|s| s.key.matches(self))
+                .filter(|s| self.selection_matches(&s.key))
                 .map(|s| s.encoder.as_str())
                 .unwrap_or("libx264");
         }
@@ -214,6 +237,83 @@ impl EncoderSettings {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn selection_fixture() -> EncoderSettings {
+        EncoderSettings {
+            encoder: "auto".into(),
+            fps: 60,
+            bitrate: 20_000,
+            width: 1280,
+            height: 800,
+            quality: 18,
+            width_mm: 310,
+            height_mm: 194,
+            stream_scale: 1,
+            geometry_ready: true,
+            decoders: None,
+            decoder_epoch: 1,
+            selection: None,
+        }
+    }
+
+    #[test]
+    fn t821_selection_contract_identity_and_invalidation_have_one_policy_owner() {
+        let mut settings = selection_fixture();
+        let key = settings.selection_key();
+        assert!(settings.selection_matches(&key));
+        settings.selection = Some(crate::selection::Selected {
+            key: key.clone(),
+            workers: 3,
+            encoder: "h264_vaapi".into(),
+            reason: "measured".into(),
+            verified: true,
+            calibrating: false,
+            decoder: None,
+        });
+        assert_eq!(settings.selected_workers(), 3);
+        assert_eq!(settings.effective_encoder(), "h264_vaapi");
+        assert!(!settings.calibrating());
+        settings.decoder_epoch += 1;
+        assert!(!settings.selection_matches(&key));
+        assert_eq!(settings.selected_workers(), 0);
+        assert_eq!(settings.effective_encoder(), "libx264");
+        assert_eq!(settings.calibrating(), !cfg!(feature = "inproc-encoder"));
+        for mutate in profile_mutations().into_iter().chain(geometry_mutations()) {
+            let mut changed = selection_fixture();
+            mutate(&mut changed);
+            let expected = changed.encoder == "auto"
+                && changed.geometry_ready
+                && changed.selection_key() == key;
+            assert_eq!(changed.selection_matches(&key), expected);
+        }
+        settings = selection_fixture();
+        settings.decoders = Some(DecoderCapabilities::default());
+        assert!(!settings.selection_matches(&key));
+        assert!(settings.selection_matches(&settings.selection_key()));
+    }
+
+    #[test]
+    fn t821_bounded_key_properties_preserve_dimensions_at_unsigned_boundaries() {
+        for width in [0, 1, 2, 4095, 4096, u32::MAX] {
+            for scale in [0, 1, 2, 4096, u32::MAX] {
+                let mut settings = selection_fixture();
+                settings.width = width;
+                settings.height = width;
+                settings.stream_scale = scale;
+                settings.fps = width;
+                settings.bitrate = width;
+                settings.quality = width;
+                settings.decoder_epoch = u64::MAX;
+                let key = settings.selection_key();
+                assert!(settings.selection_matches(&key));
+                assert_eq!((key.format.0, key.format.1), settings.video_dimensions());
+                assert_eq!(key.format.0 % 2, 0);
+                assert!(key.format.0 >= 2);
+                settings.clear_decoders();
+                assert!(!settings.selection_matches(&key));
+            }
+        }
+    }
 
     #[test]
     fn t497_restart_identity_tracks_stream_changes_but_not_inventory_metadata() {

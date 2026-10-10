@@ -44,7 +44,7 @@ fn t484_decoder_only_change_restarts_encoder_without_restarting_helper() {
     };
     selected.selection = Some(crate::selection::Selected {
         workers: 0,
-        key: crate::selection::Key::new(&selected),
+        key: selected.selection_key(),
         encoder: manager.config.encoder.clone(),
         reason: "T484 decoder-only trial".into(),
         verified: false,
@@ -766,7 +766,7 @@ fn t612_budget_restarts_only_encoder_and_expires_with_geometry_or_peer() {
     let before = selected.clone();
     selected.selection = Some(crate::selection::Selected {
         workers: 2,
-        key: crate::selection::Key::new(&selected),
+        key: selected.selection_key(),
         encoder: manager.config.encoder.clone(),
         reason: "T612 worker trial".into(),
         verified: false,

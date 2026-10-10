@@ -1822,7 +1822,7 @@ fi
                 current.decoder_epoch += 1;
                 current.selection = Some(crate::selection::Selected {
                     workers: 0,
-                    key: crate::selection::Key::new(current),
+                    key: current.selection_key(),
                     encoder: "h264_vaapi".into(),
                     reason: "T472 concurrent selector".into(),
                     verified: true,

@@ -19,7 +19,7 @@ fn acknowledge(
 ) -> Arc<crate::latency::EncoderEvidence> {
     let evidence = latency.encoder_started_with_decoder(
         &row.measurement.encoder,
-        Key::new(snapshot).format,
+        snapshot.selection_key().format,
         row.decoder.clone(),
     );
     for seq in 0..3 {
@@ -205,7 +205,13 @@ async fn t714_normal_retirement_preserves_tuned_profile_for_reconnect() {
         Some("device:T714-tablet".into()),
         Some(blent_config::adb::Transport::Usb),
     );
-    watch_cached(&cache, &LatencyTracker::new(), &Key::new(&snapshot), &row).await;
+    watch_cached(
+        &cache,
+        &LatencyTracker::new(),
+        &snapshot.selection_key(),
+        &row,
+    )
+    .await;
     assert!(
         store(path).load(cache::now(), &snapshot).is_some(),
         "T714: normal attachment retirement erased durable tuning"
@@ -215,7 +221,7 @@ async fn t714_normal_retirement_preserves_tuned_profile_for_reconnect() {
 #[tokio::test(start_paused = true)]
 async fn t714_pending_and_terminal_states_follow_trial_outcomes() {
     let (snapshot, row) = setup();
-    let key = Key::new(&snapshot);
+    let key = snapshot.selection_key();
     let (tx, _) = watch::channel(snapshot);
     assert!(tx.borrow().calibrating());
     let result = choose(&tx, &key, "libx264", vec![row.clone()], |_| {
