@@ -79,7 +79,8 @@ The existing T102 loader/distribution regression failed because its isolated C
 fixture omitted `cursor_overlay.c`, which the current Makefile links. The fixture
 now includes that unit; both permanent distribution tests pass offline. Production
 code and packaging assertions are unchanged. Full-workspace RPM notice validation
-still needs local `rpmbuild` (T833); no dependencies were downloaded.
+was skipped by the maintainer for future RPM removal (T833); no dependencies
+were downloaded. AppImage does not require `rpmbuild`.
 [Red/green evidence](artifacts/2026-10-10-t832/).
 
 ## T824: independent persistence contracts
