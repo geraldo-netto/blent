@@ -12,6 +12,7 @@ struct State {
     identity: Option<String>,
     generation: u64,
     transport: Option<blent_config::adb::Transport>,
+    closed: bool,
 }
 struct Shared {
     state: Mutex<State>,
@@ -29,6 +30,7 @@ impl Attachment {
                 identity: None,
                 generation: 0,
                 transport: None,
+                closed: false,
             }),
             presence: watch::channel(false).0,
             generation: watch::channel(0).0,
@@ -65,6 +67,9 @@ impl Attachment {
         transport: Option<blent_config::adb::Transport>,
     ) {
         let mut state = self.0.state.lock().unwrap();
+        if state.closed {
+            return;
+        }
         let preserve = identity.is_some() && state.identity == identity;
         state
             .authentication
@@ -73,17 +78,44 @@ impl Attachment {
         state.identity = identity;
         state.generation = state.generation.wrapping_add(1);
         if !preserve {
-            self.0.settings.send_if_modified(|settings| {
-                let ready = settings.geometry_ready
-                    || settings.decoders.is_some()
-                    || settings.selection.is_some();
-                settings.clear_decoders();
-                settings.geometry_ready = false;
-                ready
-            });
+            self.reset_metadata();
         }
         self.0.generation.send_replace(state.generation);
         self.0.presence.send_replace(false);
+    }
+
+    /// Permanently retire this session. Transport polling cannot revive it.
+    /// Retrying requires a new session owner and attachment.
+    pub fn retire(&self) {
+        // A worker action may have panicked while holding the generation lock.
+        // Recover only to revoke all authority, never to resume partial state.
+        let mut state = self
+            .0
+            .state
+            .lock()
+            .unwrap_or_else(|error| error.into_inner());
+        if state.closed {
+            return;
+        }
+        state.closed = true;
+        self.0.state.clear_poison();
+        state.authentication = Authentication::Unavailable;
+        state.identity = None;
+        state.transport = None;
+        state.generation = state.generation.wrapping_add(1);
+        self.reset_metadata();
+        self.0.generation.send_replace(state.generation);
+        self.0.presence.send_replace(false);
+    }
+    fn reset_metadata(&self) {
+        self.0.settings.send_if_modified(|settings| {
+            let ready = settings.geometry_ready
+                || settings.decoders.is_some()
+                || settings.selection.is_some();
+            settings.clear_decoders();
+            settings.geometry_ready = false;
+            ready
+        });
     }
 
     /// Publish completed forwarding, or fully detach. Keep the familiar watch
@@ -91,6 +123,10 @@ impl Attachment {
     pub fn send(&self, present: bool) -> Result<(), watch::error::SendError<bool>> {
         if !present {
             self.begin(None);
+        }
+        let state = self.0.state.lock().unwrap();
+        if state.closed {
+            return Err(watch::error::SendError(present));
         }
         self.0.presence.send(present)
     }
@@ -108,6 +144,7 @@ impl Attachment {
             attachment: self.clone(),
             generation: state.generation,
             transport: state.transport,
+            closed: state.closed,
             changed: self.0.generation.subscribe(),
         }
     }
@@ -121,6 +158,7 @@ pub struct Lease {
     generation: u64,
     transport: Option<blent_config::adb::Transport>,
     changed: watch::Receiver<u64>,
+    closed: bool,
 }
 impl Lease {
     /// Identity and route are captured atomically with the attachment generation.
@@ -168,7 +206,7 @@ impl Lease {
     /// restore geometry or inject contacts after a new attachment begins.
     pub fn apply(&self, action: impl FnOnce()) -> bool {
         let state = self.attachment.0.state.lock().unwrap();
-        if state.generation != self.generation {
+        if state.closed || state.generation != self.generation {
             return false;
         }
         action();
@@ -178,16 +216,18 @@ impl Lease {
         Retirement {
             changed: self.changed.clone(),
             generation: self.generation,
+            closed: self.closed,
         }
     }
 }
 pub struct Retirement {
     changed: watch::Receiver<u64>,
     generation: u64,
+    closed: bool,
 }
 impl Retirement {
     pub async fn retired(&mut self) {
-        if *self.changed.borrow() == self.generation {
+        if !self.closed && *self.changed.borrow() == self.generation {
             let _ = self.changed.changed().await;
         }
     }

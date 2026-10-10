@@ -197,7 +197,8 @@ impl InputServer {
 
         // The native adapter owns display identity and mapping. Follow attachment
         // and mode until this server ends, releasing held input on transitions.
-        tasks.spawn(self.backend.follow(
+        let mut native = tokio::task::JoinSet::new();
+        native.spawn(self.backend.follow(
             self.tablet_rx.clone(),
             self.mode_tx.subscribe(),
             self.config.clone(),
@@ -209,6 +210,10 @@ impl InputServer {
             let accept = tokio::select! {
                 res = listener.accept() => res,
                 _ = tasks.join_next(), if !tasks.is_empty() => continue,
+                completion = native.join_next() => {
+                    completion.context("Native input worker missing")??;
+                    anyhow::bail!("Native input worker completed unexpectedly");
+                }
             };
 
             let (socket, peer) = match accept {

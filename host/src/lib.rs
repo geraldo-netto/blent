@@ -11,6 +11,8 @@ mod control_outcome;
 pub mod control_workers;
 pub mod persistence_port;
 mod session_adapters;
+pub mod session_state;
+mod session_supervision;
 
 // Shared wire/session state is built for every host target.
 pub mod adb_inventory;

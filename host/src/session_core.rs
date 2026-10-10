@@ -2,14 +2,15 @@
 use crate::{attachment::Attachment, input, latency::LatencyTracker, media, stream, video_queue};
 use anyhow::Result;
 use std::{
+    panic::{catch_unwind, AssertUnwindSafe},
     sync::{atomic::AtomicBool, Arc},
-    time::Duration,
 };
 use tokio::sync::{watch, Notify};
 use tokio::task::JoinHandle;
-use tracing::{error, warn};
+use tracing::error;
 
 pub use crate::capture_contract::{CaptureBackend, CaptureContext, CaptureWorkers};
+pub use crate::session_supervision::Workers;
 
 /// Composition-owned bindings for the current stream/input implementations.
 /// These are deliberately outside the capture backend contract.
@@ -112,83 +113,107 @@ impl Prepared {
             video_queue::QUEUE_PACKETS,
             self.resources.idr_wanted.clone(),
         );
-        let (stream, input) = start_servers(self.stream, self.input, video.clone()).await?;
+        let servers = BoundServers::bind(self.stream, self.input).await?;
         let (gate_tx, gate_rx) = watch::channel(false);
         let (stop_tx, stop_rx) = watch::channel(false);
-        let (capture_stop, capture_stop_rx) = watch::channel(false);
+        let workers = catch_unwind(AssertUnwindSafe(|| {
+            self.capture.start(CaptureContext {
+                video: video.clone().into(),
+                headers: Arc::new(self.resources.codec_config),
+                refresh: self.resources.idr_wanted,
+                settings: self.settings,
+                settings_rx: self.settings_rx,
+                display: gate_rx,
+                stop: stop_rx.clone(),
+                identity: Arc::new(self.tablet.clone()),
+            })
+        }))
+        .map_err(|_| anyhow::anyhow!("Capture startup panicked"))?;
+        let (stream, input) = servers.start(video);
         let gate = spawn_display_gate(gate_tx, self.tablet.subscribe(), self.mode.subscribe());
-        let stop = forward_shutdown(daemon_stop, stop_rx, capture_stop);
-        let workers = self.capture.start(CaptureContext {
-            video: video.into(),
-            headers: Arc::new(self.resources.codec_config),
-            refresh: self.resources.idr_wanted,
-            settings: self.settings,
-            settings_rx: self.settings_rx,
-            display: gate_rx,
-            stop: capture_stop_rx,
-            identity: Arc::new(self.tablet.clone()),
-        });
-        let mut tasks = vec![stream, input, gate, stop];
+        let stop = forward_shutdown(daemon_stop, stop_rx, stop_tx.clone());
+        let mut tasks = vec![
+            ("Stream", stream),
+            ("Input", input),
+            ("Display gate", gate),
+            ("Shutdown", stop),
+        ];
         tasks.extend(
             workers
                 .auxiliary
                 .into_iter()
-                .map(|work| spawn_server("Capture auxiliary", work)),
+                .map(|work| ("Capture auxiliary", spawn_server("Capture auxiliary", work))),
         );
-        Ok(Runtime {
-            instance: self.instance,
-            tablet_tx: self.tablet,
-            relaunch: self.relaunch,
+        Ok(Runtime::from_workers(
+            self.instance,
+            self.tablet,
+            self.relaunch,
             stop_tx,
-            tasks,
-            capture: spawn_server("Capture", workers.capture),
-            video_port: self.ports.0,
-            input_port: self.ports.1,
-        })
+            Workers::new(spawn_server("Capture", workers.capture), tasks),
+            self.ports,
+        ))
     }
 }
 
-/// Own all session workers, including the gate and shutdown bridge. A startup
-/// failure occurs before workers spawn; teardown waits for capture child reaping.
+/// The supervisor owns task handles; consumers observe independent state values.
 pub struct Runtime {
     pub instance: u32,
-    pub tablet_tx: crate::attachment::Attachment,
+    pub tablet_tx: Attachment,
     pub relaunch: Arc<Notify>,
     pub stop_tx: watch::Sender<bool>,
-    pub tasks: Vec<JoinHandle<Result<()>>>,
-    pub capture: JoinHandle<Result<()>>,
     pub video_port: u16,
     pub input_port: u16,
+    pub status: watch::Receiver<crate::session_state::State>,
+    supervisor: JoinHandle<()>,
+    state: watch::Sender<crate::session_state::State>,
 }
-
 impl Runtime {
-    pub async fn stop(mut self) {
-        let _ = self.tablet_tx.send(false);
-        let _ = self.stop_tx.send(true);
-        if tokio::time::timeout(Duration::from_secs(5), &mut self.capture)
-            .await
-            .is_err()
-        {
-            warn!("Capture pipeline {} did not stop within 5s", self.instance);
-            self.capture.abort();
-            let _ = (&mut self.capture).await;
-        }
-        for task in &self.tasks {
-            task.abort();
-        }
-        for task in &mut self.tasks {
-            let _ = task.await;
+    pub fn from_workers(
+        instance: u32,
+        tablet_tx: Attachment,
+        relaunch: Arc<Notify>,
+        stop_tx: watch::Sender<bool>,
+        workers: Workers,
+        ports: (u16, u16),
+    ) -> Self {
+        let (state, status) = watch::channel(crate::session_state::State::Running);
+        let supervisor = tokio::spawn(crate::session_supervision::run(
+            workers,
+            tablet_tx.clone(),
+            stop_tx.clone(),
+            state.clone(),
+        ));
+        Self {
+            instance,
+            tablet_tx,
+            relaunch,
+            stop_tx,
+            video_port: ports.0,
+            input_port: ports.1,
+            status,
+            supervisor,
+            state,
         }
     }
+    pub async fn stop(mut self) {
+        self.tablet_tx.retire();
+        self.stop_tx.send_replace(true);
+        let _ = (&mut self.supervisor).await;
+    }
 }
-
 impl Drop for Runtime {
     fn drop(&mut self) {
-        let _ = self.stop_tx.send(true);
-        self.capture.abort();
-        for task in &self.tasks {
-            task.abort();
-        }
+        self.tablet_tx.retire();
+        self.stop_tx.send_replace(true);
+        self.supervisor.abort();
+        self.state.send_if_modified(|state| {
+            if matches!(state, crate::session_state::State::Running) {
+                *state = crate::session_state::State::Cancelled;
+                true
+            } else {
+                false
+            }
+        });
     }
 }
 
@@ -212,15 +237,40 @@ pub async fn start_servers(
     input: input::InputServer,
     video: crate::video_queue::VideoSender,
 ) -> Result<(JoinHandle<Result<()>>, JoinHandle<Result<()>>)> {
-    let video_listener = stream.bind().await?;
-    let input_listener = input.bind().await?;
-    let stream = spawn_server("Stream", async move {
-        stream.run_with_listener(video, video_listener).await
-    });
-    let input = spawn_server("Input", async move {
-        input.run_with_listener(input_listener).await
-    });
-    Ok((stream, input))
+    Ok(BoundServers::bind(stream, input).await?.start(video))
+}
+
+struct BoundServers {
+    stream: stream::StreamServer,
+    input: input::InputServer,
+    video_listener: tokio::net::TcpListener,
+    input_listener: tokio::net::TcpListener,
+}
+impl BoundServers {
+    async fn bind(stream: stream::StreamServer, input: input::InputServer) -> Result<Self> {
+        let video_listener = stream.bind().await?;
+        let input_listener = input.bind().await?;
+        Ok(Self {
+            stream,
+            input,
+            video_listener,
+            input_listener,
+        })
+    }
+    fn start(
+        self,
+        video: video_queue::VideoSender,
+    ) -> (JoinHandle<Result<()>>, JoinHandle<Result<()>>) {
+        let stream = spawn_server("Stream", async move {
+            self.stream
+                .run_with_listener(video, self.video_listener)
+                .await
+        });
+        let input = spawn_server("Input", async move {
+            self.input.run_with_listener(self.input_listener).await
+        });
+        (stream, input)
+    }
 }
 
 pub fn spawn_server(

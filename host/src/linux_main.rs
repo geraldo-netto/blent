@@ -1520,16 +1520,14 @@ printf '%s\n' "$2" >> "$0.log"
         }
         .prepare(watch::channel(false).0);
         let tablet_tx = prepared.tablet;
-        ExtraSession {
-            instance: 1,
+        ExtraSession::from_workers(
+            1,
             tablet_tx,
-            relaunch: Default::default(),
+            Default::default(),
             stop_tx,
-            tasks: vec![],
-            capture,
-            video_port: 0,
-            input_port: 0,
-        }
+            blent::session::Workers::new(capture, vec![]),
+            (0, 0),
+        )
         .stop()
         .await;
         assert!(

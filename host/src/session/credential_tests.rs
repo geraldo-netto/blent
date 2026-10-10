@@ -6,6 +6,34 @@ use tokio::net::TcpStream;
 use tokio::task::JoinHandle;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 
+// Authentication fixtures have no native resource lifecycle. Keep their input
+// worker alive until the server owner cancels it, as the backend contract requires.
+struct IdleInput;
+impl blent::input::backend::InputSink for IdleInput {
+    fn release_all(&self) {}
+    fn touch(&self, _: (f64, f64, f64), _: u8, _: u8) {}
+    fn pen(&self, _: blent::input::backend::PenSample, _: bool) {}
+}
+impl blent::input::backend::InputBackend for IdleInput {
+    fn sink(&self) -> Arc<dyn blent::input::backend::InputSink> {
+        Arc::new(Self)
+    }
+    fn follow(
+        &self,
+        _: watch::Receiver<bool>,
+        _: watch::Receiver<bool>,
+        _: blent::input::InputConfig,
+    ) -> blent::capture_contract::Signal<'static> {
+        Box::pin(std::future::pending())
+    }
+}
+struct UnstartedCapture;
+impl CaptureBackend for UnstartedCapture {
+    fn start(self: Box<Self>, _: CaptureContext) -> CaptureWorkers {
+        panic!("T444: authentication fixture must not start capture");
+    }
+}
+
 struct Fixture {
     tablet: crate::attachment::Attachment,
     video: std::net::SocketAddr,
@@ -15,13 +43,25 @@ struct Fixture {
 impl Fixture {
     async fn new() -> Self {
         let (mode, _) = watch::channel(true);
-        let prepared = Spec {
+        let spec = Spec {
             capture: capture::CaptureConfig::default(),
             ports: (0, 0),
             token: Some("a".repeat(64)),
             devices: (false, false, false),
+        };
+        let prepared = blent::session::Spec {
+            settings: spec.settings(),
+            instance: 0,
+            ports: spec.ports,
+            token: spec.token,
+            devices: spec.devices,
         }
-        .prepare(mode);
+        .prepare(
+            mode,
+            SessionResources::default(),
+            Box::new(UnstartedCapture),
+            Arc::new(IdleInput),
+        );
         prepared
             .resources
             .codec_config

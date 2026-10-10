@@ -170,3 +170,45 @@ samples with immutable 4 KiB packets: median publish/read is 50.67 ns directly a
 52.30 ns through the port (1.64 ns added). This is interface overhead, not an
 end-to-end improvement or display latency measurement.
 [Source-attested evidence](artifacts/2026-10-10-t820/).
+
+## T813: supervise session failures and revoke failed attachments
+
+One session supervisor owns capture, stream, input, display-gate, shutdown and
+capture-auxiliary task handles. Error, panic or unexpected successful completion
+retires that session's attachment and credentials, requests sibling shutdown and
+publishes a named failure through an independent lifecycle value. Native input
+remains a separately scheduled, owned task; its terminal result now propagates to
+the input server. Other sessions retain their own workers and generations.
+Transport polling cannot reactivate a retired attachment. Retry requires a new
+session owner; no automatic retry was added.
+
+Both listeners are bound before capture construction; no task is spawned until
+the backend returns its owned futures. A constructor panic returns an error and
+drops the unstarted listeners. Explicit shutdown reports Stopped after task
+cleanup. Owner drop reports Cancelled, meaning cancellation was requested without
+confirming native retirement. Failed state survives subsequent shutdown. If a
+worker panics while holding its generation lock, retirement recovers the poisoned
+lock only to revoke authority and clear metadata, never to resume partial state.
+
+Permanent T813 regressions were observed failing for capture error/panic/early
+success, constructor panic, stale Running after owner drop, erased native-input
+completion, late credentials and poisoned cleanup. Additional tests cover every
+service outcome, independent sessions, expected shutdown, bounded malformed/late
+transport values, repeated retirement and the existing async capture grace.
+Authentication tests retain their assertions; their fixture now supplies an idle
+input backend instead of dropping an unstarted native capture owner whose channel
+closure terminates input. Existing loopback authentication and lifetime tests stay
+in the normal suite.
+
+Control-side bounds during native shutdown, cleanup-phase error reporting and
+retention of unconfirmed resources remain T814/T819. Task abort is not evidence
+that a started native call stopped. No production services were reloaded, no
+packages downloaded and no external dependency code changed.
+
+Final default host collection passes 744 tests with seven existing ignores. The
+installed offline SDK passes all 33 scoped all-feature session/contract tests;
+broad SDK prerequisites remain T835. All 59 maintained production functions in
+the changed session, supervision, attachment and input modules exceed or meet
+80% individual executable-line coverage and have complexity <=9. Source hashes
+match the collection manifest. Four existing architecture guards also pass.
+[Retained red/green and coverage evidence](artifacts/2026-10-10-t813/).
