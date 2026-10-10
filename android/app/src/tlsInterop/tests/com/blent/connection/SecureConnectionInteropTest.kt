@@ -47,15 +47,15 @@ class SecureConnectionInteropTest {
         error("Rust fixture readiness deadline")
     }
 
-    private fun trial(peer: String = "host", mode: String = "accept"): Boolean {
+    private fun trial(peer: String = "host", mode: String = "accept", verified: (Socket) -> Unit = {}): Boolean {
         val directory = Files.createTempDirectory("blent-t846-interop-").toFile()
         try {
             listOf("host.der", "host.pk8", "tablet.der").forEach { File(directory, it).writeBytes(fixture(it)) }
-            return runPeer(directory, peer, mode)
+            return runPeer(directory, peer, mode, verified)
         } finally { directory.deleteRecursively() }
     }
 
-    private fun runPeer(directory: File, peer: String, mode: String): Boolean {
+    private fun runPeer(directory: File, peer: String, mode: String, verified: (Socket) -> Unit): Boolean {
         val executable = checkNotNull(System.getProperty("blent.tls.fixture")) { "Missing Rust TLS fixture" }
         val ready = File(directory, "ready")
         val log = File(directory, "fixture.log")
@@ -66,6 +66,7 @@ class SecureConnectionInteropTest {
             var admitted = false
             val result = runCatching {
                 client(peer).connect(socket).use { secure ->
+                    verified(secure)
                     admitted = true
                     secure.getOutputStream().write("fixture".toByteArray()); secure.getOutputStream().flush()
                     val reply = ByteArray(8)
@@ -81,6 +82,61 @@ class SecureConnectionInteropTest {
         } finally {
             if (process.isAlive) process.destroyForcibly()
             check(process.waitFor(2, TimeUnit.SECONDS)) { "Rust fixture still owns resources" }
+        }
+    }
+
+    private fun pin(bytes: ByteArray): ConnectionPeer {
+        val digest = java.security.MessageDigest.getInstance("SHA-256").digest(bytes)
+        return ConnectionPeer.parse(digest.joinToString("") { "%02x".format(it.toInt() and 255) })
+    }
+
+    private fun admitted(trust: ConnectionTrust, expected: ConnectionPairing.Phase, remember: Boolean) {
+        val pairing = ConnectionPairing()
+        val ticket = trust.begin(pairing, pin(fixture("host.der")), 0, 100)
+        assertEquals(expected, pairing.phase)
+        if (expected == ConnectionPairing.Phase.PENDING) pairing.approve(ticket, remember, 1)
+        var lease: ConnectionPairing.Lease? = null
+        assertTrue(trial { socket ->
+            val certificate = (socket as javax.net.ssl.SSLSocket).session.peerCertificates.first().encoded
+            lease = trust.authenticated(pairing, ticket, pin(certificate), 2)
+        })
+        assertTrue(pairing.current(checkNotNull(lease)))
+        // trial returns only after both stock TLS sockets and the Rust process retire.
+        pairing.cancel(ticket); pairing.retired(ticket)
+    }
+
+    @Test @Config(sdk = [27, 34]) fun t852RealTlsRememberRestartRevokeAndUnprovenRejection() {
+        val root = Files.createTempDirectory("blent-t852-trust-",
+            java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
+                java.nio.file.attribute.PosixFilePermissions.fromString("rwx------")))
+        val local = pin(fixture("tablet.der")); val peer = pin(fixture("host.der"))
+        try {
+            ConnectionTrust(AndroidPeerTrustStore.open(root), local).use { trust ->
+                rejectedTlsDoesNotPersist(trust)
+                admitted(trust, ConnectionPairing.Phase.PENDING, true)
+                assertTrue(trust.trusted(peer))
+            }
+            ConnectionTrust(AndroidPeerTrustStore.open(root), local).use { trust ->
+                admitted(trust, ConnectionPairing.Phase.APPROVED, false)
+                assertTrue(trust.revoke(ConnectionPairing(), peer))
+            }
+            ConnectionTrust(AndroidPeerTrustStore.open(root), local).use { trust ->
+                assertFalse(trust.trusted(peer))
+                admitted(trust, ConnectionPairing.Phase.PENDING, false)
+                assertFalse(trust.trusted(peer))
+            }
+        } finally { root.toFile().deleteRecursively() }
+    }
+
+    private fun rejectedTlsDoesNotPersist(trust: ConnectionTrust) {
+        for ((peerName, mode) in listOf("stranger" to "accept", "host" to "wrong-preface")) {
+            val pairing = ConnectionPairing(); val peer = pin(fixture("host.der"))
+            val ticket = trust.begin(pairing, peer, 0, 100)
+            pairing.approve(ticket, true, 1)
+            assertFalse(trial(peerName, mode) { fail("T852 unverified stream reached persisted admission") })
+            assertFalse(trust.trusted(peer))
+            assertEquals(ConnectionPairing.Phase.APPROVED, pairing.phase)
+            pairing.cancel(ticket); pairing.retired(ticket)
         }
     }
 

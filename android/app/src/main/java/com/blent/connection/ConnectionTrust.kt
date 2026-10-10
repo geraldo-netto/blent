@@ -41,6 +41,31 @@ internal class ConnectionTrust(
 
     fun trusted(peer: ConnectionPeer): Boolean = !closed && !poisoned && peers.contains(peer.fingerprint)
 
+    /** Storage failure cannot silently become an unremembered pairing prompt. */
+    fun begin(pairing: ConnectionPairing, peer: ConnectionPeer, now: Long, timeout: Long): ConnectionPairing.Ticket {
+        check(!closed && !poisoned)
+        return pairing.begin(peer, trusted(peer), now, timeout)
+    }
+
+    /** Invoke only for the stock TLS adapter's verified peer event. A failed
+     * remembered admission cannot leave its newly authenticated lease alive. */
+    fun authenticated(
+        pairing: ConnectionPairing,
+        ticket: ConnectionPairing.Ticket,
+        proven: ConnectionPeer,
+        now: Long,
+    ): ConnectionPairing.Lease {
+        try {
+            check(!closed && !poisoned)
+            val lease = pairing.authenticated(ticket, proven, now)
+            if (lease.remember) remember(pairing, lease)
+            return lease
+        } catch (failure: Exception) {
+            pairing.cancel(ticket)
+            throw failure
+        }
+    }
+
     fun remember(pairing: ConnectionPairing, lease: ConnectionPairing.Lease): Boolean {
         check(!closed && !poisoned)
         check(lease.remember && pairing.current(lease))

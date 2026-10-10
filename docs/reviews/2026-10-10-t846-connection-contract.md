@@ -561,3 +561,18 @@ Both adapters preserve existing evidence for explicit repair. [Validation](artif
 includes shared malformed vectors, per-function counters and an actual API36 tablet
 filesystem probe run without installing/restarting the app. T852 still composes these
 stores with stock TLS; production presentation and resources remain separate work.
+
+## T852 persisted pairing composition
+
+Both trust policies now expose admission operations that select persisted approval
+and complete current authenticated pairing. A saved pin still requires fresh stock
+TLS proof. If proof or remembered persistence fails, the matching attempt closes;
+a stale callback cannot cancel a newer attempt. Native retirement remains required
+before replacement. This reuses existing policy/storage boundaries without adding
+a separate broker or UI dependency to the contracts.
+
+[Integration evidence](artifacts/2026-10-10-t852/README.md) demonstrates persisted host
+identity reuse through real mutual TLS, restart/reconnect, explicit revoke and wrong
+certificate rejection. Android's stock adapter interoperates with Rust while saving
+and reopening trust on API27/34 JVM fixtures. Production broker/service/UI and media
+remain T853–T858; no current ADB-free production-display support is claimed.

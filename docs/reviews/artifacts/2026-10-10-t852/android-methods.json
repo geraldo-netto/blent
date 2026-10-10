@@ -1,0 +1,82 @@
+[
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "<init>",
+    "line": "13",
+    "covered": 13,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "<init>",
+    "line": "13",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "restore",
+    "line": "35",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "trusted",
+    "line": "42",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "begin",
+    "line": "46",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "authenticated",
+    "line": "58",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "remember",
+    "line": "70",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "revoke",
+    "line": "82",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "persist",
+    "line": "91",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "close",
+    "line": "100",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  }
+]

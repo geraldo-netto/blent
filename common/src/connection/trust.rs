@@ -1,7 +1,7 @@
 //! T868 persisted peer approval, independent of TLS, UI and storage adapters.
 //! One serialized owner must govern both this state and every associated Pairing.
 //! I/O belongs off the UI thread. Stored approval never substitutes for TLS proof.
-use super::pairing::{Lease, Pairing, PeerId};
+use super::pairing::{Lease, Pairing, PeerId, Ticket};
 use anyhow::{ensure, Result};
 pub mod codec;
 
@@ -71,6 +71,42 @@ impl<S: TrustStorage> Trust<S> {
         self.snapshot
             .peers
             .binary_search_by(|candidate| candidate.as_str().cmp(peer.as_str()))
+    }
+    /// T852: stored approval only selects the prompt state. Every connection
+    /// still needs fresh stock TLS authentication before a lease is returned.
+    pub fn begin(
+        &self,
+        pairing: &mut Pairing,
+        peer: PeerId,
+        now: i64,
+        timeout: i64,
+    ) -> Result<Ticket> {
+        ensure!(self.healthy, "trust storage unavailable");
+        let trusted = self.trusted(&peer);
+        pairing.begin(peer, trusted, now, timeout)
+    }
+    /// Trusted adapter callback after successful stock TLS and protocol proof.
+    /// If authentication or persistence fails, cancel this matching attempt;
+    /// native retirement is still required before a replacement can begin.
+    pub fn authenticated(
+        &mut self,
+        pairing: &mut Pairing,
+        ticket: &Ticket,
+        proven: &PeerId,
+        now: i64,
+    ) -> Result<Lease> {
+        let result = (|| {
+            ensure!(self.healthy, "trust storage unavailable");
+            let lease = pairing.authenticated(ticket, proven, now)?;
+            if lease.remember {
+                self.remember(pairing, &lease)?;
+            }
+            Ok(lease)
+        })();
+        if result.is_err() {
+            pairing.cancel(ticket);
+        }
+        result
     }
     /// A no-op still requires a current authenticated remembered lease. Callers
     /// serialize this complete operation with all approval/revoke events.

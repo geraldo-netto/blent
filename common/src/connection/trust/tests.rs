@@ -233,3 +233,102 @@ fn t868_codec_accepts_exact_maximum_and_rejects_oversized_record() {
     too_large.push(0);
     assert!(codec::decode(&too_large).is_err());
 }
+
+#[test]
+fn t852_composition_requires_fresh_proof_after_restart_and_revoke() {
+    let memory = Memory::default();
+    let mut trust = Trust::open(memory.clone(), peer('0'), 1).unwrap();
+    let mut pairing = Pairing::default();
+    let ticket = trust.begin(&mut pairing, peer('1'), 0, 100).unwrap();
+    assert_eq!(pairing.phase(), crate::connection::pairing::Phase::Pending);
+    pairing.approve(&ticket, true, 1).unwrap();
+    let lease = trust
+        .authenticated(&mut pairing, &ticket, &peer('1'), 2)
+        .unwrap();
+    assert!(pairing.current(&lease));
+    drop(trust);
+    pairing.cancel(&ticket);
+    pairing.retired(&ticket).unwrap();
+    let mut trust = Trust::open(memory, peer('0'), 1).unwrap();
+    let ticket = trust.begin(&mut pairing, peer('1'), 0, 100).unwrap();
+    assert_eq!(pairing.phase(), crate::connection::pairing::Phase::Approved);
+    let lease = trust
+        .authenticated(&mut pairing, &ticket, &peer('1'), 2)
+        .unwrap();
+    assert!(!lease.remember);
+    assert!(pairing.current(&lease));
+    trust.revoke(&mut pairing, &peer('1')).unwrap();
+    assert!(trust.begin(&mut pairing, peer('1'), 0, 100).is_err());
+    pairing.retired(&ticket).unwrap();
+    trust.begin(&mut pairing, peer('1'), 0, 100).unwrap();
+    assert_eq!(pairing.phase(), crate::connection::pairing::Phase::Pending);
+}
+#[test]
+fn t852_failed_persistence_or_proof_cancels_matching_attempt_and_keeps_retirement_barrier() {
+    for fail_storage in [false, true] {
+        let memory = Memory::default();
+        let mut trust = Trust::open(memory.clone(), peer('0'), 1).unwrap();
+        let mut pairing = Pairing::default();
+        let ticket = trust.begin(&mut pairing, peer('1'), 0, 100).unwrap();
+        pairing.approve(&ticket, true, 1).unwrap();
+        memory.0.borrow_mut().fail = fail_storage;
+        let proof = if fail_storage { peer('1') } else { peer('2') };
+        assert!(trust
+            .authenticated(&mut pairing, &ticket, &proof, 2)
+            .is_err());
+        assert_eq!(pairing.phase(), crate::connection::pairing::Phase::Closing);
+        assert!(trust.begin(&mut pairing, peer('1'), 3, 100).is_err());
+        pairing.retired(&ticket).unwrap();
+        if fail_storage {
+            assert!(trust.begin(&mut pairing, peer('1'), 3, 100).is_err());
+        }
+        assert!(memory.0.borrow().bytes.is_none());
+    }
+}
+#[test]
+fn t852_stale_completion_cannot_cancel_another_attempt_and_health_is_rechecked() {
+    let memory = Memory::default();
+    let mut trust = Trust::open(memory.clone(), peer('0'), 1).unwrap();
+    let mut pairing = Pairing::default();
+    let stale = trust.begin(&mut pairing, peer('1'), 0, 100).unwrap();
+    pairing.cancel(&stale);
+    pairing.retired(&stale).unwrap();
+    let ticket = trust.begin(&mut pairing, peer('2'), 0, 100).unwrap();
+    pairing.approve(&ticket, true, 1).unwrap();
+    assert!(trust
+        .authenticated(&mut pairing, &stale, &peer('1'), 2)
+        .is_err());
+    assert_eq!(pairing.phase(), crate::connection::pairing::Phase::Approved);
+    let (mut other, lease) = approved(peer('3'), true);
+    memory.0.borrow_mut().fail = true;
+    assert!(trust.remember(&other, &lease).is_err());
+    assert!(trust
+        .authenticated(&mut pairing, &ticket, &peer('2'), 2)
+        .is_err());
+    assert_eq!(pairing.phase(), crate::connection::pairing::Phase::Closing);
+    // All other live connections are invalidated by the shared broker on failure.
+    assert!(trust.revoke(&mut other, &peer('3')).is_err());
+    assert!(!other.current(&lease));
+}
+
+#[test]
+fn t852_bounded_invalid_completion_cannot_retarget_live_attempt() {
+    for offset in 1..=256 {
+        let mut trust = Trust::open(Memory::default(), peer('0'), 1).unwrap();
+        let mut pairing = Pairing::default();
+        let ticket = trust.begin(&mut pairing, peer('1'), 0, 100).unwrap();
+        pairing.approve(&ticket, true, 1).unwrap();
+        let stale = Ticket {
+            epoch: ticket.epoch + offset,
+            peer: ticket.peer.clone(),
+        };
+        assert!(trust
+            .authenticated(&mut pairing, &stale, &peer('1'), 2)
+            .is_err());
+        assert_eq!(pairing.phase(), crate::connection::pairing::Phase::Approved);
+        let lease = trust
+            .authenticated(&mut pairing, &ticket, &peer('1'), 2)
+            .unwrap();
+        assert!(pairing.current(&lease));
+    }
+}

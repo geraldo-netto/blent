@@ -1,0 +1,8 @@
+{
+  "common/src/connection/trust.rs": "39b2fcc3fcd770719ecd2b87d52cc614b5ba1b4e689d039c32a3736f411bb22b",
+  "common/src/connection/trust/tests.rs": "3fcedb4d027da70f472dd05a32cab8128e3cd4d903574cfb848b87e8f96547ab",
+  "host/src/secure_connection/persistence_tests.rs": "914a6958b8772265eac2f272e5d30f094772eac6eb8fee2a98d33a58e548cdd1",
+  "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt": "cc32b63b0948c3dd8c5cd086e7c527190d6be3e72170044ffecc8029ae073a09",
+  "android/app/src/test/java/com/blent/connection/ConnectionTrustAdmissionTest.kt": "757ac3bc4282e27e3e2d965f39cd762ea10bb3f8683423985432f31f192251ab",
+  "android/app/src/tlsInterop/tests/com/blent/connection/SecureConnectionInteropTest.kt": "44fc57f35a98bc014f083cd4c4d0d2d94647957b93461d29e81eac90f6e611df"
+}
