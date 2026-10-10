@@ -1,6 +1,8 @@
 # T846 connection contract and integration boundary
 
-The current Android composition is described under T854 below. Validation counts
+The current Android composition is described under T854 and production Android
+pairing presentation under T892/T893 below. Host controls and joined physical
+pairing acceptance remain T900/T901/T894/T855. Validation counts
 in individual milestone sections describe their historical scoped runs; they are
 not whole-project coverage or physical-device support claims.
 
@@ -1201,7 +1203,7 @@ The selected-device production host helper now advertises manufacturer/model
 `Blent`/`Blent`, version `1`, matching Android's accessory filter. The explicit
 prototype helper path keeps its separate `Blent USB Probe` profile. Neither
 profile grants authentication. Android's manifest opens MainActivity on accessory
-attachment; T855 still connects UI/presentation and activity lifecycle to the new
+attachment; T893 now connects Android UI/presentation and activity lifecycle to the new
 entry point. Real display/touch, camera and audio remain T857–T860. No ADB-free
 production-media support or physical-device acceptance is claimed by composition.
 
@@ -1209,3 +1211,36 @@ Validation and exact source/counter evidence are retained under
 [T854 artifacts](artifacts/2026-10-10-t854/README.md). Synthetic KeyStore provider
 tests exercise the loader boundary and signatures only; native AndroidKeyStore
 isolation, physical USB and actual Binder-kill acceptance remain T855/T846.
+
+## T892/T893 production Android pairing presentation
+
+MainActivity now retains the application-owned `ConnectionBinding` through
+`ConnectionOwner`, which captures only application context. Recreating, stopping
+or destroying an Activity does not forget a still-owned USB connection. Android
+hides the approval dialog while the Activity is stopped and presents the same
+current choice when it resumes. Explicit Disconnect/Revoke retires the link;
+individual media owners keep their own foreground/background consent policies.
+Actual process death remains the containing native ownership boundary.
+
+USB accessory intents start fresh selection/permission admission when no attempt
+is active; they never consume token extras or reapply legacy ADB credentials.
+Duplicate attachment intents do not replace an active attempt. Ordinary launcher
+and token-delivery intents retain the existing ADB path. The settings sheet has a
+separate USB section, and an approval dialog appears without opening settings.
+It compares Computer with Computer and Tablet with Tablet across devices, resets
+Remember for each exact displayed choice, and treats denial/dismissal explicitly.
+The dialog scrolls on short windows. Camera/microphone permission stays separate.
+
+T895 publishes restored peer metadata without prompting or granting TLS proof;
+T896 publishes authenticated status only after verified proof, durable trust,
+negotiation and I/O installation. Current-peer revoke waits for a durable trust
+result. Disconnected saved-computer management is follow-up T897; user-editable
+connection capacities/deadlines remain T898. The UI currently uses validated
+T854 defaults. Production display/touch/audio/camera routing remains T857–T860.
+
+[T893 evidence](artifacts/2026-10-10-t893/README.md): 711 offline connection/UI
+regressions pass on applicable JVM/API 27/34 fixtures. All 139 scoped inventory
+functions and 162 executable JVM methods meet individual 80% line coverage;
+41 production complexity entries are at most 9. Physical production pairing,
+revocation and AndroidKeyStore/accessory behavior remain T855/T846; none is
+inferred from Robolectric, and no installed app was replaced for these checks.

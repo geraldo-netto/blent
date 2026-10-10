@@ -33,6 +33,7 @@ internal fun SettingsSheet(
     displayRefreshRates: List<Float> = listOf(Prefs.DEFAULT_DISPLAY_REFRESH_RATE),
     onSettingsEvent: (SettingsEvent) -> Unit = {},
     cameraControls: @Composable () -> Unit = {},
+    connectionControls: @Composable () -> Unit = {},
     decoderDiagnostics: DecoderDiagnostics = DecoderDiagnostics(),
 ) {
     var bitrateMbps by remember(settings.bitrateKbps) {
@@ -72,6 +73,7 @@ internal fun SettingsSheet(
                 StreamControls(bitrateMbps, fpsChoice, { bitrateMbps = it }, { fpsChoice = it })
             }
 
+            connectionControls()
             cameraControls()
 
             SettingsSection("App")

@@ -63,6 +63,7 @@ internal fun BlentMain(
     displayRefreshRates: List<Float> = listOf(Prefs.DEFAULT_DISPLAY_REFRESH_RATE),
     onSettingsEvent: (SettingsEvent) -> Unit = {},
     cameraControls: @Composable () -> Unit = {},
+    connectionControls: @Composable () -> Unit = {},
     inputControls: @Composable () -> Unit = {},
 ) {
     val isConnected = presentation?.connected ?: false
@@ -121,6 +122,7 @@ internal fun BlentMain(
                 displayRefreshRates = displayRefreshRates,
                 onSettingsEvent = onSettingsEvent,
                 cameraControls = cameraControls,
+                connectionControls = connectionControls,
                 decoderDiagnostics = decoderDiagnostics(presentation),
             )
         }

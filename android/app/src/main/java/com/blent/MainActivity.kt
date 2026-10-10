@@ -1,6 +1,8 @@
 package com.blent
 
 import android.content.Intent
+import android.hardware.usb.UsbManager
+import com.blent.connection.*
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -8,6 +10,7 @@ import androidx.activity.compose.setContent
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
+    internal lateinit var connection: ConnectionBinding; private set
     internal lateinit var microphone: AudioBinding; private set
     internal lateinit var speakers: AudioBinding; private set
     private val microphonePermission = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
@@ -25,6 +28,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val prefs = Prefs(this)
+        connection = ConnectionOwner.get(applicationContext)
         cameras = CameraOwner.get(applicationContext)
         microphone = AudioOwner.get(applicationContext)
         speakers = AudioOwner.get(applicationContext, 2)
@@ -49,11 +53,14 @@ class MainActivity : ComponentActivity() {
                     onSurfaceDestroyed = session::surfaceDestroyed,
                     displayRefreshRates = windowPolicy.supportedDisplayModes().map { it.refreshRate },
                     onSettingsEvent = ::settingsEvent,
+                    connectionControls = { ConnectionControls(connection) },
                     cameraControls = { CameraControls(cameras); AudioControls(microphone); AudioControls(speakers) },
                     inputControls = { session.inputControls() },
                 )
+                ConnectionPairingDialog(connection)
             }
         }
+        accessoryIntent(intent)
         window.decorView.post { windowPolicy.enableImmersiveMode() }
     }
 
@@ -92,7 +99,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        session.applyToken(restart = true)
+        if (!accessoryIntent(intent)) session.applyToken(restart = true)
+    }
+
+    private fun accessoryIntent(intent: Intent?): Boolean {
+        if (intent?.action != UsbManager.ACTION_USB_ACCESSORY_ATTACHED) return false
+        if (!connection.state.value.active) connection.connect(ConnectionWorkerSpec("usb"))
+        return true
     }
 
     override fun onGenericMotionEvent(event: android.view.MotionEvent): Boolean =
