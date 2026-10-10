@@ -230,14 +230,16 @@ activation prerequisite with its own regressions and commit.
 | T858 | Independent camera integration | T857 routing and consent patterns |
 | T859 | Independent microphone integration | T858 consent pattern |
 | T860 | Independent speaker integration | T859 shared audio adapter |
-| T861 | Native helper/broker and production APK packaging | T853, T854 |
-| T862 | Integrated failure, isolation and reconnect qualification | T855–T861 |
-| T846 | Packaged debugging-off media acceptance and matched measurements | Above integration and qualification |
+| T861 | Deferred by maintainer: native helper/broker and APK packaging | Resume only on explicit request |
+| T862 | Integrated failure, isolation and reconnect qualification | T855–T860 |
+| T846 | Local-build debugging-off media acceptance and matched measurements | Above integration and qualification; T861 not required |
 | T863 | API 27/28 native accessory/TLS qualification | Missing suitable native device/runner |
 
 The next user-visible milestone is production display plus touch without ADB
 (T857). Camera and audio follow, then integrated fault recovery and final measured
-acceptance. API 27/28 JVM tests do not satisfy T863; its missing physical provider
+acceptance. Packaging T861 was deferred by the maintainer on October 10 and does
+not block local-build implementation or acceptance; no release packaging pass is
+claimed. API 27/28 JVM tests do not satisfy T863; its missing physical provider
 validation is explicit. No completion percentage or release date is inferred from
 item counts: broker/lifecycle/media wiring is substantial remaining work.
 
@@ -264,7 +266,8 @@ cleanup; replacement still requires actual ownership retirement.
 
 1. Wire implemented identity, approval and authenticated transport contracts into
    persistent trust adapters and production UI. Explicit approval and revocation
-   must precede media/control authority; finish native-helper packaging.
+   must precede media/control authority. Native-helper packaging is deferred under
+   T861 and does not gate local-build integration/testing.
 2. Qualify native duplex I/O and worker supervision. Preserve quarantine until
    actual native ownership ends, including blocked provider calls, reads and closes.
 3. Adapt current local stream endpoints and attachment epochs, leaving media
