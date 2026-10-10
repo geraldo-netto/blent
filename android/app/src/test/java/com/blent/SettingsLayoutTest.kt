@@ -395,7 +395,7 @@ class SettingsLayoutTest {
     }
 
     private class Socket : WebSocket {
-        override fun request() = Request.Builder().url(TouchCapture.WS_URL).build()
+        override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = 0L
         override fun send(text: String) = true
         override fun send(bytes: ByteString) = true

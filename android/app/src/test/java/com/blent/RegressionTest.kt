@@ -632,7 +632,7 @@ class RegressionTest {
 
     private class Socket(private val beforeSend: (String) -> Unit = {}) : WebSocket {
         val messages = java.util.concurrent.CopyOnWriteArrayList<String>()
-        override fun request() = Request.Builder().url(TouchCapture.WS_URL).build()
+        override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = 0L
         override fun send(text: String): Boolean { beforeSend(text); messages.add(text); return true }
         override fun send(bytes: ByteString) = false

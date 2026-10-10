@@ -20,6 +20,48 @@ class RemoteDisplayTest {
         override fun getHolder(): SurfaceHolder = Proxy.newProxyInstance(SurfaceHolder::class.java.classLoader,
             arrayOf(SurfaceHolder::class.java)) { _, method, _ -> if (method.name == "getSurface") surface else null } as SurfaceHolder
     }
+    @Test fun t856DefaultPresentationSelectsTheAdbAdapterWithoutStartingMedia() {
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication())
+        assertEquals(AdbDisplayRoutes.create(), receiver.routes)
+        assertNull(receiver.token)
+        receiver.stop()
+    }
+    @Test fun t856RouteBundleCrossesWorkerBoundaryAndRetiresOldReceipts() = runBlocking {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        val requests = mutableListOf<MediaTask.Display>()
+        val callbacks = mutableListOf<(WorkerEvent) -> Unit>()
+        val retirement = CompletableDeferred<Unit>()
+        val surface = Surface(SurfaceTexture(0))
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope) { task, _, report ->
+            requests.add(task); callbacks.add(report)
+            object : LifecycleRun {
+                override suspend fun execute() = awaitCancellation()
+                override fun cancel() {}
+                override suspend fun retire() { retirement.await() }
+            }
+        }
+        try {
+            val selected = DisplayRoutes(2, "a".repeat(64), 12001, 12002)
+            receiver.routes = selected; receiver.setSurface(view(surface)); receiver.start()
+            assertEquals(selected, requests.single().routes); assertEquals(selected, receiver.routes)
+            assertEquals(selected.token, receiver.token)
+            receiver.routes = selected; assertEquals(1, requests.size)
+            val receipts = mutableListOf<RenderAcknowledgement>()
+            receiver.onFrameRendered = { receipts.add(it) }
+            callbacks[0](WorkerEvent.Rendered(1, 2, null)); assertTrue(receipts.single().current())
+            receiver.routes = selected.copy(revision = 3, videoPort = 13001, controlPort = 13002)
+            assertFalse(receipts.single().current()); assertEquals(1, requests.size)
+            assertThrows(IllegalArgumentException::class.java) { receiver.routes = selected }
+            receiver.routes = null; receiver.routes = null; receiver.token = selected.token
+            assertNull(receiver.routes); assertNull(receiver.token)
+            retirement.complete(Unit)
+            val resumed = selected.copy(revision = 4)
+            receiver.routes = resumed
+            withTimeout(2000) { while (requests.size < 2) delay(1) }
+            assertEquals(resumed, requests.last().routes)
+            callbacks[0](WorkerEvent.Rendered(2, 3, null)); assertEquals(1, receipts.size)
+        } finally { retirement.complete(Unit); receiver.stop(); scope.cancel(); surface.release() }
+    }
     @Test fun t809_surfaceFormatStopAndStaleFramesKeepOneOwnedGeneration() = runBlocking {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val callbacks = mutableListOf<(WorkerEvent) -> Unit>()
@@ -153,7 +195,7 @@ class RemoteDisplayTest {
         stopped.cancel(); stopped.execute(); stopped.retire()
         val surface = Surface(SurfaceTexture(0))
         try {
-            val native = LocalMediaRuns.create(RuntimeEnvironment.getApplication(), MediaTask.Display("a".repeat(64), DecoderFormat("video/avc", 640, 480, 30)), surface, {})
+            val native = LocalMediaRuns.create(RuntimeEnvironment.getApplication(), MediaTask.Display(AdbDisplayRoutes.create("a".repeat(64)), DecoderFormat("video/avc", 640, 480, 30)), surface, {})
             native.cancel(); native.retire()
         } finally { surface.release() }
     }

@@ -42,8 +42,7 @@ internal object LocalMediaRuns {
         override suspend fun retire() {}
     }
     private fun display(task: MediaTask.Display, surface: Surface, report: (WorkerEvent) -> Unit): LifecycleRun {
-        val receiver = VideoReceiver()
-        receiver.token = task.token
+        val receiver = VideoReceiver(initialRoutes = task.routes)
         receiver.setStreamFormat(task.format)
         receiver.setNativeSurface(surface)
         return DisplayWorkerRun(receiver, report)

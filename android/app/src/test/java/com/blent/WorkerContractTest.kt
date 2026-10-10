@@ -17,12 +17,12 @@ class WorkerContractTest {
         val tasks = listOf(audio(), audio(2),
             MediaTask.Camera(CameraEndpoint(token, 1234, 1280, 720, 30, 3000), CameraLens.FRONT, 0),
             MediaTask.Camera(CameraEndpoint(token, 1234, 640, 480, 10, 2000, requestedLens = CameraLens.REAR), CameraLens.REAR, 3),
-            MediaTask.Display(token, DecoderFormat("video/avc", 1280, 720, 60)),
-            MediaTask.Display(token, DecoderFormat("video/hevc", 1920, 1080, 30, selection = DecoderSelection("c2.fixture", "hevc", "main", 1, 8, true, 60))),
-            MediaTask.Display(token, DecoderFormat("video/avc", 1, 1, 10, selection = DecoderSelection("fixture", "h264", "baseline", 1, 8, false, null))),
+            MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", 1280, 720, 60)),
+            MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/hevc", 1920, 1080, 30, selection = DecoderSelection("c2.fixture", "hevc", "main", 1, 8, true, 60))),
+            MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", 1, 1, 10, selection = DecoderSelection("fixture", "h264", "baseline", 1, 8, false, null))),
             MediaTask.Metadata(640, 480, 60), MediaTask.Metadata(shellVersion = 1), MediaTask.Metadata(shellVersion = 2))
         for (task in tasks) assertEquals(task, MediaTaskJson.decode(MediaTaskJson.encode(task)))
-        assertThrows(IllegalArgumentException::class.java) { MediaTaskJson.encode(MediaTask.Display(token, DecoderFormat("video/avc", 1, 1, 30, byteArrayOf(1)))) }
+        assertThrows(IllegalArgumentException::class.java) { MediaTaskJson.encode(MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", 1, 1, 30, byteArrayOf(1)))) }
     }
     @Test fun t809_requestBoundariesRejectMalformedAndOutOfRangeFields() {
         val encoded = MediaTaskJson.encode(audio())
@@ -38,14 +38,14 @@ class WorkerContractTest {
             audio().copy(endpoint = audio().endpoint.copy(token = "bad")),
             MediaTask.Camera(CameraEndpoint(token, 1, 0, 720, 30, 1000), CameraLens.REAR, 0),
             MediaTask.Camera(CameraEndpoint(token, 1, 640, 480, 30, 1000), CameraLens.REAR, 4),
-            MediaTask.Display("bad", DecoderFormat("video/avc", 640, 480, 30)),
-            MediaTask.Display(token, DecoderFormat("unknown", 640, 480, 30)),
-            MediaTask.Display(token, DecoderFormat("video/avc", Int.MAX_VALUE, 480, 30)),
+            MediaTask.Display(AdbDisplayRoutes.create("bad"), DecoderFormat("video/avc", 640, 480, 30)),
+            MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("unknown", 640, 480, 30)),
+            MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", Int.MAX_VALUE, 480, 30)),
             MediaTask.Metadata(0, 0, 0), MediaTask.Metadata(shellVersion = 3))
         for (task in badTasks) assertTrue(runCatching { MediaTaskJson.decode(MediaTaskJson.encode(task)) }.isFailure)
         assertTrue(runCatching { MediaTaskJson.decode(JSONObject(encoded).put("kind", "unknown").toString()) }.isFailure)
         assertTrue(runCatching { MediaTaskJson.decode(" ".repeat(MediaTaskJson.LIMIT + 1)) }.isFailure)
-        assertTrue(runCatching { MediaTaskJson.encode(MediaTask.Display(token, DecoderFormat("x".repeat(MediaTaskJson.LIMIT), 1, 1, 30))) }.isFailure)
+        assertTrue(runCatching { MediaTaskJson.encode(MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("x".repeat(MediaTaskJson.LIMIT), 1, 1, 30))) }.isFailure)
     }
     @Test fun t809_eventsRoundTripNullDiagnosticsAndBoundedText() {
         val active = ActiveDecoderDiagnostics("codec", "video/avc", 1280, 720, 60, true, false, null, listOf("Standard low latency=1", "quote \\\" [{}]"))

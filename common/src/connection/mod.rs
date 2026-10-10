@@ -10,3 +10,4 @@ pub mod ready;
 
 pub mod management;
 pub mod resources;
+pub mod routes;

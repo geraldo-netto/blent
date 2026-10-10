@@ -4,7 +4,7 @@ package com.blent
 internal sealed interface MediaTask {
     data class Audio(val endpoint: AudioEndpoint, val preferences: AudioPreferences) : MediaTask
     data class Camera(val endpoint: CameraEndpoint, val lens: CameraLens, val rotation: Int) : MediaTask
-    data class Display(val token: String, val format: DecoderFormat) : MediaTask
+    data class Display(val routes: DisplayRoutes, val format: DecoderFormat) : MediaTask
     data class Metadata(val width: Int = 0, val height: Int = 0, val fps: Int = 0, val shellVersion: Int = 0) : MediaTask
 }
 

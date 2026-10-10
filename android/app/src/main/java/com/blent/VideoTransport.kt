@@ -15,12 +15,12 @@ internal class VideoTransport(
 
     fun newConnection(): Socket = createSocket()
 
-    fun connect(generation: Long, connection: Socket): InputStream? {
+    fun connect(generation: Long, connection: Socket, routes: DisplayRoutes): InputStream? {
         synchronized(monitor) {
             if (!current(generation)) return null
             socket = connection
         }
-        connection.connect(InetSocketAddress(VideoReceiver.HOST, VideoReceiver.PORT), 5000)
+        connection.connect(InetSocketAddress("127.0.0.1", routes.videoPort), 5000)
         connection.apply {
             tcpNoDelay = true
             soTimeout = 10000

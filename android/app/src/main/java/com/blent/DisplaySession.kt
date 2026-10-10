@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 /** Presentation contract. S is the platform boundary's borrowed display handle;
  * implementations own native execution and never destroy the caller's handle. */
 internal interface DisplaySession<S> {
+    var routes: DisplayRoutes?
     var token: String?
     var mimeType: String
     var streamFps: Int

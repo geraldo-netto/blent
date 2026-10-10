@@ -36,7 +36,6 @@ internal class ControlSession(
 ) {
     private companion object {
         const val TAG = TouchCapture.TAG
-        const val WS_URL = TouchCapture.WS_URL
         const val RECONNECT_DELAY_MS = TouchCapture.RECONNECT_DELAY_MS
     }
 
@@ -83,10 +82,25 @@ internal class ControlSession(
     /// receiver or initial token Activity. The token store updates a running
     /// session without requiring another Activity launch. It must be the first
     /// socket message; otherwise the host closes the connection unanswered.
-    @Volatile var token: String? = null
+    @Volatile private var configuredRoutes: DisplayRoutes? = AdbDisplayRoutes.create()
+    private var routeRevision = 1L
+    var routes: DisplayRoutes?
+        get() = configuredRoutes
+        set(value) = synchronized(lock) {
+            if (configuredRoutes == value) return@synchronized
+            require(value == null || value.revision > routeRevision)
+            val restart = connectionWanted
+            disconnect()
+            configuredRoutes = value
+            if (value != null) routeRevision = value.revision
+            if (restart && value != null) connect()
+        }
+    var token: String?
+        get() = configuredRoutes?.token
+        set(value) = synchronized(lock) { configuredRoutes = configuredRoutes?.copy(token = value) }
     // Protected by lock: bind authentication to this socket attempt, including
     // tokenless startup. Publishing replacement credentials cannot retarget it.
-    private var connectionToken: String? = null
+    private var connectionRoutes: DisplayRoutes? = null
 
     /** Settings to (re)send to the host whenever the control channel connects */
     @Volatile private var pendingConfig: JSONObject? = null
@@ -191,7 +205,7 @@ internal class ControlSession(
 
     // Authentication must be accepted before any other message is offered.
     private fun sendAuthentication(): Boolean {
-        val currentToken = connectionToken
+        val currentToken = connectionRoutes?.token
         if (currentToken == null) {
             Log.w(TAG, "No session token yet — the host will send one")
             return true
@@ -360,6 +374,7 @@ internal class ControlSession(
     }
 
     private fun connectWebSocket(): Unit = synchronized(lock) {
+        val selected = configuredRoutes ?: return@synchronized
         connectionGeneration++
         resetGreeting()
         input.reset()
@@ -367,9 +382,9 @@ internal class ControlSession(
         webSocket = null
         previous?.cancel()
         val request = Request.Builder()
-            .url(WS_URL)
+            .url("ws://127.0.0.1:${selected.controlPort}")
             .build()
-        connectionToken = token
+        connectionRoutes = selected
         webSocket = client.newWebSocket(request, wsListener)
     }
 

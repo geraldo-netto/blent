@@ -161,7 +161,7 @@ class AndroidWorkerRunTest {
     @Test fun t809_serviceClassMappingAndParcelBoundsAreExplicit() {
         val app = RuntimeEnvironment.getApplication()
         val token = "a".repeat(64)
-        val tasks = listOf(task, MediaTask.Display(token, DecoderFormat("video/avc", 1, 1, 30)),
+        val tasks = listOf(task, MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", 1, 1, 30)),
             MediaTask.Camera(CameraEndpoint(token, 1, 640, 480, 30, 1000), CameraLens.REAR, 0),
             MediaTask.Audio(AudioEndpoint(token, 1, 1, 1, 40, false), AudioPreferences()),
             MediaTask.Audio(AudioEndpoint(token, 1, 2, 1, 40, false), AudioPreferences()))

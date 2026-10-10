@@ -19,7 +19,7 @@ import org.robolectric.annotation.Config
 class PenLifecycleTest {
     private class Socket(val listener: WebSocketListener) : WebSocket {
         val messages = mutableListOf<JSONObject>()
-        override fun request() = Request.Builder().url(TouchCapture.WS_URL).build()
+        override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = 0L
         override fun send(text: String): Boolean { messages.add(JSONObject(text)); return true }
         override fun send(bytes: ByteString) = false

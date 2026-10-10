@@ -19,7 +19,7 @@ class ControlBackpressureTest {
         var rejectType: String? = null
         var cancelled = false
         var queued = 0L
-        override fun request() = Request.Builder().url(TouchCapture.WS_URL).build()
+        override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = queued
         override fun send(text: String): Boolean {
             val message = JSONObject(text)

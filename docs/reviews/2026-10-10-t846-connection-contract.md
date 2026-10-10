@@ -375,6 +375,40 @@ leases/permissions and perform actual resource preparation and retirement.
 5. Compare matched rendering latency, CPU, memory and charging under the selected
    capacities. The successful echo trial establishes none of those media results.
 
+### Portable local routes and peer metadata (T856)
+
+`common::connection::routes` separates observed attachment continuity from an
+authenticated certificate identity. ADB's `device:` profile-prefix interpretation
+and transport classification live in `host/src/attachment/adb.rs`; the attachment
+owner consumes explicit identity/profile metadata and a portable USB/network link.
+Existing ADB profile keys remain unchanged. Native profiles use a separate
+`certificate:<fingerprint>` key; no serial-to-certificate identity alias is guessed.
+Route handoffs still invalidate accepted leases before forwarding/metadata changes.
+
+The local `RouteClaims` contract admits 1..1024 registrations at the configured
+capacity, each with one to five distinct local ports. A bounded ordered map indexes
+port ownership and registrations. Admission rejects overlapping ports, duplicate
+owners and invalid port/owner bounds without consuming a revision. Revocation
+immediately invalidates a claim; reuse requires actual listener/bridge retirement.
+Revisions never wrap. This registry does not bind sockets or authenticate IPC;
+the T853 broker must own one registry per local network namespace and still bind
+each exact endpoint exclusively through its OS adapter.
+
+Android `DisplayRoutes` carries an immutable local revision, credential and distinct
+video/control ports through the display interface and private worker IPC. The ADB
+adapter alone selects the existing 8890/8891 defaults. Transports construct loopback
+socket addresses from the selected local ports and snapshot credentials with the
+same connection attempt. Explicit route replacement invalidates old generations;
+null routes disable reconnection instead of silently selecting ADB. The revision is
+a local registration value, not TLS proof: T854/T857 must map it to a current T851
+lease before publishing native routes. Private IPC validates positive integer
+revisions/ports and rejects fractional, string or overflowing numbers.
+
+The earlier T864 regression fixes a separate credential race: a pending old control
+socket can no longer authenticate with a token published for its replacement.
+Native service listeners, production route selection and pairing presentation remain
+T853–T857 work. Interface injection does not enable ADB-free production display.
+
 ### Concrete broker and media integration
 
 One on-demand per-user connection broker owns each authenticated accessory peer,

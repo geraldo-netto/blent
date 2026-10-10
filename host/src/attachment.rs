@@ -1,17 +1,19 @@
 //! Producer-owned attachment epochs. Never infer a replacement from a coalescing
 //! presence watch; invalidate metadata synchronously before forwarding/launch.
 use crate::media::EncoderSettings;
+use blent_config::connection::routes::{Identity, Link};
 use std::sync::{Arc, Mutex};
 use tokio::sync::watch;
 
+mod adb;
 mod auth;
 use auth::Authentication;
 
 struct State {
     authentication: Authentication,
-    identity: Option<String>,
+    identity: Option<Identity>,
     generation: u64,
-    transport: Option<blent_config::adb::Transport>,
+    transport: Option<Link>,
     closed: bool,
 }
 struct Shared {
@@ -57,15 +59,7 @@ impl Attachment {
     /// Begin a transport handoff before its first authenticated message can
     /// arrive. Proven same-tablet migration retains geometry; replacement or
     /// absence invalidates it. Every handoff retires earlier control leases.
-    pub fn begin(&self, identity: Option<String>) {
-        self.begin_with_transport(identity, None);
-    }
-
-    pub fn begin_with_transport(
-        &self,
-        identity: Option<String>,
-        transport: Option<blent_config::adb::Transport>,
-    ) {
+    pub fn begin_route(&self, identity: Option<Identity>, transport: Option<Link>) {
         let mut state = self.0.state.lock().unwrap();
         if state.closed {
             return;
@@ -122,7 +116,7 @@ impl Attachment {
     /// sender result so callers can ignore shutdown receivers disappearing.
     pub fn send(&self, present: bool) -> Result<(), watch::error::SendError<bool>> {
         if !present {
-            self.begin(None);
+            self.begin_route(None, None);
         }
         let state = self.0.state.lock().unwrap();
         if state.closed {
@@ -152,21 +146,18 @@ impl Attachment {
 
 pub struct Lease {
     #[cfg_attr(feature = "inproc-encoder", allow(dead_code))]
-    identity: Option<String>,
+    identity: Option<Identity>,
     authentication: Authentication,
     attachment: Attachment,
     generation: u64,
-    transport: Option<blent_config::adb::Transport>,
+    transport: Option<Link>,
     changed: watch::Receiver<u64>,
     closed: bool,
 }
 impl Lease {
     /// Identity and route are captured atomically with the attachment generation.
     pub fn profile_identity(&self) -> Option<(String, &'static str)> {
-        let identity = self.identity.as_ref()?.strip_prefix("device:")?;
-        if identity.is_empty() {
-            return None;
-        }
+        let identity = self.identity.as_ref()?.profile()?;
         Some((identity.to_string(), self.transport()?))
     }
 
@@ -196,10 +187,7 @@ impl Lease {
 
     /// Immutable accepted route: never read a replacement tablet's transport.
     pub fn transport(&self) -> Option<&'static str> {
-        self.transport.map(|route| match route {
-            blent_config::adb::Transport::Usb => "usb",
-            blent_config::adb::Transport::Network => "network",
-        })
+        self.transport.map(Link::profile_name)
     }
 
     /// Serialize check and action with invalidation. An old socket cannot

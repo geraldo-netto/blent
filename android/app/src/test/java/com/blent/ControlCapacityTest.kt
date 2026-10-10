@@ -21,7 +21,7 @@ class ControlCapacityTest {
         var bytes = 0L
         var peak = 0L
         var cancelled = false
-        override fun request() = Request.Builder().url(TouchCapture.WS_URL).build()
+        override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = bytes
         override fun send(text: String): Boolean {
             val count = text.toByteArray(Charsets.UTF_8).size

@@ -19,7 +19,7 @@ class ControlLoadTest {
         var queued = 0L
         var accepted = 0L
         var cancelled = false
-        override fun request() = Request.Builder().url(TouchCapture.WS_URL).build()
+        override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = queued
         override fun send(text: String): Boolean {
             val bytes = text.toByteArray(Charsets.UTF_8).size

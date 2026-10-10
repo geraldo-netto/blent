@@ -12,7 +12,20 @@ internal class RemoteDisplay(context: Context,
     private val worker: (MediaTask.Display, Surface, (WorkerEvent) -> Unit) -> LifecycleRun = { task, surface, events -> AndroidWorkerRun(context, task, surface, events) },
 ) : DisplaySession<SurfaceView> {
     private var format = DecoderFormat(VideoWire.MIME_TYPE, 1920, 1080, Prefs.DEFAULT_FPS)
-    override var token: String? = null
+    private var configuredRoutes: DisplayRoutes? = AdbDisplayRoutes.create()
+    private var routeRevision = 1L
+    override var routes: DisplayRoutes?
+        get() = configuredRoutes
+        set(value) {
+            if (configuredRoutes == value) return
+            require(value == null || value.revision > routeRevision)
+            configuredRoutes = value
+            if (value != null) routeRevision = value.revision
+            replace()
+        }
+    override var token: String?
+        get() = configuredRoutes?.token
+        set(value) { configuredRoutes = configuredRoutes?.copy(token = value) }
     override var mimeType: String
         get() = format.mimeType
         set(value) { setStreamFormat(format.copy(mimeType = value)) }
@@ -58,10 +71,11 @@ internal class RemoteDisplay(context: Context,
         lane.stop()
         disconnect()
         val output = surface ?: return
-        val credential = token ?: return
+        val selected = configuredRoutes ?: return
+        if (selected.token == null) return
         if (!wanted) return
         startupStatus.value = "Starting isolated display worker…"
-        val request = MediaTask.Display(credential, format)
+        val request = MediaTask.Display(selected, format)
         try {
             lane.replace({ worker(request, output) { event -> receive(revision, event) } }, { failure ->
                 scope.launch {

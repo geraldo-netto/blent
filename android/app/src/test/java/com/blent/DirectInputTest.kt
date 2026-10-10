@@ -94,7 +94,7 @@ class DirectInputTest {
     private class Socket(val listener: WebSocketListener) : WebSocket {
         val messages = mutableListOf<JSONObject>()
         var accept = true
-        override fun request() = Request.Builder().url(TouchCapture.WS_URL).build()
+        override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = 0L
         override fun send(text: String): Boolean { messages.add(JSONObject(text)); return accept }
         override fun send(bytes: ByteString) = false

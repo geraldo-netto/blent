@@ -14,10 +14,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 
-internal class VideoReceiver(createSocket: () -> Socket = { Socket() }) : DisplaySession<SurfaceView> {
+internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.create(), createSocket: () -> Socket = { Socket() }) : DisplaySession<SurfaceView> {
     companion object {
-        const val HOST = "127.0.0.1"
-        const val PORT = 8890
         const val MIME_TYPE = VideoWire.MIME_TYPE
         const val MIME_TYPE_HEVC = VideoWire.MIME_TYPE_HEVC
         const val TAG = "BlentVideo"
@@ -73,7 +71,22 @@ internal class VideoReceiver(createSocket: () -> Socket = { Socket() }) : Displa
 
     /// Session token; written as the first 64 bytes on the socket. The host
     /// sends nothing until it has seen it.
-    @Volatile override var token: String? = null
+    @Volatile private var configuredRoutes = initialRoutes
+    private var routeRevision = initialRoutes?.revision ?: 0
+    override var routes: DisplayRoutes?
+        get() = configuredRoutes
+        set(value) = synchronized(this) {
+            if (configuredRoutes == value) return@synchronized
+            require(value == null || value.revision > routeRevision)
+            val restart = isRunning
+            stop()
+            configuredRoutes = value
+            if (value != null) routeRevision = value.revision
+            if (restart && value != null) start()
+        }
+    override var token: String?
+        get() = configuredRoutes?.token
+        set(value) = synchronized(this) { configuredRoutes = configuredRoutes?.copy(token = value) }
 
     internal val transport = VideoTransport(this, ::isCurrent, createSocket)
     internal val timing = FrameTiming()
@@ -174,11 +187,11 @@ internal class VideoReceiver(createSocket: () -> Socket = { Socket() }) : Displa
     override fun start() {
         synchronized(this) {
             if (isRunning) return
+            val sessionRoutes = configuredRoutes ?: return
             isRunning = true
             videoConnected = false
             val generation = sessionGeneration.incrementAndGet()
             surfaceChanges.update { it + 1 }
-            val sessionToken = token
             val sessionStatistics = ReceiverStatistics()
             statistics = sessionStatistics
             // Fresh job/scope per start — see the field docs.
@@ -188,7 +201,7 @@ internal class VideoReceiver(createSocket: () -> Socket = { Socket() }) : Displa
             scope = newScope
 
             newScope.launch {
-                connectAndReceive(generation, sessionToken, sessionStatistics)
+                connectAndReceive(generation, sessionRoutes, sessionStatistics)
             }
 
             newScope.launch {
@@ -202,7 +215,7 @@ internal class VideoReceiver(createSocket: () -> Socket = { Socket() }) : Displa
     }
 
     private suspend fun connectAndReceive(
-        generation: Long, sessionToken: String?, sessionStatistics: ReceiverStatistics
+        generation: Long, sessionRoutes: DisplayRoutes, sessionStatistics: ReceiverStatistics
     ) {
         while (isCurrent(generation)) {
             var sessionSocket: Socket? = null
@@ -215,11 +228,11 @@ internal class VideoReceiver(createSocket: () -> Socket = { Socket() }) : Displa
                     delay(500)
                     continue
                 }
-                Log.i(TAG, "Connecting to $HOST:$PORT...")
+                Log.i(TAG, "Connecting to local video port ${sessionRoutes.videoPort}...")
                 val connection = transport.newConnection()
                 sessionSocket = connection
-                val input = transport.connect(generation, connection) ?: return
-                sessionToken?.let { t ->
+                val input = transport.connect(generation, connection, sessionRoutes) ?: return
+                sessionRoutes.token?.let { t ->
                     connection.getOutputStream().apply {
                         write(t.toByteArray(Charsets.US_ASCII))
                         flush()

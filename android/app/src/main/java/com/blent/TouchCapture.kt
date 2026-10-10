@@ -10,7 +10,6 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
 ) {
     companion object {
         const val TAG = "BlentTouch"
-        const val WS_URL = "ws://127.0.0.1:8891"
         const val RECONNECT_DELAY_MS = 2000L
     }
 
@@ -20,6 +19,9 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
     val controlConnected get() = control.controlConnected
     internal val connectionState get() = control.connectionState
     val isPenOnly get() = control.isPenOnly
+    internal var routes: DisplayRoutes?
+        get() = control.routes
+        set(value) { control.routes = value }
     var token: String?
         get() = control.token
         set(value) { control.token = value }
