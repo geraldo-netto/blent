@@ -4,12 +4,8 @@ use super::{
 };
 use anyhow::{Context, Result};
 use blent_config::camera::CameraOptions;
-use std::{path::Path, process::Stdio, sync::Arc, time::Duration};
-use tokio::{
-    io::{AsyncReadExt, AsyncWriteExt},
-    net::TcpStream,
-    process::Command,
-};
+use std::{path::Path, process::Stdio, time::Duration};
+use tokio::{io::AsyncWriteExt, net::TcpStream, process::Command};
 
 pub fn filters(rotation: u8, options: &CameraOptions) -> String {
     let rotation = (rotation + (options.rotation / 90) as u8) % 4;
@@ -114,6 +110,7 @@ async fn transfer(
         .stdout
         .take()
         .context("camera decoder stdout missing")?;
+    let mut pool = super::frame_pool::Pool::configured(options.frame_bytes())?;
     socket.write_all(b"OK").await?;
     let receive = async {
         let mut sequence = 0u64;
@@ -141,9 +138,9 @@ async fn transfer(
     };
     let decode = async {
         loop {
-            let mut bytes = vec![0; options.frame_bytes()];
-            output.read_exact(&mut bytes).await?;
-            frames.send_replace(Some(Arc::new(bytes)));
+            if let Some(bytes) = pool.read(&mut output).await? {
+                frames.send_replace(Some(bytes));
+            }
         }
         #[allow(unreachable_code)]
         Ok::<(), anyhow::Error>(())

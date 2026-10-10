@@ -1,0 +1,129 @@
+{
+  "sources": {
+    "host/src/camera/frame_pool.rs": "d51617c1be02a0393b9eaf01774afa76f6f1223d28b74985799afc7d5b68f63a",
+    "host/src/camera/decoder.rs": "2196f6269a0f6246f36dc5b1926597b93a7e0726020d0fb4e0b7bc319f3b683e"
+  },
+  "functions": [
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "configured",
+      "line": 12,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "new",
+      "line": 16,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "name": "read",
+      "line": 30,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "filters",
+      "line": 10,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "command",
+      "line": 23,
+      "language": "rust",
+      "covered": 43,
+      "total": 43,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "connection",
+      "line": 69,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "transfer",
+      "line": 99,
+      "language": "rust",
+      "covered": 43,
+      "total": 43,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "line": 12,
+      "name": "configured",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "line": 16,
+      "name": "new",
+      "score": 2
+    },
+    {
+      "file": "host/src/camera/frame_pool.rs",
+      "line": 30,
+      "name": "read",
+      "score": 3
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 10,
+      "name": "filters",
+      "score": 6
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 23,
+      "name": "command",
+      "score": 1
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 69,
+      "name": "connection",
+      "score": 3
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "line": 99,
+      "name": "transfer",
+      "score": 4
+    }
+  ]
+}

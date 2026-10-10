@@ -1,0 +1,42 @@
+[
+  {
+    "bytes": 1382400,
+    "pooled": false,
+    "p50_ns": 28986,
+    "p95_ns": 33575,
+    "cpu_ns": 9464715,
+    "startup_ns": 30,
+    "allocated_bytes": 414732000,
+    "allocations": 600
+  },
+  {
+    "bytes": 1382400,
+    "pooled": true,
+    "p50_ns": 19548,
+    "p95_ns": 19799,
+    "cpu_ns": 5914148,
+    "startup_ns": 674852,
+    "allocated_bytes": 0,
+    "allocations": 0
+  },
+  {
+    "bytes": 3110400,
+    "pooled": false,
+    "p50_ns": 65858,
+    "p95_ns": 70517,
+    "cpu_ns": 21306585,
+    "startup_ns": 40,
+    "allocated_bytes": 933132000,
+    "allocations": 600
+  },
+  {
+    "bytes": 3110400,
+    "pooled": true,
+    "p50_ns": 44647,
+    "p95_ns": 48935,
+    "cpu_ns": 13494079,
+    "startup_ns": 2961521,
+    "allocated_bytes": 0,
+    "allocations": 0
+  }
+]

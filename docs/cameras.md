@@ -197,3 +197,17 @@ unplug/replug, other tablets and sustained power/latency were not validated.
 No camera images were retained in the evidence. The original
 [feasibility assessment](reviews/2026-09-20-tablet-cameras.md) preserves the
 initial hardware observations. Windows and macOS webcam output backends are not implemented.
+
+## Host frame reuse
+
+Each decoder connection owns a bounded pool of immutable YUV420 frame leases.
+`BLENT_CAMERA_FRAME_SLOTS` defaults to 3, accepts 2..16, and takes effect on the
+next connection. One additional fixed frame drains input when all leases are held;
+no replacement allocation or wait for a stalled reader occurs. Lower capacities
+use less memory but can discard more frames when readers are slow. Default pixel
+storage is four frames: 5.53 MB at 720p or 12.44 MB at 1080p, excluding allocator
+metadata and decoder/output process buffers. Held leases survive Stop/reconnect
+without being overwritten; partial input is never published.
+
+[T816 measurements](reviews/2026-10-10-camera-frame-reuse.md) cover the Rust frame
+staging stage, not end-to-end camera latency.

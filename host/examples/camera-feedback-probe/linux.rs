@@ -5,6 +5,9 @@
 mod bridge;
 #[path = "../../src/camera/decoder.rs"]
 mod decoder;
+// T816: compile the production decoder with its bounded lease owner.
+#[path = "../../src/camera/frame_pool.rs"]
+mod frame_pool;
 #[path = "../../src/camera/outputs.rs"]
 mod outputs;
 #[path = "../../src/camera/protocol.rs"]
