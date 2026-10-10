@@ -1,0 +1,5 @@
+{
+  "common/src/connection/mod.rs": "fbda4143ce2ae52d4a5fbbe024c5e2695b06bd419450cc8821ac2dd9ecb653b0",
+  "common/src/connection/registration_client.rs": "5c110a09ebd7dfb155a04c59fae2bdd88cc2c1b68a383697b522b7acfb49d53b",
+  "common/src/connection/registration_client/tests.rs": "ba6b1477f9af4438ed5b81f7f5441a54f4b6820070e92deb32894fafc0d07bf8"
+}

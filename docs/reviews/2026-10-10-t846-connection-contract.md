@@ -1351,3 +1351,21 @@ installation and bounded invalid-input regressions. Host registration/reconnecti
 still belongs to T908. Real rendered frames and touch/mouse require T857; the
 owner-deferred tablet pairing trial remains T855. Nothing was installed or reloaded
 for this implementation.
+
+## T910 portable host registration client
+
+One client model owns one resource registration exchange per local IPC lifetime.
+Request IDs 1 and 2 correlate registration and cancellation; broker-issued route
+owner/revision counters disambiguate delayed statuses. Only exact current-route
+Active can admit media. Closing or failure immediately revokes admission and cannot
+be undone by a late Active response. Register exposure is recorded before native
+I/O, so an interrupted operation cannot silently free uncertain remote ownership.
+
+Pre-exposure cancellation and pre-ownership rejection prove no remote resource;
+otherwise explicit Retired is required. Failed status, IPC loss, deadlines and
+native worker exit alone do not prove broker endpoint retirement. The independent
+Client contract also requires actual native worker retirement before releasing its
+capacity. Native descriptors remain outside the portable model. T911 supplies the
+Linux adapter; T912 provides retained session listeners before T908 integration.
+[Validation](artifacts/2026-10-10-t910/README.md) covers bounded transitions and
+invalid inputs with native per-function counters. No physical acceptance claimed.

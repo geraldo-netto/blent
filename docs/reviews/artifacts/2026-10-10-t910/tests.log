@@ -1,0 +1,22 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling getrandom v0.3.4
+   Compiling tokio v1.52.3
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.57s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/deps/blent_config-88e1a3137dc8aa58)
+
+running 9 tests
+test connection::registration_client::tests::t910_admission_requires_current_route_status_and_retirement_requires_exact_proof ... ok
+test connection::registration_client::tests::t910_all_bounded_status_pairs_preserve_terminal_and_failed_admission ... ok
+test connection::registration_client::tests::t910_cancel_before_exposure_opens_nothing_and_cancel_during_start_waits_route ... ok
+test connection::registration_client::tests::t910_failed_status_and_native_loss_never_release_remote_ownership ... ok
+test connection::registration_client::tests::t910_invalid_and_extreme_counters_reject_before_retirement_proof ... ok
+test connection::registration_client::tests::t910_invalid_profile_and_response_before_exposure_do_not_start_native_work ... ok
+test connection::registration_client::tests::t910_malformed_foreign_and_replayed_responses_cannot_grant_or_retire_resources ... ok
+test connection::registration_client::tests::t910_peer_initiated_close_and_failed_admission_revoke_before_native_cleanup ... ok
+test connection::registration_client::tests::t910_rejection_is_retirement_only_before_registration_was_owned ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 260 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-t910.lcov
