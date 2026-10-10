@@ -1,0 +1,170 @@
+{
+  "sources": {
+    "common/src/audio/wire.rs": "9182abc764a12b9eb02be38bb480f2be27182df60682a1bf93d9c71adacaffec",
+    "common/src/gpu.rs": "a5f45be5edab59c0968061e835a6600a51f7f8ab1d10964e03715d942bf10cdf",
+    "host/src/camera.rs": "6e5a8bbd91850f0bc679e751c9f0e5a825a312094d7d4f292621fb094b6eeea5",
+    "host/src/input/mapping/x11.rs": "4948ade43f3120296ec1a901d8b550fdd235a8fd6ef315fb8ab19662b194197f"
+  },
+  "functions": [
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "encode_into",
+      "line": 91,
+      "language": "rust",
+      "covered": 34,
+      "total": 34,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "from_le_bytes",
+      "line": 141,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "encode_into",
+      "line": 200,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "decode",
+      "line": 293,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/gpu.rs",
+      "name": "encoder",
+      "line": 71,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "run_native",
+      "line": 56,
+      "language": "rust",
+      "covered": 31,
+      "total": 32,
+      "percent": 96.875,
+      "passes": true,
+      "missing": [
+        85
+      ]
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "serve",
+      "line": 96,
+      "language": "rust",
+      "covered": 46,
+      "total": 48,
+      "percent": 95.83333333333333,
+      "passes": true,
+      "missing": [
+        139,
+        140
+      ]
+    },
+    {
+      "file": "host/src/input/mapping/x11.rs",
+      "name": "valid_edid",
+      "line": 10,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping/x11.rs",
+      "name": "property_edid",
+      "line": 22,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "common/src/audio/wire.rs",
+      91,
+      "encode_into",
+      5
+    ],
+    [
+      "common/src/audio/wire.rs",
+      141,
+      "from_le_bytes",
+      2
+    ],
+    [
+      "common/src/audio/wire.rs",
+      200,
+      "encode_into",
+      4
+    ],
+    [
+      "common/src/audio/wire.rs",
+      293,
+      "decode",
+      2
+    ],
+    [
+      "common/src/gpu.rs",
+      71,
+      "encoder",
+      2
+    ],
+    [
+      "host/src/camera.rs",
+      56,
+      "run_native",
+      2
+    ],
+    [
+      "host/src/camera.rs",
+      96,
+      "serve",
+      5
+    ],
+    [
+      "host/src/input/mapping/x11.rs",
+      10,
+      "valid_edid",
+      7
+    ],
+    [
+      "host/src/input/mapping/x11.rs",
+      22,
+      "property_edid",
+      8
+    ]
+  ]
+}

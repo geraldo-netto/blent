@@ -9,7 +9,7 @@ fn recorded_write(config: &FileConfig, path: &Path) -> (Result<()>, String) {
         .with_ansi(false)
         .with_writer(move || writer.try_clone().unwrap())
         .finish();
-    let result = tracing::subscriber::with_default(subscriber, || write_at(&config, path));
+    let result = tracing::subscriber::with_default(subscriber, || write_at(config, path));
     (result, std::fs::read_to_string(log.path()).unwrap())
 }
 

@@ -243,8 +243,10 @@ async fn t719_speaker_transport_preserves_stereo_and_native_gaps() {
             assert_eq!(frame.discontinuity, discontinuity);
             assert!(frame
                 .samples()
-                .chunks_exact(2)
-                .all(|pair| pair == [1234, -4321]));
+                .as_chunks::<2>()
+                .0
+                .iter()
+                .all(|pair| *pair == [1234, -4321]));
         }
     };
     let (result, ()) = tokio::time::timeout(Duration::from_secs(2), async {

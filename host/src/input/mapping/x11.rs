@@ -13,7 +13,9 @@ fn valid_edid(bytes: &[u8]) -> bool {
         && bytes.starts_with(&[0, 255, 255, 255, 255, 255, 255, 0])
         && (usize::from(bytes[126]) + 1) * 128 == bytes.len()
         && bytes
-            .chunks_exact(128)
+            .as_chunks::<128>()
+            .0
+            .iter()
             .all(|block| block.iter().fold(0u8, |sum, byte| sum.wrapping_add(*byte)) == 0)
 }
 
@@ -27,7 +29,9 @@ fn property_edid(lines: &[&str]) -> Vec<u8> {
         .collect();
     let bytes: Vec<_> = text
         .as_bytes()
-        .chunks_exact(2)
+        .as_chunks::<2>()
+        .0
+        .iter()
         .map(|pair| u8::from_str_radix(std::str::from_utf8(pair).unwrap(), 16).unwrap())
         .collect();
     if valid_edid(&bytes) {

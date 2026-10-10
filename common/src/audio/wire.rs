@@ -120,7 +120,7 @@ impl AudioGrant {
         bytes[26] = self.profile.direction as u8;
         for (sample, output) in samples
             .iter()
-            .zip(bytes[28 + clock_bytes..].chunks_exact_mut(2))
+            .zip(bytes[28 + clock_bytes..].as_chunks_mut::<2>().0.iter_mut())
         {
             output.copy_from_slice(&sample.to_le_bytes());
         }
@@ -149,7 +149,11 @@ impl PcmBlock {
             discontinuity: false,
             clock: None,
         };
-        for (sample, bytes) in block.samples.iter_mut().zip(bytes.chunks_exact(2)) {
+        for (sample, bytes) in block
+            .samples
+            .iter_mut()
+            .zip(bytes.as_chunks::<2>().0.iter())
+        {
             *sample = i16::from_le_bytes([bytes[0], bytes[1]]);
         }
         Ok(block)
@@ -215,56 +219,6 @@ impl FrameWriter {
         self.next = sequence + 1; // encode rejects u64::MAX before state changes.
         self.previous_time = Some(timestamp_us);
         Ok(())
-    }
-}
-
-#[cfg(test)]
-mod writer_tests {
-    use super::*;
-    #[test]
-    fn t719_sender_preserves_first_sequence_gaps_and_atomic_rejection() {
-        let grant = AudioGrant::new(
-            AudioProfile::new(Direction::Speakers),
-            1,
-            crate::credentials::tests::entropy,
-        )
-        .unwrap();
-        let mut reader = grant.authenticate(&grant.hello()).unwrap();
-        let mut writer = FrameWriter::new(grant.clone());
-        let mut block = PcmBlock::from_le_bytes(Direction::Speakers, &[0; 1920]).unwrap();
-        block.discontinuity = true;
-        assert!(
-            !reader
-                .decode(&writer.encode(&block, 10).unwrap())
-                .unwrap()
-                .discontinuity
-        );
-        for time in [0, 9, 10] {
-            assert!(writer.encode(&block, time).is_err());
-        }
-        assert!(
-            reader
-                .decode(&writer.encode(&block, 11).unwrap())
-                .unwrap()
-                .discontinuity
-        );
-        block.discontinuity = false;
-        assert!(
-            !reader
-                .decode(&writer.encode(&block, 12).unwrap())
-                .unwrap()
-                .discontinuity
-        );
-        let mono = PcmBlock::from_le_bytes(Direction::Microphone, &[0; 960]).unwrap();
-        assert!(writer.encode(&mono, 13).is_err());
-        writer.next = u64::MAX - 1;
-        assert!(writer.encode(&block, 13).is_ok());
-        assert!(writer.encode(&block, 14).is_err());
-        block.discontinuity = true;
-        assert!(writer.encode(&block, 14).is_err());
-        let mut final_clock = FrameWriter::new(grant);
-        assert!(final_clock.encode(&block, u64::MAX).is_ok());
-        assert!(final_clock.encode(&block, u64::MAX).is_err());
     }
 }
 
@@ -346,9 +300,63 @@ impl FrameReader {
             discontinuity: view.discontinuity,
             clock: view.clock,
         };
-        for (output, input) in block.samples.iter_mut().zip(view.pcm.chunks_exact(2)) {
+        for (output, input) in block
+            .samples
+            .iter_mut()
+            .zip(view.pcm.as_chunks::<2>().0.iter())
+        {
             *output = i16::from_le_bytes([input[0], input[1]]);
         }
         Ok(block)
+    }
+}
+
+#[cfg(test)]
+mod writer_tests {
+    use super::*;
+    #[test]
+    fn t719_sender_preserves_first_sequence_gaps_and_atomic_rejection() {
+        let grant = AudioGrant::new(
+            AudioProfile::new(Direction::Speakers),
+            1,
+            crate::credentials::tests::entropy,
+        )
+        .unwrap();
+        let mut reader = grant.authenticate(&grant.hello()).unwrap();
+        let mut writer = FrameWriter::new(grant.clone());
+        let mut block = PcmBlock::from_le_bytes(Direction::Speakers, &[0; 1920]).unwrap();
+        block.discontinuity = true;
+        assert!(
+            !reader
+                .decode(&writer.encode(&block, 10).unwrap())
+                .unwrap()
+                .discontinuity
+        );
+        for time in [0, 9, 10] {
+            assert!(writer.encode(&block, time).is_err());
+        }
+        assert!(
+            reader
+                .decode(&writer.encode(&block, 11).unwrap())
+                .unwrap()
+                .discontinuity
+        );
+        block.discontinuity = false;
+        assert!(
+            !reader
+                .decode(&writer.encode(&block, 12).unwrap())
+                .unwrap()
+                .discontinuity
+        );
+        let mono = PcmBlock::from_le_bytes(Direction::Microphone, &[0; 960]).unwrap();
+        assert!(writer.encode(&mono, 13).is_err());
+        writer.next = u64::MAX - 1;
+        assert!(writer.encode(&block, 13).is_ok());
+        assert!(writer.encode(&block, 14).is_err());
+        block.discontinuity = true;
+        assert!(writer.encode(&block, 14).is_err());
+        let mut final_clock = FrameWriter::new(grant);
+        assert!(final_clock.encode(&block, u64::MAX).is_ok());
+        assert!(final_clock.encode(&block, u64::MAX).is_err());
     }
 }

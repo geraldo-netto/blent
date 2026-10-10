@@ -22,10 +22,10 @@ mod doctor;
 mod edid;
 #[cfg(feature = "inproc-encoder")]
 mod encoder;
-#[cfg(feature = "inproc-encoder")]
-mod encoder_worker;
 #[cfg_attr(not(feature = "inproc-encoder"), allow(dead_code))]
 mod encoder_io;
+#[cfg(feature = "inproc-encoder")]
+mod encoder_worker;
 #[cfg(not(feature = "inproc-encoder"))]
 mod framed_annex_b;
 use blent::input;
@@ -76,7 +76,9 @@ use tracing::{error, info, warn};
 
 fn main() -> Result<()> {
     #[cfg(feature = "inproc-encoder")]
-    if let Some(result) = encoder_worker::dispatch(std::env::args_os().skip(1)) { return result; }
+    if let Some(result) = encoder_worker::dispatch(std::env::args_os().skip(1)) {
+        return result;
+    }
     blent::runtime_owner::run(run_cli())?
 }
 async fn run_cli() -> Result<()> {
@@ -2383,7 +2385,6 @@ impl TabletConnection<'_> {
 /// runs (/proc/<pid>/cmdline is world-readable), which would hand the token
 /// to a local process that must not receive it. Failed input authentication
 /// requests a protected broadcast, never an Activity launch.
-
 async fn launch_app_using(serial: &str, token: Option<&str>, adb: &str) {
     app_command_using(serial, app_launch_command(token), "launch", adb).await;
 }
@@ -2432,7 +2433,6 @@ fn is_fake_serial(serial: &str) -> bool {
 /// For a fresh pick, prefer USB over the network, and among USB devices the
 /// one that actually has the app installed: a phone charging next to the
 /// tablet normally does not, and it is almost never the one meant.
-
 async fn unique_devices(
     devices: &[String],
     current: Option<&str>,

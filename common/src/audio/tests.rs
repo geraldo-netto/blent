@@ -319,7 +319,7 @@ fn t717_resampling_preserves_channels_and_bounded_consumption() {
         let mut queue = PcmQueue::new(AudioProfile::new(Direction::Speakers)).unwrap();
         for _ in 0..20 {
             let mut frame = block(Direction::Speakers, i16::MIN);
-            for pair in frame.samples.chunks_exact_mut(2) {
+            for pair in frame.samples.as_chunks_mut::<2>().0.iter_mut() {
                 pair[1] = i16::MAX;
             }
             queue.push(frame, 0).unwrap();
@@ -331,8 +331,10 @@ fn t717_resampling_preserves_channels_and_bounded_consumption() {
         for _ in 0..10 {
             assert!(!queue.render(0, &mut output).unwrap().silence);
             assert!(output
-                .chunks_exact(2)
-                .all(|pair| pair == [i16::MIN, i16::MAX]));
+                .as_chunks::<2>()
+                .0
+                .iter()
+                .all(|pair| *pair == [i16::MIN, i16::MAX]));
         }
         assert!((4795..=4805).contains(&queue.queued_frames()));
     }

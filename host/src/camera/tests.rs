@@ -406,11 +406,13 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
     };
     let (result, clients_finished) = fixture_outcome(
         serve(
-            &listener,
-            &bridge,
-            &token,
-            &ffmpeg,
-            &profile,
+            Session {
+                listener: &listener,
+                bridge: &bridge,
+                token: &token,
+                ffmpeg: &ffmpeg,
+                options: &profile,
+            },
             &mut stopped,
             &status,
             &[

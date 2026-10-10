@@ -274,8 +274,11 @@ fn t691_tray_distinguishes_network_and_usb_and_bounds_session_counts() {
         input_port: 8891,
     };
     assert_eq!(State::connections(&[]), State::Waiting);
-    assert_eq!(State::connections(&[session.clone()]), State::Network(1));
-    assert!(State::connections(&[session.clone()])
+    assert_eq!(
+        State::connections(std::slice::from_ref(&session)),
+        State::Network(1)
+    );
+    assert!(State::connections(std::slice::from_ref(&session))
         .line()
         .contains("Network ADB"));
     assert_eq!(State::connections(&vec![session; 5]), State::Unavailable);

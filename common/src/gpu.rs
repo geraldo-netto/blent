@@ -68,7 +68,7 @@ impl Policy {
         }
         self == Self::Pinned(encoder.backend)
     }
-    pub fn encoder<'a>(self, requested: &'a str) -> &'a str {
+    pub fn encoder(self, requested: &str) -> &str {
         if self.allows(requested) {
             requested
         } else {

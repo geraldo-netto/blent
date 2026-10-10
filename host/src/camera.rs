@@ -73,10 +73,14 @@ async fn run_native(
         listener.local_addr()?.port(),
     )
     .await?;
-    let result = serve(
-        &listener, &bridge, &token, &ffmpeg, &options, &mut stop, &status, &devices,
-    )
-    .await;
+    let session = Session {
+        listener: &listener,
+        bridge: &bridge,
+        token: &token,
+        ffmpeg: &ffmpeg,
+        options: &options,
+    };
+    let result = serve(session, &mut stop, &status, &devices).await;
     if let Err(error) = bridge.close().await {
         tracing::warn!(%error, "camera mapping cleanup failed");
     }
@@ -90,11 +94,7 @@ fn executable(name: &str) -> Result<PathBuf> {
 }
 
 async fn serve(
-    listener: &TcpListener,
-    bridge: &bridge::Bridge,
-    token: &str,
-    ffmpeg: &std::path::Path,
-    options: &CameraOptions,
+    session: Session<'_>,
     stop: &mut watch::Receiver<bool>,
     status: &Report,
     devices: &[Arc<std::fs::File>; 2],
@@ -102,6 +102,8 @@ async fn serve(
     if *stop.borrow() {
         return Ok(());
     }
+    let options = session.options;
+    let ffmpeg = session.ffmpeg;
     let (front, front_rx) = watch::channel(None);
     let (rear, rear_rx) = watch::channel(None);
     let mut producers = Producers::new();
@@ -127,13 +129,6 @@ async fn serve(
         })?);
     }
     let frames = [front, rear];
-    let session = Session {
-        listener,
-        bridge,
-        token,
-        ffmpeg,
-        options,
-    };
     let result = session.invited(&frames, &mut producers, stop, status).await;
     drop(frames);
     if tokio::time::timeout(std::time::Duration::from_secs(3), async {

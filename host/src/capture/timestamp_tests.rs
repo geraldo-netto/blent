@@ -170,7 +170,13 @@ async fn t588_vp9_timing_fixture_preserves_every_luma_sample() {
         .unwrap();
     assert!(decoded.status.success());
     assert_eq!(decoded.stdout.len(), 40 * 64 * 64 * 3 / 2);
-    for (index, frame) in decoded.stdout.chunks_exact(64 * 64 * 3 / 2).enumerate() {
+    for (index, frame) in decoded
+        .stdout
+        .as_chunks::<{ 64 * 64 * 3 / 2 }>()
+        .0
+        .iter()
+        .enumerate()
+    {
         assert!(
             frame[..64 * 64]
                 .iter()
