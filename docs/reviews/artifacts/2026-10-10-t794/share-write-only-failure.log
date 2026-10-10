@@ -1,0 +1,9 @@
+export 1280x800 objects=1 layers=1 pitch=1280 modifier=144115188080057091
+export 1280x800 objects=1 layers=1 pitch=1280 modifier=144115188080057091
+export 1280x800 objects=1 layers=1 pitch=1280 modifier=144115188080057091
+sequence=0 slot=0
+sequence=1 slot=1
+sequence=2 slot=2
+sequence=3 slot=0
+readback row 0: first=0 expected=16 pitch=1280 width=1280
+receive message

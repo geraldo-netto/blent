@@ -1,5 +1,10 @@
 # T794: mapped VAAPI producer implementation plan
 
+Disposition (2026-10-10): the tested candidate was rejected after repeatable CPU
+regressions; see [native evidence](artifacts/2026-10-10-t794/README.md). The plan
+below records the earlier proposal and qualification criteria, not an open
+implementation commitment or shipped mapped path.
+
 Planning baseline: `3dea8f2`, 2026-10-10. No implementation or new performance
 measurement accompanies this plan. T794 remains open. Work uses cached tools and
 stock dependencies; no stock EVDI driver/library changes, downloads, cross-device admission or automatic

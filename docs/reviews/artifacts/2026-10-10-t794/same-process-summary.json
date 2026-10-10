@@ -1,0 +1,410 @@
+{
+  "128": {
+    "pairs": [
+      {
+        "pair": 1,
+        "upload": {
+          "map_us": 1.143,
+          "conversion_us": 334.774,
+          "upload_unmap_us": 623.027,
+          "encode_us": 2470.6755,
+          "total_us": 3448.5055,
+          "cpu_us": 1748.609,
+          "p95_us": 3932.02,
+          "p99_us": 4789.424
+        },
+        "mapped": {
+          "map_us": 59.1605,
+          "conversion_us": 357.814,
+          "upload_unmap_us": 181.5995,
+          "encode_us": 2324.986,
+          "total_us": 2934.396,
+          "cpu_us": 1642.059,
+          "p95_us": 3418.497,
+          "p99_us": 3495.317
+        },
+        "change_percent": {
+          "map_us": 5075.8967629046365,
+          "conversion_us": 6.88225489434664,
+          "upload_unmap_us": -70.85206580132161,
+          "encode_us": -5.896747670829294,
+          "total_us": -14.90818268957379,
+          "cpu_us": -6.093414822867771,
+          "p95_us": -13.060030213478058,
+          "p99_us": -27.020096779905057
+        }
+      },
+      {
+        "pair": 2,
+        "upload": {
+          "map_us": 1.103,
+          "conversion_us": 232.985,
+          "upload_unmap_us": 609.4405,
+          "encode_us": 2607.1165,
+          "total_us": 3456.446,
+          "cpu_us": 1495.553,
+          "p95_us": 3599.58,
+          "p99_us": 3977.658
+        },
+        "mapped": {
+          "map_us": 63.8145,
+          "conversion_us": 364.006,
+          "upload_unmap_us": 158.4445,
+          "encode_us": 2450.867,
+          "total_us": 3057.512,
+          "cpu_us": 1643.3915,
+          "p95_us": 3929.474,
+          "p99_us": 4512.403
+        },
+        "change_percent": {
+          "map_us": 5685.539437896646,
+          "conversion_us": 56.2358091722643,
+          "upload_unmap_us": -74.00164577181857,
+          "encode_us": -5.993192095558442,
+          "total_us": -11.541739694472298,
+          "cpu_us": 9.885206341734442,
+          "p95_us": 9.164791447891151,
+          "p99_us": 13.443714869403056
+        }
+      },
+      {
+        "pair": 3,
+        "upload": {
+          "map_us": 1.132,
+          "conversion_us": 223.977,
+          "upload_unmap_us": 646.137,
+          "encode_us": 2618.7095,
+          "total_us": 3474.7865,
+          "cpu_us": 1527.742,
+          "p95_us": 3647.554,
+          "p99_us": 4465.28
+        },
+        "mapped": {
+          "map_us": 63.0135,
+          "conversion_us": 362.433,
+          "upload_unmap_us": 183.834,
+          "encode_us": 2700.98,
+          "total_us": 3311.392,
+          "cpu_us": 1655.16,
+          "p95_us": 3475.638,
+          "p99_us": 3504.024
+        },
+        "change_percent": {
+          "map_us": 5466.563604240283,
+          "conversion_us": 61.817061573286544,
+          "upload_unmap_us": -71.54875823548257,
+          "encode_us": 3.141642858820348,
+          "total_us": -4.7022889032175215,
+          "cpu_us": 8.340282586981317,
+          "p95_us": -4.713185877440063,
+          "p99_us": -21.527339830872872
+        }
+      },
+      {
+        "pair": 4,
+        "upload": {
+          "map_us": 1.332,
+          "conversion_us": 232.5945,
+          "upload_unmap_us": 612.246,
+          "encode_us": 2606.255,
+          "total_us": 3439.057,
+          "cpu_us": 1487.173,
+          "p95_us": 3596.764,
+          "p99_us": 3704.716
+        },
+        "mapped": {
+          "map_us": 63.379,
+          "conversion_us": 355.8445,
+          "upload_unmap_us": 174.436,
+          "encode_us": 2432.0095,
+          "total_us": 3022.142,
+          "cpu_us": 1624.7265,
+          "p95_us": 3606.814,
+          "p99_us": 4365.105
+        },
+        "change_percent": {
+          "map_us": 4658.183183183182,
+          "conversion_us": 52.98921513621344,
+          "upload_unmap_us": -71.50883795075835,
+          "encode_us": -6.685665830856924,
+          "total_us": -12.122945330653145,
+          "cpu_us": 9.249327415169596,
+          "p95_us": 0.27941783225142736,
+          "p99_us": 17.825630898562792
+        }
+      },
+      {
+        "pair": 5,
+        "upload": {
+          "map_us": 1.133,
+          "conversion_us": 238.075,
+          "upload_unmap_us": 600.889,
+          "encode_us": 2536.3485,
+          "total_us": 3424.5385,
+          "cpu_us": 1570.359,
+          "p95_us": 4242.976,
+          "p99_us": 4521.3
+        },
+        "mapped": {
+          "map_us": 60.919,
+          "conversion_us": 334.929,
+          "upload_unmap_us": 169.486,
+          "encode_us": 2374.4875,
+          "total_us": 2980.756,
+          "cpu_us": 1572.8555,
+          "p95_us": 3399.91,
+          "p99_us": 3433.706
+        },
+        "change_percent": {
+          "map_us": 5276.787290379523,
+          "conversion_us": 40.68213798172844,
+          "upload_unmap_us": -71.79412503806859,
+          "encode_us": -6.381654571522799,
+          "total_us": -12.95889942542624,
+          "cpu_us": 0.15897638692807803,
+          "p95_us": -19.869685805434678,
+          "p99_us": -24.054895715833947
+        }
+      }
+    ],
+    "median_of_run_medians": {
+      "upload": {
+        "map_us": 1.133,
+        "conversion_us": 232.985,
+        "upload_unmap_us": 612.246,
+        "encode_us": 2606.255,
+        "total_us": 3448.5055,
+        "cpu_us": 1527.742,
+        "p95_us": 3647.554,
+        "p99_us": 4465.28
+      },
+      "mapped": {
+        "map_us": 63.0135,
+        "conversion_us": 357.814,
+        "upload_unmap_us": 174.436,
+        "encode_us": 2432.0095,
+        "total_us": 3022.142,
+        "cpu_us": 1642.059,
+        "p95_us": 3475.638,
+        "p99_us": 3504.024
+      }
+    },
+    "bitstream_sha256": {
+      "n128-p1-m0.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p1-m1.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p2-m0.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p2-m1.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p3-m0.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p3-m1.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p4-m0.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p4-m1.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p5-m0.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14",
+      "n128-p5-m1.h264": "11942fb5ad563b32799527c9440c22365e403bcb11ef6b93e92a49c22b2fbb14"
+    },
+    "identical_bitstreams": true
+  },
+  "129": {
+    "pairs": [
+      {
+        "pair": 1,
+        "upload": {
+          "map_us": 1.042,
+          "conversion_us": 231.111,
+          "upload_unmap_us": 618.933,
+          "encode_us": 2027.0385,
+          "total_us": 2871.668,
+          "cpu_us": 1500.5065,
+          "p95_us": 3318.2,
+          "p99_us": 3764.472
+        },
+        "mapped": {
+          "map_us": 63.669,
+          "conversion_us": 359.0665,
+          "upload_unmap_us": 149.587,
+          "encode_us": 2045.65,
+          "total_us": 2659.4285,
+          "cpu_us": 1611.3405,
+          "p95_us": 3071.448,
+          "p99_us": 3228.455
+        },
+        "change_percent": {
+          "map_us": 6010.268714011516,
+          "conversion_us": 55.3653871948977,
+          "upload_unmap_us": -75.83147125779365,
+          "encode_us": 0.9181621365356385,
+          "total_us": -7.390809104673668,
+          "cpu_us": 7.3864391790372075,
+          "p95_us": -7.436320896871795,
+          "p99_us": -14.238836150195834
+        }
+      },
+      {
+        "pair": 2,
+        "upload": {
+          "map_us": 1.212,
+          "conversion_us": 211.969,
+          "upload_unmap_us": 629.379,
+          "encode_us": 2209.986,
+          "total_us": 3101.3665,
+          "cpu_us": 1508.4785,
+          "p95_us": 3383.087,
+          "p99_us": 3696.068
+        },
+        "mapped": {
+          "map_us": 60.293,
+          "conversion_us": 371.866,
+          "upload_unmap_us": 184.0595,
+          "encode_us": 2135.957,
+          "total_us": 2660.6515,
+          "cpu_us": 1707.237,
+          "p95_us": 3193.507,
+          "p99_us": 3407.405
+        },
+        "change_percent": {
+          "map_us": 4874.6699669967,
+          "conversion_us": 75.43414367195203,
+          "upload_unmap_us": -70.75537950900808,
+          "encode_us": -3.349749726921347,
+          "total_us": -14.210348889755531,
+          "cpu_us": 13.176091008257673,
+          "p95_us": -5.60375775142643,
+          "p99_us": -7.810002413375516
+        }
+      },
+      {
+        "pair": 3,
+        "upload": {
+          "map_us": 1.052,
+          "conversion_us": 214.0875,
+          "upload_unmap_us": 611.89,
+          "encode_us": 2184.501,
+          "total_us": 3011.3605,
+          "cpu_us": 1477.111,
+          "p95_us": 3273.433,
+          "p99_us": 3862.573
+        },
+        "mapped": {
+          "map_us": 60.6385,
+          "conversion_us": 355.244,
+          "upload_unmap_us": 150.8595,
+          "encode_us": 2240.5855,
+          "total_us": 2823.1935,
+          "cpu_us": 1617.6975,
+          "p95_us": 3083.321,
+          "p99_us": 3452.182
+        },
+        "change_percent": {
+          "map_us": 5664.115969581749,
+          "conversion_us": 65.9340223039645,
+          "upload_unmap_us": -75.3453235058589,
+          "encode_us": 2.5673826654233567,
+          "total_us": -6.248571036247563,
+          "cpu_us": 9.517666580236694,
+          "p95_us": -5.807725406324193,
+          "p99_us": -10.624808903288042
+        }
+      },
+      {
+        "pair": 4,
+        "upload": {
+          "map_us": 1.1225,
+          "conversion_us": 213.432,
+          "upload_unmap_us": 619.735,
+          "encode_us": 2207.1255,
+          "total_us": 3040.603,
+          "cpu_us": 1499.946,
+          "p95_us": 3455.969,
+          "p99_us": 3703.763
+        },
+        "mapped": {
+          "map_us": 59.3105,
+          "conversion_us": 349.533,
+          "upload_unmap_us": 169.9365,
+          "encode_us": 2173.86,
+          "total_us": 2749.0285,
+          "cpu_us": 1610.695,
+          "p95_us": 3177.836,
+          "p99_us": 3577.086
+        },
+        "change_percent": {
+          "map_us": 5183.7861915367475,
+          "conversion_us": 63.76785111885754,
+          "upload_unmap_us": -72.57916690198229,
+          "encode_us": -1.507186609914113,
+          "total_us": -9.589364346479968,
+          "cpu_us": 7.383532473835719,
+          "p95_us": -8.047902050047329,
+          "p99_us": -3.4202242422098905
+        }
+      },
+      {
+        "pair": 5,
+        "upload": {
+          "map_us": 1.2025,
+          "conversion_us": 230.766,
+          "upload_unmap_us": 622.5905,
+          "encode_us": 2227.1395,
+          "total_us": 3082.775,
+          "cpu_us": 1522.7775,
+          "p95_us": 3452.973,
+          "p99_us": 3881.58
+        },
+        "mapped": {
+          "map_us": 60.5935,
+          "conversion_us": 359.2065,
+          "upload_unmap_us": 180.4375,
+          "encode_us": 2109.5545,
+          "total_us": 2756.133,
+          "cpu_us": 1630.286,
+          "p95_us": 3009.086,
+          "p99_us": 3174.098
+        },
+        "change_percent": {
+          "map_us": 4938.960498960499,
+          "conversion_us": 55.65832921660905,
+          "upload_unmap_us": -71.01826963308949,
+          "encode_us": -5.279642339422386,
+          "total_us": -10.595713277809772,
+          "cpu_us": 7.060026825980814,
+          "p95_us": -12.855212015848371,
+          "p99_us": -18.226649972433904
+        }
+      }
+    ],
+    "median_of_run_medians": {
+      "upload": {
+        "map_us": 1.1225,
+        "conversion_us": 214.0875,
+        "upload_unmap_us": 619.735,
+        "encode_us": 2207.1255,
+        "total_us": 3040.603,
+        "cpu_us": 1500.5065,
+        "p95_us": 3383.087,
+        "p99_us": 3764.472
+      },
+      "mapped": {
+        "map_us": 60.5935,
+        "conversion_us": 359.0665,
+        "upload_unmap_us": 169.9365,
+        "encode_us": 2135.957,
+        "total_us": 2749.0285,
+        "cpu_us": 1617.6975,
+        "p95_us": 3083.321,
+        "p99_us": 3407.405
+      }
+    },
+    "bitstream_sha256": {
+      "n129-p1-m0.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p1-m1.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p2-m0.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p2-m1.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p3-m0.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p3-m1.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p4-m0.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p4-m1.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p5-m0.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1",
+      "n129-p5-m1.h264": "39a9c1a597ce9fdda3b1daa7e38633ebf616e79b34ab8ddad051bbbbe56fb2d1"
+    },
+    "identical_bitstreams": true
+  }
+}

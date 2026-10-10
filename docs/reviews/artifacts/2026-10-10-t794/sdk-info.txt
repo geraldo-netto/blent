@@ -1,0 +1,18 @@
+
+Freedesktop SDK - Tools and headers for developing applications
+
+          ID: org.freedesktop.Sdk
+         Ref: runtime/org.freedesktop.Sdk/x86_64/25.08
+        Arch: x86_64
+      Branch: 25.08
+     Version: freedesktop-sdk-25.08.17
+     License: MIT
+      Origin: flathub
+  Collection: org.flathub.Stable
+Installation: user
+   Installed: 1.7 GB
+
+      Commit: 0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46
+      Parent: b90ed309cc1d505dea48b6a2121c5dcfac22868120eee643b0596d31f96b9bb8
+     Subject: 4535d0fa4894628fdf49999ac5c2aacd138a6035
+        Date: 2026-09-15 09:48:24 +0000
