@@ -19,7 +19,7 @@ import java.util.ArrayDeque
 internal class TabletSession(
     ticket: ConnectionTicket, private val limits: ConnectionSessionLimits,
     private val capabilities: Int,
-) : ConnectionSession {
+) : ConnectionSession, ConnectionResourceAuthority {
     private class Binding(val lease: ConnectionResourceLease) {
         var installed = false
         var closing = false
@@ -66,6 +66,9 @@ internal class TabletSession(
         check(events.size < 36) { "Session event capacity exhausted" }
         events.addLast(ConnectionSessionEvent.State(lease, state))
     }
+    override fun owns(lease: ConnectionResourceLease, now: Long): Boolean =
+        connected && resources.owns(lease, now)
+
     override fun current(lease: ConnectionResourceLease): Boolean = connected && resources.current(lease)
 
     override fun receive(frame: ConnectionFrame, now: Long) {

@@ -1,0 +1,112 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionLocalResources",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lkotlin/jvm/functions/Function1;Lcom/blent/connection/ConnectionResourceAuthority;)V",
+    "line": 17,
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResources$Role;Lcom/blent/connection/ConnectionTicket;)V",
+    "line": 12,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/TabletSession$Binding",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 23,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalResourceGroup$Channel",
+    "name": "<init>",
+    "signature": "(ILcom/blent/connection/LocalEndpoint;)V",
+    "line": 12,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalCameraOwner$guarded$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraOwner;)V",
+    "line": 25,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalCameraOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSessionEvent$Offered;Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lcom/blent/connection/ConnectionResourceAuthority;)V",
+    "line": 6,
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalCameraOffer",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Camera;Z)V",
+    "line": 18,
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalResourceGroup",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSessionEvent$Offered;Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lcom/blent/connection/LocalResourcePermit;)V",
+    "line": 5,
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/TabletSession",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionSessionLimits;I)V",
+    "line": 19,
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalRun",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionRun;Lcom/blent/connection/LocalConnectionResources;)V",
+    "line": 109,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionResources$Slot",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;J)V",
+    "line": 16,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  }
+]

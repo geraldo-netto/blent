@@ -1678,7 +1678,26 @@ independent. Permission/provider loss closes only camera and retains native
 listener/pump ownership until their actual retirement. An unopened group cannot
 publish Prepared. The default permit supports display only.
 
-[Permanent red/green regressions, real TCP camera greeting/feedback and counters](artifacts/2026-10-11-t935/README.md) cover 650 connection tests. Private controller/IPC
+[Permanent red/green regressions, real TCP camera greeting/feedback and counters](artifacts/2026-10-11-t935/README.md) cover 650 connection tests. Local ownership composition is T937; private IPC
 composition is T936; hardware capture and its separate actual-worker retirement
 proof are T932. Production camera capability remains unavailable until that
 integration; physical acceptance remains T858.
+
+## T937 camera controller and joined retirement
+
+Camera retains permission-pending ownership without opening native endpoints.
+Portable choices and permission results match the exact original runtime lease,
+its pending deadline and retained prompt. Focused ownership/projection/control
+contracts preserve independently operating display and default display-only
+capabilities.
+
+Route publication records a possible capture consumer before credentials leave
+the owner. Closing joins actual local endpoint/pump retirement with exact external
+capture-consumer completion, accepting retained cleanup after connection stop.
+Neither cancellation nor TCP EOF can release that claim. Either cleanup order
+works; a stalled camera consumer quarantines camera while display continues.
+
+[Permanent red/green, real local TCP and individual native counter evidence](artifacts/2026-10-11-t937/README.md)
+covers 662 connection tests. Private worker/IPC integration is T936; actual isolated
+hardware-worker proof and capture enablement are T932. Production camera support
+and physical acceptance remain incomplete under T858.

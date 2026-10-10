@@ -11,16 +11,18 @@ internal interface LocalConnectionResources {
 
 /** Serialized resource controller. Fixed slots and bounded event work; a stuck
  * channel quarantines its resource while the connection keeps serving others.
- * Only display is composed here. Camera/microphone require separate permission
- * adapters before they may reach any native factory. */
+ * Camera is composed only with an explicit original-resource authority adapter;
+ * permission remains pending before any camera native factory is entered.
+ * Production capability enablement and hardware capture remain external. */
 internal class ConnectionLocalResources(
     private val endpoints: ConnectionEndpoints,
     capacity: Int,
     private val limits: ConnectionRunLimits = ConnectionRunLimits(),
     private val factory: (Long) -> LocalEndpoint = { now -> LocalEndpointOwner(LocalSocketEndpoint(), now, limits) },
-) : LocalConnectionResources {
+    private val cameraAuthority: ConnectionResourceAuthority? = null,
+) : LocalConnectionResources, LocalCameraControl {
     private val block = minOf(capacity, ConnectionWire.MAX_PAYLOAD)
-    private val slots = arrayOfNulls<LocalResourceGroup>(4)
+    private val slots = arrayOfNulls<LocalResourceOwnership>(4)
     private var stopped = false
     private var previous = 0L
     init { ConnectionWindow.validate(capacity) }
@@ -45,16 +47,25 @@ internal class ConnectionLocalResources(
     private fun offered(event: ConnectionSessionEvent.Offered, now: Long) {
         val index = event.lease.key.resource.ordinal
         check(slots[index] == null) { "Local resource slot still owned" }
-        if (stopped || event.profile != ConnectionManagement.Display) {
+        val resource = if (stopped) null else owner(event)
+        if (stopped || resource == null) {
             endpoints.reject(event.lease, ConnectionManagement.Outcome.UNAVAILABLE)
             endpoints.nativeRetired(event.lease)
             return
         }
-        require(event.lease.key.resource == ConnectionManagement.Resource.DISPLAY)
-        val group = LocalResourceGroup(event, endpoints, block, limits)
-        slots[index] = group
-        group.open(now, factory)
+        slots[index] = resource
+        resource.open(now, factory)
     }
+    private fun owner(event: ConnectionSessionEvent.Offered): LocalResourceOwnership? = try {
+        when (event.lease.key.resource) {
+            ConnectionManagement.Resource.DISPLAY -> if (event.profile == ConnectionManagement.Display)
+                LocalResourceGroup(event, endpoints, block, limits) else null
+            ConnectionManagement.Resource.CAMERA -> cameraAuthority?.let {
+                LocalCameraOwner(event, endpoints, block, limits, it)
+            }
+            else -> null
+        }
+    } catch (_: IllegalArgumentException) { null } // Constructors are pure; no native work was exposed.
     private fun state(event: ConnectionSessionEvent.State, now: Long) {
         val index = event.lease.key.resource.ordinal
         val group = slots[index] ?: return // Protocol can reject unsupported offers itself.
@@ -65,7 +76,23 @@ internal class ConnectionLocalResources(
             ConnectionResourceState.RETIRED -> { check(group.retired()); slots[index] = null }
         }
     }
-    override fun display(): LocalDisplayRoute? = slots[ConnectionManagement.Resource.DISPLAY.ordinal]?.route()
+    override fun display(): LocalDisplayRoute? = (slots[ConnectionManagement.Resource.DISPLAY.ordinal] as? LocalDisplayProjection)?.route()
+    private fun cameraControl(): LocalCameraControl? = slots[ConnectionManagement.Resource.CAMERA.ordinal] as? LocalCameraControl
+    override fun offered(): LocalCameraOffer? = cameraControl()?.offered()
+    override fun pending(): CameraPermissionRequest? = cameraControl()?.pending()
+    override fun camera(): LocalCameraRoute? = cameraControl()?.camera()
+    override fun choose(lease: ConnectionResourceLease, choice: CameraConsentChoice, now: Long): Boolean {
+        time(now)
+        return !stopped && cameraControl()?.choose(lease, choice, now) == true
+    }
+    override fun permissionResult(prompt: CameraPermissionRequest, granted: Boolean, choice: CameraConsentChoice, now: Long): Boolean {
+        time(now)
+        return !stopped && cameraControl()?.permissionResult(prompt, granted, choice, now) == true
+    }
+    override fun consumerRetired(lease: ConnectionResourceLease, now: Long): Boolean {
+        time(now)
+        return cameraControl()?.consumerRetired(lease, now) == true
+    }
     override fun stop(now: Long) {
         time(now)
         stopped = true

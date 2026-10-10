@@ -3,12 +3,12 @@ package com.blent.connection
 /** One resource owns all its channels. Constructor performs no native work;
  * its controller must retain this object BEFORE calling open. */
 internal class LocalResourceGroup(
-    val offer: ConnectionSessionEvent.Offered,
+    override val offer: ConnectionSessionEvent.Offered,
     private val endpoints: ConnectionEndpoints,
     private val block: Int,
     private val limits: ConnectionRunLimits,
     private val permit: LocalResourcePermit = DisplayLocalPermit,
-) {
+) : LocalResourceOwnership, LocalDisplayProjection {
     private class Channel(val id: Int, val endpoint: LocalEndpoint) {
         var pump: ConnectionLocalPump? = null
     }
@@ -35,7 +35,7 @@ internal class LocalResourceGroup(
         require(now >= previous && now <= Long.MAX_VALUE - maxOf(limits.ioTimeoutMs, limits.retirementTimeoutMs))
         previous = now
     }
-    fun open(now: Long, factory: (Long) -> LocalEndpoint) {
+    override fun open(now: Long, factory: (Long) -> LocalEndpoint) {
         time(now)
         check(!started && channels.isEmpty() && !uncertain && !closing)
         started = true
@@ -48,7 +48,7 @@ internal class LocalResourceGroup(
             }
         } catch (failure: Exception) { fail(failure, now) }
     }
-    fun advance(now: Long) {
+    override fun advance(now: Long) {
         time(now)
         try {
             if (!closing && !permit.opening(offer.lease)) revoke(now)
@@ -75,7 +75,7 @@ internal class LocalResourceGroup(
         endpoints.prepared(offer.lease, now)
         prepared = true
     }
-    fun admit(now: Long) {
+    override fun admit(now: Long) {
         if (closing) return
         time(now)
         try {
@@ -102,7 +102,7 @@ internal class LocalResourceGroup(
         fail(failure, previous)
         false
     }
-    fun route(): LocalDisplayRoute? = if (visible()) invitation else null
+    override fun route(): LocalDisplayRoute? = if (visible()) invitation else null
     fun cameraRoute(): LocalCameraRoute? = if (visible()) camera else null
     private fun revoke(now: Long) {
         stop(now)
@@ -113,7 +113,7 @@ internal class LocalResourceGroup(
         stop(now)
         endpoints.cancel(offer.lease, ConnectionManagement.Reason.WORKER_FAILED)
     }
-    fun stop(now: Long) {
+    override fun stop(now: Long) {
         time(now)
         if (closing) return
         closing = true; invitation = null; camera = null
@@ -128,7 +128,7 @@ internal class LocalResourceGroup(
         endpoints.nativeRetired(offer.lease)
         released = true
     }
-    fun retired(): Boolean = closing && !uncertain && channels.all { it.endpoint.retired() && it.pump?.retired() != false }
-    fun quarantined(): Boolean = uncertain || channels.any { it.endpoint.quarantined() || it.pump?.quarantined() == true }
+    override fun retired(): Boolean = closing && !uncertain && channels.all { it.endpoint.retired() && it.pump?.retired() != false }
+    override fun quarantined(): Boolean = uncertain || channels.any { it.endpoint.quarantined() || it.pump?.quarantined() == true }
     fun failure(): Exception? = error
 }

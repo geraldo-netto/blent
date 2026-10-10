@@ -1,0 +1,8 @@
+49d808715739c78a7bd13788f9a0d674823aa80d6a5efd6f0c249d914764a2c8  android/app/src/main/java/com/blent/connection/ConnectionLocalContracts.kt
+bb410c4794fec3289c775dbbf81ed772d68e568e61958fe9a436f59cfae2112d  android/app/src/main/java/com/blent/connection/ConnectionLocalResources.kt
+9c7ac7ab4b29496e480a8728eeb5d28ec16374f4b3b427c2fb0f6930d6f5dd4c  android/app/src/main/java/com/blent/connection/LocalCameraOwner.kt
+0683cd2225815260e4e05014e2791e7d8bfe898df3b59fbeba5f87cd93742237  android/app/src/main/java/com/blent/connection/LocalResourceGroup.kt
+e9be1c66edb50f114ee322c97bfadc5566677d8a4169bcd1156157749a2667f4  android/app/src/main/java/com/blent/connection/ConnectionResources.kt
+536b927b305f934b7e0e658859a31313fb6850e141a40b6092f412ce7d0a5599  android/app/src/main/java/com/blent/connection/TabletSession.kt
+3d49d67d61017cddf5546ae2719288fcb19e07b8b4649e1c72f6400d4ce31cd7  android/app/src/test/java/com/blent/connection/LocalCameraOwnerTest.kt
+5fcbcfd3acaa7423d1badbc3ca3a2926b62efaa41e27c167b904b0d67ad668f6  android/app/src/test/java/com/blent/connection/LocalCameraOwnerLoopbackTest.kt

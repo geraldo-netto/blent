@@ -65,6 +65,12 @@ internal class ConnectionResources(private val role: Role, private val connectio
         check(!slot.settled)
         return slot
     }
+    fun owns(lease: Lease, now: Long): Boolean {
+        require(now >= 0)
+        val slot = slots[lease.key.resource.ordinal] ?: return false
+        return connected && slot.lease == lease && !slot.closing &&
+            (slot.stage == Stage.ADMITTED || now < slot.deadline)
+    }
     fun current(lease: Lease): Boolean {
         val slot = slots[lease.key.resource.ordinal] ?: return false
         return connected && slot.lease == lease && !slot.closing && slot.stage == Stage.ADMITTED
