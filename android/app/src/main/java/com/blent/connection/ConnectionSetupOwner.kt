@@ -172,11 +172,11 @@ internal class ConnectionSetupOwner(
         live()
         val proven = authenticate(identity)
         live()
-        stage(limits.nativeTimeoutMs, ConnectionWorkerPhase.AUTHENTICATED)
+        stage(limits.nativeTimeoutMs, ConnectionWorkerPhase.OPENING)
         val approved = trust.authenticated(pairing, ticket, proven, now())
         if (approved.remember) event(ConnectionWorkerEvent.Trust(approved.ticket.peer, true))
         live()
-        stage(limits.nativeTimeoutMs, ConnectionWorkerPhase.AUTHENTICATED)
+        stage(limits.nativeTimeoutMs, ConnectionWorkerPhase.OPENING)
         val capacity = backend.negotiate(limits.capacity, limits.nativeTimeoutMs)
         ConnectionWindow.accepted(limits.capacity, capacity)
         install(approved, capacity)
@@ -216,6 +216,7 @@ internal class ConnectionSetupOwner(
             approval = approved
             ready = ConnectionSetupReady(io, approved, capacity)
             deadline = Long.MAX_VALUE
+            event(ConnectionWorkerEvent.State(ConnectionWorkerPhase.AUTHENTICATED))
         }
         signal()
     }

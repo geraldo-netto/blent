@@ -106,6 +106,44 @@ internal class SetupRig(
 }
 
 class ConnectionSetupOwnerTest {
+    @Test fun t896WrongProofNeverPublishesAuthenticated() {
+        val backend = SetupBackend().apply { proof = setupPeer(local) }
+        SetupRig(backend).use { rig ->
+            rig.owner.decide(rig.ticket(), true, false)
+            setupAwait { rig.owner.retired() }; rig.drain()
+            assertNotNull(rig.owner.failure())
+            assertFalse("T896 unverified peer must never appear authenticated", rig.authenticated())
+        }
+    }
+    @Test fun t896PendingPersistenceAndIoDoNotPublishAuthenticated() {
+        val backend = SetupBackend().apply { ioGate = CountDownLatch(1) }
+        val store = SetupStore().apply { gate = CountDownLatch(1) }
+        SetupRig(backend, store).use { rig ->
+            rig.owner.decide(rig.ticket(), true, true)
+            assertTrue(store.entered.await(2, TimeUnit.SECONDS)); rig.drain()
+            assertFalse("T896 durable remember still pending", rig.authenticated())
+            store.gate.countDown()
+            assertTrue(backend.ioEntered.await(2, TimeUnit.SECONDS)); rig.drain()
+            assertFalse("T896 negotiated IO still pending", rig.authenticated())
+            backend.ioGate.countDown()
+            rig.ready(); rig.drain()
+            assertTrue(rig.authenticated())
+            assertEquals(1, rig.events.count { it == ConnectionWorkerEvent.State(ConnectionWorkerPhase.AUTHENTICATED) })
+        }
+    }
+    @Test fun t896FailedNegotiationNeverPublishesAuthenticated() {
+        SetupRig(SetupBackend().apply { capacity = 4097 }).use { rig ->
+            rig.owner.decide(rig.ticket(), true, false)
+            setupAwait { rig.owner.retired() }; rig.drain()
+            assertNotNull(rig.owner.failure())
+            assertFalse("T896 rejected window is not an authenticated connection", rig.authenticated())
+        }
+    }
+
+    private fun SetupRig.authenticated(): Boolean =
+        events.any { it == ConnectionWorkerEvent.State(ConnectionWorkerPhase.AUTHENTICATED) }
+
+
     @Test fun t895RememberedPeerMetadataAllowsRevocationWithoutGrantingTlsProof() {
         val backend = SetupBackend().apply { authenticateGate = CountDownLatch(1) }
         val store = SetupStore()
