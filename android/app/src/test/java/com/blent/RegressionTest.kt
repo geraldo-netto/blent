@@ -211,7 +211,6 @@ class RegressionTest {
     }
 
     private fun assertAuthFirst(type: String, action: (TouchCapture) -> Unit) {
-        val capture = TouchCapture().apply { token = "a".repeat(64) }
         val authEntered = java.util.concurrent.CountDownLatch(1)
         val authRelease = java.util.concurrent.CountDownLatch(1)
         val socket = Socket {
@@ -220,8 +219,12 @@ class RegressionTest {
                 check(authRelease.await(5, java.util.concurrent.TimeUnit.SECONDS))
             }
         }
-        set(capture, "webSocket", socket)
-        val listener = get(capture, "wsListener") as WebSocketListener
+        // T899: use the real route-selection path; manually installing only the
+        // socket bypasses the captured credential required by T856.
+        lateinit var listener: WebSocketListener
+        val capture = TouchCapture(WebSocket.Factory { _, callbacks -> listener = callbacks; socket })
+            .apply { token = "a".repeat(64) }
+        capture.connect()
         val response = Response.Builder().request(socket.request()).protocol(Protocol.HTTP_1_1)
             .code(101).message("Switching Protocols").build()
         val failures = java.util.concurrent.ConcurrentLinkedQueue<Throwable>()
