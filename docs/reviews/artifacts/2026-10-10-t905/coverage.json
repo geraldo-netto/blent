@@ -1,0 +1,389 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 16,
+      "passing": 16,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "time",
+      "line": 30,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "time",
+          "signature": "(J)V",
+          "line": 31,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "advance",
+      "line": 34,
+      "language": "kotlin",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "advance",
+          "signature": "(J)V",
+          "line": 35,
+          "covered": 11,
+          "total": 11
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "admission",
+      "line": 47,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "admission",
+          "signature": "(J)V",
+          "line": 48,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "completions",
+      "line": 53,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "completions",
+          "signature": "(J)V",
+          "line": 55,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "stop",
+      "line": 63,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "stop",
+          "signature": "(J)V",
+          "line": 64,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "fail",
+      "line": 69,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "fail",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 69,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "retirement",
+      "line": 70,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "retirement",
+          "signature": "()V",
+          "line": 71,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "failure",
+      "line": 77,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "failure",
+          "signature": "()Ljava/lang/Exception;",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "retired",
+      "line": 78,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "retired",
+          "signature": "()Z",
+          "line": 78,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "quarantined",
+      "line": 79,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/ConnectionLocalPump",
+          "name": "quarantined",
+          "signature": "()Z",
+          "line": 79,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "tick",
+      "line": 91,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/LocalChannelProducer",
+          "name": "tick",
+          "signature": "(J)V",
+          "line": 91,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "advance",
+      "line": 93,
+      "language": "kotlin",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/LocalChannelProducer",
+          "name": "advance",
+          "signature": "(Lcom/blent/connection/ConnectionEndpoints;Lcom/blent/connection/ConnectionResourceLease;ILcom/blent/connection/ConnectionIo;J)V",
+          "line": 94,
+          "covered": 11,
+          "total": 11
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "complete",
+      "line": 105,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/LocalChannelProducer",
+          "name": "complete",
+          "signature": "(Lcom/blent/connection/ConnectionIoCompletion;ZJ)V",
+          "line": 106,
+          "covered": 10,
+          "total": 10
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "tick",
+      "line": 127,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/LocalChannelConsumer",
+          "name": "tick",
+          "signature": "(J)V",
+          "line": 127,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "advance",
+      "line": 129,
+      "language": "kotlin",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/LocalChannelConsumer",
+          "name": "advance",
+          "signature": "(Lcom/blent/connection/ConnectionEndpoints;Lcom/blent/connection/ConnectionResourceLease;ILcom/blent/connection/ConnectionIo;J)V",
+          "line": 130,
+          "covered": 15,
+          "total": 15
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+      "name": "complete",
+      "line": 146,
+      "language": "kotlin",
+      "covered": 15,
+      "total": 16,
+      "percent": 93.75,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionLocalPump.kt",
+          "owner": "com/blent/connection/LocalChannelConsumer",
+          "name": "complete",
+          "signature": "(Lcom/blent/connection/ConnectionIoCompletion;Lcom/blent/connection/ConnectionEndpoints;Lcom/blent/connection/ConnectionResourceLease;IZJ)V",
+          "line": 147,
+          "covered": 15,
+          "total": 16
+        }
+      ]
+    }
+  ]
+}

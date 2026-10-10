@@ -1,0 +1,162 @@
+[
+  {
+    "owner": "com/blent/connection/LocalChannelProducer",
+    "method": "<init>",
+    "line": "85",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalChannelProducer",
+    "method": "tick",
+    "line": "91",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalChannelProducer",
+    "method": "advance",
+    "line": "94",
+    "covered": 11,
+    "total": 11,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalChannelProducer",
+    "method": "complete",
+    "line": "106",
+    "covered": 10,
+    "total": 10,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalChannelConsumer",
+    "method": "<init>",
+    "line": "120",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalChannelConsumer",
+    "method": "tick",
+    "line": "127",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalChannelConsumer",
+    "method": "advance",
+    "line": "130",
+    "covered": 15,
+    "total": 15,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalChannelConsumer",
+    "method": "complete",
+    "line": "147",
+    "covered": 15,
+    "total": 16,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "<init>",
+    "line": "10",
+    "covered": 13,
+    "total": 13,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "<init>",
+    "line": "10",
+    "covered": 4,
+    "total": 4,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "time",
+    "line": "31",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "advance",
+    "line": "35",
+    "covered": 11,
+    "total": 11,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "admission",
+    "line": "48",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "completions",
+    "line": "55",
+    "covered": 7,
+    "total": 7,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "stop",
+    "line": "64",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "fail",
+    "line": "69",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "retirement",
+    "line": "71",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "failure",
+    "line": "77",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "retired",
+    "line": "78",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalPump",
+    "method": "quarantined",
+    "line": "79",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  }
+]
