@@ -644,3 +644,16 @@ idle `tick` deadlines. Capacity configuration alone is not that agreement.
 stock TLS duplex admission/control and actual isolated helper exit. The broker
 executable/client/bridge composition and Android service remain unimplemented;
 production display/touch remains the next native acceptance milestone.
+
+### T874 private host IPC owner
+
+The Linux broker library now elects one owner using a stable private lock inode
+inside an existing owned mode-0700 runtime directory. The directory descriptor
+pins socket creation and cleanup across rename. Only an owned stale socket is
+removed after election; ordinary shutdown removes only the same socket inode.
+The lock file is never unlinked. This does not sandbox hostile same-user code.
+Async packet adapters permit one reader and one writer concurrently, retain
+borrowed listener descriptors until atomic send, and close received descriptors
+on malformed packets. Shutdown revokes I/O; actual descriptor ownership ends
+only when the wrapper and outstanding borrows drop. Runtime-directory selection,
+on-demand process startup and registration orchestration remain T853.

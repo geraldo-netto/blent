@@ -1,0 +1,6 @@
+{
+  "host/src/broker/linux/owner.rs": "ced9e5825659582960c44bf435ca258cb4937ba7e84c6d282f8124f7d6f5b5bf",
+  "host/src/broker/linux/async_io.rs": "25bb67d2d2d2d9178b6f8e7adc3afc69c29bcd5ff7d079e49a9b9800f63ed2ae",
+  "host/src/broker/linux/owner_tests.rs": "a9371fec1d1d6b0787f22375dfbdd1a3418c4f2ebc103b748049476448350fc7",
+  "host/src/broker/linux/async_io_tests.rs": "8e0c4b72680386bc124a9212a33d0136f634580dcba69278e62ea1f142cc09ae"
+}
