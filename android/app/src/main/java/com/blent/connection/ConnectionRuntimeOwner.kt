@@ -114,7 +114,7 @@ internal class ConnectionRuntimeOwner(
         return null
     }
     private fun visible(event: ConnectionWorkerEvent): Boolean = when (event) {
-        is ConnectionWorkerEvent.Pairing -> !stopped
+        is ConnectionWorkerEvent.Pairing, is ConnectionWorkerEvent.Peer -> !stopped
         is ConnectionWorkerEvent.State -> !stopped || event.phase == ConnectionWorkerPhase.CLOSING
         else -> true // Durable trust facts survive logical admission cancellation.
     }

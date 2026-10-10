@@ -25,6 +25,8 @@ internal sealed interface ConnectionWorkerCommand {
 }
 internal enum class ConnectionWorkerPhase { OPENING, WAITING_APPROVAL, AUTHENTICATED, CLOSING }
 internal sealed interface ConnectionWorkerEvent {
+    /** Claimed peer and stored trust are presentation metadata, never TLS proof. */
+    data class Peer(val ticket: ConnectionTicket, val local: ConnectionPeer, val remembered: Boolean) : ConnectionWorkerEvent
     data class Pairing(val ticket: ConnectionTicket, val local: ConnectionPeer) : ConnectionWorkerEvent
     data class State(val phase: ConnectionWorkerPhase) : ConnectionWorkerEvent
     /** Emitted only after durable trust mutation, never an optimistic UI promise. */

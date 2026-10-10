@@ -102,6 +102,13 @@ class ConnectionRuntimeOwnerTest {
         assertTrue(rig.setup.stopping); assertFalse(rig.owner.retired())
         rig.setup.gone = true; assertTrue(rig.owner.retired()); assertNull(rig.owner.failure())
     }
+    @Test fun t895PeerMetadataCannotEscapeAfterLogicalStop() {
+        val rig = RuntimeRig()
+        val peer = ConnectionWorkerEvent.Peer(rig.setup.ticket, rig.setup.ticket.peer, true)
+        rig.setup.events.add(peer); assertSame(peer, rig.owner.poll())
+        rig.owner.stop()
+        rig.setup.events.add(peer); assertNull("T895 stale identity is not a durable trust event", rig.owner.poll())
+    }
     @Test fun t888EventFilteringIsBoundedAndPreservesDurableTrustAfterStop() {
         val rig = RuntimeRig()
         val pairing = ConnectionWorkerEvent.Pairing(rig.setup.ticket, rig.setup.ticket.peer)

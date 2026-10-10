@@ -168,6 +168,7 @@ internal class ConnectionSetupOwner(
         }
         stageUntil(until(begun, limits.approvalTimeoutMs), ConnectionWorkerPhase.WAITING_APPROVAL)
         if (pairing.phase == ConnectionPairing.Phase.PENDING) awaitApproval(pairing, ticket, local)
+        else event(ConnectionWorkerEvent.Peer(ticket, local, trust.trusted(peer)))
         live()
         val proven = authenticate(identity)
         live()

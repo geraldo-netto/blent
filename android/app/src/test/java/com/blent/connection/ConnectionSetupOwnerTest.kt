@@ -106,6 +106,30 @@ internal class SetupRig(
 }
 
 class ConnectionSetupOwnerTest {
+    @Test fun t895RememberedPeerMetadataAllowsRevocationWithoutGrantingTlsProof() {
+        val backend = SetupBackend().apply { authenticateGate = CountDownLatch(1) }
+        val store = SetupStore()
+        val remote = setupPeer(backend.remote)
+        store.bytes = ConnectionTrustCodec.encode(TrustSnapshot(setupPeer(backend.local), 1, listOf(remote)))
+        SetupRig(backend, store).use { rig ->
+            assertTrue(backend.entered.await(2, TimeUnit.SECONDS)); rig.drain()
+            val metadata = rig.events.filterIsInstance<ConnectionWorkerEvent.Peer>()
+            assertEquals("T895 remembered peer must remain identifiable before proof", 1, metadata.size)
+            assertEquals(remote, metadata.single().ticket.peer)
+            assertEquals(setupPeer(backend.local), metadata.single().local)
+            assertTrue(metadata.single().remembered)
+            assertNull(rig.owner.takeReady())
+            assertFalse(rig.events.any { it is ConnectionWorkerEvent.Pairing })
+            backend.authenticateGate.countDown()
+            val ready = rig.ready()
+            assertEquals(metadata.single().ticket, ready.approval.ticket)
+            assertTrue(rig.owner.revoke(metadata.single().ticket.peer))
+            assertFalse(rig.owner.current(ready.approval))
+            setupAwait { rig.drain(); rig.events.any { it is ConnectionWorkerEvent.Trust && !it.remembered } }
+            assertTrue(ConnectionTrustCodec.decode(checkNotNull(store.bytes)).peers.isEmpty())
+        }
+    }
+
     @Test fun t886ApprovalProofWindowAndBorrowedIoHaveOneCurrentOwner() {
         SetupRig().use { rig ->
             val ticket = rig.ticket()

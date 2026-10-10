@@ -71,6 +71,9 @@ internal object ConnectionWorkerCodec {
     }
     fun event(value: ConnectionWorkerEvent): ByteArray = encode { out ->
         when (value) {
+            is ConnectionWorkerEvent.Peer -> {
+                out.writeByte(5); ticket(out, value.ticket); peer(out, value.local); out.writeBoolean(value.remembered)
+            }
             is ConnectionWorkerEvent.Pairing -> { out.writeByte(1); ticket(out, value.ticket); peer(out, value.local) }
             is ConnectionWorkerEvent.State -> { out.writeByte(2); out.writeByte(value.phase.ordinal) }
             is ConnectionWorkerEvent.Trust -> { out.writeByte(3); peer(out, value.peer); out.writeBoolean(value.remembered) }
@@ -82,6 +85,7 @@ internal object ConnectionWorkerCodec {
     }
     fun event(bytes: ByteArray): ConnectionWorkerEvent = decode(bytes) { input ->
         when (input.readUnsignedByte()) {
+            5 -> ConnectionWorkerEvent.Peer(ticket(input), peer(input), bool(input))
             1 -> ConnectionWorkerEvent.Pairing(ticket(input), peer(input))
             2 -> {
                 val code = input.readUnsignedByte(); require(code in ConnectionWorkerPhase.entries.indices)

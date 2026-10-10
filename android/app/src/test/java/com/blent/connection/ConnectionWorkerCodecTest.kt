@@ -48,6 +48,7 @@ class ConnectionWorkerCodecTest {
     }
     private fun events(): List<ConnectionWorkerEvent> = listOf(
         ConnectionWorkerEvent.Pairing(ticket, ConnectionPeer.parse("cd".repeat(32))),
+        ConnectionWorkerEvent.Peer(ticket, peer, true), ConnectionWorkerEvent.Peer(ticket, peer, false),
         ConnectionWorkerEvent.Trust(peer, true), ConnectionWorkerEvent.Trust(peer, false),
         ConnectionWorkerEvent.Ended(null), ConnectionWorkerEvent.Ended("native close failed"),
     ) + ConnectionWorkerPhase.entries.map { ConnectionWorkerEvent.State(it) }
@@ -84,6 +85,19 @@ class ConnectionWorkerCodecTest {
             rejected { ConnectionWorkerCodec.event(byteArrayOf(1, 4, byte.toByte())) }
             rejected { ConnectionWorkerCodec.event(byteArrayOf(1, 2, 127)) }
             rejected { ConnectionWorkerCodec.command(byteArrayOf(1, byte.toByte())) }
+        }
+    }
+    @Test fun t895PeerMetadataRejectsInvalidBooleanAndRoundTripsMutations() {
+        val original = ConnectionWorkerCodec.event(ConnectionWorkerEvent.Peer(ticket, peer, true))
+        for (value in listOf(2, 127, 255)) {
+            rejected { ConnectionWorkerCodec.event(original.copyOf().also { it[it.lastIndex] = value.toByte() }) }
+        }
+        val random = Random(895)
+        repeat(1024) {
+            val bytes = original.copyOf()
+            bytes[random.nextInt(bytes.size)] = random.nextInt(256).toByte()
+            val decoded = runCatching { ConnectionWorkerCodec.event(bytes) }.getOrNull()
+            if (decoded != null) assertEquals(decoded, ConnectionWorkerCodec.event(ConnectionWorkerCodec.event(decoded)))
         }
     }
     @Test fun t884SeededBoundedMutationCannotEscapeFlatSchema() {
