@@ -14,6 +14,8 @@ impl Message {
     }
     fn body(&self) -> Result<(u8, Vec<u8>)> {
         Ok(match self {
+            Self::Control { command, .. } => (5, command.encode()?),
+            Self::Report { notice, .. } => (6, notice.encode()?),
             Self::Register {
                 peer,
                 resource,
@@ -50,6 +52,14 @@ impl Message {
 }
 fn decode_body(operation: u8, request: u64, body: &[u8]) -> Result<Message> {
     Ok(match operation {
+        5 => Message::Control {
+            request,
+            command: super::super::control::Command::decode(body)?,
+        },
+        6 => Message::Report {
+            request,
+            notice: super::super::control::Notice::decode(body)?,
+        },
         0 => decode_registration(request, body)?,
         1 => Message::Unregister {
             request,

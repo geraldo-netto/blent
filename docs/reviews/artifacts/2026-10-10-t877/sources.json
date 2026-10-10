@@ -1,0 +1,8 @@
+{
+  "common/src/connection/control.rs": "a6f8f0ad147ca3fff4cb5aeb12d0132da18a9b5a2ec13360dbd78157c65188db",
+  "common/src/connection/control/codec.rs": "90f2b403bed5da27a02912fd735a03e27f1f7e84c175b29ffa48df55d1e5ce88",
+  "common/src/connection/control/tests.rs": "a2d6cc9dcd0cd1aa39ef85fef7cc1746e8626e1f75279797fd45eb1812eee690",
+  "common/src/connection/registration.rs": "386f8d709f72571f92633cf850ce0bc803f074fe5d59aac235ba5637b322afca",
+  "common/src/connection/registration/codec.rs": "251e45a3b2d39292ed28c55ea67f4161cb9c743a5b3815f7d90f8551f22468ae",
+  "host/src/broker/linux/control_tests.rs": "cb783c3683d05157183057adb324cb72b5dbf6e13c90b77b890b2db43148f113"
+}

@@ -16,3 +16,4 @@ pub mod trust;
 
 pub mod registration;
 pub mod window;
+pub mod control;

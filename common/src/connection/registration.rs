@@ -1,7 +1,7 @@
 //! T871: local registration IPC, independent of operating-system handles.
 //! The authenticated adapter supplies endpoint capabilities separately. Packet
 //! contents never prove descriptor ownership or grant a remote media lease.
-//! Pairing/UI commands are a future explicit protocol extension, not registration.
+//! Pairing control uses separate typed commands on the same authenticated IPC.
 use super::{
     management::{Credential, Profile, Resource},
     pairing::PeerId,
@@ -69,6 +69,14 @@ impl TryFrom<u8> for Rejection {
 /// The client retains RouteId to disambiguate delayed events from either request.
 #[derive(Clone, PartialEq, Eq)]
 pub enum Message {
+    Control {
+        request: u64,
+        command: super::control::Command,
+    },
+    Report {
+        request: u64,
+        notice: super::control::Notice,
+    },
     Register {
         request: u64,
         peer: PeerId,
@@ -97,6 +105,7 @@ pub enum Message {
 impl Message {
     pub fn request(&self) -> u64 {
         match self {
+            Self::Control { request, .. } | Self::Report { request, .. } => *request,
             Self::Register { request, .. } => *request,
             Self::Unregister { request, .. } => *request,
             Self::Registered { request, .. } => *request,

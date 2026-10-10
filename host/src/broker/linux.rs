@@ -175,3 +175,6 @@ impl AsRawFd for Listener {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod control_tests;

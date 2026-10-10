@@ -678,3 +678,28 @@ Remaining queue/quantum/deadline settings stay local. Parsing this record grants
 no approval or media authority. T853 must invoke this adapter; T854 implements
 the matching Android exchange. Tests use isolated byte streams; production media
 and debugging-off acceptance remain T855/T857 and subsequent media items.
+
+### T877 local pairing and discovery control
+
+Authenticated local BLRG v1 IPC adds operation 5 (typed Control command) and
+operation 6 (typed Report notice), both carrying zero descriptors. Existing
+resource-registration operations and capability validation remain unchanged.
+Each control body is at most 128 bytes within the existing 4096-byte packet cap;
+request/counter fields are 1..i64::MAX and every extent is exact.
+
+Commands are Inspect, Connect(revision,target), Decide(connection,ticket,allow,
+remember), Disconnect(connection,optional ticket), and Revoke(peer). Denial
+cannot remember trust. Notice snapshots contain Begin(revision,computer peer),
+Device(revision,opaque target,VID,PID,observed accessory), Link(revision,connection,
+optional ticket,state,saved trust), Saved(revision,peer), and End(revision).
+Pending/approved/authenticated pairing states carry an exact certificate and
+local epoch. Discovery has no ticket; closing/quarantined states may precede or
+follow certificate discovery. Observed USB IDs never grant authority.
+
+The T853 owner must issue nonrepeating IDs during its lifetime, validate the
+current snapshot/selection and exact approval ticket, bound client snapshot
+publication and reject stale callbacks. A new IPC connection after broker restart
+invalidates cached IDs; clients must not replay commands against a fresh owner.
+Snapshot Begin/End revisions must match before presentation uses the result.
+These codecs do not themselves approve, connect or revoke anything. T855 consumes
+this contract for production presentation after T853 orchestration exists.
