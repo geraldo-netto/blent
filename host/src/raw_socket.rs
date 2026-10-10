@@ -1,18 +1,15 @@
 //! Linux descriptor transport. Packet boundaries and fd ownership are explicit.
 use anyhow::{ensure, Context, Result};
+use blent_config::linux::packet;
 use blent_config::raw_frame::{Message, MESSAGE_BYTES};
-use std::os::fd::{AsRawFd, FromRawFd, OwnedFd, RawFd};
+use std::os::fd::{AsRawFd, OwnedFd, RawFd};
 use std::sync::Arc;
 
 #[derive(Clone)]
 pub(crate) struct Socket(Arc<OwnedFd>);
 
 fn owned(fd: RawFd) -> std::io::Result<OwnedFd> {
-    if fd < 0 {
-        Err(std::io::Error::last_os_error())
-    } else {
-        Ok(unsafe { OwnedFd::from_raw_fd(fd) })
-    }
+    unsafe { packet::owned(fd) }
 }
 
 impl Socket {
@@ -80,61 +77,17 @@ impl Socket {
     }
 
     pub fn send_bytes(&self, bytes: &[u8], fd: Option<RawFd>) -> Result<()> {
-        let mut iov = libc::iovec {
-            iov_base: bytes.as_ptr().cast_mut().cast(),
-            iov_len: bytes.len(),
-        };
-        // usize provides cmsghdr alignment; spare space bounds malformed-control tests.
-        let mut control = [0usize; 8];
-        let mut header: libc::msghdr = unsafe { std::mem::zeroed() };
-        header.msg_iov = &mut iov;
-        header.msg_iovlen = 1;
-        if let Some(fd) = fd {
-            header.msg_control = control.as_mut_ptr().cast();
-            header.msg_controllen = unsafe { libc::CMSG_SPACE(4) } as usize;
-            unsafe {
-                let cmsg = libc::CMSG_FIRSTHDR(&header);
-                (*cmsg).cmsg_level = libc::SOL_SOCKET;
-                (*cmsg).cmsg_type = libc::SCM_RIGHTS;
-                (*cmsg).cmsg_len = libc::CMSG_LEN(4) as usize;
-                std::ptr::write_unaligned(libc::CMSG_DATA(cmsg).cast::<RawFd>(), fd);
-            }
-        }
-        let result = unsafe { libc::sendmsg(self.as_raw_fd(), &header, libc::MSG_NOSIGNAL) };
-        ensure!(
-            result == bytes.len() as isize,
-            "send raw packet: {}",
-            std::io::Error::last_os_error()
-        );
-        Ok(())
+        Ok(packet::send(self.as_raw_fd(), bytes, fd.as_slice())?)
     }
 
-    /// All received descriptors become OwnedFd before payload validation.
+    /// Native transport owns every delivered descriptor before decoding capture.
     pub fn receive(&self) -> Result<Option<(Message, Vec<OwnedFd>)>> {
         let mut bytes = [0u8; MESSAGE_BYTES];
-        let mut iov = libc::iovec {
-            iov_base: bytes.as_mut_ptr().cast(),
-            iov_len: bytes.len(),
+        let Some(packet) = packet::receive(self.as_raw_fd(), &mut bytes)? else {
+            return Ok(None);
         };
-        let mut control = [0usize; 8];
-        let mut header: libc::msghdr = unsafe { std::mem::zeroed() };
-        header.msg_iov = &mut iov;
-        header.msg_iovlen = 1;
-        header.msg_control = control.as_mut_ptr().cast();
-        header.msg_controllen = std::mem::size_of_val(&control);
-        let result =
-            unsafe { libc::recvmsg(self.as_raw_fd(), &mut header, libc::MSG_CMSG_CLOEXEC) };
-        if result < 0 {
-            return receive_error();
-        }
-        let fds = received_fds(&header)?;
-        ensure!(result > 0, "raw capture peer closed");
-        ensure!(
-            header.msg_flags & (libc::MSG_TRUNC | libc::MSG_CTRUNC) == 0,
-            "truncated raw packet"
-        );
-        let message = Message::decode(&bytes[..result as usize])?;
-        Ok(Some((message, fds)))
+        let message = Message::decode(&bytes[..packet.length])?;
+        Ok(Some((message, packet.descriptors)))
     }
 
     pub fn wait(&self, stop: &crate::encoder_io::StopSignal) -> Result<bool> {
@@ -192,39 +145,6 @@ impl AsRawFd for Socket {
     }
 }
 
-fn receive_error() -> Result<Option<(Message, Vec<OwnedFd>)>> {
-    let error = std::io::Error::last_os_error();
-    if matches!(
-        error.kind(),
-        std::io::ErrorKind::WouldBlock | std::io::ErrorKind::Interrupted
-    ) {
-        Ok(None)
-    } else {
-        Err(error).context("receive raw packet")
-    }
-}
-
-fn received_fds(header: &libc::msghdr) -> Result<Vec<OwnedFd>> {
-    let mut fds = Vec::new();
-    unsafe {
-        let mut cmsg = libc::CMSG_FIRSTHDR(header);
-        while !cmsg.is_null() {
-            ensure!(
-                (*cmsg).cmsg_level == libc::SOL_SOCKET && (*cmsg).cmsg_type == libc::SCM_RIGHTS,
-                "unexpected raw control message"
-            );
-            let size = (*cmsg).cmsg_len - libc::CMSG_LEN(0) as usize;
-            for offset in (0..size).step_by(4) {
-                fds.push(owned(std::ptr::read_unaligned(
-                    libc::CMSG_DATA(cmsg).add(offset).cast::<RawFd>(),
-                ))?);
-            }
-            cmsg = libc::CMSG_NXTHDR(header, cmsg);
-        }
-    }
-    Ok(fds)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -265,7 +185,10 @@ mod tests {
             unsafe {
                 *libc::__errno_location() = error;
             }
-            assert_eq!(receive_error().is_ok(), error != libc::EIO);
+            assert_eq!(
+                packet::retryable(&std::io::Error::from_raw_os_error(error)),
+                error != libc::EIO
+            );
             unsafe {
                 *libc::__errno_location() = error;
             }

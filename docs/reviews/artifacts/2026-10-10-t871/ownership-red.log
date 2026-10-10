@@ -1,0 +1,18 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.01s
+   Doc-tests blent_config
+
+running 1 test
+test common/src/linux/packet.rs - linux::packet::owned (line 17) - compile fail ... FAILED
+
+failures:
+
+---- common/src/linux/packet.rs - linux::packet::owned (line 17) stdout ----
+Test compiled successfully, but it's marked `compile_fail`.
+
+failures:
+    common/src/linux/packet.rs - linux::packet::owned (line 17)
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+error: doctest failed, to rerun pass `-p blent-config --doc`

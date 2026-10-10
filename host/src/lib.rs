@@ -80,3 +80,6 @@ pub mod secure_connection;
 
 #[cfg(feature = "accessory-transport")]
 pub mod accessory;
+
+#[cfg(feature = "accessory-transport")]
+pub mod broker;

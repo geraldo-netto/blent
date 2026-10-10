@@ -226,7 +226,9 @@ activation prerequisite with its own regressions and commit.
 | T867 | Durable host identity (implemented Linux adapter) | Existing stock TLS identity validation |
 | T868 | Bounded authenticated peer-trust persistence on both sides | T867 storage patterns, existing pairing contracts |
 | T852 | Compose stored identities and trust with authenticated pairing | T867, T868 |
-| T853 | Shared host broker and authenticated local registration | T849–T852, T856 |
+| T871 | Local registration contract and Linux descriptor adapter (implemented) | T856 |
+| T872 | Authenticated link runtime and retirement barriers | T849–T852, T871 |
+| T853 | On-demand host broker and client composition | T852, T871, T872 |
 | T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
@@ -577,3 +579,26 @@ identity reuse through real mutual TLS, restart/reconnect, explicit revoke and w
 certificate rejection. Android's stock adapter interoperates with Rust while saving
 and reopening trust on API27/34 JVM fixtures. Production broker/service/UI and media
 remain T853–T858; no current ADB-free production-display support is claimed.
+
+## T871 local registration boundary
+
+The portable BLRG version-1 registration protocol admits bounded Register,
+Unregister, Registered, Status and Rejected packets. Register carries the peer
+pin, resource, credential and existing resource profile; it never accepts claimed
+ports, paths or process IDs as endpoint authority. Display supplies two listener
+capabilities in video/control order; other resources supply one. Local admission
+is not authenticated remote media admission.
+
+The Linux adapter uses nonblocking Unix SOCK_SEQPACKET, authenticates both peers
+with SO_PEERCRED, and transfers descriptors using SCM_RIGHTS/CLOEXEC. It derives
+ports from exclusive TCP listeners bound to 127.0.0.1, rejects shared ports and
+other socket types/protocols, and retains capabilities until explicit retirement.
+A wrong or still-active route cannot release its listeners. Capture reuses the
+same bounded ancillary transport, preserving its existing malformed-packet tests
+and allocation-free send path.
+
+[Validation](artifacts/2026-10-10-t871/README.md) covers bounded malformed inputs,
+ancillary cleanup, independent callers, ownership and retirement. T872 owns
+authenticated media dispatch; T853 owns private runtime directory selection,
+election, socket cleanup and the production broker/client lifecycle. No broker
+executable or working ADB-free production display is claimed by this boundary.

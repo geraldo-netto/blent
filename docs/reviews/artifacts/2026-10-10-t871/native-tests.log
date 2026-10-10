@@ -1,0 +1,20 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.34s
+     Running unittests src/lib.rs (/tmp/blent-t846-alpn-coverage/debug/deps/blent-592b3b54ab5a39c1)
+
+running 8 tests
+test broker::linux::endpoints::tests::t871_socket_metadata_never_substitutes_another_protocol_or_shared_listener ... ok
+test broker::linux::tests::t871_clients_have_distinct_authenticated_lifetimes ... ok
+test broker::linux::tests::t871_failed_retirement_retains_the_only_listener_capability ... ok
+test broker::linux::tests::t871_invalid_local_socket_selection_fails_before_resource_use ... ok
+test broker::linux::tests::t871_native_authenticated_registration_transfers_pinned_display_listeners ... ok
+test broker::linux::tests::t871_nonlisteners_foreign_addresses_and_duplicate_descriptors_are_rejected ... ok
+test broker::linux::tests::t871_shared_port_is_not_an_exclusive_endpoint_capability ... ok
+test broker::linux::tests::t871_typed_boundary_rejects_malformed_messages_and_unexpected_descriptor_ownership ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 375 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-t871-evidence/host.lcov

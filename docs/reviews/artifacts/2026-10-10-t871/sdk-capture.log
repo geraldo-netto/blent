@@ -1,0 +1,23 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling bindgen v0.72.1
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling ffmpeg-sys-next v9.0.0
+   Compiling ffmpeg-next v9.0.0
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.77s
+     Running unittests src/main.rs (target/debug/deps/blent-2d2a1d8d9daf5bc8)
+
+running 2 tests
+test raw_socket::tests::t418_exec_handoff_preserves_unrelated_child_descriptor ... ok
+test raw_socket::tests::t418_native_error_policy_and_exec_descriptor_ownership ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 286 filtered out; finished in 0.01s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running unittests src/main.rs (target/debug/deps/blent-2d2a1d8d9daf5bc8)
+
+running 1 test
+test encoder::raw_tests::t418_malformed_descriptors_stale_slots_and_peer_crash_are_bounded ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.00s
+

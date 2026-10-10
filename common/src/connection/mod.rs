@@ -13,3 +13,5 @@ pub mod resources;
 pub mod routes;
 
 pub mod trust;
+
+pub mod registration;

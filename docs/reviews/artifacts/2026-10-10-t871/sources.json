@@ -1,0 +1,13 @@
+{
+  "common/src/connection/registration/codec.rs": "c8e73868b7c7e9ad82ae9251254e4fc5ac7b25fefa3c7a8ae057e01086ecbab7",
+  "common/src/connection/registration.rs": "fce2bcc4094fd59c13e5ca0ce5fa55a1de762742eac03005180a0cb001baef13",
+  "common/src/connection/management/codec.rs": "37a803dde54af543a34f4b09359c44a481ce1c6d832c80adff96a7a03b388b84",
+  "common/src/linux/packet.rs": "c1ea44cbe6fefe2f68a3565f2fe5b107624afd1acab4d9508565e7bb45f2eed0",
+  "common/src/linux/packet/control.rs": "2a8f14f98f603c97ce57ab2cedc0785bc362af4e75d282135e279afb504c29d9",
+  "common/src/linux/packet/tests.rs": "c429b6c9c1f78d38843b17b75a47a3d23f8afcc9c3bc135014118b31edc90bdd",
+  "host/src/broker/mod.rs": "3f82672679096d17c77ef3ff500b8e36343b4f21821a367b27c3f2289b78d9f0",
+  "host/src/broker/linux.rs": "4ac87bd67790493fcce4337f40cdb0592b1380d0c50fa173d7f67c825a0bb3b3",
+  "host/src/broker/linux/endpoints.rs": "4ad07310ebc0ce95d3642a088c9c597b27764be194d494611790f3e1031d78de",
+  "host/src/broker/linux/tests.rs": "df9bee34e9bbbf18c59e4ae72110486a3d923d080033b55108821186f6b0ea7e",
+  "host/src/raw_socket.rs": "da85d755c23e0bec2fb3da7850dfe0ef28bd5aa94971340d26d52a7a91b6dc21"
+}

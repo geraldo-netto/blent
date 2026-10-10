@@ -1,0 +1,19 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.54s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::linux::tests::t871_shared_port_is_not_an_exclusive_endpoint_capability ... 
+thread 'broker::linux::tests::t871_shared_port_is_not_an_exclusive_endpoint_capability' (1843695) panicked at host/src/broker/linux/tests.rs:165:5:
+T871 shared TCP port accepted as exclusive
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    broker::linux::tests::t871_shared_port_is_not_an_exclusive_endpoint_capability
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 380 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

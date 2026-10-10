@@ -149,6 +149,19 @@ impl Message {
     }
 }
 impl Profile {
+    /// Shared local/wire profile schema. Validate before changing caller bytes.
+    pub fn encode_for(&self, resource: Resource, out: &mut [u8]) -> Result<usize> {
+        self.validate(resource)?;
+        let length = offer_length(resource) - 32;
+        ensure!(out.len() >= length, "short profile output");
+        self.encode(&mut out[..length]);
+        Ok(length)
+    }
+    /// Exact extent is checked before the internal fixed-offset decoder runs.
+    pub fn decode_for(resource: Resource, input: &[u8]) -> Result<Self> {
+        ensure!(input.len() == offer_length(resource) - 32, "invalid profile extent");
+        Self::decode(resource, input)
+    }
     fn encode(&self, out: &mut [u8]) {
         match self {
             Self::Display => {}
