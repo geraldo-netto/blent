@@ -174,4 +174,27 @@ class AndroidConnectionWorkerTest {
         } finally { worker.cancel(); execution.await() }
     }
 
+    @Test fun t907DefaultCompositionAdvertisesOnlyImplementedDisplayCapability() = runBlocking {
+        val setup = RuntimeSetup(); val io = RunnerIo()
+        setup.ready = ConnectionSetupReady(io, setup.approval, 4096)
+        val worker = AndroidConnectionWorker(spec(), { _, _ -> object : ConnectionSetup by setup {
+            override fun stop() { setup.stop(); setup.gone = true; io.gone = true }
+        } }, {}, { 0 })
+        val execution = async { worker.execute() }
+        try {
+            until { io.requests.any { it is ConnectionIoRequest.Write } }
+            val credit = ConnectionWire.Header(ConnectionWire.CREDIT, ConnectionWire.MANAGEMENT, 1, 1, 0, 0, 4096)
+            val read = io.read(); ConnectionWire.encode(credit, read.loan.bytes); io.complete(read, ConnectionWire.HEADER_BYTES)
+            val grant = io.write(); io.complete(grant, grant.loan.length)
+            until { io.requests.any { it is ConnectionIoRequest.Flush } }
+            io.complete(io.flush(), 0)
+            until { io.write() !== grant }
+            val header = io.write(); io.complete(header, header.loan.length)
+            until { io.write() !== header }
+            val body = io.write().loan
+            assertEquals(ConnectionManagement.Capabilities(1),
+                ConnectionManagement.decode(body.bytes.copyOfRange(body.offset, body.offset + body.length)))
+        } finally { worker.cancel(); execution.await(); worker.retire() }
+    }
+
 }

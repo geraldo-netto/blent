@@ -17,7 +17,7 @@ internal class AndroidConnectionWorker(
     private val report: (ConnectionWorkerEvent) -> Unit,
     private val clock: () -> Long = SystemClock::elapsedRealtime,
     private val runner: ConnectionRunFactory = ConnectionRunFactory { ready ->
-        val session = TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 0)
+        val session = TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 1)
         ConnectionLocalRun(ConnectionSessionRunner(session, ready.io, spec.io),
             ConnectionLocalResources(session, ready.capacity, spec.io))
     },

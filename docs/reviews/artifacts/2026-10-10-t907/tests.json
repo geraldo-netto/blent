@@ -1,0 +1,6 @@
+{
+  "android/app/src/test/java/com/blent/SessionDisplayRouteTest.kt": "9010c46013ee645ee6c03f6f187f238dbf8557d1d5125c1f0d426cd3bdd09f94",
+  "android/app/src/test/java/com/blent/connection/ConnectionDisplayBindingTest.kt": "de590fb04a2cb4fcba54c9ce6ceee41b68dde86fe16fb04be48edd7da7eb1d82",
+  "android/app/src/test/java/com/blent/connection/ConnectionDisplayActivityTest.kt": "4bf384dc99c2c8898b3d58b40baa6d2e23dbb73a60d41fffef3869f3e3b5c954",
+  "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt": "0d3663938550356c1935e7d231c3e12293bd7bafceab672fbf918f5984cf611a"
+}

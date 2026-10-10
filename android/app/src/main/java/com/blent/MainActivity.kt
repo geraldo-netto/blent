@@ -8,6 +8,9 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import kotlin.math.roundToInt
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     internal lateinit var connection: ConnectionBinding; private set
@@ -21,6 +24,8 @@ class MainActivity : ComponentActivity() {
         cameras.permissionResult(it)
     }
     internal lateinit var session: SessionCoordinator; private set
+    private var displayObservation: Job? = null
+    private val displayRoutes = ConnectionDisplayBinding(DisplayRouteTarget { session.selectDisplay(it) })
     private lateinit var powerBinding: StreamingPowerBinding
     internal lateinit var windowPolicy: ActivityWindowPolicy; private set
 
@@ -131,10 +136,14 @@ class MainActivity : ComponentActivity() {
         session.checkUpdate {
             try { packageManager.getPackageInfo(packageName, 0).versionName ?: "0" } catch (_: Exception) { "0" }
         }
+        displayRoutes.apply(connection.state.value)
         session.start()
+        displayObservation?.cancel()
+        displayObservation = lifecycleScope.launch { connection.state.collect { displayRoutes.apply(it) } }
     }
 
     override fun onStop() {
+        displayObservation?.cancel(); displayObservation = null
         CameraOwner.permissionRequest = null
         AudioOwner.permissionRequest = null
         reportCleanup(cleanupAll({ cameras.stop() }, { microphone.stop() }, { speakers.stop() },
@@ -142,6 +151,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
+        displayObservation?.cancel(); displayObservation = null
         reportCleanup(cleanupAll({ if (::powerBinding.isInitialized) powerBinding.stop() },
             { super.onDestroy() }, { windowPolicy.stop() }))
     }

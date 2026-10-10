@@ -1,7 +1,8 @@
 # T846 connection contract and integration boundary
 
-The current Android composition is described under T854 and production Android
-pairing presentation under T892/T893 below. Host presentation and controls are
+The current Android connection composition is described under T854, pairing
+presentation under T892/T893, and local display/Activity routing under T905/T906/
+T909/T907 below. Host presentation and controls are
 implemented under T900/T901/T903/T894; joined physical pairing acceptance remains T855. Validation counts
 in individual milestone sections describe their historical scoped runs; they are
 not whole-project coverage or physical-device support claims.
@@ -10,8 +11,8 @@ not whole-project coverage or physical-device support claims.
 
 `common/src/connection/` and Android `com.blent.connection` implement the same
 bounded envelope, duplex credit state, fair multiplexer, public identity discovery and pairing authority state machine. These are
-portable domain components, not an enabled production connection. Existing
-ADB routing and the installed applications are unchanged by this layer.
+portable domain components; native production composition is described below.
+Their constructors and wire values alone confer no pairing or media authority.
 
 The native synthetic USB trial is recorded separately in
 [the accessory feasibility review](2026-10-10-t846-usb-prototype.md).
@@ -1274,8 +1275,9 @@ Both listeners bind IPv4 loopback with OS-allocated, distinct ports before
 Prepared; an invitation becomes visible only after current protocol admission.
 No wire field selects an address or port. Other resources still require their
 separate permission and native adapters and cannot acquire listeners here.
-The production capability mask remains zero until Activity and host integration
-under T907/T908; this composition does not yet enable production USB display.
+At T906 the capability mask stayed zero pending Activity composition. T907 now
+advertises display and binds its routes on Android. Host integration remains T908;
+joined production USB display acceptance remains T857.
 
 Native bind, accept and close run on retained workers. Each channel has at most
 one outstanding read and one write/flush, and one bounded producer block. Block
@@ -1317,6 +1319,35 @@ waits. Native ownership and logical UI authority remain separate.
 [Evidence](artifacts/2026-10-10-t909/README.md): 617 passing offline tests; all 157
 scoped functions and 231 executable JVM methods meet individual 80% line coverage;
 261 reviewed production/test functions have cyclomatic complexity at most 9.
-Activity/session binding remains T907; production media capability stays disabled
-until that composition. Physical pairing and display/input acceptance remain
+T907 supplies Activity/session binding and enables Android display advertisement.
+Physical pairing and joined display/input acceptance remain
 T855/T857 and were not run during this implementation.
+
+## T907 Android Activity display routing
+
+Android now advertises display capability only. A private route reaches the
+Activity adapter only with active authenticated presentation and a matching peer
+ticket. The adapter translates it to the independent `DisplayEndpoint` contract;
+`SessionCoordinator` owns route revisions and applies control/video together.
+A route change invalidates both old destinations and pending control callbacks
+before installing new credentials and locally allocated ports. Video waits for
+the new control greeting's mode/codec. Installation failure clears both routes
+and reports an error; revision exhaustion cannot wrap into old authority.
+
+An explicit active USB selection with no admitted display clears the Activity's
+old destination. Stopping an Activity cancels its route observation and stops
+control/video while preserving the application-owned connection and independent
+camera/audio owners. Resuming checks the latest route before reconnecting;
+recreation creates fresh Activity bindings against the retained connection.
+A revoked route cannot be restored by background resume or persisted ADB
+credentials. Fresh legacy token delivery can select ADB after USB route revocation;
+it cannot replace an available USB display. A newly opened Activity with no active
+USB selection retains ordinary ADB startup. USB credentials never enter the
+legacy preference store. Route revisions span backend changes within a session.
+
+[Scoped validation](artifacts/2026-10-10-t907/README.md) retains API 27/34 lifecycle,
+Activity recreation, private route/credential boundaries, stale callbacks, partial
+installation and bounded invalid-input regressions. Host registration/reconnection
+still belongs to T908. Real rendered frames and touch/mouse require T857; the
+owner-deferred tablet pairing trial remains T855. Nothing was installed or reloaded
+for this implementation.

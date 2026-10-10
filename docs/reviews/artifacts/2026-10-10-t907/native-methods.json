@@ -1,0 +1,1634 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionDisplayBinding",
+    "method": "<init>",
+    "line": "10",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionDisplayBinding",
+    "method": "apply",
+    "line": "14",
+    "covered": 8,
+    "total": 8,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionDisplayBinding",
+    "method": "admitted",
+    "line": "23",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionDisplayBinding",
+    "method": "credential",
+    "line": "28",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker$retire$2",
+    "method": "invokeSuspend",
+    "line": "116",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker$waitWake$2",
+    "method": "invokeSuspend",
+    "line": "89",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker$cleanup$result$1",
+    "method": "invokeSuspend",
+    "line": "93",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "<init>",
+    "line": "14",
+    "covered": 11,
+    "total": 11,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "<init>",
+    "line": "14",
+    "covered": 4,
+    "total": 4,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "signal",
+    "line": "35",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "current",
+    "line": "36",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "command",
+    "line": "38",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "cancel",
+    "line": "39",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "create",
+    "line": "42",
+    "covered": 7,
+    "total": 7,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "execute",
+    "line": "50",
+    "covered": 8,
+    "total": 8,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "controls",
+    "line": "60",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "events",
+    "line": "66",
+    "covered": 4,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "step",
+    "line": "73",
+    "covered": 8,
+    "total": 8,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "display",
+    "line": "83",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "waitWake",
+    "line": "89",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "cleanup",
+    "line": "90",
+    "covered": 4,
+    "total": 4,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "finish",
+    "line": "104",
+    "covered": 7,
+    "total": 7,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "retire",
+    "line": "114",
+    "covered": 5,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "method": "_init_$lambda$0",
+    "line": "20",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker$execute$3",
+    "method": "invokeSuspend",
+    "line": "56",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Brightness",
+    "method": "<init>",
+    "line": "56",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Brightness",
+    "method": "getValue",
+    "line": "56",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRouteSequence",
+    "method": "<init>",
+    "line": "40",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRouteSequence",
+    "method": "<init>",
+    "line": "40",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRouteSequence",
+    "method": "next",
+    "line": "44",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$routeFailure$2",
+    "method": "invoke",
+    "line": "293",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$routeFailure$1",
+    "method": "invoke",
+    "line": "293",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$routeFailure$4",
+    "method": "invoke",
+    "line": "294",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$routeFailure$3",
+    "method": "invoke",
+    "line": "294",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "<init>",
+    "line": "15",
+    "covered": 4,
+    "total": 4,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "getConnection$app_debug",
+    "line": "16",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "getMicrophone$app_debug",
+    "line": "17",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "getSpeakers$app_debug",
+    "line": "18",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "getCameras$app_debug",
+    "line": "22",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "getSession$app_debug",
+    "line": "26",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "getWindowPolicy$app_debug",
+    "line": "30",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onCreate",
+    "line": "33",
+    "covered": 19,
+    "total": 19,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "settingsEvent",
+    "line": "73",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "reportNativeResolution",
+    "line": "85",
+    "covered": 13,
+    "total": 13,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onNewIntent",
+    "line": "106",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "accessoryIntent",
+    "line": "111",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onGenericMotionEvent",
+    "line": "117",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onWindowFocusChanged",
+    "line": "120",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onStart",
+    "line": "128",
+    "covered": 14,
+    "total": 14,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onStop",
+    "line": "146",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onDestroy",
+    "line": "154",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "reportCleanup",
+    "line": "160",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "microphonePermission$lambda$0",
+    "line": "20",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "cameraPermission$lambda$1",
+    "line": "24",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "displayRoutes$lambda$2",
+    "line": "28",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "method": "onCreate$lambda$3",
+    "line": "69",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation$1",
+    "method": "invoke",
+    "line": "28",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation$1",
+    "method": "invoke$lambda$0",
+    "line": "28",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation$2",
+    "method": "invoke",
+    "line": "28",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation$2",
+    "method": "invoke$lambda$0",
+    "line": "28",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$2",
+    "method": "invokeSuspend",
+    "line": "46",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$1",
+    "method": "invoke",
+    "line": "44",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$1",
+    "method": "invoke$lambda$0",
+    "line": "44",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$3",
+    "method": "invoke",
+    "line": "49",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "<init>",
+    "line": "34",
+    "covered": 11,
+    "total": 11,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "<init>",
+    "line": "34",
+    "covered": 12,
+    "total": 12,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getBitrateKbps",
+    "line": "35",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getFps",
+    "line": "36",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getBrightness",
+    "line": "37",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getRefreshRate",
+    "line": "38",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getOrientation",
+    "line": "39",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getShowStats",
+    "line": "40",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getCheckUpdates",
+    "line": "41",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getBatterySaver",
+    "line": "42",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getStreamError",
+    "line": "43",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues",
+    "method": "getControlQueueBytes",
+    "line": "44",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$withCurrentControl$1",
+    "method": "invoke",
+    "line": "244",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectStreamCallbacks$1$1",
+    "method": "invoke",
+    "line": "176",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$CheckUpdates",
+    "method": "<init>",
+    "line": "60",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$CheckUpdates",
+    "method": "getValue",
+    "line": "60",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRoutes",
+    "method": "<init>",
+    "line": "7",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRoutes",
+    "method": "getRevision",
+    "line": "7",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRoutes",
+    "method": "getToken",
+    "line": "7",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRoutes",
+    "method": "getVideoPort",
+    "line": "7",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRoutes",
+    "method": "getControlPort",
+    "line": "7",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayRoutes",
+    "method": "toString",
+    "line": "12",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$3$1$7",
+    "method": "invoke",
+    "line": "61",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$3$1$8",
+    "method": "invoke",
+    "line": "63",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$3$1$6",
+    "method": "invoke",
+    "line": "62",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectStreamCallbacks$2$1",
+    "method": "invoke",
+    "line": "184",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$1$1",
+    "method": "invoke",
+    "line": "194",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$2$1",
+    "method": "invoke",
+    "line": "224",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$2",
+    "method": "invoke",
+    "line": "199",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$1",
+    "method": "invoke",
+    "line": "193",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$powerUpdates$2",
+    "method": "invokeSuspend",
+    "line": "89",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$powerUpdates$1",
+    "method": "invoke",
+    "line": "87",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$RefreshRate",
+    "method": "<init>",
+    "line": "57",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$RefreshRate",
+    "method": "getValue",
+    "line": "57",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$2",
+    "method": "invoke",
+    "line": "223",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$1",
+    "method": "invoke",
+    "line": "220",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onCreate$3$1",
+    "method": "invoke",
+    "line": "50",
+    "covered": 15,
+    "total": 15,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$ShowStats",
+    "method": "<init>",
+    "line": "58",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$ShowStats",
+    "method": "getValue",
+    "line": "58",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$ControlQueue",
+    "method": "<init>",
+    "line": "61",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$ControlQueue",
+    "method": "getBytes",
+    "line": "61",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Stream",
+    "method": "<init>",
+    "line": "53",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Stream",
+    "method": "getBitrate",
+    "line": "53",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Stream",
+    "method": "getFps",
+    "line": "53",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onDestroy$3",
+    "method": "invoke",
+    "line": "156",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onDestroy$2",
+    "method": "invoke",
+    "line": "156",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onDestroy$1",
+    "method": "invoke",
+    "line": "155",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStart$3",
+    "method": "invoke",
+    "line": "137",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStart$4",
+    "method": "invokeSuspend",
+    "line": "142",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStart$1",
+    "method": "invoke",
+    "line": "129",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStart$2",
+    "method": "invoke",
+    "line": "131",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsValues$Companion",
+    "method": "read",
+    "line": "47",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$clearRoutes$failures$4",
+    "method": "invoke",
+    "line": "281",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$clearRoutes$failures$2",
+    "method": "invoke",
+    "line": "280",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$clearRoutes$failures$3",
+    "method": "invoke",
+    "line": "281",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$clearRoutes$failures$1",
+    "method": "invoke",
+    "line": "280",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStart$4$1",
+    "method": "emit",
+    "line": "142",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectFormatCallbacks$2$1",
+    "method": "invoke",
+    "line": "200",
+    "covered": 13,
+    "total": 13,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$start$1",
+    "method": "invoke",
+    "line": "147",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectStreamCallbacks$1",
+    "method": "invoke",
+    "line": "172",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayEndpoint",
+    "method": "<init>",
+    "line": "25",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayEndpoint",
+    "method": "getToken",
+    "line": "25",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayEndpoint",
+    "method": "getVideoPort",
+    "line": "25",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayEndpoint",
+    "method": "getControlPort",
+    "line": "25",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DisplayEndpoint",
+    "method": "toString",
+    "line": "30",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectStreamCallbacks$2",
+    "method": "invoke",
+    "line": "183",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinatorKt",
+    "method": "applyStreamSettings",
+    "line": "323",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStop$7",
+    "method": "invoke",
+    "line": "150",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStop$4",
+    "method": "invoke",
+    "line": "150",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStop$3",
+    "method": "invoke",
+    "line": "149",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStop$6",
+    "method": "invoke",
+    "line": "150",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStop$5",
+    "method": "invoke",
+    "line": "150",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStop$2",
+    "method": "invoke",
+    "line": "149",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity$onStop$1",
+    "method": "invoke",
+    "line": "149",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$1$1",
+    "method": "invoke",
+    "line": "220",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$updates$2",
+    "method": "invoke",
+    "line": "77",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator$updates$1",
+    "method": "invoke",
+    "line": "77",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Mode",
+    "method": "<init>",
+    "line": "54",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Mode",
+    "method": "getPenOnly",
+    "line": "54",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Orientation",
+    "method": "<init>",
+    "line": "55",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$Orientation",
+    "method": "getValue",
+    "line": "55",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "<init>",
+    "line": "65",
+    "covered": 14,
+    "total": 14,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "<init>",
+    "line": "65",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "getPenOnlyMode",
+    "line": "73",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "setPenOnlyMode",
+    "line": "73",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "getShowThanks",
+    "line": "74",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "setShowThanks",
+    "line": "74",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "getUpdateAvailable",
+    "line": "75",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "setUpdateAvailable",
+    "line": "75",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "getSettings",
+    "line": "76",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "setSettings",
+    "line": "76",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "getPresentation",
+    "line": "83",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "powerNow",
+    "line": "85",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "powerUpdates",
+    "line": "86",
+    "covered": 4,
+    "total": 4,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "powerFor",
+    "line": "92",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "handle",
+    "line": "97",
+    "covered": 9,
+    "total": 9,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "localPreference",
+    "line": "110",
+    "covered": 10,
+    "total": 11,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "requestStreamSettings",
+    "line": "125",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "dismissThanks",
+    "line": "129",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "inputControls",
+    "line": "130",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "surfaceReady",
+    "line": "132",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "surfaceDestroyed",
+    "line": "135",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "hover",
+    "line": "137",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "nativeResolution",
+    "line": "140",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "start",
+    "line": "144",
+    "covered": 7,
+    "total": 7,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "connectControl",
+    "line": "152",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "stop",
+    "line": "156",
+    "covered": 7,
+    "total": 7,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "checkUpdate",
+    "line": "164",
+    "covered": 2,
+    "total": 2,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "connectStreamCallbacks",
+    "line": "171",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "connectFormatCallbacks",
+    "line": "192",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "connectSettingsCallbacks",
+    "line": "219",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "restoreStreamSettings",
+    "line": "232",
+    "covered": 5,
+    "total": 5,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "withCurrentControl",
+    "line": "241",
+    "covered": 4,
+    "total": 4,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "applyToken",
+    "line": "249",
+    "covered": 14,
+    "total": 14,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "selectDisplay",
+    "line": "270",
+    "covered": 9,
+    "total": 9,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "clearRoutes",
+    "line": "280",
+    "covered": 3,
+    "total": 3,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "installRoutes",
+    "line": "285",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "routeFailure",
+    "line": "293",
+    "covered": 4,
+    "total": 4,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "legacyAfterExternal",
+    "line": "301",
+    "covered": 8,
+    "total": 8,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SessionCoordinator",
+    "method": "retireToken",
+    "line": "313",
+    "covered": 6,
+    "total": 6,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$BatterySaver",
+    "method": "<init>",
+    "line": "59",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/SettingsEvent$BatterySaver",
+    "method": "getValue",
+    "line": "59",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "<init>",
+    "line": "13",
+    "covered": 15,
+    "total": 15,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getConnected",
+    "line": "14",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "setConnected",
+    "line": "14",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getFps",
+    "line": "15",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "setFps",
+    "line": "15",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getMbps",
+    "line": "16",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "setMbps",
+    "line": "16",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getDecoderStartup",
+    "line": "17",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getDecoderRetirement",
+    "line": "18",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getDecoderDiagnostics",
+    "line": "19",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getConnectionState",
+    "line": "20",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getControlConnected",
+    "line": "21",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getCalibrating",
+    "line": "22",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "getDirectInput",
+    "line": "23",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/StreamPresentation",
+    "method": "sample",
+    "line": "31",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AdbDisplayRoutes",
+    "method": "getControlUrl",
+    "line": "19",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AdbDisplayRoutes",
+    "method": "create",
+    "line": "20",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AdbDisplayRoutes",
+    "method": "create$default",
+    "line": "20",
+    "covered": 1,
+    "total": 1,
+    "passes": true
+  }
+]

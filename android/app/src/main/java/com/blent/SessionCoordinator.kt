@@ -68,7 +68,8 @@ internal class SessionCoordinator(
     private var videoReceiver: DisplaySession<android.view.SurfaceView>? = VideoReceiver(),
     private var touchCapture: TouchCapture? = TouchCapture(),
     releaseChecks: ReleaseChecks = UpdateCheck.requests,
-) {
+    private val routeSequence: DisplayRouteSequence = DisplayRouteSequence(),
+) : DisplayRouteTarget {
     var penOnlyMode by mutableStateOf(false); private set
     var showThanks by mutableStateOf(false); private set
     var updateAvailable by mutableStateOf<String?>(null); private set
@@ -77,6 +78,8 @@ internal class SessionCoordinator(
     private var started = false
     private var stopTokenObservation: (() -> Unit)? = null
     private var codecSupported = true
+    private var externalDisplay = false
+    private var externalAvailable = false
     val presentation = StreamPresentation(videoReceiver, touchCapture)
 
     fun powerNow(): StreamingPower = powerFor(settings.batterySaver, presentation.connected, penOnlyMode, presentation.connectionState.value)
@@ -143,6 +146,9 @@ internal class SessionCoordinator(
         stopTokenObservation?.invoke()
         stopTokenObservation = prefs.observeHostToken { if (started) applyToken(restart = true) }
         applyToken(restart = false)
+        connectControl()
+    }
+    private fun connectControl() {
         touchCapture?.connect()
         if (prefs.hasUserSettings) touchCapture?.sendConfig(prefs.bitrateKbps, prefs.fps)
     }
@@ -241,6 +247,7 @@ internal class SessionCoordinator(
 
     fun applyToken(restart: Boolean) {
         val token = prefs.hostToken
+        if (externalDisplay) { legacyAfterExternal(token, restart); return }
         if (token == null) { retireToken(); return }
         val changed = touchCapture?.token != token
         touchCapture?.token = token
@@ -257,6 +264,47 @@ internal class SessionCoordinator(
                 videoReceiver?.start()
             }
         }
+    }
+
+    override fun selectDisplay(endpoint: DisplayEndpoint?) {
+        externalDisplay = true
+        externalAvailable = false
+        try {
+            clearRoutes()
+            if (endpoint == null) return
+            installRoutes(routeSequence.next(endpoint.token, endpoint.videoPort, endpoint.controlPort))
+            externalAvailable = true
+        } catch (failure: Exception) { routeFailure(failure) }
+    }
+    private fun clearRoutes() {
+        val failures = cleanupAll({ touchCapture?.routes = null }, { videoReceiver?.routes = null },
+            { touchCapture?.disconnect() }, { videoReceiver?.stop() })
+        check(failures.isEmpty()) { "Display route cleanup incomplete" }
+    }
+    private fun installRoutes(routes: DisplayRoutes) {
+        touchCapture?.routes = routes
+        videoReceiver?.routes = routes
+        // Codec and mode come from the new control greeting before video starts.
+        codecSupported = true
+        settings = settings.copy(streamError = null)
+        if (started) connectControl()
+    }
+    private fun routeFailure(failure: Exception) {
+        cleanupAll({ touchCapture?.routes = null }, { videoReceiver?.routes = null },
+            { touchCapture?.disconnect() }, { videoReceiver?.stop() })
+        externalAvailable = false
+        settings = settings.copy(streamError = failure.message ?: "Display route unavailable")
+    }
+    private fun legacyAfterExternal(token: String?, restart: Boolean) {
+        // Fresh legacy delivery may select ADB after USB revocation. Background
+        // resume and persisted credentials alone never restore a revoked route.
+        if (externalAvailable || !restart || token == null) return
+        try {
+            clearRoutes()
+            val adb = AdbDisplayRoutes.create(token)
+            installRoutes(routeSequence.next(token, adb.videoPort, adb.controlPort))
+            externalDisplay = false
+        } catch (failure: Exception) { routeFailure(failure) }
     }
 
     private fun retireToken() {
