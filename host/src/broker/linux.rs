@@ -8,6 +8,7 @@ use std::os::unix::ffi::OsStrExt;
 use std::{io, path::Path};
 pub mod async_io;
 pub mod client;
+pub mod presentation;
 mod endpoints;
 pub mod entry;
 pub mod inventory;

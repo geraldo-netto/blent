@@ -19,3 +19,4 @@ pub mod window;
 pub mod control;
 pub mod endpoint;
 pub mod control_view;
+pub mod control_client;
