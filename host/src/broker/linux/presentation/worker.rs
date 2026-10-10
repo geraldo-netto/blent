@@ -14,7 +14,7 @@ impl Worker {
             shared,
         }
     }
-    pub(super) fn run(self, commands: mpsc::Receiver<Action>, stop: oneshot::Receiver<()>) {
+    pub(super) fn run(self, commands: mpsc::Receiver<Request>, stop: oneshot::Receiver<()>) {
         let runtime = match tokio::runtime::Builder::new_current_thread()
             .enable_all()
             .build()
@@ -45,30 +45,36 @@ impl Worker {
         // deliberately on this retained thread, never the UI or shared reaper.
         drop(runtime);
     }
-    async fn drive(&self, mut commands: mpsc::Receiver<Action>) -> Result<()> {
+    async fn drive(&self, mut commands: mpsc::Receiver<Request>) -> Result<()> {
         let socket = self.connector.connect(self.settings.startup).await?;
         let mut model = Model::default();
         let mut request = 0;
-        let mut command = Command::Inspect;
+        let mut work = (Command::Inspect, None);
         loop {
-            self.shared.publish(Phase::Busy, model.view(), None);
+            self.shared.publish(Phase::Busy, model.view(), None, None);
             let reply = exchange::exchange(
                 &socket,
                 exchange::next_request(&mut request)?,
-                command,
+                work.0,
                 self.settings.limits,
                 self.settings.transaction,
             )
             .await?;
-            self.apply(&mut model, reply)?;
-            command = self.next(&model, &mut commands).await?;
+            self.apply(&mut model, reply, work.1)?;
+            work = self.next(&model, &mut commands).await?;
         }
     }
-    fn apply(&self, model: &mut Model, reply: exchange::Reply) -> Result<()> {
+    fn apply(
+        &self,
+        model: &mut Model,
+        reply: exchange::Reply,
+        completed: Option<u64>,
+    ) -> Result<()> {
         match reply {
             exchange::Reply::Snapshot(snapshot) => {
                 let view = model.publish(snapshot)?;
-                self.shared.publish(Phase::Ready, Some(view), None);
+                self.shared
+                    .publish(Phase::Ready, Some(view), None, completed);
             }
             exchange::Reply::Rejected(reason) => {
                 model.reset();
@@ -76,24 +82,31 @@ impl Worker {
                     Phase::Ready,
                     None,
                     Some(format!("Broker rejected control request: {reason:?}")),
+                    completed,
                 );
             }
         }
         Ok(())
     }
-    async fn next(&self, model: &Model, commands: &mut mpsc::Receiver<Action>) -> Result<Command> {
+    async fn next(
+        &self,
+        model: &Model,
+        commands: &mut mpsc::Receiver<Request>,
+    ) -> Result<(Command, Option<u64>)> {
         let deadline = tokio::time::Instant::now() + self.settings.poll;
         loop {
             let action = tokio::select! {
                 value = commands.recv() => value.ok_or_else(|| anyhow::anyhow!("broker client control closed"))?,
-                _ = tokio::time::sleep_until(deadline) => return Ok(Command::Inspect),
+                _ = tokio::time::sleep_until(deadline) => return Ok((Command::Inspect, None)),
             };
-            match model.command(&action) {
-                Ok(command) => return Ok(command.clone()),
-                Err(error) => {
-                    self.shared
-                        .publish(Phase::Ready, model.view(), Some(error.to_string()))
-                }
+            match model.command(&action.action) {
+                Ok(command) => return Ok((command.clone(), Some(action.id))),
+                Err(error) => self.shared.publish(
+                    Phase::Ready,
+                    model.view(),
+                    Some(error.to_string()),
+                    Some(action.id),
+                ),
             }
         }
     }
@@ -124,8 +137,14 @@ mod tests {
         let next = worker.next(&model, &mut receiver);
         tokio::pin!(next);
         let mut observed = None;
-        for _ in 0..10 {
-            sender.send(stale.clone()).await.unwrap();
+        for id in 1..=10 {
+            sender
+                .send(Request {
+                    id,
+                    action: stale.clone(),
+                })
+                .await
+                .unwrap();
             tokio::select! {
                 result = &mut next => { observed = Some(result.unwrap()); break; },
                 _ = tokio::time::sleep(Duration::from_millis(1)) => (),
@@ -133,7 +152,7 @@ mod tests {
         }
         assert_eq!(
             observed,
-            Some(Command::Inspect),
+            Some((Command::Inspect, None)),
             "T901 stale UI traffic postponed status refresh"
         );
     }

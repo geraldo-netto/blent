@@ -1,0 +1,7 @@
+{
+  "common/src/connection/control_client.rs": "c92e42c2afb96aa469c4e72aece80dd30a5b4a6e531658604325ced099bb4457",
+  "host/src/broker/linux/presentation.rs": "463a6b3f757194cbda86db97c7e2a1ae7269cbaab93de51442c1ed06aa0467e3",
+  "host/src/broker/linux/presentation/exchange.rs": "69cfb889c7d1e57b0989dbb9e45ee0baeff1e17a395384f0c720c709c21a16a7",
+  "host/src/broker/linux/presentation/worker.rs": "88d4fbd3aec8ef3941a7cf239093a37036d58a950dd1fc76b2a151c14874153b",
+  "host/src/broker/linux/presentation/tests.rs": "d45a2707308ae4ae0eac9dada7d5c91316e6670afb34eccf863240fe61ee5396"
+}

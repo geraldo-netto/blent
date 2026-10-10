@@ -382,7 +382,7 @@ fn t901_settings_and_request_counters_reject_invalid_boundaries() {
 #[test]
 fn t901_shared_status_bounds_errors_and_rejects_late_activation_after_close() {
     let shared = Shared::new();
-    shared.publish(Phase::Ready, Some(view()), Some("ø".repeat(1024)));
+    shared.publish(Phase::Ready, Some(view()), Some("ø".repeat(1024)), None);
     assert_eq!(
         shared
             .state
@@ -396,7 +396,7 @@ fn t901_shared_status_bounds_errors_and_rejects_late_activation_after_close() {
         512
     );
     shared.stop();
-    shared.publish(Phase::Ready, Some(view()), None);
+    shared.publish(Phase::Ready, Some(view()), None, None);
     assert_eq!(shared.state.lock().unwrap().phase, Phase::Closing);
     assert!(shared.state.lock().unwrap().view.is_none());
     shared.finish(Err(anyhow::anyhow!("failed")));
@@ -464,4 +464,202 @@ async fn t901_production_broker_snapshot_runs_with_an_isolated_synthetic_invento
     until(|| client.retired()).await;
     stop.send(()).unwrap();
     bounded(task).await.unwrap();
+}
+
+#[tokio::test]
+async fn t903_queued_revoke_is_not_completed_by_refresh_and_its_rejection_survives_polling() {
+    let mut fixture = Fixture::new();
+    fixture.factory.settings.poll = Duration::from_millis(5);
+    let (client, server, view) = fixture.ready().await;
+    let (poll, command) = request(&server).await;
+    assert_eq!(command, Command::Inspect);
+    client
+        .submit(view.prepare(Command::Revoke { peer: peer(4) }).unwrap())
+        .unwrap();
+    assert!(client.status().outcome.is_none());
+    send_snapshot(&server, poll, 1, State::Pending).await;
+    let (id, command) = request(&server).await;
+    assert_eq!(command, Command::Revoke { peer: peer(4) });
+    assert!(
+        client.status().outcome.is_none(),
+        "T903 refresh cannot complete queued mutation"
+    );
+    server
+        .send(
+            &Message::Rejected {
+                request: id,
+                reason: Rejection::Failed,
+            },
+            &[],
+        )
+        .await
+        .unwrap();
+    until(|| client.status().message.is_some()).await;
+    let outcome = client.status().outcome;
+    assert!(
+        outcome.is_some(),
+        "T903 retain exact mutation outcome separately from polling status"
+    );
+    let outcome = outcome.unwrap();
+    assert_eq!(outcome.id, 1);
+    assert!(outcome.error.as_ref().unwrap().contains("Failed"));
+    let (id, command) = request(&server).await;
+    assert_eq!(command, Command::Inspect);
+    send_snapshot(&server, id, 1, State::Pending).await;
+    until(|| client.status().view.is_some()).await;
+    assert_eq!(client.status().outcome, Some(outcome));
+    client.close();
+    until(|| client.retired()).await;
+}
+
+#[tokio::test]
+async fn t903_success_stale_action_and_cancellation_have_exact_outcomes() {
+    let fixture = Fixture::new();
+    let (client, server, view) = fixture.ready().await;
+    let id = client
+        .submit(view.prepare(Command::Inspect).unwrap())
+        .unwrap();
+    assert_eq!(id, 1);
+    let (request_id, _) = request(&server).await;
+    assert!(client.status().outcome.is_none());
+    send_snapshot(&server, request_id, 2, State::Pending).await;
+    until(|| client.status().outcome.is_some()).await;
+    assert_eq!(client.status().outcome, Some(Outcome { id, error: None }));
+    let stale = client
+        .submit(
+            view.prepare(Command::Connect {
+                revision: 1,
+                target: 1,
+            })
+            .unwrap(),
+        )
+        .unwrap();
+    until(|| {
+        client
+            .status()
+            .outcome
+            .as_ref()
+            .is_some_and(|outcome| outcome.id == stale)
+    })
+    .await;
+    let rejected = client.status().outcome.unwrap();
+    assert!(rejected.error.is_some());
+    let current = client.status().view.unwrap();
+    let pending = client
+        .submit(current.prepare(Command::Inspect).unwrap())
+        .unwrap();
+    let (_, command) = request(&server).await;
+    assert_eq!(
+        command,
+        Command::Inspect,
+        "stale connect must never reach broker"
+    );
+    client.close();
+    until(|| client.retired()).await;
+    assert!(pending > rejected.id);
+    assert_eq!(
+        client.status().outcome,
+        Some(rejected),
+        "cancelled reply stays unconfirmed"
+    );
+}
+
+#[tokio::test]
+async fn t903_timed_out_submission_is_unconfirmed() {
+    let mut fixture = Fixture::new();
+    fixture.factory.settings.transaction = Duration::from_millis(30);
+    let (client, server, view) = fixture.ready().await;
+    assert_eq!(
+        client.submit(view.prepare(Command::Inspect).unwrap()),
+        Ok(1)
+    );
+    let _ = request(&server).await;
+    until(|| client.retired()).await;
+    assert_eq!(client.status().phase, Phase::Failed);
+    assert!(client.status().outcome.is_none());
+}
+
+#[test]
+fn t903_submission_bounds_never_wrap_or_consume_rejected_admission() {
+    let action = view().prepare(Command::Inspect).unwrap();
+    let (sender, mut receiver) = mpsc::channel(1);
+    let mut submissions = Submissions {
+        next: MAX_COUNTER - 2,
+        sender,
+    };
+    assert_eq!(submissions.submit(action.clone()), Ok(MAX_COUNTER - 1));
+    assert_eq!(submissions.submit(action.clone()), Err(SubmitError::Full));
+    assert_eq!(receiver.try_recv().unwrap().id, MAX_COUNTER - 1);
+    assert_eq!(submissions.submit(action.clone()), Ok(MAX_COUNTER));
+    assert_eq!(receiver.try_recv().unwrap().id, MAX_COUNTER);
+    for value in [MAX_COUNTER, MAX_COUNTER + 1, u64::MAX] {
+        submissions.next = value;
+        assert_eq!(
+            submissions.submit(action.clone()),
+            Err(SubmitError::Exhausted)
+        );
+        assert_eq!(submissions.next, value);
+    }
+    submissions.next = 0;
+    drop(receiver);
+    assert_eq!(submissions.submit(action), Err(SubmitError::Closed));
+    assert_eq!(submissions.next, 0);
+}
+
+#[tokio::test]
+async fn t903_concurrent_producers_preserve_id_order_and_exact_rejections() {
+    let fixture = Fixture::new();
+    let (client, server, _) = fixture.ready().await;
+    // Different view lifetime makes each queued command deterministically stale.
+    let stale = view().prepare(Command::Inspect).unwrap();
+    let mut accepted = std::thread::scope(|scope| {
+        let mut threads = Vec::new();
+        for _ in 0..8 {
+            let client = &client;
+            let action = stale.clone();
+            threads.push(scope.spawn(move || client.submit(action).unwrap()));
+        }
+        threads
+            .into_iter()
+            .map(|thread| thread.join().unwrap())
+            .collect::<Vec<_>>()
+    });
+    accepted.sort_unstable();
+    assert_eq!(accepted, (1..=8).collect::<Vec<_>>());
+    until(|| {
+        client
+            .status()
+            .outcome
+            .as_ref()
+            .is_some_and(|outcome| outcome.id == 8)
+    })
+    .await;
+    assert!(client
+        .status()
+        .outcome
+        .unwrap()
+        .error
+        .unwrap()
+        .contains("another broker lifetime"));
+    assert!(
+        tokio::time::timeout(Duration::from_millis(20), server.receive())
+            .await
+            .is_err()
+    );
+    client.close();
+    until(|| client.retired()).await;
+}
+
+#[test]
+fn t903_outcomes_are_bounded_and_preserved_through_refresh_and_close() {
+    let shared = Shared::new();
+    shared.publish(Phase::Ready, Some(view()), Some("ø".repeat(1024)), Some(1));
+    let outcome = shared.state.lock().unwrap().outcome.clone().unwrap();
+    assert_eq!(outcome.error.as_ref().unwrap().chars().count(), 512);
+    shared.publish(Phase::Busy, Some(view()), None, None);
+    assert_eq!(shared.state.lock().unwrap().outcome, Some(outcome.clone()));
+    shared.stop();
+    shared.publish(Phase::Ready, Some(view()), None, Some(2));
+    shared.finish(Ok(()));
+    assert_eq!(shared.state.lock().unwrap().outcome, Some(outcome));
 }

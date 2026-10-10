@@ -4,8 +4,9 @@ use super::client::{Connector, Launch};
 use anyhow::{ensure, Result};
 use blent_config::{
     connection::{
-        control_client::{Client, Phase, Status, SubmitError},
+        control_client::{Client, Outcome, Phase, Status, SubmitError},
         control_view::{Action, Assembler, Limits, View},
+        wire::MAX_COUNTER,
     },
     retirement::{Completion, Pool},
     retirement_work,
@@ -88,7 +89,10 @@ impl Factory {
             .spawn(move || worker.run(receiver, stopped))?;
         admission.retain(retirement_work::Thread::new(thread));
         Ok(Handle {
-            commands,
+            commands: Mutex::new(Submissions {
+                next: 0,
+                sender: commands,
+            }),
             stop: Mutex::new(Some(stop)),
             shared,
             completion,
@@ -96,8 +100,33 @@ impl Factory {
     }
 }
 
+struct Request {
+    id: u64,
+    action: Action,
+}
+struct Submissions {
+    next: u64,
+    sender: mpsc::Sender<Request>,
+}
+impl Submissions {
+    fn submit(&mut self, action: Action) -> std::result::Result<u64, SubmitError> {
+        if self.next >= MAX_COUNTER {
+            return Err(SubmitError::Exhausted);
+        }
+        let id = self.next + 1;
+        self.sender
+            .try_send(Request { id, action })
+            .map_err(|error| match error {
+                mpsc::error::TrySendError::Full(_) => SubmitError::Full,
+                mpsc::error::TrySendError::Closed(_) => SubmitError::Closed,
+            })?;
+        self.next = id;
+        Ok(id)
+    }
+}
+
 pub struct Handle {
-    commands: mpsc::Sender<Action>,
+    commands: Mutex<Submissions>,
     stop: Mutex<Option<oneshot::Sender<()>>>,
     shared: Arc<Shared>,
     completion: Completion,
@@ -110,14 +139,15 @@ impl Client for Handle {
             .unwrap_or_else(std::sync::PoisonError::into_inner)
             .clone()
     }
-    fn submit(&self, action: Action) -> std::result::Result<(), SubmitError> {
+    fn submit(&self, action: Action) -> std::result::Result<u64, SubmitError> {
+        let mut commands = self
+            .commands
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         if self.shared.stopped.load(Ordering::Acquire) {
             return Err(SubmitError::Closed);
         }
-        self.commands.try_send(action).map_err(|error| match error {
-            mpsc::error::TrySendError::Full(_) => SubmitError::Full,
-            mpsc::error::TrySendError::Closed(_) => SubmitError::Closed,
-        })
+        commands.submit(action)
     }
     fn close(&self) {
         self.shared.stop();
@@ -151,11 +181,18 @@ impl Shared {
                 phase: Phase::Connecting,
                 view: None,
                 message: None,
+                outcome: None,
             }),
             stopped: AtomicBool::new(false),
         }
     }
-    fn publish(&self, phase: Phase, view: Option<View>, message: Option<String>) {
+    fn publish(
+        &self,
+        phase: Phase,
+        view: Option<View>,
+        message: Option<String>,
+        completed: Option<u64>,
+    ) {
         let mut state = self
             .state
             .lock()
@@ -163,10 +200,18 @@ impl Shared {
         if self.stopped.load(Ordering::Acquire) && !matches!(phase, Phase::Closed | Phase::Failed) {
             return;
         }
+        let message: Option<String> = message.map(|text| text.chars().take(512).collect());
+        let outcome = completed
+            .map(|id| Outcome {
+                id,
+                error: message.clone(),
+            })
+            .or_else(|| state.outcome.clone());
         *state = Status {
             phase,
             view,
-            message: message.map(|text| text.chars().take(512).collect()),
+            message,
+            outcome,
         };
     }
     fn stop(&self) {
@@ -182,13 +227,14 @@ impl Shared {
                 phase: Phase::Closing,
                 view: None,
                 message: None,
+                outcome: state.outcome.clone(),
             };
         }
     }
     fn finish(&self, result: Result<()>) {
         match result {
-            Ok(()) => self.publish(Phase::Closed, None, None),
-            Err(error) => self.publish(Phase::Failed, None, Some(format!("{error:#}"))),
+            Ok(()) => self.publish(Phase::Closed, None, None, None),
+            Err(error) => self.publish(Phase::Failed, None, Some(format!("{error:#}")), None),
         }
     }
 }
