@@ -1,8 +1,16 @@
 /* T383: isolated conversion-pool/triple-buffer replay; never opens EVDI. */
 #define _GNU_SOURCE
 #include "checked_arguments.h"
+#if __has_include("conversion_private.h")
+#include "conversion_private.h"
+#else
 #include "conversion.h"
+#endif
+#if __has_include("frame_exchange_private.h")
+#include "frame_exchange_private.h"
+#else
 #include "frame_exchange.h"
+#endif
 #include "conversion_exchange.h"
 #include <assert.h>
 #include <stdint.h>
@@ -39,6 +47,24 @@ struct lane {
     pthread_barrier_t *start, *end;
 };
 
+#ifdef BLENT_FRAME_EXCHANGE_PRIVATE_H
+static void mark_batch(frame_damage_t *damage, void *context) {
+    struct lane *lane = context;
+    if (lane->damage == 1) {
+        for (int cy = 0; cy < lane->height / lane->scale / 2; cy += 64)
+            frame_damage_rect(damage, 0, cy * 2 * lane->scale, lane->width,
+                              (cy + 1) * 2 * lane->scale, lane->scale);
+    } else if (lane->damage == 2) {
+        for (int r = 0; r < 63; r++)
+            frame_damage_rect(damage, 0, lane->height / 4 + r % 16, lane->width,
+                              lane->height * 3 / 4 + r % 16, lane->scale);
+    }
+}
+static void mark_work(struct lane *lane) {
+    if (lane->damage == 3) frame_exchange_invalidate(&lane->frames);
+    else frame_exchange_update(&lane->frames, mark_batch, lane);
+}
+#else
 static void mark_work(struct lane *lane) {
     frame_exchange_t *f = &lane->frames;
     if (lane->damage == 0) return;
@@ -52,6 +78,8 @@ static void mark_work(struct lane *lane) {
     for (int r = 0; r < 63; r++)
         frame_exchange_damage(f, lane->height / 4 + r % 16, lane->height * 3 / 4 + r % 16, lane->scale);
 }
+
+#endif
 
 static void convert(struct lane *lane) {
     frame_exchange_t *f = &lane->frames;
@@ -101,12 +129,18 @@ static void *run_lane(void *arg) {
     pthread_barrier_wait(lane->start);
     for (int n = 0; n < lane->samples; n++) {
         uint64_t start = clock_ns(CLOCK_MONOTONIC);
+#ifdef BLENT_FRAME_EXCHANGE_PRIVATE_H
+        mark_work(lane);
+        lane->locking[n] = 0; /* mutex owned by transaction; total is marking */
+        lane->marking[n] = clock_ns(CLOCK_MONOTONIC) - start;
+#else
         pthread_mutex_lock(&lane->frames.mutex);
         uint64_t acquired = clock_ns(CLOCK_MONOTONIC);
         lane->locking[n] = acquired - start;
         mark_work(lane);
         lane->marking[n] = clock_ns(CLOCK_MONOTONIC) - acquired;
         pthread_mutex_unlock(&lane->frames.mutex);
+#endif
         start = clock_ns(CLOCK_MONOTONIC);
         convert(lane);
         lane->conversion[n] = clock_ns(CLOCK_MONOTONIC) - start;

@@ -1,0 +1,2238 @@
+{
+  "sources": {
+    "host/evdi/capture.c": "d55cd18de44bb893904762533494a88aa0246d74e634e827a44b5e5a84c8332b",
+    "host/evdi/conversion.c": "bfa9d15e80540a94585ec7009e589900666eeddc084d450d689e8e10c16e777e",
+    "host/evdi/conversion_box.h": "61be8fd17735533b3fbc017c2f0a121b28e4872df548f8acec2c6c4e2ae9f3b4",
+    "host/evdi/cursor_overlay.c": "9737c942e273a7679a5c0a6b652c8cb7eeeac567537b07f4227d9354a75ef8ff",
+    "host/evdi/evdi_helper.c": "c1154756c53674dc46aed1ce897bbd6008ff7a90cd963d6512940429cc7a6bd5",
+    "host/evdi/fifo_writer.c": "af9c42ce08d807cd303a1627b048200438c50b5444905e3432aebb7ff57e3430",
+    "host/evdi/frame_exchange.c": "1a7a8c03157fe5e50c96c868628cf1f57ab60e7bde0ce75542ff793982c438dc",
+    "host/evdi/pixel_damage.h": "ce7a5e58d932f5f1d6b589b1a84ef161e12bfa8aaf8dad8f013ad1236b1583ca",
+    "host/evdi/pixel_format.h": "3f70e82260a75af041cce532a0c1d16beb5fb3f51444d95f681c285b37217e95",
+    "host/evdi/pixel_span.h": "c3ae238e24069ffd2bd6988676917bb253a1b524286f666eb76f48e50c7de214",
+    "host/evdi/raw_ring.c": "867e3b3aec9f777e63d89423485053cd7b0e56b99a102b1be81c6312ee4d13c0",
+    "host/evdi/writer.c": "c87dc9cb79fe2d0c3bf289b377f82e3bc0ea923037ec71818f6883ae9c0de1ce"
+  },
+  "functions": [
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_now_us",
+      "first": 13,
+      "last": 17,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_now_ms",
+      "first": 18,
+      "last": 18,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "cmp_int",
+      "first": 20,
+      "last": 23,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "on_dpms",
+      "first": 25,
+      "last": 29,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_pixel_order",
+      "first": 31,
+      "last": 33,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_to_nv12",
+      "first": 35,
+      "last": 43,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "mark_all_dirty",
+      "first": 45,
+      "last": 48,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "apply_damage",
+      "first": 55,
+      "last": 65,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "mark_damage",
+      "first": 66,
+      "last": 70,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "cursor_damage",
+      "first": 72,
+      "last": 76,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "restore_cursor",
+      "first": 78,
+      "last": 80,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "draw_cursor",
+      "first": 82,
+      "last": 85,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "publish_frame",
+      "first": 87,
+      "last": 102,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "reject_mode",
+      "first": 104,
+      "last": 109,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "validate_frame_format",
+      "first": 111,
+      "last": 122,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "validate_mode_dimensions",
+      "first": 124,
+      "last": 135,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "retire_mode_buffers",
+      "first": 137,
+      "last": 156,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "configure_mode_geometry",
+      "first": 158,
+      "last": 188,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "allocate_framebuffer",
+      "first": 190,
+      "last": 217,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "allocate_stream_buffers",
+      "first": 219,
+      "last": 235,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "mode_buffers_allocated",
+      "first": 237,
+      "last": 241,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "on_mode_changed",
+      "first": 243,
+      "last": 287,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "normalize_framebuffer_rect",
+      "first": 289,
+      "last": 298,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "normalize_full_frame",
+      "first": 303,
+      "last": 314,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "normalize_framebuffer",
+      "first": 316,
+      "last": 323,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "grab_now",
+      "first": 325,
+      "last": 350,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "on_update_ready",
+      "first": 352,
+      "last": 365,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "on_crtc_state",
+      "first": 367,
+      "last": 370,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "cursor_event_image",
+      "first": 372,
+      "last": 384,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "publish_cursor",
+      "first": 386,
+      "last": 390,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "on_cursor_set",
+      "first": 392,
+      "last": 413,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "on_cursor_move",
+      "first": 415,
+      "last": 422,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_period_ms",
+      "first": 424,
+      "last": 430,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_poll_timeout",
+      "first": 432,
+      "last": 466,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "request_capture_if_due",
+      "first": 468,
+      "last": 483,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "recover_capture_if_stalled",
+      "first": 485,
+      "last": 503,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "report_capture_stats",
+      "first": 505,
+      "last": 530,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_wakeup_fd",
+      "first": 532,
+      "last": 536,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "poll_capture_events",
+      "first": 538,
+      "last": 558,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "publish_shared_capture",
+      "first": 560,
+      "last": 578,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "service_shared_capture",
+      "first": 580,
+      "last": 583,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "shared_poll_timeout",
+      "first": 585,
+      "last": 593,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_tick",
+      "first": 595,
+      "last": 605,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_run",
+      "first": 607,
+      "last": 643,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_copy_rgba_to_bgra",
+      "first": 9,
+      "last": 14,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "row_is_dirty",
+      "first": 16,
+      "last": 18,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "row_span",
+      "first": 20,
+      "last": 22,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "clamp_byte",
+      "first": 24,
+      "last": 28,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "write_chroma",
+      "first": 31,
+      "last": 35,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_scaled_span",
+      "first": 41,
+      "last": 70,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "row_part",
+      "first": 72,
+      "last": 76,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_strip_scaled",
+      "first": 78,
+      "last": 86,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_native_span",
+      "first": 88,
+      "last": 113,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_strip",
+      "first": 115,
+      "last": 123,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_ordered_job",
+      "first": 127,
+      "last": 135,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_job",
+      "first": 137,
+      "last": 137,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_adaptive_job",
+      "first": 138,
+      "last": 138,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_rgba_job",
+      "first": 139,
+      "last": 139,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_rgba_adaptive_job",
+      "first": 140,
+      "last": 140,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_avx2_ordered",
+      "first": 144,
+      "last": 149,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_avx2_job",
+      "first": 150,
+      "last": 150,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_avx2_adaptive_job",
+      "first": 151,
+      "last": 151,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_avx2_rgba_job",
+      "first": 152,
+      "last": 152,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "convert_avx2_rgba_adaptive_job",
+      "first": 153,
+      "last": 153,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_simd_available",
+      "first": 156,
+      "last": 163,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_pool_set_simd",
+      "first": 165,
+      "last": 169,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "avx2_scale",
+      "first": 174,
+      "last": 176,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "use_avx2",
+      "first": 178,
+      "last": 184,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "select_kernel",
+      "first": 187,
+      "last": 198,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "row_work",
+      "first": 200,
+      "last": 206,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "measure_work",
+      "first": 208,
+      "last": 219,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "job_count",
+      "first": 223,
+      "last": 230,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_worker",
+      "first": 232,
+      "last": 252,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_pool_start",
+      "first": 254,
+      "last": 273,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "weighted_end",
+      "first": 275,
+      "last": 281,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "prepare_jobs",
+      "first": 283,
+      "last": 297,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "start_workers",
+      "first": 299,
+      "last": 308,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_pool_convert",
+      "first": 310,
+      "last": 325,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_pool_stop",
+      "first": 327,
+      "last": 336,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion.c",
+      "name": "conv_pool_destroy",
+      "first": 338,
+      "last": 342,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion_box.h",
+      "name": "box_two",
+      "first": 7,
+      "last": 13,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion_box.h",
+      "name": "box_four",
+      "first": 15,
+      "last": 27,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion_box.h",
+      "name": "box_row",
+      "first": 29,
+      "last": 36,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion_box.h",
+      "name": "convert_box_span",
+      "first": 40,
+      "last": 56,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/conversion_box.h",
+      "name": "convert_box_strip",
+      "first": 58,
+      "last": 66,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_image_valid",
+      "first": 5,
+      "last": 11,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_overlay_destroy",
+      "first": 13,
+      "last": 21,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_copy_image",
+      "first": 23,
+      "last": 34,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "replace_image",
+      "first": 36,
+      "last": 45,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_overlay_set",
+      "first": 47,
+      "last": 59,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "can_adopt",
+      "first": 61,
+      "last": 65,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_overlay_take",
+      "first": 67,
+      "last": 77,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_overlay_restore",
+      "first": 79,
+      "last": 90,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_visible",
+      "first": 92,
+      "last": 99,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_blend",
+      "first": 101,
+      "last": 110,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_draw_row",
+      "first": 112,
+      "last": 120,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/cursor_overlay.c",
+      "name": "cursor_overlay_draw",
+      "first": 122,
+      "last": 127,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "handle_signal",
+      "first": 50,
+      "last": 53,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "available_cpus",
+      "first": 57,
+      "last": 70,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "conv_pool_init",
+      "first": 72,
+      "last": 82,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "choose_card_after",
+      "first": 84,
+      "last": 92,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "find_card_after",
+      "first": 94,
+      "last": 106,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "find_evdi_device_after",
+      "first": 108,
+      "last": 125,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "find_evdi_device_in",
+      "first": 127,
+      "last": 129,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "connector_status_connected",
+      "first": 131,
+      "last": 141,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "directory_has_connected_output",
+      "first": 143,
+      "last": 154,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "card_connected_in",
+      "first": 156,
+      "last": 169,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "open_available_device_in",
+      "first": 171,
+      "last": 189,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "open_session_device_in",
+      "first": 193,
+      "last": 200,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "request_evdi_device",
+      "first": 202,
+      "last": 214,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "wait_for_available_device",
+      "first": 216,
+      "last": 223,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "numeric_argument",
+      "first": 232,
+      "last": 239,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "numeric_option_known",
+      "first": 241,
+      "last": 244,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "set_card_index",
+      "first": 246,
+      "last": 250,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "bounded_scale",
+      "first": 252,
+      "last": 255,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "bounded_fps",
+      "first": 257,
+      "last": 259,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "set_numeric_option",
+      "first": 261,
+      "last": 270,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "conversion_capacity",
+      "first": 272,
+      "last": 277,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "set_helper_option",
+      "first": 279,
+      "last": 288,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "parse_helper_options",
+      "first": 290,
+      "last": 299,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "initialize_helper_runtime",
+      "first": 301,
+      "last": 311,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "acquire_capture_device_in",
+      "first": 313,
+      "last": 342,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "acquire_capture_device",
+      "first": 344,
+      "last": 346,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "open_edid_file",
+      "first": 348,
+      "last": 360,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "read_edid_file",
+      "first": 362,
+      "last": 392,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "start_capture_writer",
+      "first": 394,
+      "last": 413,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "shutdown_capture",
+      "first": 415,
+      "last": 435,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "run_capture",
+      "first": 437,
+      "last": 441,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "configure_raw_socket",
+      "first": 443,
+      "last": 452,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "configure_conversion_simd",
+      "first": 454,
+      "last": 459,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "configure_capture_format",
+      "first": 461,
+      "last": 465,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/evdi_helper.c",
+      "name": "main",
+      "first": 467,
+      "last": 522,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "fifo_now_ms",
+      "first": 11,
+      "last": 15,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "capacity_value",
+      "first": 19,
+      "last": 28,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "requested_capacity",
+      "first": 30,
+      "last": 41,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "report_capacity",
+      "first": 43,
+      "last": 56,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "update_capacity",
+      "first": 61,
+      "last": 73,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "release_retired_fifo",
+      "first": 75,
+      "last": 78,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "fifo_writer_open",
+      "first": 82,
+      "last": 111,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "wait_fifo_writable",
+      "first": 127,
+      "last": 136,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "retry_fifo_write",
+      "first": 138,
+      "last": 143,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "write_fifo_bytes",
+      "first": 147,
+      "last": 160,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "retire_partial_fifo",
+      "first": 164,
+      "last": 179,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "fifo_writer_write",
+      "first": 181,
+      "last": 197,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/fifo_writer.c",
+      "name": "fifo_writer_close",
+      "first": 199,
+      "last": 204,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_init",
+      "first": 12,
+      "last": 20,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_enable_demand",
+      "first": 22,
+      "last": 26,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_reader",
+      "first": 28,
+      "last": 42,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_take_request",
+      "first": 44,
+      "last": 52,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_begin",
+      "first": 54,
+      "last": 61,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "full_spans",
+      "first": 63,
+      "last": 66,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_mark_all",
+      "first": 68,
+      "last": 76,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "mark_region",
+      "first": 78,
+      "last": 82,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_damage",
+      "first": 84,
+      "last": 88,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_damage_rect",
+      "first": 90,
+      "last": 96,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "histories_allocated",
+      "first": 98,
+      "last": 101,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_resize",
+      "first": 103,
+      "last": 123,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_allocated",
+      "first": 125,
+      "last": 127,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_retire",
+      "first": 129,
+      "last": 144,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_publish",
+      "first": 146,
+      "last": 167,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "wait_for_frame",
+      "first": 169,
+      "last": 178,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_claim",
+      "first": 180,
+      "last": 221,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_release",
+      "first": 223,
+      "last": 230,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_free",
+      "first": 232,
+      "last": 244,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_target",
+      "first": 246,
+      "last": 249,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_dimensions",
+      "first": 250,
+      "last": 252,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_is_ready",
+      "first": 253,
+      "last": 253,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_wakeup_fd",
+      "first": 254,
+      "last": 254,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_set_ready",
+      "first": 255,
+      "last": 260,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_wake",
+      "first": 261,
+      "last": 265,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_update",
+      "first": 266,
+      "last": 272,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_damage_rect",
+      "first": 273,
+      "last": 275,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_invalidate",
+      "first": 276,
+      "last": 280,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_latency_add",
+      "first": 281,
+      "last": 286,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/frame_exchange.c",
+      "name": "frame_exchange_latency_take",
+      "first": 287,
+      "last": 297,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_damage.h",
+      "name": "pixel_damage_range",
+      "first": 10,
+      "last": 19,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_damage.h",
+      "name": "pixel_chroma_range",
+      "first": 23,
+      "last": 31,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_damage.h",
+      "name": "pixel_larger_gap",
+      "first": 33,
+      "last": 35,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_damage.h",
+      "name": "pixel_remaining_gap",
+      "first": 37,
+      "last": 42,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_damage.h",
+      "name": "pixel_row_merge",
+      "first": 44,
+      "last": 51,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_damage.h",
+      "name": "pixel_damage_merge",
+      "first": 53,
+      "last": 60,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_damage.h",
+      "name": "pixel_damage_region",
+      "first": 62,
+      "last": 66,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_format.h",
+      "name": "pixel_order_valid",
+      "first": 6,
+      "last": 9,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_span.h",
+      "name": "pixel_row_split",
+      "first": 13,
+      "last": 16,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/pixel_span.h",
+      "name": "pixel_span_clipped",
+      "first": 19,
+      "last": 25,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_u32",
+      "first": 18,
+      "last": 20,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_u64",
+      "first": 21,
+      "last": 23,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_read64",
+      "first": 24,
+      "last": 26,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_read32",
+      "first": 27,
+      "last": 29,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_message",
+      "first": 31,
+      "last": 44,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_send",
+      "first": 46,
+      "last": 63,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_retire",
+      "first": 65,
+      "last": 73,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_init",
+      "first": 75,
+      "last": 85,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_geometry",
+      "first": 87,
+      "last": 95,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_mark_all",
+      "first": 97,
+      "last": 103,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_damage",
+      "first": 105,
+      "last": 115,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_converted",
+      "first": 117,
+      "last": 120,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_allocate_histories",
+      "first": 122,
+      "last": 131,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_allocate",
+      "first": 133,
+      "last": 148,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_resize",
+      "first": 150,
+      "last": 163,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_close_rights",
+      "first": 166,
+      "last": 177,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_control",
+      "first": 179,
+      "last": 196,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_receive",
+      "first": 198,
+      "last": 209,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_service",
+      "first": 211,
+      "last": 218,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_acquire",
+      "first": 220,
+      "last": 230,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_publish",
+      "first": 232,
+      "last": 242,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/raw_ring.c",
+      "name": "raw_ring_close",
+      "first": 244,
+      "last": 248,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "writer_now_us",
+      "first": 16,
+      "last": 20,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "writer_now_ms",
+      "first": 21,
+      "last": 21,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "read_idle_control",
+      "first": 23,
+      "last": 33,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "idle_fields",
+      "first": 36,
+      "last": 46,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "idle_fifo_matches",
+      "first": 48,
+      "last": 51,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "idle_control_value",
+      "first": 53,
+      "last": 62,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "writer_idle_ms",
+      "first": 64,
+      "last": 68,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "record_latency",
+      "first": 70,
+      "last": 74,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "add_period",
+      "first": 84,
+      "last": 90,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "ensure_writer_fifo",
+      "first": 92,
+      "last": 104,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "claim_writer_frame",
+      "first": 107,
+      "last": 118,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "writer_frame_due",
+      "first": 120,
+      "last": 135,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "pace_writer",
+      "first": 137,
+      "last": 156,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "write_writer_frame",
+      "first": 158,
+      "last": 164,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/evdi/writer.c",
+      "name": "writer_run",
+      "first": 166,
+      "last": 184,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

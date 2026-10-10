@@ -1,6 +1,10 @@
 #ifndef BLENT_REPLAY_EXCHANGE_H
 #define BLENT_REPLAY_EXCHANGE_H
+#if __has_include("frame_exchange_private.h")
+#include "frame_exchange_private.h"
+#else
 #include "frame_exchange.h"
+#endif
 #include <assert.h>
 
 /* Adapt only the harness; production files retain exact revision bytes. */

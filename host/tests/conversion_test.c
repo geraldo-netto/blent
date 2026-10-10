@@ -1,6 +1,6 @@
 /* T383: independent scalar oracle, dirty histories and dispatch contracts. */
-#include "conversion.h"
-#include "frame_exchange.h"
+#include "conversion_private.h"
+#include "frame_exchange_private.h"
 #include <assert.h>
 #include <stdint.h>
 #include <limits.h>

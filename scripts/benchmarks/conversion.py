@@ -27,7 +27,8 @@ def build(folder, reference, scalar=False, dimensions=None):
             raise ValueError('conversion dimensions must be even and within 2..8192')
         extra += [f'-DWIDTH={width}', f'-DHEIGHT={height}']
     extra += build_flags(folder)
-    if 'last_jobs' in (folder / 'conversion.h').read_text():
+    owner = folder / 'conversion_private.h'
+    if 'last_jobs' in (owner if owner.exists() else folder / 'conversion.h').read_text():
         extra.append('-DBLENT_ADAPTIVE_POOL')
     subprocess.run(['cc', *extra, '-std=c11', '-O3', '-Wall', '-Wextra', '-Werror', '-pthread', '-I', str(folder),
                     str(ROOT / 'scripts/benchmarks/conversion.c'), str(folder / 'conversion.c'),

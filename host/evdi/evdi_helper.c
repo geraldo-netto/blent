@@ -22,8 +22,8 @@
    ddcci_data_handler member of evdi_event_context, so a struct one pointer
    too short was being handed to a library that reads that member. */
 #include "evdi_lib.h"
-#include "conversion.h"
-#include "frame_exchange.h"
+#include "conversion_private.h"
+#include "frame_exchange_private.h"
 #include "fifo_writer.h"
 #include "capture.h"
 #include "writer.h"
@@ -416,9 +416,7 @@ static void shutdown_capture(evdi_handle handle, pthread_t writer) {
     g_running = 0;
     /* Wake the writer out of its condition wait so shutdown is immediate
        rather than up to one frame period late. */
-    pthread_mutex_lock(&g_frames.mutex);
-    pthread_cond_broadcast(&g_frames.ready);
-    pthread_mutex_unlock(&g_frames.mutex);
+    frame_exchange_wake(&g_frames);
     if (writer) pthread_join(writer, NULL);
     conv_pool_destroy(&g_conversion);
     fifo_writer_close(&g_fifo);

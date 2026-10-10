@@ -1,7 +1,11 @@
 /* T492 isolated writer experiment. No EVDI, ADB, display or app lifecycle calls.
  * The runner supplies an unchanged or explicitly patched copy of writer.c. */
 #define _GNU_SOURCE
+#if __has_include("frame_exchange_private.h")
+#include "frame_exchange_private.h"
+#else
 #include "frame_exchange.h"
+#endif
 #include "fifo_writer.h"
 #include <assert.h>
 #include <errno.h>

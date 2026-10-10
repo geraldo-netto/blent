@@ -954,3 +954,12 @@ request-rate enforcement is always enabled. This prevents callbacks bypassing
 Blent's rate cap; it does not guarantee stock-driver snapshot atomicity or exact
 presentation cadence. [T750's evidence and remaining acceptance](reviews/artifacts/2026-10-09-t750-pacing/README.md)
 keep those boundaries explicit.
+
+### Native C ownership contracts
+
+Pixel conversion jobs and exchange leases are public, portable C data contracts.
+Pool worker/lock/kernel layout and exchange buffers/history live in private owner
+headers. Capture and writer use atomic damage, readiness, wakeup and latency
+operations; they do not lock exchange internals. The composition root allocates
+owners, and native fixtures retain explicit private access. See the
+[T823 boundary validation](reviews/2026-10-10-c-owner-contracts.md).

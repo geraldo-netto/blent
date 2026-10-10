@@ -2,8 +2,16 @@
  * Build against pre-T554 modules with -DROW_BASELINE for paired comparisons. */
 #define _GNU_SOURCE
 #include "checked_arguments.h"
+#if __has_include("conversion_private.h")
+#include "conversion_private.h"
+#else
 #include "conversion.h"
+#endif
+#if __has_include("frame_exchange_private.h")
+#include "frame_exchange_private.h"
+#else
 #include "frame_exchange.h"
+#endif
 #include "conversion_exchange.h"
 #include <assert.h>
 #include <inttypes.h>

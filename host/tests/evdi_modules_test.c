@@ -1,11 +1,13 @@
 /* T380: link public module interfaces as separate translation units. */
 #define _GNU_SOURCE
-#include "conversion.h"
-#include "frame_exchange.h"
+#include "conversion_private.h"
+#include "frame_exchange_private.h"
 #include "fifo_writer.h"
 #include "capture.h"
 #include "writer.h"
 #include <assert.h>
+#include <limits.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -159,8 +161,51 @@ static void callback_context(void) {
     close(channel[0]); close(channel[1]);
 }
 
+/* T823: consumers use borrowed values and atomic operations, not lock layout. */
+static void t823_damage(frame_damage_t *damage, void *context) {
+    int scale = *(int *)context;
+    frame_damage_rect(damage, INT_MIN, INT_MIN, INT_MAX, INT_MAX, scale);
+}
+static void t823_exchange_contract(void) {
+    frame_exchange_t frames = FRAME_EXCHANGE_INITIALIZER;
+    frame_exchange_init(&frames);
+    assert(frame_exchange_wakeup_fd(&frames) == -1);
+    frame_exchange_dimensions(&frames, 8, 8);
+    frame_exchange_resize(&frames, 8, 8);
+    assert(frame_exchange_allocated(&frames));
+    frame_target_t target = frame_exchange_target(&frames);
+    assert(target.width == 8 && target.height == 8 && target.data == frames.fill);
+    assert(target.dirty == frames.dirty_fill && target.spans == frames.spans_fill);
+    frame_exchange_update(&frames, NULL, NULL);
+    for (int scale = -2; scale <= 6; scale++) {
+        memset(frames.dirty_fill, 0, (size_t)frames.dirty_bytes);
+        frame_exchange_update(&frames, t823_damage, &scale);
+        assert(!!frames.dirty_fill[0] == (scale >= 1 && scale <= 4));
+    }
+    frame_exchange_invalidate(&frames);
+    assert(frames.dirty_fill[0] == 255);
+    assert(!frame_exchange_is_ready(&frames));
+    frame_exchange_set_ready(&frames, 1);
+    assert(frame_exchange_is_ready(&frames));
+    frame_exchange_set_ready(&frames, 0);
+    frame_exchange_wake(&frames);
+    for (int n = -2; n < LAT_SAMPLES + 10; n++) frame_exchange_latency_add(&frames, n);
+    frame_exchange_latency_add(&frames, 1000000);
+    frame_exchange_latency_add(&frames, LLONG_MAX);
+    int samples[LAT_SAMPLES];
+    assert(frame_exchange_latency_take(&frames, NULL, SIZE_MAX) == 0);
+    assert(frame_exchange_latency_take(&frames, samples, 0) == 0);
+    assert(frame_exchange_latency_take(&frames, samples, 7) == 7);
+    for (int n = 0; n < 7; n++) assert(samples[n] == n);
+    assert(frame_exchange_latency_take(&frames, samples, SIZE_MAX) == LAT_SAMPLES - 7);
+    for (int n = 0; n < LAT_SAMPLES - 7; n++) assert(samples[n] == n + 7);
+    assert(frame_exchange_latency_take(&frames, samples, LAT_SAMPLES) == 0);
+    destroy_exchange(&frames);
+}
+
 int main(void) {
     alarm(15);
+    t823_exchange_contract();
     independent_pools();
     leased_frame_history();
     independent_fifo_epochs();

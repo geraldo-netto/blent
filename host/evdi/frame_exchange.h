@@ -1,30 +1,13 @@
 #ifndef BLENT_FRAME_EXCHANGE_H
 #define BLENT_FRAME_EXCHANGE_H
-#include <pthread.h>
 #include <stdatomic.h>
 #include <stddef.h>
 #include <time.h>
 #include "pixel_span.h"
 
 #define LAT_SAMPLES 256
-/* Buffer, dirty-mask and two-span row histories always travel together. A row is valid
- * only while its row's dirty bit is set. The capture owner alone converts fill;
- * the writer may borrow write until release(). */
-typedef struct {
-    pthread_mutex_t mutex;
-    pthread_cond_t ready;
-    unsigned char *fill, *latest, *write;
-    unsigned char *dirty_fill, *dirty_latest, *dirty_write;
-    pixel_row_t *spans_fill, *spans_latest, *spans_write;
-    int width, height, size, chroma_rows, dirty_bytes;
-    int buffers_ready, latest_valid;
-    int demand_fd, reader_connected, refresh_needed;
-    atomic_int writer_busy;
-    atomic_uint generation;
-    long long latest_grab_us, write_grab_us;
-    int latency[LAT_SAMPLES], latency_count;
-} frame_exchange_t;
-#define FRAME_EXCHANGE_INITIALIZER { .mutex = PTHREAD_MUTEX_INITIALIZER, .demand_fd = -1 }
+typedef struct frame_exchange frame_exchange_t;
+typedef struct frame_damage frame_damage_t;
 
 typedef struct { int have_frame; unsigned generation; } frame_cursor_t;
 typedef struct {
@@ -34,6 +17,32 @@ typedef struct {
     long long grabbed_us;
     int fresh;
 } frame_lease_t;
+
+/* Capture-owner snapshot. Borrowed pointers remain valid through conversion,
+ * until that same owner publishes/resizes; no pixel storage is copied. */
+typedef struct {
+    unsigned char *data;
+    const unsigned char *dirty;
+    const pixel_row_t *spans;
+    int width, height;
+} frame_target_t;
+frame_target_t frame_exchange_target(const frame_exchange_t *frames);
+/* Capture owner only; positive/even, size-safe dimensions validated by mode
+ * owner. Mode metadata also describes the shared-ring path. */
+void frame_exchange_dimensions(frame_exchange_t *frames, int width, int height);
+int frame_exchange_is_ready(const frame_exchange_t *frames);
+int frame_exchange_wakeup_fd(const frame_exchange_t *frames);
+void frame_exchange_set_ready(frame_exchange_t *frames, int ready);
+void frame_exchange_wake(frame_exchange_t *frames);
+/* One atomic damage transaction. Callback must not block or retain the sink,
+ * and must only call frame_damage_rect with this borrowed token. */
+typedef void (*frame_damage_update_t)(frame_damage_t *damage, void *context);
+void frame_exchange_update(frame_exchange_t *frames, frame_damage_update_t update, void *context);
+void frame_damage_rect(frame_damage_t *damage, int x0, int y0, int x1, int y1, int scale);
+void frame_exchange_invalidate(frame_exchange_t *frames);
+void frame_exchange_latency_add(frame_exchange_t *frames, long long micros);
+/* Drain at most capacity samples; excess samples remain for the next call. */
+size_t frame_exchange_latency_take(frame_exchange_t *frames, int *samples, size_t capacity);
 
 void frame_exchange_init(frame_exchange_t *frames);
 /* FIFO only, before writer startup. Failure leaves legacy conversion enabled. */
@@ -51,12 +60,6 @@ int frame_exchange_retire(frame_exchange_t *frames);
  * positive/even and size-safe by the mode owner before this call. */
 void frame_exchange_resize(frame_exchange_t *frames, int width, int height);
 int frame_exchange_allocated(const frame_exchange_t *frames);
-/* Call damage routines with mutex held once a writer exists. */
-void frame_exchange_mark_all(frame_exchange_t *frames);
-void frame_exchange_damage(frame_exchange_t *frames, int y0, int y1, int scale);
-/* Source rectangle; normalizes reversed endpoints, clips bounds and includes
- * complete scaled chroma blocks. Empty/off-frame rectangles do no work. */
-void frame_exchange_damage_rect(frame_exchange_t *frames, int x0, int y0, int x1, int y1, int scale);
 /* Publish only if the conversion still belongs to this reader/mode generation. */
 void frame_exchange_publish(frame_exchange_t *frames, long long grabbed_us, unsigned generation);
 /* Absolute CLOCK_MONOTONIC keepalive deadline, or NULL to wait for an event.

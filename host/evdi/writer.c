@@ -70,10 +70,7 @@ static int writer_idle_ms(writer_context_t *writer) {
 static void record_latency(writer_context_t *writer, long long grab_us) {
     if (grab_us <= 0) return;
     long long d = writer_now_us() - grab_us;
-    pthread_mutex_lock(&writer->frames->mutex);
-    if (d >= 0 && d < 1000000 && writer->frames->latency_count < LAT_SAMPLES)
-        writer->frames->latency[writer->frames->latency_count++] = (int)d;
-    pthread_mutex_unlock(&writer->frames->mutex);
+    frame_exchange_latency_add(writer->frames, d);
 }
 
 typedef struct {

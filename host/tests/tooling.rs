@@ -870,3 +870,16 @@ fn t308_appimage_packaging_launch_and_invalid_inputs() {
     );
     release_tests("t308");
 }
+
+#[test]
+fn t823_c_pixel_contracts_hide_native_owner_layout() {
+    let output = Command::new("python3")
+        .arg(repo().join("scripts/tests/test_c_contract_boundaries.py"))
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}

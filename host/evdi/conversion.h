@@ -1,6 +1,5 @@
 #ifndef BLENT_CONVERSION_H
 #define BLENT_CONVERSION_H
-#include <pthread.h>
 #include <stddef.h>
 #include "pixel_span.h"
 #include "pixel_format.h"
@@ -25,31 +24,10 @@ typedef struct {
  * the portable kernel. Unsupported/invalid requests leave state intact. */
 typedef enum { CONV_SIMD_AUTO, CONV_SIMD_PORTABLE, CONV_SIMD_AVX2 } conv_simd_t;
 
-typedef void (*conv_kernel_t)(const conv_job_t *job);
-
 #define MAX_CONV_THREADS 128
 typedef struct conv_pool conv_pool_t;
-typedef struct {
-    conv_pool_t *pool;
-    int id, pending;
-    pthread_cond_t ready;
-} conv_worker_arg_t;
-struct conv_pool {
-    int count, last_jobs;
-    conv_simd_t simd;
-    conv_kernel_t kernel; /* selected before publishing worker jobs */
-    pthread_t threads[MAX_CONV_THREADS];
-    conv_job_t jobs[MAX_CONV_THREADS];
-    conv_worker_arg_t workers[MAX_CONV_THREADS];
-    pthread_mutex_t mutex;
-    pthread_cond_t done;
-    unsigned generation;
-    int active, shutdown;
-};
-#define CONV_POOL_INITIALIZER { .count = 1, .last_jobs = 1, .mutex = PTHREAD_MUTEX_INITIALIZER, \
-    .done = PTHREAD_COND_INITIALIZER }
 
-/* Initialize with CONV_POOL_INITIALIZER; do not move after start. One capture
+/* The native owner initializes storage; do not move after start. One capture
  * thread owns submission. convert() joins every job before returning, so input,
  * output and dirty masks are borrowed only for the duration of that call.
  * Native/scaled kernels retain distinct hot loops. Destroy after final convert. */

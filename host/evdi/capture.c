@@ -34,35 +34,45 @@ static pixel_order_t capture_pixel_order(const capture_context_t *capture) {
 
 static void capture_to_nv12(capture_context_t *capture, const unsigned char *src, unsigned char *dst,
                          const unsigned char *dirty, const pixel_row_t *spans) {
-    conv_job_t frame = {src, dst, dst + (size_t)capture->frames->width * capture->frames->height,
-        capture->mode_w, capture->mode_h, capture->mode_stride, capture->frames->width, capture->frames->height,
-        capture->scale, 0, capture->frames->height / 2, dirty,
+    frame_target_t target = frame_exchange_target(capture->frames);
+    conv_job_t frame = {src, dst, dst + (size_t)target.width * target.height,
+        capture->mode_w, capture->mode_h, capture->mode_stride, target.width, target.height,
+        capture->scale, 0, target.height / 2, dirty,
         spans, capture_pixel_order(capture)};
     conv_pool_convert(capture->conversion, &frame);
 }
 
 static void mark_all_dirty(capture_context_t *capture) {
     if (capture->raw_ring) raw_ring_mark_all(capture->raw_ring);
-    else frame_exchange_mark_all(capture->frames);
+    else frame_exchange_invalidate(capture->frames);
 }
 
-static void mark_damage(capture_context_t *capture, const struct evdi_rect *rects, int n) {
-    for (int i = 0; i < n; i++) {
+typedef struct {
+    capture_context_t *capture;
+    const struct evdi_rect *rects;
+    int count;
+} capture_damage_t;
+static void apply_damage(frame_damage_t *sink, void *context) {
+    capture_damage_t *damage = context;
+    capture_context_t *capture = damage->capture;
+    for (int i = 0; i < damage->count; i++) {
+        const struct evdi_rect *rect = &damage->rects[i];
         if (capture->raw_ring)
-            raw_ring_damage(capture->raw_ring, rects[i].x1, rects[i].y1,
-                            rects[i].x2, rects[i].y2, capture->scale);
-        else
-            frame_exchange_damage_rect(capture->frames, rects[i].x1, rects[i].y1,
-                                        rects[i].x2, rects[i].y2, capture->scale);
+            raw_ring_damage(capture->raw_ring, rect->x1, rect->y1,
+                            rect->x2, rect->y2, capture->scale);
+        else frame_damage_rect(sink, rect->x1, rect->y1, rect->x2, rect->y2, capture->scale);
     }
+}
+static void mark_damage(capture_context_t *capture, const struct evdi_rect *rects, int n) {
+    capture_damage_t damage = {capture, rects, n};
+    if (capture->raw_ring) apply_damage(NULL, &damage);
+    else frame_exchange_update(capture->frames, apply_damage, &damage);
 }
 
 static void cursor_damage(capture_context_t *capture, cursor_rect_t rect) {
     if (rect.x1 >= rect.x2 || rect.y1 >= rect.y2) return;
     struct evdi_rect damage = {rect.x1, rect.y1, rect.x2, rect.y2};
-    pthread_mutex_lock(&capture->frames->mutex);
     mark_damage(capture, &damage, 1);
-    pthread_mutex_unlock(&capture->frames->mutex);
 }
 
 static void restore_cursor(capture_context_t *capture) {
@@ -75,7 +85,7 @@ static void draw_cursor(capture_context_t *capture) {
 }
 
 static void publish_frame(capture_context_t *capture) {
-    if (!capture->frames->buffers_ready || !capture->framebuffer)
+    if (!frame_exchange_is_ready(capture->frames) || !capture->framebuffer)
         return;
     if (capture->raw_ring) {
         capture->raw_pending = 1;
@@ -86,16 +96,14 @@ static void publish_frame(capture_context_t *capture) {
     if (!frame_exchange_begin(capture->frames, &generation)) return;
     /* Reconnecting FIFO readers need a full refresh, otherwise convert only
      * the chroma-aligned regions this particular buffer is missing. */
-    capture_to_nv12(capture, capture->framebuffer, capture->frames->fill,
-                 capture->frames->dirty_fill, capture->frames->spans_fill);
+    frame_target_t target = frame_exchange_target(capture->frames);
+    capture_to_nv12(capture, capture->framebuffer, target.data, target.dirty, target.spans);
     frame_exchange_publish(capture->frames, capture->grab_us, generation);
 }
 
 static void reject_mode(capture_context_t *capture) {
     capture->have_mode = 0;
-    pthread_mutex_lock(&capture->frames->mutex);
-    capture->frames->buffers_ready = 0;
-    pthread_mutex_unlock(&capture->frames->mutex);
+    frame_exchange_set_ready(capture->frames, 0);
     capture->capture_failed = 1;
     (*capture->running) = 0;
 }
@@ -131,7 +139,7 @@ static int retire_mode_buffers(capture_context_t *capture) {
         fprintf(stderr, "[evdi-helper] Writer stuck during mode change — stopping capture\n");
         /* The writer may still hold the old size across its pacing sleep.
            Keep every buffer in place until shutdown joins it; replacing
-           capture->frames->write here would pair that old size with a new allocation. */
+           the exchange write buffer here would pair that old size with a new allocation. */
         capture->have_mode = 0;
         capture->capture_failed = 1;
         (*capture->running) = 0;
@@ -211,16 +219,17 @@ static void allocate_framebuffer(capture_context_t *capture) {
 static void allocate_stream_buffers(capture_context_t *capture) {
     /* Stream dimensions: source divided by the scale, forced even because
        NV12 chroma covers 2x2 luma samples. */
-    capture->frames->width = (capture->mode_w / capture->scale) & ~1;
-    capture->frames->height = (capture->mode_h / capture->scale) & ~1;
-    printf("STREAM_SIZE %d %d\n", capture->frames->width, capture->frames->height);
+    int width = (capture->mode_w / capture->scale) & ~1;
+    int height = (capture->mode_h / capture->scale) & ~1;
+    frame_exchange_dimensions(capture->frames, width, height);
+    printf("STREAM_SIZE %d %d\n", width, height);
     fflush(stdout);
 
     if (capture->raw_ring) {
-        if (!raw_ring_resize(capture->raw_ring, capture->frames->width, capture->frames->height))
+        if (!raw_ring_resize(capture->raw_ring, width, height))
             reject_mode(capture);
     } else {
-        frame_exchange_resize(capture->frames, capture->frames->width, capture->frames->height);
+        frame_exchange_resize(capture->frames, width, height);
     }
 
 }
@@ -267,10 +276,7 @@ static void on_mode_changed(struct evdi_mode mode, void *user_data) {
     evdi_register_buffer(capture->handle, buf);
     capture->buffer_registered = 1;
 
-    pthread_mutex_lock(&capture->frames->mutex);
-    capture->frames->buffers_ready = 1;
-    pthread_cond_signal(&capture->frames->ready);
-    pthread_mutex_unlock(&capture->frames->mutex);
+    frame_exchange_set_ready(capture->frames, 1);
     draw_cursor(capture);
     publish_frame(capture);
 
@@ -335,12 +341,10 @@ static void grab_now(capture_context_t *capture) {
            when it takes a frame, so touching them unlocked would race.
            If the driver returned more rectangles than we gave it room for,
            we cannot know what else changed — repaint everything. */
-        pthread_mutex_lock(&capture->frames->mutex);
         if (num_rects >= (int)(sizeof(rects) / sizeof(rects[0])))
             mark_all_dirty(capture);
         else
             mark_damage(capture, rects, num_rects);
-        pthread_mutex_unlock(&capture->frames->mutex);
         publish_frame(capture);
     }
 }
@@ -511,12 +515,8 @@ static void report_capture_stats(capture_context_t *capture, long long now, long
     capture->immediate_n = 0; capture->empty_n = 0;
 
     /* Capture-side latency: grab → convert → into the encoder's FIFO. */
-    pthread_mutex_lock(&capture->frames->mutex);
-    int n = capture->frames->latency_count;
     int snapshot[LAT_SAMPLES];
-    if (n > 0) memcpy(snapshot, capture->frames->latency, (size_t)n * sizeof(int));
-    capture->frames->latency_count = 0;
-    pthread_mutex_unlock(&capture->frames->mutex);
+    int n = (int)frame_exchange_latency_take(capture->frames, snapshot, LAT_SAMPLES);
     if (n > 0) {
         qsort(snapshot, (size_t)n, sizeof(int), cmp_int);
         fprintf(stderr,
@@ -532,7 +532,7 @@ static void report_capture_stats(capture_context_t *capture, long long now, long
 static int capture_wakeup_fd(const capture_context_t *capture) {
     if (!capture) return -1;
     if (capture->raw_ring) return capture->raw_ring->socket;
-    return capture->frames->demand_fd;
+    return frame_exchange_wakeup_fd(capture->frames);
 }
 
 static int poll_capture_events(evdi_handle handle, struct evdi_event_context *evtctx,
@@ -558,7 +558,7 @@ static int poll_capture_events(evdi_handle handle, struct evdi_event_context *ev
 }
 
 static int publish_shared_capture(capture_context_t *capture) {
-    if (!capture->have_mode || !capture->frames->buffers_ready) return 1;
+    if (!capture->have_mode || !frame_exchange_is_ready(capture->frames)) return 1;
     long long now = capture_now_us();
     long long interval = capture->raw_pending ? 1000000 / capture->fps : 200000;
     if (now - capture->raw_sent_us < interval) return 1;

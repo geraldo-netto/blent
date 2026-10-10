@@ -2,7 +2,11 @@
 #define _GNU_SOURCE
 #include "checked_arguments.h"
 #include "raw_ring.h"
+#if __has_include("conversion_private.h")
+#include "conversion_private.h"
+#else
 #include "conversion.h"
+#endif
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>

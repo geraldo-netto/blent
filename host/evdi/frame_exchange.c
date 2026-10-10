@@ -1,5 +1,5 @@
 #define _GNU_SOURCE
-#include "frame_exchange.h"
+#include "frame_exchange_private.h"
 #include "pixel_damage.h"
 #include <stdlib.h>
 #include <string.h>
@@ -241,4 +241,57 @@ void frame_exchange_free(frame_exchange_t *frames) {
     free(frames->spans_fill); frames->spans_fill = NULL;
     free(frames->spans_latest); frames->spans_latest = NULL;
     free(frames->spans_write); frames->spans_write = NULL;
+}
+
+frame_target_t frame_exchange_target(const frame_exchange_t *frames) {
+    return (frame_target_t){frames->fill, frames->dirty_fill, frames->spans_fill,
+                            frames->width, frames->height};
+}
+void frame_exchange_dimensions(frame_exchange_t *frames, int width, int height) {
+    frames->width = width; frames->height = height;
+}
+int frame_exchange_is_ready(const frame_exchange_t *frames) { return frames->buffers_ready; }
+int frame_exchange_wakeup_fd(const frame_exchange_t *frames) { return frames->demand_fd; }
+void frame_exchange_set_ready(frame_exchange_t *frames, int ready) {
+    pthread_mutex_lock(&frames->mutex);
+    frames->buffers_ready = !!ready;
+    pthread_cond_signal(&frames->ready);
+    pthread_mutex_unlock(&frames->mutex);
+}
+void frame_exchange_wake(frame_exchange_t *frames) {
+    pthread_mutex_lock(&frames->mutex);
+    pthread_cond_broadcast(&frames->ready);
+    pthread_mutex_unlock(&frames->mutex);
+}
+void frame_exchange_update(frame_exchange_t *frames, frame_damage_update_t update, void *context) {
+    if (!update) return;
+    frame_damage_t damage = {frames};
+    pthread_mutex_lock(&frames->mutex);
+    update(&damage, context);
+    pthread_mutex_unlock(&frames->mutex);
+}
+void frame_damage_rect(frame_damage_t *damage, int x0, int y0, int x1, int y1, int scale) {
+    frame_exchange_damage_rect(damage->frames, x0, y0, x1, y1, scale);
+}
+void frame_exchange_invalidate(frame_exchange_t *frames) {
+    pthread_mutex_lock(&frames->mutex);
+    frame_exchange_mark_all(frames);
+    pthread_mutex_unlock(&frames->mutex);
+}
+void frame_exchange_latency_add(frame_exchange_t *frames, long long micros) {
+    pthread_mutex_lock(&frames->mutex);
+    if (micros >= 0 && micros < 1000000 && frames->latency_count < LAT_SAMPLES)
+        frames->latency[frames->latency_count++] = (int)micros;
+    pthread_mutex_unlock(&frames->mutex);
+}
+size_t frame_exchange_latency_take(frame_exchange_t *frames, int *samples, size_t capacity) {
+    if (!samples || !capacity) return 0;
+    pthread_mutex_lock(&frames->mutex);
+    size_t count = (size_t)frames->latency_count;
+    if (count > capacity) count = capacity;
+    memcpy(samples, frames->latency, count * sizeof(int));
+    frames->latency_count -= (int)count;
+    memmove(frames->latency, frames->latency + count, (size_t)frames->latency_count * sizeof(int));
+    pthread_mutex_unlock(&frames->mutex);
+    return count;
 }
