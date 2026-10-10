@@ -1,0 +1,11 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionManagement.kt": "27cf092b8acb71c28b2167c6da69ac72b06059bb92642e0a0b60ce3aeb574f78",
+  "android/app/src/main/java/com/blent/connection/ManagementDecoder.kt": "ef3dfb144c048cb210b8c6af7b878da6aa7683b4bd0353dc26304015c5831a00",
+  "android/app/src/main/java/com/blent/connection/ManagementProfiles.kt": "c5bd2752964efa34823139f907b510b12387ed2c716568088eede8d2ef480c16",
+  "android/app/src/test/java/com/blent/connection/ConnectionManagementTest.kt": "ae437435a429dfff3239ed9e1660c0d1adb15813e78eb666623ee98950b046e0",
+  "common/src/connection/management/codec.rs": "340c671a4212e26bc346b52891cad731bef4acf1be22c5a2ef0c4a8157d216ab",
+  "common/src/connection/management/decoder.rs": "bd3423f0cfaceb179c90b842f1d828f684205754f3daa7d3353c692454d74190",
+  "common/src/connection/management.rs": "8e96b784cbefc9499ba4218f69e275f057a5f4fbcf09f9964c909688c89fc965",
+  "common/tests/connection_management.rs": "c92f1be6df91c5aab8d63e1e1717101d18345b394bbafb8e8d5b94f4e04b50db",
+  "testdata/connection-management-v1.json": "80a062a588d3d81f78340a54c4eeb36436635c86baab93b2073d6b6a0ccbb93d"
+}

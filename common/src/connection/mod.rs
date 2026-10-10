@@ -7,3 +7,5 @@ pub mod wire;
 pub mod pairing;
 pub mod hello;
 pub mod ready;
+
+pub mod management;

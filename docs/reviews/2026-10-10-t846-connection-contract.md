@@ -248,7 +248,8 @@ item counts: broker/lifecycle/media wiring is substantial remaining work.
 
 ### Proposed management activation ordering
 
-The management schema/state machine is still planned under T850/T851. It carries
+The T850 management record schema is implemented; its transaction/authority state
+machine remains T851 work. The schema carries
 bounded capability, Offer, Prepared, Commit, Result and Revoke records; remote
 records never contain arbitrary host addresses, ports or paths. Each resource
 has at most one bounded pending transaction. A display resource jointly owns its
@@ -264,6 +265,50 @@ events arriving before sender completion handling stay bounded and queued; an
 independent completion callback must not race activation. New-generation CREDIT
 cannot overtake this barrier. Revocation invalidates authority before worker
 cleanup; replacement still requires actual ownership retirement.
+
+### Implemented management record version 1 (T850)
+
+`common/src/connection/management{.rs,/}` and Android `ConnectionManagement`,
+`ManagementProfiles` and `ManagementDecoder` define the independent contract.
+`testdata/connection-management-v1.json` supplies shared valid/invalid vectors.
+One decoder owns a fixed 284-byte scratch buffer; each feed consumes at most one
+complete record and returns its exact consumed byte count. Callers retain any
+coalesced remainder. Header validation precedes body consumption. Malformed input
+poisons the decoder; truncated EOF and reuse after EOF fail without resynchronizing.
+Neither mux DATA boundaries nor queued-buffer boundaries delimit records.
+
+The fixed 28-byte big-endian header is `BLMG`, version 1, one-byte operation,
+one-byte resource, a zero reserved byte, 64-bit request, 64-bit generation and
+32-bit body length. Resource IDs are display session=1 (control+display), camera=2,
+microphone=3 and speakers=4. Except capabilities, request/generation are positive
+signed-64-bit-range values. Unknown operations, resources and reserved bits fail.
+
+| Operation | Code | Exact body |
+| --- | --- | --- |
+| Capabilities | 0 | One byte, four resource capability bits; resource/request/generation all zero |
+| Offer | 1 | 32 credential bytes plus resource-specific profile |
+| Prepared | 2 | Empty |
+| Commit | 3 | Empty |
+| Result | 4 | One outcome byte, 0 through 6 |
+| Revoke | 5 | One reason byte, 0 through 4 |
+
+Display has no extra profile bytes. Camera has 13: width/height as u16, fps as u8,
+bitrate/minimum bitrate/freshness milliseconds as u16, lens as u8, then flags
+(background bit 0, adaptive bitrate bit 1). Dimensions must be even within
+160–1920 by 120–1080, fps 5–30, bitrates 256–20000 kbit/s, freshness 50–2000 ms
+and lens 0/1. Host-side rotation and mirroring stay local. Audio has four profile
+bytes: processing 1/2, u16 buffer milliseconds (20–200, steps of 10), boolean
+background 0/1. Direction follows resource; profile/resource mismatches fail.
+
+Outcomes in order are admitted, unavailable, permission required, permission
+denied, busy, revoked and failed. Reasons are requested, connection lost, worker
+failed, timed out and permission revoked. Admitted does not mean streaming.
+Credential storage is privately owned and omitted from diagnostic formatting;
+no remote endpoint address, port, path or executable is representable.
+
+[Retained T850 validation](artifacts/2026-10-10-t850/README.md) proves codecs and
+bounded parsing only. Brokers still must supply authenticated identity, enforce
+leases/permissions and perform actual resource preparation and retirement.
 
 ## Remaining integration and acceptance
 
