@@ -191,6 +191,10 @@ impl PcmQueue {
     }
 
     fn interpolate(&self, output: &mut [i16], step: u64) {
+        if self.phase == 0 && step == SCALE {
+            self.copy_identity(output);
+            return;
+        }
         for (frame, channels) in output.chunks_exact_mut(self.channels).enumerate() {
             let position = self.phase + frame as u64 * step;
             let index = (position / SCALE) as usize;
@@ -203,11 +207,89 @@ impl PcmQueue {
         }
     }
 
+    // At identity rate a block spans at most two queue entries, including a
+    // nonzero integer offset left by previous drift. Slice copies permit the
+    // compiler/libc's native bulk-copy path without architecture-specific SIMD.
+    fn copy_identity(&self, output: &mut [i16]) {
+        let first =
+            &self.blocks[0].1.samples[self.offset * self.channels..BLOCK_FRAMES * self.channels];
+        let count = first.len().min(output.len());
+        output[..count].copy_from_slice(&first[..count]);
+        if count < output.len() {
+            let remaining = output.len() - count;
+            output[count..].copy_from_slice(&self.blocks[1].1.samples[..remaining]);
+        }
+    }
+
     fn consume(&mut self, frames: usize) {
         self.offset += frames;
         while self.offset >= BLOCK_FRAMES {
             self.blocks.pop_front();
             self.offset -= BLOCK_FRAMES;
+        }
+    }
+}
+
+#[cfg(test)]
+mod identity_tests {
+    use super::*;
+    fn fixture(channels: usize, offset: usize, phase: u64) -> PcmQueue {
+        let direction = if channels == 1 {
+            super::super::Direction::Microphone
+        } else {
+            super::super::Direction::Speakers
+        };
+        let mut queue = PcmQueue::new(AudioProfile::new(direction)).unwrap();
+        let mut seed = 71u32;
+        for _ in 0..3 {
+            let mut samples = [0; super::super::MAX_SAMPLES];
+            for sample in &mut samples {
+                seed = seed.wrapping_mul(1664525).wrapping_add(1013904223);
+                *sample = seed as i16;
+            }
+            queue
+                .push(
+                    PcmBlock {
+                        samples,
+                        channels,
+                        discontinuity: false,
+                        clock: None,
+                    },
+                    0,
+                )
+                .unwrap();
+        }
+        queue.offset = offset;
+        queue.phase = phase;
+        queue
+    }
+    fn scalar(queue: &PcmQueue, step: u64) -> Vec<i16> {
+        let mut output = Vec::new();
+        for frame in 0..BLOCK_FRAMES {
+            let position = queue.phase + frame as u64 * step;
+            let index = (position / SCALE) as usize;
+            let fraction = (position % SCALE) as i64;
+            for channel in 0..queue.channels {
+                let first = queue.sample(index, channel) as i64;
+                let next = queue.sample(index + usize::from(fraction != 0), channel) as i64;
+                output.push((first + (next - first) * fraction / SCALE as i64) as i16);
+            }
+        }
+        output
+    }
+    #[test]
+    fn t818_identity_and_fractional_paths_match_signed_scalar_oracle() {
+        for channels in [1, 2] {
+            for offset in [0, 1, BLOCK_FRAMES - 1] {
+                for phase in [0, 1, SCALE / 2, SCALE - 1] {
+                    let queue = fixture(channels, offset, phase);
+                    for step in [SCALE - 1000, SCALE, SCALE + 1000] {
+                        let mut output = vec![0; BLOCK_FRAMES * channels];
+                        queue.interpolate(&mut output, step);
+                        assert_eq!(output, scalar(&queue, step));
+                    }
+                }
+            }
         }
     }
 }

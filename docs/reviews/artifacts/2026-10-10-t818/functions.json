@@ -1,0 +1,925 @@
+{
+  "sources": {
+    "common/src/audio/wire.rs": "5bb70adba4e31ef4fd6fcfff5a1043ba952b5706916fce6f3d396e28f43a2cb5",
+    "common/src/audio/buffer.rs": "b94dccd6a27c27442badd2d65f401b31d30756156d0c05bbcce9a766285a5017",
+    "host/src/audio/protocol.rs": "943f9bcdaded7b4726f669a3dc60ab21da8fedfad8ea679c5c8b8b95396bed8c",
+    "host/src/audio.rs": "27ccf6ac21ead14626f4243a454eb691914ac5955e6ed4f6e85642ff4d65646b"
+  },
+  "functions": [
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "new",
+      "line": 21,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "profile",
+      "line": 30,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "generation",
+      "line": 33,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "hello",
+      "line": 38,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "authenticate",
+      "line": 54,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "encode",
+      "line": 75,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "encode_with_clock",
+      "line": 79,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "encode_into",
+      "line": 91,
+      "language": "rust",
+      "covered": 34,
+      "total": 34,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "from_le_bytes",
+      "line": 141,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "samples",
+      "line": 158,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "new",
+      "line": 184,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "encode",
+      "line": 191,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "encode_into",
+      "line": 196,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "payload_bytes",
+      "line": 274,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "sequence",
+      "line": 297,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "validate_parts",
+      "line": 317,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "name": "decode",
+      "line": 339,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "new",
+      "line": 30,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "clear",
+      "line": 47,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "queued_frames",
+      "line": 58,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "pop",
+      "line": 64,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "advance_clock",
+      "line": 77,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "drop_oldest",
+      "line": 87,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "push",
+      "line": 94,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "native_clock",
+      "line": 114,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "measured_drift",
+      "line": 130,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "adjust_drift",
+      "line": 137,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "render",
+      "line": 153,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "underflow",
+      "line": 181,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "sample",
+      "line": 187,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "interpolate",
+      "line": 193,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "copy_identity",
+      "line": 213,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "name": "consume",
+      "line": 224,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "name": "accept",
+      "line": 9,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "name": "request",
+      "line": 30,
+      "language": "rust",
+      "covered": 38,
+      "total": 39,
+      "percent": 97.43589743589743,
+      "passes": true,
+      "missing": [
+        61
+      ]
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "name": "captured",
+      "line": 80,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "name": "grant",
+      "line": 95,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "name": "new",
+      "line": 107,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "name": "packet",
+      "line": 113,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run",
+      "line": 19,
+      "language": "rust",
+      "covered": 0,
+      "total": 18,
+      "percent": 0.0,
+      "passes": false,
+      "missing": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        33,
+        34,
+        35,
+        36,
+        37
+      ]
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "executable",
+      "line": 39,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "helper",
+      "line": 43,
+      "language": "rust",
+      "covered": 0,
+      "total": 11,
+      "percent": 0.0,
+      "passes": false,
+      "missing": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ]
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "invited",
+      "line": 55,
+      "language": "rust",
+      "covered": 0,
+      "total": 48,
+      "percent": 0.0,
+      "passes": false,
+      "missing": [
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        92,
+        94,
+        95,
+        98,
+        101,
+        102,
+        103,
+        104,
+        106,
+        107,
+        108,
+        111,
+        112
+      ]
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "invite",
+      "line": 114,
+      "language": "rust",
+      "covered": 0,
+      "total": 16,
+      "percent": 0.0,
+      "passes": false,
+      "missing": [
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        130,
+        131
+      ]
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "microphone",
+      "line": 133,
+      "language": "rust",
+      "covered": 10,
+      "total": 12,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        141,
+        144
+      ]
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "speakers_with_clock",
+      "line": 157,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run_cli",
+      "line": 181,
+      "language": "rust",
+      "covered": 0,
+      "total": 11,
+      "percent": 0.0,
+      "passes": false,
+      "missing": [
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        192
+      ]
+    }
+  ],
+  "complexity": [
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 21,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 30,
+      "name": "profile",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 33,
+      "name": "generation",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 38,
+      "name": "hello",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 54,
+      "name": "authenticate",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 75,
+      "name": "encode",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 79,
+      "name": "encode_with_clock",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 91,
+      "name": "encode_into",
+      "score": 5
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 141,
+      "name": "from_le_bytes",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 158,
+      "name": "samples",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 184,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 191,
+      "name": "encode",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 196,
+      "name": "encode_into",
+      "score": 4
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 274,
+      "name": "payload_bytes",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 297,
+      "name": "sequence",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 317,
+      "name": "validate_parts",
+      "score": 3
+    },
+    {
+      "file": "common/src/audio/wire.rs",
+      "line": 339,
+      "name": "decode",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 30,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 47,
+      "name": "clear",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 58,
+      "name": "queued_frames",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 64,
+      "name": "pop",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 77,
+      "name": "advance_clock",
+      "score": 3
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 87,
+      "name": "drop_oldest",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 94,
+      "name": "push",
+      "score": 4
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 114,
+      "name": "native_clock",
+      "score": 4
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 130,
+      "name": "measured_drift",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 137,
+      "name": "adjust_drift",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 153,
+      "name": "render",
+      "score": 4
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 181,
+      "name": "underflow",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 187,
+      "name": "sample",
+      "score": 1
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 193,
+      "name": "interpolate",
+      "score": 5
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 213,
+      "name": "copy_identity",
+      "score": 2
+    },
+    {
+      "file": "common/src/audio/buffer.rs",
+      "line": 224,
+      "name": "consume",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "line": 9,
+      "name": "accept",
+      "score": 3
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "line": 30,
+      "name": "request",
+      "score": 4
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "line": 80,
+      "name": "captured",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "line": 95,
+      "name": "grant",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "line": 107,
+      "name": "new",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio/protocol.rs",
+      "line": 113,
+      "name": "packet",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 19,
+      "name": "run",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 39,
+      "name": "executable",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 43,
+      "name": "helper",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 55,
+      "name": "invited",
+      "score": 3
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 114,
+      "name": "invite",
+      "score": 1
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 133,
+      "name": "microphone",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 157,
+      "name": "speakers_with_clock",
+      "score": 2
+    },
+    {
+      "file": "host/src/audio.rs",
+      "line": 181,
+      "name": "run_cli",
+      "score": 1
+    }
+  ]
+}

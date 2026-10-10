@@ -1,0 +1,114 @@
+[
+  {
+    "stage": "receive",
+    "channels": 1,
+    "reused": false,
+    "p50_ns": 120,
+    "p95_ns": 140,
+    "total_ns": 1436664,
+    "allocations": 20000,
+    "allocated_bytes": 19490000
+  },
+  {
+    "stage": "receive",
+    "channels": 1,
+    "reused": true,
+    "p50_ns": 50,
+    "p95_ns": 61,
+    "total_ns": 737374,
+    "allocations": 0,
+    "allocated_bytes": 0
+  },
+  {
+    "stage": "receive",
+    "channels": 2,
+    "reused": false,
+    "p50_ns": 161,
+    "p95_ns": 200,
+    "total_ns": 1984990,
+    "allocations": 20000,
+    "allocated_bytes": 38690000
+  },
+  {
+    "stage": "receive",
+    "channels": 2,
+    "reused": true,
+    "p50_ns": 60,
+    "p95_ns": 90,
+    "total_ns": 957262,
+    "allocations": 0,
+    "allocated_bytes": 0
+  },
+  {
+    "stage": "send",
+    "channels": 1,
+    "reused": false,
+    "p50_ns": 40,
+    "p95_ns": 50,
+    "total_ns": 623612,
+    "allocations": 10000,
+    "allocated_bytes": 9880000
+  },
+  {
+    "stage": "send",
+    "channels": 1,
+    "reused": true,
+    "p50_ns": 30,
+    "p95_ns": 30,
+    "total_ns": 463191,
+    "allocations": 0,
+    "allocated_bytes": 0
+  },
+  {
+    "stage": "send",
+    "channels": 2,
+    "reused": false,
+    "p50_ns": 80,
+    "p95_ns": 90,
+    "total_ns": 982380,
+    "allocations": 10000,
+    "allocated_bytes": 19480000
+  },
+  {
+    "stage": "send",
+    "channels": 2,
+    "reused": true,
+    "p50_ns": 30,
+    "p95_ns": 40,
+    "total_ns": 517376,
+    "allocations": 0,
+    "allocated_bytes": 0
+  },
+  {
+    "stage": "render",
+    "channels": 1,
+    "mode": "before",
+    "p50_ns": 2605,
+    "p95_ns": 2706,
+    "total_ns": 54837296
+  },
+  {
+    "stage": "render",
+    "channels": 1,
+    "mode": "after",
+    "p50_ns": 30,
+    "p95_ns": 40,
+    "total_ns": 1666722
+  },
+  {
+    "stage": "render",
+    "channels": 2,
+    "mode": "before",
+    "p50_ns": 3216,
+    "p95_ns": 3346,
+    "total_ns": 67508537
+  },
+  {
+    "stage": "render",
+    "channels": 2,
+    "mode": "after",
+    "p50_ns": 50,
+    "p95_ns": 51,
+    "total_ns": 2026501
+  }
+]

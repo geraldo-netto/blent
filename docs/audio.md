@@ -260,3 +260,13 @@ writes share one 250 ms complete-write budget; partial progress cannot renew it.
 Stop, transport loss or PipeWire server loss removes the owned sink and releases
 playback. Native counter correction follows the policy above. These limits bound
 application backlog; they do not establish measured acoustic latency.
+
+## Host staging and identity-rate rendering
+
+Each microphone connection retains one fixed native packet buffer; speaker capture
+and wire serialization reuse bounded storage. Validation still commits sequence
+state only after the complete packet and optional clock pass. Partial I/O keeps the
+existing deadline/connection-retirement behavior. At exact zero drift and phase,
+the worker queue bulk-copies PCM slices; fractional resampling remains unchanged.
+[T818 stage measurements](reviews/2026-10-10-audio-staging.md) show lower allocation
+traffic and processing time, without claiming lower acoustic latency.

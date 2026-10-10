@@ -83,6 +83,19 @@ impl AudioGrant {
         samples: &[i16],
         clock: Option<super::ClockSample>,
     ) -> Result<Vec<u8>> {
+        let mut bytes = Vec::new();
+        self.encode_into(sequence, timestamp_us, samples, clock, &mut bytes)?;
+        Ok(bytes)
+    }
+
+    pub fn encode_into(
+        &self,
+        sequence: u64,
+        timestamp_us: u64,
+        samples: &[i16],
+        clock: Option<super::ClockSample>,
+        bytes: &mut Vec<u8>,
+    ) -> Result<()> {
         ensure!(sequence < u64::MAX, "audio sequence exhausted");
         ensure!(
             samples.len() == BLOCK_FRAMES * self.profile.direction.channels(),
@@ -90,9 +103,15 @@ impl AudioGrant {
         );
         let clock_bytes = if self.clocked { super::CLOCK_BYTES } else { 0 };
         let size = samples.len() * 2 + clock_bytes;
-        let mut bytes = vec![0; FRAME_HEADER_BYTES + size];
-        if self.clocked {
-            bytes[28..52].copy_from_slice(&super::ClockSample::encode(clock)?);
+        let encoded_clock = if self.clocked {
+            Some(super::ClockSample::encode(clock)?)
+        } else {
+            None
+        };
+        bytes.resize(FRAME_HEADER_BYTES + size, 0);
+        bytes[27] = 0;
+        if let Some(clock) = encoded_clock {
+            bytes[28..52].copy_from_slice(&clock);
         }
         bytes[..8].copy_from_slice(&self.generation.to_be_bytes());
         bytes[8..16].copy_from_slice(&sequence.to_be_bytes());
@@ -105,7 +124,7 @@ impl AudioGrant {
         {
             output.copy_from_slice(&sample.to_le_bytes());
         }
-        Ok(bytes)
+        Ok(())
     }
 }
 
@@ -141,6 +160,13 @@ impl PcmBlock {
     }
 }
 
+/// Borrowed PCM validated together with its clock and sequence. No native types.
+pub struct PcmView<'a> {
+    pub pcm: &'a [u8],
+    pub clock: Option<super::ClockSample>,
+    pub discontinuity: bool,
+}
+
 pub struct FrameReader {
     generation: u64,
     direction: Direction,
@@ -163,6 +189,16 @@ impl FrameWriter {
         }
     }
     pub fn encode(&mut self, block: &PcmBlock, timestamp_us: u64) -> Result<Vec<u8>> {
+        let mut bytes = Vec::new();
+        self.encode_into(block, timestamp_us, &mut bytes)?;
+        Ok(bytes)
+    }
+    pub fn encode_into(
+        &mut self,
+        block: &PcmBlock,
+        timestamp_us: u64,
+        bytes: &mut Vec<u8>,
+    ) -> Result<()> {
         ensure!(
             self.previous_time.is_none_or(|last| timestamp_us > last),
             "audio clock did not advance"
@@ -174,12 +210,11 @@ impl FrameWriter {
         } else {
             self.next
         };
-        let bytes =
-            self.grant
-                .encode_with_clock(sequence, timestamp_us, block.samples(), block.clock)?;
+        self.grant
+            .encode_into(sequence, timestamp_us, block.samples(), block.clock, bytes)?;
         self.next = sequence + 1; // encode rejects u64::MAX before state changes.
         self.previous_time = Some(timestamp_us);
-        Ok(bytes)
+        Ok(())
     }
 }
 
@@ -276,33 +311,44 @@ impl FrameReader {
         Ok((sequence, timestamp, discontinuity))
     }
 
+    /// Validate borrowed storage without materializing native PCM. State advances
+    /// only after all header, size and clock checks succeed. Adapter retires a
+    /// connection on partial I/O; the view cannot outlive its input storage.
+    pub fn validate_parts<'a>(&mut self, header: &[u8], payload: &'a [u8]) -> Result<PcmView<'a>> {
+        let size = self.payload_bytes(header)?;
+        ensure!(
+            payload.len() == size,
+            "truncated or oversized audio payload"
+        );
+        let (sequence, timestamp, discontinuity) = self.sequence(header)?;
+        let clock_bytes = if self.clocked { super::CLOCK_BYTES } else { 0 };
+        let clock = if self.clocked {
+            super::ClockSample::decode(&payload[..clock_bytes])?
+        } else {
+            None
+        };
+        self.previous = Some((sequence, timestamp));
+        Ok(PcmView {
+            pcm: &payload[clock_bytes..],
+            clock,
+            discontinuity,
+        })
+    }
+
     /// No state advances until header and complete payload both validate.
     pub fn decode(&mut self, bytes: &[u8]) -> Result<PcmBlock> {
         ensure!(bytes.len() >= FRAME_HEADER_BYTES, "truncated audio frame");
-        let size = self.payload_bytes(&bytes[..FRAME_HEADER_BYTES])?;
-        ensure!(
-            bytes.len() == FRAME_HEADER_BYTES + size,
-            "truncated or oversized audio payload"
-        );
-        let (sequence, timestamp, discontinuity) = self.sequence(&bytes[..FRAME_HEADER_BYTES])?;
+        let view =
+            self.validate_parts(&bytes[..FRAME_HEADER_BYTES], &bytes[FRAME_HEADER_BYTES..])?;
         let mut block = PcmBlock {
             samples: [0; MAX_SAMPLES],
             channels: self.direction.channels(),
-            discontinuity,
-            clock: if self.clocked {
-                super::ClockSample::decode(&bytes[28..52])?
-            } else {
-                None
-            },
+            discontinuity: view.discontinuity,
+            clock: view.clock,
         };
-        for (output, input) in block
-            .samples
-            .iter_mut()
-            .zip(bytes[28 + if self.clocked { super::CLOCK_BYTES } else { 0 }..].chunks_exact(2))
-        {
+        for (output, input) in block.samples.iter_mut().zip(view.pcm.chunks_exact(2)) {
             *output = i16::from_le_bytes([input[0], input[1]]);
         }
-        self.previous = Some((sequence, timestamp));
         Ok(block)
     }
 }

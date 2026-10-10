@@ -136,11 +136,12 @@ async fn microphone(
     reader: &mut blent_config::audio::FrameReader,
 ) -> Result<()> {
     let input = child.stdin.as_mut().context("missing audio helper input")?;
+    let mut staging = protocol::Staging::new();
     loop {
         let packet =
-            tokio::time::timeout(Duration::from_millis(250), protocol::packet(socket, reader))
+            tokio::time::timeout(Duration::from_millis(250), staging.packet(socket, reader))
                 .await??;
-        tokio::time::timeout(Duration::from_millis(250), input.write_all(&packet)).await??;
+        tokio::time::timeout(Duration::from_millis(250), input.write_all(packet)).await??;
     }
 }
 
@@ -166,11 +167,12 @@ async fn speakers_with_clock(
         .context("missing audio helper output")?;
     let mut writer = blent_config::audio::FrameWriter::new(grant);
     let epoch = std::time::Instant::now();
+    let mut bytes = vec![0; if clocked { 1945 } else { 1921 }];
+    let mut packet = Vec::with_capacity(blent_config::audio::FRAME_HEADER_BYTES + 1944);
     loop {
-        let mut bytes = vec![0; if clocked { 1945 } else { 1921 }];
         tokio::time::timeout(Duration::from_millis(250), output.read_exact(&mut bytes)).await??;
         let block = protocol::captured(&bytes)?;
-        let packet = writer.encode(&block, epoch.elapsed().as_micros() as u64)?;
+        writer.encode_into(&block, epoch.elapsed().as_micros() as u64, &mut packet)?;
         tokio::time::timeout(Duration::from_millis(250), socket.write_all(&packet)).await??;
     }
 }

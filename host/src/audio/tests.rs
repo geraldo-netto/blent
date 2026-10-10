@@ -390,3 +390,36 @@ async fn t720_clocked_speaker_transport_preserves_native_counter_and_stereo() {
     assert!(result.is_err());
     process::retire(child).await;
 }
+
+#[tokio::test]
+async fn t818_staging_reuse_keeps_packet_bytes_and_sequence_atomic() {
+    let grant = grant();
+    let mut reader = grant.authenticate(&grant.hello()).unwrap();
+    let mut staging = protocol::Staging::new();
+    let first = grant.encode(0, 1, &[i16::MIN; 480]).unwrap();
+    let packet = staging
+        .packet(&mut first.as_slice(), &mut reader)
+        .await
+        .unwrap();
+    let pointer = packet.as_ptr();
+    assert_eq!(packet[0], 0);
+    assert_eq!(&packet[1..], &first[28..]);
+    let next = grant.encode(2, 2, &[i16::MAX; 480]).unwrap();
+    for length in [0, 1, 27, 28, 29, next.len() - 1] {
+        assert!(staging
+            .packet(&mut &next[..length], &mut reader)
+            .await
+            .is_err());
+    }
+    let packet = staging
+        .packet(&mut next.as_slice(), &mut reader)
+        .await
+        .unwrap();
+    assert_eq!(packet.as_ptr(), pointer);
+    assert_eq!(packet[0], 1);
+    assert_eq!(&packet[1..], &next[28..]);
+    assert!(staging
+        .packet(&mut next.as_slice(), &mut reader)
+        .await
+        .is_err());
+}

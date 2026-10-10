@@ -98,20 +98,37 @@ pub(super) async fn grant(socket: &mut TcpStream, ticket: &str, grant: &AudioGra
     Ok(())
 }
 
-/// One deadline belongs around this whole operation, including partial reads.
+/// Fixed staging owned by one connection. A borrow prevents overwrite while the
+/// native writer still consumes the packet. Partial I/O retires the connection.
+pub(super) struct Staging {
+    bytes: [u8; 1 + blent_config::audio::CLOCK_BYTES + blent_config::audio::MAX_SAMPLES * 2],
+}
+impl Staging {
+    pub(super) fn new() -> Self {
+        Self {
+            bytes: [0; 1 + blent_config::audio::CLOCK_BYTES + blent_config::audio::MAX_SAMPLES * 2],
+        }
+    }
+    /// One deadline belongs around this whole operation, including partial reads.
+    pub(super) async fn packet(
+        &mut self,
+        reader: &mut (impl tokio::io::AsyncRead + Unpin),
+        frames: &mut blent_config::audio::FrameReader,
+    ) -> Result<&[u8]> {
+        let mut header = [0; blent_config::audio::FRAME_HEADER_BYTES];
+        reader.read_exact(&mut header).await?;
+        let size = frames.payload_bytes(&header)?;
+        reader.read_exact(&mut self.bytes[1..1 + size]).await?;
+        let view = frames.validate_parts(&header, &self.bytes[1..1 + size])?;
+        self.bytes[0] = u8::from(view.discontinuity);
+        Ok(&self.bytes[..1 + size])
+    }
+}
+
+#[cfg(test)]
 pub(super) async fn packet(
     reader: &mut (impl tokio::io::AsyncRead + Unpin),
     frames: &mut blent_config::audio::FrameReader,
 ) -> Result<Vec<u8>> {
-    let mut header = [0; blent_config::audio::FRAME_HEADER_BYTES];
-    reader.read_exact(&mut header).await?;
-    let size = frames.payload_bytes(&header)?;
-    let mut packet = vec![0; header.len() + size];
-    packet[..header.len()].copy_from_slice(&header);
-    reader.read_exact(&mut packet[header.len()..]).await?;
-    let block = frames.decode(&packet)?;
-    let mut native = Vec::with_capacity(1 + size);
-    native.push(u8::from(block.discontinuity));
-    native.extend_from_slice(&packet[header.len()..]);
-    Ok(native)
+    Ok(Staging::new().packet(reader, frames).await?.to_vec())
 }
