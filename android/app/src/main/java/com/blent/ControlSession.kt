@@ -84,6 +84,9 @@ internal class ControlSession(
     /// session without requiring another Activity launch. It must be the first
     /// socket message; otherwise the host closes the connection unanswered.
     @Volatile var token: String? = null
+    // Protected by lock: bind authentication to this socket attempt, including
+    // tokenless startup. Publishing replacement credentials cannot retarget it.
+    private var connectionToken: String? = null
 
     /** Settings to (re)send to the host whenever the control channel connects */
     @Volatile private var pendingConfig: JSONObject? = null
@@ -188,7 +191,7 @@ internal class ControlSession(
 
     // Authentication must be accepted before any other message is offered.
     private fun sendAuthentication(): Boolean {
-        val currentToken = token
+        val currentToken = connectionToken
         if (currentToken == null) {
             Log.w(TAG, "No session token yet — the host will send one")
             return true
@@ -366,6 +369,7 @@ internal class ControlSession(
         val request = Request.Builder()
             .url(WS_URL)
             .build()
+        connectionToken = token
         webSocket = client.newWebSocket(request, wsListener)
     }
 
