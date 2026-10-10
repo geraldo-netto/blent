@@ -1,0 +1,289 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/registered_display.rs",
+    "host/src/attachment/registered.rs"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 24,
+      "passing": 24,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "register_route",
+      "line": 14,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "detach_registered",
+      "line": 26,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "register_route",
+      "line": 49,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "register_guarded",
+      "line": 57,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "advance_registered",
+      "line": 85,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "observed_authentication",
+      "line": 102,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "admitted",
+      "line": 124,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "current",
+      "line": 129,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "revoke",
+      "line": 135,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "close",
+      "line": 149,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "drop",
+      "line": 154,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "token",
+      "line": 158,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "close",
+      "line": 40,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "observe",
+      "line": 47,
+      "language": "rust",
+      "covered": 11,
+      "total": 13,
+      "percent": 84.61538461538461,
+      "passes": true,
+      "missing": [
+        56,
+        57
+      ]
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "accepts",
+      "line": 60,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "state",
+      "line": 71,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "live_status",
+      "line": 81,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "new",
+      "line": 105,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "state",
+      "line": 127,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "poll",
+      "line": 136,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "observe",
+      "line": 148,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "start",
+      "line": 164,
+      "language": "rust",
+      "covered": 35,
+      "total": 35,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "close",
+      "line": 206,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/registered_display.rs",
+      "name": "drop",
+      "line": 223,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

@@ -294,3 +294,34 @@ async fn t916_route_revoke_cancels_pending_socket_io_before_replacement_admissio
         .is_err());
     live.run(async { Ok(()) }).await.unwrap();
 }
+#[test]
+fn t920_concurrent_renewal_admits_exactly_one_observed_owner() {
+    for _ in 0..16 {
+        let (attachment, _) = fixture(None);
+        let lease = attachment.lease();
+        let barrier = std::sync::Barrier::new(4);
+        let results = std::thread::scope(|scope| {
+            let mut threads = Vec::new();
+            for owner in 1..=4 {
+                let lease = &lease;
+                let barrier = &barrier;
+                threads.push(scope.spawn(move || {
+                    barrier.wait();
+                    lease.register_route(peer(owner), Credential::new([owner as u8; 32]), Link::Usb)
+                }));
+            }
+            threads
+                .into_iter()
+                .map(|thread| thread.join().unwrap())
+                .collect::<Vec<_>>()
+        });
+        assert_eq!(results.iter().filter(|result| result.is_ok()).count(), 1);
+        assert!(!lease.detach_registered());
+        let current = results.into_iter().find_map(Result::ok).unwrap();
+        assert!(current.current());
+        let revoked = current.revoke().unwrap();
+        assert!(attachment.token().is_err());
+        assert!(revoked.detach_registered());
+        assert!(!revoked.detach_registered());
+    }
+}

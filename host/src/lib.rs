@@ -19,6 +19,7 @@ mod session_supervision;
 // Shared wire/session state is built for every host target.
 pub mod adb_inventory;
 pub mod display_slots;
+pub mod registered_display;
 pub mod attachment;
 pub mod config;
 pub mod ffmpeg_args;

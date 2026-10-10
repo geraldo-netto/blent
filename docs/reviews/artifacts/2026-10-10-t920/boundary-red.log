@@ -1,0 +1,38 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.37s
+     Running unittests src/lib.rs (target/debug/deps/blent-276264e4cf99d16f)
+
+running 7 tests
+test registered_display::tests::t920_invalid_active_route_counters_never_admit_display ... FAILED
+test registered_display::tests::t920_late_close_does_not_revoke_a_replacement_attachment ... ok
+test registered_display::tests::t920_lost_authority_does_not_retry_over_its_replacement ... ok
+test registered_display::tests::t920_renewal_waits_for_native_and_remote_retirement_and_preserves_geometry ... ok
+test registered_display::tests::t920_replacement_during_retry_is_not_overwritten ... FAILED
+test registered_display::tests::t920_retry_bounds_and_close_before_start ... ok
+test registered_display::tests::t920_startup_and_entropy_errors_obey_absolute_retry_deadlines ... ok
+
+failures:
+
+---- registered_display::tests::t920_invalid_active_route_counters_never_admit_display stdout ----
+
+thread 'registered_display::tests::t920_invalid_active_route_counters_never_admit_display' (2433908) panicked at host/src/registered_display/tests.rs:293:13:
+assertion `left == right` failed: T920 invalid route admitted
+  left: Active
+ right: Retiring
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- registered_display::tests::t920_replacement_during_retry_is_not_overwritten stdout ----
+
+thread 'registered_display::tests::t920_replacement_during_retry_is_not_overwritten' (2433912) panicked at host/src/registered_display/tests.rs:280:5:
+assertion `left == right` failed: T920 retry replaced foreign generation
+  left: 2
+ right: 1
+
+
+failures:
+    registered_display::tests::t920_invalid_active_route_counters_never_admit_display
+    registered_display::tests::t920_replacement_during_retry_is_not_overwritten
+
+test result: FAILED. 5 passed; 2 failed; 0 ignored; 0 measured; 354 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

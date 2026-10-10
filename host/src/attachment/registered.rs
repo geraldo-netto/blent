@@ -8,6 +8,40 @@ use blent_config::connection::{management::Credential, pairing::PeerId};
 pub struct RegisteredRoute {
     lease: Lease,
 }
+impl Lease {
+    /// Atomically renew only this observed generation. No check-then-register
+    /// window can overwrite a competing attachment, including during retry.
+    pub fn register_route(
+        &self,
+        peer: PeerId,
+        credential: Credential,
+        link: Link,
+    ) -> Result<RegisteredRoute> {
+        self.attachment
+            .register_guarded(peer, credential, link, Some(self.generation))
+    }
+    /// Detach only this current native generation. A revoked lease may retain
+    /// this authority through hot-renewal backoff; stale or legacy leases cannot
+    /// remove a replacement. No token or native retirement proof is created.
+    pub fn detach_registered(&self) -> bool {
+        let attachment = &self.attachment;
+        let mut state = attachment
+            .0
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        if state.closed || state.generation != self.generation || !state.registered {
+            return false;
+        }
+        state.authentication = Authentication::Unavailable;
+        state.identity = None;
+        state.transport = None;
+        attachment.reset_metadata();
+        attachment.0.presence.send_replace(false);
+        let _ = attachment.advance_registered(&mut state);
+        true
+    }
+}
 impl Attachment {
     /// Prepare credentials before registration can connect back to the owned
     /// listeners. Same-peer renewal keeps configured geometry and display presence;
@@ -18,9 +52,22 @@ impl Attachment {
         credential: Credential,
         link: Link,
     ) -> Result<RegisteredRoute> {
+        self.register_guarded(peer, credential, link, None)
+    }
+    fn register_guarded(
+        &self,
+        peer: PeerId,
+        credential: Credential,
+        link: Link,
+        expected: Option<u64>,
+    ) -> Result<RegisteredRoute> {
         let identity = Identity::authenticated(peer);
         let mut state = self.0.state.lock().unwrap();
         ensure!(!state.closed, "session attachment retired");
+        ensure!(
+            expected.is_none_or(|expected| expected == state.generation),
+            "stale display owner"
+        );
         let preserve = state.identity.as_ref() == Some(&identity);
         self.advance_registered(&mut state)?;
         state.authentication = Authentication::Required(token(&credential));
@@ -79,9 +126,13 @@ impl RegisteredRoute {
             self.lease.attachment.0.presence.send_replace(true);
         })
     }
-    /// Revoke old sockets immediately while retaining same-peer display intent.
-    /// Whole-peer loss must also clear Attachment presence via its owner.
-    pub fn close(&self) {
+    pub fn current(&self) -> bool {
+        self.lease.apply(|| ())
+    }
+    /// Revoke old sockets while retaining same-peer display intent. The returned
+    /// guard can later detach this exact revoked generation on whole-peer loss.
+    /// Capture that guard under the same lock; never snapshot a competing route.
+    pub fn revoke(&self) -> Option<Lease> {
         let attachment = &self.lease.attachment;
         let mut state = attachment
             .0
@@ -89,10 +140,14 @@ impl RegisteredRoute {
             .lock()
             .unwrap_or_else(std::sync::PoisonError::into_inner);
         if state.closed || state.generation != self.lease.generation {
-            return;
+            return None;
         }
         state.authentication = Authentication::Unavailable;
-        let _ = attachment.advance_registered(&mut state);
+        attachment.advance_registered(&mut state).ok()?;
+        Some(attachment.lease_locked(&state))
+    }
+    pub fn close(&self) {
+        let _ = self.revoke();
     }
 }
 impl Drop for RegisteredRoute {

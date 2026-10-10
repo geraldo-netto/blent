@@ -1478,3 +1478,31 @@ identities, delayed cleanup, stale completion, reconnect and existing ADB
 behavior. [Evidence](artifacts/2026-10-10-t917/README.md) includes two draft
 fail-before-fix regressions and per-function counters. Live USB production
 composition remains T908; no tablet acceptance or resource-use gain is claimed.
+
+## T920 registered display renewal owner
+
+`registered_display::Display` joins the portable registration client and attachment
+contracts without native handles. Its registration port must return promptly;
+a startup error proves no registration was exposed. Uncertain native ownership
+must instead return a retained client whose retirement stays incomplete. The
+caller retains the separate capacity ticket and session until both domains retire.
+
+Only a valid exact Active route admits display. Changed route IDs, malformed
+counters, inconsistent status and terminal phases revoke socket authority. Repeated
+Active polls do not notify capture again. Channel/decoder reconnect retains desired
+presence and geometry while waiting for remote AND native retirement, then retries
+with fresh entropy. Retry is explicit configuration, positive and at most 60 seconds;
+its absolute deadline does not slide on polls or failures. T908 supplies the default
+and native entropy/registration adapters; no production wiring is claimed here.
+
+Whole-display close removes its own presence/configuration and requests registration
+cleanup without waiting for native I/O. Generation-scoped revoked leases preserve
+cleanup authority across backoff. Conditional renewal compares and advances the
+attachment generation under one lock; an obsolete owner cannot overwrite or detach
+a replacement, even after native completion or during concurrent renewal. Lost
+local authority ends renewal. An incomplete client keeps the display Retiring.
+
+[Evidence](artifacts/2026-10-10-t920/README.md) retains permanent red/green stale-close,
+stale-retry, retry-window replacement and invalid-route regressions, concurrency
+coverage and native per-function counters. Linux daemon composition remains T908;
+T921 rejects ambiguous same-certificate link selection before that integration.
