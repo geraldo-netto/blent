@@ -240,7 +240,8 @@ internal class SessionCoordinator(
     }
 
     fun applyToken(restart: Boolean) {
-        val token = prefs.hostToken ?: return
+        val token = prefs.hostToken
+        if (token == null) { retireToken(); return }
         val changed = touchCapture?.token != token
         touchCapture?.token = token
         videoReceiver?.token = token
@@ -256,6 +257,16 @@ internal class SessionCoordinator(
                 videoReceiver?.start()
             }
         }
+    }
+
+    private fun retireToken() {
+        // Null at initial ADB startup still permits its token-delivery handshake.
+        // Once credentials existed, clearing them must retire their captured work.
+        if (touchCapture?.token == null && videoReceiver?.token == null) return
+        touchCapture?.disconnect()
+        videoReceiver?.stop()
+        touchCapture?.token = null
+        videoReceiver?.token = null
     }
 
 }
