@@ -57,7 +57,8 @@ class DistributionTest(unittest.TestCase):
                 write('host/evdi/evdi_helper.c', 'extern int blent_distribution_probe(void); int main(void) { return blent_distribution_probe(); }\n')
                 # T380: stub the other C units too; this fixture checks loader
                 # paths and packaging. evdi_modules tests the real module link.
-                for module in ['conversion', 'frame_exchange', 'fifo_writer', 'capture', 'raw_ring', 'writer']:
+                # T832: retain cursor_overlay too; Makefile links it into the helper.
+                for module in ['conversion', 'frame_exchange', 'fifo_writer', 'capture', 'cursor_overlay', 'raw_ring', 'writer']:
                     write(f'host/evdi/{module}.c', '/* distribution fixture */\n')
                 # T642: model an installed compiler library that precedes LIBRARY_PATH.
                 competing = root / 'compiler libraries'

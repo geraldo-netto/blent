@@ -72,3 +72,12 @@ panics, no automatic replay, explicit restart, successful completion and unknown
 panic payloads. Full library plus integration suite passes; all 28 production
 functions in affected modules meet individual 80% coverage and complexity <=9.
 [Red/green and coverage evidence](artifacts/2026-10-10-t812/).
+
+## T832: retain the complete distribution fixture
+
+The existing T102 loader/distribution regression failed because its isolated C
+fixture omitted `cursor_overlay.c`, which the current Makefile links. The fixture
+now includes that unit; both permanent distribution tests pass offline. Production
+code and packaging assertions are unchanged. Full-workspace RPM notice validation
+still needs local `rpmbuild` (T833); no dependencies were downloaded.
+[Red/green evidence](artifacts/2026-10-10-t832/).
