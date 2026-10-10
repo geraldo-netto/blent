@@ -883,3 +883,21 @@ fn t823_c_pixel_contracts_hide_native_owner_layout() {
         String::from_utf8_lossy(&output.stderr)
     );
 }
+
+#[test]
+fn t827_architecture_rules_reject_forbidden_dependency_fixtures() {
+    for name in [
+        "test_host_contract_boundaries.py",
+        "test_architecture_rules.py",
+    ] {
+        let output = Command::new("python3")
+            .arg(repo().join("scripts/tests").join(name))
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+    }
+}
