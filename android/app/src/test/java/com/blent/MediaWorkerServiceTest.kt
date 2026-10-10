@@ -82,12 +82,7 @@ class MediaWorkerServiceTest {
             val retired = AtomicInteger()
             service.factory = { _, borrowed, _ ->
                 assertNotNull(borrowed)
-                if (phase == "create") error("create")
-                object : LifecycleRun {
-                    override suspend fun execute() { if (phase == "execute") error("execute") }
-                    override fun cancel() { if (phase == "cancel") error("cancel") }
-                    override suspend fun retire() { retired.incrementAndGet(); if (phase == "retire") error("retire") }
-                }
+                failingRun(phase, retired)
             }
             try {
                 val binder = service.onBind(Intent().putExtra("worker_generation", 7L))
@@ -97,6 +92,15 @@ class MediaWorkerServiceTest {
                 if (phase != "create") assertEquals("T809 cancellation failure skipped retirement", 1, retired.get())
                 assertTrue("Worker destroyed caller Surface", surface.isValid)
             } finally { controller.destroy(); surface.release() }
+        }
+    }
+    // T866: keep fault injection separate from worker ownership assertions.
+    private fun failingRun(phase: String, retired: AtomicInteger): LifecycleRun {
+        if (phase == "create") error("create")
+        return object : LifecycleRun {
+            override suspend fun execute() { if (phase == "execute") error("execute") }
+            override fun cancel() { if (phase == "cancel") error("cancel") }
+            override suspend fun retire() { retired.incrementAndGet(); if (phase == "retire") error("retire") }
         }
     }
     @Test fun t809_malformedDuplicateAndRejectedCommandsCannotStartAnotherOwner() = runBlocking {
