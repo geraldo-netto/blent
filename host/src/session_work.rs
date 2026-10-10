@@ -19,8 +19,12 @@ impl RuntimeWork {
         }
     }
     pub fn shared(runtime: &Runtime) -> Self {
+        Self::shared_status(runtime.status.clone())
+    }
+    /// Composition can retain an observer without retaining the daemon runtime.
+    pub fn shared_status(status: watch::Receiver<State>) -> Self {
         Self {
-            binding: Binding::Shared(runtime.status.clone()),
+            binding: Binding::Shared(status),
             closed: false,
         }
     }

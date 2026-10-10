@@ -81,6 +81,7 @@ impl Fixture {
 mod policy;
 mod registration;
 mod media_client;
+mod display;
 mod runtime;
 mod shutdown;
 mod tls;

@@ -4,14 +4,18 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::task::JoinSet;
+mod admission;
 mod credentials;
 mod forwarding;
 mod launch_policy;
 mod preparation;
 mod retirement;
 mod routes;
-mod admission;
-use blent::display_slots::{Slots, Owner as DisplayOwner, Ticket as DisplayTicket, Plan as DisplayPlan};
+#[cfg(feature = "accessory-transport")]
+mod usb_display;
+use blent::display_slots::{
+    Owner as DisplayOwner, Plan as DisplayPlan, Slots, Ticket as DisplayTicket,
+};
 type RetiredDisplay = (String, u32, DisplayTicket);
 pub(crate) use routes::RouteOwner;
 
@@ -23,6 +27,8 @@ pub(crate) struct Config {
     pub relaunch: Arc<tokio::sync::Notify>,
     pub extra: ExtraSessionTemplate,
     pub adb: String,
+    #[cfg(feature = "accessory-transport")]
+    pub usb: Option<usb_display::Native>,
 }
 
 struct Pending {
@@ -54,6 +60,20 @@ enum Event {
     Retired(Option<std::result::Result<RetiredDisplay, tokio::task::JoinError>>),
     PrimaryToken,
     ExtraToken(String),
+    #[cfg(feature = "accessory-transport")]
+    UsbTick,
+    #[cfg(feature = "accessory-transport")]
+    UsbStartup(
+        Option<
+            std::result::Result<
+                (
+                    blent::display_connections::Admission,
+                    Result<blent::registered_session::Bindings>,
+                ),
+                tokio::task::JoinError,
+            >,
+        >,
+    ),
 }
 
 struct Monitor {
@@ -117,6 +137,7 @@ impl Monitor {
     async fn event(
         &mut self,
         interval: &mut tokio::time::Interval,
+        usb_interval: &mut tokio::time::Interval,
         shutdown: &mut watch::Receiver<bool>,
     ) -> Event {
         let requests = self
@@ -124,9 +145,17 @@ impl Monitor {
             .iter()
             .map(|(serial, session)| (serial.clone(), session.relaunch.clone()))
             .collect();
+        #[cfg(feature = "accessory-transport")]
+        let usb_event = usb_display::event(&mut self.config.usb, usb_interval);
+        #[cfg(not(feature = "accessory-transport"))]
+        let usb_event = {
+            let _ = usb_interval;
+            std::future::pending::<Event>()
+        };
         tokio::select! {
             _ = shutdown.changed() => Event::Stop,
             _ = interval.tick() => Event::Tick,
+            event = usb_event => event,
             result = self.discovery.next() => Event::Probe(result),
             (serial, result) = self.mutations.next() => Event::Mutation(serial, result),
             result = self.inventory.join_next(), if !self.inventory.is_empty() => Event::Inventory(result),
@@ -300,7 +329,11 @@ impl Monitor {
         else {
             return;
         };
-        if self.slots.reserve(DisplayOwner::Adb(serial.clone()), 0).is_err() {
+        if self
+            .slots
+            .reserve(DisplayOwner::Adb(serial.clone()), 0)
+            .is_err()
+        {
             return;
         }
         self.config.tablet.begin_with_transport(
@@ -328,7 +361,10 @@ impl Monitor {
         let Some(instance) = self.available_slot() else {
             return;
         };
-        let Ok(ticket) = self.slots.reserve(DisplayOwner::Adb(serial.clone()), instance) else {
+        let Ok(ticket) = self
+            .slots
+            .reserve(DisplayOwner::Adb(serial.clone()), instance)
+        else {
             return;
         };
         // Only local listener binding awaits here. Device commands run in the
@@ -337,7 +373,9 @@ impl Monitor {
             Ok(session) => session,
             Err(error) => {
                 self.slots.close(ticket).expect("owned startup ticket");
-                self.slots.retired(ticket).expect("unpublished startup failed");
+                self.slots
+                    .retired(ticket)
+                    .expect("unpublished startup failed");
                 warn!("Could not start tablet {}: {error}", instance + 1);
                 self.forwarding
                     .entry(serial)
@@ -372,8 +410,8 @@ impl Monitor {
             &self.identities,
         );
         let preferred = current_transport(&devices, self.current.as_deref(), &self.identities);
-        let found = select_tablet(&devices, preferred.as_deref())
-            .filter(|_| self.slots.adb_allowed(0));
+        let found =
+            select_tablet(&devices, preferred.as_deref()).filter(|_| self.slots.adb_allowed(0));
         self.change_primary(&found);
         let others = extra_devices(&devices, found.as_deref());
         self.remove_gone(&others);
@@ -521,6 +559,10 @@ impl Monitor {
                     input_port: session.input_port,
                 }),
         );
+        #[cfg(feature = "accessory-transport")]
+        if let Some(usb) = &self.config.usb {
+            sessions.extend(usb.status());
+        }
         if let Err(error) = ledger.update(sessions) {
             warn!("Could not update tablet sessions: {error}");
         }
@@ -542,7 +584,37 @@ impl Monitor {
         for serial in serials {
             self.remove_assignment(&serial);
         }
+        #[cfg(feature = "accessory-transport")]
+        if let Some(usb) = &mut self.config.usb {
+            usb.stop(&mut self.slots).await;
+        }
         while self.retiring.join_next().await.is_some() {}
+    }
+}
+
+impl Monitor {
+    async fn step(&mut self, event: Event, ledger: &mut Option<runtime::SessionLedger>) -> bool {
+        if matches!(event, Event::Stop) {
+            return false;
+        }
+        #[cfg(feature = "accessory-transport")]
+        let native_only = matches!(event, Event::UsbTick | Event::UsbStartup(_));
+        #[cfg(not(feature = "accessory-transport"))]
+        let native_only = false;
+        #[cfg(feature = "accessory-transport")]
+        let event = self.usb_event(event);
+        #[cfg(not(feature = "accessory-transport"))]
+        let event = Some(event);
+        if let Some(event) = event {
+            apply_event(self, event).await;
+        }
+        #[cfg(feature = "accessory-transport")]
+        self.usb_progress();
+        if !native_only {
+            self.reconcile().await;
+        }
+        self.publish(ledger);
+        true
     }
 }
 
@@ -555,8 +627,28 @@ async fn apply_event(state: &mut Monitor, event: Event) {
         Event::Retired(Some(Ok(route))) => state.retired(route),
         Event::PrimaryToken => state.primary_token(),
         Event::ExtraToken(serial) => state.extra_token(serial, Instant::now()),
+
         _ => {}
     }
+}
+
+pub(crate) fn with_usb(
+    mut config: Config,
+    runtime: &ExtraSession,
+    listeners: blent::session_network::RetainedListeners,
+) -> Config {
+    #[cfg(feature = "accessory-transport")]
+    {
+        let native = blent::broker::linux::client::Launch::from_environment()
+            .and_then(|launch| usb_display::Native::new(&config, runtime, listeners, launch));
+        match native {
+            Ok(native) => config.usb = Some(native),
+            Err(error) => warn!("Native USB display unavailable: {error}"),
+        }
+    }
+    #[cfg(not(feature = "accessory-transport"))]
+    let _ = (runtime, listeners, &mut config);
+    config
 }
 
 pub(crate) async fn run(config: Config) {
@@ -565,14 +657,14 @@ pub(crate) async fn run(config: Config) {
     let mut ledger = session_ledger();
     let mut interval = tokio::time::interval(Duration::from_secs(2));
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
+    let mut usb_interval = tokio::time::interval(Duration::from_millis(100));
     while !*shutdown.borrow() {
-        let event = state.event(&mut interval, &mut shutdown).await;
-        if matches!(event, Event::Stop) {
+        let event = state
+            .event(&mut interval, &mut usb_interval, &mut shutdown)
+            .await;
+        if !state.step(event, &mut ledger).await {
             break;
         }
-        apply_event(&mut state, event).await;
-        state.reconcile().await;
-        state.publish(&mut ledger);
     }
     state.stop().await;
 }
@@ -620,6 +712,8 @@ mod tests {
             relaunch: Default::default(),
             extra,
             adb: "/missing-test-adb".into(),
+            #[cfg(feature = "accessory-transport")]
+            usb: None,
         })
     }
 
@@ -643,7 +737,10 @@ mod tests {
         state.current = Some("OLD".into());
         state.ready.insert("SURVIVOR".into());
         state.extras.insert("SURVIVOR".into(), runtime);
-        state.slots.reserve(DisplayOwner::Adb("SURVIVOR".into()), 1).unwrap();
+        state
+            .slots
+            .reserve(DisplayOwner::Adb("SURVIVOR".into()), 1)
+            .unwrap();
         state.change_primary(&Some("SURVIVOR".into()));
         assert!(
             !state.extras.contains_key("SURVIVOR"),

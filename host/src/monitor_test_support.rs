@@ -2,7 +2,8 @@
 use super::*;
 
 fn fixture(assigned: &[String], auto_launch: bool, token: Option<&str>, adb: &str) -> Monitor {
-    let (tablet, extra, _stop) = crate::discovery_tests::monitor_inputs(assigned.len().max(2) as u32, (18000, 18001));
+    let (tablet, extra, _stop) =
+        crate::discovery_tests::monitor_inputs(assigned.len().max(2) as u32, (18000, 18001));
     let mut state = Monitor::new(Config {
         ports: (18000, 18001),
         auto_launch,
@@ -11,10 +12,15 @@ fn fixture(assigned: &[String], auto_launch: bool, token: Option<&str>, adb: &st
         relaunch: Default::default(),
         extra,
         adb: adb.into(),
+        #[cfg(feature = "accessory-transport")]
+        usb: None,
     });
     state.ready.extend(assigned.iter().cloned());
     for (instance, serial) in assigned.iter().enumerate() {
-        state.slots.reserve(DisplayOwner::Adb(serial.clone()), instance as u32).unwrap();
+        state
+            .slots
+            .reserve(DisplayOwner::Adb(serial.clone()), instance as u32)
+            .unwrap();
         let prepared = session::Spec {
             capture: Default::default(),
             ports: (0, 0),

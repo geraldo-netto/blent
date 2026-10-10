@@ -1610,3 +1610,27 @@ cannot slide or spin on clock exhaustion; per-peer failure does not starve other
 peers. [Permanent regression and counter evidence](artifacts/2026-10-11-t927/README.md)
 covers multiple peers, cancellation, both cleanup orders, failure isolation and
 invalid bounds. Linux daemon composition remains T908 and tablet acceptance T857.
+
+## T908 Linux daemon display integration
+
+With `accessory-transport`, the Linux daemon composes authenticated selected USB
+discovery with its existing capacity owner and actual exported session listeners.
+Primary assignments reuse daemon-owned capture; extra sessions start independently
+on demand through the same specification as ADB. A separate native timer observes
+registration and actual retirement without increasing ADB inventory polling.
+Selected USB uses free capacity first, otherwise retires one ADB display and waits
+for its owned cleanup. New ambiguous candidates cannot preempt ADB. Active status
+uses the authenticated peer identity and actual configured listener ports.
+
+Late startup and source loss transfer ownership into closing sessions; listener
+capabilities remain pinned until registration and native work retire. Startup
+panic conservatively quarantines its ticket while other peers progress; recovery
+proof remains T928. Default builds preserve ADB behavior. Optional-ADB diagnostics
+and idle discovery allocation evaluation remain T929/T930, respectively.
+
+[Evidence](artifacts/2026-10-11-t908/README.md) covers permanent fail-before-fix
+listener-handoff validation, real TLS registration and actual video/WebSocket
+protocols, fresh credentials, synthetic frame ACK and touch, failure isolation,
+shutdown, full native/default suites and per-function counters. Physical Android
+display/touch acceptance remains T857 with postponed T855 pairing. Native USB is
+still experimental; Windows native USB remains unsupported under T902.

@@ -1,0 +1,386 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/monitor/usb_display.rs",
+    "host/src/session_work.rs",
+    "host/src/monitor.rs::{new,event,publish,stop,step,with_usb,run}",
+    "host/src/linux_main.rs::{run_daemon,spawn_extra_session,prepare_extra_session}"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 31,
+      "passing": 31,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/linux_main.rs",
+      "name": "run_daemon",
+      "line": 1595,
+      "language": "rust",
+      "covered": 182,
+      "total": 189,
+      "percent": 96.29629629629629,
+      "passes": true,
+      "missing": [
+        1709,
+        1727,
+        1728,
+        1729,
+        1820,
+        1821,
+        1835
+      ]
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "name": "spawn_extra_session",
+      "line": 2186,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "name": "prepare_extra_session",
+      "line": 2200,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "new",
+      "line": 27,
+      "language": "rust",
+      "covered": 26,
+      "total": 29,
+      "percent": 89.65517241379311,
+      "passes": true,
+      "missing": [
+        43,
+        46,
+        51
+      ]
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "progress",
+      "line": 60,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "start",
+      "line": 74,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "next",
+      "line": 95,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "starting",
+      "line": 100,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "completed",
+      "line": 103,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "status",
+      "line": 118,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "stop",
+      "line": 121,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        128
+      ]
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "extra_bindings",
+      "line": 134,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "usb_progress",
+      "line": 148,
+      "language": "rust",
+      "covered": 7,
+      "total": 8,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        153
+      ]
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "usb_completed",
+      "line": 157,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "event",
+      "line": 166,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/usb_display.rs",
+      "name": "usb_event",
+      "line": 176,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "new",
+      "line": 107,
+      "language": "rust",
+      "covered": 29,
+      "total": 29,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "event",
+      "line": 137,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "publish",
+      "line": 537,
+      "language": "rust",
+      "covered": 27,
+      "total": 29,
+      "percent": 93.10344827586206,
+      "passes": true,
+      "missing": [
+        539,
+        567
+      ]
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "stop",
+      "line": 571,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "step",
+      "line": 596,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "with_usb",
+      "line": 635,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        646
+      ]
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "name": "run",
+      "line": 654,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "owned",
+      "line": 15,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "shared",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "shared_status",
+      "line": 25,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "running",
+      "line": 31,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "alive",
+      "line": 39,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "close",
+      "line": 42,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "retired",
+      "line": 51,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_work.rs",
+      "name": "drop",
+      "line": 60,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

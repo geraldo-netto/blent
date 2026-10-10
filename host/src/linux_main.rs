@@ -1708,7 +1708,7 @@ async fn run_daemon(cli: Cli) -> Result<()> {
     if pen_only {
         info!("Starting in pen-only mode; no virtual display or encoding until requested");
     }
-    let primary = prepared.start(shutdown_tx.subscribe()).await?;
+    let (primary, listeners) = prepared.start_exported(shutdown_tx.subscribe()).await?;
 
     let save_handle = tokio::spawn(save_settings);
 
@@ -1763,18 +1763,22 @@ async fn run_daemon(cli: Cli) -> Result<()> {
         mode_tx: mode_tx.clone(),
         shutdown_rx: shutdown_tx.subscribe(),
     };
-    let mut adb_handle = tokio::spawn(async move {
-        adb_monitor(
-            video_port,
-            input_port,
+    let monitor = monitor::with_usb(
+        monitor::Config {
+            ports: (video_port, input_port),
             auto_launch,
-            tablet_tx,
+            tablet: tablet_tx,
             token_dir,
             relaunch,
             extra,
-        )
-        .await;
-    });
+            adb: "adb".into(),
+            #[cfg(feature = "accessory-transport")]
+            usb: None,
+        },
+        &primary,
+        listeners,
+    );
+    let mut adb_handle = tokio::spawn(monitor::run(monitor));
 
     println!();
     println!("================================================");
@@ -2149,6 +2153,7 @@ fn find_helper(explicit: Option<&std::path::Path>) -> Result<PathBuf> {
 /// Everything needed to bring up a pipeline for a second (third, ...)
 /// tablet on demand. Every slot uses the shared session runtime; only the
 /// primary session participates in daemon configuration persistence.
+#[derive(Clone)]
 struct ExtraSessionTemplate {
     max_tablets: u32,
     cap_template: capture::CaptureConfig,
@@ -2179,60 +2184,36 @@ fn slot_capture_config(
 /// Ports are the base ports plus 2 per instance; the tablet side keeps
 /// using 8890/8891, since `adb reverse` maps them per device.
 async fn spawn_extra_session(t: &ExtraSessionTemplate, instance: u32) -> Result<ExtraSession> {
-    let (video_port, input_port) = *config::slot_ports(t.video_port, t.input_port, t.max_tablets)?
-        .get(instance as usize)
-        .context("tablet slot outside configured range")?;
-    let cfg = slot_capture_config(t.cap_template.clone(), instance);
-
-    let prepared = session::Spec {
-        capture: cfg.clone(),
-        ports: (video_port, input_port),
-        token: t.token.clone(),
-        devices: (t.input_touch, t.input_pen, t.input_pointer),
-    }
-    .prepare(t.mode_tx.clone());
-    let runtime = prepared.start(t.shutdown_rx.clone()).await?;
+    let runtime = prepare_extra_session(t, instance)?
+        .start(t.shutdown_rx.clone())
+        .await?;
+    let (video_port, input_port) = (runtime.video_port, runtime.input_port);
     info!(
-        "Tablet slot {} ready: video port {}, input port {}{}",
+        "Tablet slot {} ready: video port {}, input port {}",
         instance + 1,
         video_port,
         input_port,
-        cfg.card
-            .map(|c| format!(", EVDI card{}", c))
-            .unwrap_or_default()
     );
     Ok(runtime)
 }
 
-/// Keeps watching for tablets. The first serial seen gets the pipeline wired
-/// at startup; with max_tablets > 1, further serials each get a pipeline of
-/// their own for as long as they stay attached.
-///
-/// Presence is published on `tablet_tx` so the capture manager can bring the
-/// virtual display up and down along with the tablet.
-#[allow(clippy::too_many_arguments)]
-async fn adb_monitor(
-    video_port: u16,
-    input_port: u16,
-    auto_launch: bool,
-    tablet_tx: attachment::Attachment,
-    token_dir: Option<PathBuf>,
-    relaunch: std::sync::Arc<tokio::sync::Notify>,
-    extra: ExtraSessionTemplate,
-) {
-    adb_monitor_using(
-        video_port,
-        input_port,
-        auto_launch,
-        tablet_tx,
-        token_dir,
-        relaunch,
-        extra,
-        "adb",
-    )
-    .await;
+fn prepare_extra_session(
+    t: &ExtraSessionTemplate,
+    instance: u32,
+) -> Result<blent::session::Prepared> {
+    let ports = *config::slot_ports(t.video_port, t.input_port, t.max_tablets)?
+        .get(instance as usize)
+        .context("tablet slot outside configured range")?;
+    Ok(session::Spec {
+        capture: slot_capture_config(t.cap_template.clone(), instance),
+        ports,
+        token: t.token.clone(),
+        devices: (t.input_touch, t.input_pen, t.input_pointer),
+    }
+    .prepare(t.mode_tx.clone()))
 }
 
+#[cfg(test)]
 #[allow(clippy::too_many_arguments)]
 async fn adb_monitor_using(
     video_port: u16,
@@ -2252,6 +2233,8 @@ async fn adb_monitor_using(
         relaunch,
         extra,
         adb: adb.to_owned(),
+        #[cfg(feature = "accessory-transport")]
+        usb: None,
     })
     .await;
 }
