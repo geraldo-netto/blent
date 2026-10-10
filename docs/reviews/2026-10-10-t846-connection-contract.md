@@ -234,7 +234,9 @@ activation prerequisite with its own regressions and commit.
 | T882 | Android tablet resource-session and leased-buffer boundary (implemented) | T881, T849–T851 |
 | T883 | Bounded Android native session runner (implemented) | T881, T882 |
 | T884 | Private Android connection process and IPC (implemented) | T883 |
-| T854 | Production Android accessory/setup composition | T883, T884, T856 |
+| T886 | Authenticated Android setup owner (implemented) | T884, T851, T856 |
+| T887 | Android accessory selection/permission/opening | T884 |
+| T854 | Production Android accessory/setup composition | T886, T887, T883 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
 | T858 | Independent camera integration; second user-visible milestone | T857 routing; maintainer priority after working display |
@@ -961,3 +963,58 @@ termination behavior. No ADB-free production-media support is claimed here.
 Validation: [T884 retained evidence](artifacts/2026-10-10-t884/README.md):
 265 connection tests, 85 per-function coverage checks, 116 executable JVM method
 counters above 80%, and 134 complexity checks at or below 7.
+
+
+## T886 authenticated Android setup owner
+
+`ConnectionSetup` is a prompt serialized control boundary; `ConnectionSetupBackend`
+and `ConnectionSetupLifetime` define blocking native operations independently of
+Android, sockets, USB discovery or storage implementation. `ConnectionSetupOwner`
+uses one authority worker for exact pairing/trust mutations and a separate native
+closer. A bounded control gate immediately invalidates admission on stop or matching
+revocation even while TLS or durable trust publication is blocked. The containing
+reactor must supply concurrent wake hints and an independent `advance()` timer.
+
+Setup exchanges bounded public certificates, coordinates current approval with
+READY, verifies stock mutual TLS, durably records explicit remember consent and
+negotiates the authenticated BLCP receive window. It never treats HELLO, a USB
+metadata match or permission approval as peer identity proof. A queued revoke
+arriving before the peer is discovered prevents that peer's later admission.
+
+`ConnectionSetupReady` lends its framed I/O handle, approval and selected capacity;
+the setup owner retains ownership. Consumers must check `current(approval)` before
+dispatch and disconnect immediately after revocation. `TabletSession` has no
+injected approval callback; that integration gate belongs to T854. Successful
+remember writes emit a durable Trust(true) fact even if cancellation prevents
+admission; a subsequent revoke emits Trust(false) only after its deletion succeeds.
+Cancellation alone does not undo previously granted remember consent.
+
+`SocketConnectionSetup` composes existing HELLO/READY/TLS/window implementations.
+Absolute read deadlines cover fragmented discovery/readiness/window records; the
+independent supervisor also bounds blocked native writes, TLS and close. READY
+uses the remaining consent deadline; TLS is bounded by both that deadline and
+its native-operation budget. Late native completions cannot reset expired phase
+deadlines before the next reactor tick. Even unrelated remembered-peer deletion
+is bounded after setup is ready. Retirement grace begins at actual stop time. Strict
+certificate parsing precedes approval presentation. Late TLS wrappers remain
+owned and close when cancellation already began. The single close admission is
+shared with framed I/O; failed socket/bridge close cannot establish retirement.
+Actual native setup and I/O worker exits remain part of aggregate owner retirement.
+
+Defaults are 10 seconds for each native setup phase, 120 seconds for approval,
+2 seconds for retirement and 64 remembered peers. Supported deadline ranges are
+1–60000 ms for native/retirement phases and 1–600000 ms for approval; trust capacity
+is 1–1024 peers. Larger capacities retain more trust state; longer deadlines delay
+failure recovery. These are configuration contracts, not measured performance gains.
+T854 must expose them through production worker configuration. The selected channel
+window remains bounded by both peers' configured limits.
+
+Accessory selection/permission/opening remains T887. Production worker composition
+remains T854, pairing UI and physical debugging-off pairing acceptance remain T855,
+and actual display/touch routing and acceptance remain T857. Loopback tests do not
+establish native AndroidKeyStore, physical USB or real Binder-kill acceptance.
+
+Validation: [T886 retained evidence](artifacts/2026-10-10-t886/README.md):
+312 ordinary connection tests and 12 Rust/Android TLS interoperability tests pass;
+61 individual source-function checks and 80 executable JVM method counters pass
+(minimum 88.89%); 208 reviewed functions have cyclomatic complexity at most 9.

@@ -62,6 +62,9 @@ async fn serve(directory: &Path, ready: &Path, mode: &str) -> Result<()> {
     if mode == "wrong-preface" {
         return wrong_preface(socket, directory).await;
     }
+    if mode == "setup" {
+        return setup_session(socket, &identity, &peer).await;
+    }
     let mut stream = accept(socket, &identity, &peer).await?;
     if matches!(mode, "window" | "session") {
         let limits = blent::broker::session::Limits {
@@ -88,6 +91,76 @@ async fn serve(directory: &Path, ready: &Path, mode: &str) -> Result<()> {
     stream.write_all(b"accepted").await?;
     stream.flush().await?;
     Ok(())
+}
+
+// T886: this owner has only the fixture's in-process TcpStream, which is dropped
+// before retirement. It never claims USB or subprocess retirement evidence.
+struct SetupOwner(blent_config::retirement::Admission);
+impl blent::accessory::Owner for SetupOwner {
+    fn completion(&self) -> blent_config::retirement::Completion {
+        self.0.completion()
+    }
+    fn retire(
+        self: Box<Self>,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<()>> + Send>> {
+        Box::pin(async move {
+            drop(self);
+            Ok(())
+        })
+    }
+}
+
+// Use the maintained host setup/authority path, rather than skipping directly
+// to TLS. The fixture approves only its committed public tablet certificate.
+async fn setup_session(
+    socket: TcpStream,
+    identity: &Identity,
+    peer: &PeerCertificate,
+) -> Result<()> {
+    use blent::accessory::{setup, Resource};
+    use blent_config::{connection::pairing::Pairing, retirement::Pool};
+    let owner = Box::new(SetupOwner(Pool::new(1)?.reserve()?));
+    let resource = Resource {
+        stream: Box::new(socket),
+        owner,
+    };
+    let candidate = setup::discover(resource, identity, Duration::from_secs(3)).await?;
+    let proven = peer.peer_id();
+    ensure!(
+        candidate.peer() == &proven,
+        "unexpected setup fixture identity"
+    );
+    let mut pairing = Pairing::default();
+    let ticket = pairing.begin(proven.clone(), true, 0, 10000)?;
+    let verified = candidate
+        .authenticate_with_timeout(identity, ticket.clone(), Duration::from_secs(3))
+        .await?;
+    let approved = pairing.authenticated(&ticket, &verified.peer, 0)?;
+    ensure!(
+        pairing.current(&approved),
+        "setup fixture admission expired"
+    );
+    let Resource { stream, owner } = verified.resource;
+    let result = setup_resources(stream, peer).await;
+    owner.retire().await?;
+    result
+}
+
+async fn setup_resources(
+    mut stream: Box<dyn blent::accessory::Stream>,
+    peer: &PeerCertificate,
+) -> Result<()> {
+    let limits = blent::broker::session::Limits {
+        channel_bytes: 65536,
+        io_timeout: Duration::from_secs(3),
+        ..Default::default()
+    };
+    let selected = blent::broker::window::negotiate(&mut stream, limits).await?;
+    ensure!(
+        selected.channel_bytes == 4096,
+        "setup window selection mismatch"
+    );
+    resource_session(stream, peer, selected).await
 }
 
 // One bounded framing phase, followed by the existing raw fixture exchange.
@@ -262,10 +335,13 @@ fn session_echo<S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin>(
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     let args: Vec<_> = std::env::args_os().collect();
-    ensure!(args.len() == 4, "usage: secure_connection_fixture PUBLIC_FIXTURE_DIRECTORY NEW_READY_FILE accept|wrong-preface|window|session");
+    ensure!(args.len() == 4, "usage: secure_connection_fixture PUBLIC_FIXTURE_DIRECTORY NEW_READY_FILE accept|wrong-preface|window|session|setup");
     let mode = args[3].to_str().context("invalid mode")?;
     ensure!(
-        matches!(mode, "accept" | "wrong-preface" | "window" | "session"),
+        matches!(
+            mode,
+            "accept" | "wrong-preface" | "window" | "session" | "setup"
+        ),
         "invalid fixture mode"
     );
     tokio::time::timeout(

@@ -1,0 +1,11 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionSetup.kt": "d93f20b8171eb03071b590cfd8e86c0d920546e6d7ee848f630b25fa0a75cbd5",
+  "android/app/src/main/java/com/blent/connection/ConnectionSetupOwner.kt": "d11e501088519d21c73a99ebd7038958f4380dd46d6862b7591a7c6579da1cfd",
+  "android/app/src/main/java/com/blent/connection/SocketConnectionSetup.kt": "c9f549d203b6c9b42ec6cd27200b781698248d263adda17781ed322095562720",
+  "android/app/src/test/java/com/blent/connection/ConnectionSetupBoundaryTest.kt": "3c4de6e0b870dd1fc59890ae970b3ffd823726483888857759310dd78ca3495c",
+  "android/app/src/test/java/com/blent/connection/ConnectionSetupOwnerTest.kt": "55051942af60b599a08a65f11dad7e0c518b8c7a3b7385d01be58d615e63e61f",
+  "android/app/src/test/java/com/blent/connection/SocketConnectionSetupTest.kt": "c11b7c4d97e5b4913a41f80937ce4f2d62a0649572f9b2f066caf32e89166803",
+  "android/app/src/test/java/com/blent/connection/SocketSetupFixture.kt": "9676d62d04783eeff52221c84523ec55d311e73caa31c36b802791b373bd2044",
+  "android/app/src/tlsInterop/tests/com/blent/connection/SecureConnectionInteropTest.kt": "29c1e309e5a7a9448b23085cc43d4a558f36c98ca90a557fe2c4bafd7faff073",
+  "host/examples/secure_connection_fixture.rs": "3306c7baf833b1438c8d631b483c74c44cd59894e61e4783509b8f1b61b0786d"
+}

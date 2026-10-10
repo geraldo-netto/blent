@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.blent.connection.SecureConnectionInteropTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-10T17:09:53" hostname="morpheus" time="8.278">
+  <properties/>
+  <testcase name="t882RealTlsResourceAdmissionDuplexRetirementAndReplacement[27]" classname="com.blent.connection.SecureConnectionInteropTest" time="1.363"/>
+  <testcase name="t846Api27RustAndroidPrefaceWithoutAlpn" classname="com.blent.connection.SecureConnectionInteropTest" time="0.132"/>
+  <testcase name="t886RealSetupDurableRestartDuplexAndRevoke[27]" classname="com.blent.connection.SecureConnectionInteropTest" time="1.398"/>
+  <testcase name="t881RealTlsWindowNegotiationMatchesHostRuntimeBeforeApplicationData[27]" classname="com.blent.connection.SecureConnectionInteropTest" time="0.179"/>
+  <testcase name="t852RealTlsRememberRestartRevokeAndUnprovenRejection[27]" classname="com.blent.connection.SecureConnectionInteropTest" time="0.334"/>
+  <testcase name="t883RealTlsNativeRunnerDuplexGenerationsAndActualRetirement[27]" classname="com.blent.connection.SecureConnectionInteropTest" time="0.694"/>
+  <testcase name="t882RealTlsResourceAdmissionDuplexRetirementAndReplacement" classname="com.blent.connection.SecureConnectionInteropTest" time="1.361"/>
+  <testcase name="t886RealSetupDurableRestartDuplexAndRevoke" classname="com.blent.connection.SecureConnectionInteropTest" time="1.437"/>
+  <testcase name="t881RealTlsWindowNegotiationMatchesHostRuntimeBeforeApplicationData" classname="com.blent.connection.SecureConnectionInteropTest" time="0.18"/>
+  <testcase name="t852RealTlsRememberRestartRevokeAndUnprovenRejection" classname="com.blent.connection.SecureConnectionInteropTest" time="0.335"/>
+  <testcase name="t883RealTlsNativeRunnerDuplexGenerationsAndActualRetirement" classname="com.blent.connection.SecureConnectionInteropTest" time="0.694"/>
+  <testcase name="t846Api34RustAndroidMutualTlsAndRejection" classname="com.blent.connection.SecureConnectionInteropTest" time="0.164"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

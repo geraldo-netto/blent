@@ -65,23 +65,27 @@ class SecureConnectionInteropTest {
             val socket = Socket("127.0.0.1", port(process, ready)).apply { soTimeout = 3000 }
             var admitted = false
             val result = runCatching {
-                client(peer).connect(socket).use { secure ->
+                fixtureStream(socket, peer, mode).use { secure ->
                     verified(secure)
                     admitted = true
-                    if (mode != "session") rawExchange(secure)
+                    if (!resourceMode(mode)) rawExchange(secure)
                 }
             }
             if (peer != "host" || mode == "wrong-preface") assertFalse("Unapproved stream escaped authentication gate", admitted)
             if (result.isFailure) assertTrue(socket.isClosed)
             assertTrue("Rust fixture failed to retire: ${log.readText()}", process.waitFor(5, TimeUnit.SECONDS))
             if (mode == "wrong-preface") assertEquals("Fault injector must complete TLS and write bad preface", 0, process.exitValue())
-            if (mode == "session") result.getOrThrow()
+            if (resourceMode(mode)) result.getOrThrow()
             return result.isSuccess && process.exitValue() == 0
         } finally {
             if (process.isAlive) process.destroyForcibly()
             check(process.waitFor(2, TimeUnit.SECONDS)) { "Rust fixture still owns resources" }
         }
     }
+
+    private fun resourceMode(mode: String): Boolean = mode == "session" || mode == "setup"
+    private fun fixtureStream(socket: Socket, peer: String, mode: String): Socket =
+        if (mode == "setup") socket else client(peer).connect(socket)
 
     private fun rawExchange(socket: Socket) {
         socket.getOutputStream().write("fixture".toByteArray()); socket.getOutputStream().flush()
@@ -342,10 +346,12 @@ class SecureConnectionInteropTest {
         assertTrue(io.retired()); assertNull(io.closeFailure()); assertTrue(socket.isClosed)
     }
 
-    private fun driveNativeSession(runner: ConnectionRun, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>, now: () -> Long) {
+    private fun driveNativeSession(runner: ConnectionRun, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>, now: () -> Long,
+        authority: () -> Boolean = { true }) {
         var retired = 0
         val deadline = now() + 5000
         while (now() < deadline) {
+            check(authority()) { "Setup authority was revoked before dispatch" }
             runner.advance(now())
             val events = resourceEvents(runner.endpoints(), now())
             retired += events.second
@@ -370,6 +376,88 @@ class SecureConnectionInteropTest {
 
     @Test @Config(sdk = [27, 34]) fun t883RealTlsNativeRunnerDuplexGenerationsAndActualRetirement() {
         assertTrue(trial(mode = "session", verified = ::nativeResourceSession))
+    }
+
+    private fun setupIdentity(): ClientTlsIdentity {
+        val bytes = fixture("tablet.der")
+        val certificate = CertificateFactory.getInstance("X.509").generateCertificate(bytes.inputStream()) as java.security.cert.X509Certificate
+        val key = KeyFactory.getInstance("EC").generatePrivate(PKCS8EncodedKeySpec(fixture("tablet.pk8")))
+        return ClientTlsIdentity(ConnectionIdentity(bytes), IdentityKeyManager("tablet", key, certificate))
+    }
+
+    private fun setupEvents(owner: ConnectionSetup, expectPrompt: Boolean): Boolean {
+        var prompted = false
+        repeat(32) {
+            when (val event = owner.poll() ?: return prompted) {
+                is ConnectionWorkerEvent.Pairing -> {
+                    assertTrue(expectPrompt)
+                    assertEquals(pin(fixture("host.der")), event.ticket.peer)
+                    assertEquals(pin(fixture("tablet.der")), event.local)
+                    assertTrue(owner.decide(event.ticket, true, true)); prompted = true
+                }
+                is ConnectionWorkerEvent.Ended -> error("Setup ended before admission: ${owner.failure()}")
+                else -> Unit
+            }
+        }
+        error("Unbounded setup events")
+    }
+
+    private fun setupReady(owner: ConnectionSetup, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>,
+        clock: () -> Long, expectPrompt: Boolean): ConnectionSetupReady {
+        val deadline = clock() + 5000
+        var prompted = false
+        while (clock() < deadline) {
+            owner.advance()
+            prompted = setupEvents(owner, expectPrompt) || prompted
+            owner.takeReady()?.let { assertEquals(expectPrompt, prompted); return it }
+            check(owner.failure() == null) { "Native setup failed: ${owner.failure()}" }
+            wakes.poll(10, TimeUnit.MILLISECONDS)
+        }
+        error("Setup did not publish authenticated runtime")
+    }
+
+    private fun setupSession(socket: Socket, directory: java.nio.file.Path, expectPrompt: Boolean) {
+        val wakes = java.util.concurrent.ArrayBlockingQueue<Unit>(1)
+        val origin = System.nanoTime()
+        val clock = { TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin) }
+        val backend = SocketConnectionSetup(socket, ::setupIdentity)
+        val owner = ConnectionSetupOwner(backend, { AndroidPeerTrustStore.open(directory) }, clock,
+            ConnectionSetupLimits(4096, 5000, 3000, 2000), { wakes.offer(Unit); Unit })
+        try {
+            val ready = setupReady(owner, wakes, clock, expectPrompt)
+            assertTrue(owner.current(ready.approval)); assertEquals(4096, ready.capacity)
+            val session = TabletSession(ready.approval.ticket, ConnectionSessionLimits(ready.capacity, 64, 64, 3000), 15)
+            val runner = ConnectionSessionRunner(session, ready.io, ConnectionRunLimits(3000, 1000))
+            try { driveNativeSession(runner, wakes, clock) { owner.current(ready.approval) } }
+            finally { retireNativeSession(runner, wakes, clock) }
+            if (!expectPrompt) {
+                assertTrue(owner.revoke(ready.approval.ticket.peer)); assertFalse(owner.current(ready.approval))
+            }
+        } finally { retireSetup(owner, wakes, clock) }
+        assertTrue(socket.isClosed)
+    }
+
+    private fun retireSetup(owner: ConnectionSetup, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>, clock: () -> Long) {
+        owner.stop()
+        val deadline = clock() + 3000
+        while (!owner.retired()) {
+            check(clock() < deadline) { "Setup native ownership did not retire: ${owner.failure()}" }
+            owner.advance(); wakes.poll(10, TimeUnit.MILLISECONDS)
+        }
+        assertFalse(owner.terminationRequired())
+    }
+
+    @Test @Config(sdk = [27, 34]) fun t886RealSetupDurableRestartDuplexAndRevoke() {
+        val directory = Files.createTempDirectory("blent-t886-trust-",
+            java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
+                java.nio.file.attribute.PosixFilePermissions.fromString("rwx------")))
+        try {
+            assertTrue(trial(mode = "setup") { setupSession(it, directory, true) })
+            assertTrue(trial(mode = "setup") { setupSession(it, directory, false) })
+            ConnectionTrust(AndroidPeerTrustStore.open(directory), pin(fixture("tablet.der"))).use {
+                assertFalse(it.trusted(pin(fixture("host.der"))))
+            }
+        } finally { directory.toFile().deleteRecursively() }
     }
 
 }
