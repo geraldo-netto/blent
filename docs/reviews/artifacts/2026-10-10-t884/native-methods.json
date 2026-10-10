@@ -1,0 +1,930 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "<init>",
+    "descriptor": "()V",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "createWorker$app_debug",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;)Lcom/blent/connection/ConnectionWorker;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "terminate$app_debug",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "command",
+    "descriptor": "(IJLandroid/os/Parcel;)Z",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "start",
+    "descriptor": "(Landroid/os/Parcel;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "control",
+    "descriptor": "(Landroid/os/Parcel;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "execute",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerSpec;Landroid/os/IBinder;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 14,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "link",
+    "descriptor": "(Landroid/os/IBinder;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "controls",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorker;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "deliver",
+    "descriptor": "(Landroid/os/IBinder;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "publish",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerEvent;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "cancelNative",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorker;)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "finish",
+    "descriptor": "(Ljava/lang/Exception;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "stop",
+    "descriptor": "()V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "onBind",
+    "descriptor": "(Landroid/content/Intent;)Landroid/os/IBinder;",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "onStartCommand",
+    "descriptor": "(Landroid/content/Intent;II)I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "onUnbind",
+    "descriptor": "(Landroid/content/Intent;)Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "onDestroy",
+    "descriptor": "()V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "clientDeath$lambda$0",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerService;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerPhase",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$execute$3",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$execute$4",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$execute$2",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Ended",
+    "name": "<init>",
+    "descriptor": "(Ljava/lang/String;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Ended",
+    "name": "getFailure",
+    "descriptor": "()Ljava/lang/String;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$retire$2",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$cancel$1$1",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Pairing",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Pairing",
+    "name": "getTicket",
+    "descriptor": "()Lcom/blent/connection/ConnectionTicket;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Pairing",
+    "name": "getLocal",
+    "descriptor": "()Lcom/blent/connection/ConnectionPeer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec$event$2",
+    "name": "invoke",
+    "descriptor": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionWorkerEvent;",
+    "covered": 6,
+    "missed": 1,
+    "percent": 85.71428571428571
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec$event$1",
+    "name": "invoke",
+    "descriptor": "(Ljava/io/DataOutputStream;)V",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$clean$1$1",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$State",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerPhase;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$State",
+    "name": "getPhase",
+    "descriptor": "()Lcom/blent/connection/ConnectionWorkerPhase;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Decide",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionTicket;ZZ)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Decide",
+    "name": "getTicket",
+    "descriptor": "()Lcom/blent/connection/ConnectionTicket;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Decide",
+    "name": "getApproved",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Decide",
+    "name": "getRemember",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "encode",
+    "descriptor": "(Lkotlin/jvm/functions/Function1;)[B",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "decode",
+    "descriptor": "([BLkotlin/jvm/functions/Function1;)Ljava/lang/Object;",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "string",
+    "descriptor": "(Ljava/io/DataOutputStream;Ljava/lang/String;I)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "string",
+    "descriptor": "(Ljava/io/DataInputStream;I)Ljava/lang/String;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "bool",
+    "descriptor": "(Ljava/io/DataInputStream;)Z",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "peer",
+    "descriptor": "(Ljava/io/DataOutputStream;Lcom/blent/connection/ConnectionPeer;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "peer",
+    "descriptor": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionPeer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "ticket",
+    "descriptor": "(Ljava/io/DataOutputStream;Lcom/blent/connection/ConnectionTicket;)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "ticket",
+    "descriptor": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionTicket;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "spec",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerSpec;)[B",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "spec",
+    "descriptor": "([B)Lcom/blent/connection/ConnectionWorkerSpec;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "command",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerCommand;)[B",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "command",
+    "descriptor": "([B)Lcom/blent/connection/ConnectionWorkerCommand;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "event",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerEvent;)[B",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec",
+    "name": "event",
+    "descriptor": "([B)Lcom/blent/connection/ConnectionWorkerEvent;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec$command$1",
+    "name": "invoke",
+    "descriptor": "(Ljava/io/DataOutputStream;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec$command$2",
+    "name": "invoke",
+    "descriptor": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionWorkerCommand;",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec$spec$2",
+    "name": "invoke",
+    "descriptor": "(Ljava/io/DataInputStream;)Lcom/blent/connection/ConnectionWorkerSpec;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCodec$spec$1",
+    "name": "invoke",
+    "descriptor": "(Ljava/io/DataOutputStream;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$execute$4",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Trust",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionPeer;Z)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Trust",
+    "name": "getPeer",
+    "descriptor": "()Lcom/blent/connection/ConnectionPeer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Trust",
+    "name": "getRemembered",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$transmit$service$1",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$1",
+    "name": "invoke",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerEvent;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$start$1",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "<init>",
+    "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;JJJJLcom/blent/connection/ConnectionWorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+    "covered": 28,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "<init>",
+    "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;JJJJLcom/blent/connection/ConnectionWorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "connected",
+    "descriptor": "(Landroid/os/IBinder;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "disconnected",
+    "descriptor": "()V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "fail",
+    "descriptor": "(Ljava/lang/Exception;)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "command",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerCommand;)Z",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "execute",
+    "descriptor": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "transmit",
+    "descriptor": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 18,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "bind",
+    "descriptor": "()V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "observe",
+    "descriptor": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "cancel",
+    "descriptor": "()V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "stopAndExit",
+    "descriptor": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "retire",
+    "descriptor": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "requiresDeath",
+    "descriptor": "()Z",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "awaitDeath",
+    "descriptor": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "clean",
+    "descriptor": "()Lkotlinx/coroutines/Deferred;",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "death$lambda$0",
+    "descriptor": "(Lcom/blent/connection/AndroidConnectionWorkerRun;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Revoke",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionPeer;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Revoke",
+    "name": "getPeer",
+    "descriptor": "()Lcom/blent/connection/ConnectionPeer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerGenerations",
+    "name": "<init>",
+    "descriptor": "(J)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerGenerations",
+    "name": "<init>",
+    "descriptor": "(JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerGenerations",
+    "name": "next",
+    "descriptor": "()J",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$stopAndExit$3",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$stopAndExit$2",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$stopAndExit$4",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$connection$1",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/AndroidConnectionWorkerRun;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$connection$1",
+    "name": "onServiceConnected",
+    "descriptor": "(Landroid/content/ComponentName;Landroid/os/IBinder;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$connection$1",
+    "name": "onServiceDisconnected",
+    "descriptor": "(Landroid/content/ComponentName;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$connection$1",
+    "name": "onBindingDied",
+    "descriptor": "(Landroid/content/ComponentName;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$connection$1",
+    "name": "onNullBinding",
+    "descriptor": "(Landroid/content/ComponentName;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "validate",
+    "descriptor": "(Landroid/os/Parcel;Ljava/lang/String;I)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "generation",
+    "descriptor": "(Landroid/os/Parcel;)J",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "bytes",
+    "descriptor": "(Landroid/os/Parcel;)[B",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "end",
+    "descriptor": "(Landroid/os/Parcel;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "command",
+    "descriptor": "(Landroid/os/IBinder;IJ[BLandroid/os/IBinder;)V",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "command$default",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerIpc;Landroid/os/IBinder;IJ[BLandroid/os/IBinder;ILjava/lang/Object;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "event",
+    "descriptor": "(Landroid/os/IBinder;JLcom/blent/connection/ConnectionWorkerEvent;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerIpc",
+    "name": "send",
+    "descriptor": "(Landroid/os/IBinder;ILandroid/os/Parcel;)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$execute$3$2",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "<init>",
+    "descriptor": "(Ljava/lang/String;Lcom/blent/connection/ConnectionSessionLimits;Lcom/blent/connection/ConnectionRunLimits;J)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "<init>",
+    "descriptor": "(Ljava/lang/String;Lcom/blent/connection/ConnectionSessionLimits;Lcom/blent/connection/ConnectionRunLimits;JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "getDevice",
+    "descriptor": "()Ljava/lang/String;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "getSession",
+    "descriptor": "()Lcom/blent/connection/ConnectionSessionLimits;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "getIo",
+    "descriptor": "()Lcom/blent/connection/ConnectionRunLimits;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "getApprovalTimeoutMs",
+    "descriptor": "()J",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$stop$1",
+    "name": "invokeSuspend",
+    "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$binder$1",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionWorkerService;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$binder$1",
+    "name": "onTransact",
+    "descriptor": "(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$callback$1",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/AndroidConnectionWorkerRun;)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$callback$1",
+    "name": "onTransact",
+    "descriptor": "(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z",
+    "covered": 10,
+    "missed": 0,
+    "percent": 100.0
+  }
+]

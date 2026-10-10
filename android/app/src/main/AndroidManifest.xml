@@ -92,5 +92,6 @@
         <service android:name=".MicrophoneWorkerService" android:process=":microphone" android:exported="false" />
         <service android:name=".SpeakerWorkerService" android:process=":speakers" android:exported="false" />
         <service android:name=".MetadataWorkerService" android:process=":metadata" android:exported="false" />
+        <service android:name=".connection.ConnectionWorkerService" android:process=":connection" android:exported="false" />
     </application>
 </manifest>

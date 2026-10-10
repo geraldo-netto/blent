@@ -1,0 +1,28 @@
+package com.blent.connection
+
+import com.blent.LifecycleRun
+
+/** Local device selection only; never a certificate, permission or media grant. */
+internal data class ConnectionWorkerSpec(
+    val device: String, val session: ConnectionSessionLimits = ConnectionSessionLimits(),
+    val io: ConnectionRunLimits = ConnectionRunLimits(), val approvalTimeoutMs: Long = 120000,
+) {
+    init { require(device.isNotEmpty() && device.length <= 512 && '\u0000' !in device); require(approvalTimeoutMs in 1..600000) }
+}
+internal sealed interface ConnectionWorkerCommand {
+    data class Decide(val ticket: ConnectionTicket, val approved: Boolean, val remember: Boolean) : ConnectionWorkerCommand
+    data class Revoke(val peer: ConnectionPeer) : ConnectionWorkerCommand
+}
+internal enum class ConnectionWorkerPhase { OPENING, WAITING_APPROVAL, AUTHENTICATED, CLOSING }
+internal sealed interface ConnectionWorkerEvent {
+    data class Pairing(val ticket: ConnectionTicket, val local: ConnectionPeer) : ConnectionWorkerEvent
+    data class State(val phase: ConnectionWorkerPhase) : ConnectionWorkerEvent
+    /** Emitted only after durable trust mutation, never an optimistic UI promise. */
+    data class Trust(val peer: ConnectionPeer, val remembered: Boolean) : ConnectionWorkerEvent
+    /** Execution ended; neither native retirement nor process death is implied. */
+    data class Ended(val failure: String?) : ConnectionWorkerEvent
+}
+/** command only admits bounded control work; it never performs native I/O. */
+internal interface ConnectionWorker : LifecycleRun {
+    fun command(value: ConnectionWorkerCommand): Boolean
+}

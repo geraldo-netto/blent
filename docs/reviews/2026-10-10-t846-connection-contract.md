@@ -233,7 +233,7 @@ activation prerequisite with its own regressions and commit.
 | T881 | Android bounded framing and BLCP negotiation (implemented) | T849, T875 |
 | T882 | Android tablet resource-session and leased-buffer boundary (implemented) | T881, T849–T851 |
 | T883 | Bounded Android native session runner (implemented) | T881, T882 |
-| T884 | Private Android connection process and IPC | T883 |
+| T884 | Private Android connection process and IPC (implemented) | T883 |
 | T854 | Production Android accessory/setup composition | T883, T884, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
@@ -919,3 +919,45 @@ identity/trust, TLS setup and production service composition remain T854.
 Locally allocated endpoint pumps and debugging-off display acceptance remain
 T857. These boundaries are still pending, not established by portable or JVM
 native-stream tests.
+
+
+## T884 private Android connection process and control boundary
+
+`ConnectionWorker` defines lifecycle and bounded command admission independently
+of Android Binder, USB, TLS and storage. Typed configuration, pairing decisions,
+trust updates and connection events use a flat versioned codec. Encoded metadata
+is limited to 4 KiB; the complete Parcel is limited to 8 KiB. Strict generation,
+boolean, string, opcode and trailing-data checks reject malformed envelopes.
+Neither contract nor codec transports media buffers.
+
+`ConnectionWorkerService` runs in the nonexported same-UID `:connection` process.
+It accepts one generation and one START for its lifetime. Same-UID one-way Binder
+calls only validate and admit bounded control work; worker construction, native
+execution, event delivery and cleanup run outside Binder callbacks. Commands and
+events each have 32 slots. Callback loss, overflow or rejected delivery requests
+process exit. A failed callback death-link exits before native factory admission.
+Main-process death, explicit EXIT, unbinding and service destruction also request
+exit; no new native owner can replace a stalled one within the same service.
+
+`AndroidConnectionWorkerRun` owns binding and outgoing calls independently of
+its caller's coroutine. START is treated as potentially effective before its
+transaction returns. STOP and EXIT have separate asynchronous admissions so a
+blocked STOP cannot prevent EXIT. Ended and framework binding invalidation are
+execution observations, never substitutes for actual Binder death. Failed
+retirement retains the binding and outstanding calls; replacement remains
+quarantined until process death and actual local call completion. Generations
+fail on exhaustion instead of wrapping. A late Binder still receives STOP/EXIT
+while ownership is retained. Retirement without a Binder atomically closes
+callback admission before unbinding. Failed death-link registration revokes
+START admission before releasing the waiting sender.
+
+These are process/control adapters. The production factory explicitly reports
+unsupported until T854 supplies USB selection, permission, identity/trust,
+approval and TLS setup. T855 supplies presentation, and T857 supplies local media
+endpoints and production display/touch acceptance. Robolectric lifecycle fixtures
+are permanent automated regressions, not proof of physical USB or kernel Binder
+termination behavior. No ADB-free production-media support is claimed here.
+
+Validation: [T884 retained evidence](artifacts/2026-10-10-t884/README.md):
+265 connection tests, 85 per-function coverage checks, 116 executable JVM method
+counters above 80%, and 134 complexity checks at or below 7.
