@@ -1,0 +1,15 @@
+{
+  "host_binary_sha256": "669ddcb9923fb7c9fa42a9dc3ba161cc430478575f305bd1ae93b71c4bd8238e",
+  "sources": {
+    "scripts/benchmarks/aoa/build.sh": "2440f245ddd2a513d6a22e8010ccc068bd3edc4aa4001a7654c99a8920ba9aa1",
+    "scripts/benchmarks/aoa/contract.c": "fb01a3ea7bef740c5d82dff60b7c70cded6779c8c61605d07bcb8b55019b1f1e",
+    "scripts/benchmarks/aoa/main.c": "71fdf1b968e4aa70ed48d8703453377fdf2a8c2c153d959dce1a1ef601fddae9",
+    "scripts/benchmarks/aoa/usb_probe.c": "aaf932b363587aa95eadd6fbee9bceca7fef65659fd4ca70671f5a925518a249",
+    "scripts/benchmarks/aoa/usb_probe.h": "d49b951657347b4e4e43f5e690483ff25e8ffad8a46f57b4314675ce9fc6e08c",
+    "scripts/tests/fixtures/aoa/bulk.c": "b50d3d2eb18fc1357407b630fc5302bbf4b030d9c6fbae67c8a1150969a731ef",
+    "scripts/tests/fixtures/aoa/enumeration.c": "6bc51ed94327e22225ba0c8b46577db63a78566710b45079d012ca861d6aaf1b",
+    "scripts/tests/fixtures/aoa/libusb.h": "22fe50573dd1d1e47c1bc4b3bfc1646fb49c4cdf424c2aff7eb476aaacf1583d",
+    "scripts/tests/test_aoa_probe.py": "872a7baf2aed8f68c2c36ff30b8c15e1e9f9518633ef6d9b6dd0bf2d8222806c"
+  },
+  "android_apk": "Unchanged from original offline provenance; same profile APK used in all native attempts."
+}

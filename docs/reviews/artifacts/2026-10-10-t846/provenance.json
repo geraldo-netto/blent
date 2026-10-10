@@ -1,0 +1,41 @@
+{
+  "sources": {
+    "android/app/build.gradle.kts": "c415a4eeebb2f269b9dea3e6397fe76c242d7e9cecc71cecc30dfec6eba7cd18",
+    "android/app/src/profile/AndroidManifest.xml": "64c7fbde850bb21f157a6fbb66f7a6dc03716bec14f047f54e26f5efb3a6c30b",
+    "android/app/src/profile/res/xml/aoa_probe_filter.xml": "6d46b8a1b10bcf70689ea955329010dcb40de995c03b8fb1480806f719654e4e",
+    "android/app/src/test/java/com/blent/AoaProbeWireTest.kt": "7570f805e7508117f90c8572329bc1b1bc62ea679a1c104e3321e714a94ca4d7",
+    "scripts/benchmarks/android-accessory/AoaProbeActivity.kt": "08de40453c9778e84dfaa3f31feba5cb99cd9a36480c8add09e3fd4516fb6414",
+    "scripts/benchmarks/android-accessory/AoaProbeRun.kt": "6475bf7105075e44dbf63e8c8dfdaa83f3ad0671395bf8d79337b509526391f3",
+    "scripts/benchmarks/android-accessory-contract/AoaProbeWire.kt": "7345b5072670e37fa09fa8790a6eacd9f3164ffd4bd5c9e716f615ed91f5a7ce",
+    "scripts/benchmarks/aoa/build.sh": "2440f245ddd2a513d6a22e8010ccc068bd3edc4aa4001a7654c99a8920ba9aa1",
+    "scripts/benchmarks/aoa/contract.c": "fb01a3ea7bef740c5d82dff60b7c70cded6779c8c61605d07bcb8b55019b1f1e",
+    "scripts/benchmarks/aoa/main.c": "71fdf1b968e4aa70ed48d8703453377fdf2a8c2c153d959dce1a1ef601fddae9",
+    "scripts/benchmarks/aoa/usb_probe.c": "9ffcf3f5395261ba60e26258d6eafdc0047bceacb96fa59ce26335b2faba7042",
+    "scripts/benchmarks/aoa/usb_probe.h": "d49b951657347b4e4e43f5e690483ff25e8ffad8a46f57b4314675ce9fc6e08c",
+    "scripts/tests/fixtures/aoa/enumeration.c": "6bc51ed94327e22225ba0c8b46577db63a78566710b45079d012ca861d6aaf1b",
+    "scripts/tests/fixtures/aoa/libusb.h": "22fe50573dd1d1e47c1bc4b3bfc1646fb49c4cdf424c2aff7eb476aaacf1583d",
+    "scripts/tests/test_aoa_probe.py": "cc0beb28622c7b0d370f843869da600b74018ea1162c24654372caf9f5aa4f84"
+  },
+  "host_binary": {
+    "path": "/tmp/blent-t846/aoa-probe",
+    "sha256": "44c7e20363d9e6f86736cead9bdb610d41580fbcec9991f3c0d2b73d031ea6bf"
+  },
+  "apks": {
+    "debug": {
+      "sha256": "159793478920ca1010ab75b92be8cc410d441648229a52c4e7bf5a6fa4c799b5",
+      "bytes": 9305270,
+      "contains_probe_activity": false
+    },
+    "profile": {
+      "sha256": "6f253b2b187745dadabbd46b63666d2da46a3833af094e23555e6193144dbc65",
+      "bytes": 9326089,
+      "contains_probe_activity": true
+    },
+    "optimized": {
+      "sha256": "e8d0f005a1cdaf4d779fae42b34830cbcb93c2141a813ddf3513ab62678dbc49",
+      "bytes": 1764695,
+      "contains_probe_activity": true
+    }
+  },
+  "native_usb_test_performed": false
+}

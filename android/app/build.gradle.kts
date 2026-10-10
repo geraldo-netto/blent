@@ -21,7 +21,9 @@ val identityInputs = fileTree("src/main").files + fileTree("src/profile").files 
     rootProject.file("gradle.properties"),
     rootProject.file("settings.gradle.kts"), rootProject.file("gradle/wrapper/gradle-wrapper.properties")
 )
-identityInputs.sortedBy { it.path }.forEach { input ->
+val accessoryIdentityInputs = fileTree("../../scripts/benchmarks/android-accessory").files +
+    fileTree("../../scripts/benchmarks/android-accessory-contract").files
+(identityInputs + accessoryIdentityInputs).sortedBy { it.path }.forEach { input ->
     val data = input.readBytes()
     sourceDigest.update(input.relativeTo(rootProject.projectDir).path.toByteArray())
     sourceDigest.update(0.toByte())
@@ -81,9 +83,16 @@ android {
     }
 
     sourceSets.getByName("profile").java.srcDir("../../scripts/benchmarks/android-allocations")
+    sourceSets.getByName("profile").java.srcDir("../../scripts/benchmarks/android-accessory")
+    sourceSets.getByName("profile").java.srcDir("../../scripts/benchmarks/android-accessory-contract")
+    sourceSets.getByName("testDebug").java.srcDir("../../scripts/benchmarks/android-accessory-contract")
+    sourceSets.getByName("testRelease").java.srcDir("../../scripts/benchmarks/android-accessory-contract")
     sourceSets.getByName("optimized").apply {
         manifest.srcFile("src/profile/AndroidManifest.xml")
         java.srcDir("../../scripts/benchmarks/android-allocations")
+        java.srcDir("../../scripts/benchmarks/android-accessory")
+        java.srcDir("../../scripts/benchmarks/android-accessory-contract")
+        res.srcDir("src/profile/res")
     }
     sourceSets.getByName("testProfile").java.srcDir("../../scripts/benchmarks/android-allocation-tests")
     sourceSets.getByName("test").resources.srcDir("../../testdata")
@@ -122,7 +131,7 @@ listOf("debug", "release", "profile", "optimized").forEach { variant ->
     val title = variant.replaceFirstChar { it.uppercaseChar() }
     val profileSource = layout.buildDirectory.dir("generated/source/profile/$variant")
     val generateProfileIdentity = tasks.register("generate${title}ProfileIdentity") {
-        inputs.files(identityInputs)
+        inputs.files(identityInputs + accessoryIdentityInputs)
         inputs.property("variant", variant)
         outputs.dir(profileSource)
         doLast {
