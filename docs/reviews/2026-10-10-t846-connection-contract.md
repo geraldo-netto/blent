@@ -1265,3 +1265,37 @@ acceptance, followed by display/touch T857, camera T858 and audio T860/T859.
 tests plus actual isolated GUI startup, native per-function counters for all new
 functions and changed App wiring, stale-action/lifecycle widget tests and the two
 draft fail-before-fix regressions. No device support is inferred from those tests.
+
+## T905/T906 Android local channel ownership
+
+The connection worker now composes the protocol runner with a bounded local
+resource controller. Display owns control and video listeners as one exact lease.
+Both listeners bind IPv4 loopback with OS-allocated, distinct ports before
+Prepared; an invitation becomes visible only after current protocol admission.
+No wire field selects an address or port. Other resources still require their
+separate permission and native adapters and cannot acquire listeners here.
+The production capability mask remains zero until Activity and host integration
+under T907/T908; this composition does not yet enable production USB display.
+
+Native bind, accept and close run on retained workers. Each channel has at most
+one outstanding read and one write/flush, and one bounded producer block. Block
+size is capped by the negotiated window and 64 KiB. Consumer writes borrow ring
+storage until exact write/flush completion; the resource cannot return ownership
+while a pump or native endpoint remains live. An idle accept begins its startup
+deadline only on admission. Bind and active I/O deadlines remain absolute.
+
+The controller drains at most 32 endpoint events per turn and scans four resource
+slots. A failed channel cancels its resource and its sibling display channel;
+resource quarantine does not terminate an otherwise live connection. Whole-link
+shutdown requires every native owner to retire or the containing process to exit.
+Partial construction, failed close and late failed stop retain uncertain ownership;
+a timeout alone never grants a replacement. The worker's existing independent
+10 ms default timer drives progress even without native wakeups.
+
+[T906 evidence](artifacts/2026-10-10-t906/README.md) includes real JVM loopback
+listeners and protocol/mux/pump traffic in both directions, bounded invalid-port
+and lease-counter cases, late-construction/cancellation regressions, stale leases,
+partial factory failure, sibling cleanup and per-method native counters. These
+fixtures do not establish physical USB, Android Binder/Activity lifecycle or
+rendered-frame/input acceptance. T855's production tablet pairing trial is deferred
+by the owner's 2026-10-10 test-later decision; implementation continues locally.

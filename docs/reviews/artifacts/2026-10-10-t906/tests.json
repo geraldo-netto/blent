@@ -1,0 +1,5 @@
+{
+  "android/app/src/test/java/com/blent/connection/LocalEndpointNativeTest.kt": "9cd2c0e977f439247eefe524299c5017114eb532aeb9130d587509a210c4ad18",
+  "android/app/src/test/java/com/blent/connection/ConnectionLocalResourcesTest.kt": "aac4566bf32b44521f5f361d37c6f8a6789760bcd99321219112e5b5cf3f8315",
+  "android/app/src/test/java/com/blent/connection/LocalResourceLoopbackTest.kt": "87086d5de13ddff905fb07211d725d8bf278fda414fff3789d7308d5a599995f"
+}
