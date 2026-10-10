@@ -1,0 +1,10 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.45s
+     Running unittests src/main.rs (target/debug/deps/blent-3d154ee040abf851)
+
+running 2 tests
+test monitor::retirement::tests::t919_blocked_native_fixture ... ok
+test monitor::retirement::tests::t919_retiring_slot_waits_for_native_exit_in_isolated_process ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 420 filtered out; finished in 0.12s
+

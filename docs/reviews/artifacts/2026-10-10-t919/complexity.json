@@ -1,0 +1,32 @@
+[
+  [
+    "host/src/monitor/retirement.rs",
+    5,
+    "retire",
+    9
+  ],
+  [
+    "host/src/monitor/retirement.rs",
+    45,
+    "retired",
+    3
+  ],
+  [
+    "host/src/monitor/retirement.rs",
+    52,
+    "remove_assignment",
+    9
+  ],
+  [
+    "host/src/monitor/retirement/tests.rs",
+    5,
+    "t919_retiring_slot_waits_for_native_exit_in_isolated_process",
+    1
+  ],
+  [
+    "host/src/monitor/retirement/tests.rs",
+    26,
+    "t919_blocked_native_fixture",
+    5
+  ]
+]

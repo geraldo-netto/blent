@@ -1,0 +1,54 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/monitor/retirement.rs"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 3,
+      "passing": 3,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "name": "retire",
+      "line": 5,
+      "language": "rust",
+      "covered": 33,
+      "total": 33,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "name": "retired",
+      "line": 45,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "name": "remove_assignment",
+      "line": 52,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

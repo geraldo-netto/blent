@@ -1,0 +1,37 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.43s
+     Running unittests src/main.rs (target/debug/deps/blent-3d154ee040abf851)
+
+running 1 test
+test monitor::retirement::tests::t919_retiring_slot_waits_for_native_exit_in_isolated_process ... FAILED
+
+failures:
+
+---- monitor::retirement::tests::t919_retiring_slot_waits_for_native_exit_in_isolated_process stdout ----
+
+thread 'monitor::retirement::tests::t919_retiring_slot_waits_for_native_exit_in_isolated_process' (2391577) panicked at host/src/monitor/retirement/tests.rs:17:5:
+
+running 1 test
+test monitor::retirement::tests::t919_blocked_native_fixture ... FAILED
+
+failures:
+
+failures:
+    monitor::retirement::tests::t919_blocked_native_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 421 filtered out; finished in 0.02s
+
+
+thread 'monitor::retirement::tests::t919_blocked_native_fixture' (2391582) panicked at host/src/monitor/retirement/tests.rs:75:5:
+T919 monitor freed slot before native capture exited
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    monitor::retirement::tests::t919_retiring_slot_waits_for_native_exit_in_isolated_process
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 421 filtered out; finished in 0.03s
+
+error: test failed, to rerun pass `-p blent --bin blent`

@@ -20,14 +20,22 @@ impl Monitor {
             if let Some(task) = task {
                 let _ = task.await;
             }
-            if let Some(session) = session {
-                session.stop().await;
-            }
+            let completion = match session {
+                Some(session) => Some(session.stop().await),
+                None => None,
+            };
             if let Some(routes) = routes {
                 if let Err(error) = routes.retire(&adb).await {
                     // Offline cleanup remains bounded; credentials were revoked
                     // before retirement, and foreign routes are never removed.
                     warn!("Could not retire owned routes on {serial}: {error}");
+                }
+            }
+            if let Some(completion) = completion {
+                // Bounded logical stop can leave native workers quarantined.
+                // Keep this instance reserved while other retirement jobs run.
+                while !completion.is_complete() {
+                    tokio::time::sleep(Duration::from_millis(10)).await;
                 }
             }
             (serial, instance)
@@ -57,3 +65,6 @@ impl Monitor {
         }
     }
 }
+
+#[cfg(test)]
+mod tests;

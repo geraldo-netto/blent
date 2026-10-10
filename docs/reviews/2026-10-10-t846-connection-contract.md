@@ -1436,3 +1436,12 @@ native route/session ownership before reassigning a slot (T917/T908). Credential
 revocation alone is not retirement proof. [Evidence](artifacts/2026-10-10-t916/README.md)
 retains red/green concurrency, fallback and exhaustion regressions and native
 per-function counters. Production monitor composition remains T908.
+
+## T919 monitor retirement prerequisite
+
+The existing monitor now retains each display slot after bounded logical session
+stop until its returned native completion is actually complete. Route cleanup
+runs before this final wait, and independent retirement jobs continue. The daemon
+keeps its existing bounded shutdown behavior. [Regression and counters](artifacts/2026-10-10-t919/README.md)
+prove blocked-native retention, sibling progress and final release. This closes
+the pre-existing slot-reuse gap before shared ADB/USB admission under T917.
