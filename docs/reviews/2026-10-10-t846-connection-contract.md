@@ -1546,3 +1546,29 @@ snapshot byte/batch-boundary gap is separately tracked under T923.
 [Regression and counter evidence](artifacts/2026-10-10-t922/README.md) covers the
 shared schema and changed Linux consumers. Native Windows test checking exposed
 an older fixture initializer defect, retained separately as T926.
+
+## T924 selected USB discovery lifetime
+
+One portable `display_discovery::Discovery` owns a nonblocking broker-control client.
+It waits for actual native retirement before replacing failed work, with an explicit
+positive retry interval capped at 60 seconds and absolute deadlines. Counter/clock
+exhaustion does not create replacement work. Bounded failure status remains visible
+through retry; native completion cannot continue to advertise Ready.
+
+Only complete Ready/Busy snapshots expose authenticated candidate intent. New
+admission rejects ambiguous same-certificate links before any ADB preemption.
+Existing registrations retain their exact authenticated connection while an
+additional location proves the same certificate. Connection/ticket replacement,
+authority loss and broker lifetime changes invalidate that exact membership.
+Opaque lifetime tokens distinguish equal counters across restarts without keeping
+old device/trust snapshots alive. Media still requires T920 Active registration.
+
+Linux launch-path resolution now has one owner, reused by existing GUI composition
+and available to daemon composition. The original T894 path regression moves into
+that native adapter and remains in the normal host suite. Paths resolve configured
+absolute roots and sibling executables; release discovery remains deferred T861.
+
+[Evidence](artifacts/2026-10-10-t924/README.md) includes permanent draft red/green
+regressions, bounded candidate/clock tests, native client retirement, per-function
+counters and offline Windows checking. T925 joins retained display resources;
+T908 connects the source and ownership policy to the production daemon.

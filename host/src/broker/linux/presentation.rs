@@ -63,6 +63,11 @@ pub struct Factory {
     connector: Arc<Connector>,
     pool: Pool,
 }
+impl crate::display_discovery::Factory for Factory {
+    fn start(&mut self) -> Result<Box<dyn Client>> {
+        Factory::start(self).map(|client| Box::new(client) as Box<dyn Client>)
+    }
+}
 impl Factory {
     pub fn new(settings: Settings) -> Result<Self> {
         settings.validate()?;

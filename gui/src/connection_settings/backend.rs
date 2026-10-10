@@ -19,106 +19,18 @@ mod linux {
         client::Launch,
         presentation::{Factory, Settings},
     };
-    use std::{ffi::OsString, path::PathBuf};
-
     pub(super) fn create() -> Result<Box<dyn Source>, String> {
-        let launch = paths(
-            std::env::current_exe().map_err(|error| error.to_string())?,
-            std::env::var_os("XDG_RUNTIME_DIR"),
-            std::env::var_os("XDG_STATE_HOME"),
-            std::env::var_os("HOME"),
-        )?;
+        let launch = Launch::from_environment().map_err(|error| format!("{error:#}"))?;
         Ok(Box::new(
             Factory::new(Settings::new(launch)).map_err(|error| error.to_string())?,
         ))
     }
 
-    // Local acceptance uses sibling binaries. Packaging discovery is T861.
-    // No directory scan, external command or device I/O occurs on the GUI thread.
-    fn paths(
-        executable: PathBuf,
-        runtime: Option<OsString>,
-        state: Option<OsString>,
-        home: Option<OsString>,
-    ) -> Result<Launch, String> {
-        let executable = absolute(Some(executable.into_os_string()), "GUI executable")?;
-        let directory = executable
-            .parent()
-            .ok_or("GUI executable has no directory")?;
-        let state = match state {
-            Some(state) => absolute(Some(state), "XDG_STATE_HOME")?,
-            None => absolute(home, "HOME")?.join(".local/state"),
-        };
-        Ok(Launch {
-            executable: directory.join("blent-usb-broker"),
-            helper: directory.join("blent-usb-io"),
-            runtime: absolute(runtime, "XDG_RUNTIME_DIR")?.join("blent-usb"),
-            state: state.join("blent/connection"),
-        })
-    }
-    fn absolute(value: Option<OsString>, name: &str) -> Result<PathBuf, String> {
-        value
-            .map(PathBuf::from)
-            .filter(|path| path.is_absolute())
-            .ok_or_else(|| format!("{name} must be an absolute path"))
-    }
     impl Source for Factory {
         fn start(&mut self) -> Result<Box<dyn Client>, String> {
             Factory::start(self)
                 .map(|handle| Box::new(handle) as Box<dyn Client>)
                 .map_err(|error| error.to_string())
-        }
-    }
-
-    #[cfg(test)]
-    mod tests {
-        use super::*;
-        #[test]
-        fn t894_paths_are_absolute_and_do_not_probe_devices_or_tokens() {
-            let launch = paths(
-                "/opt/blent/gui".into(),
-                Some("/run/user/42".into()),
-                None,
-                Some("/home/test".into()),
-            )
-            .unwrap();
-            assert_eq!(
-                launch.executable,
-                PathBuf::from("/opt/blent/blent-usb-broker")
-            );
-            assert_eq!(launch.helper, PathBuf::from("/opt/blent/blent-usb-io"));
-            assert_eq!(launch.runtime, PathBuf::from("/run/user/42/blent-usb"));
-            assert_eq!(
-                launch.state,
-                PathBuf::from("/home/test/.local/state/blent/connection")
-            );
-            let launch = paths(
-                "/bin/gui".into(),
-                Some("/tmp/private".into()),
-                Some("/state".into()),
-                None,
-            )
-            .unwrap();
-            assert_eq!(launch.state, PathBuf::from("/state/blent/connection"));
-            for value in [
-                None,
-                Some("".into()),
-                Some("relative".into()),
-                Some("../escape".into()),
-            ] {
-                assert!(absolute(value.clone(), "test").is_err());
-                assert!(paths("/bin/gui".into(), value, None, Some("/home/test".into())).is_err());
-            }
-            assert!(paths("gui".into(), Some("/run".into()), None, None).is_err());
-            assert!(paths("/".into(), Some("/run".into()), None, None).is_err());
-            assert!(paths(
-                "/bin/gui".into(),
-                Some("/run".into()),
-                Some("relative".into()),
-                None
-            )
-            .is_err());
-            assert!(paths("/bin/gui".into(), Some("/run".into()), None, None).is_err());
         }
     }
 }

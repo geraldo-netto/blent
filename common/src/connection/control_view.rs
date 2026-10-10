@@ -10,12 +10,28 @@ use std::{collections::BTreeMap, sync::Arc};
 mod snapshot;
 pub use snapshot::{Assembler, Device, Limits, Link, Snapshot};
 
+/// Opaque process-local origin. Retaining it does not retain an old snapshot.
+#[derive(Clone)]
+pub struct Lifetime(Arc<()>);
+impl Lifetime {
+    pub fn same_as(&self, other: &Self) -> bool {
+        Arc::ptr_eq(&self.0, &other.0)
+    }
+}
+
 #[derive(Clone)]
 pub struct View {
     session: Arc<()>,
     snapshot: Arc<Snapshot>,
 }
 impl View {
+    /// Equal counters or persisted certificates do not identify a broker lifetime.
+    pub fn same_lifetime(&self, other: &Self) -> bool {
+        Arc::ptr_eq(&self.session, &other.session)
+    }
+    pub fn lifetime(&self) -> Lifetime {
+        Lifetime(self.session.clone())
+    }
     pub fn snapshot(&self) -> &Snapshot {
         &self.snapshot
     }

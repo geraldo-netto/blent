@@ -409,3 +409,36 @@ fn t900_seeded_invalid_sequences_remain_bounded_and_only_complete_on_end() {
         }
     }
 }
+
+#[test]
+fn t924_equal_broker_counters_do_not_identify_a_lifetime() {
+    let mut model = Model::default();
+    let original = model.publish(snapshot(1, State::Authenticated)).unwrap();
+    let refresh = model.publish(snapshot(2, State::Authenticated)).unwrap();
+    assert!(original.same_lifetime(&refresh));
+    assert!(original.same_lifetime(&original.clone()));
+    model.reset();
+    let replacement = model.publish(snapshot(1, State::Authenticated)).unwrap();
+    assert!(!original.same_lifetime(&replacement));
+    let independent = Model::default()
+        .publish(snapshot(1, State::Authenticated))
+        .unwrap();
+    assert!(!replacement.same_lifetime(&independent));
+}
+
+#[test]
+fn t924_lifetime_tokens_do_not_pin_obsolete_snapshots() {
+    let mut model = Model::default();
+    let view = model.publish(snapshot(1, State::Authenticated)).unwrap();
+    let weak = Arc::downgrade(&view.snapshot);
+    let lifetime = view.lifetime();
+    assert!(lifetime.same_as(&view.lifetime()));
+    drop(view);
+    model.reset();
+    assert!(
+        weak.upgrade().is_none(),
+        "T924 origin retains obsolete device/trust metadata"
+    );
+    let replacement = model.publish(snapshot(1, State::Authenticated)).unwrap();
+    assert!(!lifetime.same_as(&replacement.lifetime()));
+}
