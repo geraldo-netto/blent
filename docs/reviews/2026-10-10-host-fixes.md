@@ -28,3 +28,30 @@ The six media tests also pass with all features in the already-installed local
 Freedesktop SDK, using local Clang; network disabled. Host development headers
 were unavailable, so this uses SDK libraries rather than claiming host-native
 all-feature deployment acceptance. [Evidence](artifacts/2026-10-10-t821/).
+
+## T811: responsive controller retirement
+
+Camera/audio controller Drop now signals shutdown and transfers ownership to a
+bounded reaper instead of joining on the caller. Explicit `shutdown` returns a
+completion observation; completion means actual termination and join. The reaper
+retains held workers and their admission slots, checks finished workers every
+10 ms while retiring, and sleeps on its channel while idle. One stuck worker
+cannot prevent another finished worker from being joined. Existing per-controller
+command serialization still prevents overlapping session replacements.
+
+`BLENT_CONTROL_WORKERS` configures the process-wide active-plus-retiring controller
+budget (default 8, valid 1..64). This includes idle controllers, normally camera,
+microphone and speakers. A larger budget tolerates more concurrent owners but
+retains more native resources if cleanup stalls. Capacity exhaustion returns an
+explicit unavailable error; it never authorizes premature release. Embedders may
+inject one shared `WorkerPool` through `with_pool`. No forced cancellation of
+native threads or recovery from process aborts is claimed.
+
+Both permanent held-cleanup destructor tests first failed at the 200 ms caller
+progress deadline. They now pass and retain capacity until cleanup and join;
+replacement admission, sibling completion, panic reaping, repeated Stop, invalid
+capacities and normal retirement pass. Existing cleanup assertions now await the
+explicit completion contract. Full library suite: 303 passing tests, three
+existing ignores unchanged. All 37 production functions in the changed modules
+meet individual 80% coverage and complexity <=9.
+[Red/green and source-attested coverage](artifacts/2026-10-10-t811/).

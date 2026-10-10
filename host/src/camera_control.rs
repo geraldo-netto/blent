@@ -1,7 +1,7 @@
 //! T543 manual host ownership. Preferences never start capture by themselves.
 use anyhow::Result;
 use blent_config::camera::{CameraBackend, CameraPreview, CameraProfile, CameraState as State};
-use std::{future::Future, sync::Arc, thread::JoinHandle};
+use std::{future::Future, sync::Arc};
 use tokio::sync::watch;
 
 #[derive(Clone)]
@@ -22,11 +22,19 @@ pub struct Controller {
     command: Option<watch::Sender<Option<CameraProfile>>>,
     state: watch::Receiver<State>,
     preview: watch::Receiver<Option<Arc<CameraPreview>>>,
-    worker: Option<JoinHandle<()>>,
+    worker: Option<crate::control_workers::Worker>,
 }
 
 impl Controller {
     pub fn new<F, Fut>(session: F) -> Result<Self>
+    where
+        F: Fn(CameraProfile, watch::Receiver<bool>, Report) -> Fut + Send + 'static,
+        Fut: Future<Output = Result<()>>,
+    {
+        Self::with_pool(crate::control_workers::WorkerPool::shared()?, session)
+    }
+
+    pub fn with_pool<F, Fut>(pool: crate::control_workers::WorkerPool, session: F) -> Result<Self>
     where
         F: Fn(CameraProfile, watch::Receiver<bool>, Report) -> Fut + Send + 'static,
         Fut: Future<Output = Result<()>>,
@@ -41,17 +49,24 @@ impl Controller {
             state: status,
             preview: images,
         };
-        let worker = std::thread::Builder::new()
-            .name("blent-camera".into())
-            .spawn(move || {
-                runtime.block_on(supervise(commands, report, session));
-            })?;
+        let worker = crate::control_workers::Worker::spawn(pool, "blent-camera", move || {
+            runtime.block_on(supervise(commands, report, session));
+        })?;
         Ok(Self {
             command: Some(command),
             state,
             preview,
             worker: Some(worker),
         })
+    }
+    pub fn shutdown(mut self) -> crate::control_workers::Completion {
+        let complete = self.worker.as_ref().unwrap().completion();
+        self.retire();
+        complete
+    }
+    fn retire(&mut self) {
+        drop(self.command.take());
+        drop(self.worker.take());
     }
 }
 
@@ -76,10 +91,7 @@ impl CameraBackend for Controller {
 
 impl Drop for Controller {
     fn drop(&mut self) {
-        drop(self.command.take());
-        if let Some(worker) = self.worker.take() {
-            let _ = worker.join();
-        }
+        self.retire();
     }
 }
 
@@ -233,6 +245,54 @@ mod tests {
         owner.await.unwrap();
         let (_sender, mut already_stopped) = watch::channel(true);
         cancelled(&mut already_stopped).await;
+    }
+
+    #[test]
+    fn t811_drop_returns_while_native_retirement_is_held() {
+        let (entered, ready) = std::sync::mpsc::channel();
+        let (release, held) = std::sync::mpsc::channel();
+        let held = Arc::new(std::sync::Mutex::new(held));
+        let pool = crate::control_workers::WorkerPool::new(1).unwrap();
+        let controller = Controller::with_pool(pool.clone(), move |_, mut stop, report| {
+            let entered = entered.clone();
+            let held = held.clone();
+            async move {
+                report.update(State::Streaming);
+                entered.send(()).unwrap();
+                crate::camera_control::cancelled(&mut stop).await;
+                held.lock().unwrap().recv().unwrap();
+                Ok(())
+            }
+        })
+        .unwrap();
+        controller.start(CameraProfile::default()).unwrap();
+        ready
+            .recv_timeout(std::time::Duration::from_secs(2))
+            .unwrap();
+        let complete = controller.worker.as_ref().unwrap().completion();
+        let (dropped, done) = std::sync::mpsc::channel();
+        let caller = std::thread::spawn(move || {
+            drop(controller);
+            dropped.send(()).unwrap();
+        });
+        let responsive = done
+            .recv_timeout(std::time::Duration::from_millis(200))
+            .is_ok();
+        assert!(Controller::with_pool(pool.clone(), |_, _, _| async { Ok(()) }).is_err());
+        release.send(()).unwrap();
+        caller.join().unwrap();
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(2);
+        while !complete.is_complete() {
+            assert!(std::time::Instant::now() < deadline);
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        let next = Controller::with_pool(pool, |_, _, _| async { Ok(()) }).unwrap();
+        let retired = next.shutdown();
+        while !retired.is_complete() {
+            assert!(std::time::Instant::now() < deadline);
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert!(responsive, "T811 destructor waits for held native cleanup");
     }
 
     #[test]
