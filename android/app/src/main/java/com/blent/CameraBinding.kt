@@ -31,6 +31,7 @@ internal class CameraBinding(
     private val backgroundRunning get() = backgroundRun != null
     private var pending: Pair<CameraEndpoint, CameraLens>? = null
     private var observer: Job? = null
+    private val statusUpdates = LatestDispatch(scope) { status = "Status update failed: ${it.message}" }
     private var generation = 0L
     private var serviceError: Exception? = null
     private val guard = ResourceLane(scope, { status = it })
@@ -95,7 +96,7 @@ internal class CameraBinding(
         selected = lens
         status = "${lens.label} camera selected."
         guard.replace({ createRun(host, lens, rotation) { text ->
-            scope.launch { if (revision == generation) status = text }
+            statusUpdates.submit { if (revision == generation) status = text }
         } }, { failure ->
             if (generation == revision) {
                 if (failure != null) status = failure.message ?: "Camera sharing failed."

@@ -340,3 +340,19 @@ tests pass, 916/916 methods meet individual 80% coverage, complexity <=9.
 reduce buffer hold at 50 ms feedback delay from 50.18 ms to 0.077 ms. Full cycle
 remains about 50 ms: no transport throughput claim. No extra frame copy, storage
 or worker; reject speculative overlap without measured end-to-end benefit.
+
+## T830: bound presentation status dispatch
+
+Audio and camera status producers now share a portable latest-value dispatcher:
+one scheduled drain and one replaceable pending action. UI cancellation clears
+admission; action/report failures are contained; yielding prevents monopolizing
+the UI. Generation checks still reject stale status. Ordered data and lifecycle
+completion use their existing separate channels.
+
+Permanent `StatusDispatchTest` first failed for both 10,000-status bursts while
+the UI dispatcher was held. Each now retains exactly one pending dispatch and
+delivers the latest status; stale generations, reentrant updates, canceled scopes
+and throwing callbacks pass. This bounds queue growth; it is not a latency claim.
+[Scoped coverage and red evidence](artifacts/2026-10-10-android-status-dispatch/coverage.json):
+every changed method passes 80%; full Android suite passes, all 1,081 measured
+methods pass individually and no production method exceeds complexity 9.

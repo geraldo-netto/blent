@@ -33,6 +33,7 @@ internal class AudioBinding(
         get() = mutableState.value.pending
         private set(value) { mutableState.update { it.copy(pending = value) } }
     private var visible = false
+    private val statusUpdates = LatestDispatch(scope) { status = "Status update failed: ${it.message}" }
     private var generation = 0L
     private var observer: Job? = null
     private var backgroundRun: String? = null
@@ -82,7 +83,7 @@ internal class AudioBinding(
         sharing = true; status = "Starting $label…"
         retirement.replace({
             createRun(endpoint, settings) { text ->
-                scope.launch { if (revision == generation) status = text }
+                statusUpdates.submit { if (revision == generation) status = text }
             }
         }, { failure ->
             if (revision == generation) {
