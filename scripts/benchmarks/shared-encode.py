@@ -12,9 +12,15 @@ import shutil
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
-FILES = ['encoder.rs', 'encoder_frame.rs', 'encoder_shared.rs', 'encoder_storage.rs',
-         'encoder_io.rs', 'encoder_fifo.rs', 'raw_memory.rs', 'raw_socket.rs', 'media.rs',
-         'media_storage.rs', 'config.rs', 'latency.rs', 'video_queue.rs', 'selection.rs']
+# Copy native private adapters verbatim; use the production library for shared
+# contracts so VideoOutput and MediaBytes retain their actual type identity.
+FILES = ['encoder.rs', 'encoder_hardware.rs', 'encoder_frame.rs', 'encoder_shared.rs',
+         'encoder_storage.rs', 'encoder_io.rs', 'encoder_fifo.rs', 'raw_memory.rs',
+         'raw_socket.rs']
+
+
+def target_directory(folder):
+    return Path(os.environ.get('CARGO_TARGET_DIR', folder / 'target')).resolve()
 
 
 def build(folder):
@@ -26,10 +32,9 @@ def build(folder):
         manifest[name] = hashlib.sha256(data).hexdigest()
     with (folder / 'src/encoder.rs').open('a') as source:
         source.write((ROOT / 'scripts/benchmarks/shared-encode.rs').read_text())
-    modules = ['encoder', 'encoder_io', 'raw_memory', 'raw_socket', 'media',
-               'media_storage', 'config', 'latency', 'video_queue', 'selection']
+    modules = ['encoder', 'encoder_io', 'raw_memory', 'raw_socket']
     (folder / 'src/main.rs').write_text('\n'.join('mod ' + name + ';' for name in modules) +
-        '\nfn main() { encoder::benchmark(&std::env::args().skip(1).collect::<Vec<_>>()).unwrap(); }\n')
+        '\nuse blent::{annex_scan, config, latency, media, media_storage};\nfn main() { encoder::benchmark(&std::env::args().skip(1).collect::<Vec<_>>()).unwrap(); }\n')
     (folder / 'Cargo.toml').write_text('''[package]
 name = "blent-shared-encode-bench"
 version = "0.0.0"
@@ -46,8 +51,13 @@ tempfile = "3"
 tracing = "0.1"
 tokio = { version = "1", features = ["full"] }
 ffmpeg-next = "9"
-blent-config = { path = ''' + json.dumps(str(ROOT / 'common')) + ' }\n')
-    subprocess.run(['cargo', 'build', '--offline', '--release'], cwd=folder, check=True)
+blent-config = { path = ''' + json.dumps(str(ROOT / 'common')) + ' }\n' +
+        'blent = { path = ' + json.dumps(str(ROOT / 'host')) +
+        ', features = ["inproc-encoder"] }\n')
+    # Reuse the project dependency versions; resolution may only use local cache.
+    shutil.copyfile(ROOT / 'Cargo.lock', folder / 'Cargo.lock')
+    subprocess.run(['cargo', 'build', '--offline', '--release',
+                    '--target-dir', str(target_directory(folder))], cwd=folder, check=True)
     subprocess.run(['cc', '-O3', '-pthread', '-I', str(ROOT / 'host/evdi'),
         str(ROOT / 'scripts/benchmarks/shared-encode-producer.c'),
         str(ROOT / 'host/evdi/raw_ring.c'), str(ROOT / 'host/evdi/conversion.c'), str(ROOT / 'host/evdi/cursor_overlay.c'),
@@ -56,7 +66,7 @@ blent-config = { path = ''' + json.dumps(str(ROOT / 'common')) + ' }\n')
 
 
 def run(args):
-    binary = args.directory / 'target/release/blent-shared-encode-bench'
+    binary = target_directory(args.directory) / 'release/blent-shared-encode-bench'
     rows = []
     for repeat in range(args.repeats):
         for mode in (['fifo', 'shared'] if repeat % 2 == 0 else ['shared', 'fifo']):

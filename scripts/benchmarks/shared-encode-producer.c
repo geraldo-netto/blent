@@ -83,6 +83,20 @@ static unsigned char *reserve(raw_ring_t *ring, uint32_t *slot) {
     }
     return pixels;
 }
+/* T793: leave the shared socket alive until the consumer drains every frame
+ * and drops its codec/input references. Closing with unread RELEASE packets
+ * can reset the peer before it receives the final queued FRAME. */
+static void finish_shared(raw_ring_t *ring) {
+    assert(fclose(stdout) == 0);
+    uint64_t deadline = now_ns() + 2000000000;
+    while (raw_ring_service(ring)) {
+        assert(now_ns() < deadline);
+        struct pollfd socket = {.fd=ring->socket, .events=POLLIN};
+        poll(&socket, 1, 10);
+    }
+    raw_ring_close(ring);
+}
+
 int main(int argc, char **argv) {
     producer_options options = {0};
     if (!options_parse(argc, argv, &options)) {
@@ -123,7 +137,7 @@ int main(int argc, char **argv) {
         if (shared) assert(raw_ring_publish(&ring, slot, captured / 1000) == 1);
         else write_frame(fifo, pixels, size);
     }
-    if (shared) raw_ring_close(&ring);
+    if (shared) finish_shared(&ring);
     else { close(fifo); close(socket); }
     conv_pool_destroy(&pool); free(bgra); free(packed);
     return 0;

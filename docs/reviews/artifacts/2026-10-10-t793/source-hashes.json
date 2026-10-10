@@ -1,0 +1,7 @@
+{
+  "scripts/benchmarks/shared-encode.py": "e207c012cc2acc4839842ddf96c86a54217035d22cd0d837fc966d11b519b32f",
+  "scripts/benchmarks/shared-encode.rs": "87bafb7117f9a4a2d5394766a372a1935fd025082390df5f5e9b2fa75d02fe8d",
+  "scripts/benchmarks/shared-encode-producer.c": "f60771f84905a8fb71913d99c6f9050fe638019f18c5935a520a8d44d8c5197c",
+  "host/tests/shared_encode_replay.py": "70edb0f4206fe0e19ac961a68a244685e4bbcd50606fbca250943dcaecda53ff",
+  "host/tests/shared_encode_replay.rs": "0c0eb15ad5233a622b1681532306c5ef36fd92140c29a2d39203512604bbb854"
+}

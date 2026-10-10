@@ -23,15 +23,15 @@ pub fn benchmark(args: &[String]) -> anyhow::Result<()> {
     let mut command = tokio::process::Command::new(&args[0]);
     command.arg(&args[1]).arg(&path).args([width.to_string(), height.to_string(),
         (frames + warmup + cooldown).to_string(), fps.to_string(), threads.to_string()]);
-    child.attach(&mut command);
+    child.attach(&mut command)?;
     command.stdout(Stdio::piped()).stderr(Stdio::inherit());
     let mut producer = command.as_std_mut().spawn()?;
     // Drop the command too: its pre_exec closure owns the child endpoint.
     drop(command); drop(child);
     let socket = (args[1] == "shared").then_some(parent);
-    let mut input = shared::Input::open(&path, socket, (width, height), 4)?;
+    let mut input = shared::Input::open_with_nonce(&path, socket, (width, height), 4, None)?;
     let stop = StopSignal::new()?;
-    let mut encoder = Encoder::new("libx264", width, height, fps, 60000, 18)?;
+    let mut encoder = Encoder::with_device("libx264", width, height, fps, 60000, 18, 1, "/dev/dri/renderD128")?;
     let mut rows = Vec::new();
     let mut encoded = Vec::new();
     let mut usb = args.get(7).map(|fd| unsafe { std::net::TcpStream::from_raw_fd(fd.parse().unwrap()) });
@@ -53,6 +53,10 @@ pub fn benchmark(args: &[String]) -> anyhow::Result<()> {
                 "bytes": packets[0].0.len()}));
         }
     }
+    // The producer closes its timestamp pipe, then waits for these owners to
+    // release the socket; this keeps the last queued shared frame readable.
+    drop(encoder);
+    drop(input);
     assert!(producer.wait()?.success());
     assert_eq!(rows.len(), frames);
     if let Some(connection) = usb.as_mut() { connection.write_all(&2u32.to_be_bytes())?; }
