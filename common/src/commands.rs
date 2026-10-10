@@ -15,7 +15,7 @@ use output::CapturedOutput;
 mod retirement;
 #[cfg(windows)]
 mod windows;
-pub use owned::{OwnedChild, Retirement, RetirementPhase};
+pub use owned::{OwnedChild, Retirement, RetirementError, RetirementPhase};
 
 pub fn spawn_reaped(command: &mut std::process::Command) -> std::io::Result<u32> {
     #[cfg(windows)]

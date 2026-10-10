@@ -151,7 +151,9 @@ Larger capacities allow more concurrent work and retain more memory/handles when
 resources stall. Shorter waits return control sooner but can report incomplete
 retirement during ordinary cleanup. Process retirement reports graceful exit,
 exit after signalling, or incomplete retirement, together with a completion
-ticket and any signal error. Audio uses a 500 ms grace, camera children 1 second,
+ticket and a typed `RetirementError` when grace is unrepresentable or signalling
+fails. Invalid grace skips waiting, reports incomplete retirement, and transfers
+child/lease cleanup through the same owner Drop path. Audio uses a 500 ms grace, camera children 1 second,
 and capture children 1.5 seconds after SIGTERM; the reap budget follows. Camera
 producer collection has a separate 3-second bound. Camera device locks and
 capture FIFO inode leases survive unconfirmed native retirement. FIFO replacement

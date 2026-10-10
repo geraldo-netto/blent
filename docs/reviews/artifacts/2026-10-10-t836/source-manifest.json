@@ -1,0 +1,5 @@
+{
+  "common/src/commands.rs": "c8d8773736e13a9bb930a93d4393783351bddb5af2da8667e200f0184c9b2e19",
+  "common/src/commands/owned.rs": "81723a2fd86364c0d8e0a74e47df151ca61c08baf54a3e2c0aeb0838cb5aaef2",
+  "common/src/commands/tests.rs": "a14a857ebc0f5dec2f965d6f7028c7fe12655627d64f4b0e0656940cd2d0811a"
+}

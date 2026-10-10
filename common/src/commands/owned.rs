@@ -14,11 +14,17 @@ pub enum RetirementPhase {
     ReapedAfterSignal,
     Incomplete,
 }
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum RetirementError {
+    /// Grace plus reap cannot be represented by the monotonic clock.
+    InvalidGrace,
+    Signal(String),
+}
 #[derive(Clone, Debug)]
 pub struct Retirement {
     pub phase: RetirementPhase,
     pub completion: Completion,
-    pub signal_error: Option<String>,
+    pub error: Option<RetirementError>,
 }
 pub struct OwnedChild {
     child: Option<Child>,
@@ -83,15 +89,29 @@ impl OwnedChild {
         self.start_kill()
     }
     /// Grace, signal, bounded reap, then retain any unconfirmed native owner.
+    /// Invalid grace returns an explicit error; Drop still signals and retains
+    /// the child and its leases without waiting for native completion.
     pub async fn retire(mut self, grace: Duration) -> Retirement {
         let completion = self.completion();
-        let deadline = tokio::time::Instant::now() + grace + self.reap_budget;
+        let Some(deadline) = tokio::time::Instant::now()
+            .checked_add(grace)
+            .and_then(|end| end.checked_add(self.reap_budget))
+        else {
+            return Retirement {
+                phase: RetirementPhase::Incomplete,
+                completion,
+                error: Some(RetirementError::InvalidGrace),
+            };
+        };
         drop(self.stdin.take());
-        let mut signal_error = None;
+        let mut error = None;
         let mut phase = if matches!(tokio::time::timeout(grace, self.wait()).await, Ok(Ok(_))) {
             RetirementPhase::Exited
         } else {
-            signal_error = self.signal().err().map(|error| error.to_string());
+            error = self
+                .signal()
+                .err()
+                .map(|error| RetirementError::Signal(error.to_string()));
             let budget = self.reap_budget;
             if matches!(tokio::time::timeout(budget, self.wait()).await, Ok(Ok(_))) {
                 RetirementPhase::ReapedAfterSignal
@@ -112,7 +132,7 @@ impl OwnedChild {
         Retirement {
             phase,
             completion,
-            signal_error,
+            error,
         }
     }
 }

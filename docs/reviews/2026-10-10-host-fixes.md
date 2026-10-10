@@ -291,3 +291,22 @@ Windows GNU cross-check also pass offline; native Windows acceptance/counters re
 T737. No production reload or downloaded resource was needed. No measured throughput
 or end-to-end latency improvement is claimed.
 [Red/green and source-attested coverage](artifacts/2026-10-10-t815/).
+
+## T836: reject unrepresentable retirement grace
+
+`OwnedChild::retire` uses checked monotonic-clock addition for grace and reap.
+An unrepresentable request returns `RetirementError::InvalidGrace` with incomplete
+phase; owned Drop still signals and retains the child/leases until real cleanup.
+Valid requests retain their existing grace/reap behavior. Signal failures now use
+the same independent typed error contract instead of an untyped signal-only field.
+
+The permanent extreme-grace regression was observed panicking before this change.
+It now passes together with valid boundary durations, cancellation before polling,
+final lease release and accepted/denied-signal capacity tests. All 228 common tests
+and 13 focused host session tests pass; Windows GNU cross-compilation passes.
+All 12 changed production methods have >=80% individual coverage and complexity
+<=9. Strict merging exposed truncated profiles from intentionally killed T815
+producer fixtures (T837); the scoped report uses complete profiles through LLVM's
+supported merge mode, retaining the invalid records and every production method.
+T837 separately restores clean strict collection; no coverage exclusion is added.
+[Evidence and source hashes](artifacts/2026-10-10-t836/).

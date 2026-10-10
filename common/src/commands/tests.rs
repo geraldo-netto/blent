@@ -364,22 +364,28 @@ fn t814_unconfirmed_async_exit_retains_admission_after_control_deadline() {
     const NAME: &str =
         "commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline";
     if std::env::var_os("BLENT_T814_HELD_REAP").is_none() {
-        let output = Command::new(std::env::current_exe().unwrap())
-            .args(["--exact", NAME, "--nocapture"])
-            .env("BLENT_T814_HELD_REAP", "1")
-            .env("BLENT_PROCESS_LIMIT", "1")
-            .env("BLENT_REAP_TIMEOUT_MS", "20")
-            .output_timeout(Duration::from_secs(5))
-            .unwrap();
-        assert!(
-            output.status.success(),
-            "{}{}",
-            String::from_utf8_lossy(&output.stdout),
-            String::from_utf8_lossy(&output.stderr)
-        );
+        for denied in [false, true] {
+            let output = Command::new(std::env::current_exe().unwrap())
+                .args(["--exact", NAME, "--nocapture"])
+                .env(
+                    "BLENT_T814_HELD_REAP",
+                    if denied { "denied" } else { "accepted" },
+                )
+                .env("BLENT_PROCESS_LIMIT", "1")
+                .env("BLENT_REAP_TIMEOUT_MS", "20")
+                .output_timeout(Duration::from_secs(5))
+                .unwrap();
+            assert!(
+                output.status.success(),
+                "{}{}",
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
+        }
         return;
     }
-    // This disposable process alone makes kill(2) report success without sending
+    let denied = std::env::var("BLENT_T814_HELD_REAP").unwrap() == "denied";
+    // This disposable process makes kill(2) fail or report success without sending
     // a signal. The owned fixture always exits itself after 400 ms.
     let mut instructions = [
         libc::sock_filter {
@@ -398,7 +404,7 @@ fn t814_unconfirmed_async_exit_retains_admission_after_control_deadline() {
             code: (libc::BPF_RET | libc::BPF_K) as u16,
             jt: 0,
             jf: 0,
-            k: libc::SECCOMP_RET_ERRNO,
+            k: libc::SECCOMP_RET_ERRNO | if denied { libc::EPERM as u32 } else { 0 },
         },
         libc::sock_filter {
             code: (libc::BPF_RET | libc::BPF_K) as u16,
@@ -431,6 +437,10 @@ fn t814_unconfirmed_async_exit_retains_admission_after_control_deadline() {
             let pid = child.id().unwrap();
             let report = child.retire(Duration::ZERO).await;
             assert_eq!(report.phase, RetirementPhase::Incomplete);
+            assert_eq!(
+                matches!(report.error, Some(RetirementError::Signal(_))),
+                denied
+            );
             assert!(!report.completion.is_complete());
             assert_eq!(
                 OwnedChild::spawn(&mut tokio::process::Command::from(fixture(&path, "denied")))
@@ -509,6 +519,117 @@ fn t814_dependent_lease_cleanup_cannot_hold_control_deadline() {
     let end = std::time::Instant::now() + Duration::from_secs(2);
     while !report.completion.is_complete() {
         assert!(std::time::Instant::now() < end);
+        std::thread::sleep(Duration::from_millis(1));
+    }
+}
+
+#[test]
+fn t836_extreme_retirement_grace_never_panics_or_loses_ownership() {
+    use std::sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    };
+    struct Lease(Arc<AtomicBool>);
+    impl Drop for Lease {
+        fn drop(&mut self) {
+            self.0.store(true, Ordering::Release);
+        }
+    }
+    for grace in [Duration::MAX, Duration::from_secs(u64::MAX / 2)] {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        let root = tempfile::tempdir().unwrap();
+        let released = Arc::new(AtomicBool::new(false));
+        let mut child = runtime.block_on(async {
+            OwnedChild::spawn(&mut tokio::process::Command::from(fixture(
+                &root.path().join("pid"),
+                "denied",
+            )))
+            .unwrap()
+        });
+        let pid = child.id().unwrap();
+        t836_fixture_ready(&root.path().join("pid"));
+        child.keep_alive(Lease(released.clone()));
+        let ticket = child.completion();
+        let started = std::time::Instant::now();
+        let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            runtime.block_on(child.retire(grace))
+        }));
+        let duration = started.elapsed();
+        let end = std::time::Instant::now() + Duration::from_secs(2);
+        while !ticket.is_complete() {
+            assert!(std::time::Instant::now() < end);
+            std::thread::sleep(Duration::from_millis(1));
+        }
+        assert!(released.load(Ordering::Acquire));
+        assert_exited(pid);
+        assert!(duration < Duration::from_millis(200));
+        assert!(
+            result.is_ok(),
+            "T836: invalid grace panicked during owned retirement"
+        );
+        let report = result.unwrap();
+        assert_eq!(report.phase, RetirementPhase::Incomplete);
+        assert_eq!(report.error, Some(RetirementError::InvalidGrace));
+    }
+}
+
+#[tokio::test]
+async fn t836_representable_grace_and_cancelled_retirement_preserve_ownership() {
+    for grace in [
+        Duration::ZERO,
+        Duration::from_nanos(1),
+        Duration::from_millis(1),
+        Duration::from_secs(1_000_000_000),
+    ] {
+        let root = tempfile::tempdir().unwrap();
+        let mut command = tokio::process::Command::from(fixture(&root.path().join("pid"), "input"));
+        command.stdin(Stdio::null());
+        let child = OwnedChild::spawn(&mut command).unwrap();
+        t836_fixture_ready(&root.path().join("pid"));
+        let native: &tokio::process::Child = &child;
+        assert_eq!(native.id(), child.id());
+        let report = child.retire(grace).await;
+        assert!(report.error.is_none());
+        assert!(report.completion.is_complete());
+        assert!(matches!(
+            report.phase,
+            RetirementPhase::Exited | RetirementPhase::ReapedAfterSignal
+        ));
+    }
+    for grace in [Duration::from_secs(60), Duration::MAX] {
+        let root = tempfile::tempdir().unwrap();
+        let child = OwnedChild::spawn(&mut tokio::process::Command::from(fixture(
+            &root.path().join("pid"),
+            "denied",
+        )))
+        .unwrap();
+        let ticket = child.completion();
+        let pid = child.id().unwrap();
+        t836_fixture_ready(&root.path().join("pid"));
+        let task = tokio::spawn(child.retire(grace));
+        task.abort();
+        assert!(task.await.unwrap_err().is_cancelled());
+        tokio::time::timeout(Duration::from_secs(2), async {
+            while !ticket.is_complete() {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .unwrap();
+        assert_exited(pid);
+    }
+}
+
+fn t836_fixture_ready(path: &std::path::Path) {
+    let end = std::time::Instant::now() + Duration::from_secs(2);
+    while !path.exists() {
+        assert!(
+            std::time::Instant::now() < end,
+            "T836 fixture did not start"
+        );
         std::thread::sleep(Duration::from_millis(1));
     }
 }
