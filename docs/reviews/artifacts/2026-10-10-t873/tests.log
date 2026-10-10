@@ -1,0 +1,25 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.24s
+     Running unittests src/lib.rs (/tmp/blent-t846-alpn-coverage/debug/deps/blent-592b3b54ab5a39c1)
+
+running 13 tests
+test broker::transport::tests::t873_borrowed_reservation_preserves_original_buffer_and_revocation ... ok
+test broker::transport::tests::t873_bounded_invalid_declared_lengths_never_reach_allocation ... ok
+test broker::transport::tests::t873_cancellation_does_not_restart_partial_read_deadline ... ok
+test broker::transport::tests::t873_deadline_bounds_and_closed_channel_drain_are_explicit ... ok
+test broker::transport::tests::t873_fragmented_reads_writes_preserve_reservations_and_payload ... ok
+test broker::transport::tests::t873_idle_read_has_no_deadline_but_partial_body_does ... ok
+test broker::transport::tests::t873_invalid_headers_eof_and_native_errors_poison_connection ... ok
+test broker::transport::tests::t873_payload_is_unavailable_until_complete_frame_event ... ok
+test broker::transport::tests::t873_pending_write_services_read_and_pending_consumer_services_write ... ok
+test broker::transport::tests::t873_real_duplex_handles_bidirectional_fragmentation ... ok
+test broker::transport::tests::t873_revocation_during_body_must_drain_completed_frame ... ok
+test broker::transport::tests::t873_stopping_transfers_stream_for_explicit_shutdown ... ok
+test broker::transport::tests::t873_writer_deadline_includes_flush_and_cancelled_waits ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 383 filtered out; finished in 0.01s
+
+
+    Finished report saved to /tmp/blent-t873-evidence/rust.lcov

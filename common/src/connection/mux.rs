@@ -78,6 +78,13 @@ impl Multiplexer {
         self.credit[index] = self.capacity;
         Ok(())
     }
+    /// Recheck after asynchronous body completion; revocation can arrive after
+    /// header validation and must never revive delivery from cached permission.
+    pub fn accepts_data(&self, channel: Channel, generation: u64) -> bool {
+        let index = channel as usize - 1;
+        !self.failed && self.enabled[index] && !self.closing[index]
+            && self.generations[index] == generation
+    }
     pub fn offer(&mut self, channel: Channel, bytes: Vec<u8>) -> std::result::Result<(), Vec<u8>> {
         if self.failed || self.closing[channel as usize - 1] || !self.enabled[channel as usize - 1] {
             return Err(bytes);
@@ -171,6 +178,19 @@ impl Multiplexer {
             }));
         }
         Ok(self.metadata()?.map(|header| Frame { header, bytes: &[] }))
+    }
+    /// Reborrow the current writer reservation after a nonblocking write call
+    /// returns. Never finish/release its bytes while native code retains a borrow.
+    /// This permits a single owner to service inbound events between partial
+    /// writes without copying an outbound payload into a second staging buffer.
+    pub fn reserved(&self) -> Option<Frame<'_>> {
+        let header = self.active?;
+        let bytes = if header.kind == Kind::Data {
+            self.queue.reserved().expect("reserved slice").bytes
+        } else {
+            &[]
+        };
+        Some(Frame { header, bytes })
     }
     /// Finish only when native writer has retired its borrow. False retires the
     /// entire physical connection, even when no bytes were observed locally.

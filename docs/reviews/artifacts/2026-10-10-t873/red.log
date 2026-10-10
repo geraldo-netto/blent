@@ -1,0 +1,37 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.17s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 10 tests
+test broker::transport::tests::t873_cancellation_does_not_restart_partial_read_deadline ... ok
+test broker::transport::tests::t873_deadline_bounds_and_closed_channel_drain_are_explicit ... ok
+test broker::transport::tests::t873_fragmented_reads_writes_preserve_reservations_and_payload ... ok
+test broker::transport::tests::t873_idle_read_has_no_deadline_but_partial_body_does ... ok
+test broker::transport::tests::t873_invalid_headers_eof_and_native_errors_poison_connection ... ok
+test broker::transport::tests::t873_payload_is_unavailable_until_complete_frame_event ... FAILED
+test broker::transport::tests::t873_pending_write_services_read_and_pending_consumer_services_write ... ok
+test broker::transport::tests::t873_real_duplex_handles_bidirectional_fragmentation ... ok
+test broker::transport::tests::t873_revocation_during_body_must_drain_completed_frame ... FAILED
+test broker::transport::tests::t873_writer_deadline_includes_flush_and_cancelled_waits ... ok
+
+failures:
+
+---- broker::transport::tests::t873_payload_is_unavailable_until_complete_frame_event stdout ----
+
+thread 'broker::transport::tests::t873_payload_is_unavailable_until_complete_frame_event' (1861794) panicked at host/src/broker/transport/tests.rs:342:5:
+T873 unfinished frame exposes staging bytes
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- broker::transport::tests::t873_revocation_during_body_must_drain_completed_frame stdout ----
+
+thread 'broker::transport::tests::t873_revocation_during_body_must_drain_completed_frame' (1861797) panicked at host/src/broker/transport/tests.rs:325:13:
+T873 revoked partial frame regained delivery authority
+
+
+failures:
+    broker::transport::tests::t873_payload_is_unavailable_until_complete_frame_event
+    broker::transport::tests::t873_revocation_during_body_must_drain_completed_frame
+
+test result: FAILED. 8 passed; 2 failed; 0 ignored; 0 measured; 383 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

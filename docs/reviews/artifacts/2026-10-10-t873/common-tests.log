@@ -1,0 +1,497 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.62s
+     Running unittests src/lib.rs (/tmp/blent-t846-alpn-coverage/debug/deps/blent_config-88e1a3137dc8aa58)
+
+running 240 tests
+test adb::tests::t278_mdns_service_and_domain_forms_are_network_routes ... ok
+test adb_reverse::tests::t557_bounded_malformed_listing_fuzz_fails_closed ... ok
+test adb_reverse::tests::t557_only_absent_routes_are_repaired_without_stealing_destinations ... ok
+test android::tests::t250_fork_components_keep_original_class_namespace ... ok
+test audio::buffer::identity_tests::t818_identity_and_fractional_paths_match_signed_scalar_oracle ... ok
+test audio::clock::tests::t720_clock_encoding_has_fixed_bounds_and_explicit_unavailability ... ok
+test audio::clock::tests::t720_clocked_wire_is_negotiated_and_invalid_counters_do_not_advance_sequence ... ok
+test audio::clock::tests::t720_counter_windows_reject_resets_stalls_outliers_and_stale_measurements ... ok
+test audio::clock::tests::t720_fractional_excess_native_drift_is_rejected_before_rounding ... ok
+test audio::clock::tests::t720_native_windows_drive_bounded_resampling_without_cross_clock_subtraction ... ok
+test audio::session::tests::t717_generation_exhaustion_and_absent_owner_fail_closed ... ok
+test audio::session::tests::t736_entropy_failure_preserves_generation_for_retry ... ok
+test audio::staging_tests::t818_reusable_writer_is_atomic_on_invalid_input ... ok
+test audio::staging_tests::t818_views_validate_before_commit_and_preserve_endian_and_clock ... ok
+test audio::tests::t717_both_directions_stop_and_retirement_are_independent ... ok
+test audio::tests::t717_bounded_frame_mutations_never_escape_pcm_limits ... ok
+test audio::tests::t717_buffer_preferences_control_prefill_and_wire_golden_fields ... ok
+test audio::tests::t717_capabilities_fail_closed_per_direction_and_processing ... ok
+test audio::tests::t717_drift_bounds_overflow_and_discontinuity ... ok
+test audio::tests::t717_fake_backend_obeys_owned_retirement_before_restart ... ok
+test audio::tests::t717_fractional_excess_drift_is_rejected_before_rounding ... ok
+test audio::tests::t717_frame_truncation_and_size_errors_do_not_advance_sequence ... ok
+test audio::tests::t717_handshake_cannot_move_clock_backwards ... ok
+test audio::tests::t717_handshake_rejects_every_changed_byte_and_truncation ... ok
+test audio::tests::t717_malformed_receive_closes_admission_and_deadline_cannot_be_extended ... ok
+test audio::tests::t717_pcm_roundtrip_preserves_signed_extremes_and_stereo_order ... ok
+test audio::tests::t717_poll_clock_must_not_regress_before_frame_arrives ... ok
+test audio::tests::t717_profile_bounds_and_serialized_invalid_values ... ok
+test audio::tests::t717_queue_prefill_overflow_underflow_and_no_repeated_speech ... ok
+test audio::tests::t717_queue_rejects_channels_sizes_backwards_clock_and_expires_old_audio ... ok
+test audio::tests::t717_queue_stress_stays_bounded_with_extreme_samples_and_drift ... ok
+test audio::tests::t717_receive_and_render_enforce_deadline_without_poll ... ok
+test audio::tests::t717_receive_render_disconnect_and_fresh_start ... ok
+test audio::tests::t717_resampling_interpolates_across_block_boundary ... ok
+test audio::tests::t717_resampling_preserves_channels_and_bounded_consumption ... ok
+test audio::tests::t717_sequence_gaps_reordering_and_wrap ... ok
+test audio::tests::t717_session_rejects_implicit_unauthenticated_and_unsupported_start ... ok
+test audio::tests::t717_stale_failure_cannot_cancel_replacement_and_stop_cannot_restore_it ... ok
+test audio::tests::t717_stale_render_cannot_retire_replacement ... ok
+test audio::tests::t718_native_pcm_bounds_and_saved_preferences_are_passive ... ok
+test audio::tests::t719_capture_transfer_bounds_age_overflow_and_partial_rendering ... ok
+test audio::tests::t719_speaker_defaults_upgrade_old_settings_without_starting ... ok
+test audio::tests::t736_failed_entropy_never_admits_or_advances_a_session ... ok
+test audio::wire::writer_tests::t719_sender_preserves_first_sequence_gaps_and_atomic_rejection ... ok
+test camera::preview::tests::t543_preview_bounds_colours_and_shape_preserve_exported_pixels ... ok
+test camera::tests::t539_profile_limits_and_bounded_invalid_inputs ... ok
+test camera::tests::t616_freshness_budget_is_bounded ... ok
+test camera::tests::t618_adaptive_rate_bounds_and_fixed_override ... ok
+test capture_capacity::tests::t697_defaults_auto_manual_and_configuration_limits ... ok
+test capture_capacity::tests::t697_effective_capacity_is_verified_separately_and_dirty_work_is_bounded ... ok
+test cli::backend::tests::t694_capability_admission_is_explicit_and_preserves_supported_arguments ... ok
+test cli::backend::tests::t694_connection_overrides_preserve_saved_values_and_bound_slot_ranges ... ok
+test cli::camera_tests::t539_camera_command_is_separate_from_display_startup ... ok
+test cli::camera_tests::t612_worker_cli_bounds_and_auto_are_explicit ... ok
+test commands::output::tests::t815_child_exit_after_idle_probe_still_drains_final_bytes ... ok
+test commands::output::tests::t815_collection_failure_panic_and_cancellation_retire_owners ... ok
+test commands::output::tests::t815_held_collection_cannot_block_control_or_release_its_capacity ... ok
+test commands::output::tests::t815_interrupted_reads_retry_without_losing_budget_or_bytes ... ok
+test commands::output_limits::tests::t815_stream_and_total_boundaries_preserve_only_admitted_bytes ... ok
+test commands::tests::t094_async_command_is_bounded_and_reaped ... ok
+test commands::tests::t094_cancelled_command_is_reaped ... ok
+test commands::tests::t094_sync_command_is_bounded_and_reaped ... ok
+test commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets ... ok
+test commands::tests::t328_denied_signal_does_not_extend_deadline ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t590_denied_group_signal_reports_unretired_work ... ok
+test commands::tests::t609_cancelled_stdin_writer_is_reaped ... ok
+test commands::tests::t609_stdin_delivery_closes_input_and_preserves_bytes ... ok
+test commands::tests::t609_timeout_covers_blocked_stdin_write ... ok
+test commands::tests::t814_accepted_signal_does_not_make_reaping_unbounded ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t814_dependent_lease_cleanup_cannot_hold_control_deadline ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.00s
+
+ok
+test commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline ... ok
+test commands::tests::t815_collection_failure_after_reap_never_signals_a_reusable_pid ... ok
+test commands::tests::t836_extreme_retirement_grace_never_panics_or_loses_ownership ... 
+running 1 test
+test commands::tests::t496_fixture_process ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t836_representable_grace_and_cancelled_retirement_preserve_ownership ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... 
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+test connection::flow::tests::t846_sequences_never_wrap ... ok
+test connection::resources::tests::t851_request_and_generation_exhaustion_never_wrap ... ok
+test connection::routes::tests::t856_local_route_revision_exhaustion_does_not_wrap ... ok
+test connection::trust::tests::t852_bounded_invalid_completion_cannot_retarget_live_attempt ... ok
+test connection::trust::tests::t852_composition_requires_fresh_proof_after_restart_and_revoke ... ok
+test connection::trust::tests::t852_failed_persistence_or_proof_cancels_matching_attempt_and_keeps_retirement_barrier ... ok
+test connection::trust::tests::t852_stale_completion_cannot_cancel_another_attempt_and_health_is_rechecked ... ok
+test connection::trust::tests::t868_capacity_has_no_eviction_and_invalid_load_is_preserved ... ok
+test connection::trust::tests::t868_codec_accepts_exact_maximum_and_rejects_oversized_record ... ok
+test connection::trust::tests::t868_codec_encode_rejects_noncanonical_snapshots_and_capacity_lowering ... ok
+test connection::trust::tests::t868_codec_golden_vectors_and_bounded_mutations ... ok
+test connection::trust::tests::t868_failed_remember_keeps_admission_closed_and_revoke_cancels_unsaved_peer ... ok
+test connection::trust::tests::t868_failed_writes_and_counter_exhaustion_poison_reconnect_admission ... ok
+test connection::trust::tests::t868_rejects_unproven_nonremembered_stale_and_changed_leases ... ok
+test connection::trust::tests::t868_remember_restart_sorted_peers_and_revoke_without_implicit_authority ... ok
+test credentials::tests::t523_entropy_failure_never_becomes_an_empty_credential ... ok
+test diagnostics::native::tests::t533_command_fixture ... ok
+test diagnostics::native::tests::t533_native_discovery_and_failure_keep_process_contracts ... ok
+test direct_input::tests::t673_preferences_validate_monitor_identity_modes_and_device_masks ... ok
+test direct_input::tests::t689_denied_partial_creation_replacement_and_shutdown_release_ownership ... ok
+test direct_input::tests::t689_direct_mouse_taps_right_click_and_drag_have_owned_transitions ... ok
+test direct_input::tests::t689_invalid_events_cannot_reach_adapter_or_create_contacts ... ok
+test direct_input::tests::t689_touch_owns_slots_and_release_uses_last_position ... ok
+test display::tests::t321_invalid_and_boundary_numeric_corpus_never_wraps_or_admits_low_clock ... ok
+test display::tests::t321_low_clock_is_rejected_with_supported_refresh_alternative ... ok
+test display::tests::t321_minimum_refresh_and_rounded_clock_boundaries_agree ... ok
+test display::tests::t321_saved_low_clock_preserves_geometry_and_raises_refresh ... ok
+test encoder_workers::tests::t612_budget_order_manual_override_and_bounds ... ok
+test encoder_workers::tests::t612_effective_count_is_evidence_not_requested_capacity ... ok
+test encoder_workers::tests::t665_worker_fields_require_the_exact_x264_marker ... ok
+test encoding::tests::t373_registry_preserves_aliases_and_adapter_capabilities ... ok
+test encoding::tests::t400_low_latency_vaapi_is_distinct_from_stock_encoder_name ... ok
+test encoding::tests::t433_av1_profiles_use_framed_stock_cli_and_reject_inproc ... ok
+test encoding::tests::t612_manual_workers_use_shared_policy_and_preserve_default ... ok
+test encoding::tests::t613_x264_defaults_to_one_worker_in_both_adapters ... ok
+test encoding::tests::t787_shared_vaapi_preserves_explicit_low_latency_policy ... ok
+test encoding::tests::t839_numeric_boundaries_match_low_level_profile_contract ... ok
+test encoding::tests::t839_profile_rejects_bitrate_overflow_before_arithmetic ... ok
+test encoding::windows::tests::t685_bounded_invalid_requests_and_probe_commands ... ok
+test encoding::windows::tests::t685_catalog_profiles_keep_hardware_out_of_live_admission ... ok
+test encoding::windows::tests::t685_options_preserve_defaults_and_distinguish_capacity_from_quality ... ok
+test gpu::tests::t727_config_roundtrip_merge_and_restart_preserve_legacy_device ... ok
+test gpu::tests::t727_policy_preserves_automatic_and_bounds_invalid_or_stale_choices ... ok
+test idle::control::tests::t695_epoch_local_trial_motion_keys_staleness_and_owned_drop ... ok
+test idle::control::tests::t695_invalid_epochs_missing_and_malformed_evidence_fail_closed ... ok
+test idle::control::tests::t695_pending_bound_and_ack_ordinal_boundaries ... ok
+test idle::control::tests::t695_retirement_and_adapter_failure_clear_sparse_request ... ok
+test idle::tests::t492_active_epoch_rejects_regression_and_sequence_wrap_is_valid ... ok
+test idle::tests::t492_busy_or_unmeasured_stream_remains_at_compatible_cadence ... ok
+test idle::tests::t492_current_profile_needs_measured_baseline_and_sparse_trial ... ok
+test idle::tests::t492_missing_frames_keys_and_invalid_samples_cannot_certify_idle ... ok
+test idle::tests::t492_slow_ack_encoder_queue_growth_and_clock_steps_restore_compatibility ... ok
+test idle::tests::t492_timestamp_conversion_is_bounded_and_preserves_wall_time_gaps ... ok
+test idle::tests::t667_ack_limit_is_independent_of_relative_cost_margin ... ok
+test idle::tests::t667_baseline_ack_limit_is_inclusive_and_never_admits_slow_frames ... ok
+test idle::tests::t667_pending_cadence_grace_expires_at_one_second ... ok
+test idle::tests::t667_percentile_uses_the_ordered_window_and_exact_cost_margin ... ok
+test idle::tests::t667_tick_preserves_baseline_and_exact_sparse_deadline ... ok
+test idle::tests::t667_trial_waits_for_the_complete_sample_window ... ok
+test input_mapping::tests::t672_invalid_coordinates_geometry_identity_and_ranges_are_rejected ... ok
+test input_mapping::tests::t672_mapping_bounds_rotation_and_mixed_dpi_property ... ok
+test input_mapping::tests::t672_selection_requires_exact_identity_and_current_topology ... ok
+test lifecycle::tests::t524_transition_bounds_errors_and_restart_order ... ok
+test linux::appimage::tests::t308_stable_launcher_requires_absolute_executable_and_literal_unit_binding ... ok
+test linux::autostart::tests::t231_hidden_and_incomplete_entries_do_not_report_enabled ... ok
+test linux::autostart::tests::t231_shell_and_gui_entries_agree_and_launch_literal_paths ... ok
+test linux::daemon::status::tests::t409_changed_pid_file_precedes_still_valid_cached_daemon ... ok
+test linux::daemon::status::tests::t409_stale_pid_and_identity_changes_force_discovery ... ok
+test linux::daemon::status::tests::t409_status_revalidates_one_pid_without_repeated_inventory ... ok
+test linux::gpu::tests::t727_discovery_checks_stable_identity_permissions_and_native_bounds ... ok
+test linux::gpu::tests::t727_effective_reports_require_owned_process_and_open_device_evidence ... ok
+test linux::gpu::tests::t727_pci_names_are_optional_bounded_and_do_not_cross_vendor_sections ... ok
+test linux::packet::tests::t871_bounded_invalid_sizes_and_descriptor_counts_never_reach_syscall ... ok
+test linux::packet::tests::t871_empty_payload_owns_and_closes_rights_before_rejection ... ok
+test linux::packet::tests::t871_excess_and_truncated_rights_close_every_delivered_descriptor ... ok
+test linux::packet::tests::t871_full_packet_and_maximum_rights_are_bounded ... ok
+test linux::packet::tests::t871_packet_parameter_bounds_and_native_errors_are_rejected ... ok
+test linux::packet::tests::t871_packets_preserve_boundaries_and_owned_cloexec_rights ... ok
+test linux::packet::tests::t871_payload_truncation_and_unknown_control_release_received_rights ... ok
+test linux::pipe::report::tests::t415_status_rejects_stale_processes_replaced_fifos_and_malformed_reports ... ok
+test linux::pipe::tests::t415_inspection_never_consumes_frames_or_opens_a_reader ... ok
+test linux::pipe::tests::t415_requests_are_atomic_private_validated_and_do_not_follow_links ... ok
+test linux::pipe::tests::t415_status_does_not_wake_a_reader_waiting_for_the_capture_writer ... ok
+test linux::pipe::tests::t463_failed_publication_keeps_preference_for_startup_retry ... ok
+test linux::pipe::tests::t463_save_waits_for_startup_publication_before_publishing_new_value ... ok
+test linux::pipe::tests::t463_startup_reads_latest_preference_instead_of_old_snapshot ... ok
+test linux::processes::coverage_tests::t497_pinned_signals_reject_invalid_inputs_and_accept_retired_children ... ok
+test linux::processes::tests::t245_process_matching_preserves_ownership_and_native_arguments ... ok
+test linux::processes::tests::t409_inventory_filters_before_full_reads_and_rechecks_uid ... ok
+test linux::runtime::tests::runtime_dir_is_private ... ok
+test linux::runtime::tests::t099_session_snapshot_is_private_current_and_removed_on_exit ... ok
+test linux::runtime::tests::t242_fake_tablet_runtime_fixture_matches_the_host ... ok
+test linux::runtime::tests::t252_base_permissions_and_symlink_policy_are_explicit ... ok
+test linux::runtime::tests::t252_directory_owner_must_match_the_calling_user ... ok
+test linux::runtime::tests::t252_fallback_selection_preserves_native_home_and_order ... ok
+test linux::runtime::tests::t252_foreign_owner_cannot_receive_runtime_files ... ok
+test linux::runtime::tests::t252_foreign_owner_child ... ok
+test linux::runtime::tests::t252_runtime_child ... ok
+test linux::runtime::tests::t252_runtime_paths_reject_unsafe_state ... ok
+test linux::runtime::tests::t436_runtime_fixture_survives_shared_umask ... ok
+test linux::runtime::tests::t444_random_tokens_are_fresh_fixed_width_and_reject_mutations ... ok
+test linux::runtime::tests::token_comparison_is_exact ... ok
+test model::merge::tests::t703_changed_value_types_are_atomic_and_absent_removal_is_safe ... ok
+test model::merge::tests::t703_nested_fields_and_atomic_arrays_preserve_unedited_latest_values ... ok
+test model::tests::t017_merge_preserves_external_changes_and_applies_only_user_edits ... ok
+test model::tests::t061_dimensions_fit_edid_active_pixel_fields ... ok
+test model::tests::t063_unknown_encoder_is_not_persisted_as_valid_configuration ... ok
+test model::tests::t093_all_slot_ports_are_unique_nonzero_and_representable ... ok
+test model::tests::t415_pipe_capacity_round_trips_and_invalid_values_fall_back ... ok
+test model::tests::t434_auto_is_default_but_explicit_choices_survive ... ok
+test model::tests::t474_conversion_capacity_defaults_round_trips_and_rejects_invalid_values ... ok
+test model::tests::t474_conversion_edit_merges_and_requires_explicit_restart ... ok
+test model::tests::t480_profile_cache_is_opt_in_and_persists ... ok
+test model::tests::t492_adaptive_idle_preference_round_trips_without_changing_motion_rate ... ok
+test model::tests::t543_camera_preferences_round_trip_without_starting_or_restarting_display ... ok
+test model::tests::t612_worker_capacity_roundtrip_and_sanitize ... ok
+test negotiation::tests::t478_avc_level_one_b_orders_between_one_and_one_one ... ok
+test negotiation::tests::t478_old_peer_and_duplicate_identity_are_not_rich_support ... ok
+test negotiation::tests::t478_scope_format_version_and_bounds_are_validated ... ok
+test negotiation::tests::t478_shared_report_round_trips_and_intersects_exact_profiles ... ok
+test negotiation::tests::t478_unknown_unsupported_depth_level_and_profile_never_authorize ... ok
+test negotiation::tests::t480_software_fingerprint_is_bounded_and_optional_for_older_peers ... ok
+test negotiation::tests::t484_decoder_receipt_matches_shared_android_vector_and_changes_with_hints ... ok
+test negotiation::tests::t668_codec_families_and_hardware_subset_are_validated ... ok
+test negotiation::tests::t668_codec_profile_depth_and_level_contracts_are_independent ... ok
+test negotiation::tests::t668_hardware_choices_precede_software_without_losing_identity ... ok
+test negotiation::tests::t668_invalid_reports_and_streams_cannot_offer_decoder_choices ... ok
+test negotiation::tests::t668_legacy_reports_reject_either_rich_extension ... ok
+test negotiation::tests::t668_report_dimensions_and_rate_are_independently_bounded ... ok
+test platform::tests::t493_capabilities_never_imply_an_unimplemented_backend ... ok
+test raw_frame::tests::t418_descriptor_layout_roundtrips_with_bounded_arithmetic ... ok
+test raw_frame::tests::t418_malformed_descriptors_and_bounded_mutation_fuzz_never_escape_layout ... ok
+test raw_frame::tests::t418_raw_transport_settings_are_explicit_and_round_trip ... ok
+test raw_frame::tests::t669_slot_offsets_partition_the_allocation_without_overlap ... ok
+test release::tests::t374_shared_release_response_contract ... ok
+test retirement::tests::t814_capacity_boundaries_reject_invalid_values ... ok
+test retirement::tests::t814_panicking_adapter_keeps_its_slot_without_stalling_siblings ... ok
+test retirement::tests::t814_retirement_retains_capacity_and_siblings_progress ... ok
+test retirement::tests::t841_completed_messages_preserve_retirement_ownership ... ok
+test retirement_limits::tests::t814_rejects_invalid_and_out_of_bounds_resource_limits ... ok
+test retirement_work::tests::t814_cleanup_panic_cannot_release_unknown_resources_or_block_siblings ... ok
+test scheduling::linux::tests::t582_async_scope_start_is_verified_with_a_bounded_wait ... ok
+test scheduling::linux::tests::t582_group_input_and_effective_weight_are_validated ... ok
+test scheduling::linux::tests::t582_native_scope_keeps_all_threads_and_new_children_together ... ok
+test scheduling::linux::tests::t582_only_the_same_user_and_exact_adb_server_are_eligible ... ok
+test scheduling::linux::tests::t582_requests_cover_owned_groups_without_boosting_an_editor ... ok
+test scheduling::tests::t582_high_default_and_normal_override_round_trip_and_merge ... ok
+test storage::diff::tests::t559_diffs_semantic_paths_and_added_removed_values ... ok
+test storage::diff::tests::t559_malformed_and_bounded_nested_input_never_fabricates_changes ... ok
+test storage::merge_tests::t703_optional_serial_removal_and_addition_preserve_other_edits ... ok
+test storage::merge_tests::t703_same_camera_field_keeps_last_edited_save_wins ... ok
+test storage::merge_tests::t703_two_camera_snapshots_preserve_independent_edits_in_both_orders ... ok
+test storage::tests::t104_concurrent_config_transactions ... ok
+test storage::tests::t137_partial_updates_preserve_invalid_existing_config ... ok
+test storage::tests::t140_xdg_config_isolation ... ok
+test storage::tests::t264_position_aliases_round_trip_as_one_canonical_choice ... ok
+test storage::tests::t288_invalid_pen_mode_save_preserves_previous_file ... ok
+test storage::tests::t321_explicit_edit_rejects_low_clock_without_overwriting_preferences ... ok
+test storage::tests::t321_missing_or_malformed_saved_configuration_has_supported_default_timing ... ok
+test storage::tests::t332_invalid_joint_mode_save_preserves_last_valid_configuration ... ok
+test storage::write_tests::t566_failed_persistence_never_reports_a_successful_change ... ok
+test storage::write_tests::t566_success_reports_only_committed_changes_and_noop_stays_quiet ... ok
+test version::tests::t123_shared_release_version_contract ... ok
+test video::tests::t670_codec_labels_preserve_the_public_names ... ok
+test video::tests::t670_vp9_encoder_aliases_keep_their_bitstream_identity ... ok
+
+test result: ok. 240 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.13s
+
+     Running tests/appimage.rs (/tmp/blent-t846-alpn-coverage/debug/deps/appimage-0416967bff80113b)
+
+running 4 tests
+test t308_autostart_child ... ok
+test t308_registration_controls_only_its_service_and_preserves_direct_autostart ... ok
+test t308_service_binding_child ... ok
+test t308_services_match_only_the_current_stable_distribution ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/audio_render_bench.rs (/tmp/blent-t846-alpn-coverage/debug/deps/audio_render_bench-aec9c768f1588919)
+
+running 1 test
+test t818_identity_rate_samples_and_measurements ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/autostart.rs (/tmp/blent-t846-alpn-coverage/debug/deps/autostart-157468cd2929efbc)
+
+running 6 tests
+test t536_autostart_child ... ok
+test t536_managed_autostart_works_without_graphical_target_and_disables_cleanly ... ok
+test t653_probe_child ... ok
+test t653_systemd_probes_require_success_and_exact_state ... ok
+test t656_disable_child ... ok
+test t656_disable_reports_nonmissing_filesystem_errors ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+     Running tests/command_lifetime.rs (/tmp/blent-t846-alpn-coverage/debug/deps/command_lifetime-64e6552fb2ef9578)
+
+running 6 tests
+test t328_async_cancellation_retires_descendants ... ok
+test t328_async_timeout_retires_descendants ... ok
+test t328_detached_work_reports_cancellation_limit ... ok
+test t328_success_preserves_status_and_output ... ok
+test t328_successful_async_command_keeps_completed_status ... ok
+test t328_sync_timeout_retires_descendants ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.00s
+
+     Running tests/command_output.rs (/tmp/blent-t846-alpn-coverage/debug/deps/command_output-82dbd44674fb38b7)
+
+running 7 tests
+test t815_exact_over_limit_and_simultaneous_streams_are_bounded ... ok
+test t815_inherited_output_does_not_extend_success_collection ... ok
+test t815_invalid_limits_reject_before_child_creation ... ok
+test t815_output_fixture ... ok
+test t815_overflow_interrupts_blocked_stdin_delivery ... ok
+test t815_unrepresentable_deadline_is_rejected_without_panic_or_spawn ... ok
+test t837_overflow_fixture_remains_live_until_owned_retirement ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running tests/config_location.rs (/tmp/blent-t846-alpn-coverage/debug/deps/config_location-983d4b257ab6f789)
+
+running 2 tests
+test t493_invalid_home_is_an_error_without_relative_writes ... ok
+test t497_default_adapters_publish_only_the_isolated_current_preference ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/connection.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection-9c646e15b3e8d1ee)
+
+running 10 tests
+test t846_bounded_header_mutations_never_allocate_or_panic ... ok
+test t846_credit_boundaries_and_independent_channel_retirement ... ok
+test t846_fair_queue_skips_stalls_and_borrows_buffers ... ok
+test t846_header_extents_and_atomic_encode_rejection ... ok
+test t846_queue_bounds_charge_retained_allocations_and_message_overhead ... ok
+test t846_scheduler_rejects_oversized_credit_without_reserving ... ok
+test t846_seeded_duplex_flow_bounds_and_rejections ... ok
+test t846_seeded_queue_preserves_order_with_cancel_and_backpressure ... ok
+test t846_shared_connection_vectors ... ok
+test t846_shared_credit_and_retirement_trace ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/connection_management.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection_management-524efc519f13497c)
+
+running 5 tests
+test t850_coalesced_input_consumes_exactly_one_record_without_growth ... ok
+test t850_invalid_models_reject_before_modifying_output ... ok
+test t850_invalid_wire_poisoning_and_bounded_mutations ... ok
+test t850_shared_vectors_fix_cross_language_wire_and_rejections ... ok
+test t850_typed_records_roundtrip_and_decode_every_split ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/connection_mux.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection_mux-a8eadf682c9914ae)
+
+running 8 tests
+test t846_channel_replacement_waits_for_peer_writer_and_consumer_retirement ... ok
+test t846_flow_drain_validates_bounds_order_and_terminal_acknowledgement ... ok
+test t846_mux_bounded_fairness_and_stalled_consumer ... ok
+test t846_mux_invalid_input_and_failed_committed_writes_retire_connection ... ok
+test t846_mux_metadata_bootstraps_and_coalesces_consumer_credit ... ok
+test t846_mux_terminal_drains_inflight_without_stalling_other_channels ... ok
+test t849_activation_rejects_stale_duplicate_closed_and_failed_without_mutation ... ok
+test t849_unleased_channels_never_grant_initial_credit ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/connection_pairing.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection_pairing-6d634e63c9cdc956)
+
+running 5 tests
+test t846_pairing_approval_requires_current_tls_proof_and_retires_before_replacement ... ok
+test t846_pairing_timeout_boundaries_and_bounded_stale_callback_fuzz ... ok
+test t846_peer_fingerprint_invalid_boundaries_and_mutations ... ok
+test t846_setup_readiness_has_exact_role_version_and_extent ... ok
+test t846_untrusted_identity_header_is_bounded_and_role_specific ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/connection_registration.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection_registration-cd52ec8df1a00dfe)
+
+running 5 tests
+test t871_all_typed_messages_roundtrip_and_have_exact_descriptor_counts ... ok
+test t871_bounded_packet_mutations_preserve_canonical_models_or_reject ... ok
+test t871_independent_fixed_layout_and_local_request_identity ... ok
+test t871_invalid_counters_and_profiles_reject_without_output_mutation ... ok
+test t871_malformed_header_body_and_route_values_reject ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/connection_resource_mux.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection_resource_mux-db9b5f7cb650fb61)
+
+running 1 test
+test t851_crossing_commit_drains_real_credits_and_preserves_display ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/connection_resources.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection_resources-0bb961af5aebcbb0)
+
+running 8 tests
+test t851_bounded_invalid_callback_fuzz_preserves_active_resource ... ok
+test t851_cancel_crossing_commit_installs_drain_without_reviving_authority ... ok
+test t851_deadline_is_absolute_and_disconnect_does_not_prove_retirement ... ok
+test t851_denial_and_stale_consent_never_consume_wire_generation ... ok
+test t851_duplicate_settlement_and_retirement_cannot_release_tombstone_early ... ok
+test t851_independent_resources_revoke_before_retirement_and_reuse ... ok
+test t851_invalid_bounds_roles_keys_and_out_of_order_events ... ok
+test t851_late_prepared_permission_and_admission_cannot_restore_authority ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/connection_routes.rs (/tmp/blent-t846-alpn-coverage/debug/deps/connection_routes-d08b43fbc1d77612)
+
+running 4 tests
+test t856_authenticated_and_observed_identity_namespaces_never_alias ... ok
+test t856_bounded_port_mutations_preserve_unrelated_owner ... ok
+test t856_invalid_ports_bounds_and_failed_reservation_do_not_consume_revision ... ok
+test t856_route_claims_reject_collisions_until_actual_retirement ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/diagnostics.rs (/tmp/blent-t846-alpn-coverage/debug/deps/diagnostics-51c85da10d8b895c)
+
+running 3 tests
+test t533_malformed_bounded_output_never_establishes_readiness ... ok
+test t533_missing_commands_never_run_and_backends_stay_unsupported ... ok
+test t533_versions_paths_and_command_failures_are_separate_evidence ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/owned_stream.rs (/tmp/blent-t846-alpn-coverage/debug/deps/owned_stream-69dcf6ede9507572)
+
+running 4 tests
+test t529_owned_stream_drop_timeout_and_cancel_retire_descendants ... ok
+test t529_owned_stream_preserves_large_input_output_and_eof ... ok
+test t529_owned_stream_reports_start_failure ... ok
+test t529_pipe_child ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.07s
+
+     Running tests/persistence_contract.rs (/tmp/blent-t846-alpn-coverage/debug/deps/persistence_contract-cf98c4c2a946adba)
+
+running 2 tests
+test t824_filesystem_adapter_obeys_the_same_contract ... ok
+test t824_memory_adapter_preserves_cancellation_atomic_rejection_and_merge_contract ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/portable_policy.rs (/tmp/blent-t846-alpn-coverage/debug/deps/portable_policy-8427bf866388e5c9)
+
+running 1 test
+test t736_policy_builds_without_native_entropy_on_webassembly ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.89s
+
+     Running tests/windows_platform.rs (/tmp/blent-t846-alpn-coverage/debug/deps/windows_platform-b111d78cda9fa570)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+    Finished report saved to /tmp/blent-t873-evidence/common.lcov

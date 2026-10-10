@@ -227,7 +227,8 @@ activation prerequisite with its own regressions and commit.
 | T868 | Bounded authenticated peer-trust persistence on both sides | T867 storage patterns, existing pairing contracts |
 | T852 | Compose stored identities and trust with authenticated pairing | T867, T868 |
 | T871 | Local registration contract and Linux descriptor adapter (implemented) | T856 |
-| T872 | Authenticated link runtime and retirement barriers | T849–T852, T871 |
+| T873 | Cancellation-safe bounded frame driver (implemented) | T849 |
+| T872 | Authenticated link runtime and retirement barriers | T849–T852, T871, T873 |
 | T853 | On-demand host broker and client composition | T852, T871, T872 |
 | T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
@@ -602,3 +603,18 @@ ancillary cleanup, independent callers, ownership and retirement. T872 owns
 authenticated media dispatch; T853 owns private runtime directory selection,
 election, socket cleanup and the production broker/client lifecycle. No broker
 executable or working ADB-free production display is claimed by this boundary.
+
+## T873 asynchronous frame I/O
+
+The Rust transport driver preserves partial frame offsets and absolute active-I/O
+deadlines across cancelled waits, services read/write directions independently,
+and reborrows existing outbound queue buffers instead of copying them into a
+second payload staging buffer. Receive staging is fixed at 64 KiB; deadline
+timers are reused. Completed write events follow flush and writer retirement.
+Completed receive bodies remain available until explicit consume, and delivery
+is rechecked after partial-body revocation.
+
+[Scoped tests/counters](artifacts/2026-10-10-t873/README.md) pass. T872 must compose
+these frame events into whole management-record publication barriers and resource
+leases, including inbound events arriving while TLS flush remains pending. The
+driver alone does not perform admission, native-owner retirement or media routing.
