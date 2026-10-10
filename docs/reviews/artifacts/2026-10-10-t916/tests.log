@@ -1,0 +1,22 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.79s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/deps/blent-276264e4cf99d16f)
+
+running 11 tests
+test attachment::auth::tests::t444_rotation_failure_stays_closed_and_same_identity_can_retry ... ok
+test attachment::registered::tests::t916_absence_does_not_restore_tokenless_authentication_while_old_route_retires ... ok
+test attachment::registered::tests::t916_closed_session_and_stale_native_close_cannot_mutate_replacement ... ok
+test attachment::registered::tests::t916_concurrent_handoffs_capture_their_own_atomic_credential_and_identity ... ok
+test attachment::registered::tests::t916_drop_revokes_credential_and_wakes_current_socket_retirement ... ok
+test attachment::registered::tests::t916_generation_exhaustion_never_wraps_or_restores_retired_authority ... ok
+test attachment::registered::tests::t916_native_detach_and_legacy_fallback_fail_closed_at_generation_exhaustion ... ok
+test attachment::registered::tests::t916_required_native_credentials_override_legacy_tokenless_and_fallback ... ok
+test attachment::registered::tests::t916_route_revoke_cancels_pending_socket_io_before_replacement_admission ... ok
+test attachment::registered::tests::t916_same_peer_renewal_preserves_geometry_and_presence_but_retires_old_sockets ... ok
+test attachment::registered::tests::t916_unmanaged_legacy_fallback_is_restored_without_caching_native_secrets ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 337 filtered out; finished in 0.01s
+
+
+    Finished report saved to /tmp/blent-t916.lcov

@@ -10,6 +10,13 @@ impl Authentication {
     pub fn configured(token: Option<String>) -> Self {
         token.map_or(Self::Disabled, Self::Required)
     }
+    // Store policy without preserving an old required secret across backends.
+    pub fn renewable(&self) -> Self {
+        match self {
+            Self::Required(_) => Self::Unavailable,
+            other => other.clone(),
+        }
+    }
     pub fn rotate(&mut self, preserve: bool, generate: impl FnOnce() -> anyhow::Result<String>) {
         let needed =
             matches!(self, Self::Unavailable) || (!preserve && matches!(self, Self::Required(_)));

@@ -1,0 +1,6 @@
+{
+  "host/src/attachment.rs": "de0851e487258cada65aecf701a35a114afedf7af9854983b5a77c5464c3aef5",
+  "host/src/attachment/auth.rs": "32b9858d402cfa795a558e11acc25d18277805cccfdcca752de42f585a8233ce",
+  "host/src/attachment/registered.rs": "81987d30ba8845287641a8cdf94c0aae5cc61814d1248c47ae863e160cd12d72",
+  "host/src/attachment/registered/tests.rs": "27fa883e6dbaf262f604c1171535b8c6d406ac6fdc880378e1a96ffce73ed9f5"
+}

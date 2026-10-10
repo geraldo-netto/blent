@@ -1414,3 +1414,25 @@ listener owners before returning an error.
 [Evidence](artifacts/2026-10-10-t912/README.md) retains fail-before-fix port reporting,
 native descriptor lifetime, startup rollback and session lifecycle regressions.
 T908 still joins authenticated peer discovery, session selection and registration.
+
+## T916 registered display attachment authority
+
+A `RegisteredRoute` binds exact credential, authenticated peer identity and local
+generation under one lock. Credentials are required independently of legacy ADB
+preferences. Only the composition owner holding exact current broker Active proof
+may admit it. Stale route admission/close cannot alter its replacement, and native
+counter exhaustion permanently closes the attachment rather than wrapping.
+
+Close/drop invalidates old sockets and credential immediately. Same-peer renewal
+retains negotiated geometry and desired display presence, allowing the configured
+virtual display to survive a decoder/control route replacement; native cleanup
+and fresh registration admission remain separate requirements. A different peer
+resets geometry/presence. Whole-peer loss explicitly clears presence, while
+absence or descriptive identity alone never restores tokenless authentication.
+
+Explicit ADB fallback restores the configured legacy authentication policy with
+fresh required credentials. Its composition owner must first retire the prior
+native route/session ownership before reassigning a slot (T917/T908). Credential
+revocation alone is not retirement proof. [Evidence](artifacts/2026-10-10-t916/README.md)
+retains red/green concurrency, fallback and exhaustion regressions and native
+per-function counters. Production monitor composition remains T908.

@@ -1,0 +1,47 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.36s
+     Running unittests src/lib.rs (target/debug/deps/blent-276264e4cf99d16f)
+
+running 1 test
+test attachment::registered::tests::t916_concurrent_handoffs_capture_their_own_atomic_credential_and_identity ... FAILED
+
+failures:
+
+---- attachment::registered::tests::t916_concurrent_handoffs_capture_their_own_atomic_credential_and_identity stdout ----
+
+thread '<unnamed>' (2377983) panicked at host/src/attachment/registered/tests.rs:49:49:
+called `Result::unwrap()` on an `Err` value: attachment credential unavailable
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' (2377987) panicked at host/src/attachment/registered/tests.rs:49:49:
+called `Result::unwrap()` on an `Err` value: attachment credential unavailable
+
+thread '<unnamed>' (2377986) panicked at host/src/attachment/registered/tests.rs:48:21:
+assertion `left == right` failed: T916 foreign handoff credential
+  left: Some("0303030303030303030303030303030303030303030303030303030303030303")
+ right: Some("0101010101010101010101010101010101010101010101010101010101010101")
+
+thread '<unnamed>' (2377984) panicked at host/src/attachment/registered/tests.rs:49:49:
+called `Result::unwrap()` on an `Err` value: attachment credential unavailable
+
+thread '<unnamed>' (2377985) panicked at host/src/attachment/registered/tests.rs:49:49:
+called `Result::unwrap()` on an `Err` value: attachment credential unavailable
+
+thread '<unnamed>' (2377982) panicked at host/src/attachment/registered/tests.rs:49:49:
+called `Result::unwrap()` on an `Err` value: attachment credential unavailable
+
+thread '<unnamed>' (2377980) panicked at host/src/attachment/registered/tests.rs:48:21:
+assertion `left == right` failed: T916 foreign handoff credential
+  left: Some("3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a")
+ right: Some("1818181818181818181818181818181818181818181818181818181818181818")
+
+thread 'attachment::registered::tests::t916_concurrent_handoffs_capture_their_own_atomic_credential_and_identity' (2377979) panicked at host/src/attachment/registered/tests.rs:58:27:
+called `Result::unwrap()` on an `Err` value: Any { .. }
+
+
+failures:
+    attachment::registered::tests::t916_concurrent_handoffs_capture_their_own_atomic_credential_and_identity
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 338 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

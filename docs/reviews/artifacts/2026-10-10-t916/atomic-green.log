@@ -1,0 +1,9 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.37s
+     Running unittests src/lib.rs (target/debug/deps/blent-276264e4cf99d16f)
+
+running 1 test
+test attachment::registered::tests::t916_concurrent_handoffs_capture_their_own_atomic_credential_and_identity ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 338 filtered out; finished in 0.01s
+

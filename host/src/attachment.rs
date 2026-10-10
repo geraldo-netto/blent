@@ -7,10 +7,14 @@ use tokio::sync::watch;
 
 mod adb;
 mod auth;
+mod registered;
 use auth::Authentication;
+pub use registered::RegisteredRoute;
 
 struct State {
     authentication: Authentication,
+    legacy: Authentication,
+    registered: bool,
     identity: Option<Identity>,
     generation: u64,
     transport: Option<Link>,
@@ -29,6 +33,8 @@ impl Attachment {
         Self(Arc::new(Shared {
             state: Mutex::new(State {
                 authentication: Authentication::Unmanaged,
+                legacy: Authentication::Unmanaged,
+                registered: false,
                 identity: None,
                 generation: 0,
                 transport: None,
@@ -42,7 +48,11 @@ impl Attachment {
 
     pub fn with_token(settings: watch::Sender<EncoderSettings>, token: Option<String>) -> Self {
         let attachment = Self::new(settings);
-        attachment.0.state.lock().unwrap().authentication = Authentication::configured(token);
+        {
+            let mut state = attachment.0.state.lock().unwrap();
+            state.authentication = Authentication::configured(token);
+            state.legacy = state.authentication.renewable();
+        }
         attachment
     }
 
@@ -65,12 +75,16 @@ impl Attachment {
             return;
         }
         let preserve = identity.is_some() && state.identity == identity;
-        state
-            .authentication
-            .rotate(preserve, blent_config::credentials::random_token);
+        if state.registered {
+            if self.advance_registered(&mut state).is_err() {
+                return;
+            }
+        } else {
+            state.generation = state.generation.wrapping_add(1);
+        }
+        state.observed_authentication(&identity, preserve);
         state.transport = transport.filter(|_| identity.is_some());
         state.identity = identity;
-        state.generation = state.generation.wrapping_add(1);
         if !preserve {
             self.reset_metadata();
         }
@@ -132,6 +146,10 @@ impl Attachment {
     /// Capture at accept time, before WebSocket/authentication can await.
     pub fn lease(&self) -> Lease {
         let state = self.0.state.lock().unwrap();
+        self.lease_locked(&state)
+    }
+
+    fn lease_locked(&self, state: &State) -> Lease {
         Lease {
             authentication: state.authentication.clone(),
             identity: state.identity.clone(),

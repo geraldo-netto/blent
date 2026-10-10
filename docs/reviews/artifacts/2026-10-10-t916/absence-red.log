@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.71s
+     Running unittests src/lib.rs (target/debug/deps/blent-276264e4cf99d16f)
+
+running 1 test
+test attachment::registered::tests::t916_absence_does_not_restore_tokenless_authentication_while_old_route_retires ... FAILED
+
+failures:
+
+---- attachment::registered::tests::t916_absence_does_not_restore_tokenless_authentication_while_old_route_retires stdout ----
+
+thread 'attachment::registered::tests::t916_absence_does_not_restore_tokenless_authentication_while_old_route_retires' (2379721) panicked at host/src/attachment/registered/tests.rs:225:9:
+T916 absence must retain credential revocation
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    attachment::registered::tests::t916_absence_does_not_restore_tokenless_authentication_while_old_route_retires
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 345 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`
