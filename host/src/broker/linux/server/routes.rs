@@ -20,16 +20,7 @@ impl Server {
             self.owner_id < i64::MAX as u64,
             "registration owner IDs exhausted"
         );
-        let connection = self
-            .links
-            .keys()
-            .find(|&&id| {
-                self.controller
-                    .lease(id)
-                    .is_some_and(|lease| lease.ticket.peer == peer)
-            })
-            .copied()
-            .context("peer not authenticated")?;
+        let connection = self.connection_for(&peer)?;
         let mut endpoints = Endpoints::validate(resource, descriptors)?;
         self.owner_id += 1;
         let owner = self.owner_id;
@@ -70,6 +61,16 @@ impl Server {
             ],
         );
         Ok(())
+    }
+    fn connection_for(&self, peer: &PeerId) -> Result<u64> {
+        let mut matching = self.links.keys().copied().filter(|&id| {
+            self.controller
+                .lease(id)
+                .is_some_and(|lease| &lease.ticket.peer == peer)
+        });
+        let connection = matching.next().context("peer not authenticated")?;
+        ensure!(matching.next().is_none(), "ambiguous authenticated peer");
+        Ok(connection)
     }
     pub(super) fn unregister(&mut self, client: u64, request: u64, route: RouteId) -> Result<()> {
         let registered = self.routes.get_mut(&route.owner).context("unknown route")?;

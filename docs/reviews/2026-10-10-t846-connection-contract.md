@@ -1506,3 +1506,17 @@ local authority ends renewal. An incomplete client keeps the display Retiring.
 stale-retry, retry-window replacement and invalid-route regressions, concurrency
 coverage and native per-function counters. Linux daemon composition remains T908;
 T921 rejects ambiguous same-certificate link selection before that integration.
+
+## T921 unambiguous registration target
+
+Local registration identifies a certificate peer, not a physical USB location.
+The broker now requires exactly one matching authenticated link before reserving
+endpoints or allocating an owner ID. Two selected links proving the same certificate
+are ambiguous and cannot receive a new registration by arbitrary map order. Existing
+registrations retain their exact connection; unrelated peers remain usable. Once
+one duplicate loses authority, the remaining authenticated link is usable again.
+T908 must also filter ambiguous candidates before preempting an ADB display.
+
+[Real TLS fixture evidence](artifacts/2026-10-10-t921/README.md) retains the permanent
+fail-before-fix regression, independent-peer and single-link recovery checks,
+actual native shutdown, and per-function counters. No physical USB trial occurred.

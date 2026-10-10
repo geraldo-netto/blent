@@ -1,0 +1,129 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/broker/linux/server/routes.rs"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 9,
+      "passing": 9,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "register",
+      "line": 5,
+      "language": "rust",
+      "covered": 49,
+      "total": 52,
+      "percent": 94.23076923076923,
+      "passes": true,
+      "missing": [
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "connection_for",
+      "line": 65,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "unregister",
+      "line": 75,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "cancel_route",
+      "line": 84,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "registered",
+      "line": 98,
+      "language": "rust",
+      "covered": 17,
+      "total": 18,
+      "percent": 94.44444444444444,
+      "passes": true,
+      "missing": [
+        112
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "route_state",
+      "line": 122,
+      "language": "rust",
+      "covered": 19,
+      "total": 21,
+      "percent": 90.47619047619048,
+      "passes": true,
+      "missing": [
+        137,
+        143
+      ]
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "status",
+      "line": 148,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "retire_route",
+      "line": 160,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/routes.rs",
+      "name": "retire_link_routes",
+      "line": 178,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

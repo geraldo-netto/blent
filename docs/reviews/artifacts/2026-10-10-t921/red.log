@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.65s
+     Running unittests src/lib.rs (target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::linux::server::tests::tls::ambiguity::t921_duplicate_authenticated_certificates_do_not_route_media_arbitrarily ... FAILED
+
+failures:
+
+---- broker::linux::server::tests::tls::ambiguity::t921_duplicate_authenticated_certificates_do_not_route_media_arbitrarily stdout ----
+
+thread 'broker::linux::server::tests::tls::ambiguity::t921_duplicate_authenticated_certificates_do_not_route_media_arbitrarily' (2443466) panicked at host/src/broker/linux/server/tests/tls/ambiguity.rs:109:5:
+T921 ambiguous peer was sent to an arbitrary live TLS link
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::linux::server::tests::tls::ambiguity::t921_duplicate_authenticated_certificates_do_not_route_media_arbitrarily
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 602 filtered out; finished in 0.09s
+
+error: test failed, to rerun pass `-p blent --lib`

@@ -1,4 +1,5 @@
 use super::*;
+mod ambiguity;
 use crate::{
     accessory::{setup::tests::remote_hello, Owner, Resource as NativeResource, Stream},
     secure_connection::{self, Identity, IdentityRecord, PeerCertificate},
@@ -127,7 +128,7 @@ fn approve(server: &mut Server, client: u64, id: u64) -> PeerId {
         .snapshot()
         .iter()
         .find_map(|notice| match notice {
-            Notice::Link { ticket, .. } => ticket.clone(),
+            Notice::Link { connection, ticket, .. } if *connection == id => ticket.clone(),
             _ => None,
         })
         .unwrap();
