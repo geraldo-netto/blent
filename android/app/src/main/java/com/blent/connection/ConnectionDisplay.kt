@@ -18,8 +18,6 @@ internal data class LocalDisplayRoute(
 /** Shape validation only; authority remains with the current runtime owner. */
 internal object ConnectionDisplayLease {
     fun validate(lease: ConnectionResourceLease) {
-        require(lease.key.resource == ConnectionManagement.Resource.DISPLAY)
-        require(lease.owner > 0 && lease.connection.epoch > 0)
-        require(lease.key.request > 0 && lease.key.generation > 0)
+        ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.DISPLAY)
     }
 }

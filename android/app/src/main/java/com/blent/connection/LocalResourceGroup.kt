@@ -7,6 +7,7 @@ internal class LocalResourceGroup(
     private val endpoints: ConnectionEndpoints,
     private val block: Int,
     private val limits: ConnectionRunLimits,
+    private val permit: LocalResourcePermit = DisplayLocalPermit,
 ) {
     private class Channel(val id: Int, val endpoint: LocalEndpoint) {
         var pump: ConnectionLocalPump? = null
@@ -19,10 +20,27 @@ internal class LocalResourceGroup(
     private var released = false
     private var error: Exception? = null
     private var invitation: LocalDisplayRoute? = null
+    private var camera: LocalCameraRoute? = null
+    private var previous = 0L
+    private var started = false
+    init {
+        require(block in 1..ConnectionWire.MAX_PAYLOAD)
+        val resource = offer.lease.key.resource
+        require(resource == ConnectionManagement.Resource.DISPLAY || resource == ConnectionManagement.Resource.CAMERA)
+        ConnectionLocalLease.validate(offer.lease, resource)
+        ConnectionManagement.encode(ConnectionManagement.Offer(offer.lease.key, offer.credential, offer.profile))
+    }
 
+    private fun time(now: Long) {
+        require(now >= previous && now <= Long.MAX_VALUE - maxOf(limits.ioTimeoutMs, limits.retirementTimeoutMs))
+        previous = now
+    }
     fun open(now: Long, factory: (Long) -> LocalEndpoint) {
-        check(channels.isEmpty() && !uncertain && !closing)
+        time(now)
+        check(!started && channels.isEmpty() && !uncertain && !closing)
+        started = true
         try {
+            if (!permit.opening(offer.lease)) { revoke(now); return }
             for (id in ConnectionChannels.members(offer.lease.key.resource)) {
                 uncertain = true
                 channels.add(Channel(id, factory(now)))
@@ -31,7 +49,9 @@ internal class LocalResourceGroup(
         } catch (failure: Exception) { fail(failure, now) }
     }
     fun advance(now: Long) {
+        time(now)
         try {
+            if (!closing && !permit.opening(offer.lease)) revoke(now)
             for (channel in channels) step(channel, now)
             if (!closing) prepare(now)
         } catch (failure: Exception) { fail(failure, now) }
@@ -49,7 +69,7 @@ internal class LocalResourceGroup(
         if (!closing) channel.pump?.failure()?.let { throw it }
     }
     private fun prepare(now: Long) {
-        if (prepared || channels.any { it.endpoint.port() == null }) return
+        if (!started || prepared || channels.any { it.endpoint.port() == null }) return
         val ports = channels.map { checkNotNull(it.endpoint.port()) }
         require(ports.all { it in 1..65535 } && ports.distinct().size == ports.size)
         endpoints.prepared(offer.lease, now)
@@ -57,24 +77,46 @@ internal class LocalResourceGroup(
     }
     fun admit(now: Long) {
         if (closing) return
+        time(now)
         try {
             check(prepared && !admitted && endpoints.current(offer.lease))
+            if (!permit.admission(offer.lease)) { revoke(now); return }
             for (channel in channels) channel.endpoint.admit(now)
-            invitation = LocalDisplayRoute(offer.lease, offer.credential,
-                port(ConnectionWire.CONTROL), port(ConnectionWire.DISPLAY))
+            publish()
             admitted = true
         } catch (failure: Exception) { fail(failure, now) }
     }
+    private fun publish() {
+        if (offer.lease.key.resource == ConnectionManagement.Resource.DISPLAY) {
+            invitation = LocalDisplayRoute(offer.lease, offer.credential,
+                port(ConnectionWire.CONTROL), port(ConnectionWire.DISPLAY))
+        } else {
+            camera = LocalCameraRoute(offer.lease, offer.credential, port(ConnectionWire.CAMERA),
+                offer.profile as ConnectionManagement.Camera)
+        }
+    }
     private fun port(id: Int): Int = checkNotNull(channels.single { it.id == id }.endpoint.port())
-    fun route(): LocalDisplayRoute? = if (endpoints.current(offer.lease)) invitation else null
+    private fun visible(): Boolean = try {
+        !closing && endpoints.current(offer.lease) && permit.admission(offer.lease)
+    } catch (failure: Exception) {
+        fail(failure, previous)
+        false
+    }
+    fun route(): LocalDisplayRoute? = if (visible()) invitation else null
+    fun cameraRoute(): LocalCameraRoute? = if (visible()) camera else null
+    private fun revoke(now: Long) {
+        stop(now)
+        endpoints.cancel(offer.lease, ConnectionManagement.Reason.PERMISSION_REVOKED)
+    }
     private fun fail(failure: Exception, now: Long) {
         if (error == null) error = failure
         stop(now)
         endpoints.cancel(offer.lease, ConnectionManagement.Reason.WORKER_FAILED)
     }
     fun stop(now: Long) {
+        time(now)
         if (closing) return
-        closing = true; invitation = null
+        closing = true; invitation = null; camera = null
         for (channel in channels) stopChannel(channel, now)
     }
     private fun stopChannel(channel: Channel, now: Long) {

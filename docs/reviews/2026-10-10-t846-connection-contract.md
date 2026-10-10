@@ -1669,3 +1669,16 @@ ownership. Background capture requires both host request and local allowance.
 replacement and preparation/capture revalidation. Local endpoint/IPC adapters are
 T935/T936; isolated capture/capability composition is T932. Production camera
 support and physical acceptance remain incomplete under T858.
+
+## T935 camera local endpoint ownership
+
+A camera group owns one channel and locally allocated loopback port. Explicit
+consent is rechecked before opening/admission; actual protocol admission remains
+independent. Permission/provider loss closes only camera and retains native
+listener/pump ownership until their actual retirement. An unopened group cannot
+publish Prepared. The default permit supports display only.
+
+[Permanent red/green regressions, real TCP camera greeting/feedback and counters](artifacts/2026-10-11-t935/README.md) cover 650 connection tests. Private controller/IPC
+composition is T936; hardware capture and its separate actual-worker retirement
+proof are T932. Production camera capability remains unavailable until that
+integration; physical acceptance remains T858.
