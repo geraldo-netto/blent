@@ -1,0 +1,6 @@
+{
+  "gui/src/main.rs": "52a02dbb227e91cfb86d2f896944839fd71090ce7596a9c50f3212c635bdcf9b",
+  "gui/src/monitor_inventory.rs": "0cb37b7bc16daf59aa0efce63518f6229cf801b6a53aaf51b0f036c9492c9c28",
+  "gui/src/direct_input_settings.rs": "a2e69fef79d9029d25b1b7f3fde6f31310ea1498d42c45a4978f73f28d6bd9eb",
+  "common/src/input_mapping.rs": "96e9bb9c7809fee6ba60310b371b66463022f74243c9fa5504cbb0cb1d6b8021"
+}

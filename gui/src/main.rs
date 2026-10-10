@@ -1,5 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+#[cfg(any(windows, test))]
+mod monitor_inventory;
+
 mod audio_settings;
 mod camera_preview;
 mod camera_settings;
@@ -76,6 +79,10 @@ struct App {
     microphone: audio_settings::Panel,
     speakers: audio_settings::Panel,
     _status_worker: Option<status_worker::StatusWorker>,
+    #[cfg(windows)]
+    monitors: monitor_inventory::Published,
+    #[cfg(windows)]
+    _monitor_worker: Option<monitor_inventory::Worker>,
     store: ConfigStore,
     save: Option<settings::PendingSave>,
     cfg: FileConfig,
@@ -197,7 +204,19 @@ impl App {
             Duration::from_secs(2),
         );
 
+        #[cfg(windows)]
+        let (monitors, monitor_worker) = {
+            let repaint = cc.egui_ctx.clone();
+            monitor_inventory::discover(
+                blent_config::windows::monitors::NativeInventory,
+                move || repaint.request_repaint(),
+            )
+        };
         Self {
+            #[cfg(windows)]
+            monitors,
+            #[cfg(windows)]
+            _monitor_worker: monitor_worker,
             scheduling_status,
             camera: camera_settings::Panel::default(),
             microphone: audio_settings::Panel::default(),
@@ -859,15 +878,10 @@ impl App {
     fn setting_input_devices(&mut self, ui: &mut egui::Ui) {
         #[cfg(windows)]
         {
-            use blent_config::input_mapping::MonitorInventory;
-            let snapshot = blent_config::windows::monitors::NativeInventory.snapshot();
-            direct_input_settings::show(
-                ui,
-                &mut self.cfg,
-                snapshot.as_ref().map(|s| s.monitors()).unwrap_or(&[]),
-            );
-            if let Err(error) = snapshot {
-                ui.label(format!("Monitor inventory unavailable: {error}"));
+            let snapshot = self.monitors.read();
+            direct_input_settings::show(ui, &mut self.cfg, snapshot.monitors());
+            if let Some(notice) = snapshot.notice(std::time::Instant::now()) {
+                ui.label(notice);
             }
             ui.end_row();
             return;
@@ -1368,6 +1382,10 @@ mod tests {
                 microphone: audio_settings::Panel::default(),
                 speakers: audio_settings::Panel::default(),
                 _status_worker: None,
+                #[cfg(windows)]
+                monitors: Default::default(),
+                #[cfg(windows)]
+                _monitor_worker: None,
                 store,
                 save: None,
                 cfg,

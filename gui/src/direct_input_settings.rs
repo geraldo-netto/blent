@@ -24,6 +24,9 @@ pub fn show(ui: &mut egui::Ui, config: &mut FileConfig, monitors: &[Monitor]) {
                 ui.selectable_value(&mut direct.monitor, monitor.id.clone(), &monitor.name);
             }
         });
+    if !direct.monitor.is_empty() && !monitors.iter().any(|m| m.id == direct.monitor) {
+        ui.label("Selected monitor unavailable; selection retained");
+    }
     ui.horizontal(|ui| {
         ui.selectable_value(&mut direct.mode, Mode::Touch, "Touch");
         ui.selectable_value(&mut direct.mode, Mode::DirectMouse, "Mouse");
@@ -171,5 +174,21 @@ mod tests {
             store.save_edits(&config, &FileConfig::default()).unwrap();
             assert_eq!(store.load(), config);
         }
+    }
+    #[test]
+    fn t825_removed_monitor_selection_is_retained_and_visible() {
+        let context = egui::Context::default();
+        let mut config = FileConfig::default();
+        config.direct_input = Some(Config {
+            monitor: "removed".into(),
+            mode: Mode::DirectMouse,
+        });
+        let shapes = frame(&context, &mut config, &[], Vec::new());
+        assert_eq!(config.direct_input.as_ref().unwrap().monitor, "removed");
+        assert!(shapes.iter().any(|shape| position(
+            &shape.shape,
+            "Selected monitor unavailable; selection retained"
+        )
+        .is_some()));
     }
 }

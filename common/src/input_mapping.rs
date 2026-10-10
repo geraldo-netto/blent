@@ -154,8 +154,9 @@ impl Snapshot {
     }
 }
 
+pub type InventoryResult = Result<Snapshot>;
 pub trait MonitorInventory {
-    fn snapshot(&self) -> Result<Snapshot>;
+    fn snapshot(&self) -> InventoryResult;
 }
 
 #[derive(Clone, Debug)]

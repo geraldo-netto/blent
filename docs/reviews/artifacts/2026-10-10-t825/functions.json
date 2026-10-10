@@ -1,0 +1,148 @@
+{
+  "sources": {
+    "gui/src/monitor_inventory.rs": "0cb37b7bc16daf59aa0efce63518f6229cf801b6a53aaf51b0f036c9492c9c28",
+    "gui/src/direct_input_settings.rs": "a2e69fef79d9029d25b1b7f3fde6f31310ea1498d42c45a4978f73f28d6bd9eb"
+  },
+  "functions": [
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "name": "monitors",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "name": "notice",
+      "line": 24,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "name": "read",
+      "line": 38,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "name": "publish",
+      "line": 41,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "name": "discover",
+      "line": 53,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "name": "start",
+      "line": 67,
+      "language": "rust",
+      "covered": 14,
+      "total": 15,
+      "percent": 93.33333333333333,
+      "passes": true,
+      "missing": [
+        79
+      ]
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "name": "with_pool",
+      "line": 85,
+      "language": "rust",
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/direct_input_settings.rs",
+      "name": "show",
+      "line": 9,
+      "language": "rust",
+      "covered": 29,
+      "total": 29,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "line": 21,
+      "name": "monitors",
+      "score": 1
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "line": 24,
+      "name": "notice",
+      "score": 5
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "line": 38,
+      "name": "read",
+      "score": 1
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "line": 41,
+      "name": "publish",
+      "score": 3
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "line": 53,
+      "name": "discover",
+      "score": 2
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "line": 67,
+      "name": "start",
+      "score": 3
+    },
+    {
+      "file": "gui/src/monitor_inventory.rs",
+      "line": 85,
+      "name": "with_pool",
+      "score": 6
+    },
+    {
+      "file": "gui/src/direct_input_settings.rs",
+      "line": 9,
+      "name": "show",
+      "score": 9
+    }
+  ]
+}

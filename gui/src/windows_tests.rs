@@ -9,6 +9,8 @@ fn app(store: ConfigStore) -> App {
         microphone: audio_settings::Panel::default(),
         speakers: audio_settings::Panel::default(),
         _status_worker: None,
+        monitors: Default::default(),
+        _monitor_worker: None,
         store,
         save: None,
         cfg: cfg.clone(),
