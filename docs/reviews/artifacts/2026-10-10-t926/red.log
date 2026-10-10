@@ -1,0 +1,12 @@
+    Checking blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Checking blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Checking blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+error[E0063]: missing field `connection` in initializer of `App`
+ --> gui/src/windows_tests.rs:6:5
+  |
+6 |     App {
+  |     ^^^ missing `connection`
+
+For more information about this error, try `rustc --explain E0063`.
+error: could not compile `blent-gui` (bin "blent-gui" test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

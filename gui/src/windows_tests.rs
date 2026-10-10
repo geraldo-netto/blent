@@ -4,6 +4,7 @@ use super::*;
 fn app(store: ConfigStore) -> App {
     let cfg = store.load();
     App {
+        connection: connection_settings::Panel::default(),
         scheduling_status: "This process: High priority unavailable; using OS settings".into(),
         camera: camera_settings::Panel::default(),
         microphone: audio_settings::Panel::default(),
