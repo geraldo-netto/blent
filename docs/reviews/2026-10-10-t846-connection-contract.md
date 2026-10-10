@@ -1594,3 +1594,19 @@ concrete capture/UI/storage internals.
 includes two draft fail-before-fix cases, native port ownership, real broker TLS,
 bounded invalid inputs and individual coverage. Production daemon composition
 remains T908; physical joined display/touch acceptance remains T857.
+
+## T927 portable connection coordination
+
+`display_connections::Connections` processes selected authenticated peers independently
+and owns each startup admission and joined session through its exact capacity ticket.
+Ambiguous new peers cannot preempt ADB; existing exact links remain owned. Native
+composition retains the opaque admission during startup and may release a failed
+startup only after proving no exposure and complete cleanup. Late binding always
+transfers ownership, including cancellation and authority loss.
+
+Every poll honors closing/stale tickets and invalidated source authority. Reaping
+destroys retained listener capabilities before releasing capacity. Absolute retries
+cannot slide or spin on clock exhaustion; per-peer failure does not starve other
+peers. [Permanent regression and counter evidence](artifacts/2026-10-11-t927/README.md)
+covers multiple peers, cancellation, both cleanup orders, failure isolation and
+invalid bounds. Linux daemon composition remains T908 and tablet acceptance T857.

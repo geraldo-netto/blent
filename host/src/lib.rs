@@ -20,6 +20,7 @@ mod session_supervision;
 pub mod adb_inventory;
 pub mod display_slots;
 pub mod display_discovery;
+pub mod display_connections;
 pub mod registered_display;
 pub mod registered_session;
 pub mod session_work;
@@ -89,3 +90,6 @@ pub mod accessory;
 
 #[cfg(feature = "accessory-transport")]
 pub mod broker;
+
+#[cfg(test)]
+mod display_test_support;
