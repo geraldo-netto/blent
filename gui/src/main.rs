@@ -6,6 +6,7 @@ mod monitor_inventory;
 mod audio_settings;
 mod camera_preview;
 mod camera_settings;
+mod connection_settings;
 mod conversion_settings;
 #[cfg(any(windows, test))]
 mod direct_input_settings;
@@ -76,6 +77,7 @@ fn dispatch_action(
 struct App {
     scheduling_status: String,
     camera: camera_settings::Panel,
+    connection: connection_settings::Panel,
     microphone: audio_settings::Panel,
     speakers: audio_settings::Panel,
     _status_worker: Option<status_worker::StatusWorker>,
@@ -106,6 +108,7 @@ enum Tab {
     General,
     Camera,
     Audio,
+    Usb,
 }
 
 use blent_config::release::{API as RELEASES_API, PAGE as RELEASES_PAGE};
@@ -219,6 +222,7 @@ impl App {
             _monitor_worker: monitor_worker,
             scheduling_status,
             camera: camera_settings::Panel::default(),
+            connection: connection_settings::Panel::default(),
             microphone: audio_settings::Panel::default(),
             speakers: audio_settings::Panel::default(),
             _status_worker: Some(worker),
@@ -1072,6 +1076,23 @@ impl App {
     fn show_settings(&mut self, ui: &mut egui::Ui, status: &Status) {
         ui.label(egui::RichText::new("Settings").strong().size(15.0));
         ui.add_space(6.0);
+        self.show_settings_tabs(ui);
+        ui.add_space(8.0);
+        match self.tab {
+            Tab::Video => self.show_video_settings(ui),
+            Tab::Usb => self.connection.show(ui),
+            Tab::Audio => self.show_audio_settings(ui),
+            Tab::Camera => self.camera.show(ui, &mut self.cfg.camera.options),
+            Tab::Display => settings_grid(ui, ("settings", self.tab), |ui| {
+                self.show_display_settings(ui)
+            }),
+            Tab::General => settings_grid(ui, ("settings", self.tab), |ui| {
+                self.show_general_settings(ui, status)
+            }),
+        }
+    }
+
+    fn show_settings_tabs(&mut self, ui: &mut egui::Ui) {
         ui.horizontal_wrapped(|ui| {
             for (tab, name) in [
                 (Tab::Video, "Video"),
@@ -1079,31 +1100,17 @@ impl App {
                 (Tab::General, "General"),
                 (Tab::Camera, "Cameras"),
                 (Tab::Audio, "Audio"),
+                (Tab::Usb, "USB connection"),
             ] {
                 ui.selectable_value(&mut self.tab, tab, name);
             }
         });
-        ui.add_space(8.0);
-        if self.tab == Tab::Video {
-            self.show_video_settings(ui);
-            return;
-        }
-        if self.tab == Tab::Audio {
-            self.microphone.show(ui, &mut self.cfg.audio.microphone);
-            ui.separator();
-            self.speakers.show(ui, &mut self.cfg.audio.speakers);
-            return;
-        }
-        if self.tab == Tab::Camera {
-            self.camera.show(ui, &mut self.cfg.camera.options);
-            return;
-        }
-        // Each tab retains its own grid ID and remembered column widths.
-        settings_grid(ui, ("settings", self.tab), |ui| match self.tab {
-            Tab::Display => self.show_display_settings(ui),
-            Tab::General => self.show_general_settings(ui, status),
-            _ => {}
-        });
+    }
+
+    fn show_audio_settings(&mut self, ui: &mut egui::Ui) {
+        self.microphone.show(ui, &mut self.cfg.audio.microphone);
+        ui.separator();
+        self.speakers.show(ui, &mut self.cfg.audio.speakers);
     }
 }
 
@@ -1366,6 +1373,21 @@ mod tests {
         }
     }
 
+    #[test]
+    fn t894_usb_tab_is_lazy_and_keeps_existing_settings_independent() {
+        let (_directory, mut app) = settings_test_app(Tab::Usb);
+        let original = app.cfg.clone();
+        let ctx = egui::Context::default();
+        let labels = window_test_frame(&mut app, &ctx, vec![]);
+        assert!(labels.iter().any(|(text, _)| text == "Find USB devices"));
+        assert_eq!(app.cfg, original);
+        for tab in [Tab::Video, Tab::Display, Tab::General, Tab::Camera, Tab::Audio] {
+            app.tab = tab;
+            window_test_frame(&mut app, &ctx, vec![]);
+        }
+        assert_eq!(app.cfg, original);
+    }
+
     fn settings_test_app(tab: Tab) -> (tempfile::TempDir, App) {
         let directory = tempfile::tempdir().unwrap();
         let store = ConfigStore::new(directory.path().join("config.toml"));
@@ -1379,6 +1401,7 @@ mod tests {
             App {
                 scheduling_status: "This process: High priority active".into(),
                 camera: camera_settings::Panel::default(),
+                connection: connection_settings::Panel::default(),
                 microphone: audio_settings::Panel::default(),
                 speakers: audio_settings::Panel::default(),
                 _status_worker: None,

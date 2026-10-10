@@ -1,8 +1,8 @@
 # T846 connection contract and integration boundary
 
 The current Android composition is described under T854 and production Android
-pairing presentation under T892/T893 below. Host controls and joined physical
-pairing acceptance remain T900/T901/T894/T855. Validation counts
+pairing presentation under T892/T893 below. Host presentation and controls are
+implemented under T900/T901/T903/T894; joined physical pairing acceptance remains T855. Validation counts
 in individual milestone sections describe their historical scoped runs; they are
 not whole-project coverage or physical-device support claims.
 
@@ -1244,3 +1244,24 @@ functions and 162 executable JVM methods meet individual 80% line coverage;
 41 production complexity entries are at most 9. Physical production pairing,
 revocation and AndroidKeyStore/accessory behavior remain T855/T846; none is
 inferred from Robolectric, and no installed app was replaced for these checks.
+
+## T894 production host pairing controls
+
+The GUI now has a USB connection tab backed by T900 immutable snapshots and the
+T901 Linux native client. T903 associates each queued command with an exact,
+retained outcome. Device connection, corresponding Computer/Tablet fingerprint
+comparison, explicit approve/deny/remember, disconnect and saved-peer revocation
+are available. Stale tickets and reconnect lifetimes cannot replay choices;
+background refresh cannot confirm a queued mutation. Retry waits for actual
+client/native retirement, and terminal status with incomplete cleanup is visible.
+
+Local acceptance uses sibling broker/helper binaries and private runtime/state
+roots, resolved by the Linux adapter. Packaging remains deferred T861; Windows
+ADB-free USB remains unsupported T902. Existing media/control protocols are not
+yet routed over the connection. T855 retains joined production-device pairing
+acceptance, followed by display/touch T857, camera T858 and audio T860/T859.
+
+[T894 evidence](artifacts/2026-10-10-t894/README.md) retains 98 passing GUI unit
+tests plus actual isolated GUI startup, native per-function counters for all new
+functions and changed App wiring, stale-action/lifecycle widget tests and the two
+draft fail-before-fix regressions. No device support is inferred from those tests.

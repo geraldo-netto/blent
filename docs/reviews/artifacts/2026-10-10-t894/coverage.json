@@ -1,0 +1,251 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "gui/src/connection_settings"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 20,
+      "passing": 20,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "gui/src/connection_settings/backend.rs",
+      "name": "create",
+      "line": 8,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings/backend.rs",
+      "name": "create",
+      "line": 24,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        30
+      ]
+    },
+    {
+      "file": "gui/src/connection_settings/backend.rs",
+      "name": "paths",
+      "line": 38,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings/backend.rs",
+      "name": "absolute",
+      "line": 59,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings/backend.rs",
+      "name": "start",
+      "line": 66,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "default",
+      "line": 26,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "show",
+      "line": 38,
+      "language": "rust",
+      "covered": 22,
+      "total": 23,
+      "percent": 95.65217391304348,
+      "passes": true,
+      "missing": [
+        47
+      ]
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "summary",
+      "line": 61,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "refresh",
+      "line": 69,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "complete",
+      "line": 88,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "start",
+      "line": 97,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "send",
+      "line": 110,
+      "language": "rust",
+      "covered": 20,
+      "total": 21,
+      "percent": 95.23809523809524,
+      "passes": true,
+      "missing": [
+        112
+      ]
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "controls",
+      "line": 132,
+      "language": "rust",
+      "covered": 23,
+      "total": 24,
+      "percent": 95.83333333333333,
+      "passes": true,
+      "missing": [
+        134
+      ]
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "devices",
+      "line": 158,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "links",
+      "line": 187,
+      "language": "rust",
+      "covered": 32,
+      "total": 33,
+      "percent": 96.96969696969697,
+      "passes": true,
+      "missing": [
+        206
+      ]
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "pair",
+      "line": 226,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "saved",
+      "line": 256,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "fingerprint",
+      "line": 275,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "phase_label",
+      "line": 284,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "link_label",
+      "line": 294,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

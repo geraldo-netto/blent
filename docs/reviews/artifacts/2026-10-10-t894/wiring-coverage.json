@@ -1,0 +1,50 @@
+[
+  {
+    "file": "gui/src/main.rs",
+    "name": "new",
+    "line": 175,
+    "language": "rust",
+    "covered": 49,
+    "total": 52,
+    "percent": 94.23076923076923,
+    "passes": true,
+    "missing": [
+      189,
+      191,
+      205
+    ]
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_settings",
+    "line": 1076,
+    "language": "rust",
+    "covered": 17,
+    "total": 17,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_settings_tabs",
+    "line": 1095,
+    "language": "rust",
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/main.rs",
+    "name": "show_audio_settings",
+    "line": 1110,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

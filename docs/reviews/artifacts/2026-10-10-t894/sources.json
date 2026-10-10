@@ -1,0 +1,7 @@
+{
+  "gui/Cargo.toml": "94a2c13ce18d8384820a6c2b17a813914077d6f301b9d6759cee541661248ebe",
+  "gui/src/main.rs": "655a392319ea024e15ce96fc1ddc4e10ba27ec090280742f4b680c3f7e69562c",
+  "gui/src/connection_settings.rs": "e8af2d21dbcc8edf6132cf86623af9bad635896d41706f0ac85a4a1eaf8e906f",
+  "gui/src/connection_settings/tests.rs": "bf2a7e618b4294cd1c6ba119e68e3b0314d6e57c4e509c6fd560de8c8fefad82",
+  "gui/src/connection_settings/backend.rs": "d8de4bfea98cdb95d328d4e402094ceb558e6748e7f57c666dc126287eb03a0d"
+}
