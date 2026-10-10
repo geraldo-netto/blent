@@ -5,6 +5,7 @@ pub mod audio_control;
 #[cfg(target_os = "linux")]
 pub mod camera;
 pub mod camera_control;
+mod control_outcome;
 pub mod control_workers;
 
 // Shared wire/session state is built for every host target.

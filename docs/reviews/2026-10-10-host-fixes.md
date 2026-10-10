@@ -55,3 +55,20 @@ explicit completion contract. Full library suite: 303 passing tests, three
 existing ignores unchanged. All 37 production functions in the changed modules
 meet individual 80% coverage and complexity <=9.
 [Red/green and source-attested coverage](artifacts/2026-10-10-t811/).
+
+## T812: publish terminal controller outcomes
+
+A shared outcome boundary catches session-factory and future-poll panics. Audio
+and camera owners publish explicit failure and wait for another command. Audio
+admission resets only after that terminal outcome. Stop cleanup errors remain
+visible until a subsequent explicit action. An outer thread boundary also catches
+runtime/supervisor/future destruction panics; a dead supervisor rejects Start
+rather than leaving a false Starting state. Its owner must be retired before
+constructing another. Native aborts remain outside unwind containment.
+
+Permanent regressions first reproduced missing failure publication for both
+controllers and hidden cleanup failure. They now cover setup/poll/cleanup/drop
+panics, no automatic replay, explicit restart, successful completion and unknown
+panic payloads. Full library plus integration suite passes; all 28 production
+functions in affected modules meet individual 80% coverage and complexity <=9.
+[Red/green and coverage evidence](artifacts/2026-10-10-t812/).

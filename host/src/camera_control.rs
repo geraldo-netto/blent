@@ -50,7 +50,10 @@ impl Controller {
             preview: images,
         };
         let worker = crate::control_workers::Worker::spawn(pool, "blent-camera", move || {
-            runtime.block_on(supervise(commands, report, session));
+            crate::control_outcome::worker(
+                || runtime.block_on(supervise(commands, report.clone(), session)),
+                |error| report.update(State::Failed(format!("{error:#}"))),
+            );
         })?;
         Ok(Self {
             command: Some(command),
@@ -131,7 +134,7 @@ where
 {
     let (stop, stopped) = watch::channel(false);
     status.update(State::Starting);
-    let work = session(options, stopped, status.clone());
+    let work = crate::control_outcome::run(|| session(options, stopped, status.clone()));
     tokio::pin!(work);
     tokio::select! {
         result = &mut work => {
@@ -145,7 +148,11 @@ where
         changed = commands.changed() => {
             status.update(State::Stopping);
             stop.send_replace(true);
-            let _ = work.await; // owns final black frames, child retirement and ADB cleanup
+            // Completion still owns final frames, child retirement and ADB cleanup.
+            if let Err(error) = work.await {
+                status.update(State::Failed(format!("{error:#}")));
+                return changed.is_ok() && commands.changed().await.is_ok();
+            }
             changed.is_ok()
         }
     }

@@ -47,7 +47,18 @@ impl Controller {
         let worker_admission = admitted.clone();
         let worker =
             crate::control_workers::Worker::spawn(pool, "blent-audio-control", move || {
-                runtime.block_on(supervise(receiver, Report(sender), run, worker_admission));
+                let report = Report(sender);
+                crate::control_outcome::worker(
+                    || {
+                        runtime.block_on(supervise(
+                            receiver,
+                            report.clone(),
+                            run,
+                            worker_admission.clone(),
+                        ))
+                    },
+                    |error| complete(&report, &worker_admission, Err(error)),
+                );
             })?;
         Ok(Self {
             commands: Some(commands),
@@ -140,27 +151,34 @@ where
         }
     };
     report.update(AudioState::Starting, detail);
-    let work = run(options, stopped, report.clone());
+    let work = crate::control_outcome::run(|| run(options, stopped, report.clone()));
     tokio::pin!(work);
     tokio::select! {
         result = &mut work => {
-            {
-                let mut reservation = admitted.lock().unwrap();
-                match result {
-                    Ok(()) => report.update(AudioState::Stopped, "Stopped"),
-                    Err(error) => report.update(AudioState::Failed, format!("{error:#}")),
-                }
-                *reservation = false;
-            }
+            complete(report, admitted, result);
             commands.changed().await.is_ok()
         }
         changed = commands.changed() => {
             report.update(AudioState::Stopping, "Stopping audio…");
             stop.send_replace(true);
-            let _ = work.await;
+            if let Err(error) = work.await {
+                complete(report, admitted, Err(error));
+                return changed.is_ok() && commands.changed().await.is_ok();
+            }
             changed.is_ok()
         }
     }
+}
+
+fn complete(report: &Report, admitted: &Mutex<bool>, result: Result<()>) {
+    let mut reservation = admitted
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner());
+    match result {
+        Ok(()) => report.update(AudioState::Stopped, "Stopped"),
+        Err(error) => report.update(AudioState::Failed, format!("{error:#}")),
+    }
+    *reservation = false;
 }
 
 #[cfg(test)]
