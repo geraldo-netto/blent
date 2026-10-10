@@ -259,12 +259,23 @@ class RegressionTest {
         assertTrue(timing.decodeMicrosFor(last - VideoReceiver.ARRIVAL_RING + 1) >= 0)
     }
 
+    // These regressions exercise the local decoder adapter's native lifetime.
+    // T809's RemoteDisplay tests separately cover worker-generation retirement.
+    private fun localVideo(activity: MainActivity): VideoReceiver {
+        val previous = get(activity, "videoReceiver") as DisplaySession<*>
+        previous.stop()
+        return VideoReceiver().also {
+            it.token = previous.token; it.streamFps = previous.streamFps
+            set(activity, "videoReceiver", it)
+        }
+    }
+
     @Test fun t133_tokenRotationRestartsActiveReconnectsOnly() {
         val prefs = Prefs(app).apply { checkUpdates = false; hostToken = "a".repeat(64) }
         val controller = Robolectric.buildActivity(MainActivity::class.java).create()
         val activity = controller.get()
         val capture = get(activity, "touchCapture") as TouchCapture
-        val receiver = get(activity, "videoReceiver") as VideoReceiver
+        val receiver = localVideo(activity)
         try {
             set(activity, "started", true)
             receiver.start() // No surface; session waits without real video I/O.
@@ -443,7 +454,7 @@ class RegressionTest {
         val controller = Robolectric.buildActivity(MainActivity::class.java).create()
         val activity = controller.get()
         val capture = get(activity, "touchCapture") as TouchCapture
-        val receiver = get(activity, "videoReceiver") as VideoReceiver
+        val receiver = localVideo(activity)
         try {
             assertFalse(get(activity, "started") as Boolean)
             capture.onModeKnown?.invoke(false)
@@ -459,7 +470,7 @@ class RegressionTest {
         val controller = Robolectric.buildActivity(MainActivity::class.java).create()
         val activity = controller.get()
         val capture = get(activity, "touchCapture") as TouchCapture
-        val receiver = get(activity, "videoReceiver") as VideoReceiver
+        val receiver = localVideo(activity)
         try {
             set(activity, "started", true)
             val worker = Thread { capture.onModeKnown?.invoke(false); capture.onCodecKnown?.invoke("hevc") }
@@ -588,7 +599,7 @@ class RegressionTest {
         val controller = Robolectric.buildActivity(MainActivity::class.java).create()
         val activity = controller.get()
         val capture = get(activity, "touchCapture") as TouchCapture
-        val receiver = get(activity, "videoReceiver") as VideoReceiver
+        val receiver = localVideo(activity)
         val socket = Socket()
         set(capture, "webSocket", socket)
         set(activity, "started", true)

@@ -12,6 +12,7 @@ import java.util.concurrent.*
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class CapabilityIsolationTest {
+    @org.junit.Before fun workerBridge() { WorkerTestBridge.install() }
     @Test fun t808_busyNativeWorkerReturnsUnavailableWithoutNewQueries() = runBlocking {
         val entered = CountDownLatch(1)
         val release = CountDownLatch(1)

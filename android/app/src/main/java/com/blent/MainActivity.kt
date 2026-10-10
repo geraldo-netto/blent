@@ -32,7 +32,9 @@ class MainActivity : ComponentActivity() {
         windowPolicy = ActivityWindowPolicy(this, prefs)
         windowPolicy.applyDisplaySettings()
         windowPolicy.applyOrientation()
-        session = SessionCoordinator(prefs, { runOnUiThread(it) })
+        session = SessionCoordinator(prefs, { runOnUiThread(it) },
+            videoReceiver = RemoteDisplay(applicationContext),
+            touchCapture = TouchCapture(capabilities = { width, height, fps -> RemoteMetadata.report(applicationContext, width, height, fps) }))
         reportNativeResolution()
         setContent {
             BlentTheme {

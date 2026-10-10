@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 /** Read-only stream observations for Compose; owning a view never starts video. */
-internal class StreamPresentation(private val receiver: VideoReceiver?, control: TouchCapture?) {
+internal class StreamPresentation(private val receiver: DisplaySession<android.view.SurfaceView>?, control: TouchCapture?) {
     var connected by mutableStateOf(false); private set
     var fps by mutableStateOf(0f); private set
     var mbps by mutableStateOf(0f); private set
-    val decoderStartup = CodecLifetime.startupStatus
-    val decoderRetirement = CodecLifetime.retirementStatus
-    val decoderDiagnostics = receiver?.decoder?.diagnostics ?: MutableStateFlow(DecoderDiagnostics())
+    val decoderStartup = receiver?.startupStatus ?: MutableStateFlow<String?>(null)
+    val decoderRetirement = receiver?.retirementStatus ?: MutableStateFlow<String?>(null)
+    val decoderDiagnostics = receiver?.decoderDiagnostics ?: MutableStateFlow(DecoderDiagnostics())
     val connectionState = control?.connectionState ?: MutableStateFlow(ControlConnection())
     val controlConnected: StateFlow<Boolean> = control?.controlConnected ?: MutableStateFlow(false)
     val calibrating = control?.control?.calibrating ?: MutableStateFlow(false)
@@ -65,7 +65,7 @@ internal sealed interface SettingsEvent {
 internal class SessionCoordinator(
     private val prefs: Prefs,
     private val dispatchUi: (() -> Unit) -> Unit,
-    private var videoReceiver: VideoReceiver? = VideoReceiver(),
+    private var videoReceiver: DisplaySession<android.view.SurfaceView>? = VideoReceiver(),
     private var touchCapture: TouchCapture? = TouchCapture(),
     releaseChecks: ReleaseChecks = UpdateCheck.requests,
 ) {
@@ -260,7 +260,7 @@ internal class SessionCoordinator(
 
 }
 
-internal fun applyStreamSettings(prefs: Prefs?, touchCapture: TouchCapture?, videoReceiver: VideoReceiver?, bitrateKbps: Int, newFps: Int) {
+internal fun applyStreamSettings(prefs: Prefs?, touchCapture: TouchCapture?, videoReceiver: DisplaySession<android.view.SurfaceView>?, bitrateKbps: Int, newFps: Int) {
     prefs?.bitrateKbps = bitrateKbps
     prefs?.fps = newFps
     prefs?.hasUserSettings = true

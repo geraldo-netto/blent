@@ -15,12 +15,8 @@ internal object AudioOwner {
     fun get(context: Context, direction: Int = 1): AudioBinding {
         cached(direction)?.let { return it }
         val app = context.applicationContext
-        val capture = if (direction == 1) AudioCapture(app)::run else AudioPlayback(app)::run
         val service = if (direction == 1) MicrophoneService::class.java else SpeakerService::class.java
-        val binding = AudioBinding(app, { permissionRequest?.invoke() },
-            permission = { direction == 2 || app.checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) == android.content.pm.PackageManager.PERMISSION_GRANTED },
-            capture = capture, invitations = if (direction == 1) AudioInvitations.microphone else AudioInvitations.speakers,
-            direction = direction, service = { run ->
+        val binding = RemoteMediaBindings.audio(app, direction, { permissionRequest?.invoke() }, service = { run ->
             val intent = Intent(app, service).putExtra("audio_run", run)
             if (run == null) app.stopService(intent) else app.startForegroundService(intent)
         })

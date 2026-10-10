@@ -1,3 +1,9 @@
+# Implementation update (2026-10-10)
+
+T809 is implemented with separate on-demand Android native workers. See the
+[current architecture and validation](artifacts/2026-10-10-android-process-isolation/README.md).
+The proposal below records the earlier review and alternatives.
+
 # Resource isolation and lifecycle review
 
 Review-only extension of the [Android performance review](2026-10-09-android-performance.md).

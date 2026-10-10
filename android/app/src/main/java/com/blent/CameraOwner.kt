@@ -12,9 +12,9 @@ internal object CameraOwner {
 
     fun get(context: Context): CameraBinding {
         val app = context.applicationContext
-        return binding ?: CameraBinding(app, {
+        return binding ?: RemoteMediaBindings.camera(app, {
             app.getSystemService(DisplayManager::class.java).getDisplay(Display.DEFAULT_DISPLAY)?.rotation ?: 0
-        }, { permissionRequest?.invoke() }, backgroundService = { run ->
+        }, { permissionRequest?.invoke() }, service = { run ->
             val intent = Intent(app, CameraService::class.java).putExtra("camera_run", run)
             if (run != null) app.startForegroundService(intent) else app.stopService(intent)
         }).also { binding = it }

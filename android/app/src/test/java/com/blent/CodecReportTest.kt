@@ -33,6 +33,7 @@ class SelectionCodecShadow : ShadowMediaCodec() {
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34], shadows = [SelectionCodecShadow::class])
 class CodecReportTest {
+    @org.junit.Before fun workerBridge() { WorkerTestBridge.install() }
     @Test fun t497_selectionRejectsMismatchedCodecsInvalidIdentitiesAndOversizedHints() {
         ShadowMediaCodecList.reset()
         try {

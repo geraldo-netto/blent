@@ -39,6 +39,24 @@ class AudioPlaybackTest {
         }
         override fun close() { closes++ }
     }
+    @Test fun t809_localAudioWorkerPublishesStatusAndReturnsAfterStop() = runBlocking(Dispatchers.IO) {
+        ServerSocket(0).use { server ->
+            val endpoint = endpoint(server.localPort)
+            val peer = async(Dispatchers.IO) { server.accept().use { socket ->
+                socket.soTimeout = 2000; socket.getInputStream().readNBytes(76)
+                socket.getOutputStream().write(grant(endpoint))
+                assertEquals(-1, socket.getInputStream().read())
+            } }
+            val events = mutableListOf<WorkerEvent>()
+            lateinit var run: LifecycleRun
+            run = LocalMediaRuns.create(RuntimeEnvironment.getApplication(),
+                MediaTask.Audio(endpoint, AudioPreferences(builtIn = false)), null) {
+                events.add(it); run.cancel()
+            }
+            withTimeout(3000) { run.execute() }; run.retire(); peer.await()
+            assertTrue(events.single() is WorkerEvent.Status)
+        }
+    }
     @Test fun t801_stopDuringNativeStartCompletesWithoutLaunchingAudioWork() = runBlocking(Dispatchers.Unconfined) {
         ServerSocket(0).use { server ->
             val endpoint = endpoint(server.localPort)

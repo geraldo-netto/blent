@@ -12,6 +12,7 @@ import java.net.ServerSocket
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class AudioOwnerTest {
+    @org.junit.Before fun workerBridge() { WorkerTestBridge.install() }
     @Test fun t718_defaultOwnerRequestsPermissionAndRetiresBackgroundService() = runBlocking {
         val app = RuntimeEnvironment.getApplication()
         AudioOwner.reset()

@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 
-class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
+internal class VideoReceiver(createSocket: () -> Socket = { Socket() }) : DisplaySession<SurfaceView> {
     companion object {
         const val HOST = "127.0.0.1"
         const val PORT = 8890
@@ -53,7 +53,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
 
     // Install both callbacks and replay readiness atomically: the first frame
     // may precede Compose's effect, and retirement may race its registration.
-    @Synchronized fun observeConnection(connected: () -> Unit, disconnected: () -> Unit) {
+    @Synchronized override fun observeConnection(connected: () -> Unit, disconnected: () -> Unit) {
         onConnected = connected
         onDisconnected = disconnected
         if (videoConnected) connected() else disconnected()
@@ -64,16 +64,16 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
      * not a physical-screen timestamp. The host times the round trip on its clock, so
      * no clock synchronisation between the two devices is needed.
      */
-    internal var onFrameRendered: ((RenderAcknowledgement) -> Unit)? = null
+    override var onFrameRendered: ((RenderAcknowledgement) -> Unit)? = null
 
     /// Which bitstream the host is sending. Set from the host's greeting
     /// before the stream starts; the frames carry nothing that says which
     /// codec they are, so guessing wrong means a decoder that never outputs.
-    @Volatile var mimeType: String = MIME_TYPE
+    @Volatile override var mimeType: String = MIME_TYPE
 
     /// Session token; written as the first 64 bytes on the socket. The host
     /// sends nothing until it has seen it.
-    @Volatile var token: String? = null
+    @Volatile override var token: String? = null
 
     internal val transport = VideoTransport(this, ::isCurrent, createSocket)
     internal val timing = FrameTiming()
@@ -92,7 +92,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     @Volatile private var decoderSelection: DecoderSelection? = null
 
     /** Frame rate the host is configured to send, used to size decoder hints. */
-    @Volatile var streamFps = Prefs.DEFAULT_FPS
+    @Volatile override var streamFps = Prefs.DEFAULT_FPS
         set(value) {
             if (value !in 10..90) return
             synchronized(this) {
@@ -105,7 +105,7 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
         }
 
     /** Retire once, then publish all format fields before a replacement worker starts. */
-    @Synchronized internal fun setStreamFormat(format: DecoderFormat) {
+    @Synchronized override fun setStreamFormat(format: DecoderFormat) {
         if (format == DecoderFormat(mimeType, formatWidth, formatHeight, streamFps, selection = decoderSelection)) return
         val restart = isRunning
         stop()
@@ -120,6 +120,10 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     @Volatile private var statistics = ReceiverStatistics()
     val currentFps get() = statistics.fps
     val currentMbps get() = statistics.mbps
+
+    override val startupStatus get() = CodecLifetime.startupStatus
+    override val retirementStatus get() = CodecLifetime.retirementStatus
+    override val decoderDiagnostics get() = decoder.diagnostics
 
     private val surfaceChanges = MutableStateFlow(0L)
     private val surfaceReady = AtomicBoolean(false)
@@ -137,8 +141,11 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
     private var job: Job? = null
     private var scope: CoroutineScope? = null
 
-    fun setSurface(surfaceView: SurfaceView) {
-        val surface = surfaceView.holder.surface
+    override fun setSurface(surfaceView: SurfaceView) {
+        setNativeSurface(surfaceView.holder.surface)
+    }
+
+    internal fun setNativeSurface(surface: Surface?) {
         if (surface == null || !surface.isValid) {
             Log.w(TAG, "Surface not ready yet")
             return
@@ -157,14 +164,14 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
      * rather than letting it keep rendering into a destroyed surface, which
      * throws from the render thread on the way to the background.
      */
-    @Synchronized fun onSurfaceDestroyed() {
+    @Synchronized override fun onSurfaceDestroyed() {
         surfaceReady.set(false)
         pendingSurface.set(null)
         surfaceChanges.update { it + 1 }
         decoder.resetCodec()
     }
 
-    fun start() {
+    override fun start() {
         synchronized(this) {
             if (isRunning) return
             isRunning = true
@@ -348,10 +355,10 @@ class VideoReceiver(createSocket: () -> Socket = { Socket() }) {
         decoder.feedDecoder(codec, data, offset, size, isConfig, presentationTimeUs, arrivalNanos)
     }
 
-    fun getFps(): Float = currentFps
-    fun getMbps(): Float = currentMbps
+    override fun getFps(): Float = currentFps
+    override fun getMbps(): Float = currentMbps
 
-    @Synchronized fun stop() {
+    @Synchronized override fun stop() {
         val wasRunning = isRunning
         sessionGeneration.incrementAndGet()
         isRunning = false

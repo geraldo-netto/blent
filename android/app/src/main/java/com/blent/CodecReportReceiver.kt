@@ -9,14 +9,14 @@ import android.os.Build
 import kotlinx.coroutines.*
 
 /** Read-only decoder inventory for `adb shell am broadcast`; DUMP restricts callers to shell/system. */
-class CodecReportReceiver(private val query: (Int) -> String = { decoderReport(it) }) : BroadcastReceiver() {
+class CodecReportReceiver(private val query: ((Int) -> String)? = null) : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val version = intent.getIntExtra("blent_codecs_version", 1)
         val completion = goAsync()
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                completion.resultData = MetadataQueries.lane.query { query(version) }
-                    ?: formatDecoderReport(version, null)
+                completion.resultData = if (query == null) RemoteMetadata.shell(context.applicationContext, version)
+                    else MetadataQueries.lane.query { query.invoke(version) } ?: formatDecoderReport(version, null)
             } finally { completion.finish() }
         }
     }

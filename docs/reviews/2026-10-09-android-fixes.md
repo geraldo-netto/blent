@@ -356,3 +356,18 @@ and throwing callbacks pass. This bounds queue growth; it is not a latency claim
 [Scoped coverage and red evidence](artifacts/2026-10-10-android-status-dispatch/coverage.json):
 every changed method passes 80%; full Android suite passes, all 1,081 measured
 methods pass individually and no production method exceeds complexity 9.
+
+## T809: independent native workers on demand
+
+Display, camera, microphone, speaker and metadata work now use separate private
+processes, with bounded IPC, one native owner each, generation/death observation,
+Surface handle transfer and retirement before replacement. Consent and foreground
+service policy remain with main-process owners. Stop does not wait on native
+cleanup; failed death confirmation quarantines the resource. Worker and parent
+death regressions pass on the attached tablet using the disposable acceptance app.
+
+[Architecture, costs, source hashes and native results](artifacts/2026-10-10-android-process-isolation/README.md)
+record the accepted memory/startup tradeoff and test limits. Full offline suite:
+902 tests; 1,081/1,081 methods meet 80% coverage; complexity <=9. T830 bounds UI
+status dispatch downstream of the bounded IPC mailboxes. No production reinstall
+or download; physical audio/camera acceptance remains under T718/T720.

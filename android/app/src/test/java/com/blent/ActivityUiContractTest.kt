@@ -39,13 +39,15 @@ class ActivityUiContractTest {
         lateinit var controller: org.robolectric.android.controller.ActivityController<MainActivity>
         lateinit var prefs: Prefs
         lateinit var capture: TouchCapture
-        lateinit var receiver: VideoReceiver
+        internal lateinit var remoteCapabilities: suspend (Int, Int, Int) -> org.json.JSONObject
+        internal lateinit var receiver: VideoReceiver
         internal val socket = OfflineSocket()
         val trace = CompositionTrace()
         private var previousTracer: Any? = null
         private var stopped = false
 
         override fun before() {
+            WorkerTestBridge.install()
             CameraOwner.reset()
             AudioOwner.reset()
             previousTracer = ReflectionHelpers.getStaticField(Class.forName("androidx.compose.runtime.ComposerKt"), "compositionTracer")
@@ -53,6 +55,8 @@ class ActivityUiContractTest {
             prefs = Prefs(RuntimeEnvironment.getApplication()).apply { checkUpdates = false }
             controller = Robolectric.buildActivity(MainActivity::class.java).create()
             val activity = controller.get()
+            val original = ReflectionHelpers.getField<TouchCapture>(activity.session, "touchCapture")
+            remoteCapabilities = ReflectionHelpers.getField(original.control, "decoderCapabilities")
             capture = TouchCapture(WebSocket.Factory { _, _ -> socket })
             receiver = VideoReceiver { error("T497 no physical video connection") }
             activity.session.stop()
@@ -86,6 +90,10 @@ class ActivityUiContractTest {
         override fun send(bytes: ByteString) = true
         override fun close(code: Int, reason: String?): Boolean { retired = true; return true }
         override fun cancel() { retired = true }
+    }
+
+    @Test fun t809_activityMetadataContractUsesRemoteWorker() = kotlinx.coroutines.runBlocking {
+        assertEquals(640, fixture.remoteCapabilities(640, 480, 30).getInt("width"))
     }
 
     @Test fun t497_realActivityCompositionRoutesDisplayChangesAndRetiresItsSession() {

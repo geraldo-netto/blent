@@ -5,7 +5,9 @@ import android.view.SurfaceView
 import okhttp3.WebSocket
 
 /** Activity-facing input facade. The shared monitor orders socket handshakes and input. */
-class TouchCapture(factory: WebSocket.Factory = defaultControlClient()) {
+class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
+    capabilities: suspend (Int, Int, Int) -> org.json.JSONObject = DecoderCapabilities::report,
+) {
     companion object {
         const val TAG = "BlentTouch"
         const val WS_URL = "ws://127.0.0.1:8891"
@@ -13,7 +15,7 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient()) {
     }
 
     internal val motion: MotionTranslator = MotionTranslator { message, sampleTimeMs -> control.sendWhenConnected(message, sampleTimeMs) }
-    internal val control: ControlSession = ControlSession(this, motion, factory)
+    internal val control: ControlSession = ControlSession(this, motion, factory, capabilities)
     val connectionGeneration get() = control.connectionGeneration
     val controlConnected get() = control.controlConnected
     internal val connectionState get() = control.connectionState

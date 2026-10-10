@@ -17,7 +17,7 @@ class DecoderWaitUiTest {
     @Test fun t806_decoderWaitSurvivesPresentationReplacementAndClearsOnlyAtCompletion() {
         assertTrue(CodecLifetime.beginStartup())
         try {
-            val presentation = StreamPresentation(null, null)
+            val presentation = StreamPresentation(VideoReceiver(), null)
             assertEquals("Decoder startup pending.", presentation.decoderStartup.value)
             compose.setContent { BlentTheme { BlentMain({}, presentation = presentation) } }
             compose.onNodeWithText("Decoder startup pending.").assertIsDisplayed()

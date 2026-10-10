@@ -87,5 +87,10 @@
             android:name=".StreamingService"
             android:foregroundServiceType="connectedDevice"
             android:exported="false" />
+        <service android:name=".DisplayWorkerService" android:process=":display" android:exported="false" />
+        <service android:name=".CameraWorkerService" android:process=":camera" android:exported="false" />
+        <service android:name=".MicrophoneWorkerService" android:process=":microphone" android:exported="false" />
+        <service android:name=".SpeakerWorkerService" android:process=":speakers" android:exported="false" />
+        <service android:name=".MetadataWorkerService" android:process=":metadata" android:exported="false" />
     </application>
 </manifest>

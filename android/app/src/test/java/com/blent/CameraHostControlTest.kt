@@ -18,6 +18,21 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class CameraHostControlTest {
+    @org.junit.Before fun workerBridge() { WorkerTestBridge.install() }
+    @Test fun t809_localCameraAdapterRetainsAndroidPermissionBoundary() {
+        val app = RuntimeEnvironment.getApplication()
+        val commands = MutableStateFlow<CameraEndpoint?>(null)
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        var prompts = 0
+        val binding = CameraBinding(app, { 0 }, { prompts++ }, invitations = commands, scope = scope)
+        try {
+            shadowOf(app).denyPermissions(android.Manifest.permission.CAMERA)
+            binding.start()
+            commands.value = CameraEndpoint("a".repeat(64), 12345, 640, 480, 30, 1000, CameraLens.FRONT)
+            assertEquals(1, prompts)
+            assertNull(binding.selected)
+        } finally { binding.shutdown(); scope.cancel() }
+    }
     @Test fun t543_hostBackgroundPolicySurvivesActivityStopButRetiresOnHostStop() = runBlocking {
         val commands = MutableStateFlow<CameraEndpoint?>(null)
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)

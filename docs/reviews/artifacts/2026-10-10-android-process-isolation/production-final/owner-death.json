@@ -1,0 +1,22 @@
+{
+  "workers": [
+    {
+      "pid": 16277,
+      "startup_ns": 697570961
+    },
+    {
+      "pid": 16297,
+      "startup_ns": 696469961
+    },
+    {
+      "pid": 16315,
+      "startup_ns": 720200769
+    },
+    {
+      "pid": 16342,
+      "startup_ns": 700194615
+    }
+  ],
+  "parent_pid": 16066,
+  "all_processes_exited": true
+}

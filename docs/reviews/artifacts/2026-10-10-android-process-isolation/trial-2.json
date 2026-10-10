@@ -1,0 +1,40 @@
+{
+  "fingerprint": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys",
+  "grouped": false,
+  "workers": [
+    {
+      "pid": 8814,
+      "pss_kb": 23649,
+      "rss_kb": 96984,
+      "cpu_ms": 619,
+      "startup_ns": 381083346
+    },
+    {
+      "pid": 8829,
+      "pss_kb": 23142,
+      "rss_kb": 97688,
+      "cpu_ms": 630,
+      "startup_ns": 394010731
+    },
+    {
+      "pid": 8849,
+      "pss_kb": 22905,
+      "rss_kb": 96916,
+      "cpu_ms": 632,
+      "startup_ns": 400574846
+    },
+    {
+      "pid": 8864,
+      "pss_kb": 22685,
+      "rss_kb": 97504,
+      "cpu_ms": 607,
+      "startup_ns": 373028154
+    }
+  ],
+  "restarted_pid": 8887,
+  "death_contained": true,
+  "hang_admission_bounded": true,
+  "surface_handle_transfer": true,
+  "stale_reply_rejected": true,
+  "run_id": "2"
+}

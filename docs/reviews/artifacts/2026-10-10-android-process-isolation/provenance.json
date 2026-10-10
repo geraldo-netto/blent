@@ -1,0 +1,8 @@
+{
+  "offline": true,
+  "sources": {
+    "IsolationProbe.kt": "8d5bf24af0eec525458fa537ac400cb8253f03a2663d8293fcb39a82a5e048db",
+    "IsolationWorker.kt": "0b54361d6842f32d916b23878887d886d6e7e7b5d38e06e8a606a82fd22b77e6"
+  },
+  "apk_sha256": "4167138809dba8ab9d9896a2e7f846490680306d77c94e0a25f0bc361855c2be"
+}
