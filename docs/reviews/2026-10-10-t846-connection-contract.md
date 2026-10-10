@@ -235,7 +235,7 @@ activation prerequisite with its own regressions and commit.
 | T883 | Bounded Android native session runner (implemented) | T881, T882 |
 | T884 | Private Android connection process and IPC (implemented) | T883 |
 | T886 | Authenticated Android setup owner (implemented) | T884, T851, T856 |
-| T887 | Android accessory selection/permission/opening | T884 |
+| T887 | Android accessory selection/permission/opening (implemented) | T884 |
 | T854 | Production Android accessory/setup composition | T886, T887, T883 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
@@ -1018,3 +1018,60 @@ Validation: [T886 retained evidence](artifacts/2026-10-10-t886/README.md):
 312 ordinary connection tests and 12 Rust/Android TLS interoperability tests pass;
 61 individual source-function checks and 80 executable JVM method counters pass
 (minimum 88.89%); 208 reviewed functions have cyclomatic complexity at most 9.
+
+## T887 Android accessory selection and native opening
+
+`AccessoryDescription`, `AccessorySelection`, `AccessoryResolver` and
+`AccessorySelectionOwner` keep selection policy independent of Android and native
+I/O. Length-prefixed SHA-256 snapshots preserve null versus empty metadata and
+reject malformed Unicode and fields larger than 512 UTF-8 bytes. A positive,
+nonwrapping epoch plus the snapshot digest forms the canonical worker device
+token. Replacement invalidates the previous selection before attempting a new
+scan. Stale callbacks cannot invalidate a newer selection. Snapshots default to
+32 accessories, with a configurable range of 1–1024; bounds are checked before
+traversal. T854 must forward the chosen capacity through composition.
+
+`AndroidAccessoryInventory` re-enumerates an exact, unique supported candidate and
+checks actual `UsbManager` permission. Its selection snapshot consistently omits
+serial: Android 29+ can require accessory permission to read that field, so using
+it before consent prevents permission requests and using it only afterward changes
+the selection token. Otherwise identical public metadata is ambiguous even when
+serials differ; no unique physical identity is claimed. Native metadata never
+grants pairing or media authority. The supported manufacturer/model/version
+profile is injected; production metadata changes remain T854.
+
+`AndroidAccessoryPermission` owns one permission request and its native cleanup.
+Callbacks use a private action, an immutable package-directed PendingIntent and
+an app-signature permission gate on API27/34; API33+ additionally registers a
+nonexported receiver. Extras claiming permission are ignored. The receiver only
+correlates a current request and admits one background hint. Queue rejection
+changes local failure state; it does not perform native cancellation on the
+receiver thread. A supervisor must observe `failure()` independently of native
+progress. A fresh snapshot and real permission check precede result delivery,
+and the main serialized owner must call `confirm` before admitting a worker.
+
+Monotonically increasing request epochs and exact pending receipts reject stale
+replacement/completion. Failed cancellation retains the native token for cleanup.
+A blocked previous cancellation prevents creation of a replacement token. Late
+registration after close is unregistered by its retained native operation.
+`retired()` includes actual operation completion, successful unregistration and
+release of every pending token; a stop request or reported result is insufficient.
+
+`AndroidAccessoryOpening` owns descriptor acquisition, independent stream wrappers
+and the socket bridge. It retains every current native owner before advancing,
+checks selection/permission before and after opening, and rejects late/stale
+results. Cancellation races close late acquisitions; failed native cleanup cannot
+establish retirement. The caller must retain the opening owner even when `open`
+throws and must supply its current-selection gate. Native opening and close belong
+on supervised workers, with independent timeout/process-retirement enforcement.
+
+These are tested components, not production USB support. T854 still composes them
+with the private connection service, setup owner and reactor, including permission
+failure monitoring, detach invalidation, current-selection/current-approval gates
+and actual retirement. T855 supplies pairing presentation and physical acceptance;
+T857 supplies production display/touch. Physical detach/reattach remains T854/T862.
+
+Validation: [T887 retained evidence](artifacts/2026-10-10-t887/README.md):
+361 connection tests pass without skips; all 47 inventoried production functions
+and 78 executable JVM methods pass individual line coverage (100% for these
+methods). All 89 reviewed functions have cyclomatic complexity at most 7.

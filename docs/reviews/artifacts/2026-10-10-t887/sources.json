@@ -1,0 +1,11 @@
+{
+  "android/app/src/main/java/com/blent/connection/AccessorySelection.kt": "b6bf5adbbb86109b44595088a7c754a98e13dab869988a605b56466a0593777a",
+  "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt": "7947ae253b113410ea080e7155d4f0089a95981d0e1980459e97216a94d45689",
+  "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt": "e5a438ff263ec66f3f736baea93a06340812e26bdbd55703307536fa04687a53",
+  "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt": "f9b558aed1c6f6b7a0139e735bfc46ee131e3c70d5ce0289fa13f9cbdde6c7d8",
+  "android/app/src/test/java/com/blent/connection/AccessorySelectionTest.kt": "86cca5e8de2c901c2c3f664d6947c4ae0b44b3f182e844a853e30dd4d8815d10",
+  "android/app/src/test/java/com/blent/connection/AndroidAccessorySelectionTest.kt": "a7acdb12998366f33359a8e552f606a308a219274c185b49753adb1c2b3ba0b4",
+  "android/app/src/test/java/com/blent/connection/AccessoryPermissionBoundaryTest.kt": "ee3b565f27e2a600250f348b9e4b8a1141b1bc11ef22e81afb665f58da273fb5",
+  "android/app/src/test/java/com/blent/connection/AccessoryOpeningBoundaryTest.kt": "55690b4886f48df5cb941360c77477b138997c8373ba906a2cac1c4ea5353e3f",
+  "android/app/src/main/AndroidManifest.xml": "26e86ba7a21e9b70722ebd22e60035ea2e77ef545649226c29164b1e89fb5f2f"
+}

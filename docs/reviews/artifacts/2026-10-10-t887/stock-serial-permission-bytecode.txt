@@ -1,0 +1,163 @@
+Compiled from "UsbSerialReader.java"
+class com.android.server.usb.UsbSerialReader extends android.hardware.usb.IUsbSerialReader$Stub {
+  private final java.lang.String mSerialNumber;
+
+  private final android.content.Context mContext;
+
+  private final com.android.server.usb.UsbPermissionManager mPermissionManager;
+
+  private java.lang.Object mDevice;
+
+  com.android.server.usb.UsbSerialReader(android.content.Context, com.android.server.usb.UsbPermissionManager, java.lang.String);
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method android/hardware/usb/IUsbSerialReader$Stub."<init>":()V
+       4: aload_0
+       5: aload_1
+       6: putfield      #7                  // Field mContext:Landroid/content/Context;
+       9: aload_0
+      10: aload_2
+      11: putfield      #13                 // Field mPermissionManager:Lcom/android/server/usb/UsbPermissionManager;
+      14: aload_0
+      15: aload_3
+      16: putfield      #17                 // Field mSerialNumber:Ljava/lang/String;
+      19: return
+
+  public void setDevice(java.lang.Object);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: putfield      #21                 // Field mDevice:Ljava/lang/Object;
+       5: return
+
+  public java.lang.String getSerial(java.lang.String) throws android.os.RemoteException;
+    Code:
+       0: invokestatic  #25                 // Method android/os/Binder.getCallingPid:()I
+       3: istore_2
+       4: invokestatic  #31                 // Method android/os/Binder.getCallingUid:()I
+       7: istore_3
+       8: iload_3
+       9: sipush        1000
+      12: if_icmpeq     199
+      15: aload_0
+      16: iload_3
+      17: aload_1
+      18: invokevirtual #36                 // Method enforcePackageBelongsToUid:(ILjava/lang/String;)V
+      21: invokestatic  #40                 // Method android/os/Binder.getCallingUserHandle:()Landroid/os/UserHandle;
+      24: astore        4
+      26: invokestatic  #44                 // Method android/os/Binder.clearCallingIdentity:()J
+      29: lstore        6
+      31: aload_0
+      32: getfield      #7                  // Field mContext:Landroid/content/Context;
+      35: invokevirtual #48                 // Method android/content/Context.getPackageManager:()Landroid/content/pm/PackageManager;
+      38: aload_1
+      39: iconst_0
+      40: aload         4
+      42: invokevirtual #54                 // Method android/os/UserHandle.getIdentifier:()I
+      45: invokevirtual #59                 // Method android/content/pm/PackageManager.getPackageInfoAsUser:(Ljava/lang/String;II)Landroid/content/pm/PackageInfo;
+      48: astore        8
+      50: goto          87
+      53: astore        9
+      55: new           #67                 // class android/os/RemoteException
+      58: dup
+      59: new           #69                 // class java/lang/StringBuilder
+      62: dup
+      63: invokespecial #71                 // Method java/lang/StringBuilder."<init>":()V
+      66: ldc           #72                 // String package
+      68: invokevirtual #74                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      71: aload_1
+      72: invokevirtual #74                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      75: ldc           #78                 // String  cannot be found
+      77: invokevirtual #74                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      80: invokevirtual #80                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      83: invokespecial #84                 // Method android/os/RemoteException."<init>":(Ljava/lang/String;)V
+      86: athrow
+      87: aload         8
+      89: getfield      #87                 // Field android/content/pm/PackageInfo.applicationInfo:Landroid/content/pm/ApplicationInfo;
+      92: getfield      #93                 // Field android/content/pm/ApplicationInfo.targetSdkVersion:I
+      95: istore        5
+      97: iload         5
+      99: bipush        29
+     101: if_icmplt     181
+     104: aload_0
+     105: getfield      #7                  // Field mContext:Landroid/content/Context;
+     108: ldc           #103                // String android.permission.MANAGE_USB
+     110: iload_2
+     111: iload_3
+     112: invokevirtual #105                // Method android/content/Context.checkPermission:(Ljava/lang/String;II)I
+     115: iconst_m1
+     116: if_icmpne     181
+     119: iload_3
+     120: invokestatic  #109                // Method android/os/UserHandle.getUserId:(I)I
+     123: istore        9
+     125: aload_0
+     126: getfield      #21                 // Field mDevice:Ljava/lang/Object;
+     129: instanceof    #113                // class android/hardware/usb/UsbDevice
+     132: ifeq          160
+     135: aload_0
+     136: getfield      #13                 // Field mPermissionManager:Lcom/android/server/usb/UsbPermissionManager;
+     139: iload         9
+     141: invokevirtual #115                // Method com/android/server/usb/UsbPermissionManager.getPermissionsForUser:(I)Lcom/android/server/usb/UsbUserPermissionManager;
+     144: aload_0
+     145: getfield      #21                 // Field mDevice:Ljava/lang/Object;
+     148: checkcast     #113                // class android/hardware/usb/UsbDevice
+     151: aload_1
+     152: iload_2
+     153: iload_3
+     154: invokevirtual #121                // Method com/android/server/usb/UsbUserPermissionManager.checkPermission:(Landroid/hardware/usb/UsbDevice;Ljava/lang/String;II)V
+     157: goto          181
+     160: aload_0
+     161: getfield      #13                 // Field mPermissionManager:Lcom/android/server/usb/UsbPermissionManager;
+     164: iload         9
+     166: invokevirtual #115                // Method com/android/server/usb/UsbPermissionManager.getPermissionsForUser:(I)Lcom/android/server/usb/UsbUserPermissionManager;
+     169: aload_0
+     170: getfield      #21                 // Field mDevice:Ljava/lang/Object;
+     173: checkcast     #126                // class android/hardware/usb/UsbAccessory
+     176: iload_2
+     177: iload_3
+     178: invokevirtual #128                // Method com/android/server/usb/UsbUserPermissionManager.checkPermission:(Landroid/hardware/usb/UsbAccessory;II)V
+     181: lload         6
+     183: invokestatic  #131                // Method android/os/Binder.restoreCallingIdentity:(J)V
+     186: goto          199
+     189: astore        10
+     191: lload         6
+     193: invokestatic  #131                // Method android/os/Binder.restoreCallingIdentity:(J)V
+     196: aload         10
+     198: athrow
+     199: aload_0
+     200: getfield      #17                 // Field mSerialNumber:Ljava/lang/String;
+     203: areturn
+    Exception table:
+       from    to  target type
+          31    50    53   Class android/content/pm/PackageManager$NameNotFoundException
+          31   181   189   any
+         189   191   189   any
+
+  private void enforcePackageBelongsToUid(int, java.lang.String);
+    Code:
+       0: aload_0
+       1: getfield      #7                  // Field mContext:Landroid/content/Context;
+       4: invokevirtual #48                 // Method android/content/Context.getPackageManager:()Landroid/content/pm/PackageManager;
+       7: iload_1
+       8: invokevirtual #135                // Method android/content/pm/PackageManager.getPackagesForUid:(I)[Ljava/lang/String;
+      11: astore_3
+      12: aload_3
+      13: aload_2
+      14: invokestatic  #139                // Method com/android/internal/util/ArrayUtils.contains:([Ljava/lang/Object;Ljava/lang/Object;)Z
+      17: ifne          51
+      20: new           #145                // class java/lang/IllegalArgumentException
+      23: dup
+      24: new           #69                 // class java/lang/StringBuilder
+      27: dup
+      28: invokespecial #71                 // Method java/lang/StringBuilder."<init>":()V
+      31: aload_2
+      32: invokevirtual #74                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      35: ldc           #147                // String  does to belong to the
+      37: invokevirtual #74                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      40: iload_1
+      41: invokevirtual #149                // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+      44: invokevirtual #80                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      47: invokespecial #152                // Method java/lang/IllegalArgumentException."<init>":(Ljava/lang/String;)V
+      50: athrow
+      51: return
+}

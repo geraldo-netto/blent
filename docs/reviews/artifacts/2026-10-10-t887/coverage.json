@@ -1,0 +1,1123 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+    "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+    "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+    "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 47,
+      "passing": 47,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "bytes",
+      "line": 17,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessoryMetadata",
+          "name": "bytes",
+          "signature": "(Ljava/lang/String;)[B",
+          "line": 18,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "digest",
+      "line": 23,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessoryMetadata",
+          "name": "digest",
+          "signature": "(Ljava/util/List;)Ljava/lang/String;",
+          "line": 24,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "<lambda>",
+      "line": 33,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessoryMetadata$digest$1",
+          "name": "invoke",
+          "signature": "(B)Ljava/lang/CharSequence;",
+          "line": 33,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "matches",
+      "line": 42,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessoryProfile",
+          "name": "matches",
+          "signature": "(Lcom/blent/connection/AccessoryDescription;)Z",
+          "line": 43,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "encode",
+      "line": 54,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessorySelection",
+          "name": "encode",
+          "signature": "()Ljava/lang/String;",
+          "line": 54,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "parse",
+      "line": 56,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessorySelection$Companion",
+          "name": "parse",
+          "signature": "(Ljava/lang/String;)Lcom/blent/connection/AccessorySelection;",
+          "line": 57,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "bounded",
+      "line": 72,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessoryResolver",
+          "name": "bounded",
+          "signature": "(Ljava/util/List;)V",
+          "line": 72,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "choose",
+      "line": 73,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessoryResolver",
+          "name": "choose",
+          "signature": "(Ljava/util/List;)Lcom/blent/connection/AccessoryDescription;",
+          "line": 74,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "resolve",
+      "line": 83,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessoryResolver",
+          "name": "resolve",
+          "signature": "(Lcom/blent/connection/AccessorySelection;Ljava/util/List;)Lcom/blent/connection/AccessoryDescription;",
+          "line": 84,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "select",
+      "line": 108,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessorySelectionOwner",
+          "name": "select",
+          "signature": "(Ljava/util/List;)Lcom/blent/connection/AccessorySelection;",
+          "line": 109,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "current",
+      "line": 116,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessorySelectionOwner",
+          "name": "current",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)Z",
+          "line": 116,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "confirm",
+      "line": 117,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessorySelectionOwner",
+          "name": "confirm",
+          "signature": "(Lcom/blent/connection/AccessorySelection;Ljava/util/List;Z)Lcom/blent/connection/AccessoryDescription;",
+          "line": 118,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+      "name": "invalidate",
+      "line": 125,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AccessorySelection.kt",
+          "owner": "com/blent/connection/AccessorySelectionOwner",
+          "name": "invalidate",
+          "signature": "()V",
+          "line": 125,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+      "name": "<lambda>",
+      "line": 13,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+          "owner": "com/blent/connection/AndroidAccessoryInventory$1",
+          "name": "invoke",
+          "signature": "()[Landroid/hardware/usb/UsbAccessory;",
+          "line": 13,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+      "name": "devices",
+      "line": 18,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+          "owner": "com/blent/connection/AndroidAccessoryInventory",
+          "name": "devices",
+          "signature": "()Ljava/util/List;",
+          "line": 19,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+      "name": "snapshot",
+      "line": 23,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+          "owner": "com/blent/connection/AndroidAccessoryInventory",
+          "name": "snapshot",
+          "signature": "()Ljava/util/List;",
+          "line": 23,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+      "name": "resolve",
+      "line": 24,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+          "owner": "com/blent/connection/AndroidAccessoryInventory",
+          "name": "resolve",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)Landroid/hardware/usb/UsbAccessory;",
+          "line": 25,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+      "name": "permitted",
+      "line": 30,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+          "owner": "com/blent/connection/AndroidAccessoryInventory",
+          "name": "permitted",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)Z",
+          "line": 30,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+      "name": "open",
+      "line": 31,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+          "owner": "com/blent/connection/AndroidAccessoryInventory",
+          "name": "open",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)Landroid/os/ParcelFileDescriptor;",
+          "line": 32,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+      "name": "describe",
+      "line": 37,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryInventory.kt",
+          "owner": "com/blent/connection/AndroidAccessoryInventory$Companion",
+          "name": "describe",
+          "signature": "(Landroid/hardware/usb/UsbAccessory;)Lcom/blent/connection/AccessoryDescription;",
+          "line": 39,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+      "name": "<lambda>",
+      "line": 16,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+          "owner": "com/blent/connection/AndroidAccessoryOpening$1",
+          "name": "invoke",
+          "signature": "(Landroid/os/ParcelFileDescriptor;)Lcom/blent/connection/AndroidAccessoryPorts;",
+          "line": 16,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+      "name": "live",
+      "line": 27,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+          "owner": "com/blent/connection/AndroidAccessoryOpening",
+          "name": "live",
+          "signature": "()V",
+          "line": 28,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+      "name": "adopt",
+      "line": 31,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+          "owner": "com/blent/connection/AndroidAccessoryOpening",
+          "name": "adopt",
+          "signature": "(Ljava/io/Closeable;)Ljava/io/Closeable;",
+          "line": 32,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+      "name": "open",
+      "line": 38,
+      "language": "kotlin",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+          "owner": "com/blent/connection/AndroidAccessoryOpening",
+          "name": "open",
+          "signature": "()Ljava/net/Socket;",
+          "line": 39,
+          "covered": 15,
+          "total": 15
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+      "name": "close",
+      "line": 55,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+          "owner": "com/blent/connection/AndroidAccessoryOpening",
+          "name": "close",
+          "signature": "()V",
+          "line": 56,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+      "name": "retired",
+      "line": 61,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryOpening.kt",
+          "owner": "com/blent/connection/AndroidAccessoryOpening",
+          "name": "retired",
+          "signature": "()Z",
+          "line": 61,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "onReceive",
+      "line": 41,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission$receiver$1",
+          "name": "onReceive",
+          "signature": "(Landroid/content/Context;Landroid/content/Intent;)V",
+          "line": 42,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "<lambda>",
+      "line": 43,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission$receiver$1$onReceive$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 43,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "failure",
+      "line": 47,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "failure",
+          "signature": "()Ljava/lang/Exception;",
+          "line": 47,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "retired",
+      "line": 48,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "retired",
+          "signature": "()Z",
+          "line": 48,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "failed",
+      "line": 51,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "failed",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 51,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "live",
+      "line": 52,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "live",
+          "signature": "()V",
+          "line": 52,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "address",
+      "line": 53,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "address",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)Landroid/net/Uri;",
+          "line": 53,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "claimHint",
+      "line": 55,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "claimHint",
+          "signature": "(Landroid/content/Intent;)Lcom/blent/connection/AndroidAccessoryPermission$Pending;",
+          "line": 55,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "start",
+      "line": 63,
+      "language": "kotlin",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "start",
+          "signature": "()V",
+          "line": 64,
+          "covered": 11,
+          "total": 11
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "register",
+      "line": 78,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "register",
+          "signature": "()V",
+          "line": 79,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "beginRequest",
+      "line": 85,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "beginRequest",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)I",
+          "line": 85,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "request",
+      "line": 90,
+      "language": "kotlin",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "request",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)V",
+          "line": 91,
+          "covered": 16,
+          "total": 16
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "beginComplete",
+      "line": 110,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "beginComplete",
+          "signature": "(Lcom/blent/connection/AndroidAccessoryPermission$Pending;)Z",
+          "line": 110,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "complete",
+      "line": 115,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "complete",
+          "signature": "(Lcom/blent/connection/AndroidAccessoryPermission$Pending;)V",
+          "line": 116,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "permission",
+      "line": 126,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "permission",
+          "signature": "(Lcom/blent/connection/AccessorySelection;)Lkotlin/Pair;",
+          "line": 126,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "cancelPending",
+      "line": 130,
+      "language": "kotlin",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "cancelPending",
+          "signature": "(Lcom/blent/connection/AndroidAccessoryPermission$Pending;)Z",
+          "line": 132,
+          "covered": 12,
+          "total": 12
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "unregister",
+      "line": 146,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "unregister",
+          "signature": "()V",
+          "line": 147,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "cleanup",
+      "line": 155,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "cleanup",
+          "signature": "()V",
+          "line": 156,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "<lambda>",
+      "line": 156,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "cleanup$lambda$26",
+          "signature": "(Lcom/blent/connection/AndroidAccessoryPermission;)V",
+          "line": 156,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "cleanup$lambda$27",
+          "signature": "(Lcom/blent/connection/AndroidAccessoryPermission;)V",
+          "line": 156,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "<lambda>",
+      "line": 156,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "cleanup$lambda$26",
+          "signature": "(Lcom/blent/connection/AndroidAccessoryPermission;)V",
+          "line": 156,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "cleanup$lambda$27",
+          "signature": "(Lcom/blent/connection/AndroidAccessoryPermission;)V",
+          "line": 156,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+      "name": "close",
+      "line": 158,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidAccessoryPermission.kt",
+          "owner": "com/blent/connection/AndroidAccessoryPermission",
+          "name": "close",
+          "signature": "()V",
+          "line": 159,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    }
+  ]
+}
