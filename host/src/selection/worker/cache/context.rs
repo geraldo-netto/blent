@@ -1,5 +1,6 @@
 use super::*;
-use crate::{attachment::Attachment, capture::CaptureConfig};
+use crate::capture::CaptureConfig;
+use blent::capture_contract::ProfileSource;
 use blent_config::commands::SyncCommandExt;
 use sha2::{Digest, Sha256};
 use std::path::Path;
@@ -8,10 +9,10 @@ impl Cache {
     pub async fn open(
         base: &CaptureConfig,
         snapshot: &EncoderSettings,
-        attachment: &Attachment,
+        attachment: &dyn ProfileSource,
     ) -> Option<std::sync::Arc<Self>> {
-        let lease = attachment.lease();
-        let identity = lease.profile_identity()?;
+        let lease = attachment.profile();
+        let identity = lease.identity()?;
         fingerprint(&identity, "", snapshot, base)?;
         let base = base.clone();
         let snapshot = snapshot.clone();

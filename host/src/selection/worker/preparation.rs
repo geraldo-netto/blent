@@ -1,5 +1,5 @@
 use super::*;
-use crate::attachment::Attachment;
+use blent::capture_contract::ProfileSource;
 
 enum Prepared {
     Cached(Box<Candidate>),
@@ -11,7 +11,7 @@ pub(super) async fn optimize(
     settings: &watch::Sender<EncoderSettings>,
     snapshot: &EncoderSettings,
     latency: &LatencyTracker,
-    attachment: &Attachment,
+    attachment: &dyn ProfileSource,
 ) {
     let cache = cache::Cache::open(base, snapshot, attachment).await;
     optimize_with(&HostProbes(base), settings, snapshot, latency, cache).await;

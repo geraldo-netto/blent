@@ -182,3 +182,31 @@ fn t787_bounded_plane_layout_property() {
         (*raw).linesize[0] = stride;
     }
 }
+
+#[test]
+fn t820_uploaded_frames_preserve_encoder_packet_content_and_keyframes() {
+    let _guard = test_api::activate();
+    let mut direct = super::super::Encoder::new("libx264", 64, 64, 30, 500, 20).unwrap();
+    let mut uploaded = super::super::Encoder::new("libx264", 64, 64, 30, 500, 20).unwrap();
+    uploaded.hardware = Some(Frames::new("portable-fake-device", 64, 64).unwrap());
+    for (value, keyframe) in [(64, true), (128, false), (192, true)] {
+        for encoder in [&mut direct, &mut uploaded] {
+            encoder.frame.data_mut(0).fill(value);
+            encoder.frame.data_mut(1).fill(128);
+        }
+        let expected = direct.encode_prepared(keyframe).unwrap();
+        let actual = uploaded.encode_prepared(keyframe).unwrap();
+        assert!(!actual.is_empty());
+        assert_eq!(
+            actual
+                .iter()
+                .map(|(bytes, idr)| (&bytes[..], *idr))
+                .collect::<Vec<_>>(),
+            expected
+                .iter()
+                .map(|(bytes, idr)| (&bytes[..], *idr))
+                .collect::<Vec<_>>(),
+            "T820: upload path changed encoded output or keyframe identity"
+        );
+    }
+}

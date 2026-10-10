@@ -9,7 +9,7 @@ mod trial;
 #[cfg(not(feature = "inproc-encoder"))]
 mod worker;
 #[cfg(not(feature = "inproc-encoder"))]
-pub(crate) use worker::spawn;
+pub(crate) use worker::run;
 
 #[cfg(not(feature = "inproc-encoder"))]
 mod resources;

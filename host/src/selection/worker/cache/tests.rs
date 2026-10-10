@@ -243,7 +243,7 @@ async fn t480_proven_identity_and_attachment_retirement_bound_cache_use() {
         ("tablet".into(), "usb")
     );
     let mut cache = store(dir.path().join("cache"));
-    cache.lease = Some(attachment.lease());
+    cache.lease = Some(Box::new(attachment.lease()));
     cache.save(100, &row).unwrap();
     attachment.begin_with_transport(Some("device:tablet".into()), Some(Transport::Network));
     cache.retired().await;
@@ -386,7 +386,7 @@ pub(in crate::selection::worker) fn attached_store(
     lease: crate::attachment::Lease,
 ) -> Cache {
     Cache {
-        lease: Some(lease),
+        lease: Some(Box::new(lease)),
         ..store(path)
     }
 }

@@ -29,8 +29,11 @@ async fn t437_closed_settings_stops_idle_capture() {
     let (_display_tx, display) = watch::channel(false);
     let (stop_tx, stop) = watch::channel(false);
     let (video, _receiver) = crate::video_queue::channel(8, Default::default());
-    let mut task =
-        tokio::spawn(async move { manager.stream_frames(video, settings, display, stop).await });
+    let mut task = tokio::spawn(async move {
+        manager
+            .stream_frames(video.into(), settings, display, stop)
+            .await
+    });
     let result = tokio::time::timeout(std::time::Duration::from_millis(300), &mut task).await;
     if result.is_err() {
         stop_tx.send(true).unwrap();

@@ -22,6 +22,16 @@ class HostContractBoundariesTest(unittest.TestCase):
             source = (ROOT / name).read_text().split('\n#[cfg(test)]\nmod tests')[0]
             self.assertNotIn('ConfigStore', source, 'T824 concrete storage dependency: ' + name)
 
+    def test_t820_capture_contract_excludes_session_and_native_implementations(self):
+        path = ROOT / 'host/src/capture_contract.rs'
+        self.assertTrue(path.exists(), 'T820: no independent capture contract')
+        source = path.read_text()
+        self.assertNotRegex(source, r'\b(VideoSender|Attachment|CodecConfig|LatencyTracker|JoinHandle|CaptureManager)\b',
+                            'T820: capture contract exposes an implementation')
+        for name in ['host/src/capture.rs', 'host/src/capture/encoding.rs']:
+            production = (ROOT / name).read_text().split('#[cfg(test)]\nmod ')[0]
+            self.assertNotIn('crate::video_queue::VideoSender', production)
+
 
 if __name__ == '__main__':
     unittest.main()

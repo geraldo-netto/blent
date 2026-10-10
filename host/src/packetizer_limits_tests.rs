@@ -22,7 +22,7 @@ async fn rejected_packets(codec: Codec, packets: &[Vec<u8>]) {
     let (tx, _rx) = crate::video_queue::channel(8, Default::default());
     let result = read_loop(
         data.as_slice(),
-        tx,
+        tx.into(),
         Default::default(),
         Default::default(),
         codec,
@@ -78,7 +78,7 @@ fn t407_stdout_read_avoids_scratch_to_parser_payload_copy() {
     let (result, counts) = crate::allocation_probe::measure(|| {
         rt.block_on(read_loop(
             encoded.as_slice(),
-            tx,
+            tx.into(),
             Default::default(),
             Default::default(),
             Codec::H264,
@@ -101,7 +101,7 @@ async fn t407_cancellation_retires_queued_generation_with_partial_next_nal() {
     let (tx, mut receiver) = crate::video_queue::channel(8, Default::default());
     let task = tokio::spawn(read_loop(
         reader,
-        tx,
+        tx.into(),
         Default::default(),
         Default::default(),
         Codec::H264,
@@ -131,7 +131,7 @@ async fn t407_exact_frame_limit_survives_eof_and_read_boundaries() {
     let (tx, mut receiver) = crate::video_queue::channel(8, Default::default());
     read_loop(
         encoded.as_slice(),
-        tx,
+        tx.into(),
         Default::default(),
         Default::default(),
         Codec::H264,

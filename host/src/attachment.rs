@@ -124,7 +124,6 @@ pub struct Lease {
 }
 impl Lease {
     /// Identity and route are captured atomically with the attachment generation.
-    #[cfg(not(feature = "inproc-encoder"))]
     pub fn profile_identity(&self) -> Option<(String, &'static str)> {
         let identity = self.identity.as_ref()?.strip_prefix("device:")?;
         if identity.is_empty() {

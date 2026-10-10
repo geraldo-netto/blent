@@ -134,6 +134,7 @@ async fn cancel_waiting_encoder() -> (bool, bool) {
     let (video, _receiver) = crate::video_queue::channel(8, Default::default());
     // Enter the production session directly: no helper, display attachment,
     // compositor commands or uinput devices are involved.
+    let video = video.into();
     let mut session = Box::pin(manager.run_encoder_session(&video, &mut run));
     assert!(futures_util::poll!(&mut session).is_pending());
     let opened = wait_for_fifo(path, true).await;

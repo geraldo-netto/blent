@@ -5,14 +5,11 @@ pub(crate) use blent::session::start_servers;
 pub(crate) use blent::session::Runtime;
 #[cfg(test)]
 use blent::session::{forward_shutdown, spawn_display_gate, spawn_server};
-use blent::session::{CaptureBackend, CaptureContext, CaptureResources, CaptureWorkers, Prepared};
+use blent::session::{CaptureBackend, CaptureContext, CaptureWorkers, Prepared, SessionResources};
 use std::sync::Arc;
 #[cfg(test)]
 use std::time::Duration;
 use tokio::sync::watch;
-#[cfg(test)]
-use tokio::task::JoinHandle;
-use tracing::error;
 
 pub(crate) struct Spec {
     pub capture: capture::CaptureConfig,
@@ -54,6 +51,11 @@ impl Spec {
         }
         .prepare(
             mode,
+            SessionResources {
+                codec_config: manager.codec_config(),
+                idr_wanted: manager.idr_request_flag(),
+                latency: manager.latency_tracker(),
+            },
             Box::new(LinuxCapture {
                 manager,
                 config: self.capture,
@@ -68,29 +70,24 @@ struct LinuxCapture {
     config: capture::CaptureConfig,
 }
 impl CaptureBackend for LinuxCapture {
-    fn resources(&self) -> CaptureResources {
-        CaptureResources {
-            codec_config: self.manager.codec_config(),
-            idr_wanted: self.manager.idr_request_flag(),
-            latency: self.manager.latency_tracker(),
-        }
-    }
     fn start(self: Box<Self>, context: CaptureContext) -> CaptureWorkers {
         let Self {
             mut manager,
             config,
         } = *self;
+        #[cfg(feature = "inproc-encoder")]
+        let _ = config;
         #[cfg(not(feature = "inproc-encoder"))]
-        let selector = crate::selection::spawn(
+        let selector = crate::selection::run(
             config.clone(),
             context.settings,
             context.display.clone(),
             context.stop.clone(),
             manager.latency_tracker(),
-            context.attachment,
+            context.identity,
         );
-        let capture = tokio::spawn(async move {
-            if let Err(error) = manager
+        let capture = Box::pin(async move {
+            manager
                 .stream_frames(
                     context.video,
                     context.settings_rx,
@@ -98,14 +95,14 @@ impl CaptureBackend for LinuxCapture {
                     context.stop,
                 )
                 .await
-            {
-                error!("Capture manager {} failed: {error}", config.instance);
-            }
         });
         CaptureWorkers {
             capture,
             #[cfg(not(feature = "inproc-encoder"))]
-            auxiliary: vec![selector],
+            auxiliary: vec![Box::pin(async move {
+                selector.await;
+                Ok(())
+            })],
             #[cfg(feature = "inproc-encoder")]
             auxiliary: vec![],
         }
@@ -334,12 +331,20 @@ async fn t497_server_task_errors_keep_the_service_name_and_do_not_escape() {
         return;
     }
     crate::test_logging::enable();
-    spawn_server("Successful", async { Ok(()) }).await.unwrap();
+    spawn_server("Successful", async { Ok(()) })
+        .await
+        .unwrap()
+        .unwrap();
     assert!(!crate::test_logging::text().contains("Successful server failed"));
     for name in ["Stream", "Input"] {
-        spawn_server(name, async { anyhow::bail!("fixture failure") })
+        let result = spawn_server(name, async { anyhow::bail!("fixture failure") })
             .await
             .unwrap();
+        assert_eq!(
+            result.unwrap_err().to_string(),
+            "fixture failure",
+            "T820: worker outcome was erased"
+        );
         assert!(
             crate::test_logging::text().contains(&format!("{name} server failed: fixture failure"))
         );

@@ -161,7 +161,7 @@ impl CaptureManager {
 
     pub async fn stream_frames(
         &mut self,
-        tx: crate::video_queue::VideoSender,
+        tx: blent::capture_contract::VideoOutput,
         settings_rx: watch::Receiver<EncoderSettings>,
         display_rx: watch::Receiver<bool>,
         shutdown_rx: watch::Receiver<bool>,
@@ -402,7 +402,7 @@ impl CaptureManager {
 
     async fn run_encoder_session(
         &mut self,
-        tx: &crate::video_queue::VideoSender,
+        tx: &blent::capture_contract::VideoOutput,
         run: &mut CaptureRun,
     ) -> Result<Option<SessionChanges>> {
         let output = EncoderOutput {

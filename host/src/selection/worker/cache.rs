@@ -16,7 +16,7 @@ const MAX_BYTES: u64 = 65536;
 pub(super) struct Cache {
     path: PathBuf,
     fingerprint: String,
-    lease: Option<crate::attachment::Lease>,
+    lease: Option<Box<dyn blent::capture_contract::ProfileLease>>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -44,7 +44,7 @@ impl Cache {
     }
 
     pub fn active(&self) -> bool {
-        self.lease.as_ref().is_none_or(|lease| lease.apply(|| {}))
+        self.lease.as_ref().is_none_or(|lease| lease.active())
     }
 
     fn read(&self) -> Option<Record> {
@@ -129,7 +129,7 @@ impl Cache {
 
     pub async fn retired(&self) {
         if let Some(lease) = &self.lease {
-            lease.retirement().retired().await;
+            lease.retired().await;
         } else {
             std::future::pending::<()>().await;
         }

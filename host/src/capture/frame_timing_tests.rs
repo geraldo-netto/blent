@@ -27,7 +27,7 @@ async fn t561_frame_logs_correlate_packets_and_only_accepted_acks() {
     let (tx, mut rx) = crate::video_queue::channel(8, Default::default());
     read_loop(
         stream.as_slice(),
-        tx,
+        tx.into(),
         Default::default(),
         tracker.clone(),
         Codec::H264,

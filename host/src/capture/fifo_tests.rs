@@ -214,7 +214,7 @@ async fn t226_partial_frame_recovers_without_display_hotplug() {
     let (stop, stop_rx) = watch::channel(false);
     let session = tokio::spawn(async move {
         manager
-            .stream_frames(tx, settings_rx, display_rx, stop_rx)
+            .stream_frames(tx.into(), settings_rx, display_rx, stop_rx)
             .await
     });
     let packet = tokio::time::timeout(std::time::Duration::from_secs(10), rx.recv()).await;
@@ -261,7 +261,7 @@ async fn t429_encoder_changes_survive_unstarted_manager_cleanup() {
     let (stop, stop_rx) = watch::channel(false);
     let session = tokio::spawn(async move {
         manager
-            .stream_frames(video, settings_rx, display_rx, stop_rx)
+            .stream_frames(video.into(), settings_rx, display_rx, stop_rx)
             .await
     });
     let mut packet = tokio::time::timeout(std::time::Duration::from_secs(10), rx.recv())

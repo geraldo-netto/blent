@@ -15,7 +15,7 @@ pub(super) struct EncoderProcess {
 pub(super) struct EncoderOutput {
     #[cfg(feature = "inproc-encoder")]
     pub(super) raw_socket: Option<crate::raw_socket::Socket>,
-    pub(super) tx: crate::video_queue::VideoSender,
+    pub(super) tx: blent::capture_contract::VideoOutput,
     pub(super) codec_config: CodecConfig,
     pub(super) latency: crate::latency::LatencyTracker,
     #[cfg_attr(not(feature = "inproc-encoder"), allow(dead_code))]
@@ -100,7 +100,7 @@ impl EncoderProcess {
             config,
             evidence.clone(),
             output.latency.clone(),
-            output.tx.viewer_epoch(),
+            output.tx.viewers(),
         );
         let handle = tokio::spawn(super::cli_encoder::read_loop_with_idle(
             stdout,

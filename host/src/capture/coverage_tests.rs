@@ -84,6 +84,7 @@ impl Fixture {
         let (video, _receiver) = crate::video_queue::channel(8, Default::default());
         let stream_tx = self.manager.helper.stream_tx.clone();
         let mode_tx = self.manager.helper.mode_tx.clone();
+        let video = video.into();
         let mut task = Box::pin(self.manager.run_encoder_session(&video, &mut self.run));
         assert!(futures_util::poll!(&mut task).is_pending());
         for size in [64, 128] {
@@ -120,6 +121,7 @@ impl Fixture {
     async fn display_notifications(&mut self) {
         self.children();
         let (video, _receiver) = crate::video_queue::channel(8, Default::default());
+        let video = video.into();
         let mut task = Box::pin(self.manager.run_encoder_session(&video, &mut self.run));
         assert!(futures_util::poll!(&mut task).is_pending());
         self.display.send(true).unwrap();

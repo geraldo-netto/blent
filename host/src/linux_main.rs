@@ -51,6 +51,7 @@ mod test_logging;
 mod tray;
 use blent::update;
 use blent::vdisplay;
+#[cfg(any(test, not(feature = "inproc-encoder")))]
 use blent::video_queue;
 
 use anyhow::{Context, Result};
@@ -1509,6 +1510,7 @@ printf '%s\n' "$2" >> "$0.log"
             stop_rx.changed().await.unwrap();
             tokio::time::sleep(std::time::Duration::from_millis(1600)).await;
             done.store(true, Ordering::SeqCst);
+            Ok(())
         });
         let prepared = session::Spec {
             capture: Default::default(),

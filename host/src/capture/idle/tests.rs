@@ -1,8 +1,9 @@
 use super::*;
 use blent_config::negotiation::{DecoderChoice, Profile, StreamProfile};
+use std::sync::atomic::AtomicU64;
 
 fn launch(lease: Lease, evidence: Arc<EncoderEvidence>, tracker: LatencyTracker) -> Handle {
-    super::launch(lease, evidence, tracker, Default::default())
+    super::launch(lease, evidence, tracker, Arc::new(AtomicU64::new(0)))
 }
 
 fn evidence(tracker: &LatencyTracker) -> Arc<EncoderEvidence> {
@@ -120,12 +121,24 @@ async fn t492_unknown_decoder_disabled_setting_and_invalid_fifo_never_start() {
     let tracker = LatencyTracker::new();
     let known = evidence(&tracker);
     let mut config = CaptureConfig::default();
-    assert!(start(&config, known.clone(), tracker.clone(), Default::default()).is_none());
+    assert!(start(
+        &config,
+        known.clone(),
+        tracker.clone(),
+        Arc::new(AtomicU64::new(0))
+    )
+    .is_none());
     config.adaptive_idle = true;
     let unknown = tracker.encoder_started("libx264", known.format);
-    assert!(start(&config, unknown, tracker.clone(), Default::default()).is_none());
+    assert!(start(
+        &config,
+        unknown,
+        tracker.clone(),
+        Arc::new(AtomicU64::new(0))
+    )
+    .is_none());
     config.instance = u32::MAX;
-    assert!(start(&config, known, tracker, Default::default()).is_none());
+    assert!(start(&config, known, tracker, Arc::new(AtomicU64::new(0))).is_none());
     let dir = tempfile::tempdir().unwrap();
     assert!(Lease::new(&dir.path().join("absent")).is_err());
     assert!(Lease::new(dir.path()).is_err());
@@ -267,7 +280,7 @@ async fn t492_completed_packets_retain_their_own_timing_before_broadcast() {
     let (tx, mut rx) = crate::video_queue::channel(8, Arc::new(AtomicBool::new(false)));
     super::super::cli_encoder::read_loop_with_idle(
         stream.as_slice(),
-        tx,
+        tx.into(),
         Default::default(),
         tracker,
         Codec::H264,

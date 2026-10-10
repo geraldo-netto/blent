@@ -6,7 +6,7 @@ use blent::{
     },
     media::{EncoderGeneration, EncoderSettings, VideoPacket},
     media_storage::MediaBytes,
-    session::{CaptureBackend, CaptureContext, CaptureResources, CaptureWorkers, Prepared, Spec},
+    session::{CaptureBackend, CaptureContext, CaptureWorkers, Prepared, SessionResources, Spec},
 };
 use futures_util::{SinkExt, StreamExt};
 use std::sync::{
@@ -29,7 +29,6 @@ struct State {
 }
 struct Capture {
     state: Arc<State>,
-    resources: CaptureResources,
     frames: mpsc::Receiver<VideoPacket>,
 }
 struct Input(Arc<State>);
@@ -45,21 +44,21 @@ impl Drop for Complete {
     }
 }
 impl CaptureBackend for Capture {
-    fn resources(&self) -> CaptureResources {
-        self.resources.clone()
-    }
     fn start(self: Box<Self>, mut context: CaptureContext) -> CaptureWorkers {
         self.state.starts.fetch_add(1, Ordering::Relaxed);
+        context
+            .headers
+            .publish(Some(MediaBytes::from_static(b"csd")));
         let mut frames = self.frames;
         let complete = Complete(self.state, true);
-        let capture = tokio::spawn(async move {
+        let capture = Box::pin(async move {
             let _complete = complete;
             loop {
                 tokio::select! {
-                    _ = context.stop.wait_for(|stop| *stop) => return,
+                    _ = context.stop.wait_for(|stop| *stop) => return Ok(()),
                     packet = frames.recv() => match packet {
                         Some(packet) => { let _ = context.video.send(packet); },
-                        None => return,
+                        None => return Ok(()),
                     },
                 }
             }
@@ -98,10 +97,7 @@ impl InputBackend for Input {
 }
 
 fn prepare(ports: (u16, u16), state: Arc<State>) -> (Prepared, mpsc::Sender<VideoPacket>) {
-    let resources = CaptureResources::default();
-    resources
-        .codec_config
-        .publish(Some(MediaBytes::from_static(b"csd")));
+    let resources = SessionResources::default();
     let (sender, frames) = mpsc::channel(2);
     let settings = EncoderSettings {
         encoder: "libx264".into(),
@@ -128,9 +124,9 @@ fn prepare(ports: (u16, u16), state: Arc<State>) -> (Prepared, mpsc::Sender<Vide
     (
         spec.prepare(
             watch::channel(false).0,
+            resources,
             Box::new(Capture {
                 state: state.clone(),
-                resources,
                 frames,
             }),
             Arc::new(Input(state)),

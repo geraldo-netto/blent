@@ -10,7 +10,7 @@ use std::{
     os::unix::fs::{FileTypeExt, MetadataExt, OpenOptionsExt},
     path::{Path, PathBuf},
     sync::{
-        atomic::{AtomicBool, AtomicU64, Ordering},
+        atomic::{AtomicBool, Ordering},
         Arc, Mutex,
     },
     time::Duration,
@@ -58,7 +58,7 @@ pub(super) fn start(
     config: &CaptureConfig,
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
-    viewers: Arc<AtomicU64>,
+    viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
 ) -> Option<Handle> {
     if !config.adaptive_idle || evidence.decoder.is_none() {
         return None;
@@ -77,7 +77,7 @@ fn launch(
     lease: Lease,
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
-    viewers: Arc<AtomicU64>,
+    viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
 ) -> Handle {
     let lease = Arc::new(lease);
     let timings = Timings::default();
@@ -88,7 +88,7 @@ fn launch(
         tracker,
         Instant::now(),
         viewers.clone(),
-        viewers.load(Ordering::Acquire),
+        viewers.epoch(),
     ));
     Handle {
         timings,
@@ -103,7 +103,7 @@ async fn run(
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
     origin: Instant,
-    viewers: Arc<AtomicU64>,
+    viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
     viewer_epoch: u64,
 ) {
     let mut updates = tracker.activity_updates();
@@ -112,7 +112,7 @@ async fn run(
     let mut policy = Policy::new(evidence.decoder.is_some());
     let mut previous = policy.phase;
     while evidence.active() {
-        if viewers.load(Ordering::Acquire) != viewer_epoch {
+        if viewers.epoch() != viewer_epoch {
             lease.clear();
             return;
         }

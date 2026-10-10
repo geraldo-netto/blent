@@ -47,7 +47,6 @@ impl VideoSender {
         self.budget.usage()
     }
 
-    #[cfg(not(feature = "inproc-encoder"))]
     pub fn viewer_epoch(&self) -> Arc<AtomicU64> {
         self.viewer_epoch.clone()
     }

@@ -1,5 +1,6 @@
 use super::super::cache::tests::{setup, store};
 use super::*;
+use crate::attachment::Attachment;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 struct FakeProbes {

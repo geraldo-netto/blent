@@ -40,6 +40,7 @@ pub(super) fn prepare(
     }
     .prepare(
         watch::channel(true).0,
+        SessionResources::default(),
         Box::new(Unavailable),
         input_backend(config, store)?,
     );
@@ -65,13 +66,11 @@ fn input_backend(
 }
 struct Unavailable;
 impl CaptureBackend for Unavailable {
-    fn resources(&self) -> CaptureResources {
-        CaptureResources::default()
-    }
     fn start(self: Box<Self>, mut context: CaptureContext) -> CaptureWorkers {
         CaptureWorkers {
-            capture: tokio::spawn(async move {
+            capture: Box::pin(async move {
                 let _ = context.stop.wait_for(|stop| *stop).await;
+                Ok(())
             }),
             auxiliary: vec![],
         }

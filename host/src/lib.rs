@@ -5,10 +5,12 @@ pub mod audio_control;
 #[cfg(target_os = "linux")]
 pub mod camera;
 pub mod camera_control;
+pub mod capture_contract;
 pub mod config_jobs;
 mod control_outcome;
 pub mod control_workers;
 pub mod persistence_port;
+mod session_adapters;
 
 // Shared wire/session state is built for every host target.
 pub mod adb_inventory;

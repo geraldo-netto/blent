@@ -9,32 +9,15 @@ use tokio::sync::{watch, Notify};
 use tokio::task::JoinHandle;
 use tracing::{error, warn};
 
+pub use crate::capture_contract::{CaptureBackend, CaptureContext, CaptureWorkers};
+
+/// Composition-owned bindings for the current stream/input implementations.
+/// These are deliberately outside the capture backend contract.
 #[derive(Clone, Default)]
-pub struct CaptureResources {
+pub struct SessionResources {
     pub codec_config: media::CodecConfig,
     pub idr_wanted: Arc<AtomicBool>,
     pub latency: LatencyTracker,
-}
-
-/// No native resources may be started until session listeners have bound.
-pub trait CaptureBackend: Send {
-    fn resources(&self) -> CaptureResources;
-    fn start(self: Box<Self>, context: CaptureContext) -> CaptureWorkers;
-}
-
-pub struct CaptureContext {
-    pub video: video_queue::VideoSender,
-    pub settings: watch::Sender<media::EncoderSettings>,
-    pub settings_rx: watch::Receiver<media::EncoderSettings>,
-    pub display: watch::Receiver<bool>,
-    pub stop: watch::Receiver<bool>,
-    pub attachment: Attachment,
-}
-
-/// All native workers remain owned by the session and joined on shutdown.
-pub struct CaptureWorkers {
-    pub capture: JoinHandle<()>,
-    pub auxiliary: Vec<JoinHandle<()>>,
 }
 
 pub struct Spec {
@@ -66,11 +49,11 @@ impl Spec {
     pub fn prepare(
         self,
         mode: watch::Sender<bool>,
+        resources: SessionResources,
         capture: Box<dyn CaptureBackend>,
         backend: Arc<dyn input::backend::InputBackend>,
     ) -> Prepared {
         let config = self.input_config();
-        let resources = capture.resources();
         let (settings, settings_rx) = watch::channel(self.settings);
         let tablet = Attachment::with_token(settings.clone(), self.token.clone());
         let relaunch = Arc::new(Notify::new());
@@ -114,7 +97,7 @@ pub struct Prepared {
     pub settings_rx: watch::Receiver<media::EncoderSettings>,
     pub tablet: Attachment,
     pub relaunch: Arc<Notify>,
-    pub resources: CaptureResources,
+    pub resources: SessionResources,
     pub stream: stream::StreamServer,
     pub input: input::InputServer,
     mode: watch::Sender<bool>,
@@ -125,8 +108,10 @@ pub struct Prepared {
 
 impl Prepared {
     pub async fn start(self, daemon_stop: watch::Receiver<bool>) -> Result<Runtime> {
-        let (video, _) =
-            video_queue::channel(video_queue::QUEUE_PACKETS, self.resources.idr_wanted);
+        let (video, _) = video_queue::channel(
+            video_queue::QUEUE_PACKETS,
+            self.resources.idr_wanted.clone(),
+        );
         let (stream, input) = start_servers(self.stream, self.input, video.clone()).await?;
         let (gate_tx, gate_rx) = watch::channel(false);
         let (stop_tx, stop_rx) = watch::channel(false);
@@ -134,22 +119,29 @@ impl Prepared {
         let gate = spawn_display_gate(gate_tx, self.tablet.subscribe(), self.mode.subscribe());
         let stop = forward_shutdown(daemon_stop, stop_rx, capture_stop);
         let workers = self.capture.start(CaptureContext {
-            video,
+            video: video.into(),
+            headers: Arc::new(self.resources.codec_config),
+            refresh: self.resources.idr_wanted,
             settings: self.settings,
             settings_rx: self.settings_rx,
             display: gate_rx,
             stop: capture_stop_rx,
-            attachment: self.tablet.clone(),
+            identity: Arc::new(self.tablet.clone()),
         });
         let mut tasks = vec![stream, input, gate, stop];
-        tasks.extend(workers.auxiliary);
+        tasks.extend(
+            workers
+                .auxiliary
+                .into_iter()
+                .map(|work| spawn_server("Capture auxiliary", work)),
+        );
         Ok(Runtime {
             instance: self.instance,
             tablet_tx: self.tablet,
             relaunch: self.relaunch,
             stop_tx,
             tasks,
-            capture: workers.capture,
+            capture: spawn_server("Capture", workers.capture),
             video_port: self.ports.0,
             input_port: self.ports.1,
         })
@@ -163,8 +155,8 @@ pub struct Runtime {
     pub tablet_tx: crate::attachment::Attachment,
     pub relaunch: Arc<Notify>,
     pub stop_tx: watch::Sender<bool>,
-    pub tasks: Vec<JoinHandle<()>>,
-    pub capture: JoinHandle<()>,
+    pub tasks: Vec<JoinHandle<Result<()>>>,
+    pub capture: JoinHandle<Result<()>>,
     pub video_port: u16,
     pub input_port: u16,
 }
@@ -204,13 +196,14 @@ pub fn forward_shutdown(
     mut daemon: watch::Receiver<bool>,
     mut local: watch::Receiver<bool>,
     capture: watch::Sender<bool>,
-) -> JoinHandle<()> {
+) -> JoinHandle<Result<()>> {
     tokio::spawn(async move {
         tokio::select! {
             _ = daemon.wait_for(|stop| *stop) => {},
             _ = local.wait_for(|stop| *stop) => {},
         }
         let _ = capture.send(true);
+        Ok(())
     })
 }
 
@@ -218,7 +211,7 @@ pub async fn start_servers(
     stream: stream::StreamServer,
     input: input::InputServer,
     video: crate::video_queue::VideoSender,
-) -> Result<(JoinHandle<()>, JoinHandle<()>)> {
+) -> Result<(JoinHandle<Result<()>>, JoinHandle<Result<()>>)> {
     let video_listener = stream.bind().await?;
     let input_listener = input.bind().await?;
     let stream = spawn_server("Stream", async move {
@@ -233,11 +226,13 @@ pub async fn start_servers(
 pub fn spawn_server(
     name: &'static str,
     run: impl std::future::Future<Output = Result<()>> + Send + 'static,
-) -> JoinHandle<()> {
+) -> JoinHandle<Result<()>> {
     tokio::spawn(async move {
-        if let Err(error) = run.await {
+        let outcome = run.await;
+        if let Err(error) = &outcome {
             error!("{name} server failed: {error}");
         }
+        outcome
     })
 }
 
@@ -245,7 +240,7 @@ pub fn spawn_display_gate(
     gate: watch::Sender<bool>,
     mut tablet: watch::Receiver<bool>,
     mut mode: watch::Receiver<bool>,
-) -> JoinHandle<()> {
+) -> JoinHandle<Result<()>> {
     tokio::spawn(async move {
         let mut last = false;
         loop {
@@ -260,5 +255,6 @@ pub fn spawn_display_gate(
                 r = mode.changed() => if r.is_err() { break },
             }
         }
+        Ok(())
     })
 }

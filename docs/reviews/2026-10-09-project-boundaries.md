@@ -7,7 +7,8 @@ and [host](2026-10-09-host-performance-lifecycle.md) resource reviews.
 
 ## Implementation follow-up (2026-10-10)
 
-T821 now defines selection values independently of their media consumer. T824
+T820 now defines independent capture/publication/observation and worker-outcome
+contracts. T821 defines selection values independently of their media consumer. T824
 moves filesystem methods off FileConfig and makes persistence workers depend on
 focused snapshot/transaction/publication contracts. T826 uses these contracts
 through bounded reusable native workers, keeping Wi-Fi policy off filesystem locks.

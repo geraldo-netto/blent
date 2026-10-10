@@ -98,8 +98,6 @@ impl CliEncoder<'_> {
             h,
         )
     }
-
-
 }
 
 /// T400: distribution FFmpeg options vary; probe the selected stock encoder.
@@ -163,7 +161,7 @@ impl Packetizer {
 #[cfg(test)]
 pub(super) async fn read_loop(
     stdout: impl tokio::io::AsyncRead + Unpin,
-    tx: crate::video_queue::VideoSender,
+    tx: blent::capture_contract::VideoOutput,
     codec_config: CodecConfig,
     latency: crate::latency::LatencyTracker,
     codec: Codec,
@@ -174,7 +172,7 @@ pub(super) async fn read_loop(
 
 pub(super) async fn read_loop_with_idle(
     stdout: impl tokio::io::AsyncRead + Unpin,
-    tx: crate::video_queue::VideoSender,
+    tx: blent::capture_contract::VideoOutput,
     codec_config: CodecConfig,
     latency: crate::latency::LatencyTracker,
     codec: Codec,
@@ -224,7 +222,7 @@ pub(super) async fn read_loop_with_idle(
 }
 
 fn publish_packets(
-    tx: &crate::video_queue::VideoSender,
+    tx: &blent::capture_contract::VideoOutput,
     latency: &crate::latency::LatencyTracker,
     evidence: &std::sync::Arc<crate::latency::EncoderEvidence>,
     packets: Vec<crate::media::VideoPacket>,
@@ -423,7 +421,7 @@ mod tests {
         let input = crate::framed_annex_b::tests::stream(Codec::H264, &packets);
         read_loop(
             input.as_slice(),
-            tx,
+            tx.into(),
             CodecConfig::default(),
             latency,
             Codec::H264,
@@ -455,7 +453,7 @@ mod tests {
         for _ in 0..2 {
             read_loop(
                 input.as_slice(),
-                tx.clone(),
+                tx.clone().into(),
                 CodecConfig::default(),
                 latency.clone(),
                 Codec::H264,
@@ -526,10 +524,7 @@ mod encoder_policy_tests {
             assert_eq!(value("-vf"), Some("settb=1/1000000,setpts='if(isnan(PREV_OUTPTS),PTS,max(PTS,PREV_OUTPTS+1))',format=nv12,hwupload"));
             assert_eq!(value("-async_depth"), supported.then_some("1"));
             assert_eq!(value("-f"), Some("tee"));
-            assert_eq!(
-                args.last().copied(),
-                Some(crate::ffmpeg_args::TEE_OUTPUT)
-            );
+            assert_eq!(args.last().copied(), Some(crate::ffmpeg_args::TEE_OUTPUT));
         }
     }
 

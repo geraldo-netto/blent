@@ -8,30 +8,19 @@ use crate::{
     media::EncoderSettings,
 };
 use std::{cmp::Ordering, future::Future, sync::Arc, time::Duration};
-use tokio::{sync::watch, task::JoinHandle};
+use tokio::sync::watch;
 
 // Calibrate one encoder at a time across all tablet sessions. Current streams
 // continue normally; concurrent probes would distort comparative measurements.
 static ADMISSION: tokio::sync::Semaphore = tokio::sync::Semaphore::const_new(1);
 
-pub(crate) fn spawn(
-    config: CaptureConfig,
-    settings: watch::Sender<EncoderSettings>,
-    display: watch::Receiver<bool>,
-    stop: watch::Receiver<bool>,
-    latency: LatencyTracker,
-    attachment: crate::attachment::Attachment,
-) -> JoinHandle<()> {
-    tokio::spawn(run(config, settings, display, stop, latency, attachment))
-}
-
-async fn run(
+pub(crate) async fn run(
     config: CaptureConfig,
     settings: watch::Sender<EncoderSettings>,
     mut display: watch::Receiver<bool>,
     mut stop: watch::Receiver<bool>,
     latency: LatencyTracker,
-    attachment: crate::attachment::Attachment,
+    attachment: Arc<dyn blent::capture_contract::ProfileSource>,
 ) {
     let mut updates = settings.subscribe();
     let mut completed = None;
@@ -47,7 +36,7 @@ async fn run(
                 &mut updates,
                 &mut display,
                 &mut stop,
-                optimize(&config, &settings, &snapshot, &latency, &attachment),
+                optimize(&config, &settings, &snapshot, &latency, attachment.as_ref()),
             )
             .await;
             if finished.is_some() {
@@ -477,3 +466,22 @@ fn fallback_encoder(settings: &EncoderSettings) -> &str {
 
 #[cfg(test)]
 mod coverage_tests;
+
+#[cfg(test)]
+fn spawn(
+    config: CaptureConfig,
+    settings: watch::Sender<EncoderSettings>,
+    display: watch::Receiver<bool>,
+    stop: watch::Receiver<bool>,
+    latency: LatencyTracker,
+    attachment: crate::attachment::Attachment,
+) -> tokio::task::JoinHandle<()> {
+    tokio::spawn(run(
+        config,
+        settings,
+        display,
+        stop,
+        latency,
+        Arc::new(attachment),
+    ))
+}

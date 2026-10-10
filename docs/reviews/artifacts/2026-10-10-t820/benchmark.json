@@ -1,0 +1,69 @@
+{
+  "command": "cargo run --offline --locked --release -p blent --example capture-port-bench",
+  "iterations_per_sample": 200000,
+  "samples": [
+    [
+      0,
+      10097601,
+      10695230
+    ],
+    [
+      1,
+      10514058,
+      10535650
+    ],
+    [
+      2,
+      10332878,
+      10435426
+    ],
+    [
+      3,
+      10169411,
+      10744956
+    ],
+    [
+      4,
+      10136937,
+      11540407
+    ],
+    [
+      5,
+      10169160,
+      10496244
+    ],
+    [
+      6,
+      10130305,
+      10448642
+    ],
+    [
+      7,
+      10360961,
+      10472729
+    ],
+    [
+      8,
+      10123131,
+      10251168
+    ],
+    [
+      9,
+      10112139,
+      10307798
+    ],
+    [
+      10,
+      10004019,
+      10212685
+    ],
+    [
+      11,
+      10129544,
+      10199318
+    ]
+  ],
+  "median_direct_ns": 50.668105,
+  "median_adapter_ns": 52.3034275,
+  "limits": "In-memory queue publish/read with 4 KiB immutable payload, alternating order. Not capture, transport or display latency; no overall speedup claimed."
+}

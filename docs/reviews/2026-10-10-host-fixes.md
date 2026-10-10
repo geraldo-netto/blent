@@ -133,3 +133,40 @@ ignores unchanged). All 28 production functions in affected modules meet individ
 80% coverage and complexity <=9. Caller cancellation after ADB connect still needs
 attempt-level route ownership (T834); storage cancellation does not claim to solve
 that separate lifecycle gap. [Evidence](artifacts/2026-10-10-t826/).
+
+## T820: independent capture contracts and owned outcomes
+
+`capture_contract` defines immutable packet publication, codec-header publication,
+keyframe requests, viewer observations, generation-bound profile leases and owned
+worker futures. It contains no queue, attachment, codec-cache, latency-tracker,
+native capture or task-handle implementations. Session adapters implement those
+ports. Concrete stream/input bindings remain in the composition-owned
+SessionResources bundle, outside the backend contract. Linux construction connects
+its manager resources there; an independent fake backend can initialize headers
+and stream entirely through its supplied ports.
+
+The session binds both listeners before invoking capture and owns spawning all
+returned work. Success/error outcomes survive the task boundary; logging no longer
+erases errors. T813 separately adds active failure supervision. Selection uses a
+profile lease interface; shared frame bytes and generation ownership are preserved.
+There is one boxed profile lease per cache attempt, not per frame. No frame data
+copy or hot-path allocation was added by packet publication.
+
+The structural check failed before extraction. Independent fake and real-adapter
+regressions preserve byte addresses, rejected ownership, keyframe demand, header
+clearing, viewer epochs and attachment retirement. Existing listener-before-start,
+authentication, generation, worker cancellation and packet limits remain tested.
+Default host library/binary collection passes 725 tests, with seven existing
+ignores unchanged; final focused session/contract checks also pass. Installed SDK
+capture/encoder/session suites and portable contracts pass with all features;
+broad SDK native fixture limitations remain T835. A permanent stock-libavcodec
+submission test compares uploaded CPU test surfaces with direct frames, including
+keyframe packet equality; this tests Blent's dispatch without claiming GPU-driver
+acceptance. All 184 production functions in scoped changed modules meet individual
+80% coverage and complexity <=9. No coverage exclusion was added.
+
+The retained release microbenchmark runs twelve alternating 200,000-iteration
+samples with immutable 4 KiB packets: median publish/read is 50.67 ns directly and
+52.30 ns through the port (1.64 ns added). This is interface overhead, not an
+end-to-end improvement or display latency measurement.
+[Source-attested evidence](artifacts/2026-10-10-t820/).
