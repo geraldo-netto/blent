@@ -62,3 +62,12 @@ late callbacks, stale authority, reconnect, configuration changes and stuck
 cleanup. Measure local CPU, encoded/payload bytes and first-changed-frame latency
 with matched settings. Battery savings and live device recovery require a later
 owner-approved physical window; existing deferred campaigns stay separate.
+
+## Idle scheduling follow-up (T918)
+
+Local inspection also found a 10 ms default timer in both Android connection
+actors. The local endpoint factory currently supplies no native wake callback,
+so progress relies on the periodic fallback. T918 tracks completion-driven
+wakeups and nearest-deadline sleeps, with retained lost-wake fallback and matched
+CPU/wakeup/latency measurements. This is separate from video-frame suppression;
+no measured power saving is claimed.
