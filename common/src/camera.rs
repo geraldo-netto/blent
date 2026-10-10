@@ -4,6 +4,7 @@ use anyhow::{ensure, Result};
 use clap::{Args, ValueEnum};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+pub mod connection;
 mod preview;
 pub use preview::CameraPreview;
 
@@ -36,6 +37,10 @@ pub struct CameraProfile {
     /// ADB serial; required when more than one device is connected.
     #[cfg_attr(feature = "platform", arg(long))]
     pub serial: Option<String>,
+    /// Explicit direct-USB tablet certificate fingerprint; never selects ADB.
+    #[cfg_attr(feature = "platform", arg(long, conflicts_with = "serial"))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usb_peer: Option<String>,
     #[cfg_attr(feature = "platform", arg(long, default_value_t = 1280))]
     pub width: u32,
     #[cfg_attr(feature = "platform", arg(long, default_value_t = 720))]
@@ -88,6 +93,7 @@ impl Default for CameraProfile {
             lens: Lens::Front,
             background: false,
             serial: None,
+            usb_peer: None,
             width: 1280,
             height: 720,
             fps: 30,
@@ -103,6 +109,7 @@ impl Default for CameraProfile {
 
 impl CameraProfile {
     pub fn validate(&self) -> Result<()> {
+        self.target()?;
         self.validate_freshness()?;
         ensure!(
             matches!(self.rotation, 0 | 90 | 180 | 270),
@@ -242,3 +249,6 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod connection_tests;

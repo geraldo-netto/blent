@@ -14,7 +14,10 @@ mod status_tests;
 mod tests;
 
 use anyhow::{Context, Result};
-use blent_config::camera::{CameraOptions, CameraProfile};
+use blent_config::camera::{
+    connection::{Invitation, Target},
+    CameraOptions, CameraProfile,
+};
 use futures_util::{stream::FuturesUnordered, StreamExt};
 use std::{path::PathBuf, sync::Arc};
 type Producers = FuturesUnordered<crate::owned_task::Task>;
@@ -59,6 +62,10 @@ async fn run_native(
     status: Report,
 ) -> Result<()> {
     options.validate()?;
+    let serial = match options.target()? {
+        Target::Adb(serial) => serial,
+        Target::Usb(_) => anyhow::bail!("direct-USB camera sharing is not yet supported"),
+    };
     let devices = [
         Arc::new(outputs::open_device(&options.front_device, "Blent Front")?),
         Arc::new(outputs::open_device(&options.rear_device, "Blent Rear")?),
@@ -67,15 +74,10 @@ async fn run_native(
     let adb = executable("adb")?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let token = blent_config::runtime::random_token()?;
-    let bridge = bridge::Bridge::create(
-        adb,
-        options.serial.as_deref(),
-        listener.local_addr()?.port(),
-    )
-    .await?;
+    let bridge = bridge::Bridge::create(adb, serial, listener.local_addr()?.port()).await?;
     let session = Session {
         listener: &listener,
-        bridge: &bridge,
+        invitation: &bridge,
         token: &token,
         ffmpeg: &ffmpeg,
         options: &options,
@@ -148,7 +150,7 @@ async fn serve(
 
 struct Session<'a> {
     listener: &'a TcpListener,
-    bridge: &'a bridge::Bridge,
+    invitation: &'a dyn Invitation,
     token: &'a str,
     ffmpeg: &'a std::path::Path,
     options: &'a CameraOptions,
@@ -162,7 +164,9 @@ impl Session<'_> {
         stop: &mut watch::Receiver<bool>,
         status: &Report,
     ) -> Result<()> {
-        self.bridge.invite(self.token, self.options).await?;
+        self.invitation
+            .invite(self.token, &self.options.profile)
+            .await?;
         status.update(State::Waiting);
         tracing::info!("Webcams ready; waiting for tablet permission and camera frames.");
         tokio::select! {
@@ -229,3 +233,6 @@ async fn frame_status(frames: &[outputs::Frames; 2], options: &CameraOptions, st
         }
     }
 }
+
+#[cfg(test)]
+mod connection_tests;

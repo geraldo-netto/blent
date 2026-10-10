@@ -1,6 +1,12 @@
 //! A dedicated, temporary ADB reverse mapping and shell-protected invitation.
 use anyhow::{ensure, Context, Result};
-use blent_config::{camera::CameraOptions, commands::AsyncCommandExt};
+use blent_config::{
+    camera::{
+        connection::{validate_credential, Invitation, InvitationResult},
+        CameraProfile,
+    },
+    commands::AsyncCommandExt,
+};
 use std::{
     path::{Path, PathBuf},
     time::Duration,
@@ -50,15 +56,14 @@ impl Bridge {
         })
     }
 
-    pub async fn invite(&self, token: &str, options: &CameraOptions) -> Result<()> {
+    pub async fn invite(&self, token: &str, options: &CameraProfile) -> Result<()> {
         // Only hex and typed numbers enter the remote shell command. The serial
         // stays a distinct local argv element, including spaces/metacharacters.
+        validate_credential(token)?;
+        options.validate()?;
         ensure!(
-            token.len() == 64
-                && token
-                    .bytes()
-                    .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b)),
-            "invalid camera token"
+            options.usb_peer.is_none(),
+            "ADB camera invitation cannot target USB"
         );
         let port: u16 = self
             .remote
@@ -126,5 +131,15 @@ mod tests {
         for line in ["", "tcp:9999 tcp:1234", "Usb tcp:9999 tcp:1234 extra"] {
             assert!(!owns_mapping(line, "tcp:9999", "tcp:1234"));
         }
+    }
+}
+
+impl Invitation for Bridge {
+    fn invite<'a>(
+        &'a self,
+        credential: &'a str,
+        profile: &'a CameraProfile,
+    ) -> InvitationResult<'a> {
+        Box::pin(Bridge::invite(self, credential, profile))
     }
 }

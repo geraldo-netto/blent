@@ -408,7 +408,7 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
         serve(
             Session {
                 listener: &listener,
-                bridge: &bridge,
+                invitation: &bridge,
                 token: &token,
                 ffmpeg: &ffmpeg,
                 options: &profile,

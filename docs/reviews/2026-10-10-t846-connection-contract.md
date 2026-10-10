@@ -1640,3 +1640,18 @@ still experimental; Windows native USB remains unsupported under T902.
 Native USB builds report missing ADB as unavailable optional automatic discovery;
 direct USB does not require it. Default builds retain the install/restart guidance.
 Discovery/retry behavior is unchanged. [Permanent red/green regression and counters](artifacts/2026-10-11-t929/README.md) cover both build configurations.
+
+## T931 portable camera invitation boundary
+
+Camera capture sessions depend on an independent invitation interface; the ADB
+adapter accepts portable profiles and retains its own OS/mapping cleanup. Explicit
+USB peer selection is separate from display selection and mutually exclusive with
+an ADB serial. Existing saved settings and automatic ADB selection remain valid.
+Checked camera wire projection preserves remote controls; rotation/mirror remain
+host decoder transforms. Native camera requests currently fail as unsupported
+before output ownership; T933 supplies that adapter and T858 production controls.
+
+[Contract regressions and counters](artifacts/2026-10-11-t931/README.md) include
+fail-before-fix target validation, bounded invalid inputs and preserved actual
+codec/feedback and private native cleanup fixtures. Android consent is T934;
+Android uplink/worker integration is T932. Prerequisites do not complete T858.
