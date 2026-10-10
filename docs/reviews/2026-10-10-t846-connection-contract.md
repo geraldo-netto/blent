@@ -236,7 +236,8 @@ activation prerequisite with its own regressions and commit.
 | T884 | Private Android connection process and IPC (implemented) | T883 |
 | T886 | Authenticated Android setup owner (implemented) | T884, T851, T856 |
 | T887 | Android accessory selection/permission/opening (implemented) | T884 |
-| T854 | Production Android accessory/setup composition | T886, T887, T883 |
+| T888 | Authenticated Android runtime supervision (implemented) | T886, T883 |
+| T854 | Production Android accessory/setup composition | T888, T887, T884 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
 | T858 | Independent camera integration; second user-visible milestone | T857 routing; maintainer priority after working display |
@@ -1075,3 +1076,41 @@ Validation: [T887 retained evidence](artifacts/2026-10-10-t887/README.md):
 361 connection tests pass without skips; all 47 inventoried production functions
 and 78 executable JVM methods pass individual line coverage (100% for these
 methods). All 89 reviewed functions have cyclomatic complexity at most 7.
+
+## T888 authenticated runtime supervision
+
+`ConnectionRuntime` and its prompt `ConnectionRunFactory` separate supervision
+from Android, sockets and native construction. `ConnectionRuntimeOwner` retains
+setup and one returned runner. Its injected monotonic clock bounds dispatch;
+invalid/backward/exhausted time closes admission using the last valid cleanup
+time. A factory is attempted once. A throwing construction or failed stop keeps
+ownership quarantined because partial native effects cannot be ruled out.
+
+A stable `ConnectionEndpoints` facade checks current approval and the retained
+connection ticket before new work. `prepared` and `permissionRequired` reject
+future/negative timestamps and use fresh runtime time rather than a stale callback
+time. Read/offer/current deny admission after revocation; reject also requires an
+active session. Exact consumed receipts and native-retirement evidence remain
+valid cleanup after stop, with the same connection/lease validation. Cancel can
+reach an already-closing retained lease. This preserves `TabletSession`'s existing
+post-revocation borrowed-buffer contract without reopening transport authority.
+
+Event delivery is bounded. Stale Offered, Readable and ADMITTED events are filtered;
+Closing and Retired events remain available only for the retained connection.
+Durable trust facts survive logical cancellation. Clean setup/runner termination
+also initiates aggregate cleanup even without a failure. Ended is a request to
+finish ownership, never evidence that native calls or the OS process exited.
+Actual retirement requires setup and runner completion; external endpoint workers
+and private-process death remain separate owners in T854/T857.
+
+The production service/native factory, configuration and USB metadata wiring
+remain T854. Pairing/connection presentation remains T855 and real production media
+remains T857–T860. The runtime factory must be prompt and retain partial native
+ownership on failure; native I/O, identity loading and trust storage do not belong
+inside synchronous runtime construction.
+
+Validation: [T888 retained evidence](artifacts/2026-10-10-t888/README.md):
+382 ordinary connection tests and 14 real Rust/Android TLS interoperability tests
+pass. All 32 inventoried production functions and 34 executable JVM methods pass
+individual line coverage (100% for these methods); 129 reviewed functions have
+cyclomatic complexity at most 9.

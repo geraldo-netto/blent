@@ -291,7 +291,7 @@ class SecureConnectionInteropTest {
         error("T882 unbounded resource output")
     }
 
-    private fun resourceEvents(session: ConnectionEndpoints, now: Long): Pair<Boolean, Int> {
+    private fun resourceEvents(session: ConnectionEndpoints, now: Long, observed: (ConnectionResourceLease) -> Unit = {}): Pair<Boolean, Int> {
         var progress = false
         var retired = 0
         repeat(32) {
@@ -302,6 +302,7 @@ class SecureConnectionInteropTest {
                     assertEquals(ConnectionManagement.Resource.DISPLAY, event.lease.key.resource)
                     assertTrue(event.lease.key.generation in 1..2)
                     assertArrayEquals(ByteArray(32) { 7 }, event.credential.bytes())
+                    observed(event.lease)
                     session.prepared(event.lease, now)
                 }
                 is ConnectionSessionEvent.Readable -> resourceEcho(session, event)
@@ -454,6 +455,91 @@ class SecureConnectionInteropTest {
         try {
             assertTrue(trial(mode = "setup") { setupSession(it, directory, true) })
             assertTrue(trial(mode = "setup") { setupSession(it, directory, false) })
+            ConnectionTrust(AndroidPeerTrustStore.open(directory), pin(fixture("tablet.der"))).use {
+                assertFalse(it.trusted(pin(fixture("host.der"))))
+            }
+        } finally { directory.toFile().deleteRecursively() }
+    }
+
+
+    private fun runtimePairing(runtime: ConnectionRuntime, expectPrompt: Boolean): Boolean {
+        var prompted = false
+        repeat(32) {
+            when (val event = runtime.poll() ?: return prompted) {
+                is ConnectionWorkerEvent.Pairing -> {
+                    assertTrue(expectPrompt)
+                    assertEquals(pin(fixture("host.der")), event.ticket.peer)
+                    assertEquals(pin(fixture("tablet.der")), event.local)
+                    assertTrue(runtime.command(ConnectionWorkerCommand.Decide(event.ticket, true, true)))
+                    prompted = true
+                }
+                is ConnectionWorkerEvent.Ended -> error("Runtime ended before resource exchange: ${runtime.failure()}")
+                else -> Unit
+            }
+        }
+        error("Unbounded runtime events")
+    }
+
+    private fun driveRuntime(runtime: ConnectionRuntime, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>,
+        clock: () -> Long, expectPrompt: Boolean): ConnectionResourceLease {
+        var prompted = false
+        var retired = 0
+        var last: ConnectionResourceLease? = null
+        val deadline = clock() + 5000
+        while (clock() < deadline) {
+            runtime.advance()
+            val events = resourceEvents(runtime.endpoints(), clock()) { last = it }
+            retired += events.second
+            if (retired == 2) {
+                assertEquals(expectPrompt, prompted)
+                return checkNotNull(last)
+            }
+            prompted = runtimePairing(runtime, expectPrompt) || prompted
+            check(!runtime.retired()) { "Runtime retired before duplex exchange: ${runtime.failure()}" }
+            if (!events.first) wakes.poll(10, TimeUnit.MILLISECONDS)
+        }
+        error("Runtime duplex deadline: ${runtime.failure()}")
+    }
+
+    private fun retireRuntime(runtime: ConnectionRuntime, wakes: java.util.concurrent.ArrayBlockingQueue<Unit>, clock: () -> Long) {
+        runtime.stop()
+        val deadline = clock() + 3000
+        while (!runtime.retired()) {
+            check(clock() < deadline) { "Runtime native ownership did not retire: ${runtime.failure()}" }
+            runtime.advance(); wakes.poll(10, TimeUnit.MILLISECONDS)
+        }
+        assertFalse(runtime.terminationRequired())
+    }
+
+    private fun runtimeSession(socket: Socket, directory: java.nio.file.Path, expectPrompt: Boolean) {
+        val wakes = java.util.concurrent.ArrayBlockingQueue<Unit>(1)
+        val origin = System.nanoTime()
+        val clock = { TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin) }
+        val setup = ConnectionSetupOwner(SocketConnectionSetup(socket, ::setupIdentity),
+            { AndroidPeerTrustStore.open(directory) }, clock,
+            ConnectionSetupLimits(4096, 5000, 3000, 2000), { wakes.offer(Unit); Unit })
+        val runtime = ConnectionRuntimeOwner(setup, ConnectionRunFactory { ready ->
+            assertEquals(4096, ready.capacity)
+            ConnectionSessionRunner(TabletSession(ready.approval.ticket,
+                ConnectionSessionLimits(ready.capacity, 64, 64, 3000), 15), ready.io, ConnectionRunLimits(3000, 1000))
+        }, clock)
+        try {
+            val lease = driveRuntime(runtime, wakes, clock, expectPrompt)
+            if (!expectPrompt) assertTrue(runtime.command(ConnectionWorkerCommand.Revoke(lease.connection.peer)))
+            runtime.stop()
+            assertFalse(runtime.endpoints().current(lease))
+            assertFalse(runtime.endpoints().offer(lease, ConnectionWire.MANAGEMENT, byteArrayOf(1)))
+        } finally { retireRuntime(runtime, wakes, clock) }
+        assertTrue(socket.isClosed)
+    }
+
+    @Test @Config(sdk = [27, 34]) fun t888RealRuntimeSetupDuplexRestartRevokeAndActualRetirement() {
+        val directory = Files.createTempDirectory("blent-t888-trust-",
+            java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
+                java.nio.file.attribute.PosixFilePermissions.fromString("rwx------")))
+        try {
+            assertTrue(trial(mode = "setup") { runtimeSession(it, directory, true) })
+            assertTrue(trial(mode = "setup") { runtimeSession(it, directory, false) })
             ConnectionTrust(AndroidPeerTrustStore.open(directory), pin(fixture("tablet.der"))).use {
                 assertFalse(it.trusted(pin(fixture("host.der"))))
             }
