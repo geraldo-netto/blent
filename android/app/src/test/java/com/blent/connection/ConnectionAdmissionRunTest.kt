@@ -164,4 +164,23 @@ class ConnectionAdmissionRunTest {
             rig.worker.end.complete(Unit); rig.run.retire()
         } finally { rig.worker.end.complete(Unit); executing.await() }
     }
+    @Test fun t909CancellationPublishesExactDisplayRevocationBeforeStuckNativeCleanup() = runBlocking {
+        val admission = RunAdmission().apply { ready = selection; stopRetires = false }
+        val worker = AdmissionWorker(); val events = java.util.Collections.synchronizedList(ArrayList<ConnectionWorkerEvent>())
+        var callback: ((ConnectionWorkerEvent) -> Unit)? = null
+        val run = ConnectionAdmissionRun(ConnectionWorkerSpec("template", timerMs = 1), { admission },
+            { _, report -> callback = report; worker }, events::add)
+        val executing = async { outcome { run.execute() } }
+        try {
+            worker.executing.await(); val route = displayRoute()
+            checkNotNull(callback)(ConnectionWorkerEvent.Display(route))
+            run.cancel()
+            assertEquals("T909 logical revocation cannot wait for native retirement",
+                ConnectionWorkerEvent.DisplayClosed(route.lease), events.last())
+            checkNotNull(callback)(ConnectionWorkerEvent.Display(displayRoute(2)))
+            assertEquals(2, events.size)
+            until { worker.retires.get() > 0 }; assertFalse(executing.isCompleted)
+        } finally { worker.nativeEnd.complete(Unit); admission.gone = true; run.cancel(); executing.await(); run.retire() }
+    }
+
 }

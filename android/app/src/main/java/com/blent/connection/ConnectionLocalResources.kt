@@ -84,6 +84,7 @@ internal class ConnectionLocalRun(
     private val local: LocalConnectionResources,
 ) : ConnectionRun {
     private var stopping = false
+    override fun display(): LocalDisplayRoute? = if (stopping) null else local.display()
     override fun endpoints(): ConnectionEndpoints = transport.endpoints()
     override fun advance(now: Long) {
         transport.advance(now)

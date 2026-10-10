@@ -25,6 +25,8 @@ internal data class ConnectionRunLimits(val ioTimeoutMs: Long = 5000, val retire
  * even when native I/O blocks. Endpoint operations are serialized with advance.
  * This contract owns transport I/O, not local endpoint workers or process exit. */
 internal interface ConnectionRun {
+    /** Current locally admitted display; null revokes visibility, not ownership. */
+    fun display(): LocalDisplayRoute?
     fun endpoints(): ConnectionEndpoints
     fun advance(now: Long)
     fun stop(now: Long)

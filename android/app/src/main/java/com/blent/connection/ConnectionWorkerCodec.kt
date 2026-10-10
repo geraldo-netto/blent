@@ -31,15 +31,6 @@ internal object ConnectionWorkerCodec {
         1 -> true
         else -> error("Invalid control boolean")
     }
-    private fun peer(output: DataOutputStream, value: ConnectionPeer) = string(output, value.fingerprint, 64)
-    private fun peer(input: DataInputStream): ConnectionPeer = ConnectionPeer.parse(string(input, 64))
-    private fun ticket(output: DataOutputStream, value: ConnectionTicket) {
-        require(value.epoch > 0); output.writeLong(value.epoch); peer(output, value.peer)
-    }
-    private fun ticket(input: DataInputStream): ConnectionTicket {
-        val epoch = input.readLong(); require(epoch > 0)
-        return ConnectionTicket(epoch, peer(input))
-    }
     fun spec(value: ConnectionWorkerSpec): ByteArray = encode(2) { out ->
         string(out, value.device, 512)
         out.writeInt(value.session.capacity); out.writeInt(value.session.messages); out.writeInt(value.session.quantum)
@@ -57,26 +48,28 @@ internal object ConnectionWorkerCodec {
     fun command(value: ConnectionWorkerCommand): ByteArray = encode { out ->
         when (value) {
             is ConnectionWorkerCommand.Decide -> {
-                out.writeByte(1); ticket(out, value.ticket); out.writeBoolean(value.approved); out.writeBoolean(value.remember)
+                out.writeByte(1); ConnectionAuthorityCodec.ticket(out, value.ticket); out.writeBoolean(value.approved); out.writeBoolean(value.remember)
             }
-            is ConnectionWorkerCommand.Revoke -> { out.writeByte(2); peer(out, value.peer) }
+            is ConnectionWorkerCommand.Revoke -> { out.writeByte(2); ConnectionAuthorityCodec.peer(out, value.peer) }
         }
     }
     fun command(bytes: ByteArray): ConnectionWorkerCommand = decode(bytes) { input ->
         when (input.readUnsignedByte()) {
-            1 -> ConnectionWorkerCommand.Decide(ticket(input), bool(input), bool(input))
-            2 -> ConnectionWorkerCommand.Revoke(peer(input))
+            1 -> ConnectionWorkerCommand.Decide(ConnectionAuthorityCodec.ticket(input), bool(input), bool(input))
+            2 -> ConnectionWorkerCommand.Revoke(ConnectionAuthorityCodec.peer(input))
             else -> error("Unknown connection command")
         }
     }
     fun event(value: ConnectionWorkerEvent): ByteArray = encode { out ->
         when (value) {
             is ConnectionWorkerEvent.Peer -> {
-                out.writeByte(5); ticket(out, value.ticket); peer(out, value.local); out.writeBoolean(value.remembered)
+                out.writeByte(5); ConnectionAuthorityCodec.ticket(out, value.ticket); ConnectionAuthorityCodec.peer(out, value.local); out.writeBoolean(value.remembered)
             }
-            is ConnectionWorkerEvent.Pairing -> { out.writeByte(1); ticket(out, value.ticket); peer(out, value.local) }
+            is ConnectionWorkerEvent.Pairing -> { out.writeByte(1); ConnectionAuthorityCodec.ticket(out, value.ticket); ConnectionAuthorityCodec.peer(out, value.local) }
             is ConnectionWorkerEvent.State -> { out.writeByte(2); out.writeByte(value.phase.ordinal) }
-            is ConnectionWorkerEvent.Trust -> { out.writeByte(3); peer(out, value.peer); out.writeBoolean(value.remembered) }
+            is ConnectionWorkerEvent.Trust -> { out.writeByte(3); ConnectionAuthorityCodec.peer(out, value.peer); out.writeBoolean(value.remembered) }
+            is ConnectionWorkerEvent.Display -> { out.writeByte(6); ConnectionDisplayCodec.write(out, value.route) }
+            is ConnectionWorkerEvent.DisplayClosed -> { out.writeByte(7); ConnectionAuthorityCodec.lease(out, value.lease) }
             is ConnectionWorkerEvent.Ended -> {
                 out.writeByte(4); out.writeBoolean(value.failure != null)
                 value.failure?.let { string(out, it, 512) }
@@ -85,15 +78,19 @@ internal object ConnectionWorkerCodec {
     }
     fun event(bytes: ByteArray): ConnectionWorkerEvent = decode(bytes) { input ->
         when (input.readUnsignedByte()) {
-            5 -> ConnectionWorkerEvent.Peer(ticket(input), peer(input), bool(input))
-            1 -> ConnectionWorkerEvent.Pairing(ticket(input), peer(input))
+            6 -> ConnectionWorkerEvent.Display(ConnectionDisplayCodec.read(input))
+            7 -> ConnectionWorkerEvent.DisplayClosed(ConnectionAuthorityCodec.lease(input))
+            5 -> ConnectionWorkerEvent.Peer(ConnectionAuthorityCodec.ticket(input), ConnectionAuthorityCodec.peer(input), bool(input))
+            1 -> ConnectionWorkerEvent.Pairing(ConnectionAuthorityCodec.ticket(input), ConnectionAuthorityCodec.peer(input))
             2 -> {
                 val code = input.readUnsignedByte(); require(code in ConnectionWorkerPhase.entries.indices)
                 ConnectionWorkerEvent.State(ConnectionWorkerPhase.entries[code])
             }
-            3 -> ConnectionWorkerEvent.Trust(peer(input), bool(input))
-            4 -> ConnectionWorkerEvent.Ended(if (bool(input)) string(input, 512) else null)
+            3 -> ConnectionWorkerEvent.Trust(ConnectionAuthorityCodec.peer(input), bool(input))
+            4 -> ended(input)
             else -> error("Unknown connection event")
         }
     }
+    private fun ended(input: DataInputStream) = ConnectionWorkerEvent.Ended(if (bool(input)) string(input, 512) else null)
+
 }

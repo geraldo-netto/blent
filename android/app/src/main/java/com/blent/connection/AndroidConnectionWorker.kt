@@ -27,6 +27,7 @@ internal class AndroidConnectionWorker(
     private val wake = Channel<Unit>(Channel.CONFLATED)
     private val commands = Channel<ConnectionWorkerCommand>(32)
     private val completed = CompletableDeferred<Unit>()
+    private var displayed: LocalDisplayRoute? = null
     @Volatile private var runtime: ConnectionRuntime? = null
     @Volatile private var uncertain = false
     @Volatile private var retirementError: Exception? = null
@@ -73,16 +74,24 @@ internal class AndroidConnectionWorker(
         controls(owned)
         owned.advance()
         events(owned)
+        display(owned)
         owned.failure()?.let { throw it }
         check(!owned.terminationRequired()) { "Connection native ownership requires process exit" }
         return owned.retired()
+    }
+    private fun display(owned: ConnectionRuntime) {
+        val selected = owned.display()
+        if (selected == displayed) return
+        displayed?.let { report(ConnectionWorkerEvent.DisplayClosed(it.lease)) }
+        displayed = selected
+        selected?.let { report(ConnectionWorkerEvent.Display(it)) }
     }
     private suspend fun waitWake() { withTimeoutOrNull(spec.timerMs) { wake.receive() } }
     private suspend fun cleanup(owned: ConnectionRuntime): Boolean {
         owned.stop()
         val result = withTimeoutOrNull(spec.io.retirementTimeoutMs) {
             while (true) {
-                owned.advance(); events(owned)
+                owned.advance(); events(owned); display(owned)
                 if (owned.terminationRequired()) return@withTimeoutOrNull false
                 if (owned.retired()) return@withTimeoutOrNull true
                 waitWake()

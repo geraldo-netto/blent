@@ -116,7 +116,15 @@ internal class ConnectionRuntimeOwner(
     private fun visible(event: ConnectionWorkerEvent): Boolean = when (event) {
         is ConnectionWorkerEvent.Pairing, is ConnectionWorkerEvent.Peer -> !stopped
         is ConnectionWorkerEvent.State -> !stopped || event.phase == ConnectionWorkerPhase.CLOSING
-        else -> true // Durable trust facts survive logical admission cancellation.
+        is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended -> true
+        is ConnectionWorkerEvent.Display, is ConnectionWorkerEvent.DisplayClosed -> false // Only guarded runner snapshots publish media.
+    }
+    override fun display(): LocalDisplayRoute? {
+        time()
+        if (!live()) return null
+        val selected = runner?.display() ?: return null
+        if (selected.lease.connection != approval?.ticket) return null
+        return selected.takeIf { raw()?.current(it.lease) == true }
     }
     override fun endpoints(): ConnectionEndpoints = guarded
     override fun stop() { stopAt(time()) }

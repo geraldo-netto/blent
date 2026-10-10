@@ -1299,3 +1299,24 @@ partial factory failure, sibling cleanup and per-method native counters. These
 fixtures do not establish physical USB, Android Binder/Activity lifecycle or
 rendered-frame/input acceptance. T855's production tablet pairing trial is deferred
 by the owner's 2026-10-10 test-later decision; implementation continues locally.
+
+## T909 private display lease publication
+
+The worker now obtains routes through a runtime snapshot guarded by current
+pairing approval, matching connection ticket and exact resource admission. Setup
+metadata cannot publish media events. Private same-UID IPC carries a bounded
+route and its exact closure, reusing the existing 4096-byte envelope and bounded
+queues. Media payload remains in the connection process.
+
+Presentation checks the worker-generation reference, authenticated peer ticket
+and local resource-owner sequence. Equal counters from another process cannot
+replay a route, and a late closure cannot clear a replacement. Whole-connection
+admission cancellation publishes exact route revocation before native cleanup
+waits. Native ownership and logical UI authority remain separate.
+
+[Evidence](artifacts/2026-10-10-t909/README.md): 617 passing offline tests; all 157
+scoped functions and 231 executable JVM methods meet individual 80% line coverage;
+261 reviewed production/test functions have cyclomatic complexity at most 9.
+Activity/session binding remains T907; production media capability stays disabled
+until that composition. Physical pairing and display/input acceptance remain
+T855/T857 and were not run during this implementation.

@@ -31,6 +31,11 @@ internal sealed interface ConnectionWorkerEvent {
     data class State(val phase: ConnectionWorkerPhase) : ConnectionWorkerEvent
     /** Emitted only after durable trust mutation, never an optimistic UI promise. */
     data class Trust(val peer: ConnectionPeer, val remembered: Boolean) : ConnectionWorkerEvent
+    /** Only private same-UID metadata; encoded video never travels over Binder. */
+    data class Display(val route: LocalDisplayRoute) : ConnectionWorkerEvent
+    data class DisplayClosed(val lease: ConnectionResourceLease) : ConnectionWorkerEvent {
+        init { ConnectionDisplayLease.validate(lease) }
+    }
     /** Execution ended; neither native retirement nor process death is implied. */
     data class Ended(val failure: String?) : ConnectionWorkerEvent
 }

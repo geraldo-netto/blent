@@ -258,4 +258,25 @@ class AndroidConnectionWorkerRunTest {
             assertThrows(IllegalArgumentException::class.java) { AndroidConnectionWorkerRun(context, spec, retireMillis = value) }
         }
     }
+    @Test fun t909PrivateBinderCarriesDisplayRouteAndExactClosureWithGenerationFiltering() = runBlocking {
+        val route = displayRoute()
+        val encoded = ConnectionWorkerCodec.event(ConnectionWorkerEvent.Display(route))
+        val endpoint = ConnectionWorkerEndpoint().apply {
+            start = {
+                assertTrue(it.raw(encoded, it.generation + 1))
+                it.emit(ConnectionWorkerEvent.Display(route))
+                it.emit(ConnectionWorkerEvent.DisplayClosed(route.lease))
+                it.emit(ConnectionWorkerEvent.Ended(null))
+            }
+        }
+        val events = ArrayList<ConnectionWorkerEvent>()
+        val worker = run(ConnectionWorkerContext(endpoint), events::add)
+        try { worker.execute() } finally { worker.retire() }
+        assertEquals(2, events.size)
+        val decoded = (events[0] as ConnectionWorkerEvent.Display).route
+        assertEquals(route.lease, decoded.lease); assertEquals(route.controlPort, decoded.controlPort)
+        assertEquals(route.displayPort, decoded.displayPort); assertArrayEquals(route.credential.bytes(), decoded.credential.bytes())
+        assertEquals(ConnectionWorkerEvent.DisplayClosed(route.lease), events[1])
+    }
+
 }

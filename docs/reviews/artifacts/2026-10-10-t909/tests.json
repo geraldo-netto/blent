@@ -1,0 +1,8 @@
+{
+  "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerRunTest.kt": "847c21e1defdc9f05b0506b7e2166d88e70d2e305fb4f9253990562381d8344b",
+  "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt": "aec6c5b0c93be142f9c2f015e6897d66d237286f2f2883ab78586c2d3020052c",
+  "android/app/src/test/java/com/blent/connection/ConnectionAdmissionRunTest.kt": "23a638b9ac02d52818df7bf856c7ef787671e13d7333dc9121b786fa42f6c484",
+  "android/app/src/test/java/com/blent/connection/ConnectionBindingTest.kt": "6baab0518e4ab1afbd8e9aa4e19818ef725e11e32264cba2e55f6fa7acbe6046",
+  "android/app/src/test/java/com/blent/connection/ConnectionDisplayTest.kt": "fa3b5ecd850672a5ae61db79ce70a878358eba3a4cef7b8da321d1bb83433190",
+  "android/app/src/test/java/com/blent/connection/ConnectionRuntimeFixture.kt": "faa7ef5d3446293136b308a43f6aaf5fe957a0c523c18288825965166697b445"
+}

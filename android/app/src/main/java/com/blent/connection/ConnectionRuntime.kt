@@ -14,6 +14,8 @@ internal interface ConnectionRuntime {
     fun advance()
     fun command(command: ConnectionWorkerCommand): Boolean
     fun poll(): ConnectionWorkerEvent?
+    /** Current locally admitted display; null revokes visibility, not ownership. */
+    fun display(): LocalDisplayRoute?
     fun endpoints(): ConnectionEndpoints
     fun stop()
     fun failure(): Exception?

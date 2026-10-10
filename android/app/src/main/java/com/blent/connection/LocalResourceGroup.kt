@@ -1,22 +1,5 @@
 package com.blent.connection
 
-/** Private local invitation, valid only while the exact lease remains current.
- * Addresses are fixed loopback; ports originate in local listeners, never wire
- * metadata. Reading this value conveys neither pairing nor media authority. */
-internal data class LocalDisplayRoute(
-    val lease: ConnectionResourceLease,
-    val credential: ConnectionManagement.Credential,
-    val controlPort: Int,
-    val displayPort: Int,
-) {
-    init {
-        require(lease.key.resource == ConnectionManagement.Resource.DISPLAY)
-        require(lease.owner > 0 && lease.connection.epoch > 0)
-        require(lease.key.request > 0 && lease.key.generation > 0)
-        require(controlPort in 1..65535 && displayPort in 1..65535 && controlPort != displayPort)
-    }
-}
-
 /** One resource owns all its channels. Constructor performs no native work;
  * its controller must retain this object BEFORE calling open. */
 internal class LocalResourceGroup(

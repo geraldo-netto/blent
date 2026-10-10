@@ -30,6 +30,7 @@ internal class ConnectionAdmissionRun(
     @Volatile private var execution: Deferred<Unit>? = null
     @Volatile private var uncertain = false
     @Volatile private var retired = false
+    private var displayed: ConnectionResourceLease? = null
 
     private fun signal() { wake.trySend(Unit) }
     private fun current(): Boolean {
@@ -43,12 +44,17 @@ internal class ConnectionAdmissionRun(
         return try { worker?.command(value) == true }
         catch (failure: Exception) { failed(failure); false }
     }
-    private fun deliver(value: ConnectionWorkerEvent) {
-        if (!visible(value)) return
+    private fun deliver(value: ConnectionWorkerEvent) = synchronized(gate) {
+        if (!visible(value)) return@synchronized
+        when (value) {
+            is ConnectionWorkerEvent.Display -> displayed = value.route.lease
+            is ConnectionWorkerEvent.DisplayClosed -> if (displayed == value.lease) displayed = null
+            else -> Unit
+        }
         try { report(value) } catch (failure: Exception) { failed(failure) }
     }
     private fun visible(value: ConnectionWorkerEvent): Boolean = when (value) {
-        is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended -> true
+        is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended, is ConnectionWorkerEvent.DisplayClosed -> true
         else -> worker != null && current()
     }
     private fun open() {
@@ -100,8 +106,15 @@ internal class ConnectionAdmissionRun(
             }
         }
     }
+    private fun revokeDisplay() = synchronized(gate) {
+        val lease = displayed ?: return@synchronized
+        displayed = null
+        try { report(ConnectionWorkerEvent.DisplayClosed(lease)) }
+        catch (failure: Exception) { error.compareAndSet(null, failure) }
+    }
     override fun cancel() {
         stopping.set(true)
+        revokeDisplay()
         try { admission?.stop() } catch (failure: Exception) { error.compareAndSet(null, failure) }
         try { worker?.cancel() } catch (failure: Exception) { error.compareAndSet(null, failure) }
         execution?.cancel()

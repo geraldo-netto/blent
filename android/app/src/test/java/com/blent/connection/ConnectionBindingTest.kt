@@ -143,4 +143,21 @@ class ConnectionBindingTest {
             assertNull(rig.binding.state.value.cleanup)
         }
     }
+    @Test fun t909WorkerDeathAndExplicitDisconnectClearDisplayWhileNativeOwnerRemains() {
+        Rig().use { rig ->
+            val worker = rig.connect(); val route = displayRoute()
+            rig.prompt(worker); worker.report(ConnectionWorkerEvent.State(ConnectionWorkerPhase.AUTHENTICATED))
+            worker.report(ConnectionWorkerEvent.Display(route)); assertSame(route, rig.binding.state.value.display?.route)
+            worker.done.complete(Unit) // ResourceLane observes execution end before native retirement.
+            assertNull(rig.binding.state.value.display); assertFalse(worker.released.isCompleted)
+            worker.report(ConnectionWorkerEvent.Display(displayRoute(2))); assertNull(rig.binding.state.value.display)
+            worker.released.complete(Unit)
+            val next = rig.connect(); rig.prompt(next)
+            next.report(ConnectionWorkerEvent.State(ConnectionWorkerPhase.AUTHENTICATED))
+            next.report(ConnectionWorkerEvent.Display(route)); assertNotNull(rig.binding.state.value.display)
+            worker.report(ConnectionWorkerEvent.DisplayClosed(route.lease)); assertNotNull(rig.binding.state.value.display)
+            rig.binding.disconnect(); assertNull(rig.binding.state.value.display); assertFalse(next.released.isCompleted)
+        }
+    }
+
 }

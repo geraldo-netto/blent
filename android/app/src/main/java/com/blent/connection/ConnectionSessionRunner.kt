@@ -113,6 +113,7 @@ internal class ConnectionSessionRunner(
             reading = null; writing = null; frame = null
         } else if (now - started >= limits.retirementTimeoutMs) terminate = true
     }
+    override fun display(): LocalDisplayRoute? = null
     override fun endpoints(): ConnectionEndpoints = session
     override fun failure(): Exception? = error
     override fun retired(): Boolean = ended

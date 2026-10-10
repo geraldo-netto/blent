@@ -23,7 +23,8 @@ class AndroidConnectionWorkerTest {
     }
     private class Rig {
         val setup = RuntimeSetup()
-        val run = RuntimeRun()
+        val endpoints = ResourceEndpoints()
+        val run = RuntimeRun(endpoints)
         val reports = ArrayList<ConnectionWorkerEvent>()
         var creates = 0
         var live: (() -> Boolean)? = null
@@ -147,4 +148,30 @@ class AndroidConnectionWorkerTest {
             until { store.closed }
         }
     }
+    @Test fun t909WorkerPublishesBoundedRouteTransitionsAndExactRevocation() = runBlocking {
+        val rig = Rig(); rig.setup.offer(); val first = displayRoute()
+        rig.run.display = first; rig.endpoints.active.add(first.lease)
+        val worker = rig.create(spec()); val execution = async { worker.execute() }
+        try {
+            until { rig.reports.any { it is ConnectionWorkerEvent.Display } }
+            delay(5); assertEquals(listOf(ConnectionWorkerEvent.Display(first)), rig.reports)
+            val next = displayRoute(2); rig.run.display = next; rig.endpoints.active.add(next.lease)
+            checkNotNull(rig.wake)(); until { rig.reports.size == 3 }
+            assertEquals(ConnectionWorkerEvent.DisplayClosed(first.lease), rig.reports[1])
+            assertEquals(ConnectionWorkerEvent.Display(next), rig.reports[2])
+            rig.endpoints.active.clear(); checkNotNull(rig.wake)(); until { rig.reports.size == 4 }
+            assertEquals(ConnectionWorkerEvent.DisplayClosed(next.lease), rig.reports[3]); assertFalse(rig.run.stopped)
+        } finally { worker.cancel(); execution.await(); worker.retire() }
+    }
+    @Test fun t909PairingLossPublishesDisplayRevocationDuringWorkerCleanup() = runBlocking {
+        val rig = Rig(); rig.setup.offer(); val route = displayRoute()
+        rig.run.display = route; rig.endpoints.active.add(route.lease)
+        val worker = rig.create(spec()); val execution = async { worker.execute() }
+        try {
+            until { rig.reports.isNotEmpty() }; rig.setup.live = false; checkNotNull(rig.wake)()
+            execution.await(); worker.retire()
+            assertEquals(listOf(ConnectionWorkerEvent.Display(route), ConnectionWorkerEvent.DisplayClosed(route.lease)), rig.reports)
+        } finally { worker.cancel(); execution.await() }
+    }
+
 }

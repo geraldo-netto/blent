@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.asStateFlow
  * replacement private process starts its ticket counter at the same value. */
 internal class ConnectionChoice(val ticket: ConnectionTicket, val tablet: ConnectionPeer)
 
+/** Reference identity also distinguishes equal counters in replacement processes. */
+internal class ConnectionDisplayChoice(val route: LocalDisplayRoute)
+
 internal data class ConnectionView(
     val status: String = "USB connection is off.",
     val peer: ConnectionChoice? = null,
@@ -15,6 +18,7 @@ internal data class ConnectionView(
     val active: Boolean = false,
     val authenticated: Boolean = false,
     val cleanup: String? = null,
+    val display: ConnectionDisplayChoice? = null,
 )
 
 /** Portable presentation reducer. No UI, native work, storage or media consent.
@@ -25,10 +29,11 @@ internal class ConnectionPresentation {
     private var generation: Any? = null
     private var accepting = false
     private var finished = true
+    private var displayOwner = 0L
 
     @Synchronized fun begin(): Any {
         val token = Any()
-        generation = token; accepting = true; finished = false
+        generation = token; accepting = true; finished = false; displayOwner = 0
         mutable.value = ConnectionView(status = "Opening USB connection…", active = true,
             cleanup = mutable.value.cleanup)
         return token
@@ -48,6 +53,8 @@ internal class ConnectionPresentation {
             is ConnectionWorkerEvent.Peer -> peer(event.ticket, event.local, event.remembered, false)
             is ConnectionWorkerEvent.Pairing -> peer(event.ticket, event.local, false, true)
             is ConnectionWorkerEvent.State -> phase(event.phase)
+            is ConnectionWorkerEvent.Display -> display(event.route)
+            is ConnectionWorkerEvent.DisplayClosed -> displayClosed(event.lease)
             else -> Unit
         }
     }
@@ -56,7 +63,7 @@ internal class ConnectionPresentation {
         require(ticket.epoch > 0)
         val choice = ConnectionChoice(ticket, local)
         mutable.value = mutable.value.copy(peer = choice, approval = if (prompt) choice else null,
-            remembered = remembered, authenticated = false,
+            remembered = remembered, authenticated = false, display = null,
             status = if (prompt) "Compare fingerprints on both devices." else "Checking remembered computer…")
     }
 
@@ -72,7 +79,21 @@ internal class ConnectionPresentation {
         if (closing) accepting = false
         mutable.value = mutable.value.copy(status = text, authenticated = authenticated,
             approval = if (authenticated || closing) null else mutable.value.approval,
-            active = !closing)
+            active = !closing, display = if (authenticated) mutable.value.display else null)
+    }
+
+    private fun display(route: LocalDisplayRoute) {
+        val state = mutable.value
+        if (!state.authenticated || state.peer?.ticket != route.lease.connection) return
+        if (route.lease.owner <= displayOwner) return
+        displayOwner = route.lease.owner
+        mutable.value = state.copy(display = ConnectionDisplayChoice(route))
+    }
+    private fun displayClosed(lease: ConnectionResourceLease) {
+        val state = mutable.value
+        if (state.peer?.ticket != lease.connection) return
+        displayOwner = maxOf(displayOwner, lease.owner)
+        if (state.display?.route?.lease == lease) mutable.value = state.copy(display = null)
     }
 
     private fun trust(event: ConnectionWorkerEvent.Trust) {
@@ -91,7 +112,7 @@ internal class ConnectionPresentation {
     @Synchronized fun revoke(token: Any, choice: ConnectionChoice): ConnectionWorkerCommand? {
         if (generation !== token || !accepting || mutable.value.peer !== choice) return null
         accepting = false
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false,
+        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null,
             status = "Revoking computer; waiting for saved trust update…")
         return ConnectionWorkerCommand.Revoke(choice.ticket.peer)
     }
@@ -99,14 +120,14 @@ internal class ConnectionPresentation {
     @Synchronized fun stop(token: Any) {
         if (generation !== token || finished) return
         accepting = false
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false,
+        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null,
             status = "Disconnecting USB…", cleanup = "Closing USB resources…")
     }
 
     @Synchronized fun ended(token: Any, failure: String?) {
         if (generation !== token || finished) return
         accepting = false
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false,
+        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null,
             status = failure ?: "USB connection ended.", cleanup = "Closing USB resources…")
     }
 
@@ -118,7 +139,7 @@ internal class ConnectionPresentation {
     @Synchronized fun retired(token: Any) {
         if (generation !== token) return
         finished = true
-        mutable.value = mutable.value.copy(cleanup = null)
+        mutable.value = mutable.value.copy(cleanup = null, display = null, authenticated = false)
     }
 
     @Synchronized fun cleanup(text: String) { mutable.value = mutable.value.copy(cleanup = text) }

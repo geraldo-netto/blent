@@ -42,6 +42,8 @@ internal class RuntimeRun(private val endpoint: ConnectionEndpoints = RunnerSess
     var terminate = false
     var error: Exception? = null
     var stopError: Exception? = null
+    var display: LocalDisplayRoute? = null
+    override fun display() = display
     override fun endpoints() = endpoint
     override fun advance(now: Long) { dispatch.add(stopped) }
     override fun stop(now: Long) {
