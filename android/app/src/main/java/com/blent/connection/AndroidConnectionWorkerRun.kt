@@ -9,6 +9,7 @@ import android.os.IBinder
 import android.os.Parcel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.selects.select
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
@@ -36,12 +37,16 @@ internal class AndroidConnectionWorkerRun(
     private val report: (ConnectionWorkerEvent) -> Unit = {},
     private val bindMillis: Long = 5000,
     private val startMillis: Long = 5000,
-    private val graceMillis: Long = 500,
-    private val retireMillis: Long = 5000,
+    graceMillis: Long? = null,
+    retireMillis: Long? = null,
     generations: ConnectionWorkerGenerations = sharedGenerations,
     private val transmitDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ConnectionWorker {
     companion object { private val sharedGenerations = ConnectionWorkerGenerations() }
+    // Native retirement plus the maximum supported actor timer cadence. Explicit
+    // overrides remain bounded to 60 seconds. Ended permits EXIT, never retirement.
+    private val grace = graceMillis ?: (spec.io.retirementTimeoutMs + 1000)
+    private val retirementWait = retireMillis ?: (grace + 5000)
     private val app = context.applicationContext
     private val generation = generations.next()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -52,6 +57,7 @@ internal class AndroidConnectionWorkerRun(
     private val ready = CompletableDeferred<IBinder>()
     private val started = CompletableDeferred<Unit>()
     private val dead = CompletableDeferred<Unit>()
+    private val ended = CompletableDeferred<Unit>()
     private val commands = Channel<ByteArray>(32)
     private val events = Channel<ByteArray>(32)
     @Volatile private var bound = false
@@ -66,7 +72,8 @@ internal class AndroidConnectionWorkerRun(
     @Volatile private var retired = false
     init {
         require(bindMillis in 1..60000 && startMillis in 1..60000)
-        require(graceMillis in 0..60000 && retireMillis in 1..60000)
+        require(graceMillis == null || graceMillis in 0..60000)
+        require(retireMillis == null || retireMillis in 1..60000)
     }
     private val death = IBinder.DeathRecipient {
         dead.complete(Unit)
@@ -78,9 +85,11 @@ internal class AndroidConnectionWorkerRun(
                 ConnectionWorkerIpc.validate(data, ConnectionWorkerIpc.EVENT, flags)
                 require(code == 1)
                 val revision = ConnectionWorkerIpc.generation(data)
-                if (revision != generation || stopped.get()) return true
+                if (revision != generation) return true
                 val bytes = ConnectionWorkerIpc.bytes(data)
                 ConnectionWorkerIpc.end(data)
+                if (ConnectionWorkerCodec.event(bytes) is ConnectionWorkerEvent.Ended) ended.complete(Unit)
+                if (stopped.get()) return true
                 check(events.trySend(bytes).isSuccess) { "Connection worker event backlog exceeded" }
                 return true
             } catch (error: Exception) { fail(error); return false }
@@ -179,14 +188,17 @@ internal class AndroidConnectionWorkerRun(
     private suspend fun stopAndExit() {
         val service = try { ready.await() } catch (_: Exception) { return }
         stopCall = scope.launch(Dispatchers.IO) { runCatching { ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.STOP, generation) } }
-        if (withTimeoutOrNull(graceMillis) { dead.await(); true } != true) {
+        withTimeoutOrNull(grace) {
+            select<Unit> { dead.onAwait {}; ended.onAwait {} }
+        }
+        if (!dead.isCompleted) {
             exitCall = scope.launch(Dispatchers.IO) { runCatching { ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.EXIT, generation) } }
         }
     }
     override suspend fun retire() {
         cancel()
         if (retired) return
-        withTimeout(retireMillis) {
+        withTimeout(retirementWait) {
             outgoing?.join()
             if (requiresDeath()) awaitDeath()
             else stopping?.cancel()

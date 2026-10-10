@@ -20,6 +20,44 @@ class AndroidConnectionWorkerRunTest {
     private suspend fun until(condition: () -> Boolean) = withTimeout(1500) { while (!condition()) delay(1) }
     private fun await(latch: CountDownLatch) { check(latch.await(3, TimeUnit.SECONDS)) }
 
+    @Test fun t890ConfiguredNativeCleanupMustNotBeKilledAtFixedHalfSecond() = runBlocking {
+        val endpoint = ConnectionWorkerEndpoint().apply { start = {} }
+        val context = ConnectionWorkerContext(endpoint)
+        val configured = spec.copy(io = ConnectionRunLimits(retirementTimeoutMs = 2000))
+        val worker = AndroidConnectionWorkerRun(context, configured)
+        val executing = async(Dispatchers.Default) { runCatching { worker.execute() } }
+        try {
+            until { endpoint.callback != null }
+            worker.cancel(); executing.await()
+            until { endpoint.codes.contains(ConnectionWorkerIpc.STOP) }
+            delay(700)
+            assertTrue("T890: configured native retirement budget must survive fixed 500 ms EXIT", endpoint.alive)
+            assertFalse(endpoint.codes.contains(ConnectionWorkerIpc.EXIT))
+        } finally { endpoint.die(); worker.retire() }
+    }
+    @Test fun t890ExecutionEndedDuringStopAllowsPromptExitButNeverSubstitutesForDeath() = runBlocking {
+        val endpoint = ConnectionWorkerEndpoint().apply { start = {}; killOnExit = false }
+        val context = ConnectionWorkerContext(endpoint)
+        val configured = spec.copy(io = ConnectionRunLimits(retirementTimeoutMs = 60000))
+        val worker = AndroidConnectionWorkerRun(context, configured, retireMillis = 100)
+        val executing = async(Dispatchers.Default) { runCatching { worker.execute() } }
+        try {
+            until { endpoint.callback != null }; worker.cancel(); executing.await()
+            until { endpoint.codes.contains(ConnectionWorkerIpc.STOP) }
+            endpoint.emit(ConnectionWorkerEvent.Ended(null))
+            until { endpoint.codes.contains(ConnectionWorkerIpc.EXIT) }
+            assertTrue(endpoint.alive)
+            assertTrue(runCatching { worker.retire() }.isFailure)
+            assertEquals(0, context.unbinds)
+        } finally { endpoint.die(); worker.retire() }
+    }
+    @Test fun t890DefaultDerivedBudgetAcceptsEverySupportedNativeLimit() = runBlocking {
+        for (timeout in listOf(1L, 60000L)) {
+            val configured = spec.copy(io = ConnectionRunLimits(retirementTimeoutMs = timeout))
+            val worker = AndroidConnectionWorkerRun(ConnectionWorkerContext(ConnectionWorkerEndpoint()), configured)
+            worker.cancel(); worker.retire()
+        }
+    }
     @Test fun t884ClientBindIntentMatchesActualServiceGenerationContract() = runBlocking {
         val endpoint = ConnectionWorkerEndpoint()
         val context = ConnectionWorkerContext(endpoint).apply {
