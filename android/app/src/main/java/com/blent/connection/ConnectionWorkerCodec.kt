@@ -8,15 +8,15 @@ import java.io.DataOutputStream
 /** Flat private control schema. Strict types/bounds, no recursion or media bytes. */
 internal object ConnectionWorkerCodec {
     const val LIMIT = 4096
-    private fun encode(write: (DataOutputStream) -> Unit): ByteArray {
+    private fun encode(version: Int = 1, write: (DataOutputStream) -> Unit): ByteArray {
         val bytes = ByteArrayOutputStream()
-        DataOutputStream(bytes).use { it.writeByte(1); write(it) }
+        DataOutputStream(bytes).use { it.writeByte(version); write(it) }
         return bytes.toByteArray().also { require(it.size <= LIMIT) }
     }
-    private fun <T> decode(bytes: ByteArray, read: (DataInputStream) -> T): T {
+    private fun <T> decode(bytes: ByteArray, version: Int = 1, read: (DataInputStream) -> T): T {
         require(bytes.size in 2..LIMIT)
         val input = DataInputStream(ByteArrayInputStream(bytes))
-        require(input.readUnsignedByte() == 1)
+        require(input.readUnsignedByte() == version)
         return read(input).also { require(input.available() == 0) }
     }
     private fun string(output: DataOutputStream, value: String, limit: Int) {
@@ -40,16 +40,19 @@ internal object ConnectionWorkerCodec {
         val epoch = input.readLong(); require(epoch > 0)
         return ConnectionTicket(epoch, peer(input))
     }
-    fun spec(value: ConnectionWorkerSpec): ByteArray = encode { out ->
+    fun spec(value: ConnectionWorkerSpec): ByteArray = encode(2) { out ->
         string(out, value.device, 512)
         out.writeInt(value.session.capacity); out.writeInt(value.session.messages); out.writeInt(value.session.quantum)
         out.writeLong(value.session.resourceTimeoutMs); out.writeLong(value.io.ioTimeoutMs)
         out.writeLong(value.io.retirementTimeoutMs); out.writeLong(value.approvalTimeoutMs)
+        out.writeLong(value.nativeTimeoutMs); out.writeInt(value.trustedPeers)
+        out.writeInt(value.accessoryCapacity); out.writeLong(value.timerMs)
     }
-    fun spec(bytes: ByteArray): ConnectionWorkerSpec = decode(bytes) { input ->
+    fun spec(bytes: ByteArray): ConnectionWorkerSpec = decode(bytes, 2) { input ->
         val device = string(input, 512)
         val session = ConnectionSessionLimits(input.readInt(), input.readInt(), input.readInt(), input.readLong())
-        ConnectionWorkerSpec(device, session, ConnectionRunLimits(input.readLong(), input.readLong()), input.readLong())
+        ConnectionWorkerSpec(device, session, ConnectionRunLimits(input.readLong(), input.readLong()), input.readLong(),
+            input.readLong(), input.readInt(), input.readInt(), input.readLong())
     }
     fun command(value: ConnectionWorkerCommand): ByteArray = encode { out ->
         when (value) {

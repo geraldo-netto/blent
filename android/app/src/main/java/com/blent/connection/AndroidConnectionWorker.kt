@@ -1,0 +1,112 @@
+package com.blent.connection
+
+import android.os.SystemClock
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
+
+/** One connection-process actor. Native opening, crypto and storage belong to
+ * setup's retained workers; callbacks only wake this serialized control loop. */
+internal class AndroidConnectionWorker(
+    private val spec: ConnectionWorkerSpec,
+    private val setup: (current: () -> Boolean, wake: () -> Unit) -> ConnectionSetup,
+    private val report: (ConnectionWorkerEvent) -> Unit,
+    private val clock: () -> Long = SystemClock::elapsedRealtime,
+    private val runner: ConnectionRunFactory = ConnectionRunFactory { ready ->
+        ConnectionSessionRunner(
+            TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 0), ready.io, spec.io,
+        )
+    },
+) : ConnectionWorker {
+    private val state = AtomicInteger(0)
+    private val stopping = AtomicBoolean()
+    private val wake = Channel<Unit>(Channel.CONFLATED)
+    private val commands = Channel<ConnectionWorkerCommand>(32)
+    private val completed = CompletableDeferred<Unit>()
+    @Volatile private var runtime: ConnectionRuntime? = null
+    @Volatile private var uncertain = false
+    @Volatile private var retirementError: Exception? = null
+
+    private fun signal() { wake.trySend(Unit) }
+    private fun current(): Boolean = !stopping.get()
+    override fun command(value: ConnectionWorkerCommand): Boolean =
+        current() && state.get() != 2 && commands.trySend(value).isSuccess.also { if (it) signal() }
+    override fun cancel() { stopping.set(true); signal() }
+
+    private fun create() {
+        if (!current()) return
+        uncertain = true
+        val authority = setup(::current, ::signal)
+        runtime = ConnectionRuntimeOwner(authority, runner, clock)
+        uncertain = false
+        if (!current()) checkNotNull(runtime).stop()
+    }
+    override suspend fun execute() {
+        check(state.compareAndSet(0, 1)) { "Connection worker already executed or retired" }
+        try {
+            create()
+            val owned = runtime ?: return
+            while (!step(owned)) waitWake()
+        } finally {
+            withContext(NonCancellable) { finish() }
+        }
+    }
+    private fun controls(owned: ConnectionRuntime) {
+        repeat(32) {
+            val command = commands.tryReceive().getOrNull() ?: return
+            if (current()) owned.command(command)
+        }
+    }
+    private fun events(owned: ConnectionRuntime) {
+        repeat(32) {
+            val event = owned.poll() ?: return
+            // Service publishes execution Ended after this worker's retirement.
+            if (event !is ConnectionWorkerEvent.Ended) report(event)
+        }
+    }
+    private fun step(owned: ConnectionRuntime): Boolean {
+        if (!current()) { owned.stop(); return true }
+        controls(owned)
+        owned.advance()
+        events(owned)
+        owned.failure()?.let { throw it }
+        check(!owned.terminationRequired()) { "Connection native ownership requires process exit" }
+        return owned.retired()
+    }
+    private suspend fun waitWake() { withTimeoutOrNull(spec.timerMs) { wake.receive() } }
+    private suspend fun cleanup(owned: ConnectionRuntime): Boolean {
+        owned.stop()
+        val result = withTimeoutOrNull(spec.io.retirementTimeoutMs) {
+            while (true) {
+                owned.advance(); events(owned)
+                if (owned.terminationRequired()) return@withTimeoutOrNull false
+                if (owned.retired()) return@withTimeoutOrNull true
+                waitWake()
+            }
+            @Suppress("UNREACHABLE_CODE") false
+        }
+        return result == true
+    }
+    private suspend fun finish() {
+        cancel()
+        try {
+            val owned = runtime
+            check(!uncertain && (owned == null || cleanup(owned))) { "Connection native retirement is unconfirmed" }
+        } catch (failure: Exception) { retirementError = failure }
+        finally {
+            state.set(2); commands.close(); wake.close(); completed.complete(Unit)
+        }
+    }
+    override suspend fun retire() {
+        cancel()
+        if (state.compareAndSet(0, 2)) completed.complete(Unit)
+        check(withTimeoutOrNull(spec.io.retirementTimeoutMs + spec.timerMs) { completed.await(); true } == true) {
+            "Connection actor has not retired"
+        }
+        retirementError?.let { throw it }
+    }
+}

@@ -151,7 +151,7 @@ class ConnectionWorkerServiceTest {
             } finally { release.complete(Unit); controller.destroy() }
         }
     }
-    @Test fun t884DestroyAlwaysExitsEvenWhenUnlinkFailsAndDefaultBackendIsExplicit() = runBlocking<Unit> {
+    @Test fun t884DestroyAlwaysExitsEvenWhenUnlinkFailsAndDefaultBackendIsLazy() = runBlocking<Unit> {
         val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
         val service = controller.get(); service.factory = { _, _ -> Worker() }; val events = Events()
         start(bind(service), events); until { events.values.any { it is ConnectionWorkerEvent.Ended } }
@@ -159,9 +159,22 @@ class ConnectionWorkerServiceTest {
         assertThrows(IllegalStateException::class.java) { controller.destroy() }; assertTrue(service.exits.get() > 0)
         val real = Robolectric.buildService(ConnectionWorkerService::class.java).create()
         try {
-            assertThrows(UnsupportedOperationException::class.java) { real.get().createWorker(ConnectionWorkerSpec("usb")) {} }
+            val selected = AccessorySelection(1, "ab".repeat(32)).encode()
+            val owned = real.get().createWorker(ConnectionWorkerSpec(selected)) {}
+            owned.cancel(); owned.retire()
         } finally { real.destroy() }
         assertTrue(ShadowProcess.wasKilled(Process.myPid()))
+    }
+    @Test fun t854ProductionServiceFactoryDefersNativeLookupUntilExecution() = runBlocking<Unit> {
+        val controller = Robolectric.buildService(ConnectionWorkerService::class.java).create()
+        val selected = AccessorySelection(1, "ab".repeat(32)).encode()
+        val worker = controller.get().createWorker(ConnectionWorkerSpec(selected,
+            io = ConnectionRunLimits(100, 100), nativeTimeoutMs = 100, timerMs = 1)) {}
+        try {
+            val result = runCatching { withTimeout(2000) { worker.execute() } }
+            assertTrue(result.isFailure)
+            assertFalse(result.exceptionOrNull() is TimeoutCancellationException)
+        } finally { worker.cancel(); worker.retire(); controller.destroy() }
     }
     @Test fun t884CommandBacklogCannotGrowWhileFactoryIsBlocked() = runBlocking<Unit> {
         val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()

@@ -18,6 +18,34 @@ class ConnectionWorkerCodecTest {
         val revoke = ConnectionWorkerCommand.Revoke(peer)
         assertEquals(revoke, ConnectionWorkerCodec.command(ConnectionWorkerCodec.command(revoke)))
     }
+    @Test fun t854ProductionBoundsRoundTripAndRejectInvalidConfiguration() {
+        for (edge in listOf(1, 1024)) {
+            val spec = ConnectionWorkerSpec("usb", nativeTimeoutMs = 60000,
+                trustedPeers = edge, accessoryCapacity = edge, timerMs = 1000,
+                io = ConnectionRunLimits(123, 456))
+            assertEquals(spec, ConnectionWorkerCodec.spec(ConnectionWorkerCodec.spec(spec)))
+            assertEquals(ConnectionSetupLimits(262144, 120000, 60000, 456, edge), spec.setupLimits())
+            rejected { ConnectionWorkerCodec.spec(ConnectionWorkerCodec.spec(spec).also { it[0] = 1 }) }
+        }
+        for (value in listOf(Int.MIN_VALUE, -1, 0, 1025, Int.MAX_VALUE)) {
+            rejected { ConnectionWorkerSpec("usb", trustedPeers = value) }
+            rejected { ConnectionWorkerSpec("usb", accessoryCapacity = value) }
+        }
+        for (value in listOf(Long.MIN_VALUE, -1, 0, 1001, Long.MAX_VALUE)) {
+            rejected { ConnectionWorkerSpec("usb", timerMs = value) }
+        }
+        for (value in listOf(Long.MIN_VALUE, -1, 0, 60001, Long.MAX_VALUE)) {
+            rejected { ConnectionWorkerSpec("usb", nativeTimeoutMs = value) }
+        }
+        val random = Random(854)
+        val original = ConnectionWorkerCodec.spec(ConnectionWorkerSpec("usb"))
+        repeat(1024) {
+            val bytes = original.copyOf()
+            bytes[random.nextInt(bytes.size)] = random.nextInt(256).toByte()
+            val decoded = runCatching { ConnectionWorkerCodec.spec(bytes) }.getOrNull()
+            if (decoded != null) assertEquals(decoded, ConnectionWorkerCodec.spec(ConnectionWorkerCodec.spec(decoded)))
+        }
+    }
     private fun events(): List<ConnectionWorkerEvent> = listOf(
         ConnectionWorkerEvent.Pairing(ticket, ConnectionPeer.parse("cd".repeat(32))),
         ConnectionWorkerEvent.Trust(peer, true), ConnectionWorkerEvent.Trust(peer, false),
@@ -39,7 +67,7 @@ class ConnectionWorkerCodecTest {
         )
         for ((bytes, decode) in records) {
             for (length in 0 until bytes.size) rejected { decode(bytes.copyOf(length)) }
-            rejected { decode(bytes + 0) }; rejected { decode(bytes.copyOf().also { it[0] = 2 }) }
+            rejected { decode(bytes + 0) }; rejected { decode(bytes.copyOf().also { it[0] = 127 }) }
             rejected { decode(ByteArray(ConnectionWorkerCodec.LIMIT + 1)) }
         }
     }

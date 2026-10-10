@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Discovery only. Permission and matching TLS fingerprints remain mandatory. -->
+<resources>
+    <usb-accessory manufacturer="Blent" model="Blent" version="1" />
+</resources>

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /** Private process adapter; Binder handles bounded metadata, never native work.
  * Every instance exits its process on destruction; one START is admitted in
- * that lifetime. Factory setup remains T854 and is explicitly unsupported here. */
+ * that lifetime. The production factory leaves native setup on retained workers. */
 open class ConnectionWorkerService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val admitted = AtomicBoolean()
@@ -28,7 +28,7 @@ open class ConnectionWorkerService : Service() {
     private val clientDeath = IBinder.DeathRecipient { terminate() }
 
     internal open fun createWorker(spec: ConnectionWorkerSpec, report: (ConnectionWorkerEvent) -> Unit): ConnectionWorker =
-        throw UnsupportedOperationException("Production USB setup is not implemented (T854)")
+        AndroidConnectionFactory({ applicationContext }).create(spec, report)
     internal open fun terminate() { Process.killProcess(Process.myPid()) }
 
     private val binder = object : Binder() {

@@ -6,8 +6,18 @@ import com.blent.LifecycleRun
 internal data class ConnectionWorkerSpec(
     val device: String, val session: ConnectionSessionLimits = ConnectionSessionLimits(),
     val io: ConnectionRunLimits = ConnectionRunLimits(), val approvalTimeoutMs: Long = 120000,
+    val nativeTimeoutMs: Long = 10000, val trustedPeers: Int = 64,
+    val accessoryCapacity: Int = 32, val timerMs: Long = 10,
 ) {
-    init { require(device.isNotEmpty() && device.length <= 512 && '\u0000' !in device); require(approvalTimeoutMs in 1..600000) }
+    init {
+        require(device.isNotEmpty() && device.length <= 512 && '\u0000' !in device)
+        require(approvalTimeoutMs in 1..600000 && nativeTimeoutMs in 1..60000)
+        require(trustedPeers in 1..1024 && accessoryCapacity in 1..1024)
+        require(timerMs in 1..1000)
+    }
+    fun setupLimits(): ConnectionSetupLimits = ConnectionSetupLimits(
+        session.capacity, approvalTimeoutMs, nativeTimeoutMs, io.retirementTimeoutMs, trustedPeers,
+    )
 }
 internal sealed interface ConnectionWorkerCommand {
     data class Decide(val ticket: ConnectionTicket, val approved: Boolean, val remember: Boolean) : ConnectionWorkerCommand

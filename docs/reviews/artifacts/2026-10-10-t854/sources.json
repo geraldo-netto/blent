@@ -1,0 +1,23 @@
+{
+  "android/app/src/main/java/com/blent/connection/AndroidConnectionFactory.kt": "4eaa67943eadc078e0147c9b6a38b069e88b724f4e824eba0b150d9ba9671c32",
+  "android/app/src/main/java/com/blent/connection/AndroidConnectionSetupBackend.kt": "667ae6f51315d417e3ec6d6cff24c6bbdd262cd093d0aa780659108be6be74a8",
+  "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt": "337521d19b797c805b881b6ea1f4c3ccd3432380fd6513d1af2e59c6ac4fe0b7",
+  "android/app/src/main/java/com/blent/connection/AndroidUsbConnection.kt": "b59686f50deffb1b98f0e6717e91f99488bc82f09a682089fbfc1a6f1efc99c2",
+  "android/app/src/main/java/com/blent/connection/ConnectionAdmissionRun.kt": "9802b3b26aa6afc8266099232f7905cdf5d98a50311b96ede093bf559adbf7f6",
+  "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt": "7f356d5ad50f443e102be250e7d8b90739494bb32d534e777bab0f461400941d",
+  "android/app/src/main/java/com/blent/connection/ConnectionWorkerCodec.kt": "9bcd47d13a4633558846278e22b6620dd13bd17982d24f7437816e310d71db57",
+  "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt": "035e02d461172712a79357db11565f9564dc149f75aca1b2463d5f34c43d7f26",
+  "android/app/src/test/java/com/blent/connection/AndroidConnectionFactoryTest.kt": "07350098f74ede5ff0d8a32769439c253f9e7ddc09bed90e406ebe39fa49d81b",
+  "android/app/src/test/java/com/blent/connection/AndroidConnectionSetupBackendTest.kt": "fd20396307cfeb603565f7ef6209926c2b52dee91380316f280f08e72220ef4f",
+  "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt": "3e6fa376dac51cc1c174d1c42f47a3db2b22ff6b08b5f1b066abab5480fe37f3",
+  "android/app/src/test/java/com/blent/connection/AndroidUsbConnectionTest.kt": "d33e3b58c3544302995363e7d1041ce47f703ded4809eb9489042a3edb5f04c8",
+  "android/app/src/test/java/com/blent/connection/ConnectionAdmissionRunTest.kt": "c6759b52880c648dda854293a261d14b631fc96fbd134876b76f17e834403bcc",
+  "android/app/src/test/java/com/blent/connection/ConnectionWorkerCodecTest.kt": "11d1bf9d116242d383bab3166058cb01465517a0b66bc0ce6e0bed9255d6a1c1",
+  "android/app/src/test/java/com/blent/connection/ConnectionWorkerServiceTest.kt": "dbcbf4973b507d16cd1499093fdd9f645d4304450d65443d43486e03f60e2cca",
+  "android/app/src/test/java/com/blent/connection/ConnectionFactoryKeyStoreFixture.kt": "6d077b9e10da600518f3f74b8123c0f8ac1af9a30da686d357fa69879a6d99e2",
+  "host/accessory/accessory.c": "ac675d37abec64321a17381423a23383408b5d3dc1b4aa0ac51f283502c54caa",
+  "scripts/tests/fixtures/aoa/enumeration.c": "8adab613be16268b245ea46b809b07ae5cfef16aaf40ae049418bbee1f4880b5",
+  "scripts/tests/test_aoa_probe.py": "09a265f7627bca716d1ec12f9ae525120d96acd6e3bec7335da6a306a7c0fae0",
+  "android/app/src/main/AndroidManifest.xml": "317e46c5362d86abff5a2707ac8b6a4ce5b176f9e54d1a45f7259cec7a2e7280",
+  "android/app/src/main/res/xml/accessory_filter.xml": "2e23d761397515b70c7e7424616cc8dffb9f48c9d20ef4430b4520db8db34b29"
+}

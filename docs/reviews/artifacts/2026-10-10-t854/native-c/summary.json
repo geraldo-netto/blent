@@ -1,0 +1,74 @@
+{
+  "matches": {
+    "covered": 4,
+    "lines": 4
+  },
+  "find_device": {
+    "covered": 10,
+    "lines": 10
+  },
+  "is_accessory": {
+    "covered": 3,
+    "lines": 3
+  },
+  "check_reopen": {
+    "covered": 5,
+    "lines": 5
+  },
+  "start_accessory": {
+    "covered": 13,
+    "lines": 13
+  },
+  "wait_accessory": {
+    "covered": 12,
+    "lines": 13
+  },
+  "accessory_interface": {
+    "covered": 3,
+    "lines": 3
+  },
+  "endpoints": {
+    "covered": 12,
+    "lines": 12
+  },
+  "claim_accessory": {
+    "covered": 11,
+    "lines": 11
+  },
+  "check_selection": {
+    "covered": 6,
+    "lines": 6
+  },
+  "open_target": {
+    "covered": 16,
+    "lines": 16
+  },
+  "accessory_open": {
+    "covered": 1,
+    "lines": 1
+  },
+  "accessory_open_selected": {
+    "covered": 4,
+    "lines": 4
+  },
+  "check_transfer": {
+    "covered": 5,
+    "lines": 5
+  },
+  "transfer_timeout": {
+    "covered": 4,
+    "lines": 4
+  },
+  "check_progress": {
+    "covered": 3,
+    "lines": 3
+  },
+  "accessory_transfer": {
+    "covered": 11,
+    "lines": 11
+  },
+  "accessory_close": {
+    "covered": 6,
+    "lines": 6
+  }
+}

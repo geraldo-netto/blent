@@ -147,6 +147,20 @@ class AoaProbeEnumerationTest(unittest.TestCase):
             self.assertEqual(result.returncode, 2, result.stderr)
             self.assertIn('controls=0', result.stderr)
 
+    def test_t854_production_metadata_matches_android_filter(self):
+        import xml.etree.ElementTree as ET
+        result = subprocess.run([self.binary, '0', '0', '0', '0', '4'],
+                                capture_output=True, text=True, timeout=2)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        profile = ET.parse(ROOT / 'android/app/src/main/res/xml/accessory_filter.xml').getroot()[0].attrib
+        for index, field in [(0, 'manufacturer'), (1, 'model'), (3, 'version')]:
+            self.assertIn(f'metadata[{index}]={profile[field]}\n', result.stderr)
+        self.assertIn('metadata[2]=Blent USB connection\n', result.stderr)
+        self.assertIn('approve Blent on tablet.', result.stderr)
+        prototype = self.run_probe(0)
+        self.assertEqual(prototype.returncode, 0, prototype.stderr)
+        self.assertIn('metadata[1]=Blent USB Probe\n', prototype.stderr)
+
     def test_t879_exact_selection_allows_expected_reenumeration(self):
         result = subprocess.run([self.binary, '0', '0', '0', '0', '4'],
                                 capture_output=True, text=True, timeout=2)

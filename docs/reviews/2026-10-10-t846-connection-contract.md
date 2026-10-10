@@ -1,5 +1,9 @@
 # T846 connection contract and integration boundary
 
+The current Android composition is described under T854 below. Validation counts
+in individual milestone sections describe their historical scoped runs; they are
+not whole-project coverage or physical-device support claims.
+
 ## Implemented domain layer
 
 `common/src/connection/` and Android `com.blent.connection` implement the same
@@ -237,7 +241,9 @@ activation prerequisite with its own regressions and commit.
 | T886 | Authenticated Android setup owner (implemented) | T884, T851, T856 |
 | T887 | Android accessory selection/permission/opening (implemented) | T884 |
 | T888 | Authenticated Android runtime supervision (implemented) | T886, T883 |
-| T854 | Production Android accessory/setup composition | T888, T887, T884 |
+| T889 | Supervised Android USB admission (implemented) | T887 |
+| T890 | Configured connection shutdown budgets (implemented) | T884 |
+| T854 | Production Android accessory/setup composition (implemented) | T888–T890, T884 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
 | T858 | Independent camera integration; second user-visible milestone | T857 routing; maintainer priority after working display |
@@ -873,8 +879,8 @@ Larger windows retain more bytes when consumers stall; smaller quanta increase
 scheduling/framing work. These are bounded configuration choices, not throughput
 claims. No new performance timings or physical-device acceptance are implied.
 
-Native accessory/service ownership, locally allocated listeners, process-death
-quarantine and Binder presentation remain T854. Production media adoption and
+T854 supplies native accessory/service ownership and process-death quarantine.
+Locally allocated listeners remain T857; Binder presentation remains T855. Production media adoption and
 actual debugging-off acceptance remain T855/T857–T860. The portable session alone
 does not enable the production application's ADB-free connection.
 
@@ -917,11 +923,11 @@ even after the calls have exited. The containing service must retain physical
 admission until actual process death; this runner cannot establish OS handle
 release, local endpoint exit, or Binder death on its own.
 
-Private process/IPC supervision remains T884; USB discovery/permission,
-identity/trust, TLS setup and production service composition remain T854.
+Private process/IPC supervision is implemented under T884; T854 now composes
+USB discovery/permission, identity/trust and TLS setup with that service.
 Locally allocated endpoint pumps and debugging-off display acceptance remain
-T857. These boundaries are still pending, not established by portable or JVM
-native-stream tests.
+T857. Physical native-stream acceptance is not established by portable or JVM
+tests.
 
 
 ## T884 private Android connection process and control boundary
@@ -954,9 +960,8 @@ while ownership is retained. Retirement without a Binder atomically closes
 callback admission before unbinding. Failed death-link registration revokes
 START admission before releasing the waiting sender.
 
-These are process/control adapters. The production factory explicitly reports
-unsupported until T854 supplies USB selection, permission, identity/trust,
-approval and TLS setup. T855 supplies presentation, and T857 supplies local media
+These are process/control adapters. T854 now supplies the production factory for
+USB selection, permission, identity/trust, approval and TLS setup. T855 supplies presentation, and T857 supplies local media
 endpoints and production display/touch acceptance. Robolectric lifecycle fixtures
 are permanent automated regressions, not proof of physical USB or kernel Binder
 termination behavior. No ADB-free production-media support is claimed here.
@@ -1007,11 +1012,12 @@ Defaults are 10 seconds for each native setup phase, 120 seconds for approval,
 1–60000 ms for native/retirement phases and 1–600000 ms for approval; trust capacity
 is 1–1024 peers. Larger capacities retain more trust state; longer deadlines delay
 failure recovery. These are configuration contracts, not measured performance gains.
-T854 must expose them through production worker configuration. The selected channel
+T854 exposes them through production worker configuration, using its single shared
+5-second retirement default for setup and the session runner. The selected channel
 window remains bounded by both peers' configured limits.
 
-Accessory selection/permission/opening remains T887. Production worker composition
-remains T854, pairing UI and physical debugging-off pairing acceptance remain T855,
+Accessory selection/permission/opening is implemented under T887, supervised by
+T889 and composed by T854. Pairing UI and physical debugging-off acceptance remain T855,
 and actual display/touch routing and acceptance remain T857. Loopback tests do not
 establish native AndroidKeyStore, physical USB or real Binder-kill acceptance.
 
@@ -1030,7 +1036,7 @@ nonwrapping epoch plus the snapshot digest forms the canonical worker device
 token. Replacement invalidates the previous selection before attempting a new
 scan. Stale callbacks cannot invalidate a newer selection. Snapshots default to
 32 accessories, with a configurable range of 1–1024; bounds are checked before
-traversal. T854 must forward the chosen capacity through composition.
+traversal. T854 forwards the chosen capacity through composition.
 
 `AndroidAccessoryInventory` re-enumerates an exact, unique supported candidate and
 checks actual `UsbManager` permission. Its selection snapshot consistently omits
@@ -1039,7 +1045,7 @@ it before consent prevents permission requests and using it only afterward chang
 the selection token. Otherwise identical public metadata is ambiguous even when
 serials differ; no unique physical identity is claimed. Native metadata never
 grants pairing or media authority. The supported manufacturer/model/version
-profile is injected; production metadata changes remain T854.
+profile is injected; T854 coordinates the production profile with the host helper.
 
 `AndroidAccessoryPermission` owns one permission request and its native cleanup.
 Callbacks use a private action, an immutable package-directed PendingIntent and
@@ -1066,11 +1072,11 @@ establish retirement. The caller must retain the opening owner even when `open`
 throws and must supply its current-selection gate. Native opening and close belong
 on supervised workers, with independent timeout/process-retirement enforcement.
 
-These are tested components, not production USB support. T854 still composes them
+These are tested components, not accepted production USB support. T854 composes them
 with the private connection service, setup owner and reactor, including permission
 failure monitoring, detach invalidation, current-selection/current-approval gates
 and actual retirement. T855 supplies pairing presentation and physical acceptance;
-T857 supplies production display/touch. Physical detach/reattach remains T854/T862.
+T857 supplies production display/touch. Physical detach/reattach remains T855/T862.
 
 Validation: [T887 retained evidence](artifacts/2026-10-10-t887/README.md):
 361 connection tests pass without skips; all 47 inventoried production functions
@@ -1103,8 +1109,8 @@ finish ownership, never evidence that native calls or the OS process exited.
 Actual retirement requires setup and runner completion; external endpoint workers
 and private-process death remain separate owners in T854/T857.
 
-The production service/native factory, configuration and USB metadata wiring
-remain T854. Pairing/connection presentation remains T855 and real production media
+T854 implements the production service/native factory, configuration and USB
+metadata wiring. Pairing/connection presentation remains T855 and real production media
 remains T857–T860. The runtime factory must be prompt and retain partial native
 ownership on failure; native I/O, identity loading and trust storage do not belong
 inside synchronous runtime construction.
@@ -1114,3 +1120,92 @@ Validation: [T888 retained evidence](artifacts/2026-10-10-t888/README.md):
 pass. All 32 inventoried production functions and 34 executable JVM methods pass
 individual line coverage (100% for these methods); 129 reviewed functions have
 cyclomatic complexity at most 9.
+
+
+## T889 permission supervision and T890 shutdown budgets
+
+`AccessoryAdmission` separates the main-process permission supervisor from native
+Android APIs. `AccessoryAdmissionOwner` owns one native worker, an independent
+closer and a 32-slot callback queue. `AndroidAccessoryAdmissionBackend` owns the
+actual detach receiver, inventory and `AndroidAccessoryPermission`. Construction
+is inert. The control owner supplies an independent timer; callbacks only enqueue
+bounded work or synchronously invalidate selection. USB metadata and permission
+never substitute for TLS proof or media consent.
+
+Native request/callback deadlines are separate from the absolute human consent
+window. Duplicate/stale permission results cannot publish a second admission.
+Stopped late startup cannot begin enumeration. Failed native cleanup, partially
+constructed owners and still-running threads retain ownership; cancellation is
+not retirement. T854 connects these owners to worker binding, and T855 supplies
+presentation and native debugging-off acceptance.
+
+`AndroidConnectionWorkerRun` now derives its default shutdown grace from configured
+native retirement plus 1000 ms (maximum supported reactor cadence), then permits
+5000 ms for process exit and local cleanup. Existing explicit timing overrides
+retain their bounds. A correctly tagged Ended permits prompt EXIT even after STOP;
+actual Binder death and finished local calls remain mandatory before retirement.
+
+[T889 evidence](artifacts/2026-10-10-t889/README.md): 45 tests, 48 inventoried
+functions and 52 executable JVM methods passing individual coverage (100% line),
+103 reviewed functions at cyclomatic complexity <=9. [T890 evidence](artifacts/2026-10-10-t890/README.md):
+42 tests, 35 inventoried functions and 40 executable JVM methods passing individual
+coverage (100% line), 44 reviewed functions at complexity <=9. These measurements
+are scoped framework-model results, not native USB/Binder acceptance.
+
+
+## T854 production Android composition
+
+`androidUsbConnection` is the main-process entry point. `ConnectionAdmissionRun`
+retains T889 permission admission throughout one T890 private-process client.
+Native permission must complete before binding; caller-supplied device text cannot
+bypass selection. Detach invalidates selection immediately and wakes cancellation.
+A separate timer observes admission failure while the child connection is waiting.
+Late pairing/status callbacks cannot present stale authority; durable trust facts
+remain observable. Both actual permission retirement and actual worker/Binder
+retirement are required before replacement. A stuck child does not block the
+independent cleanup deadline; unconfirmed ownership stays quarantined.
+
+`ConnectionWorkerService.createWorker` uses `AndroidConnectionFactory`.
+Construction captures suppliers only. `AndroidConnectionSetupBackend` opens USB
+and the retained socket bridge on the setup authority thread, then loads the
+AndroidKeyStore identity and app-private trust storage. Native work, including
+late factory results, remains owned through cancellation. Existing identity/trust
+files are preserved; an invalid directory or interrupted trust record fails
+explicitly instead of silently repairing, rotating or deleting state.
+
+`AndroidConnectionWorker` serializes bounded commands and events with a conflated
+wake channel and independent timer. It composes T886 authenticated setup with T888
+runtime and T883 session I/O. It advertises zero media capabilities until T857
+supplies real endpoint owners. Internal Ended does not imply native retirement;
+the containing service reports execution completion after cleanup. Media bytes
+never travel through Binder.
+
+Configuration is carried in private same-APK spec schema version 2; command/event
+schemas remain version 1. Limits are validated before native work:
+
+| Option | Default | Supported range | Tradeoff |
+| --- | --- | --- | --- |
+| Native setup/permission operation timeout | 10000 ms | 1–60000 ms | Longer waits tolerate slower native calls but delay recovery |
+| Human permission/pairing approval | 120000 ms | 1–600000 ms | Absolute consent window; native calls keep their shorter budget |
+| Native retirement | 5000 ms | 1–60000 ms | Shared by setup and session cleanup; longer grace delays quarantine |
+| Accessory snapshot capacity | 32 | 1–1024 | Bounds lookup work and retained metadata |
+| Remembered peer capacity | 64 | 1–1024 | Bounds trust state; lowering below saved usage fails without deletion |
+| Reactor timer cadence | 10 ms | 1–1000 ms | Longer cadence lowers idle wake frequency but delays deadline observation |
+
+Existing per-lane byte/message, scheduling quantum, I/O and resource setup limits
+are forwarded unchanged. T890 derives outer process shutdown allowances from the
+same native retirement budget. Each main-owner cleanup or reactor-completion wait
+allows that budget plus 6000 ms. These are configurable bounds, not measured throughput claims.
+
+The selected-device production host helper now advertises manufacturer/model
+`Blent`/`Blent`, version `1`, matching Android's accessory filter. The explicit
+prototype helper path keeps its separate `Blent USB Probe` profile. Neither
+profile grants authentication. Android's manifest opens MainActivity on accessory
+attachment; T855 still connects UI/presentation and activity lifecycle to the new
+entry point. Real display/touch, camera and audio remain T857–T860. No ADB-free
+production-media support or physical-device acceptance is claimed by composition.
+
+Validation and exact source/counter evidence are retained under
+[T854 artifacts](artifacts/2026-10-10-t854/README.md). Synthetic KeyStore provider
+tests exercise the loader boundary and signatures only; native AndroidKeyStore
+isolation, physical USB and actual Binder-kill acceptance remain T855/T846.

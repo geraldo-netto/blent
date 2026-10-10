@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 struct libusb_device { int unused; };
 struct libusb_context { int unused; };
@@ -42,11 +43,20 @@ libusb_device *libusb_get_device(libusb_device_handle *value) { assert(value==&h
 int libusb_get_device_descriptor(libusb_device *value,struct libusb_device_descriptor *out) {
     assert(value==&device); out->idVendor=0x18d1; out->idProduct=switched?0x2d00:0x4ee8; return 0;
 }
+static void check_metadata(uint8_t type,uint16_t index,const unsigned char *data,uint16_t length) {
+        const char *expected[]={"Blent",selection?"Blent":"Blent USB Probe",
+            selection?"Blent USB connection":"T846 synthetic USB integrity test","1",
+            "https://github.com/geraldo-netto/blent",selection?"blent-1":"blent-probe-1"};
+        assert(type==0x40 && index<6 && length==strlen(expected[index])+1);
+        assert(!memcmp(data,expected[index],length));
+        fprintf(stderr,"metadata[%u]=%s\n",index,data);
+}
 int libusb_control_transfer(libusb_device_handle *value,uint8_t type,uint8_t request,
     uint16_t val,uint16_t index,unsigned char *data,uint16_t length,unsigned int timeout) {
     assert(value==&handle && val==0 && timeout==1000);
     (void)type; (void)index; controls++;
     if (request==51) { assert(length==2); data[0]=2; data[1]=0; }
+    if (request==52) check_metadata(type,index,data,length);
     if (request==53) switched=1;
     return length;
 }

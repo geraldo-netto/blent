@@ -35,12 +35,13 @@ static void check_reopen(int status) {
     if (!retryable) fprintf(stderr,"USB re-enumeration open error %d\n",status);
     accessory_require(retryable,"cannot open re-enumerating target");
 }
-static void start_accessory(libusb_device_handle *handle) {
+static void start_accessory(libusb_device_handle *handle, int production) {
     unsigned char version[2];
     int count=libusb_control_transfer(handle,0xc0,51,0,0,version,2,1000);
     accessory_require(count==2 && (version[0] || version[1]),"AOA unsupported");
-    const char *strings[]={"Blent","Blent USB Probe","T846 synthetic USB integrity test","1",
-                          "https://github.com/geraldo-netto/blent","blent-probe-1"};
+    const char *strings[]={"Blent",production?"Blent":"Blent USB Probe",
+                          production?"Blent USB connection":"T846 synthetic USB integrity test","1",
+                          "https://github.com/geraldo-netto/blent",production?"blent-1":"blent-probe-1"};
     for (int index=0;index<6;index++) {
         int length=(int)strlen(strings[index])+1;
         count=libusb_control_transfer(handle,0x40,52,0,(uint16_t)index,
@@ -112,13 +113,14 @@ static void open_target(accessory_usb *usb, accessory_target target,const access
     accessory_require(usb->handle!=NULL,"target absent");
     check_selection(usb->handle,selected);
     if (!is_accessory(usb->handle)) {
-        start_accessory(usb->handle); libusb_close(usb->handle); usb->handle=NULL;
+        start_accessory(usb->handle,selected!=NULL); libusb_close(usb->handle); usb->handle=NULL;
         wait_accessory(usb,target);
     }
     claim_accessory(usb);
     struct libusb_device_descriptor desc;
     accessory_require(libusb_get_device_descriptor(libusb_get_device(usb->handle),&desc)==0,"accessory identity");
-    fprintf(stderr,"Accessory %04x:%04x interface %d; approve Blent USB Probe on tablet.\n",desc.idVendor,desc.idProduct,usb->interface);
+    fprintf(stderr,"Accessory %04x:%04x interface %d; approve %s on tablet.\n",desc.idVendor,desc.idProduct,usb->interface,
+            selected?"Blent":"Blent USB Probe");
     fprintf(stderr,"ADB interface advertised: %s\n",desc.idProduct==0x2d01?"yes":"no");
 }
 void accessory_open(accessory_usb *usb,accessory_target target) { open_target(usb,target,NULL); }
