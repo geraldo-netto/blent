@@ -1,0 +1,3 @@
+bbc71e5da48005e8bae57212f5b108bb8ae3cabdb180883dbbdbf9258e3659c5  host/src/linux_main.rs
+b19815921f4515ba3bf069611b18c52606097e805ea7a93170fc9115e8072d13  host/src/monitor.rs
+717573d4859098eb14050852f62aedae0b6444a8c0faa794237785b9af3c4a15  host/src/monitor/diagnostic_tests.rs

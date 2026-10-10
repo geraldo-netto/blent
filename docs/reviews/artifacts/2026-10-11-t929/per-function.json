@@ -1,0 +1,40 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/monitor.rs::queue_inventory"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 1,
+      "passing": 1,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/monitor.rs",
+      "name": "queue_inventory",
+      "line": 177,
+      "language": "rust",
+      "covered": 29,
+      "total": 36,
+      "percent": 80.55555555555556,
+      "passes": true,
+      "missing": [
+        179,
+        185,
+        186,
+        187,
+        188,
+        203,
+        208
+      ]
+    }
+  ]
+}

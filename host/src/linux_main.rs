@@ -72,7 +72,9 @@ use session::Runtime as ExtraSession;
 use std::path::PathBuf;
 use tokio::signal;
 use tokio::sync::watch;
-use tracing::{error, info, warn};
+#[cfg(not(feature = "accessory-transport"))]
+use tracing::error;
+use tracing::{info, warn};
 
 fn main() -> Result<()> {
     #[cfg(feature = "inproc-encoder")]

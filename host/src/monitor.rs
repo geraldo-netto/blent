@@ -196,6 +196,9 @@ impl Monitor {
                     .await
                     .is_err()
             {
+                #[cfg(feature = "accessory-transport")]
+                warn!("ADB unavailable; automatic ADB connections cannot be discovered. Direct USB does not require ADB.");
+                #[cfg(not(feature = "accessory-transport"))]
                 error!("adb is not installed; install android-tools (or adb) and restart");
             }
             let devices = adb_inventory::query(&adb).await;
@@ -787,3 +790,6 @@ mod coverage_tests;
 
 #[cfg(test)]
 mod route_tests;
+
+#[cfg(test)]
+mod diagnostic_tests;

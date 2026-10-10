@@ -1625,8 +1625,8 @@ uses the authenticated peer identity and actual configured listener ports.
 Late startup and source loss transfer ownership into closing sessions; listener
 capabilities remain pinned until registration and native work retire. Startup
 panic conservatively quarantines its ticket while other peers progress; recovery
-proof remains T928. Default builds preserve ADB behavior. Optional-ADB diagnostics
-and idle discovery allocation evaluation remain T929/T930, respectively.
+proof remains T928. Default builds preserve ADB behavior. Native builds describe missing ADB as unavailable optional discovery (T929);
+idle discovery allocation evaluation remains T930.
 
 [Evidence](artifacts/2026-10-11-t908/README.md) covers permanent fail-before-fix
 listener-handoff validation, real TLS registration and actual video/WebSocket
@@ -1634,3 +1634,9 @@ protocols, fresh credentials, synthetic frame ACK and touch, failure isolation,
 shutdown, full native/default suites and per-function counters. Physical Android
 display/touch acceptance remains T857 with postponed T855 pairing. Native USB is
 still experimental; Windows native USB remains unsupported under T902.
+
+## T929 optional ADB diagnostics
+
+Native USB builds report missing ADB as unavailable optional automatic discovery;
+direct USB does not require it. Default builds retain the install/restart guidance.
+Discovery/retry behavior is unchanged. [Permanent red/green regression and counters](artifacts/2026-10-11-t929/README.md) cover both build configurations.
