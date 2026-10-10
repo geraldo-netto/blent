@@ -85,7 +85,7 @@ internal class FrameTiming(private val clock: () -> Long = System::nanoTime) {
     /** Microseconds from complete arrival to callback execution, or -1. */
     fun decodeMicrosFor(seq: Int, expectedEpoch: Epoch = epoch): Int {
         val now = clock()
-        var report: String? = null
+        val report: String?
         val total = synchronized(this) {
             if (epoch !== expectedEpoch) return -1
             val i = find(seq)

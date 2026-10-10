@@ -1,0 +1,35 @@
+{
+  "item": "T847",
+  "change": "Remove redundant initializer; immutable report assigned once inside existing synchronized block; logging remains outside lock.",
+  "behavior_change": false,
+  "source_sha256": "de29c5310400e2b00a8f95abcd5001d0275aa26bf89596571cbe0f58027b5aff",
+  "tests": "Unchanged FrameTimingTest at Robolectric API 27 and 34",
+  "counters": {
+    "INSTRUCTION": {
+      "covered": 61,
+      "missed": 6
+    },
+    "BRANCH": {
+      "covered": 5,
+      "missed": 1
+    },
+    "LINE": {
+      "covered": 10,
+      "missed": 0
+    },
+    "COMPLEXITY": {
+      "covered": 3,
+      "missed": 1
+    },
+    "METHOD": {
+      "covered": 1,
+      "missed": 0
+    }
+  },
+  "compile_variants": [
+    "debug",
+    "profile",
+    "optimized"
+  ],
+  "warning_present_after": false
+}
