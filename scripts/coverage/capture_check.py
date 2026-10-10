@@ -19,10 +19,10 @@ from report import summary
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def prepare(directory):
+def prepare(directory, scope='host/evdi/'):
     # Never merge previous executions or overwrite another measurement directory.
     directory.mkdir(parents=True)
-    functions = [function for function in owned_functions(ROOT) if function.file.startswith('host/evdi/')]
+    functions = [function for function in owned_functions(ROOT) if function.file.startswith(scope)]
     sources = {function.file: fingerprint(ROOT / function.file) for function in functions}
     manifest = dict(sources=sources, functions=[asdict(function) for function in functions])
     (directory/'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
@@ -43,12 +43,19 @@ def environment(directory):
                 PATH=str(wrappers) + os.pathsep + os.environ.get('PATH', ''))
 
 
-def run(directory):
-    directory = directory.resolve()
-    functions, sources = prepare(directory)
+def suite(scope):
+    if scope == 'host/accessory/':
+        return [sys.executable, '-m', 'unittest', 'discover', '-s', 'scripts/tests', '-p', 'test_aoa_probe.py']
     command = ['cargo', 'test', '--locked', '-p', 'blent']
     for target in ['evdi_helper', 'conversion', 'evdi_modules', 'frame_retirement']:
         command.extend(['--test', target])
+    return command
+
+
+def run(directory, scope='host/evdi/'):
+    directory = directory.resolve()
+    functions, sources = prepare(directory, scope)
+    command = suite(scope)
     with (directory/'tests.log').open('w') as log:
         subprocess.run(command, cwd=ROOT, env=environment(directory), check=True, stdout=log, stderr=subprocess.STDOUT)
     verify_sources(ROOT, sources)
@@ -57,7 +64,7 @@ def run(directory):
         gcov_json(path, ROOT, data)
     rows = [result(function, data) for function in functions]
     passed = bool(rows) and all(row['passes'] for row in rows)
-    report = dict(scopes=['host/evdi/'], minimum_percent=80, passes=passed, summary=summary(rows), functions=rows)
+    report = dict(scopes=[scope], minimum_percent=80, passes=passed, summary=summary(rows), functions=rows)
     (directory/'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report['summary'], indent=2))
     return int(not passed)
@@ -66,8 +73,9 @@ def run(directory):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path, help='new directory for raw counters, log and report')
+    parser.add_argument('--scope', choices=['host/evdi/', 'host/accessory/'], default='host/evdi/')
     args = parser.parse_args()
-    return run(args.output)
+    return run(args.output, args.scope)
 
 
 if __name__ == '__main__':

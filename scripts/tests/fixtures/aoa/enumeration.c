@@ -1,6 +1,6 @@
 /* T846: run the real USB adapter against deterministic re-enumeration failures. */
 #define _POSIX_C_SOURCE 200809L
-#include "usb_probe.h"
+#include "accessory.h"
 #include <libusb.h>
 #include <assert.h>
 #include <stdio.h>
@@ -13,7 +13,7 @@ static struct libusb_device device;
 static struct libusb_context context;
 static struct libusb_device_handle handle;
 static int switched, attempts, sleeps, error, persistent, strict, absent;
-static struct libusb_endpoint_descriptor endpoints[]={{2,0x81},{2,0x02}};
+static struct libusb_endpoint_descriptor endpoints[]={{2,0x81,512},{2,0x02,512}};
 static struct libusb_interface_descriptor descriptor={255,255,0,2,0,0,endpoints};
 static struct libusb_interface interface={&descriptor,1};
 static struct libusb_config_descriptor config={1,&interface};
@@ -67,6 +67,6 @@ static void report(void) { fprintf(stderr,"attempts=%d sleeps=%d\n",attempts,sle
 int main(int argc,char **argv) {
     assert(argc==5); error=atoi(argv[1]); persistent=atoi(argv[2]); strict=atoi(argv[3]); absent=atoi(argv[4]);
     assert(!atexit(report));
-    probe_usb usb={0}; probe_target target={.bus=3,.ports={2},.count=1};
-    probe_open(&usb,target); assert(usb.claimed); probe_close(&usb); return 0;
+    accessory_usb usb={0}; accessory_target target={.bus=3,.ports={2},.count=1};
+    accessory_open(&usb,target); assert(usb.claimed); accessory_close(&usb); return 0;
 }

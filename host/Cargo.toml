@@ -5,12 +5,18 @@ version = "1.2.3"
 edition = "2021"
 description = "Low-latency USB display server - turns your Android tablet into a second monitor"
 
+[[example]]
+name = "secure_connection_fixture"
+required-features = ["accessory-transport"]
+
 [[bin]]
 name = "blent-audio"
 path = "src/bin/audio.rs"
 required-features = ["native-audio"]
 
 [features]
+# T846 remains experimental until native pairing/media acceptance passes.
+accessory-transport = ["dep:rustls", "dep:tokio-rustls", "dep:rcgen"]
 native-audio = ["dep:pipewire"]
 # Native libavcodec in a private Blent worker; the historical feature name stays.
 # Raw shared slots cross exec without another raw-frame copy. Off by default on purpose: it needs the ffmpeg
@@ -20,6 +26,9 @@ native-audio = ["dep:pipewire"]
 inproc-encoder = ["ffmpeg-next"]
 
 [dependencies]
+rustls = { version = "0.23.45", optional = true, default-features = false, features = ["ring", "std", "tls12"] }
+tokio-rustls = { version = "0.26.5", optional = true, default-features = false, features = ["ring", "tls12"] }
+rcgen = { version = "0.14.10", optional = true, default-features = false, features = ["ring"] }
 blent-config = { path = "../common" }
 tokio = { version = "1", features = ["full"] }
 anyhow = "1"
@@ -57,3 +66,8 @@ windows-sys = { version = "0.61", features = [
     "Win32_Foundation", "Win32_Graphics_Gdi", "Win32_System_LibraryLoader",
     "Win32_System_Threading", "Win32_UI_Shell", "Win32_UI_WindowsAndMessaging",
 ] }
+
+[[example]]
+name = "accessory_probe"
+path = "examples/accessory_probe.rs"
+required-features = ["accessory-transport"]

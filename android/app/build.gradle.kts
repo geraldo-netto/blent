@@ -96,6 +96,8 @@ android {
     }
     sourceSets.getByName("testProfile").java.srcDir("../../scripts/benchmarks/android-allocation-tests")
     sourceSets.getByName("test").resources.srcDir("../../testdata")
+    // Compiled with the normal test friend paths; executed only by tlsInteropTest.
+    sourceSets.getByName("testDebug").java.srcDir("src/tlsInterop/tests")
     // Exercise the isolated replay's transport lifetime in the normal suite.
     sourceSets.getByName("test").java.srcDir("../../scripts/benchmarks/android-decoder/input")
 
@@ -123,6 +125,36 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+    }
+}
+
+// T846: Robolectric's ParcelFileDescriptor shadow accesses the JDK descriptor
+// field. This opens only the test JVM; Android application permissions are unchanged.
+tasks.withType<Test>().configureEach {
+    jvmArgs("--add-opens=java.base/java.io=ALL-UNNAMED")
+}
+
+// T846: explicit native/JVM integration suite. Ordinary JVM tests need no Rust
+// executable; the normal Python tooling suite builds it offline and runs this task.
+afterEvaluate {
+    val unit = tasks.named<Test>("testDebugUnitTest")
+    unit.configure { exclude("**/SecureConnectionInteropTest*") }
+    tasks.register<Test>("tlsInteropTest") {
+        dependsOn("compileDebugUnitTestKotlin", "compileDebugUnitTestJavaWithJavac",
+            "processDebugUnitTestJavaRes", "generateDebugUnitTestConfig")
+        testClassesDirs = unit.get().testClassesDirs
+        classpath = unit.get().classpath
+        systemProperties(unit.get().systemProperties)
+        filter { includeTestsMatching("com.blent.connection.SecureConnectionInteropTest") }
+        val fixture = providers.gradleProperty("blentTlsFixture").orElse("")
+        inputs.property("nativeFixture", fixture)
+        outputs.upToDateWhen { false }
+        doFirst {
+            require(fixture.get().isNotEmpty() && file(fixture.get()).canExecute()) {
+                "tlsInteropTest requires -PblentTlsFixture=/absolute/path/to/secure_connection_fixture"
+            }
+            systemProperty("blent.tls.fixture", file(fixture.get()).absolutePath)
+        }
     }
 }
 

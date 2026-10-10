@@ -15,19 +15,19 @@ class AoaProbeTargetTest(unittest.TestCase):
         cls.addClassCleanup(cls.directory.cleanup)
         root = Path(cls.directory.name)
         source = root / 'target.c'
-        source.write_text('''#include "usb_probe.h"
+        source.write_text('''#include "accessory.h"
 #include <stdio.h>
 int main(int argc,char **argv) {
     if (argc!=3) return 9;
-    probe_target target=probe_parse_target(argv[1],argv[2]);
+    accessory_target target=accessory_parse_target(argv[1],argv[2]);
     printf("%u %d %u\\n",target.bus,target.count,target.ports[target.count-1]);
     return 0;
 }
 ''')
         cls.binary = root / 'target'
         subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined',
-                        '-I' + str(ROOT / 'scripts/benchmarks/aoa'), str(source),
-                        str(ROOT / 'scripts/benchmarks/aoa/contract.c'), '-o', str(cls.binary)], check=True)
+                        '-I' + str(ROOT / 'host/accessory'), '-I' + str(ROOT / 'scripts/benchmarks/aoa'), str(source),
+                        str(ROOT / 'host/accessory/contract.c'), '-o', str(cls.binary)], check=True)
         cls.echo = cls.build_echo_fixture(root)
 
     @classmethod
@@ -39,9 +39,9 @@ int main(int argc,char **argv) {
 #include <assert.h>
 static unsigned char saved_header[24],saved_payload[65536];
 static int phase,corrupt;
-void probe_open(probe_usb *value,probe_target target) { (void)value;(void)target; }
-void probe_close(probe_usb *value) { (void)value; }
-void probe_transfer(probe_usb *value,int receive,unsigned char *data,int length) {
+void accessory_open(accessory_usb *value,accessory_target target) { (void)value;(void)target; }
+void accessory_close(accessory_usb *value) { (void)value; }
+void accessory_transfer(accessory_usb *value,int receive,unsigned char *data,int length) {
     (void)value;
     assert(receive==(phase>=2));
     switch (phase) {
@@ -70,8 +70,8 @@ int main(int argc,char **argv) {
 ''')
         binary = root / 'echo'
         subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined',
-                        '-I' + str(ROOT / 'scripts/benchmarks/aoa'), str(source),
-                        str(ROOT / 'scripts/benchmarks/aoa/contract.c'), '-lz', '-o', str(binary)], check=True)
+                        '-I' + str(ROOT / 'host/accessory'), '-I' + str(ROOT / 'scripts/benchmarks/aoa'), str(source),
+                        str(ROOT / 'host/accessory/contract.c'), '-lz', '-o', str(binary)], check=True)
         return binary
 
     def run_target(self, bus, path):
@@ -109,19 +109,19 @@ class AoaProbeEnumerationTest(unittest.TestCase):
         cls.addClassCleanup(cls.directory.cleanup)
         cls.binary = Path(cls.directory.name) / 'enumeration'
         fixture = ROOT / 'scripts/tests/fixtures/aoa'
-        adapter = ROOT / 'scripts/benchmarks/aoa'
+        adapter = ROOT / 'host/accessory'
         subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
                         '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(adapter),
-                        str(fixture / 'enumeration.c'), str(adapter / 'usb_probe.c'),
+                        str(fixture / 'enumeration.c'), str(adapter / 'accessory.c'),
                         str(adapter / 'contract.c'), '-o', str(cls.binary)], check=True)
 
     def test_t846_usb_zero_length_packets_are_bounded_read_events(self):
         fixture = ROOT / 'scripts/tests/fixtures/aoa'
-        adapter = ROOT / 'scripts/benchmarks/aoa'
+        adapter = ROOT / 'host/accessory'
         binary = Path(self.directory.name) / 'bulk'
         subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
                         '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(adapter),
-                        str(fixture / 'bulk.c'), str(adapter / 'usb_probe.c'),
+                        str(fixture / 'bulk.c'), str(adapter / 'accessory.c'),
                         str(adapter / 'contract.c'), '-o', str(binary)], check=True)
         for mode, expected, calls in [(1, 0, 4), (2, 2, 9), (3, 2, 1),
                                       (4, 2, 1), (5, 2, 1), (6, 2, 0), (7, 2, 0), (8, 2, 1)]:
@@ -155,6 +155,32 @@ class AoaProbeEnumerationTest(unittest.TestCase):
         result = self.run_probe(-1)
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertIn('attempts=2 sleeps=1', result.stderr)
+
+
+class AccessoryStreamTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.directory = tempfile.TemporaryDirectory(prefix='blent-accessory-stream-')
+        cls.addClassCleanup(cls.directory.cleanup)
+        cls.binary = Path(cls.directory.name) / 'stream'
+        subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
+                        '-fsanitize=address,undefined',
+                        '-I' + str(ROOT / 'scripts/tests/fixtures/aoa'),
+                        '-I' + str(ROOT / 'host/accessory'),
+                        str(ROOT / 'scripts/tests/fixtures/aoa/stream_fixture.c'),
+                        str(ROOT / 'host/accessory/contract.c'), '-pthread', '-o', str(cls.binary)], check=True)
+
+    def test_t846_packet_aligned_usb_writes_terminate_pending_device_read(self):
+        for scenario in range(15, 24):
+            result = subprocess.run([self.binary, str(scenario)], capture_output=True, timeout=3)
+            expected = 0 if scenario in (15, 18, 19) else 2
+            self.assertEqual(result.returncode, expected, (scenario, result.stderr.decode()))
+
+    def test_t846_usb_duplex_bounds_timeouts_partial_io_and_process_retirement(self):
+        for scenario in range(15):
+            expected = 2 if scenario in (3, 4, 5, 6, 8, 9, 10, 12, 14) else 0
+            result = subprocess.run([self.binary, str(scenario)], capture_output=True, timeout=3)
+            self.assertEqual(result.returncode, expected, (scenario, result.stderr.decode()))
 
 
 if __name__ == '__main__':

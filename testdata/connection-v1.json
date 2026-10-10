@@ -1,0 +1,601 @@
+[
+  {
+    "name": "channel-1-kind-0-length-1-credit-0",
+    "hex": "424c4e54010001000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 1,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "name": "channel-1-kind-0-length-65536-credit-0",
+    "hex": "424c4e54010001000123456789abcdef000000000000000200000000000000030001000000000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 1,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 65536,
+    "credit": 0
+  },
+  {
+    "name": "channel-1-kind-1-length-0-credit-1",
+    "hex": "424c4e54010101000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "name": "channel-1-kind-1-length-0-credit-1048576",
+    "hex": "424c4e54010101000123456789abcdef000000000000000200000000000000030000000000100000",
+    "valid": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1048576
+  },
+  {
+    "name": "channel-1-kind-2-length-0-credit-0",
+    "hex": "424c4e54010201000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 2,
+    "channel": 1,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-1-kind-3-length-0-credit-0",
+    "hex": "424c4e54010301000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 3,
+    "channel": 1,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-2-kind-0-length-1-credit-0",
+    "hex": "424c4e54010002000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 2,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "name": "channel-2-kind-0-length-65536-credit-0",
+    "hex": "424c4e54010002000123456789abcdef000000000000000200000000000000030001000000000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 2,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 65536,
+    "credit": 0
+  },
+  {
+    "name": "channel-2-kind-1-length-0-credit-1",
+    "hex": "424c4e54010102000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": true,
+    "kind": 1,
+    "channel": 2,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "name": "channel-2-kind-1-length-0-credit-1048576",
+    "hex": "424c4e54010102000123456789abcdef000000000000000200000000000000030000000000100000",
+    "valid": true,
+    "kind": 1,
+    "channel": 2,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1048576
+  },
+  {
+    "name": "channel-2-kind-2-length-0-credit-0",
+    "hex": "424c4e54010202000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 2,
+    "channel": 2,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-2-kind-3-length-0-credit-0",
+    "hex": "424c4e54010302000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 3,
+    "channel": 2,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-3-kind-0-length-1-credit-0",
+    "hex": "424c4e54010003000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 3,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "name": "channel-3-kind-0-length-65536-credit-0",
+    "hex": "424c4e54010003000123456789abcdef000000000000000200000000000000030001000000000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 3,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 65536,
+    "credit": 0
+  },
+  {
+    "name": "channel-3-kind-1-length-0-credit-1",
+    "hex": "424c4e54010103000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": true,
+    "kind": 1,
+    "channel": 3,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "name": "channel-3-kind-1-length-0-credit-1048576",
+    "hex": "424c4e54010103000123456789abcdef000000000000000200000000000000030000000000100000",
+    "valid": true,
+    "kind": 1,
+    "channel": 3,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1048576
+  },
+  {
+    "name": "channel-3-kind-2-length-0-credit-0",
+    "hex": "424c4e54010203000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 2,
+    "channel": 3,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-3-kind-3-length-0-credit-0",
+    "hex": "424c4e54010303000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 3,
+    "channel": 3,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-4-kind-0-length-1-credit-0",
+    "hex": "424c4e54010004000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 4,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "name": "channel-4-kind-0-length-65536-credit-0",
+    "hex": "424c4e54010004000123456789abcdef000000000000000200000000000000030001000000000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 4,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 65536,
+    "credit": 0
+  },
+  {
+    "name": "channel-4-kind-1-length-0-credit-1",
+    "hex": "424c4e54010104000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": true,
+    "kind": 1,
+    "channel": 4,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "name": "channel-4-kind-1-length-0-credit-1048576",
+    "hex": "424c4e54010104000123456789abcdef000000000000000200000000000000030000000000100000",
+    "valid": true,
+    "kind": 1,
+    "channel": 4,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1048576
+  },
+  {
+    "name": "channel-4-kind-2-length-0-credit-0",
+    "hex": "424c4e54010204000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 2,
+    "channel": 4,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-4-kind-3-length-0-credit-0",
+    "hex": "424c4e54010304000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 3,
+    "channel": 4,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-5-kind-0-length-1-credit-0",
+    "hex": "424c4e54010005000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 5,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "name": "channel-5-kind-0-length-65536-credit-0",
+    "hex": "424c4e54010005000123456789abcdef000000000000000200000000000000030001000000000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 5,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 65536,
+    "credit": 0
+  },
+  {
+    "name": "channel-5-kind-1-length-0-credit-1",
+    "hex": "424c4e54010105000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": true,
+    "kind": 1,
+    "channel": 5,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "name": "channel-5-kind-1-length-0-credit-1048576",
+    "hex": "424c4e54010105000123456789abcdef000000000000000200000000000000030000000000100000",
+    "valid": true,
+    "kind": 1,
+    "channel": 5,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1048576
+  },
+  {
+    "name": "channel-5-kind-2-length-0-credit-0",
+    "hex": "424c4e54010205000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 2,
+    "channel": 5,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-5-kind-3-length-0-credit-0",
+    "hex": "424c4e54010305000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 3,
+    "channel": 5,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "signed-counter-maxima",
+    "hex": "424c4e54010001007fffffffffffffff7fffffffffffffff7fffffffffffffff0000001000000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 1,
+    "session": 9223372036854775807,
+    "generation": 9223372036854775807,
+    "sequence": 9223372036854775807,
+    "length": 16,
+    "credit": 0
+  },
+  {
+    "name": "invalid-session-0",
+    "hex": "424c4e54010001000000000000000000000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-session-9223372036854775808",
+    "hex": "424c4e54010001008000000000000000000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-session-18446744073709551615",
+    "hex": "424c4e5401000100ffffffffffffffff000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-generation-0",
+    "hex": "424c4e54010001000123456789abcdef000000000000000000000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-generation-9223372036854775808",
+    "hex": "424c4e54010001000123456789abcdef800000000000000000000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-generation-18446744073709551615",
+    "hex": "424c4e54010001000123456789abcdefffffffffffffffff00000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-sequence-9223372036854775808",
+    "hex": "424c4e54010001000123456789abcdef000000000000000280000000000000000000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-sequence-18446744073709551615",
+    "hex": "424c4e54010001000123456789abcdef0000000000000002ffffffffffffffff0000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-length-0",
+    "hex": "424c4e54010001000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-length-65537",
+    "hex": "424c4e54010001000123456789abcdef000000000000000200000000000000030001000100000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-length-4294967295",
+    "hex": "424c4e54010001000123456789abcdef00000000000000020000000000000003ffffffff00000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-credit-1",
+    "hex": "424c4e54010001000123456789abcdef000000000000000200000000000000030000001000000001",
+    "valid": false
+  },
+  {
+    "name": "invalid-credit-4294967295",
+    "hex": "424c4e54010001000123456789abcdef0000000000000002000000000000000300000010ffffffff",
+    "valid": false
+  },
+  {
+    "name": "invalid-kind-4",
+    "hex": "424c4e54010401000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-kind-255",
+    "hex": "424c4e5401ff01000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-channel-0",
+    "hex": "424c4e54010000000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-channel-7",
+    "hex": "424c4e54010007000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-channel-255",
+    "hex": "424c4e540100ff000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-body-1-1-1",
+    "hex": "424c4e54010101000123456789abcdef000000000000000200000000000000030000000100000001",
+    "valid": false
+  },
+  {
+    "name": "invalid-body-1-0-0",
+    "hex": "424c4e54010101000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-body-1-0-1048577",
+    "hex": "424c4e54010101000123456789abcdef000000000000000200000000000000030000000000100001",
+    "valid": false
+  },
+  {
+    "name": "invalid-body-2-1-0",
+    "hex": "424c4e54010201000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-body-2-0-1",
+    "hex": "424c4e54010201000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": false
+  },
+  {
+    "name": "invalid-body-3-1-0",
+    "hex": "424c4e54010301000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-body-3-0-1",
+    "hex": "424c4e54010301000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": false
+  },
+  {
+    "name": "invalid-prefix-0",
+    "hex": "bd4c4e54010001000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-prefix-1",
+    "hex": "42b34e54010001000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-prefix-2",
+    "hex": "424cb154010001000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-prefix-3",
+    "hex": "424c4eab010001000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-prefix-4",
+    "hex": "424c4e54fe0001000123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "invalid-prefix-7",
+    "hex": "424c4e54010001ff0123456789abcdef000000000000000200000000000000030000001000000000",
+    "valid": false
+  },
+  {
+    "name": "channel-6-kind-0-length-1-credit-0",
+    "hex": "424c4e54010006000123456789abcdef000000000000000200000000000000030000000100000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 6,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "name": "channel-6-kind-0-length-65536-credit-0",
+    "hex": "424c4e54010006000123456789abcdef000000000000000200000000000000030001000000000000",
+    "valid": true,
+    "kind": 0,
+    "channel": 6,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 65536,
+    "credit": 0
+  },
+  {
+    "name": "channel-6-kind-1-length-0-credit-1",
+    "hex": "424c4e54010106000123456789abcdef000000000000000200000000000000030000000000000001",
+    "valid": true,
+    "kind": 1,
+    "channel": 6,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "name": "channel-6-kind-1-length-0-credit-1048576",
+    "hex": "424c4e54010106000123456789abcdef000000000000000200000000000000030000000000100000",
+    "valid": true,
+    "kind": 1,
+    "channel": 6,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 1048576
+  },
+  {
+    "name": "channel-6-kind-2-length-0-credit-0",
+    "hex": "424c4e54010206000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 2,
+    "channel": 6,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "name": "channel-6-kind-3-length-0-credit-0",
+    "hex": "424c4e54010306000123456789abcdef000000000000000200000000000000030000000000000000",
+    "valid": true,
+    "kind": 3,
+    "channel": 6,
+    "session": 81985529216486895,
+    "generation": 2,
+    "sequence": 3,
+    "length": 0,
+    "credit": 0
+  }
+]

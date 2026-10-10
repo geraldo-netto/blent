@@ -27,6 +27,6 @@ int libusb_bulk_transfer(libusb_device_handle *value,unsigned char endpoint,
 static void report_bulk(void) { fprintf(stderr,"calls=%d\n",calls); }
 int main(int argc,char **argv) {
     assert(argc==2); mode=atoi(argv[1]); assert(!atexit(report_bulk));
-    probe_usb usb={0}; unsigned char data[4]={0};
-    probe_transfer(&usb,mode!=3,data,mode==6?0:4); return 0;
+    accessory_usb usb={0}; unsigned char data[4]={0};
+    accessory_transfer(&usb,mode!=3,data,mode==6?0:4); return 0;
 }

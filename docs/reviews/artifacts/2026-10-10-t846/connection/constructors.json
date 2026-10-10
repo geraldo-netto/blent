@@ -1,0 +1,178 @@
+[
+  {
+    "class_name": "com/blent/connection/ConnectionIdentity",
+    "method": "<init>",
+    "descriptor": "([B)V",
+    "covered": 5,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionPairing$Ticket",
+    "method": "<init>",
+    "descriptor": "(JLcom/blent/connection/ConnectionPeer;)V",
+    "covered": 1,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionQueue",
+    "method": "<init>",
+    "descriptor": "(III)V",
+    "covered": 8,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionPeer",
+    "method": "<init>",
+    "descriptor": "(Ljava/lang/String;)V",
+    "covered": 2,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/IdentityKeyManager",
+    "method": "<init>",
+    "descriptor": "(Ljava/lang/String;Ljava/security/PrivateKey;Ljava/security/cert/X509Certificate;)V",
+    "covered": 5,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/SocketBridge",
+    "method": "<init>",
+    "descriptor": "(Ljava/io/InputStream;Ljava/io/OutputStream;Lcom/blent/connection/SocketBridgeSockets;Lkotlin/jvm/functions/Function2;)V",
+    "covered": 13,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionMux",
+    "method": "<init>",
+    "descriptor": "(JJIII)V",
+    "covered": 10,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionWire$Header",
+    "method": "<init>",
+    "descriptor": "(IIJJJII)V",
+    "covered": 3,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/AndroidIdentityGenerator",
+    "method": "<init>",
+    "descriptor": "(Lkotlin/jvm/functions/Function2;)V",
+    "covered": 2,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/AndroidAccessoryPorts",
+    "method": "<init>",
+    "descriptor": "(Ljava/io/InputStream;Ljava/io/OutputStream;)V",
+    "covered": 4,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/SocketBridgeAdmission",
+    "method": "<init>",
+    "descriptor": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)V",
+    "covered": 4,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/AndroidConnectionIdentity",
+    "method": "<init>",
+    "descriptor": "(Ljava/io/File;Lcom/blent/connection/IdentityStore;Lcom/blent/connection/IdentityGenerator;Lkotlin/jvm/functions/Function1;)V",
+    "covered": 5,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/AndroidIdentityStore",
+    "method": "<init>",
+    "descriptor": "(Ljava/security/KeyStore;)V",
+    "covered": 1,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ClientTlsIdentity",
+    "method": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionIdentity;Lcom/blent/connection/IdentityKeyManager;)V",
+    "covered": 3,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionFlow",
+    "method": "<init>",
+    "descriptor": "(JJII)V",
+    "covered": 7,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/SecureConnection",
+    "method": "<init>",
+    "descriptor": "([Ljavax/net/ssl/KeyManager;[B)V",
+    "covered": 4,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionPairing$Lease",
+    "method": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionPairing$Ticket;Z)V",
+    "covered": 1,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/SocketBridgeSockets",
+    "method": "<init>",
+    "descriptor": "(Ljava/net/Socket;Ljava/net/Socket;)V",
+    "covered": 1,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionQueue$Pending",
+    "method": "<init>",
+    "descriptor": "([BI)V",
+    "covered": 1,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionPairing",
+    "method": "<init>",
+    "descriptor": "()V",
+    "covered": 2,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionQueue$Slice",
+    "method": "<init>",
+    "descriptor": "(I[BII)V",
+    "covered": 1,
+    "missed": 0,
+    "passes": true
+  },
+  {
+    "class_name": "com/blent/connection/ConnectionMux$Frame",
+    "method": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionWire$Header;[BII)V",
+    "covered": 1,
+    "missed": 0,
+    "passes": true
+  }
+]

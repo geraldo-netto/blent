@@ -1,0 +1,528 @@
+{
+  "scope": "New locked packages introduced by optional accessory-transport feature; not a whole-project inventory",
+  "packages": [
+    {
+      "name": "asn1-rs",
+      "version": "0.7.2",
+      "crate_sha256": "b7f43a50ac4fdca5df8e885c21b835997f0a1cdee65494a6847694a98652d9d8",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Pierre Chifflier <chifflier@wzdftpd.net>"
+      ],
+      "notices": [
+        {
+          "path": "asn1-rs-0.7.2/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "asn1-rs-0.7.2/LICENSE-MIT",
+          "sha256": "a5c61b93b6ee1d104af9920cf020ff3c7efe818e31fe562c72261847a728f513",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "asn1-rs-derive",
+      "version": "0.6.0",
+      "crate_sha256": "3109e49b1e4909e9db6515a30c633684d68cdeaa252f215214cb4fa1a5bfee2c",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Pierre Chifflier <chifflier@wzdftpd.net>"
+      ],
+      "notices": [
+        {
+          "path": "asn1-rs-derive-0.6.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "asn1-rs-derive-0.6.0/LICENSE-MIT",
+          "sha256": "a5c61b93b6ee1d104af9920cf020ff3c7efe818e31fe562c72261847a728f513",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "asn1-rs-impl",
+      "version": "0.2.0",
+      "crate_sha256": "7b18050c2cd6fe86c3a76584ef5e0baf286d038cda203eb6223df2cc413565f7",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "Pierre Chifflier <chifflier@wzdftpd.net>"
+      ],
+      "notices": [
+        {
+          "path": "asn1-rs-impl-0.2.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "Standard Apache-2.0 text from cached asn1-rs-0.7.2; asn1-rs-impl crate declares MIT/Apache-2.0 but has no bundled license file"
+        }
+      ]
+    },
+    {
+      "name": "bit-vec",
+      "version": "0.9.1",
+      "crate_sha256": "b71798fca2c1fe1086445a7258a4bc81e6e49dcd24c8d0dd9a1e57395b603f51",
+      "declared_license": "Apache-2.0 OR MIT",
+      "authors": [
+        "Alexis Beingessner <a.beingessner@gmail.com>"
+      ],
+      "notices": [
+        {
+          "path": "bit-vec-0.9.1/LICENSE-APACHE",
+          "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "bit-vec-0.9.1/LICENSE-MIT",
+          "sha256": "f51ac2c59a222f7476ce507ca879960e2b64ea64bb2786eefdbeb7b0b538d1b7",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "der-parser",
+      "version": "10.0.0",
+      "crate_sha256": "07da5016415d5a3c4dd39b11ed26f915f52fc4e0dc197d87908bc916e51bc1a6",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Pierre Chifflier <chifflier@wzdftpd.net>"
+      ],
+      "notices": [
+        {
+          "path": "der-parser-10.0.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "der-parser-10.0.0/LICENSE-MIT",
+          "sha256": "a5c61b93b6ee1d104af9920cf020ff3c7efe818e31fe562c72261847a728f513",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "deranged",
+      "version": "0.5.8",
+      "crate_sha256": "7cd812cc2bc1d69d4764bd80df88b4317eaef9e773c75226407d9bc0876b211c",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Jacob Pratt <jacob@jhpratt.dev>"
+      ],
+      "notices": [
+        {
+          "path": "deranged-0.5.8/LICENSE-Apache",
+          "sha256": "edd65bdd88957a205c47d53fa499eed8865a70320f0f03f6391668cb304ea376",
+          "source": "cached crate LICENSE-Apache"
+        },
+        {
+          "path": "deranged-0.5.8/LICENSE-MIT",
+          "sha256": "231c837c45eb53f108fb48929e488965bc4fcc14e9ea21d35f50e6b99d98685b",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "num-bigint",
+      "version": "0.4.8",
+      "crate_sha256": "c89e69e7e0f03bea5ef08013795c25018e101932225a656383bd384495ecc367",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "The Rust Project Developers"
+      ],
+      "notices": [
+        {
+          "path": "num-bigint-0.4.8/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "num-bigint-0.4.8/LICENSE-MIT",
+          "sha256": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "num-conv",
+      "version": "0.2.2",
+      "crate_sha256": "521739c6d2bac4aa25192232afe6841231376b2b26d4d9fae5ecf8ca5772e441",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Jacob Pratt <jacob@jhpratt.dev>"
+      ],
+      "notices": [
+        {
+          "path": "num-conv-0.2.2/LICENSE-Apache",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+          "source": "cached crate LICENSE-Apache"
+        },
+        {
+          "path": "num-conv-0.2.2/LICENSE-MIT",
+          "sha256": "e2e245f2b566d0bfafb0f6a04c16b82d710c4e6e7d799e39bb4ef6e541b85b98",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "num-integer",
+      "version": "0.1.47",
+      "crate_sha256": "7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "The Rust Project Developers"
+      ],
+      "notices": [
+        {
+          "path": "num-integer-0.1.47/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "num-integer-0.1.47/LICENSE-MIT",
+          "sha256": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "oid-registry",
+      "version": "0.8.1",
+      "crate_sha256": "12f40cff3dde1b6087cc5d5f5d4d65712f34016a03ed60e9c08dcc392736b5b7",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Pierre Chifflier <chifflier@wzdftpd.net>"
+      ],
+      "notices": [
+        {
+          "path": "oid-registry-0.8.1/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "oid-registry-0.8.1/LICENSE-MIT",
+          "sha256": "a5c61b93b6ee1d104af9920cf020ff3c7efe818e31fe562c72261847a728f513",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "powerfmt",
+      "version": "0.2.0",
+      "crate_sha256": "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Jacob Pratt <jacob@jhpratt.dev>"
+      ],
+      "notices": [
+        {
+          "path": "powerfmt-0.2.0/LICENSE-Apache",
+          "sha256": "155420c6403d4e0fca34105e3c03fdd6939b64c393c7ec6f95f5b72c5474eab0",
+          "source": "cached crate LICENSE-Apache"
+        },
+        {
+          "path": "powerfmt-0.2.0/LICENSE-MIT",
+          "sha256": "070dbc7dda03a29296f2d58bdb9b7331af90f2abc9f31df22875d1eabaf29852",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "rcgen",
+      "version": "0.14.10",
+      "crate_sha256": "8774e05a7d0de114588e6a28fe7e71694b82614ed569d86d8b389dfbc98b8ad8",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [],
+      "notices": [
+        {
+          "path": "rcgen-0.14.10/LICENSE",
+          "sha256": "debe6fed7ac143217c7f533759c54b14f18cd01d5fe195c51d83c2ae2d136cb4",
+          "source": "cached crate LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "ring",
+      "version": "0.17.14",
+      "crate_sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+      "declared_license": "Apache-2.0 AND ISC",
+      "authors": [],
+      "notices": [
+        {
+          "path": "ring-0.17.14/LICENSE",
+          "sha256": "b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a",
+          "source": "cached crate LICENSE"
+        },
+        {
+          "path": "ring-0.17.14/LICENSE-BoringSSL",
+          "sha256": "005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d",
+          "source": "cached crate LICENSE-BoringSSL"
+        },
+        {
+          "path": "ring-0.17.14/LICENSE-other-bits",
+          "sha256": "f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f",
+          "source": "cached crate LICENSE-other-bits"
+        }
+      ]
+    },
+    {
+      "name": "rusticata-macros",
+      "version": "4.1.0",
+      "crate_sha256": "faf0c4a6ece9950b9abdb62b1cfcf2a68b3b67a10ba445b3bb85be2a293d0632",
+      "declared_license": "MIT/Apache-2.0",
+      "authors": [
+        "Pierre Chifflier <chifflier@wzdftpd.net>"
+      ],
+      "notices": [
+        {
+          "path": "rusticata-macros-4.1.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "rusticata-macros-4.1.0/LICENSE-MIT",
+          "sha256": "a5c61b93b6ee1d104af9920cf020ff3c7efe818e31fe562c72261847a728f513",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "rustls",
+      "version": "0.23.45",
+      "crate_sha256": "0d41d731c7d2f962d1ccc364cec258de3c0e93b38c2fb3ba97ac74513048d634",
+      "declared_license": "Apache-2.0 OR ISC OR MIT",
+      "authors": [],
+      "notices": [
+        {
+          "path": "rustls-0.23.45/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "rustls-0.23.45/LICENSE-ISC",
+          "sha256": "7cfafc877eccc46c0e346ccbaa5c51bb6b894d2b818e617d970211e232785ad4",
+          "source": "cached crate LICENSE-ISC"
+        },
+        {
+          "path": "rustls-0.23.45/LICENSE-MIT",
+          "sha256": "709e3175b4212f7b13aa93971c9f62ff8c69ec45ad8c6532a7e0c41d7a7d6f8c",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "rustls-pki-types",
+      "version": "1.15.1",
+      "crate_sha256": "2f4925028c7eb5d1fcdaf196971378ed9d2c1c4efc7dc5d011256f76c99c0a96",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [],
+      "notices": [
+        {
+          "path": "rustls-pki-types-1.15.1/LICENSE-APACHE",
+          "sha256": "45fd05c4865e7c350b98ad7ac50e1b15462d49af4a91e9b0c9dd933dc9a69742",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "rustls-pki-types-1.15.1/LICENSE-MIT",
+          "sha256": "9117d922e667125508dde62b02c1f57ed22f5ad21eb536aa2e2d99e1c796e639",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "rustls-webpki",
+      "version": "0.103.15",
+      "crate_sha256": "f3c3cf1d8b1e7d4927e2d154c3fcb02979afb9939629c62cd9048d4f07b60ac2",
+      "declared_license": "ISC",
+      "authors": [],
+      "notices": [
+        {
+          "path": "rustls-webpki-0.103.15/LICENSE",
+          "sha256": "5b698ca13897be3afdb7174256fa1574f8c6892b8bea1a66dd6469d3fe27885a",
+          "source": "cached crate LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "subtle",
+      "version": "2.6.1",
+      "crate_sha256": "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292",
+      "declared_license": "BSD-3-Clause",
+      "authors": [
+        "Isis Lovecruft <isis@patternsinthevoid.net>",
+        "Henry de Valence <hdevalence@hdevalence.ca>"
+      ],
+      "notices": [
+        {
+          "path": "subtle-2.6.1/LICENSE",
+          "sha256": "d1fc1bc0d155df60b2e7705b6b2ae02a05c96f948e1cec6e2fb86360b09f346b",
+          "source": "cached crate LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "time",
+      "version": "0.3.55",
+      "crate_sha256": "cdb87b95ec50ddfa440816d227a17b2ccbdda963a316a727fda0fc4334f7d134",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Jacob Pratt <open-source@jhpratt.dev>",
+        "Time contributors"
+      ],
+      "notices": [
+        {
+          "path": "time-0.3.55/LICENSE-Apache",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+          "source": "cached crate LICENSE-Apache"
+        },
+        {
+          "path": "time-0.3.55/LICENSE-MIT",
+          "sha256": "2537228d9a1b44a5dc595241349cae7090b326c8de165aaf89bfddef4a00d0fc",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "time-core",
+      "version": "0.1.9",
+      "crate_sha256": "9e1c906769ad99c88eaa54e728060edef082f8e358ff32030cb7c7d315e81109",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Jacob Pratt <open-source@jhpratt.dev>",
+        "Time contributors"
+      ],
+      "notices": [
+        {
+          "path": "time-core-0.1.9/LICENSE-Apache",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+          "source": "cached crate LICENSE-Apache"
+        },
+        {
+          "path": "time-core-0.1.9/LICENSE-MIT",
+          "sha256": "2537228d9a1b44a5dc595241349cae7090b326c8de165aaf89bfddef4a00d0fc",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "time-macros",
+      "version": "0.2.32",
+      "crate_sha256": "7e689342a48d2ea927c87ea50cabf8594854bf940e9310208848d680d668ed85",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Jacob Pratt <open-source@jhpratt.dev>",
+        "Time contributors"
+      ],
+      "notices": [
+        {
+          "path": "time-macros-0.2.32/LICENSE-Apache",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+          "source": "cached crate LICENSE-Apache"
+        },
+        {
+          "path": "time-macros-0.2.32/LICENSE-MIT",
+          "sha256": "2537228d9a1b44a5dc595241349cae7090b326c8de165aaf89bfddef4a00d0fc",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "tokio-rustls",
+      "version": "0.26.5",
+      "crate_sha256": "b0c85f2c3ef0b1cd58b36682f4b17aaa995f0e5db534d85692b4903abce21f67",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [],
+      "notices": [
+        {
+          "path": "tokio-rustls-0.26.5/LICENSE-APACHE",
+          "sha256": "cc117d90b498b32b11a886f279b359da16a73c3b01efbb2f5cc004b20262334e",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "tokio-rustls-0.26.5/LICENSE-MIT",
+          "sha256": "e20fa2b8e0a2565f24a792b94b4bf4b6c2b9d36f781d8a9516e218a036e6677a",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "untrusted",
+      "version": "0.9.0",
+      "crate_sha256": "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1",
+      "declared_license": "ISC",
+      "authors": [
+        "Brian Smith <brian@briansmith.org>"
+      ],
+      "notices": [
+        {
+          "path": "untrusted-0.9.0/LICENSE.txt",
+          "sha256": "7abd9b6960dcf7d4d0a48606a5b71bfe37d472db68d70637f3a58a56785f1621",
+          "source": "cached crate LICENSE.txt"
+        }
+      ]
+    },
+    {
+      "name": "x509-parser",
+      "version": "0.18.1",
+      "crate_sha256": "d43b0f71ce057da06bc0851b23ee24f3f86190b07203dd8f567d0b706a185202",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Pierre Chifflier <chifflier@wzdftpd.net>"
+      ],
+      "notices": [
+        {
+          "path": "x509-parser-0.18.1/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "x509-parser-0.18.1/LICENSE-MIT",
+          "sha256": "a5c61b93b6ee1d104af9920cf020ff3c7efe818e31fe562c72261847a728f513",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "yasna",
+      "version": "0.6.0",
+      "crate_sha256": "b5f6765e852b9b4dc8e2a76843e4d64d1cea8e79bcde0b6901aea8e7c7f08282",
+      "declared_license": "MIT OR Apache-2.0",
+      "authors": [
+        "Masaki Hara <ackie.h.gmai@gmail.com>"
+      ],
+      "notices": [
+        {
+          "path": "yasna-0.6.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "yasna-0.6.0/LICENSE-MIT",
+          "sha256": "2a7df90e60fd5512b8bca35d3ce90e068f21c52d962855053fd1d9e2e7ca0f16",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "name": "zeroize",
+      "version": "1.9.0",
+      "crate_sha256": "e13c156562582aa81c60cb29407084cdb54c4164760106ab78e6c5b0858cf64e",
+      "declared_license": "Apache-2.0 OR MIT",
+      "authors": [
+        "The RustCrypto Project Developers"
+      ],
+      "notices": [
+        {
+          "path": "zeroize-1.9.0/LICENSE-APACHE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "source": "cached crate LICENSE-APACHE"
+        },
+        {
+          "path": "zeroize-1.9.0/LICENSE-MIT",
+          "sha256": "8c7516d4b27b1e495be5e38b612298b63de48d05f49cdac94f70f3cd70f8864b",
+          "source": "cached crate LICENSE-MIT"
+        }
+      ]
+    }
+  ]
+}

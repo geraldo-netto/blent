@@ -1,4 +1,12 @@
 # Third-party components
+- The optional experimental host `accessory-transport` feature uses stock Rustls,
+  tokio-rustls, rcgen and their crypto/parsing dependencies. New locked dependency
+  notices, exact crate checksums and license declarations are retained in
+  [the accessory inventory](licenses/accessory-transport/inventory.json).
+  These files come from the local Cargo cache; no upstream source was modified.
+  The Linux USB helper links the system's unmodified libusb-1.0 shared library;
+  it does not bundle that library. Enabling this feature in a release also requires
+  its native-helper packaging and runtime acceptance tracked under T846.
 - Android APKs carry project notices, the Apache-2.0 runtime dependency license,
   the MPL-2.0 public-suffix data license and its upstream source notice in
   `assets/licenses/`. The reviewed dependency coordinates and artifact hashes

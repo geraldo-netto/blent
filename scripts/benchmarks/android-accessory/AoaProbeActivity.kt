@@ -19,7 +19,7 @@ import android.widget.TextView
 class AoaProbeActivity : Activity() {
     private lateinit var status: TextView
     private lateinit var manager: UsbManager
-    private var session: AoaProbeRun? = null
+    private var session: AoaSecureRun? = null
     private val permissionAction get() = "$packageName.AOA_PROBE_PERMISSION"
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -42,11 +42,12 @@ class AoaProbeActivity : Activity() {
     private fun showControls() {
         val layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(32, 32, 32, 32) }
         status = TextView(this).apply {
-            text = "USB accessory test only. No display or input authority.\nStart the host probe, then approve accessory access.\nUnplug/replug after testing to restore normal USB mode."
+            text = "Encrypted USB test only. No media or input authority.\nStart the host probe, then approve accessory access.\nUnplug/replug after testing to restore normal USB mode."
             textSize = 20f
         }
         layout.addView(status)
         layout.addView(Button(this).apply { text = "Start USB test"; setOnClickListener { startProbe(true) } })
+        layout.addView(Button(this).apply { text = "Approve displayed computer"; setOnClickListener { session?.approve() } })
         layout.addView(Button(this).apply { text = "Stop USB test"; setOnClickListener { stopProbe() } })
         setContentView(layout)
     }
@@ -63,8 +64,8 @@ class AoaProbeActivity : Activity() {
             if (requestPermission) askPermission(accessory)
             return
         }
-        status.text = "USB test running; maximum 60 seconds. Stop affects only this probe process."
-        session = AoaProbeRun(this, manager, accessory) { message ->
+        status.text = "Encrypted USB test starting; maximum 180 seconds. Stop affects only this probe process."
+        session = AoaSecureRun(this, manager, accessory) { message ->
             runOnUiThread { status.text = message }
         }.also {
             if (!it.start()) status.text = "One test per process. Tap Stop, then reopen Blent USB Probe."

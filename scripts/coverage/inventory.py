@@ -35,7 +35,7 @@ def coverage_source(path):
     if path.suffix == '.rs':
         return True
     if path.suffix in {'.c', '.h'}:
-        return path.as_posix().startswith(('host/evdi/', 'host/gpu/'))
+        return path.as_posix().startswith(('host/evdi/', 'host/gpu/', 'host/accessory/'))
     return path.suffix == '.kt' and path.as_posix().startswith('android/app/src/')
 
 

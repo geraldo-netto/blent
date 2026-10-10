@@ -27,6 +27,10 @@ class InventoryTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'parse error'):
                 snapshot(root)
 
+    def test_t846_native_accessory_functions_remain_in_production_scope(self):
+        self.assertTrue(coverage_source(Path('host/accessory/stream.c')))
+        self.assertTrue(coverage_source(Path('host/accessory/accessory.h')))
+
     def test_t766_optional_gpu_functions_remain_in_production_scope(self):
         self.assertTrue(coverage_source(Path('host/gpu/capture.c')))
         self.assertTrue(coverage_source(Path('host/gpu/options.h')))

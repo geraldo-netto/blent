@@ -1,0 +1,335 @@
+[
+  {
+    "direction": "send",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 0,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 0,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "direction": "send",
+    "ok": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 0,
+    "length": 0,
+    "credit": 64
+  },
+  {
+    "direction": "send",
+    "ok": false,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 0,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "direction": "receive",
+    "ok": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 0,
+    "length": 0,
+    "credit": 64
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 1,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 8,
+    "generation": 9,
+    "sequence": 1,
+    "length": 64,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 8,
+    "sequence": 1,
+    "length": 64,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 0,
+    "channel": 2,
+    "session": 7,
+    "generation": 9,
+    "sequence": 1,
+    "length": 64,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 2,
+    "length": 64,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 1,
+    "length": 65,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": true,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 1,
+    "length": 64,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 1,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "direction": "send",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 1,
+    "length": 65,
+    "credit": 0
+  },
+  {
+    "direction": "send",
+    "ok": true,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 1,
+    "length": 64,
+    "credit": 0
+  },
+  {
+    "direction": "send",
+    "ok": false,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 2,
+    "length": 1,
+    "credit": 0
+  },
+  {
+    "direction": "send",
+    "ok": false,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 2,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "direction": "release",
+    "length": 0,
+    "ok": false
+  },
+  {
+    "direction": "release",
+    "length": 65,
+    "ok": false
+  },
+  {
+    "direction": "release",
+    "length": 64,
+    "ok": true
+  },
+  {
+    "direction": "send",
+    "ok": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 2,
+    "length": 0,
+    "credit": 32
+  },
+  {
+    "direction": "receive",
+    "ok": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 2,
+    "length": 0,
+    "credit": 32
+  },
+  {
+    "direction": "send",
+    "ok": true,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 3,
+    "length": 16,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": true,
+    "kind": 0,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 3,
+    "length": 16,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 4,
+    "length": 0,
+    "credit": 49
+  },
+  {
+    "direction": "send",
+    "ok": false,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 4,
+    "length": 0,
+    "credit": 49
+  },
+  {
+    "direction": "release",
+    "length": 16,
+    "ok": true
+  },
+  {
+    "direction": "send",
+    "ok": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 4,
+    "length": 0,
+    "credit": 48
+  },
+  {
+    "direction": "receive",
+    "ok": true,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 4,
+    "length": 0,
+    "credit": 48
+  },
+  {
+    "direction": "send",
+    "ok": true,
+    "kind": 2,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 5,
+    "length": 0,
+    "credit": 0
+  },
+  {
+    "direction": "receive",
+    "ok": false,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 5,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "direction": "send",
+    "ok": false,
+    "kind": 1,
+    "channel": 1,
+    "session": 7,
+    "generation": 9,
+    "sequence": 6,
+    "length": 0,
+    "credit": 1
+  },
+  {
+    "direction": "release",
+    "length": 1,
+    "ok": false
+  }
+]

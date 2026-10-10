@@ -1,5 +1,9 @@
 # T846: USB-first ADB-free transport feasibility
 
+The original trial used native sources under `scripts/benchmarks/aoa/` at
+commit `ff7978a0`. Current shared native ownership/USB code is extracted into
+`host/accessory/`; historical trial hashes below identify the original sources.
+
 Owner selected USB first on 2026-10-10. Keep optional ADB fallback during
 qualification; direct LAN remains later. T846 is not resolved by this document
 or by compiling the prototype. Production still uses ADB.
