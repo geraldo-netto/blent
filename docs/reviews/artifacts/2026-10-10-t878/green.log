@@ -1,0 +1,19 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.32s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 11 tests
+test broker::pump::tests::t878_absolute_pending_deadlines_do_not_refresh_or_charge_idle_reads ... ok
+test broker::pump::tests::t878_backpressure_preserves_exact_block_while_receive_continues ... ok
+test broker::pump::tests::t878_invalid_block_and_deadline_rejected_before_io ... ok
+test broker::pump::tests::t878_invalid_extents_eof_and_native_errors_fail_closed ... ok
+test broker::pump::tests::t878_native_socket_duplex_and_drop_retire_exact_local_handle ... ok
+test broker::pump::tests::t878_partial_duplex_keeps_credit_until_flush_and_reuses_buffers ... ok
+test broker::pump::tests::t878_revoked_or_rebound_lease_cannot_complete_pending_consumer ... ok
+test broker::pump::tests::t878_stalled_consumer_expires_without_credit_or_sibling_failure ... ok
+test broker::pump::tests::t878_tiny_endpoint_capacity_never_charges_hidden_vector_growth ... ok
+test broker::session::tests::pump::t878_large_requested_block_adapts_to_small_negotiated_window ... ok
+test broker::session::tests::pump::t878_session_adapter_keeps_exact_consumer_and_channel_authority ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 452 filtered out; finished in 0.01s
+

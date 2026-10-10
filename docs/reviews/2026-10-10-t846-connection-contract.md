@@ -716,3 +716,21 @@ Root controllers and hubs are excluded. Other devices have unknown support unles
 already reporting the stock accessory VID/PID; this observation grants no trust.
 The Rust Scan adapter bounds bytes/time and retains independent native Completion.
 T853 still maps this native data to opaque IDs and revalidates explicit selections.
+
+### T878 local endpoint pumping
+
+A portable Endpoint boundary carries exact resource lease/channel identity,
+current authority, outbound allocation capacity and consumer borrow/completion
+operations. Session implements it. The host Pump owns one local byte-stream
+handle and bounded state for both directions; it never spawns per-block tasks.
+Configured producer blocks are capped to the endpoint's retained-allocation
+capacity. One pending consumer borrow holds credit until complete write/flush.
+Independent active-I/O deadlines do not charge idle socket reads. Errors poison
+only this pump. The owner must still cancel the whole affected resource, retire
+all its channel handles and observe any independent native worker Completion.
+
+The T853 reactor must poll pumps after local socket readiness AND Session progress
+(including freed queue capacity), and continue polling Session while consumers
+stall. It must schedule idle resource ticks. A constructor, buffer drop, cancelled
+wait or kill request cannot establish native resource retirement. These library
+boundaries are tested but do not themselves enable production media without ADB.

@@ -9,3 +9,4 @@ pub mod session;
 
 pub mod connection;
 pub mod window;
+pub mod pump;

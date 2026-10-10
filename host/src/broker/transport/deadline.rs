@@ -4,7 +4,7 @@ use tokio::time::{sleep, Instant, Sleep};
 
 /// Allocate once per direction, then reset in place. Disarming retains storage.
 #[derive(Default)]
-pub(super) struct Deadline {
+pub(crate) struct Deadline {
     timer: Option<Pin<Box<Sleep>>>,
     armed: bool,
 }

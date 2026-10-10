@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.10s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::pump::tests::t878_tiny_endpoint_capacity_never_charges_hidden_vector_growth ... FAILED
+
+failures:
+
+---- broker::pump::tests::t878_tiny_endpoint_capacity_never_charges_hidden_vector_growth stdout ----
+
+thread 'broker::pump::tests::t878_tiny_endpoint_capacity_never_charges_hidden_vector_growth' (1953670) panicked at host/src/broker/pump/tests.rs:345:9:
+T878 allocation exceeded endpoint capacity 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::pump::tests::t878_tiny_endpoint_capacity_never_charges_hidden_vector_growth
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 461 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

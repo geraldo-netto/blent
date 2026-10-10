@@ -30,6 +30,9 @@ pub(super) struct Channels {
     capacity: usize,
 }
 impl Channels {
+    pub fn capacity(&self) -> usize {
+        self.capacity
+    }
     pub fn new(capacity: u32) -> Self {
         Self {
             buffers: Default::default(),

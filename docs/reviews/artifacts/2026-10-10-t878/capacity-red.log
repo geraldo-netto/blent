@@ -1,0 +1,22 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.88s
+     Running unittests src/lib.rs (/tmp/blent-t815-target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test broker::session::tests::pump::t878_large_requested_block_adapts_to_small_negotiated_window ... FAILED
+
+failures:
+
+---- broker::session::tests::pump::t878_large_requested_block_adapts_to_small_negotiated_window stdout ----
+
+thread 'broker::session::tests::pump::t878_large_requested_block_adapts_to_small_negotiated_window' (1951419) panicked at host/src/broker/session/tests/pump.rs:13:5:
+T878 one byte cannot enter small negotiated window when block allocation is larger
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    broker::session::tests::pump::t878_large_requested_block_adapts_to_small_negotiated_window
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 460 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent --lib`

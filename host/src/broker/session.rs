@@ -20,6 +20,9 @@ mod channels;
 mod lifecycle;
 mod management;
 mod readiness;
+mod endpoint;
+pub use endpoint::Endpoint;
+pub use blent_config::connection::endpoint::Read;
 use channels::Channels;
 use management::{Effect, Publication};
 
@@ -52,12 +55,6 @@ impl Default for Limits {
             io_timeout: Duration::from_secs(5),
         }
     }
-}
-/// Completion names the exact consumer borrow, not merely its byte length.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct Read {
-    pub id: u64,
-    pub count: usize,
 }
 struct Binding {
     lease: Lease,

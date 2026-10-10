@@ -12,7 +12,7 @@ use std::{
     time::Duration,
 };
 use tokio::io::{AsyncRead, AsyncWrite};
-mod deadline;
+pub(super) mod deadline;
 mod input;
 mod output;
 use deadline::Deadline;
