@@ -378,8 +378,17 @@ mod persistence_contract_tests {
             let adapter = SessionSettings::new(&none, &mode, false);
             let store = blent_config::storage::ConfigStore::default();
             for enabled in [false, true, false] {
-                store.update(|config| { config.auto_resolution = enabled; Ok(()) }).unwrap();
-                assert_eq!((adapter.auto_resolution)(), enabled, "T824: preference was cached or read from another location");
+                store
+                    .update(|config| {
+                        config.auto_resolution = enabled;
+                        Ok(())
+                    })
+                    .unwrap();
+                assert_eq!(
+                    (adapter.auto_resolution)(),
+                    enabled,
+                    "T824: preference was cached or read from another location"
+                );
             }
             return;
         }
@@ -389,7 +398,13 @@ mod persistence_contract_tests {
             .env("BLENT_T824_SETTINGS_CHILD", "1")
             .env("XDG_CONFIG_HOME", root.path())
             .env("HOME", root.path())
-            .output().unwrap();
-        assert!(output.status.success(), "{}{}", String::from_utf8_lossy(&output.stdout), String::from_utf8_lossy(&output.stderr));
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
     }
 }
