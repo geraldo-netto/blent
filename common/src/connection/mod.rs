@@ -18,3 +18,4 @@ pub mod registration;
 pub mod window;
 pub mod control;
 pub mod endpoint;
+pub mod control_view;

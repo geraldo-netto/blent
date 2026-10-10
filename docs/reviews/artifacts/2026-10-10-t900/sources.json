@@ -1,0 +1,5 @@
+{
+  "common/src/connection/control_view.rs": "2fd1f40b0857aa1dce6f94d5cacb167531276a5325b4c7a45120419a43d39b63",
+  "common/src/connection/control_view/tests.rs": "fab28dd6e9d91cbd1c0820c6032d2920a9f304ade9f011d047136067e717a2ec",
+  "common/src/connection/control_view/snapshot.rs": "7a6f84cccefefb1df2e9a4b0abfbce5b2bdf415d46c73330b10e93cec17cb964"
+}

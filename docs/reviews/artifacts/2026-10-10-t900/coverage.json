@@ -1,0 +1,279 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "common/src/connection/control_view.rs",
+    "common/src/connection/control_view/snapshot.rs"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 23,
+      "passing": 23,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "default",
+      "line": 10,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "validate",
+      "line": 19,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "revision",
+      "line": 56,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "computer",
+      "line": 59,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "devices",
+      "line": 62,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "links",
+      "line": 65,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "saved",
+      "line": 68,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "record",
+      "line": 71,
+      "language": "rust",
+      "covered": 32,
+      "total": 33,
+      "percent": 96.96969696969697,
+      "passes": true,
+      "missing": [
+        118
+      ]
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "link",
+      "line": 122,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "new",
+      "line": 166,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "push",
+      "line": 173,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "revision",
+      "line": 200,
+      "language": "rust",
+      "covered": 7,
+      "total": 8,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        202
+      ]
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "snapshot",
+      "line": 19,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "prepare",
+      "line": 22,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "default",
+      "line": 45,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "reset",
+      "line": 55,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "view",
+      "line": 59,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "publish",
+      "line": 62,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "check_snapshot",
+      "line": 74,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "command",
+      "line": 92,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "allowed",
+      "line": 110,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "matching",
+      "line": 148,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "known",
+      "line": 160,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}
