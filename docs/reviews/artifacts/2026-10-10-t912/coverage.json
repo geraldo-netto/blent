@@ -1,0 +1,203 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "host/src/session_core.rs",
+    "host/src/session_network.rs"
+  ],
+  "passes": true,
+  "summary": {
+    "rust": {
+      "functions": 16,
+      "passing": 16,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/session_core.rs",
+      "name": "input_config",
+      "line": 33,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "prepare",
+      "line": 50,
+      "language": "rust",
+      "covered": 41,
+      "total": 41,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "start",
+      "line": 109,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "start_exported",
+      "line": 118,
+      "language": "rust",
+      "covered": 51,
+      "total": 51,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "from_workers",
+      "line": 187,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "stop",
+      "line": 216,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "drop",
+      "line": 224,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "forward_shutdown",
+      "line": 239,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "start_servers",
+      "line": 254,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "bind",
+      "line": 271,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "start",
+      "line": 284,
+      "language": "rust",
+      "covered": 17,
+      "total": 18,
+      "percent": 94.44444444444444,
+      "passes": true,
+      "missing": [
+        296
+      ]
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "spawn_server",
+      "line": 304,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_core.rs",
+      "name": "spawn_display_gate",
+      "line": 317,
+      "language": "rust",
+      "covered": 17,
+      "total": 19,
+      "percent": 89.47368421052632,
+      "passes": true,
+      "missing": [
+        328,
+        329
+      ]
+    },
+    {
+      "file": "host/src/session_network.rs",
+      "name": "retain",
+      "line": 15,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_network.rs",
+      "name": "ports",
+      "line": 29,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/session_network.rs",
+      "name": "try_clone",
+      "line": 34,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

@@ -13,6 +13,7 @@ pub mod owned_task;
 pub mod persistence_port;
 mod session_adapters;
 pub mod session_state;
+pub mod session_network;
 mod session_supervision;
 
 // Shared wire/session state is built for every host target.

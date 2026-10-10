@@ -88,7 +88,6 @@ impl Spec {
             stream,
             input,
             instance: self.instance,
-            ports: self.ports,
         }
     }
 }
@@ -104,11 +103,22 @@ pub struct Prepared {
     mode: watch::Sender<bool>,
     capture: Box<dyn CaptureBackend>,
     instance: u32,
-    ports: (u16, u16),
 }
 
 impl Prepared {
     pub async fn start(self, daemon_stop: watch::Receiver<bool>) -> Result<Runtime> {
+        self.start_exported(daemon_stop)
+            .await
+            .map(|(runtime, _listeners)| runtime)
+    }
+
+    /// Native composition seam for media registration. Portable session behavior
+    /// still depends only on the capture/input and lifecycle contracts. The caller
+    /// owns returned TCP capabilities independently until its route really retires.
+    pub async fn start_exported(
+        self,
+        daemon_stop: watch::Receiver<bool>,
+    ) -> Result<(Runtime, crate::session_network::RetainedListeners)> {
         let admission = Workers::reserve()?;
         let (video, _) = video_queue::channel(
             video_queue::QUEUE_PACKETS,
@@ -130,7 +140,8 @@ impl Prepared {
             })
         }))
         .map_err(|_| anyhow::anyhow!("Capture startup panicked"))?;
-        let (stream, input) = servers.start(video);
+        let ports = servers.retained.ports();
+        let (stream, input, retained) = servers.start(video);
         let gate = spawn_display_gate(gate_tx, self.tablet.subscribe(), self.mode.subscribe());
         let stop = forward_shutdown(daemon_stop, stop_rx, stop_tx.clone());
         let mut tasks = vec![
@@ -145,13 +156,16 @@ impl Prepared {
                 .into_iter()
                 .map(|work| ("Capture auxiliary", spawn_server("Capture auxiliary", work))),
         );
-        Ok(Runtime::from_workers(
-            self.instance,
-            self.tablet,
-            self.relaunch,
-            stop_tx,
-            Workers::new(admission, spawn_server("Capture", workers.capture), tasks),
-            self.ports,
+        Ok((
+            Runtime::from_workers(
+                self.instance,
+                self.tablet,
+                self.relaunch,
+                stop_tx,
+                Workers::new(admission, spawn_server("Capture", workers.capture), tasks),
+                ports,
+            ),
+            retained,
         ))
     }
 }
@@ -242,7 +256,8 @@ pub async fn start_servers(
     input: input::InputServer,
     video: crate::video_queue::VideoSender,
 ) -> Result<(JoinHandle<Result<()>>, JoinHandle<Result<()>>)> {
-    Ok(BoundServers::bind(stream, input).await?.start(video))
+    let (stream, input, _retained) = BoundServers::bind(stream, input).await?.start(video);
+    Ok((stream, input))
 }
 
 struct BoundServers {
@@ -250,22 +265,30 @@ struct BoundServers {
     input: input::InputServer,
     video_listener: tokio::net::TcpListener,
     input_listener: tokio::net::TcpListener,
+    retained: crate::session_network::RetainedListeners,
 }
 impl BoundServers {
     async fn bind(stream: stream::StreamServer, input: input::InputServer) -> Result<Self> {
         let video_listener = stream.bind().await?;
         let input_listener = input.bind().await?;
+        let (retained, video_listener, input_listener) =
+            crate::session_network::RetainedListeners::retain(video_listener, input_listener)?;
         Ok(Self {
             stream,
             input,
             video_listener,
             input_listener,
+            retained,
         })
     }
     fn start(
         self,
         video: video_queue::VideoSender,
-    ) -> (JoinHandle<Result<()>>, JoinHandle<Result<()>>) {
+    ) -> (
+        JoinHandle<Result<()>>,
+        JoinHandle<Result<()>>,
+        crate::session_network::RetainedListeners,
+    ) {
         let stream = spawn_server("Stream", async move {
             self.stream
                 .run_with_listener(video, self.video_listener)
@@ -274,7 +297,7 @@ impl BoundServers {
         let input = spawn_server("Input", async move {
             self.input.run_with_listener(self.input_listener).await
         });
-        (stream, input)
+        (stream, input, self.retained)
     }
 }
 

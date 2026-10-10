@@ -1,0 +1,37 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.71s
+     Running tests/capture_contract.rs (target/llvm-cov-target/debug/deps/capture_contract-d0ba440204bce380)
+
+running 4 tests
+test t820_codec_headers_and_refresh_use_independent_ports ... ok
+test t820_fake_output_preserves_immutable_backing_and_generation ... ok
+test t820_real_queue_and_attachment_adapters_obey_capture_contracts ... ok
+test t820_worker_contract_preserves_success_and_error_without_runtime_handles ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/session_failure.rs (target/llvm-cov-target/debug/deps/session_failure-77704dfd80a32026)
+
+running 16 tests
+test t813_already_requested_daemon_shutdown_is_not_failure ... ok
+test t813_capture_error_retires_attachment_and_siblings ... ok
+test t813_capture_panic_retires_attachment_and_siblings ... ok
+test t813_failed_session_cannot_be_reactivated_by_late_transport ... ok
+test t813_native_input_completion_is_a_session_failure ... ok
+test t813_normal_shutdown_aborts_unresponsive_async_capture_after_grace ... ok
+test t813_owner_drop_closes_status_with_terminal_value ... ok
+test t813_retirement_rejects_bounded_invalid_and_late_transport_values ... ok
+test t813_service_outcomes_publish_failure_without_stopping_other_sessions ... ok
+test t813_startup_panic_returns_error_and_releases_listeners ... ok
+test t813_unexpected_capture_success_retires_attachment_and_siblings ... ok
+test t813_worker_panic_during_generation_action_still_retires_session ... ok
+test t912_ephemeral_session_reports_actual_owned_listener_ports ... ok
+test t912_exported_listener_capabilities_outlive_actual_session_retirement ... ok
+test t912_legacy_server_start_keeps_its_listeners_after_export_is_dropped ... ok
+test t912_partial_bind_failure_rolls_back_before_capture_or_endpoint_publication ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+    Finished report saved to /tmp/blent-t912.lcov

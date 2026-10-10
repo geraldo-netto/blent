@@ -1394,3 +1394,23 @@ Safe recovery requires independent proof of the original broker's native death.
 [Validation](artifacts/2026-10-10-t911/README.md) covers isolated broker/TLS traffic,
 descriptor lifetime and bounded failures. T912/T908 still own session-listener
 publication and host integration; T855/T857 physical acceptance remains pending.
+
+## T912 session listener ownership
+
+`Prepared::start_exported` is an explicit native TCP composition seam: it returns
+the ordinary session runtime plus separately owned `RetainedListeners`. The
+portable capture/input/attachment and lifecycle contracts do not gain OS handles.
+The network adapter retains bound video/control capabilities and exports ordered
+owned duplicates to registration adapters. Numeric ports describe their actual
+bindings; an ephemeral bind now reports its assigned port rather than zero.
+
+Ordinary session startup drops the extra export while its accept loops retain
+their listeners. Registration startup retains its own duplicates through broker
+retirement, independently of session-task retirement. The composition owner must
+retire both domains before reusing a session; one domain's completion is not proof
+for the other. Partial bind or capture startup failure drops all unpublished
+listener owners before returning an error.
+
+[Evidence](artifacts/2026-10-10-t912/README.md) retains fail-before-fix port reporting,
+native descriptor lifetime, startup rollback and session lifecycle regressions.
+T908 still joins authenticated peer discovery, session selection and registration.

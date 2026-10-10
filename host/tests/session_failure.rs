@@ -507,3 +507,135 @@ async fn t813_worker_panic_during_generation_action_still_retires_session() {
     assert!(!runtime.tablet_tx.lease().apply(|| panic!("retired work")));
     runtime.stop().await;
 }
+
+#[tokio::test]
+async fn t912_ephemeral_session_reports_actual_owned_listener_ports() {
+    let (trigger, release) = oneshot::channel();
+    let prepared = spec(0).prepare(
+        watch::channel(false).0,
+        SessionResources::default(),
+        Box::new(Capture {
+            release,
+            outcome: 0,
+            started: Arc::new(AtomicBool::new(false)),
+            done: Arc::new(AtomicBool::new(false)),
+        }),
+        Arc::new(Input),
+    );
+    let (_daemon, stop) = watch::channel(false);
+    let runtime = prepared.start(stop).await.unwrap();
+    assert_ne!(
+        runtime.video_port, 0,
+        "T912 must report the bound video port"
+    );
+    assert_ne!(
+        runtime.input_port, 0,
+        "T912 must report the bound control port"
+    );
+    assert_ne!(runtime.video_port, runtime.input_port);
+    assert!(std::net::TcpListener::bind(("127.0.0.1", runtime.video_port)).is_err());
+    assert!(std::net::TcpListener::bind(("127.0.0.1", runtime.input_port)).is_err());
+    trigger.send(()).unwrap();
+    runtime.stop().await;
+}
+
+#[tokio::test]
+async fn t912_exported_listener_capabilities_outlive_actual_session_retirement() {
+    let (trigger, release) = oneshot::channel();
+    let prepared = spec(0).prepare(
+        watch::channel(false).0,
+        SessionResources::default(),
+        Box::new(Capture {
+            release,
+            outcome: 0,
+            started: Arc::new(AtomicBool::new(false)),
+            done: Arc::new(AtomicBool::new(false)),
+        }),
+        Arc::new(Input),
+    );
+    let (_daemon, stop) = watch::channel(false);
+    let (runtime, retained) = prepared.start_exported(stop).await.unwrap();
+    let ports = retained.ports();
+    assert_eq!(ports, (runtime.video_port, runtime.input_port));
+    let native = retained.try_clone().unwrap();
+    assert_eq!(native.len(), 2);
+    assert_eq!(native[0].local_addr().unwrap().port(), ports.0);
+    assert_eq!(native[1].local_addr().unwrap().port(), ports.1);
+    trigger.send(()).unwrap();
+    let retirement = runtime.stop().await;
+    tokio::time::timeout(Duration::from_secs(2), async {
+        while !retirement.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    for port in [ports.0, ports.1] {
+        assert!(std::net::TcpListener::bind(("127.0.0.1", port)).is_err());
+    }
+    drop(retained);
+    for port in [ports.0, ports.1] {
+        assert!(std::net::TcpListener::bind(("127.0.0.1", port)).is_err());
+    }
+    drop(native);
+    for port in [ports.0, ports.1] {
+        assert!(std::net::TcpListener::bind(("127.0.0.1", port)).is_ok());
+    }
+}
+
+#[tokio::test]
+async fn t912_partial_bind_failure_rolls_back_before_capture_or_endpoint_publication() {
+    let occupied = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+    let vacant = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+    let video_port = vacant.local_addr().unwrap().port();
+    drop(vacant);
+    let mut config = spec(0);
+    config.ports = (video_port, occupied.local_addr().unwrap().port());
+    let prepared = config.prepare(
+        watch::channel(false).0,
+        SessionResources::default(),
+        Box::new(StartupPanic),
+        Arc::new(Input),
+    );
+    let (_daemon, stop) = watch::channel(false);
+    let error = match prepared.start_exported(stop).await {
+        Ok(_) => panic!("T912 occupied input endpoint was accepted"),
+        Err(error) => error,
+    };
+    assert!(!error.to_string().contains("Capture startup panicked"));
+    assert!(std::net::TcpListener::bind(("127.0.0.1", video_port)).is_ok());
+}
+
+#[tokio::test]
+async fn t912_legacy_server_start_keeps_its_listeners_after_export_is_dropped() {
+    let reserved = [
+        std::net::TcpListener::bind("127.0.0.1:0").unwrap(),
+        std::net::TcpListener::bind("127.0.0.1:0").unwrap(),
+    ];
+    let ports = (
+        reserved[0].local_addr().unwrap().port(),
+        reserved[1].local_addr().unwrap().port(),
+    );
+    drop(reserved);
+    let mut config = spec(0);
+    config.ports = ports;
+    let prepared = config.prepare(
+        watch::channel(false).0,
+        SessionResources::default(),
+        Box::new(StartupPanic),
+        Arc::new(Input),
+    );
+    let (video, _) = blent::video_queue::channel(8, Default::default());
+    let (stream, input) = blent::session::start_servers(prepared.stream, prepared.input, video)
+        .await
+        .unwrap();
+    for port in [ports.0, ports.1] {
+        assert!(std::net::TcpListener::bind(("127.0.0.1", port)).is_err());
+    }
+    stream.abort();
+    input.abort();
+    let _ = tokio::join!(stream, input);
+    for port in [ports.0, ports.1] {
+        assert!(std::net::TcpListener::bind(("127.0.0.1", port)).is_ok());
+    }
+}
