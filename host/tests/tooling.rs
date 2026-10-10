@@ -901,3 +901,17 @@ fn t827_architecture_rules_reject_forbidden_dependency_fixtures() {
         );
     }
 }
+
+#[test]
+fn t817_fused_camera_output_stall_blocks_preview() {
+    let output = Command::new("python3")
+        .arg(repo().join("scripts/benchmarks/camera-fusion.py"))
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+}

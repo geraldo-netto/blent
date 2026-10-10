@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-init_hw_device",
+      "vaapi=gpu:/dev/dri/renderD128",
+      "-f",
+      "lavfi",
+      "-i",
+      "color=s=160x120",
+      "-frames:v",
+      "1",
+      "-f",
+      "null",
+      "-"
+    ],
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-init_hw_device",
+      "vaapi=gpu:/dev/dri/renderD129",
+      "-f",
+      "lavfi",
+      "-i",
+      "color=s=160x120",
+      "-frames:v",
+      "1",
+      "-f",
+      "null",
+      "-"
+    ],
+    "returncode": 0,
+    "stderr": ""
+  }
+]
