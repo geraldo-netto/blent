@@ -151,4 +151,95 @@ class SecureConnectionInteropTest {
         assertFalse(trial(peer = "stranger"))
         assertFalse(trial(mode = "wrong-preface"))
     }
+
+    private fun window(socket: Socket) {
+        val origin = System.nanoTime()
+        fun now() = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin)
+        val negotiation = ConnectionWindowNegotiation(4096, 0, 3000)
+        val input = java.io.DataInputStream(socket.getInputStream())
+        val byte = ByteArray(1)
+        repeat(ConnectionWindow.BYTES) {
+            input.readFully(byte)
+            assertEquals(1, negotiation.feed(byte, 0, 1, now()))
+        }
+        assertNull(negotiation.selected())
+        val first = negotiation.output(now())!!
+        assertNull(negotiation.output(now()))
+        socket.getOutputStream().write(first.bytes, first.offset, 5)
+        negotiation.wrote(first, 5, now())
+        val rest = negotiation.output(now())!!
+        socket.getOutputStream().write(rest.bytes, rest.offset, rest.length)
+        negotiation.wrote(rest, rest.length, now())
+        assertNull(negotiation.selected())
+        val receipt = negotiation.flush(now())!!
+        socket.getOutputStream().flush()
+        assertEquals(4096, negotiation.flushed(receipt, now()))
+        assertEquals(4096, negotiation.selected())
+        assertFalse(negotiation.nativePending())
+        framed(socket)
+    }
+
+    private fun framed(socket: Socket) {
+        val origin = System.nanoTime()
+        val clock = { TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - origin) }
+        val mux = ConnectionMux(1, 1, 4096, 8, 64)
+        val reader = ConnectionFrameReader(3000)
+        val writer = ConnectionFrameWriter(3000)
+        assertTrue(mux.offer(ConnectionWire.MANAGEMENT, "window-frame".toByteArray()))
+        repeat(16) {
+            drainFrames(socket, mux, writer, clock)
+            val frame = readFrame(socket, reader, clock)
+            assertEquals(ConnectionWire.MANAGEMENT, frame.header.channel)
+            val delivered = mux.receive(frame.header)
+            if (delivered) {
+                assertArrayEquals("framed-ok".toByteArray(), frame.bytes.copyOfRange(frame.offset, frame.offset + frame.length))
+                mux.release(frame.header.channel, frame.length)
+            }
+            reader.release(frame)
+            if (delivered) return
+        }
+        error("Rust framing turn limit exceeded")
+    }
+
+    private fun drainFrames(socket: Socket, mux: ConnectionMux, writer: ConnectionFrameWriter, now: () -> Long) {
+        repeat(8) {
+            val frame = mux.next() ?: return
+            val owned = ConnectionFrame(frame.header, frame.bytes, frame.offset, frame.length)
+            writer.begin(owned, now())
+            writeFrame(socket, writer, now)
+            val receipt = writer.flush(now())!!
+            assertNull(writer.flush(now()))
+            socket.getOutputStream().flush()
+            assertSame(owned, writer.flushComplete(receipt, now()))
+            mux.finish(true)
+        }
+        error("Unbounded fixture output")
+    }
+
+    private fun writeFrame(socket: Socket, writer: ConnectionFrameWriter, now: () -> Long) {
+        repeat(128) {
+            val loan = writer.write(now()) ?: return
+            assertNull(writer.write(now()))
+            val count = minOf(7, loan.length)
+            socket.getOutputStream().write(loan.bytes, loan.offset, count)
+            writer.writeComplete(loan, count, now())
+        }
+        error("Unbounded fixture frame")
+    }
+
+    private fun readFrame(socket: Socket, reader: ConnectionFrameReader, now: () -> Long): ConnectionFrame {
+        repeat(128) {
+            reader.frame()?.let { frame -> assertNull(reader.frame()); return frame }
+            val loan = reader.read(now())!!
+            assertNull(reader.read(now()))
+            val count = socket.getInputStream().read(loan.bytes, loan.offset, minOf(7, loan.length))
+            reader.readComplete(loan, count, now())
+        }
+        error("Unbounded fixture input")
+    }
+
+    @Test @Config(sdk = [27, 34]) fun t881RealTlsWindowNegotiationMatchesHostRuntimeBeforeApplicationData() {
+        assertTrue(trial(mode = "window", verified = ::window))
+    }
+
 }

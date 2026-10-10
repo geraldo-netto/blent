@@ -1,0 +1,458 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "<init>",
+    "descriptor": "(J)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "read",
+    "descriptor": "(J)Lcom/blent/connection/ConnectionBuffer;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "readComplete",
+    "descriptor": "(Lcom/blent/connection/ConnectionBuffer;IJ)V",
+    "covered": 13,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "receiveHeader",
+    "descriptor": "(IJ)V",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "frame",
+    "descriptor": "()Lcom/blent/connection/ConnectionFrame;",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "release",
+    "descriptor": "(Lcom/blent/connection/ConnectionFrame;)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "nativePending",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "tick",
+    "descriptor": "(J)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameReader",
+    "name": "cancel",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "<init>",
+    "descriptor": "(IJJ)V",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "requireCurrent",
+    "descriptor": "(Z)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "checkDeadline",
+    "descriptor": "(J)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "feed",
+    "descriptor": "([BIIJ)I",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "prepare",
+    "descriptor": "()V",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "output",
+    "descriptor": "(J)Lcom/blent/connection/ConnectionWindowNegotiation$Write;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "wrote",
+    "descriptor": "(Lcom/blent/connection/ConnectionWindowNegotiation$Write;IJ)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "flush",
+    "descriptor": "(J)Lcom/blent/connection/ConnectionWindowNegotiation$Flush;",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "flushed",
+    "descriptor": "(Lcom/blent/connection/ConnectionWindowNegotiation$Flush;J)I",
+    "covered": 6,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "nativePending",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "selected",
+    "descriptor": "()Ljava/lang/Integer;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation",
+    "name": "cancel",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation$Stage",
+    "name": "<clinit>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrame",
+    "name": "<init>",
+    "descriptor": "(Lcom/blent/connection/ConnectionWire$Header;[BII)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrame",
+    "name": "getHeader",
+    "descriptor": "()Lcom/blent/connection/ConnectionWire$Header;",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrame",
+    "name": "getBytes",
+    "descriptor": "()[B",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrame",
+    "name": "getOffset",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrame",
+    "name": "getLength",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation$Write",
+    "name": "<init>",
+    "descriptor": "([BII)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation$Write",
+    "name": "getBytes",
+    "descriptor": "()[B",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation$Write",
+    "name": "getOffset",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation$Write",
+    "name": "getLength",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "<init>",
+    "descriptor": "(J)V",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "begin",
+    "descriptor": "(Lcom/blent/connection/ConnectionFrame;J)V",
+    "covered": 11,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "write",
+    "descriptor": "(J)Lcom/blent/connection/ConnectionBuffer;",
+    "covered": 9,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "writeComplete",
+    "descriptor": "(Lcom/blent/connection/ConnectionBuffer;IJ)V",
+    "covered": 8,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "flush",
+    "descriptor": "(J)Lcom/blent/connection/ConnectionFlush;",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "flushComplete",
+    "descriptor": "(Lcom/blent/connection/ConnectionFlush;J)Lcom/blent/connection/ConnectionFrame;",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "nativePending",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "tick",
+    "descriptor": "(J)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameWriter",
+    "name": "cancel",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionBuffer",
+    "name": "<init>",
+    "descriptor": "([BII)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionBuffer",
+    "name": "getBytes",
+    "descriptor": "()[B",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionBuffer",
+    "name": "getOffset",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionBuffer",
+    "name": "getLength",
+    "descriptor": "()I",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFlush",
+    "name": "<init>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindow",
+    "name": "validate",
+    "descriptor": "(I)V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindow",
+    "name": "encode",
+    "descriptor": "(ZI)[B",
+    "covered": 4,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindow",
+    "name": "decode",
+    "descriptor": "([BZ)I",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindow",
+    "name": "select",
+    "descriptor": "(II)I",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindow",
+    "name": "accepted",
+    "descriptor": "(II)I",
+    "covered": 3,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWindowNegotiation$Flush",
+    "name": "<init>",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameClock",
+    "name": "<init>",
+    "descriptor": "(J)V",
+    "covered": 2,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameClock",
+    "name": "getFailed",
+    "descriptor": "()Z",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameClock",
+    "name": "check",
+    "descriptor": "(J)V",
+    "covered": 7,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameClock",
+    "name": "start",
+    "descriptor": "(J)V",
+    "covered": 5,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameClock",
+    "name": "clear",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  },
+  {
+    "owner": "com/blent/connection/ConnectionFrameClock",
+    "name": "cancel",
+    "descriptor": "()V",
+    "covered": 1,
+    "missed": 0,
+    "percent": 100.0
+  }
+]

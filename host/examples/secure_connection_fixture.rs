@@ -63,6 +63,19 @@ async fn serve(directory: &Path, ready: &Path, mode: &str) -> Result<()> {
         return wrong_preface(socket, directory).await;
     }
     let mut stream = accept(socket, &identity, &peer).await?;
+    if mode == "window" {
+        let limits = blent::broker::session::Limits {
+            channel_bytes: 65536,
+            io_timeout: Duration::from_secs(3),
+            ..Default::default()
+        };
+        let selected = blent::broker::window::negotiate(&mut stream, limits).await?;
+        ensure!(
+            selected.channel_bytes == 4096,
+            "tablet window selection mismatch"
+        );
+        stream = framed(stream).await?;
+    }
     let mut request = [0; 7];
     stream.read_exact(&mut request).await?;
     ensure!(
@@ -74,13 +87,66 @@ async fn serve(directory: &Path, ready: &Path, mode: &str) -> Result<()> {
     Ok(())
 }
 
+// One bounded framing phase, followed by the existing raw fixture exchange.
+// Exercises the real transport/mux; no media Session or resource authority.
+async fn framed<S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin>(stream: S) -> Result<S> {
+    use blent::broker::transport::{Event, Transport};
+    use blent_config::connection::{
+        mux::Multiplexer,
+        wire::{Channel, Kind},
+    };
+    let mut transport = Transport::new(
+        stream,
+        Multiplexer::new(1, 1, 4096, 8, 64)?,
+        Duration::from_secs(3),
+    )?;
+    let mut received = false;
+    for _ in 0..16 {
+        match transport.next().await? {
+            Event::Written(header) if header.kind == Kind::Data => {
+                ensure!(
+                    received && header.channel == Channel::Management,
+                    "unexpected framed reply"
+                );
+                return Ok(transport.into_stream());
+            }
+            Event::Written(_) => (),
+            Event::Received { header, deliver } => {
+                ensure!(
+                    header.channel == Channel::Management,
+                    "unexpected fixture channel"
+                );
+                if deliver {
+                    ensure!(
+                        !received && transport.payload() == b"window-frame",
+                        "invalid framed request"
+                    );
+                    received = true;
+                    transport
+                        .multiplexer()
+                        .release(header.channel, header.length)?;
+                    ensure!(
+                        transport
+                            .multiplexer()
+                            .offer(Channel::Management, b"framed-ok".to_vec())
+                            .is_ok(),
+                        "fixture reply queue full"
+                    );
+                }
+                transport.consume()?;
+            }
+        }
+    }
+    anyhow::bail!("fixture framing turn limit exceeded")
+}
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     let args: Vec<_> = std::env::args_os().collect();
-    ensure!(args.len() == 4, "usage: secure_connection_fixture PUBLIC_FIXTURE_DIRECTORY NEW_READY_FILE accept|wrong-preface");
+    ensure!(args.len() == 4, "usage: secure_connection_fixture PUBLIC_FIXTURE_DIRECTORY NEW_READY_FILE accept|wrong-preface|window");
     let mode = args[3].to_str().context("invalid mode")?;
     ensure!(
-        matches!(mode, "accept" | "wrong-preface"),
+        matches!(mode, "accept" | "wrong-preface" | "window"),
         "invalid fixture mode"
     );
     tokio::time::timeout(

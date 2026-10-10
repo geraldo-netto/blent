@@ -1,0 +1,129 @@
+{
+  "valid": [
+    {
+      "name": "tablet-4096",
+      "host": false,
+      "capacity": 4096,
+      "hex": "424c43500100000000001000"
+    },
+    {
+      "name": "tablet-4097",
+      "host": false,
+      "capacity": 4097,
+      "hex": "424c43500100000000001001"
+    },
+    {
+      "name": "tablet-65536",
+      "host": false,
+      "capacity": 65536,
+      "hex": "424c43500100000000010000"
+    },
+    {
+      "name": "tablet-1048576",
+      "host": false,
+      "capacity": 1048576,
+      "hex": "424c43500100000000100000"
+    },
+    {
+      "name": "host-4096",
+      "host": true,
+      "capacity": 4096,
+      "hex": "424c43500101000000001000"
+    },
+    {
+      "name": "host-4097",
+      "host": true,
+      "capacity": 4097,
+      "hex": "424c43500101000000001001"
+    },
+    {
+      "name": "host-65536",
+      "host": true,
+      "capacity": 65536,
+      "hex": "424c43500101000000010000"
+    },
+    {
+      "name": "host-1048576",
+      "host": true,
+      "capacity": 1048576,
+      "hex": "424c43500101000000100000"
+    }
+  ],
+  "invalid": [
+    {
+      "name": "short",
+      "host": true,
+      "hex": "424c435001010000001000"
+    },
+    {
+      "name": "trailing",
+      "host": true,
+      "hex": "424c4350010100000010000000"
+    },
+    {
+      "name": "empty",
+      "host": true,
+      "hex": ""
+    },
+    {
+      "name": "wrong-role",
+      "host": true,
+      "hex": "424c43500100000000100000"
+    },
+    {
+      "name": "prefix-0",
+      "host": true,
+      "hex": "c24c43500101000000100000"
+    },
+    {
+      "name": "prefix-1",
+      "host": true,
+      "hex": "42cc43500101000000100000"
+    },
+    {
+      "name": "prefix-2",
+      "host": true,
+      "hex": "424cc3500101000000100000"
+    },
+    {
+      "name": "prefix-3",
+      "host": true,
+      "hex": "424c43d00101000000100000"
+    },
+    {
+      "name": "prefix-4",
+      "host": true,
+      "hex": "424c43508101000000100000"
+    },
+    {
+      "name": "prefix-6",
+      "host": true,
+      "hex": "424c43500101800000100000"
+    },
+    {
+      "name": "prefix-7",
+      "host": true,
+      "hex": "424c43500101008000100000"
+    },
+    {
+      "name": "capacity-0",
+      "host": true,
+      "hex": "424c43500101000000000000"
+    },
+    {
+      "name": "capacity-4095",
+      "host": true,
+      "hex": "424c43500101000000000fff"
+    },
+    {
+      "name": "capacity-1048577",
+      "host": true,
+      "hex": "424c43500101000000100001"
+    },
+    {
+      "name": "capacity-4294967295",
+      "host": true,
+      "hex": "424c435001010000ffffffff"
+    }
+  ]
+}

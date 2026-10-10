@@ -230,7 +230,9 @@ activation prerequisite with its own regressions and commit.
 | T873 | Cancellation-safe bounded frame driver (implemented) | T849 |
 | T872 | Authenticated host resource runtime and retirement barriers (implemented) | T849–T852, T871, T873 |
 | T853 | On-demand Linux host broker and client composition (implemented) | T852, T871–T879 |
-| T854 | Isolated Android connection service and local bridges | T849–T851, T856 |
+| T881 | Android bounded framing and BLCP negotiation (implemented) | T849, T875 |
+| T882 | Android tablet resource session and leased local endpoints | T881, T849–T851 |
+| T854 | Isolated Android connection service and local bridges | T881, T882, T856 |
 | T855 | Production approve/deny/remember/revoke presentation | T852–T854 |
 | T857 | Display and touch/mouse integration | T853–T856 |
 | T858 | Independent camera integration; second user-visible milestone | T857 routing; maintainer priority after working display |
@@ -786,3 +788,35 @@ duplex control bytes and stuck native shutdown. These tests do not establish
 debugging-off production media acceptance: Android service T854, pairing UI T855
 and display/touch T857 remain required. Linux is the implemented broker backend;
 Windows runtime support is unavailable, and macOS remains declined.
+
+## T881 Android transport ownership
+
+Android now implements the same BLCP v1 receive-window contract as the host.
+`ConnectionWindowNegotiation` consumes only the 12-byte proposal, selects the
+smaller valid capacity, and publishes it only after the whole reply and its
+flush complete. Exact opaque receipts reject stale callbacks. A single absolute
+deadline spans proposal, reply and flush; byte progress does not extend it.
+
+`ConnectionFrameReader` and `ConnectionFrameWriter` are separate portable state
+owners. Native adapters receive one exact array-range loan per operation and
+return it only after that operation actually finishes. Header/body offsets
+survive short reads/writes and zero progress. The reader has a fixed 64 KiB body
+buffer; the writer borrows the caller-owned payload without another full-frame
+copy. A completed receive frame has one consumer claim, remains retained until
+release and cannot be retrieved after cancellation. Cancellation prevents reuse
+but keeps outstanding native loans visible until their exact completion.
+
+Active frame deadlines span the complete header/body and, for writes, flush.
+An idle reader has no active-frame deadline. A supervisor must tick deadlines
+while native calls block and retain process/worker ownership through actual
+retirement; these pure state machines do not interrupt syscalls or establish
+native worker exit. Authenticated identity, media consent, resource leases and
+receive-credit release remain the session owner's responsibilities.
+
+[Evidence](artifacts/2026-10-10-t881/README.md) covers permanent cancelled/duplicate
+loan and frame-claim regressions, fragmented/coalesced frames, exact extents,
+bounded mutation, deadlines and independent directions. Actual maintained Rust
+and Android TLS adapters exchange BLCP plus management CREDIT/DATA using the new
+framing on API27/34 JVM fixtures. Production resource dispatch is T882; native
+service ownership is T854. JVM interoperability does not satisfy physical-device
+acceptance or the API27/28 native-provider gap T863.
