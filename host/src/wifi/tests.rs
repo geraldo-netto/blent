@@ -1,5 +1,6 @@
 use super::*;
 use crate::usb::{CommandFuture, NativeCommands};
+use blent_config::storage::ConfigStore;
 use std::{
     process::Output,
     sync::{Arc, Mutex},
@@ -300,4 +301,117 @@ async fn t691_off_without_commands_still_forgets_saved_address() {
         .await
         .unwrap();
     assert!(store.load().wifi_address.is_empty());
+}
+
+#[tokio::test(flavor = "current_thread")]
+async fn t826_held_config_lock_cannot_stall_runtime_progress() {
+    let (_root, store, adb) = fixture();
+    store
+        .update(|config| {
+            config.wifi_address = "192.0.2.1:5555".into();
+            Ok(())
+        })
+        .unwrap();
+    let lock = std::fs::File::open(store.path().unwrap().with_extension("lock")).unwrap();
+    lock.lock().unwrap();
+    let (release, wait) = std::sync::mpsc::channel();
+    let blocked = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let observed = blocked.clone();
+    let native = std::thread::spawn(move || {
+        if wait
+            .recv_timeout(std::time::Duration::from_millis(250))
+            .is_err()
+        {
+            observed.store(true, std::sync::atomic::Ordering::Release);
+        }
+        drop(lock);
+    });
+    let heartbeat = tokio::spawn(async move {
+        tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        let _ = release.send(());
+    });
+    setup(&adb, &store, true).await.unwrap();
+    heartbeat.await.unwrap();
+    native.join().unwrap();
+    assert!(
+        !blocked.load(std::sync::atomic::Ordering::Acquire),
+        "T826 config lock blocked the event loop"
+    );
+    assert!(store.load().wifi_address.is_empty());
+}
+
+#[tokio::test]
+async fn t826_failed_post_connect_snapshot_retires_the_attempted_route() {
+    struct Reads(std::sync::atomic::AtomicUsize);
+    impl crate::persistence_port::AsyncSnapshots for Reads {
+        fn snapshot(&self) -> crate::persistence_port::Reply<'_> {
+            Box::pin(async move {
+                if self.0.fetch_add(1, std::sync::atomic::Ordering::SeqCst) > 0 {
+                    anyhow::bail!("snapshot worker failed");
+                }
+                Ok(blent_config::FileConfig {
+                    wifi_address: "192.0.2.1:5555".into(),
+                    ..Default::default()
+                })
+            })
+        }
+    }
+    let (_root, _store, adb) = fixture();
+    assert!(
+        policy::reconnect(&adb, &Reads(std::sync::atomic::AtomicUsize::new(0)))
+            .await
+            .is_none()
+    );
+    assert!(
+        adb.0
+             .0
+            .lock()
+            .unwrap()
+            .calls
+            .contains(&vec!["disconnect".into(), "192.0.2.1:5555".into()]),
+        "T826 unknown current configuration left an attempted route connected"
+    );
+}
+
+struct Failed;
+impl crate::persistence_port::AsyncSnapshots for Failed {
+    fn snapshot(&self) -> crate::persistence_port::Reply<'_> {
+        Box::pin(async { Ok(blent_config::FileConfig::default()) })
+    }
+}
+impl crate::persistence_port::AsyncTransactions for Failed {
+    fn transact(
+        &self,
+        _: blent_config::persistence_contract::Edit<'static>,
+    ) -> crate::persistence_port::Reply<'_> {
+        Box::pin(async { anyhow::bail!("commit unavailable") })
+    }
+}
+
+#[tokio::test(start_paused = true)]
+async fn t826_failed_commit_disconnects_new_route_before_returning_failure() {
+    let (_root, _store, adb) = fixture();
+    assert!(policy::setup(&adb, &Failed, false).await.is_err());
+    assert_eq!(
+        adb.0 .0.lock().unwrap().calls.last().unwrap(),
+        &vec!["disconnect".to_owned(), "192.0.2.1:5555".to_owned()],
+        "T826: failed commit leaked the new route"
+    );
+}
+
+#[tokio::test(start_paused = true)]
+async fn t826_failed_commit_preserves_an_existing_network_route() {
+    let (_root, _store, adb) = fixture();
+    adb.0 .0.lock().unwrap().reply = "already connected to 192.0.2.1:5555".into();
+    assert!(policy::setup(&adb, &Failed, false).await.is_err());
+    assert!(
+        !adb.0
+             .0
+            .lock()
+            .unwrap()
+            .calls
+            .iter()
+            .any(|args| args[0] == "disconnect"),
+        "T826: failed save disconnected an existing route"
+    );
 }

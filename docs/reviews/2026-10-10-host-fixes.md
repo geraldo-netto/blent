@@ -104,3 +104,31 @@ Windows-only functions remain visibly unmeasured under T737. Full workspace
 library/binary tests pass; the broader integration run exposed the separately
 fixed T832 fixture and missing RPM tool T833. No full-workspace pass is claimed.
 [Source-attested coverage and red/green logs](artifacts/2026-10-10-t824/).
+
+## T826: bounded asynchronous Wi-Fi persistence
+
+Wi-Fi policy now awaits independent snapshot/transaction ports. A native storage
+adapter uses a reusable process-wide pool: `BLENT_CONFIG_WORKERS` defaults to 2,
+accepts 1..64, and is read once on first use. Each worker owns at most one active
+call; the shared queue holds at most that many additional requests, and each
+adapter admits at most two. Busy admission returns an explicit error. Larger
+budgets tolerate more unrelated slow stores at the cost of retained threads and
+native resources. Dedicated owners can inject a one-worker retirement budget.
+
+Native calls run outside the queue lock and async event loop. Dropping a waiter
+cancels queued work/cooperative lock waits, but retains admission and ownership
+until native work really exits. Cancellation after commit starts cannot undo the
+write. A request panic fails its reply without killing the reusable pool. Owner
+retirement transfers held threads to the bounded reaper. The process-wide pool
+keeps its workers idle until process exit; it does not repeatedly create threads.
+
+Permanent red/green regressions cover a disposable held file lock while the
+runtime heartbeat progresses, held reads, canceled queued edits, commit-in-progress,
+sibling progress, repeated reuse, panic/error replies, capacity boundaries and
+partial worker construction. Post-connect snapshot failures disconnect the attempt;
+failed commits disconnect newly created routes while preserving an already-connected
+route. Full host library and Wi-Fi CLI suite passes (315 + 3 tests, three existing
+ignores unchanged). All 28 production functions in affected modules meet individual
+80% coverage and complexity <=9. Caller cancellation after ADB connect still needs
+attempt-level route ownership (T834); storage cancellation does not claim to solve
+that separate lifecycle gap. [Evidence](artifacts/2026-10-10-t826/).

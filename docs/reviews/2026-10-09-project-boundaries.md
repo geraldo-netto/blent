@@ -9,7 +9,9 @@ and [host](2026-10-09-host-performance-lifecycle.md) resource reviews.
 
 T821 now defines selection values independently of their media consumer. T824
 moves filesystem methods off FileConfig and makes persistence workers depend on
-focused snapshot/transaction/publication contracts. The sections below retain the
+focused snapshot/transaction/publication contracts. T826 uses these contracts
+through bounded reusable native workers, keeping Wi-Fi policy off filesystem locks.
+The sections below retain the
 original review baseline; [current fixes and validation](2026-10-10-host-fixes.md)
 record implemented behavior and remaining platform limits.
 
