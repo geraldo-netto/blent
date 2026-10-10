@@ -1,6 +1,8 @@
 use super::*;
 use crate::secure_connection::{identity_store::load_or_create, IdentityRecord};
+use std::fs::OpenOptions;
 use std::os::unix::fs::{symlink, PermissionsExt};
+use std::os::unix::fs::{MetadataExt, OpenOptionsExt};
 
 fn root() -> tempfile::TempDir {
     tempfile::Builder::new()

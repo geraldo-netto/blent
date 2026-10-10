@@ -93,7 +93,7 @@ and a 1..4096-byte public certificate. Discovery is untrusted. The pairing state
 machine binds approval and subsequent TLS proof to an exact certificate fingerprint
 and epoch; stale callbacks, deadline expiry and revoked leases cannot authorize
 streams. Cancellation enters Closing, with no replacement until native retirement.
-Persistent trust and production approval UI are still pending.
+Persistent trust storage is implemented under T868 below; production approval UI remains pending.
 
 After local approval, each peer sends the eight-byte `BLPR` readiness marker
 (version 1, endpoint role, two reserved zero bytes), then validates the peer's
@@ -541,3 +541,23 @@ This is storage readiness only: T868 supplies peer trust, T852 composes TLS/pair
 and T853 owns the production broker lifecycle and directory selection. Windows has
 no implementation of this storage adapter yet. Working display/touch remains first
 production milestone, followed immediately by webcam, then speakers and microphone.
+
+## T868 authenticated peer-trust persistence
+
+Rust `connection::trust` and Android `ConnectionTrust` now implement bounded saved
+approval behind independent storage contracts. Shared canonical records bind exact
+peer pins to the local certificate and a nonwrapping revision. Capacity defaults to
+64, configurable from 1 to 1024; reducing capacity never silently evicts saved peers.
+A remembered approval is written only after the current pairing lease proves TLS
+authentication. Revocation invalidates live pairing first; a failed write poisons
+reconnect admission. A multi-link broker must revoke all matching pairings in its
+single serialized command owner. Saved approval alone never grants media authority.
+
+Linux and Android private-file adapters retain exclusive stable locks and reject
+interrupted pending/temp state. A durable intent marker precedes complete atomic
+publication; synchronized publication precedes marker removal. Failure before intent
+durability cannot promise persistence, and no failure reports a successful revoke.
+Both adapters preserve existing evidence for explicit repair. [Validation](artifacts/2026-10-10-t868/README.md)
+includes shared malformed vectors, per-function counters and an actual API36 tablet
+filesystem probe run without installing/restarting the app. T852 still composes these
+stores with stock TLS; production presentation and resources remain separate work.

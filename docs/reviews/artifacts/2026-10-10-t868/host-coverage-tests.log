@@ -1,0 +1,40 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.79s
+     Running unittests src/lib.rs (/tmp/blent-t846-alpn-coverage/debug/deps/blent-592b3b54ab5a39c1)
+
+running 28 tests
+test secure_connection::identity_store::linux::tests::t867_crash_child ... ok
+test secure_connection::identity_store::linux::tests::t867_every_failed_storage_boundary_prevents_regeneration ... ok
+test secure_connection::identity_store::linux::tests::t867_failed_publication_preserves_conflicting_and_pending_records ... ok
+test secure_connection::identity_store::linux::tests::t867_native_restart_reuses_identity_and_concurrent_owner_is_rejected ... ok
+test secure_connection::identity_store::linux::tests::t867_native_write_failure_keeps_reserved_record ... ok
+test secure_connection::identity_store::linux::tests::t867_oversized_and_corrupt_records_are_bounded_and_preserved ... ok
+test secure_connection::identity_store::linux::tests::t867_pending_initialization_is_durable_and_never_silently_replaced ... ok
+test secure_connection::identity_store::linux::tests::t867_private_directory_is_required_and_pinned_across_rename ... ok
+test secure_connection::identity_store::linux::tests::t867_process_exit_at_each_boundary_preserves_identity_or_pending_state ... ok
+test secure_connection::identity_store::linux::tests::t867_unsafe_children_are_rejected_without_touching_targets ... ok
+test secure_connection::identity_store::tests::t867_codec_rejects_truncation_trailing_overflow_and_bounded_mutations ... ok
+test secure_connection::identity_store::tests::t867_generation_and_publication_errors_preserve_pending_state ... ok
+test secure_connection::identity_store::tests::t867_invalid_record_or_crypto_does_not_rotate_or_publish ... ok
+test secure_connection::identity_store::tests::t867_reuses_valid_identity_and_never_generates_after_storage_failure ... ok
+test secure_connection::tests::t846_identity_and_certificate_bounds_and_pin_checks ... ok
+test secure_connection::tests::t846_matching_alpn_does_not_bypass_protocol_preface ... ok
+test secure_connection::tests::t846_mutually_pinned_tls_carries_duplex_bytes ... ok
+test secure_connection::tests::t846_no_alpn_requires_authenticated_protocol_preface ... ok
+test secure_connection::tests::t846_preface_golden_vector_and_bounded_mutations ... ok
+test secure_connection::tests::t846_preface_wait_shares_handshake_deadline_in_both_roles ... ok
+test secure_connection::tests::t846_silent_peer_handshake_has_deadline ... ok
+test secure_connection::tests::t846_unapproved_peer_cannot_complete_tls ... ok
+test secure_connection::trust_store::tests::t868_crash_child ... ok
+test secure_connection::trust_store::tests::t868_crashed_revoke_at_each_boundary_never_automatically_restores_old_trust ... ok
+test secure_connection::trust_store::tests::t868_failed_revoke_at_each_boundary_never_automatically_restores_old_trust ... ok
+test secure_connection::trust_store::tests::t868_native_incomplete_malformed_and_oversized_state_is_preserved ... ok
+test secure_connection::trust_store::tests::t868_native_restart_remembers_and_revokes_with_exclusive_ownership ... ok
+test secure_connection::trust_store::tests::t868_native_symlink_and_failed_rename_preserve_target_and_intent ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 345 filtered out; finished in 0.60s
+
+
+    Finished report saved to /tmp/blent-t868-evidence/rust.lcov

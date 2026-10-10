@@ -9,6 +9,10 @@ use std::{sync::Arc, time::Duration};
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
 pub mod identity_store;
+#[cfg(target_os = "linux")]
+mod private_directory;
+#[cfg(target_os = "linux")]
+pub mod trust_store;
 
 pub const MAX_CERTIFICATE: usize = 4096;
 pub const MAX_PRIVATE_KEY: usize = 4096;

@@ -1,0 +1,54 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.5/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+WARNING: The option setting 'android.experimental.lint.version=8.3.2' is experimental.
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+> Task :app:generateProfileProfileIdentity
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preProfileBuild
+> Task :app:mergeProfileNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:checkProfileAarMetadata UP-TO-DATE
+> Task :app:generateProfileResValues UP-TO-DATE
+> Task :app:mapProfileSourceSetPaths UP-TO-DATE
+> Task :app:generateProfileResources UP-TO-DATE
+> Task :app:mergeProfileResources UP-TO-DATE
+> Task :app:packageProfileResources UP-TO-DATE
+> Task :app:parseProfileLocalResources UP-TO-DATE
+> Task :app:createProfileCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksProfile UP-TO-DATE
+> Task :app:processProfileMainManifest UP-TO-DATE
+> Task :app:processProfileManifest UP-TO-DATE
+> Task :app:processProfileManifestForPackage UP-TO-DATE
+> Task :app:processProfileResources UP-TO-DATE
+> Task :app:javaPreCompileProfile UP-TO-DATE
+> Task :app:mergeProfileShaders UP-TO-DATE
+> Task :app:compileProfileShaders NO-SOURCE
+> Task :app:generateProfileAssets UP-TO-DATE
+> Task :app:mergeProfileAssets UP-TO-DATE
+> Task :app:compressProfileAssets UP-TO-DATE
+> Task :app:checkProfileDuplicateClasses UP-TO-DATE
+> Task :app:desugarProfileFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexProfile UP-TO-DATE
+> Task :app:mergeLibDexProfile UP-TO-DATE
+> Task :app:mergeProfileJniLibFolders UP-TO-DATE
+> Task :app:mergeProfileNativeLibs NO-SOURCE
+> Task :app:stripProfileDebugSymbols NO-SOURCE
+> Task :app:validateSigningProfile UP-TO-DATE
+> Task :app:writeProfileAppMetadata UP-TO-DATE
+> Task :app:writeProfileSigningConfigVersions UP-TO-DATE
+> Task :app:compileProfileKotlin
+> Task :app:compileProfileJavaWithJavac NO-SOURCE
+> Task :app:dexBuilderProfile
+> Task :app:mergeProfileGlobalSynthetics UP-TO-DATE
+> Task :app:processProfileJavaRes UP-TO-DATE
+> Task :app:mergeProfileJavaResource UP-TO-DATE
+> Task :app:mergeProjectDexProfile
+> Task :app:packageProfile
+> Task :app:createProfileApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleProfile
+
+BUILD SUCCESSFUL in 8s
+34 actionable tasks: 6 executed, 28 up-to-date

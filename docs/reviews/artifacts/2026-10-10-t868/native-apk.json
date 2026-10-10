@@ -1,0 +1,7 @@
+{
+  "apk_sha256": "ec199736a2d755fe7bb65ba313fde20a167feae037b19c02a8e9a081adfd73d6",
+  "serial": "8002RH1010011900",
+  "installed": false,
+  "runner": "app_process under existing profile app UID",
+  "test_scope": "disposable no_backup/t868-check directory"
+}

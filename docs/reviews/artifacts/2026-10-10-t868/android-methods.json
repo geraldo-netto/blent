@@ -1,0 +1,317 @@
+[
+  {
+    "file": "AndroidPeerTrustStore.kt",
+    "cls": "com/blent/connection/AndroidPeerTrustStore",
+    "method": "<init>",
+    "line": "8",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "AndroidPeerTrustStore.kt",
+    "cls": "com/blent/connection/AndroidPeerTrustStore",
+    "method": "ready",
+    "line": "26",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  },
+  {
+    "file": "AndroidPeerTrustStore.kt",
+    "cls": "com/blent/connection/AndroidPeerTrustStore",
+    "method": "load",
+    "line": "33",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  },
+  {
+    "file": "AndroidPeerTrustStore.kt",
+    "cls": "com/blent/connection/AndroidPeerTrustStore",
+    "method": "replace",
+    "line": "40",
+    "missed": 0,
+    "covered": 12,
+    "percent": 100.0
+  },
+  {
+    "file": "AndroidPeerTrustStore.kt",
+    "cls": "com/blent/connection/AndroidPeerTrustStore",
+    "method": "close",
+    "line": "54",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/ConnectionTrustCodec",
+    "method": "encode",
+    "line": "22",
+    "missed": 0,
+    "covered": 9,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/ConnectionTrustCodec",
+    "method": "decode",
+    "line": "34",
+    "missed": 0,
+    "covered": 9,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/ConnectionTrustCodec",
+    "method": "pin",
+    "line": "46",
+    "missed": 0,
+    "covered": 2,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/ConnectionTrustCodec",
+    "method": "<clinit>",
+    "line": "19",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "AndroidPeerTrustStore.kt",
+    "cls": "com/blent/connection/AndroidPeerTrustStore$Companion",
+    "method": "open",
+    "line": "13",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "AndroidPeerTrustStore.kt",
+    "cls": "com/blent/connection/AndroidPeerTrustStore$Companion",
+    "method": "open",
+    "line": "15",
+    "missed": 0,
+    "covered": 6,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess$Companion",
+    "method": "open",
+    "line": "31",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/TrustSnapshot",
+    "method": "<init>",
+    "line": "7",
+    "missed": 0,
+    "covered": 6,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/TrustSnapshot",
+    "method": "getLocal",
+    "line": "7",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/TrustSnapshot",
+    "method": "getRevision",
+    "line": "7",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrustCodec.kt",
+    "cls": "com/blent/connection/TrustSnapshot",
+    "method": "getPeers",
+    "line": "9",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "<init>",
+    "line": "13",
+    "missed": 0,
+    "covered": 13,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "<init>",
+    "line": "13",
+    "missed": 0,
+    "covered": 3,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "restore",
+    "line": "35",
+    "missed": 0,
+    "covered": 6,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "trusted",
+    "line": "42",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "remember",
+    "line": "45",
+    "missed": 0,
+    "covered": 9,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "revoke",
+    "line": "57",
+    "missed": 0,
+    "covered": 6,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "persist",
+    "line": "66",
+    "missed": 0,
+    "covered": 7,
+    "percent": 100.0
+  },
+  {
+    "file": "ConnectionTrust.kt",
+    "cls": "com/blent/connection/ConnectionTrust",
+    "method": "close",
+    "line": "75",
+    "missed": 0,
+    "covered": 5,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "<init>",
+    "line": "20",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "path",
+    "line": "39",
+    "missed": 0,
+    "covered": 3,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "validate",
+    "line": "45",
+    "missed": 0,
+    "covered": 5,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "lock",
+    "line": "52",
+    "missed": 0,
+    "covered": 9,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "exists",
+    "line": "62",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "read",
+    "line": "68",
+    "missed": 0,
+    "covered": 9,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "writeNew",
+    "line": "81",
+    "missed": 0,
+    "covered": 8,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "replace",
+    "line": "91",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "syncDirectory",
+    "line": "96",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "remove",
+    "line": "97",
+    "missed": 0,
+    "covered": 1,
+    "percent": 100.0
+  },
+  {
+    "file": "NioTrustFileAccess.kt",
+    "cls": "com/blent/connection/NioTrustFileAccess",
+    "method": "close",
+    "line": "100",
+    "missed": 0,
+    "covered": 4,
+    "percent": 100.0
+  }
+]

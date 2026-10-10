@@ -1,0 +1,2 @@
+android/app/build/outputs/apk/profile/app-profile.apk: 1 file pushed, 0 skipped. 97.3 MB/s (9762519 bytes in 0.096s)
+{"sdk":36,"status":"PASS","checks":"remember,restart,revoke,exclusive-lock,pending-quarantine,temp-quarantine","cleanup":true}

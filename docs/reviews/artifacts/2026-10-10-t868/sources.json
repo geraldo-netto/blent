@@ -1,0 +1,18 @@
+{
+  "common/src/connection/trust.rs": "b7b0fd0e43f8fa409e518d0b551e54bc8d039b892d4e327ac2d69af61f915c6e",
+  "common/src/connection/trust/tests.rs": "183e8239456e08431c05087be8ec627dca1fbb4670a27ebc86d489e419ee2bc0",
+  "common/src/connection/trust/codec.rs": "379b312a3d65fe2c55aea873afec12b2a0eb1122f88610f2560a83baa19666b4",
+  "host/src/secure_connection/private_directory.rs": "03dcf357f637f94be4e85a73b09dfc80f11ee3e6c6150a8ca7882116a631e7d9",
+  "host/src/secure_connection/trust_store.rs": "37fca36eeaa03c43c783ace6b8e3bf698a302f2ee53af72264dfec67bd636682",
+  "host/src/secure_connection/trust_store/tests.rs": "0ee09c61382956e0366a0e3e780d6b8434c350c4ea8fbb111c38477d78b1b7ac",
+  "host/src/secure_connection/identity_store/linux.rs": "d55ef1d1aac68ffc1b98b8f71fd5b9033001666677d781dfc65f84059e153f1e",
+  "host/src/secure_connection/identity_store/linux/tests.rs": "4e0447881849730ca51d0dfe2bab79c34670bbdcc0584bbf8df61bba677d96e1",
+  "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt": "e0f886eadba638ef24f0581d63b62981e8e081ec07b1572edc764faad2ab21be",
+  "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt": "6453a976d8035016e9641bfb076e5bfe702ef9af1b002301c5d1eaa6c3d8a3d4",
+  "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt": "62d4026326c1fffd78cd6ac54a442f1ae73995b5f152bd5b1799b4e2f11c278c",
+  "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt": "c06e13e2ce627f7d66bdbef9619434fe7f28723d7e02dd007bec07029b5957e6",
+  "android/app/src/test/java/com/blent/connection/ConnectionTrustTest.kt": "ab4a6ba88ccc682ec06171040902045a2fec3d53bf89654bb1a66b9d63563fcb",
+  "android/app/src/test/java/com/blent/connection/AndroidPeerTrustStoreTest.kt": "4a1bd51006f6b78b8bb7d9e83654afc92bb35b75c0ea11db9666f35548413b91",
+  "scripts/benchmarks/android-accessory-contract/com/blent/connection/TrustStoreProbe.kt": "2422b1e762999964944360200542d1fac76dfddbd89e224445a8ad62e7d7e98e",
+  "testdata/connection-trust-v1.json": "caf9cf599457f5f9d840dd5eab2959dc3fcda07cdde17ce902ded29ef9bbbb96"
+}

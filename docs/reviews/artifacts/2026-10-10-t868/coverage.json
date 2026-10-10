@@ -1,0 +1,1043 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "common/src/connection/trust",
+    "host/src/secure_connection/identity_store",
+    "host/src/secure_connection/private_directory.rs",
+    "host/src/secure_connection/trust_store",
+    "android/app/src/main/java/com/blent/connection/ConnectionTrust",
+    "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+    "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 27,
+      "passing": 27,
+      "below_80": 0,
+      "unmeasured": 0
+    },
+    "rust": {
+      "functions": 35,
+      "passing": 35,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "common/src/connection/trust/codec.rs",
+      "name": "encode",
+      "line": 9,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust/codec.rs",
+      "name": "decode",
+      "line": 22,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust/codec.rs",
+      "name": "parse_peer",
+      "line": 50,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust/codec.rs",
+      "name": "validate",
+      "line": 53,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "open",
+      "line": 36,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "healthy",
+      "line": 64,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "trusted",
+      "line": 67,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "find",
+      "line": 70,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "remember",
+      "line": 77,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "revoke",
+      "line": 99,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/trust.rs",
+      "name": "persist",
+      "line": 109,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "open",
+      "line": 18,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "read_identity",
+      "line": 25,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "no_pending",
+      "line": 28,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "load",
+      "line": 33,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "reserve",
+      "line": 38,
+      "language": "rust",
+      "covered": 14,
+      "total": 15,
+      "percent": 93.33333333333333,
+      "passes": true,
+      "missing": [
+        44
+      ]
+    },
+    {
+      "file": "host/src/secure_connection/identity_store/linux.rs",
+      "name": "publish",
+      "line": 56,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "load_or_create",
+      "line": 21,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "lengths",
+      "line": 36,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "encode",
+      "line": 47,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/identity_store.rs",
+      "name": "decode",
+      "line": 57,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "open",
+      "line": 16,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "child",
+      "line": 28,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "read",
+      "line": 33,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "ensure_absent",
+      "line": 45,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "sync",
+      "line": 53,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "rename",
+      "line": 56,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "remove",
+      "line": 74,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "child",
+      "line": 84,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/private_directory.rs",
+      "name": "private",
+      "line": 98,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/trust_store.rs",
+      "name": "open",
+      "line": 13,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/trust_store.rs",
+      "name": "settled",
+      "line": 18,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/trust_store.rs",
+      "name": "load",
+      "line": 24,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/secure_connection/trust_store.rs",
+      "name": "replace",
+      "line": 28,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        34
+      ]
+    },
+    {
+      "file": "host/src/secure_connection/trust_store.rs",
+      "name": "write_record",
+      "line": 51,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+      "name": "open",
+      "line": 13,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+          "owner": "com/blent/connection/AndroidPeerTrustStore$Companion",
+          "name": "open",
+          "signature": "(Ljava/nio/file/Path;)Lcom/blent/connection/AndroidPeerTrustStore;",
+          "line": 13,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+      "name": "open",
+      "line": 14,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+          "owner": "com/blent/connection/AndroidPeerTrustStore$Companion",
+          "name": "open",
+          "signature": "(Lcom/blent/connection/TrustFileAccess;)Lcom/blent/connection/AndroidPeerTrustStore;",
+          "line": 15,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+      "name": "ready",
+      "line": 25,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+          "owner": "com/blent/connection/AndroidPeerTrustStore",
+          "name": "ready",
+          "signature": "()V",
+          "line": 26,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+      "name": "load",
+      "line": 32,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+          "owner": "com/blent/connection/AndroidPeerTrustStore",
+          "name": "load",
+          "signature": "()[B",
+          "line": 33,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+      "name": "replace",
+      "line": 39,
+      "language": "kotlin",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+          "owner": "com/blent/connection/AndroidPeerTrustStore",
+          "name": "replace",
+          "signature": "([B)V",
+          "line": 40,
+          "covered": 12,
+          "total": 12
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+      "name": "close",
+      "line": 53,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/AndroidPeerTrustStore.kt",
+          "owner": "com/blent/connection/AndroidPeerTrustStore",
+          "name": "close",
+          "signature": "()V",
+          "line": 54,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+      "name": "restore",
+      "line": 34,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+          "owner": "com/blent/connection/ConnectionTrust",
+          "name": "restore",
+          "signature": "()V",
+          "line": 35,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+      "name": "trusted",
+      "line": 42,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+          "owner": "com/blent/connection/ConnectionTrust",
+          "name": "trusted",
+          "signature": "(Lcom/blent/connection/ConnectionPeer;)Z",
+          "line": 42,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+      "name": "remember",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+          "owner": "com/blent/connection/ConnectionTrust",
+          "name": "remember",
+          "signature": "(Lcom/blent/connection/ConnectionPairing;Lcom/blent/connection/ConnectionPairing$Lease;)Z",
+          "line": 45,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+      "name": "revoke",
+      "line": 56,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+          "owner": "com/blent/connection/ConnectionTrust",
+          "name": "revoke",
+          "signature": "(Lcom/blent/connection/ConnectionPairing;Lcom/blent/connection/ConnectionPeer;)Z",
+          "line": 57,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+      "name": "persist",
+      "line": 65,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+          "owner": "com/blent/connection/ConnectionTrust",
+          "name": "persist",
+          "signature": "(Ljava/util/Set;)V",
+          "line": 66,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+      "name": "close",
+      "line": 74,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrust.kt",
+          "owner": "com/blent/connection/ConnectionTrust",
+          "name": "close",
+          "signature": "()V",
+          "line": 75,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+      "name": "get:peers",
+      "line": 9,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+          "owner": "com/blent/connection/TrustSnapshot",
+          "name": "getPeers",
+          "signature": "()Ljava/util/List;",
+          "line": 9,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+      "name": "encode",
+      "line": 21,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+          "owner": "com/blent/connection/ConnectionTrustCodec",
+          "name": "encode",
+          "signature": "(Lcom/blent/connection/TrustSnapshot;)[B",
+          "line": 22,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+      "name": "decode",
+      "line": 33,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+          "owner": "com/blent/connection/ConnectionTrustCodec",
+          "name": "decode",
+          "signature": "([B)Lcom/blent/connection/TrustSnapshot;",
+          "line": 34,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+      "name": "pin",
+      "line": 45,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionTrustCodec.kt",
+          "owner": "com/blent/connection/ConnectionTrustCodec",
+          "name": "pin",
+          "signature": "(Ljava/nio/ByteBuffer;)Lcom/blent/connection/ConnectionPeer;",
+          "line": 46,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "open",
+      "line": 30,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess$Companion",
+          "name": "open",
+          "signature": "(Ljava/nio/file/Path;)Lcom/blent/connection/NioTrustFileAccess;",
+          "line": 31,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "path",
+      "line": 38,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "path",
+          "signature": "(Ljava/lang/String;)Ljava/nio/file/Path;",
+          "line": 39,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "validate",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "validate",
+          "signature": "(Ljava/nio/file/Path;)V",
+          "line": 45,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "lock",
+      "line": 51,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "lock",
+          "signature": "()V",
+          "line": 52,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "exists",
+      "line": 62,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "exists",
+          "signature": "(Ljava/lang/String;)Z",
+          "line": 62,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "read",
+      "line": 67,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "read",
+          "signature": "(Ljava/lang/String;I)[B",
+          "line": 68,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "writeNew",
+      "line": 80,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "writeNew",
+          "signature": "(Ljava/lang/String;[B)V",
+          "line": 81,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "replace",
+      "line": 90,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "replace",
+          "signature": "(Ljava/lang/String;Ljava/lang/String;)V",
+          "line": 91,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "syncDirectory",
+      "line": 96,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "syncDirectory",
+          "signature": "()V",
+          "line": 96,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "remove",
+      "line": 97,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "remove",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 97,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+      "name": "close",
+      "line": 99,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/NioTrustFileAccess.kt",
+          "owner": "com/blent/connection/NioTrustFileAccess",
+          "name": "close",
+          "signature": "()V",
+          "line": 100,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    }
+  ]
+}
