@@ -1,27 +1,33 @@
 //! Linux audio transport and isolated PipeWire adapter.
-use crate::{audio_control::Report, camera::bridge::Bridge, camera_control::cancelled};
+use crate::{audio_control::Report, camera_control::cancelled};
 use anyhow::{ensure, Context, Result};
+use blent_config::audio::connection::{Connection, Target};
 use blent_config::audio::{AudioOptions, AudioSession, AudioState, Direction};
-use blent_config::commands::AsyncCommandExt;
 use std::{
     path::{Path, PathBuf},
     time::Duration,
 };
+#[cfg(test)]
+use tokio::process::Command;
 use tokio::{
     io::AsyncWriteExt,
     net::{TcpListener, TcpStream},
-    process::Command,
     sync::watch,
 };
+mod adb;
 mod process;
 mod protocol;
+#[cfg(feature = "accessory-transport")]
+pub(crate) mod usb;
 
-/// Implemented adapters only. Portable USB contracts do not imply native audio
-/// support; T979 supplies that adapter independently of camera/display support.
-pub const fn transport_capabilities() -> blent_config::audio::connection::Transports {
+/// Implemented adapters only; physical qualification remains separate. USB
+/// microphone is unavailable until its consent/uplink composition is implemented.
+pub const fn transport_capabilities(
+    direction: Direction,
+) -> blent_config::audio::connection::Transports {
     blent_config::audio::connection::Transports {
         adb: true,
-        usb: false,
+        usb: cfg!(feature = "accessory-transport") && matches!(direction, Direction::Speakers),
     }
 }
 
@@ -31,22 +37,52 @@ pub async fn run(
     report: Report,
 ) -> Result<()> {
     options.validate()?;
+    if *stop.borrow() {
+        return Ok(());
+    }
     ensure!(
-        transport_capabilities().supports(&options.target()?),
+        transport_capabilities(options.profile.direction).supports(&options.target()?),
         "direct-USB audio is not implemented"
     );
-    let adb = executable("adb")?;
     let helper = helper()?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
-    let bridge = Bridge::create(
-        adb,
-        options.serial.as_deref(),
-        listener.local_addr()?.port(),
-    )
-    .await?;
-    let result = invited(&listener, &bridge, &helper, &options, &report, &mut stop).await;
+    let token = blent_config::credentials::random_token()?;
+    let bridge = connection(&options, &listener, &token).await?;
+    let session = Session {
+        listener: &listener,
+        connection: bridge.as_ref(),
+        helper: &helper,
+        options: &options,
+        token: &token,
+    };
+    let result = session.serve(&report, &mut stop).await;
     let cleanup = bridge.close().await;
     result.and(cleanup)
+}
+
+async fn connection(
+    options: &AudioOptions,
+    listener: &TcpListener,
+    _token: &str,
+) -> Result<Box<dyn Connection<blent_config::audio::AudioProfile>>> {
+    match options.target()? {
+        Target::Adb(serial) => Ok(Box::new(
+            adb::Bridge::create(executable("adb")?, serial, listener.local_addr()?.port()).await?,
+        )),
+        #[cfg(feature = "accessory-transport")]
+        Target::Usb(_) => {
+            use std::os::fd::AsFd;
+            let retained = std::net::TcpListener::from(listener.as_fd().try_clone_to_owned()?);
+            Ok(Box::new(usb::native(
+                options,
+                _token,
+                retained,
+                crate::broker::linux::client::Launch::from_environment()?,
+            )?))
+        }
+        #[cfg(not(feature = "accessory-transport"))]
+        Target::Usb(_) => anyhow::bail!("direct-USB audio requires accessory-transport support"),
+    }
 }
 
 fn executable(name: &str) -> Result<PathBuf> {
@@ -65,34 +101,105 @@ fn helper() -> Result<PathBuf> {
     executable("blent-audio")
 }
 
-async fn invited(
-    listener: &TcpListener,
-    bridge: &Bridge,
-    helper: &Path,
-    options: &AudioOptions,
-    report: &Report,
-    stop: &mut watch::Receiver<bool>,
-) -> Result<()> {
-    let token = blent_config::credentials::random_token()?;
-    let setup = async {
-        invite(bridge, &token, options).await?;
-        protocol::accept(listener, &token, options.profile.direction).await
-    };
-    let (mut socket, capabilities, mode, processing, clocked) = tokio::select! {
-        result = setup => result?,
-        _ = cancelled(stop) => return Ok(()),
-    };
-    let mut session = AudioSession::new(options.profile.direction);
-    let mut profile = options.profile;
-    profile.processing = mode;
-    let grant = session.start_with_clock(profile, capabilities, true, 0, clocked)?;
-    let mut child = process::spawn_with_clock(helper, options.profile, &token, clocked)?;
-    let started = std::time::Instant::now();
-    let stream = async {
-        process::ready(&mut child)
+/// Linux session orchestration depends on the independent typed connection port;
+/// local device creation remains in the process adapter. It never selects a new
+/// peer, consumes a new invitation or reconnects after original authority loss.
+pub(crate) struct Session<'a> {
+    pub(crate) listener: &'a TcpListener,
+    pub(crate) connection: &'a dyn Connection<blent_config::audio::AudioProfile>,
+    pub(crate) helper: &'a Path,
+    pub(crate) options: &'a AudioOptions,
+    pub(crate) token: &'a str,
+}
+impl Session<'_> {
+    pub(crate) async fn serve(
+        &self,
+        report: &Report,
+        stop: &mut watch::Receiver<bool>,
+    ) -> Result<()> {
+        self.serve_with(report, stop, &process::spawn_with_clock)
+            .await
+    }
+    // Internal Linux process boundary seam: tests can attach a real dependent
+    // lease to OwnedChild without replacing retirement or connection semantics.
+    async fn serve_with(
+        &self,
+        report: &Report,
+        stop: &mut watch::Receiver<bool>,
+        spawn: &process::Start<'_>,
+    ) -> Result<()> {
+        self.options.validate()?;
+        ensure!(
+            blent_config::connection::media::valid_credential(self.token),
+            "invalid audio session credential"
+        );
+        if *stop.borrow() {
+            return Ok(());
+        }
+        let setup = async {
+            self.connection
+                .invite(self.token, &self.options.profile)
+                .await?;
+            protocol::accept(self.listener, self.token, self.options.profile.direction).await
+        };
+        let accepted = tokio::select! {
+            biased;
+            _ = cancelled(stop) => return Ok(()),
+            result = self.connection.monitor() => return lost(result),
+            result = setup => result?,
+        };
+        self.stream(accepted, report, stop, spawn).await
+    }
+    async fn stream(
+        &self,
+        accepted: protocol::Accepted,
+        report: &Report,
+        stop: &mut watch::Receiver<bool>,
+        spawn: &process::Start<'_>,
+    ) -> Result<()> {
+        let (mut socket, capabilities, mode, processing, clocked) = accepted;
+        let mut session = AudioSession::new(self.options.profile.direction);
+        let mut profile = self.options.profile;
+        profile.processing = mode;
+        let grant = session.start_with_clock(profile, capabilities, true, 0, clocked)?;
+        let mut child = spawn(self.helper, self.options.profile, self.token, clocked)?;
+        let stream = self.transfer(
+            &mut socket,
+            &mut child,
+            &mut session,
+            grant,
+            report,
+            processing,
+            clocked,
+        );
+        let result = tokio::select! {
+            biased;
+            _ = cancelled(stop) => Ok(()),
+            result = self.connection.monitor() => lost(result),
+            result = stream => result,
+        };
+        let retired = process::retire(child).await;
+        ensure!(
+            retired.completion.is_complete(),
+            "Audio process retirement incomplete; capacity retained"
+        );
+        result
+    }
+    async fn transfer(
+        &self,
+        socket: &mut TcpStream,
+        child: &mut blent_config::commands::OwnedChild,
+        session: &mut AudioSession,
+        grant: blent_config::audio::AudioGrant,
+        report: &Report,
+        processing: String,
+        clocked: bool,
+    ) -> Result<()> {
+        let started = std::time::Instant::now();
+        process::ready(child)
             .await
             .context("PipeWire unavailable or virtual audio device setup failed")?;
-        protocol::grant(&mut socket, &token, &grant).await?;
+        protocol::grant(socket, self.token, &grant).await?;
         session.connected(
             grant.generation(),
             &grant.hello(),
@@ -100,47 +207,23 @@ async fn invited(
         )?;
         report.update(
             AudioState::Streaming,
-            format!("Blent {:?} available. {processing}", profile.direction),
+            format!(
+                "Blent {:?} available. {processing}",
+                self.options.profile.direction
+            ),
         );
-        match profile.direction {
+        match self.options.profile.direction {
             Direction::Microphone => {
                 let mut reader = grant.authenticate(&grant.hello())?;
-                microphone(&mut socket, &mut child, &mut reader).await
+                microphone(socket, child, &mut reader).await
             }
-            Direction::Speakers => {
-                speakers_with_clock(&mut socket, &mut child, grant, clocked).await
-            }
+            Direction::Speakers => speakers_with_clock(socket, child, grant, clocked).await,
         }
-    };
-    let result = tokio::select! {
-        result = stream => result,
-        _ = cancelled(stop) => Ok(()),
-    };
-    let retired = process::retire(child).await;
-    ensure!(
-        retired.completion.is_complete(),
-        "Audio process retirement incomplete; capacity retained"
-    );
-    result
+    }
 }
-
-async fn invite(bridge: &Bridge, token: &str, options: &AudioOptions) -> Result<()> {
-    let port: u16 = bridge
-        .remote
-        .strip_prefix("tcp:")
-        .context("invalid ADB audio port")?
-        .parse()?;
-    let profile = options.profile;
-    let command = format!("am broadcast -n io.github.geraldo_netto.blent/com.blent.AudioReceiver --es token {token} --ei port {port} --ei direction {} --ei processing {} --ei buffer_ms {} --ez background {}\n", profile.direction as u8, profile.processing as u8, profile.buffer_ms, profile.background);
-    let result = Command::new(&bridge.adb)
-        .args(["-s", &bridge.serial, "shell"])
-        .output_input_timeout(Some(command.as_bytes()), Duration::from_secs(5))
-        .await?;
-    ensure!(
-        result.status.success() && String::from_utf8_lossy(&result.stdout).contains("result=1"),
-        "Tablet did not accept audio request. Install updated Blent and open it."
-    );
-    Ok(())
+fn lost(result: Result<()>) -> Result<()> {
+    result?;
+    anyhow::bail!("original audio connection ended")
 }
 
 async fn microphone(
@@ -209,3 +292,6 @@ mod tests;
 
 #[cfg(test)]
 mod connection_tests;
+
+#[cfg(test)]
+pub(crate) mod session_tests;

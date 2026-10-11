@@ -6,11 +6,13 @@ use tokio::{
     net::{TcpListener, TcpStream},
 };
 
+pub(super) type Accepted = (TcpStream, AudioCapabilities, Processing, String, bool);
+
 pub(super) async fn accept(
     listener: &TcpListener,
     token: &str,
     direction: Direction,
-) -> Result<(TcpStream, AudioCapabilities, Processing, String, bool)> {
+) -> Result<Accepted> {
     let deadline = tokio::time::Instant::now() + Duration::from_secs(90);
     loop {
         let (mut socket, _) = tokio::time::timeout_at(deadline, listener.accept()).await??;

@@ -1,0 +1,12 @@
+{
+  "host/src/audio.rs": "bb5aebca3097fec9bdbd37c6cc34e235b24169d36c82b7fbf2db4f725b4cb4b8",
+  "host/src/audio/adb.rs": "068d15a6a52420421b39a19f2bc3586952226d0750101434a83d4fceda3871f1",
+  "host/src/audio/usb.rs": "995ac5802ec2bfde581e04808f3c86529601fab0001bd05866e540414ce4cd3d",
+  "host/src/audio/process.rs": "084ecdfe81c631a4b4a47a3f3bcd1bb5f39dcee905eb587a4854f41c0d41f7c4",
+  "host/src/audio/protocol.rs": "f98302d2581f4c42a9b0f4393cd86e00485d3fe69bff8af916c1549d26239288",
+  "host/src/audio/connection_tests.rs": "f5166d0c14d047225ec7203b8e83c270a48d2a5af43e74d8d40fc5a8c3bca986",
+  "host/src/audio/session_tests.rs": "e6b9f5e5e14d16c914dc828fcecdd096d9b42628da16f042ff5dc99aa36220ee",
+  "host/src/audio/tests.rs": "ef69d480849d9c128d5790fafa411d6d38392d9cb0e52b932f039f6b238ae82e",
+  "host/src/broker/linux/server/tests.rs": "370410c3b329f53cace37b16e2e9496387fddcc731d7bf27493d00800d693894",
+  "host/src/broker/linux/server/tests/audio.rs": "9c0c13f1af95b8c6c8e280e5f2ec1e2f87eb0757b40ec5946fb038b225572832"
+}

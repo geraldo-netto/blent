@@ -435,6 +435,9 @@ fn t977_unimplemented_usb_audio_never_falls_back_to_adb_or_opens_native_devices(
             .unwrap();
         runtime.block_on(async {
             for direction in [Direction::Microphone, Direction::Speakers] {
+                if transport_capabilities(direction).usb {
+                    continue;
+                }
                 let mut options = AudioOptions::new(direction);
                 options.usb_peer = Some("a".repeat(64));
                 let (_stop, stopped) = watch::channel(false);

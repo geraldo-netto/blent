@@ -208,3 +208,5 @@ async fn t853_failed_inventory_rejects_inspect_until_successful_refresh() {
 }
 
 mod camera;
+
+mod audio;

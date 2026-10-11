@@ -4,6 +4,9 @@ use blent_config::commands::OwnedChild as Child;
 use std::{path::Path, process::Stdio, time::Duration};
 use tokio::process::Command;
 
+pub(super) type Start<'a> =
+    dyn Fn(&Path, AudioProfile, &str, bool) -> Result<Child> + Send + Sync + 'a;
+
 #[cfg(test)]
 pub(super) fn spawn(helper: &Path, profile: AudioProfile, token: &str) -> Result<Child> {
     spawn_with_clock(helper, profile, token, false)

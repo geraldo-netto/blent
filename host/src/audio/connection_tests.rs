@@ -3,6 +3,39 @@ use super::*;
 use std::os::unix::fs::PermissionsExt;
 use tokio::io::AsyncReadExt;
 
+#[test]
+fn t992_audio_pre_stopped_never_creates_native_transport_or_helper() {
+    if std::env::var_os("BLENT_T992_STOPPED_CHILD").is_some() {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        runtime.block_on(async {
+            for direction in [Direction::Microphone, Direction::Speakers] {
+                let (_, stopped) = watch::channel(true);
+                let (state, _) = watch::channel(Default::default());
+                run(AudioOptions::new(direction), stopped, Report(state))
+                    .await
+                    .expect("T992 Stop must precede native dependency lookup or setup");
+            }
+        });
+        return;
+    }
+    let root = tempfile::tempdir().unwrap();
+    let result = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", "audio::connection_tests::t992_audio_pre_stopped_never_creates_native_transport_or_helper", "--nocapture"])
+        .env("BLENT_T992_STOPPED_CHILD", "1").env("PATH", root.path())
+        .env("XDG_RUNTIME_DIR", root.path().join("runtime"))
+        .env("XDG_STATE_HOME", root.path().join("state"))
+        .output().unwrap();
+    assert!(
+        result.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&result.stdout),
+        String::from_utf8_lossy(&result.stderr)
+    );
+}
+
 fn script(root: &Path, name: &str, source: &str) {
     let path = root.join(name);
     std::fs::write(&path, format!("#!/usr/bin/python3\n{source}\n")).unwrap();
@@ -75,7 +108,7 @@ async fn private_pipeline() {
             pipeline_once(&root, direction, mode).await;
         }
     }
-    let capabilities = transport_capabilities();
+    let capabilities = transport_capabilities(Direction::Microphone);
     assert!(capabilities.adb && !capabilities.usb);
     assert!(capabilities.available());
     assert!(capabilities.supports(&blent_config::audio::connection::Target::Adb(None)));
@@ -189,4 +222,46 @@ async fn microphone_packet(root: &Path, socket: &mut TcpStream, generation: &[u8
     let native = std::fs::read(root.join("delivered")).unwrap();
     assert_eq!(native[0], 0);
     assert_eq!(&native[1..], &packet[28..]);
+}
+
+#[test]
+fn t992_audio_explicit_usb_factory_never_looks_up_adb_or_selects_fallback() {
+    if std::env::var_os("BLENT_T992_USB_FACTORY_CHILD").is_some() {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let mut options = AudioOptions::new(Direction::Speakers);
+                options.usb_peer = Some("ab".repeat(32));
+                let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+                let error = connection(&options, &listener, &"ab".repeat(32))
+                    .await
+                    .err()
+                    .unwrap();
+                let expected = if cfg!(feature = "accessory-transport") {
+                    "XDG_RUNTIME_DIR must be an absolute path"
+                } else {
+                    "direct-USB audio requires accessory-transport support"
+                };
+                assert_eq!(
+                    error.to_string(),
+                    expected,
+                    "T992 USB chose ADB or touched a native source before validating private paths"
+                );
+            });
+        return;
+    }
+    let root = tempfile::tempdir().unwrap();
+    let result=std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact","audio::connection_tests::t992_audio_explicit_usb_factory_never_looks_up_adb_or_selects_fallback","--nocapture"])
+        .env("BLENT_T992_USB_FACTORY_CHILD","1").env("PATH",root.path())
+        .env("XDG_RUNTIME_DIR","relative-t992-private").env("XDG_STATE_HOME",root.path().join("state"))
+        .output().unwrap();
+    assert!(
+        result.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&result.stdout),
+        String::from_utf8_lossy(&result.stderr)
+    );
 }
