@@ -25,6 +25,7 @@ class WorkerAcceptanceReceiver : BroadcastReceiver() {
     }
     private fun audio(direction: Int, mode: Int) = MediaTask.Audio(
         AudioEndpoint("a".repeat(64), 12345, direction, 1, mode, false), AudioPreferences(gain = 0, builtIn = false))
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun exercise(context: Context, ownerDeath: Boolean): JSONObject = supervisorScope {
         val rows = JSONArray()
         val owners = ArrayList<Owner>()

@@ -1,0 +1,26 @@
+[
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceReceiver.kt",
+    14,
+    "onReceive",
+    2
+  ],
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceReceiver.kt",
+    26,
+    "audio",
+    1
+  ],
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceReceiver.kt",
+    29,
+    "exercise",
+    6
+  ],
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceReceiver.kt",
+    93,
+    "stop",
+    2
+  ]
+]
