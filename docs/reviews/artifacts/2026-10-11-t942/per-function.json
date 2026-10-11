@@ -1,0 +1,568 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "android/app/src/main/java/com/blent/ResourceLane.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 23,
+      "passing": 23,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "get:error",
+      "line": 40,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "getError",
+          "signature": "()Ljava/lang/Exception;",
+          "line": 40,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "checkAvailable",
+      "line": 42,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "checkAvailable",
+          "signature": "()V",
+          "line": 42,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "replace",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "replace",
+          "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+          "line": 45,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$replace$1",
+          "name": "invoke",
+          "signature": "(Lcom/blent/ResourceRetirement;)V",
+          "line": 44,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "stop",
+      "line": 53,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "stop",
+          "signature": "()V",
+          "line": 54,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "admit",
+      "line": 60,
+      "language": "kotlin",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "admit",
+          "signature": "()V",
+          "line": 61,
+          "covered": 12,
+          "total": 12
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 70,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$admit$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 70,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 71,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$admit$2",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Throwable;)V",
+          "line": 71,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "execute",
+      "line": 75,
+      "language": "kotlin",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "execute",
+          "signature": "(Lcom/blent/ResourceLane$Active;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 75,
+          "covered": 16,
+          "total": 16
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 88,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$execute$failure$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 88,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "requestStop",
+      "line": 95,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "requestStop",
+          "signature": "(Lcom/blent/ResourceLane$Active;)V",
+          "line": 96,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 100,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$requestStop$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 100,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$requestStop$2",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 100,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 100,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$requestStop$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 100,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$requestStop$2",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 100,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "beginDeadline",
+      "line": 105,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "beginDeadline",
+          "signature": "(Lcom/blent/ResourceLane$Active;)V",
+          "line": 106,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 107,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$beginDeadline$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 108,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "markStalled",
+      "line": 113,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "markStalled",
+          "signature": "(Lcom/blent/ResourceLane$Active;)V",
+          "line": 114,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "notifyEnded",
+      "line": 119,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "notifyEnded",
+          "signature": "(Lcom/blent/ResourceLane$Active;)V",
+          "line": 120,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 122,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$notifyEnded$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 122,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "notifyRetired",
+      "line": 125,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "notifyRetired",
+          "signature": "(Lcom/blent/ResourceLane$Request;Lcom/blent/ResourceRetirement;)V",
+          "line": 126,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "<lambda>",
+      "line": 128,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane$notifyRetired$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 128,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "notify",
+      "line": 131,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "notify",
+          "signature": "(Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V",
+          "line": 132,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "status",
+      "line": 136,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "status",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 137,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "name": "complete",
+      "line": 140,
+      "language": "kotlin",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/ResourceLane.kt",
+          "owner": "com/blent/ResourceLane",
+          "name": "complete",
+          "signature": "(Lcom/blent/ResourceLane$Active;)V",
+          "line": 141,
+          "covered": 16,
+          "total": 16
+        }
+      ]
+    }
+  ]
+}

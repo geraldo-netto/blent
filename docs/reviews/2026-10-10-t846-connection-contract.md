@@ -1777,3 +1777,19 @@ ownership, not physical capture acceptance. T942 separates successful native
 retirement notification, T943 adapts admitted capture, T944 composes Activity
 permissions, and T932 joins/enables production camera; T858 remains hardware
 acceptance. Production camera capability remains disabled.
+
+## T942 distinct resource retirement notifications
+
+ResourceLane keeps execution-ended callbacks separate from successful actual
+retirement and safe no-start notifications. Failed retirement never publishes
+proof. Unopened pending requests are retired explicitly when superseded, stopped
+or rejected before dispatch. Factories construct lazy wrappers without native
+acquisition. Observer Exceptions cannot skip cleanup or open overlapping owners;
+reentrant reporting observes the same single-owner admission gate.
+
+[Permanent red/green, 256-step bounded properties and native counters](artifacts/2026-10-11-t942/README.md)
+cover 934 offline tests and all 23 scoped methods. Fatal Errors remain propagated;
+their outstanding ownership retention gap is tracked by T947 before camera
+integration. T943 binds actual capture claims to original connection attempts;
+T944 handles Activity/permission and T932 enables the joined composition. Camera
+capabilities remain disabled; physical acceptance stays T858.

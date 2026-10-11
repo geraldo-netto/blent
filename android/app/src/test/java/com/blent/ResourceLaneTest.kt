@@ -100,6 +100,23 @@ class ResourceLaneTest {
         assertFalse(lane.stalled)
     }
 
+    @Test fun t942EndedCallbackFailureCannotSkipNativeRetirementOrStrandAdmission() = runBlocking {
+        val errors = ConcurrentLinkedQueue<Throwable>()
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined + CoroutineExceptionHandler { _, error -> errors.add(error) })
+        val reports = mutableListOf<String>()
+        val lane = ResourceLane(scope, { reports.add(it) })
+        val first = Run().apply { release.complete(Unit) }
+        val second = Run().apply { release.complete(Unit) }
+        try {
+            lane.replace({ first }, { error("ended callback failed") })
+            lane.replace({ second }, {})
+            assertEquals("T942 ended callback cannot bypass native cleanup", 1, first.retired)
+            assertEquals(1, second.started)
+            assertTrue("T942 callback exception remains resource-local", errors.isEmpty())
+            assertTrue(reports.any { it.contains("ended callback failed") })
+        } finally { lane.stop(); scope.cancel(); scope.coroutineContext[Job]!!.join() }
+    }
+
     @Test fun t806_deadlinesRejectInvalidRangesAndCannotClearLaterWait() = runBlocking {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val invalid = listOf(Long.MIN_VALUE, -100, -1, 0, 60_001, Long.MAX_VALUE)

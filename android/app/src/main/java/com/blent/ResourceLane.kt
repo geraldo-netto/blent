@@ -2,15 +2,27 @@ package com.blent
 
 import kotlinx.coroutines.*
 
+/** Safe proof for one original request; failure/timeout never produces proof. */
+internal enum class ResourceRetirement { NOT_STARTED, RETIRED }
+
 /** One retiring owner and one latest request. A deadline reports a stall;
- * it never transfers ownership or authorizes replacement. */
+ * it never transfers ownership or authorizes replacement.
+ * Factories return lazy wrappers without native acquisition; opening happens
+ * only inside execute.
+ * Execution-ended observers run before retirement and cannot prove release.
+ * Separate retirement observers run after the job and actual native cleanup,
+ * or after an unopened request is discarded. Observer failures cannot skip
+ * cleanup or authorize replacement; fatal VM errors are not consumed. */
 internal class ResourceLane(
     private val scope: CoroutineScope,
     private val report: (String) -> Unit,
     private val deadlineMillis: Long = 5_000,
 ) {
     init { require(deadlineMillis in 1..60_000) }
-    private data class Request(val create: () -> LifecycleRun, val complete: (Exception?) -> Unit)
+    private class Request(
+        val create: () -> LifecycleRun, val complete: (Exception?) -> Unit,
+        val onRetired: (ResourceRetirement) -> Unit,
+    ) { var proofPublished = false }
     private class Active(val request: Request) {
         lateinit var job: Job
         @Volatile var run: LifecycleRun? = null
@@ -18,6 +30,7 @@ internal class ResourceLane(
         var deadline: Job? = null
         var failure: Exception? = null
         var notified = false
+        var retirement: ResourceRetirement? = null
     }
     private val guard = RetirementGuard()
     private var current: Active? = null
@@ -28,22 +41,30 @@ internal class ResourceLane(
 
     fun checkAvailable() = guard.checkAvailable()
 
-    @Synchronized fun replace(create: () -> LifecycleRun, complete: (Exception?) -> Unit) {
+    @Synchronized fun replace(create: () -> LifecycleRun, complete: (Exception?) -> Unit, retired: (ResourceRetirement) -> Unit = {}) {
         checkAvailable()
-        pending = Request(create, complete)
+        val displaced = pending
+        pending = Request(create, complete, retired)
         val owner = current
         if (owner == null) admit() else requestStop(owner)
+        displaced?.let { notifyRetired(it, ResourceRetirement.NOT_STARTED) }
     }
 
     @Synchronized fun stop() {
+        val displaced = pending
         pending = null
         current?.let { requestStop(it) }
+        displaced?.let { notifyRetired(it, ResourceRetirement.NOT_STARTED) }
     }
 
     private fun admit() {
+        if (current != null) return
         val request = pending ?: return
         pending = null
-        if (!scope.isActive || error != null) return
+        if (!scope.isActive || error != null) {
+            notifyRetired(request, ResourceRetirement.NOT_STARTED)
+            return
+        }
         val owner = Active(request)
         current = owner
         owner.job = scope.launch(start = CoroutineStart.LAZY) { execute(owner) }
@@ -61,20 +82,23 @@ internal class ResourceLane(
         } finally {
             notifyEnded(owner)
             beginDeadline(owner)
-            owner.run?.let { run ->
+            val run = owner.run
+            if (run == null) owner.retirement = ResourceRetirement.NOT_STARTED
+            else {
                 val failure = withContext(NonCancellable) { guard.retire(run) }
-                if (failure != null) report("Native cleanup incomplete: ${failure.message}")
+                if (failure == null) owner.retirement = ResourceRetirement.RETIRED
+                else status("Native cleanup incomplete: ${failure.message}")
             }
         }
     }
 
     private fun requestStop(owner: Active) {
-        if (stalled) report("Native cleanup stalled; replacement waiting.")
+        if (stalled) status("Native cleanup stalled; replacement waiting.")
         if (owner.stopping) return
         owner.stopping = true
         beginDeadline(owner)
         cleanupAll({ owner.run?.cancel() }, { owner.job.cancel() }).firstOrNull()?.let {
-            report("Cancellation incomplete: ${it.message}")
+            status("Cancellation incomplete: ${it.message}")
         }
     }
 
@@ -89,29 +113,49 @@ internal class ResourceLane(
     @Synchronized private fun markStalled(owner: Active) {
         if (current !== owner) return
         stalled = true
-        report("Native cleanup stalled; replacement waiting.")
+        status("Native cleanup stalled; replacement waiting.")
     }
 
     private fun notifyEnded(owner: Active) {
         if (owner.notified) return
         owner.notified = true
-        owner.request.complete(owner.failure)
+        notify("Execution-ended", { owner.request.complete(owner.failure) })
+    }
+
+    private fun notifyRetired(request: Request, proof: ResourceRetirement) {
+        if (request.proofPublished) return
+        request.proofPublished = true
+        notify("Retirement", { request.onRetired(proof) })
+    }
+
+    private fun notify(label: String, callback: () -> Unit) {
+        try { callback() }
+        catch (failure: Exception) { status("$label callback failed: ${failure.message}") }
+    }
+
+    private fun status(text: String) {
+        try { report(text) } catch (_: Exception) { /* Observers cannot own native cleanup. */ }
     }
 
     @Synchronized private fun complete(owner: Active) {
         if (current !== owner) return
         owner.deadline?.cancel()
+        notifyEnded(owner)
+        val proof = owner.retirement ?: if (owner.run == null) ResourceRetirement.NOT_STARTED else null
+        proof?.let { notifyRetired(owner.request, it) }
+        // Keep the original owner installed through callbacks. Reentrant replace
+        // can update the latest request but cannot admit a second native owner.
         current = null
         val recovered = stalled
         stalled = false
-        notifyEnded(owner)
         if (error != null) {
+            val displaced = pending
             pending = null
-            report("Native cleanup incomplete: ${error?.message}")
+            displaced?.let { notifyRetired(it, ResourceRetirement.NOT_STARTED) }
+            status("Native cleanup incomplete: ${error?.message}")
         } else {
-            if (recovered) report("Native cleanup complete.")
+            if (recovered) status("Native cleanup complete.")
             admit()
         }
     }
 }
-
