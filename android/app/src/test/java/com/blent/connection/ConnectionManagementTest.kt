@@ -76,7 +76,7 @@ class ConnectionManagementTest {
         assertArrayEquals(bytes, ConnectionManagement.encode(parser.feed(bytes).message!!))
         parser.end(); rejected { parser.end() }
     }
-    @Test fun t850ProfileKeyAndCredentialBoundaries() {
+    @Test fun t955CameraAndAudioProfileBoundaries() {
         val valid = vectors("valid").map(ConnectionManagement::decode)
         val camera = valid.filterIsInstance<Offer>().first { it.profile is Camera }
         val profile = camera.profile as Camera
@@ -89,6 +89,12 @@ class ConnectionManagementTest {
             val changed = audio.copy(profile = (audio.profile as Audio).copy(bufferMs = value))
             if (value in 20..200 && value % 10 == 0) ConnectionManagement.encode(changed) else rejected { ConnectionManagement.encode(changed) }
         }
+    }
+    @Test fun t850ProfileKeyAndCredentialBoundaries() {
+        val valid = vectors("valid").map(ConnectionManagement::decode)
+        val camera = valid.filterIsInstance<Offer>().first { it.profile is Camera }
+        val profile = camera.profile as Camera
+        val audio = valid.filterIsInstance<Offer>().first { it.profile is Audio }
         for (value in listOf(Long.MIN_VALUE, -1L, 0L)) {
             rejected { ConnectionManagement.encode(camera.copy(key = camera.key.copy(request = value))) }
             rejected { ConnectionManagement.encode(camera.copy(key = camera.key.copy(generation = value))) }
