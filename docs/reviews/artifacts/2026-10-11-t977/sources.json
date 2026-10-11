@@ -1,0 +1,19 @@
+{
+  "common/src/audio.rs": "a69e39b50f8b92f30b5b0609f0598525012ab734c2e27faaa2e33e7653386a1d",
+  "common/src/audio/settings.rs": "89f35257dcc494342314782c5379b1e2ae6ce889e01cd1a6f95254f1eecc05c8",
+  "common/src/audio/connection.rs": "e27b80a5e539546ab9ef9b068ce26898ab2be3fe86b9177fd1b36adceab1143d",
+  "common/src/audio/connection/tests.rs": "315b871f3a8456d09b3ff41f180b06753ed49f39834208093b4095a3b4a80491",
+  "common/src/audio/connection/contract_tests.rs": "44d69dda176f9af259bba4ee371f65535ea369aef3a0d597fd54993b6a4cadaa",
+  "common/src/connection/media.rs": "5521ad45001fa5ae19b1eb747f8523a0539e67494e1217b616a5c2878c7dfa28",
+  "common/src/connection/mod.rs": "5d2ff6f19ce1179952f70f66c3243f0d0e1173e28203aeb0999da0368cc79129",
+  "common/src/camera/connection.rs": "3e1537b2300be87bf6104f18390226339d90a8659b0fede130d71f3befb2543c",
+  "common/src/cli.rs": "dcf776eb5944ea2af443f9e898e63f6f6be10de7a1b3214bfba67642adfa29bf",
+  "host/src/audio.rs": "aaeec05cd4952a0048025ccb6a3ddbaaab84f4ed639eceb48c8bc59fd935714b",
+  "host/src/audio_control.rs": "cbbd404952a9d66b3aab2892bdae99345a35b4d87a216bfa5d69ff9114fcfc99",
+  "host/src/audio/tests.rs": "c7534dbb88777e9f3b02b5dadbace3eae0253cb5439bdb94145ffb865e7ace0e",
+  "host/src/audio/connection_tests.rs": "8e35ff57554edb489d59ea197463012643557130de57cc11d66f30835af96eba",
+  "host/src/camera.rs": "6d6f8f54b968d4b429e24289d9a05358a20f498f3e6924d88254d81b1d25bf58",
+  "host/src/camera/bridge.rs": "7272c3e93804cb12c9fcb51475cc39cb79276f4eee9a4e9994cd5817044cebf3",
+  "host/src/camera/usb.rs": "6cdb6e85d8096a7a06226518eaa45ca03431f7723378e1a5222790ca189ea2ce",
+  "host/src/camera/connection_tests.rs": "b7d10ea56e23c86aaf068feda716880d0708b5208b2b630de9890c67eb434d97"
+}

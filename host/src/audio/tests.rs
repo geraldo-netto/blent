@@ -425,3 +425,42 @@ async fn t818_staging_reuse_keeps_packet_bytes_and_sequence_atomic() {
         .await
         .is_err());
 }
+
+#[test]
+fn t977_unimplemented_usb_audio_never_falls_back_to_adb_or_opens_native_devices() {
+    if std::env::var_os("BLENT_T977_AUDIO_CHILD").is_some() {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        runtime.block_on(async {
+            for direction in [Direction::Microphone, Direction::Speakers] {
+                let mut options = AudioOptions::new(direction);
+                options.usb_peer = Some("a".repeat(64));
+                let (_stop, stopped) = watch::channel(false);
+                let report = Report(watch::channel(Default::default()).0);
+                let error = run(options, stopped, report).await.unwrap_err();
+                assert_eq!(
+                    error.to_string(),
+                    "direct-USB audio is not implemented",
+                    "T977 USB must never use ADB or native audio"
+                );
+            }
+        });
+        return;
+    }
+    // An empty private PATH proves no real ADB/helper/desktop can be touched.
+    let root = tempfile::tempdir().unwrap();
+    let result = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", "audio::tests::t977_unimplemented_usb_audio_never_falls_back_to_adb_or_opens_native_devices", "--nocapture"])
+        .env("BLENT_T977_AUDIO_CHILD", "1").env("PATH", root.path())
+        .env("XDG_RUNTIME_DIR", root.path().join("runtime"))
+        .env("XDG_STATE_HOME", root.path().join("state"))
+        .output().unwrap();
+    assert!(
+        result.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&result.stdout),
+        String::from_utf8_lossy(&result.stderr)
+    );
+}

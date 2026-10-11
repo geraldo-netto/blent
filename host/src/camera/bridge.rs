@@ -134,7 +134,7 @@ mod tests {
     }
 }
 
-impl Invitation for Bridge {
+impl Invitation<CameraProfile> for Bridge {
     fn invite<'a>(
         &'a self,
         credential: &'a str,
@@ -144,7 +144,7 @@ impl Invitation for Bridge {
     }
 }
 
-impl blent_config::camera::connection::Connection for Bridge {
+impl blent_config::camera::connection::Connection<CameraProfile> for Bridge {
     fn monitor(&self) -> InvitationResult<'_> {
         Box::pin(std::future::pending())
     }

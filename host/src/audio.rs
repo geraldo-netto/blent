@@ -16,12 +16,25 @@ use tokio::{
 mod process;
 mod protocol;
 
+/// Implemented adapters only. Portable USB contracts do not imply native audio
+/// support; T979 supplies that adapter independently of camera/display support.
+pub const fn transport_capabilities() -> blent_config::audio::connection::Transports {
+    blent_config::audio::connection::Transports {
+        adb: true,
+        usb: false,
+    }
+}
+
 pub async fn run(
     options: AudioOptions,
     mut stop: watch::Receiver<bool>,
     report: Report,
 ) -> Result<()> {
-    options.profile.validate()?;
+    options.validate()?;
+    ensure!(
+        transport_capabilities().supports(&options.target()?),
+        "direct-USB audio is not implemented"
+    );
     let adb = executable("adb")?;
     let helper = helper()?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
@@ -193,3 +206,6 @@ pub async fn run_cli(options: AudioOptions) -> Result<()> {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod connection_tests;

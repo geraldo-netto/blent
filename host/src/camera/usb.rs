@@ -144,12 +144,12 @@ impl Bridge {
         Ok(())
     }
 }
-impl Invitation for Bridge {
+impl Invitation<CameraProfile> for Bridge {
     fn invite<'a>(&'a self, token: &'a str, profile: &'a CameraProfile) -> InvitationResult<'a> {
         Box::pin(self.invite_once(token, profile))
     }
 }
-impl Connection for Bridge {
+impl Connection<CameraProfile> for Bridge {
     fn monitor(&self) -> InvitationResult<'_> {
         Box::pin(self.supervise())
     }

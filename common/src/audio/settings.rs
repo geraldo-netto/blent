@@ -7,12 +7,16 @@ use serde::{Deserialize, Serialize};
 pub struct AudioOptions {
     pub profile: AudioProfile,
     pub serial: Option<String>,
+    /// Explicit direct-USB tablet certificate fingerprint; never selects ADB.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub usb_peer: Option<String>,
 }
 impl AudioOptions {
     pub fn new(direction: Direction) -> Self {
         Self {
             profile: AudioProfile::new(direction),
             serial: None,
+            usb_peer: None,
         }
     }
 }

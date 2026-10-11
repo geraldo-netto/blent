@@ -122,6 +122,9 @@ pub struct AudioArgs {
     pub background: bool,
     #[arg(long)]
     pub serial: Option<String>,
+    /// Explicit direct-USB tablet fingerprint; support depends on the backend.
+    #[arg(long, conflicts_with = "serial")]
+    pub usb_peer: Option<String>,
 }
 impl AudioArgs {
     pub fn options(&self) -> crate::audio::AudioOptions {
@@ -133,6 +136,7 @@ impl AudioArgs {
                 background: self.background,
             },
             serial: self.serial.clone(),
+            usb_peer: self.usb_peer.clone(),
         }
     }
 }

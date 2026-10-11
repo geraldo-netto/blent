@@ -110,7 +110,7 @@ async fn connection(
     profile: &CameraProfile,
     listener: &TcpListener,
     _token: &str,
-) -> Result<Box<dyn Connection>> {
+) -> Result<Box<dyn Connection<CameraProfile>>> {
     match profile.target()? {
         Target::Adb(serial) => Ok(Box::new(
             bridge::Bridge::create(executable("adb")?, serial, listener.local_addr()?.port())
@@ -192,7 +192,7 @@ async fn serve(
 
 struct Session<'a> {
     listener: &'a TcpListener,
-    invitation: &'a dyn Connection,
+    invitation: &'a dyn Connection<CameraProfile>,
     token: &'a str,
     ffmpeg: &'a std::path::Path,
     options: &'a CameraOptions,

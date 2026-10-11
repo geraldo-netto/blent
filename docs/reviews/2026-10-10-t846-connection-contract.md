@@ -1976,3 +1976,14 @@ pre-existing management enum coverage gaps found by the full native shared suite
 were resolved under T981: permanent bounded tag/audio-profile properties and a
 fresh full common collection now pass the individual gate for all 10 management
 methods. T976 evidence remains its historical partial result.
+
+### Shared audio invitation boundary (T977)
+
+Current camera/audio domains share `connection::media::{Target, Transports,
+Invitation<P>, Connection<P>}`. Audio selectors persist exact full USB peer
+identities independently by direction; old ADB defaults are preserved.
+`AudioProfile::invitation_profile` projects the existing microphone/speaker
+resource and processing/buffer/background schema, independent of clock negotiation
+and native adapters. Native USB audio remains explicitly unavailable until T979;
+selection never silently falls back to ADB. Retained offline evidence:
+[contracts, default audio and camera adapter counters](artifacts/2026-10-11-t977/README.md).

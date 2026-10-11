@@ -18,6 +18,27 @@ The selected product contract is [microphone/shared audio](reviews/2026-09-29-au
 and [tablet speakers](reviews/2026-09-29-audio-output.md). The following describes
 implemented shared behavior; those reviews also contain planned native behavior.
 
+## Portable connection selection (T977)
+
+`AudioOptions` and `blent audio --usb-peer <full-tablet-fingerprint>` now accept an
+explicit USB target independently for microphone and speakers. It conflicts with
+`--serial`; invalid, shortened or uppercase fingerprints fail validation.
+Existing settings and commands retain ADB selection by default. Saving a target
+starts no media or connection. The native audio implementation currently reports
+USB unavailable and rejects that target before ADB, helper or device work; Linux
+USB composition and production selector controls remain T979. Android leased
+speaker playback remains T978, followed by microphone integration T859. These
+contracts do not establish physical USB audio support.
+
+Camera and audio use shared platform-independent `connection::media` transport
+and generic invitation/monitor/close interfaces. Profiles preserve direction,
+processing, buffer and background preferences; transport selectors stay outside
+the wire schema. Audio clock negotiation remains its authenticated PCM bootstrap.
+Invitation success is transport acceptance only; cancellation, timeout or a
+failed close does not prove native/remote retirement. Adapters retain original
+ownership independently. [Offline contract and native fixtures](reviews/artifacts/2026-10-11-t977/README.md)
+qualify this boundary; actual USB speaker/microphone acceptance remains T860/T859.
+
 ## Ownership and adapter integration
 
 Keep one `AudioSession` and native `AudioBackend` owner per direction throughout

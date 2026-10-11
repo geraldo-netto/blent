@@ -79,7 +79,7 @@ impl Controller {
 }
 impl AudioController for Controller {
     fn start(&self, options: AudioOptions) -> Result<()> {
-        options.profile.validate()?;
+        options.validate()?;
         let mut admitted = self.admitted.lock().unwrap();
         anyhow::ensure!(!*admitted, "Stop audio before changing an active session");
         self.commands.as_ref().unwrap().send(Some(options))?;
@@ -192,6 +192,28 @@ mod tests {
         },
         time::{Duration, Instant},
     };
+
+    #[test]
+    fn t977_invalid_target_is_rejected_before_control_admission() {
+        let (sender, receiver) = watch::channel(None);
+        let (_status, status) = watch::channel(AudioStatus::default());
+        let controller = Controller {
+            commands: Some(sender),
+            status,
+            worker: None,
+            admitted: Arc::new(Mutex::new(false)),
+        };
+        let mut options = AudioOptions::new(Direction::Speakers);
+        options.usb_peer = Some("a".repeat(64));
+        options.serial = Some("other-tablet".into());
+        assert!(
+            controller.start(options).is_err(),
+            "T977 ambiguous target admitted"
+        );
+        assert!(receiver.borrow().is_none());
+        assert!(!*controller.admitted.lock().unwrap());
+        assert_eq!(controller.status().state, AudioState::Stopped);
+    }
 
     #[test]
     fn t811_drop_returns_while_native_retirement_is_held() {

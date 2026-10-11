@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 
 mod buffer;
 mod clock;
+pub mod connection;
 pub use clock::{ClockSample, CLOCK_BYTES};
 mod settings;
 pub use settings::{AudioController, AudioOptions, AudioSettings, AudioStatus};

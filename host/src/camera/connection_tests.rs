@@ -3,7 +3,7 @@ use blent_config::camera::connection::{validate_credential, Invitation, Invitati
 use std::sync::Mutex;
 
 struct IndependentInvitation(Mutex<Option<CameraProfile>>);
-impl Invitation for IndependentInvitation {
+impl Invitation<CameraProfile> for IndependentInvitation {
     fn invite<'a>(
         &'a self,
         credential: &'a str,
@@ -100,14 +100,14 @@ async fn t931_adb_adapter_rejects_native_target_without_a_command() {
     };
     let mut profile = CameraProfile::default();
     profile.usb_peer = Some("a".repeat(64));
-    let port: &dyn Invitation = &bridge;
+    let port: &dyn Invitation<CameraProfile> = &bridge;
     let error = port.invite(&"a".repeat(64), &profile).await.unwrap_err();
     assert_eq!(error.to_string(), "ADB camera invitation cannot target USB");
     assert!(!marker.exists());
 }
 
 struct PendingInvitation;
-impl Invitation for PendingInvitation {
+impl Invitation<CameraProfile> for PendingInvitation {
     fn invite<'a>(&'a self, _: &'a str, _: &'a CameraProfile) -> InvitationResult<'a> {
         Box::pin(std::future::pending())
     }
@@ -210,7 +210,7 @@ async fn t971_producer_failure_interrupts_pending_invitation() {
     );
 }
 
-impl Connection for IndependentInvitation {
+impl Connection<CameraProfile> for IndependentInvitation {
     fn monitor(&self) -> InvitationResult<'_> {
         Box::pin(std::future::pending())
     }
@@ -218,7 +218,7 @@ impl Connection for IndependentInvitation {
         Box::pin(async { Ok(()) })
     }
 }
-impl Connection for PendingInvitation {
+impl Connection<CameraProfile> for PendingInvitation {
     fn monitor(&self) -> InvitationResult<'_> {
         Box::pin(std::future::pending())
     }
@@ -228,12 +228,12 @@ impl Connection for PendingInvitation {
 }
 
 struct LostConnection(IndependentInvitation);
-impl Invitation for LostConnection {
+impl Invitation<CameraProfile> for LostConnection {
     fn invite<'a>(&'a self, token: &'a str, profile: &'a CameraProfile) -> InvitationResult<'a> {
         self.0.invite(token, profile)
     }
 }
-impl Connection for LostConnection {
+impl Connection<CameraProfile> for LostConnection {
     fn monitor(&self) -> InvitationResult<'_> {
         Box::pin(async { anyhow::bail!("T933 original connection lost") })
     }
