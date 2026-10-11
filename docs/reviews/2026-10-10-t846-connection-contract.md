@@ -2051,3 +2051,28 @@ qualify automated composition. USB permission, Android process death and hardwar
 audio devices are controlled synthetic evidence; physical/acoustic duplex and
 debugging-off rendered/input acceptance remain postponed under T859/T846/T857.
 No live USB/ADB, host services, installations or downloads occur.
+
+
+### T1004 fixture input ownership and stable admission (2026-10-12)
+
+T1000's intermittent admission timeout was a joined fixture mismatch. The fixture
+previously called `TabletSessionRig.send`, draining host frames immediately from
+the test thread. That could process Commit after the actor advanced local owners
+but before separate publication reads: offer visibility disappeared before the
+local ADMITTED event installed its route. `AudioClosed` then `AudioRoute` for the
+same lease correctly could not revive the closed original presentation. Native
+endpoint diagnostics showed no failure or cancellation and no capture worker.
+
+Production `ConnectionSessionRunner.readComplete` delivers frames only inside
+`advance`, followed by the same actor turn's local-resource advancement. The joined
+fixture now queues host Offer/Commit/retirement frames until that turn; host mux
+state stays independent. This does not relax closed-owner or native proof rules
+and does not change production code to accommodate an invalid interleaving.
+
+Permanent deterministic API 27/34 regressions fail before the queue fix and pass
+unchanged after it for all resource kinds. A bounded 32-cycle duplex admission
+case includes pending camera withdrawal and checks exact original display/audio
+authority, authenticated PCM and independent native owners. Existing joined
+camera/microphone/speaker, Stop, failure/death and held cleanup assertions remain.
+[Fresh ordinary suite, native counters and red/green evidence](artifacts/2026-10-12-t1004/README.md).
+Physical acceptance remains postponed.

@@ -24,9 +24,11 @@ internal class JoinedMediaConnectionFixture {
         return checkNotNull(connection.state.value.display)
     }
     fun retirePeer(lease: ConnectionResourceLease) = synchronized(link.gate) {
-        link.protocol.peerClose(lease)
-        link.protocol.send(ConnectionManagement.Revoke(lease.key, ConnectionManagement.Reason.REQUESTED))
-        link.protocol.pump()
+        for (channel in ConnectionChannels.members(lease.key.resource)) {
+            if (link.protocol.host.acceptsData(channel, lease.key.generation)) link.protocol.host.close(channel, ConnectionWire.CLOSE)
+            link.protocol.host.consumerRetired(channel, lease.key.generation)
+        }
+        link.send(ConnectionManagement.Revoke(lease.key, ConnectionManagement.Reason.REQUESTED))
     }
     fun replaceChannel(lease: ConnectionResourceLease) = synchronized(link.gate) {
         for (channel in ConnectionChannels.members(lease.key.resource)) link.protocol.host.replaceChannel(channel, lease.key.generation + 1)

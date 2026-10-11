@@ -18,13 +18,21 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
     val token = presentation.begin()
     val opened = AtomicInteger()
     val controls = CopyOnWriteArrayList<ConnectionWorkerCommand>()
+    val events = CopyOnWriteArrayList<ConnectionWorkerEvent>()
+    val cancellations = CopyOnWriteArrayList<Pair<ConnectionResourceLease, ConnectionManagement.Reason>>()
+    val nativeEndpoints = CopyOnWriteArrayList<LocalEndpoint>()
+    private val recordedEndpoints = object : ConnectionEndpoints by protocol.tablet {
+        override fun cancel(lease: ConnectionResourceLease, reason: ConnectionManagement.Reason) {
+            cancellations.add(lease to reason); protocol.tablet.cancel(lease, reason)
+        }
+    }
     val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
     val service = controller.get()
     private val origin = System.nanoTime()
     private var closed = false
     private var delivered = false
-    private val local = ConnectionLocalResources(protocol.tablet, 4096, ConnectionRunLimits(5000, 1000),
-        factory = { now -> opened.incrementAndGet(); LocalEndpointOwner(LocalSocketEndpoint(), now, ConnectionRunLimits(5000, 1000)) },
+    private val local = ConnectionLocalResources(recordedEndpoints, 4096, ConnectionRunLimits(5000, 1000),
+        factory = { now -> opened.incrementAndGet(); LocalEndpointOwner(LocalSocketEndpoint(), now, ConnectionRunLimits(5000, 1000)).also(nativeEndpoints::add) },
         cameraAuthority = protocol.tablet, audioAuthority = protocol.tablet,
         microphoneAuthority = if (capabilities and 4 != 0) protocol.tablet else null)
     private val transport = object : ConnectionRun {
@@ -97,7 +105,7 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
     val worker = ConnectionAdmissionRun(ConnectionWorkerSpec("template", session = ConnectionSessionLimits(4096),
         io = ConnectionRunLimits(5000, 1000), timerMs = 1), { admission },
         { spec, report -> AndroidConnectionWorkerRun(context, spec, report, bindMillis = 1000, startMillis = 1000, retireMillis = 4000) },
-        { presentation.event(token, it); report(it) })
+        { events.add(it); presentation.event(token, it); report(it) })
     init {
         service.factory = { spec, report ->
             val setup = RuntimeSetup().apply {
@@ -113,9 +121,11 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
         }
     }
     private fun clock() = ((System.nanoTime() - origin) / 1_000_000).also { check(it < 10000) }
-    fun send(message: ConnectionManagement.Message) = synchronized(gate) { protocol.send(message) }
+    fun send(message: ConnectionManagement.Message) = synchronized(gate) {
+        check(protocol.host.offer(ConnectionWire.MANAGEMENT, ConnectionManagement.encode(message)))
+    }
     fun commit(lease: ConnectionResourceLease) = synchronized(gate) {
-        protocol.send(ConnectionManagement.Commit(lease.key))
+        send(ConnectionManagement.Commit(lease.key))
         for (channel in ConnectionChannels.members(lease.key.resource)) protocol.host.activate(channel, lease.key.generation)
     }
     fun messages() = synchronized(gate) { protocol.messages.toList() }

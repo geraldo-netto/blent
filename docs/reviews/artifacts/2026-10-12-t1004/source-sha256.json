@@ -1,0 +1,7 @@
+{
+  "android/app/src/test/java/com/blent/connection/ConnectionJoinedCameraFixture.kt": "50780778edb6c3f8f9a51da8f0cd0b60c2dc6a20b9d47b3ca6aab540a22c272d",
+  "android/app/src/test/java/com/blent/connection/ConnectionJoinedCameraFixtureTest.kt": "ac36e34ffc8be2d4239e7756a96eff6a3b218ce3241aa1b46d379442437f8e83",
+  "android/app/src/test/java/com/blent/connection/ConnectionJoinedDuplexTest.kt": "7b3779d14e5777494912416afc83f59f601c677769754d32882c5cd8366a3eaf",
+  "android/app/src/test/java/com/blent/connection/ConnectionJoinedSpeakerFixture.kt": "db98fc848ce0b9d9d63cc4fc8570953f80fafdabbacf2acb4067a3f17dd3b4fa",
+  "android/app/src/test/java/com/blent/connection/JoinedMediaConnectionFixture.kt": "dc104c01e22b249ca6538374f557f98c96b50cd1702d1aa07d50bb18c4abdf5e"
+}

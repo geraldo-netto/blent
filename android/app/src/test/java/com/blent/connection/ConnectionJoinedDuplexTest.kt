@@ -56,6 +56,30 @@ private fun duplexSpeakerPcm(sequence: Long): ByteArray {
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class ConnectionJoinedDuplexTest {
+    @Test fun t1004RepeatedDuplexAdmissionWithPendingCameraWithdrawalPreservesAudioAuthority() = runBlocking {
+        repeat(32) {
+            val rig = DuplexFixture()
+            try {
+                val display = rig.connect()
+                val invitation = rig.link.protocol.invitation(ConnectionManagement.Resource.CAMERA, 5)
+                rig.link.send(invitation)
+                rig.original.until { rig.connection.state.value.cameraOffer != null }
+                val microphone = rig.admitMicrophone()
+                val speaker = async { rig.admitSpeakers() }
+                rig.link.send(ConnectionManagement.Revoke(invitation.key, ConnectionManagement.Reason.REQUESTED))
+                val speakers = speaker.await()
+                rig.stream()
+                rig.original.until { rig.connection.state.value.cameraOffer == null }
+                assertSame(display, rig.connection.state.value.display)
+                assertEquals(microphone.lease, rig.microphone.selectedRoute()?.lease)
+                assertEquals(speakers.lease, rig.speakers.selectedRoute()?.lease)
+                assertTrue(rig.microphone.binding.sharing); assertTrue(rig.speakers.binding.sharing)
+                assertTrue(rig.connection.state.value.authenticated)
+                assertFalse(rig.microphone.native.exitRequested); assertFalse(rig.speakers.native.exitRequested)
+            } finally { rig.close() }
+        }
+    }
+
     @Test fun t1000BothAudioDirectionsTransferTogetherAndIndependentStopRetainsSiblingAuthority() = runBlocking {
         for (stopMicrophone in listOf(false, true)) {
             val rig = DuplexFixture()

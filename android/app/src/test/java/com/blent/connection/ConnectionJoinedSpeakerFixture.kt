@@ -53,7 +53,7 @@ internal class ConnectionJoinedAudioFixture(
         link.commit(lease)
         try { until { selectedRoute() != null && native.tasks.isNotEmpty() } }
         catch (failure: TimeoutCancellationException) {
-            throw AssertionError("Joined $resource admission: connection=${connection.state.value}; audio=${binding.state.value}; tasks=${native.tasks.size}; alive=${native.alive}; exit=${native.exitRequested}; messages=${link.messages()}", failure)
+            throw AssertionError("Joined $resource admission: connection=${connection.state.value}; audio=${binding.state.value}; events=${link.events}; cancellations=${link.cancellations}; endpointFailures=${link.nativeEndpoints.map { it.failure() }}; consent=${policy.state.value}; controls=${link.controls}; tasks=${native.tasks.size}; alive=${native.alive}; exit=${native.exitRequested}; messages=${link.messages()}", failure)
         }
         return checkNotNull(selectedRoute()).route
     }
