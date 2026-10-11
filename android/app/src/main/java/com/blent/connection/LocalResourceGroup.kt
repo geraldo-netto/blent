@@ -21,12 +21,12 @@ internal class LocalResourceGroup(
     private var error: Exception? = null
     private var invitation: LocalDisplayRoute? = null
     private var camera: LocalCameraRoute? = null
+    private var audio: LocalAudioRoute? = null
     private var previous = 0L
     private var started = false
     init {
         require(block in 1..ConnectionWire.MAX_PAYLOAD)
         val resource = offer.lease.key.resource
-        require(resource == ConnectionManagement.Resource.DISPLAY || resource == ConnectionManagement.Resource.CAMERA)
         ConnectionLocalLease.validate(offer.lease, resource)
         ConnectionManagement.encode(ConnectionManagement.Offer(offer.lease.key, offer.credential, offer.profile))
     }
@@ -87,12 +87,14 @@ internal class LocalResourceGroup(
         } catch (failure: Exception) { fail(failure, now) }
     }
     private fun publish() {
-        if (offer.lease.key.resource == ConnectionManagement.Resource.DISPLAY) {
-            invitation = LocalDisplayRoute(offer.lease, offer.credential,
+        when (offer.lease.key.resource) {
+            ConnectionManagement.Resource.DISPLAY -> invitation = LocalDisplayRoute(offer.lease, offer.credential,
                 port(ConnectionWire.CONTROL), port(ConnectionWire.DISPLAY))
-        } else {
-            camera = LocalCameraRoute(offer.lease, offer.credential, port(ConnectionWire.CAMERA),
-                offer.profile as ConnectionManagement.Camera)
+            ConnectionManagement.Resource.CAMERA -> camera = LocalCameraRoute(offer.lease, offer.credential,
+                port(ConnectionWire.CAMERA), offer.profile as ConnectionManagement.Camera)
+            ConnectionManagement.Resource.MICROPHONE, ConnectionManagement.Resource.SPEAKERS -> audio = LocalAudioRoute(
+                offer.lease, offer.credential, port(ConnectionChannels.members(offer.lease.key.resource).single()),
+                offer.profile as ConnectionManagement.Audio)
         }
     }
     private fun port(id: Int): Int = checkNotNull(channels.single { it.id == id }.endpoint.port())
@@ -104,6 +106,7 @@ internal class LocalResourceGroup(
     }
     override fun route(): LocalDisplayRoute? = if (visible()) invitation else null
     fun cameraRoute(): LocalCameraRoute? = if (visible()) camera else null
+    fun audioRoute(): LocalAudioRoute? = if (visible()) audio else null
     private fun revoke(now: Long) {
         stop(now)
         endpoints.cancel(offer.lease, ConnectionManagement.Reason.PERMISSION_REVOKED)
@@ -116,7 +119,7 @@ internal class LocalResourceGroup(
     override fun stop(now: Long) {
         time(now)
         if (closing) return
-        closing = true; invitation = null; camera = null
+        closing = true; invitation = null; camera = null; audio = null
         for (channel in channels) stopChannel(channel, now)
     }
     private fun stopChannel(channel: Channel, now: Long) {

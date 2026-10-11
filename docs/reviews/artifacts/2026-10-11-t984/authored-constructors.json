@@ -1,0 +1,102 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionLocalResources",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lkotlin/jvm/functions/Function1;Lcom/blent/connection/ConnectionResourceAuthority;Lcom/blent/connection/ConnectionResourceAuthority;)V",
+    "line": 19,
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalAudioRoute",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Credential;ILcom/blent/connection/ConnectionManagement$Audio;)V",
+    "line": 7,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalAudioOffer",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Audio;)V",
+    "line": 15,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalSpeakerOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSessionEvent$Offered;Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lcom/blent/connection/ConnectionResourceAuthority;)V",
+    "line": 8,
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalMediaResource",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSessionEvent$Offered;Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lcom/blent/connection/ConnectionResourceAuthority;Lcom/blent/connection/LocalResourcePermit;Lkotlin/jvm/functions/Function0;)V",
+    "line": 7,
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalMediaResource$guarded$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalMediaResource;)V",
+    "line": 25,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalResourceGroup$Channel",
+    "name": "<init>",
+    "signature": "(ILcom/blent/connection/LocalEndpoint;)V",
+    "line": 12,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalCameraOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSessionEvent$Offered;Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lcom/blent/connection/ConnectionResourceAuthority;)V",
+    "line": 4,
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalResourceGroup",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSessionEvent$Offered;Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lcom/blent/connection/LocalResourcePermit;)V",
+    "line": 5,
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalRun",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionRun;Lcom/blent/connection/LocalConnectionResources;)V",
+    "line": 126,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  }
+]

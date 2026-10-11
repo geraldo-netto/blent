@@ -78,6 +78,25 @@ disabled pending T978/T979/T859. T986 also rechecks legacy permission before and
 queued permission loss cannot acquire a native worker. Created workers remain
 owned through real retirement. [Regression and native counter evidence](reviews/artifacts/2026-10-11-t983/README.md).
 
+## Android local leased speaker routing (T984)
+
+`LocalSpeakerOwner` now implements pending local Start, requested/local background
+consent and original lease checks before endpoint preparation and admission.
+`LocalAudioOffer` contains no credentials; `LocalAudioRoute` publishes only a
+locally allocated loopback port with the validated original profile. The shared
+`LocalMediaResource` joins actual endpoint/pump and possible external consumer
+completion for both camera and speakers. Logical closure, source loss and deadline
+warnings never release that barrier. An uncertain cleanup publication quarantines
+its resource without retrying proof or releasing capacity.
+
+Speaker channels use the existing bounded bidirectional local pump, preserving
+bootstrap, clock negotiation and PCM bytes. Control forwarding remains prompt;
+a stopped connection still accepts its exact late consumer completion. Android
+production does not compose the speaker authority yet: worker publications and
+local controls remain T985, joined playback/capability enablement T978, physical
+acceptance T860. Microphone remains unavailable in this adapter until T859.
+[Private protocol/lifecycle and native counter evidence](reviews/artifacts/2026-10-11-t984/README.md).
+
 ## Ownership and adapter integration
 
 Keep one `AudioSession` and native `AudioBackend` owner per direction throughout
