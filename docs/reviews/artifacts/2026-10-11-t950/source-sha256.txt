@@ -1,0 +1,3 @@
+0616d4010d24992a85a69883c5292472d0c617906ffd45b0148164108e964b9f  android/app/src/main/java/com/blent/CameraBinding.kt
+4a66083a1eef2668fb4969a3270619784cbf8ee319b012e39f9fe15335ff5a8d  android/app/src/main/java/com/blent/CameraCapturePermission.kt
+cb9730dbeeeb51f12bbae48199a73100567f2db8dc7042bcd012ca69faee0fbf  android/app/src/test/java/com/blent/CameraPermissionIdentityTest.kt

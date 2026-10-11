@@ -1,0 +1,22 @@
+[
+  {
+    "owner": "com/blent/CameraCapturePermission",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;)V",
+    "line": 5,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraBinding",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)V",
+    "line": 9,
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true
+  }
+]

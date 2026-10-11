@@ -30,7 +30,8 @@ internal class CameraBinding(
     private var active = false
     private var backgroundRun: String? = null
     private val backgroundRunning get() = backgroundRun != null
-    private var pending: Pair<CameraEndpoint, CameraLens>? = null
+    private var pending: CameraCapturePermission? = null
+    val permissionPending: CameraCapturePermission? get() = pending
     private var observer: Job? = null
     private val statusUpdates = LatestDispatch(scope) { status = "Status update failed: ${it.message}" }
     private var generation = 0L
@@ -105,18 +106,19 @@ internal class CameraBinding(
         }
         background(false)
         if (!active) { status = "Open Blent on the tablet to allow camera access."; return false }
-        pending = host to lens
+        pending = CameraCapturePermission(host, lens)
         requestPermission()
         return false
     }
 
-    fun permissionResult(granted: Boolean) {
-        val request = pending
+    fun permissionResult(granted: Boolean, original: CameraCapturePermission? = pending) {
+        if (pending !== original) return
+        val request = original
         pending = null
         if (!active || request == null) return
         if (!granted) { status = "Camera permission denied."; return }
-        if (request.first != endpoint) { status = "Computer connection changed; select camera again."; return }
-        choose(request.second)
+        if (request.endpoint != endpoint) { status = "Computer connection changed; select camera again."; return }
+        choose(request.lens)
     }
 
     private fun launch(host: CameraEndpoint, lens: CameraLens) {
