@@ -127,7 +127,7 @@ async fn t539_real_h264_upload_decodes_only_to_selected_endpoint() {
             .unwrap();
         assert_eq!(
             front_rx.borrow().as_ref().unwrap().len(),
-            profile.frame_bytes()
+            profile.frame_bytes().unwrap()
         );
         assert!(rear_rx.borrow().is_none());
         client.shutdown().await.unwrap();
@@ -168,10 +168,10 @@ async fn t539_virtual_camera_writes_black_on_start_and_stop() {
     assert!(result.is_err());
     outputs::retire(child).await;
     let bytes = std::fs::read(capture).unwrap();
-    assert!(bytes.len() >= profile.frame_bytes() * 2);
+    assert!(bytes.len() >= profile.frame_bytes().unwrap() * 2);
     assert_eq!(
-        &bytes[bytes.len() - profile.frame_bytes()..],
-        &outputs::blank(&profile)
+        &bytes[bytes.len() - profile.frame_bytes().unwrap()..],
+        &outputs::blank(&profile).unwrap()
     );
 }
 
@@ -464,7 +464,7 @@ async fn t543_host_reports_frames_and_rejects_unselected_lens() {
     tokio::pin!(monitor);
     let checks = async {
         tokio::task::yield_now().await;
-        frames[0].send_replace(Some(std::sync::Arc::new(outputs::blank(&profile))));
+        frames[0].send_replace(Some(std::sync::Arc::new(outputs::blank(&profile).unwrap())));
         state.wait_for(|s| *s == State::Streaming).await.unwrap();
         assert!(status.preview.borrow().is_some());
         frames[0].send_replace(None);
@@ -666,4 +666,19 @@ async fn t609_rejects_shell_input_and_redacts_adb_diagnostics() {
         bridge.remote = remote.into();
         assert!(bridge.invite(&token, &profile).await.is_err());
     }
+}
+
+#[test]
+fn t938_invalid_black_frame_dimensions_are_rejected_before_allocation() {
+    let mut profile = options();
+    profile.width = u32::MAX;
+    let result = std::panic::catch_unwind(|| outputs::blank(&profile));
+    assert!(
+        result.is_ok(),
+        "T938 invalid black frame panicked before rejection"
+    );
+    assert!(
+        result.unwrap().is_err(),
+        "T938 allocated unsupported black frame"
+    );
 }

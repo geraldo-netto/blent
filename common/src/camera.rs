@@ -115,18 +115,7 @@ impl CameraProfile {
             matches!(self.rotation, 0 | 90 | 180 | 270),
             "camera rotation must be 0, 90, 180 or 270 degrees"
         );
-        ensure!(
-            (160..=1920).contains(&self.width),
-            "camera width must be 160–1920"
-        );
-        ensure!(
-            (120..=1080).contains(&self.height),
-            "camera height must be 120–1080"
-        );
-        ensure!(
-            self.width.is_multiple_of(2) && self.height.is_multiple_of(2),
-            "camera dimensions must be even"
-        );
+        self.validate_dimensions()?;
         ensure!((5..=30).contains(&self.fps), "camera FPS must be 5–30");
         ensure!(
             (256..=20000).contains(&self.bitrate),
@@ -147,8 +136,29 @@ impl CameraProfile {
         Ok(())
     }
 
-    pub fn frame_bytes(&self) -> usize {
-        (self.width * self.height * 3 / 2) as usize
+    fn validate_dimensions(&self) -> Result<()> {
+        ensure!(
+            (160..=1920).contains(&self.width),
+            "camera width must be 160–1920"
+        );
+        ensure!(
+            (120..=1080).contains(&self.height),
+            "camera height must be 120–1080"
+        );
+        ensure!(
+            self.width.is_multiple_of(2) && self.height.is_multiple_of(2),
+            "camera dimensions must be even"
+        );
+        Ok(())
+    }
+
+    /// Planar YUV420 byte size for supported, even dimensions. Unchecked public
+    /// profiles must be rejected before any allocation; unrelated settings do
+    /// not affect the layout. Valid bounds also prove the u64 product cannot wrap.
+    pub fn frame_bytes(&self) -> Result<usize> {
+        self.validate_dimensions()?;
+        let bytes = u64::from(self.width) * u64::from(self.height) * 3 / 2;
+        Ok(usize::try_from(bytes)?)
     }
 }
 
@@ -171,6 +181,63 @@ mod tests {
             panic!()
         };
         options
+    }
+
+    #[test]
+    fn t938_unchecked_dimensions_never_panic_or_wrap_frame_size() {
+        let profile = CameraProfile {
+            width: u32::MAX,
+            height: u32::MAX,
+            ..Default::default()
+        };
+        let size = std::panic::catch_unwind(|| profile.frame_bytes());
+        assert!(size.is_ok(), "T938 unchecked public dimensions panicked");
+        assert!(
+            size.unwrap().is_err(),
+            "T938 unsupported frame size accepted"
+        );
+    }
+
+    #[test]
+    fn t938_dimension_boundaries_and_supported_sizes_are_exact() {
+        let values = [
+            0,
+            1,
+            119,
+            120,
+            121,
+            159,
+            160,
+            161,
+            480,
+            720,
+            1080,
+            1081,
+            1920,
+            1921,
+            u32::MAX,
+        ];
+        for width in values {
+            for height in values {
+                let profile = CameraProfile {
+                    width,
+                    height,
+                    ..Default::default()
+                };
+                let size = profile.frame_bytes();
+                let supported = (160..=1920).contains(&width)
+                    && (120..=1080).contains(&height)
+                    && width.is_multiple_of(2)
+                    && height.is_multiple_of(2);
+                assert_eq!(size.is_ok(), supported, "T938 {width}x{height}");
+                if supported {
+                    assert_eq!(
+                        size.unwrap() as u64,
+                        u64::from(width) * u64::from(height) * 3 / 2
+                    );
+                }
+            }
+        }
     }
 
     #[test]
@@ -216,7 +283,7 @@ mod tests {
             );
         }
         defaults.validate().unwrap();
-        assert_eq!(defaults.frame_bytes(), 1280 * 720 * 3 / 2);
+        assert_eq!(defaults.frame_bytes().unwrap(), 1280 * 720 * 3 / 2);
         for value in [0, 1, 159, 160, 161, 720, 1080, 1280, 1920, 1921, u32::MAX] {
             let mut candidate = defaults.clone();
             candidate.width = value;

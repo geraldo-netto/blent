@@ -54,11 +54,12 @@ pub fn open_device(path: &Path, label: &str) -> Result<File> {
     Ok(file)
 }
 
-pub fn blank(options: &CameraOptions) -> Vec<u8> {
-    let pixels = (options.width * options.height) as usize;
-    let mut frame = vec![128; options.frame_bytes()];
+pub fn blank(options: &CameraOptions) -> Result<Vec<u8>> {
+    let bytes = options.frame_bytes()?;
+    let pixels = bytes / 3 * 2;
+    let mut frame = vec![128; bytes];
     frame[..pixels].fill(16);
-    frame
+    Ok(frame)
 }
 
 pub fn producer(ffmpeg: &Path, device: &Path, options: &CameraOptions) -> Command {
@@ -102,7 +103,7 @@ pub async fn feed(
     options: &CameraOptions,
 ) -> Result<()> {
     let mut input = child.stdin.take().context("camera output stdin missing")?;
-    let black = blank(options);
+    let black = blank(options)?;
     let result = write_frames(child, &mut input, &mut frames, &black).await;
     let _ = tokio::time::timeout(Duration::from_secs(2), input.write_all(&black)).await;
     result

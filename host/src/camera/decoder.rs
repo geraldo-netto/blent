@@ -110,7 +110,7 @@ async fn transfer(
         .stdout
         .take()
         .context("camera decoder stdout missing")?;
-    let mut pool = super::frame_pool::Pool::configured(options.frame_bytes())?;
+    let mut pool = super::frame_pool::Pool::configured(options.frame_bytes()?)?;
     socket.write_all(b"OK").await?;
     let receive = async {
         let mut sequence = 0u64;

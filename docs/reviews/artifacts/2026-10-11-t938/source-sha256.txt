@@ -1,0 +1,4 @@
+7eba111ad60ddbda80d3410dff95cf706fbd2bbe3f63ad7aba9ada01b595bbf0  common/src/camera.rs
+82580b87d789b8c794276ffd566e1e767fb179ce60eb7fe8a29be8c8eafb2216  host/src/camera/decoder.rs
+7e5ad5f5204570cf9877f1c8f7461e9f417d379da4e1858853a9e35af07301c6  host/src/camera/outputs.rs
+a0dd270854c662b22b8ab61b8e7a463e15acd13c6a6d480e25a6d9c86c272ea6  host/src/camera/tests.rs
