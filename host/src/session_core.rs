@@ -120,6 +120,15 @@ impl Prepared {
         daemon_stop: watch::Receiver<bool>,
     ) -> Result<(Runtime, crate::session_network::RetainedListeners)> {
         let admission = Workers::reserve()?;
+        self.start_exported_reserved(daemon_stop, admission).await
+    }
+    /// Composition retains admission.completion() before starting this future.
+    /// All spawned work is installed in its retained owner before further startup.
+    pub async fn start_exported_reserved(
+        self,
+        daemon_stop: watch::Receiver<bool>,
+        admission: SessionAdmission,
+    ) -> Result<(Runtime, crate::session_network::RetainedListeners)> {
         let (video, _) = video_queue::channel(
             video_queue::QUEUE_PACKETS,
             self.resources.idr_wanted.clone(),
@@ -141,28 +150,27 @@ impl Prepared {
         }))
         .map_err(|_| anyhow::anyhow!("Capture startup panicked"))?;
         let ports = servers.retained.ports();
-        let (stream, input, retained) = servers.start(video);
-        let gate = spawn_display_gate(gate_tx, self.tablet.subscribe(), self.mode.subscribe());
-        let stop = forward_shutdown(daemon_stop, stop_rx, stop_tx.clone());
-        let mut tasks = vec![
-            ("Stream", stream),
-            ("Input", input),
-            ("Display gate", gate),
-            ("Shutdown", stop),
-        ];
-        tasks.extend(
-            workers
-                .auxiliary
-                .into_iter()
-                .map(|work| ("Capture auxiliary", spawn_server("Capture auxiliary", work))),
+        let mut retained_workers = Workers::empty(admission);
+        let retained = servers.start_retained(video, &mut retained_workers);
+        retained_workers.add(
+            "Display gate",
+            spawn_display_gate(gate_tx, self.tablet.subscribe(), self.mode.subscribe()),
         );
+        retained_workers.add(
+            "Shutdown",
+            forward_shutdown(daemon_stop, stop_rx, stop_tx.clone()),
+        );
+        for work in workers.auxiliary {
+            retained_workers.add("Capture auxiliary", spawn_server("Capture auxiliary", work));
+        }
+        retained_workers.add("Capture", spawn_server("Capture", workers.capture));
         Ok((
             Runtime::from_workers(
                 self.instance,
                 self.tablet,
                 self.relaunch,
                 stop_tx,
-                Workers::new(admission, spawn_server("Capture", workers.capture), tasks),
+                retained_workers,
                 ports,
             ),
             retained,
@@ -292,14 +300,39 @@ impl BoundServers {
         JoinHandle<Result<()>>,
         crate::session_network::RetainedListeners,
     ) {
-        let stream = spawn_server("Stream", async move {
+        let (stream, input, retained) = self.work(video);
+        (
+            spawn_server("Stream", stream),
+            spawn_server("Input", input),
+            retained,
+        )
+    }
+    fn start_retained(
+        self,
+        video: video_queue::VideoSender,
+        workers: &mut Workers,
+    ) -> crate::session_network::RetainedListeners {
+        let (stream, input, retained) = self.work(video);
+        workers.add("Stream", spawn_server("Stream", stream));
+        workers.add("Input", spawn_server("Input", input));
+        retained
+    }
+    /// Both ownership adapters share pure listener-work construction. Spawning
+    /// remains separate so retained startup records each exposed worker promptly.
+    fn work(
+        self,
+        video: video_queue::VideoSender,
+    ) -> (
+        impl std::future::Future<Output = Result<()>> + Send + 'static,
+        impl std::future::Future<Output = Result<()>> + Send + 'static,
+        crate::session_network::RetainedListeners,
+    ) {
+        let stream = async move {
             self.stream
                 .run_with_listener(video, self.video_listener)
                 .await
-        });
-        let input = spawn_server("Input", async move {
-            self.input.run_with_listener(self.input_listener).await
-        });
+        };
+        let input = async move { self.input.run_with_listener(self.input_listener).await };
         (stream, input, self.retained)
     }
 }

@@ -1632,8 +1632,10 @@ uses the authenticated peer identity and actual configured listener ports.
 
 Late startup and source loss transfer ownership into closing sessions; listener
 capabilities remain pinned until registration and native work retire. Startup
-panic conservatively quarantines its ticket while other peers progress; recovery
-proof remains T928. Default builds preserve ADB behavior. Native builds describe missing ADB as unavailable optional discovery (T929);
+panic originally quarantined its ticket while other peers progressed. T928 now
+retains independent original startup completion before task exposure and recovers
+only after the task is joined and actual native cleanup completes; an unknown
+startup without that proof remains quarantined. Default builds preserve ADB behavior. Native builds describe missing ADB as unavailable optional discovery (T929);
 idle discovery allocation evaluation remains T930.
 
 [Evidence](artifacts/2026-10-11-t908/README.md) covers permanent fail-before-fix
@@ -2076,3 +2078,35 @@ authority, authenticated PCM and independent native owners. Existing joined
 camera/microphone/speaker, Stop, failure/death and held cleanup assertions remain.
 [Fresh ordinary suite, native counters and red/green evidence](artifacts/2026-10-12-t1004/README.md).
 Physical acceptance remains postponed.
+
+## T928 independent display startup recovery (2026-10-12)
+
+Linux USB composition retains an exact portable admission recovery observer outside
+the startup task. Extra native session capacity is reserved before exposing the
+future; its observer follows the original partial session workers into actual
+retirement. The shared primary instead reserves one local binding-task owner and
+reuses its existing runtime, so `BLENT_SESSION_LIMIT=1` still admits that display.
+Only newly created extra sessions consume additional native session capacity.
+The composition pairs results with original Tokio task identities. Panic and
+cancellation move that observer to independently polled retirement; neither result
+proves completion. Ordinary errors also retain unfinished native cleanup. Startup
+construction installs its worker owner before spawning servers/gates/auxiliary work.
+Legacy and retained server adapters share pure listener-work construction, while
+the retained adapter records each worker immediately after spawning.
+
+Only a joined task and completed original native observer permit capacity recovery.
+The portable coordinator additionally checks the exact reserved ticket; an old
+completed observer cannot retire a replacement in the same slot. Retry deadlines
+remain absolute, current peer authority is revalidated on fresh admission, and
+stalled cleanup leaves other peers progressing. The original T908 unknown-startup
+quarantine regression remains unchanged: no independently registered observer
+means no proven recovery. Broker registration IPC loss remains separate under T914.
+
+Permanent tests cover retained native work after panic, cancellation before
+publication, shared-primary admission with one native session slot, bounded
+extra-session and shared-task capacity exhaustion, partial listener rollback after capture
+constructor failure, and repeated stale proof against a new ticket. The native
+panic test fails before recovery and passes unchanged afterward.
+[Native evidence](artifacts/2026-10-12-t928/README.md) records source fingerprints,
+normal-suite checks, native individual counters and complexity. Real devices,
+production host services and physical acceptance remain untouched/postponed.

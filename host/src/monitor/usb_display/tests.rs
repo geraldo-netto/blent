@@ -519,3 +519,223 @@ async fn t908_shutdown_joins_pending_startup_without_admitting_late_binding() {
     assert_eq!(fixture.state.config.usb.as_ref().unwrap().startups.len(), 2);
     fixture.stop().await;
 }
+
+// T928: task exit is separate from actual retained native cleanup.
+#[tokio::test]
+async fn t928_panicked_startup_reclaims_only_after_original_native_retirement() {
+    let mut fixture = Fixture::new(2).await;
+    fixture.links(&[(1, 2), (2, 3)]);
+    let native = fixture.state.config.usb.as_mut().unwrap();
+    native
+        .connections
+        .poll(&mut fixture.state.slots, Instant::now())
+        .unwrap();
+    let Decision::Start(admission) = native
+        .connections
+        .plan(&mut fixture.state.slots, Instant::now())
+        .unwrap()
+    else {
+        panic!("T928 original admission missing")
+    };
+    let original = fixture
+        .state
+        .slots
+        .ticket(&DisplayOwner::Peer(peer(3)))
+        .unwrap();
+    let (release, hold) = std::sync::mpsc::channel();
+    let (entered, started) = tokio::sync::oneshot::channel();
+    let owner = blent::session::Workers::reserve().unwrap();
+    let proof = owner.completion();
+    native.spawn(admission, owner, move |owner| async move {
+        let capture = tokio::task::spawn_blocking(move || {
+            entered.send(()).unwrap();
+            hold.recv().unwrap();
+            Ok(())
+        });
+        let _workers = blent::session::Workers::new(owner, capture, vec![]);
+        started.await.unwrap();
+        panic!("T928 startup death with actual held native work");
+    });
+    let result = native.next().await.unwrap();
+    assert!(result.is_err());
+    native.completed(&mut fixture.state.slots, result);
+    fixture.links(&[(1, 2)]);
+    for _ in 0..32 {
+        fixture.state.usb_progress();
+        assert!(fixture.state.slots.owner(original).is_some());
+        assert!(!proof.is_complete());
+    }
+    fixture.complete().await;
+    assert!(fixture
+        .state
+        .slots
+        .ticket(&DisplayOwner::Peer(peer(2)))
+        .is_some());
+    release.send(()).unwrap();
+    tokio::time::timeout(Duration::from_secs(5), async {
+        while !proof.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    fixture.state.usb_progress();
+    assert!(
+        fixture.state.slots.owner(original).is_none(),
+        "T928 retired startup capacity remained quarantined"
+    );
+    assert!(fixture
+        .state
+        .slots
+        .ticket(&DisplayOwner::Peer(peer(2)))
+        .is_some());
+    fixture.stop().await;
+}
+
+#[tokio::test]
+async fn t928_cancelled_unpublished_start_joins_original_task_before_reclaim() {
+    let mut fixture = Fixture::new(1).await;
+    fixture.links(&[(1, 2)]);
+    let native = fixture.state.config.usb.as_mut().unwrap();
+    native
+        .connections
+        .poll(&mut fixture.state.slots, Instant::now())
+        .unwrap();
+    let Decision::Start(admission) = native
+        .connections
+        .plan(&mut fixture.state.slots, Instant::now())
+        .unwrap()
+    else {
+        panic!("T928 original admission missing")
+    };
+    let ticket = fixture
+        .state
+        .slots
+        .ticket(&DisplayOwner::Peer(peer(2)))
+        .unwrap();
+    let (entered, started) = tokio::sync::oneshot::channel();
+    native.spawn(
+        admission,
+        blent::session::Workers::reserve().unwrap(),
+        move |owner| async move {
+            let _owner = owner;
+            entered.send(()).unwrap();
+            std::future::pending().await
+        },
+    );
+    started.await.unwrap();
+    native.startups.abort_all();
+    // Cancellation request is not a joined task or native cleanup proof.
+    fixture.state.usb_progress();
+    assert!(fixture.state.slots.owner(ticket).is_some());
+    fixture.links(&[]);
+    let native = fixture.state.config.usb.as_mut().unwrap();
+    let result = native.next().await.unwrap();
+    assert!(matches!(&result, Err(error) if error.is_cancelled()));
+    native.completed(&mut fixture.state.slots, result);
+    assert!(fixture.state.slots.owner(ticket).is_none());
+    assert!(native.startup_proofs.is_empty());
+    assert!(native.abandoned.is_empty());
+    fixture.stop().await;
+}
+
+#[tokio::test]
+async fn t928_exhausted_native_startup_capacity_releases_only_unexposed_ticket() {
+    const TEST: &str = "monitor::usb_display::tests::t928_exhausted_native_startup_capacity_releases_only_unexposed_ticket";
+    if std::env::var_os("BLENT_T928_CAPACITY_FIXTURE").is_none() {
+        let output = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", TEST, "--nocapture"])
+            .env("BLENT_T928_CAPACITY_FIXTURE", "1")
+            .env("BLENT_SESSION_LIMIT", "1")
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        return;
+    }
+    let mut fixture = Fixture::new(2).await;
+    fixture.links(&[(1, 2), (2, 3)]);
+    fixture.state.usb_progress();
+    fixture.complete().await;
+    for _ in 0..32 {
+        fixture.state.usb_progress();
+        assert!(!fixture.state.config.usb.as_ref().unwrap().starting());
+        assert!(fixture
+            .state
+            .slots
+            .ticket(&DisplayOwner::Peer(peer(2)))
+            .is_none());
+        assert!(fixture
+            .state
+            .slots
+            .ticket(&DisplayOwner::Peer(peer(3)))
+            .is_some());
+        assert!(!*fixture.runtime.stop_tx.borrow());
+    }
+    fixture.stop().await;
+}
+
+#[tokio::test]
+async fn t928_shared_primary_starts_with_one_native_session_slot() {
+    const TEST: &str =
+        "monitor::usb_display::tests::t928_shared_primary_starts_with_one_native_session_slot";
+    if std::env::var_os("BLENT_T928_PRIMARY_FIXTURE").is_none() {
+        let output = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", TEST, "--nocapture"])
+            .env("BLENT_T928_PRIMARY_FIXTURE", "1")
+            .env("BLENT_SESSION_LIMIT", "1")
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        return;
+    }
+    let mut fixture = Fixture::new(1).await;
+    fixture.links(&[(1, 2)]);
+    fixture.state.usb_progress();
+    assert!(
+        fixture.state.config.usb.as_ref().unwrap().starting(),
+        "T928 shared primary incorrectly consumes another native session slot"
+    );
+    fixture.complete().await;
+    assert!(fixture
+        .state
+        .slots
+        .ticket(&DisplayOwner::Peer(peer(2)))
+        .is_some());
+    assert!(!*fixture.runtime.stop_tx.borrow());
+    fixture.stop().await;
+}
+
+#[tokio::test]
+async fn t928_shared_startup_capacity_failure_releases_unexposed_binding() {
+    let mut fixture = Fixture::new(1).await;
+    let held = fixture
+        .state
+        .config
+        .usb
+        .as_ref()
+        .unwrap()
+        .shared_startup
+        .reserve()
+        .unwrap();
+    fixture.links(&[(1, 2)]);
+    fixture.state.usb_progress();
+    assert!(!fixture.state.config.usb.as_ref().unwrap().starting());
+    assert!(fixture
+        .state
+        .slots
+        .ticket(&DisplayOwner::Peer(peer(2)))
+        .is_none());
+    assert!(!*fixture.runtime.stop_tx.borrow());
+    drop(held);
+    fixture.stop().await;
+}

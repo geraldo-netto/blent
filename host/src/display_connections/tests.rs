@@ -431,3 +431,33 @@ fn t927_exhausted_retry_clock_cannot_spin_or_preempt_another_display() {
     }
     assert_eq!(f.slots.closing(adb), Some(false));
 }
+
+#[test]
+fn t928_original_completion_is_required_and_stale_proof_cannot_retire_replacement() {
+    let mut f = Fixture::new(1);
+    f.links(&[(1, 2, 1)]);
+    let original = f.start();
+    let ticket = original.ticket;
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let native = pool.reserve().unwrap();
+    let recovery = original.recovery(native.completion());
+    assert!(recovery.matches(&original));
+    drop(original);
+    f.links(&[(1, 2, 2)]);
+    for _ in 0..32 {
+        assert!(!f.connections.recover_failed(&mut f.slots, &recovery, f.now));
+        assert!(f.slots.owner(ticket).is_some());
+    }
+    drop(native);
+    assert!(f.connections.recover_failed(&mut f.slots, &recovery, f.now));
+    assert!(f.slots.owner(ticket).is_none());
+    f.now += Duration::from_secs(1);
+    let replacement = f.start();
+    assert!(!recovery.matches(&replacement));
+    assert_ne!(ticket, replacement.ticket);
+    for _ in 0..32 {
+        assert!(f.connections.recover_failed(&mut f.slots, &recovery, f.now));
+        assert_eq!(f.slots.closing(replacement.ticket), Some(false));
+    }
+    f.connections.failed(&mut f.slots, replacement, f.now);
+}

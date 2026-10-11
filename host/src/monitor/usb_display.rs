@@ -12,6 +12,7 @@ use blent::{
 };
 
 type Started = (Admission, Result<Bindings>);
+type StartupProof = blent::display_connections::Recovery;
 struct Primary {
     attachment: attachment::Attachment,
     status: watch::Receiver<blent::session_state::State>,
@@ -22,6 +23,10 @@ pub(crate) struct Native {
     registration: Arc<registration_client::Factory>,
     primary: Primary,
     startups: JoinSet<Started>,
+    shared_startup: blent_config::retirement::Pool,
+    startup_proofs: std::collections::HashMap<tokio::task::Id, StartupProof>,
+    returned_proofs: Vec<StartupProof>,
+    abandoned: Vec<StartupProof>,
 }
 impl Native {
     pub(super) fn new(
@@ -55,6 +60,10 @@ impl Native {
                 listeners: Arc::new(listeners),
             },
             startups: JoinSet::new(),
+            shared_startup: blent_config::retirement::Pool::new(1)?,
+            startup_proofs: Default::default(),
+            returned_proofs: vec![],
+            abandoned: vec![],
         })
     }
     pub(super) fn progress(
@@ -63,39 +72,106 @@ impl Native {
         extra: &ExtraSessionTemplate,
     ) -> Result<()> {
         let now = Instant::now();
+        self.reap_startups(slots, now);
         self.connections.poll(slots, now)?;
         loop {
             match self.connections.plan(slots, now)? {
-                Decision::Start(admission) => self.start(admission, extra),
+                Decision::Start(admission) => self.start(slots, admission, extra),
                 _ => return Ok(()),
             }
         }
     }
-    fn start(&mut self, admission: Admission, extra: &ExtraSessionTemplate) {
-        let registration = self.registration.clone();
+    fn start(&mut self, slots: &mut Slots, admission: Admission, extra: &ExtraSessionTemplate) {
         if admission.instance() == 0 {
-            let bindings = Bindings {
-                attachment: self.primary.attachment.clone(),
-                registration: Box::new(Bound::new(registration, self.primary.listeners.clone())),
-                entropy: blent_config::credentials::system_entropy,
-                work: Box::new(RuntimeWork::shared_status(self.primary.status.clone())),
-            };
-            self.startups
-                .spawn(async move { (admission, Ok(bindings)) });
-        } else {
-            let instance = admission.instance();
-            let template = extra.clone();
-            self.startups.spawn(async move {
-                let prepared = prepare_extra_session(&template, instance);
-                let result = extra_bindings(prepared, template.shutdown_rx, registration).await;
-                (admission, result)
-            });
+            self.start_shared(slots, admission);
+            return;
         }
+        let owner = match blent::session::Workers::reserve() {
+            Ok(owner) => owner,
+            Err(error) => {
+                warn!("Could not reserve USB display startup: {error}");
+                self.connections.failed(slots, admission, Instant::now());
+                return;
+            }
+        };
+        let registration = self.registration.clone();
+        let instance = admission.instance();
+        let template = extra.clone();
+        self.spawn(admission, owner, move |owner| async move {
+            let prepared = prepare_extra_session(&template, instance);
+            extra_bindings(prepared, template.shutdown_rx, registration, owner).await
+        });
+    }
+    fn start_shared(&mut self, slots: &mut Slots, admission: Admission) {
+        // The primary reuses an existing runtime, not a second native session.
+        // Retain only its bounded unpublished binding task until actual join.
+        let owner = match self.shared_startup.reserve() {
+            Ok(owner) => owner,
+            Err(error) => {
+                warn!("Could not reserve shared USB startup: {error}");
+                self.connections.failed(slots, admission, Instant::now());
+                return;
+            }
+        };
+        let bindings = Bindings {
+            attachment: self.primary.attachment.clone(),
+            registration: Box::new(Bound::new(
+                self.registration.clone(),
+                self.primary.listeners.clone(),
+            )),
+            entropy: blent_config::credentials::system_entropy,
+            work: Box::new(RuntimeWork::shared_status(self.primary.status.clone())),
+        };
+        self.track(admission, owner.completion(), async move {
+            let _owner = owner;
+            Ok(bindings)
+        });
+    }
+    fn spawn<F, W>(
+        &mut self,
+        admission: Admission,
+        owner: blent::session::SessionAdmission,
+        work: W,
+    ) where
+        F: std::future::Future<Output = Result<Bindings>> + Send + 'static,
+        W: FnOnce(blent::session::SessionAdmission) -> F + Send + 'static,
+    {
+        self.track(
+            admission,
+            owner.completion(),
+            async move { work(owner).await },
+        );
+    }
+    fn track<F>(
+        &mut self,
+        admission: Admission,
+        completion: blent_config::retirement::Completion,
+        work: F,
+    ) where
+        F: std::future::Future<Output = Result<Bindings>> + Send + 'static,
+    {
+        let proof = admission.recovery(completion);
+        let task = self.startups.spawn(async move { (admission, work.await) });
+        self.startup_proofs.insert(task.id(), proof);
     }
     pub(super) async fn next(
         &mut self,
     ) -> Option<std::result::Result<Started, tokio::task::JoinError>> {
-        self.startups.join_next().await
+        let result = self.startups.join_next_with_id().await?;
+        Some(match result {
+            Ok((id, started)) => {
+                if let Some(proof) = self.startup_proofs.remove(&id) {
+                    self.returned_proofs.push(proof);
+                }
+                Ok(started)
+            }
+            Err(error) => {
+                if let Some(proof) = self.startup_proofs.remove(&error.id()) {
+                    self.abandoned.push(proof);
+                }
+                Err(error)
+            }
+        })
     }
     pub(super) fn starting(&self) -> bool {
         !self.startups.is_empty()
@@ -106,14 +182,42 @@ impl Native {
         result: std::result::Result<Started, tokio::task::JoinError>,
     ) {
         match result {
-            Ok((admission, Ok(bindings))) => self.connections.bind(slots, admission, bindings),
-            Ok((admission, Err(error))) => {
-                warn!("Could not start USB display: {error}");
-                self.connections.failed(slots, admission, Instant::now());
+            Ok((admission, result)) => self.complete_start(slots, admission, result),
+            Err(error) => {
+                warn!("USB display startup exited; actual cleanup still required: {error}")
             }
-            // No proof of native cleanup: retain the portable startup ticket.
-            Err(error) => warn!("USB display startup ownership quarantined: {error}"),
         }
+        self.reap_startups(slots, Instant::now());
+    }
+    fn take_proof(&mut self, admission: &Admission) -> Option<StartupProof> {
+        let index = self
+            .returned_proofs
+            .iter()
+            .position(|proof| proof.matches(admission))?;
+        Some(self.returned_proofs.swap_remove(index))
+    }
+    fn complete_start(
+        &mut self,
+        slots: &mut Slots,
+        admission: Admission,
+        result: Result<Bindings>,
+    ) {
+        let proof = self.take_proof(&admission);
+        match result {
+            Ok(bindings) => self.connections.bind(slots, admission, bindings),
+            Err(error) => {
+                warn!("Could not start USB display: {error}");
+                if let Some(proof) = proof {
+                    self.abandoned.push(proof);
+                } else {
+                    self.connections.failed(slots, admission, Instant::now());
+                }
+            }
+        }
+    }
+    fn reap_startups(&mut self, slots: &mut Slots, now: Instant) {
+        self.abandoned
+            .retain(|proof| !self.connections.recover_failed(slots, proof, now));
     }
     pub(super) fn status(&self) -> Vec<runtime::TabletSession> {
         self.connections.status()
@@ -124,6 +228,7 @@ impl Native {
             self.completed(slots, result);
         }
         while !self.connections.retired() {
+            self.reap_startups(slots, Instant::now());
             if let Err(error) = self.connections.poll(slots, Instant::now()) {
                 warn!("USB display cleanup: {error}");
             }
@@ -135,8 +240,9 @@ async fn extra_bindings(
     prepared: Result<blent::session::Prepared>,
     shutdown: watch::Receiver<bool>,
     registration: Arc<registration_client::Factory>,
+    owner: blent::session::SessionAdmission,
 ) -> Result<Bindings> {
-    let (runtime, listeners) = prepared?.start_exported(shutdown).await?;
+    let (runtime, listeners) = prepared?.start_exported_reserved(shutdown, owner).await?;
     Ok(Bindings {
         attachment: runtime.tablet_tx.clone(),
         registration: Box::new(Bound::new(registration, Arc::new(listeners))),

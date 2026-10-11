@@ -43,6 +43,12 @@ pub struct SessionAdmission {
     grace: Duration,
     reap: Duration,
 }
+impl SessionAdmission {
+    /// Independent observer retained before startup is exposed to a task.
+    pub fn completion(&self) -> blent_config::retirement::Completion {
+        self.slot.completion()
+    }
+}
 pub struct Workers {
     tasks: FuturesUnordered<NamedTask>,
     admission: Option<SessionAdmission>,
@@ -75,15 +81,23 @@ impl Workers {
         capture: JoinHandle<Result<()>>,
         mut tasks: Vec<(&'static str, JoinHandle<Result<()>>)>,
     ) -> Self {
+        let mut workers = Self::empty(admission);
         tasks.push(("Capture", capture));
+        for (name, handle) in tasks {
+            workers.add(name, handle);
+        }
+        workers
+    }
+    /// Install retained ownership before exposing the first worker.
+    pub fn empty(admission: SessionAdmission) -> Self {
         Self {
-            tasks: tasks
-                .into_iter()
-                .map(|(name, handle)| NamedTask { name, handle })
-                .collect(),
+            tasks: FuturesUnordered::new(),
             admission: Some(admission),
             status: None,
         }
+    }
+    pub fn add(&mut self, name: &'static str, handle: JoinHandle<Result<()>>) {
+        self.tasks.push(NamedTask { name, handle });
     }
     pub(super) fn completion(&self) -> blent_config::retirement::Completion {
         self.admission.as_ref().unwrap().slot.completion()
@@ -231,6 +245,27 @@ mod tests {
             grace: Duration::from_millis(10),
             reap: Duration::from_millis(10),
         }
+    }
+    #[tokio::test]
+    async fn t928_terminal_startup_worker_outcomes_remain_failures() {
+        assert!(Wake::Stop.failure().is_none());
+        for result in [Ok(Ok(())), Ok(Err(anyhow::anyhow!("T928 worker error")))] {
+            let failure = Wake::Other("Capture", result).failure().unwrap();
+            assert_eq!(failure.worker, "Capture");
+            assert!(!failure.message.is_empty());
+        }
+        let panicked: Completion = tokio::spawn(async {
+            panic!("T928 worker panic");
+        })
+        .await;
+        assert!(panicked.as_ref().unwrap_err().is_panic());
+        let failure = Wake::Other("Capture", panicked).failure().unwrap();
+        assert_eq!(failure.worker, "Capture");
+        assert!(failure.message.contains("T928 worker panic"));
+        let cancelled = tokio::spawn(std::future::pending::<Result<()>>());
+        cancelled.abort();
+        let failure = Wake::Other("Capture", cancelled.await).failure().unwrap();
+        assert!(failure.message.contains("cancelled"));
     }
     #[tokio::test]
     async fn t814_cleanup_error_and_panic_publish_failure() {

@@ -28,6 +28,23 @@ impl Admission {
     pub fn instance(&self) -> u32 {
         self.ticket.instance()
     }
+    /// Retain before task exposure. This observer proves the original native
+    /// startup's cleanup, independently of the result or cancellation of its task.
+    pub fn recovery(&self, completion: blent_config::retirement::Completion) -> Recovery {
+        Recovery {
+            ticket: self.ticket,
+            completion,
+        }
+    }
+}
+pub struct Recovery {
+    ticket: Ticket,
+    completion: blent_config::retirement::Completion,
+}
+impl Recovery {
+    pub fn matches(&self, admission: &Admission) -> bool {
+        self.ticket == admission.ticket
+    }
 }
 struct Starting {
     candidate: Candidate,
@@ -194,6 +211,27 @@ impl Connections {
         );
         let _ = slots.close(admission.ticket);
         let _ = slots.retired(admission.ticket);
+    }
+    /// Call only after the original task is joined. Neither task exit nor this
+    /// exact ticket alone proves that retained partial native work has retired.
+    pub fn recover_failed(&mut self, slots: &mut Slots, recovery: &Recovery, now: Instant) -> bool {
+        if !recovery.completion.is_complete() {
+            return false;
+        }
+        let instance = recovery.ticket.instance();
+        let Some(start) = self
+            .starting
+            .get(&instance)
+            .filter(|start| start.ticket == recovery.ticket)
+        else {
+            return true; // Already transferred/reaped; never touch a replacement.
+        };
+        let peer = start.candidate.peer().as_str().to_owned();
+        self.starting.remove(&instance);
+        self.retries.insert(peer, now.checked_add(self.retry));
+        let _ = slots.close(recovery.ticket);
+        let _ = slots.retired(recovery.ticket);
+        true
     }
     fn finish_start(&mut self, admission: &Admission) {
         if self
