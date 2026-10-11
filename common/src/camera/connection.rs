@@ -26,6 +26,15 @@ pub trait Invitation: Send + Sync {
     ) -> InvitationResult<'a>;
 }
 
+/// Pipeline supervision is separate from invitation acceptance. Monitoring stays
+/// pending while this original connection is usable; loss returns an error.
+/// Close revokes promptly and waits boundedly for cleanup. An error does not
+/// prove retirement: adapters retain uncertain native ownership independently.
+pub trait Connection: Invitation {
+    fn monitor(&self) -> InvitationResult<'_>;
+    fn close(&self) -> InvitationResult<'_>;
+}
+
 impl CameraProfile {
     pub fn target(&self) -> Result<Target<'_>> {
         match (&self.serial, &self.usb_peer) {

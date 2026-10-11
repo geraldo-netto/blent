@@ -214,9 +214,17 @@ staging stage, not end-to-end camera latency.
 
 ## Direct USB camera integration status
 
-The regular camera workflow above still uses ADB. T932 implements Android's
-original-consent/isolated-capture composition for direct USB; it advertises camera
-capability while keeping Start, SDK permission and background consent separate
-from pairing. Host registration (T933), production USB camera controls and joined
-physical acceptance (T858/T863) remain pending. Device trials are postponed;
-offline fixtures do not establish debugging-off camera support.
+The regular GUI workflow above still defaults to ADB. T932 implements Android's
+original-consent/isolated-capture composition for direct USB; local Start, SDK
+permission and background consent remain separate from pairing. T933 supplies
+Linux host registration and pipeline composition in builds with
+`accessory-transport`. An explicit `cameras --usb-peer <full-tablet-fingerprint>`
+selects that peer independently of display; credentials are fresh per invocation.
+Source loss or revocation ends that camera registration. Start a new host camera
+invocation to issue another invitation. Builds without the feature fail explicitly
+before acquiring camera devices. Production GUI transport controls and joined
+physical acceptance remain T858; older-device evidence remains T863. Device trials
+are postponed: private TLS/protocol and real H.264 fixtures do not establish
+physical debugging-off camera support.
+
+[Native regression and per-function evidence](reviews/artifacts/2026-10-11-t933/README.md).

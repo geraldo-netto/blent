@@ -1,11 +1,14 @@
 # T846 connection contract and integration boundary
 
-The current Android connection composition is described under T854, pairing
-presentation under T892/T893, and local display/Activity routing under T905/T906/
-T909/T907 below. Host presentation and controls are
-implemented under T900/T901/T903/T894; joined physical pairing acceptance remains T855. Validation counts
-in individual milestone sections describe their historical scoped runs; they are
-not whole-project coverage or physical-device support claims.
+Current implementation includes Android connection/display composition and the
+T932 original-consent camera composition, Linux display composition T908 and
+Linux USB camera invitation/pipeline T933 below. Host and Android pairing controls
+are implemented; joined physical pairing acceptance remains T855. Production
+camera transport controls and joined camera acceptance remain T858. Audio remains
+unavailable on this transport until T860/T859. Earlier milestone sections record
+historical implementation state, dependencies and scoped validation at that
+milestone; later sections supersede their then-pending implementation status.
+Those historical counts never imply whole-project coverage or physical support.
 
 ## Implemented domain layer
 
@@ -1927,3 +1930,24 @@ same contracts and discovery owner. Linux camera pipeline wiring remains T933;
 production controls and postponed joined acceptance remain T858.
 
 [Native counter and regression evidence](artifacts/2026-10-11-t969/README.md).
+
+
+## T933 Linux USB camera invitation and pipeline
+
+The independent camera Connection contract adds lifetime supervision and cleanup
+to invitation acceptance. Existing ADB mapping and camera media behavior remain
+transport adapters. Linux USB binds one actual listener capability to the original
+portable registration, uses a fresh credential per invocation, and supervises its
+source and exact route independently of display. Stop/revocation/source loss ends
+the pipeline; output workers and broker registration each retain their own actual
+cleanup proof. A bounded cleanup wait never proves retirement, and Drop retains
+uncertain original ownership in the retirement pool.
+
+Private real mutual TLS/native broker acceptance forwards unchanged camera header,
+packet and feedback framing; real H.264 and isolated device fixtures remain in the
+normal suite. Default builds report USB camera unavailable before device ownership;
+feature-enabled Linux builds accept explicit CLI USB peer selection. GUI transport
+controls and joined physical camera acceptance remain T858, older provider evidence
+T863, final acceptance T846. No native device trial was performed.
+
+[Native source/object attestations, regressions and individual counters](artifacts/2026-10-11-t933/README.md).

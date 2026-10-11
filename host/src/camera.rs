@@ -7,15 +7,17 @@ mod frame_pool;
 #[cfg(test)]
 mod native_tests;
 mod outputs;
-mod protocol;
+pub(crate) mod protocol;
 #[cfg(test)]
 mod status_tests;
 #[cfg(test)]
 mod tests;
+#[cfg(feature = "accessory-transport")]
+pub(crate) mod usb;
 
 use anyhow::{Context, Result};
 use blent_config::camera::{
-    connection::{Invitation, Target},
+    connection::{Connection, Target},
     CameraOptions, CameraProfile,
 };
 use futures_util::{stream::FuturesUnordered, StreamExt};
@@ -62,22 +64,18 @@ async fn run_native(
     status: Report,
 ) -> Result<()> {
     options.validate()?;
-    let serial = match options.target()? {
-        Target::Adb(serial) => serial,
-        Target::Usb(_) => anyhow::bail!("direct-USB camera sharing is not yet supported"),
-    };
+    validate_transport(options.target()?)?;
     let devices = [
         Arc::new(outputs::open_device(&options.front_device, "Blent Front")?),
         Arc::new(outputs::open_device(&options.rear_device, "Blent Rear")?),
     ];
     let ffmpeg = executable("ffmpeg")?;
-    let adb = executable("adb")?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let token = blent_config::runtime::random_token()?;
-    let bridge = bridge::Bridge::create(adb, serial, listener.local_addr()?.port()).await?;
+    let bridge = connection(&options.profile, &listener, &token).await?;
     let session = Session {
         listener: &listener,
-        invitation: &bridge,
+        invitation: bridge.as_ref(),
         token: &token,
         ffmpeg: &ffmpeg,
         options: &options,
@@ -88,6 +86,42 @@ async fn run_native(
     }
     drop(devices);
     result
+}
+
+fn validate_transport(target: Target<'_>) -> Result<()> {
+    match target {
+        Target::Adb(_) => Ok(()),
+        #[cfg(feature = "accessory-transport")]
+        Target::Usb(_) => Ok(()),
+        #[cfg(not(feature = "accessory-transport"))]
+        Target::Usb(_) => anyhow::bail!("direct-USB camera requires accessory-transport support"),
+    }
+}
+
+async fn connection(
+    profile: &CameraProfile,
+    listener: &TcpListener,
+    _token: &str,
+) -> Result<Box<dyn Connection>> {
+    match profile.target()? {
+        Target::Adb(serial) => Ok(Box::new(
+            bridge::Bridge::create(executable("adb")?, serial, listener.local_addr()?.port())
+                .await?,
+        )),
+        #[cfg(feature = "accessory-transport")]
+        Target::Usb(_) => {
+            use std::os::fd::AsFd;
+            let retained = std::net::TcpListener::from(listener.as_fd().try_clone_to_owned()?);
+            Ok(Box::new(usb::Bridge::native(
+                profile,
+                _token,
+                retained,
+                crate::broker::linux::client::Launch::from_environment()?,
+            )?))
+        }
+        #[cfg(not(feature = "accessory-transport"))]
+        Target::Usb(_) => anyhow::bail!("direct-USB camera requires accessory-transport support"),
+    }
 }
 
 fn executable(name: &str) -> Result<PathBuf> {
@@ -150,7 +184,7 @@ async fn serve(
 
 struct Session<'a> {
     listener: &'a TcpListener,
-    invitation: &'a dyn Invitation,
+    invitation: &'a dyn Connection,
     token: &'a str,
     ffmpeg: &'a std::path::Path,
     options: &'a CameraOptions,
@@ -175,7 +209,8 @@ impl Session<'_> {
             result = sessions(self.listener, self.token, self.ffmpeg, self.options, frames) => result,
             _ = control::cancelled(stop) => Ok(()),
             _ = frame_status(frames, self.options, status) => Ok(()),
-            result = producer_stopped(producers) => result
+            result = producer_stopped(producers) => result,
+            result = self.invitation.monitor() => result,
         }
     }
 }

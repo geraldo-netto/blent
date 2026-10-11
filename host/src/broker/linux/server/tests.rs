@@ -206,3 +206,5 @@ async fn t853_failed_inventory_rejects_inspect_until_successful_refresh() {
     ));
     fixture.finish().await;
 }
+
+mod camera;

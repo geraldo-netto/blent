@@ -143,3 +143,12 @@ impl Invitation for Bridge {
         Box::pin(Bridge::invite(self, credential, profile))
     }
 }
+
+impl blent_config::camera::connection::Connection for Bridge {
+    fn monitor(&self) -> InvitationResult<'_> {
+        Box::pin(std::future::pending())
+    }
+    fn close(&self) -> InvitationResult<'_> {
+        Box::pin(Bridge::close(self))
+    }
+}
