@@ -1,14 +1,19 @@
 # T846 connection contract and integration boundary
 
-Current implementation includes Android connection/display composition and the
-T932 original-consent camera composition, Linux display composition T908 and
-Linux USB camera invitation/pipeline T933 below. Host and Android pairing controls
-are implemented; joined physical pairing acceptance remains T855. Production
-camera transport controls and joined camera acceptance remain T858. Audio remains
-unavailable on this transport until T860/T859. Earlier milestone sections record
-historical implementation state, dependencies and scoped validation at that
-milestone; later sections supersede their then-pending implementation status.
-Those historical counts never imply whole-project coverage or physical support.
+Current Android composition advertises display, camera, microphone and speakers
+(mask 15) under T932/T978/T998. Linux display T908, camera T933, and both typed
+USB audio directions T979/T999 are implemented. Original consent, permission,
+native consumer ownership and independent resource retirement remain required;
+T1000 qualifies joined automated duplex fixtures. Host and Android pairing and
+media controls are implemented. Physical pairing/display/camera/audio acceptance
+remains postponed under T855/T857/T858/T859/T860/T846; synthetic native results
+never establish debugging-off hardware or acoustic support.
+
+Earlier milestone sections record historical implementation state, dependencies
+and scoped validation at that milestone. Later implementation sections supersede
+then-pending work; their historical counts never imply current whole-project
+coverage or physical support. Current code and the explicit summary above govern
+implemented behavior.
 
 ## Implemented domain layer
 
@@ -1855,11 +1860,10 @@ covers 973 offline tests, all 45 scoped methods and 7 authored constructors,
 including private Binder/actor and real loopback composition on simulated API
 27/34. T944 supplies Activity/permission lifecycle integration and T932 enables
 the joined production camera capability. Real camera/accessory acceptance remains
-T858/T863. At the T948 milestone, the capability mask was display-only. Current
-`AndroidConnectionWorker.kt::tabletConnectionRun` advertises mask 3 (display and
-camera) under T932; microphone/speaker capability remains disabled until its
-production adapters are implemented. This advertisement does not establish
-physical debugging-off media acceptance.
+T858/T863. At T948 the capability mask was display-only; T932 subsequently enabled
+camera (mask 3). Current `AndroidConnectionWorker.kt::tabletConnectionRun`
+advertises all four resources (mask 15) under T998. This advertisement does not
+establish physical debugging-off media acceptance.
 
 ## T949 portable local camera consent and prompt ownership
 
@@ -1909,12 +1913,12 @@ updates preserve the wrapper and avoid restarting capture. Source failure/reset
 revokes selection; the existing lane retains every actually created camera worker
 until native retirement and forwards proof to the original connection worker.
 
-Default tablet composition now advertises display plus camera (mask 3) and injects
-the original resource authority into the camera controller. Audio stays unavailable
-on this transport. This is implemented Android composition, not physical joined
-acceptance or a completed host camera adapter. T933 owns host registration, T858
-owns production USB camera controls/joined hardware acceptance, and T863 retains
-its missing older-device evidence. Owner postponed all live trials.
+At T932 the default composition enabled display plus camera (mask 3) and injected
+the original resource authority into the camera controller; audio was unavailable
+at that milestone. T933 subsequently implemented the host camera adapter, T973/T974
+its production controls, and T978/T998/T999 both audio directions. Current mask is
+15. Physical camera acceptance remains T858; T863 retains missing older-device
+evidence. Owner postponed all live trials.
 
 [Permanent regressions and native counters](artifacts/2026-10-11-t932/README.md)
 cover 1,782 normal tests and all 2,498 Android source functions individually.
@@ -1961,7 +1965,8 @@ T863, final acceptance T846. No native device trial was performed.
 The earlier T949/T944 milestone names `CameraPermission*` are historical. Current
 code uses independent `LocalPermission*` contracts, mediator and SDK slot, shared
 for resource adapters. Camera consent/foreground policy remains camera-owned;
-original audio ownership is the next integration under T951. Existing permanent
+original audio ownership was subsequent integration under T951 and is now joined
+through T996–T999. Existing permanent
 SDK identity tests and the full normal Android method gate pass unchanged.
 
 ### T976 shared media registration ownership
@@ -1971,7 +1976,8 @@ MediaRegistration owns exact source/route supervision and independently proven
 cleanup for camera, microphone or speakers. The retained camera adapter uses this
 one owner; display orchestration keeps its existing separate owner. Portable
 audio request/schema qualification does not enable Android audio capability or
-establish physical support. Audio contracts/adapters remain T977–T979; three
+establish physical support. T977–T979/T998/T999 subsequently implemented audio
+contracts/adapters in both directions; three
 pre-existing management enum coverage gaps found by the full native shared suite
 were resolved under T981: permanent bounded tag/audio-profile properties and a
 fresh full common collection now pass the individual gate for all 10 management
@@ -1984,8 +1990,8 @@ Invitation<P>, Connection<P>}`. Audio selectors persist exact full USB peer
 identities independently by direction; old ADB defaults are preserved.
 `AudioProfile::invitation_profile` projects the existing microphone/speaker
 resource and processing/buffer/background schema, independent of clock negotiation
-and native adapters. Native USB audio remains explicitly unavailable until T979;
-selection never silently falls back to ADB. Retained offline evidence:
+and native adapters. Native USB audio was unavailable at T977; T979 and T999 now
+implement both directions. Selection never silently falls back to ADB. Retained offline evidence:
 [contracts, default audio and camera adapter counters](artifacts/2026-10-11-t977/README.md).
 
 ### Shared original-owner Android consent (T982)
@@ -1999,11 +2005,11 @@ compatibility wrapper or native implementation type enters these contracts.
 `CameraAccessOffer` retains lens metadata; `AudioAccessOffer` validates direction
 and flags and prevents speaker playback from requesting microphone SDK permission.
 Original ownership and local/background consent are qualified separately for both
-audio directions. Native leased audio routing, worker/consumer retirement and
-production UI integration remain T978/T979/T859; physical acceptance remains
-T860/T859/T846. Capability advertisement remains display/camera only. Earlier
-milestone type names and test counts in this document describe historical evidence.
-[Current shared policy qualification](artifacts/2026-10-11-t982/README.md).
+audio directions. At T982 native leased audio and production UI integration were pending;
+T978/T979/T996–T999 subsequently implemented both directions. Physical acceptance
+remains T860/T859/T846. Capability advertisement was display/camera only at T982;
+current mask is 15. Earlier milestone type names and test counts describe historical
+evidence. [Shared policy milestone qualification](artifacts/2026-10-11-t982/README.md).
 
 
 ### Joined Android speaker implementation (T983–T989, T985, T978; 2026-10-11)
