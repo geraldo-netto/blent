@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.asStateFlow
 internal class CameraConsentPolicy(
     private val permission: () -> Boolean,
     private val prompts: CameraPermissionPrompts,
-) {
+) : CameraAccessControls {
     private val mutable = MutableStateFlow(CameraConsentView())
-    val state = mutable.asStateFlow()
+    override val state = mutable.asStateFlow()
     private var pending: CameraPermissionAction? = null
 
     fun observe(value: CameraAccessOffer?) {
@@ -26,19 +26,19 @@ internal class CameraConsentPolicy(
         if (mutable.value.enabled) maintain()
     }
 
-    fun start(offer: CameraAccessOffer): Boolean {
+    override fun start(offer: CameraAccessOffer): Boolean {
         if (!current(offer) || !mutable.value.foreground) return false
         mutable.value = mutable.value.copy(enabled = true)
         return maintain()
     }
 
-    fun stop(offer: CameraAccessOffer): Boolean {
+    override fun stop(offer: CameraAccessOffer): Boolean {
         if (!current(offer)) return false
         disable(offer.owner)
         return update(offer, context(enabled = false))
     }
 
-    fun background(offer: CameraAccessOffer, allowed: Boolean): Boolean {
+    override fun background(offer: CameraAccessOffer, allowed: Boolean): Boolean {
         if (!current(offer)) return false
         mutable.value = mutable.value.copy(backgroundAllowed = allowed)
         if (!mutable.value.enabled) return true

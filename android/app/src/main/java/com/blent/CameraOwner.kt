@@ -4,12 +4,23 @@ import android.content.Context
 import android.content.Intent
 import android.hardware.display.DisplayManager
 import android.view.Display
+import android.os.Handler
+import android.os.Looper
+import com.blent.connection.ConnectionCameraAccess
+import com.blent.connection.ConnectionOwner
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.android.asCoroutineDispatcher
+import kotlinx.coroutines.cancel
 
 /** Process camera owner holds only the application; Activity callbacks detach onStop. */
 internal object CameraOwner {
     private var binding: CameraBinding? = null
     private var control: CameraActivityOwner? = null
     private val prompts = CameraPermissionPrompts()
+    private var observation: CameraConsentObservation? = null
+    private var scope: CoroutineScope? = null
+    val access: CameraAccessControls? get() = control?.consent
 
     fun get(context: Context): CameraBinding {
         val app = context.applicationContext
@@ -21,7 +32,12 @@ internal object CameraOwner {
             if (run != null) app.startForegroundService(intent) else app.stopService(intent)
         })
         binding = value
-        control = CameraActivityOwner(value, CameraConsentPolicy(value::hasPermission, prompts), prompts)
+        val owner = CameraActivityOwner(value, CameraConsentPolicy(value::hasPermission, prompts), prompts)
+        control = owner
+        val dispatcher = CoroutineScope(SupervisorJob() + Handler(Looper.getMainLooper()).asCoroutineDispatcher())
+        scope = dispatcher
+        observation = CameraConsentObservation(ConnectionCameraAccess(ConnectionOwner.get(app)).offers,
+            owner.consent, dispatcher)
         return value
     }
 
@@ -39,6 +55,10 @@ internal object CameraOwner {
     }
 
     fun reset() {
+        observation?.retire()
+        observation = null
+        scope?.cancel()
+        scope = null
         control?.clear()
         binding?.shutdown()
         CameraInvitations.endpoint.value = null

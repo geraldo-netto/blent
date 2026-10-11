@@ -124,6 +124,31 @@ class CameraActivityOwnerTest {
         assertEquals(CameraLens.FRONT, rig.binding.selected)
     }
 
+    @Test fun t944PermissionLossBeforeBackgroundStopRetiresCaptureWithoutNewInvitation() = Rig().use { rig ->
+        rig.allowed = true
+        val attachment = rig.owner.attach(rig.launcher()::launch)
+        rig.invitations.value = endpoint.copy(background = true)
+        assertEquals(CameraLens.FRONT, rig.binding.selected)
+        rig.allowed = false
+        assertTrue(rig.owner.detach(attachment))
+        assertNull("T944 revoked camera survived Activity stop", rig.binding.selected)
+        assertNull(rig.services.last())
+    }
+
+    @Test fun t944ForegroundReturnRechecksExistingBackgroundCapturePermission() = Rig().use { rig ->
+        rig.allowed = true
+        val attachment = rig.owner.attach(rig.launcher()::launch)
+        rig.invitations.value = endpoint.copy(background = true)
+        rig.owner.detach(attachment)
+        assertEquals(CameraLens.FRONT, rig.binding.selected)
+        rig.allowed = false
+        var prompts = 0
+        rig.owner.attach { prompts++; true }
+        assertNull("T944 foreground return retained revoked native camera", rig.binding.selected)
+        assertNull(rig.services.last())
+        assertEquals(0, prompts) // Revocation ends the old run; no relabeled dialog.
+    }
+
     @Test fun t961DeniedFailedAndUnavailableLaunchersCannotStartCapture() = Rig().use { rig ->
         rig.binding.start()
         rig.invitations.value = endpoint

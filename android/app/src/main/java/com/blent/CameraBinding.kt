@@ -97,6 +97,16 @@ internal class CameraBinding(
 
     fun hasPermission(): Boolean = permission()
 
+    /** Fresh SDK permission, independent of a new invitation or SDK callback. */
+    fun permissionChanged() {
+        if (selected == null || hasPermission()) return
+        pending = null
+        stopTarget(source.target)
+        stopCapture()
+        background(false)
+        status = "Camera permission unavailable."
+    }
+
     private fun allowCapture(host: CameraEndpoint, lens: CameraLens): Boolean {
         if (hasPermission()) return true
         if (source.target != null) {
@@ -179,7 +189,7 @@ internal class CameraBinding(
     fun stop() {
         active = false
         pending = null
-        if (backgroundRunning && selected != null) return
+        if (backgroundRunning && selected != null && hasPermission()) return
         shutdown()
     }
 

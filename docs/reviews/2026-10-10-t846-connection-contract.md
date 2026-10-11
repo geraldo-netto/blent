@@ -1878,3 +1878,15 @@ observation wiring remains T944; joined native capture/capability enablement T93
 and real camera/accessory acceptance T858/T863. Existing MainActivity bare-boolean
 legacy permission forwarding and old-Activity detach are explicitly retained for
 T944, not claimed fixed by the portable policy.
+
+## T944 application-owned camera consent observation
+
+Original USB camera offers now project into independent local consent contracts.
+Application-owned observation retains no Activity; exact peer/lease ownership
+preserves intent through permission/admission and rejects replacement workers.
+Fresh SDK permission checks retire revoked background capture on Activity stop
+and return, preserving isolated cleanup and unrelated display/audio.
+
+[Permanent red/green SDK, policy and native counter evidence](artifacts/2026-10-11-t944/README.md)
+covers simulated API 27/34. Capture composition/capability enablement remains
+T932; physical camera/provider acceptance remains T858/T863 and is postponed.

@@ -1,0 +1,656 @@
+[
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 15,
+    "name": "current",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 16,
+    "name": "update",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 17,
+    "name": "permissionResult",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 43,
+    "name": "current",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 44,
+    "name": "complete",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 55,
+    "name": "start",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 56,
+    "name": "stop",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentContracts.kt",
+    "line": 57,
+    "name": "background",
+    "score": 0
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 18,
+    "name": "observe",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 29,
+    "name": "start",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 35,
+    "name": "stop",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 41,
+    "name": "background",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 49,
+    "name": "foreground",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 56,
+    "name": "permissionChanged",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 58,
+    "name": "keepBackground",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 61,
+    "name": "permitted",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 63,
+    "name": "context",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 66,
+    "name": "current",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 69,
+    "name": "live",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 72,
+    "name": "update",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 76,
+    "name": "maintain",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 86,
+    "name": "requiresClose",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 89,
+    "name": "closePermissionLoss",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 96,
+    "name": "requestPermission",
+    "score": 9
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 101,
+    "name": "current",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 103,
+    "name": "complete",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 115,
+    "name": "permissionResult",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 123,
+    "name": "cancelPermission",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 128,
+    "name": "disable",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentPolicy.kt",
+    "line": 134,
+    "name": "clear",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraConsentObservation.kt",
+    "line": 24,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 41,
+    "name": "start",
+    "score": 6
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 55,
+    "name": "useTarget",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 62,
+    "name": "applyHost",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 71,
+    "name": "stopTarget",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 76,
+    "name": "choose",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 98,
+    "name": "hasPermission",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 101,
+    "name": "permissionChanged",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 110,
+    "name": "allowCapture",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 126,
+    "name": "permissionResult",
+    "score": 6
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 136,
+    "name": "launch",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 162,
+    "name": "idleStatus",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 165,
+    "name": "stopCapture",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 171,
+    "name": "background",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 178,
+    "name": "stopBackground",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 189,
+    "name": "stop",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 196,
+    "name": "ownsBackground",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 198,
+    "name": "backgroundStopped",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "line": 202,
+    "name": "shutdown",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+    "line": 15,
+    "name": "attach",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+    "line": 26,
+    "name": "detach",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+    "line": 35,
+    "name": "requestLegacy",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+    "line": 46,
+    "name": "legacyAction",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+    "line": 47,
+    "name": "current",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+    "line": 48,
+    "name": "complete",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+    "line": 55,
+    "name": "clear",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 25,
+    "name": "get",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 44,
+    "name": "attach",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 47,
+    "name": "detach",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 49,
+    "name": "permissionResult",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 51,
+    "name": "ownsService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 53,
+    "name": "serviceStopped",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 57,
+    "name": "reset",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 19,
+    "name": "project",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 29,
+    "name": "clear",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 31,
+    "name": "original",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 37,
+    "name": "currentChoice",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 44,
+    "name": "current",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 47,
+    "name": "offer",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 54,
+    "name": "profile",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 59,
+    "name": "authority",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 60,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 61,
+    "name": "update",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 62,
+    "name": "permissionResult",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 66,
+    "name": "wire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 20,
+    "name": "execute",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 21,
+    "name": "cancel",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 22,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 26,
+    "name": "launcher",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 27,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 30,
+    "name": "t961AlreadyAvailableInvitationKeepsOneOriginalPromptOnAttach",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 42,
+    "name": "t961OldDetachCannotStopReplacementOrClearItsPrompt",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 60,
+    "name": "t961ReplacementLaunchRetainsExactRequestAndRejectsOldSdkResult",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 76,
+    "name": "t961BusySdkSlotCannotRelabelOriginalGrantToReplacementLens",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 91,
+    "name": "t961DetachKeepsOnlyExplicitBackgroundCaptureAndClearRetiresOwner",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 107,
+    "name": "t961DiscardedActionCannotFinishReplacementEvenWithSameRequest",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 127,
+    "name": "t944PermissionLossBeforeBackgroundStopRetiresCaptureWithoutNewInvitation",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 138,
+    "name": "t944ForegroundReturnRechecksExistingBackgroundCapturePermission",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt",
+    "line": 152,
+    "name": "t961DeniedFailedAndUnavailableLaunchersCannotStartCapture",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 11,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 12,
+    "name": "update",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 13,
+    "name": "permissionResult",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 21,
+    "name": "offer",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 25,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 28,
+    "name": "t944ProcessObservationRetainsExplicitBackgroundIntentAndDropsOldSources",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 47,
+    "name": "t944NormalSourceEndAndSourceFailureRevokeOnlyThisPolicy",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentObservationTest.kt",
+    "line": 72,
+    "name": "t944CancellationAndQueuedLatePublicationCannotRestoreAccess",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentOwnerTest.kt",
+    "line": 17,
+    "name": "t944ApplicationObservesOriginalOffersWithoutActivityAndResamplesPermission",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraConsentOwnerTest.kt",
+    "line": 63,
+    "name": "t944ResetCancelsQueuedPublicationAndDoesNotRetainPreviousPolicy",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 12,
+    "name": "execute",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 13,
+    "name": "cancel",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 14,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 15,
+    "name": "command",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 22,
+    "name": "connect",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 29,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 33,
+    "name": "t944OfferPermissionAdmissionKeepOneOwnerButExactPublicationAuthority",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 56,
+    "name": "t944IdenticalTicketsInReplacementPeerCannotReviveOriginalAccess",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 72,
+    "name": "t944InvalidVisibilityForeignLeaseAndSourceLossCannotExposeAccess",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 85,
+    "name": "t944EveryConsentBooleanMapsWithoutGrantingCaptureOrChangingResource",
+    "score": 2
+  }
+]

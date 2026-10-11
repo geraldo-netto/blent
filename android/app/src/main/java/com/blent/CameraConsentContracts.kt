@@ -48,3 +48,11 @@ internal class CameraPermissionPrompt(
     val attachment: CameraPermissionAttachment,
     val action: CameraPermissionAction,
 )
+
+/** Focused local control contract; UI does not depend on policy implementation. */
+internal interface CameraAccessControls {
+    val state: kotlinx.coroutines.flow.StateFlow<CameraConsentView>
+    fun start(offer: CameraAccessOffer): Boolean
+    fun stop(offer: CameraAccessOffer): Boolean
+    fun background(offer: CameraAccessOffer, allowed: Boolean): Boolean
+}

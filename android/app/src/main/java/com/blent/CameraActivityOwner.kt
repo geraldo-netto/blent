@@ -16,6 +16,7 @@ internal class CameraActivityOwner(
         check(!closed) { "Camera UI owner retired" }
         val identity = prompts.attach(launch)
         foreground = true
+        binding.permissionChanged()
         consent.foreground(true)
         binding.start()
         if (binding.permissionPending != null) requestLegacy()
