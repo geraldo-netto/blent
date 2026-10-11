@@ -5,6 +5,30 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class TabletConnectionRunTest {
+    @Test fun t998ProductionMicrophoneOfferRequiresOriginalPermissionWithoutOpeningCapture() {
+        val setup = RuntimeSetup(); val io = RunnerIo()
+        val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096))
+        val session = run.endpoints() as TabletSession
+        val credit = checkNotNull(session.nextFrame(0)); session.written(credit, 0)
+        session.receive(ConnectionFrame(ConnectionWire.Header(ConnectionWire.CREDIT, ConnectionWire.MANAGEMENT,
+            1, 1, 0, 0, 4096), byteArrayOf(), 0, 0), 0)
+        val bytes = ConnectionManagement.encode(ConnectionManagement.Offer(audioLease(ConnectionManagement.Resource.MICROPHONE).key,
+            ConnectionManagement.Credential(ByteArray(32)), ConnectionManagement.Audio(1, 40, false)))
+        session.receive(ConnectionFrame(ConnectionWire.Header(ConnectionWire.DATA, ConnectionWire.MANAGEMENT,
+            1, 1, 1, bytes.size, 0), bytes, 0, bytes.size), 0)
+        run.advance(0)
+        val audio = run as LocalAudioControl
+        val offer = checkNotNull(audio.audioOffered(ConnectionManagement.Resource.MICROPHONE))
+        assertFalse(offer.permissionRequired); assertNull(audio.audio(ConnectionManagement.Resource.MICROPHONE))
+        assertTrue(audio.chooseAudio(offer.lease, com.blent.MediaLocalConsent(true, false, true, false), 0))
+        assertTrue(checkNotNull(audio.audioOffered(ConnectionManagement.Resource.MICROPHONE)).permissionRequired)
+        val permission = run as LocalAudioPermissionControl
+        val prompt = checkNotNull(permission.pendingAudio())
+        assertEquals(offer.lease, prompt.lease); assertNull(audio.audio(ConnectionManagement.Resource.MICROPHONE))
+        run.stop(0); io.requests.forEach { io.complete(it, 0, IOException("fixture cancelled")) }; io.gone = true
+        run.advance(1); assertTrue(run.retired()); assertNull(permission.pendingAudio())
+        assertFalse(permission.audioPermissionResult(prompt, true, com.blent.MediaLocalConsent(true, true, true, false), 1))
+    }
     @Test fun t932DefaultCompositionRetainsCameraOfferWithoutOpeningEndpointBeforePermission() {
         val setup = RuntimeSetup()
         val io = RunnerIo()
@@ -36,7 +60,7 @@ class TabletConnectionRunTest {
         assertNull(camera.offered())
         assertTrue(run.retired())
     }
-    @Test fun t978ProductionCompositionAdvertisesOnlyDisplayCameraAndSpeakersAndKeepsAudioPending() {
+    @Test fun t978ProductionCompositionAdvertisesImplementedMediaAndKeepsUnselectedAudioPending() {
         val setup = RuntimeSetup(); val io = RunnerIo()
         val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096))
         val session = run.endpoints() as TabletSession
@@ -44,7 +68,7 @@ class TabletConnectionRunTest {
         session.receive(ConnectionFrame(ConnectionWire.Header(ConnectionWire.CREDIT, ConnectionWire.MANAGEMENT,
             1, 1, 0, 0, 4096), byteArrayOf(), 0, 0), 0)
         val capabilities = checkNotNull(session.nextFrame(0))
-        assertEquals(ConnectionManagement.Capabilities(11), ConnectionManagement.decode(capabilities.bytes.copyOfRange(capabilities.offset, capabilities.offset + capabilities.length)))
+        assertEquals(ConnectionManagement.Capabilities(15), ConnectionManagement.decode(capabilities.bytes.copyOfRange(capabilities.offset, capabilities.offset + capabilities.length)))
         session.written(capabilities, 0)
         val bytes = ConnectionManagement.encode(ConnectionManagement.Offer(audioLease().key,
             ConnectionManagement.Credential(ByteArray(32)), ConnectionManagement.Audio(1, 40, false)))

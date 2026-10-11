@@ -192,7 +192,7 @@ class AndroidConnectionWorkerTest {
             val header = io.write(); io.complete(header, header.loan.length)
             until { io.write() !== header }
             val body = io.write().loan
-            assertEquals(ConnectionManagement.Capabilities(11),
+            assertEquals(ConnectionManagement.Capabilities(15),
                 ConnectionManagement.decode(body.bytes.copyOfRange(body.offset, body.offset + body.length)))
         } finally { worker.cancel(); execution.await(); worker.retire() }
     }

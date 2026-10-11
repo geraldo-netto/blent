@@ -54,7 +54,7 @@ Camera and selected audio production callers use this shared policy. `AudioAcces
 microphone/speaker metadata without transport credentials or native handles;
 speaker offers cannot request microphone SDK permission. Independent audio
 properties qualify this policy for the leased USB adapters. Android advertises implemented speaker routing/playback under T978;
-Linux speaker PCM is implemented under T992; production host controls are implemented under T979; microphone remains T859. Legacy audio Activity/permission behavior
+Linux speaker PCM is implemented under T992; production host controls are implemented under T979. Android microphone composition is T998; Linux uplink remains T999 and physical acceptance T859. Legacy audio Activity/permission behavior
 remains as described below. Camera behavior and permanent regressions are
 preserved. [Policy and native counter evidence](reviews/artifacts/2026-10-11-t982/README.md).
 
@@ -152,15 +152,16 @@ attachment owns both policies; an older Activity cannot detach its replacement.
 Actual audio worker cleanup remains independent of logical Stop and UI lifecycle.
 
 The passive audio settings and legacy invitation/SDK behavior remain available
-when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979; microphone remains T859.
+when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979. Android microphone composition is T998; Linux uplink remains T999 and physical acceptance T859.
 [Permanent UI/lifecycle/projection tests and native counters](reviews/artifacts/2026-10-11-t985/README.md)
 are synthetic evidence; physical qualification remains postponed under T860.
 
 ## Joined Android leased USB speaker playback (T978)
 
-Production connection composition now advertises display, camera and speakers
-(mask 11), with the explicit original session audio authority. Microphone remains
-unavailable. Speaker offers follow the T985 local consent path before allocating
+Production Android connection composition advertises display, camera, microphone
+and speakers (mask 15), with explicit original session media authority. Microphone
+consent/uplink is implemented under T996–T998; host microphone selection remains
+unavailable until T999. Speaker offers follow the T985 local consent path before allocating
 an endpoint, then select an original target retained through `AudioBinding` and
 the isolated `SpeakerWorkerService`. The existing authenticated PCM bootstrap
 negotiates the tablet processing preference and optional native-clock format;
@@ -179,6 +180,29 @@ The fixture's audio device and process-death notifications are synthetic. It
 establishes joined protocol and ownership behavior, not acoustic performance or
 physical process/accessory qualification. Native speaker-only acceptance remains
 T860; Linux PCM composition remains T992 and controls T979. [Joined tests and individual native counters](reviews/artifacts/2026-10-11-t978/README.md).
+
+## Joined Android leased USB microphone capture (T996–T998)
+
+Microphone offers require explicit per-offer Start and a fresh original permission
+sample before endpoint preparation. The retained opaque SDK prompt routes through
+the exact original worker/publication; denied, stale, withdrawn or unproven grants
+cannot start capture. Shared consent state and native audio ownership preserve
+independent speaker behavior. After admission, the exact target selects the isolated
+`MicrophoneWorkerService` and existing authenticated mono PCM capture path.
+Tablet processing override, gain, built-in input selection, buffer/background
+preferences and optional native clock metadata remain in their existing adapters.
+Requested background capture needs both host request and explicit local consent.
+
+Permanent joined tests on Android API 27/34 use real private services/Binder,
+management/mux and loopback TCP with synthetic microphone hardware and controlled
+process-death notifications. They verify clocked and unclocked PCM, grant before
+sampling, permission denial/loss, pending Stop/source loss, stale SDK callbacks,
+background choices, native failures, worker death and blocked actual reads.
+Display control continues while microphone cleanup is held; endpoint closure,
+execution Ended and deadlines cannot prove actual worker/consumer retirement.
+No acoustic, hardware/provider or actual process separation acceptance is claimed.
+Linux uplink is T999; automated duplex isolation T1000 and postponed physical
+acceptance T859/T846 remain explicit. [Offline native evidence](reviews/artifacts/2026-10-11-t998/README.md).
 
 ## Shared original USB media connection adapters (T991)
 
@@ -210,7 +234,7 @@ The Linux accessory build supports explicit speaker selection through
 The complete options/profile and original credential are validated before native
 registration. ADB remains the default and uses its existing owned reverse mapping;
 USB never falls back to ADB. Stopping before startup creates no helper or mapping.
-USB microphone is visibly unavailable until T859.
+Linux USB microphone is visibly unavailable until T999. Android consent/uplink is T998; physical qualification remains T859.
 
 Both transports use the independent typed Connection/Invitation port. USB retains
 the original selected source and route through generic media ownership. Pending
@@ -236,7 +260,7 @@ SDK-wide native-audio validation T835 remain explicit.
 
 The Audio tab provides separate ADB/Direct USB selectors and a full Tablet
 fingerprint field for each direction. Linux reports ADB for both directions and
-USB for speakers; USB microphone remains unavailable until T859. Unsupported
+USB for speakers; Linux USB microphone remains unavailable until T999. Unsupported
 saved targets stay visible and are never rewritten during rendering. Selection,
 editing and Apply save passive preferences; they start no connection or media and
 do not restart display sharing.

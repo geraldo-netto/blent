@@ -13,7 +13,7 @@ import org.robolectric.RuntimeEnvironment
 
 /** Real media service, Binder protocol, worker adapter and audio wire/renderer.
  * Native device and process-death notifications are controlled synthetic evidence. */
-internal class JoinedSpeakerWorkerFixture {
+internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
     val controller = Robolectric.buildService(WorkerProbeService::class.java).create()
     val service = controller.get()
     val tasks = CopyOnWriteArrayList<MediaTask.Audio>()
@@ -21,6 +21,10 @@ internal class JoinedSpeakerWorkerFixture {
     val deaths = CopyOnWriteArrayList<IBinder.DeathRecipient>()
     val socket = AtomicReference<Socket?>()
     val audible = CompletableDeferred<Unit>()
+    val captured = CompletableDeferred<Unit>()
+    val readRelease = CompletableDeferred<Unit>()
+    val started = AtomicInteger()
+    @Volatile var holdRead = false
     val writeRelease = CompletableDeferred<Unit>()
     @Volatile var holdWrite = false
     val release = CompletableDeferred<Unit>()
@@ -48,6 +52,21 @@ internal class JoinedSpeakerWorkerFixture {
         }
         override fun close() { closes.incrementAndGet() }
     }
+    private val microphone = object : MicrophoneDevice {
+        override val capabilities = 7
+        override val aecEnabled = false
+        private var reads = 0L
+        override fun start() { started.incrementAndGet() }
+        override fun clockSample() = AudioClockSample(7, reads * 480, 1000000000 + reads * 10000000)
+        override suspend fun read(output: ShortArray) {
+            check(started.get() == 1)
+            captured.complete(Unit)
+            if (holdRead) withContext(NonCancellable) { readRelease.await() }
+            delay(10); org.robolectric.shadows.ShadowSystemClock.advanceBy(java.time.Duration.ofMillis(10))
+            output.fill(1234); reads++
+        }
+        override fun close() { closes.incrementAndGet() }
+    }
     private val endpoint = object : Binder() {
         override fun isBinderAlive() = alive
         override fun linkToDeath(recipient: IBinder.DeathRecipient, flags: Int) { deaths.add(recipient) }
@@ -62,7 +81,7 @@ internal class JoinedSpeakerWorkerFixture {
     val context = object : ContextWrapper(RuntimeEnvironment.getApplication()) {
         override fun getApplicationContext(): Context = this
         override fun bindService(intent: Intent, connection: ServiceConnection, flags: Int): Boolean {
-            check(intent.component?.className == SpeakerWorkerService::class.java.name)
+            check(intent.component?.className == (if (direction == 1) MicrophoneWorkerService::class.java.name else SpeakerWorkerService::class.java.name))
             remote = service.onBind(intent)
             connection.onServiceConnected(intent.component, endpoint)
             return true
@@ -72,11 +91,10 @@ internal class JoinedSpeakerWorkerFixture {
     init { service.factory = { task, _, report -> native(task as MediaTask.Audio, report) } }
     private fun native(task: MediaTask.Audio, report: (WorkerEvent) -> Unit): LifecycleRun {
         tasks.add(task)
-        val playback = AudioPlayback(context) { _, _ -> opened.incrementAndGet(); player }
         return object : LifecycleRun {
             override suspend fun execute() {
                 failure?.let { error(it) }
-                playback.run(task.endpoint, task.preferences, socket::set) { report(WorkerEvent.Status(it)) }
+                media(task, report)
             }
             override fun cancel() { socket.get()?.close() }
             override suspend fun retire() {
@@ -87,11 +105,19 @@ internal class JoinedSpeakerWorkerFixture {
             }
         }
     }
+    private suspend fun media(task: MediaTask.Audio, report: (WorkerEvent) -> Unit) {
+        if (direction == 1) AudioCapture(context) { _, _ -> opened.incrementAndGet(); microphone }
+            .run(task.endpoint, task.preferences, socket::set) { report(WorkerEvent.Status(it)) }
+        else AudioPlayback(context) { _, _ -> opened.incrementAndGet(); player }
+            .run(task.endpoint, task.preferences, socket::set) { report(WorkerEvent.Status(it)) }
+    }
     fun run(endpoint: AudioEndpoint, preferences: AudioPreferences, report: (String) -> Unit): LifecycleRun =
         AndroidWorkerRun(context, MediaTask.Audio(endpoint, preferences), report = {
             if (it is WorkerEvent.Status) report(it.text)
         }, graceMillis = 5, exitMillis = 4000)
     private fun finishDeath() { if (exitRequested && cleanup.isCompleted && acceptExit) die() }
     fun die() { alive = false; deaths.toList().forEach { it.binderDied() }; socket.get()?.close() }
-    fun close() { writeRelease.complete(Unit); release.complete(Unit); die(); controller.destroy() }
+    fun close() { readRelease.complete(Unit); writeRelease.complete(Unit); release.complete(Unit); die(); controller.destroy() }
 }
+
+internal typealias JoinedSpeakerWorkerFixture = JoinedAudioWorkerFixture

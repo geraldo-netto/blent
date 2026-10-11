@@ -13,9 +13,9 @@ import kotlinx.coroutines.withTimeoutOrNull
 /** Authenticated setup supplies the ticket/window; media consent remains owned
  * by its resource controller. No media device opens during composition. */
 internal fun tabletConnectionRun(spec: ConnectionWorkerSpec, ready: ConnectionSetupReady): ConnectionRun {
-    val session = TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 11)
+    val session = TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 15)
     return ConnectionLocalRun(ConnectionSessionRunner(session, ready.io, spec.io),
-        ConnectionLocalResources(session, ready.capacity, spec.io, cameraAuthority = session, audioAuthority = session))
+        ConnectionLocalResources(session, ready.capacity, spec.io, cameraAuthority = session, audioAuthority = session, microphoneAuthority = session))
 }
 
 /** One connection-process actor. Native opening, crypto and storage belong to

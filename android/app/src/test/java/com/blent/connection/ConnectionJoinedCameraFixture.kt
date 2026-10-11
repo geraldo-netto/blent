@@ -25,7 +25,8 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
     private var delivered = false
     private val local = ConnectionLocalResources(protocol.tablet, 4096, ConnectionRunLimits(5000, 1000),
         factory = { now -> opened.incrementAndGet(); LocalEndpointOwner(LocalSocketEndpoint(), now, ConnectionRunLimits(5000, 1000)) },
-        cameraAuthority = protocol.tablet, audioAuthority = protocol.tablet)
+        cameraAuthority = protocol.tablet, audioAuthority = protocol.tablet,
+        microphoneAuthority = if (capabilities and 4 != 0) protocol.tablet else null)
     private val transport = object : ConnectionRun {
         override fun display(): LocalDisplayRoute? = null
         override fun endpoints(): ConnectionEndpoints = protocol.tablet
@@ -42,7 +43,7 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
         override fun terminationRequired() = false
     }
     private val joined = ConnectionLocalRun(transport, local)
-    private val serialized = object : ConnectionRun, LocalCameraControl, LocalAudioControl {
+    private val serialized = object : ConnectionRun, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl {
         override fun display() = synchronized(gate) { joined.display() }
         override fun endpoints(): ConnectionEndpoints = object : ConnectionEndpoints by protocol.tablet {
             override fun current(lease: ConnectionResourceLease) = synchronized(gate) { protocol.tablet.current(lease) }
@@ -65,6 +66,9 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
         override fun chooseAudio(lease: ConnectionResourceLease, choice: com.blent.MediaLocalConsent, now: Long) =
             synchronized(gate) { joined.chooseAudio(lease, choice, now) }
         override fun audioConsumerRetired(lease: ConnectionResourceLease, now: Long) = synchronized(gate) { joined.audioConsumerRetired(lease, now) }
+        override fun pendingAudio() = synchronized(gate) { joined.pendingAudio() }
+        override fun audioPermissionResult(prompt: AudioPermissionRequest, granted: Boolean, choice: com.blent.MediaLocalConsent, now: Long) =
+            synchronized(gate) { joined.audioPermissionResult(prompt, granted, choice, now) }
     }
     private val admission = object : AccessoryAdmission {
         private val selection = AccessorySelection(7, "ab".repeat(32))
