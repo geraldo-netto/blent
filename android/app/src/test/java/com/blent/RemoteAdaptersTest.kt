@@ -18,15 +18,16 @@ import java.lang.reflect.Proxy
 @Config(sdk = [27, 34])
 class RemoteAdaptersTest {
     private class Endpoint : Binder() {
-        val deaths = mutableListOf<IBinder.DeathRecipient>()
+        val deaths = java.util.concurrent.CopyOnWriteArrayList<IBinder.DeathRecipient>()
         val started = CompletableDeferred<Unit>()
         val commands = java.util.concurrent.CopyOnWriteArrayList<Int>()
-        @Volatile var unlinked = 0
+        private val unlinkCount = java.util.concurrent.atomic.AtomicInteger()
+        val unlinked get() = unlinkCount.get()
         @Volatile var alive = true
         var exitWorks = true
         override fun isBinderAlive() = alive
         override fun linkToDeath(recipient: IBinder.DeathRecipient, flags: Int) { deaths.add(recipient) }
-        override fun unlinkToDeath(recipient: IBinder.DeathRecipient, flags: Int): Boolean { unlinked++; return deaths.remove(recipient) }
+        override fun unlinkToDeath(recipient: IBinder.DeathRecipient, flags: Int): Boolean { unlinkCount.incrementAndGet(); return deaths.remove(recipient) }
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
             WorkerIpc.validate(data, WorkerIpc.REQUEST)
             val generation = data.readLong()
@@ -111,6 +112,38 @@ class RemoteAdaptersTest {
                     delay(1)
                 }
             }
+        }
+    }
+    private fun mutateDeaths(pool: java.util.concurrent.ExecutorService, endpoint: Endpoint,
+        listeners: List<IBinder.DeathRecipient>, register: Boolean) {
+        val barrier = java.util.concurrent.CyclicBarrier(8)
+        val tasks = (0 until 8).map { actor -> pool.submit(java.util.concurrent.Callable {
+            barrier.await(3, java.util.concurrent.TimeUnit.SECONDS)
+            for (index in actor..listeners.lastIndex step 8) {
+                if (register) endpoint.linkToDeath(listeners[index], 0)
+                else assertTrue("T963 original registration lost during unlink", endpoint.unlinkToDeath(listeners[index], 0))
+            }
+        }) }
+        tasks.forEach { it.get(3, java.util.concurrent.TimeUnit.SECONDS) }
+    }
+
+    @Test fun t963ConcurrentBinderRegistrationsAndRemovalsPreserveEveryOriginalRecipient() {
+        val endpoint = Endpoint()
+        val pool = java.util.concurrent.Executors.newFixedThreadPool(8)
+        try {
+            repeat(8) {
+                val listeners = List(512) { object : IBinder.DeathRecipient { override fun binderDied() {} } }
+                assertEquals(512, listeners.distinct().size)
+                mutateDeaths(pool, endpoint, listeners, true)
+                assertEquals("T963 native registration lost under concurrency", listeners.size, endpoint.deaths.size)
+                assertTrue(endpoint.deaths.containsAll(listeners))
+                mutateDeaths(pool, endpoint, listeners, false)
+                assertTrue(endpoint.deaths.isEmpty())
+            }
+            assertEquals(4096, endpoint.unlinked)
+        } finally {
+            pool.shutdownNow()
+            assertTrue("T963 fixture threads not retired", pool.awaitTermination(3, java.util.concurrent.TimeUnit.SECONDS))
         }
     }
     @Test fun t809_defaultRemoteDisplayFactoryUsesBinderAndReleasesIt() = runBlocking {

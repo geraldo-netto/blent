@@ -1,0 +1,98 @@
+[
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 28,
+    "name": "isBinderAlive",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 29,
+    "name": "linkToDeath",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 30,
+    "name": "unlinkToDeath",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 31,
+    "name": "onTransact",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 49,
+    "name": "getApplicationContext",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 50,
+    "name": "bindService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 53,
+    "name": "unbindService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 55,
+    "name": "until",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 58,
+    "name": "t809_remoteAudioAndCameraStatusReachConsentOwners",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 85,
+    "name": "t962PausedLooperRetiresOnlyAfterActualDeathAndDrivesFallbackTimer",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 117,
+    "name": "mutateDeaths",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 130,
+    "name": "t963ConcurrentBinderRegistrationsAndRemovalsPreserveEveryOriginalRecipient",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 135,
+    "name": "binderDied",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 149,
+    "name": "t809_defaultRemoteDisplayFactoryUsesBinderAndReleasesIt",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 154,
+    "name": "getHolder",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 166,
+    "name": "t809_remoteMetadataRoundTripAndUnavailableFallbackAreExplicit",
+    "score": 1
+  }
+]
