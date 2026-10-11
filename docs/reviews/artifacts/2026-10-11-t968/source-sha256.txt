@@ -1,0 +1,2 @@
+265fd1fa5dafe2c683da1f853cb9cdd68c628b8ff091868135192c6486eb1aa1  android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt
+814d8ebaa9c2c0fc4a8d1614e16d50db428dceefb71d428ef73a9db14a58fccd  android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt

@@ -16,6 +16,36 @@ class ConnectionCameraCaptureOwnerTest {
     private val profile = ConnectionManagement.Camera(640, 480, 30, 3000, 1000, 150, 1, true, true)
     private fun route() = LocalCameraRoute(lease, ConnectionManagement.Credential(ByteArray(32) { it.toByte() }), 12345, profile)
 
+    @Test fun t968DefaultIoAdapterRetainsOriginalClaimUntilActualCompletion() = runBlocking {
+        val commands = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerCommand>()
+        val completed = CompletableDeferred<ConnectionWorkerCommand>()
+        val owner = ConnectionCameraCaptureOwner(route(), { command ->
+            commands.add(command)
+            if (command is ConnectionWorkerCommand.CameraConsumerRetired) completed.complete(command)
+            true
+        })
+        try {
+            val claim = checkNotNull(owner.retain())
+            assertFalse(owner.closed(lease.copy(owner = 2)))
+            assertTrue(claim.current())
+            assertTrue(owner.stop())
+            assertFalse(claim.current())
+            assertNull(owner.retain())
+            assertTrue(owner.closed(lease))
+            assertFalse("T968 route closure cannot replace native retirement", completed.isCompleted)
+            assertEquals(listOf(ConnectionWorkerCommand.CameraChoice(lease,
+                CameraConsentChoice(false, false, enabled = false))), commands)
+            claim.retired(ResourceRetirement.RETIRED)
+            assertEquals(ConnectionWorkerCommand.CameraConsumerRetired(lease),
+                withTimeout(2000) { completed.await() })
+            owner.retire()
+            claim.retired(ResourceRetirement.RETIRED)
+            assertFalse(owner.closed(lease))
+            assertFalse(owner.stop())
+            assertEquals(2, commands.size)
+        } finally { owner.retire() }
+    }
+
     @Test fun t948ClosureJoinsAllOriginalClaimsInEitherOrderWithoutDuplicateProof() = runBlocking {
         for (closeFirst in listOf(false, true)) {
             val commands = mutableListOf<ConnectionWorkerCommand>()

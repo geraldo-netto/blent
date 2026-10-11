@@ -1,0 +1,146 @@
+[
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 16,
+    "name": "endpoint",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 43,
+    "name": "current",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 44,
+    "name": "retired",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 49,
+    "name": "retain",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 52,
+    "name": "invalidate",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 53,
+    "name": "stop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 57,
+    "name": "closed",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 65,
+    "name": "flush",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 70,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 94,
+    "name": "stop",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 100,
+    "name": "ready",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 107,
+    "name": "deliver",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "line": 121,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 17,
+    "name": "route",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 19,
+    "name": "t968DefaultIoAdapterRetainsOriginalClaimUntilActualCompletion",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 49,
+    "name": "t948ClosureJoinsAllOriginalClaimsInEitherOrderWithoutDuplicateProof",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 72,
+    "name": "t948LocalStopRevokesNewClaimsWithoutPretendingRouteClosure",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 88,
+    "name": "t948RelaySenderCannotHoldDomainGateAcrossIndependentCallbacks",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 102,
+    "name": "t948ActualRetirementRejectsFurtherStopAndMalformedLeasesRejectBeforeRelay",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 112,
+    "name": "t948MalformedLeaseAndRetryParametersRejectBeforeAnyRelay",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 125,
+    "name": "t948RejectedAndThrowingTerminalCommandsRetryOneOriginalProof",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 148,
+    "name": "t948ActualRetirementJoinsBlockedOriginalRelayRatherThanLosingIt",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 163,
+    "name": "t948BoundedClaimOrderPropertyPublishesExactlyOneProof",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraCaptureOwnerTest.kt",
+    "line": 184,
+    "name": "t948ProjectionPreservesCanonicalProfileAndCredential",
+    "score": 1
+  }
+]
