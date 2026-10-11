@@ -17,12 +17,17 @@ use blent_config::{
         wire::{Channel, Kind},
     },
 };
+use std::sync::{
+    atomic::{AtomicUsize, Ordering},
+    Arc,
+};
 use tokio::sync::{oneshot, watch};
+mod duplex;
 
-struct Peer {
-    wire: Transport<Box<dyn crate::accessory::Stream>>,
-    decoder: Decoder,
+type AudioWire = Transport<Box<dyn crate::accessory::Stream>>;
+struct AudioTrack {
     profile: blent_config::connection::management::Audio,
+    progress: Arc<AtomicUsize>,
     channel: Channel,
     microphone: Option<Vec<u8>>,
     sequence: u64,
@@ -33,9 +38,8 @@ struct Peer {
     release: oneshot::Receiver<()>,
     held: Option<Key>,
 }
-impl Peer {
+impl AudioTrack {
     fn new(
-        stream: Box<dyn crate::accessory::Stream>,
         profile: blent_config::connection::management::Audio,
         direction: Direction,
         received: oneshot::Sender<Vec<u8>>,
@@ -43,13 +47,7 @@ impl Peer {
         release: oneshot::Receiver<()>,
     ) -> Self {
         Self {
-            wire: Transport::new(
-                stream,
-                Multiplexer::new(1, 1, 4096, 64, 64).unwrap(),
-                Duration::from_secs(2),
-            )
-            .unwrap(),
-            decoder: Decoder::new(),
+            progress: Arc::new(AtomicUsize::new(0)),
             profile,
             channel: if direction == Direction::Microphone {
                 Channel::Microphone
@@ -66,15 +64,7 @@ impl Peer {
             held: None,
         }
     }
-    fn management(&mut self, message: MediaMessage) {
-        let mut bytes = [0; blent_config::connection::management::MAX_RECORD];
-        let count = message.encode(&mut bytes).unwrap();
-        self.wire
-            .multiplexer()
-            .offer(Channel::Management, bytes[..count].to_vec())
-            .unwrap();
-    }
-    fn command(&mut self, message: MediaMessage) {
+    fn command(&mut self, wire: &mut AudioWire, message: MediaMessage) {
         match message {
             MediaMessage::Offer(key, credential, Profile::Audio(profile)) => {
                 assert_eq!(
@@ -88,15 +78,14 @@ impl Peer {
                 assert_eq!(credential.as_bytes(), &[0xab; 32]);
                 assert_eq!(profile, self.profile);
                 self.key = Some(key);
-                self.management(MediaMessage::Prepared(key));
+                management(wire, MediaMessage::Prepared(key));
             }
             MediaMessage::Commit(key) => {
                 assert_eq!(Some(key), self.key);
-                self.wire
-                    .multiplexer()
+                wire.multiplexer()
                     .activate(self.channel, key.generation)
                     .unwrap();
-                self.management(MediaMessage::Result(key, Outcome::Admitted));
+                management(wire, MediaMessage::Result(key, Outcome::Admitted));
                 let request = [
                     b"BLAUREQ2".as_slice(),
                     "ab".repeat(32).as_bytes(),
@@ -112,10 +101,7 @@ impl Peer {
                     ],
                 ]
                 .concat();
-                self.wire
-                    .multiplexer()
-                    .offer(self.channel, request)
-                    .unwrap();
+                wire.multiplexer().offer(self.channel, request).unwrap();
             }
             MediaMessage::Revoke(key, _) => {
                 assert_eq!(Some(key), self.key);
@@ -125,42 +111,22 @@ impl Peer {
             _ => panic!("T992 unrelated resource command"),
         }
     }
-    fn confirm(&mut self) {
+    fn confirm(&mut self, wire: &mut AudioWire) {
         let key = self.held.take().unwrap();
-        if self
-            .wire
+        if wire
             .multiplexer()
             .accepts_data(self.channel, key.generation)
         {
-            self.wire
-                .multiplexer()
-                .close(self.channel, Kind::Close)
-                .unwrap();
+            wire.multiplexer().close(self.channel, Kind::Close).unwrap();
         }
-        self.wire
-            .multiplexer()
+        wire.multiplexer()
             .consumer_retired(self.channel, key.generation)
             .unwrap();
-        self.management(MediaMessage::Result(key, Outcome::Revoked));
-    }
-    fn payload(&mut self, channel: Channel, length: u32) {
-        let bytes = self.wire.payload().to_vec();
-        if channel == Channel::Management {
-            let mut offset = 0;
-            while offset < bytes.len() {
-                let (count, message) = self.decoder.feed(&bytes[offset..]).unwrap();
-                offset += count;
-                if let Some(message) = message {
-                    self.command(message);
-                }
-            }
-        } else {
-            self.audio(channel, &bytes);
-        }
-        self.wire.multiplexer().release(channel, length).unwrap();
+        management(wire, MediaMessage::Result(key, Outcome::Revoked));
     }
     fn audio(&mut self, channel: Channel, bytes: &[u8]) {
         assert_eq!(channel, self.channel);
+        self.progress.fetch_add(bytes.len(), Ordering::SeqCst);
         if self.received.is_none() {
             return;
         }
@@ -181,7 +147,7 @@ impl Peer {
         self.received.take().unwrap().send(result).unwrap();
         self.bytes.clear();
     }
-    fn capture(&mut self) {
+    fn capture(&mut self, wire: &mut AudioWire) {
         if self.held.is_some() {
             return;
         }
@@ -189,13 +155,134 @@ impl Peer {
             return;
         };
         let packet = audio::session_tests::microphone_packet(hello, true, self.sequence);
-        if self
-            .wire
+        if wire
             .multiplexer()
             .offer(Channel::Microphone, packet)
             .is_ok()
         {
             self.sequence += 1;
+            self.progress.fetch_add(960, Ordering::SeqCst);
+        }
+    }
+}
+fn management(wire: &mut AudioWire, message: MediaMessage) {
+    let mut bytes = [0; blent_config::connection::management::MAX_RECORD];
+    let count = message.encode(&mut bytes).unwrap();
+    wire.multiplexer()
+        .offer(Channel::Management, bytes[..count].to_vec())
+        .unwrap();
+}
+
+async fn retirement(track: Option<&mut AudioTrack>) {
+    match track {
+        Some(track) if track.held.is_some() => (&mut track.release).await.unwrap(),
+        _ => std::future::pending::<()>().await,
+    }
+}
+struct Peer {
+    wire: AudioWire,
+    decoder: Decoder,
+    microphone: Option<AudioTrack>,
+    speakers: Option<AudioTrack>,
+}
+impl Peer {
+    fn empty(stream: Box<dyn crate::accessory::Stream>) -> Self {
+        Self {
+            wire: Transport::new(
+                stream,
+                Multiplexer::new(1, 1, 4096, 64, 64).unwrap(),
+                Duration::from_secs(2),
+            )
+            .unwrap(),
+            decoder: Decoder::new(),
+            microphone: None,
+            speakers: None,
+        }
+    }
+    fn new(
+        stream: Box<dyn crate::accessory::Stream>,
+        profile: blent_config::connection::management::Audio,
+        direction: Direction,
+        received: oneshot::Sender<Vec<u8>>,
+        revoking: oneshot::Sender<()>,
+        release: oneshot::Receiver<()>,
+    ) -> Self {
+        let track = AudioTrack::new(profile, direction, received, revoking, release);
+        let mut peer = Self::empty(stream);
+        if direction == Direction::Microphone {
+            peer.microphone = Some(track);
+        } else {
+            peer.speakers = Some(track);
+        }
+        peer
+    }
+    fn duplex(
+        stream: Box<dyn crate::accessory::Stream>,
+        microphone: AudioTrack,
+        speakers: AudioTrack,
+    ) -> Self {
+        Self {
+            microphone: Some(microphone),
+            speakers: Some(speakers),
+            ..Self::empty(stream)
+        }
+    }
+    fn track(&mut self, resource: Resource) -> &mut AudioTrack {
+        match resource {
+            Resource::Microphone => self.microphone.as_mut().unwrap(),
+            Resource::Speakers => self.speakers.as_mut().unwrap(),
+            _ => panic!("T1000 unrelated resource"),
+        }
+    }
+    fn command(&mut self, message: MediaMessage) {
+        let resource = match &message {
+            MediaMessage::Offer(key, _, _)
+            | MediaMessage::Commit(key)
+            | MediaMessage::Revoke(key, _) => key.resource,
+            _ => panic!("T1000 unexpected command"),
+        };
+        match resource {
+            Resource::Microphone => self
+                .microphone
+                .as_mut()
+                .unwrap()
+                .command(&mut self.wire, message),
+            Resource::Speakers => self
+                .speakers
+                .as_mut()
+                .unwrap()
+                .command(&mut self.wire, message),
+            _ => panic!("T1000 unrelated resource"),
+        }
+    }
+    fn payload(&mut self, channel: Channel, length: u32) {
+        let bytes = self.wire.payload().to_vec();
+        if channel == Channel::Management {
+            let mut offset = 0;
+            while offset < bytes.len() {
+                let (count, message) = self.decoder.feed(&bytes[offset..]).unwrap();
+                offset += count;
+                if let Some(message) = message {
+                    self.command(message);
+                }
+            }
+        } else {
+            self.audio(channel, &bytes);
+        }
+        self.wire.multiplexer().release(channel, length).unwrap();
+    }
+
+    fn audio(&mut self, channel: Channel, bytes: &[u8]) {
+        self.track(if channel == Channel::Microphone {
+            Resource::Microphone
+        } else {
+            Resource::Speakers
+        })
+        .audio(channel, bytes);
+    }
+    fn capture(&mut self) {
+        if let Some(track) = &mut self.microphone {
+            track.capture(&mut self.wire);
         }
     }
     async fn run(mut self, mut stopped: oneshot::Receiver<()>) {
@@ -204,7 +291,8 @@ impl Peer {
             tokio::select! {
                 _=&mut stopped=>return,
                 _=capture.tick()=>self.capture(),
-                result=&mut self.release,if self.held.is_some()=>{result.unwrap();self.confirm();}
+                ()=retirement(self.microphone.as_mut())=>self.microphone.as_mut().unwrap().confirm(&mut self.wire),
+                ()=retirement(self.speakers.as_mut())=>self.speakers.as_mut().unwrap().confirm(&mut self.wire),
                 event=self.wire.next()=>{
                     if let WireEvent::Received{header,deliver}=event.unwrap() {
                         if deliver {self.payload(header.channel,header.length);}

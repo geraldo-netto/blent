@@ -29,7 +29,9 @@ internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
     @Volatile var holdWrite = false
     val release = CompletableDeferred<Unit>()
     val cleanup = CompletableDeferred<Unit>()
+    val failed = CompletableDeferred<Unit>()
     val opened = AtomicInteger()
+    val written = AtomicInteger()
     val closes = AtomicInteger()
     val unbound = AtomicInteger()
     @Volatile var alive = true
@@ -37,6 +39,7 @@ internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
     @Volatile var failure: String? = null
     @Volatile var failRetirement = false
     @Volatile var acceptExit = true
+    var next: JoinedAudioWorkerFixture? = null
     private var remote: IBinder? = null
     private val player = object : SpeakerDevice {
         override val paused = false
@@ -44,6 +47,7 @@ internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
         override fun start() {}
         override fun description() = "joined synthetic speakers"
         override suspend fun write(chunk: PlaybackChunk): SpeakerWrite {
+            written.incrementAndGet()
             if (chunk.samples.any { it != 0.toShort() }) {
                 audible.complete(Unit)
                 if (holdWrite) withContext(NonCancellable) { writeRelease.await() }
@@ -93,7 +97,7 @@ internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
         tasks.add(task)
         return object : LifecycleRun {
             override suspend fun execute() {
-                failure?.let { error(it) }
+                failure?.let { failed.complete(Unit); error(it) }
                 media(task, report)
             }
             override fun cancel() { socket.get()?.close() }
@@ -111,13 +115,15 @@ internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
         else AudioPlayback(context) { _, _ -> opened.incrementAndGet(); player }
             .run(task.endpoint, task.preferences, socket::set) { report(WorkerEvent.Status(it)) }
     }
-    fun run(endpoint: AudioEndpoint, preferences: AudioPreferences, report: (String) -> Unit): LifecycleRun =
-        AndroidWorkerRun(context, MediaTask.Audio(endpoint, preferences), report = {
+    fun run(endpoint: AudioEndpoint, preferences: AudioPreferences, report: (String) -> Unit): LifecycleRun {
+        if (!alive) return checkNotNull(next) { "No replacement native process fixture" }.run(endpoint, preferences, report)
+        return AndroidWorkerRun(context, MediaTask.Audio(endpoint, preferences), report = {
             if (it is WorkerEvent.Status) report(it.text)
         }, graceMillis = 5, exitMillis = 4000)
+    }
     private fun finishDeath() { if (exitRequested && cleanup.isCompleted && acceptExit) die() }
     fun die() { alive = false; deaths.toList().forEach { it.binderDied() }; socket.get()?.close() }
-    fun close() { readRelease.complete(Unit); writeRelease.complete(Unit); release.complete(Unit); die(); controller.destroy() }
+    fun close() { readRelease.complete(Unit); writeRelease.complete(Unit); release.complete(Unit); die(); controller.destroy(); next?.close() }
 }
 
 internal typealias JoinedSpeakerWorkerFixture = JoinedAudioWorkerFixture

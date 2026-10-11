@@ -1,23 +1,26 @@
 package com.blent.connection
 
 import com.blent.*
-import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.*
 
 /** Complete consent/consumer path over the private connection and media services. */
-internal class ConnectionJoinedAudioFixture(val resource: ConnectionManagement.Resource = ConnectionManagement.Resource.SPEAKERS) {
+internal class ConnectionJoinedAudioFixture(
+    val resource: ConnectionManagement.Resource = ConnectionManagement.Resource.SPEAKERS,
+    shared: JoinedMediaConnectionFixture? = null,
+) {
     private val direction = if (resource == ConnectionManagement.Resource.MICROPHONE) 1 else 2
     @Volatile var permitted = direction == 2
     val prompts = LocalPermissionPrompts()
     val sdk = java.util.concurrent.CopyOnWriteArrayList<LocalPermissionPrompt>()
-    val dispatcher = java.util.concurrent.Executors.newSingleThreadExecutor().asCoroutineDispatcher()
-    val scope = CoroutineScope(SupervisorJob() + dispatcher)
+    private val original = shared ?: JoinedMediaConnectionFixture()
+    private val ownsConnection = shared == null
+    val dispatcher = original.dispatcher
+    val scope = original.scope
     private val audioScope = CoroutineScope(SupervisorJob() + dispatcher)
-    private val report = AtomicReference<(ConnectionWorkerEvent) -> Unit>({})
-    val link = ConnectionJoinedCameraFixture(15) { report.get()(it) }
-    val connection = ConnectionBinding(scope, { _, callback -> report.set(callback); link.worker })
+    val link = original.link
+    val connection = original.connection
     val native = JoinedAudioWorkerFixture(direction)
     val binding = AudioBinding(AudioPreferences(processing = 2, background = true, gain = 75, builtIn = false, speakerLowLatency = true), {}, { permitted },
         native::run, MutableStateFlow(null), audioScope, {}, direction, {})
@@ -27,22 +30,12 @@ internal class ConnectionJoinedAudioFixture(val resource: ConnectionManagement.R
     init { prompts.attach { sdk.add(it); true } }
     suspend fun until(condition: () -> Boolean) = withTimeout(4000) { while (!condition()) delay(1) }
     suspend fun connect() {
-        withContext(dispatcher) {
-            binding.start(); policy.foreground(true)
-            connection.connect(ConnectionWorkerSpec("joined speaker"))
-        }
-        until { connection.state.value.authenticated }
+        attach(); original.connect()
     }
-    suspend fun display(): ConnectionDisplayChoice {
-        link.send(link.protocol.invitation(ConnectionManagement.Resource.DISPLAY, 2))
-        until { link.messages().any { it is ConnectionManagement.Prepared && it.key.resource == ConnectionManagement.Resource.DISPLAY } }
-        val key = (link.messages().first { it is ConnectionManagement.Prepared && it.key.resource == ConnectionManagement.Resource.DISPLAY } as ConnectionManagement.Prepared).key
-        link.commit(ConnectionResourceLease(cameraLease().connection, key, 1))
-        until { connection.state.value.display != null }
-        return checkNotNull(connection.state.value.display)
-    }
-    suspend fun offer(request: Long = 1, background: Boolean = false): AudioAccessOffer {
-        val invitation = link.protocol.invitation(resource, request)
+    suspend fun attach() = withContext(dispatcher) { binding.start(); policy.foreground(true) }
+    suspend fun display(): ConnectionDisplayChoice = original.display()
+    suspend fun offer(request: Long = 1, background: Boolean = false, generation: Long = 1): AudioAccessOffer {
+        val invitation = link.protocol.invitation(resource, request, generation)
         link.send(invitation.copy(profile = (invitation.profile as ConnectionManagement.Audio).copy(background = background)))
         until { policy.state.value.offer != null }
         return checkNotNull(policy.state.value.offer)
@@ -57,7 +50,11 @@ internal class ConnectionJoinedAudioFixture(val resource: ConnectionManagement.R
     suspend fun admitPrepared(): LocalAudioRoute {
         until { link.messages().any { it is ConnectionManagement.Prepared && it.key.resource == resource } }
         val lease = checkNotNull(selectedOffer()).lease
-        link.commit(lease); until { selectedRoute() != null && native.tasks.isNotEmpty() }
+        link.commit(lease)
+        try { until { selectedRoute() != null && native.tasks.isNotEmpty() } }
+        catch (failure: TimeoutCancellationException) {
+            throw AssertionError("Joined $resource admission: connection=${connection.state.value}; audio=${binding.state.value}; tasks=${native.tasks.size}; alive=${native.alive}; exit=${native.exitRequested}; messages=${link.messages()}", failure)
+        }
         return checkNotNull(selectedRoute()).route
     }
     fun selectedOffer() = if (direction == 1) connection.state.value.microphoneOffer else connection.state.value.speakersOffer
@@ -67,8 +64,9 @@ internal class ConnectionJoinedAudioFixture(val resource: ConnectionManagement.R
     }
     suspend fun close() {
         native.readRelease.complete(Unit); native.writeRelease.complete(Unit); native.release.complete(Unit); native.die()
-        withContext(dispatcher) { observation.retire(); binding.shutdown(); connection.disconnect() }
-        until { connection.state.value.cleanup == null }; scope.cancel(); audioScope.cancel(); native.close(); link.cleanup(); dispatcher.close()
+        withContext(dispatcher) { observation.retire(); binding.shutdown() }
+        if (ownsConnection) original.close()
+        audioScope.cancel(); native.close()
     }
 }
 

@@ -1,0 +1,8 @@
+{
+  "android/app/src/test/java/com/blent/connection/ConnectionJoinedSpeakerFixture.kt": "9a96e9bdf960cf1a571114fe0944c2754513e250a8722166bd7511835092f949",
+  "android/app/src/test/java/com/blent/connection/JoinedSpeakerWorkerFixture.kt": "ace50061bf5065d6045ab0325a24d7c88ce22d29ca8b209d56168731d7965afa",
+  "android/app/src/test/java/com/blent/connection/ConnectionJoinedDuplexTest.kt": "a78593e5846fdf1cfd7c1964b0017d265c60adb71bda163a495c90340775b0b3",
+  "android/app/src/test/java/com/blent/connection/JoinedMediaConnectionFixture.kt": "20459e9faa96fc51d0e8b661be850bc3aeccc1fabf945c0735369309a5ce29c0",
+  "host/src/broker/linux/server/tests/audio.rs": "7587dd3d6247fea9fa469f1b4030c421adde1c61da9cca4589ebc4afd897ab00",
+  "host/src/broker/linux/server/tests/audio/duplex.rs": "b7e1e60be6087c703640aea8b4a37d0ac006e42721cfa129b61870f7b1c953ee"
+}

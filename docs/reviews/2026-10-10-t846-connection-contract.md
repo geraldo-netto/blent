@@ -2019,3 +2019,29 @@ worker failure/death and a blocked renderer while display remains available.
 Native device/process-death signals in these fixtures are synthetic; no physical
 or acoustic acceptance is claimed. Linux speaker composition remains T979 and
 postponed physical acceptance T860/T846.
+
+
+### T1000 automated joined duplex isolation (2026-10-11)
+
+One original Android connection now joins simultaneous leased microphone, speaker
+and display fixtures with separate native workers/consumers. Permanent API 27/34
+regressions cover both directions transferring authenticated clocked PCM together,
+either independent Stop, pending microphone denial, microphone native open failure
+and worker death, a noncancellable read with actual cleanup held, responsive display
+revocation, and clean generation replacement requiring fresh Start. The unaffected
+speaker retains its exact original authority and private worker. Existing joined
+microphone/speaker assertions remain.
+
+One real private Linux mutual-TLS connection likewise owns both original audio
+registrations, real loopback endpoints and independent synthetic native helpers.
+Exact mono/stereo PCM and clocks reach their consumers; either Stop order keeps
+sibling PCM advancing while the first remote consumer's retirement is held. Remote
+revocation and actual local registration-owner destruction remain separate proofs.
+The fixture drops each original registration only after exact remote revocation,
+and waits for the retained native proof before declaring complete retirement.
+
+[Fresh offline native counters and permanent fixtures](artifacts/2026-10-11-t1000/README.md)
+qualify automated composition. USB permission, Android process death and hardware
+audio devices are controlled synthetic evidence; physical/acoustic duplex and
+debugging-off rendered/input acceptance remain postponed under T859/T846/T857.
+No live USB/ADB, host services, installations or downloads occur.
