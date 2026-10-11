@@ -50,13 +50,12 @@ consent are separate conditions. SDK completion never grants a replacement or
 substitutes for a fresh permission sample. Observation failure affects only its
 own policy and never proves native worker or endpoint retirement.
 
-Camera production callers use this shared policy. `AudioAccessOffer` adds validated
+Camera and selected audio production callers use this shared policy. `AudioAccessOffer` adds validated
 microphone/speaker metadata without transport credentials or native handles;
 speaker offers cannot request microphone SDK permission. Independent audio
-properties qualify this policy for the upcoming leased USB speaker/microphone
-adapters. Production USB audio capability remains disabled until those adapters
-are implemented (T978/T979/T859); the existing legacy audio Activity/permission
-owner remains as described below. Camera behavior and permanent regressions are
+properties qualify this policy for the leased USB adapters. Production USB audio capability remains disabled until joined playback and host adapters
+are implemented (T978/T979/T859); legacy audio Activity/permission behavior
+remains as described below. Camera behavior and permanent regressions are
 preserved. [Policy and native counter evidence](reviews/artifacts/2026-10-11-t982/README.md).
 
 ## Shared Android consumer ownership (T983)
@@ -93,7 +92,7 @@ Speaker channels use the existing bounded bidirectional local pump, preserving
 bootstrap, clock negotiation and PCM bytes. Control forwarding remains prompt;
 a stopped connection still accepts its exact late consumer completion. Android
 production does not compose the speaker authority yet: worker publications and
-local controls remain T985, joined playback/capability enablement T978, physical
+local controls are implemented under T989/T985; joined playback/capability enablement remains T978, physical
 acceptance T860. Microphone remains unavailable in this adapter until T859.
 [Private protocol/lifecycle and native counter evidence](reviews/artifacts/2026-10-11-t984/README.md).
 
@@ -108,8 +107,8 @@ Binder. A decoded lease or completion command provides no native authority by
 itself; original retained workers must validate it.
 
 These schema foundations do not enable audio: T989 routes commands only through
-a provided audio owner matching the exact original ticket/resource. UI consent
-remains T985 and production joined playback/capability T978.
+a provided audio owner matching the exact original ticket/resource. UI consent is implemented under T985; production joined playback/capability
+remains T978.
 [Contract properties and native counters](reviews/artifacts/2026-10-11-t988/README.md).
 
 ## Original Android audio worker publication (T989)
@@ -130,9 +129,35 @@ replacement worker or revoke a sibling. `ConnectionBinding` now exposes typed
 microphone/speaker targets with original authority; its UI actions retain the
 exact current publication identity. Camera contracts and regressions remain.
 
-Production USB audio remains disabled: local consent/Activity controls are T985,
-joined speaker composition/capability T978, microphone T859 and physical T860.
+Production USB audio remains disabled pending joined speaker composition/capability
+T978, microphone T859 and physical T860. Local consent/Activity controls are
+implemented under T985.
 [Private worker/lifecycle regressions and native counters](reviews/artifacts/2026-10-11-t989/README.md).
+
+## Original Android audio consent and Activity controls (T985)
+
+`ConnectionMediaAccess` projects exact original peer/lease/publication ownership
+for camera and audio through typed metadata adapters. Only an admitted route with
+its matching consumer target can be selected. Queued UI callbacks cannot consent
+to a replacement, and same-owner admission retains fresh local intent.
+`MediaConsumerSelection` and `MediaConsumerObservation` share stable target
+selection and source-withdrawal handling across camera/audio.
+
+`AudioOwner` composes separate consent and consumer observations for microphone
+and speakers. Each USB offer requires local Start; persisted background settings
+alone grant neither Start nor per-offer background consent. Requested background
+audio additionally requires the existing direction's background setting. Stop,
+source loss and foreground loss without explicit background consent withdraw
+only that direction. Android SDK completion remains bound to the original prompt;
+speaker offers never request microphone permission. The exact foreground Activity
+attachment owns both policies; an older Activity cannot detach its replacement.
+Actual audio worker cleanup remains independent of logical Stop and UI lifecycle.
+
+The passive audio settings and legacy invitation/SDK behavior remain available
+when no USB offer is selected. These controls do not enable production USB audio;
+joined speaker composition is T978, host transport T979 and microphone T859.
+[Permanent UI/lifecycle/projection tests and native counters](reviews/artifacts/2026-10-11-t985/README.md)
+are synthetic evidence; physical qualification remains postponed under T860.
 
 ## Ownership and adapter integration
 

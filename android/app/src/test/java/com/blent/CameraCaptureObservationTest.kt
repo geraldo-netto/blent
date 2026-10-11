@@ -17,7 +17,7 @@ class CameraCaptureObservationTest {
     }
     private class Rig(dispatcher: CoroutineDispatcher = Dispatchers.Unconfined) : AutoCloseable {
         val scope = CoroutineScope(SupervisorJob() + dispatcher)
-        val source = Channel<CameraCapturePublication>(1)
+        val source = Channel<MediaConsumerPublication<CameraCaptureTarget>>(1)
         val identity = Any()
         val view = MutableStateFlow(MediaConsentView<CameraAccessOffer>(CameraAccessOffer(identity, CameraLens.FRONT,
             false, false, true, object : MediaAccessAuthority {
@@ -35,11 +35,11 @@ class CameraCaptureObservationTest {
             })
         val published = mutableListOf<CameraCaptureTarget?>()
         var reject = false
-        val observation = CameraCaptureObservation(source.receiveAsFlow(), view, { true }, {
+        val observation = MediaConsumerObservation<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>(source.receiveAsFlow(), view, { true }, {
             if (reject && it != null) throw IOException("native selection failed")
             published.add(it)
-        }, scope)
-        suspend fun publish() { source.send(CameraCapturePublication(identity, target)) }
+        }, scope, ::CameraCaptureTarget)
+        suspend fun publish() { source.send(MediaConsumerPublication<CameraCaptureTarget>(identity, target)) }
         override fun close() { observation.retire(); source.close(); scope.cancel() }
     }
 

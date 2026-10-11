@@ -19,7 +19,7 @@ internal object CameraOwner {
     private var control: CameraActivityOwner? = null
     private val prompts = LocalPermissionPrompts()
     private var observation: MediaConsentObservation<CameraAccessOffer>? = null
-    private var captureObservation: CameraCaptureObservation? = null
+    private var captureObservation: MediaConsumerObservation<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>? = null
     private var scope: CoroutineScope? = null
     val access: MediaAccessControls<CameraAccessOffer>? get() = control?.consent
 
@@ -39,8 +39,8 @@ internal object CameraOwner {
         scope = dispatcher
         val access = ConnectionCameraAccess(ConnectionOwner.get(app))
         observation = MediaConsentObservation<CameraAccessOffer>(access.offers, owner.consent, dispatcher)
-        captureObservation = CameraCaptureObservation(access.captures, owner.consent.state,
-            value::hasPermission, value::useTarget, dispatcher)
+        captureObservation = MediaConsumerObservation<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>(access.captures, owner.consent.state,
+            value::hasPermission, value::useTarget, dispatcher, ::CameraCaptureTarget)
         return value
     }
 

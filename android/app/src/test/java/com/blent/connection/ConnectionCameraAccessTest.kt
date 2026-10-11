@@ -32,7 +32,7 @@ class ConnectionCameraAccessTest {
     private val consent = MediaLocalConsent(true, false, true, false)
 
     @Test fun t932CaptureProjectionJoinsExactOriginalTargetAndDropsMismatchedMetadata() = Rig().use { rig ->
-        val emitted = mutableListOf<CameraCapturePublication?>()
+        val emitted = mutableListOf<MediaConsumerPublication<CameraCaptureTarget>?>()
         val observer = rig.scope.launch { rig.access.captures.collect { emitted.add(it) } }
         try {
             assertNull(rig.access.capture())

@@ -8,6 +8,3 @@ internal class AudioConsumerTarget(
 ) : MediaConsumerTarget<AudioEndpoint> {
     init { require(endpoint.valid()) { "Invalid audio consumer target" } }
 }
-
-/** Opaque original consent lifetime; equal endpoints are not owner identity. */
-internal class AudioConsumerPublication(val owner: Any, val target: AudioConsumerTarget)

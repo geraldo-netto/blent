@@ -1,0 +1,172 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionAudioAccess",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionBinding;Lcom/blent/connection/ConnectionManagement$Resource;)V",
+    "line": 7,
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaAccess",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionBinding;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/StateFlow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;)V",
+    "line": 8,
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaAccess$Original",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 17,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraAccess",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionBinding;)V",
+    "line": 6,
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaAccess$authority$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionMediaAccess;Lcom/blent/connection/ConnectionMediaAccess$Original;Lcom/blent/connection/ConnectionMediaChoice;)V",
+    "line": 56,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsumerSelection",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)V",
+    "line": 5,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsumerSelection$claim$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/MediaConsumerSelection;Ljava/lang/Object;Ljava/lang/Object;Lcom/blent/MediaConsumerClaim;)V",
+    "line": 48,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioConsumerTarget",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioEndpoint;Lcom/blent/MediaConsumerAuthority;)V",
+    "line": 5,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MainActivity",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 15,
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsumerObservation",
+    "name": "<init>",
+    "signature": "(Lkotlinx/coroutines/flow/Flow;Lkotlinx/coroutines/flow/StateFlow;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)V",
+    "line": 8,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsumerSelection$authority$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/MediaConsumerSelection;Lcom/blent/MediaConsumerPublication;Ljava/lang/Object;)V",
+    "line": 39,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioActivityOwner$action$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioActivityOwner;Lcom/blent/AudioCapturePermission;)V",
+    "line": 51,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsumerPublication",
+    "name": "<init>",
+    "signature": "(Ljava/lang/Object;Lcom/blent/MediaConsumerTarget;)V",
+    "line": 26,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioAccessObservation",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioBinding;Lcom/blent/connection/ConnectionAudioAccess;Lcom/blent/LocalPermissionPrompts;Lkotlinx/coroutines/CoroutineScope;)V",
+    "line": 8,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureTarget",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraEndpoint;Lcom/blent/MediaConsumerAuthority;)V",
+    "line": 4,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioActivityOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioBinding;Lcom/blent/AudioBinding;Lcom/blent/LocalPermissionPrompts;Lcom/blent/MediaConsentPolicy;Lcom/blent/MediaConsentPolicy;)V",
+    "line": 6,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioBinding",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Lkotlinx/coroutines/flow/MutableStateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;)V",
+    "line": 9,
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true
+  }
+]

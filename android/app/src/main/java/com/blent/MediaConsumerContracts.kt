@@ -21,3 +21,6 @@ internal interface MediaConsumerTarget<E> {
     val endpoint: E
     val authority: MediaConsumerAuthority
 }
+
+/** One original publication; metadata carries no native/permission grant. */
+internal class MediaConsumerPublication<T : MediaConsumerTarget<*>>(val owner: Any, val target: T)

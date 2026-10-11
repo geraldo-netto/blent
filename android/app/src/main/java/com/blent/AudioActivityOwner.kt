@@ -7,6 +7,8 @@ internal class AudioActivityOwner(
     private val microphone: AudioBinding,
     private val speakers: AudioBinding,
     private val prompts: LocalPermissionPrompts,
+    val microphoneConsent: MediaConsentPolicy<AudioAccessOffer>,
+    val speakerConsent: MediaConsentPolicy<AudioAccessOffer>,
 ) {
     private var foreground = false
     private var closed = false
@@ -17,6 +19,8 @@ internal class AudioActivityOwner(
         val identity = prompts.attach(launch)
         pending = null
         foreground = true
+        microphoneConsent.permissionChanged(); speakerConsent.permissionChanged()
+        microphoneConsent.foreground(true); speakerConsent.foreground(true)
         microphone.start()
         speakers.start()
         if (microphone.permissionPending != null) requestPermission()
@@ -27,6 +31,7 @@ internal class AudioActivityOwner(
         if (!prompts.detach(identity)) return false
         pending = null
         foreground = false
+        microphoneConsent.foreground(false); speakerConsent.foreground(false)
         microphone.stop()
         speakers.stop()
         return true
@@ -57,6 +62,7 @@ internal class AudioActivityOwner(
         closed = true
         pending = null
         foreground = false
+        microphoneConsent.clear(); speakerConsent.clear()
         prompts.clear()
         microphone.shutdown()
         speakers.shutdown()

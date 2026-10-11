@@ -28,12 +28,12 @@ class CameraCaptureSelectionTest {
     @Test fun t932WithdrawnSourceCannotReviveOldWrapperByPublishingEqualMetadata() {
         val owner = Any()
         val authority = Authority()
-        val publication = CameraCapturePublication(owner, CameraCaptureTarget(endpoint, authority))
+        val publication = MediaConsumerPublication<CameraCaptureTarget>(owner, CameraCaptureTarget(endpoint, authority))
         val view = MediaConsentView<CameraAccessOffer>(offer(owner), true, true, false)
-        val selection = CameraCaptureSelection({ view }, { true })
+        val selection = MediaConsumerSelection<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>({ view }, { true }, ::CameraCaptureTarget)
         val first = selection.project(publication)!!
         val claim = first.authority.retain()!!
-        assertSame(first, selection.project(CameraCapturePublication(owner, publication.target)))
+        assertSame(first, selection.project(MediaConsumerPublication<CameraCaptureTarget>(owner, publication.target)))
         selection.project(null)
         assertFalse("T932 source withdrawal must revoke original acquisition authority", claim.current())
         assertNull(first.authority.retain())
@@ -54,8 +54,8 @@ class CameraCaptureSelectionTest {
             val requested = bits and 64 != 0
             val owner = Any()
             val view = MediaConsentView<CameraAccessOffer>(offer(owner, requested, admitted) { live }, enabled, foreground, background)
-            val selection = CameraCaptureSelection({ view }, { permission })
-            val value = CameraCapturePublication(owner, CameraCaptureTarget(endpoint, Authority()))
+            val selection = MediaConsumerSelection<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>({ view }, { permission }, ::CameraCaptureTarget)
+            val value = MediaConsumerPublication<CameraCaptureTarget>(owner, CameraCaptureTarget(endpoint, Authority()))
             val allowed = enabled && admitted && permission && live && (foreground || (background && requested))
             assertEquals("T932 bits=$bits", allowed, selection.project(value) != null)
         }
@@ -66,8 +66,8 @@ class CameraCaptureSelectionTest {
         val authority = Authority()
         val view = MutableStateFlow(MediaConsentView<CameraAccessOffer>(offer(owner), true, true, false))
         var permission = true
-        val selection = CameraCaptureSelection({ view.value }, { permission })
-        val target = selection.project(CameraCapturePublication(owner, CameraCaptureTarget(endpoint, authority)))!!
+        val selection = MediaConsumerSelection<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>({ view.value }, { permission }, ::CameraCaptureTarget)
+        val target = selection.project(MediaConsumerPublication<CameraCaptureTarget>(owner, CameraCaptureTarget(endpoint, authority)))!!
         val claim = target.authority.retain()!!
         permission = false
         assertFalse(claim.current()); assertNull(target.authority.retain())
@@ -89,11 +89,11 @@ class CameraCaptureSelectionTest {
 
     @Test fun t932MissingConsentAndThrowingPermissionOrAuthorityFailClosed() {
         val owner = Any()
-        val value = CameraCapturePublication(owner, CameraCaptureTarget(endpoint, Authority()))
-        assertNull(CameraCaptureSelection({ MediaConsentView<CameraAccessOffer>() }, { true }).project(value))
+        val value = MediaConsumerPublication<CameraCaptureTarget>(owner, CameraCaptureTarget(endpoint, Authority()))
+        assertNull(MediaConsumerSelection<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>({ MediaConsentView<CameraAccessOffer>() }, { true }, ::CameraCaptureTarget).project(value))
         val valid = MediaConsentView<CameraAccessOffer>(offer(owner), true, true, false)
-        assertNull(CameraCaptureSelection({ valid }, { throw SecurityException() }).project(value))
-        assertNull(CameraCaptureSelection({ valid.copy(offer = offer(owner) { throw IllegalStateException() }) },
-            { true }).project(value))
+        assertNull(MediaConsumerSelection<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>({ valid }, { throw SecurityException() }, ::CameraCaptureTarget).project(value))
+        assertNull(MediaConsumerSelection<CameraAccessOffer, CameraEndpoint, CameraCaptureTarget>({ valid.copy(offer = offer(owner) { throw IllegalStateException() }) },
+            { true }, ::CameraCaptureTarget).project(value))
     }
 }

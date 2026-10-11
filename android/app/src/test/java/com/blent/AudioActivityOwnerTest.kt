@@ -27,7 +27,8 @@ class AudioActivityOwnerTest {
             services::add, direction, {})
         val microphone = binding(1)
         val speakers = binding(2)
-        init { owner = AudioActivityOwner(microphone, speakers, prompts) }
+        init { owner = AudioActivityOwner(microphone, speakers, prompts,
+            MediaConsentPolicy(microphone::hasPermission, prompts), MediaConsentPolicy(speakers::hasPermission, prompts)) }
         fun launcher(native: () -> Unit = {}) = LocalPermissionLauncher(native) { prompt, granted -> prompts.result(prompt, granted) }
         override fun close() { owner.clear(); scope.cancel() }
     }
@@ -132,4 +133,38 @@ class AudioActivityOwnerTest {
             assertEquals(accepted && background, rig.microphone.sharing)
         }
     }
+    private fun audioOffer(direction: Int, background: Boolean = false) = AudioAccessOffer(Any(), direction, background, false, true,
+        object : MediaAccessAuthority {
+            override fun current() = true
+            override fun update(context: MediaLocalConsent) = true
+            override fun permissionResult(granted: Boolean, context: MediaLocalConsent) = false
+        })
+    @Test fun t985ExactAttachmentControlsBothDirectionsWithoutInheritingBackgroundConsent() = Rig().use { rig ->
+        rig.allowed = true
+        val mic = rig.owner.microphoneConsent; val speaker = rig.owner.speakerConsent
+        val microphoneOffer = audioOffer(1, true); val speakerOffer = audioOffer(2, true)
+        mic.observe(microphoneOffer); speaker.observe(speakerOffer)
+        assertFalse(mic.start(microphoneOffer)); assertFalse(speaker.start(speakerOffer))
+        val original = rig.owner.attach(rig.launcher()::launch)
+        assertTrue(mic.start(microphoneOffer)); assertTrue(speaker.start(speakerOffer))
+        speaker.background(speakerOffer, true)
+        val replacement = rig.owner.attach(rig.launcher()::launch)
+        assertFalse(rig.owner.detach(original)); assertTrue(mic.state.value.foreground)
+        assertTrue(rig.owner.detach(replacement)); assertFalse(mic.state.value.enabled)
+        assertTrue(speaker.state.value.enabled); assertFalse(speaker.state.value.foreground)
+        rig.owner.clear(); assertNull(mic.state.value.offer); assertNull(speaker.state.value.offer)
+    }
+    @Test fun t985ReattachSamplesFreshPermissionAndSdkResultCannotEnableOtherDirection() = Rig().use { rig ->
+        rig.allowed = true
+        val mic = rig.owner.microphoneConsent; val speaker = rig.owner.speakerConsent
+        val microphoneOffer = audioOffer(1); val speakerOffer = audioOffer(2)
+        mic.observe(microphoneOffer); speaker.observe(speakerOffer)
+        val first = rig.owner.attach(rig.launcher()::launch)
+        assertTrue(mic.start(microphoneOffer)); assertTrue(speaker.start(speakerOffer))
+        rig.allowed = false
+        rig.owner.attach(rig.launcher()::launch)
+        assertFalse(mic.state.value.enabled); assertTrue(speaker.state.value.enabled)
+        assertFalse(rig.owner.detach(first)); assertTrue(speaker.state.value.foreground)
+    }
+
 }

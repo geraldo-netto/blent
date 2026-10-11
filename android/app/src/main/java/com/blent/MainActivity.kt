@@ -48,6 +48,8 @@ class MainActivity : ComponentActivity() {
         val cameraAccess = checkNotNull(CameraOwner.access)
         microphone = AudioOwner.get(applicationContext)
         speakers = AudioOwner.get(applicationContext, 2)
+        val microphoneAccess = checkNotNull(AudioOwner.access(1))
+        val speakerAccess = checkNotNull(AudioOwner.access(2))
         powerBinding = StreamingPowerBinding(this)
         windowPolicy = ActivityWindowPolicy(this, prefs)
         windowPolicy.applyDisplaySettings()
@@ -70,7 +72,7 @@ class MainActivity : ComponentActivity() {
                     displayRefreshRates = windowPolicy.supportedDisplayModes().map { it.refreshRate },
                     onSettingsEvent = ::settingsEvent,
                     connectionControls = { ConnectionControls(connection) },
-                    cameraControls = { CameraControls(cameras, cameraAccess); AudioControls(microphone); AudioControls(speakers) },
+                    cameraControls = { CameraControls(cameras, cameraAccess); AudioControls(microphone, microphoneAccess); AudioControls(speakers, speakerAccess) },
                     inputControls = { session.inputControls() },
                 )
                 ConnectionPairingDialog(connection)

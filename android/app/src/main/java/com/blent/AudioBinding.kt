@@ -48,6 +48,8 @@ internal class AudioBinding(
     private var serviceError: Exception? = null
     private val retirement = ResourceLane(scope, { status = it })
 
+    fun hasPermission(): Boolean = permission()
+
     fun start() {
         visible = true
         target?.let { if (!targetStarted) startTarget(it) }

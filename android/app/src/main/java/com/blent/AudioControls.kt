@@ -13,7 +13,16 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun AudioControls(binding: AudioBinding) {
+internal fun AudioControls(binding: AudioBinding, access: MediaAccessControls<AudioAccessOffer>? = null) {
+    val consent = access?.state?.collectAsState()?.value
+    if (consent?.offer != null) AudioConsentControls(binding, checkNotNull(access), consent)
+    else LegacyAudioControls(binding)
+    AudioSettings(binding)
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun LegacyAudioControls(binding: AudioBinding) {
     val state by binding.state.collectAsState()
     SettingsSection("${binding.label.replaceFirstChar { it.uppercase() }} sharing")
     Text(state.status, style = MaterialTheme.typography.bodySmall)
@@ -22,6 +31,11 @@ internal fun AudioControls(binding: AudioBinding) {
         Button(onClick = binding::accept, enabled = state.pending != null) { Text("Allow ${binding.label}") }
         OutlinedButton(onClick = binding::stopSharing, enabled = state.sharing || state.pending != null) { Text("Stop ${binding.label}") }
     }
+}
+
+@Composable
+private fun AudioSettings(binding: AudioBinding) {
+    val state by binding.state.collectAsState()
     AudioProcessing(binding)
     Row {
         Checkbox(state.preferences.background, { binding.configure(state.preferences.copy(background = it)) },

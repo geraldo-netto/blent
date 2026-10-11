@@ -3,21 +3,22 @@ package com.blent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-/** Application-owned camera composition on the camera dispatcher. Source loss
- * clears only its selected camera; actual native retirement remains in the lane. */
-internal class CameraCaptureObservation(
-    source: Flow<CameraCapturePublication?>,
-    consent: StateFlow<MediaConsentView<CameraAccessOffer>>,
+/** Application-owned media composition on its dispatcher. Source loss
+ * clears only its selected media; actual native retirement remains in the lane. */
+internal class MediaConsumerObservation<O : MediaAccessOffer, E, T : MediaConsumerTarget<E>>(
+    source: Flow<MediaConsumerPublication<T>?>,
+    consent: StateFlow<MediaConsentView<O>>,
     permission: () -> Boolean,
-    private val useTarget: (CameraCaptureTarget?) -> Unit,
+    private val useTarget: (T?) -> Unit,
     scope: CoroutineScope,
+    target: (E, MediaConsumerAuthority) -> T,
 ) {
     private var closed = false
-    private val selection = CameraCaptureSelection({ consent.value }, permission)
+    private val selection = MediaConsumerSelection({ consent.value }, permission, target)
     private val job = scope.launch {
         try {
             coroutineScope {
-                val current = MutableStateFlow<CameraCapturePublication?>(null)
+                val current = MutableStateFlow<MediaConsumerPublication<T>?>(null)
                 launch {
                     try { source.collect { current.value = it } }
                     finally { current.value = null }
@@ -27,7 +28,7 @@ internal class CameraCaptureObservation(
                 }
             }
         } catch (cancelled: CancellationException) { throw cancelled }
-        catch (_: Exception) { /* Native cleanup is still owned by CameraBinding. */ }
+        catch (_: Exception) { /* Native cleanup is still owned by the binding. */ }
         finally { if (!closed) useTarget(selection.project(null)) }
     }
 

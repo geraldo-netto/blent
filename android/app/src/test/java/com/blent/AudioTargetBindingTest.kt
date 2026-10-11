@@ -268,7 +268,7 @@ class AudioTargetBindingTest {
             assertEquals(length == 64, runCatching { rig.target(authority, rig.endpoint.copy(token = "a".repeat(length))) }.isSuccess)
         }
         assertTrue(authority.claims.isEmpty())
-        val source = AudioConsumerPublication(Any(), rig.target(authority))
+        val source = MediaConsumerPublication<AudioConsumerTarget>(Any(), rig.target(authority))
         assertSame(authority, source.target.authority)
     }
 

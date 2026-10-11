@@ -44,10 +44,12 @@ class AudioOwnerTest {
         val app = RuntimeEnvironment.getApplication()
         Shadows.shadowOf(app).denyPermissions(Manifest.permission.RECORD_AUDIO)
         try {
+            assertNull(AudioOwner.access(1)); assertNull(AudioOwner.access(2))
             assertFalse(AudioOwner.detach(LocalPermissionAttachment()))
             assertThrows(IllegalStateException::class.java) { AudioOwner.attach { true } }
             for (direction in listOf(Int.MIN_VALUE, -1, 0, 3, Int.MAX_VALUE)) {
                 assertThrows(IllegalStateException::class.java) { AudioOwner.get(app, direction) }
+                assertThrows(IllegalStateException::class.java) { AudioOwner.access(direction) }
             }
             val binding = AudioOwner.get(app)
             assertThrows(IllegalStateException::class.java) { AudioOwner.attach { true } }
@@ -56,6 +58,7 @@ class AudioOwnerTest {
             Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             assertNull(binding.permissionPending); assertFalse(binding.sharing)
             AudioOwner.get(app, 2)
+            assertNotNull(AudioOwner.access(1)); assertNotNull(AudioOwner.access(2))
             val attached = AudioOwner.attach { false }
             AudioInvitations.microphone.value = AudioEndpoint("ab".repeat(32), 12346, 1, 1, 40, false)
             Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
