@@ -8,6 +8,14 @@ use blent_config::{
 use std::sync::{Arc, Mutex};
 use tokio::io::AsyncReadExt;
 
+#[test]
+fn t999_audio_microphone_usb_capability_tracks_native_accessory_build() {
+    assert_eq!(
+        transport_capabilities(Direction::Microphone).usb,
+        cfg!(feature = "accessory-transport")
+    );
+}
+
 struct Fixture {
     root: tempfile::TempDir,
     listener: TcpListener,
@@ -16,13 +24,16 @@ struct Fixture {
 }
 impl Fixture {
     async fn new(body: &str) -> Self {
+        Self::new_direction(body, Direction::Speakers).await
+    }
+    async fn new_direction(body: &str, direction: Direction) -> Self {
         use std::os::unix::fs::PermissionsExt;
         let root = tempfile::tempdir().unwrap();
         let helper = root.path().join("helper");
         let source = format!("#!/usr/bin/python3\nimport os,pathlib,sys,time\nroot=pathlib.Path(__file__).parent\n(root/'pid').write_text(str(os.getpid()))\n{body}\n");
         std::fs::write(&helper, source).unwrap();
         std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o700)).unwrap();
-        let mut options = AudioOptions::new(Direction::Speakers);
+        let mut options = AudioOptions::new(direction);
         options.usb_peer = Some(crate::display_test_support::peer(2).as_str().into());
         options.profile.buffer_ms = 80;
         options.profile.background = true;
@@ -68,7 +79,14 @@ impl Fixture {
             .unwrap();
         let magic: &[u8] = if clocked { b"BLAUREQ2" } else { b"BLAUREQ1" };
         socket
-            .write_all(&[magic, "ab".repeat(32).as_bytes(), &[7, 0, 2, 2]].concat())
+            .write_all(
+                &[
+                    magic,
+                    "ab".repeat(32).as_bytes(),
+                    &[7, 0, self.options.profile.direction as u8, 2],
+                ]
+                .concat(),
+            )
             .await
             .unwrap();
         socket
@@ -87,6 +105,100 @@ impl Fixture {
             std::io::Error::last_os_error().raw_os_error(),
             Some(libc::ESRCH)
         );
+    }
+}
+pub(crate) const MICROPHONE_PCM: &str = "sys.stdout.buffer.write(b'READY\\n');sys.stdout.buffer.flush()\nsize=985 if 'clocked' in sys.argv else 961\ndata=sys.stdin.buffer.read(size)\n(root/'capture').write_bytes(data)\nwhile len(sys.stdin.buffer.read(size))==size: pass";
+
+pub(crate) fn microphone_packet(hello: &[u8], clocked: bool, sequence: u64) -> Vec<u8> {
+    assert_eq!(hello.len(), 156);
+    assert_eq!(&hello[..64], "ab".repeat(32).as_bytes());
+    assert_eq!(
+        &hello[144..156],
+        &[1, 1, 0, 0, 187, 128, 1, 224, 2, 1, 0, 80]
+    );
+    assert_eq!(
+        &hello[64..72],
+        if clocked { b"BLAUD002" } else { b"BLAUD001" }
+    );
+    let mut packet = Vec::from(&hello[136..144]);
+    packet.extend_from_slice(&sequence.to_be_bytes());
+    packet.extend_from_slice(&(sequence + 1).to_be_bytes());
+    packet.extend_from_slice(&(if clocked { 984u16 } else { 960u16 }).to_be_bytes());
+    packet.extend_from_slice(&[1, 0]);
+    if clocked {
+        packet.extend_from_slice(
+            &ClockSample::encode(Some(ClockSample {
+                epoch: 3,
+                frames: sequence * 480,
+                nanos: 2000000001 + sequence * 10000000,
+            }))
+            .unwrap(),
+        );
+    }
+    packet.extend_from_slice(&1234i16.to_le_bytes().repeat(480));
+    packet
+}
+pub(crate) async fn captured(root: &Path, clocked: bool) {
+    let bytes = bounded(async {
+        loop {
+            if let Ok(bytes) = std::fs::read(root.join("capture")) {
+                if bytes.len() == if clocked { 985 } else { 961 } {
+                    break bytes;
+                }
+            }
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await;
+    assert_eq!(bytes[0], 0);
+    let offset = if clocked { 25 } else { 1 };
+    assert_eq!(&bytes[offset..], &1234i16.to_le_bytes().repeat(480));
+    if clocked {
+        assert_eq!(
+            ClockSample::decode(&bytes[1..25]).unwrap(),
+            Some(ClockSample {
+                epoch: 3,
+                frames: 0,
+                nanos: 2000000001
+            })
+        );
+    }
+}
+
+#[tokio::test]
+async fn t999_audio_microphone_clock_pcm_original_loss_and_native_retirement() {
+    for clocked in [false, true] {
+        let rig = authenticated();
+        let fixture = Fixture::new_direction(MICROPHONE_PCM, Direction::Microphone).await;
+        let bridge = fixture.bridge(&rig);
+        let token = "ab".repeat(32);
+        let session = fixture.session(&bridge, &token);
+        let (_stop, mut stopped) = watch::channel(false);
+        let report = Report::new(watch::channel(Default::default()).0);
+        let peer = async {
+            registered(&rig).await;
+            let mut socket = fixture.peer(clocked).await;
+            let mut hello = [0; 156];
+            socket.read_exact(&mut hello).await.unwrap();
+            socket
+                .write_all(&microphone_packet(&hello, clocked, 0))
+                .await
+                .unwrap();
+            captured(fixture.root.path(), clocked).await;
+            assert!(report.status().detail.contains("Effective Raw"));
+            rig.client().set(Phase::Closing);
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        };
+        let (result, ()) =
+            bounded(async { tokio::join!(session.serve(&report, &mut stopped), peer) }).await;
+        assert!(result.is_err());
+        fixture.assert_helper_reaped();
+        assert!(report.native_retired());
+        assert_eq!(rig.calls.lock().unwrap().requests.len(), 1);
+        assert!(!bridge.retired());
+        rig.complete();
+        bridge.close().await.unwrap();
+        assert!(bridge.retired());
     }
 }
 async fn bounded<T>(work: impl std::future::Future<Output = T>) -> T {
@@ -141,9 +253,14 @@ async fn received(socket: &mut TcpStream, clocked: bool) {
 }
 #[tokio::test]
 async fn t992_audio_original_pending_stop_and_loss_do_not_start_helper() {
-    for lost in [false, true] {
+    for (direction, lost) in [
+        (Direction::Speakers, false),
+        (Direction::Microphone, false),
+        (Direction::Speakers, true),
+        (Direction::Microphone, true),
+    ] {
         let rig = authenticated();
-        let fixture = Fixture::new(PCM).await;
+        let fixture = Fixture::new_direction(PCM, direction).await;
         let bridge = fixture.bridge(&rig);
         let token = "ab".repeat(32);
         let session = fixture.session(&bridge, &token);
@@ -201,12 +318,18 @@ async fn t992_audio_clock_pcm_processing_override_and_original_loss_retire_only_
 }
 #[tokio::test]
 async fn t992_audio_native_failure_and_stall_leave_original_route_owned_until_actual_proof() {
-    for body in [
-        "sys.stdout.buffer.write(b'WRONG!');sys.stdout.buffer.flush();time.sleep(30)",
-        "sys.stdout.buffer.write(b'READY\\n');sys.stdout.buffer.flush();time.sleep(30)",
-    ] {
+    for (direction, body) in [Direction::Microphone, Direction::Speakers]
+        .into_iter()
+        .flat_map(|direction| {
+            [
+                "sys.stdout.buffer.write(b'WRONG!');sys.stdout.buffer.flush();time.sleep(30)",
+                "sys.stdout.buffer.write(b'READY\\n');sys.stdout.buffer.flush();time.sleep(30)",
+            ]
+            .map(|body| (direction, body))
+        })
+    {
         let rig = authenticated();
-        let fixture = Fixture::new(body).await;
+        let fixture = Fixture::new_direction(body, direction).await;
         let bridge = fixture.bridge(&rig);
         let token = "ab".repeat(32);
         let session = fixture.session(&bridge, &token);
@@ -240,8 +363,23 @@ impl Drop for Held {
 }
 #[tokio::test]
 async fn t992_audio_stuck_native_lease_never_reports_success_or_releases_actual_completion() {
+    held_native(Direction::Speakers).await;
+}
+#[tokio::test]
+async fn t999_audio_microphone_stuck_native_lease_retains_independent_completion() {
+    held_native(Direction::Microphone).await;
+}
+async fn held_native(direction: Direction) {
     let rig = authenticated();
-    let fixture = Fixture::new(PCM).await;
+    let fixture = Fixture::new_direction(
+        if direction == Direction::Speakers {
+            PCM
+        } else {
+            MICROPHONE_PCM
+        },
+        direction,
+    )
+    .await;
     let bridge = fixture.bridge(&rig);
     let token = "ab".repeat(32);
     let session = fixture.session(&bridge, &token);
@@ -263,7 +401,17 @@ async fn t992_audio_stuck_native_lease_never_reports_success_or_releases_actual_
     let peer = async {
         registered(&rig).await;
         let mut socket = fixture.peer(false).await;
-        received(&mut socket, false).await;
+        if direction == Direction::Speakers {
+            received(&mut socket, false).await;
+        } else {
+            let mut hello = [0; 156];
+            socket.read_exact(&mut hello).await.unwrap();
+            socket
+                .write_all(&microphone_packet(&hello, false, 0))
+                .await
+                .unwrap();
+            captured(fixture.root.path(), false).await;
+        }
         stop.send_replace(true);
         tokio::time::sleep(Duration::from_millis(50)).await;
         drop(socket);
@@ -298,7 +446,10 @@ async fn t992_audio_stuck_native_lease_never_reports_success_or_releases_actual_
 }
 #[test]
 fn t992_audio_direction_capabilities_and_loss_errors_are_explicit() {
-    assert!(!transport_capabilities(Direction::Microphone).usb);
+    assert_eq!(
+        transport_capabilities(Direction::Microphone).usb,
+        cfg!(feature = "accessory-transport")
+    );
     assert_eq!(
         transport_capabilities(Direction::Speakers).usb,
         cfg!(feature = "accessory-transport")

@@ -1,0 +1,9 @@
+{
+  "gui/src/audio_settings.rs": "718579ef6e1f249fd3f2222b4b398e5c929c220f0dc6a2208cf08a1f13fc69ac",
+  "gui/src/main.rs": "d091f0181c3d78468e1f2dd36629afece277147d76bf3ca96080c1ddf2355af4",
+  "host/src/audio.rs": "36d15544b55b5013dddd6902ce526906ffe4635beda16bedaf86c770b1ce8daf",
+  "host/src/audio/connection_tests.rs": "d80c4f4827566755f27388c473a585f203958ae68f50ac211f5a8ff895f9e7ca",
+  "host/src/audio/session_tests.rs": "3ea4baaac024202db321184489e6a0392d7e7dbc0e0eece981e5d11fb9d03042",
+  "host/src/audio/usb.rs": "f058adcaefb8b28dbb5bd4dd451ad8519e563b20f27ca80b809326669c731848",
+  "host/src/broker/linux/server/tests/audio.rs": "f71e75f6b5e4c3bd38c600b1138233edd22d3cb66c4e9a566df8d87b6e89bc08"
+}

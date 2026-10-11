@@ -1,4 +1,4 @@
-//! T992: unchanged audio bootstrap/clock/PCM over real private mutual TLS routing.
+//! T992/T999: both audio directions over real private mutual TLS routing.
 use super::*;
 use crate::{
     audio::{self, usb},
@@ -23,6 +23,9 @@ struct Peer {
     wire: Transport<Box<dyn crate::accessory::Stream>>,
     decoder: Decoder,
     profile: blent_config::connection::management::Audio,
+    channel: Channel,
+    microphone: Option<Vec<u8>>,
+    sequence: u64,
     key: Option<Key>,
     bytes: Vec<u8>,
     received: Option<oneshot::Sender<Vec<u8>>>,
@@ -34,6 +37,7 @@ impl Peer {
     fn new(
         stream: Box<dyn crate::accessory::Stream>,
         profile: blent_config::connection::management::Audio,
+        direction: Direction,
         received: oneshot::Sender<Vec<u8>>,
         revoking: oneshot::Sender<()>,
         release: oneshot::Receiver<()>,
@@ -47,6 +51,13 @@ impl Peer {
             .unwrap(),
             decoder: Decoder::new(),
             profile,
+            channel: if direction == Direction::Microphone {
+                Channel::Microphone
+            } else {
+                Channel::Speaker
+            },
+            microphone: None,
+            sequence: 0,
             key: None,
             bytes: Vec::new(),
             received: Some(received),
@@ -66,7 +77,14 @@ impl Peer {
     fn command(&mut self, message: MediaMessage) {
         match message {
             MediaMessage::Offer(key, credential, Profile::Audio(profile)) => {
-                assert_eq!(key.resource, Resource::Speakers);
+                assert_eq!(
+                    key.resource,
+                    if self.channel == Channel::Microphone {
+                        Resource::Microphone
+                    } else {
+                        Resource::Speakers
+                    }
+                );
                 assert_eq!(credential.as_bytes(), &[0xab; 32]);
                 assert_eq!(profile, self.profile);
                 self.key = Some(key);
@@ -76,18 +94,27 @@ impl Peer {
                 assert_eq!(Some(key), self.key);
                 self.wire
                     .multiplexer()
-                    .activate(Channel::Speaker, key.generation)
+                    .activate(self.channel, key.generation)
                     .unwrap();
                 self.management(MediaMessage::Result(key, Outcome::Admitted));
                 let request = [
                     b"BLAUREQ2".as_slice(),
                     "ab".repeat(32).as_bytes(),
-                    &[7, 0, 2, 2],
+                    &[
+                        7,
+                        0,
+                        if self.channel == Channel::Microphone {
+                            1
+                        } else {
+                            2
+                        },
+                        2,
+                    ],
                 ]
                 .concat();
                 self.wire
                     .multiplexer()
-                    .offer(Channel::Speaker, request)
+                    .offer(self.channel, request)
                     .unwrap();
             }
             MediaMessage::Revoke(key, _) => {
@@ -103,16 +130,16 @@ impl Peer {
         if self
             .wire
             .multiplexer()
-            .accepts_data(Channel::Speaker, key.generation)
+            .accepts_data(self.channel, key.generation)
         {
             self.wire
                 .multiplexer()
-                .close(Channel::Speaker, Kind::Close)
+                .close(self.channel, Kind::Close)
                 .unwrap();
         }
         self.wire
             .multiplexer()
-            .consumer_retired(Channel::Speaker, key.generation)
+            .consumer_retired(self.channel, key.generation)
             .unwrap();
         self.management(MediaMessage::Result(key, Outcome::Revoked));
     }
@@ -128,26 +155,55 @@ impl Peer {
                 }
             }
         } else {
-            assert_eq!(channel, Channel::Speaker);
-            if self.received.is_some() {
-                self.bytes.extend_from_slice(&bytes);
-                assert!(self.bytes.len() <= 8192);
-                if self.bytes.len() >= 156 + 1972 {
-                    self.received
-                        .take()
-                        .unwrap()
-                        .send(self.bytes[..156 + 1972].to_vec())
-                        .unwrap();
-                    self.bytes.clear();
-                }
-            }
+            self.audio(channel, &bytes);
         }
         self.wire.multiplexer().release(channel, length).unwrap();
     }
+    fn audio(&mut self, channel: Channel, bytes: &[u8]) {
+        assert_eq!(channel, self.channel);
+        if self.received.is_none() {
+            return;
+        }
+        self.bytes.extend_from_slice(bytes);
+        assert!(self.bytes.len() <= 8192);
+        let count = if channel == Channel::Microphone {
+            156
+        } else {
+            156 + 1972
+        };
+        if self.bytes.len() < count {
+            return;
+        }
+        let result = self.bytes[..count].to_vec();
+        if channel == Channel::Microphone {
+            self.microphone = Some(result.clone());
+        }
+        self.received.take().unwrap().send(result).unwrap();
+        self.bytes.clear();
+    }
+    fn capture(&mut self) {
+        if self.held.is_some() {
+            return;
+        }
+        let Some(hello) = self.microphone.as_ref() else {
+            return;
+        };
+        let packet = audio::session_tests::microphone_packet(hello, true, self.sequence);
+        if self
+            .wire
+            .multiplexer()
+            .offer(Channel::Microphone, packet)
+            .is_ok()
+        {
+            self.sequence += 1;
+        }
+    }
     async fn run(mut self, mut stopped: oneshot::Receiver<()>) {
+        let mut capture = tokio::time::interval(Duration::from_millis(10));
         loop {
             tokio::select! {
                 _=&mut stopped=>return,
+                _=capture.tick()=>self.capture(),
                 result=&mut self.release,if self.held.is_some()=>{result.unwrap();self.confirm();}
                 event=self.wire.next()=>{
                     if let WireEvent::Received{header,deliver}=event.unwrap() {
@@ -161,6 +217,13 @@ impl Peer {
 }
 #[tokio::test]
 async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_remote_retirement() {
+    private_tls_audio(Direction::Speakers).await;
+}
+#[tokio::test]
+async fn t999_audio_private_tls_microphone_preserves_pcm_clock_and_delayed_remote_retirement() {
+    private_tls_audio(Direction::Microphone).await;
+}
+async fn private_tls_audio(direction: Direction) {
     let auth = super::tls::authenticated().await;
     let launch = Launch {
         executable: "/bin/false".into(),
@@ -168,7 +231,7 @@ async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_re
         state: auth.fixture.server.settings.state.clone(),
         helper: auth.fixture.server.settings.helper.clone(),
     };
-    let mut options = AudioOptions::new(Direction::Speakers);
+    let mut options = AudioOptions::new(direction);
     options.usb_peer = Some(auth.pin.as_str().into());
     options.profile.buffer_ms = 80;
     options.profile.background = true;
@@ -191,6 +254,7 @@ async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_re
     let peer = Peer::new(
         auth.tablet,
         options.profile.invitation_profile().unwrap().1,
+        direction,
         received,
         revoking,
         released,
@@ -201,8 +265,12 @@ async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_re
     std::fs::write(
         &helper,
         format!(
-            "#!/usr/bin/python3\nimport pathlib,sys,time\n{}\n",
-            audio::session_tests::PCM
+            "#!/usr/bin/python3\nimport pathlib,sys,time\nroot=pathlib.Path(__file__).parent\n{}\n",
+            if direction == Direction::Microphone {
+                audio::session_tests::MICROPHONE_PCM
+            } else {
+                audio::session_tests::PCM
+            }
         ),
     )
     .unwrap();
@@ -218,23 +286,13 @@ async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_re
     let work = session.serve(&report, &mut stopped);
     tokio::pin!(work);
     let bytes = tokio::select! {result=&mut work=>panic!("premature audio {result:?}"),result=pcm=>result.unwrap()};
-    assert_eq!(&bytes[..64], token.as_bytes());
-    assert_eq!(&bytes[64..72], b"BLAUD002");
-    assert_eq!(
-        &bytes[144..156],
-        &[2, 2, 0, 0, 187, 128, 1, 224, 2, 1, 0, 80]
-    );
-    assert_eq!(&bytes[156..164], &bytes[136..144]);
-    assert_eq!(&bytes[182..184], &[2, 0]);
-    assert_eq!(
-        blent_config::audio::ClockSample::decode(&bytes[184..208]).unwrap(),
-        Some(blent_config::audio::ClockSample {
-            epoch: 3,
-            frames: 96000,
-            nanos: 2000000001
-        })
-    );
-    assert_eq!(&bytes[208..], b"\xd2\x04\x1f\xef".repeat(480));
+    if direction == Direction::Speakers {
+        speaker_samples(&bytes, &token);
+    } else {
+        tokio::select! {result=&mut work=>panic!("premature native microphone {result:?}"),()=audio::session_tests::captured(helper_root.path(), true)=>()}
+        assert_eq!(&bytes[..64], token.as_bytes());
+        assert!(report.status().detail.contains("Effective Raw"));
+    }
     stop.send_replace(true);
     bounded(&mut work).await.unwrap();
     assert!(!bridge.retired());
@@ -256,4 +314,24 @@ async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_re
         .await
         .unwrap();
     fixture.finish().await;
+}
+
+fn speaker_samples(bytes: &[u8], token: &str) {
+    assert_eq!(&bytes[..64], token.as_bytes());
+    assert_eq!(&bytes[64..72], b"BLAUD002");
+    assert_eq!(
+        &bytes[144..156],
+        &[2, 2, 0, 0, 187, 128, 1, 224, 2, 1, 0, 80]
+    );
+    assert_eq!(&bytes[156..164], &bytes[136..144]);
+    assert_eq!(&bytes[182..184], &[2, 0]);
+    assert_eq!(
+        blent_config::audio::ClockSample::decode(&bytes[184..208]).unwrap(),
+        Some(blent_config::audio::ClockSample {
+            epoch: 3,
+            frames: 96000,
+            nanos: 2000000001
+        })
+    );
+    assert_eq!(&bytes[208..], b"\xd2\x04\x1f\xef".repeat(480));
 }

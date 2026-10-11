@@ -6,12 +6,12 @@ mod monitor_inventory;
 mod audio_settings;
 mod camera_preview;
 mod camera_settings;
-mod media_target_settings;
 mod connection_settings;
 mod conversion_settings;
 #[cfg(any(windows, test))]
 mod direct_input_settings;
 mod gpu_settings;
+mod media_target_settings;
 mod pipe_settings;
 mod platform;
 mod platform_diagnostics;
@@ -3170,6 +3170,21 @@ printf '%s' "$((existing + delta))" > "$count""#,
         check_audio_controls_on(blent_config::audio::Direction::Speakers, true);
     }
 
+    #[test]
+    fn t999_usb_microphone_controls_save_exact_target_and_preserve_other_sessions() {
+        check_audio_controls_on(blent_config::audio::Direction::Microphone, true);
+    }
+
+    fn audio_test_options(
+        app: &mut App,
+        direction: blent_config::audio::Direction,
+    ) -> &mut blent_config::audio::AudioOptions {
+        match direction {
+            blent_config::audio::Direction::Microphone => &mut app.cfg.audio.microphone,
+            blent_config::audio::Direction::Speakers => &mut app.cfg.audio.speakers,
+        }
+    }
+
     fn check_audio_controls(direction: blent_config::audio::Direction) {
         check_audio_controls_on(direction, false);
     }
@@ -3220,15 +3235,26 @@ printf '%s' "$((existing + delta))" > "$count""#,
         let context = egui::Context::default();
         context.style_mut(|s| s.animation_time = 0.0);
         if usb {
-            app.cfg.audio.speakers.serial = Some("previous-adb-tablet".into());
+            audio_test_options(&mut app, direction).serial = Some("previous-adb-tablet".into());
             click_settings_text(&mut app, &context, "Direct USB", frame);
-            assert_eq!(app.cfg.audio.speakers.serial, None);
-            assert_eq!(app.cfg.audio.speakers.usb_peer.as_deref(), Some(""));
-            assert!(app.cfg.audio.speakers.validate().is_err());
-            click_settings_text(&mut app, &context, "Full Tablet fingerprint from USB connection", frame);
+            assert_eq!(audio_test_options(&mut app, direction).serial, None);
+            assert_eq!(
+                audio_test_options(&mut app, direction).usb_peer.as_deref(),
+                Some("")
+            );
+            assert!(audio_test_options(&mut app, direction).validate().is_err());
+            click_settings_text(
+                &mut app,
+                &context,
+                "Full Tablet fingerprint from USB connection",
+                frame,
+            );
             let peer = "ab".repeat(32);
             frame(&mut app, &context, vec![egui::Event::Text(peer.clone())]);
-            assert_eq!(app.cfg.audio.speakers.usb_peer.as_deref(), Some(peer.as_str()));
+            assert_eq!(
+                audio_test_options(&mut app, direction).usb_peer.as_deref(),
+                Some(peer.as_str())
+            );
             assert!(calls.borrow().1.is_empty());
             assert!(!app.cfg.requires_restart_from(&app.saved_cfg));
         }

@@ -256,12 +256,13 @@ mod tests {
         assert!(panel.backend.is_none());
         let mut microphone = AudioOptions::new(Direction::Microphone);
         microphone.usb_peer = Some("ab".repeat(32));
+        panel.transports = |_| Default::default();
         assert_eq!(
             panel.start(microphone).unwrap_err(),
             "Selected audio transport is unavailable on this backend."
         );
         assert!(transport_capabilities(Direction::Speakers).usb);
-        assert!(!transport_capabilities(Direction::Microphone).usb);
+        assert!(transport_capabilities(Direction::Microphone).usb);
     }
     #[test]
     fn t979_exact_speaker_usb_and_microphone_adb_options_reach_only_selected_backend() {
@@ -279,7 +280,13 @@ mod tests {
         let mut microphone = AudioOptions::new(Direction::Microphone);
         microphone.serial = Some("exact adb serial".into());
         panel.start(microphone.clone()).unwrap();
-        assert_eq!(*starts.borrow(), vec![speaker, microphone]);
+        let mut usb_microphone = AudioOptions::new(Direction::Microphone);
+        usb_microphone.usb_peer = Some("cd".repeat(32));
+        usb_microphone.profile.buffer_ms = 80;
+        usb_microphone.profile.background = true;
+        usb_microphone.profile.processing = Processing::Raw;
+        panel.start(usb_microphone.clone()).unwrap();
+        assert_eq!(*starts.borrow(), vec![speaker, microphone, usb_microphone]);
     }
     #[test]
     fn t979_bounded_profile_and_nonhex_target_inputs_never_reach_backend() {

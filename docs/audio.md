@@ -54,7 +54,7 @@ Camera and selected audio production callers use this shared policy. `AudioAcces
 microphone/speaker metadata without transport credentials or native handles;
 speaker offers cannot request microphone SDK permission. Independent audio
 properties qualify this policy for the leased USB adapters. Android advertises implemented speaker routing/playback under T978;
-Linux speaker PCM is implemented under T992; production host controls are implemented under T979. Android microphone composition is T998; Linux uplink remains T999 and physical acceptance T859. Legacy audio Activity/permission behavior
+Linux speaker PCM is implemented under T992; production host controls are implemented under T979. Android microphone composition is T998; Linux uplink is implemented under T999; physical acceptance remains T859. Legacy audio Activity/permission behavior
 remains as described below. Camera behavior and permanent regressions are
 preserved. [Policy and native counter evidence](reviews/artifacts/2026-10-11-t982/README.md).
 
@@ -152,7 +152,7 @@ attachment owns both policies; an older Activity cannot detach its replacement.
 Actual audio worker cleanup remains independent of logical Stop and UI lifecycle.
 
 The passive audio settings and legacy invitation/SDK behavior remain available
-when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979. Android microphone composition is T998; Linux uplink remains T999 and physical acceptance T859.
+when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979. Android microphone composition is T998; Linux uplink is implemented under T999; physical acceptance remains T859.
 [Permanent UI/lifecycle/projection tests and native counters](reviews/artifacts/2026-10-11-t985/README.md)
 are synthetic evidence; physical qualification remains postponed under T860.
 
@@ -160,8 +160,7 @@ are synthetic evidence; physical qualification remains postponed under T860.
 
 Production Android connection composition advertises display, camera, microphone
 and speakers (mask 15), with explicit original session media authority. Microphone
-consent/uplink is implemented under T996–T998; host microphone selection remains
-unavailable until T999. Speaker offers follow the T985 local consent path before allocating
+consent/uplink is implemented under T996–T998; host microphone selection is implemented under T999. Speaker offers follow the T985 local consent path before allocating
 an endpoint, then select an original target retained through `AudioBinding` and
 the isolated `SpeakerWorkerService`. The existing authenticated PCM bootstrap
 negotiates the tablet processing preference and optional native-clock format;
@@ -201,7 +200,7 @@ background choices, native failures, worker death and blocked actual reads.
 Display control continues while microphone cleanup is held; endpoint closure,
 execution Ended and deadlines cannot prove actual worker/consumer retirement.
 No acoustic, hardware/provider or actual process separation acceptance is claimed.
-Linux uplink is T999; automated duplex isolation T1000 and postponed physical
+Linux uplink is implemented under T999; automated duplex isolation T1000 and postponed physical
 acceptance T859/T846 remain explicit. [Offline native evidence](reviews/artifacts/2026-10-11-t998/README.md).
 
 ## Shared original USB media connection adapters (T991)
@@ -234,7 +233,7 @@ The Linux accessory build supports explicit speaker selection through
 The complete options/profile and original credential are validated before native
 registration. ADB remains the default and uses its existing owned reverse mapping;
 USB never falls back to ADB. Stopping before startup creates no helper or mapping.
-Linux USB microphone is visibly unavailable until T999. Android consent/uplink is T998; physical qualification remains T859.
+Linux USB microphone is implemented under T999 with Android consent/uplink T998. Physical qualification remains T859.
 
 Both transports use the independent typed Connection/Invitation port. USB retains
 the original selected source and route through generic media ownership. Pending
@@ -256,11 +255,39 @@ fixtures. Production GUI selection is implemented under T979; postponed acceptan
 SDK-wide native-audio validation T835 remain explicit.
 [Offline tests and individual native counters](reviews/artifacts/2026-10-11-t992/README.md).
 
+## Linux leased USB microphone PCM (T999)
+
+The Linux accessory build also supports
+`blent audio --direction microphone --usb-peer <full-tablet-fingerprint>`.
+Microphone uses the same typed original media registration/connection owner as
+speakers, with its own invitation, lease, helper and completion proofs. Full
+profile, peer and credential validation precede native setup; ADB remains the
+default and USB never silently selects it. Android requires explicit original
+microphone permission and local Start before preparation (T996–T998).
+
+Authenticated mono PCM uplink preserves negotiated processing, native clock
+metadata, buffering and background choice. The native adapter receives bounded
+PCM through its existing staging writer; one stalled direction cannot release
+its admission or substitute a new original connection. Pending Stop/loss starts
+no helper. Actual helper and original route completion remain independently
+owned after errors or bounded deadlines, preserving T995 admission behavior.
+
+Permanent private fixtures exercise real mutual TLS, descriptor registration,
+management/mux, local PCM and synthetic native helpers in both directions. They
+verify exact mono samples/clock, pending Stop, original source loss, failed/stalled
+helpers, held actual dependent native leases and delayed remote retirement.
+GUI tests cover microphone USB selection, editing, passive persistence and
+Start/Stop without changing display. Shared ADB regressions remain.
+This establishes implemented routing and automated ownership, not microphone
+hardware, acoustic quality or real duplex acceptance. Automated duplex isolation
+is T1000; postponed physical T859 and SDK-wide native validation T835 remain.
+[Offline evidence and individual native counters](reviews/artifacts/2026-10-11-t999/README.md).
+
 ## Host audio transport controls (T979)
 
 The Audio tab provides separate ADB/Direct USB selectors and a full Tablet
 fingerprint field for each direction. Linux reports ADB for both directions and
-USB for speakers; Linux USB microphone remains unavailable until T999. Unsupported
+USB for both audio directions; native/physical qualification remains separate. Unsupported
 saved targets stay visible and are never rewritten during rendering. Selection,
 editing and Apply save passive preferences; they start no connection or media and
 do not restart display sharing.

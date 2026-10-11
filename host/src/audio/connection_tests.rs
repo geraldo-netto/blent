@@ -109,7 +109,8 @@ async fn private_pipeline() {
         }
     }
     let capabilities = transport_capabilities(Direction::Microphone);
-    assert!(capabilities.adb && !capabilities.usb);
+    assert!(capabilities.adb);
+    assert_eq!(capabilities.usb, cfg!(feature = "accessory-transport"));
     assert!(capabilities.available());
     assert!(capabilities.supports(&blent_config::audio::connection::Target::Adb(None)));
 }

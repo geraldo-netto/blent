@@ -20,14 +20,14 @@ mod protocol;
 #[cfg(feature = "accessory-transport")]
 pub(crate) mod usb;
 
-/// Implemented adapters only; physical qualification remains separate. USB
-/// microphone is unavailable until its consent/uplink composition is implemented.
+/// Implemented adapters only; physical qualification remains separate. Both
+/// independent audio directions share the validated original USB media adapter.
 pub const fn transport_capabilities(
-    direction: Direction,
+    _direction: Direction,
 ) -> blent_config::audio::connection::Transports {
     blent_config::audio::connection::Transports {
         adb: true,
-        usb: cfg!(feature = "accessory-transport") && matches!(direction, Direction::Speakers),
+        usb: cfg!(feature = "accessory-transport"),
     }
 }
 

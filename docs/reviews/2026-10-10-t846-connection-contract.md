@@ -2011,7 +2011,7 @@ milestone type names and test counts in this document describe historical eviden
 The preceding milestone statements are historical. At T978 Android production
 composition advertised display, camera and speakers (mask 11); T996–T998 now
 compose original microphone consent/uplink and advertise all four resources
-(mask 15). Host microphone uplink remains T999 and physical qualification T859. Shared original publication/consumer/consent ownership
+(mask 15). Host microphone uplink is implemented under T999; physical qualification remains T859. Shared original publication/consumer/consent ownership
 feeds exact per-direction local Start/Stop/background controls and the isolated
 speaker worker. Joined private service/Binder, TCP, clocked PCM and renderer
 fixtures retain actual cleanup/process-death barriers through denial, cancellation,
