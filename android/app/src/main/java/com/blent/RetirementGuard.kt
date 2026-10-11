@@ -3,7 +3,8 @@ package com.blent
 import java.util.concurrent.atomic.AtomicReference
 
 /** A failed native release keeps its owner reachable and closes admission.
- * Only one run may execute at once; successors must check admission after join. */
+ * Only one run may execute at once; successors must check admission after join.
+ * Fatal failures remain propagated, but cannot erase the retained native owner. */
 internal class RetirementGuard {
     private data class Held(val run: LifecycleRun, val error: Exception)
     private val held = AtomicReference<Held?>(null)
@@ -12,8 +13,11 @@ internal class RetirementGuard {
     suspend fun retire(run: LifecycleRun): Exception? = try {
         run.retire()
         null
-    } catch (error: Exception) {
-        held.compareAndSet(null, Held(run, error))
+    } catch (failure: Throwable) {
+        val diagnostic = failure as? Exception
+            ?: IllegalStateException("Native release failed: ${failure.message}", failure)
+        held.compareAndSet(null, Held(run, diagnostic))
+        if (failure !is Exception) throw failure
         this.error
     }
 }

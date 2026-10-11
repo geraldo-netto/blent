@@ -80,15 +80,18 @@ internal class ResourceLane(
         } catch (failure: Exception) {
             if (failure !is CancellationException) owner.failure = failure
         } finally {
-            notifyEnded(owner)
-            beginDeadline(owner)
-            val run = owner.run
-            if (run == null) owner.retirement = ResourceRetirement.NOT_STARTED
-            else {
-                val failure = withContext(NonCancellable) { guard.retire(run) }
-                if (failure == null) owner.retirement = ResourceRetirement.RETIRED
-                else status("Native cleanup incomplete: ${failure.message}")
-            }
+            try { notifyEnded(owner); beginDeadline(owner) }
+            finally { retire(owner) }
+        }
+    }
+
+    private suspend fun retire(owner: Active) {
+        val run = owner.run
+        if (run == null) owner.retirement = ResourceRetirement.NOT_STARTED
+        else {
+            val failure = withContext(NonCancellable) { guard.retire(run) }
+            if (failure == null) owner.retirement = ResourceRetirement.RETIRED
+            else status("Native cleanup incomplete: ${failure.message}")
         }
     }
 
@@ -142,6 +145,12 @@ internal class ResourceLane(
         owner.deadline?.cancel()
         notifyEnded(owner)
         val proof = owner.retirement ?: if (owner.run == null) ResourceRetirement.NOT_STARTED else null
+        if (proof == null && error == null) {
+            // A failure before the guard was entered still cannot release a run.
+            stalled = true
+            status("Native cleanup unconfirmed; replacement waiting.")
+            return
+        }
         proof?.let { notifyRetired(owner.request, it) }
         // Keep the original owner installed through callbacks. Reentrant replace
         // can update the latest request but cannot admit a second native owner.

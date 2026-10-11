@@ -1,0 +1,52 @@
+[
+  {
+    "owner": "com/blent/RetirementGuard",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 8,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/ResourceLane",
+    "name": "<init>",
+    "signature": "(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;J)V",
+    "line": 16,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/ResourceLane$Active",
+    "name": "<init>",
+    "signature": "(Lcom/blent/ResourceLane$Request;)V",
+    "line": 26,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/RetirementGuard$Held",
+    "name": "<init>",
+    "signature": "(Lcom/blent/LifecycleRun;Ljava/lang/Exception;)V",
+    "line": 9,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/ResourceLane$Request",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+    "line": 22,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  }
+]

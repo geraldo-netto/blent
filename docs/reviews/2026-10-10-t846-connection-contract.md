@@ -1789,7 +1789,22 @@ reentrant reporting observes the same single-owner admission gate.
 
 [Permanent red/green, 256-step bounded properties and native counters](artifacts/2026-10-11-t942/README.md)
 cover 934 offline tests and all 23 scoped methods. Fatal Errors remain propagated;
-their outstanding ownership retention gap is tracked by T947 before camera
-integration. T943 binds actual capture claims to original connection attempts;
+T947 closes their native ownership retention gap. T943 supplies portable capture
+binding and T948 binds claims to original connection attempts;
 T944 handles Activity/permission and T932 enables the joined composition. Camera
 capabilities remain disabled; physical acceptance stays T858.
+
+## T947 fatal failure ownership
+
+Execution-ended Errors cannot skip actual native retirement. Fatal release instead
+retains the original run, quarantines its lane and propagates the original failure
+without granting proof or replacement. An unopened pending request still has safe
+no-start proof; independent lanes continue. Missing native proof never clears an
+unconfirmed owner. Fatal VM failures are not converted into successful cleanup.
+
+[Permanent fail-before-fix regressions and native counters](artifacts/2026-10-11-t947/README.md)
+cover 937 offline tests and all 28 scoped methods. Synthetic JVM failures qualify
+ownership behavior; they do not qualify real heap exhaustion or physical camera
+failure. Original error identity remains in the guard; coroutine handler evidence
+preserves class, message and original provenance across stack recovery. Camera
+capabilities remain disabled pending T943/T948/T944/T932; physical acceptance T858.
