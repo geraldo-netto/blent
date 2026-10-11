@@ -16,7 +16,6 @@ use crate::{
 use anyhow::{ensure, Context, Result};
 use blent_config::{
     connection::{
-        management::Reason,
         pairing::{PeerId, Ticket},
         resources::Lease,
     },
@@ -198,10 +197,12 @@ fn dispatch(
             let result = bridges.register(connection.session(), offer, now, 120_000);
             emit(output, Event::Registered { owner, result })
         }
-        Command::Cancel(lease) => connection.session().cancel(&lease, Reason::Requested),
+        Command::Cancel(lease) => cancel_original(connection.session(), &lease),
         _ => anyhow::bail!("unexpected setup command during media"),
     }
 }
+pub(crate) use super::session::cancel_original;
+
 fn poll_media(
     connection: &mut Connection,
     bridges: &mut Bridges,

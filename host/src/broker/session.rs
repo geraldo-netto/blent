@@ -16,6 +16,8 @@ use std::{
     time::Duration,
 };
 use tokio::io::{AsyncRead, AsyncWrite};
+mod cancellation;
+pub(crate) use cancellation::cancel_original;
 mod channels;
 mod endpoint;
 mod lifecycle;
