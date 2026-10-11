@@ -31,10 +31,12 @@ internal data class LocalCameraOffer(
  * BEFORE returning credentials. consumerRetired requires actual capture-worker
  * completion/no-start proof supplied by its retained native boundary adapter;
  * rejection, a timeout, socket EOF or sending cancellation is insufficient. */
-internal interface LocalCameraControl {
+internal interface LocalCameraProjection {
     fun offered(): LocalCameraOffer?
-    fun pending(): CameraPermissionRequest?
     fun camera(): LocalCameraRoute?
+}
+internal interface LocalCameraControl : LocalCameraProjection {
+    fun pending(): CameraPermissionRequest?
     fun choose(lease: ConnectionResourceLease, choice: CameraConsentChoice, now: Long): Boolean
     fun permissionResult(prompt: CameraPermissionRequest, granted: Boolean, choice: CameraConsentChoice, now: Long): Boolean
     fun consumerRetired(lease: ConnectionResourceLease, now: Long): Boolean

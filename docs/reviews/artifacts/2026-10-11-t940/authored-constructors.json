@@ -1,0 +1,62 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionRuntimeOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSetup;Lcom/blent/connection/ConnectionRunFactory;Lkotlin/jvm/functions/Function0;)V",
+    "line": 4,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalResources",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionEndpoints;ILcom/blent/connection/ConnectionRunLimits;Lkotlin/jvm/functions/Function1;Lcom/blent/connection/ConnectionResourceAuthority;)V",
+    "line": 17,
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraPublication",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function1;)V",
+    "line": 5,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lcom/blent/connection/ConnectionRunFactory;)V",
+    "line": 14,
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalCameraOffer",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Camera;Z)V",
+    "line": 18,
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionLocalRun",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionRun;Lcom/blent/connection/LocalConnectionResources;)V",
+    "line": 109,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  }
+]

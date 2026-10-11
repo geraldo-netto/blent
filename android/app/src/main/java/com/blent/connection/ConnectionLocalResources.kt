@@ -109,9 +109,19 @@ internal class ConnectionLocalResources(
 internal class ConnectionLocalRun(
     private val transport: ConnectionRun,
     private val local: LocalConnectionResources,
-) : ConnectionRun {
+) : ConnectionRun, LocalCameraControl {
     private var stopping = false
     override fun display(): LocalDisplayRoute? = if (stopping) null else local.display()
+    private fun cameraControl(): LocalCameraControl? = local as? LocalCameraControl
+    override fun offered(): LocalCameraOffer? = if (stopping) null else cameraControl()?.offered()
+    override fun camera(): LocalCameraRoute? = if (stopping) null else cameraControl()?.camera()
+    override fun pending(): CameraPermissionRequest? = if (stopping) null else cameraControl()?.pending()
+    override fun choose(lease: ConnectionResourceLease, choice: CameraConsentChoice, now: Long): Boolean =
+        !stopping && cameraControl()?.choose(lease, choice, now) == true
+    override fun permissionResult(prompt: CameraPermissionRequest, granted: Boolean, choice: CameraConsentChoice, now: Long): Boolean =
+        !stopping && cameraControl()?.permissionResult(prompt, granted, choice, now) == true
+    override fun consumerRetired(lease: ConnectionResourceLease, now: Long): Boolean =
+        cameraControl()?.consumerRetired(lease, now) == true
     override fun endpoints(): ConnectionEndpoints = transport.endpoints()
     override fun advance(now: Long) {
         transport.advance(now)

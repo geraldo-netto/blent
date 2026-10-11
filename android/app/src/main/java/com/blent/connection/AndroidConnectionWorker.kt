@@ -28,6 +28,7 @@ internal class AndroidConnectionWorker(
     private val commands = Channel<ConnectionWorkerCommand>(32)
     private val completed = CompletableDeferred<Unit>()
     private var displayed: LocalDisplayRoute? = null
+    private val camera = ConnectionCameraPublication(report)
     @Volatile private var runtime: ConnectionRuntime? = null
     @Volatile private var uncertain = false
     @Volatile private var retirementError: Exception? = null
@@ -35,7 +36,8 @@ internal class AndroidConnectionWorker(
     private fun signal() { wake.trySend(Unit) }
     private fun current(): Boolean = !stopping.get()
     override fun command(value: ConnectionWorkerCommand): Boolean =
-        current() && state.get() != 2 && commands.trySend(value).isSuccess.also { if (it) signal() }
+        (current() || value is ConnectionWorkerCommand.CameraConsumerRetired) && state.get() != 2 &&
+            commands.trySend(value).isSuccess.also { if (it) signal() }
     override fun cancel() { stopping.set(true); signal() }
 
     private fun create() {
@@ -59,7 +61,7 @@ internal class AndroidConnectionWorker(
     private fun controls(owned: ConnectionRuntime) {
         repeat(32) {
             val command = commands.tryReceive().getOrNull() ?: return
-            if (current()) owned.command(command)
+            if (current() || command is ConnectionWorkerCommand.CameraConsumerRetired) owned.command(command)
         }
     }
     private fun events(owned: ConnectionRuntime) {
@@ -75,6 +77,7 @@ internal class AndroidConnectionWorker(
         owned.advance()
         events(owned)
         display(owned)
+        camera(owned)
         owned.failure()?.let { throw it }
         check(!owned.terminationRequired()) { "Connection native ownership requires process exit" }
         return owned.retired()
@@ -86,12 +89,16 @@ internal class AndroidConnectionWorker(
         displayed = selected
         selected?.let { report(ConnectionWorkerEvent.Display(it)) }
     }
+    private fun camera(owned: ConnectionRuntime) {
+        val projection = owned as? LocalCameraProjection
+        camera.update(projection?.offered(), projection?.camera())
+    }
     private suspend fun waitWake() { withTimeoutOrNull(spec.timerMs) { wake.receive() } }
     private suspend fun cleanup(owned: ConnectionRuntime): Boolean {
         owned.stop()
         val result = withTimeoutOrNull(spec.io.retirementTimeoutMs) {
             while (true) {
-                owned.advance(); events(owned); display(owned)
+                controls(owned); owned.advance(); events(owned); display(owned); camera(owned)
                 if (owned.terminationRequired()) return@withTimeoutOrNull false
                 if (owned.retired()) return@withTimeoutOrNull true
                 waitWake()

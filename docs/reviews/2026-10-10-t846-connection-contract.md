@@ -1712,6 +1712,21 @@ Existing display tags/bytes remain unchanged; no media travels through Binder.
 
 [Permanent bounded invalid-input, real Binder/Parcel and native counter evidence](artifacts/2026-10-11-t939/README.md)
 covers 673 connection tests. These parsed values grant no native permission or
-original worker authority. Camera runtime dispatch remains unsupported until
-T940; main-process presentation is T941 and joined private integration T936.
+original worker authority. Camera runtime dispatch is composed in T940; main-process presentation is T941 and joined private integration T936.
 Hardware capture/capability enablement and physical acceptance remain T932/T858.
+
+## T940 retained camera runtime and actor controls
+
+Focused local projection/control interfaces expose only current original-connection
+camera offers and actually admitted routes. Permission replies resolve inside the
+original owner through its exact pending prompt. Publication emits transitions
+and revokes camera independently of display; neither route closure nor actor stop
+replaces actual native retirement.
+
+The serialized actor accepts exact retained capture-consumer completion after
+cancellation and processes it during cleanup. New consent and permission work
+remain closed. [Permanent fail-before-fix, joined real TCP and native counter evidence](artifacts/2026-10-11-t940/README.md)
+covers 683 connection tests. Default production capabilities remain display-only.
+T941 must relay terminal proof through private service/client IPC and main-process
+admission/presentation; T936 joins these layers. Actual hardware capture/proof is
+T932, host adaptation T933 and physical acceptance T858.

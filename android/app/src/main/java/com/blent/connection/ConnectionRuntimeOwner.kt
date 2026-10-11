@@ -5,7 +5,7 @@ internal class ConnectionRuntimeOwner(
     private val setup: ConnectionSetup,
     private val factory: ConnectionRunFactory,
     private val clock: () -> Long,
-) : ConnectionRuntime {
+) : ConnectionRuntime, LocalCameraProjection {
     private var runner: ConnectionRun? = null
     private var approval: ConnectionApproval? = null
     private var attempted = false
@@ -100,10 +100,37 @@ internal class ConnectionRuntimeOwner(
         val accepted = when (command) {
             is ConnectionWorkerCommand.Decide -> !stopped && setup.decide(command.ticket, command.approved, command.remember)
             is ConnectionWorkerCommand.Revoke -> setup.revoke(command.peer)
-            is ConnectionWorkerCommand.Camera -> false // Enabled by the retained camera runtime adapter in T940.
+            is ConnectionWorkerCommand.Camera -> cameraCommand(command)
         }
         live()
         return accepted
+    }
+    private fun cameraCommand(value: ConnectionWorkerCommand.Camera): Boolean {
+        if (approval?.ticket != value.lease.connection) return false
+        val control = runner as? LocalCameraControl ?: return false
+        return when (value) {
+            is ConnectionWorkerCommand.CameraChoice -> live() && control.choose(value.lease, value.choice, previous)
+            is ConnectionWorkerCommand.CameraPermission -> live() && permission(control, value)
+            // Cleanup belongs to the retained original owner after logical stop.
+            is ConnectionWorkerCommand.CameraConsumerRetired -> control.consumerRetired(value.lease, previous)
+        }
+    }
+    private fun permission(control: LocalCameraControl, value: ConnectionWorkerCommand.CameraPermission): Boolean {
+        val prompt = control.pending() ?: return false
+        if (prompt.lease != value.lease) return false
+        return control.permissionResult(prompt, value.granted, value.choice, previous)
+    }
+    override fun offered(): LocalCameraOffer? {
+        time()
+        if (!live()) return null
+        return (runner as? LocalCameraProjection)?.offered()?.takeIf { it.lease.connection == approval?.ticket }
+    }
+    override fun camera(): LocalCameraRoute? {
+        time()
+        if (!live()) return null
+        val selected = (runner as? LocalCameraProjection)?.camera() ?: return null
+        if (selected.lease.connection != approval?.ticket) return null
+        return selected.takeIf { raw()?.current(it.lease) == true }
     }
     override fun poll(): ConnectionWorkerEvent? {
         time(); live()
