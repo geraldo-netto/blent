@@ -25,6 +25,30 @@ def snapshot(root):
 
 
 class RustCollectTest(unittest.TestCase):
+    def test_t1001_fresh_owned_target_passes_actual_offline_cargo_clean_guard(self):
+        import rust_collect
+        llvm = tools()
+        with tempfile.TemporaryDirectory(prefix='blent-t1001-cache-') as directory:
+            root = Path(directory)
+            (root / 'Cargo.toml').write_text('[package]\nname="blent-cache-probe"\nversion="0.0.0"\nedition="2021"\n[[bin]]\nname="blent-cache-probe"\npath="probe.rs"\n')
+            (root / 'Cargo.lock').write_text('version = 4\n[[package]]\nname = "blent-cache-probe"\nversion = "0.0.0"\n')
+            (root / 'probe.rs').write_text('fn main() { println!("cache guard"); }\n')
+            old = root / 'unrelated'; old.mkdir()
+            run('rustc', '-Cinstrument-coverage', str(root / 'probe.rs'), '-o', str(old / 'cached'))
+            exporter = NativeExporter(root, old, llvm)
+            output = root / 'evidence'
+            def guarded(command, **kwargs):
+                target = Path(kwargs['env']['CARGO_TARGET_DIR'])
+                result = subprocess.run(['cargo', 'clean', '--package', 'blent-cache-probe', '--locked', '--offline',
+                    '--manifest-path', str(root / 'Cargo.toml'), '--target-dir', str(target)],
+                    env=kwargs['env'], capture_output=True, text=True, timeout=60)
+                self.assertEqual(0, result.returncode, result.stderr)
+                self.assertTrue((target / 'CACHEDIR.TAG').read_text().startswith('Signature: 8a477f597d28d172789f06886806bc55\n'))
+                exporter(command, **kwargs)
+            rust_collect.collect(root, output, rust_collect.Selection(library=True), runner=guarded, snapshotter=snapshot)
+            self.assertTrue((old / 'cached').is_file())
+            self.assertTrue((output / 'attestation.json').is_file())
+
     def test_t880_native_cached_mapping_cannot_enter_fresh_collection(self):
         import rust_collect
         llvm = tools()

@@ -1,0 +1,4 @@
+{
+  "scripts/coverage/rust_collect.py": "2fccef45ae4c408adea44b02f86ef84264c6b1a322e29ee21935ea4c05c7513a",
+  "scripts/coverage/test_rust_collect.py": "72681ad1109bcbb38ed36c9c5d803e8bad712a9b97368ec7805279301b537a5e"
+}

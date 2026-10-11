@@ -93,6 +93,10 @@ def collect(root, output, selection, runner=subprocess.run, snapshotter=snapshot
     output.mkdir(parents=True, exist_ok=False)
     target = output / 'target'
     target.mkdir()
+    # Cargo's guarded clean accepts only explicitly marked cache directories.
+    # This path was created exclusively above; never mark a caller's existing tree.
+    (target / 'CACHEDIR.TAG').write_text('Signature: 8a477f597d28d172789f06886806bc55\n'
+                                      '# Blent exclusively owned native coverage cache.\n')
     manifest = snapshotter(root)
     (output / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     with (output / 'collection.log').open('w') as log:
