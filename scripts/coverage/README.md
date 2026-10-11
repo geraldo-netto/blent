@@ -307,3 +307,8 @@ Keep the directory for review, then delete only your own evidence when no longer
 needed; fresh compilation trades extra local disk/build time for unambiguous
 mapping ownership. Missing cached dependencies fail offline; this tool does not
 authorize downloads.
+
+T965 shares authored PSI ownership with the complexity inventory through
+`scripts/kotlin/AuthoredKotlin.kt`. Native method attribution, generated-code
+filtering and per-function thresholds remain unchanged; the compiled inventory
+cache fingerprints both the reporter and ownership source.

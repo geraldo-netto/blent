@@ -19,13 +19,76 @@ fun increment(element: PsiElement): Int = when (element) {
 
 fun complexity(element: PsiElement): Int = increment(element) + element.children.sumOf(::complexity)
 
+fun initializationComplexity(element: PsiElement): Int =
+    if (element is KtNamedFunction || element is KtPropertyAccessor || element is KtClassOrObject) 0
+    else increment(element) + element.children.sumOf(::initializationComplexity)
+
+fun initializationBodies(declarations: List<KtDeclaration>): List<PsiElement> = declarations.mapNotNull {
+    when (it) {
+        is KtAnonymousInitializer -> it.body
+        is KtProperty -> if (propertyInitialization(it)) it.delegateExpression ?: it.initializer else null
+        else -> null
+    }
+}
+
+fun primaryBodies(element: KtClassOrObject): List<PsiElement> {
+    val parameters = element.primaryConstructor?.valueParameters.orEmpty().mapNotNull { it.defaultValue }
+    return parameters + element.superTypeListEntries + initializationBodies(element.declarations)
+}
+
+fun objectBodies(element: KtObjectDeclaration, name: String): List<PsiElement> = when {
+    element.isObjectLiteral() -> primaryBodies(element)
+    name == "<init>" -> element.superTypeListEntries
+    else -> initializationBodies(element.declarations)
+}
+
+fun secondaryBodies(element: KtSecondaryConstructor): List<PsiElement> {
+    val own = listOfNotNull(element.getDelegationCall(), element.bodyExpression) +
+        element.valueParameters.mapNotNull { it.defaultValue }
+    val parent = element.getContainingClassOrObject()
+    return if (parent.hasPrimaryConstructor() || element.getDelegationCall().isCallToThis) own
+        else own + initializationBodies(parent.declarations)
+}
+
+fun classBodies(element: KtClassOrObject, name: String): List<PsiElement> = when {
+    element is KtEnumEntry -> initializationBodies(element.declarations)
+    name == "<clinit>" -> element.declarations.filterIsInstance<KtEnumEntry>()
+        .flatMap { it.superTypeListEntries }
+    else -> primaryBodies(element)
+}
+
+fun methodBodies(element: PsiElement, name: String): List<PsiElement> = when (element) {
+    is KtNamedFunction -> listOfNotNull(element.bodyExpression)
+    is KtPropertyAccessor -> listOfNotNull(element.bodyExpression)
+    is KtSecondaryConstructor -> secondaryBodies(element)
+    is KtLambdaExpression -> listOfNotNull(element.bodyExpression)
+    is KtObjectDeclaration -> objectBodies(element, name)
+    is KtFile -> initializationBodies(element.declarations)
+    is KtClassOrObject -> classBodies(element, name)
+    else -> emptyList()
+}
+
+fun methodComplexity(element: PsiElement, name: String): Int =
+    if (element is KtNamedFunction && element.name != null) complexity(element)
+    else if (name == "<init>" || name == "<clinit>")
+        1 + methodBodies(element, name).sumOf(::initializationComplexity)
+    else 1 + methodBodies(element, name).sumOf(::complexity)
+
+fun reportMethod(source: String, path: String, element: PsiElement) {
+    val line = source.substring(0, element.textOffset).count { it == '\n' } + 1
+    for (name in listOfNotNull(functionName(element), additionalInitialization(element))) {
+        println("$path\t$line\t$name\t${methodComplexity(element, name)}")
+    }
+}
+
 fun report(factory: KtPsiFactory, path: String) {
     val source = File(path).readText()
     val file = factory.createFile(File(path).name, source)
     check(PsiTreeUtil.findChildOfType(file, PsiErrorElement::class.java) == null) { "$path: Kotlin parse error" }
-    for (function in PsiTreeUtil.collectElementsOfType(file, KtNamedFunction::class.java)) {
-        val line = source.substring(0, function.textOffset).count { it == '\n' } + 1
-        println("$path\t$line\t${function.name}\t${complexity(function)}")
+    for (element in PsiTreeUtil.collectElements(file) {
+        functionName(it) != null || additionalInitialization(it) != null
+    }) {
+        reportMethod(source, path, element)
     }
 }
 

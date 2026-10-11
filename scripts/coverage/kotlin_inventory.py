@@ -1,5 +1,6 @@
 """Use the same pinned Kotlin compiler as the cyclomatic-complexity inventory."""
 import os
+import hashlib
 from pathlib import Path
 import subprocess
 import sys
@@ -15,10 +16,12 @@ def functions(root, paths):
     cache = cache_dir()
     classpath = os.pathsep.join(artifact(cache, key, digest) for key, digest in ARTIFACTS.items())
     source = Path(__file__).with_name('KotlinFunctions.kt')
-    jar = cache / f'functions-{fingerprint(source)}.jar'
+    owners = Path(__file__).resolve().parents[1] / 'kotlin/AuthoredKotlin.kt'
+    digest = hashlib.sha256(source.read_bytes() + owners.read_bytes()).hexdigest()
+    jar = cache / f'functions-{digest}.jar'
     if not jar.exists():
         subprocess.run(['java', '-cp', classpath, 'org.jetbrains.kotlin.cli.jvm.K2JVMCompiler',
-                        '-no-stdlib', '-no-reflect', '-cp', classpath, '-d', str(jar), str(source)], check=True)
+                        '-no-stdlib', '-no-reflect', '-cp', classpath, '-d', str(jar), str(source), str(owners)], check=True)
     output = subprocess.check_output(['java', '-Djava.awt.headless=true', '-cp',
                                       f'{jar}{os.pathsep}{classpath}', 'KotlinFunctionsKt',
                                       *map(str, paths)], text=True)
