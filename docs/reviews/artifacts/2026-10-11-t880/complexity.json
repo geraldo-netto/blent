@@ -1,0 +1,128 @@
+[
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 24,
+    "name": "names",
+    "score": 4
+  },
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 31,
+    "name": "command",
+    "score": 7
+  },
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 48,
+    "name": "environment",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 57,
+    "name": "native_object",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 63,
+    "name": "owned_objects",
+    "score": 7
+  },
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 76,
+    "name": "validate_collection",
+    "score": 4
+  },
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 86,
+    "name": "collect",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/rust_collect.py",
+    "line": 106,
+    "name": "main",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 11,
+    "name": "run",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 15,
+    "name": "tools",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 22,
+    "name": "snapshot",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 28,
+    "name": "test_t880_native_cached_mapping_cannot_enter_fresh_collection",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 58,
+    "name": "test_t880_existing_output_is_never_reused_or_deleted",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 68,
+    "name": "test_t880_changed_sources_do_not_gain_attestation",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 80,
+    "name": "test_t880_external_native_object_link_is_rejected",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 91,
+    "name": "test_t880_selection_has_no_output_or_target_passthrough",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 102,
+    "name": "test_t880_failed_or_empty_collection_cannot_claim_success",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 120,
+    "name": "__init__",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 126,
+    "name": "__call__",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 73,
+    "name": "changed",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_rust_collect.py",
+    "line": 107,
+    "name": "failed",
+    "score": 1
+  }
+]

@@ -165,8 +165,8 @@ Before measuring, create a source snapshot:
 ```
 
 Keep sources unchanged until the measurements and report are complete. Collect
-Rust with `cargo llvm-cov --workspace --all-features --lcov --output-path ...` and
-also without `--all-features`; preserve both reports to cover the CLI-only build.
+Rust with the fresh-target collector below, once with `--all-features` and once
+without it; preserve both reports to cover the CLI-only build.
 GCC records use `compiler.py`, as demonstrated by the capture gate. Android uses
 the regular Robolectric suite with a separate JaCoCo init script:
 
@@ -279,3 +279,31 @@ Archived recipe tests use synthetic `<archived recipe: ...>` code filenames.
 They still execute their unchanged security assertions, while coverage no longer
 mistakes archived ASTs for nonexistent production files. A permanent native Python
 reporting regression verifies this boundary; no production counters are ignored.
+
+## Fresh local Rust collection (T880)
+
+Use a new output directory for each invocation:
+
+```sh
+python3 scripts/coverage/rust_collect.py --output /tmp/blent-rust-default
+python3 scripts/coverage/rust_collect.py --output /tmp/blent-rust-all --all-features
+python3 scripts/coverage/rust_collect.py --output /tmp/blent-rust-common --package blent-config --lib
+```
+
+The collector enforces offline, locked Cargo resolution and creates its own fresh
+target/build tree, overriding inherited reused-target paths and profile output.
+It never cleans or reuses a caller's existing directory. Package and test options
+accept names; use `--filter` for a Rust test-name filter. Arbitrary Cargo argument,
+output-path and target-dir passthrough is intentionally absent. CI already uses
+fresh target directories.
+
+The output retains `manifest.json`, `rust.lcov`, Cargo logs, raw profiles/native
+objects and SHA-256 attestation of sources, report, collector and owned objects.
+Source edits, inventory changes, escaped native-object links, failed tests and
+empty reports prevent success attestation. Native counters are unchanged; run
+`report.py check` separately to enforce per-function coverage. A successful
+collection does not itself claim the coverage threshold or platform support.
+Keep the directory for review, then delete only your own evidence when no longer
+needed; fresh compilation trades extra local disk/build time for unambiguous
+mapping ownership. Missing cached dependencies fail offline; this tool does not
+authorize downloads.
