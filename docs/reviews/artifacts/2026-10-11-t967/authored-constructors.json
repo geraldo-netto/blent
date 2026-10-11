@@ -1,0 +1,22 @@
+[
+  {
+    "owner": "com/blent/DecoderMailbox$Pending",
+    "name": "<init>",
+    "signature": "(Lcom/blent/DecoderInput;J)V",
+    "line": 9,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/DecoderMailbox",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;)V",
+    "line": 8,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "path": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+    "line": 15,
+    "name": "offer",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+    "line": 33,
+    "name": "reserve",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+    "line": 46,
+    "name": "first",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+    "line": 47,
+    "name": "complete",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+    "line": 55,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/DecoderMailboxDefaultTest.kt",
+    "line": 8,
+    "name": "input",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/DecoderMailboxDefaultTest.kt",
+    "line": 11,
+    "name": "t967DefaultClockOwnsFramesAndBoundsAdmission",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/DecoderMailboxDefaultTest.kt",
+    "line": 46,
+    "name": "t967InvalidSizeAndOffsetReleaseReservedCapacity",
+    "score": 3
+  }
+]

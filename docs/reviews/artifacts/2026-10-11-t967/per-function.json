@@ -1,0 +1,191 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "android/app/src/main/java/com/blent/DecoderMailbox.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 7,
+      "passing": 7,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+      "name": "<init>",
+      "line": 6,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox",
+          "name": "<init>",
+          "signature": "(Lkotlin/jvm/functions/Function0;)V",
+          "line": 8,
+          "covered": 3,
+          "total": 3
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox",
+          "name": "<init>",
+          "signature": "(Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+          "line": 8,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+      "name": "<init>",
+      "line": 9,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox$Pending",
+          "name": "<init>",
+          "signature": "(Lcom/blent/DecoderInput;J)V",
+          "line": 9,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+      "name": "offer",
+      "line": 15,
+      "language": "kotlin",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox",
+          "name": "offer",
+          "signature": "(Lcom/blent/DecoderInput;)Z",
+          "line": 16,
+          "covered": 12,
+          "total": 12
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+      "name": "reserve",
+      "line": 33,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox",
+          "name": "reserve",
+          "signature": "(J)Z",
+          "line": 34,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+      "name": "first",
+      "line": 46,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox",
+          "name": "first",
+          "signature": "()Lcom/blent/DecoderMailbox$Pending;",
+          "line": 46,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+      "name": "complete",
+      "line": 47,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox",
+          "name": "complete",
+          "signature": "(Lcom/blent/DecoderMailbox$Pending;)V",
+          "line": 48,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+      "name": "close",
+      "line": 55,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/DecoderMailbox.kt",
+          "owner": "com/blent/DecoderMailbox",
+          "name": "close",
+          "signature": "()V",
+          "line": 56,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    }
+  ]
+}
