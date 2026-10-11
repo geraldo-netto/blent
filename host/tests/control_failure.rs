@@ -18,6 +18,13 @@ fn wait(mut ready: impl FnMut() -> bool) {
     }
 }
 
+// T953: both resources retain the same setup-versus-first-poll failure contract.
+fn check_setup_fixture(first: bool, setup: bool) {
+    if first && setup {
+        panic!("setup fixture");
+    }
+}
+
 #[test]
 fn t812_audio_setup_and_poll_panics_are_reported_and_manual_restart_recovers() {
     for setup in [false, true] {
@@ -25,9 +32,7 @@ fn t812_audio_setup_and_poll_panics_are_reported_and_manual_restart_recovers() {
         let calls = attempts.clone();
         let controller = blent::audio_control::Controller::new(move |_, mut stop, report| {
             let first = calls.fetch_add(1, Ordering::SeqCst) == 0;
-            if first && setup {
-                panic!("setup fixture");
-            }
+            check_setup_fixture(first, setup);
             async move {
                 if first {
                     panic!("poll fixture");
@@ -60,9 +65,7 @@ fn t812_camera_setup_and_poll_panics_are_reported_and_manual_restart_recovers() 
         let attempts = calls.clone();
         let controller = blent::camera_control::Controller::new(move |_, mut stop, report| {
             let first = calls.fetch_add(1, Ordering::SeqCst) == 0;
-            if first && setup {
-                panic!("setup fixture");
-            }
+            check_setup_fixture(first, setup);
             async move {
                 if first {
                     panic!("poll fixture");
