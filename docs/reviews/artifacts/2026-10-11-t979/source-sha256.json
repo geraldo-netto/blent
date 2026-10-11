@@ -1,0 +1,6 @@
+{
+  "gui/src/audio_settings.rs": "dc5053b67801f2101534f84535fa42067ab8b784f1dd8dec11c3a85bf5082c63",
+  "gui/src/camera_settings/connection.rs": "04446e4202476f329175902fd323a23fb8fe478f2ea11b6e394b1ac874d24f55",
+  "gui/src/media_target_settings.rs": "ac4c801391a724c6cfbe8b94e74891d8e3c888b40409ed36ce9e4b5284ae47a6",
+  "gui/src/main.rs": "393999fca8fc53506ecac6fc5804ecfe9b3d0d3bc42d1a7a777edf48ea61c1f1"
+}

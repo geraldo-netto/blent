@@ -4,10 +4,21 @@ use blent_config::audio::{
 };
 use eframe::egui;
 
-#[derive(Default)]
 pub(super) struct Panel {
     pub(super) backend: Option<Box<dyn AudioController>>,
     error: Option<String>,
+    create: fn() -> Result<Box<dyn AudioController>, String>,
+    transports: fn(Direction) -> blent_config::connection::media::Transports,
+}
+impl Default for Panel {
+    fn default() -> Self {
+        Self {
+            backend: None,
+            error: None,
+            create: factory,
+            transports: transport_capabilities,
+        }
+    }
 }
 impl Panel {
     pub(super) fn show(&mut self, ui: &mut egui::Ui, options: &mut AudioOptions) {
@@ -35,7 +46,10 @@ impl Panel {
             } else {
                 "audio-speakers"
             },
-            |ui| preferences(ui, options),
+            |ui| {
+                preferences(ui, options);
+                connection(ui, options, (self.transports)(options.profile.direction));
+            },
         );
         ui.label("Start applies these settings. Apply saves preferences; it never starts audio or restarts display sharing.");
         ui.label(if microphone { "Open Blent on the tablet for microphone permission and background consent. Raw mode may include acoustic echo." }
@@ -54,7 +68,7 @@ impl Panel {
         ui.horizontal(|ui| {
             if ui
                 .add_enabled(
-                    !active && cfg!(target_os = "linux"),
+                    !active && (self.transports)(options.profile.direction).available(),
                     egui::Button::new(format!("Start {label}")),
                 )
                 .clicked()
@@ -74,14 +88,19 @@ impl Panel {
             ui.ctx()
                 .request_repaint_after(std::time::Duration::from_millis(100));
         }
-        if !cfg!(target_os = "linux") {
+        if !(self.transports)(options.profile.direction).available() {
             ui.label("Audio backend unavailable on this operating system.");
         }
     }
     fn start(&mut self, options: AudioOptions) -> Result<(), String> {
-        options.profile.validate().map_err(|e| e.to_string())?;
+        options.validate().map_err(|e| e.to_string())?;
+        if !(self.transports)(options.profile.direction)
+            .supports(&options.target().map_err(|e| e.to_string())?)
+        {
+            return Err("Selected audio transport is unavailable on this backend.".into());
+        }
         if self.backend.is_none() {
-            self.backend = Some(factory()?);
+            self.backend = Some((self.create)()?);
         }
         self.backend
             .as_ref()
@@ -90,6 +109,26 @@ impl Panel {
             .map_err(|e| format!("{e:#}"))
     }
 }
+fn transport_capabilities(direction: Direction) -> blent_config::connection::media::Transports {
+    #[cfg(target_os = "linux")]
+    return blent::audio::transport_capabilities(direction);
+    #[cfg(not(target_os = "linux"))]
+    {
+        let _ = direction;
+        blent_config::connection::media::Transports::default()
+    }
+}
+fn connection(
+    ui: &mut egui::Ui,
+    options: &mut AudioOptions,
+    transports: blent_config::connection::media::Transports,
+) {
+    use crate::media_target_settings::{self, Description, Selection};
+    media_target_settings::show(ui, Selection {serial: &mut options.serial, usb_peer: &mut options.usb_peer}, transports,
+        Description {label:"USB audio status", unavailable:"Direct USB audio is unavailable on this backend.", qualification:"Experimental: physical debugging-off audio acceptance is pending.",
+            consent:"Pair and select this tablet in USB connection controls. Start this audio direction locally on the tablet; pairing grants no audio access."});
+}
+
 fn factory() -> Result<Box<dyn AudioController>, String> {
     #[cfg(target_os = "linux")]
     return blent::audio_control::Controller::new(blent::audio::run)
@@ -119,12 +158,6 @@ fn preferences(ui: &mut egui::Ui, options: &mut AudioOptions) {
         "Continue while hidden (requires tablet consent)",
     );
     ui.end_row();
-    ui.label("Tablet serial");
-    let mut serial = options.serial.clone().unwrap_or_default();
-    if ui.text_edit_singleline(&mut serial).changed() {
-        options.serial = (!serial.trim().is_empty()).then(|| serial.trim().to_owned());
-    }
-    ui.end_row();
 }
 
 #[cfg(all(test, target_os = "linux"))]
@@ -151,6 +184,7 @@ mod tests {
         let mut panel = Panel {
             backend: Some(Box::new(Backend(starts.clone()))),
             error: Some("fixture failure".into()),
+            ..Default::default()
         };
         let mut options = AudioOptions::new(Direction::Microphone);
         let context = egui::Context::default();
@@ -163,5 +197,146 @@ mod tests {
         options.profile.buffer_ms = 1;
         assert!(panel.start(options).is_err());
         drop(factory().unwrap());
+    }
+    #[test]
+    fn t979_invalid_full_audio_targets_never_reach_even_a_permissive_backend() {
+        let starts = Rc::new(RefCell::new(Vec::new()));
+        let mut panel = Panel {
+            backend: Some(Box::new(Backend(starts.clone()))),
+            ..Default::default()
+        };
+        for direction in [Direction::Microphone, Direction::Speakers] {
+            for length in 0..=128 {
+                if length == 64 {
+                    continue;
+                }
+                let mut options = AudioOptions::new(direction);
+                options.usb_peer = Some("a".repeat(length));
+                assert!(
+                    panel.start(options).is_err(),
+                    "T979 malformed full USB target reached backend"
+                );
+            }
+            let mut options = AudioOptions::new(direction);
+            options.usb_peer = Some("ab".repeat(32));
+            options.serial = Some("other-tablet".into());
+            assert!(
+                panel.start(options).is_err(),
+                "T979 ambiguous serial/peer reached backend"
+            );
+        }
+        assert!(starts.borrow().is_empty());
+    }
+    #[test]
+    fn t979_unavailable_direction_and_factory_failure_never_create_or_retain_backend() {
+        let mut panel = Panel {
+            create: || panic!("T979 unavailable target reached native factory"),
+            transports: |_| Default::default(),
+            ..Default::default()
+        };
+        for direction in [Direction::Microphone, Direction::Speakers] {
+            for usb in [false, true] {
+                let mut options = AudioOptions::new(direction);
+                options.usb_peer = usb.then(|| "ab".repeat(32));
+                assert_eq!(
+                    panel.start(options).unwrap_err(),
+                    "Selected audio transport is unavailable on this backend."
+                );
+            }
+        }
+        assert!(panel.backend.is_none());
+        panel.transports = transport_capabilities;
+        panel.create = || Err("T979 private constructor failed".into());
+        assert_eq!(
+            panel
+                .start(AudioOptions::new(Direction::Speakers))
+                .unwrap_err(),
+            "T979 private constructor failed"
+        );
+        assert!(panel.backend.is_none());
+        let mut microphone = AudioOptions::new(Direction::Microphone);
+        microphone.usb_peer = Some("ab".repeat(32));
+        assert_eq!(
+            panel.start(microphone).unwrap_err(),
+            "Selected audio transport is unavailable on this backend."
+        );
+        assert!(transport_capabilities(Direction::Speakers).usb);
+        assert!(!transport_capabilities(Direction::Microphone).usb);
+    }
+    #[test]
+    fn t979_exact_speaker_usb_and_microphone_adb_options_reach_only_selected_backend() {
+        let starts = Rc::new(RefCell::new(Vec::new()));
+        let mut panel = Panel {
+            backend: Some(Box::new(Backend(starts.clone()))),
+            ..Default::default()
+        };
+        let mut speaker = AudioOptions::new(Direction::Speakers);
+        speaker.usb_peer = Some("ab".repeat(32));
+        speaker.profile.buffer_ms = 80;
+        speaker.profile.background = true;
+        speaker.profile.processing = Processing::Raw;
+        panel.start(speaker.clone()).unwrap();
+        let mut microphone = AudioOptions::new(Direction::Microphone);
+        microphone.serial = Some("exact adb serial".into());
+        panel.start(microphone.clone()).unwrap();
+        assert_eq!(*starts.borrow(), vec![speaker, microphone]);
+    }
+    #[test]
+    fn t979_bounded_profile_and_nonhex_target_inputs_never_reach_backend() {
+        let starts = Rc::new(RefCell::new(Vec::new()));
+        let mut panel = Panel {
+            backend: Some(Box::new(Backend(starts.clone()))),
+            ..Default::default()
+        };
+        for direction in [Direction::Microphone, Direction::Speakers] {
+            for buffer_ms in 0..=240 {
+                if (20..=200).contains(&buffer_ms) && buffer_ms % 10 == 0 {
+                    continue;
+                }
+                let mut options = AudioOptions::new(direction);
+                options.profile.buffer_ms = buffer_ms;
+                assert!(panel.start(options).is_err());
+            }
+        }
+        for byte in 0..=255u8 {
+            if byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte) {
+                continue;
+            }
+            let mut value = vec![b'a'; 64];
+            value[31] = byte;
+            let mut options = AudioOptions::new(Direction::Speakers);
+            options.usb_peer = Some(String::from_utf8_lossy(&value).into());
+            assert!(panel.start(options).is_err());
+        }
+        assert!(starts.borrow().is_empty());
+    }
+    #[test]
+    fn t979_unavailable_saved_audio_targets_remain_visible_and_rendering_stays_passive() {
+        let mut panel = Panel {
+            transports: |_| Default::default(),
+            ..Default::default()
+        };
+        let ctx = egui::Context::default();
+        for direction in [Direction::Microphone, Direction::Speakers] {
+            for usb in [false, true] {
+                let mut options = AudioOptions::new(direction);
+                options.usb_peer = usb.then(|| "ab".repeat(32));
+                let original = options.clone();
+                let _ = ctx.run(
+                    egui::RawInput {
+                        screen_rect: Some(egui::Rect::from_min_size(
+                            egui::Pos2::ZERO,
+                            egui::vec2(900.0, 1800.0),
+                        )),
+                        ..Default::default()
+                    },
+                    |ctx| {
+                        egui::CentralPanel::default().show(ctx, |ui| panel.show(ui, &mut options));
+                    },
+                );
+                assert_eq!(options, original);
+                assert!(panel.backend.is_none());
+            }
+        }
     }
 }

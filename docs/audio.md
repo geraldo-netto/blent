@@ -26,7 +26,7 @@ explicit USB target independently for microphone and speakers. It conflicts with
 Existing settings and commands retain ADB selection by default. Saving a target
 starts no media or connection. The Linux accessory build now implements USB speaker PCM under T992. USB
 microphone remains unavailable and rejects before ADB, helper or device work;
-production selector controls remain T979. Android leased
+production selector controls are implemented under T979. Android leased
 speaker playback is composed under T978; microphone integration remains T859. These
 contracts do not establish physical USB audio support.
 
@@ -54,8 +54,7 @@ Camera and selected audio production callers use this shared policy. `AudioAcces
 microphone/speaker metadata without transport credentials or native handles;
 speaker offers cannot request microphone SDK permission. Independent audio
 properties qualify this policy for the leased USB adapters. Android advertises implemented speaker routing/playback under T978;
-Linux speaker PCM is implemented under T992; production host controls remain
-T979 and microphone T859. Legacy audio Activity/permission behavior
+Linux speaker PCM is implemented under T992; production host controls are implemented under T979; microphone remains T859. Legacy audio Activity/permission behavior
 remains as described below. Camera behavior and permanent regressions are
 preserved. [Policy and native counter evidence](reviews/artifacts/2026-10-11-t982/README.md).
 
@@ -74,8 +73,7 @@ created during a permission change remains owned until its actual retirement.
 Failed cleanup quarantines its direction while the other direction remains
 independent. Binding construction rejects invalid direction/preferences before
 native ownership. These are adapter foundations; production USB speaker playback is composed under T978, with
-host PCM transport is implemented under T992, while controls T979 and physical
-acceptance T860 remain pending. T986 also rechecks legacy permission before and after lazy native creation;
+host PCM transport is implemented under T992, with production controls under T979; physical acceptance T860 remains pending. T986 also rechecks legacy permission before and after lazy native creation;
 queued permission loss cannot acquire a native worker. Created workers remain
 owned through real retirement. [Regression and native counter evidence](reviews/artifacts/2026-10-11-t983/README.md).
 
@@ -154,8 +152,7 @@ attachment owns both policies; an older Activity cannot detach its replacement.
 Actual audio worker cleanup remains independent of logical Stop and UI lifecycle.
 
 The passive audio settings and legacy invitation/SDK behavior remain available
-when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls remain T979 and
-microphone T859.
+when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979; microphone remains T859.
 [Permanent UI/lifecycle/projection tests and native counters](reviews/artifacts/2026-10-11-t985/README.md)
 are synthetic evidence; physical qualification remains postponed under T860.
 
@@ -231,9 +228,34 @@ retirement. T994 fixes an obsolete local cancellation race revealed by this join
 Helper and original-route cleanup retain their own actual proof after deadlines.
 T995 keeps per-direction controller admission occupied while that proof is
 pending. No physical/acoustic qualification follows from these
-fixtures. Production GUI selection remains T979; postponed acceptance T860 and
+fixtures. Production GUI selection is implemented under T979; postponed acceptance T860 and
 SDK-wide native-audio validation T835 remain explicit.
 [Offline tests and individual native counters](reviews/artifacts/2026-10-11-t992/README.md).
+
+## Host audio transport controls (T979)
+
+The Audio tab provides separate ADB/Direct USB selectors and a full Tablet
+fingerprint field for each direction. Linux reports ADB for both directions and
+USB for speakers; USB microphone remains unavailable until T859. Unsupported
+saved targets stay visible and are never rewritten during rendering. Selection,
+editing and Apply save passive preferences; they start no connection or media and
+do not restart display sharing.
+
+Start validates the entire AudioOptions, including mutually exclusive serial/full
+USB peer and profile, before backend construction or admission. It checks the
+selected direction's implemented transport availability. Native factories and
+capabilities stay behind the platform boundary; controls depend on AudioController
+and independent media selection contracts. Camera and audio share the target
+editor through focused boundary projections, preserving camera behavior.
+
+Permanent bounded invalid profile/fingerprint tests first reproduced GUI forwarding
+of a malformed full target to a permissive backend. The same regression passes.
+Interactive tests cover exact speaker USB selection, passive save, manual Start/
+Stop, retained processing/buffer/background choices and display independence.
+Unavailable-direction and failed-constructor tests reject without retaining a
+backend. No physical media result is claimed; speaker acceptance T860 remains
+postponed and SDK-wide native-audio validation T835 remains explicit.
+[GUI regressions and individual native counters](reviews/artifacts/2026-10-11-t979/README.md).
 
 ## Audio admission follows actual retirement (T995)
 
