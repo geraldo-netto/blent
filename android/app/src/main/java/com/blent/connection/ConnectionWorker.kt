@@ -1,6 +1,7 @@
 package com.blent.connection
 
 import com.blent.LifecycleRun
+import com.blent.MediaLocalConsent
 
 /** Local device selection only; never a certificate, permission or media grant. */
 internal data class ConnectionWorkerSpec(
@@ -35,6 +36,15 @@ internal sealed interface ConnectionWorkerCommand {
     data class CameraConsumerRetired(override val lease: ConnectionResourceLease) : Camera {
         init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA) }
     }
+    sealed interface Audio : ConnectionWorkerCommand { val lease: ConnectionResourceLease }
+    data class AudioChoice(override val lease: ConnectionResourceLease, val choice: MediaLocalConsent) : Audio {
+        init { ConnectionAudioLease.validate(lease) }
+    }
+    /** Actual audio consumer retirement/no-start proof to its original worker. */
+    data class AudioConsumerRetired(override val lease: ConnectionResourceLease) : Audio {
+        init { ConnectionAudioLease.validate(lease) }
+    }
+
 }
 internal enum class ConnectionWorkerPhase { OPENING, WAITING_APPROVAL, AUTHENTICATED, CLOSING }
 internal sealed interface ConnectionWorkerEvent {
@@ -55,6 +65,13 @@ internal sealed interface ConnectionWorkerEvent {
     data class Camera(val route: LocalCameraRoute) : Media
     data class CameraClosed(val lease: ConnectionResourceLease) : Media {
         init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA) }
+    }
+    /** Flat private control metadata only; PCM uses the independent channel. */
+    sealed interface Audio : Media
+    data class AudioOffered(val offer: LocalAudioOffer) : Audio
+    data class AudioRoute(val route: LocalAudioRoute) : Audio
+    data class AudioClosed(val lease: ConnectionResourceLease) : Audio {
+        init { ConnectionAudioLease.validate(lease) }
     }
     /** Execution ended; neither native retirement nor process death is implied. */
     data class Ended(val failure: String?) : ConnectionWorkerEvent

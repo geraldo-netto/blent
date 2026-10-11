@@ -15,9 +15,14 @@ internal data class LocalAudioRoute(
 internal data class LocalAudioOffer(val lease: ConnectionResourceLease, val profile: ConnectionManagement.Audio) {
     init { validateLocalAudio(lease, profile) }
 }
+internal object ConnectionAudioLease {
+    fun validate(lease: ConnectionResourceLease) {
+        require(lease.key.resource == ConnectionManagement.Resource.MICROPHONE || lease.key.resource == ConnectionManagement.Resource.SPEAKERS)
+        ConnectionLocalLease.validate(lease, lease.key.resource)
+    }
+}
 private fun validateLocalAudio(lease: ConnectionResourceLease, profile: ConnectionManagement.Audio) {
-    require(lease.key.resource == ConnectionManagement.Resource.MICROPHONE || lease.key.resource == ConnectionManagement.Resource.SPEAKERS)
-    ConnectionLocalLease.validate(lease, lease.key.resource)
+    ConnectionAudioLease.validate(lease)
     ConnectionManagement.encode(ConnectionManagement.Offer(lease.key, ConnectionManagement.Credential(ByteArray(32)), profile))
 }
 

@@ -47,13 +47,15 @@ internal object ConnectionWorkerCodec {
             }
             is ConnectionWorkerCommand.Revoke -> { out.writeByte(2); ConnectionAuthorityCodec.peer(out, value.peer) }
             is ConnectionWorkerCommand.Camera -> ConnectionCameraCodec.command(out, value)
+            is ConnectionWorkerCommand.Audio -> ConnectionAudioCodec.command(out, value)
         }
     }
     fun command(bytes: ByteArray): ConnectionWorkerCommand = decode(bytes) { input ->
         when (val code = input.readUnsignedByte()) {
             1 -> ConnectionWorkerCommand.Decide(ConnectionAuthorityCodec.ticket(input), ConnectionControlFields.bool(input), ConnectionControlFields.bool(input))
             2 -> ConnectionWorkerCommand.Revoke(ConnectionAuthorityCodec.peer(input))
-            else -> ConnectionCameraCodec.command(input, code)
+            3, 4, 5 -> ConnectionCameraCodec.command(input, code)
+            else -> ConnectionAudioCodec.command(input, code)
         }
     }
     fun event(value: ConnectionWorkerEvent): ByteArray = encode { out ->

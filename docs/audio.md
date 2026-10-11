@@ -97,6 +97,21 @@ local controls remain T985, joined playback/capability enablement T978, physical
 acceptance T860. Microphone remains unavailable in this adapter until T859.
 [Private protocol/lifecycle and native counter evidence](reviews/artifacts/2026-10-11-t984/README.md).
 
+## Private Android audio IPC contracts (T988)
+
+Private connection commands now carry an exact microphone/speaker lease and
+`MediaLocalConsent`, plus a separate actual-consumer completion command. Offered,
+admitted and closed audio events contain bounded metadata only. The flat codecs
+reuse management profile validation, reject malformed/truncated/trailing records,
+and preserve existing display/camera tags. PCM and OS handles do not travel over
+Binder. A decoded lease or completion command provides no native authority by
+itself; original retained workers must validate it.
+
+These schema foundations do not enable audio: the runtime currently rejects audio
+commands until T989 supplies original-worker publication/retirement. UI consent
+remains T985 and production joined playback/capability T978.
+[Contract properties and native counters](reviews/artifacts/2026-10-11-t988/README.md).
+
 ## Ownership and adapter integration
 
 Keep one `AudioSession` and native `AudioBackend` owner per direction throughout

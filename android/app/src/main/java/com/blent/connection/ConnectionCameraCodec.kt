@@ -79,6 +79,7 @@ internal object ConnectionMediaCodec {
             is ConnectionWorkerEvent.CameraOffered -> { out.writeByte(8); ConnectionCameraCodec.offered(out, value.offer) }
             is ConnectionWorkerEvent.Camera -> { out.writeByte(9); ConnectionCameraCodec.route(out, value.route) }
             is ConnectionWorkerEvent.CameraClosed -> { out.writeByte(10); ConnectionCameraCodec.closed(out, value.lease) }
+            is ConnectionWorkerEvent.Audio -> ConnectionAudioCodec.event(out, value)
         }
     }
     fun read(input: DataInputStream, code: Int): ConnectionWorkerEvent.Media = when (code) {
@@ -87,6 +88,6 @@ internal object ConnectionMediaCodec {
         8 -> ConnectionWorkerEvent.CameraOffered(ConnectionCameraCodec.offered(input))
         9 -> ConnectionWorkerEvent.Camera(ConnectionCameraCodec.route(input))
         10 -> ConnectionWorkerEvent.CameraClosed(ConnectionCameraCodec.closed(input))
-        else -> error("Unknown media event")
+        else -> ConnectionAudioCodec.event(input, code)
     }
 }

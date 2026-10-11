@@ -101,6 +101,7 @@ internal class ConnectionRuntimeOwner(
             is ConnectionWorkerCommand.Decide -> !stopped && setup.decide(command.ticket, command.approved, command.remember)
             is ConnectionWorkerCommand.Revoke -> setup.revoke(command.peer)
             is ConnectionWorkerCommand.Camera -> cameraCommand(command)
+            is ConnectionWorkerCommand.Audio -> false // Actor audio composition remains T989.
         }
         live()
         return accepted
