@@ -33,7 +33,7 @@ attestation still establish these native counters. Protection was never bypassed
 All 55 production functions in host audio/process/controller and GUI audio scopes
 pass individual native 80% executable-line coverage, with no missing counters.
 Changed authored Rust complexity: 225 functions, maximum 9. Fresh accessory:
-45 host + 49 shared tests; default: 42 host + 49 shared. GUI: 111 unit tests and one
+45 host + 49 shared tests; default: 41 host + 49 shared. GUI: 111 unit tests and one
 private offline Xvfb/D-Bus startup smoke. Full results, compressed LCOV, matching
 inventories/object attestations, red/green logs and source fingerprints retained.
 
