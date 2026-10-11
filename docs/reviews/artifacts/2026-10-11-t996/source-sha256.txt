@@ -1,0 +1,4 @@
+d80d067915646af7bcf04d19f8e1b7bcd42ba006533e9c8032a20d50c6f6b79a  android/app/src/main/java/com/blent/connection/ConnectionMediaConsent.kt
+5a277d190bbef48098d5183d73bffc02627e5f52d21b12a120a8bf63522a1dab  android/app/src/main/java/com/blent/connection/ConnectionCameraConsent.kt
+12cd97c9266210089f0af76c5aa12053628bdc498208be380e5c19787cf0f7ac  android/app/src/test/java/com/blent/connection/ConnectionMediaConsentTest.kt
+c8c26cf7ea38087ad223e79726f35868d08bef6b523427f3163a6334a4061631  android/app/src/test/java/com/blent/connection/ConnectionCameraConsentTest.kt
