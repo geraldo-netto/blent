@@ -35,7 +35,7 @@ private class AdmissionWorker : ConnectionWorker {
     @Volatile var commandError: Exception? = null
     @Volatile var executeError: Exception? = null
     var terminalAllowed = false
-    override fun command(value: ConnectionWorkerCommand): Boolean { commandError?.let { throw it }; calls.incrementAndGet(); return !stopped || (terminalAllowed && value is ConnectionWorkerCommand.CameraConsumerRetired) }
+    override fun command(value: ConnectionWorkerCommand): Boolean { commandError?.let { throw it }; calls.incrementAndGet(); return !stopped || (terminalAllowed && (value is ConnectionWorkerCommand.CameraConsumerRetired || value is ConnectionWorkerCommand.AudioConsumerRetired)) }
     override suspend fun execute() {
         executing.complete(Unit)
         if (stubborn) withContext(NonCancellable) { end.await() } else end.await()
@@ -200,6 +200,56 @@ class ConnectionAdmissionRunTest {
                 run.command(ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())))
             assertEquals(ConnectionWorkerEvent.CameraClosed(cameraLease()), events.last())
         } finally { owned.nativeEnd.complete(Unit); admission.gone = true; run.cancel(); execution.await(); run.retire() }
+    }
+
+    @Test fun t989AudioCleanupRetainsBothOriginalDirectionsAfterAccessoryAuthorityLoss() = runBlocking {
+        val rig = AdmissionRunRig(); rig.worker.terminalAllowed = true
+        val hold = CompletableDeferred<Unit>()
+        val worker = object : ConnectionWorker by rig.worker { override suspend fun retire() { hold.await() } }
+        val events = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerEvent>()
+        var callback: ((ConnectionWorkerEvent) -> Unit)? = null
+        val run = ConnectionAdmissionRun(rig.spec, { rig.admission }, { _, report -> callback = report; worker }, events::add)
+        rig.grant(); val execution = async { outcome { run.execute() } }; rig.worker.executing.await()
+        val resources = listOf(ConnectionManagement.Resource.MICROPHONE, ConnectionManagement.Resource.SPEAKERS)
+        try {
+            for (resource in resources) {
+                val route = audioRoute(resource)
+                checkNotNull(callback)(ConnectionWorkerEvent.AudioOffered(LocalAudioOffer(route.lease, route.profile)))
+                checkNotNull(callback)(ConnectionWorkerEvent.AudioRoute(route))
+                assertFalse(run.command(ConnectionWorkerCommand.AudioConsumerRetired(route.lease)))
+            }
+            rig.admission.allowed = false
+            assertFalse(run.command(ConnectionWorkerCommand.AudioChoice(audioLease(), com.blent.MediaLocalConsent(true, true, true, false))))
+            run.cancel()
+            assertEquals(2, events.filterIsInstance<ConnectionWorkerEvent.AudioClosed>().size)
+            for (resource in resources) {
+                assertFalse(run.command(ConnectionWorkerCommand.AudioConsumerRetired(audioLease(resource, 2))))
+                assertTrue(run.command(ConnectionWorkerCommand.AudioConsumerRetired(audioLease(resource))))
+                assertFalse(run.command(ConnectionWorkerCommand.AudioConsumerRetired(audioLease(resource))))
+            }
+            assertFalse(execution.isCompleted)
+            hold.complete(Unit); assertNull(execution.await()); run.retire()
+            assertFalse(run.command(ConnectionWorkerCommand.AudioConsumerRetired(audioLease())))
+        } finally { hold.complete(Unit); run.cancel(); execution.await(); run.retire() }
+    }
+    @Test fun t989RejectedAudioProofIsRetainedForRetryButNeverTransferrableToForeignLease() = runBlocking {
+        val rig = AdmissionRunRig(); rig.worker.terminalAllowed = true
+        val hold = CompletableDeferred<Unit>()
+        val worker = object : ConnectionWorker by rig.worker { override suspend fun retire() { hold.await() } }
+        var callback: ((ConnectionWorkerEvent) -> Unit)? = null
+        val run = ConnectionAdmissionRun(rig.spec, { rig.admission }, { _, report -> callback = report; worker }, {})
+        rig.grant(); val execution = async { outcome { run.execute() } }; rig.worker.executing.await()
+        try {
+            val route = audioRoute(); checkNotNull(callback)(ConnectionWorkerEvent.AudioRoute(route))
+            checkNotNull(callback)(ConnectionWorkerEvent.AudioClosed(route.lease.copy(owner = 2)))
+            assertFalse(run.command(ConnectionWorkerCommand.AudioConsumerRetired(route.lease)))
+            checkNotNull(callback)(ConnectionWorkerEvent.AudioClosed(route.lease))
+            rig.worker.commandError = java.io.IOException("T989 original completion queue failed")
+            assertFalse(run.command(ConnectionWorkerCommand.AudioConsumerRetired(route.lease)))
+            rig.worker.commandError = null
+            assertTrue(run.command(ConnectionWorkerCommand.AudioConsumerRetired(route.lease)))
+            hold.complete(Unit); execution.await(); run.retire()
+        } finally { hold.complete(Unit); run.cancel(); execution.await(); run.retire() }
     }
 
 }

@@ -5,14 +5,14 @@ import com.blent.MediaLocalConsent
 /** Audio route metadata is private loopback data, never a management address.
  * Interpretation grants no permission or original worker/lease authority. */
 internal data class LocalAudioRoute(
-    val lease: ConnectionResourceLease,
-    val credential: ConnectionManagement.Credential,
-    val port: Int,
-    val profile: ConnectionManagement.Audio,
-) {
+    override val lease: ConnectionResourceLease,
+    override val credential: ConnectionManagement.Credential,
+    override val port: Int,
+    override val profile: ConnectionManagement.Audio,
+) : LocalMediaRoute<ConnectionManagement.Audio> {
     init { validateLocalAudio(lease, profile); require(port in 1..65535) }
 }
-internal data class LocalAudioOffer(val lease: ConnectionResourceLease, val profile: ConnectionManagement.Audio) {
+internal data class LocalAudioOffer(override val lease: ConnectionResourceLease, override val profile: ConnectionManagement.Audio) : LocalMediaOffer<ConnectionManagement.Audio> {
     init { validateLocalAudio(lease, profile) }
 }
 internal object ConnectionAudioLease {
@@ -28,9 +28,11 @@ private fun validateLocalAudio(lease: ConnectionResourceLease, profile: Connecti
 
 /** Exact original lease controls. Closing/rejection cannot substitute for actual
  * endpoint and external audio worker completion. Methods are prompt/nonblocking. */
-internal interface LocalAudioControl {
+internal interface LocalAudioProjection {
     fun audioOffered(resource: ConnectionManagement.Resource): LocalAudioOffer?
     fun audio(resource: ConnectionManagement.Resource): LocalAudioRoute?
+}
+internal interface LocalAudioControl : LocalAudioProjection {
     fun chooseAudio(lease: ConnectionResourceLease, choice: MediaLocalConsent, now: Long): Boolean
     fun audioConsumerRetired(lease: ConnectionResourceLease, now: Long): Boolean
 }

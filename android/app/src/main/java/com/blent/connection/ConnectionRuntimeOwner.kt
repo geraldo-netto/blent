@@ -5,7 +5,7 @@ internal class ConnectionRuntimeOwner(
     private val setup: ConnectionSetup,
     private val factory: ConnectionRunFactory,
     private val clock: () -> Long,
-) : ConnectionRuntime, LocalCameraProjection {
+) : ConnectionRuntime, LocalCameraProjection, LocalAudioProjection {
     private var runner: ConnectionRun? = null
     private var approval: ConnectionApproval? = null
     private var attempted = false
@@ -101,7 +101,7 @@ internal class ConnectionRuntimeOwner(
             is ConnectionWorkerCommand.Decide -> !stopped && setup.decide(command.ticket, command.approved, command.remember)
             is ConnectionWorkerCommand.Revoke -> setup.revoke(command.peer)
             is ConnectionWorkerCommand.Camera -> cameraCommand(command)
-            is ConnectionWorkerCommand.Audio -> false // Actor audio composition remains T989.
+            is ConnectionWorkerCommand.Audio -> audioCommand(command)
         }
         live()
         return accepted
@@ -115,6 +115,26 @@ internal class ConnectionRuntimeOwner(
             // Cleanup belongs to the retained original owner after logical stop.
             is ConnectionWorkerCommand.CameraConsumerRetired -> control.consumerRetired(value.lease, previous)
         }
+    }
+    private fun audioCommand(value: ConnectionWorkerCommand.Audio): Boolean {
+        if (approval?.ticket != value.lease.connection) return false
+        val control = runner as? LocalAudioControl ?: return false
+        return when (value) {
+            is ConnectionWorkerCommand.AudioChoice -> live() && control.chooseAudio(value.lease, value.choice, previous)
+            is ConnectionWorkerCommand.AudioConsumerRetired -> control.audioConsumerRetired(value.lease, previous)
+        }
+    }
+    override fun audioOffered(resource: ConnectionManagement.Resource): LocalAudioOffer? {
+        time()
+        if (!live()) return null
+        return (runner as? LocalAudioProjection)?.audioOffered(resource)?.takeIf { it.lease.key.resource == resource && it.lease.connection == approval?.ticket }
+    }
+    override fun audio(resource: ConnectionManagement.Resource): LocalAudioRoute? {
+        time()
+        if (!live()) return null
+        val selected = (runner as? LocalAudioProjection)?.audio(resource) ?: return null
+        if (selected.lease.key.resource != resource || selected.lease.connection != approval?.ticket) return null
+        return selected.takeIf { raw()?.current(it.lease) == true }
     }
     private fun permission(control: LocalCameraControl, value: ConnectionWorkerCommand.CameraPermission): Boolean {
         val prompt = control.pending() ?: return false

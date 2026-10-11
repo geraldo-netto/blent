@@ -1,0 +1,532 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionMediaConsumerSession$Owned",
+    "name": "<init>",
+    "signature": "(Ljava/lang/Object;Lcom/blent/connection/ConnectionMediaConsumerOwner;Ljava/lang/Object;)V",
+    "line": 16,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionBinding$Attempt",
+    "name": "<init>",
+    "signature": "(Ljava/lang/Object;)V",
+    "line": 22,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionRuntimeOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionSetup;Lcom/blent/connection/ConnectionRunFactory;Lkotlin/jvm/functions/Function0;)V",
+    "line": 4,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraRouteChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraRoute;)V",
+    "line": 8,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAudioPresentation",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionManagement$Resource;)V",
+    "line": 11,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaPublication",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+    "line": 5,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Ended",
+    "name": "<init>",
+    "signature": "(Ljava/lang/String;)V",
+    "line": 77,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$AudioRoute",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalAudioRoute;)V",
+    "line": 72,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Pairing",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;)V",
+    "line": 53,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$AudioOffered",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalAudioOffer;)V",
+    "line": 71,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraPresentation",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 13,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionView",
+    "name": "<init>",
+    "signature": "(Ljava/lang/String;Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionChoice;Ljava/lang/Boolean;ZZLjava/lang/String;Lcom/blent/connection/ConnectionDisplayChoice;Lcom/blent/connection/ConnectionCameraOfferChoice;Lcom/blent/connection/ConnectionCameraRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;)V",
+    "line": 15,
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$CameraPermission",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;ZLcom/blent/connection/CameraConsentChoice;)V",
+    "line": 32,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaConsumerOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionMediaConsumerCommands;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlin/jvm/functions/Function0;)V",
+    "line": 13,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$CameraChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/CameraConsentChoice;)V",
+    "line": 28,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$CameraConsumerRetired",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 36,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$State",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerPhase;)V",
+    "line": 54,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAudioConsumerCommands",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionManagement$Resource;)V",
+    "line": 10,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalAudioRoute",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Credential;ILcom/blent/connection/ConnectionManagement$Audio;)V",
+    "line": 7,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Decide",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;ZZ)V",
+    "line": 24,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$CameraOffered",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraOffer;)V",
+    "line": 64,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalAudioOffer",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Audio;)V",
+    "line": 15,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraPublication",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function1;)V",
+    "line": 4,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraOfferChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraOffer;)V",
+    "line": 5,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$CameraClosed",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 66,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaCompletionRelay",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionMediaConsumerCommands;Lcom/blent/connection/ConnectionResourceLease;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineDispatcher;JLkotlin/jvm/functions/Function0;)V",
+    "line": 64,
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Peer",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;Z)V",
+    "line": 52,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$AudioChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/MediaLocalConsent;)V",
+    "line": 40,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraSession",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+    "line": 8,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionBinding$open$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorker;Lcom/blent/connection/ConnectionBinding$Attempt;Lcom/blent/connection/ConnectionBinding;)V",
+    "line": 104,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$DisplayClosed",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 60,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaPresentation",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionManagement$Resource;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+    "line": 6,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Trust",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionPeer;Z)V",
+    "line": 56,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAudioPublication",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function1;)V",
+    "line": 4,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAdmissionRun",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+    "line": 12,
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$Revoke",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionPeer;)V",
+    "line": 25,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerCommand$AudioConsumerRetired",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 44,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Camera",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraRoute;)V",
+    "line": 65,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAudioOfferChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalAudioOffer;)V",
+    "line": 4,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaConsumerSession",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionMediaConsumerCommands;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlin/jvm/functions/Function2;)V",
+    "line": 10,
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$AudioClosed",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 73,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lcom/blent/connection/ConnectionRunFactory;)V",
+    "line": 23,
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalCameraOffer",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Camera;Z)V",
+    "line": 18,
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/LocalCameraRoute",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionResourceLease;Lcom/blent/connection/ConnectionManagement$Credential;ILcom/blent/connection/ConnectionManagement$Camera;)V",
+    "line": 5,
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;)V",
+    "line": 10,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPresentation",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 34,
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerSpec",
+    "name": "<init>",
+    "signature": "(Ljava/lang/String;Lcom/blent/connection/ConnectionSessionLimits;Lcom/blent/connection/ConnectionRunLimits;JJIIJ)V",
+    "line": 7,
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionBinding",
+    "name": "<init>",
+    "signature": "(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;J)V",
+    "line": 17,
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionMediaConsumerOwner$Claim",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionMediaConsumerOwner;)V",
+    "line": 27,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionDisplayChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalDisplayRoute;)V",
+    "line": 13,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAudioSession",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionManagement$Resource;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+    "line": 17,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerEvent$Display",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalDisplayRoute;)V",
+    "line": 59,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAudioRouteChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalAudioRoute;)V",
+    "line": 7,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  }
+]

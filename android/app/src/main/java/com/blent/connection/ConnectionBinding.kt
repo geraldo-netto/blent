@@ -1,5 +1,7 @@
 package com.blent.connection
 
+import com.blent.AudioConsumerTarget
+import com.blent.MediaLocalConsent
 import com.blent.CameraCaptureTarget
 import com.blent.LifecycleRun
 import com.blent.ResourceLane
@@ -20,12 +22,20 @@ internal class ConnectionBinding(
     private class Attempt(val token: Any) {
         @Volatile var worker: ConnectionWorker? = null
         val cameras = ConnectionCameraSession({ worker?.command(it) == true })
+        val microphones = ConnectionAudioSession(ConnectionManagement.Resource.MICROPHONE, { worker?.command(it) == true })
+        val speakers = ConnectionAudioSession(ConnectionManagement.Resource.SPEAKERS, { worker?.command(it) == true })
+        fun stopMedia() { cameras.stop(); microphones.stop(); speakers.stop() }
+        suspend fun retireMedia() { cameras.retire(); microphones.retire(); speakers.retire() }
     }
     private val projectionGate = Any()
     private val presentation = ConnectionPresentation()
     val state = presentation.state
     private val mutableCameraTarget = MutableStateFlow<CameraCaptureTarget?>(null)
     val cameraTarget = mutableCameraTarget.asStateFlow()
+    private val mutableMicrophoneTarget = MutableStateFlow<AudioConsumerTarget?>(null)
+    val microphoneTarget = mutableMicrophoneTarget.asStateFlow()
+    private val mutableSpeakersTarget = MutableStateFlow<AudioConsumerTarget?>(null)
+    val speakersTarget = mutableSpeakersTarget.asStateFlow()
     private val lane = ResourceLane(scope, ::cleanup, cleanupNoticeMs)
     @Volatile private var current: Attempt? = null
 
@@ -37,12 +47,12 @@ internal class ConnectionBinding(
     @Synchronized fun connect(spec: ConnectionWorkerSpec) {
         try { lane.checkAvailable() }
         catch (failure: Exception) { presentation.cleanup(failure.message ?: "USB cleanup incomplete."); return }
-        current?.cameras?.stop()
+        current?.stopMedia()
         val attempt = synchronized(projectionGate) {
-            Attempt(presentation.begin()).also { current = it; mutableCameraTarget.value = null }
+            Attempt(presentation.begin()).also { current = it; clearTargets() }
         }
         lane.replace({ open(attempt, spec) }, {
-            attempt.cameras.stop()
+            attempt.stopMedia()
             presentation.ended(attempt.token, it?.message)
             clearTarget(attempt)
             if (attempt.worker == null) presentation.retired(attempt.token)
@@ -52,12 +62,28 @@ internal class ConnectionBinding(
     private fun receive(attempt: Attempt, event: ConnectionWorkerEvent) {
         presentation.event(attempt.token, event)
         if (event is ConnectionWorkerEvent.CameraClosed) attempt.cameras.closed(event.lease)
-        if (event is ConnectionWorkerEvent.Ended) attempt.cameras.stop()
+        if (event is ConnectionWorkerEvent.AudioClosed) {
+            attempt.microphones.closed(event.lease); attempt.speakers.closed(event.lease)
+        }
+        if (event is ConnectionWorkerEvent.Ended) attempt.stopMedia()
         projectCamera(attempt, event)
+        projectAudio(attempt, event)
     }
 
+    private fun clearTargets() {
+        mutableCameraTarget.value = null; mutableMicrophoneTarget.value = null; mutableSpeakersTarget.value = null
+    }
+    private fun projectAudio(attempt: Attempt, event: ConnectionWorkerEvent) = synchronized(projectionGate) {
+        if (current !== attempt) return@synchronized
+        projectAudioTarget(attempt.microphones, state.value.microphone?.route, event, mutableMicrophoneTarget)
+        projectAudioTarget(attempt.speakers, state.value.speakers?.route, event, mutableSpeakersTarget)
+    }
+    private fun projectAudioTarget(session: ConnectionAudioSession, shown: LocalAudioRoute?, event: ConnectionWorkerEvent, target: MutableStateFlow<AudioConsumerTarget?>) {
+        if (shown == null) { session.clear(); target.value = null }
+        else if (event is ConnectionWorkerEvent.AudioRoute && shown === event.route) target.value = session.admitted(shown)
+    }
     private fun clearTarget(attempt: Attempt) {
-        synchronized(projectionGate) { if (current === attempt) mutableCameraTarget.value = null }
+        synchronized(projectionGate) { if (current === attempt) clearTargets() }
     }
 
     private fun projectCamera(attempt: Attempt, event: ConnectionWorkerEvent) = synchronized(projectionGate) {
@@ -77,18 +103,18 @@ internal class ConnectionBinding(
         presentation.started(attempt.token)
         return object : LifecycleRun {
             override suspend fun execute() = worker.execute()
-            override fun cancel() { attempt.cameras.stop(); worker.cancel() }
+            override fun cancel() { attempt.stopMedia(); worker.cancel() }
             override suspend fun retire() {
                 worker.retire()
-                attempt.cameras.retire()
+                attempt.retireMedia()
                 presentation.retired(attempt.token)
             }
         }
     }
 
     @Synchronized fun disconnect() {
-        current?.let { it.cameras.stop(); presentation.stop(it.token) }
-        mutableCameraTarget.value = null
+        current?.let { it.stopMedia(); presentation.stop(it.token) }
+        clearTargets()
         lane.stop()
     }
 
@@ -101,8 +127,8 @@ internal class ConnectionBinding(
     @Synchronized fun revoke(choice: ConnectionChoice): Boolean {
         val attempt = current ?: return false
         val command = presentation.revoke(attempt.token, choice) ?: return false
-        attempt.cameras.stop()
-        mutableCameraTarget.value = null
+        attempt.stopMedia()
+        clearTargets()
         return send(attempt, command)
     }
 
@@ -118,11 +144,17 @@ internal class ConnectionBinding(
         return send(attempt, command)
     }
 
+    fun audioChoice(choice: ConnectionAudioChoice, context: MediaLocalConsent): Boolean {
+        val attempt = current ?: return false
+        val command = presentation.audioChoice(attempt.token, choice, context) ?: return false
+        return send(attempt, command)
+    }
+
     private fun send(attempt: Attempt, command: ConnectionWorkerCommand): Boolean = try {
         check(attempt.worker?.command(command) == true) { "USB command rejected; reconnect to try again." }
         true
     } catch (failure: Exception) {
-        attempt.cameras.stop()
+        attempt.stopMedia()
         clearTarget(attempt)
         presentation.ended(attempt.token, failure.message ?: "USB command failed.")
         lane.stop()

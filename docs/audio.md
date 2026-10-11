@@ -107,10 +107,32 @@ and preserve existing display/camera tags. PCM and OS handles do not travel over
 Binder. A decoded lease or completion command provides no native authority by
 itself; original retained workers must validate it.
 
-These schema foundations do not enable audio: the runtime currently rejects audio
-commands until T989 supplies original-worker publication/retirement. UI consent
+These schema foundations do not enable audio: T989 routes commands only through
+a provided audio owner matching the exact original ticket/resource. UI consent
 remains T985 and production joined playback/capability T978.
 [Contract properties and native counters](reviews/artifacts/2026-10-11-t988/README.md).
+
+## Original Android audio worker publication (T989)
+
+The actor and accessory admission now forward audio choice/completion to the
+retained original worker. Runtime projections validate the requested direction,
+original authenticated ticket and current resource before publishing a route.
+Logical Stop suppresses new controls while still allowing exact late consumer
+completion; stale, shown, foreign and already completed claims are rejected.
+Private completion queues may retry boundedly, and failed delivery never proves
+native retirement or authorizes replacement.
+
+`ConnectionMediaConsumerOwner`, completion relay, session, presentation and
+change-only publication are shared by camera/audio through independent local
+metadata/command contracts and explicit resource adapters. Each direction holds
+one unresolved owner and a scalar watermark. Matching metadata cannot alias a
+replacement worker or revoke a sibling. `ConnectionBinding` now exposes typed
+microphone/speaker targets with original authority; its UI actions retain the
+exact current publication identity. Camera contracts and regressions remain.
+
+Production USB audio remains disabled: local consent/Activity controls are T985,
+joined speaker composition/capability T978, microphone T859 and physical T860.
+[Private worker/lifecycle regressions and native counters](reviews/artifacts/2026-10-11-t989/README.md).
 
 ## Ownership and adapter integration
 

@@ -1,5 +1,7 @@
 package com.blent.connection
 
+import com.blent.MediaLocalConsent
+
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -21,6 +23,10 @@ internal data class ConnectionView(
     val display: ConnectionDisplayChoice? = null,
     val cameraOffer: ConnectionCameraOfferChoice? = null,
     val camera: ConnectionCameraRouteChoice? = null,
+    val microphoneOffer: ConnectionAudioOfferChoice? = null,
+    val microphone: ConnectionAudioRouteChoice? = null,
+    val speakersOffer: ConnectionAudioOfferChoice? = null,
+    val speakers: ConnectionAudioRouteChoice? = null,
 )
 
 /** Portable presentation reducer. No UI, native work, storage or media consent.
@@ -33,13 +39,15 @@ internal class ConnectionPresentation {
     private var finished = true
     private var displayOwner = 0L
     private val camera = ConnectionCameraPresentation()
+    private val microphone = ConnectionAudioPresentation(ConnectionManagement.Resource.MICROPHONE)
+    private val speakers = ConnectionAudioPresentation(ConnectionManagement.Resource.SPEAKERS)
 
     @Synchronized fun begin(): Any {
         val token = Any()
         generation = token; accepting = true; finished = false; displayOwner = 0
-        camera.reset()
-        mutable.value = ConnectionView(status = "Opening USB connection…", active = true,
-            cleanup = mutable.value.cleanup)
+        resetMedia()
+        publish(ConnectionView(status = "Opening USB connection…", active = true,
+            cleanup = mutable.value.cleanup))
         return token
     }
 
@@ -65,6 +73,7 @@ internal class ConnectionPresentation {
         when (event) {
             is ConnectionWorkerEvent.Display -> display(event.route)
             is ConnectionWorkerEvent.DisplayClosed -> displayClosed(event.lease)
+            is ConnectionWorkerEvent.Audio -> audio(event)
             else -> camera(event)
         }
     }
@@ -78,16 +87,37 @@ internal class ConnectionPresentation {
             is ConnectionWorkerEvent.CameraClosed -> camera.closed(ticket, event.lease)
             else -> return
         }
-        mutable.value = state.copy(cameraOffer = camera.offer, camera = camera.route)
+        publish(state.copy(cameraOffer = camera.offer, camera = camera.route))
+    }
+
+    private fun resetMedia() { camera.reset(); microphone.reset(); speakers.reset() }
+    private fun clearMedia() { camera.clear(); microphone.clear(); speakers.clear() }
+    private fun publish(value: ConnectionView) {
+        mutable.value = value.copy(microphoneOffer = microphone.offer, microphone = microphone.route,
+            speakersOffer = speakers.offer, speakers = speakers.route)
+    }
+    private val audioPresentations = arrayOf<ConnectionAudioPresentation?>(null, null, microphone, speakers)
+    private fun audioPresentation(resource: ConnectionManagement.Resource): ConnectionAudioPresentation? = audioPresentations[resource.ordinal]
+    private fun audio(event: ConnectionWorkerEvent.Audio) {
+        val state = mutable.value
+        if (!state.authenticated) return
+        val projection = audioPresentation(event.lease.key.resource) ?: return
+        val ticket = state.peer?.ticket
+        when (event) {
+            is ConnectionWorkerEvent.AudioOffered -> projection.offered(ticket, event.offer)
+            is ConnectionWorkerEvent.AudioRoute -> projection.admitted(ticket, event.route)
+            is ConnectionWorkerEvent.AudioClosed -> projection.closed(ticket, event.lease)
+        }
+        publish(state)
     }
 
     private fun peer(ticket: ConnectionTicket, local: ConnectionPeer, remembered: Boolean, prompt: Boolean) {
         require(ticket.epoch > 0)
         val choice = ConnectionChoice(ticket, local)
-        camera.clear()
-        mutable.value = mutable.value.copy(peer = choice, approval = if (prompt) choice else null,
+        clearMedia()
+        publish(mutable.value.copy(peer = choice, approval = if (prompt) choice else null,
             remembered = remembered, authenticated = false, display = null, cameraOffer = null, camera = null,
-            status = if (prompt) "Compare fingerprints on both devices." else "Checking remembered computer…")
+            status = if (prompt) "Compare fingerprints on both devices." else "Checking remembered computer…"))
     }
 
     private fun phase(phase: ConnectionWorkerPhase) {
@@ -100,77 +130,77 @@ internal class ConnectionPresentation {
         val authenticated = phase == ConnectionWorkerPhase.AUTHENTICATED
         val closing = phase == ConnectionWorkerPhase.CLOSING
         if (closing) accepting = false
-        cameraPhase(authenticated)
-        mutable.value = mutable.value.copy(status = text, authenticated = authenticated,
+        mediaPhase(authenticated)
+        publish(mutable.value.copy(status = text, authenticated = authenticated,
             approval = if (authenticated || closing) null else mutable.value.approval,
             active = !closing, display = if (authenticated) mutable.value.display else null,
-            cameraOffer = camera.offer, camera = camera.route)
+            cameraOffer = camera.offer, camera = camera.route))
     }
 
-    private fun cameraPhase(authenticated: Boolean) { if (!authenticated) camera.clear() }
+    private fun mediaPhase(authenticated: Boolean) { if (!authenticated) clearMedia() }
 
     private fun display(route: LocalDisplayRoute) {
         val state = mutable.value
         if (!state.authenticated || state.peer?.ticket != route.lease.connection) return
         if (route.lease.owner <= displayOwner) return
         displayOwner = route.lease.owner
-        mutable.value = state.copy(display = ConnectionDisplayChoice(route))
+        publish(state.copy(display = ConnectionDisplayChoice(route)))
     }
     private fun displayClosed(lease: ConnectionResourceLease) {
         val state = mutable.value
         if (state.peer?.ticket != lease.connection) return
         displayOwner = maxOf(displayOwner, lease.owner)
-        if (state.display?.route?.lease == lease) mutable.value = state.copy(display = null)
+        if (state.display?.route?.lease == lease) publish(state.copy(display = null))
     }
 
     private fun trust(event: ConnectionWorkerEvent.Trust) {
         if (mutable.value.peer?.ticket?.peer != event.peer) return
-        mutable.value = mutable.value.copy(remembered = event.remembered)
+        publish(mutable.value.copy(remembered = event.remembered))
     }
 
     @Synchronized fun decide(token: Any, choice: ConnectionChoice, allow: Boolean, remember: Boolean): ConnectionWorkerCommand? {
         if (generation !== token || !accepting || mutable.value.approval !== choice) return null
         if (!allow) accepting = false
-        mutable.value = mutable.value.copy(approval = null, active = allow,
-            status = if (allow) "Approval submitted; verifying connection…" else "Computer denied; closing connection…")
+        publish(mutable.value.copy(approval = null, active = allow,
+            status = if (allow) "Approval submitted; verifying connection…" else "Computer denied; closing connection…"))
         return ConnectionWorkerCommand.Decide(choice.ticket, allow, allow && remember)
     }
 
     @Synchronized fun revoke(token: Any, choice: ConnectionChoice): ConnectionWorkerCommand? {
         if (generation !== token || !accepting || mutable.value.peer !== choice) return null
         accepting = false
-        camera.clear()
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
-            status = "Revoking computer; waiting for saved trust update…")
+        clearMedia()
+        publish(mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
+            status = "Revoking computer; waiting for saved trust update…"))
         return ConnectionWorkerCommand.Revoke(choice.ticket.peer)
     }
 
     @Synchronized fun stop(token: Any) {
         if (generation !== token || finished) return
         accepting = false
-        camera.clear()
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
-            status = "Disconnecting USB…", cleanup = "Closing USB resources…")
+        clearMedia()
+        publish(mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
+            status = "Disconnecting USB…", cleanup = "Closing USB resources…"))
     }
 
     @Synchronized fun ended(token: Any, failure: String?) {
         if (generation !== token || finished) return
         accepting = false
-        camera.clear()
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
-            status = failure ?: "USB connection ended.", cleanup = "Closing USB resources…")
+        clearMedia()
+        publish(mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
+            status = failure ?: "USB connection ended.", cleanup = "Closing USB resources…"))
     }
 
     @Synchronized fun started(token: Any) {
         if (generation !== token || finished) return
-        mutable.value = mutable.value.copy(cleanup = null)
+        publish(mutable.value.copy(cleanup = null))
     }
 
     @Synchronized fun retired(token: Any) {
         if (generation !== token) return
         finished = true
-        camera.clear()
-        mutable.value = mutable.value.copy(cleanup = null, display = null, authenticated = false, cameraOffer = null, camera = null)
+        clearMedia()
+        publish(mutable.value.copy(cleanup = null, display = null, authenticated = false, cameraOffer = null, camera = null))
     }
     @Synchronized fun cameraChoice(token: Any, choice: ConnectionCameraChoice, context: CameraConsentChoice): ConnectionWorkerCommand? {
         if (!cameraCurrent(token, choice)) return null
@@ -183,5 +213,12 @@ internal class ConnectionPresentation {
     private fun cameraCurrent(token: Any, choice: ConnectionCameraChoice): Boolean =
         generation === token && accepting && mutable.value.authenticated && camera.current(choice)
 
-    @Synchronized fun cleanup(text: String) { mutable.value = mutable.value.copy(cleanup = text) }
+    @Synchronized fun audioChoice(token: Any, choice: ConnectionAudioChoice, context: MediaLocalConsent): ConnectionWorkerCommand? {
+        if (!audioCurrent(token, choice)) return null
+        return ConnectionWorkerCommand.AudioChoice(choice.lease, context)
+    }
+    private fun audioCurrent(token: Any, choice: ConnectionAudioChoice): Boolean =
+        generation === token && accepting && mutable.value.authenticated && audioPresentation(choice.lease.key.resource)?.current(choice) == true
+
+    @Synchronized fun cleanup(text: String) { publish(mutable.value.copy(cleanup = text))}
 }

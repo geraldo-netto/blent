@@ -19,7 +19,7 @@ class ConnectionCameraCaptureOwnerTest {
     @Test fun t968DefaultIoAdapterRetainsOriginalClaimUntilActualCompletion() = runBlocking {
         val commands = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerCommand>()
         val completed = CompletableDeferred<ConnectionWorkerCommand>()
-        val owner = ConnectionCameraCaptureOwner(route(), { command ->
+        val owner = ConnectionMediaConsumerOwner(route().lease, ConnectionCameraConsumerCommands, { command ->
             commands.add(command)
             if (command is ConnectionWorkerCommand.CameraConsumerRetired) completed.complete(command)
             true
@@ -49,7 +49,7 @@ class ConnectionCameraCaptureOwnerTest {
     @Test fun t948ClosureJoinsAllOriginalClaimsInEitherOrderWithoutDuplicateProof() = runBlocking {
         for (closeFirst in listOf(false, true)) {
             val commands = mutableListOf<ConnectionWorkerCommand>()
-            val owner = ConnectionCameraCaptureOwner(route(), { commands.add(it); true }, Dispatchers.Unconfined)
+            val owner = ConnectionMediaConsumerOwner(route().lease, ConnectionCameraConsumerCommands, { commands.add(it); true }, Dispatchers.Unconfined)
             val first = checkNotNull(owner.retain())
             val second = checkNotNull(owner.retain())
             try {
@@ -71,7 +71,7 @@ class ConnectionCameraCaptureOwnerTest {
 
     @Test fun t948LocalStopRevokesNewClaimsWithoutPretendingRouteClosure() = runBlocking {
         val commands = mutableListOf<ConnectionWorkerCommand>()
-        val owner = ConnectionCameraCaptureOwner(route(), { commands.add(it); true }, Dispatchers.Unconfined)
+        val owner = ConnectionMediaConsumerOwner(route().lease, ConnectionCameraConsumerCommands, { commands.add(it); true }, Dispatchers.Unconfined)
         try {
             val claim = checkNotNull(owner.retain())
             assertTrue(owner.stop())
@@ -88,8 +88,8 @@ class ConnectionCameraCaptureOwnerTest {
     @Test fun t948RelaySenderCannotHoldDomainGateAcrossIndependentCallbacks() = runBlocking {
         val callbackFinished = CountDownLatch(1)
         var progressed = false
-        lateinit var relay: ConnectionCameraCompletionRelay
-        relay = ConnectionCameraCompletionRelay(lease, {
+        lateinit var relay: ConnectionMediaCompletionRelay
+        relay = ConnectionMediaCompletionRelay(ConnectionCameraConsumerCommands, lease, {
             val callback = Thread { relay.ready(); callbackFinished.countDown() }
             callback.start()
             progressed = callbackFinished.await(500, TimeUnit.MILLISECONDS)
@@ -101,7 +101,7 @@ class ConnectionCameraCaptureOwnerTest {
 
     @Test fun t948ActualRetirementRejectsFurtherStopAndMalformedLeasesRejectBeforeRelay() = runBlocking {
         val commands = mutableListOf<ConnectionWorkerCommand>()
-        val owner = ConnectionCameraCaptureOwner(route(), { commands.add(it); true }, Dispatchers.Unconfined)
+        val owner = ConnectionMediaConsumerOwner(route().lease, ConnectionCameraConsumerCommands, { commands.add(it); true }, Dispatchers.Unconfined)
         owner.retire()
         assertFalse(owner.stop())
         assertTrue(commands.isEmpty())
@@ -113,11 +113,11 @@ class ConnectionCameraCaptureOwnerTest {
         val invalid = listOf(lease.copy(owner = 0), lease.copy(connection = ConnectionTicket(0, peer)),
             lease.copy(key = ConnectionManagement.Key(ConnectionManagement.Resource.DISPLAY, 1, 1)))
         for (value in invalid) assertThrows(IllegalArgumentException::class.java) {
-            ConnectionCameraCompletionRelay(value, { error("invalid lease sent") }, Dispatchers.Unconfined)
+            ConnectionMediaCompletionRelay(ConnectionCameraConsumerCommands, value, { error("invalid lease sent") }, Dispatchers.Unconfined)
         }
         for (value in listOf(Long.MIN_VALUE, -1, 0, 1001, Long.MAX_VALUE)) {
             assertThrows(IllegalArgumentException::class.java) {
-                ConnectionCameraCompletionRelay(lease, { true }, Dispatchers.Unconfined, value)
+                ConnectionMediaCompletionRelay(ConnectionCameraConsumerCommands, lease, { true }, Dispatchers.Unconfined, value)
             }
         }
     }
@@ -126,7 +126,7 @@ class ConnectionCameraCaptureOwnerTest {
         val attempts = AtomicInteger()
         val accepted = CompletableDeferred<Unit>()
         val commands = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerCommand>()
-        val relay = ConnectionCameraCompletionRelay(lease, {
+        val relay = ConnectionMediaCompletionRelay(ConnectionCameraConsumerCommands, lease, {
             commands.add(it)
             when (attempts.incrementAndGet()) {
                 1 -> false
@@ -141,14 +141,14 @@ class ConnectionCameraCaptureOwnerTest {
             assertEquals(List(3) { ConnectionWorkerCommand.CameraConsumerRetired(lease) }, commands)
             relay.ready(); assertEquals(3, attempts.get())
         } finally { relay.retire() }
-        val stopped = ConnectionCameraCompletionRelay(lease, { throw IllegalStateException("stop rejected") }, Dispatchers.Unconfined)
+        val stopped = ConnectionMediaCompletionRelay(ConnectionCameraConsumerCommands, lease, { throw IllegalStateException("stop rejected") }, Dispatchers.Unconfined)
         assertFalse(stopped.stop()); stopped.retire()
     }
 
     @Test fun t948ActualRetirementJoinsBlockedOriginalRelayRatherThanLosingIt() = runBlocking {
         val entered = CountDownLatch(1)
         val release = CountDownLatch(1)
-        val relay = ConnectionCameraCompletionRelay(lease, {
+        val relay = ConnectionMediaCompletionRelay(ConnectionCameraConsumerCommands, lease, {
             entered.countDown(); check(release.await(4, TimeUnit.SECONDS)); false
         })
         relay.ready()
@@ -164,7 +164,7 @@ class ConnectionCameraCaptureOwnerTest {
         val random = Random(948)
         repeat(128) {
             val commands = mutableListOf<ConnectionWorkerCommand>()
-            val owner = ConnectionCameraCaptureOwner(route(), { commands.add(it); true }, Dispatchers.Unconfined)
+            val owner = ConnectionMediaConsumerOwner(route().lease, ConnectionCameraConsumerCommands, { commands.add(it); true }, Dispatchers.Unconfined)
             val claims = List(random.nextInt(16)) { checkNotNull(owner.retain()) }.shuffled(kotlin.random.Random(random.nextInt()))
             try {
                 val closeFirst = random.nextBoolean()
@@ -182,8 +182,8 @@ class ConnectionCameraCaptureOwnerTest {
     }
 
     @Test fun t948ProjectionPreservesCanonicalProfileAndCredential() {
-        val owner = ConnectionCameraCaptureOwner(route(), { true }, Dispatchers.Unconfined)
-        val endpoint = owner.target.endpoint
+        val owner = ConnectionMediaConsumerOwner(route().lease, ConnectionCameraConsumerCommands, { true }, Dispatchers.Unconfined)
+        val endpoint = CameraCaptureTarget(ConnectionCameraTarget.endpoint(route()), owner).endpoint
         assertEquals("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f", endpoint.token)
         assertEquals(CameraEndpoint(endpoint.token, 12345, 640, 480, 30, 3000, CameraLens.REAR, true, 150, true, 1000), endpoint)
         assertTrue(endpoint.valid())

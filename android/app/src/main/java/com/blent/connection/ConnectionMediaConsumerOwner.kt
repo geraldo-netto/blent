@@ -2,31 +2,17 @@ package com.blent.connection
 
 import com.blent.MediaConsumerAuthority
 import com.blent.MediaConsumerClaim
-import com.blent.CameraCaptureTarget
-import com.blent.CameraEndpoint
-import com.blent.CameraLens
 import com.blent.ResourceRetirement
 import kotlinx.coroutines.*
 import java.util.Collections
 import java.util.IdentityHashMap
 
-/** Boundary projection only; metadata carries neither current consent nor a
- * native grant. The independent capture contract retains original authority. */
-internal object ConnectionCameraTarget {
-    fun endpoint(route: LocalCameraRoute): CameraEndpoint {
-        val profile = route.profile
-        val token = route.credential.bytes().joinToString("") { "%02x".format(it.toInt() and 255) }
-        return CameraEndpoint(token, route.port, profile.width, profile.height,
-            profile.fps, profile.bitrate, CameraLens.entries[profile.lens], profile.background,
-            profile.freshnessMs, profile.adaptive, profile.minBitrate)
-    }
-}
-
-/** One original route and all its possible native requests. Local stop revokes
- * new claims immediately; terminal proof additionally requires published closure
- * and every request's actual retirement/no-start. No sender runs under this gate. */
-internal class ConnectionCameraCaptureOwner(
-    val route: LocalCameraRoute,
+/** One exact media lease's consumer requests. Closing revokes new claims;
+ * terminal proof additionally requires published closure and actual completion
+ * of every claim. Original senders run outside the domain gate. */
+internal class ConnectionMediaConsumerOwner(
+    private val lease: ConnectionResourceLease,
+    commands: ConnectionMediaConsumerCommands,
     send: (ConnectionWorkerCommand) -> Boolean,
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
     delivered: () -> Unit = {},
@@ -36,8 +22,7 @@ internal class ConnectionCameraCaptureOwner(
     private var closing = false
     private var visible = true
     private var gone = false
-    private val relay = ConnectionCameraCompletionRelay(route.lease, send, dispatcher, delivered = delivered)
-    val target = CameraCaptureTarget(ConnectionCameraTarget.endpoint(route), this)
+    private val relay = ConnectionMediaCompletionRelay(commands, lease, send, dispatcher, delivered = delivered)
 
     private inner class Claim : MediaConsumerClaim {
         override fun current(): Boolean = synchronized(gate) { !closing && !gone && claims.contains(this) }
@@ -56,7 +41,7 @@ internal class ConnectionCameraCaptureOwner(
     }
     fun closed(lease: ConnectionResourceLease): Boolean {
         synchronized(gate) {
-            if (lease != route.lease || gone) return false
+            if (lease != this.lease || gone) return false
             closing = true; visible = false
         }
         flush()
@@ -76,7 +61,8 @@ internal class ConnectionCameraCaptureOwner(
 /** Bounded terminal relay to the original already-created worker. Metadata-only
  * send never binds a replacement or does native I/O. Rejection retains proof and
  * retries one command; native IPC ownership remains in that original worker. */
-internal class ConnectionCameraCompletionRelay(
+internal class ConnectionMediaCompletionRelay(
+    private val commands: ConnectionMediaConsumerCommands,
     private val lease: ConnectionResourceLease,
     private val send: (ConnectionWorkerCommand) -> Boolean,
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -89,12 +75,12 @@ internal class ConnectionCameraCompletionRelay(
     private var retired = false
     init {
         require(retryMillis in 1..1000)
-        ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA)
+        ConnectionLocalLease.validate(lease, commands.resource)
     }
     fun stop(): Boolean {
         if (synchronized(gate) { retired }) return false
         return try {
-            send(ConnectionWorkerCommand.CameraChoice(lease, CameraConsentChoice(false, false, enabled = false)))
+            send(commands.stop(lease))
         } catch (_: Exception) { false }
     }
     fun ready() {
@@ -105,7 +91,7 @@ internal class ConnectionCameraCompletionRelay(
         pending.start()
     }
     private suspend fun deliver() {
-        val command = ConnectionWorkerCommand.CameraConsumerRetired(lease)
+        val command = commands.retired(lease)
         var waitMillis = retryMillis
         while (currentCoroutineContext().isActive) {
             val accepted = try { send(command) } catch (_: Exception) { false }

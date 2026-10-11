@@ -33,6 +33,8 @@ internal class ConnectionAdmissionRun(
     private var displayed: ConnectionResourceLease? = null
     private var cameraShown: ConnectionResourceLease? = null
     private var capture: ConnectionResourceLease? = null
+    private val audioShown = arrayOfNulls<ConnectionResourceLease>(4)
+    private val audioConsumers = arrayOfNulls<ConnectionResourceLease>(4)
 
     private fun signal() { wake.trySend(Unit) }
     private fun current(): Boolean {
@@ -43,6 +45,7 @@ internal class ConnectionAdmissionRun(
     private fun failed(failure: Exception) { error.compareAndSet(null, failure); cancel() }
     override fun command(value: ConnectionWorkerCommand): Boolean {
         if (value is ConnectionWorkerCommand.CameraConsumerRetired) return cameraCleanup(value)
+        if (value is ConnectionWorkerCommand.AudioConsumerRetired) return audioCleanup(value)
         if (!current()) return false
         return try { worker?.command(value) == true }
         catch (failure: Exception) { failed(failure); false }
@@ -53,6 +56,13 @@ internal class ConnectionAdmissionRun(
             (worker?.command(value) == true).also { if (it) capture = null }
         } catch (failure: Exception) { failed(failure); false }
     }
+    private fun audioCleanup(value: ConnectionWorkerCommand.AudioConsumerRetired): Boolean = synchronized(gate) {
+        val index = value.lease.key.resource.ordinal
+        if (retired || audioConsumers[index] != value.lease || audioShown[index] == value.lease) return@synchronized false
+        try {
+            (worker?.command(value) == true).also { if (it) audioConsumers[index] = null }
+        } catch (failure: Exception) { failed(failure); false }
+    }
     private fun deliver(value: ConnectionWorkerEvent) = synchronized(gate) {
         if (!visible(value)) return@synchronized
         media(value)
@@ -60,17 +70,31 @@ internal class ConnectionAdmissionRun(
     }
     private fun media(value: ConnectionWorkerEvent) {
         when (value) {
+            is ConnectionWorkerEvent.Audio -> audioMedia(value)
             is ConnectionWorkerEvent.Display -> displayed = value.route.lease
             is ConnectionWorkerEvent.DisplayClosed -> if (displayed == value.lease) displayed = null
+            else -> cameraMedia(value)
+        }
+    }
+    private fun cameraMedia(value: ConnectionWorkerEvent) {
+        when (value) {
             is ConnectionWorkerEvent.CameraOffered -> cameraShown = value.offer.lease
             is ConnectionWorkerEvent.Camera -> { cameraShown = value.route.lease; capture = value.route.lease }
             is ConnectionWorkerEvent.CameraClosed -> if (cameraShown == value.lease) cameraShown = null
             else -> Unit
         }
     }
+    private fun audioMedia(value: ConnectionWorkerEvent.Audio) {
+        val index = value.lease.key.resource.ordinal
+        when (value) {
+            is ConnectionWorkerEvent.AudioOffered -> audioShown[index] = value.lease
+            is ConnectionWorkerEvent.AudioRoute -> { audioShown[index] = value.lease; audioConsumers[index] = value.lease }
+            is ConnectionWorkerEvent.AudioClosed -> if (audioShown[index] == value.lease) audioShown[index] = null
+        }
+    }
     private fun visible(value: ConnectionWorkerEvent): Boolean = when (value) {
         is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended,
-        is ConnectionWorkerEvent.DisplayClosed, is ConnectionWorkerEvent.CameraClosed -> true
+        is ConnectionWorkerEvent.DisplayClosed, is ConnectionWorkerEvent.CameraClosed, is ConnectionWorkerEvent.AudioClosed -> true
         else -> worker != null && current()
     }
     private fun open() {
@@ -134,11 +158,20 @@ internal class ConnectionAdmissionRun(
         try { report(ConnectionWorkerEvent.CameraClosed(lease)) }
         catch (failure: Exception) { error.compareAndSet(null, failure) }
     }
+    private fun revokeAudio() = synchronized(gate) {
+        for (resource in listOf(ConnectionManagement.Resource.MICROPHONE, ConnectionManagement.Resource.SPEAKERS)) {
+            val index = resource.ordinal
+            val lease = audioShown[index] ?: continue
+            audioShown[index] = null // Retain consumers until actual completion.
+            try { report(ConnectionWorkerEvent.AudioClosed(lease)) }
+            catch (failure: Exception) { error.compareAndSet(null, failure) }
+        }
+    }
     override fun cancel() {
         stopping.set(true)
         try { admission?.stop() } catch (failure: Exception) { error.compareAndSet(null, failure) }
         try { worker?.cancel() } catch (failure: Exception) { error.compareAndSet(null, failure) }
-        revokeDisplay(); revokeCamera() // Native stop is requested before a synchronous completion callback can relay proof.
+        revokeDisplay(); revokeCamera(); revokeAudio() // Native stop is requested before a synchronous completion callback can relay proof.
         execution?.cancel()
         signal()
     }

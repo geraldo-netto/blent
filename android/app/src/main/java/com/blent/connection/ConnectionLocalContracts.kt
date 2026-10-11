@@ -16,10 +16,10 @@ internal interface LocalDisplayProjection { fun route(): LocalDisplayRoute? }
 /** Permission metadata contains no endpoint or credential. Interpretation grants
  * neither OS permission nor original connection/worker lifetime authority. */
 internal data class LocalCameraOffer(
-    val lease: ConnectionResourceLease,
-    val profile: ConnectionManagement.Camera,
+    override val lease: ConnectionResourceLease,
+    override val profile: ConnectionManagement.Camera,
     val permissionRequired: Boolean,
-) {
+) : LocalMediaOffer<ConnectionManagement.Camera> {
     init {
         ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA)
         ConnectionManagement.encode(ConnectionManagement.Offer(lease.key,

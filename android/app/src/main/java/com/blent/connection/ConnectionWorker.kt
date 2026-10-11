@@ -67,10 +67,10 @@ internal sealed interface ConnectionWorkerEvent {
         init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.CAMERA) }
     }
     /** Flat private control metadata only; PCM uses the independent channel. */
-    sealed interface Audio : Media
-    data class AudioOffered(val offer: LocalAudioOffer) : Audio
-    data class AudioRoute(val route: LocalAudioRoute) : Audio
-    data class AudioClosed(val lease: ConnectionResourceLease) : Audio {
+    sealed interface Audio : Media { val lease: ConnectionResourceLease }
+    data class AudioOffered(val offer: LocalAudioOffer) : Audio { override val lease: ConnectionResourceLease get() = offer.lease }
+    data class AudioRoute(val route: LocalAudioRoute) : Audio { override val lease: ConnectionResourceLease get() = route.lease }
+    data class AudioClosed(override val lease: ConnectionResourceLease) : Audio {
         init { ConnectionAudioLease.validate(lease) }
     }
     /** Execution ended; neither native retirement nor process death is implied. */
