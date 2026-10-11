@@ -1,0 +1,67 @@
+Compiled from "ConnectionOwner.kt"
+public final class com.blent.connection.ConnectionOwner {
+  public static final com.blent.connection.ConnectionOwner INSTANCE;
+
+  private static com.blent.connection.ConnectionBinding binding;
+
+  public static final int $stable;
+
+  private com.blent.connection.ConnectionOwner();
+    Code:
+       0: aload_0
+       1: invokespecial #8                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public final synchronized com.blent.connection.ConnectionBinding get(android.content.Context);
+    Code:
+       0: aload_1
+       1: ldc           #15                 // String context
+       3: invokestatic  #21                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_1
+       7: invokevirtual #27                 // Method android/content/Context.getApplicationContext:()Landroid/content/Context;
+      10: astore_2
+      11: getstatic     #31                 // Field binding:Lcom/blent/connection/ConnectionBinding;
+      14: dup
+      15: ifnonnull     77
+      18: pop
+      19: new           #33                 // class com/blent/connection/ConnectionBinding
+      22: dup
+      23: aconst_null
+      24: iconst_1
+      25: aconst_null
+      26: invokestatic  #39                 // Method kotlinx/coroutines/SupervisorKt.SupervisorJob$default:(Lkotlinx/coroutines/Job;ILjava/lang/Object;)Lkotlinx/coroutines/CompletableJob;
+      29: invokestatic  #45                 // Method kotlinx/coroutines/Dispatchers.getDefault:()Lkotlinx/coroutines/CoroutineDispatcher;
+      32: checkcast     #47                 // class kotlin/coroutines/CoroutineContext
+      35: invokeinterface #53,  2           // InterfaceMethod kotlinx/coroutines/CompletableJob.plus:(Lkotlin/coroutines/CoroutineContext;)Lkotlin/coroutines/CoroutineContext;
+      40: invokestatic  #59                 // Method kotlinx/coroutines/CoroutineScopeKt.CoroutineScope:(Lkotlin/coroutines/CoroutineContext;)Lkotlinx/coroutines/CoroutineScope;
+      43: new           #61                 // class com/blent/connection/ConnectionOwner$get$1
+      46: dup
+      47: aload_2
+      48: invokespecial #64                 // Method com/blent/connection/ConnectionOwner$get$1."<init>":(Landroid/content/Context;)V
+      51: checkcast     #66                 // class kotlin/jvm/functions/Function2
+      54: lconst_0
+      55: iconst_4
+      56: aconst_null
+      57: invokespecial #69                 // Method com/blent/connection/ConnectionBinding."<init>":(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+      60: astore_3
+      61: aload_3
+      62: astore        4
+      64: iconst_0
+      65: istore        5
+      67: getstatic     #72                 // Field INSTANCE:Lcom/blent/connection/ConnectionOwner;
+      70: pop
+      71: aload         4
+      73: putstatic     #31                 // Field binding:Lcom/blent/connection/ConnectionBinding;
+      76: aload_3
+      77: areturn
+
+  static {};
+    Code:
+       0: new           #2                  // class com/blent/connection/ConnectionOwner
+       3: dup
+       4: invokespecial #79                 // Method "<init>":()V
+       7: putstatic     #72                 // Field INSTANCE:Lcom/blent/connection/ConnectionOwner;
+      10: bipush        8
+      12: putstatic     #82                 // Field $stable:I
+      15: return
+}

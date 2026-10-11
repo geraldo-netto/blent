@@ -1,0 +1,241 @@
+Compiled from "AudioOwner.kt"
+public final class com.blent.AudioOwner {
+  public static final com.blent.AudioOwner INSTANCE;
+
+  private static com.blent.AudioBinding microphone;
+
+  private static com.blent.AudioBinding speakers;
+
+  private static kotlin.jvm.functions.Function0<kotlin.Unit> permissionRequest;
+
+  public static final int $stable;
+
+  private com.blent.AudioOwner();
+    Code:
+       0: aload_0
+       1: invokespecial #8                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public final kotlin.jvm.functions.Function0<kotlin.Unit> getPermissionRequest();
+    Code:
+       0: getstatic     #18                 // Field permissionRequest:Lkotlin/jvm/functions/Function0;
+       3: areturn
+
+  public final void setPermissionRequest(kotlin.jvm.functions.Function0<kotlin.Unit>);
+    Code:
+       0: aload_1
+       1: putstatic     #18                 // Field permissionRequest:Lkotlin/jvm/functions/Function0;
+       4: return
+
+  private final com.blent.AudioBinding cached(int);
+    Code:
+       0: iload_1
+       1: tableswitch   { // 1 to 2
+                     1: 24
+                     2: 30
+               default: 36
+          }
+      24: getstatic     #28                 // Field microphone:Lcom/blent/AudioBinding;
+      27: goto          49
+      30: getstatic     #31                 // Field speakers:Lcom/blent/AudioBinding;
+      33: goto          49
+      36: new           #33                 // class java/lang/IllegalStateException
+      39: dup
+      40: ldc           #35                 // String Invalid audio direction.
+      42: invokevirtual #39                 // Method java/lang/Object.toString:()Ljava/lang/String;
+      45: invokespecial #42                 // Method java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+      48: athrow
+      49: areturn
+
+  public final com.blent.AudioBinding get(android.content.Context, int);
+    Code:
+       0: aload_1
+       1: ldc           #51                 // String context
+       3: invokestatic  #57                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_0
+       7: iload_2
+       8: invokespecial #59                 // Method cached:(I)Lcom/blent/AudioBinding;
+      11: astore_3
+      12: aload_3
+      13: ifnull        25
+      16: aload_3
+      17: astore        5
+      19: iconst_0
+      20: istore        6
+      22: aload         5
+      24: areturn
+      25: aload_1
+      26: invokevirtual #65                 // Method android/content/Context.getApplicationContext:()Landroid/content/Context;
+      29: astore_3
+      30: iload_2
+      31: iconst_1
+      32: if_icmpne     40
+      35: ldc           #67                 // class com/blent/MicrophoneService
+      37: goto          42
+      40: ldc           #69                 // class com/blent/SpeakerService
+      42: astore        4
+      44: getstatic     #75                 // Field com/blent/RemoteMediaBindings.INSTANCE:Lcom/blent/RemoteMediaBindings;
+      47: aload_3
+      48: invokestatic  #79                 // Method kotlin/jvm/internal/Intrinsics.checkNotNull:(Ljava/lang/Object;)V
+      51: aload_3
+      52: iload_2
+      53: getstatic     #84                 // Field com/blent/AudioOwner$get$binding$1.INSTANCE:Lcom/blent/AudioOwner$get$binding$1;
+      56: checkcast     #86                 // class kotlin/jvm/functions/Function0
+      59: new           #88                 // class com/blent/AudioOwner$get$binding$2
+      62: dup
+      63: aload_3
+      64: aload         4
+      66: invokespecial #91                 // Method com/blent/AudioOwner$get$binding$2."<init>":(Landroid/content/Context;Ljava/lang/Class;)V
+      69: checkcast     #93                 // class kotlin/jvm/functions/Function1
+      72: invokevirtual #97                 // Method com/blent/RemoteMediaBindings.audio:(Landroid/content/Context;ILkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lcom/blent/AudioBinding;
+      75: astore        5
+      77: iload_2
+      78: iconst_1
+      79: if_icmpne     90
+      82: aload         5
+      84: putstatic     #28                 // Field microphone:Lcom/blent/AudioBinding;
+      87: goto          95
+      90: aload         5
+      92: putstatic     #31                 // Field speakers:Lcom/blent/AudioBinding;
+      95: aload         5
+      97: areturn
+
+  public static com.blent.AudioBinding get$default(com.blent.AudioOwner, android.content.Context, int, int, java.lang.Object);
+    Code:
+       0: iload_3
+       1: iconst_2
+       2: iand
+       3: ifeq          8
+       6: iconst_1
+       7: istore_2
+       8: aload_0
+       9: aload_1
+      10: iload_2
+      11: invokevirtual #110                // Method get:(Landroid/content/Context;I)Lcom/blent/AudioBinding;
+      14: areturn
+
+  public final boolean owns(java.lang.String, int);
+    Code:
+       0: aload_0
+       1: iload_2
+       2: invokespecial #59                 // Method cached:(I)Lcom/blent/AudioBinding;
+       5: dup
+       6: ifnull        25
+       9: aload_1
+      10: invokevirtual #116                // Method com/blent/AudioBinding.ownsBackground:(Ljava/lang/String;)Z
+      13: iconst_1
+      14: if_icmpne     21
+      17: iconst_1
+      18: goto          27
+      21: iconst_0
+      22: goto          27
+      25: pop
+      26: iconst_0
+      27: ireturn
+
+  public static boolean owns$default(com.blent.AudioOwner, java.lang.String, int, int, java.lang.Object);
+    Code:
+       0: iload_3
+       1: iconst_2
+       2: iand
+       3: ifeq          8
+       6: iconst_1
+       7: istore_2
+       8: aload_0
+       9: aload_1
+      10: iload_2
+      11: invokevirtual #122                // Method owns:(Ljava/lang/String;I)Z
+      14: ireturn
+
+  public final void stopped(java.lang.String, int);
+    Code:
+       0: aload_0
+       1: iload_2
+       2: invokespecial #59                 // Method cached:(I)Lcom/blent/AudioBinding;
+       5: dup
+       6: ifnull        16
+       9: aload_1
+      10: invokevirtual #127                // Method com/blent/AudioBinding.backgroundStopped:(Ljava/lang/String;)V
+      13: goto          17
+      16: pop
+      17: return
+
+  public static void stopped$default(com.blent.AudioOwner, java.lang.String, int, int, java.lang.Object);
+    Code:
+       0: iload_3
+       1: iconst_2
+       2: iand
+       3: ifeq          8
+       6: iconst_1
+       7: istore_2
+       8: aload_0
+       9: aload_1
+      10: iload_2
+      11: invokevirtual #131                // Method stopped:(Ljava/lang/String;I)V
+      14: return
+
+  public final void stopSharing(int);
+    Code:
+       0: aload_0
+       1: iload_1
+       2: invokespecial #59                 // Method cached:(I)Lcom/blent/AudioBinding;
+       5: dup
+       6: ifnull        15
+       9: invokevirtual #135                // Method com/blent/AudioBinding.stopSharing:()V
+      12: goto          16
+      15: pop
+      16: return
+
+  public static void stopSharing$default(com.blent.AudioOwner, int, int, java.lang.Object);
+    Code:
+       0: iload_2
+       1: iconst_1
+       2: iand
+       3: ifeq          8
+       6: iconst_1
+       7: istore_1
+       8: aload_0
+       9: iload_1
+      10: invokevirtual #139                // Method stopSharing:(I)V
+      13: return
+
+  public final void reset();
+    Code:
+       0: getstatic     #28                 // Field microphone:Lcom/blent/AudioBinding;
+       3: dup
+       4: ifnull        13
+       7: invokevirtual #143                // Method com/blent/AudioBinding.shutdown:()V
+      10: goto          14
+      13: pop
+      14: getstatic     #31                 // Field speakers:Lcom/blent/AudioBinding;
+      17: dup
+      18: ifnull        27
+      21: invokevirtual #143                // Method com/blent/AudioBinding.shutdown:()V
+      24: goto          28
+      27: pop
+      28: aconst_null
+      29: putstatic     #28                 // Field microphone:Lcom/blent/AudioBinding;
+      32: aconst_null
+      33: putstatic     #31                 // Field speakers:Lcom/blent/AudioBinding;
+      36: aconst_null
+      37: putstatic     #18                 // Field permissionRequest:Lkotlin/jvm/functions/Function0;
+      40: getstatic     #148                // Field com/blent/AudioInvitations.INSTANCE:Lcom/blent/AudioInvitations;
+      43: invokevirtual #152                // Method com/blent/AudioInvitations.getMicrophone:()Lkotlinx/coroutines/flow/MutableStateFlow;
+      46: aconst_null
+      47: invokeinterface #157,  2          // InterfaceMethod kotlinx/coroutines/flow/MutableStateFlow.setValue:(Ljava/lang/Object;)V
+      52: getstatic     #148                // Field com/blent/AudioInvitations.INSTANCE:Lcom/blent/AudioInvitations;
+      55: invokevirtual #160                // Method com/blent/AudioInvitations.getSpeakers:()Lkotlinx/coroutines/flow/MutableStateFlow;
+      58: aconst_null
+      59: invokeinterface #157,  2          // InterfaceMethod kotlinx/coroutines/flow/MutableStateFlow.setValue:(Ljava/lang/Object;)V
+      64: return
+
+  static {};
+    Code:
+       0: new           #2                  // class com/blent/AudioOwner
+       3: dup
+       4: invokespecial #162                // Method "<init>":()V
+       7: putstatic     #164                // Field INSTANCE:Lcom/blent/AudioOwner;
+      10: bipush        8
+      12: putstatic     #167                // Field $stable:I
+      15: return
+}

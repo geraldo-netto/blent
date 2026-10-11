@@ -1,0 +1,3 @@
+834c6bfc90bd57092856eef55dd5704bd7c19fec134553f04f989efa391a5b6e  scripts/coverage/KotlinFunctions.kt
+ae7870205f809873f2eaea435da7e96268ea48701ea2705111d5cdcf00c18c7f  scripts/coverage/test_kotlin_inventory.py
+55a464b1307948c2cc67b96529266f94fed45866e56539f04ba1f2d96873a611  scripts/coverage/README.md

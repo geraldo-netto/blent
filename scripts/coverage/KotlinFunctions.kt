@@ -9,9 +9,25 @@ import org.jetbrains.kotlin.com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.lexer.KtTokens
 
+// JVM default null fields emit no assignment; empty blocks emit no body.
+// Keep parameter defaults, calls, delegates and every nonempty init body.
+fun executableInitializer(expression: KtExpression): Boolean = when (expression) {
+    is KtParenthesizedExpression -> expression.expression?.let(::executableInitializer) == true
+    is KtConstantExpression -> expression.text != "null"
+    else -> true
+}
+
+fun propertyInitialization(property: KtProperty): Boolean {
+    if (property.hasModifier(KtTokens.CONST_KEYWORD)) return false
+    return property.hasDelegateExpression() || property.initializer?.let(::executableInitializer) == true
+}
+
 fun hasInitialization(declarations: List<KtDeclaration>): Boolean = declarations.any {
-    it is KtAnonymousInitializer || (it is KtProperty &&
-        !it.hasModifier(KtTokens.CONST_KEYWORD) && it.hasDelegateExpressionOrInitializer())
+    when (it) {
+        is KtAnonymousInitializer -> (it.body as? KtBlockExpression)?.statements?.isNotEmpty() == true
+        is KtProperty -> propertyInitialization(it)
+        else -> false
+    }
 }
 
 fun instanceInitialization(element: KtClassOrObject, body: Boolean, base: Boolean): String? {

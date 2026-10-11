@@ -1,0 +1,273 @@
+Compiled from "RemoteMetadata.kt"
+public final class com.blent.RemoteMetadata {
+  public static final com.blent.RemoteMetadata INSTANCE;
+
+  private static com.blent.WorkerQueries owner;
+
+  public static final int $stable;
+
+  private com.blent.RemoteMetadata();
+    Code:
+       0: aload_0
+       1: invokespecial #8                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  private final synchronized com.blent.WorkerQueries owner(android.content.Context);
+    Code:
+       0: getstatic     #15                 // Field owner:Lcom/blent/WorkerQueries;
+       3: dup
+       4: ifnonnull     46
+       7: pop
+       8: new           #17                 // class com/blent/WorkerQueries
+      11: dup
+      12: new           #19                 // class com/blent/RemoteMetadata$owner$1
+      15: dup
+      16: aload_1
+      17: invokespecial #22                 // Method com/blent/RemoteMetadata$owner$1."<init>":(Landroid/content/Context;)V
+      20: checkcast     #24                 // class kotlin/jvm/functions/Function2
+      23: lconst_0
+      24: aconst_null
+      25: bipush        6
+      27: aconst_null
+      28: invokespecial #27                 // Method com/blent/WorkerQueries."<init>":(Lkotlin/jvm/functions/Function2;JLkotlinx/coroutines/CoroutineScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+      31: astore_2
+      32: aload_2
+      33: astore_3
+      34: iconst_0
+      35: istore        4
+      37: getstatic     #30                 // Field INSTANCE:Lcom/blent/RemoteMetadata;
+      40: pop
+      41: aload_3
+      42: putstatic     #15                 // Field owner:Lcom/blent/WorkerQueries;
+      45: aload_2
+      46: areturn
+
+  public final java.lang.Object report(android.content.Context, int, int, int, kotlin.coroutines.Continuation<? super org.json.JSONObject>);
+    Code:
+       0: aload         5
+       2: instanceof    #42                 // class com/blent/RemoteMetadata$report$1
+       5: ifeq          41
+       8: aload         5
+      10: checkcast     #42                 // class com/blent/RemoteMetadata$report$1
+      13: astore        10
+      15: aload         10
+      17: getfield      #45                 // Field com/blent/RemoteMetadata$report$1.label:I
+      20: ldc           #46                 // int -2147483648
+      22: iand
+      23: ifeq          41
+      26: aload         10
+      28: dup
+      29: getfield      #45                 // Field com/blent/RemoteMetadata$report$1.label:I
+      32: ldc           #46                 // int -2147483648
+      34: isub
+      35: putfield      #45                 // Field com/blent/RemoteMetadata$report$1.label:I
+      38: goto          53
+      41: new           #42                 // class com/blent/RemoteMetadata$report$1
+      44: dup
+      45: aload_0
+      46: aload         5
+      48: invokespecial #49                 // Method com/blent/RemoteMetadata$report$1."<init>":(Lcom/blent/RemoteMetadata;Lkotlin/coroutines/Continuation;)V
+      51: astore        10
+      53: aload         10
+      55: getfield      #53                 // Field com/blent/RemoteMetadata$report$1.result:Ljava/lang/Object;
+      58: astore        9
+      60: invokestatic  #59                 // Method kotlin/coroutines/intrinsics/IntrinsicsKt.getCOROUTINE_SUSPENDED:()Ljava/lang/Object;
+      63: astore        11
+      65: aload         10
+      67: getfield      #45                 // Field com/blent/RemoteMetadata$report$1.label:I
+      70: tableswitch   { // 0 to 1
+                     0: 92
+                     1: 156
+               default: 268
+          }
+      92: aload         9
+      94: invokestatic  #65                 // Method kotlin/ResultKt.throwOnFailure:(Ljava/lang/Object;)V
+      97: aload_0
+      98: aload_1
+      99: invokespecial #67                 // Method owner:(Landroid/content/Context;)Lcom/blent/WorkerQueries;
+     102: new           #69                 // class com/blent/MediaTask$Metadata
+     105: dup
+     106: iload_2
+     107: iload_3
+     108: iload         4
+     110: iconst_0
+     111: bipush        8
+     113: aconst_null
+     114: invokespecial #72                 // Method com/blent/MediaTask$Metadata."<init>":(IIIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+     117: aload         10
+     119: aload         10
+     121: iload_2
+     122: putfield      #75                 // Field com/blent/RemoteMetadata$report$1.I$0:I
+     125: aload         10
+     127: iload_3
+     128: putfield      #78                 // Field com/blent/RemoteMetadata$report$1.I$1:I
+     131: aload         10
+     133: iload         4
+     135: putfield      #81                 // Field com/blent/RemoteMetadata$report$1.I$2:I
+     138: aload         10
+     140: iconst_1
+     141: putfield      #45                 // Field com/blent/RemoteMetadata$report$1.label:I
+     144: invokevirtual #85                 // Method com/blent/WorkerQueries.query:(Lcom/blent/MediaTask$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+     147: dup
+     148: aload         11
+     150: if_acmpne     182
+     153: aload         11
+     155: areturn
+     156: aload         10
+     158: getfield      #81                 // Field com/blent/RemoteMetadata$report$1.I$2:I
+     161: istore        4
+     163: aload         10
+     165: getfield      #78                 // Field com/blent/RemoteMetadata$report$1.I$1:I
+     168: istore_3
+     169: aload         10
+     171: getfield      #75                 // Field com/blent/RemoteMetadata$report$1.I$0:I
+     174: istore_2
+     175: aload         9
+     177: invokestatic  #65                 // Method kotlin/ResultKt.throwOnFailure:(Ljava/lang/Object;)V
+     180: aload         9
+     182: checkcast     #87                 // class java/lang/String
+     185: astore        6
+     187: aload         6
+     189: dup
+     190: ifnull        213
+     193: astore        7
+     195: iconst_0
+     196: istore        8
+     198: getstatic     #92                 // Field com/blent/WorkerJsonBoundary.INSTANCE:Lcom/blent/WorkerJsonBoundary;
+     201: aload         7
+     203: ldc           #93                 // int 262144
+     205: invokevirtual #97                 // Method com/blent/WorkerJsonBoundary.parse:(Ljava/lang/String;I)Lorg/json/JSONObject;
+     208: nop
+     209: dup
+     210: ifnonnull     267
+     213: pop
+     214: getstatic     #102                // Field com/blent/DecoderCapabilities.INSTANCE:Lcom/blent/DecoderCapabilities;
+     217: iload_2
+     218: iload_3
+     219: iload         4
+     221: getstatic     #107                // Field com/blent/RemoteMetadata$report$3.INSTANCE:Lcom/blent/RemoteMetadata$report$3;
+     224: checkcast     #109                // class kotlin/jvm/functions/Function4
+     227: invokevirtual #113                // Method com/blent/DecoderCapabilities.describe$app_debug:(IIILkotlin/jvm/functions/Function4;)Lorg/json/JSONObject;
+     230: ldc           #115                // String hardware
+     232: new           #117                // class org/json/JSONArray
+     235: dup
+     236: invokespecial #118                // Method org/json/JSONArray."<init>":()V
+     239: invokevirtual #124                // Method org/json/JSONObject.put:(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+     242: ldc           #126                // String details
+     244: new           #117                // class org/json/JSONArray
+     247: dup
+     248: invokespecial #118                // Method org/json/JSONArray."<init>":()V
+     251: invokevirtual #124                // Method org/json/JSONObject.put:(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+     254: ldc           #128                // String status
+     256: ldc           #130                // String unavailable
+     258: invokevirtual #124                // Method org/json/JSONObject.put:(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;
+     261: dup
+     262: ldc           #132                // String put(...)
+     264: invokestatic  #138                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+     267: areturn
+     268: new           #140                // class java/lang/IllegalStateException
+     271: dup
+     272: ldc           #142                // String call to \'resume\' before \'invoke\' with coroutine
+     274: invokespecial #145                // Method java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+     277: athrow
+
+  public final java.lang.Object shell(android.content.Context, int, kotlin.coroutines.Continuation<? super java.lang.String>);
+    Code:
+       0: aload_3
+       1: instanceof    #163                // class com/blent/RemoteMetadata$shell$1
+       4: ifeq          39
+       7: aload_3
+       8: checkcast     #163                // class com/blent/RemoteMetadata$shell$1
+      11: astore        5
+      13: aload         5
+      15: getfield      #164                // Field com/blent/RemoteMetadata$shell$1.label:I
+      18: ldc           #46                 // int -2147483648
+      20: iand
+      21: ifeq          39
+      24: aload         5
+      26: dup
+      27: getfield      #164                // Field com/blent/RemoteMetadata$shell$1.label:I
+      30: ldc           #46                 // int -2147483648
+      32: isub
+      33: putfield      #164                // Field com/blent/RemoteMetadata$shell$1.label:I
+      36: goto          50
+      39: new           #163                // class com/blent/RemoteMetadata$shell$1
+      42: dup
+      43: aload_0
+      44: aload_3
+      45: invokespecial #165                // Method com/blent/RemoteMetadata$shell$1."<init>":(Lcom/blent/RemoteMetadata;Lkotlin/coroutines/Continuation;)V
+      48: astore        5
+      50: aload         5
+      52: getfield      #166                // Field com/blent/RemoteMetadata$shell$1.result:Ljava/lang/Object;
+      55: astore        4
+      57: invokestatic  #59                 // Method kotlin/coroutines/intrinsics/IntrinsicsKt.getCOROUTINE_SUSPENDED:()Ljava/lang/Object;
+      60: astore        6
+      62: aload         5
+      64: getfield      #164                // Field com/blent/RemoteMetadata$shell$1.label:I
+      67: tableswitch   { // 0 to 1
+                     0: 88
+                     1: 147
+               default: 174
+          }
+      88: aload         4
+      90: invokestatic  #65                 // Method kotlin/ResultKt.throwOnFailure:(Ljava/lang/Object;)V
+      93: aload_0
+      94: aload_1
+      95: invokespecial #67                 // Method owner:(Landroid/content/Context;)Lcom/blent/WorkerQueries;
+      98: new           #69                 // class com/blent/MediaTask$Metadata
+     101: dup
+     102: iconst_0
+     103: iconst_0
+     104: iconst_0
+     105: iload_2
+     106: iconst_2
+     107: if_icmpne     114
+     110: iconst_2
+     111: goto          115
+     114: iconst_1
+     115: bipush        7
+     117: aconst_null
+     118: invokespecial #72                 // Method com/blent/MediaTask$Metadata."<init>":(IIIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+     121: aload         5
+     123: aload         5
+     125: iload_2
+     126: putfield      #167                // Field com/blent/RemoteMetadata$shell$1.I$0:I
+     129: aload         5
+     131: iconst_1
+     132: putfield      #164                // Field com/blent/RemoteMetadata$shell$1.label:I
+     135: invokevirtual #85                 // Method com/blent/WorkerQueries.query:(Lcom/blent/MediaTask$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+     138: dup
+     139: aload         6
+     141: if_acmpne     160
+     144: aload         6
+     146: areturn
+     147: aload         5
+     149: getfield      #167                // Field com/blent/RemoteMetadata$shell$1.I$0:I
+     152: istore_2
+     153: aload         4
+     155: invokestatic  #65                 // Method kotlin/ResultKt.throwOnFailure:(Ljava/lang/Object;)V
+     158: aload         4
+     160: checkcast     #87                 // class java/lang/String
+     163: dup
+     164: ifnonnull     173
+     167: pop
+     168: iload_2
+     169: aconst_null
+     170: invokestatic  #173                // Method com/blent/CodecReportReceiverKt.formatDecoderReport:(I[Landroid/media/MediaCodecInfo;)Ljava/lang/String;
+     173: areturn
+     174: new           #140                // class java/lang/IllegalStateException
+     177: dup
+     178: ldc           #142                // String call to \'resume\' before \'invoke\' with coroutine
+     180: invokespecial #145                // Method java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+     183: athrow
+
+  static {};
+    Code:
+       0: new           #2                  // class com/blent/RemoteMetadata
+       3: dup
+       4: invokespecial #176                // Method "<init>":()V
+       7: putstatic     #30                 // Field INSTANCE:Lcom/blent/RemoteMetadata;
+      10: bipush        8
+      12: putstatic     #179                // Field $stable:I
+      15: return
+}

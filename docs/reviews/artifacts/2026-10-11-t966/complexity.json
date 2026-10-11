@@ -1,0 +1,146 @@
+[
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 13,
+    "name": "test_t497_real_lambda_body_entries_disambiguate_shared_declaration_lines",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 28,
+    "name": "test_t497_real_compiler_inventory_and_cached_repeat_agree",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 51,
+    "name": "test_t848_primary_constructor_collects_multiple_initializers_once",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 72,
+    "name": "test_t848_object_and_companion_initializers_are_real_static_methods",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 90,
+    "name": "test_t848_file_secondary_object_literal_and_enum_initialization_keep_native_boundaries",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 115,
+    "name": "test_t848_bounded_initializer_shapes_preserve_single_authored_method",
+    "score": 3
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 129,
+    "name": "test_t848_init_only_bodies_and_delegated_fields_are_not_generated_scaffolding",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 141,
+    "name": "test_t966_null_defaults_and_empty_init_are_filtered_setup_not_executable_methods",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 158,
+    "name": "test_t966_actual_compiler_default_fields_do_not_emit_authored_static_work",
+    "score": 1
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 175,
+    "name": "test_t966_bounded_parentheses_preserve_calls_and_remove_only_null_work",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/test_kotlin_inventory.py",
+    "line": 190,
+    "name": "test_t497_compiler_result_rejects_unowned_paths_and_malformed_records",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 14,
+    "name": "executableInitializer",
+    "score": 4
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 20,
+    "name": "propertyInitialization",
+    "score": 3
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 25,
+    "name": "hasInitialization",
+    "score": 4
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 33,
+    "name": "instanceInitialization",
+    "score": 5
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 38,
+    "name": "classInitialization",
+    "score": 9
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 52,
+    "name": "namedFunction",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 55,
+    "name": "accessor",
+    "score": 3
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 58,
+    "name": "fileInitialization",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 61,
+    "name": "additionalInitialization",
+    "score": 9
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 69,
+    "name": "functionName",
+    "score": 8
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 79,
+    "name": "reportFunction",
+    "score": 2
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 89,
+    "name": "inventory",
+    "score": 3
+  },
+  {
+    "path": "scripts/coverage/KotlinFunctions.kt",
+    "line": 100,
+    "name": "main",
+    "score": 1
+  }
+]

@@ -1,6 +1,8 @@
 """T497: compiler PSI distinguishes authored callbacks, accessors and constructors."""
 from pathlib import Path
 import tempfile
+import os
+import subprocess
 import unittest
 from unittest.mock import patch
 
@@ -135,6 +137,55 @@ class Delegated { val value by lazy { System.nanoTime() } }
             rows = kotlin_inventory.functions(root, [source])
             self.assertEqual([(row.name, row.first) for row in rows],
                              [('<init>', 1), ('<clinit>', 2), ('<init>', 3), ('<lambda>', 3)])
+
+    def test_t966_null_defaults_and_empty_init_are_filtered_setup_not_executable_methods(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root/'Fixture.kt'
+            source.write_text('''object NullOnly { var field: Any? = null }
+object Parenthesized { var field: Any? = ((null)) }
+class EmptyInit { init {} }
+object EmptyObject { init {} }
+object Executable { var field: Any? = null; init { System.nanoTime() } }
+class Parameter(val field: Any? = null)
+object Delegate { val field by lazy { null } }
+object Call { val field: Any? = factory() }
+''')
+            rows = kotlin_inventory.functions(root, [source])
+            self.assertEqual([(row.name, row.first) for row in rows], [
+                ('<clinit>', 5), ('<init>', 6), ('<clinit>', 7), ('<lambda>', 7), ('<clinit>', 8)])
+
+    def test_t966_actual_compiler_default_fields_do_not_emit_authored_static_work(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root/'Fixture.kt'
+            source.write_text('object NullOnly { private var owner: Any? = null; fun read() = owner }\n')
+            cache = kotlin_inventory.cache_dir()
+            classpath = os.pathsep.join(kotlin_inventory.artifact(cache, name, digest)
+                                       for name, digest in kotlin_inventory.ARTIFACTS.items())
+            subprocess.run(['java', '-cp', classpath, 'org.jetbrains.kotlin.cli.jvm.K2JVMCompiler',
+                            '-no-stdlib', '-no-reflect', '-cp', classpath, '-d', str(root/'classes'), str(source)],
+                           check=True, capture_output=True, timeout=30)
+            native = subprocess.check_output(['javap', '-c', '-p', '-classpath', str(root/'classes'), 'NullOnly'],
+                                             text=True, timeout=30)
+            self.assertRegex(native, r'putstatic[^\n]*INSTANCE')
+            self.assertNotRegex(native, r'putstatic[^\n]*owner')
+            self.assertEqual([row.name for row in kotlin_inventory.functions(root, [source])], ['read'])
+
+    def test_t966_bounded_parentheses_preserve_calls_and_remove_only_null_work(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root/'Fixture.kt'
+            lines = []
+            for depth in range(65):
+                null = '(' * depth + 'null' + ')' * depth
+                call = '(' * depth + 'factory()' + ')' * depth
+                lines.extend([f'object Null{depth} {{ val value: Any? = {null} }}',
+                              f'object Call{depth} {{ val value: Any? = {call} }}'])
+            source.write_text('\n'.join(lines) + '\n')
+            rows = kotlin_inventory.functions(root, [source])
+            self.assertEqual([(row.name, row.first) for row in rows],
+                             [('<clinit>', 2 * depth + 2) for depth in range(65)])
 
     def test_t497_compiler_result_rejects_unowned_paths_and_malformed_records(self):
         with tempfile.TemporaryDirectory() as directory:

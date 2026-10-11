@@ -203,6 +203,11 @@ all of its property/init bodies; every mapped native method variant must pass.
 Secondary-only classes retain shared initialization within each secondary
 constructor's native counters. Initialization without matching native method
 counters fails; coverage of unrelated methods cannot replace those counters.
+T966 omits empty init blocks and property literal-null defaults (including
+parentheses): these emit no authored JVM initializer instructions. Actual compiler
+fixtures retain singleton INSTANCE setup but prove no property assignment; native
+JaCoCo filters that generated setup. Calls, delegates, parameter defaults and
+nonempty init blocks remain inventoried. Missing executable counters still fail.
 Native JaCoCo filters remain authoritative for compiler-generated scaffolding:
 retained default-constructor variants with authored counters must also pass. Per the maintainer's scope, compiler-inlined lambda bodies
 count within their enclosing function/method. Lambda body-entry lines disambiguate
