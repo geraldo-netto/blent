@@ -211,3 +211,12 @@ without being overwritten; partial input is never published.
 
 [T816 measurements](reviews/2026-10-10-camera-frame-reuse.md) cover the Rust frame
 staging stage, not end-to-end camera latency.
+
+## Direct USB camera integration status
+
+The regular camera workflow above still uses ADB. T932 implements Android's
+original-consent/isolated-capture composition for direct USB; it advertises camera
+capability while keeping Start, SDK permission and background consent separate
+from pairing. Host registration (T933), production USB camera controls and joined
+physical acceptance (T858/T863) remain pending. Device trials are postponed;
+offline fixtures do not establish debugging-off camera support.

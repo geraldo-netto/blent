@@ -1890,3 +1890,24 @@ and return, preserving isolated cleanup and unrelated display/audio.
 [Permanent red/green SDK, policy and native counter evidence](artifacts/2026-10-11-t944/README.md)
 covers simulated API 27/34. Capture composition/capability enablement remains
 T932; physical camera/provider acceptance remains T858/T863 and is postponed.
+
+## T932 application-owned USB camera capture composition
+
+The process camera owner now observes both original consent and admitted capture
+publications. A portable selection adapter requires explicit local Start, fresh
+SDK permission, current offer authority and foreground or explicitly allowed
+background before native acquisition. Its opaque wrapper lifetime cannot revive
+after withdrawal, even when identical metadata is republished. Unrelated status
+updates preserve the wrapper and avoid restarting capture. Source failure/reset
+revokes selection; the existing lane retains every actually created camera worker
+until native retirement and forwards proof to the original connection worker.
+
+Default tablet composition now advertises display plus camera (mask 3) and injects
+the original resource authority into the camera controller. Audio stays unavailable
+on this transport. This is implemented Android composition, not physical joined
+acceptance or a completed host camera adapter. T933 owns host registration, T858
+owns production USB camera controls/joined hardware acceptance, and T863 retains
+its missing older-device evidence. Owner postponed all live trials.
+
+[Permanent regressions and native counters](artifacts/2026-10-11-t932/README.md)
+cover 1,782 normal tests and all 2,498 Android source functions individually.

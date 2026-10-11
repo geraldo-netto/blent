@@ -1,0 +1,102 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionCameraAccess$Original",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 12,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraAccess",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionBinding;)V",
+    "line": 11,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lcom/blent/connection/ConnectionRunFactory;)V",
+    "line": 23,
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraAccess$authority$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionCameraAccess;Lcom/blent/connection/ConnectionCameraAccess$Original;Lcom/blent/connection/ConnectionCameraChoice;)V",
+    "line": 70,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCapturePublication",
+    "name": "<init>",
+    "signature": "(Ljava/lang/Object;Lcom/blent/CameraCaptureTarget;)V",
+    "line": 25,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureSelection",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V",
+    "line": 5,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureSelection$authority$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraCaptureSelection;Lcom/blent/CameraCapturePublication;Ljava/lang/Object;)V",
+    "line": 38,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureSelection$claim$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraCaptureSelection;Ljava/lang/Object;Ljava/lang/Object;Lcom/blent/CameraCaptureClaim;)V",
+    "line": 47,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureObservation",
+    "name": "<init>",
+    "signature": "(Lkotlinx/coroutines/flow/Flow;Lkotlinx/coroutines/flow/StateFlow;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineScope;)V",
+    "line": 8,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureTarget",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraCaptureAuthority;)V",
+    "line": 19,
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true
+  }
+]

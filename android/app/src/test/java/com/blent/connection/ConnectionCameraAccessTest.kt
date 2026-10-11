@@ -2,6 +2,7 @@ package com.blent.connection
 
 import com.blent.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -29,6 +30,29 @@ class ConnectionCameraAccessTest {
         override fun close() { workers.forEach { it.release.complete(Unit) }; binding.disconnect(); scope.cancel() }
     }
     private val consent = CameraLocalConsent(true, false, true, false)
+
+    @Test fun t932CaptureProjectionJoinsExactOriginalTargetAndDropsMismatchedMetadata() = Rig().use { rig ->
+        val emitted = mutableListOf<CameraCapturePublication?>()
+        val observer = rig.scope.launch { rig.access.captures.collect { emitted.add(it) } }
+        try {
+            assertNull(rig.access.capture())
+            val worker = rig.connect()
+            worker.report(ConnectionWorkerEvent.CameraOffered(LocalCameraOffer(cameraLease(), cameraProfile(), false)))
+            assertNull(rig.access.capture())
+            worker.report(ConnectionWorkerEvent.Camera(cameraRoute()))
+            val original = rig.access.capture()!!
+            assertSame(rig.access.project()!!.owner, original.owner)
+            assertSame(rig.binding.cameraTarget.value, original.target)
+            worker.report(ConnectionWorkerEvent.Trust(cameraLease().connection.peer, true))
+            assertSame(original.owner, rig.access.capture()!!.owner)
+            assertSame(original.target, rig.access.capture()!!.target)
+            worker.report(ConnectionWorkerEvent.Camera(cameraRoute(2).copy(port = 12346)))
+            assertNull(rig.access.capture())
+            assertNull(emitted.last())
+            worker.report(ConnectionWorkerEvent.CameraClosed(cameraLease()))
+            assertNull(rig.access.capture())
+        } finally { observer.cancel() }
+    }
 
     @Test fun t944OfferPermissionAdmissionKeepOneOwnerButExactPublicationAuthority() = Rig().use { rig ->
         assertNull(rig.access.project())

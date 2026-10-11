@@ -19,6 +19,7 @@ internal object CameraOwner {
     private var control: CameraActivityOwner? = null
     private val prompts = CameraPermissionPrompts()
     private var observation: CameraConsentObservation? = null
+    private var captureObservation: CameraCaptureObservation? = null
     private var scope: CoroutineScope? = null
     val access: CameraAccessControls? get() = control?.consent
 
@@ -36,8 +37,10 @@ internal object CameraOwner {
         control = owner
         val dispatcher = CoroutineScope(SupervisorJob() + Handler(Looper.getMainLooper()).asCoroutineDispatcher())
         scope = dispatcher
-        observation = CameraConsentObservation(ConnectionCameraAccess(ConnectionOwner.get(app)).offers,
-            owner.consent, dispatcher)
+        val access = ConnectionCameraAccess(ConnectionOwner.get(app))
+        observation = CameraConsentObservation(access.offers, owner.consent, dispatcher)
+        captureObservation = CameraCaptureObservation(access.captures, owner.consent.state,
+            value::hasPermission, value::useTarget, dispatcher)
         return value
     }
 
@@ -55,6 +58,8 @@ internal object CameraOwner {
     }
 
     fun reset() {
+        captureObservation?.retire()
+        captureObservation = null
         observation?.retire()
         observation = null
         scope?.cancel()

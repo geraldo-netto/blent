@@ -3,11 +3,20 @@ package com.blent.connection
 import android.os.SystemClock
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
+
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+
+/** Authenticated setup supplies the ticket/window; media consent remains owned
+ * by its resource controller. No camera device opens during composition. */
+internal fun tabletConnectionRun(spec: ConnectionWorkerSpec, ready: ConnectionSetupReady): ConnectionRun {
+    val session = TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 3)
+    return ConnectionLocalRun(ConnectionSessionRunner(session, ready.io, spec.io),
+        ConnectionLocalResources(session, ready.capacity, spec.io, cameraAuthority = session))
+}
 
 /** One connection-process actor. Native opening, crypto and storage belong to
  * setup's retained workers; callbacks only wake this serialized control loop. */
@@ -16,11 +25,7 @@ internal class AndroidConnectionWorker(
     private val setup: (current: () -> Boolean, wake: () -> Unit) -> ConnectionSetup,
     private val report: (ConnectionWorkerEvent) -> Unit,
     private val clock: () -> Long = SystemClock::elapsedRealtime,
-    private val runner: ConnectionRunFactory = ConnectionRunFactory { ready ->
-        val session = TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 1)
-        ConnectionLocalRun(ConnectionSessionRunner(session, ready.io, spec.io),
-            ConnectionLocalResources(session, ready.capacity, spec.io))
-    },
+    private val runner: ConnectionRunFactory = ConnectionRunFactory { ready -> tabletConnectionRun(spec, ready) },
 ) : ConnectionWorker {
     private val state = AtomicInteger(0)
     private val stopping = AtomicBoolean()

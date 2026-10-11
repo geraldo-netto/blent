@@ -8,7 +8,7 @@ import org.robolectric.util.ReflectionHelpers
 internal class ConnectionUiFixture : AutoCloseable {
     class Worker(val report: (ConnectionWorkerEvent) -> Unit) : ConnectionWorker {
         val released = CompletableDeferred<Unit>()
-        val commands = mutableListOf<ConnectionWorkerCommand>()
+        val commands = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerCommand>()
         var cancelled = 0
         override suspend fun execute() { awaitCancellation() }
         override fun cancel() { cancelled++ }

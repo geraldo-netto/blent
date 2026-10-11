@@ -3,6 +3,7 @@ package com.blent.connection
 import com.blent.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 
 /** Wire/presentation adapter. Portable consent sees no credential or worker type.
  * The opaque owner spans one original peer/lease, including permission/admission
@@ -15,6 +16,16 @@ internal class ConnectionCameraAccess(private val binding: ConnectionBinding) {
     // Sample latest state when a conflated wake runs; a queued old snapshot must
     // not clear consent already carried into a newer publication of this owner.
     val offers: Flow<CameraAccessOffer?> = binding.state.map { project(binding.state.value) }
+    val captures: Flow<CameraCapturePublication?> = combine(binding.state, binding.cameraTarget) { _, _ -> capture() }
+
+    fun capture(): CameraCapturePublication? {
+        val offer = project() ?: return null
+        if (!offer.admitted) return null
+        val choice = binding.state.value.camera ?: return null
+        val target = binding.cameraTarget.value ?: return null
+        if (target.endpoint != ConnectionCameraTarget.endpoint(choice.route)) return null
+        return CameraCapturePublication(offer.owner, target)
+    }
 
     fun project(view: ConnectionView = binding.state.value): CameraAccessOffer? {
         val choice = currentChoice(view)

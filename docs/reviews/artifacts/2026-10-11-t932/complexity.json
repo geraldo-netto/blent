@@ -1,0 +1,1928 @@
+[
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureContracts.kt",
+    "line": 19,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureContracts.kt",
+    "line": 20,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureContracts.kt",
+    "line": 25,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 8,
+    "name": "<init>",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 16,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 17,
+    "name": "<lambda>",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 19,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 21,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 22,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 25,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 25,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureObservation.kt",
+    "line": 34,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 5,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 13,
+    "name": "project",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 21,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 22,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 25,
+    "name": "local",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 29,
+    "name": "permitted",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 36,
+    "name": "current",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 38,
+    "name": "authority",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 39,
+    "name": "retain",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 44,
+    "name": "stop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 47,
+    "name": "claim",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 48,
+    "name": "current",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraCaptureSelection.kt",
+    "line": 49,
+    "name": "retired",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 17,
+    "name": "<clinit>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 24,
+    "name": "get:access",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 26,
+    "name": "get",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 28,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 29,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 31,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 31,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 47,
+    "name": "attach",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 48,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 50,
+    "name": "detach",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 52,
+    "name": "permissionResult",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 54,
+    "name": "ownsService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 56,
+    "name": "serviceStopped",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/CameraOwner.kt",
+    "line": 60,
+    "name": "reset",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 15,
+    "name": "tabletConnectionRun",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 23,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 28,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 41,
+    "name": "signal",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 42,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 43,
+    "name": "command",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 45,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 46,
+    "name": "cancel",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 48,
+    "name": "create",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 56,
+    "name": "execute",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 57,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 63,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 66,
+    "name": "controls",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 67,
+    "name": "<lambda>",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 72,
+    "name": "events",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 73,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 79,
+    "name": "step",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 86,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 87,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 90,
+    "name": "display",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 93,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 95,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 97,
+    "name": "camera",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 101,
+    "name": "waitWake",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 101,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 102,
+    "name": "cleanup",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 104,
+    "name": "<lambda>",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 115,
+    "name": "finish",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 119,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 125,
+    "name": "retire",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 128,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 128,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "line": 131,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 11,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 12,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 18,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 19,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 21,
+    "name": "capture",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 30,
+    "name": "project",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 37,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 40,
+    "name": "clear",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 42,
+    "name": "original",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 45,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 48,
+    "name": "currentChoice",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 55,
+    "name": "current",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 58,
+    "name": "offer",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 60,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 65,
+    "name": "profile",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 70,
+    "name": "authority",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 71,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 72,
+    "name": "update",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 73,
+    "name": "permissionResult",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/connection/ConnectionCameraAccess.kt",
+    "line": 77,
+    "name": "wire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 13,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 15,
+    "name": "dispatch",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 16,
+    "name": "drain",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 18,
+    "name": "<init>",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 24,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 25,
+    "name": "update",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 26,
+    "name": "permissionResult",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 30,
+    "name": "retain",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 31,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 32,
+    "name": "retired",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 34,
+    "name": "stop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 38,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 38,
+    "name": "<lambda>",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 42,
+    "name": "publish",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 43,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 46,
+    "name": "t932SourceCompletionAndFailureRevokeCaptureWithoutClearingLocalConsent",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 46,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 47,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 61,
+    "name": "t932ConsentStopAndObserverRetirementInvalidateOnlyOriginalCapture",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 61,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 62,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 80,
+    "name": "t932NativeSelectionFailureAndParentCancellationDropCapture",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 80,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 81,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 87,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 95,
+    "name": "t932RetirementBeforeQueuedPublicationCannotAcquireCapture",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 95,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 97,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureObservationTest.kt",
+    "line": 101,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 7,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 9,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 14,
+    "name": "retain",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 15,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 16,
+    "name": "retired",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 18,
+    "name": "stop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 20,
+    "name": "offer",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 21,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 23,
+    "name": "current",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 24,
+    "name": "update",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 25,
+    "name": "permissionResult",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 28,
+    "name": "t932WithdrawnSourceCannotReviveOldWrapperByPublishingEqualMetadata",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 33,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 33,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 46,
+    "name": "t932EveryConsentAndPermissionBooleanRejectsUnsafeCapture",
+    "score": 8
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 56,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 57,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 57,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 64,
+    "name": "t932FreshStateOriginalOwnerAndClaimAreCheckedAtAcquisition",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 69,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 69,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 90,
+    "name": "t932MissingConsentAndThrowingPermissionOrAuthorityFailClosed",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 93,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 93,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 95,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 95,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 96,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 96,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraCaptureSelectionTest.kt",
+    "line": 97,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 19,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 25,
+    "name": "isBinderAlive",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 26,
+    "name": "linkToDeath",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 27,
+    "name": "unlinkToDeath",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 30,
+    "name": "onTransact",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 37,
+    "name": "die",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 37,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 39,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 40,
+    "name": "getApplicationContext",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 41,
+    "name": "bindService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 46,
+    "name": "unbindService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 48,
+    "name": "until",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 48,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 55,
+    "name": "t932ProcessCompositionRequiresLocalStartAndActualNativeDeathBeforeProof",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 55,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 63,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 68,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 72,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 80,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 83,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 86,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt",
+    "line": 86,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 17,
+    "name": "spec",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 19,
+    "name": "until",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 19,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 20,
+    "name": "failed",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 24,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 35,
+    "name": "create",
+    "score": 5
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 35,
+    "name": "<lambda>",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 36,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 38,
+    "name": "stop",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 40,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 40,
+    "name": "<lambda>",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 42,
+    "name": "stop",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 46,
+    "name": "t854FactoryIsPromptAndCancelBeforeExecuteOpensNothing",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 46,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 50,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 52,
+    "name": "t854RetireBeforeExecutePreventsLaterNativeAdmission",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 52,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 54,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 56,
+    "name": "t854OneActorBoundsCommandsAndSuppressesInternalEnded",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 56,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 59,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 60,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 61,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 67,
+    "name": "t854CancelInvalidatesOpeningGateAndStopsRunnerBeforeFurtherDispatch",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 67,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 69,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 69,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 74,
+    "name": "t854IndependentTimerObservesSetupFailureWithoutWake",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 74,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 75,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 76,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 77,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 79,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 84,
+    "name": "t854SetupFactoryFailureQuarantinesRatherThanRetrying",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 84,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 87,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 88,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 90,
+    "name": "t854CoroutineCancellationStillWaitsActualNativeRetirement",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 90,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 92,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 92,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 93,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 97,
+    "name": "t854StuckNativeRetirementIsBoundedAndNeverReportedAsSuccess",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 97,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 99,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 99,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 101,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 102,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 104,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 106,
+    "name": "t854ProcessExitRequirementFailsExecutionEvenWithNoProtocolError",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 106,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 107,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 108,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 109,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 110,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 111,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 114,
+    "name": "t854ReportFailureCannotOrphanSetupAndDuplicateExecuteRejects",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 114,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 115,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 117,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 118,
+    "name": "stop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 119,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 119,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 120,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 120,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 121,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 123,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 126,
+    "name": "t854DefaultRunnerAndAndroidClockOwnTransportUntilActualExit",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 126,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 129,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 130,
+    "name": "stop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 131,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 132,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 132,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 136,
+    "name": "t854NativeSetupStallDoesNotBlockTimerOrCancellation",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 136,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 137,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 138,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 140,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 140,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 141,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 142,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 144,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 145,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 146,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 148,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 151,
+    "name": "t909WorkerPublishesBoundedRouteTransitionsAndExactRevocation",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 151,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 154,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 156,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 156,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 159,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 162,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 166,
+    "name": "t909PairingLossPublishesDisplayRevocationDuringWorkerCleanup",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 166,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 169,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 171,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 177,
+    "name": "t907T932DefaultCompositionAdvertisesDisplayCameraWithoutAudio",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 177,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 180,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 181,
+    "name": "stop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 182,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 182,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 183,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 185,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 185,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 189,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 189,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 191,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt",
+    "line": 193,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 9,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 10,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 13,
+    "name": "execute",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 14,
+    "name": "cancel",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 15,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 16,
+    "name": "command",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 18,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 21,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 21,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 23,
+    "name": "connect",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 25,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 30,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 30,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 34,
+    "name": "t932CaptureProjectionJoinsExactOriginalTargetAndDropsMismatchedMetadata",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 34,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 36,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 36,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 57,
+    "name": "t944OfferPermissionAdmissionKeepOneOwnerButExactPublicationAuthority",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 57,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 80,
+    "name": "t944IdenticalTicketsInReplacementPeerCannotReviveOriginalAccess",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 80,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 96,
+    "name": "t944InvalidVisibilityForeignLeaseAndSourceLossCannotExposeAccess",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 96,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 109,
+    "name": "t944EveryConsentBooleanMapsWithoutGrantingCaptureOrChangingResource",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionCameraAccessTest.kt",
+    "line": 109,
+    "name": "<lambda>",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 8,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 9,
+    "name": "<init>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 13,
+    "name": "execute",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 14,
+    "name": "cancel",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 15,
+    "name": "retire",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 16,
+    "name": "command",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 20,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 20,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 26,
+    "name": "prompt",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 27,
+    "name": "connect",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 28,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+    "line": 30,
+    "name": "<lambda>",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/TabletConnectionRunTest.kt",
+    "line": 8,
+    "name": "t932DefaultCompositionRetainsCameraOfferWithoutOpeningEndpointBeforePermission",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/connection/TabletConnectionRunTest.kt",
+    "line": 33,
+    "name": "<lambda>",
+    "score": 1
+  }
+]

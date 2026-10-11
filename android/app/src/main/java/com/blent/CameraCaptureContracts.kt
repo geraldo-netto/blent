@@ -20,3 +20,7 @@ internal class CameraCaptureTarget(val endpoint: CameraEndpoint, val authority: 
     init { require(endpoint.valid()) { "Invalid camera capture target" } }
 }
 
+/** Opaque consent lifetime and its original capture authority, projected by a
+ * transport adapter. Equal profile values never substitute for this owner. */
+internal class CameraCapturePublication(val owner: Any, val target: CameraCaptureTarget)
+

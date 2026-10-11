@@ -1,0 +1,51 @@
+package com.blent
+
+/** Local consent and original transport authority must both remain current at
+ * acquisition. A stable wrapper avoids restarting capture on unrelated UI wakes. */
+internal class CameraCaptureSelection(
+    private val consent: () -> CameraConsentView,
+    private val permission: () -> Boolean,
+) {
+    private var publication: CameraCapturePublication? = null
+    private var selected: CameraCaptureTarget? = null
+    @Volatile private var identity: Any? = null
+
+    fun project(value: CameraCapturePublication?): CameraCaptureTarget? {
+        if (value == null || !permitted(value.owner)) {
+            identity = null; publication = null; selected = null
+            return null
+        }
+        val previous = publication
+        if (previous?.owner === value.owner && previous.target === value.target) return selected
+        publication = value
+        val original = Any().also { identity = it }
+        return CameraCaptureTarget(value.target.endpoint, authority(value, original)).also { selected = it }
+    }
+
+    private fun local(view: CameraConsentView, offer: CameraAccessOffer): Boolean =
+        view.enabled && offer.admitted &&
+            (view.foreground || (view.backgroundAllowed && offer.backgroundRequested))
+
+    private fun permitted(owner: Any): Boolean = try {
+        val view = consent()
+        val offer = view.offer
+        offer?.owner === owner && local(view, checkNotNull(offer)) &&
+            permission() && offer.authority.current()
+    } catch (_: Exception) { false }
+
+    private fun current(owner: Any, original: Any) = identity === original && permitted(owner)
+
+    private fun authority(value: CameraCapturePublication, identity: Any) = object : CameraCaptureAuthority {
+        override fun retain(): CameraCaptureClaim? {
+            if (!current(value.owner, identity)) return null
+            val original = value.target.authority.retain() ?: return null
+            return claim(value.owner, identity, original)
+        }
+        override fun stop() = value.target.authority.stop()
+    }
+
+    private fun claim(owner: Any, identity: Any, original: CameraCaptureClaim) = object : CameraCaptureClaim {
+        override fun current() = current(owner, identity) && original.current()
+        override fun retired(proof: ResourceRetirement) = original.retired(proof)
+    }
+}
