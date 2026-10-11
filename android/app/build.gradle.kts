@@ -95,6 +95,9 @@ android {
         res.srcDir("src/profile/res")
     }
     sourceSets.getByName("testProfile").java.srcDir("../../scripts/benchmarks/android-allocation-tests")
+    // T959: permanent compile regression for exact disposable worker fixtures.
+    // These remain test-only; never ship the simulated native factory.
+    sourceSets.getByName("test").java.srcDir("../../scripts/benchmarks/android-worker-tests")
     sourceSets.getByName("test").resources.srcDir("../../testdata")
     // Compiled with the normal test friend paths; executed only by tlsInteropTest.
     sourceSets.getByName("testDebug").java.srcDir("src/tlsInterop/tests")

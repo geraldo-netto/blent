@@ -33,7 +33,7 @@ class WorkerAcceptanceReceiver : BroadcastReceiver() {
         try {
             val tasks = listOf(audio(1, 60), audio(2, 40),
                 MediaTask.Camera(CameraEndpoint("a".repeat(64), 12345, 640, 480, 30, 3000), CameraLens.REAR, 0),
-                MediaTask.Display("a".repeat(64), DecoderFormat("video/avc", 640, 480, 30)))
+                MediaTask.Display(AdbDisplayRoutes.create("a".repeat(64)), DecoderFormat("video/avc", 640, 480, 30)))
             for (task in tasks) {
                 val started = System.nanoTime()
                 val owner = Owner(context, task, if (task is MediaTask.Display) surface else null, this).also { owners.add(it) }
