@@ -288,6 +288,7 @@ Use a new output directory for each invocation:
 python3 scripts/coverage/rust_collect.py --output /tmp/blent-rust-default
 python3 scripts/coverage/rust_collect.py --output /tmp/blent-rust-all --all-features
 python3 scripts/coverage/rust_collect.py --output /tmp/blent-rust-common --package blent-config --lib
+python3 scripts/coverage/rust_collect.py --output /tmp/blent-rust-host-units --package blent --lib --bins --feature accessory-transport
 ```
 
 The collector enforces offline, locked Cargo resolution and creates its own fresh
@@ -296,6 +297,12 @@ It never cleans or reuses a caller's existing directory. Package and test option
 accept names; use `--filter` for a Rust test-name filter. Arbitrary Cargo argument,
 output-path and target-dir passthrough is intentionally absent. CI already uses
 fresh target directories.
+
+T1006 adds explicit `--bins` selection. Combine it with `--lib` for library and
+binary unit targets without integration targets. This changes the requested
+test targets only; it introduces no function/counter exclusions and preserves
+all existing tests. Full integration checks remain separate. In particular,
+RPM-dependent notice tests remain deferred under T833, not deleted or skipped.
 
 The output retains `manifest.json`, `rust.lcov`, Cargo logs, raw profiles/native
 objects and SHA-256 attestation of sources, report, collector and owned objects.

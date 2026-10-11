@@ -20,6 +20,7 @@ class Selection:
     all_features: bool = False
     filter: str | None = None
     features: tuple = ()
+    binaries: bool = False
 
 
 def names(option, values):
@@ -38,6 +39,8 @@ def command(selection, report):
         args.append('--workspace')
     if selection.library:
         args.append('--lib')
+    if selection.binaries:
+        args.append('--bins')
     if selection.all_features:
         args.append('--all-features')
     if selection.filter is not None:
@@ -117,12 +120,13 @@ def main():
     parser.add_argument('--package', action='append', default=[])
     parser.add_argument('--test', action='append', default=[])
     parser.add_argument('--lib', action='store_true')
+    parser.add_argument('--bins', action='store_true', help='select binary unit targets; combine with --lib')
     parser.add_argument('--all-features', action='store_true')
     parser.add_argument('--feature', action='append', default=[], help='explicit feature name; repeat as needed')
     parser.add_argument('--filter')
     args = parser.parse_args()
     collect(ROOT, args.output, Selection(tuple(args.package), tuple(args.test), args.lib,
-                                       args.all_features, args.filter, tuple(args.feature)))
+                                       args.all_features, args.filter, tuple(args.feature), args.bins))
 
 
 if __name__ == '__main__':

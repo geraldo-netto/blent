@@ -25,6 +25,46 @@ def snapshot(root):
 
 
 class RustCollectTest(unittest.TestCase):
+    def test_t1006_actual_offline_cargo_accepts_combined_unit_targets(self):
+        with tempfile.TemporaryDirectory(prefix='blent-t1006-units-') as directory:
+            root = Path(directory)
+            (root / 'Cargo.toml').write_text('[package]\nname="blent-unit-probe"\nversion="0.0.0"\nedition="2021"\n[lib]\npath="library.rs"\n[[bin]]\nname="blent-unit-probe"\npath="binary.rs"\n')
+            (root / 'Cargo.lock').write_text('version = 4\n[[package]]\nname="blent-unit-probe"\nversion="0.0.0"\n')
+            (root / 'library.rs').write_text('#[test] fn library() {}\n')
+            (root / 'binary.rs').write_text('fn main() {}\n#[test] fn binary() {}\n')
+            for flags in [['--lib'], ['--bins'], ['--lib', '--bins']]:
+                output = run('cargo', 'test', '--locked', '--offline', *flags,
+                             '--manifest-path', str(root / 'Cargo.toml'),
+                             '--target-dir', str(root / 'target'))
+                self.assertIn('test result: ok', output.stdout)
+
+    def test_t1006_cli_selects_only_requested_unit_targets(self):
+        import rust_collect
+        from unittest.mock import patch
+        for flags in [[], ['--lib'], ['--bins'], ['--lib', '--bins']]:
+            args = ['rust_collect.py', '--output', 'new-evidence', '--package', 'blent', *flags]
+            with patch('sys.argv', args), patch.object(rust_collect, 'collect') as collect:
+                rust_collect.main()
+            selection = collect.call_args.args[2]
+            self.assertEqual('--lib' in flags, selection.library)
+            self.assertEqual('--bins' in flags, selection.binaries)
+            self.assertEqual((), selection.tests)
+            self.assertEqual(('blent',), selection.packages)
+
+    def test_t1006_explicit_unit_targets_preserve_offline_owned_collection(self):
+        import rust_collect
+        output = Path('evidence/rust.lcov')
+        selection = rust_collect.Selection(packages=('blent',), library=True, binaries=True,
+                                           features=('accessory-transport',))
+        command = rust_collect.command(selection, output)
+        for option in ['--lib', '--bins', '--offline', '--locked', '--features=accessory-transport']:
+            self.assertIn(option, command)
+        self.assertNotIn('--all-features', command)
+        self.assertNotIn('--bins', rust_collect.command(rust_collect.Selection(), output))
+        for invalid in ['', '../foreign', '--target-dir=old', '\x00', 'f' * 257]:
+            with self.assertRaises(ValueError):
+                rust_collect.command(rust_collect.Selection(packages=(invalid,), binaries=True), output)
+
     def test_t1001_fresh_owned_target_passes_actual_offline_cargo_clean_guard(self):
         import rust_collect
         llvm = tools()
