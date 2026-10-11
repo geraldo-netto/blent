@@ -1728,7 +1728,7 @@ cancellation and processes it during cleanup. New consent and permission work
 remain closed. [Permanent fail-before-fix, joined real TCP and native counter evidence](artifacts/2026-10-11-t940/README.md)
 covers 683 connection tests. Default production capabilities remain display-only.
 T941 relays terminal proof through private service/client IPC and main-process
-admission/presentation; T936 joins these layers. Actual hardware capture/proof is
+admission/presentation; T936 verifies these joined layers. Actual hardware capture/proof is
 T932, host adaptation T933 and physical acceptance T858.
 
 ## T941 camera presentation and retained private cleanup
@@ -1744,6 +1744,20 @@ Presentation binds permission choices to exact original generation/reference
 identity. Closed owners cannot replay routes or clear replacements; new owners may
 change profiles. Camera closure preserves display, while stop/revoke/peer changes
 clear camera immediately. [Permanent red/green, bounded real Binder/Parcel and native counters](artifacts/2026-10-11-t941/README.md)
-cover 699 connection tests. T936 joins private IPC with the actual local camera
+cover 699 connection tests. T936 verifies private IPC joined with the actual local camera
 channel. Production capabilities remain display-only pending actual hardware
 capture/proof under T932; host adaptation is T933 and physical acceptance T858.
+
+## T936 joined private camera transport
+
+The portable owner, schemas, actor, original worker IPC and presentation are
+composed. [Permanent joined service/Binder, actor, mux and real local TCP evidence](artifacts/2026-10-11-t936/README.md)
+covers 705 connection tests: greeting/feedback, denied camera with independent
+display, late permission rejection and retained cleanup after cancellation.
+
+Fixture USB permission/pairing authority is synthetic and process death simulated;
+hardware capture is never started. These results establish private transport and
+lifecycle composition, not physical camera/codec/native USB acceptance. Production
+capabilities remain display-only until T932 supplies Activity/isolated capture and
+actual hardware-worker completion. Host adaptation remains T933 and physical
+acceptance T858 with postponed T855/native T863 prerequisites.
