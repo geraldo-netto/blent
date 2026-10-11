@@ -15,6 +15,11 @@ pub(super) fn spawn_with_clock(
     token: &str,
     clocked: bool,
 ) -> Result<Child> {
+    profile.validate()?;
+    anyhow::ensure!(
+        blent_config::connection::media::valid_credential(token),
+        "invalid audio helper credential"
+    );
     let direction = match profile.direction {
         Direction::Microphone => "microphone",
         Direction::Speakers => "speakers",
@@ -73,3 +78,6 @@ pub(super) async fn ready(child: &mut Child) -> Result<()> {
     anyhow::ensure!(&ready == b"READY\n", "PipeWire device could not be created");
     Ok(())
 }
+
+#[cfg(test)]
+mod tests;

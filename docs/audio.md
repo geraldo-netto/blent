@@ -205,6 +205,16 @@ Native counters cover the default and accessory configurations; Windows runtime
 validation remains unavailable under T902. Speaker PCM integration is T992,
 controls T979 and postponed physical acceptance T860.
 
+## Native helper argument validation (T993)
+
+The Linux audio helper boundary validates the complete profile and strict
+64-character lowercase-hex credential before slicing its label or spawning a
+child. Short and multibyte tokens return errors; invalid buffering never creates
+a helper. Permanent red/green tests and bounded byte/length cases retain these
+checks independently of caller validation. Production callers already generated
+valid credentials; wire format and valid native startup remain unchanged.
+[Regression and native counters](reviews/artifacts/2026-10-11-t993/README.md).
+
 ## Ownership and adapter integration
 
 Keep one `AudioSession` and native `AudioBackend` owner per direction throughout
