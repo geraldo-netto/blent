@@ -10,6 +10,7 @@ pub mod display;
 pub mod encoder_workers;
 pub mod encoding;
 pub mod gpu;
+pub mod host_activity;
 pub mod idle;
 pub mod input_mapping;
 pub mod model;

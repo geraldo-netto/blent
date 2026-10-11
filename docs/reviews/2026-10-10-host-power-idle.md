@@ -3,9 +3,9 @@
 Owner decision (2026-10-10): host lock or display-off pauses display sharing only;
 active webcam/audio continue. Host suspend/shutdown necessarily interrupts all
 resources. Resume should restore enabled resources without restoring stale
-connection authority. Implementation is tracked under T913–T915 in TODO.md.
+connection authority. Portable policy is implemented under T913; native integration and unchanged-frame handling remain T914/T915 in TODO.md.
 
-## Current implementation, verified locally
+## Native implementation, verified locally before T914 integration
 
 - `host/evdi/capture.c::on_dpms` records `dpms_on` and logs it. No production
   capture decision reads that flag; it also appears in diagnostic statistics.
@@ -71,3 +71,50 @@ so progress relies on the periodic fallback. T918 tracks completion-driven
 wakeups and nearest-deadline sleeps, with retained lost-wake fallback and matched
 CPU/wakeup/latency measurements. This is separate from video-frame suppression;
 no measured power saving is claimed.
+
+## Portable policy and independent ownership (T913, 2026-10-12)
+
+`common/src/host_activity` defines independent host observation, capability, policy
+and resource authority contracts. The policy accepts strictly increasing revisions
+from one positive source epoch. Rejected stale, foreign, duplicate or unsupported
+observations leave its state unchanged. Supported-but-unknown machine power
+conservatively pauses all resources; supported-but-unknown lock/display state
+pauses display when its preference is enabled. Unsupported capabilities remain
+explicitly false and preserve existing behavior. Transport loss is not a power
+observation, and unchanged content remains a separate cadence input.
+
+The persisted `[host_activity]` settings default to:
+
+```toml
+pause_on_lock = true
+pause_on_display_off = true
+pause_without_viewer = true
+```
+
+Disabling a setting preserves display demand for that condition, trading potential
+idle resource savings for uninterrupted sharing. Machine suspension/unavailability
+is mandatory for all resources regardless of these display preferences. Lock,
+display-off and viewer loss leave auxiliary camera/audio demand enabled. Each
+resource still requires its own exact current original authority; auxiliary demand
+never grants a webcam/audio lease. Settings merge by edited leaf, preserving
+concurrent changes to other preferences and media settings. Changes currently
+require the existing explicit restart boundary; native application is T914.
+
+One `Gate` per display, webcam, microphone and speaker reserves independently
+retained startup/native completion before exposing a factory. Stop is irreversible
+for that original request; rapid resume waits for actual completion. A stalled
+resource cannot block another gate. Replacement rechecks current original
+authenticated authority, and request exhaustion fails closed without wrapping.
+Backend adapters must recheck the plan/authority before acquisition and retain
+the real startup owner independently of cancellation or task results.
+
+These are portable decisions and ownership rules, not running OS event integration
+or a claim of reduced native CPU/power. T914 supplies Linux sources, display/media
+lifecycle composition and fresh codec/keyframe recovery. T915 supplies cadence
+changes. Physical lock/suspend/tablet acceptance remains postponed.
+
+Permanent normal-suite tests exercise all capability byte values, all eight
+preference combinations, invalid TOML values, source/revision boundaries, concurrent
+settings edits, original authority loss, counter exhaustion and 32 independent
+resource cycles while actual retirement is held. Native counters and source
+attestation are retained in [T913 evidence](artifacts/2026-10-12-t913/README.md).

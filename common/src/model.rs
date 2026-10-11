@@ -96,6 +96,8 @@ pub struct FileConfig {
     pub calibration_generation: u32,
     /// Opt-in measured sparse cadence for the current encoder/decoder session.
     pub adaptive_idle: bool,
+    /// Portable preferences; native host observation integration is separate.
+    pub host_activity: crate::host_activity::Settings,
     /// Raw capture transport. Shared memory requires a validated native adapter.
     pub raw_transport: crate::raw_frame::RawTransport,
     /// Bounded shared slots: more tolerate retained encoder frames, costing RAM.
@@ -194,6 +196,7 @@ impl Default for FileConfig {
             profile_cache: false,
             calibration_generation: 0,
             adaptive_idle: false,
+            host_activity: Default::default(),
             raw_transport: Default::default(),
             raw_slots: 4,
             encoding_gpu: String::new(),

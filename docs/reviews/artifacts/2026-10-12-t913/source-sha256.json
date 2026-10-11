@@ -1,0 +1,8 @@
+{
+  "common/src/lib.rs": "1fbe9076090f5ff9f26044f55a68eaec6cb25a95126994d0e4acebb3071b3dee",
+  "common/src/model.rs": "d646e738cce8a80c49d7db8cc2f6a647f8370c7494a7803d8be54dcc99725e56",
+  "common/src/host_activity.rs": "9e159443f9a70753aa0e5fbdc832fd8bc797100de77026994624c8d516c4b046",
+  "common/src/host_activity/gate.rs": "5cddec4a265b67f584d0f3f48c4967995548a1729abdc8837398a127b4c69112",
+  "common/src/host_activity/tests.rs": "c0c33c02db31be1dcde4743eb4e4159df49481fa95a5764d8682deba51d385af",
+  "common/src/host_activity/policy.rs": "7c10ed446036e5cf30a5059ed8492d0aefae503de2314b95161db73898b23c01"
+}
