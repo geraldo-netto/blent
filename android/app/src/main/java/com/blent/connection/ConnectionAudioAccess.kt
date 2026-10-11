@@ -2,14 +2,14 @@ package com.blent.connection
 
 import com.blent.*
 
-/** Independent audio direction. Speaker offers never enter microphone SDK policy.
- * Microphone permission negotiation is composed with its native adapter in T859. */
+/** Independent audio metadata and original permission boundary. Speaker offers
+ * never enter microphone SDK policy. Native capability is composed separately. */
 internal class ConnectionAudioAccess(private val binding: ConnectionBinding, private val resource: ConnectionManagement.Resource) {
     init { require(resource == ConnectionManagement.Resource.MICROPHONE || resource == ConnectionManagement.Resource.SPEAKERS) }
     private val access = ConnectionMediaAccess<ConnectionAudioChoice, AudioAccessOffer, AudioEndpoint, AudioConsumerTarget>(
         binding, ::choice, if (resource == ConnectionManagement.Resource.MICROPHONE) binding.microphoneTarget else binding.speakersTarget,
         { (it as? ConnectionAudioRouteChoice)?.route?.let(ConnectionAudioTarget::endpoint) },
-        ::offer, binding::audioChoice, { _, _, _ -> false },
+        ::offer, binding::audioChoice, ::permission,
     )
     val offers = access.offers
     val captures = access.captures
@@ -24,6 +24,9 @@ internal class ConnectionAudioAccess(private val binding: ConnectionBinding, pri
             is ConnectionAudioRouteChoice -> choice.route.profile
         }
         return AudioAccessOffer(owner, if (resource == ConnectionManagement.Resource.MICROPHONE) 1 else 2,
-            profile.background, false, choice is ConnectionAudioRouteChoice, authority)
+            profile.background, (choice as? ConnectionAudioOfferChoice)?.offer?.permissionRequired == true,
+            choice is ConnectionAudioRouteChoice, authority)
     }
+    private fun permission(choice: ConnectionAudioChoice, granted: Boolean, context: MediaLocalConsent) =
+        choice is ConnectionAudioOfferChoice && binding.audioPermission(choice, granted, context)
 }

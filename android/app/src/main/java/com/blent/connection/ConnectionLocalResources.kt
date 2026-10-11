@@ -23,7 +23,8 @@ internal class ConnectionLocalResources(
     private val factory: (Long) -> LocalEndpoint = { now -> LocalEndpointOwner(LocalSocketEndpoint(), now, limits) },
     private val cameraAuthority: ConnectionResourceAuthority? = null,
     private val audioAuthority: ConnectionResourceAuthority? = null,
-) : LocalConnectionResources, LocalCameraControl, LocalAudioControl {
+    private val microphoneAuthority: ConnectionResourceAuthority? = null,
+) : LocalConnectionResources, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl {
     private val block = minOf(capacity, ConnectionWire.MAX_PAYLOAD)
     private val slots = arrayOfNulls<LocalResourceOwnership>(4)
     private var stopped = false
@@ -69,7 +70,9 @@ internal class ConnectionLocalResources(
             ConnectionManagement.Resource.SPEAKERS -> audioAuthority?.let {
                 LocalSpeakerOwner(event, endpoints, block, limits, it)
             }
-            ConnectionManagement.Resource.MICROPHONE -> null
+            ConnectionManagement.Resource.MICROPHONE -> microphoneAuthority?.let {
+                LocalAudioOwner(event, endpoints, block, limits, it)
+            }
         }
     } catch (_: IllegalArgumentException) { null } // Constructors are pure; no native work was exposed.
     private fun state(event: ConnectionSessionEvent.State, now: Long) {
@@ -110,6 +113,13 @@ internal class ConnectionLocalResources(
         time(now)
         return audioControl(lease.key.resource)?.audioConsumerRetired(lease, now) == true
     }
+    private fun audioPermissionControl(): LocalAudioPermissionControl? =
+        slots[ConnectionManagement.Resource.MICROPHONE.ordinal] as? LocalAudioPermissionControl
+    override fun pendingAudio(): AudioPermissionRequest? = audioPermissionControl()?.pendingAudio()
+    override fun audioPermissionResult(prompt: AudioPermissionRequest, granted: Boolean, choice: MediaLocalConsent, now: Long): Boolean {
+        time(now)
+        return !stopped && audioPermissionControl()?.audioPermissionResult(prompt, granted, choice, now) == true
+    }
     override fun stop(now: Long) {
         time(now)
         stopped = true
@@ -126,7 +136,7 @@ internal class ConnectionLocalResources(
 internal class ConnectionLocalRun(
     private val transport: ConnectionRun,
     private val local: LocalConnectionResources,
-) : ConnectionRun, LocalCameraControl, LocalAudioControl {
+) : ConnectionRun, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl {
     private var stopping = false
     override fun display(): LocalDisplayRoute? = if (stopping) null else local.display()
     private fun cameraControl(): LocalCameraControl? = local as? LocalCameraControl
@@ -148,6 +158,10 @@ internal class ConnectionLocalRun(
         !stopping && audioControl()?.chooseAudio(lease, choice, now) == true
     override fun audioConsumerRetired(lease: ConnectionResourceLease, now: Long): Boolean =
         audioControl()?.audioConsumerRetired(lease, now) == true
+    private fun audioPermissionControl(): LocalAudioPermissionControl? = local as? LocalAudioPermissionControl
+    override fun pendingAudio(): AudioPermissionRequest? = if (stopping) null else audioPermissionControl()?.pendingAudio()
+    override fun audioPermissionResult(prompt: AudioPermissionRequest, granted: Boolean, choice: MediaLocalConsent, now: Long): Boolean =
+        !stopping && audioPermissionControl()?.audioPermissionResult(prompt, granted, choice, now) == true
     override fun endpoints(): ConnectionEndpoints = transport.endpoints()
     override fun advance(now: Long) {
         transport.advance(now)

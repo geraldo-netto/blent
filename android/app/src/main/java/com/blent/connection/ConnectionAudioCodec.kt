@@ -40,11 +40,15 @@ internal object ConnectionAudioCodec {
         when (value) {
             is ConnectionWorkerCommand.AudioChoice -> { out.writeByte(6); lease(out, value.lease); choice(out, value.choice) }
             is ConnectionWorkerCommand.AudioConsumerRetired -> { out.writeByte(7); lease(out, value.lease) }
+            is ConnectionWorkerCommand.AudioPermission -> {
+                out.writeByte(8); lease(out, value.lease); out.writeBoolean(value.granted); choice(out, value.choice)
+            }
         }
     }
     fun command(input: DataInputStream, code: Int): ConnectionWorkerCommand.Audio = when (code) {
         6 -> ConnectionWorkerCommand.AudioChoice(lease(input), choice(input))
         7 -> ConnectionWorkerCommand.AudioConsumerRetired(lease(input))
+        8 -> ConnectionWorkerCommand.AudioPermission(lease(input), ConnectionControlFields.bool(input), choice(input))
         else -> error("Unknown audio command")
     }
     fun event(out: DataOutputStream, value: ConnectionWorkerEvent.Audio) {
@@ -61,10 +65,10 @@ internal object ConnectionAudioCodec {
         else -> error("Unknown audio event")
     }
     private fun offered(out: DataOutputStream, value: LocalAudioOffer) {
-        lease(out, value.lease); profile(out, value.lease.key, value.profile)
+        lease(out, value.lease); profile(out, value.lease.key, value.profile); out.writeBoolean(value.permissionRequired)
     }
     private fun offered(input: DataInputStream): LocalAudioOffer {
-        val lease = lease(input); return LocalAudioOffer(lease, profile(input, lease.key))
+        val lease = lease(input); return LocalAudioOffer(lease, profile(input, lease.key), ConnectionControlFields.bool(input))
     }
     private fun route(out: DataOutputStream, value: LocalAudioRoute) {
         lease(out, value.lease); out.writeInt(value.port); out.write(value.credential.bytes()); profile(out, value.lease.key, value.profile)

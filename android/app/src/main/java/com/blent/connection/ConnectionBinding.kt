@@ -149,6 +149,11 @@ internal class ConnectionBinding(
         val command = presentation.audioChoice(attempt.token, choice, context) ?: return false
         return send(attempt, command)
     }
+    fun audioPermission(choice: ConnectionAudioOfferChoice, granted: Boolean, context: MediaLocalConsent): Boolean {
+        val attempt = current ?: return false
+        val command = presentation.audioPermission(attempt.token, choice, granted, context) ?: return false
+        return send(attempt, command)
+    }
 
     private fun send(attempt: Attempt, command: ConnectionWorkerCommand): Boolean = try {
         check(attempt.worker?.command(command) == true) { "USB command rejected; reconnect to try again." }

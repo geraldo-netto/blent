@@ -121,8 +121,15 @@ internal class ConnectionRuntimeOwner(
         val control = runner as? LocalAudioControl ?: return false
         return when (value) {
             is ConnectionWorkerCommand.AudioChoice -> live() && control.chooseAudio(value.lease, value.choice, previous)
+            is ConnectionWorkerCommand.AudioPermission -> live() && audioPermission(value)
             is ConnectionWorkerCommand.AudioConsumerRetired -> control.audioConsumerRetired(value.lease, previous)
         }
+    }
+    private fun audioPermission(value: ConnectionWorkerCommand.AudioPermission): Boolean {
+        val control = runner as? LocalAudioPermissionControl ?: return false
+        val prompt = control.pendingAudio() ?: return false
+        if (prompt.lease != value.lease) return false
+        return control.audioPermissionResult(prompt, value.granted, value.choice, previous)
     }
     override fun audioOffered(resource: ConnectionManagement.Resource): LocalAudioOffer? {
         time()

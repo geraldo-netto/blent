@@ -40,6 +40,10 @@ internal sealed interface ConnectionWorkerCommand {
     data class AudioChoice(override val lease: ConnectionResourceLease, val choice: MediaLocalConsent) : Audio {
         init { ConnectionAudioLease.validate(lease) }
     }
+    /** The retained original worker resolves only its pending microphone prompt. */
+    data class AudioPermission(override val lease: ConnectionResourceLease, val granted: Boolean, val choice: MediaLocalConsent) : Audio {
+        init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.MICROPHONE) }
+    }
     /** Actual audio consumer retirement/no-start proof to its original worker. */
     data class AudioConsumerRetired(override val lease: ConnectionResourceLease) : Audio {
         init { ConnectionAudioLease.validate(lease) }

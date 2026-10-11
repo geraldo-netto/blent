@@ -217,6 +217,10 @@ internal class ConnectionPresentation {
         if (!audioCurrent(token, choice)) return null
         return ConnectionWorkerCommand.AudioChoice(choice.lease, context)
     }
+    @Synchronized fun audioPermission(token: Any, choice: ConnectionAudioOfferChoice, granted: Boolean, context: MediaLocalConsent): ConnectionWorkerCommand? {
+        if (!audioCurrent(token, choice) || !choice.offer.permissionRequired) return null
+        return ConnectionWorkerCommand.AudioPermission(choice.lease, granted, context)
+    }
     private fun audioCurrent(token: Any, choice: ConnectionAudioChoice): Boolean =
         generation === token && accepting && mutable.value.authenticated && audioPresentation(choice.lease.key.resource)?.current(choice) == true
 

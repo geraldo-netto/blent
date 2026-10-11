@@ -12,8 +12,19 @@ internal data class LocalAudioRoute(
 ) : LocalMediaRoute<ConnectionManagement.Audio> {
     init { validateLocalAudio(lease, profile); require(port in 1..65535) }
 }
-internal data class LocalAudioOffer(override val lease: ConnectionResourceLease, override val profile: ConnectionManagement.Audio) : LocalMediaOffer<ConnectionManagement.Audio> {
-    init { validateLocalAudio(lease, profile) }
+internal data class LocalAudioOffer(
+    override val lease: ConnectionResourceLease,
+    override val profile: ConnectionManagement.Audio,
+    val permissionRequired: Boolean = false,
+) : LocalMediaOffer<ConnectionManagement.Audio> {
+    init {
+        validateLocalAudio(lease, profile)
+        require(!permissionRequired || lease.key.resource == ConnectionManagement.Resource.MICROPHONE)
+    }
+}
+/** Opaque local identity. A decoded lease or grant callback cannot recreate it. */
+internal class AudioPermissionRequest(val lease: ConnectionResourceLease) {
+    init { ConnectionLocalLease.validate(lease, ConnectionManagement.Resource.MICROPHONE) }
 }
 internal object ConnectionAudioLease {
     fun validate(lease: ConnectionResourceLease) {
@@ -35,4 +46,9 @@ internal interface LocalAudioProjection {
 internal interface LocalAudioControl : LocalAudioProjection {
     fun chooseAudio(lease: ConnectionResourceLease, choice: MediaLocalConsent, now: Long): Boolean
     fun audioConsumerRetired(lease: ConnectionResourceLease, now: Long): Boolean
+}
+/** Optional original microphone permission boundary, separate from playback. */
+internal interface LocalAudioPermissionControl {
+    fun pendingAudio(): AudioPermissionRequest?
+    fun audioPermissionResult(prompt: AudioPermissionRequest, granted: Boolean, choice: MediaLocalConsent, now: Long): Boolean
 }

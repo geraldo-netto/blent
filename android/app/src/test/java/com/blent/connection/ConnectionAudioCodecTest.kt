@@ -71,7 +71,8 @@ class ConnectionAudioCodecTest {
     private fun invalidBooleans(command: ByteArray, event: ByteArray, value: Int) {
         for (index in command.size - 4 until command.size)
             rejected { ConnectionWorkerCodec.command(command.copyOf().also { it[index] = value.toByte() }) }
-        rejected { ConnectionWorkerCodec.event(event.copyOf().also { it[it.lastIndex] = value.toByte() }) }
+        for (index in event.size - 2 until event.size)
+            rejected { ConnectionWorkerCodec.event(event.copyOf().also { it[index] = value.toByte() }) }
     }
     @Test fun t988LeaseProfileAndPortBoundariesUseCanonicalContracts() {
         for (resource in resources) {
@@ -81,9 +82,9 @@ class ConnectionAudioCodecTest {
         }
         val offered = ConnectionWorkerCodec.event(events().first())
         for (processing in 0..255) if (processing !in 1..2)
-            rejected { ConnectionWorkerCodec.event(offered.copyOf().also { it[it.size - 4] = processing.toByte() }) }
+            rejected { ConnectionWorkerCodec.event(offered.copyOf().also { it[it.size - 5] = processing.toByte() }) }
         for (buffer in 0..220) if (buffer !in 20..200 || buffer % 10 != 0)
-            rejected { ConnectionWorkerCodec.event(offered.copyOf().also { it[it.size - 3] = 0; it[it.size - 2] = buffer.toByte() }) }
+            rejected { ConnectionWorkerCodec.event(offered.copyOf().also { it[it.size - 4] = 0; it[it.size - 3] = buffer.toByte() }) }
     }
     private fun invalidLease(lease: ConnectionResourceLease, value: Long) {
         val alternatives = listOf(lease.copy(owner = value), lease.copy(connection = lease.connection.copy(epoch = value)),
@@ -116,7 +117,7 @@ class ConnectionAudioCodecTest {
             }
         }
         for (tag in 0..255) {
-            if (tag !in 1..7) rejected { ConnectionWorkerCodec.command(byteArrayOf(1, tag.toByte())) }
+            if (tag !in 1..8) rejected { ConnectionWorkerCodec.command(byteArrayOf(1, tag.toByte())) }
             if (tag !in 1..13) rejected { ConnectionWorkerCodec.event(byteArrayOf(1, tag.toByte())) }
         }
     }

@@ -111,4 +111,57 @@ class ConnectionAudioAccessTest {
             assertEquals(ConnectionWorkerCommand.AudioChoice(route.lease, value), worker.commands.last())
         }
     }
+    @Test fun t997OriginalPermissionPublicationRoutesSdkResultOnlyToItsCurrentWorker() {
+        Rig(ConnectionManagement.Resource.MICROPHONE).use { rig ->
+            val route = audioRoute(rig.resource)
+            val initial = LocalAudioOffer(route.lease, route.profile)
+            val choice = ConnectionAudioOfferChoice(initial)
+            assertFalse(rig.binding.audioPermission(choice, true, context))
+            val worker = rig.connect()
+            worker.report(ConnectionWorkerEvent.AudioOffered(initial))
+            val before = checkNotNull(rig.access.project())
+            assertFalse(before.authority.permissionResult(true, context))
+            worker.report(ConnectionWorkerEvent.AudioOffered(initial.copy(permissionRequired = true)))
+            val offered = checkNotNull(rig.access.project())
+            assertSame(before.owner, offered.owner); assertTrue(offered.permissionRequired)
+            assertFalse(before.authority.permissionResult(true, context))
+            for (granted in listOf(false, true)) {
+                assertTrue(offered.authority.permissionResult(granted, context))
+                assertEquals(ConnectionWorkerCommand.AudioPermission(route.lease, granted, context), worker.commands.last())
+            }
+            val current = checkNotNull(rig.binding.state.value.microphoneOffer)
+            assertFalse(rig.binding.audioPermission(ConnectionAudioOfferChoice(current.offer), true, context))
+            worker.report(ConnectionWorkerEvent.AudioRoute(route))
+            assertFalse(rig.binding.audioPermission(current, true, context))
+            assertFalse(offered.authority.permissionResult(true, context))
+            val admitted = checkNotNull(rig.access.project())
+            assertFalse(admitted.permissionRequired); assertFalse(admitted.authority.permissionResult(true, context))
+            rig.binding.disconnect(); worker.release.complete(Unit)
+            val next = rig.connect()
+            next.report(ConnectionWorkerEvent.AudioOffered(initial.copy(permissionRequired = true)))
+            assertFalse(offered.authority.permissionResult(true, context))
+            assertTrue(checkNotNull(rig.access.project()).authority.permissionResult(false, context))
+        }
+    }
+
+    @Test fun t997SharedConsentKeepsExactSdkPromptAcrossMicrophoneMetadataAndFreshGrant() {
+        Rig(ConnectionManagement.Resource.MICROPHONE).use { rig ->
+            val worker = rig.connect(); val route = audioRoute(rig.resource)
+            val prompts = LocalPermissionPrompts(); val sdk = mutableListOf<LocalPermissionPrompt>()
+            prompts.attach { sdk.add(it); true }
+            var allowed = false
+            val policy = MediaConsentPolicy<AudioAccessOffer>({ allowed }, prompts)
+            worker.report(ConnectionWorkerEvent.AudioOffered(LocalAudioOffer(route.lease, route.profile)))
+            val original = checkNotNull(rig.access.project()); policy.foreground(true); policy.observe(original)
+            assertTrue(policy.start(original)); assertTrue(sdk.isEmpty())
+            worker.report(ConnectionWorkerEvent.AudioOffered(LocalAudioOffer(route.lease, route.profile, true)))
+            val requested = checkNotNull(rig.access.project()); policy.observe(requested)
+            assertEquals(1, sdk.size); assertTrue(policy.state.value.enabled)
+            allowed = true
+            assertTrue(prompts.result(sdk.single(), true))
+            assertEquals(ConnectionWorkerCommand.AudioPermission(route.lease, true, context), worker.commands.last())
+            assertFalse(prompts.result(sdk.single(), true)); assertTrue(policy.state.value.enabled)
+            policy.stop(requested); policy.clear(); prompts.clear()
+        }
+    }
 }
