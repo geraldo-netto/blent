@@ -1,0 +1,26 @@
+[
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceFactory.kt",
+    11,
+    "create",
+    6
+  ],
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceFactory.kt",
+    26,
+    "execute",
+    6
+  ],
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceFactory.kt",
+    35,
+    "cancel",
+    1
+  ],
+  [
+    "scripts/benchmarks/android-worker-tests/WorkerAcceptanceFactory.kt",
+    36,
+    "retire",
+    2
+  ]
+]

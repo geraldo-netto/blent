@@ -16,18 +16,22 @@ internal object WorkerAcceptanceFactory {
             is MediaTask.Display -> { check(surface!!.isValid); 40 }
             else -> error("unsupported fixture")
         }
-        return object : LifecycleRun {
-            override suspend fun execute() {
-                report(WorkerEvent.Status("pid=${Process.myPid()}"))
-                when (mode) {
-                    60 -> CountDownLatch(1).await()
-                    80 -> return
-                    100 -> { delay(50); Process.killProcess(Process.myPid()); awaitCancellation() }
-                    else -> while (currentCoroutineContext().isActive) { report(WorkerEvent.Status("heartbeat")); delay(20) }
-                }
-            }
-            override fun cancel() {}
-            override suspend fun retire() { if (mode == 80) CountDownLatch(1).await() }
+        return AcceptanceRun(mode, report)
+    }
+}
+
+
+/** Test-native operation owns only its bounded mode and original report callback. */
+private class AcceptanceRun(private val mode: Int, private val report: (WorkerEvent) -> Unit) : LifecycleRun {
+    override suspend fun execute() {
+        report(WorkerEvent.Status("pid=${Process.myPid()}"))
+        when (mode) {
+            60 -> CountDownLatch(1).await()
+            80 -> return
+            100 -> { delay(50); Process.killProcess(Process.myPid()); awaitCancellation() }
+            else -> while (currentCoroutineContext().isActive) { report(WorkerEvent.Status("heartbeat")); delay(20) }
         }
     }
+    override fun cancel() {}
+    override suspend fun retire() { if (mode == 80) CountDownLatch(1).await() }
 }
