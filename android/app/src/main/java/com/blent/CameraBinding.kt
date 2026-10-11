@@ -95,8 +95,10 @@ internal class CameraBinding(
         }
     }
 
+    fun hasPermission(): Boolean = permission()
+
     private fun allowCapture(host: CameraEndpoint, lens: CameraLens): Boolean {
-        if (permission()) return true
+        if (hasPermission()) return true
         if (source.target != null) {
             // External offers obtain permission before admission. Permission loss
             // after admission closes that original target, never a legacy prompt.
@@ -129,7 +131,7 @@ internal class CameraBinding(
         val claim = target?.authority?.retain()
         check(target == null || claim != null) { "Camera target no longer current" }
         try {
-            guard.replace({ CameraCaptureRun(claim, permission) {
+            guard.replace({ CameraCaptureRun(claim, ::hasPermission) {
                 createRun(host, lens, rotation) { text ->
                     statusUpdates.submit { if (revision == generation) status = text }
                 }

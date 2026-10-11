@@ -1,0 +1,10 @@
+f7ed674f9f66413d89f0380c0cb52d9274540e6b1c3a047ba28f7c9a25f51498  android/app/src/main/java/com/blent/CameraActivityOwner.kt
+2a751348dc2a83d10ea70cc52abc23e402700fb02658b1329e9adf9a54fd3ec2  android/app/src/main/java/com/blent/CameraPermissionLauncher.kt
+946693480879c3cf69b345bb12145a8541c1bc90ef1ba7cd84aac867718625b3  android/app/src/main/java/com/blent/CameraOwner.kt
+d477d5bef48f9998899a8b3d1191c5a0daee6c4c3ca515ee5df6e65a15329597  android/app/src/main/java/com/blent/CameraBinding.kt
+bd9fe9ef97febc9d4d8de137e299fed972a73caf18ef8d203ea707f16c0ae50b  android/app/src/main/java/com/blent/MainActivity.kt
+4f5306a14ff7c8b087f3afb226586be5de7297332815ba9e62046325fb02ea19  android/app/src/test/java/com/blent/CameraActivityOwnerTest.kt
+5b970b6b7af4e7b0c446e7ab9f45af51e87818bb9c435f35b9bff0ae31ff708e  android/app/src/test/java/com/blent/CameraPermissionLauncherTest.kt
+3ea657a72adfd03b9f3a96552a5a40d60a2de6ef66e22fc5a5991ab3a04da024  android/app/src/test/java/com/blent/CameraOwnerAttachmentTest.kt
+4f27adcc3b9530fe7e79353ad8ede869bc86a42ac70fb2066e6beb13da0f27e3  android/app/src/test/java/com/blent/ActivityUiContractTest.kt
+32ab4794b2c802de6d08cb98b7ce967f4292cc9e4a0a6da74fb0eac891ef325e  android/app/src/test/java/com/blent/CameraHostControlTest.kt

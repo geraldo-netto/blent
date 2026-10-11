@@ -103,7 +103,7 @@ class CameraHostControlTest {
         val owner = CameraOwner.get(app)
         assertSame(owner, CameraOwner.get(app))
         var requested = false
-        CameraOwner.permissionRequest = { requested = true }
+        CameraOwner.attach { requested = true; true }
         shadowOf(app).denyPermissions(android.Manifest.permission.CAMERA)
         owner.start()
         CameraInvitations.endpoint.value = CameraEndpoint("a".repeat(64), 12345, 1280, 720, 30, 3000, CameraLens.FRONT, true)

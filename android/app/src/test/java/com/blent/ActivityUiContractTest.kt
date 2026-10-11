@@ -179,4 +179,31 @@ class ActivityUiContractTest {
         }
         assertNull(AudioOwner.permissionRequest)
     }
+
+    @Test fun t961StoppedActivityCannotStopReplacementCameraOwner() {
+        val app = RuntimeEnvironment.getApplication()
+        org.robolectric.Shadows.shadowOf(app).grantPermissions(android.Manifest.permission.CAMERA)
+        val old = fixture.controller
+        val replacement = Robolectric.buildActivity(MainActivity::class.java).create()
+        val activity = replacement.get()
+        activity.session.stop()
+        ReflectionHelpers.setField(activity, "session", SessionCoordinator(fixture.prefs, { it() },
+            VideoReceiver { error("T961 no physical connection") }, TouchCapture(WebSocket.Factory { _, _ -> OfflineSocket() })))
+        replacement.start().resume()
+        val endpoint = CameraEndpoint("ab".repeat(32), 12345, 640, 480, 30, 1000, CameraLens.FRONT)
+        try {
+            assertSame(old.get().cameras, activity.cameras)
+            old.pause().stop()
+            CameraInvitations.endpoint.value = endpoint
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            assertEquals("T961 old Activity stop shut down replacement camera owner", endpoint, activity.cameras.endpoint)
+        } finally {
+            CameraInvitations.endpoint.value = null
+            val content = activity.findViewById<android.view.ViewGroup>(android.R.id.content)
+            (content.getChildAt(0) as? androidx.compose.ui.platform.AbstractComposeView)?.disposeComposition()
+            replacement.pause().stop().destroy()
+            old.start().resume()
+        }
+    }
+
 }

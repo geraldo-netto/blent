@@ -1,0 +1,52 @@
+[
+  {
+    "owner": "com/blent/MainActivity",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 15,
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraActivityOwner$legacyAction$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraActivityOwner;Lcom/blent/CameraCapturePermission;)V",
+    "line": 45,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraPermissionLauncher",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)V",
+    "line": 6,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraActivityOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraBinding;Lcom/blent/CameraConsentPolicy;Lcom/blent/CameraPermissionPrompts;)V",
+    "line": 6,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraBinding",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)V",
+    "line": 9,
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true
+  }
+]

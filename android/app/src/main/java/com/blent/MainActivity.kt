@@ -21,8 +21,13 @@ class MainActivity : ComponentActivity() {
     }
     internal lateinit var cameras: CameraBinding; private set
     private val cameraPermission = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
-        cameras.permissionResult(it)
+        cameraPermissionLauncher.complete(it)
     }
+    private val cameraPermissionLauncher: CameraPermissionLauncher = CameraPermissionLauncher(
+        { cameraPermission.launch(android.Manifest.permission.CAMERA) },
+        { prompt, granted -> CameraOwner.permissionResult(prompt, granted) },
+    )
+    private var cameraAttachment: CameraPermissionAttachment? = null
     internal lateinit var session: SessionCoordinator; private set
     private var displayObservation: Job? = null
     private val displayRoutes = ConnectionDisplayBinding(DisplayRouteTarget { session.selectDisplay(it) })
@@ -126,8 +131,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        CameraOwner.permissionRequest = { cameraPermission.launch(android.Manifest.permission.CAMERA) }
-        cameras.start()
+        cameraAttachment = CameraOwner.attach(cameraPermissionLauncher::launch)
         AudioOwner.permissionRequest = { microphonePermission.launch(android.Manifest.permission.RECORD_AUDIO) }
         microphone.start()
         speakers.start()
@@ -144,16 +148,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         displayObservation?.cancel(); displayObservation = null
-        CameraOwner.permissionRequest = null
         AudioOwner.permissionRequest = null
-        reportCleanup(cleanupAll({ cameras.stop() }, { microphone.stop() }, { speakers.stop() },
+        reportCleanup(cleanupAll({ detachCamera() }, { microphone.stop() }, { speakers.stop() },
             { super.onStop() }, { windowPolicy.stop() }, { powerBinding.stop() }, { session.stop() }))
     }
 
     override fun onDestroy() {
         displayObservation?.cancel(); displayObservation = null
-        reportCleanup(cleanupAll({ if (::powerBinding.isInitialized) powerBinding.stop() },
+        reportCleanup(cleanupAll({ detachCamera(); cameraPermissionLauncher.retire() },
+            { if (::powerBinding.isInitialized) powerBinding.stop() },
             { super.onDestroy() }, { windowPolicy.stop() }))
+    }
+
+    private fun detachCamera() {
+        cameraAttachment?.let(CameraOwner::detach)
+        cameraAttachment = null
     }
 
     private fun reportCleanup(failures: List<Exception>) {
