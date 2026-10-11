@@ -197,16 +197,16 @@ fn assert_no_regeneration(path: &Path) {
 fn t867_process_exit_at_each_boundary_preserves_identity_or_pending_state() {
     for point in POINTS {
         let root = root();
-        let output = std::process::Command::new(std::env::current_exe().unwrap())
+        let mut command = std::process::Command::new(std::env::current_exe().unwrap());
+        command
             .args([
                 "--exact",
                 "secure_connection::identity_store::linux::tests::t867_crash_child",
                 "--nocapture",
             ])
             .env("BLENT_T867_CRASH_POINT", point)
-            .env("BLENT_T867_CRASH_DIR", root.path())
-            .output()
-            .unwrap();
+            .env("BLENT_T867_CRASH_DIR", root.path());
+        let output = crash_output(&mut command, std::time::Duration::from_secs(10)).unwrap();
         assert_eq!(output.status.code(), Some(86), "T867 {point}");
         assert_no_regeneration(root.path());
     }
@@ -235,4 +235,69 @@ fn t867_native_write_failure_keeps_reserved_record() {
     assert!(store.publish(b"record").is_err()); // Real EBADF from read-only fd.
     drop(store);
     assert_no_regeneration(root.path());
+}
+
+// T869: use the production timed child owner; keep fixture failure bounded too.
+fn crash_output(
+    command: &mut std::process::Command,
+    timeout: std::time::Duration,
+) -> std::io::Result<std::process::Output> {
+    use blent_config::commands::SyncCommandExt;
+    command.output_timeout(timeout)
+}
+
+#[test]
+fn t869_stalled_checkpoint_is_killed_and_reaped_within_deadline() {
+    use blent_config::commands::SyncCommandExt;
+    let root = root();
+    let result = std::process::Command::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "secure_connection::identity_store::linux::tests::t869_timeout_check_child",
+            "--nocapture",
+        ])
+        .env("BLENT_T869_CHECK", root.path())
+        .output_timeout(std::time::Duration::from_secs(5));
+    assert!(
+        result.is_ok(),
+        "T869 checkpoint owner itself hung: {result:?}"
+    );
+    assert!(
+        result.unwrap().status.success(),
+        "T869 checkpoint retirement assertion failed"
+    );
+}
+
+#[test]
+fn t869_timeout_check_child() {
+    let Some(root) = std::env::var_os("BLENT_T869_CHECK") else {
+        return;
+    };
+    let marker = Path::new(&root).join("stalled.pid");
+    let mut command = std::process::Command::new(std::env::current_exe().unwrap());
+    command
+        .args([
+            "--exact",
+            "secure_connection::identity_store::linux::tests::t869_stalled_child",
+            "--nocapture",
+        ])
+        .env("BLENT_T869_PID", &marker);
+    let result = crash_output(&mut command, std::time::Duration::from_secs(1));
+    assert!(result.is_err_and(|error| error.kind() == std::io::ErrorKind::TimedOut));
+    let pid: u32 = std::fs::read_to_string(marker).unwrap().parse().unwrap();
+    assert!(
+        !Path::new(&format!("/proc/{pid}")).exists(),
+        "T869 stalled child remains alive or unreaped"
+    );
+}
+
+#[test]
+fn t869_stalled_child() {
+    let Some(marker) = std::env::var_os("BLENT_T869_PID") else {
+        return;
+    };
+    std::fs::write(marker, std::process::id().to_string()).unwrap();
+    loop {
+        std::thread::park();
+    }
 }
