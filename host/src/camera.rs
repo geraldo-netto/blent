@@ -25,6 +25,14 @@ use std::{path::PathBuf, sync::Arc};
 type Producers = FuturesUnordered<crate::owned_task::Task>;
 use tokio::{net::TcpListener, sync::watch};
 
+/// Native implementation availability, not device/permission qualification.
+pub const fn transport_capabilities() -> blent_config::camera::connection::Transports {
+    blent_config::camera::connection::Transports {
+        adb: true,
+        usb: cfg!(feature = "accessory-transport"),
+    }
+}
+
 pub async fn run(options: &CameraOptions) -> Result<()> {
     let (stop, stopped) = watch::channel(false);
     let (status, _) = watch::channel(State::Starting);

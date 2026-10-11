@@ -1,12 +1,14 @@
 //! Portable settings/UI; only create_backend selects a native implementation.
 use blent_config::camera::{CameraBackend, CameraProfile, CameraState, Lens};
 use eframe::egui;
+mod connection;
 
 pub(super) struct Panel {
     pub(super) backend: Option<Box<dyn CameraBackend>>,
     error: Option<String>,
     preview: crate::camera_preview::Preview,
     create: fn() -> Result<Box<dyn CameraBackend>, String>,
+    transports: blent_config::camera::connection::Transports,
 }
 
 impl Default for Panel {
@@ -16,6 +18,7 @@ impl Default for Panel {
             error: None,
             preview: Default::default(),
             create: create_backend,
+            transports: transport_capabilities(),
         }
     }
 }
@@ -33,7 +36,8 @@ impl Panel {
                 .id_salt("camera-advanced")
                 .show(ui, |ui| {
                     super::settings_grid(ui, "camera-advanced-grid", |ui| {
-                        advanced_profile(ui, options)
+                        advanced_profile(ui, options);
+                        connection::show(ui, options, self.transports);
                     });
                 });
         });
@@ -73,10 +77,7 @@ impl Panel {
                 "Start camera"
             };
             if ui
-                .add_enabled(
-                    blent_config::platform::capabilities().camera,
-                    egui::Button::new(label),
-                )
+                .add_enabled(self.transports.available(), egui::Button::new(label))
                 .clicked()
             {
                 self.error = self.start(options.clone()).err();
@@ -96,13 +97,19 @@ impl Panel {
             ui.ctx()
                 .request_repaint_after(std::time::Duration::from_millis(200));
         }
-        if !blent_config::platform::capabilities().camera {
+        if !self.transports.available() {
             ui.label("Camera backend is not implemented on this operating system.");
         }
     }
 
     fn start(&mut self, options: CameraProfile) -> Result<(), String> {
         options.validate().map_err(|e| e.to_string())?;
+        if !self
+            .transports
+            .supports(&options.target().map_err(|e| e.to_string())?)
+        {
+            return Err("Selected camera transport is unavailable on this backend.".into());
+        }
         if self.backend.is_none() {
             self.backend = Some((self.create)()?);
         }
@@ -112,6 +119,13 @@ impl Panel {
             .start(options)
             .map_err(|e| format!("{e:#}"))
     }
+}
+
+fn transport_capabilities() -> blent_config::camera::connection::Transports {
+    #[cfg(target_os = "linux")]
+    return blent::camera::transport_capabilities();
+    #[cfg(not(target_os = "linux"))]
+    blent_config::camera::connection::Transports::default()
 }
 
 fn create_backend() -> Result<Box<dyn CameraBackend>, String> {
@@ -178,7 +192,6 @@ fn advanced_profile(ui: &mut egui::Ui, options: &mut CameraProfile) {
         ui.label(egui::RichText::new("Start with Blent visible on the tablet. Background sharing keeps its camera service and CPU awake; higher resolution/FPS uses more power.").weak().size(11.0));
     });
     ui.end_row();
-    device(ui, options);
 }
 
 fn rotation(ui: &mut egui::Ui, rotation: &mut u16) {
@@ -214,26 +227,6 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
     ui.end_row();
 }
 
-fn device(ui: &mut egui::Ui, options: &mut CameraProfile) {
-    ui.label("Tablet serial");
-    let mut serial = options.serial.clone().unwrap_or_default();
-    if ui
-        .add(
-            egui::TextEdit::singleline(&mut serial)
-                .hint_text("Automatic (one connected tablet)")
-                .desired_width(190.0_f32.min(ui.available_width())),
-        )
-        .changed()
-    {
-        options.serial = if serial.trim().is_empty() {
-            None
-        } else {
-            Some(serial.trim().into())
-        };
-    }
-    ui.end_row();
-}
-
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
@@ -257,6 +250,136 @@ mod tests {
         }
         fn preview(&self) -> Option<std::sync::Arc<blent_config::camera::CameraPreview>> {
             None
+        }
+    }
+
+    #[test]
+    fn t974_unsupported_invalid_and_ambiguous_camera_targets_never_create_backend() {
+        use blent_config::camera::connection::Transports;
+        let mut panel = Panel {
+            transports: Transports::default(),
+            create: || panic!("T974 unavailable target reached native factory"),
+            ..Default::default()
+        };
+        assert_eq!(
+            panel.start(CameraProfile::default()).unwrap_err(),
+            "Selected camera transport is unavailable on this backend."
+        );
+        let valid = CameraProfile {
+            usb_peer: Some("ab".repeat(32)),
+            ..Default::default()
+        };
+        assert_eq!(
+            panel.start(valid.clone()).unwrap_err(),
+            "Selected camera transport is unavailable on this backend."
+        );
+        panel.transports = Transports {
+            adb: true,
+            usb: true,
+        };
+        for length in 0..=128 {
+            if length == 64 {
+                continue;
+            }
+            assert!(panel
+                .start(CameraProfile {
+                    usb_peer: Some("a".repeat(length)),
+                    ..Default::default()
+                })
+                .is_err());
+        }
+        for value in [
+            "A".repeat(64),
+            "☃".repeat(64),
+            format!("{}\n", "a".repeat(63)),
+        ] {
+            assert!(panel
+                .start(CameraProfile {
+                    usb_peer: Some(value),
+                    ..Default::default()
+                })
+                .is_err());
+        }
+        assert!(panel
+            .start(CameraProfile {
+                serial: Some("other-tablet".into()),
+                ..valid
+            })
+            .is_err());
+        assert!(panel.backend.is_none());
+    }
+
+    #[test]
+    fn t974_exact_usb_profile_reaches_only_camera_backend() {
+        let profiles = Rc::new(RefCell::new(Vec::new()));
+        let mut panel = Panel {
+            backend: Some(Box::new(Fixture {
+                state: Rc::new(RefCell::new(CameraState::Stopped)),
+                profiles: profiles.clone(),
+            })),
+            ..Default::default()
+        };
+        let profile = CameraProfile {
+            usb_peer: Some("ab".repeat(32)),
+            lens: Lens::Rear,
+            background: true,
+            ..Default::default()
+        };
+        panel.start(profile.clone()).unwrap();
+        assert_eq!(*profiles.borrow(), vec![profile]);
+    }
+
+    #[test]
+    fn t974_unavailable_saved_target_remains_visible_and_rendering_never_rewrites_it() {
+        use blent_config::camera::connection::Transports;
+        let mut panel = Panel {
+            transports: Transports::default(),
+            ..Default::default()
+        };
+        let ctx = egui::Context::default();
+        for usb in [false, true] {
+            let original = CameraProfile {
+                usb_peer: usb.then(|| "ab".repeat(32)),
+                ..Default::default()
+            };
+            let mut profile = original.clone();
+            let output = ctx.run(
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        egui::Pos2::ZERO,
+                        egui::vec2(900.0, 1800.0),
+                    )),
+                    ..Default::default()
+                },
+                |ctx| {
+                    egui::CentralPanel::default().show(ctx, |ui| {
+                        panel.show(ui, &mut profile);
+                        egui::Grid::new("t974-target").show(ui, |ui| {
+                            connection::show(ui, &mut profile, panel.transports)
+                        });
+                    });
+                },
+            );
+            let mut text = Vec::new();
+            for shape in output.shapes {
+                crate::tests::collect_text_rects(&shape.shape, &mut text);
+            }
+            assert!(text
+                .iter()
+                .any(|(label, _)| label
+                    == "Camera backend is not implemented on this operating system."));
+            if usb {
+                assert!(
+                    text.iter()
+                        .any(|(label, _)| label
+                            == "Direct USB camera is unavailable on this backend.")
+                );
+                assert!(text
+                    .iter()
+                    .any(|(label, _)| label.starts_with("Experimental:")));
+            }
+            assert_eq!(profile, original);
+            assert!(panel.backend.is_none());
         }
     }
 

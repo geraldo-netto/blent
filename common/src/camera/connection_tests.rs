@@ -1,6 +1,28 @@
 use super::*;
 
 #[test]
+fn t974_camera_transport_capabilities_are_independent_and_fail_closed() {
+    use connection::{Target, Transports};
+    let peer = crate::connection::pairing::PeerId::parse("ab".repeat(32)).unwrap();
+    for adb in [false, true] {
+        for usb in [false, true] {
+            let capabilities = Transports { adb, usb };
+            assert_eq!(capabilities.available(), adb || usb);
+            assert_eq!(capabilities.supports(&Target::Adb(None)), adb);
+            assert_eq!(capabilities.supports(&Target::Adb(Some("tablet"))), adb);
+            assert_eq!(capabilities.supports(&Target::Usb(peer.clone())), usb);
+        }
+    }
+    assert_eq!(
+        Transports::default(),
+        Transports {
+            adb: false,
+            usb: false
+        }
+    );
+}
+
+#[test]
 fn t931_usb_selection_rejects_ambiguous_or_invalid_settings() {
     for value in [
         serde_json::json!({"usb_peer":"a".repeat(64),"serial":"tablet"}),

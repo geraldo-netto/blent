@@ -13,6 +13,28 @@ pub enum Target<'a> {
     Usb(PeerId),
 }
 
+/// Implemented connection adapters, independent of OS/device types. Availability
+/// grants no permission or physical qualification; callers disclose validation
+/// separately. Default means no implemented backend.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct Transports {
+    pub adb: bool,
+    pub usb: bool,
+}
+
+impl Transports {
+    pub fn available(self) -> bool {
+        self.adb || self.usb
+    }
+
+    pub fn supports(self, target: &Target<'_>) -> bool {
+        match target {
+            Target::Adb(_) => self.adb,
+            Target::Usb(_) => self.usb,
+        }
+    }
+}
+
 pub type InvitationResult<'a> = Pin<Box<dyn Future<Output = Result<()>> + Send + 'a>>;
 
 /// Requesting an invitation is independent of capture and OS output devices.

@@ -3,6 +3,19 @@ use clap::Parser;
 use std::{os::unix::fs::PermissionsExt, path::Path, time::Duration};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
+#[test]
+fn t974_camera_native_availability_matches_selected_build_without_acquiring_devices() {
+    let capabilities = transport_capabilities();
+    assert!(capabilities.adb);
+    assert_eq!(capabilities.usb, cfg!(feature = "accessory-transport"));
+    let peer = blent_config::connection::pairing::PeerId::parse("ab".repeat(32)).unwrap();
+    assert_eq!(
+        validate_transport(Target::Usb(peer)).is_ok(),
+        capabilities.usb
+    );
+    assert!(validate_transport(Target::Adb(None)).is_ok());
+}
+
 pub(super) fn options() -> CameraOptions {
     let cli = blent_config::cli::Cli::parse_from([
         "blent", "cameras", "--width", "160", "--height", "120",

@@ -214,7 +214,12 @@ staging stage, not end-to-end camera latency.
 
 ## Direct USB camera integration status
 
-The regular host GUI workflow above still defaults to ADB. T932 implements
+Camera connection defaults to ADB for existing profiles. In **Advanced camera
+settings**, choose **Direct USB** and paste the full **Tablet** fingerprint from
+**USB connection** controls. Selecting USB clears the camera's ADB serial; choosing
+ADB clears its USB peer. Apply saves only; Start/Restart applies the camera profile
+without restarting display. Invalid or unavailable targets fail before backend
+creation. Direct USB is labelled experimental until joined physical acceptance. T932 implements
 Android's original-consent/isolated-capture composition for direct USB. T973 exposes
 it in the regular app's Settings: a USB request shows its lens and requires local
 **Start camera** before admission. **Stop camera** affects only camera sharing.
@@ -227,8 +232,8 @@ Linux host registration and pipeline composition in builds with
 selects that peer independently of display; credentials are fresh per invocation.
 Source loss or revocation ends that camera registration. Start a new host camera
 invocation to issue another invitation. Builds without the feature fail explicitly
-before acquiring camera devices. Production host GUI transport selection remains T974; joined physical acceptance
-remains T858 and older-device evidence remains T863. Device trials
+before acquiring camera devices. Production host GUI transport selection is implemented under T974. Joined physical
+acceptance remains T858 and older-device evidence remains T863. Device trials
 are postponed: private TLS/protocol and real H.264 fixtures do not establish
 physical debugging-off camera support.
 

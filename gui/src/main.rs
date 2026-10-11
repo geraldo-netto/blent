@@ -1381,7 +1381,13 @@ mod tests {
         let labels = window_test_frame(&mut app, &ctx, vec![]);
         assert!(labels.iter().any(|(text, _)| text == "Find USB devices"));
         assert_eq!(app.cfg, original);
-        for tab in [Tab::Video, Tab::Display, Tab::General, Tab::Camera, Tab::Audio] {
+        for tab in [
+            Tab::Video,
+            Tab::Display,
+            Tab::General,
+            Tab::Camera,
+            Tab::Audio,
+        ] {
             app.tab = tab;
             window_test_frame(&mut app, &ctx, vec![]);
         }
@@ -2026,7 +2032,7 @@ mod tests {
         assert_eq!(app.cfg, app.saved_cfg);
     }
 
-    fn collect_text_rects(shape: &egui::Shape, text: &mut Vec<(String, egui::Rect)>) {
+    pub(crate) fn collect_text_rects(shape: &egui::Shape, text: &mut Vec<(String, egui::Rect)>) {
         match shape {
             egui::Shape::Text(value) => text.push((
                 value.galley.text().to_owned(),
@@ -2274,6 +2280,50 @@ mod tests {
         assert_eq!(app.message, "Settings saved");
         assert_eq!(app.store.load().camera.options, profile);
         assert_eq!(app.cfg.width, app.saved_cfg.width);
+    }
+
+    #[test]
+    fn t974_usb_camera_selection_saves_exact_peer_without_display_restart() {
+        let (_settings_directory, mut app) = settings_test_app(Tab::Camera);
+        let directory = tempfile::tempdir().unwrap();
+        app.store = ConfigStore::new(directory.path().join("config.toml"));
+        app.cfg = app.saved_cfg.clone();
+        app.cfg.camera.options.serial = Some("old-adb-tablet".into());
+        let ctx = egui::Context::default();
+        ctx.style_mut(|style| style.animation_time = 0.0);
+        click_settings_text(
+            &mut app,
+            &ctx,
+            "Advanced camera settings",
+            camera_test_frame,
+        );
+        click_settings_text(&mut app, &ctx, "Direct USB", camera_test_frame);
+        assert_eq!(app.cfg.camera.options.serial, None);
+        assert_eq!(app.cfg.camera.options.usb_peer.as_deref(), Some(""));
+        assert!(app.camera.backend.is_none());
+        assert!(app.cfg.camera.options.validate().is_err());
+        click_settings_text(
+            &mut app,
+            &ctx,
+            "Full Tablet fingerprint from USB connection",
+            camera_test_frame,
+        );
+        let peer = "ab".repeat(32);
+        camera_test_frame(&mut app, &ctx, vec![egui::Event::Text(peer.clone())]);
+        assert_eq!(
+            app.cfg.camera.options.usb_peer.as_deref(),
+            Some(peer.as_str())
+        );
+        assert!(!app.cfg.requires_restart_from(&app.saved_cfg));
+        app.apply(true);
+        wait_for_work(&mut app);
+        assert_eq!(app.message, "Settings saved");
+        assert_eq!(app.store.load().camera.options.usb_peer, Some(peer));
+        assert_eq!(app.cfg.width, app.saved_cfg.width);
+        assert!(app.camera.backend.is_none());
+        click_settings_text(&mut app, &ctx, "ADB", camera_test_frame);
+        assert_eq!(app.cfg.camera.options.usb_peer, None);
+        assert_eq!(app.cfg.camera.options.serial, None);
     }
 
     #[test]
