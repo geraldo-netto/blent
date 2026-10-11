@@ -1,0 +1,80 @@
+[
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 27,
+    "name": "isBinderAlive",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 28,
+    "name": "linkToDeath",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 29,
+    "name": "unlinkToDeath",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 30,
+    "name": "onTransact",
+    "score": 4
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 48,
+    "name": "getApplicationContext",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 49,
+    "name": "bindService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 52,
+    "name": "unbindService",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 54,
+    "name": "until",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 57,
+    "name": "t809_remoteAudioAndCameraStatusReachConsentOwners",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 84,
+    "name": "t962PausedLooperRetiresOnlyAfterActualDeathAndDrivesFallbackTimer",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 116,
+    "name": "t809_defaultRemoteDisplayFactoryUsesBinderAndReleasesIt",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 121,
+    "name": "getHolder",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt",
+    "line": 133,
+    "name": "t809_remoteMetadataRoundTripAndUnavailableFallbackAreExplicit",
+    "score": 1
+  }
+]

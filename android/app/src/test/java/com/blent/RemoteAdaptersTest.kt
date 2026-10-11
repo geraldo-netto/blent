@@ -5,6 +5,7 @@ import android.os.*
 import android.graphics.SurfaceTexture
 import android.view.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.android.asCoroutineDispatcher
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,11 +20,17 @@ class RemoteAdaptersTest {
     private class Endpoint : Binder() {
         val deaths = mutableListOf<IBinder.DeathRecipient>()
         val started = CompletableDeferred<Unit>()
+        val commands = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        @Volatile var unlinked = 0
+        @Volatile var alive = true
+        var exitWorks = true
+        override fun isBinderAlive() = alive
         override fun linkToDeath(recipient: IBinder.DeathRecipient, flags: Int) { deaths.add(recipient) }
-        override fun unlinkToDeath(recipient: IBinder.DeathRecipient, flags: Int) = deaths.remove(recipient)
+        override fun unlinkToDeath(recipient: IBinder.DeathRecipient, flags: Int): Boolean { unlinked++; return deaths.remove(recipient) }
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
             WorkerIpc.validate(data, WorkerIpc.REQUEST)
             val generation = data.readLong()
+            commands.add(code)
             when (code) {
                 WorkerIpc.START -> {
                     MediaTaskJson.decode(requireNotNull(data.readString()))
@@ -32,7 +39,7 @@ class RemoteAdaptersTest {
                     WorkerIpc.event(callback, generation, WorkerEventJson.encode(WorkerEvent.Status("remote ready")))
                     started.complete(Unit)
                 }
-                WorkerIpc.EXIT -> deaths.toList().forEach { it.binderDied() }
+                WorkerIpc.EXIT -> if (exitWorks) { alive = false; deaths.toList().forEach { it.binderDied() } }
             }
             return true
         }
@@ -45,7 +52,7 @@ class RemoteAdaptersTest {
         override fun unbindService(connection: ServiceConnection) {}
     }
     private suspend fun until(condition: () -> Boolean) = withTimeout(3000) {
-        while (!condition()) { Shadows.shadowOf(Looper.getMainLooper()).idle(); delay(1) }
+        while (!condition()) { Shadows.shadowOf(Looper.getMainLooper()).idleFor(1, java.util.concurrent.TimeUnit.MILLISECONDS); delay(1) }
     }
     @Test fun t809_remoteAudioAndCameraStatusReachConsentOwners() = runBlocking {
         val app = RuntimeEnvironment.getApplication()
@@ -57,7 +64,13 @@ class RemoteAdaptersTest {
             AudioInvitations.speakers.value = AudioEndpoint("a".repeat(64), 1234, 2, 1, 40, false)
             until { audio.status == "remote ready" }
             assertTrue(audio.sharing)
-        } finally { audio.shutdown(); until { audioEndpoint.deaths.isEmpty() } }
+        } finally {
+            audio.shutdown()
+            try { until { audioEndpoint.deaths.isEmpty() } }
+            catch (failure: TimeoutCancellationException) {
+                throw AssertionError("T962 audio status=${audio.status}; commands=${audioEndpoint.commands}; unlinked=${audioEndpoint.unlinked}", failure)
+            }
+        }
         val cameraEndpoint = Endpoint()
         val camera = RemoteMediaBindings.camera(App(cameraEndpoint), { 0 }, {}, {})
         try {
@@ -67,6 +80,38 @@ class RemoteAdaptersTest {
             until { camera.status == "remote ready" }
             assertEquals(CameraLens.FRONT, camera.selected)
         } finally { camera.shutdown(); until { cameraEndpoint.deaths.isEmpty() }; CameraInvitations.endpoint.value = null }
+    }
+    @Test fun t962PausedLooperRetiresOnlyAfterActualDeathAndDrivesFallbackTimer() = runBlocking {
+        val endpoint = Endpoint().apply { exitWorks = false }
+        val scope = CoroutineScope(SupervisorJob() + Handler(Looper.getMainLooper()).asCoroutineDispatcher())
+        var proof: ResourceRetirement? = null
+        val lane = ResourceLane(scope, {})
+        val run = AndroidWorkerRun(App(endpoint), MediaTask.Metadata(640, 480, 30), graceMillis = 1, exitMillis = 3000)
+        try {
+            lane.replace({ run }, {}, { proof = it })
+            until { endpoint.started.isCompleted }
+            lane.stop(); scope.cancel()
+            until { endpoint.commands.contains(WorkerIpc.EXIT) }
+            // Advancing the fixture clock is not process death or native proof.
+            repeat(8) { Shadows.shadowOf(Looper.getMainLooper()).idleFor(1, java.util.concurrent.TimeUnit.MILLISECONDS); delay(1) }
+            assertTrue(endpoint.alive)
+            assertNull(proof); assertEquals(0, endpoint.unlinked)
+            endpoint.alive = false // Exact simulated native process death; no callback.
+            until { endpoint.deaths.isEmpty() }
+            until { proof != null }
+            assertEquals(ResourceRetirement.RETIRED, proof)
+            assertEquals(1, endpoint.unlinked)
+        } finally {
+            endpoint.alive = false
+            run.cancel(); scope.cancel()
+            // Release the owned fixture even on the intentionally red old waiter.
+            withTimeout(3000) {
+                while (!scope.coroutineContext[Job]!!.isCompleted) {
+                    Shadows.shadowOf(Looper.getMainLooper()).idleFor(5, java.util.concurrent.TimeUnit.MILLISECONDS)
+                    delay(1)
+                }
+            }
+        }
     }
     @Test fun t809_defaultRemoteDisplayFactoryUsesBinderAndReleasesIt() = runBlocking {
         val endpoint = Endpoint()

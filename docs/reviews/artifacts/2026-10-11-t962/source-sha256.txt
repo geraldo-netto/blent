@@ -1,0 +1,1 @@
+139f049b7231d02b017689234b46b0d0874ac805c47e278a962454d4cfaac221  android/app/src/test/java/com/blent/RemoteAdaptersTest.kt
