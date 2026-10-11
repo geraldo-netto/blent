@@ -177,7 +177,7 @@ class ActivityUiContractTest {
             AudioInvitations.microphone.value = null
             fixture.stop()
         }
-        assertNull(AudioOwner.permissionRequest)
+        assertNull(ReflectionHelpers.getField<LocalPermissionAttachment?>(activity, "audioAttachment"))
     }
 
     @Test fun t961StoppedActivityCannotStopReplacementCameraOwner() {

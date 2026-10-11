@@ -1,0 +1,52 @@
+[
+  {
+    "owner": "com/blent/MainActivity",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 15,
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioActivityOwner$action$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioActivityOwner;Lcom/blent/AudioCapturePermission;)V",
+    "line": 46,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioCapturePermission",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioEndpoint;)V",
+    "line": 5,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioActivityOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioBinding;Lcom/blent/AudioBinding;Lcom/blent/LocalPermissionPrompts;)V",
+    "line": 6,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioBinding",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Lkotlinx/coroutines/flow/MutableStateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;)V",
+    "line": 9,
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true
+  }
+]

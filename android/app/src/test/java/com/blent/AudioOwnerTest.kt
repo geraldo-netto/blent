@@ -17,13 +17,14 @@ class AudioOwnerTest {
         val app = RuntimeEnvironment.getApplication()
         AudioOwner.reset()
         try {
-            var prompts = 0; AudioOwner.permissionRequest = { prompts++ }
-            assertNotNull(AudioOwner.permissionRequest)
+            val prompts = mutableListOf<LocalPermissionPrompt>()
             val binding = AudioOwner.get(app); assertSame(binding, AudioOwner.get(app))
+            AudioOwner.get(app, 2)
+            AudioOwner.attach { prompts.add(it); true }
             binding.start(); org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             AudioInvitations.microphone.value = AudioEndpoint("a".repeat(64), 12345, 1, 1, 40, false)
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
-            assertEquals(1, prompts); binding.permissionResult(false)
+            assertEquals(1, prompts.size); assertTrue(AudioOwner.permissionResult(prompts.single(), false))
             Shadows.shadowOf(app).grantPermissions(Manifest.permission.RECORD_AUDIO)
             binding.configure(AudioPreferences(background = true, builtIn = false))
             ServerSocket(0).use { server ->
@@ -35,6 +36,37 @@ class AudioOwnerTest {
                 AudioOwner.stopSharing(); assertFalse(binding.sharing)
             }
             AudioOwner.stopped("old"); assertFalse(AudioOwner.owns("old"))
+        } finally { AudioOwner.reset(); Shadows.shadowOf(android.os.Looper.getMainLooper()).idle() }
+    }
+
+    @Test fun t951UninitializedDetachedAndRejectedSdkOwnersFailClosed() {
+        AudioOwner.reset()
+        val app = RuntimeEnvironment.getApplication()
+        Shadows.shadowOf(app).denyPermissions(Manifest.permission.RECORD_AUDIO)
+        try {
+            assertFalse(AudioOwner.detach(LocalPermissionAttachment()))
+            assertThrows(IllegalStateException::class.java) { AudioOwner.attach { true } }
+            for (direction in listOf(Int.MIN_VALUE, -1, 0, 3, Int.MAX_VALUE)) {
+                assertThrows(IllegalStateException::class.java) { AudioOwner.get(app, direction) }
+            }
+            val binding = AudioOwner.get(app)
+            assertThrows(IllegalStateException::class.java) { AudioOwner.attach { true } }
+            binding.start()
+            AudioInvitations.microphone.value = AudioEndpoint("ab".repeat(32), 12345, 1, 1, 40, false)
+            Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            assertNull(binding.permissionPending); assertFalse(binding.sharing)
+            AudioOwner.get(app, 2)
+            val attached = AudioOwner.attach { false }
+            AudioInvitations.microphone.value = AudioEndpoint("ab".repeat(32), 12346, 1, 1, 40, false)
+            Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            assertNull(binding.permissionPending); assertFalse(binding.sharing)
+            assertTrue(AudioOwner.detach(attached)); assertFalse(AudioOwner.detach(attached))
+            val stale = LocalPermissionPrompt(attached, object : LocalPermissionAction {
+                override fun current() = true
+                override fun complete(granted: Boolean) { fail("T951 foreign SDK prompt granted capture") }
+            })
+            assertFalse(AudioOwner.permissionResult(stale, true))
+            AudioOwner.reset(); assertFalse(AudioOwner.permissionResult(stale, false))
         } finally { AudioOwner.reset(); Shadows.shadowOf(android.os.Looper.getMainLooper()).idle() }
     }
 }

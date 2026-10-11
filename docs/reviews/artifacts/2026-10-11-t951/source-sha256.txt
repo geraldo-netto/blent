@@ -1,0 +1,11 @@
+7ae6e0eb0e38f6e9fa6fe0f83a6fe6cd047cc99c05f8a23531f5910857334cfe  android/app/src/main/java/com/blent/AudioBinding.kt
+0d50898ee6d6b817daa52f00e7ea10b7707b3235ab831c78fca58dea39321568  android/app/src/main/java/com/blent/AudioOwner.kt
+48a0dc1766de9b6774910670e68e8a0133b77a1b648b3679c0e9aa2cd2565514  android/app/src/main/java/com/blent/AudioActivityOwner.kt
+4ebc0509532c9b13ad976db8ad6f0ec370139e7c63c32bfbdb998b8233a6cc0e  android/app/src/main/java/com/blent/AudioConsentContracts.kt
+01f603dd409d65834abefbbf33753cc022b9229243ca70aaaee0d81e844c1510  android/app/src/main/java/com/blent/MainActivity.kt
+dd232a46fedbbd9b03c52ac57a1b02535e42caec6cdbab052e2dc5c9e44c36b4  android/app/src/test/java/com/blent/AudioPermissionIdentityTest.kt
+29ec7926d54bbd5017bcfa97a68c7f1854225cae7a825cbbd118b2444672908f  android/app/src/test/java/com/blent/AudioActivityAttachmentTest.kt
+ef3273a1a6d7f17a0245fbe235b113eac6b385390c049074c1fc052f92d0d2d2  android/app/src/test/java/com/blent/AudioActivityOwnerTest.kt
+f66bd71717919c5b1744ea9bbbf944f002dcd1aef7536068b7c80d0788c0f6a1  android/app/src/test/java/com/blent/AudioOwnerTest.kt
+fb73ab5245aec618135bb29dc29a3adcc771b76223b92daff3581474c807a11f  android/app/src/test/java/com/blent/AudioBindingTest.kt
+e3c9863b95eae5ea18d1a3e4b1da84c822f07eccc16cf89c6f3ff4b48a16715d  android/app/src/test/java/com/blent/ActivityUiContractTest.kt

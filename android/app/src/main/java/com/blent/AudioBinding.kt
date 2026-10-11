@@ -29,9 +29,14 @@ internal class AudioBinding(
     var sharing: Boolean
         get() = mutableState.value.sharing
         private set(value) { mutableState.update { it.copy(sharing = value) } }
+    var permissionPending: AudioCapturePermission? = null
+        private set
     var pending: AudioEndpoint?
         get() = mutableState.value.pending
-        private set(value) { mutableState.update { it.copy(pending = value) } }
+        private set(value) {
+            permissionPending = value?.let { AudioCapturePermission(it) }
+            mutableState.update { it.copy(pending = value) }
+        }
     private var visible = false
     private val statusUpdates = LatestDispatch(scope) { status = "Status update failed: ${it.message}" }
     private var generation = 0L
@@ -57,8 +62,8 @@ internal class AudioBinding(
         if (!permission()) { requestPermission(); return }
         accept()
     }
-    fun permissionResult(granted: Boolean) {
-        if (!visible || pending == null) return
+    fun permissionResult(granted: Boolean, original: AudioCapturePermission?) {
+        if (!visible || original == null || permissionPending !== original) return
         if (!granted) { pending = null; status = "Microphone permission denied."; return }
         accept()
     }

@@ -17,8 +17,13 @@ class MainActivity : ComponentActivity() {
     internal lateinit var microphone: AudioBinding; private set
     internal lateinit var speakers: AudioBinding; private set
     private val microphonePermission = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
-        microphone.permissionResult(it)
+        microphonePermissionLauncher.complete(it)
     }
+    private val microphonePermissionLauncher: LocalPermissionLauncher = LocalPermissionLauncher(
+        { microphonePermission.launch(android.Manifest.permission.RECORD_AUDIO) },
+        { prompt, granted -> AudioOwner.permissionResult(prompt, granted) },
+    )
+    private var audioAttachment: LocalPermissionAttachment? = null
     internal lateinit var cameras: CameraBinding; private set
     private val cameraPermission = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
         cameraPermissionLauncher.complete(it)
@@ -133,9 +138,7 @@ class MainActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         cameraAttachment = CameraOwner.attach(cameraPermissionLauncher::launch)
-        AudioOwner.permissionRequest = { microphonePermission.launch(android.Manifest.permission.RECORD_AUDIO) }
-        microphone.start()
-        speakers.start()
+        audioAttachment = AudioOwner.attach(microphonePermissionLauncher::launch)
         windowPolicy.start()
         powerBinding.start(session.powerNow(), session.powerUpdates())
         session.checkUpdate {
@@ -149,14 +152,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         displayObservation?.cancel(); displayObservation = null
-        AudioOwner.permissionRequest = null
-        reportCleanup(cleanupAll({ detachCamera() }, { microphone.stop() }, { speakers.stop() },
+        reportCleanup(cleanupAll({ detachCamera() }, { detachAudio() },
             { super.onStop() }, { windowPolicy.stop() }, { powerBinding.stop() }, { session.stop() }))
     }
 
     override fun onDestroy() {
         displayObservation?.cancel(); displayObservation = null
         reportCleanup(cleanupAll({ detachCamera(); cameraPermissionLauncher.retire() },
+            { detachAudio(); microphonePermissionLauncher.retire() },
             { if (::powerBinding.isInitialized) powerBinding.stop() },
             { super.onDestroy() }, { windowPolicy.stop() }))
     }
@@ -164,6 +167,11 @@ class MainActivity : ComponentActivity() {
     private fun detachCamera() {
         cameraAttachment?.let(CameraOwner::detach)
         cameraAttachment = null
+    }
+
+    private fun detachAudio() {
+        audioAttachment?.let(AudioOwner::detach)
+        audioAttachment = null
     }
 
     private fun reportCleanup(failures: List<Exception>) {

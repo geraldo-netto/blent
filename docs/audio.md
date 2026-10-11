@@ -23,6 +23,16 @@ implemented shared behavior; those reviews also contain planned native behavior.
 Keep one `AudioSession` and native `AudioBackend` owner per direction throughout
 an attachment's lifetime. Microphone and speakers have separate state, credentials,
 queues, sequence tracking and retirement. A failure in one does not stop the other.
+Android's process audio owner retains one exact foreground attachment. A stopped
+older Activity cannot detach a replacement or stop its microphone/speaker runs.
+Microphone SDK results retain an independent original permission-request identity;
+equal or reused endpoint data cannot grant or deny a replacement invitation.
+The SDK adapter retains its actual outstanding request slot until result or
+Activity destruction. Foreground detach stops only foreground audio; explicitly
+permitted background runs keep their service and actual native retirement owner.
+These lifecycle fixes are independent of USB speaker/microphone integration,
+which remains planned under T860/T859.
+
 The native implementation must intersect both endpoints' current capabilities before
 Start. A supported direction means its 48 kHz s16le channel layout is supported.
 Speech capability means processing can be requested, not that AEC works effectively.
