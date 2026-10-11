@@ -182,3 +182,140 @@ pub(super) async fn authenticated() -> Authenticated {
         pin,
     }
 }
+
+async fn presentation_view(
+    client: &impl blent_config::connection::control_client::Client,
+    accept: impl Fn(&blent_config::connection::control_view::View) -> bool,
+) -> blent_config::connection::control_view::View {
+    bounded(async {
+        loop {
+            if let Some(view) = client.status().view.filter(|view| accept(view)) {
+                return view;
+            }
+            tokio::time::sleep(Duration::from_millis(2)).await;
+        }
+    })
+    .await
+}
+
+#[tokio::test]
+async fn t855_presentation_commands_pair_real_tls_then_durably_revoke() {
+    use crate::broker::linux::{client::Launch, presentation};
+    use blent_config::connection::{control::State as LinkState, control_client::Client};
+    let mut fixture = Fixture::configured(|settings| settings.session.channel_bytes = 4096).await;
+    let (owner, _owner_socket) = fixture.client().await;
+    let id = selection(&mut fixture.server, owner);
+    let mut stream = attach(&mut fixture.server, id);
+    let tablet = Identity::load(IdentityRecord::generate().unwrap()).unwrap();
+    bounded(remote_hello(&mut stream, tablet.certificate())).await;
+    let identified = event(&mut fixture.server, id).await;
+    fixture.server.link_event(id, identified).unwrap();
+    let host = fixture.server.identity.identity.clone();
+    let mut settings = presentation::Settings::new(Launch {
+        executable: "/bin/false".into(),
+        runtime: fixture.server.settings.runtime.clone(),
+        state: fixture.server.settings.state.clone(),
+        helper: fixture.server.settings.helper.clone(),
+    });
+    settings.poll = Duration::from_millis(5);
+    let factory = presentation::Factory::new(settings).unwrap();
+    let (stop, done) = tokio::sync::oneshot::channel();
+    let running = tokio::spawn(async move {
+        tokio::select! { result = fixture.server.run() => panic!("server failed: {result:?}"), _ = done => () }
+        fixture
+    });
+    let client = factory.start().unwrap();
+    let view = presentation_view(&client, |view| {
+        view.snapshot()
+            .links()
+            .get(&id)
+            .is_some_and(|link| link.state == LinkState::Pending)
+    })
+    .await;
+    let ticket = view.snapshot().links()[&id].ticket.clone().unwrap();
+    let pin = ticket.peer.clone();
+    assert_eq!(
+        view.snapshot().computer(),
+        &PeerCertificate::parse(host.certificate().to_vec())
+            .unwrap()
+            .peer_id()
+    );
+    assert!(view.snapshot().saved().is_empty());
+    let submitted = client
+        .submit(
+            view.prepare(Command::Decide {
+                connection: id,
+                ticket,
+                allow: true,
+                remember: true,
+            })
+            .unwrap(),
+        )
+        .unwrap();
+    let approved = presentation_view(&client, |view| {
+        view.snapshot()
+            .links()
+            .get(&id)
+            .is_some_and(|link| link.state == LinkState::Approved)
+    })
+    .await;
+    assert!(
+        approved.snapshot().saved().is_empty(),
+        "approval without peer proof cannot persist trust"
+    );
+    assert_eq!(client.status().outcome.as_ref().unwrap().id, submitted);
+    let mut tablet = bounded(remote_tls(stream, tablet, host)).await;
+    let authenticated = presentation_view(&client, |view| {
+        view.snapshot()
+            .links()
+            .get(&id)
+            .is_some_and(|link| link.state == LinkState::Authenticated)
+    })
+    .await;
+    assert_eq!(
+        authenticated.snapshot().saved().get(pin.as_str()),
+        Some(&pin)
+    );
+    let revoke = client
+        .submit(
+            authenticated
+                .prepare(Command::Revoke { peer: pin })
+                .unwrap(),
+        )
+        .unwrap();
+    let revoked = presentation_view(&client, |view| view.snapshot().saved().is_empty()).await;
+    assert!(revoked
+        .snapshot()
+        .links()
+        .get(&id)
+        .is_none_or(|link| !link.trusted));
+    assert_eq!(client.status().outcome.as_ref().unwrap().id, revoke);
+    assert!(client.status().outcome.as_ref().unwrap().error.is_none());
+    retire_presentation(&client, &mut tablet).await;
+    stop.send(()).unwrap();
+    let mut fixture = bounded(running).await.unwrap();
+    fixture
+        .server
+        .shutdown(Duration::from_secs(2))
+        .await
+        .unwrap();
+    fixture.finish().await;
+}
+
+async fn retire_presentation(
+    client: &impl blent_config::connection::control_client::Client,
+    tablet: &mut Box<dyn Stream>,
+) {
+    let mut drain = Vec::new();
+    // Revocation aborts transport; it need not wait for TLS close_notify.
+    if let Err(error) = bounded(tablet.read_to_end(&mut drain)).await {
+        assert_eq!(error.kind(), std::io::ErrorKind::UnexpectedEof);
+    }
+    client.close();
+    bounded(async {
+        while !client.retired() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await;
+}
