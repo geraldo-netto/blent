@@ -1,0 +1,1058 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+    "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+    "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 45,
+      "passing": 45,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "<lambda>",
+      "line": 22,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding$Attempt$cameras$1",
+          "name": "invoke",
+          "signature": "(Lcom/blent/connection/ConnectionWorkerCommand;)Ljava/lang/Boolean;",
+          "line": 22,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "cleanup",
+      "line": 32,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "cleanup",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 33,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "connect",
+      "line": 37,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "connect",
+          "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;)V",
+          "line": 38,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "<lambda>",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding$connect$1",
+          "name": "invoke",
+          "signature": "()Lcom/blent/LifecycleRun;",
+          "line": 44,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "<lambda>",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding$connect$2",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 45,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "receive",
+      "line": 52,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "receive",
+          "signature": "(Lcom/blent/connection/ConnectionBinding$Attempt;Lcom/blent/connection/ConnectionWorkerEvent;)V",
+          "line": 53,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "clearTarget",
+      "line": 59,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "clearTarget",
+          "signature": "(Lcom/blent/connection/ConnectionBinding$Attempt;)V",
+          "line": 60,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "projectCamera",
+      "line": 63,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "projectCamera",
+          "signature": "(Lcom/blent/connection/ConnectionBinding$Attempt;Lcom/blent/connection/ConnectionWorkerEvent;)V",
+          "line": 63,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "open",
+      "line": 74,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "open",
+          "signature": "(Lcom/blent/connection/ConnectionBinding$Attempt;Lcom/blent/connection/ConnectionWorkerSpec;)Lcom/blent/LifecycleRun;",
+          "line": 75,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "<lambda>",
+      "line": 75,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding$open$worker$1",
+          "name": "invoke",
+          "signature": "(Lcom/blent/connection/ConnectionWorkerEvent;)V",
+          "line": 75,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "execute",
+      "line": 79,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding$open$1",
+          "name": "execute",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 79,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "cancel",
+      "line": 80,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding$open$1",
+          "name": "cancel",
+          "signature": "()V",
+          "line": 80,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "retire",
+      "line": 81,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding$open$1",
+          "name": "retire",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 82,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "disconnect",
+      "line": 89,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "disconnect",
+          "signature": "()V",
+          "line": 90,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "decide",
+      "line": 95,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "decide",
+          "signature": "(Lcom/blent/connection/ConnectionChoice;ZZ)Z",
+          "line": 96,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "revoke",
+      "line": 101,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "revoke",
+          "signature": "(Lcom/blent/connection/ConnectionChoice;)Z",
+          "line": 102,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "cameraChoice",
+      "line": 109,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "cameraChoice",
+          "signature": "(Lcom/blent/connection/ConnectionCameraChoice;Lcom/blent/connection/CameraConsentChoice;)Z",
+          "line": 110,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "cameraPermission",
+      "line": 115,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "cameraPermission",
+          "signature": "(Lcom/blent/connection/ConnectionCameraOfferChoice;ZLcom/blent/connection/CameraConsentChoice;)Z",
+          "line": 116,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "name": "send",
+      "line": 121,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+          "owner": "com/blent/connection/ConnectionBinding",
+          "name": "send",
+          "signature": "(Lcom/blent/connection/ConnectionBinding$Attempt;Lcom/blent/connection/ConnectionWorkerCommand;)Z",
+          "line": 121,
+          "covered": 10,
+          "total": 10
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "endpoint",
+      "line": 16,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraTarget",
+          "name": "endpoint",
+          "signature": "(Lcom/blent/connection/LocalCameraRoute;)Lcom/blent/CameraEndpoint;",
+          "line": 17,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "<lambda>",
+      "line": 18,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraTarget$endpoint$token$1",
+          "name": "invoke",
+          "signature": "(B)Ljava/lang/CharSequence;",
+          "line": 18,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "<lambda>",
+      "line": 32,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 32,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "current",
+      "line": 43,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner$Claim",
+          "name": "current",
+          "signature": "()Z",
+          "line": 43,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "retired",
+      "line": 44,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner$Claim",
+          "name": "retired",
+          "signature": "(Lcom/blent/ResourceRetirement;)V",
+          "line": 45,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "retain",
+      "line": 49,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner",
+          "name": "retain",
+          "signature": "()Lcom/blent/CameraCaptureClaim;",
+          "line": 49,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "invalidate",
+      "line": 52,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner",
+          "name": "invalidate",
+          "signature": "()V",
+          "line": 52,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "stop",
+      "line": 53,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner",
+          "name": "stop",
+          "signature": "()Z",
+          "line": 54,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "closed",
+      "line": 57,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner",
+          "name": "closed",
+          "signature": "(Lcom/blent/connection/ConnectionResourceLease;)Z",
+          "line": 58,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "flush",
+      "line": 65,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner",
+          "name": "flush",
+          "signature": "()V",
+          "line": 66,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "retire",
+      "line": 69,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCaptureOwner",
+          "name": "retire",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 71,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "<lambda>",
+      "line": 84,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCompletionRelay$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 84,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "stop",
+      "line": 94,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCompletionRelay",
+          "name": "stop",
+          "signature": "()Z",
+          "line": 95,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "ready",
+      "line": 100,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCompletionRelay",
+          "name": "ready",
+          "signature": "()V",
+          "line": 101,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "<lambda>",
+      "line": 103,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCompletionRelay$ready$pending$1$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 103,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "<lambda>",
+      "line": 103,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCompletionRelay$ready$pending$1$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 103,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "deliver",
+      "line": 107,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCompletionRelay",
+          "name": "deliver",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 108,
+          "covered": 10,
+          "total": 11
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+      "name": "retire",
+      "line": 121,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraCaptureOwner.kt",
+          "owner": "com/blent/connection/ConnectionCameraCompletionRelay",
+          "name": "retire",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 122,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "admitted",
+      "line": 21,
+      "language": "kotlin",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession",
+          "name": "admitted",
+          "signature": "(Lcom/blent/connection/LocalCameraRoute;)Lcom/blent/CameraCaptureTarget;",
+          "line": 21,
+          "covered": 11,
+          "total": 11
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "<lambda>",
+      "line": 30,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession$admitted$1$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 30,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "sameRoute",
+      "line": 34,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession",
+          "name": "sameRoute",
+          "signature": "(Lcom/blent/connection/LocalCameraRoute;Lcom/blent/connection/LocalCameraRoute;)Z",
+          "line": 35,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "delivered",
+      "line": 38,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession",
+          "name": "delivered",
+          "signature": "(Lcom/blent/connection/ConnectionResourceLease;)V",
+          "line": 39,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "closed",
+      "line": 42,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession",
+          "name": "closed",
+          "signature": "(Lcom/blent/connection/ConnectionResourceLease;)Z",
+          "line": 43,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "clear",
+      "line": 47,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession",
+          "name": "clear",
+          "signature": "()V",
+          "line": 48,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "stop",
+      "line": 50,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession",
+          "name": "stop",
+          "signature": "()V",
+          "line": 51,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+      "name": "retire",
+      "line": 55,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionCameraSession.kt",
+          "owner": "com/blent/connection/ConnectionCameraSession",
+          "name": "retire",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 57,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    }
+  ]
+}

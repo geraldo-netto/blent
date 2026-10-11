@@ -11,7 +11,7 @@ import org.robolectric.RuntimeEnvironment
 /** Real private service/Binder, actor, mux and local TCP. Pairing/USB permission
  * are explicit synthetic authority; process death is simulated, never hardware
  * acceptance. Every protocol mutation shares the actor's synchronization gate. */
-internal class ConnectionJoinedCameraFixture {
+internal class ConnectionJoinedCameraFixture(private val report: (ConnectionWorkerEvent) -> Unit = {}) {
     val gate = Any()
     val protocol = TabletSessionRig(capabilities = 3, timeout = 60000)
     val presentation = ConnectionPresentation()
@@ -88,7 +88,7 @@ internal class ConnectionJoinedCameraFixture {
     val worker = ConnectionAdmissionRun(ConnectionWorkerSpec("template", session = ConnectionSessionLimits(4096),
         io = ConnectionRunLimits(5000, 1000), timerMs = 1), { admission },
         { spec, report -> AndroidConnectionWorkerRun(context, spec, report, bindMillis = 1000, startMillis = 1000, retireMillis = 4000) },
-        { presentation.event(token, it) })
+        { presentation.event(token, it); report(it) })
     init {
         service.factory = { spec, report ->
             val setup = RuntimeSetup().apply {

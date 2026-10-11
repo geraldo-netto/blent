@@ -1829,3 +1829,27 @@ covers 955 offline tests and all 37 scoped methods. These target/native
 authorities are synthetic; production capabilities remain display-only. T948
 supplies original USB-attempt/profile mapping, T944 Activity/permission adapters
 and T932 joined capability enablement. Physical camera acceptance remains T858.
+
+## T948 original connection camera authority
+
+ConnectionBinding exposes portable camera targets from each exact original USB
+worker, with validated profile/credential projection and original presentation
+identity for consent/permission controls. All possible native lens requests retain
+separate claims. Published route closure joins every actual retirement/no-start
+before consumer completion; TCP EOF and execution end cannot substitute. UI
+replacement invalidates current capture immediately without redirecting late proof
+through the replacement worker. Duplicate metadata preserves target identity;
+foreign, conflicting and retired metadata cannot reopen it.
+
+One unresolved owner and a scalar watermark bound session history. Terminal
+completion is independently retained and retried with bounded backoff, outside
+ownership locks, until accepted or actual original worker retirement joins the
+relay. Rejected or blocked control cannot authorize resource reuse. Camera stop
+preserves display and the authenticated connection.
+
+[Permanent red/green and native counter evidence](artifacts/2026-10-11-t948/README.md)
+covers 973 offline tests, all 45 scoped methods and 7 authored constructors,
+including private Binder/actor and real loopback composition on simulated API
+27/34. T944 supplies Activity/permission lifecycle integration and T932 enables
+the joined production camera capability. Real camera/accessory acceptance remains
+T858/T863; the capability mask is still display-only.
