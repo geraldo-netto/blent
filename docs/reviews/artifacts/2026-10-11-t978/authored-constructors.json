@@ -1,0 +1,12 @@
+[
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorker",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lcom/blent/connection/ConnectionRunFactory;)V",
+    "line": 23,
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true
+  }
+]

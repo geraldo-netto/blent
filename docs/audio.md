@@ -27,7 +27,7 @@ Existing settings and commands retain ADB selection by default. Saving a target
 starts no media or connection. The native audio implementation currently reports
 USB unavailable and rejects that target before ADB, helper or device work; Linux
 USB composition and production selector controls remain T979. Android leased
-speaker playback remains T978, followed by microphone integration T859. These
+speaker playback is composed under T978; microphone integration remains T859. These
 contracts do not establish physical USB audio support.
 
 Camera and audio use shared platform-independent `connection::media` transport
@@ -53,8 +53,8 @@ own policy and never proves native worker or endpoint retirement.
 Camera and selected audio production callers use this shared policy. `AudioAccessOffer` adds validated
 microphone/speaker metadata without transport credentials or native handles;
 speaker offers cannot request microphone SDK permission. Independent audio
-properties qualify this policy for the leased USB adapters. Production USB audio capability remains disabled until joined playback and host adapters
-are implemented (T978/T979/T859); legacy audio Activity/permission behavior
+properties qualify this policy for the leased USB adapters. Android advertises implemented speaker routing/playback under T978;
+joined host audio remains T979 and microphone T859. Legacy audio Activity/permission behavior
 remains as described below. Camera behavior and permanent regressions are
 preserved. [Policy and native counter evidence](reviews/artifacts/2026-10-11-t982/README.md).
 
@@ -72,8 +72,8 @@ original claim and cancellation checks surround lazy native acquisition. A worke
 created during a permission change remains owned until its actual retirement.
 Failed cleanup quarantines its direction while the other direction remains
 independent. Binding construction rejects invalid direction/preferences before
-native ownership. These are adapter foundations; production USB audio remains
-disabled pending T978/T979/T859. T986 also rechecks legacy permission before and after lazy native creation;
+native ownership. These are adapter foundations; production USB speaker playback is composed under T978, with
+host transport T979 and physical acceptance T860 still pending. T986 also rechecks legacy permission before and after lazy native creation;
 queued permission loss cannot acquire a native worker. Created workers remain
 owned through real retirement. [Regression and native counter evidence](reviews/artifacts/2026-10-11-t983/README.md).
 
@@ -91,9 +91,9 @@ its resource without retrying proof or releasing capacity.
 Speaker channels use the existing bounded bidirectional local pump, preserving
 bootstrap, clock negotiation and PCM bytes. Control forwarding remains prompt;
 a stopped connection still accepts its exact late consumer completion. Android
-production does not compose the speaker authority yet: worker publications and
-local controls are implemented under T989/T985; joined playback/capability enablement remains T978, physical
-acceptance T860. Microphone remains unavailable in this adapter until T859.
+production does not compose the speaker authority yet: worker publications,
+local controls and joined playback are implemented under T989/T985/T978; physical
+acceptance remains T860. Microphone remains unavailable in this adapter until T859.
 [Private protocol/lifecycle and native counter evidence](reviews/artifacts/2026-10-11-t984/README.md).
 
 ## Private Android audio IPC contracts (T988)
@@ -107,8 +107,7 @@ Binder. A decoded lease or completion command provides no native authority by
 itself; original retained workers must validate it.
 
 These schema foundations do not enable audio: T989 routes commands only through
-a provided audio owner matching the exact original ticket/resource. UI consent is implemented under T985; production joined playback/capability
-remains T978.
+a provided audio owner matching the exact original ticket/resource. UI consent and joined playback/capability are implemented under T985/T978.
 [Contract properties and native counters](reviews/artifacts/2026-10-11-t988/README.md).
 
 ## Original Android audio worker publication (T989)
@@ -129,9 +128,9 @@ replacement worker or revoke a sibling. `ConnectionBinding` now exposes typed
 microphone/speaker targets with original authority; its UI actions retain the
 exact current publication identity. Camera contracts and regressions remain.
 
-Production USB audio remains disabled pending joined speaker composition/capability
-T978, microphone T859 and physical T860. Local consent/Activity controls are
-implemented under T985.
+Android production composition advertises speakers with display/camera under
+T978. Microphone remains unavailable until T859; physical speaker acceptance
+remains T860. Local consent/Activity controls are implemented under T985.
 [Private worker/lifecycle regressions and native counters](reviews/artifacts/2026-10-11-t989/README.md).
 
 ## Original Android audio consent and Activity controls (T985)
@@ -154,10 +153,34 @@ attachment owns both policies; an older Activity cannot detach its replacement.
 Actual audio worker cleanup remains independent of logical Stop and UI lifecycle.
 
 The passive audio settings and legacy invitation/SDK behavior remain available
-when no USB offer is selected. These controls do not enable production USB audio;
-joined speaker composition is T978, host transport T979 and microphone T859.
+when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host transport
+remains T979 and microphone T859.
 [Permanent UI/lifecycle/projection tests and native counters](reviews/artifacts/2026-10-11-t985/README.md)
 are synthetic evidence; physical qualification remains postponed under T860.
+
+## Joined Android leased USB speaker playback (T978)
+
+Production connection composition now advertises display, camera and speakers
+(mask 11), with the explicit original session audio authority. Microphone remains
+unavailable. Speaker offers follow the T985 local consent path before allocating
+an endpoint, then select an original target retained through `AudioBinding` and
+the isolated `SpeakerWorkerService`. The existing authenticated PCM bootstrap
+negotiates the tablet processing preference and optional native-clock format;
+buffer, background, volume, built-in route and low-latency preferences are retained.
+USB audio uses explicit lease withdrawal, independently of legacy invitations.
+
+Permanent joined tests use real private connection/media services and Binder,
+management/mux routing, loopback TCP, clocked grants/PCM and the audio renderer.
+They cover denial, cancelled pending consent, stale publications, failed native
+open, worker death, delayed native cleanup, delayed process-death proof and a
+blocked renderer. Speaker closure leaves the original connection and display
+available. Neither logical Stop, socket EOF, native execution end nor a deadline
+alone proves actual original consumer retirement.
+
+The fixture's audio device and process-death notifications are synthetic. It
+establishes joined protocol and ownership behavior, not acoustic performance or
+physical process/accessory qualification. Native speaker-only acceptance remains
+T860; Linux composition remains T979. [Joined tests and individual native counters](reviews/artifacts/2026-10-11-t978/README.md).
 
 ## Ownership and adapter integration
 

@@ -2004,3 +2004,17 @@ production UI integration remain T978/T979/T859; physical acceptance remains
 T860/T859/T846. Capability advertisement remains display/camera only. Earlier
 milestone type names and test counts in this document describe historical evidence.
 [Current shared policy qualification](artifacts/2026-10-11-t982/README.md).
+
+
+### Joined Android speaker implementation (T983–T989, T985, T978; 2026-10-11)
+
+The preceding milestone statements are historical. Current Android production
+composition advertises display, camera and speakers (mask 11); microphone remains
+unavailable pending T859. Shared original publication/consumer/consent ownership
+feeds exact per-direction local Start/Stop/background controls and the isolated
+speaker worker. Joined private service/Binder, TCP, clocked PCM and renderer
+fixtures retain actual cleanup/process-death barriers through denial, cancellation,
+worker failure/death and a blocked renderer while display remains available.
+Native device/process-death signals in these fixtures are synthetic; no physical
+or acoustic acceptance is claimed. Linux speaker composition remains T979 and
+postponed physical acceptance T860/T846.

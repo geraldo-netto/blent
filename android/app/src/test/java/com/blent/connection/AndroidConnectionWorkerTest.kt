@@ -174,7 +174,7 @@ class AndroidConnectionWorkerTest {
         } finally { worker.cancel(); execution.await() }
     }
 
-    @Test fun t907T932DefaultCompositionAdvertisesDisplayCameraWithoutAudio() = runBlocking {
+    @Test fun t907T932T978DefaultCompositionAdvertisesDisplayCameraSpeakersWithoutMicrophone() = runBlocking {
         val setup = RuntimeSetup(); val io = RunnerIo()
         setup.ready = ConnectionSetupReady(io, setup.approval, 4096)
         val worker = AndroidConnectionWorker(spec(), { _, _ -> object : ConnectionSetup by setup {
@@ -192,7 +192,7 @@ class AndroidConnectionWorkerTest {
             val header = io.write(); io.complete(header, header.loan.length)
             until { io.write() !== header }
             val body = io.write().loan
-            assertEquals(ConnectionManagement.Capabilities(3),
+            assertEquals(ConnectionManagement.Capabilities(11),
                 ConnectionManagement.decode(body.bytes.copyOfRange(body.offset, body.offset + body.length)))
         } finally { worker.cancel(); execution.await(); worker.retire() }
     }

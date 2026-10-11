@@ -11,9 +11,9 @@ import org.robolectric.RuntimeEnvironment
 /** Real private service/Binder, actor, mux and local TCP. Pairing/USB permission
  * are explicit synthetic authority; process death is simulated, never hardware
  * acceptance. Every protocol mutation shares the actor's synchronization gate. */
-internal class ConnectionJoinedCameraFixture(private val report: (ConnectionWorkerEvent) -> Unit = {}) {
+internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, private val report: (ConnectionWorkerEvent) -> Unit = {}) {
     val gate = Any()
-    val protocol = TabletSessionRig(capabilities = 3, timeout = 60000)
+    val protocol = TabletSessionRig(capabilities = capabilities, timeout = 60000)
     val presentation = ConnectionPresentation()
     val token = presentation.begin()
     val opened = AtomicInteger()
@@ -25,7 +25,7 @@ internal class ConnectionJoinedCameraFixture(private val report: (ConnectionWork
     private var delivered = false
     private val local = ConnectionLocalResources(protocol.tablet, 4096, ConnectionRunLimits(5000, 1000),
         factory = { now -> opened.incrementAndGet(); LocalEndpointOwner(LocalSocketEndpoint(), now, ConnectionRunLimits(5000, 1000)) },
-        cameraAuthority = protocol.tablet)
+        cameraAuthority = protocol.tablet, audioAuthority = protocol.tablet)
     private val transport = object : ConnectionRun {
         override fun display(): LocalDisplayRoute? = null
         override fun endpoints(): ConnectionEndpoints = protocol.tablet
@@ -42,7 +42,7 @@ internal class ConnectionJoinedCameraFixture(private val report: (ConnectionWork
         override fun terminationRequired() = false
     }
     private val joined = ConnectionLocalRun(transport, local)
-    private val serialized = object : ConnectionRun, LocalCameraControl {
+    private val serialized = object : ConnectionRun, LocalCameraControl, LocalAudioControl {
         override fun display() = synchronized(gate) { joined.display() }
         override fun endpoints(): ConnectionEndpoints = object : ConnectionEndpoints by protocol.tablet {
             override fun current(lease: ConnectionResourceLease) = synchronized(gate) { protocol.tablet.current(lease) }
@@ -60,6 +60,11 @@ internal class ConnectionJoinedCameraFixture(private val report: (ConnectionWork
         override fun permissionResult(prompt: CameraPermissionRequest, granted: Boolean, choice: CameraConsentChoice, now: Long) =
             synchronized(gate) { joined.permissionResult(prompt, granted, choice, now) }
         override fun consumerRetired(lease: ConnectionResourceLease, now: Long) = synchronized(gate) { joined.consumerRetired(lease, now) }
+        override fun audioOffered(resource: ConnectionManagement.Resource) = synchronized(gate) { joined.audioOffered(resource) }
+        override fun audio(resource: ConnectionManagement.Resource) = synchronized(gate) { joined.audio(resource) }
+        override fun chooseAudio(lease: ConnectionResourceLease, choice: com.blent.MediaLocalConsent, now: Long) =
+            synchronized(gate) { joined.chooseAudio(lease, choice, now) }
+        override fun audioConsumerRetired(lease: ConnectionResourceLease, now: Long) = synchronized(gate) { joined.audioConsumerRetired(lease, now) }
     }
     private val admission = object : AccessoryAdmission {
         private val selection = AccessorySelection(7, "ab".repeat(32))
@@ -110,8 +115,8 @@ internal class ConnectionJoinedCameraFixture(private val report: (ConnectionWork
         for (channel in ConnectionChannels.members(lease.key.resource)) protocol.host.activate(channel, lease.key.generation)
     }
     fun messages() = synchronized(gate) { protocol.messages.toList() }
-    fun payload() = synchronized(gate) { protocol.payloads.flatMap { it.second.toList() }.toByteArray() }
-    fun feedback(bytes: ByteArray) = synchronized(gate) { protocol.host.offer(ConnectionWire.CAMERA, bytes) }
+    fun payload(channel: Int = ConnectionWire.CAMERA) = synchronized(gate) { protocol.payloads.filter { it.first == channel }.flatMap { it.second.toList() }.toByteArray() }
+    fun feedback(bytes: ByteArray, channel: Int = ConnectionWire.CAMERA) = synchronized(gate) { protocol.host.offer(channel, bytes) }
     fun retired() = synchronized(gate) { local.retired() }
     fun cleanup() { service.onDestroy() }
 }

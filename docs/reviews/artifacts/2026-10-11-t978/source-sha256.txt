@@ -1,0 +1,7 @@
+168bfd5d9ee20fba3646b2dae575ac729020a2cceb3ac4c95afb39c04fb2492e  android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt
+fdf58aca339bcb7d810906c153d8ea1d48b93542f9bc05aa5c45f6ef13091fa9  android/app/src/test/java/com/blent/connection/AndroidConnectionWorkerTest.kt
+8713eecf1b35eb043641ecc58a090802af48a06288f843cfc9849c19e0cb9eb1  android/app/src/test/java/com/blent/connection/ConnectionJoinedCameraFixture.kt
+0380f746a108a71722a67f4fd8ed2da93a73a8f52976838e50cc5526884111a9  android/app/src/test/java/com/blent/connection/TabletConnectionRunTest.kt
+3b8f4fb5591632d5ece602ee3ccfe41fb9faa4be0a9990713c44d816b0f90dd9  android/app/src/test/java/com/blent/connection/ConnectionJoinedSpeakerFixture.kt
+4c83e915153100d79a927c7b4c81eb420e7076f3aa6cf9aca367501fc8f879d2  android/app/src/test/java/com/blent/connection/ConnectionJoinedSpeakerTest.kt
+a5ac3e410b877ba6097701cfe07365dc7ebd1e2623bd95a5a290edb848f42256  android/app/src/test/java/com/blent/connection/JoinedSpeakerWorkerFixture.kt
