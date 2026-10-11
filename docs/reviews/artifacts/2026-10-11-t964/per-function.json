@@ -1,0 +1,283 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "android/app/src/main/java/com/blent/AudioPlayback.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 11,
+      "passing": 11,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "<init>",
+      "line": 13,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback",
+          "name": "<init>",
+          "signature": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)V",
+          "line": 14,
+          "covered": 4,
+          "total": 4
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback",
+          "name": "<init>",
+          "signature": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+          "line": 14,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "<lambda>",
+      "line": 16,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback$1",
+          "name": "invoke",
+          "signature": "()Ljava/net/Socket;",
+          "line": 16,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "<lambda>",
+      "line": 17,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback$2",
+          "name": "invoke",
+          "signature": "(Lcom/blent/AudioEndpoint;Lcom/blent/AudioPreferences;)Lcom/blent/SpeakerDevice;",
+          "line": 17,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "run",
+      "line": 18,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback",
+          "name": "run",
+          "signature": "(Lcom/blent/AudioEndpoint;Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 19,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "<lambda>",
+      "line": 19,
+      "language": "kotlin",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback$run$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 20,
+          "covered": 20,
+          "total": 20
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "stream",
+      "line": 41,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback",
+          "name": "stream",
+          "signature": "(Ljava/net/Socket;Lcom/blent/AudioWire;Lokio/BufferedSource;Lcom/blent/SpeakerDevice;Lcom/blent/AudioPlaybackQueue;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 42,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "<lambda>",
+      "line": 42,
+      "language": "kotlin",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback$stream$2$reader$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 43,
+          "covered": 11,
+          "total": 11
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "<lambda>",
+      "line": 57,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback$stream$2$renderer$1",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 57,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "<lambda>",
+      "line": 59,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback$stream$2$1",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Throwable;)V",
+          "line": 59,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "render",
+      "line": 67,
+      "language": "kotlin",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback",
+          "name": "render",
+          "signature": "(Ljava/net/Socket;Lcom/blent/SpeakerDevice;Lcom/blent/AudioPlaybackQueue;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 68,
+          "covered": 15,
+          "total": 15
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+      "name": "renderFrame",
+      "line": 85,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+          "owner": "com/blent/AudioPlayback",
+          "name": "renderFrame",
+          "signature": "(Ljava/net/Socket;Lcom/blent/SpeakerDevice;Lcom/blent/AudioPlaybackQueue;[SLkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 86,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    }
+  ]
+}

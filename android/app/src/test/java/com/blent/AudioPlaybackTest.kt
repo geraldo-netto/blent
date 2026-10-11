@@ -181,6 +181,91 @@ class AudioPlaybackTest {
             assertFalse(player.audible.get()); assertEquals(1, player.closes); peer.await()
         }
     }
+    /** Records completed dispatcher turns, avoiding a scheduling/sleep assertion. */
+    private class ReadDispatcher : CoroutineDispatcher() {
+        val current = ThreadLocal<Job?>()
+        private val turns = java.util.IdentityHashMap<Job, Int>()
+        @Synchronized fun completed(job: Job) = turns[job] ?: 0
+        @Synchronized private fun finished(job: Job) { turns[job] = completed(job) + 1 }
+        override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) {
+            Dispatchers.IO.dispatch(context) {
+                val job = checkNotNull(context[Job])
+                current.set(job)
+                try { block.run() } finally { current.remove(); finished(job) }
+            }
+        }
+    }
+    /** Native close is observable before a blocked read delivers its failure. */
+    private class DelayedReadFailure(grant: ByteArray, private val dispatcher: ReadDispatcher) : Socket() {
+        val entered = CompletableDeferred<Unit>()
+        val release = java.util.concurrent.CountDownLatch(1)
+        val initial = java.util.concurrent.atomic.AtomicReference<Job>()
+        val reading = java.util.concurrent.atomic.AtomicReference<Job>()
+        private val closed = AtomicBoolean()
+        val closes = java.util.concurrent.atomic.AtomicInteger()
+        private val input = object : java.io.InputStream() {
+            private val prefix = java.io.ByteArrayInputStream(grant)
+            override fun read(): Int {
+                val one = ByteArray(1)
+                return if (read(one, 0, 1) == -1) -1 else one[0].toInt() and 255
+            }
+            override fun read(bytes: ByteArray, offset: Int, length: Int): Int {
+                val count = prefix.read(bytes, offset, length)
+                if (count >= 0) { initial.compareAndSet(null, dispatcher.current.get()); return count }
+                reading.compareAndSet(null, checkNotNull(dispatcher.current.get()))
+                entered.complete(Unit)
+                check(release.await(3, java.util.concurrent.TimeUnit.SECONDS)) { "T964 read fixture not released" }
+                throw java.net.SocketTimeoutException("controlled native read timeout")
+            }
+        }
+        override fun connect(endpoint: java.net.SocketAddress, timeout: Int) {}
+        override fun setTcpNoDelay(on: Boolean) {}
+        override fun getInputStream() = input
+        override fun getOutputStream() = java.io.ByteArrayOutputStream()
+        override fun isClosed() = closed.get()
+        override fun close() { if (closed.compareAndSet(false, true)) closes.incrementAndGet() }
+    }
+    private suspend fun untilTurn(condition: () -> Boolean) = withTimeout(3000) { while (!condition()) delay(1) }
+
+    @Test fun t964RendererCompletionCannotCancelOrHidePendingNativeReadFailure() = runBlocking {
+        val dispatcher = ReadDispatcher()
+        val endpoint = endpoint(12345)
+        val socket = DelayedReadFailure(grant(endpoint), dispatcher)
+        val rendering = CompletableDeferred<Job>()
+        var playerCloses = 0
+        val player = object : SpeakerDevice {
+            override val paused = false
+            override suspend fun awaitReady() {}
+            override fun start() {}
+            override fun description() = "T964 controlled reader"
+            override suspend fun write(chunk: PlaybackChunk): SpeakerWrite {
+                rendering.complete(checkNotNull(currentCoroutineContext()[Job]))
+                delay(1)
+                return SpeakerWrite.Written
+            }
+            override fun close() { playerCloses++ }
+        }
+        val playback = AudioPlayback(RuntimeEnvironment.getApplication(), dispatcher, { socket }) { _, _ -> player }
+        val outcome = async { runCatching { playback.run(endpoint, AudioPreferences(), {}, {}) } }
+        try {
+            withTimeout(3000) { socket.entered.await(); rendering.await() }
+            val coordinator = checkNotNull(socket.initial.get()).children.single()
+            val before = dispatcher.completed(coordinator)
+            socket.close() // Models the timeout watchdog's close, before read delivery.
+            withTimeout(3000) { rendering.await().join() }
+            untilTurn { dispatcher.completed(coordinator) > before }
+            assertFalse("T964 renderer completion cancelled the original pending reader", socket.reading.get().isCancelled)
+            assertFalse("T964 pending native read already reported completed", outcome.isCompleted)
+            socket.release.countDown()
+            val failure = withTimeout(3000) { outcome.await().exceptionOrNull() }
+            assertTrue("T964 native timeout was hidden: $failure", failure is java.net.SocketTimeoutException)
+            assertEquals(1, playerCloses)
+            assertEquals(1, socket.closes.get())
+        } finally {
+            socket.release.countDown(); socket.close()
+            withTimeout(3000) { outcome.join() }
+        }
+    }
     @Test fun t719_stopWhileGrantPendingNeverStartsPlayback() = runBlocking(Dispatchers.IO) {
         ServerSocket(0).use { server ->
             val endpoint = endpoint(server.localPort); val player = Player(); val attached = CompletableDeferred<Socket>()

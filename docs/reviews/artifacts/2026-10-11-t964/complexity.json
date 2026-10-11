@@ -1,0 +1,338 @@
+[
+  {
+    "path": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+    "line": 18,
+    "name": "run",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+    "line": 41,
+    "name": "stream",
+    "score": 6
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+    "line": 67,
+    "name": "render",
+    "score": 9
+  },
+  {
+    "path": "android/app/src/main/java/com/blent/AudioPlayback.kt",
+    "line": 85,
+    "name": "renderFrame",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 17,
+    "name": "endpoint",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 18,
+    "name": "grant",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 21,
+    "name": "packet",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 30,
+    "name": "awaitReady",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 31,
+    "name": "start",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 32,
+    "name": "description",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 33,
+    "name": "write",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 40,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 42,
+    "name": "t809_localAudioWorkerPublishesStatusAndReturnsAfterStop",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 60,
+    "name": "t801_stopDuringNativeStartCompletesWithoutLaunchingAudioWork",
+    "score": 7
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 71,
+    "name": "start",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 72,
+    "name": "awaitReady",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 73,
+    "name": "description",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 74,
+    "name": "write",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 75,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 78,
+    "name": "dispatch",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 87,
+    "name": "t801_pausedPlaybackDoesNotPollNativeClockAndLocalStopStillCompletes",
+    "score": 9
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 96,
+    "name": "awaitReady",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 97,
+    "name": "start",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 98,
+    "name": "description",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 99,
+    "name": "clockSample",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 100,
+    "name": "write",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 101,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 117,
+    "name": "t719_localStopReturnsNormallyAndReleasesNativePlayback",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 137,
+    "name": "t719_authenticatedStereoPlaybackClosesEveryOwnedResource",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 157,
+    "name": "t719_nativeOpenFailureAdvertisesUnsupported",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 168,
+    "name": "t719_fragmentedFrameCannotExtendCompleteReadDeadline",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 188,
+    "name": "completed",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 189,
+    "name": "finished",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 190,
+    "name": "dispatch",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 208,
+    "name": "read",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 212,
+    "name": "read",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 221,
+    "name": "connect",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 222,
+    "name": "setTcpNoDelay",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 223,
+    "name": "getInputStream",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 224,
+    "name": "getOutputStream",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 225,
+    "name": "isClosed",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 226,
+    "name": "close",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 228,
+    "name": "untilTurn",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 230,
+    "name": "t964RendererCompletionCannotCancelOrHidePendingNativeReadFailure",
+    "score": 6
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 238,
+    "name": "awaitReady",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 239,
+    "name": "start",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 240,
+    "name": "description",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 241,
+    "name": "write",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 246,
+    "name": "close",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 269,
+    "name": "t719_stopWhileGrantPendingNeverStartsPlayback",
+    "score": 2
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 284,
+    "name": "t719_transientFocusReportsPauseAndResumesOnlyCurrentSession",
+    "score": 9
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 290,
+    "name": "awaitReady",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 291,
+    "name": "start",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 292,
+    "name": "description",
+    "score": 1
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 293,
+    "name": "write",
+    "score": 3
+  },
+  {
+    "path": "android/app/src/test/java/com/blent/AudioPlaybackTest.kt",
+    "line": 298,
+    "name": "close",
+    "score": 1
+  }
+]

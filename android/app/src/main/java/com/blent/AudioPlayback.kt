@@ -13,10 +13,11 @@ import okio.source
 /** Independent socket reader and bounded renderer. No IO on Android callbacks. */
 internal class AudioPlayback(private val context: Context,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val socketFactory: () -> Socket = { Socket() },
     private val open: (AudioEndpoint, AudioPreferences) -> SpeakerDevice = { endpoint, prefs -> AudioSpeaker.open(context, endpoint, prefs) }) {
     suspend fun run(endpoint: AudioEndpoint, preferences: AudioPreferences, connected: (Socket?) -> Unit,
         status: (String) -> Unit) = withContext(dispatcher) {
-        Socket().use { socket ->
+        socketFactory().use { socket ->
             connected(socket)
             try {
                 socket.connect(InetSocketAddress("127.0.0.1", endpoint.port), 2000)
@@ -56,7 +57,12 @@ internal class AudioPlayback(private val context: Context,
         val renderer = launch { render(socket, player, queue, status) }
         // A local socket-only Stop also wakes a renderer parked on focus.
         reader.invokeOnCompletion { renderer.cancel() }
-        try { renderer.join() } finally { reader.cancel(); socket.close(); queue.clear() }
+        try {
+            renderer.join()
+            // A native timeout closes the socket before delivering its read
+            // failure. Preserve that original reader through actual completion.
+            reader.join()
+        } finally { reader.cancel(); socket.close(); queue.clear() }
     }
     private suspend fun render(socket: Socket, player: SpeakerDevice, queue: AudioPlaybackQueue, status: (String) -> Unit) {
         val silence = ShortArray(960)

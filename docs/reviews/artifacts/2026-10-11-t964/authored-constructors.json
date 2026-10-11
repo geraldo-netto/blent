@@ -1,0 +1,12 @@
+[
+  {
+    "owner": "com/blent/AudioPlayback",
+    "name": "<init>",
+    "signature": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)V",
+    "line": 14,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  }
+]
