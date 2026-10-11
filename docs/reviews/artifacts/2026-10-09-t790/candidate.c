@@ -30,10 +30,13 @@ static inline ISA __attribute__((always_inline)) void block(struct fixture *f,in
 static inline ISA __attribute__((always_inline)) void fused_scale(struct fixture *f,int n){for(int cy=f->job.cy0;cy<f->job.cy1;cy++)for(int x=f->spans[cy].begin;x<f->spans[cy].end;x+=2)block(f,x,cy,n);}
 static ISA void fused(struct fixture *f){if(f->job.scale==1)fused_scale(f,1);else if(f->job.scale==2)fused_scale(f,2);else fused_scale(f,4);}
 static void baseline(struct fixture *f){cursor_overlay_restore(&f->cursor,f->source,f->job.stride);cursor_overlay_draw(&f->cursor,f->source,1920,1080,f->job.stride);conv_pool_convert(&f->pool,&f->job);}
+static void shape_cursor(struct fixture *f,int size,int arrow){
+ if(arrow)for(int y=0;y<size;y++)for(int x=0;x<size;x++)if(x>y || x>size/3)memset(f->pixels+(y*size+x)*4,0,4);
+}
 static void init(struct fixture *f,int n,int size,int arrow){
  f->source=malloc(1920*1080*4);f->pixels=malloc(size*size*4);int ow=1920/n,oh=1080/n;f->output=malloc(ow*oh*3/2);f->expected=malloc(ow*oh*3/2);assert(f->source&&f->pixels&&f->output&&f->expected);
  memset(f->source,63,1920*1080*4);memset(f->pixels,127,size*size*4);
- if(arrow)for(int y=0;y<size;y++)for(int x=0;x<size;x++)if(x>y || x>size/3)memset(f->pixels+(y*size+x)*4,0,4);memset(f->output,0,ow*oh*3/2);cursor_image_t image={f->pixels,(size_t)size*size*4,size,size,size*4,1,0};assert(cursor_overlay_set(&f->cursor,&image));f->cursor.x=64;f->cursor.y=16;
+ shape_cursor(f,size,arrow);memset(f->output,0,ow*oh*3/2);cursor_image_t image={f->pixels,(size_t)size*size*4,size,size,size*4,1,0};assert(cursor_overlay_set(&f->cursor,&image));f->cursor.x=64;f->cursor.y=16;
  for(int cy=0;cy<540;cy++)f->spans[cy]=(pixel_row_t){.begin=64/n,.end=(64+size)/n};f->job=(conv_job_t){.src=f->source,.ydst=f->output,.uvdst=f->output+ow*oh,.w=1920,.h=1080,.stride=1920*4,.ow=ow,.oh=oh,.scale=n,.cy0=16/n/2,.cy1=(16+size)/n/2,.spans=f->spans};
  conv_pool_start(&f->pool,1);baseline(f);memcpy(f->expected,f->output,ow*oh*3/2);cursor_overlay_restore(&f->cursor,f->source,f->job.stride);memset(f->output,0,ow*oh*3/2);fused(f);assert(!memcmp(f->expected,f->output,ow*oh*3/2));
 }

@@ -1,0 +1,1 @@
+a4c3c6c8e6e7324788e3f276b2e05e54be4262a41306a82fa0daec606170020e  docs/reviews/artifacts/2026-10-09-t790/candidate.c

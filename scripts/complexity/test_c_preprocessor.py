@@ -90,7 +90,9 @@ class AnnotationMacroTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         rows = list(file_scores(root / 'docs/reviews/artifacts/2026-10-09-t790/candidate.c'))
         self.assertIn((15, 'blend_pixel', 5), rows)
-        self.assertEqual(len(rows), 9)
+        self.assertEqual({row[1] for row in rows}, {
+            "stamp", "blend_pixel", "mean", "block", "fused_scale", "fused",
+            "baseline", "shape_cursor", "init", "main"})
 
     def test_t844_unknown_macro_and_bad_executable_body_fail_closed(self):
         for source in ['static UNKNOWN void f(void) {}',
