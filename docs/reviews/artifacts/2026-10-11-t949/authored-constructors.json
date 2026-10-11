@@ -1,0 +1,92 @@
+[
+  {
+    "owner": "com/blent/CameraPermissionPrompt",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraPermissionAttachment;Lcom/blent/CameraPermissionAction;)V",
+    "line": 47,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraConsentPolicy$requestPermission$action$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraConsentPolicy;Lcom/blent/CameraAccessOffer;)V",
+    "line": 100,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraConsentView",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraAccessOffer;ZZZ)V",
+    "line": 33,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraLocalConsent",
+    "name": "<init>",
+    "signature": "(ZZZZ)V",
+    "line": 5,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraAccessOffer",
+    "name": "<init>",
+    "signature": "(Ljava/lang/Object;Lcom/blent/CameraLens;ZZZLcom/blent/CameraAccessAuthority;)V",
+    "line": 22,
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraConsentPolicy",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lcom/blent/CameraPermissionPrompts;)V",
+    "line": 10,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraPermissionAttachment",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 46,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraPermissionPrompts$Attached",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraPermissionAttachment;Lkotlin/jvm/functions/Function1;)V",
+    "line": 8,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraPermissionPrompts",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 7,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  }
+]

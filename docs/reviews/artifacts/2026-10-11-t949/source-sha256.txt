@@ -1,0 +1,5 @@
+d1d20941a57ed56ad079037e5c726bc2a4b114bd027b5bbecd803645092a9dab  android/app/src/main/java/com/blent/CameraConsentContracts.kt
+ea8112248caba305ff87711ecd4a25f1c379ce87e11eebef7a5d79fb53d3fee2  android/app/src/main/java/com/blent/CameraPermissionPrompts.kt
+dbdbe80b84ed5c8d152c93215bc20bdb8b8a0f2321a3f3de47c8ecae85f169fe  android/app/src/main/java/com/blent/CameraConsentPolicy.kt
+92f9021964ce6fe142ffe5f0ea6420ef285f8935a93679a4b707861c468afc3a  android/app/src/test/java/com/blent/CameraPermissionPromptsTest.kt
+d32c4100e731f0750f5ed3bedf16daee5885d86ad9ed451ecc3a7f520f832961  android/app/src/test/java/com/blent/CameraConsentPolicyTest.kt

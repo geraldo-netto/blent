@@ -1853,3 +1853,28 @@ including private Binder/actor and real loopback composition on simulated API
 27/34. T944 supplies Activity/permission lifecycle integration and T932 enables
 the joined production camera capability. Real camera/accessory acceptance remains
 T858/T863; the capability mask is still display-only.
+
+## T949 portable local camera consent and prompt ownership
+
+Portable CameraConsentPolicy separates local foreground/enable/background choices
+and fresh permission from original transport authority. An opaque original lifetime
+preserves intent across its own publications; source replacement clears it.
+Background requires both requested profile policy and explicit local consent;
+permission loss closes capture or preparing consent without requesting a dialog
+in the background. Permission callbacks resample current permission and cannot
+redirect intent through another publication.
+
+CameraPermissionPrompts retains one attached launcher and pending action using
+exact attachment/action/prompt identities. Old detach cannot clear a replacement;
+stale, forged, cancelled and duplicate results cannot approve capture. Failed or
+synchronous launch cannot retain/replay a slot, and replacement cannot leave policy
+waiting for a discarded SDK prompt. Its SDK adapter must retain the original
+outstanding result independently of logical cancellation.
+
+[Permanent red/green and individual native counter evidence](artifacts/2026-10-11-t949/README.md)
+covers 985 offline tests, all 30 scoped methods and 9 authored constructors, plus
+bounded Boolean lifecycle and invalid-offer tests. Android SDK/Activity/process
+observation wiring remains T944; joined native capture/capability enablement T932
+and real camera/accessory acceptance T858/T863. Existing MainActivity bare-boolean
+legacy permission forwarding and old-Activity detach are explicitly retained for
+T944, not claimed fixed by the portable policy.
