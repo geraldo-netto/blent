@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
         val prefs = Prefs(this)
         connection = ConnectionOwner.get(applicationContext)
         cameras = CameraOwner.get(applicationContext)
+        val cameraAccess = checkNotNull(CameraOwner.access)
         microphone = AudioOwner.get(applicationContext)
         speakers = AudioOwner.get(applicationContext, 2)
         powerBinding = StreamingPowerBinding(this)
@@ -64,7 +65,7 @@ class MainActivity : ComponentActivity() {
                     displayRefreshRates = windowPolicy.supportedDisplayModes().map { it.refreshRate },
                     onSettingsEvent = ::settingsEvent,
                     connectionControls = { ConnectionControls(connection) },
-                    cameraControls = { CameraControls(cameras); AudioControls(microphone); AudioControls(speakers) },
+                    cameraControls = { CameraControls(cameras, cameraAccess); AudioControls(microphone); AudioControls(speakers) },
                     inputControls = { session.inputControls() },
                 )
                 ConnectionPairingDialog(connection)

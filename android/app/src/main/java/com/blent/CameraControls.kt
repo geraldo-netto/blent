@@ -10,7 +10,15 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun CameraControls(binding: CameraBinding) {
+internal fun CameraControls(binding: CameraBinding, access: CameraAccessControls? = null) {
+    val consent = access?.state?.collectAsState()?.value
+    if (access != null && consent?.offer != null) CameraConsentControls(access, consent)
+    else LegacyCameraControls(binding)
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun LegacyCameraControls(binding: CameraBinding) {
     val state by binding.state.collectAsState()
     SettingsSection("Camera sharing")
     Text(state.status, style = MaterialTheme.typography.bodySmall)

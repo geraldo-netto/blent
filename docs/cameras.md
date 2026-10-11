@@ -214,16 +214,21 @@ staging stage, not end-to-end camera latency.
 
 ## Direct USB camera integration status
 
-The regular GUI workflow above still defaults to ADB. T932 implements Android's
-original-consent/isolated-capture composition for direct USB; local Start, SDK
-permission and background consent remain separate from pairing. T933 supplies
+The regular host GUI workflow above still defaults to ADB. T932 implements
+Android's original-consent/isolated-capture composition for direct USB. T973 exposes
+it in the regular app's Settings: a USB request shows its lens and requires local
+**Start camera** before admission. **Stop camera** affects only camera sharing.
+**Allow camera in background** is local consent and is available only when the
+computer requests background capture; new owners start with that choice off.
+Android permission remains separate from pairing. After withdrawal, the existing
+ADB camera controls return. T933 supplies
 Linux host registration and pipeline composition in builds with
 `accessory-transport`. An explicit `cameras --usb-peer <full-tablet-fingerprint>`
 selects that peer independently of display; credentials are fresh per invocation.
 Source loss or revocation ends that camera registration. Start a new host camera
 invocation to issue another invitation. Builds without the feature fail explicitly
-before acquiring camera devices. Production GUI transport controls and joined
-physical acceptance remain T858; older-device evidence remains T863. Device trials
+before acquiring camera devices. Production host GUI transport selection remains T974; joined physical acceptance
+remains T858 and older-device evidence remains T863. Device trials
 are postponed: private TLS/protocol and real H.264 fixtures do not establish
 physical debugging-off camera support.
 

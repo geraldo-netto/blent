@@ -1,0 +1,5 @@
+6a33d0a649fbb480834e9fcbe10cf9bcda05d91153d152359ab6b9725153581b  android/app/src/main/java/com/blent/CameraControls.kt
+2e4f96e6decd693f0ee589f36d0403eecdfda92f9ea2d993f9cdb5b959b82869  android/app/src/main/java/com/blent/CameraConsentControls.kt
+39b7c1b81528f69e96816faa2cc7c5a2e219ab83a7ca2ada5e83e8b1bc19c32a  android/app/src/main/java/com/blent/MainActivity.kt
+8284c607e98845a4dd6cc1ca024d9bd81baffb5ebb0d8109cdaf5822fdb9108c  android/app/src/test/java/com/blent/CameraConsentControlsTest.kt
+b8533e3283278fb63077c0f3456954cfd16fd441628b11ad621e1b8106d97b8a  android/app/src/test/java/com/blent/CameraConsentMainActivityTest.kt
