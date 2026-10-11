@@ -39,15 +39,19 @@ class CameraProbeReceiver : BroadcastReceiver() {
         }
         return JSONObject().put("fingerprint", Build.FINGERPRINT).put("rows", rows)
     }
+    private fun candidate(format: MediaFormat, explicit: Boolean): String? {
+        if (!explicit) return null
+        return MediaCodecList(MediaCodecList.REGULAR_CODECS).codecInfos.firstOrNull {
+            it.isEncoder && it.isHardwareAccelerated && it.supportedTypes.contains("video/avc") &&
+                runCatching { it.getCapabilitiesForType("video/avc").isFormatSupported(format) }.getOrDefault(false)
+        }?.name
+    }
     private fun run(width: Int, height: Int, explicit: Boolean): JSONObject {
         val memoryBefore = Debug.MemoryInfo().also { Debug.getMemoryInfo(it) }.totalPss
         val cpu = Debug.threadCpuTimeNanos()
         val started = System.nanoTime()
         val format = format(width, height)
-        val candidate = if (explicit) MediaCodecList(MediaCodecList.REGULAR_CODECS).codecInfos.firstOrNull {
-            it.isEncoder && it.isHardwareAccelerated && it.supportedTypes.contains("video/avc") &&
-                runCatching { it.getCapabilitiesForType("video/avc").isFormatSupported(format) }.getOrDefault(false)
-        }?.name else null
+        val candidate = candidate(format, explicit)
         val selectedAt = System.nanoTime()
         val codec = if (candidate == null) MediaCodec.createEncoderByType("video/avc") else MediaCodec.createByCodecName(candidate)
         var surface: Surface? = null
