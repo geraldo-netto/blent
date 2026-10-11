@@ -19,11 +19,11 @@ class CameraCaptureObservationTest {
         val scope = CoroutineScope(SupervisorJob() + dispatcher)
         val source = Channel<CameraCapturePublication>(1)
         val identity = Any()
-        val view = MutableStateFlow(CameraConsentView(CameraAccessOffer(identity, CameraLens.FRONT,
-            false, false, true, object : CameraAccessAuthority {
+        val view = MutableStateFlow(MediaConsentView<CameraAccessOffer>(CameraAccessOffer(identity, CameraLens.FRONT,
+            false, false, true, object : MediaAccessAuthority {
                 override fun current() = true
-                override fun update(context: CameraLocalConsent) = true
-                override fun permissionResult(granted: Boolean, context: CameraLocalConsent) = false
+                override fun update(context: MediaLocalConsent) = true
+                override fun permissionResult(granted: Boolean, context: MediaLocalConsent) = false
             }), true, true, false))
         val target = CameraCaptureTarget(CameraEndpoint("ab".repeat(32), 12345, 640, 480, 30, 3000),
             object : CameraCaptureAuthority {

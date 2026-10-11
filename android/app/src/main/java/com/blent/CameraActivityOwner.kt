@@ -5,7 +5,7 @@ package com.blent
  * Native release remains CameraBinding's retirement lane, not UI detachment. */
 internal class CameraActivityOwner(
     private val binding: CameraBinding,
-    val consent: CameraConsentPolicy,
+    val consent: MediaConsentPolicy<CameraAccessOffer>,
     private val prompts: LocalPermissionPrompts,
 ) {
     private var foreground = false

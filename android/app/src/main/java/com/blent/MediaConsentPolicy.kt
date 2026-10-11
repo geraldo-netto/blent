@@ -3,42 +3,42 @@ package com.blent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-/** Serialized portable consent policy on the camera owner's dispatcher. Starts
+/** Serialized portable consent policy on the media owner's dispatcher. Starts
  * require explicit local intent; original lifetime identity carries intent across
  * offer/permission/admission publications, never across a replacement. Native
- * capture and SDK work belong to separate adapters. */
-internal class CameraConsentPolicy(
+ * media and SDK work belong to separate adapters. */
+internal class MediaConsentPolicy<O : MediaAccessOffer>(
     private val permission: () -> Boolean,
     private val prompts: LocalPermissionPrompts,
-) : CameraAccessControls {
-    private val mutable = MutableStateFlow(CameraConsentView())
+) : MediaAccessControls<O> {
+    private val mutable = MutableStateFlow(MediaConsentView<O>())
     override val state = mutable.asStateFlow()
     private var pending: LocalPermissionAction? = null
 
-    fun observe(value: CameraAccessOffer?) {
+    fun observe(value: O?) {
         val previous = mutable.value
         if (previous.offer === value) return
         cancelPermission()
         val sameOwner = previous.offer != null && previous.offer.owner === value?.owner
         mutable.value = if (sameOwner) previous.copy(offer = value)
-            else CameraConsentView(offer = value, foreground = previous.foreground)
+            else MediaConsentView(offer = value, foreground = previous.foreground)
         if (!sameOwner && previous.enabled) previous.offer?.let { update(it, context(enabled = false)) }
         if (mutable.value.enabled) maintain()
     }
 
-    override fun start(offer: CameraAccessOffer): Boolean {
+    override fun start(offer: O): Boolean {
         if (!current(offer) || !mutable.value.foreground) return false
         mutable.value = mutable.value.copy(enabled = true)
         return maintain()
     }
 
-    override fun stop(offer: CameraAccessOffer): Boolean {
+    override fun stop(offer: O): Boolean {
         if (!current(offer)) return false
         disable(offer.owner)
         return update(offer, context(enabled = false))
     }
 
-    override fun background(offer: CameraAccessOffer, allowed: Boolean): Boolean {
+    override fun background(offer: O, allowed: Boolean): Boolean {
         if (!current(offer)) return false
         mutable.value = mutable.value.copy(backgroundAllowed = allowed)
         if (!mutable.value.enabled) return true
@@ -60,16 +60,16 @@ internal class CameraConsentPolicy(
 
     private fun permitted(): Boolean = try { permission() } catch (_: Exception) { false }
 
-    private fun context(enabled: Boolean = mutable.value.enabled): CameraLocalConsent =
-        CameraLocalConsent(mutable.value.foreground, permitted(), enabled, mutable.value.backgroundAllowed)
+    private fun context(enabled: Boolean = mutable.value.enabled): MediaLocalConsent =
+        MediaLocalConsent(mutable.value.foreground, permitted(), enabled, mutable.value.backgroundAllowed)
 
-    private fun current(offer: CameraAccessOffer): Boolean =
+    private fun current(offer: O): Boolean =
         mutable.value.offer === offer && live(offer)
 
-    private fun live(offer: CameraAccessOffer): Boolean = try { offer.authority.current() }
+    private fun live(offer: O): Boolean = try { offer.authority.current() }
         catch (_: Exception) { false }
 
-    private fun update(offer: CameraAccessOffer, context: CameraLocalConsent): Boolean = try {
+    private fun update(offer: O, context: MediaLocalConsent): Boolean = try {
         live(offer) && offer.authority.update(context)
     } catch (_: Exception) { false }
 
@@ -83,22 +83,22 @@ internal class CameraConsentPolicy(
         return true
     }
 
-    private fun requiresClose(offer: CameraAccessOffer, context: CameraLocalConsent): Boolean =
+    private fun requiresClose(offer: O, context: MediaLocalConsent): Boolean =
         !context.permission && (offer.admitted || !context.foreground)
 
-    private fun closePermissionLoss(offer: CameraAccessOffer, context: CameraLocalConsent) {
+    private fun closePermissionLoss(offer: O, context: MediaLocalConsent) {
         disable(offer.owner)
         // Preparing consent can still be waiting for permission; explicitly
         // close it when no foreground exists to complete that original prompt.
         if (!offer.admitted) update(offer, context.copy(enabled = false))
     }
 
-    private fun requestPermission(offer: CameraAccessOffer) {
+    private fun requestPermission(offer: O) {
         val previous = pending
         if (previous != null && prompts.owns(previous)) return
         pending = null
         val action = object : LocalPermissionAction {
-            override fun current(): Boolean = this@CameraConsentPolicy.current(offer) &&
+            override fun current(): Boolean = this@MediaConsentPolicy.current(offer) &&
                 mutable.value.foreground && mutable.value.enabled
             override fun complete(granted: Boolean) {
                 pending = null
@@ -112,7 +112,7 @@ internal class CameraConsentPolicy(
         }
     }
 
-    private fun permissionResult(offer: CameraAccessOffer, granted: Boolean) {
+    private fun permissionResult(offer: O, granted: Boolean) {
         if (!current(offer)) return
         val context = context()
         val accepted = try { offer.authority.permissionResult(granted, context) }

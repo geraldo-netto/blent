@@ -1987,3 +1987,20 @@ resource and processing/buffer/background schema, independent of clock negotiati
 and native adapters. Native USB audio remains explicitly unavailable until T979;
 selection never silently falls back to ADB. Retained offline evidence:
 [contracts, default audio and camera adapter counters](artifacts/2026-10-11-t977/README.md).
+
+### Shared original-owner Android consent (T982)
+
+The T949 camera consent policy/observation is now the generic
+`MediaConsentPolicy<O>` / `MediaConsentObservation<O>` implementation, with
+independent `MediaAccessOffer`, `MediaAccessAuthority`, `MediaLocalConsent`,
+`MediaConsentView<O>` and `MediaAccessControls<O>` contracts. Current camera
+callers and permanent regressions migrate together; no duplicate audio policy,
+compatibility wrapper or native implementation type enters these contracts.
+`CameraAccessOffer` retains lens metadata; `AudioAccessOffer` validates direction
+and flags and prevents speaker playback from requesting microphone SDK permission.
+Original ownership and local/background consent are qualified separately for both
+audio directions. Native leased audio routing, worker/consumer retirement and
+production UI integration remain T978/T979/T859; physical acceptance remains
+T860/T859/T846. Capability advertisement remains display/camera only. Earlier
+milestone type names and test counts in this document describe historical evidence.
+[Current shared policy qualification](artifacts/2026-10-11-t982/README.md).

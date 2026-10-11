@@ -6,18 +6,18 @@ import kotlinx.coroutines.flow.collect
 
 /** Process-owned portable observation, independent from Activity and transport.
  * Source completion/failure revokes consent; UI retirement cancels observation
- * only, never substitutes for native capture/endpoint cleanup. Serialized with
- * the policy on its camera dispatcher. */
-internal class CameraConsentObservation(
-    source: Flow<CameraAccessOffer?>,
-    private val policy: CameraConsentPolicy,
+ * only, never substitutes for native media/endpoint cleanup. Serialized with
+ * the policy on its media dispatcher. */
+internal class MediaConsentObservation<O : MediaAccessOffer>(
+    source: Flow<O?>,
+    private val policy: MediaConsentPolicy<O>,
     scope: CoroutineScope,
 ) {
     private var closed = false
     private val job = scope.launch {
         try { source.collect { if (!closed) policy.observe(it) } }
         catch (cancelled: CancellationException) { throw cancelled }
-        catch (_: Exception) { /* Only this camera source becomes unavailable. */ }
+        catch (_: Exception) { /* Only this media source becomes unavailable. */ }
         finally { if (!closed) policy.clear() }
     }
 

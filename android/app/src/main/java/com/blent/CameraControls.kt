@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun CameraControls(binding: CameraBinding, access: CameraAccessControls? = null) {
+internal fun CameraControls(binding: CameraBinding, access: MediaAccessControls<CameraAccessOffer>? = null) {
     val consent = access?.state?.collectAsState()?.value
     if (access != null && consent?.offer != null) CameraConsentControls(access, consent)
     else LegacyCameraControls(binding)

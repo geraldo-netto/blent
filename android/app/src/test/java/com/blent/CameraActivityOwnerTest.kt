@@ -22,7 +22,7 @@ class CameraActivityOwnerTest {
                 override suspend fun retire() {}
             }
         }, invitations, scope, services::add)
-        init { owner = CameraActivityOwner(binding, CameraConsentPolicy({ allowed }, prompts), prompts) }
+        init { owner = CameraActivityOwner(binding, MediaConsentPolicy<CameraAccessOffer>({ allowed }, prompts), prompts) }
         fun launcher(native: () -> Unit = {}) = LocalPermissionLauncher(native) { prompt, granted -> prompts.result(prompt, granted) }
         override fun close() { owner.clear(); scope.cancel() }
     }

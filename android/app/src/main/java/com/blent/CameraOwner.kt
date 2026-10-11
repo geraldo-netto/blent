@@ -18,10 +18,10 @@ internal object CameraOwner {
     private var binding: CameraBinding? = null
     private var control: CameraActivityOwner? = null
     private val prompts = LocalPermissionPrompts()
-    private var observation: CameraConsentObservation? = null
+    private var observation: MediaConsentObservation<CameraAccessOffer>? = null
     private var captureObservation: CameraCaptureObservation? = null
     private var scope: CoroutineScope? = null
-    val access: CameraAccessControls? get() = control?.consent
+    val access: MediaAccessControls<CameraAccessOffer>? get() = control?.consent
 
     fun get(context: Context): CameraBinding {
         val app = context.applicationContext
@@ -33,12 +33,12 @@ internal object CameraOwner {
             if (run != null) app.startForegroundService(intent) else app.stopService(intent)
         })
         binding = value
-        val owner = CameraActivityOwner(value, CameraConsentPolicy(value::hasPermission, prompts), prompts)
+        val owner = CameraActivityOwner(value, MediaConsentPolicy<CameraAccessOffer>(value::hasPermission, prompts), prompts)
         control = owner
         val dispatcher = CoroutineScope(SupervisorJob() + Handler(Looper.getMainLooper()).asCoroutineDispatcher())
         scope = dispatcher
         val access = ConnectionCameraAccess(ConnectionOwner.get(app))
-        observation = CameraConsentObservation(access.offers, owner.consent, dispatcher)
+        observation = MediaConsentObservation<CameraAccessOffer>(access.offers, owner.consent, dispatcher)
         captureObservation = CameraCaptureObservation(access.captures, owner.consent.state,
             value::hasPermission, value::useTarget, dispatcher)
         return value

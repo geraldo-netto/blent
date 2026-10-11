@@ -39,6 +39,26 @@ failed close does not prove native/remote retirement. Adapters retain original
 ownership independently. [Offline contract and native fixtures](reviews/artifacts/2026-10-11-t977/README.md)
 qualify this boundary; actual USB speaker/microphone acceptance remains T860/T859.
 
+## Shared Android consent policy (T982)
+
+Android camera and audio now share `MediaConsentPolicy<O>` and
+`MediaConsentObservation<O>` through independent `MediaAccessOffer`, authority and
+control interfaces. One exact original lifetime carries local intent across its
+own permission/admission publications; replacement or source withdrawal clears
+it. Foreground Start, fresh permission and explicit requested/local background
+consent are separate conditions. SDK completion never grants a replacement or
+substitutes for a fresh permission sample. Observation failure affects only its
+own policy and never proves native worker or endpoint retirement.
+
+Camera production callers use this shared policy. `AudioAccessOffer` adds validated
+microphone/speaker metadata without transport credentials or native handles;
+speaker offers cannot request microphone SDK permission. Independent audio
+properties qualify this policy for the upcoming leased USB speaker/microphone
+adapters. Production USB audio capability remains disabled until those adapters
+are implemented (T978/T979/T859); the existing legacy audio Activity/permission
+owner remains as described below. Camera behavior and permanent regressions are
+preserved. [Policy and native counter evidence](reviews/artifacts/2026-10-11-t982/README.md).
+
 ## Ownership and adapter integration
 
 Keep one `AudioSession` and native `AudioBackend` owner per direction throughout

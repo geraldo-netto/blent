@@ -21,12 +21,12 @@ import org.robolectric.annotation.LooperMode
 class CameraConsentControlsTest {
     @get:Rule val compose = createComposeRule()
 
-    private class Authority : CameraAccessAuthority {
+    private class Authority : MediaAccessAuthority {
         var live = true
-        val contexts = mutableListOf<CameraLocalConsent>()
+        val contexts = mutableListOf<MediaLocalConsent>()
         override fun current() = live
-        override fun update(context: CameraLocalConsent): Boolean { contexts.add(context); return live }
-        override fun permissionResult(granted: Boolean, context: CameraLocalConsent): Boolean {
+        override fun update(context: MediaLocalConsent): Boolean { contexts.add(context); return live }
+        override fun permissionResult(granted: Boolean, context: MediaLocalConsent): Boolean {
             contexts.add(context); return live && granted
         }
     }
@@ -39,7 +39,7 @@ class CameraConsentControlsTest {
         val prompts = LocalPermissionPrompts()
         val requested = mutableListOf<LocalPermissionPrompt>()
         var permission = false
-        val policy = CameraConsentPolicy({ permission }, prompts)
+        val policy = MediaConsentPolicy<CameraAccessOffer>({ permission }, prompts)
         init { prompts.attach { requested.add(it); true }; policy.foreground(true) }
         fun offer(authority: Authority, permissionRequired: Boolean = true, admitted: Boolean = false,
             background: Boolean = true, lens: CameraLens = CameraLens.FRONT) =

@@ -3,7 +3,7 @@ package com.blent
 /** Local consent and original transport authority must both remain current at
  * acquisition. A stable wrapper avoids restarting capture on unrelated UI wakes. */
 internal class CameraCaptureSelection(
-    private val consent: () -> CameraConsentView,
+    private val consent: () -> MediaConsentView<CameraAccessOffer>,
     private val permission: () -> Boolean,
 ) {
     private var publication: CameraCapturePublication? = null
@@ -22,7 +22,7 @@ internal class CameraCaptureSelection(
         return CameraCaptureTarget(value.target.endpoint, authority(value, original)).also { selected = it }
     }
 
-    private fun local(view: CameraConsentView, offer: CameraAccessOffer): Boolean =
+    private fun local(view: MediaConsentView<CameraAccessOffer>, offer: CameraAccessOffer): Boolean =
         view.enabled && offer.admitted &&
             (view.foreground || (view.backgroundAllowed && offer.backgroundRequested))
 

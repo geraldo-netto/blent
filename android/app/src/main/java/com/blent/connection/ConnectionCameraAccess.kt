@@ -67,12 +67,12 @@ internal class ConnectionCameraAccess(private val binding: ConnectionBinding) {
         is ConnectionCameraRouteChoice -> choice.route.profile
     }
 
-    private fun authority(owner: Original, choice: ConnectionCameraChoice) = object : CameraAccessAuthority {
+    private fun authority(owner: Original, choice: ConnectionCameraChoice) = object : MediaAccessAuthority {
         override fun current() = this@ConnectionCameraAccess.current(owner, choice)
-        override fun update(context: CameraLocalConsent) = current() && binding.cameraChoice(choice, context.wire())
-        override fun permissionResult(granted: Boolean, context: CameraLocalConsent) =
+        override fun update(context: MediaLocalConsent) = current() && binding.cameraChoice(choice, context.wire())
+        override fun permissionResult(granted: Boolean, context: MediaLocalConsent) =
             choice is ConnectionCameraOfferChoice && current() && binding.cameraPermission(choice, granted, context.wire())
     }
 
-    private fun CameraLocalConsent.wire() = CameraConsentChoice(foreground, permission, enabled, backgroundAllowed)
+    private fun MediaLocalConsent.wire() = CameraConsentChoice(foreground, permission, enabled, backgroundAllowed)
 }

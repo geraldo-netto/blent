@@ -19,17 +19,17 @@ class CameraCaptureSelectionTest {
     }
     private fun offer(owner: Any, background: Boolean = true, admitted: Boolean = true,
                       live: () -> Boolean = { true }) = CameraAccessOffer(owner, CameraLens.REAR,
-        background, false, admitted, object : CameraAccessAuthority {
+        background, false, admitted, object : MediaAccessAuthority {
             override fun current() = live()
-            override fun update(context: CameraLocalConsent) = true
-            override fun permissionResult(granted: Boolean, context: CameraLocalConsent) = false
+            override fun update(context: MediaLocalConsent) = true
+            override fun permissionResult(granted: Boolean, context: MediaLocalConsent) = false
         })
 
     @Test fun t932WithdrawnSourceCannotReviveOldWrapperByPublishingEqualMetadata() {
         val owner = Any()
         val authority = Authority()
         val publication = CameraCapturePublication(owner, CameraCaptureTarget(endpoint, authority))
-        val view = CameraConsentView(offer(owner), true, true, false)
+        val view = MediaConsentView<CameraAccessOffer>(offer(owner), true, true, false)
         val selection = CameraCaptureSelection({ view }, { true })
         val first = selection.project(publication)!!
         val claim = first.authority.retain()!!
@@ -53,7 +53,7 @@ class CameraCaptureSelectionTest {
             val background = bits and 32 != 0
             val requested = bits and 64 != 0
             val owner = Any()
-            val view = CameraConsentView(offer(owner, requested, admitted) { live }, enabled, foreground, background)
+            val view = MediaConsentView<CameraAccessOffer>(offer(owner, requested, admitted) { live }, enabled, foreground, background)
             val selection = CameraCaptureSelection({ view }, { permission })
             val value = CameraCapturePublication(owner, CameraCaptureTarget(endpoint, Authority()))
             val allowed = enabled && admitted && permission && live && (foreground || (background && requested))
@@ -64,7 +64,7 @@ class CameraCaptureSelectionTest {
     @Test fun t932FreshStateOriginalOwnerAndClaimAreCheckedAtAcquisition() {
         val owner = Any()
         val authority = Authority()
-        val view = MutableStateFlow(CameraConsentView(offer(owner), true, true, false))
+        val view = MutableStateFlow(MediaConsentView<CameraAccessOffer>(offer(owner), true, true, false))
         var permission = true
         val selection = CameraCaptureSelection({ view.value }, { permission })
         val target = selection.project(CameraCapturePublication(owner, CameraCaptureTarget(endpoint, authority)))!!
@@ -90,8 +90,8 @@ class CameraCaptureSelectionTest {
     @Test fun t932MissingConsentAndThrowingPermissionOrAuthorityFailClosed() {
         val owner = Any()
         val value = CameraCapturePublication(owner, CameraCaptureTarget(endpoint, Authority()))
-        assertNull(CameraCaptureSelection({ CameraConsentView() }, { true }).project(value))
-        val valid = CameraConsentView(offer(owner), true, true, false)
+        assertNull(CameraCaptureSelection({ MediaConsentView<CameraAccessOffer>() }, { true }).project(value))
+        val valid = MediaConsentView<CameraAccessOffer>(offer(owner), true, true, false)
         assertNull(CameraCaptureSelection({ valid }, { throw SecurityException() }).project(value))
         assertNull(CameraCaptureSelection({ valid.copy(offer = offer(owner) { throw IllegalStateException() }) },
             { true }).project(value))

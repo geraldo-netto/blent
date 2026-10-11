@@ -1,0 +1,172 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionCameraAccess$Original",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionResourceLease;)V",
+    "line": 12,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraAccess",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionBinding;)V",
+    "line": 11,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraAccess$authority$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionCameraAccess;Lcom/blent/connection/ConnectionCameraAccess$Original;Lcom/blent/connection/ConnectionCameraChoice;)V",
+    "line": 70,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaLocalConsent",
+    "name": "<init>",
+    "signature": "(ZZZZ)V",
+    "line": 15,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsentPolicy",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lcom/blent/LocalPermissionPrompts;)V",
+    "line": 10,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsentPolicy$requestPermission$action$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/MediaConsentPolicy;Lcom/blent/MediaAccessOffer;)V",
+    "line": 100,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraActivityOwner$legacyAction$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraActivityOwner;Lcom/blent/CameraCapturePermission;)V",
+    "line": 46,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraAccessOffer",
+    "name": "<init>",
+    "signature": "(Ljava/lang/Object;Lcom/blent/CameraLens;ZZZLcom/blent/MediaAccessAuthority;)V",
+    "line": 5,
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureSelection",
+    "name": "<init>",
+    "signature": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V",
+    "line": 5,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureSelection$authority$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraCaptureSelection;Lcom/blent/CameraCapturePublication;Ljava/lang/Object;)V",
+    "line": 38,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraActivityOwner",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraBinding;Lcom/blent/MediaConsentPolicy;Lcom/blent/LocalPermissionPrompts;)V",
+    "line": 6,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureSelection$claim$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/CameraCaptureSelection;Ljava/lang/Object;Ljava/lang/Object;Lcom/blent/CameraCaptureClaim;)V",
+    "line": 47,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioCapturePermission",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioEndpoint;)V",
+    "line": 5,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioAccessOffer",
+    "name": "<init>",
+    "signature": "(Ljava/lang/Object;IZZZLcom/blent/MediaAccessAuthority;)V",
+    "line": 10,
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/CameraCaptureObservation",
+    "name": "<init>",
+    "signature": "(Lkotlinx/coroutines/flow/Flow;Lkotlinx/coroutines/flow/StateFlow;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineScope;)V",
+    "line": 8,
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsentObservation",
+    "name": "<init>",
+    "signature": "(Lkotlinx/coroutines/flow/Flow;Lcom/blent/MediaConsentPolicy;Lkotlinx/coroutines/CoroutineScope;)V",
+    "line": 11,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/MediaConsentView",
+    "name": "<init>",
+    "signature": "(Lcom/blent/MediaAccessOffer;ZZZ)V",
+    "line": 30,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  }
+]

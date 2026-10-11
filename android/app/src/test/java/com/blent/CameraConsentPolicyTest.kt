@@ -4,21 +4,21 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class CameraConsentPolicyTest {
-    private class Authority : CameraAccessAuthority {
+    private class Authority : MediaAccessAuthority {
         var live = true
         var rejects = false
         var throws = false
         var updateFailure = false
         var resultFailure = false
         var onUpdate: (() -> Unit)? = null
-        val choices = mutableListOf<CameraLocalConsent>()
-        val results = mutableListOf<Pair<Boolean, CameraLocalConsent>>()
+        val choices = mutableListOf<MediaLocalConsent>()
+        val results = mutableListOf<Pair<Boolean, MediaLocalConsent>>()
         override fun current(): Boolean { if (throws) error("owner unavailable"); return live }
-        override fun update(context: CameraLocalConsent): Boolean {
+        override fun update(context: MediaLocalConsent): Boolean {
             if (updateFailure) error("control failed")
             choices.add(context); onUpdate?.invoke(); return !rejects
         }
-        override fun permissionResult(granted: Boolean, context: CameraLocalConsent): Boolean {
+        override fun permissionResult(granted: Boolean, context: MediaLocalConsent): Boolean {
             if (resultFailure) error("permission control failed")
             results.add(granted to context); return !rejects
         }
@@ -28,7 +28,7 @@ class CameraConsentPolicyTest {
         val prompts = LocalPermissionPrompts()
         val launched = mutableListOf<LocalPermissionPrompt>()
         val attachment = prompts.attach { launched.add(it); true }
-        val policy = CameraConsentPolicy({ permission }, prompts)
+        val policy = MediaConsentPolicy<CameraAccessOffer>({ permission }, prompts)
         val authority = Authority()
         val original = Any()
         fun offer(pending: Boolean = false, admitted: Boolean = false, background: Boolean = true,
@@ -41,12 +41,12 @@ class CameraConsentPolicyTest {
         rig.policy.observe(offer); assertFalse(rig.policy.start(offer)); assertTrue(rig.authority.choices.isEmpty())
         rig.policy.foreground(true); assertTrue(rig.authority.choices.isEmpty())
         assertTrue(rig.policy.start(offer)); assertTrue(rig.policy.state.value.enabled)
-        assertEquals(CameraLocalConsent(true, true, true, false), rig.authority.choices.last())
+        assertEquals(MediaLocalConsent(true, true, true, false), rig.authority.choices.last())
         val route = rig.offer(admitted = true); rig.policy.observe(route)
         assertTrue(rig.policy.state.value.enabled)
         assertTrue(rig.policy.background(route, true)); rig.policy.foreground(false)
         assertTrue(rig.policy.state.value.enabled)
-        assertEquals(CameraLocalConsent(false, true, true, true), rig.authority.choices.last())
+        assertEquals(MediaLocalConsent(false, true, true, true), rig.authority.choices.last())
         assertTrue(rig.policy.background(route, false)); assertFalse(rig.policy.state.value.enabled)
         assertFalse(rig.authority.choices.last().enabled)
         rig.policy.foreground(true); assertTrue(rig.policy.start(route))
@@ -67,7 +67,7 @@ class CameraConsentPolicyTest {
         assertEquals(1, rig.launched.size)
         rig.policy.permissionChanged(); assertEquals(1, rig.launched.size)
         assertTrue(rig.prompts.result(rig.launched.single(), true))
-        assertEquals(true to CameraLocalConsent(true, false, true, false), rig.authority.results.single())
+        assertEquals(true to MediaLocalConsent(true, false, true, false), rig.authority.results.single())
         assertFalse(rig.policy.state.value.enabled)
         assertTrue(rig.policy.start(pending)); assertEquals(2, rig.launched.size)
         val old = rig.launched.last()
@@ -99,13 +99,13 @@ class CameraConsentPolicyTest {
         val rig = Rig(); rig.permission = false; rig.prompts.detach(rig.attachment)
         rig.policy.foreground(true); val pending = rig.offer(pending = true)
         rig.policy.observe(pending); assertTrue(rig.policy.start(pending))
-        assertEquals(false to CameraLocalConsent(true, false, true, false), rig.authority.results.single())
+        assertEquals(false to MediaLocalConsent(true, false, true, false), rig.authority.results.single())
         assertFalse(rig.policy.state.value.enabled)
         rig.authority.rejects = true; assertFalse(rig.policy.start(pending))
         rig.authority.live = false; assertFalse(rig.policy.start(pending))
         rig.authority.throws = true; assertFalse(rig.policy.start(pending))
         rig.policy.clear(); rig.policy.permissionChanged(); rig.policy.foreground(false)
-        val brokenPermission = CameraConsentPolicy({ error("permission unavailable") }, LocalPermissionPrompts())
+        val brokenPermission = MediaConsentPolicy<CameraAccessOffer>({ error("permission unavailable") }, LocalPermissionPrompts())
         val authority = Authority(); val offer = rig.offer(authority = authority)
         brokenPermission.observe(offer); brokenPermission.foreground(true); assertTrue(brokenPermission.start(offer))
         assertFalse(authority.choices.last().permission); brokenPermission.clear()
@@ -117,7 +117,7 @@ class CameraConsentPolicyTest {
         rig.authority.onUpdate = { rig.authority.onUpdate = null; rig.policy.observe(pending) }
         rig.prompts.attach { rig.permission = true; rig.prompts.result(it, true) }
         rig.policy.observe(offer); assertTrue(rig.policy.start(offer))
-        assertEquals(true to CameraLocalConsent(true, true, true, false), rig.authority.results.single())
+        assertEquals(true to MediaLocalConsent(true, true, true, false), rig.authority.results.single())
         assertTrue(rig.policy.state.value.enabled); assertSame(pending, rig.policy.state.value.offer)
         rig.policy.observe(pending); assertEquals(1, rig.authority.results.size)
         rig.policy.clear(); assertFalse(rig.authority.choices.last().enabled)
@@ -134,7 +134,7 @@ class CameraConsentPolicyTest {
         assertEquals("T949 discarded slot must not stall original consent", 1, next.size)
         assertNotSame(old, next.single()); rig.permission = true
         assertTrue(rig.prompts.result(next.single(), true))
-        assertEquals(true to CameraLocalConsent(true, true, true, false), rig.authority.results.single())
+        assertEquals(true to MediaLocalConsent(true, true, true, false), rig.authority.results.single())
         assertTrue(rig.policy.state.value.enabled); rig.policy.clear()
     }
 

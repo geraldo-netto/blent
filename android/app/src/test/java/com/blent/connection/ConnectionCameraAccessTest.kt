@@ -29,7 +29,7 @@ class ConnectionCameraAccessTest {
         }
         override fun close() { workers.forEach { it.release.complete(Unit) }; binding.disconnect(); scope.cancel() }
     }
-    private val consent = CameraLocalConsent(true, false, true, false)
+    private val consent = MediaLocalConsent(true, false, true, false)
 
     @Test fun t932CaptureProjectionJoinsExactOriginalTargetAndDropsMismatchedMetadata() = Rig().use { rig ->
         val emitted = mutableListOf<CameraCapturePublication?>()
@@ -112,7 +112,7 @@ class ConnectionCameraAccessTest {
         val access = rig.access.project()!!
         assertEquals(CameraLens.FRONT, access.lens); assertTrue(access.backgroundRequested)
         for (bits in 0 until 16) {
-            val context = CameraLocalConsent(bits and 1 != 0, bits and 2 != 0, bits and 4 != 0, bits and 8 != 0)
+            val context = MediaLocalConsent(bits and 1 != 0, bits and 2 != 0, bits and 4 != 0, bits and 8 != 0)
             assertTrue(access.authority.update(context)); assertTrue(access.authority.permissionResult(bits and 1 != 0, context))
             assertEquals(ConnectionWorkerCommand.CameraChoice(cameraLease(), CameraConsentChoice(context.foreground,
                 context.permission, context.enabled, context.backgroundAllowed)), worker.commands[bits * 2])

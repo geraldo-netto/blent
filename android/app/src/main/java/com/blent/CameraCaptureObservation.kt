@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.*
  * clears only its selected camera; actual native retirement remains in the lane. */
 internal class CameraCaptureObservation(
     source: Flow<CameraCapturePublication?>,
-    consent: StateFlow<CameraConsentView>,
+    consent: StateFlow<MediaConsentView<CameraAccessOffer>>,
     permission: () -> Boolean,
     private val useTarget: (CameraCaptureTarget?) -> Unit,
     scope: CoroutineScope,

@@ -6,17 +6,17 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class CameraConsentObservationTest {
-    private class Authority : CameraAccessAuthority {
-        val updates = mutableListOf<CameraLocalConsent>()
+    private class Authority : MediaAccessAuthority {
+        val updates = mutableListOf<MediaLocalConsent>()
         override fun current() = true
-        override fun update(context: CameraLocalConsent) = updates.add(context)
-        override fun permissionResult(granted: Boolean, context: CameraLocalConsent) = false
+        override fun update(context: MediaLocalConsent) = updates.add(context)
+        override fun permissionResult(granted: Boolean, context: MediaLocalConsent) = false
     }
     private class Rig : AutoCloseable {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
-        val policy = CameraConsentPolicy({ true }, LocalPermissionPrompts())
+        val policy = MediaConsentPolicy<CameraAccessOffer>({ true }, LocalPermissionPrompts())
         val source = MutableStateFlow<CameraAccessOffer?>(null)
-        val observer = CameraConsentObservation(source, policy, scope)
+        val observer = MediaConsentObservation<CameraAccessOffer>(source, policy, scope)
         val authorities = mutableListOf<Authority>()
         fun offer(): CameraAccessOffer {
             val authority = Authority().also { authorities.add(it) }
@@ -46,7 +46,7 @@ class CameraConsentObservationTest {
 
     @Test fun t944NormalSourceEndAndSourceFailureRevokeOnlyThisPolicy() = runBlocking {
         for (failed in listOf(false, true)) {
-            val policy = CameraConsentPolicy({ true }, LocalPermissionPrompts())
+            val policy = MediaConsentPolicy<CameraAccessOffer>({ true }, LocalPermissionPrompts())
             val source = MutableSharedFlow<CameraAccessOffer?>()
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
             val finished = CompletableDeferred<Unit>()
@@ -59,7 +59,7 @@ class CameraConsentObservationTest {
                 source.first()
                 if (failed) error("camera source failed")
             }
-            val observer = CameraConsentObservation(stream, policy, scope)
+            val observer = MediaConsentObservation<CameraAccessOffer>(stream, policy, scope)
             assertSame(offer, policy.state.value.offer)
             source.emit(null)
             assertNull(policy.state.value.offer)

@@ -9,10 +9,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 /** The rendered offer is retained by each callback; authority validation belongs
- * to CameraAccessControls, so a queued tap cannot grant a replacement owner. */
+ * to MediaAccessControls<CameraAccessOffer>, so a queued tap cannot grant a replacement owner. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun CameraConsentControls(access: CameraAccessControls, view: CameraConsentView) {
+internal fun CameraConsentControls(access: MediaAccessControls<CameraAccessOffer>, view: MediaConsentView<CameraAccessOffer>) {
     val offer = view.offer ?: return
     Column {
         SettingsSection("Camera sharing")
@@ -40,7 +40,7 @@ internal fun CameraConsentControls(access: CameraAccessControls, view: CameraCon
     }
 }
 
-internal fun cameraConsentStatus(view: CameraConsentView): String = when {
+internal fun cameraConsentStatus(view: MediaConsentView<CameraAccessOffer>): String = when {
     !view.enabled -> "Camera is off. Start locally to accept this request."
     view.offer?.permissionRequired == true -> "Camera requested; waiting for Android permission."
     view.offer?.admitted == true -> "Camera admitted; capture follows local permission and lifecycle."
