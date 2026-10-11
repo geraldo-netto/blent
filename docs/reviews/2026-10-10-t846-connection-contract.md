@@ -1951,3 +1951,11 @@ controls and joined physical camera acceptance remain T858, older provider evide
 T863, final acceptance T846. No native device trial was performed.
 
 [Native source/object attestations, regressions and individual counters](artifacts/2026-10-11-t933/README.md).
+
+### T975 shared original-permission boundary
+
+The earlier T949/T944 milestone names `CameraPermission*` are historical. Current
+code uses independent `LocalPermission*` contracts, mediator and SDK slot, shared
+for resource adapters. Camera consent/foreground policy remains camera-owned;
+original audio ownership is the next integration under T951. Existing permanent
+SDK identity tests and the full normal Android method gate pass unchanged.

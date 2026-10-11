@@ -25,8 +25,8 @@ class CameraConsentPolicyTest {
     }
     private class Rig {
         var permission = true
-        val prompts = CameraPermissionPrompts()
-        val launched = mutableListOf<CameraPermissionPrompt>()
+        val prompts = LocalPermissionPrompts()
+        val launched = mutableListOf<LocalPermissionPrompt>()
         val attachment = prompts.attach { launched.add(it); true }
         val policy = CameraConsentPolicy({ permission }, prompts)
         val authority = Authority()
@@ -105,7 +105,7 @@ class CameraConsentPolicyTest {
         rig.authority.live = false; assertFalse(rig.policy.start(pending))
         rig.authority.throws = true; assertFalse(rig.policy.start(pending))
         rig.policy.clear(); rig.policy.permissionChanged(); rig.policy.foreground(false)
-        val brokenPermission = CameraConsentPolicy({ error("permission unavailable") }, CameraPermissionPrompts())
+        val brokenPermission = CameraConsentPolicy({ error("permission unavailable") }, LocalPermissionPrompts())
         val authority = Authority(); val offer = rig.offer(authority = authority)
         brokenPermission.observe(offer); brokenPermission.foreground(true); assertTrue(brokenPermission.start(offer))
         assertFalse(authority.choices.last().permission); brokenPermission.clear()
@@ -127,7 +127,7 @@ class CameraConsentPolicyTest {
         val rig = Rig(); rig.permission = false; rig.policy.foreground(true)
         val pending = rig.offer(pending = true); rig.policy.observe(pending); rig.policy.start(pending)
         val old = rig.launched.single()
-        val next = mutableListOf<CameraPermissionPrompt>()
+        val next = mutableListOf<LocalPermissionPrompt>()
         rig.prompts.attach { next.add(it); true }
         assertFalse(rig.prompts.result(old, true))
         rig.policy.permissionChanged()

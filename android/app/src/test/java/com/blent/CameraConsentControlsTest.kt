@@ -36,8 +36,8 @@ class CameraConsentControlsTest {
         val binding = CameraBinding(RuntimeEnvironment.getApplication(), { 0 }, {}, { true },
             { _, _, _, _ -> error("T973 local consent must not start legacy capture") },
             MutableStateFlow(null), scope)
-        val prompts = CameraPermissionPrompts()
-        val requested = mutableListOf<CameraPermissionPrompt>()
+        val prompts = LocalPermissionPrompts()
+        val requested = mutableListOf<LocalPermissionPrompt>()
         var permission = false
         val policy = CameraConsentPolicy({ permission }, prompts)
         init { prompts.attach { requested.add(it); true }; policy.foreground(true) }

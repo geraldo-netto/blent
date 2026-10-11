@@ -23,11 +23,11 @@ class MainActivity : ComponentActivity() {
     private val cameraPermission = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
         cameraPermissionLauncher.complete(it)
     }
-    private val cameraPermissionLauncher: CameraPermissionLauncher = CameraPermissionLauncher(
+    private val cameraPermissionLauncher: LocalPermissionLauncher = LocalPermissionLauncher(
         { cameraPermission.launch(android.Manifest.permission.CAMERA) },
         { prompt, granted -> CameraOwner.permissionResult(prompt, granted) },
     )
-    private var cameraAttachment: CameraPermissionAttachment? = null
+    private var cameraAttachment: LocalPermissionAttachment? = null
     internal lateinit var session: SessionCoordinator; private set
     private var displayObservation: Job? = null
     private val displayRoutes = ConnectionDisplayBinding(DisplayRouteTarget { session.selectDisplay(it) })

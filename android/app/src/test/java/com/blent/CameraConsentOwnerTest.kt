@@ -31,7 +31,7 @@ class CameraConsentOwnerTest {
             assertFalse(controls.state.value.foreground)
             assertFalse(controls.start(original))
             assertTrue(fixture.workers.last().commands.isEmpty())
-            val prompts = mutableListOf<CameraPermissionPrompt>()
+            val prompts = mutableListOf<LocalPermissionPrompt>()
             val attachment = CameraOwner.attach { prompts.add(it); true }
             assertTrue(controls.start(original))
             assertEquals(ConnectionWorkerCommand.CameraChoice(cameraLease(), CameraConsentChoice(true, false, true, false)),

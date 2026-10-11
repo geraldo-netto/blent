@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.asStateFlow
  * capture and SDK work belong to separate adapters. */
 internal class CameraConsentPolicy(
     private val permission: () -> Boolean,
-    private val prompts: CameraPermissionPrompts,
+    private val prompts: LocalPermissionPrompts,
 ) : CameraAccessControls {
     private val mutable = MutableStateFlow(CameraConsentView())
     override val state = mutable.asStateFlow()
-    private var pending: CameraPermissionAction? = null
+    private var pending: LocalPermissionAction? = null
 
     fun observe(value: CameraAccessOffer?) {
         val previous = mutable.value
@@ -97,7 +97,7 @@ internal class CameraConsentPolicy(
         val previous = pending
         if (previous != null && prompts.owns(previous)) return
         pending = null
-        val action = object : CameraPermissionAction {
+        val action = object : LocalPermissionAction {
             override fun current(): Boolean = this@CameraConsentPolicy.current(offer) &&
                 mutable.value.foreground && mutable.value.enabled
             override fun complete(granted: Boolean) {

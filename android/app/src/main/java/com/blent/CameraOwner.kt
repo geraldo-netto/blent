@@ -17,7 +17,7 @@ import kotlinx.coroutines.cancel
 internal object CameraOwner {
     private var binding: CameraBinding? = null
     private var control: CameraActivityOwner? = null
-    private val prompts = CameraPermissionPrompts()
+    private val prompts = LocalPermissionPrompts()
     private var observation: CameraConsentObservation? = null
     private var captureObservation: CameraCaptureObservation? = null
     private var scope: CoroutineScope? = null
@@ -44,12 +44,12 @@ internal object CameraOwner {
         return value
     }
 
-    fun attach(launch: (CameraPermissionPrompt) -> Boolean): CameraPermissionAttachment =
+    fun attach(launch: (LocalPermissionPrompt) -> Boolean): LocalPermissionAttachment =
         checkNotNull(control) { "Camera owner not initialized" }.attach(launch)
 
-    fun detach(identity: CameraPermissionAttachment): Boolean = control?.detach(identity) == true
+    fun detach(identity: LocalPermissionAttachment): Boolean = control?.detach(identity) == true
 
-    fun permissionResult(prompt: CameraPermissionPrompt, granted: Boolean): Boolean = prompts.result(prompt, granted)
+    fun permissionResult(prompt: LocalPermissionPrompt, granted: Boolean): Boolean = prompts.result(prompt, granted)
 
     fun ownsService(run: String?): Boolean = binding?.ownsBackground(run) == true
 

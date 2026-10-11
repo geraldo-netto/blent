@@ -3,17 +3,17 @@ package com.blent
 import org.junit.Assert.*
 import org.junit.Test
 
-class CameraPermissionLauncherTest {
-    private val action = object : CameraPermissionAction {
+class LocalPermissionLauncherTest {
+    private val action = object : LocalPermissionAction {
         override fun current() = true
         override fun complete(granted: Boolean) {}
     }
-    private fun prompt() = CameraPermissionPrompt(CameraPermissionAttachment(), action)
+    private fun prompt() = LocalPermissionPrompt(LocalPermissionAttachment(), action)
 
     @Test fun t961SdkSlotRetainsOriginalUntilActualReplyAndRejectsOverlaps() {
-        val replies = mutableListOf<Pair<CameraPermissionPrompt, Boolean>>()
+        val replies = mutableListOf<Pair<LocalPermissionPrompt, Boolean>>()
         var launches = 0
-        val sdk = CameraPermissionLauncher({ launches++ }) { prompt, granted -> replies.add(prompt to granted) }
+        val sdk = LocalPermissionLauncher({ launches++ }) { prompt, granted -> replies.add(prompt to granted) }
         val first = prompt()
         assertTrue(sdk.launch(first))
         assertFalse("T961 logical cancellation cannot free outstanding SDK slot", sdk.launch(prompt()))
@@ -31,9 +31,9 @@ class CameraPermissionLauncherTest {
     @Test fun t961SynchronousCompletionAndSdkFailureDoNotLeakSlots() {
         var shouldThrow = true
         var complete = false
-        val replies = mutableListOf<CameraPermissionPrompt>()
-        lateinit var sdk: CameraPermissionLauncher
-        sdk = CameraPermissionLauncher({
+        val replies = mutableListOf<LocalPermissionPrompt>()
+        lateinit var sdk: LocalPermissionLauncher
+        sdk = LocalPermissionLauncher({
             if (shouldThrow) error("stopped SDK")
             if (complete) sdk.complete(true)
         }) { prompt, _ -> replies.add(prompt) }
@@ -48,7 +48,7 @@ class CameraPermissionLauncherTest {
     }
 
     @Test fun t961PublisherFailureCannotConsumeNextResultOrKeepDestroyedPrompt() {
-        val sdk = CameraPermissionLauncher({}) { _, _ -> error("publisher failed") }
+        val sdk = LocalPermissionLauncher({}) { _, _ -> error("publisher failed") }
         assertTrue(sdk.launch(prompt()))
         try { sdk.complete(true); fail("T961 publisher failure hidden") }
         catch (_: IllegalStateException) {}

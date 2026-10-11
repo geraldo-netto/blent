@@ -37,18 +37,6 @@ internal data class CameraConsentView(
     val backgroundAllowed: Boolean = false,
 )
 
-/** A permission action retains only portable original-owner state. Implementations
- * must not capture an Activity; its SDK launcher is held only while attached. */
-internal interface CameraPermissionAction {
-    fun current(): Boolean
-    fun complete(granted: Boolean)
-}
-internal class CameraPermissionAttachment
-internal class CameraPermissionPrompt(
-    val attachment: CameraPermissionAttachment,
-    val action: CameraPermissionAction,
-)
-
 /** Focused local control contract; UI does not depend on policy implementation. */
 internal interface CameraAccessControls {
     val state: kotlinx.coroutines.flow.StateFlow<CameraConsentView>

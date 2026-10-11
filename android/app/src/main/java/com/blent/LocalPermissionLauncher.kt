@@ -3,14 +3,14 @@ package com.blent
 /** One Activity's actual SDK request slot. Logical prompt cancellation cannot
  * free this slot: keep the original request until its SDK result or destruction.
  * Calls serialize on the UI dispatcher. */
-internal class CameraPermissionLauncher(
+internal class LocalPermissionLauncher(
     private val launchSdk: () -> Unit,
-    private val publish: (CameraPermissionPrompt, Boolean) -> Unit,
+    private val publish: (LocalPermissionPrompt, Boolean) -> Unit,
 ) {
-    private var pending: CameraPermissionPrompt? = null
+    private var pending: LocalPermissionPrompt? = null
     private var closed = false
 
-    fun launch(prompt: CameraPermissionPrompt): Boolean {
+    fun launch(prompt: LocalPermissionPrompt): Boolean {
         if (closed || pending != null) return false
         pending = prompt
         try { launchSdk() }

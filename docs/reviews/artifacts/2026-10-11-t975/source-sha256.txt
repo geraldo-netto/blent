@@ -1,0 +1,10 @@
+069426335225bc2d1f6646f83c9a81a5589677d94fb694db44b78a84613ee518  android/app/src/main/java/com/blent/LocalPermissionContracts.kt
+4f62a3e2d80720481916c43672c5fa940101a9d263cbd33aaff6029d9d378a10  android/app/src/main/java/com/blent/LocalPermissionLauncher.kt
+82fe89e1bf003145b8963f53193fe1e62a84a6b19a926c531e4dc1be33a90b92  android/app/src/main/java/com/blent/LocalPermissionPrompts.kt
+80287d862d37f55196d58880b820dbbe0f3f4ed84048184b358e74a5229f59df  android/app/src/main/java/com/blent/CameraConsentContracts.kt
+7391e6a193dc55483f90085f65f7508f6278e031ab6816d36a49f01d110a4fdd  android/app/src/main/java/com/blent/CameraConsentPolicy.kt
+4926ea0e695e1c61914085f09632b682b331b1241b77ecc603aa0bdc6940bb9c  android/app/src/main/java/com/blent/CameraActivityOwner.kt
+c68ce20d5493b4fae187fdcd00e55ce432884db0a43c106153d8a294f65e1d18  android/app/src/main/java/com/blent/CameraOwner.kt
+23f54b8b9184c9d524eb1e6b19d813a926f64e21f634ccf1259c9c4eefdfec2a  android/app/src/main/java/com/blent/MainActivity.kt
+517d5f303a32a9d3f71cf928bd808993696fb30b4e4ce0d946d2ac6f87a02ed8  android/app/src/test/java/com/blent/LocalPermissionLauncherTest.kt
+d7e3ddb9ffd84014538e8f7ec2e81441c75970fb4e201495ae0c2b0c1c4467e7  android/app/src/test/java/com/blent/LocalPermissionPromptsTest.kt

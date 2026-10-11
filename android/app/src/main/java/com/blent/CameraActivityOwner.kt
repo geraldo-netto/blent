@@ -6,13 +6,13 @@ package com.blent
 internal class CameraActivityOwner(
     private val binding: CameraBinding,
     val consent: CameraConsentPolicy,
-    private val prompts: CameraPermissionPrompts,
+    private val prompts: LocalPermissionPrompts,
 ) {
     private var foreground = false
     private var closed = false
-    private var legacy: CameraPermissionAction? = null
+    private var legacy: LocalPermissionAction? = null
 
-    fun attach(launch: (CameraPermissionPrompt) -> Boolean): CameraPermissionAttachment {
+    fun attach(launch: (LocalPermissionPrompt) -> Boolean): LocalPermissionAttachment {
         check(!closed) { "Camera UI owner retired" }
         val identity = prompts.attach(launch)
         foreground = true
@@ -23,7 +23,7 @@ internal class CameraActivityOwner(
         return identity
     }
 
-    fun detach(identity: CameraPermissionAttachment): Boolean {
+    fun detach(identity: LocalPermissionAttachment): Boolean {
         if (!prompts.detach(identity)) return false
         legacy = null
         foreground = false
@@ -43,7 +43,7 @@ internal class CameraActivityOwner(
         return false
     }
 
-    private fun legacyAction(original: CameraCapturePermission) = object : CameraPermissionAction {
+    private fun legacyAction(original: CameraCapturePermission) = object : LocalPermissionAction {
         override fun current() = legacy === this && !closed && foreground && binding.permissionPending === original
         override fun complete(granted: Boolean) {
             if (!current()) return

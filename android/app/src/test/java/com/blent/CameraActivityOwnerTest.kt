@@ -10,7 +10,7 @@ class CameraActivityOwnerTest {
     private inner class Rig : AutoCloseable {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val invitations = MutableStateFlow<CameraEndpoint?>(null)
-        val prompts = CameraPermissionPrompts()
+        val prompts = LocalPermissionPrompts()
         var allowed = false
         val captures = mutableListOf<CameraLens>()
         val services = mutableListOf<String?>()
@@ -23,7 +23,7 @@ class CameraActivityOwnerTest {
             }
         }, invitations, scope, services::add)
         init { owner = CameraActivityOwner(binding, CameraConsentPolicy({ allowed }, prompts), prompts) }
-        fun launcher(native: () -> Unit = {}) = CameraPermissionLauncher(native) { prompt, granted -> prompts.result(prompt, granted) }
+        fun launcher(native: () -> Unit = {}) = LocalPermissionLauncher(native) { prompt, granted -> prompts.result(prompt, granted) }
         override fun close() { owner.clear(); scope.cancel() }
     }
 
@@ -105,7 +105,7 @@ class CameraActivityOwnerTest {
     }
 
     @Test fun t961DiscardedActionCannotFinishReplacementEvenWithSameRequest() = Rig().use { rig ->
-        val published = mutableListOf<CameraPermissionPrompt>()
+        val published = mutableListOf<LocalPermissionPrompt>()
         rig.owner.attach { published.add(it); true }
         rig.invitations.value = endpoint
         val old = published.single().action

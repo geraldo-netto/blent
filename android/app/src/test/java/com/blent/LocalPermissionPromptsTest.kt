@@ -3,8 +3,8 @@ package com.blent
 import org.junit.Assert.*
 import org.junit.Test
 
-class CameraPermissionPromptsTest {
-    private class Action : CameraPermissionAction {
+class LocalPermissionPromptsTest {
+    private class Action : LocalPermissionAction {
         var live = true
         var currentFailure = false
         var completionFailure = false
@@ -20,8 +20,8 @@ class CameraPermissionPromptsTest {
     }
 
     @Test fun t949ReplacementActivityCannotReceiveOldPromptOrLoseItsLauncherToOldDetach() {
-        val owner = CameraPermissionPrompts()
-        val launched = mutableListOf<CameraPermissionPrompt>()
+        val owner = LocalPermissionPrompts()
+        val launched = mutableListOf<LocalPermissionPrompt>()
         val original = owner.attach { launched.add(it); true }
         val oldAction = Action()
         assertTrue(owner.request(oldAction))
@@ -38,13 +38,13 @@ class CameraPermissionPromptsTest {
     }
 
     @Test fun t949OnePendingExactPromptRejectsForgedDuplicateCancelledAndStaleResults() {
-        val owner = CameraPermissionPrompts()
-        val launched = mutableListOf<CameraPermissionPrompt>()
+        val owner = LocalPermissionPrompts()
+        val launched = mutableListOf<LocalPermissionPrompt>()
         val attached = owner.attach { launched.add(it); true }
         val action = Action()
         assertTrue(owner.request(action)); assertFalse(owner.request(Action()))
         val prompt = launched.single()
-        assertFalse(owner.result(CameraPermissionPrompt(attached, action), true))
+        assertFalse(owner.result(LocalPermissionPrompt(attached, action), true))
         assertTrue(owner.result(prompt, true)); assertEquals(listOf(true), action.values)
         assertFalse(owner.result(prompt, false))
         assertTrue(owner.request(action)); val cancelled = launched.last()
@@ -56,7 +56,7 @@ class CameraPermissionPromptsTest {
     }
 
     @Test fun t949FailedThrowingAndSynchronousLaunchDoNotRetainOrReplayActions() {
-        val owner = CameraPermissionPrompts()
+        val owner = LocalPermissionPrompts()
         val action = Action()
         owner.attach { false }; assertFalse(owner.request(action))
         owner.attach { throw IllegalStateException("SDK unavailable") }; assertFalse(owner.request(action))

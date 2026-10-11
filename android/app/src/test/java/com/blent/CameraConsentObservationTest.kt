@@ -14,7 +14,7 @@ class CameraConsentObservationTest {
     }
     private class Rig : AutoCloseable {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
-        val policy = CameraConsentPolicy({ true }, CameraPermissionPrompts())
+        val policy = CameraConsentPolicy({ true }, LocalPermissionPrompts())
         val source = MutableStateFlow<CameraAccessOffer?>(null)
         val observer = CameraConsentObservation(source, policy, scope)
         val authorities = mutableListOf<Authority>()
@@ -46,7 +46,7 @@ class CameraConsentObservationTest {
 
     @Test fun t944NormalSourceEndAndSourceFailureRevokeOnlyThisPolicy() = runBlocking {
         for (failed in listOf(false, true)) {
-            val policy = CameraConsentPolicy({ true }, CameraPermissionPrompts())
+            val policy = CameraConsentPolicy({ true }, LocalPermissionPrompts())
             val source = MutableSharedFlow<CameraAccessOffer?>()
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
             val finished = CompletableDeferred<Unit>()
