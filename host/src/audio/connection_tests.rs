@@ -14,7 +14,7 @@ fn t992_audio_pre_stopped_never_creates_native_transport_or_helper() {
             for direction in [Direction::Microphone, Direction::Speakers] {
                 let (_, stopped) = watch::channel(true);
                 let (state, _) = watch::channel(Default::default());
-                run(AudioOptions::new(direction), stopped, Report(state))
+                run(AudioOptions::new(direction), stopped, Report::new(state))
                     .await
                     .expect("T992 Stop must precede native dependency lookup or setup");
             }
@@ -153,7 +153,7 @@ async fn pipeline_once(root: &Path, direction: Direction, mode: u8) {
     let (result, ()) = tokio::time::timeout(Duration::from_secs(4), async {
         let work = async {
             if mode < 2 {
-                run(options, stopped, Report(state)).await
+                run(options, stopped, Report::new(state)).await
             } else {
                 run_cli(options).await
             }
@@ -235,10 +235,15 @@ fn t992_audio_explicit_usb_factory_never_looks_up_adb_or_selects_fallback() {
                 let mut options = AudioOptions::new(Direction::Speakers);
                 options.usb_peer = Some("ab".repeat(32));
                 let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-                let error = connection(&options, &listener, &"ab".repeat(32))
-                    .await
-                    .err()
-                    .unwrap();
+                let error = connection(
+                    &options,
+                    &listener,
+                    &"ab".repeat(32),
+                    &Report::new(watch::channel(Default::default()).0),
+                )
+                .await
+                .err()
+                .unwrap();
                 let expected = if cfg!(feature = "accessory-transport") {
                     "XDG_RUNTIME_DIR must be an absolute path"
                 } else {

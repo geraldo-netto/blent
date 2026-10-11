@@ -148,7 +148,7 @@ async fn t992_audio_original_pending_stop_and_loss_do_not_start_helper() {
         let token = "ab".repeat(32);
         let session = fixture.session(&bridge, &token);
         let (stop, mut stopped) = watch::channel(false);
-        let report = Report(watch::channel(Default::default()).0);
+        let report = Report::new(watch::channel(Default::default()).0);
         let peer = async {
             registered(&rig).await;
             if lost {
@@ -178,12 +178,12 @@ async fn t992_audio_clock_pcm_processing_override_and_original_loss_retire_only_
         let token = "ab".repeat(32);
         let session = fixture.session(&bridge, &token);
         let (_stop, mut stopped) = watch::channel(false);
-        let report = Report(watch::channel(Default::default()).0);
+        let report = Report::new(watch::channel(Default::default()).0);
         let peer = async {
             registered(&rig).await;
             let mut socket = fixture.peer(clocked).await;
             received(&mut socket, clocked).await;
-            assert!(report.0.borrow().detail.contains("Effective Raw"));
+            assert!(report.status().detail.contains("Effective Raw"));
             rig.client().set(Phase::Closing);
             tokio::time::sleep(Duration::from_millis(200)).await;
             drop(socket);
@@ -211,7 +211,7 @@ async fn t992_audio_native_failure_and_stall_leave_original_route_owned_until_ac
         let token = "ab".repeat(32);
         let session = fixture.session(&bridge, &token);
         let (_stop, mut stopped) = watch::channel(false);
-        let report = Report(watch::channel(Default::default()).0);
+        let report = Report::new(watch::channel(Default::default()).0);
         let peer = async {
             registered(&rig).await;
             let socket = fixture.peer(false).await;
@@ -246,7 +246,7 @@ async fn t992_audio_stuck_native_lease_never_reports_success_or_releases_actual_
     let token = "ab".repeat(32);
     let session = fixture.session(&bridge, &token);
     let (stop, mut stopped) = watch::channel(false);
-    let report = Report(watch::channel(Default::default()).0);
+    let report = Report::new(watch::channel(Default::default()).0);
     let (release, held) = std::sync::mpsc::channel();
     let held = Mutex::new(Some(held));
     let (entered, entry) = std::sync::mpsc::channel();
@@ -278,6 +278,10 @@ async fn t992_audio_stuck_native_lease_never_reports_success_or_releases_actual_
     entry.try_recv().unwrap();
     let proof = completion.lock().unwrap().clone().unwrap();
     assert!(!proof.is_complete());
+    assert!(
+        !report.native_retired(),
+        "T995 helper proof lost at pipeline error"
+    );
     assert!(!bridge.retired());
     release.send(()).unwrap();
     bounded(async {
@@ -286,6 +290,7 @@ async fn t992_audio_stuck_native_lease_never_reports_success_or_releases_actual_
         }
     })
     .await;
+    assert!(report.native_retired());
     fixture.assert_helper_reaped();
     rig.complete();
     bridge.close().await.unwrap();

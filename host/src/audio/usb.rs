@@ -13,6 +13,7 @@ pub(crate) fn native(
     token: &str,
     listener: TcpListener,
     launch: Launch,
+    report: &crate::audio_control::Report,
 ) -> Result<Bridge> {
     options.validate()?;
     ensure!(
@@ -22,7 +23,10 @@ pub(crate) fn native(
     let (resource, profile) = options.profile.invitation_profile()?;
     let request =
         crate::media_request::request(options.target()?, resource, Profile::Audio(profile), token)?;
-    crate::media_connection::linux::native(&options.profile, token, request, listener, launch)
+    let bridge =
+        crate::media_connection::linux::native(&options.profile, token, request, listener, launch)?;
+    report.retain(bridge.completion())?;
+    Ok(bridge)
 }
 
 #[cfg(test)]
@@ -56,7 +60,16 @@ mod tests {
                 "ab".repeat(32)
             };
             let listener = TcpListener::bind("127.0.0.1:0").unwrap();
-            assert!(native(&options, &token, listener, launch.clone()).is_err());
+            assert!(native(
+                &options,
+                &token,
+                listener,
+                launch.clone(),
+                &crate::audio_control::Report::new(
+                    tokio::sync::watch::channel(Default::default()).0
+                )
+            )
+            .is_err());
         }
         assert_eq!(
             std::fs::read_dir(root.path()).unwrap().count(),

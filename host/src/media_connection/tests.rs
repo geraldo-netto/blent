@@ -76,7 +76,7 @@ async fn t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registr
     bridge.invite(&"ab".repeat(32), &profile()).await.unwrap();
     assert!(bridge.invite(&"ab".repeat(32), &profile()).await.is_err());
     assert_eq!(rig.calls.lock().unwrap().clients.len(), 1);
-    let completion = bridge.admission.as_ref().unwrap().completion();
+    let completion = bridge.completion();
     drop(bridge);
     assert!(!completion.is_complete());
     rig.complete();

@@ -8,10 +8,49 @@ use std::{
 use tokio::sync::watch;
 
 #[derive(Clone)]
-pub struct Report(pub watch::Sender<AudioStatus>);
+pub struct Report {
+    status: watch::Sender<AudioStatus>,
+    retirement: Arc<Mutex<retirement::Tracker>>,
+}
+mod retirement;
 impl Report {
+    pub fn new(status: watch::Sender<AudioStatus>) -> Self {
+        Self {
+            status,
+            retirement: Arc::new(Mutex::new(Default::default())),
+        }
+    }
+    /// Record proof immediately after native creation, before publishing it or
+    /// returning from the owning backend. Observation does not own the resource.
+    pub fn retain(&self, completion: blent_config::retirement::Completion) -> Result<()> {
+        self.retirement
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .retain(completion)
+    }
+    pub fn status(&self) -> AudioStatus {
+        self.status.borrow().clone()
+    }
+    pub(crate) fn native_retired(&self) -> bool {
+        self.retirement
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .complete()
+    }
+    pub(crate) async fn wait_native(&self) {
+        if self.native_retired() {
+            return;
+        }
+        self.update(
+            AudioState::Stopping,
+            "Waiting for actual audio resource cleanup…",
+        );
+        while !self.native_retired() {
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        }
+    }
     pub fn update(&self, state: AudioState, detail: impl Into<String>) {
-        self.0.send_replace(AudioStatus {
+        self.status.send_replace(AudioStatus {
             state,
             detail: detail.into(),
         });
@@ -47,7 +86,7 @@ impl Controller {
         let worker_admission = admitted.clone();
         let worker =
             crate::control_workers::Worker::spawn(pool, "blent-audio-control", move || {
-                let report = Report(sender);
+                let report = Report::new(sender);
                 crate::control_outcome::worker(
                     || {
                         runtime.block_on(supervise(
@@ -57,7 +96,10 @@ impl Controller {
                             worker_admission.clone(),
                         ))
                     },
-                    |error| complete(&report, &worker_admission, Err(error)),
+                    |error| {
+                        runtime.block_on(report.wait_native());
+                        complete(&report, &worker_admission, Err(error));
+                    },
                 );
             })?;
         Ok(Self {
@@ -155,13 +197,16 @@ where
     tokio::pin!(work);
     tokio::select! {
         result = &mut work => {
+            report.wait_native().await;
             complete(report, admitted, result);
             commands.changed().await.is_ok()
         }
         changed = commands.changed() => {
             report.update(AudioState::Stopping, "Stopping audio…");
             stop.send_replace(true);
-            if let Err(error) = work.await {
+            let result = work.await;
+            report.wait_native().await;
+            if let Err(error) = result {
                 complete(report, admitted, Err(error));
                 return changed.is_ok() && commands.changed().await.is_ok();
             }

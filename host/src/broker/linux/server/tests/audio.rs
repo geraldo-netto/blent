@@ -176,7 +176,8 @@ async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_re
     listener.set_nonblocking(true).unwrap();
     let local = tokio::net::TcpListener::from_std(listener.try_clone().unwrap()).unwrap();
     let token = "ab".repeat(32);
-    let bridge = usb::native(&options, &token, listener, launch).unwrap();
+    let report = Report::new(watch::channel(Default::default()).0);
+    let bridge = usb::native(&options, &token, listener, launch, &report).unwrap();
     let (server_stop, server_done) = oneshot::channel();
     let running = tokio::spawn(async move {
         let mut fixture = auth.fixture;
@@ -214,7 +215,6 @@ async fn t992_audio_private_tls_speaker_route_preserves_clock_pcm_and_delayed_re
         token: &token,
     };
     let (stop, mut stopped) = watch::channel(false);
-    let report = Report(watch::channel(Default::default()).0);
     let work = session.serve(&report, &mut stopped);
     tokio::pin!(work);
     let bytes = tokio::select! {result=&mut work=>panic!("premature audio {result:?}"),result=pcm=>result.unwrap()};

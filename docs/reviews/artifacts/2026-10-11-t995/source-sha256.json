@@ -1,0 +1,12 @@
+{
+  "host/src/audio_control.rs": "c80f80c73cee1ed3c14471f15bfd4fd5868d46de4e9a5ce61a02fdff22bd2366",
+  "host/src/audio_control/retirement.rs": "8deae69c40e92622bd23d8e37655bdc7bcf23b641d4dfcb9f6b35263bc5a4803",
+  "host/src/audio.rs": "fab596728112b5f436db02fb1bcf8691964be72e0fd8c3964cd35f75d577c0f4",
+  "host/src/audio/usb.rs": "6443250877570008657452e6350e5862cba81f1cc8532c9b70db4de68a6765b5",
+  "host/src/audio/connection_tests.rs": "c99917d39d199eeffb4821af88810adbc53711ccd26dcda5298a67dac71f7c7d",
+  "host/src/audio/session_tests.rs": "f30e5946a706a29f794112ff9946492279d201e5e193035c1337ba057776acd0",
+  "host/src/audio/tests.rs": "c7ed8b5039a8605bfba877fad0b7deb24da08598007ef2094e6406d6873a856d",
+  "host/src/media_connection.rs": "bef2a6305562e7550345681a8ba28b0dc938e63bbbbc36a49419510129956c71",
+  "host/src/media_connection/tests.rs": "bc6610f006d696779eb35c76d150526350aec4cd9d6a7c792197dc02d93e19b4",
+  "host/src/broker/linux/server/tests/audio.rs": "b03dfae75ac816b81f62e36dc7b61cdab50bea927adaf87751fbba6e5c62b36b"
+}

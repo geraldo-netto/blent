@@ -47,7 +47,7 @@ pub async fn run(
     let helper = helper()?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let token = blent_config::credentials::random_token()?;
-    let bridge = connection(&options, &listener, &token).await?;
+    let bridge = connection(&options, &listener, &token, &report).await?;
     let session = Session {
         listener: &listener,
         connection: bridge.as_ref(),
@@ -57,6 +57,8 @@ pub async fn run(
     };
     let result = session.serve(&report, &mut stop).await;
     let cleanup = bridge.close().await;
+    drop(bridge);
+    report.wait_native().await;
     result.and(cleanup)
 }
 
@@ -64,6 +66,7 @@ async fn connection(
     options: &AudioOptions,
     listener: &TcpListener,
     _token: &str,
+    _report: &Report,
 ) -> Result<Box<dyn Connection<blent_config::audio::AudioProfile>>> {
     match options.target()? {
         Target::Adb(serial) => Ok(Box::new(
@@ -78,6 +81,7 @@ async fn connection(
                 _token,
                 retained,
                 crate::broker::linux::client::Launch::from_environment()?,
+                _report,
             )?))
         }
         #[cfg(not(feature = "accessory-transport"))]
@@ -163,6 +167,7 @@ impl Session<'_> {
         profile.processing = mode;
         let grant = session.start_with_clock(profile, capabilities, true, 0, clocked)?;
         let mut child = spawn(self.helper, self.options.profile, self.token, clocked)?;
+        report.retain(child.completion())?;
         let stream = self.transfer(
             &mut socket,
             &mut child,
@@ -277,7 +282,7 @@ async fn speakers_with_clock(
 pub async fn run_cli(options: AudioOptions) -> Result<()> {
     let (stop, stopped) = watch::channel(false);
     let (report, _) = watch::channel(Default::default());
-    let work = run(options, stopped, Report(report));
+    let work = run(options, stopped, Report::new(report));
     tokio::pin!(work);
     let mut terminate = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
     tokio::select! {

@@ -48,6 +48,14 @@ impl<P: Clone + PartialEq + Send + Sync> Bridge<P> {
     pub(crate) fn retired(&self) -> bool {
         self.with_owner(|owner| owner.retired())
     }
+    /// Observes original owner destruction and actual independently retained
+    /// source/route cleanup; close requests and errors cannot complete it.
+    pub(crate) fn completion(&self) -> blent_config::retirement::Completion {
+        self.admission
+            .as_ref()
+            .expect("original media admission retained")
+            .completion()
+    }
     async fn invite_once(&self, token: &str, profile: &P) -> Result<()> {
         ensure!(
             blent_config::runtime::token_matches(&self.token, token) && self.profile == *profile,

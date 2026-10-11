@@ -229,11 +229,34 @@ validate stereo samples, processing override and native clock fields, pending
 Stop, source loss, failed/stalled helpers, held native leases and delayed remote
 retirement. T994 fixes an obsolete local cancellation race revealed by this join.
 Helper and original-route cleanup retain their own actual proof after deadlines.
-T995 retains the remaining per-direction controller admission follow-up while
-that proof is pending. No physical/acoustic qualification follows from these
+T995 keeps per-direction controller admission occupied while that proof is
+pending. No physical/acoustic qualification follows from these
 fixtures. Production GUI selection remains T979; postponed acceptance T860 and
 SDK-wide native-audio validation T835 remain explicit.
 [Offline tests and individual native counters](reviews/artifacts/2026-10-11-t992/README.md).
+
+## Audio admission follows actual retirement (T995)
+
+The controller observes implementation-independent portable completion proofs,
+separately from status and backend Result. Each direction tracks a bounded pair:
+its original USB connection owner and isolated native helper. The Linux adapters
+record proof immediately after native creation, before publishing or returning.
+Closed descriptors, requested cancellation, helper exit, timeout and a successful
+or failed backend return cannot release Start while actual cleanup remains pending.
+
+Pending cleanup reports Stopping and keeps that direction occupied. It also keeps
+its independently retained control-worker completion pending across bounded Drop
+or shutdown; microphone, speaker and other controls remain independent. Normal
+completion reuses the fixed observation slots. There is no unbounded history,
+new native owner or automatic session restart. A backend panic follows the same
+retirement barrier before releasing controller admission.
+
+The Linux CLI/pipeline drops the original connection owner before waiting for its
+proof, avoiding a self-held barrier. Actual helper and route retirement retain
+their existing native owners independently of this observation. Private error,
+success, panic, held-lease and sibling-control regressions qualify the ordering;
+physical audio acceptance remains T860/T859 and SDK-wide qualification T835.
+[Regression and individual native counters](reviews/artifacts/2026-10-11-t995/README.md).
 
 ## Native helper argument validation (T993)
 
