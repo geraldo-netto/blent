@@ -1,5 +1,8 @@
 use super::*;
 use crate::display_test_support::{peer, Backend, Calls, Route};
+use crate::{connection_discovery::Discovery, media_registration::MediaRegistration};
+use anyhow::ensure;
+use blent_config::connection::registration_client::{Phase, Request};
 use blent_config::connection::{
     control::{Notice, State as LinkState},
     control_client::{
@@ -13,7 +16,7 @@ use std::sync::{
     atomic::{AtomicBool, AtomicUsize, Ordering},
     Arc, Mutex,
 };
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 pub(crate) fn view(links: &[(u64, u64, LinkState)]) -> View {
     let mut assembler = Assembler::new(Limits::default()).unwrap();
@@ -110,10 +113,12 @@ impl Rig {
             now: Instant::now(),
         }
     }
-    pub(crate) fn owner(&self, profile: &CameraProfile, token: &str) -> Result<CameraRegistration> {
-        CameraRegistration::new(
-            profile,
-            token,
+    pub(crate) fn owner(&self, profile: &CameraProfile, token: &str) -> Result<MediaRegistration> {
+        self.media(super::request(profile, token)?)
+    }
+    pub(crate) fn media(&self, request: Request) -> Result<MediaRegistration> {
+        MediaRegistration::new(
+            request,
             Discovery::new(
                 Box::new(ControlHandle(self.source.clone())),
                 Duration::from_secs(1),

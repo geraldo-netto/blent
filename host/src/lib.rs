@@ -27,6 +27,7 @@ pub mod display_slots;
 pub mod ffmpeg_args;
 pub mod latency;
 pub mod media;
+pub mod media_registration;
 pub mod media_storage;
 pub mod pipe_encoder;
 pub mod raw_transfer;

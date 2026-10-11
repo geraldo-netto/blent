@@ -1,12 +1,14 @@
 use super::test_support::*;
 use super::*;
 use crate::display_test_support::peer;
+use crate::media_registration::State;
 use blent_config::connection::{
     control::State as LinkState,
     control_client::Phase as ControlPhase,
     registration_client::{Failure, Status},
     wire::MAX_COUNTER,
 };
+use blent_config::connection::{registration_client::Phase, routes::RouteId};
 use std::sync::atomic::Ordering;
 
 #[test]

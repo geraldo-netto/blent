@@ -119,7 +119,7 @@ pub enum Profile {
     Audio(Audio),
 }
 impl Profile {
-    fn validate(&self, resource: Resource) -> Result<()> {
+    pub fn validate(&self, resource: Resource) -> Result<()> {
         match (self, resource) {
             (Self::Display, Resource::DisplaySession) => Ok(()),
             (Self::Camera(value), Resource::Camera) => value.validate(),

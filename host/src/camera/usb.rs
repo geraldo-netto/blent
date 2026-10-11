@@ -2,8 +2,9 @@
 //! pipeline cancellation through independently observed native/remote cleanup.
 use crate::{
     broker::linux::{client::Launch, presentation, registration_client},
-    camera_registration::{CameraRegistration, State},
+    camera_registration,
     connection_discovery::Discovery,
+    media_registration::{MediaRegistration, State},
 };
 use anyhow::{ensure, Result};
 use blent_config::{
@@ -36,7 +37,7 @@ impl Factory for Bound {
 }
 
 pub(crate) struct Bridge {
-    owner: Mutex<Option<CameraRegistration>>,
+    owner: Mutex<Option<MediaRegistration>>,
     admission: Option<Admission>,
     profile: CameraProfile,
     token: String,
@@ -62,10 +63,14 @@ impl Bridge {
             )?),
             listener,
         };
-        let owner = CameraRegistration::new(profile, token, source, Box::new(bound))?;
+        let owner = MediaRegistration::new(
+            camera_registration::request(profile, token)?,
+            source,
+            Box::new(bound),
+        )?;
         Self::owned(profile, token, owner)
     }
-    fn owned(profile: &CameraProfile, token: &str, owner: CameraRegistration) -> Result<Self> {
+    fn owned(profile: &CameraProfile, token: &str, owner: MediaRegistration) -> Result<Self> {
         let admission = Pool::new(1)?.reserve()?;
         Ok(Self {
             owner: Mutex::new(Some(owner)),
@@ -75,7 +80,7 @@ impl Bridge {
             invited: AtomicBool::new(false),
         })
     }
-    fn with_owner<T>(&self, operation: impl FnOnce(&mut CameraRegistration) -> T) -> T {
+    fn with_owner<T>(&self, operation: impl FnOnce(&mut MediaRegistration) -> T) -> T {
         let mut owner = self
             .owner
             .lock()
@@ -125,7 +130,7 @@ impl Bridge {
         }
     }
     async fn revoke(&self) -> Result<()> {
-        self.with_owner(CameraRegistration::close);
+        self.with_owner(MediaRegistration::close);
         let result = tokio::time::timeout(Duration::from_secs(3), async {
             while !self.retired() {
                 tokio::time::sleep(Duration::from_millis(10)).await;
@@ -152,7 +157,7 @@ impl Connection for Bridge {
         Box::pin(self.revoke())
     }
 }
-struct Retained(CameraRegistration);
+struct Retained(MediaRegistration);
 impl Observe for Retained {
     fn poll_complete(&mut self) -> bool {
         self.0.retired()

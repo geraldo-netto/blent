@@ -1959,3 +1959,14 @@ code uses independent `LocalPermission*` contracts, mediator and SDK slot, share
 for resource adapters. Camera consent/foreground policy remains camera-owned;
 original audio ownership is the next integration under T951. Existing permanent
 SDK identity tests and the full normal Android method gate pass unchanged.
+
+### T976 shared media registration ownership
+
+Current camera registration projection constructs a validated independent Request;
+MediaRegistration owns exact source/route supervision and independently proven
+cleanup for camera, microphone or speakers. The retained camera adapter uses this
+one owner; display orchestration keeps its existing separate owner. Portable
+audio request/schema qualification does not enable Android audio capability or
+establish physical support. Audio contracts/adapters remain T977–T979; three
+pre-existing management enum coverage gaps found by the full native shared suite
+remain explicitly open under T981.
