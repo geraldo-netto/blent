@@ -115,6 +115,23 @@ class RustCollectTest(unittest.TestCase):
             self.assertFalse((root / 'failed/attestation.json').exists())
             self.assertFalse((root / 'empty/attestation.json').exists())
 
+    def test_t970_explicit_features_do_not_require_all_features_or_relax_ownership(self):
+        import rust_collect
+        selection = rust_collect.Selection(packages=('blent',), library=True,
+                                           features=('accessory-transport',))
+        command = rust_collect.command(selection, Path('evidence/rust.lcov'))
+        self.assertIn('--features=accessory-transport', command)
+        self.assertNotIn('--all-features', command)
+        self.assertIn('--offline', command)
+        self.assertIn('--locked', command)
+        for invalid in [None, '', '--target-dir=/tmp/old', '../other', '\x00', 'a' * 257]:
+            with self.assertRaises(ValueError):
+                rust_collect.command(rust_collect.Selection(features=(invalid,)), Path('evidence/rust.lcov'))
+        for length in range(1, 257):
+            value = 'f' * length
+            self.assertIn('--features=' + value,
+                rust_collect.command(rust_collect.Selection(features=(value,)), Path('evidence/rust.lcov')))
+
 
 class NativeExporter:
     def __init__(self, root, old, llvm):

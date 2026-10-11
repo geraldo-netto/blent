@@ -312,3 +312,10 @@ T965 shares authored PSI ownership with the complexity inventory through
 `scripts/kotlin/AuthoredKotlin.kt`. Native method attribution, generated-code
 filtering and per-function thresholds remain unchanged; the compiled inventory
 cache fingerprints both the reporter and ownership source.
+
+T970: `--feature NAME` selects an explicit Cargo feature and can repeat. For
+example, `--package blent --lib --feature accessory-transport` collects the host
+USB adapter without enabling `native-audio`; unavailable audio development SDKs
+remain visible under T835. Feature names have the same bounded typed validation
+as package/test names. Offline resolution, fresh target ownership and source/
+object attestation remain mandatory.

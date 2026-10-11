@@ -19,6 +19,7 @@ class Selection:
     library: bool = False
     all_features: bool = False
     filter: str | None = None
+    features: tuple = ()
 
 
 def names(option, values):
@@ -32,6 +33,7 @@ def command(selection, report):
     args = ['cargo', 'llvm-cov', 'test', '--offline', '--locked', '--lcov', '--output-path', str(report)]
     args.extend(names('package', selection.packages))
     args.extend(names('test', selection.tests))
+    args.extend(names('features', selection.features))
     if not selection.packages:
         args.append('--workspace')
     if selection.library:
@@ -110,10 +112,11 @@ def main():
     parser.add_argument('--test', action='append', default=[])
     parser.add_argument('--lib', action='store_true')
     parser.add_argument('--all-features', action='store_true')
+    parser.add_argument('--feature', action='append', default=[], help='explicit feature name; repeat as needed')
     parser.add_argument('--filter')
     args = parser.parse_args()
     collect(ROOT, args.output, Selection(tuple(args.package), tuple(args.test), args.lib,
-                                       args.all_features, args.filter))
+                                       args.all_features, args.filter, tuple(args.feature)))
 
 
 if __name__ == '__main__':
