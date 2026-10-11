@@ -17,6 +17,9 @@ internal class AudioBinding(
     val direction: Int,
     private val save: (AudioPreferences) -> Unit,
 ) {
+    init { require(initial.valid(direction)) { "Invalid initial audio direction/preferences" } }
+    private var target: AudioConsumerTarget? = null
+    private var targetStarted = false
     val label = if (direction == 1) "microphone" else "speakers"
     private val mutableState = MutableStateFlow(AudioLifecycleState(initial, "Start $label on your computer."))
     val state = mutableState.asStateFlow()
@@ -47,12 +50,41 @@ internal class AudioBinding(
 
     fun start() {
         visible = true
+        target?.let { if (!targetStarted) startTarget(it) }
         if (observer?.isActive == true) return
         observer = scope.launch {
             invitations.collect { endpoint ->
-                if (endpoint != null) { invitations.value = null; invite(endpoint) }
+                if (endpoint != null) {
+                    invitations.value = null
+                    if (target == null) invite(endpoint)
+                }
             }
         }
+    }
+    /** Selected external ownership remains explicit until withdrawal. ADB uses
+     * its existing one-shot invitations; it cannot replace or revive this target. */
+    fun useTarget(value: AudioConsumerTarget?) {
+        require(value == null || value.endpoint.direction == direction) { "Audio target direction mismatch" }
+        if (target === value) return
+        stopSharing()
+        target = value
+        targetStarted = false
+        if (value != null) startTarget(value)
+    }
+    private fun startTarget(value: AudioConsumerTarget) {
+        if (!visible || targetStarted) return
+        targetStarted = true
+        try {
+            check(permission()) { "Audio permission unavailable" }
+            launch(preferences.effective(value.endpoint), value)
+        } catch (error: Exception) {
+            stopSharing()
+            status = error.message ?: "Audio unavailable."
+        }
+    }
+    private fun stopTarget(value: AudioConsumerTarget?) {
+        try { value?.authority?.stop() }
+        catch (error: Exception) { status = "Audio control failed: ${error.message}" }
     }
     private fun invite(endpoint: AudioEndpoint) {
         stopSharing()
@@ -69,16 +101,22 @@ internal class AudioBinding(
     }
     fun accept() {
         val requested = pending ?: return
-        if (!visible || !permission()) return
+        if (!visible || target != null || !permission()) return
         try {
             val endpoint = preferences.effective(requested)
             pending = null
-            launch(endpoint)
+            launch(endpoint, null)
         } catch (error: Exception) { stopSharing(); status = error.message ?: "Audio unavailable." }
     }
-    private fun launch(endpoint: AudioEndpoint) {
+    private fun launch(endpoint: AudioEndpoint, owner: AudioConsumerTarget?) {
         retirement.checkAvailable()
         check(serviceError == null) { "Background cleanup incomplete: ${serviceError?.message}" }
+        val claim = owner?.authority?.retain()
+        check(owner == null || claim != null) { "Audio target no longer current" }
+        try { launchOwned(endpoint, owner, claim) }
+        catch (error: Exception) { claim?.retired(ResourceRetirement.NOT_STARTED); throw error }
+    }
+    private fun launchOwned(endpoint: AudioEndpoint, owner: AudioConsumerTarget?, claim: MediaConsumerClaim?) {
         val revision = ++generation
         val settings = preferences
         if (endpoint.background) {
@@ -87,16 +125,20 @@ internal class AudioBinding(
         }
         sharing = true; status = "Starting $label…"
         retirement.replace({
-            createRun(endpoint, settings) { text ->
-                statusUpdates.submit { if (revision == generation) status = text }
+            val create = {
+                createRun(endpoint, settings) { text ->
+                    statusUpdates.submit { if (revision == generation) status = text }
+                }
             }
+            if (owner == null) create() else MediaConsumerRun(claim, permission, create)
         }, { failure ->
             if (revision == generation) {
+                stopTarget(owner)
                 if (failure != null) status = failure.message ?: "Audio stopped."
                 sharing = false
                 stopBackground()
             }
-        })
+        }, { proof -> claim?.retired(proof) })
     }
     private fun stopBackground() {
         if (backgroundRun == null) return
@@ -112,6 +154,8 @@ internal class AudioBinding(
     fun stopSharing() {
         generation++
         pending = null
+        targetStarted = true
+        stopTarget(target)
         retirement.stop()
         sharing = false
         stopBackground()
@@ -132,5 +176,7 @@ internal class AudioBinding(
     }
     fun ownsBackground(run: String?): Boolean = run != null && run == backgroundRun
     fun backgroundStopped(run: String?) { if (ownsBackground(run)) stopSharing() }
-    fun shutdown() { stop(); stopSharing(); scope.cancel() }
+    fun shutdown() {
+        stop(); stopSharing(); target = null; scope.cancel()
+    }
 }

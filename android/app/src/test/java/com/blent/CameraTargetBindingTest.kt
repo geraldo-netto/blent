@@ -7,18 +7,18 @@ import org.junit.Test
 
 class CameraTargetBindingTest {
     private val endpoint = CameraEndpoint("ab".repeat(32), 12345, 640, 480, 30, 1000, CameraLens.FRONT)
-    private class Authority : CameraCaptureAuthority {
+    private class Authority : MediaConsumerAuthority {
         var available = true
         var stops = 0
         var failure: Exception? = null
         val claims = mutableListOf<Claim>()
         var retainHook: () -> Unit = {}
-        inner class Claim : CameraCaptureClaim {
+        inner class Claim : MediaConsumerClaim {
             val proofs = mutableListOf<ResourceRetirement>()
             override fun current() = available
             override fun retired(proof: ResourceRetirement) { proofs.add(proof) }
         }
-        override fun retain(): CameraCaptureClaim? {
+        override fun retain(): MediaConsumerClaim? {
             retainHook()
             return if (available) Claim().also { claims.add(it) } else null
         }

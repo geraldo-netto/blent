@@ -1,7 +1,7 @@
 package com.blent.connection
 
-import com.blent.CameraCaptureAuthority
-import com.blent.CameraCaptureClaim
+import com.blent.MediaConsumerAuthority
+import com.blent.MediaConsumerClaim
 import com.blent.CameraCaptureTarget
 import com.blent.CameraEndpoint
 import com.blent.CameraLens
@@ -30,7 +30,7 @@ internal class ConnectionCameraCaptureOwner(
     send: (ConnectionWorkerCommand) -> Boolean,
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
     delivered: () -> Unit = {},
-) : CameraCaptureAuthority {
+) : MediaConsumerAuthority {
     private val gate = Any()
     private val claims = Collections.newSetFromMap(IdentityHashMap<Claim, Boolean>())
     private var closing = false
@@ -39,14 +39,14 @@ internal class ConnectionCameraCaptureOwner(
     private val relay = ConnectionCameraCompletionRelay(route.lease, send, dispatcher, delivered = delivered)
     val target = CameraCaptureTarget(ConnectionCameraTarget.endpoint(route), this)
 
-    private inner class Claim : CameraCaptureClaim {
+    private inner class Claim : MediaConsumerClaim {
         override fun current(): Boolean = synchronized(gate) { !closing && !gone && claims.contains(this) }
         override fun retired(proof: ResourceRetirement) {
             synchronized(gate) { claims.remove(this) }
             flush()
         }
     }
-    override fun retain(): CameraCaptureClaim? = synchronized(gate) {
+    override fun retain(): MediaConsumerClaim? = synchronized(gate) {
         if (closing || gone) null else Claim().also { claims.add(it) }
     }
     fun invalidate() { synchronized(gate) { closing = true } }

@@ -1,6 +1,6 @@
 package com.blent.connection
 
-import com.blent.CameraCaptureClaim
+import com.blent.MediaConsumerClaim
 import com.blent.ResourceRetirement
 import java.net.Socket
 import java.util.concurrent.atomic.AtomicReference
@@ -24,8 +24,8 @@ class ConnectionCameraBindingLoopbackTest {
         val rig = ConnectionJoinedCameraFixture { events.get()(it) }
         val binding = ConnectionBinding(scope, { _, report -> events.set(report); rig.worker })
         var socket: Socket? = null
-        var first: CameraCaptureClaim? = null
-        var second: CameraCaptureClaim? = null
+        var first: MediaConsumerClaim? = null
+        var second: MediaConsumerClaim? = null
         try {
             binding.connect(ConnectionWorkerSpec("joined camera"))
             until { binding.state.value.authenticated }

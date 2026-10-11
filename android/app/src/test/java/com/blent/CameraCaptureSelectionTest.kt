@@ -6,12 +6,12 @@ import org.junit.Test
 
 class CameraCaptureSelectionTest {
     private val endpoint = CameraEndpoint("ab".repeat(32), 12345, 640, 480, 30, 3000)
-    private class Authority : CameraCaptureAuthority {
+    private class Authority : MediaConsumerAuthority {
         var available = true
         var current = true
         var stops = 0
         val proofs = mutableListOf<ResourceRetirement>()
-        override fun retain(): CameraCaptureClaim? = if (!available) null else object : CameraCaptureClaim {
+        override fun retain(): MediaConsumerClaim? = if (!available) null else object : MediaConsumerClaim {
             override fun current() = current
             override fun retired(proof: ResourceRetirement) { proofs.add(proof) }
         }

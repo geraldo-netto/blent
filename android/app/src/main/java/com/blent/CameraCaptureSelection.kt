@@ -35,8 +35,8 @@ internal class CameraCaptureSelection(
 
     private fun current(owner: Any, original: Any) = identity === original && permitted(owner)
 
-    private fun authority(value: CameraCapturePublication, identity: Any) = object : CameraCaptureAuthority {
-        override fun retain(): CameraCaptureClaim? {
+    private fun authority(value: CameraCapturePublication, identity: Any) = object : MediaConsumerAuthority {
+        override fun retain(): MediaConsumerClaim? {
             if (!current(value.owner, identity)) return null
             val original = value.target.authority.retain() ?: return null
             return claim(value.owner, identity, original)
@@ -44,7 +44,7 @@ internal class CameraCaptureSelection(
         override fun stop() = value.target.authority.stop()
     }
 
-    private fun claim(owner: Any, identity: Any, original: CameraCaptureClaim) = object : CameraCaptureClaim {
+    private fun claim(owner: Any, identity: Any, original: MediaConsumerClaim) = object : MediaConsumerClaim {
         override fun current() = current(owner, identity) && original.current()
         override fun retired(proof: ResourceRetirement) = original.retired(proof)
     }

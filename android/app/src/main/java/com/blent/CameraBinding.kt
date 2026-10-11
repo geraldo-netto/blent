@@ -141,7 +141,7 @@ internal class CameraBinding(
         val claim = target?.authority?.retain()
         check(target == null || claim != null) { "Camera target no longer current" }
         try {
-            guard.replace({ CameraCaptureRun(claim, ::hasPermission) {
+            guard.replace({ MediaConsumerRun(claim, ::hasPermission) {
                 createRun(host, lens, rotation) { text ->
                     statusUpdates.submit { if (revision == generation) status = text }
                 }

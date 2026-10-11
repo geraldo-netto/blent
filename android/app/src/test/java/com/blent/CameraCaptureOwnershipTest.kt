@@ -6,13 +6,13 @@ import org.junit.Test
 
 class CameraCaptureOwnershipTest {
     private val endpoint = CameraEndpoint("ab".repeat(32), 12345, 640, 480, 30, 1000)
-    private class Claim : CameraCaptureClaim {
+    private class Claim : MediaConsumerClaim {
         var alive = true
         val proofs = mutableListOf<ResourceRetirement>()
         override fun current() = alive
         override fun retired(proof: ResourceRetirement) { proofs.add(proof) }
     }
-    private class Authority : CameraCaptureAuthority {
+    private class Authority : MediaConsumerAuthority {
         val claim = Claim()
         override fun retain() = claim.takeIf { it.alive }
         override fun stop(): Boolean { claim.alive = false; return true }
@@ -29,7 +29,7 @@ class CameraCaptureOwnershipTest {
     @Test fun t943RepeatedExecutionCannotOverwriteNativeOwner() = runBlocking {
         val native = Run()
         var created = 0
-        val capture = CameraCaptureRun(null, { true }, { created++; native })
+        val capture = MediaConsumerRun(null, { true }, { created++; native })
         capture.execute()
         assertTrue("T943 repeated execute cannot replace retained native owner", runCatching { capture.execute() }.isFailure)
         assertEquals(1, created)
@@ -40,7 +40,7 @@ class CameraCaptureOwnershipTest {
     @Test fun t943RetirementBeforeExecutionNeverConstructsNativeOwner() = runBlocking {
         var created = 0
         val native = Run()
-        val unopened = CameraCaptureRun(null, { true }, { created++; native })
+        val unopened = MediaConsumerRun(null, { true }, { created++; native })
         unopened.retire()
         assertTrue("T943 retirement closes future execution", runCatching { unopened.execute() }.isFailure)
         assertEquals(0, created)
@@ -53,7 +53,7 @@ class CameraCaptureOwnershipTest {
             val native = Run()
             var created = 0
             var permission = afterFactory
-            val capture = CameraCaptureRun(claim, { permission }, { created++; permission = false; native })
+            val capture = MediaConsumerRun(claim, { permission }, { created++; permission = false; native })
             assertTrue(runCatching { capture.execute() }.isFailure)
             assertEquals(if (afterFactory) 1 else 0, created)
             assertEquals(0, native.opened)
@@ -64,7 +64,7 @@ class CameraCaptureOwnershipTest {
             val claim = Claim().apply { alive = afterFactory }
             val native = Run()
             var created = 0
-            val capture = CameraCaptureRun(claim, { true }, { created++; claim.alive = false; native })
+            val capture = MediaConsumerRun(claim, { true }, { created++; claim.alive = false; native })
             assertTrue(runCatching { capture.execute() }.isFailure)
             assertEquals(if (afterFactory) 1 else 0, created)
             assertEquals(0, native.opened)
@@ -74,18 +74,18 @@ class CameraCaptureOwnershipTest {
     }
 
     @Test fun t943CancellationBeforeAndDuringFactoryCannotOpenNativeCapture() = runBlocking {
-        val first = CameraCaptureRun(null, { true }, { error("cancelled factory") })
+        val first = MediaConsumerRun(null, { true }, { error("cancelled factory") })
         first.cancel()
         assertTrue(runCatching { first.execute() }.isFailure)
         first.retire()
         val native = Run()
-        lateinit var during: CameraCaptureRun
-        during = CameraCaptureRun(null, { true }, { during.cancel(); native })
+        lateinit var during: MediaConsumerRun
+        during = MediaConsumerRun(null, { true }, { during.cancel(); native })
         assertTrue(runCatching { during.execute() }.isFailure)
         during.retire()
         assertEquals(0, native.opened)
         assertEquals(1, native.retired)
-        val active = CameraCaptureRun(null, { true }, { native })
+        val active = MediaConsumerRun(null, { true }, { native })
         active.execute(); active.cancel(); active.retire()
         assertEquals(1, native.opened)
         assertTrue("T943 cancel and retirement request native stop", native.stopped >= 2)

@@ -26,8 +26,8 @@ class CameraCaptureObservationTest {
                 override fun permissionResult(granted: Boolean, context: MediaLocalConsent) = false
             }), true, true, false))
         val target = CameraCaptureTarget(CameraEndpoint("ab".repeat(32), 12345, 640, 480, 30, 3000),
-            object : CameraCaptureAuthority {
-                override fun retain() = object : CameraCaptureClaim {
+            object : MediaConsumerAuthority {
+                override fun retain() = object : MediaConsumerClaim {
                     override fun current() = true
                     override fun retired(proof: ResourceRetirement) {}
                 }
