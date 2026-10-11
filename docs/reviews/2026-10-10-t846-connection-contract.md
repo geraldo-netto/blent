@@ -1855,7 +1855,11 @@ covers 973 offline tests, all 45 scoped methods and 7 authored constructors,
 including private Binder/actor and real loopback composition on simulated API
 27/34. T944 supplies Activity/permission lifecycle integration and T932 enables
 the joined production camera capability. Real camera/accessory acceptance remains
-T858/T863; the capability mask is still display-only.
+T858/T863. At the T948 milestone, the capability mask was display-only. Current
+`AndroidConnectionWorker.kt::tabletConnectionRun` advertises mask 3 (display and
+camera) under T932; microphone/speaker capability remains disabled until its
+production adapters are implemented. This advertisement does not establish
+physical debugging-off media acceptance.
 
 ## T949 portable local camera consent and prompt ownership
 
