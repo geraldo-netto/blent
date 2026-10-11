@@ -26,23 +26,24 @@ open class IsolationWorker : Service() {
             if (!busy.compareAndSet(false, true)) { respond(callback, generation, -1); return true }
             val incoming = if (code == 4) Surface.CREATOR.createFromParcel(data) else null
             val stall = if (code == 2) CountDownLatch(1).also { held.set(it) } else null
-            Thread {
-                try {
-                    if (code == 2) { respond(callback, generation, 2); stall!!.await() }
-                    else {
-                        val result = when (code) {
-                            1 -> 1
-                            4 -> { check(incoming!!.isValid); surface?.release(); surface = incoming; 4 }
-                            5 -> { surface?.release(); surface = null; 5 }
-                            else -> -2
-                        }
-                        busy.set(false)
-                        respond(callback, generation, result)
-                    }
-                } finally { if (code == 2) busy.set(false) }
-            }.start()
+            Thread { operate(code, incoming, callback, generation, stall) }.start()
             return true
         }
+    }
+    private fun operate(code: Int, incoming: Surface?, callback: IBinder, generation: Long, stall: CountDownLatch?) {
+        try {
+            if (code == 2) { respond(callback, generation, 2); stall!!.await() }
+            else {
+                val result = when (code) {
+                    1 -> 1
+                    4 -> { check(incoming!!.isValid); surface?.release(); surface = incoming; 4 }
+                    5 -> { surface?.release(); surface = null; 5 }
+                    else -> -2
+                }
+                busy.set(false)
+                respond(callback, generation, result)
+            }
+        } finally { if (code == 2) busy.set(false) }
     }
     private fun respond(callback: IBinder, generation: Long, result: Int) {
         val data = Parcel.obtain()
