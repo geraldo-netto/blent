@@ -21,6 +21,14 @@ class AndroidWorkerRunTest {
         var revision = 0L
         var callback: IBinder? = null
         var killWorks = true
+        @Volatile var alive = true
+        val startEntered = java.util.concurrent.CountDownLatch(1)
+        var startGate: java.util.concurrent.CountDownLatch? = null
+        val stopEntered = java.util.concurrent.CountDownLatch(1)
+        var stopGate: java.util.concurrent.CountDownLatch? = null
+        val exitEntered = java.util.concurrent.CountDownLatch(1)
+        var exitGate: java.util.concurrent.CountDownLatch? = null
+        override fun isBinderAlive() = alive
         var failLink = false
         var failStop = false
         var start: (Endpoint) -> Unit = { it.emit(WorkerEvent.Result("ok")); it.emit(WorkerEvent.Ended(null)) }
@@ -33,9 +41,17 @@ class AndroidWorkerRunTest {
             WorkerIpc.validate(data, WorkerIpc.REQUEST)
             revision = data.readLong(); commands.add(code)
             when (code) {
-                WorkerIpc.START -> { MediaTaskJson.decode(requireNotNull(data.readString())); callback = data.readStrongBinder(); start(this) }
-                WorkerIpc.STOP -> if (failStop) throw RemoteException("stop failed")
-                WorkerIpc.EXIT -> if (killWorks) deaths.toList().forEach { it.binderDied() }
+                WorkerIpc.START -> {
+                    startGate?.let { startEntered.countDown(); check(it.await(3, java.util.concurrent.TimeUnit.SECONDS)) }
+                    MediaTaskJson.decode(requireNotNull(data.readString())); callback = data.readStrongBinder(); start(this) }
+                WorkerIpc.STOP -> {
+                    stopGate?.let { stopEntered.countDown(); check(it.await(3, java.util.concurrent.TimeUnit.SECONDS)) }
+                    if (failStop) throw RemoteException("stop failed")
+                }
+                WorkerIpc.EXIT -> {
+                    if (killWorks) { alive = false; deaths.toList().forEach { it.binderDied() } }
+                    exitGate?.let { exitEntered.countDown(); check(it.await(3, java.util.concurrent.TimeUnit.SECONDS)) }
+                }
             }
             return true
         }
@@ -102,7 +118,8 @@ class AndroidWorkerRunTest {
         val run = AndroidWorkerRun(context, task, graceMillis = 1, exitMillis = 30)
         run.execute()
         assertTrue(runCatching { run.retire() }.exceptionOrNull() is TimeoutCancellationException)
-        assertEquals(1, context.unbinds)
+        assertEquals("T885 keep incomplete ownership bound", 0, context.unbinds)
+        endpoint.alive = false; run.retire(); assertEquals(1, context.unbinds)
         val error = Endpoint().apply { start = { it.emit(WorkerEvent.Ended("native failed")) } }
         val failed = AndroidWorkerRun(Context(error), task, graceMillis = 1)
         assertEquals("native failed", runCatching { failed.execute() }.exceptionOrNull()?.message)
@@ -172,4 +189,84 @@ class AndroidWorkerRunTest {
         assertThrows(IllegalArgumentException::class.java) { WorkerIpc.command(Endpoint(), WorkerIpc.START, 1, "x".repeat(400000)) }
         assertThrows(IllegalArgumentException::class.java) { WorkerIpc.event(Endpoint(), 1, "x".repeat(400000)) }
     }
+    @Test fun t885BindingLossCannotProveDeathOrReleaseOriginalNativeOwner() = runBlocking {
+        for (bindingDeath in listOf(false, true)) {
+            val endpoint = Endpoint().apply { start = {}; killWorks = false }
+            val context = Context(endpoint)
+            val run = AndroidWorkerRun(context, task, graceMillis = 1, exitMillis = 30)
+            val execution = async(Dispatchers.Default) { runCatching { run.execute() } }
+            try {
+                withTimeout(1000) { while (endpoint.callback == null) delay(1) }
+                if (bindingDeath) context.connection.onBindingDied(context.component)
+                else context.connection.onServiceDisconnected(context.component)
+                assertTrue(withTimeout(1000) { execution.await() }.isFailure)
+                assertTrue("T885 live Binder must not grant retirement",
+                    runCatching { run.retire() }.exceptionOrNull() is TimeoutCancellationException)
+                assertEquals("T885 incomplete native owner must remain bound", 0, context.unbinds)
+                endpoint.deaths.toList().forEach { it.binderDied() }
+                run.retire(); assertEquals(1, context.unbinds)
+            } finally {
+                endpoint.deaths.toList().forEach { it.binderDied() }
+                run.cancel(); withTimeout(1000) { execution.await() }; run.retire()
+            }
+        }
+    }
+
+    @Test fun t885BlockedNativeControlCallsRemainOwnedAfterConfirmedDeath() = runBlocking {
+        for (stop in listOf(false, true)) {
+            val release = java.util.concurrent.CountDownLatch(1)
+            val endpoint = Endpoint().apply { if (stop) stopGate = release else exitGate = release }
+            val context = Context(endpoint)
+            val run = AndroidWorkerRun(context, task, graceMillis = 1, exitMillis = 30)
+            try {
+                run.execute(); run.cancel()
+                val entered = if (stop) endpoint.stopEntered else endpoint.exitEntered
+                withContext(Dispatchers.IO) { check(entered.await(2, java.util.concurrent.TimeUnit.SECONDS)) }
+                withTimeout(1000) { while (endpoint.alive) delay(1) }
+                assertTrue("T885 process exit cannot release a still-running native IPC call", runCatching { run.retire() }.isFailure)
+                assertEquals(0, context.unbinds)
+            } finally { release.countDown(); run.retire() }
+            assertEquals(1, context.unbinds)
+        }
+    }
+    @Test fun t885StartCallCannotOutliveSuccessfulRetirement() = runBlocking {
+        val release = java.util.concurrent.CountDownLatch(1)
+        val endpoint = Endpoint().apply { startGate = release }
+        val context = Context(endpoint)
+        val run = AndroidWorkerRun(context, task, graceMillis = 1, exitMillis = 30)
+        val execution = async(Dispatchers.Default) { runCatching { run.execute() } }
+        try {
+            withContext(Dispatchers.IO) { check(endpoint.startEntered.await(2, java.util.concurrent.TimeUnit.SECONDS)) }
+            run.cancel()
+            withTimeout(1000) { while (endpoint.alive) delay(1) }
+            assertTrue("T885 blocked START remains owned after worker death", runCatching { run.retire() }.isFailure)
+            assertEquals(0, context.unbinds)
+        } finally {
+            release.countDown(); withTimeout(1000) { execution.await() }; run.retire()
+        }
+        assertEquals(1, context.unbinds)
+    }
+    @Test fun t885FailedNativeUnbindCannotBeReportedAsRetirementOnRetry() = runBlocking {
+        val context = Context(Endpoint()).apply { unbindError = true }
+        val run = AndroidWorkerRun(context, task, graceMillis = 1)
+        run.execute()
+        repeat(2) {
+            assertEquals("unbind failed", runCatching { run.retire() }.exceptionOrNull()?.message)
+        }
+        assertEquals("T885 uncertain native cleanup is never replayed", 1, context.unbinds)
+    }
+
+    @Test fun t885InvalidCleanupLimitsRejectBeforeBinding() {
+        val context = Context(Endpoint())
+        for (value in listOf(Long.MIN_VALUE, -1, 60001, Long.MAX_VALUE)) {
+            assertThrows(IllegalArgumentException::class.java) { AndroidWorkerRun(context, task, graceMillis = value) }
+        }
+        for (value in listOf(Long.MIN_VALUE, -1, 0, 60001, Long.MAX_VALUE)) {
+            assertThrows(IllegalArgumentException::class.java) { AndroidWorkerRun(context, task, exitMillis = value) }
+        }
+        for (value in listOf(1L, 60000L)) AndroidWorkerRun(context, task, graceMillis = value, exitMillis = value)
+        AndroidWorkerRun(context, task, graceMillis = 0)
+        assertEquals(0, context.binds)
+    }
+
 }

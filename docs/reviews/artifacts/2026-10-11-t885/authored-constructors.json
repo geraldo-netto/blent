@@ -1,0 +1,32 @@
+[
+  {
+    "owner": "com/blent/AndroidWorkerRun$connection$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AndroidWorkerRun;)V",
+    "line": 53,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AndroidWorkerRun$callback$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AndroidWorkerRun;)V",
+    "line": 42,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AndroidWorkerRun",
+    "name": "<init>",
+    "signature": "(Landroid/content/Context;Lcom/blent/MediaTask;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;JJ)V",
+    "line": 14,
+    "covered": 18,
+    "total": 18,
+    "percent": 100.0,
+    "passes": true
+  }
+]

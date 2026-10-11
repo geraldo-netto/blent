@@ -1761,3 +1761,19 @@ lifecycle composition, not physical camera/codec/native USB acceptance. Producti
 capabilities remain display-only until T932 supplies Activity/isolated capture and
 actual hardware-worker completion. Host adaptation remains T933 and physical
 acceptance T858 with postponed T855/native T863 prerequisites.
+
+## T885 actual isolated media-worker retirement
+
+Legacy isolated media capture now treats framework binding loss as execution
+failure, retaining the original Binder until actual process death. Native START,
+STOP and EXIT calls remain owned through completion; blocked STOP cannot consume
+the independent EXIT timer. Failed cleanup retains its binding/jobs, and failed
+unbind cannot report success on retry. Ended or timeout never proves retirement.
+
+[Permanent red/green, bounded input and native counter evidence](artifacts/2026-10-11-t885/README.md)
+covers 924 offline connection/media/camera/audio/display/resource tests and all
+30 scoped methods. Synthetic Binder death and blocked calls establish adapter
+ownership, not physical capture acceptance. T942 separates successful native
+retirement notification, T943 adapts admitted capture, T944 composes Activity
+permissions, and T932 joins/enables production camera; T858 remains hardware
+acceptance. Production camera capability remains disabled.
