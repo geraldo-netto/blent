@@ -95,6 +95,9 @@ def function_result(function, methods, data):
     row = result(function, data)
     row['evidence'] = 'source lines with all instructions covered (conservative fallback)'
     if not selected:
+        if function.name in {'<init>', '<clinit>'}:
+            row.update(covered=0, total=0, percent=None, passes=False, missing=[],
+                       evidence='missing native Kotlin initialization method counters')
         return row
     worst = min(selected, key=lambda method: method['covered'] / max(method['total'], 1))
     covered, total = worst['covered'], worst['total']

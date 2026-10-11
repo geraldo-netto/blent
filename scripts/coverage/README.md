@@ -196,7 +196,15 @@ fixtures, including Rust test-only modules. An absent measurement fails; there
 is no aggregate-percentage substitute or silent platform exclusion.
 
 Kotlin uses authored PSI functions, accessors, constructors and callbacks compiled
-as separate methods. Per the maintainer's scope, compiler-inlined lambda bodies
+as separate methods. T848 inventories primary construction, instance property/init
+bodies, anonymous-object initialization, named-object/companion and top-level static
+initialization, and enum entry arguments. One source initialization owner includes
+all of its property/init bodies; every mapped native method variant must pass.
+Secondary-only classes retain shared initialization within each secondary
+constructor's native counters. Initialization without matching native method
+counters fails; coverage of unrelated methods cannot replace those counters.
+Native JaCoCo filters remain authoritative for compiler-generated scaffolding:
+retained default-constructor variants with authored counters must also pass. Per the maintainer's scope, compiler-inlined lambda bodies
 count within their enclosing function/method. Lambda body-entry lines disambiguate
 callbacks declared on a parent's first statement line. Native method counters
 prevent allocating a callback from counting as executing it. Multiple compiled

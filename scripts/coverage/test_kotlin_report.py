@@ -47,3 +47,27 @@ class KotlinReportTest(unittest.TestCase):
                    dict(file='Prefs.kt', name='getEnabled$default', line=2, covered=0, total=1)]
         self.assertTrue(function_result(function, methods, {})['passes'])
         self.assertFalse(function_result(function, [], {})['passes'])
+
+    def test_t848_initialization_without_native_method_cannot_borrow_other_bodies(self):
+        for name in ['<init>', '<clinit>']:
+            function = Function('A.kt', name, 1, 30, 'kotlin')
+            data = {'A.kt': {line: int(line != 1) for line in range(1, 31)}}
+            other = dict(file='A.kt', name='other', line=2, covered=29, total=29)
+            self.assertFalse(function_result(function, [other], data)['passes'],
+                             'T848 unrelated body counters masked missing initialization method')
+
+    def test_t848_each_native_constructor_variant_must_pass_with_nested_ownership(self):
+        outer = Function('A.kt', '<init>', 1, 30, 'kotlin')
+        inner = Function('A.kt', '<init>', 5, 9, 'kotlin')
+        static = Function('A.kt', '<clinit>', 12, 15, 'kotlin')
+        methods = [dict(file='A.kt', name='<init>', signature='(I)V', line=1, covered=4, total=4),
+                   dict(file='A.kt', name='<init>', signature='(IILkotlin/jvm/internal/DefaultConstructorMarker;)V',
+                        line=1, covered=0, total=1),
+                   dict(file='A.kt', name='<init>', signature='(I)V', line=5, covered=2, total=2),
+                   dict(file='A.kt', name='<clinit>', signature='()V', line=13, covered=2, total=2)]
+        assigned = assign_methods([outer, inner, static], methods)
+        self.assertEqual(assigned[function_key(inner)], [methods[2]])
+        self.assertEqual(assigned[function_key(static)], [methods[3]])
+        self.assertFalse(function_result(outer, assigned[function_key(outer)], {})['passes'])
+        self.assertTrue(function_result(inner, assigned[function_key(inner)], {})['passes'])
+        self.assertTrue(function_result(static, assigned[function_key(static)], {})['passes'])
