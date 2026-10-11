@@ -99,9 +99,11 @@ def collect(root, output, selection, runner=subprocess.run, snapshotter=snapshot
         runner(args, cwd=root, env=environment(target, os.environ if inherited is None else inherited),
                stdout=log, stderr=subprocess.STDOUT, check=True)
     objects = validate_collection(root, manifest, snapshotter, output)
-    proof = dict(version=1, command=args, sources=manifest['sources'], objects=objects,
+    proof = dict(version=1, command=args, sources=manifest['sources'],
+                 build_sources=manifest.get('build_sources', manifest['sources']), objects=objects,
                  report_sha256=fingerprint(output / 'rust.lcov'), collector_sha256=fingerprint(Path(__file__)))
     (output / 'attestation.json').write_text(json.dumps(proof, indent=2) + '\n')
+    (output / 'native-sources.json').write_text(json.dumps(proof['build_sources'], indent=2) + '\n')
     return proof
 
 

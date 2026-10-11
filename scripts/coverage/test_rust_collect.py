@@ -48,6 +48,7 @@ class RustCollectTest(unittest.TestCase):
             proof = json.loads((output / 'attestation.json').read_text())
             self.assertEqual(['target/current'], list(proof['objects']))
             self.assertEqual(snapshot(root)['sources'], proof['sources'])
+            self.assertEqual(proof['build_sources'], json.loads((output / 'native-sources.json').read_text()))
             self.assertEqual('true', exporter.environment['CARGO_NET_OFFLINE'])
             self.assertNotIn('LLVM_PROFILE_FILE', exporter.environment)
             self.assertIn('--offline', exporter.command)

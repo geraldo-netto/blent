@@ -299,6 +299,11 @@ fresh target directories.
 
 The output retains `manifest.json`, `rust.lcov`, Cargo logs, raw profiles/native
 objects and SHA-256 attestation of sources, report, collector and owned objects.
+The snapshot's `build_sources` fingerprints all authored Rust inputs separately
+from maintained `sources`/functions: compiled benchmark and fixture inputs do not
+become threshold owners. The collector emits this flat map as `native-sources.json`;
+pass it to `report.py check --native-sources` when importing native counters.
+Changed, added or removed inputs invalidate the snapshot and collection.
 Source edits, inventory changes, escaped native-object links, failed tests and
 empty reports prevent success attestation. Native counters are unchanged; run
 `report.py check` separately to enforce per-function coverage. A successful

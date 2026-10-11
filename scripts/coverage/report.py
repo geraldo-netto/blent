@@ -23,12 +23,25 @@ def sources(root):
     return sorted(paths)
 
 
+def build_source_paths(root):
+    # Rust test/example/benchmark modules can be compiled into measured objects.
+    # Fingerprinting their inputs does not make their functions threshold owners.
+    return sorted(path for path in source_files(root) if path.suffix == '.rs')
+
+
+def validate_build_sources(root, hashes):
+    if not isinstance(hashes, dict) or set(hashes) != {str(path) for path in build_source_paths(root)}:
+        raise ValueError('Rust build source inventory changed after coverage began')
+    verify_sources(root, hashes)
+
+
 def snapshot(root):
     paths = sources(root)
     functions = [function for function in owned_functions(root) if coverage_source(Path(function.file))]
     kotlin = [root / path for path in paths if path.suffix in {'.kt', '.kts'} and not fixture(path)]
     functions.extend(kotlin_functions(root, kotlin))
     return dict(version=1, sources={str(path): fingerprint(root / path) for path in paths},
+                build_sources={str(path): fingerprint(root / path) for path in build_source_paths(root)},
                 functions=[asdict(function) for function in functions])
 
 
@@ -39,6 +52,8 @@ def validate_snapshot(root, manifest):
     if current != set(manifest['sources']):
         raise ValueError('source inventory changed after coverage began')
     verify_sources(root, manifest['sources'])
+    if 'build_sources' in manifest:
+        validate_build_sources(root, manifest['build_sources'])
 
 
 def native_lines(args, root):

@@ -27,6 +27,61 @@ class InventoryTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'parse error'):
                 snapshot(root)
 
+    def test_t972_native_inputs_preserve_exempt_benchmark_hashes_without_threshold_functions(self):
+        import json
+        import subprocess
+        from model import fingerprint
+        from platform_scope import attest_native
+        from report import snapshot, validate_snapshot
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            production = root/'host/src/main.rs'
+            benchmark = root/'scripts/benchmarks/probe.rs'
+            for path, text in [(production, 'fn main() {}'), (benchmark, 'fn benchmark() {}')]:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text)
+            manifest = snapshot(root)
+            self.assertEqual(list(manifest['sources']), ['host/src/main.rs'])
+            self.assertEqual([fn['name'] for fn in manifest['functions']], ['main'])
+            inputs = manifest.get('build_sources', manifest['sources'])
+            stamp = root/'native-sources.json'
+            stamp.write_text(json.dumps(inputs))
+            counters = {str(path.relative_to(root)): {1: 1} for path in [production, benchmark]}
+            attest_native(root, [stamp], counters, ['linux'])
+            self.assertEqual(inputs['scripts/benchmarks/probe.rs'], fingerprint(benchmark))
+            validate_snapshot(root, manifest)
+            benchmark.write_text('fn changed() {}')
+            with self.assertRaises(ValueError): validate_snapshot(root, manifest)
+            with self.assertRaises(ValueError): attest_native(root, [stamp], counters, ['linux'])
+
+
+    def test_t972_missing_added_changed_or_invalid_build_inputs_fail_closed(self):
+        import copy
+        import subprocess
+        from report import snapshot, validate_snapshot
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            source = root/'scripts/benchmarks/probe.rs'
+            source.parent.mkdir(parents=True)
+            source.write_text('invalid Rust stays fingerprinted, never parsed')
+            manifest = snapshot(root)
+            self.assertEqual(manifest['functions'], [])
+            self.assertEqual(manifest['sources'], {})
+            validate_snapshot(root, manifest)
+            for invalid in [None, [], {}, {'../escape.rs': '0'*64}, {str(source.relative_to(root)): '0'*64}]:
+                damaged = copy.deepcopy(manifest)
+                damaged['build_sources'] = invalid
+                with self.assertRaises(ValueError): validate_snapshot(root, damaged)
+            source.unlink()
+            with self.assertRaises(ValueError): validate_snapshot(root, manifest)
+            source.write_text('invalid Rust stays fingerprinted, never parsed')
+            extra = root/'scripts/benchmarks/extra.rs'
+            extra.write_text('fn added() {}')
+            with self.assertRaises(ValueError): validate_snapshot(root, manifest)
+
+
     def test_t846_native_accessory_functions_remain_in_production_scope(self):
         self.assertTrue(coverage_source(Path('host/accessory/stream.c')))
         self.assertTrue(coverage_source(Path('host/accessory/accessory.h')))
