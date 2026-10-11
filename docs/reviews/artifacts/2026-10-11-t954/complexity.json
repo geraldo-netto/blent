@@ -1,0 +1,20 @@
+[
+  [
+    "scripts/benchmarks/audio-project.py",
+    12,
+    "direct_packets",
+    2
+  ],
+  [
+    "scripts/benchmarks/audio-project.py",
+    26,
+    "pipeline_track",
+    4
+  ],
+  [
+    "scripts/benchmarks/audio-project.py",
+    54,
+    "main",
+    7
+  ]
+]

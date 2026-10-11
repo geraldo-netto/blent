@@ -9,26 +9,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--directory', type=Path, required=True)
-    parser.add_argument('--package', choices=['com.blent.audiobench.baseline', 'com.blent.audiobench.candidate'], required=True)
-    parser.add_argument('--revision')
-    args = parser.parse_args()
-    if args.revision:
-        args.revision = subprocess.check_output(['git', 'rev-parse', '--verify', args.revision + '^{commit}'], cwd=ROOT, text=True).strip()
-    spec = importlib.util.spec_from_file_location('capability_project', ROOT / 'scripts/benchmarks/capability-project.py')
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    builder = module.decoder_builder()
-    directory = builder.prepare(args)
-    shutil.copy2(ROOT / 'android/local.properties', directory / 'local.properties')
-    for name in ['AudioPlaybackQueue.kt', 'AudioClock.kt', 'AudioPackets.kt', 'AudioOutput.kt', 'AudioRoute.kt', 'AudioSpeaker.kt', 'AudioPreferences.kt', 'AudioEndpoint.kt']:
-        source = builder.source(name, args.revision)
-        if source is None:
-            raise SystemExit('Missing audio source: ' + name)
-        (directory / 'originals' / name).write_text(source)
-        (directory / 'app/src/main/java' / name).write_text(source)
+def direct_packets(directory):
     import re
     packets = (directory / 'originals/AudioPackets.kt').read_text()
     direct = packets.replace('class AudioPackets', 'class DirectAudioPackets')
@@ -40,6 +21,9 @@ def main():
         direct = direct.replace('val samples = readSamples(source)', 'val samples = ShortArray(480 * direction) { source.readShortLe() }')
     (directory / 'app/src/main/java/DirectAudioPackets.kt').write_text(direct)
     (directory / 'originals/DirectAudioPackets.kt').write_text(direct)
+
+
+def pipeline_track(directory):
     typed = 'fun write(samples: ShortArray' in (directory / 'originals/AudioOutput.kt').read_text()
     parameter = 'samples: ShortArray' if typed else 'samples: ByteArray'
     value = 'samples[offset].toLong()' if typed else '((samples[offset].toInt() and 255) or ((samples[offset + 1].toInt() and 255) shl 8)).toShort().toLong()'
@@ -65,6 +49,30 @@ internal class PipelineTrack : OutputTrack {
         track += '\ninternal fun pipelinePreferences(lowLatency: Boolean): AudioPreferences { require(!lowLatency); return AudioPreferences(gain = 0, builtIn = false) }\n'
     (directory / 'app/src/main/java/PipelineTrack.kt').write_text(track)
     (directory / 'originals/PipelineTrack.kt').write_text(track)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--directory', type=Path, required=True)
+    parser.add_argument('--package', choices=['com.blent.audiobench.baseline', 'com.blent.audiobench.candidate'], required=True)
+    parser.add_argument('--revision')
+    args = parser.parse_args()
+    if args.revision:
+        args.revision = subprocess.check_output(['git', 'rev-parse', '--verify', args.revision + '^{commit}'], cwd=ROOT, text=True).strip()
+    spec = importlib.util.spec_from_file_location('capability_project', ROOT / 'scripts/benchmarks/capability-project.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    builder = module.decoder_builder()
+    directory = builder.prepare(args)
+    shutil.copy2(ROOT / 'android/local.properties', directory / 'local.properties')
+    for name in ['AudioPlaybackQueue.kt', 'AudioClock.kt', 'AudioPackets.kt', 'AudioOutput.kt', 'AudioRoute.kt', 'AudioSpeaker.kt', 'AudioPreferences.kt', 'AudioEndpoint.kt']:
+        source = builder.source(name, args.revision)
+        if source is None:
+            raise SystemExit('Missing audio source: ' + name)
+        (directory / 'originals' / name).write_text(source)
+        (directory / 'app/src/main/java' / name).write_text(source)
+    direct_packets(directory)
+    pipeline_track(directory)
     for name in ['AudioPipelineProbe.kt', 'AudioModeProbe.kt']:
         text = (ROOT / 'scripts/benchmarks/android-audio' / name).read_text()
         if 'suspend fun awaitReady()' not in (directory / 'originals/AudioOutput.kt').read_text():
