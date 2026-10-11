@@ -31,6 +31,8 @@ internal class ConnectionAdmissionRun(
     @Volatile private var uncertain = false
     @Volatile private var retired = false
     private var displayed: ConnectionResourceLease? = null
+    private var cameraShown: ConnectionResourceLease? = null
+    private var capture: ConnectionResourceLease? = null
 
     private fun signal() { wake.trySend(Unit) }
     private fun current(): Boolean {
@@ -40,21 +42,35 @@ internal class ConnectionAdmissionRun(
     }
     private fun failed(failure: Exception) { error.compareAndSet(null, failure); cancel() }
     override fun command(value: ConnectionWorkerCommand): Boolean {
+        if (value is ConnectionWorkerCommand.CameraConsumerRetired) return cameraCleanup(value)
         if (!current()) return false
         return try { worker?.command(value) == true }
         catch (failure: Exception) { failed(failure); false }
     }
+    private fun cameraCleanup(value: ConnectionWorkerCommand.CameraConsumerRetired): Boolean = synchronized(gate) {
+        if (retired || capture != value.lease || cameraShown == value.lease) return@synchronized false
+        try {
+            (worker?.command(value) == true).also { if (it) capture = null }
+        } catch (failure: Exception) { failed(failure); false }
+    }
     private fun deliver(value: ConnectionWorkerEvent) = synchronized(gate) {
         if (!visible(value)) return@synchronized
+        media(value)
+        try { report(value) } catch (failure: Exception) { failed(failure) }
+    }
+    private fun media(value: ConnectionWorkerEvent) {
         when (value) {
             is ConnectionWorkerEvent.Display -> displayed = value.route.lease
             is ConnectionWorkerEvent.DisplayClosed -> if (displayed == value.lease) displayed = null
+            is ConnectionWorkerEvent.CameraOffered -> cameraShown = value.offer.lease
+            is ConnectionWorkerEvent.Camera -> { cameraShown = value.route.lease; capture = value.route.lease }
+            is ConnectionWorkerEvent.CameraClosed -> if (cameraShown == value.lease) cameraShown = null
             else -> Unit
         }
-        try { report(value) } catch (failure: Exception) { failed(failure) }
     }
     private fun visible(value: ConnectionWorkerEvent): Boolean = when (value) {
-        is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended, is ConnectionWorkerEvent.DisplayClosed -> true
+        is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended,
+        is ConnectionWorkerEvent.DisplayClosed, is ConnectionWorkerEvent.CameraClosed -> true
         else -> worker != null && current()
     }
     private fun open() {
@@ -112,11 +128,17 @@ internal class ConnectionAdmissionRun(
         try { report(ConnectionWorkerEvent.DisplayClosed(lease)) }
         catch (failure: Exception) { error.compareAndSet(null, failure) }
     }
+    private fun revokeCamera() = synchronized(gate) {
+        val lease = cameraShown ?: return@synchronized
+        cameraShown = null // Consumer proof is retained independently.
+        try { report(ConnectionWorkerEvent.CameraClosed(lease)) }
+        catch (failure: Exception) { error.compareAndSet(null, failure) }
+    }
     override fun cancel() {
         stopping.set(true)
-        revokeDisplay()
         try { admission?.stop() } catch (failure: Exception) { error.compareAndSet(null, failure) }
         try { worker?.cancel() } catch (failure: Exception) { error.compareAndSet(null, failure) }
+        revokeDisplay(); revokeCamera() // Native stop is requested before a synchronous completion callback can relay proof.
         execution?.cancel()
         signal()
     }

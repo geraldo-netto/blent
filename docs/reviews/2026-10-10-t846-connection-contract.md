@@ -1727,6 +1727,23 @@ The serialized actor accepts exact retained capture-consumer completion after
 cancellation and processes it during cleanup. New consent and permission work
 remain closed. [Permanent fail-before-fix, joined real TCP and native counter evidence](artifacts/2026-10-11-t940/README.md)
 covers 683 connection tests. Default production capabilities remain display-only.
-T941 must relay terminal proof through private service/client IPC and main-process
+T941 relays terminal proof through private service/client IPC and main-process
 admission/presentation; T936 joins these layers. Actual hardware capture/proof is
 T932, host adaptation T933 and physical acceptance T858.
+
+## T941 camera presentation and retained private cleanup
+
+Main admission retains exposed camera cleanup separately from route visibility.
+After logical stop, only the exact closed published consumer claim can use the
+original worker's bounded terminal relay. Private service controls remain available
+during native retirement; post-stop client delivery follows the original STOP.
+Blocked IPC remains owned through actual Binder death until its own call exits.
+No terminal relay can bind or start a replacement.
+
+Presentation binds permission choices to exact original generation/reference
+identity. Closed owners cannot replay routes or clear replacements; new owners may
+change profiles. Camera closure preserves display, while stop/revoke/peer changes
+clear camera immediately. [Permanent red/green, bounded real Binder/Parcel and native counters](artifacts/2026-10-11-t941/README.md)
+cover 699 connection tests. T936 joins private IPC with the actual local camera
+channel. Production capabilities remain display-only pending actual hardware
+capture/proof under T932; host adaptation is T933 and physical acceptance T858.

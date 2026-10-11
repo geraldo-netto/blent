@@ -18,6 +18,7 @@ open class ConnectionWorkerService : Service() {
     private val admitted = AtomicBoolean()
     private val stopped = AtomicBoolean()
     private val cancelSent = AtomicBoolean()
+    private val finished = AtomicBoolean()
     private val commands = Channel<ConnectionWorkerCommand>(32)
     private val events = Channel<ConnectionWorkerEvent>(32)
     private var generation = 0L
@@ -61,7 +62,9 @@ open class ConnectionWorkerService : Service() {
     private fun control(data: Parcel) {
         val value = ConnectionWorkerCodec.command(ConnectionWorkerIpc.bytes(data))
         ConnectionWorkerIpc.end(data)
-        check(admitted.get() && !stopped.get() && commands.trySend(value).isSuccess)
+        check(admitted.get() && !finished.get())
+        check(!stopped.get() || value is ConnectionWorkerCommand.CameraConsumerRetired)
+        check(commands.trySend(value).isSuccess)
     }
     private suspend fun execute(spec: ConnectionWorkerSpec, remote: IBinder) {
         var failure: Exception? = null
@@ -76,8 +79,10 @@ open class ConnectionWorkerService : Service() {
             }
         } catch (error: Exception) { if (error !is CancellationException) failure = error }
         finally {
-            controls?.cancel()
-            withContext(NonCancellable) { finish(failure) }
+            withContext(NonCancellable) {
+                try { finish(failure) }
+                finally { finished.set(true); commands.close(); controls?.cancel() }
+            }
         }
     }
     private fun link(remote: IBinder) {
@@ -87,7 +92,7 @@ open class ConnectionWorkerService : Service() {
     private suspend fun controls(owned: ConnectionWorker) {
         try {
             for (value in commands) {
-                if (stopped.get()) return
+                if (stopped.get() && value !is ConnectionWorkerCommand.CameraConsumerRetired) continue
                 check(owned.command(value)) { "Connection control backlog exceeded" }
             }
         } catch (error: Exception) { if (error !is CancellationException) terminate() }
@@ -111,11 +116,11 @@ open class ConnectionWorkerService : Service() {
             try { cancelNative(owned) } catch (error: Exception) { if (failure == null) failure = error }
             try { owned.retire() } catch (error: Exception) { if (failure == null) failure = error }
         }
+        finished.set(true)
         publish(ConnectionWorkerEvent.Ended(failure?.message?.replace('\u0000', '?')?.take(512)))
     }
     private fun stop() {
         if (!stopped.compareAndSet(false, true)) return
-        commands.close()
         execution?.cancel()
         scope.launch {
             try { worker?.let(::cancelNative) }

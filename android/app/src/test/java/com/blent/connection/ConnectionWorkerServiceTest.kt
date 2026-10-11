@@ -236,4 +236,47 @@ class ConnectionWorkerServiceTest {
         } finally { controller.destroy() }
     }
 
+    @Test fun t941PrivateServiceRelaysTerminalCameraProofWhileRetiring() = runBlocking<Unit> {
+        val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
+        val service = controller.get(); val release = CompletableDeferred<Unit>()
+        val owned = Worker(release = release); val events = Events()
+        service.factory = { _, _ -> owned }
+        try {
+            val binder = bind(service); start(binder, events); owned.entered.await()
+            ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.STOP, 7)
+            until { owned.retired.get() == 1 }
+            val proof = ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())
+            ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.CONTROL, 7, ConnectionWorkerCodec.command(proof))
+            until { owned.commands.contains(proof) }
+            assertEquals("T941 retained cleanup must not kill its original process", 0, service.exits.get())
+            assertTrue(events.values.none { it is ConnectionWorkerEvent.Ended })
+            release.complete(Unit); until { events.values.any { it is ConnectionWorkerEvent.Ended } }
+        } finally { release.complete(Unit); controller.destroy() }
+    }
+
+    @Test fun t941StoppingServiceDropsQueuedConsentButPreservesExactGenerationProof() = runBlocking<Unit> {
+        val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
+        val service = controller.get(); val release = CompletableDeferred<Unit>()
+        val owned = Worker(release = release); val events = Events()
+        service.factory = { _, _ -> owned }
+        try {
+            val binder = bind(service); start(binder, events); owned.entered.await()
+            ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.STOP, 7)
+            until { owned.cancelled.get() == 1 }
+            val proof = ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())
+            assertThrows(IllegalStateException::class.java) {
+                ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.CONTROL, 8, ConnectionWorkerCodec.command(proof))
+            }
+            assertTrue(owned.commands.isEmpty()); assertEquals(0, service.exits.get())
+            ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.CONTROL, 7, ConnectionWorkerCodec.command(proof))
+            until { owned.commands.contains(proof) }
+            runCatching {
+                ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.CONTROL, 7,
+                    ConnectionWorkerCodec.command(ConnectionWorkerCommand.CameraChoice(cameraLease(), CameraConsentChoice(true, true))))
+            }
+            assertTrue(service.exits.get() > 0)
+            assertEquals(listOf(proof), owned.commands.toList())
+        } finally { release.complete(Unit); controller.destroy() }
+    }
+
 }

@@ -1,0 +1,142 @@
+[
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 16,
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraRouteChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraRoute;)V",
+    "line": 8,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraPresentation",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 14,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionView",
+    "name": "<init>",
+    "signature": "(Ljava/lang/String;Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionChoice;Ljava/lang/Boolean;ZZLjava/lang/String;Lcom/blent/connection/ConnectionDisplayChoice;Lcom/blent/connection/ConnectionCameraOfferChoice;Lcom/blent/connection/ConnectionCameraRouteChoice;)V",
+    "line": 13,
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionCameraOfferChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalCameraOffer;)V",
+    "line": 5,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionAdmissionRun",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+    "line": 12,
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+    "name": "<init>",
+    "signature": "(Landroid/content/Context;Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/connection/ConnectionWorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+    "line": 34,
+    "covered": 32,
+    "total": 32,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerGenerations",
+    "name": "<init>",
+    "signature": "(J)V",
+    "line": 19,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$connection$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/AndroidConnectionWorkerRun;)V",
+    "line": 101,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionTicket;Lcom/blent/connection/ConnectionPeer;)V",
+    "line": 8,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionPresentation",
+    "name": "<init>",
+    "signature": "()V",
+    "line": 28,
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionWorkerService$binder$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/ConnectionWorkerService;)V",
+    "line": 35,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/AndroidConnectionWorkerRun$callback$1",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/AndroidConnectionWorkerRun;)V",
+    "line": 85,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/connection/ConnectionDisplayChoice",
+    "name": "<init>",
+    "signature": "(Lcom/blent/connection/LocalDisplayRoute;)V",
+    "line": 11,
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true
+  }
+]

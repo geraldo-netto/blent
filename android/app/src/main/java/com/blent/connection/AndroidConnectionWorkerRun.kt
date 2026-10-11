@@ -59,12 +59,15 @@ internal class AndroidConnectionWorkerRun(
     private val dead = CompletableDeferred<Unit>()
     private val ended = CompletableDeferred<Unit>()
     private val commands = Channel<ByteArray>(32)
+    private val cleanupCommands = Channel<ByteArray>(32)
+    private val stopIssued = CompletableDeferred<Unit>()
     private val events = Channel<ByteArray>(32)
     @Volatile private var bound = false
     @Volatile private var remote: IBinder? = null
     @Volatile private var startExposed = false
     private var acceptingBinding = true
     private var outgoing: Job? = null
+    private var cleanupRelay: Job? = null
     private var stopping: Job? = null
     private var stopCall: Job? = null
     private var exitCall: Job? = null
@@ -124,7 +127,30 @@ internal class AndroidConnectionWorkerRun(
     }
     override fun command(value: ConnectionWorkerCommand): Boolean {
         val encoded = ConnectionWorkerCodec.command(value)
+        if (value is ConnectionWorkerCommand.CameraConsumerRetired) return cleanupCommand(encoded)
         return !stopped.get() && commands.trySend(encoded).isSuccess
+    }
+    /** Only retained proof can use this independent bounded native relay. It
+     * never binds/starts a replacement and retains blocked IPC through retire. */
+    private fun cleanupCommand(bytes: ByteArray): Boolean = synchronized(guard) {
+        if (retired || dead.isCompleted || ended.isCompleted || !startExposed) return@synchronized false
+        val service = remote ?: return@synchronized false
+        val accepted = cleanupCommands.trySend(bytes).isSuccess
+        if (accepted && cleanupRelay == null) {
+            cleanupRelay = scope.launch(transmitDispatcher, start = CoroutineStart.LAZY) { cleanupControls(service) }
+            checkNotNull(cleanupRelay).start()
+        }
+        accepted
+    }
+    private suspend fun cleanupControls(service: IBinder) {
+        try {
+            for (bytes in cleanupCommands) {
+                if (stopped.get()) { stopIssued.await(); stopCall?.join() }
+                if (!dead.isCompleted && !ended.isCompleted) {
+                    ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.CONTROL, generation, bytes)
+                }
+            }
+        } catch (error: Exception) { if (error !is CancellationException) fail(error) }
     }
     override suspend fun execute() {
         check(admitted.compareAndSet(false, true)) { "Connection worker already executed" }
@@ -186,8 +212,9 @@ internal class AndroidConnectionWorkerRun(
         }
     }
     private suspend fun stopAndExit() {
-        val service = try { ready.await() } catch (_: Exception) { return }
+        val service = try { ready.await() } catch (_: Exception) { stopIssued.complete(Unit); return }
         stopCall = scope.launch(Dispatchers.IO) { runCatching { ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.STOP, generation) } }
+        stopIssued.complete(Unit)
         withTimeoutOrNull(grace) {
             select<Unit> { dead.onAwait {}; ended.onAwait {} }
         }
@@ -202,6 +229,7 @@ internal class AndroidConnectionWorkerRun(
             outgoing?.join()
             if (requiresDeath()) awaitDeath()
             else stopping?.cancel()
+            cleanupCommands.close(); cleanupRelay?.join()
             stopping?.join(); stopCall?.join(); exitCall?.join()
             clean().await()
         }

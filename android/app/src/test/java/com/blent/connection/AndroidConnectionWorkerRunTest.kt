@@ -279,4 +279,57 @@ class AndroidConnectionWorkerRunTest {
         assertEquals(ConnectionWorkerEvent.DisplayClosed(route.lease), events[1])
     }
 
+    @Test fun t941OriginalClientRetainsTerminalCameraProofDuringStop() = runBlocking {
+        val endpoint = ConnectionWorkerEndpoint().apply { start = {}; killOnExit = false }
+        val worker = AndroidConnectionWorkerRun(ConnectionWorkerContext(endpoint), spec,
+            graceMillis = 1000, retireMillis = 1000)
+        val execution = async(Dispatchers.Default) { runCatching { worker.execute() } }
+        try {
+            until { endpoint.callback != null }; worker.cancel(); withTimeout(1500) { execution.await() }
+            until { endpoint.codes.contains(ConnectionWorkerIpc.STOP) }
+            assertFalse(worker.command(ConnectionWorkerCommand.CameraChoice(cameraLease(), CameraConsentChoice(true, true))))
+            val proof = ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())
+            assertTrue("T941 exact retained proof must survive logical client stop", worker.command(proof))
+            until { endpoint.controls.contains(proof) }
+            endpoint.emit(ConnectionWorkerEvent.Ended(null))
+            until { endpoint.codes.contains(ConnectionWorkerIpc.EXIT) }
+        } finally { endpoint.die(); worker.retire() }
+        assertFalse(worker.command(ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())))
+    }
+
+    @Test fun t941CleanupRelayIsBoundedAndBlockedIpcRemainsOwnedAfterDeath() = runBlocking {
+        val entered = CountDownLatch(1); val release = CountDownLatch(1)
+        val endpoint = ConnectionWorkerEndpoint().apply {
+            start = {}; control = { entered.countDown(); await(release) }
+        }
+        val context = ConnectionWorkerContext(endpoint)
+        val worker = run(context, retire = 30)
+        val execution = async(Dispatchers.Default) { runCatching { worker.execute() } }
+        val proof = ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())
+        try {
+            until { endpoint.callback != null }
+            assertTrue(worker.command(proof)); withContext(Dispatchers.IO) { await(entered) }
+            repeat(32) { assertTrue(worker.command(proof)) }
+            repeat(128) { assertFalse(worker.command(proof)) }
+            worker.cancel(); withTimeout(1500) { execution.await() }; until { !endpoint.alive }
+            assertTrue(runCatching { worker.retire() }.isFailure)
+            assertEquals(0, context.unbinds)
+        } finally { release.countDown(); endpoint.die(); worker.retire() }
+        assertEquals(1, endpoint.controls.size)
+        assertFalse(worker.command(proof))
+    }
+    @Test fun t941CleanupRelayRejectsBeforeStartAfterEndedAndOnNativeFailure() = runBlocking {
+        val proof = ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())
+        val endpoint = ConnectionWorkerEndpoint().apply { start = {}; control = { throw RemoteException("proof delivery failed") } }
+        val worker = run(ConnectionWorkerContext(endpoint))
+        assertFalse(worker.command(proof))
+        val execution = async(Dispatchers.Default) { runCatching { worker.execute() } }
+        try {
+            until { endpoint.callback != null }; assertTrue(worker.command(proof))
+            assertTrue(withTimeout(1500) { execution.await() }.isFailure)
+        } finally { endpoint.die(); worker.retire() }
+        val ended = ConnectionWorkerEndpoint(); val finished = run(ConnectionWorkerContext(ended))
+        finished.execute(); assertFalse(finished.command(proof)); finished.retire()
+    }
+
 }

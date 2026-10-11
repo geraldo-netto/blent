@@ -34,7 +34,8 @@ private class AdmissionWorker : ConnectionWorker {
     @Volatile var retireError: Exception? = null
     @Volatile var commandError: Exception? = null
     @Volatile var executeError: Exception? = null
-    override fun command(value: ConnectionWorkerCommand): Boolean { commandError?.let { throw it }; calls.incrementAndGet(); return !stopped }
+    var terminalAllowed = false
+    override fun command(value: ConnectionWorkerCommand): Boolean { commandError?.let { throw it }; calls.incrementAndGet(); return !stopped || (terminalAllowed && value is ConnectionWorkerCommand.CameraConsumerRetired) }
     override suspend fun execute() {
         executing.complete(Unit)
         if (stubborn) withContext(NonCancellable) { end.await() } else end.await()
@@ -181,6 +182,24 @@ class ConnectionAdmissionRunTest {
             assertEquals(2, events.size)
             until { worker.retires.get() > 0 }; assertFalse(executing.isCompleted)
         } finally { worker.nativeEnd.complete(Unit); admission.gone = true; run.cancel(); executing.await(); run.retire() }
+    }
+
+    @Test fun t941AdmissionKeepsOnlyExactPublishedCameraCleanupAfterStop() = runBlocking {
+        val admission = RunAdmission().apply { ready = selection; stopRetires = false }
+        val owned = AdmissionWorker().apply { terminalAllowed = true }; val events = java.util.Collections.synchronizedList(ArrayList<ConnectionWorkerEvent>())
+        var callback: ((ConnectionWorkerEvent) -> Unit)? = null
+        val run = ConnectionAdmissionRun(ConnectionWorkerSpec("template", timerMs = 1), { admission },
+            { _, report -> callback = report; owned }, events::add)
+        val execution = async { outcome { run.execute() } }
+        try {
+            owned.executing.await(); checkNotNull(callback)(ConnectionWorkerEvent.Camera(cameraRoute()))
+            run.cancel()
+            assertFalse(run.command(ConnectionWorkerCommand.CameraConsumerRetired(cameraLease(2))))
+            assertFalse(run.command(ConnectionWorkerCommand.CameraChoice(cameraLease(), CameraConsentChoice(true, true))))
+            assertTrue("T941 exact original capture cleanup remains reachable",
+                run.command(ConnectionWorkerCommand.CameraConsumerRetired(cameraLease())))
+            assertEquals(ConnectionWorkerEvent.CameraClosed(cameraLease()), events.last())
+        } finally { owned.nativeEnd.complete(Unit); admission.gone = true; run.cancel(); execution.await(); run.retire() }
     }
 
 }

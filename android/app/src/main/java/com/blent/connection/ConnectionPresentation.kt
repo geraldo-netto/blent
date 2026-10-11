@@ -19,6 +19,8 @@ internal data class ConnectionView(
     val authenticated: Boolean = false,
     val cleanup: String? = null,
     val display: ConnectionDisplayChoice? = null,
+    val cameraOffer: ConnectionCameraOfferChoice? = null,
+    val camera: ConnectionCameraRouteChoice? = null,
 )
 
 /** Portable presentation reducer. No UI, native work, storage or media consent.
@@ -30,10 +32,12 @@ internal class ConnectionPresentation {
     private var accepting = false
     private var finished = true
     private var displayOwner = 0L
+    private val camera = ConnectionCameraPresentation()
 
     @Synchronized fun begin(): Any {
         val token = Any()
         generation = token; accepting = true; finished = false; displayOwner = 0
+        camera.reset()
         mutable.value = ConnectionView(status = "Opening USB connection…", active = true,
             cleanup = mutable.value.cleanup)
         return token
@@ -53,17 +57,36 @@ internal class ConnectionPresentation {
             is ConnectionWorkerEvent.Peer -> peer(event.ticket, event.local, event.remembered, false)
             is ConnectionWorkerEvent.Pairing -> peer(event.ticket, event.local, false, true)
             is ConnectionWorkerEvent.State -> phase(event.phase)
-            is ConnectionWorkerEvent.Display -> display(event.route)
-            is ConnectionWorkerEvent.DisplayClosed -> displayClosed(event.lease)
+            is ConnectionWorkerEvent.Media -> media(event)
             else -> Unit
         }
+    }
+    private fun media(event: ConnectionWorkerEvent.Media) {
+        when (event) {
+            is ConnectionWorkerEvent.Display -> display(event.route)
+            is ConnectionWorkerEvent.DisplayClosed -> displayClosed(event.lease)
+            else -> camera(event)
+        }
+    }
+    private fun camera(event: ConnectionWorkerEvent.Media) {
+        val state = mutable.value
+        if (!state.authenticated) return
+        val ticket = state.peer?.ticket
+        when (event) {
+            is ConnectionWorkerEvent.CameraOffered -> camera.offered(ticket, event.offer)
+            is ConnectionWorkerEvent.Camera -> camera.admitted(ticket, event.route)
+            is ConnectionWorkerEvent.CameraClosed -> camera.closed(ticket, event.lease)
+            else -> return
+        }
+        mutable.value = state.copy(cameraOffer = camera.offer, camera = camera.route)
     }
 
     private fun peer(ticket: ConnectionTicket, local: ConnectionPeer, remembered: Boolean, prompt: Boolean) {
         require(ticket.epoch > 0)
         val choice = ConnectionChoice(ticket, local)
+        camera.clear()
         mutable.value = mutable.value.copy(peer = choice, approval = if (prompt) choice else null,
-            remembered = remembered, authenticated = false, display = null,
+            remembered = remembered, authenticated = false, display = null, cameraOffer = null, camera = null,
             status = if (prompt) "Compare fingerprints on both devices." else "Checking remembered computer…")
     }
 
@@ -77,10 +100,14 @@ internal class ConnectionPresentation {
         val authenticated = phase == ConnectionWorkerPhase.AUTHENTICATED
         val closing = phase == ConnectionWorkerPhase.CLOSING
         if (closing) accepting = false
+        cameraPhase(authenticated)
         mutable.value = mutable.value.copy(status = text, authenticated = authenticated,
             approval = if (authenticated || closing) null else mutable.value.approval,
-            active = !closing, display = if (authenticated) mutable.value.display else null)
+            active = !closing, display = if (authenticated) mutable.value.display else null,
+            cameraOffer = camera.offer, camera = camera.route)
     }
+
+    private fun cameraPhase(authenticated: Boolean) { if (!authenticated) camera.clear() }
 
     private fun display(route: LocalDisplayRoute) {
         val state = mutable.value
@@ -112,7 +139,8 @@ internal class ConnectionPresentation {
     @Synchronized fun revoke(token: Any, choice: ConnectionChoice): ConnectionWorkerCommand? {
         if (generation !== token || !accepting || mutable.value.peer !== choice) return null
         accepting = false
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null,
+        camera.clear()
+        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
             status = "Revoking computer; waiting for saved trust update…")
         return ConnectionWorkerCommand.Revoke(choice.ticket.peer)
     }
@@ -120,14 +148,16 @@ internal class ConnectionPresentation {
     @Synchronized fun stop(token: Any) {
         if (generation !== token || finished) return
         accepting = false
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null,
+        camera.clear()
+        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
             status = "Disconnecting USB…", cleanup = "Closing USB resources…")
     }
 
     @Synchronized fun ended(token: Any, failure: String?) {
         if (generation !== token || finished) return
         accepting = false
-        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null,
+        camera.clear()
+        mutable.value = mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
             status = failure ?: "USB connection ended.", cleanup = "Closing USB resources…")
     }
 
@@ -139,8 +169,19 @@ internal class ConnectionPresentation {
     @Synchronized fun retired(token: Any) {
         if (generation !== token) return
         finished = true
-        mutable.value = mutable.value.copy(cleanup = null, display = null, authenticated = false)
+        camera.clear()
+        mutable.value = mutable.value.copy(cleanup = null, display = null, authenticated = false, cameraOffer = null, camera = null)
     }
+    @Synchronized fun cameraChoice(token: Any, choice: ConnectionCameraChoice, context: CameraConsentChoice): ConnectionWorkerCommand? {
+        if (!cameraCurrent(token, choice)) return null
+        return ConnectionWorkerCommand.CameraChoice(choice.lease, context)
+    }
+    @Synchronized fun cameraPermission(token: Any, choice: ConnectionCameraOfferChoice, granted: Boolean, context: CameraConsentChoice): ConnectionWorkerCommand? {
+        if (!cameraCurrent(token, choice) || !choice.offer.permissionRequired) return null
+        return ConnectionWorkerCommand.CameraPermission(choice.lease, granted, context)
+    }
+    private fun cameraCurrent(token: Any, choice: ConnectionCameraChoice): Boolean =
+        generation === token && accepting && mutable.value.authenticated && camera.current(choice)
 
     @Synchronized fun cleanup(text: String) { mutable.value = mutable.value.copy(cleanup = text) }
 }
