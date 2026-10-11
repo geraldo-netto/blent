@@ -13,12 +13,14 @@ import org.robolectric.RuntimeEnvironment
 
 /** Real media service, Binder protocol, worker adapter and audio wire/renderer.
  * Native device and process-death notifications are controlled synthetic evidence. */
-internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
+internal class JoinedAudioWorkerFixture(
+    private val direction: Int = 2,
+    val deaths: CopyOnWriteArrayList<IBinder.DeathRecipient> = CopyOnWriteArrayList(),
+) {
     val controller = Robolectric.buildService(WorkerProbeService::class.java).create()
     val service = controller.get()
     val tasks = CopyOnWriteArrayList<MediaTask.Audio>()
     val commands = CopyOnWriteArrayList<Int>()
-    val deaths = CopyOnWriteArrayList<IBinder.DeathRecipient>()
     val socket = AtomicReference<Socket?>()
     val audible = CompletableDeferred<Unit>()
     val captured = CompletableDeferred<Unit>()
@@ -122,7 +124,7 @@ internal class JoinedAudioWorkerFixture(private val direction: Int = 2) {
         }, graceMillis = 5, exitMillis = 4000)
     }
     private fun finishDeath() { if (exitRequested && cleanup.isCompleted && acceptExit) die() }
-    fun die() { alive = false; deaths.toList().forEach { it.binderDied() }; socket.get()?.close() }
+    fun die() { alive = false; deaths.forEach { it.binderDied() }; socket.get()?.close() }
     fun close() { readRelease.complete(Unit); writeRelease.complete(Unit); release.complete(Unit); die(); controller.destroy(); next?.close() }
 }
 
