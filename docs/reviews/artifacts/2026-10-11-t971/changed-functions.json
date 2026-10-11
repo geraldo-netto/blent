@@ -1,0 +1,24 @@
+[
+  {
+    "file": "host/src/camera.rs",
+    "name": "invited",
+    "line": 160,
+    "language": "rust",
+    "covered": 19,
+    "total": 19,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/camera.rs",
+    "name": "producer_stopped",
+    "line": 183,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

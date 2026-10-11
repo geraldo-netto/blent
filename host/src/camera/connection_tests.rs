@@ -31,7 +31,7 @@ async fn t931_camera_session_invites_through_independent_port() {
         ffmpeg: std::path::Path::new("/unused"),
         options: &profile,
     };
-    let (_stop, mut stopped) = watch::channel(true);
+    let (stop, mut stopped) = watch::channel(false);
     let (state, observed) = watch::channel(State::Starting);
     let report = Report {
         state,
@@ -42,10 +42,19 @@ async fn t931_camera_session_invites_through_independent_port() {
     // Keep the producer branch pending until the session has observed stop.
     let task = crate::owned_task::Task::spawn(std::future::pending()).unwrap();
     producers.push(task);
-    tokio::time::timeout(
-        std::time::Duration::from_secs(1),
-        session.invited(&frames, &mut producers, &mut stopped, &report),
-    )
+    tokio::time::timeout(std::time::Duration::from_secs(1), async {
+        let cancel = async {
+            while invitation.0.lock().unwrap().is_none() {
+                tokio::task::yield_now().await;
+            }
+            stop.send_replace(true);
+        };
+        tokio::join!(
+            session.invited(&frames, &mut producers, &mut stopped, &report),
+            cancel
+        )
+        .0
+    })
     .await
     .unwrap()
     .unwrap();
@@ -94,4 +103,108 @@ async fn t931_adb_adapter_rejects_native_target_without_a_command() {
     let error = port.invite(&"a".repeat(64), &profile).await.unwrap_err();
     assert_eq!(error.to_string(), "ADB camera invitation cannot target USB");
     assert!(!marker.exists());
+}
+
+struct PendingInvitation;
+impl Invitation for PendingInvitation {
+    fn invite<'a>(&'a self, _: &'a str, _: &'a CameraProfile) -> InvitationResult<'a> {
+        Box::pin(std::future::pending())
+    }
+}
+
+#[tokio::test(start_paused = true)]
+async fn t971_stop_cancels_pending_invitation_before_output_retirement() {
+    let options = tests::options();
+    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let token = "a".repeat(64);
+    let session = Session {
+        listener: &listener,
+        invitation: &PendingInvitation,
+        token: &token,
+        ffmpeg: std::path::Path::new("/unused"),
+        options: &options,
+    };
+    let (stop, mut stopped) = watch::channel(false);
+    let report = Report {
+        state: watch::channel(State::Starting).0,
+        preview: watch::channel(None).0,
+    };
+    let frames = [watch::channel(None).0, watch::channel(None).0];
+    let mut producers = Producers::new();
+    let producer = crate::owned_task::Task::spawn(std::future::pending()).unwrap();
+    producers.push(producer);
+    let cancel = async {
+        tokio::task::yield_now().await;
+        stop.send_replace(true);
+    };
+    let result = tokio::time::timeout(std::time::Duration::from_secs(1), async {
+        tokio::join!(
+            session.invited(&frames, &mut producers, &mut stopped, &report),
+            cancel
+        )
+        .0
+    })
+    .await;
+    assert!(
+        result.is_ok(),
+        "T971 Stop must interrupt pending invitation"
+    );
+    result.unwrap().unwrap();
+    // Cancellation of invitation must not claim the independent producer exited.
+    assert!(!producers.is_empty());
+    producers.iter().next().unwrap().abort();
+    assert!(producers.next().await.unwrap().is_err());
+}
+
+#[tokio::test]
+async fn t971_producer_failure_interrupts_pending_invitation() {
+    let options = tests::options();
+    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let session = Session {
+        listener: &listener,
+        invitation: &PendingInvitation,
+        token: &"a".repeat(64),
+        ffmpeg: std::path::Path::new("/unused"),
+        options: &options,
+    };
+    let (_stop, mut stopped) = watch::channel(false);
+    let report = Report {
+        state: watch::channel(State::Starting).0,
+        preview: watch::channel(None).0,
+    };
+    let frames = [watch::channel(None).0, watch::channel(None).0];
+    for failure in [false, true] {
+        let mut producers = Producers::new();
+        producers.push(
+            crate::owned_task::Task::spawn(async move {
+                if failure {
+                    anyhow::bail!("T971 original producer failed");
+                }
+                Ok(())
+            })
+            .unwrap(),
+        );
+        let error = tokio::time::timeout(
+            std::time::Duration::from_secs(1),
+            session.invited(&frames, &mut producers, &mut stopped, &report),
+        )
+        .await
+        .unwrap()
+        .unwrap_err();
+        assert_eq!(
+            error.to_string(),
+            if failure {
+                "T971 original producer failed"
+            } else {
+                "camera producer stopped"
+            }
+        );
+    }
+    assert_eq!(
+        producer_stopped(&mut Producers::new())
+            .await
+            .unwrap_err()
+            .to_string(),
+        "camera producers stopped"
+    );
 }

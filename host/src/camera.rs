@@ -164,18 +164,28 @@ impl Session<'_> {
         stop: &mut watch::Receiver<bool>,
         status: &Report,
     ) -> Result<()> {
-        self.invitation
-            .invite(self.token, &self.options.profile)
-            .await?;
+        tokio::select! {
+            result = self.invitation.invite(self.token, &self.options.profile) => result?,
+            _ = control::cancelled(stop) => return Ok(()),
+            result = producer_stopped(producers) => return result,
+        }
         status.update(State::Waiting);
         tracing::info!("Webcams ready; waiting for tablet permission and camera frames.");
         tokio::select! {
             result = sessions(self.listener, self.token, self.ffmpeg, self.options, frames) => result,
             _ = control::cancelled(stop) => Ok(()),
             _ = frame_status(frames, self.options, status) => Ok(()),
-            result = producers.next() => { result.context("camera producers stopped")???; anyhow::bail!("camera producer stopped") }
+            result = producer_stopped(producers) => result
         }
     }
+}
+
+async fn producer_stopped(producers: &mut Producers) -> Result<()> {
+    producers
+        .next()
+        .await
+        .context("camera producers stopped")???;
+    anyhow::bail!("camera producer stopped")
 }
 
 async fn sessions(

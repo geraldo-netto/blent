@@ -1,0 +1,23 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.23s
+     Running unittests src/lib.rs (target/debug/deps/blent-592b3b54ab5a39c1)
+
+running 1 test
+test camera::connection_tests::t971_stop_cancels_pending_invitation_before_output_retirement ... FAILED
+
+failures:
+
+---- camera::connection_tests::t971_stop_cancels_pending_invitation_before_output_retirement stdout ----
+
+thread 'camera::connection_tests::t971_stop_cancels_pending_invitation_before_output_retirement' (3189638) panicked at host/src/camera/connection_tests.rs:125:5:
+T971 Stop must interrupt pending invitation
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    camera::connection_tests::t971_stop_cancels_pending_invitation_before_output_retirement
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 657 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`
