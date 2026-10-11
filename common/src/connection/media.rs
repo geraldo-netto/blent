@@ -63,3 +63,12 @@ impl<'a> Target<'a> {
         }
     }
 }
+
+/// Fixed lowercase-hex media credentials, separate from profile/selection data.
+/// Check bytes before any decoder slices a UTF-8 string at protocol offsets.
+pub fn valid_credential(value: &str) -> bool {
+    value.len() == 64
+        && value
+            .bytes()
+            .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+}

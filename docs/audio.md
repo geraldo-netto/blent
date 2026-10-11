@@ -26,7 +26,7 @@ explicit USB target independently for microphone and speakers. It conflicts with
 Existing settings and commands retain ADB selection by default. Saving a target
 starts no media or connection. The native audio implementation currently reports
 USB unavailable and rejects that target before ADB, helper or device work; Linux
-USB composition and production selector controls remain T979. Android leased
+USB PCM composition remains T992 and production selector controls T979. Android leased
 speaker playback is composed under T978; microphone integration remains T859. These
 contracts do not establish physical USB audio support.
 
@@ -73,7 +73,7 @@ created during a permission change remains owned until its actual retirement.
 Failed cleanup quarantines its direction while the other direction remains
 independent. Binding construction rejects invalid direction/preferences before
 native ownership. These are adapter foundations; production USB speaker playback is composed under T978, with
-host transport T979 and physical acceptance T860 still pending. T986 also rechecks legacy permission before and after lazy native creation;
+host PCM transport T992 and controls T979 and physical acceptance T860 still pending. T986 also rechecks legacy permission before and after lazy native creation;
 queued permission loss cannot acquire a native worker. Created workers remain
 owned through real retirement. [Regression and native counter evidence](reviews/artifacts/2026-10-11-t983/README.md).
 
@@ -180,7 +180,30 @@ alone proves actual original consumer retirement.
 The fixture's audio device and process-death notifications are synthetic. It
 establishes joined protocol and ownership behavior, not acoustic performance or
 physical process/accessory qualification. Native speaker-only acceptance remains
-T860; Linux composition remains T979. [Joined tests and individual native counters](reviews/artifacts/2026-10-11-t978/README.md).
+T860; Linux PCM composition remains T992 and controls T979. [Joined tests and individual native counters](reviews/artifacts/2026-10-11-t978/README.md).
+
+## Shared original USB media connection adapters (T991)
+
+Host `media_connection::Bridge<P>` shares original invitation supervision and
+retained cleanup across typed camera/audio profiles using the independent
+`Connection<P>`/`Invitation<P>` contract and `MediaRegistration` owner. Only the
+Linux adapter constructs discovery/registration process settings and passes the
+retained listener descriptor. Camera retains its typed request adapter and its
+existing wire behavior; this extraction does not enable native USB audio.
+
+`media_request` validates explicit USB selection, resource/profile consistency
+and strict fixed lowercase-hex credentials before registration. The native
+constructor also checks that its bootstrap token describes the exact original
+request credential, before native setup. Camera and audio share byte-format
+validation, while existing camera boundary error semantics remain intact.
+
+Permanent camera and typed audio properties preserve original requests,
+replacement/replayed invitation rejection, pending cancellation, independent
+monitor/close and held actual retirement. The private mutual-TLS camera fixture
+still carries unchanged framing and feedback through the native descriptor path.
+Native counters cover the default and accessory configurations; Windows runtime
+validation remains unavailable under T902. Speaker PCM integration is T992,
+controls T979 and postponed physical acceptance T860.
 
 ## Ownership and adapter integration
 

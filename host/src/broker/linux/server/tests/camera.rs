@@ -5,7 +5,7 @@ use crate::{
         linux::client::Launch,
         transport::{Event as WireEvent, Transport},
     },
-    camera::{protocol, usb::Bridge},
+    camera::{protocol, usb},
 };
 use blent_config::{
     camera::{
@@ -168,7 +168,7 @@ async fn t933_private_tls_camera_registration_preserves_protocol_and_delayed_ret
     listener.set_nonblocking(true).unwrap();
     let local = tokio::net::TcpListener::from_std(listener.try_clone().unwrap()).unwrap();
     let token = "ab".repeat(32);
-    let bridge = Bridge::native(&profile, &token, listener, launch).unwrap();
+    let bridge = usb::native(&profile, &token, listener, launch).unwrap();
     let (server_stop, server_done) = oneshot::channel();
     let running = tokio::spawn(async move {
         let mut fixture = auth.fixture;

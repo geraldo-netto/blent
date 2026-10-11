@@ -36,10 +36,7 @@ impl CameraProfile {
 /// Credentials deliberately remain outside Debug/serialization of profiles.
 pub fn validate_credential(value: &str) -> Result<()> {
     ensure!(
-        value.len() == 64
-            && value
-                .bytes()
-                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b)),
+        crate::connection::media::valid_credential(value),
         "invalid camera token"
     );
     Ok(())

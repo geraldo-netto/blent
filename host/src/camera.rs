@@ -120,7 +120,7 @@ async fn connection(
         Target::Usb(_) => {
             use std::os::fd::AsFd;
             let retained = std::net::TcpListener::from(listener.as_fd().try_clone_to_owned()?);
-            Ok(Box::new(usb::Bridge::native(
+            Ok(Box::new(usb::native(
                 profile,
                 _token,
                 retained,
