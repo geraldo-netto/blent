@@ -1,19 +1,17 @@
-use crate::{
-    display_discovery::Candidate, registered_display::Registration, registered_session::Work,
-};
-use crate::{
-    display_discovery::{Discovery, Factory},
-    media::EncoderSettings,
-};
+use crate::{connection_discovery::Candidate, registered_session::Work};
+use crate::{connection_discovery::Discovery, media::EncoderSettings};
 use anyhow::{ensure, Result};
 use blent_config::connection::{
     control::{Notice, State as LinkState},
     control_client::{
-        Client as ControlClient, Phase as ControlPhase, Status as ControlStatus, SubmitError,
+        Client as ControlClient, Factory, Phase as ControlPhase, Status as ControlStatus,
+        SubmitError,
     },
     control_view::{Action, Assembler, Limits, Model, View},
     pairing::{PeerId, Ticket as PairingTicket},
-    registration_client::{Client, Phase, Request as RegistrationRequest, Status},
+    registration_client::{
+        Client, Factory as Registration, Phase, Request as RegistrationRequest, Status,
+    },
     routes::RouteId,
 };
 use std::sync::{

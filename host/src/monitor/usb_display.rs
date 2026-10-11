@@ -4,8 +4,8 @@ use blent::{
     broker::linux::{
         client::Launch, display_registration::Bound, presentation, registration_client,
     },
+    connection_discovery::Discovery,
     display_connections::{Admission, Connections, Decision},
-    display_discovery::Discovery,
     registered_session::Bindings,
     session_network::RetainedListeners,
     session_work::RuntimeWork,

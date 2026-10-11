@@ -42,7 +42,7 @@ async fn registration_fixture(bound: bool) {
         profile: Profile::Display,
     };
     let client: Box<dyn Client> = if bound {
-        use crate::registered_display::Registration;
+        use blent_config::connection::registration_client::Factory as Registration;
         let (retained, _video, _control) = crate::session_network::RetainedListeners::retain(
             tokio::net::TcpListener::from_std(video.try_clone().unwrap()).unwrap(),
             tokio::net::TcpListener::from_std(control.try_clone().unwrap()).unwrap(),

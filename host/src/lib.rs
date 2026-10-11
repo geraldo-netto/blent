@@ -5,6 +5,7 @@ pub mod audio_control;
 #[cfg(target_os = "linux")]
 pub mod camera;
 pub mod camera_control;
+pub mod camera_registration;
 pub mod capture_contract;
 pub mod config_jobs;
 mod control_outcome;
@@ -12,28 +13,28 @@ pub mod control_workers;
 pub mod owned_task;
 pub mod persistence_port;
 mod session_adapters;
-pub mod session_state;
 pub mod session_network;
+pub mod session_state;
 mod session_supervision;
 
 // Shared wire/session state is built for every host target.
 pub mod adb_inventory;
-pub mod display_slots;
-pub mod display_discovery;
-pub mod display_connections;
-pub mod registered_display;
-pub mod registered_session;
-pub mod session_work;
 pub mod attachment;
 pub mod config;
+pub mod connection_discovery;
+pub mod display_connections;
+pub mod display_slots;
 pub mod ffmpeg_args;
 pub mod latency;
 pub mod media;
 pub mod media_storage;
 pub mod pipe_encoder;
 pub mod raw_transfer;
+pub mod registered_display;
+pub mod registered_session;
 #[path = "selection_types.rs"]
 pub mod selection;
+pub mod session_work;
 pub mod tray_state;
 pub mod usb;
 pub mod video_queue;

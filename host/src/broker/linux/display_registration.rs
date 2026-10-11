@@ -1,8 +1,8 @@
 //! Native listener capabilities bound to the portable display-registration port.
 use super::registration_client::Factory;
-use crate::{registered_display::Registration, session_network::RetainedListeners};
+use crate::session_network::RetainedListeners;
 use anyhow::Result;
-use blent_config::connection::registration_client::{Client, Request};
+use blent_config::connection::registration_client::{Client, Factory as Registration, Request};
 use std::sync::Arc;
 
 pub struct Bound {

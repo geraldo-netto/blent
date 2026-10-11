@@ -1549,7 +1549,7 @@ an older fixture initializer defect, retained separately as T926.
 
 ## T924 selected USB discovery lifetime
 
-One portable `display_discovery::Discovery` owns a nonblocking broker-control client.
+One portable `connection_discovery::Discovery` owns a nonblocking broker-control client.
 It waits for actual native retirement before replacing failed work, with an explicit
 positive retry interval capped at 60 seconds and absolute deadlines. Counter/clock
 exhaustion does not create replacement work. Bounded failure status remains visible
@@ -1911,3 +1911,19 @@ its missing older-device evidence. Owner postponed all live trials.
 
 [Permanent regressions and native counters](artifacts/2026-10-11-t932/README.md)
 cover 1,782 normal tests and all 2,498 Android source functions individually.
+
+
+## T969 portable camera registration ownership
+
+`camera_registration::CameraRegistration` selects one explicit unambiguous USB
+peer through shared authenticated discovery. It validates the credential and
+profile before native exposure, preserves original snapshot lifetime and exact
+registration route, and observes Active independently of discovery. Failure or
+withdrawal closes this owner without silently retargeting; a fresh invocation
+supplies a fresh credential. Source and registration must both actually retire.
+Control and registration factories are independent common contracts; native
+listener capabilities remain in adapters. Existing display callers use those
+same contracts and discovery owner. Linux camera pipeline wiring remains T933;
+production controls and postponed joined acceptance remain T858.
+
+[Native counter and regression evidence](artifacts/2026-10-11-t969/README.md).

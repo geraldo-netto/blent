@@ -28,7 +28,7 @@ impl Client for Source {
         self.1.load(Ordering::SeqCst)
     }
 }
-impl blent::display_discovery::Factory for Source {
+impl blent_config::connection::control_client::Factory for Source {
     fn start(&mut self) -> Result<Box<dyn Client>> {
         Ok(Box::new(Self(self.0.clone(), self.1.clone())))
     }
@@ -319,7 +319,7 @@ impl blent_config::connection::registration_client::Client for Registered {
     }
 }
 struct Registration;
-impl blent::registered_display::Registration for Registration {
+impl blent_config::connection::registration_client::Factory for Registration {
     fn start(
         &mut self,
         _: blent_config::connection::registration_client::Request,

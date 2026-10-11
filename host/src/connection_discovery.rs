@@ -1,9 +1,9 @@
-//! Selected USB discovery intent. A broker snapshot never admits media by itself;
-//! the registered-display owner still requires the exact Active route.
+//! Shared authenticated USB discovery. A broker snapshot never admits media by
+//! itself; each media owner still requires its exact Active registration route.
 use anyhow::{ensure, Result};
 use blent_config::connection::{
     control::State,
-    control_client::{Client, Phase, Status},
+    control_client::{Client, Factory, Phase, Status},
     control_view::{Lifetime, View},
     pairing::{PeerId, Ticket},
 };
@@ -11,12 +11,6 @@ use std::{
     collections::BTreeMap,
     time::{Duration, Instant},
 };
-
-/// Prompt startup only. Implementations retain native work independently and
-/// expose its actual completion through Client::retired.
-pub trait Factory: Send {
-    fn start(&mut self) -> Result<Box<dyn Client>>;
-}
 
 #[derive(Clone)]
 pub struct Candidate {

@@ -53,7 +53,7 @@ fn t894_paths_are_absolute_and_do_not_probe_devices_or_tokens() {
 fn t924_native_source_start_failure_retires_actual_worker() {
     use crate::{
         broker::linux::presentation::{Factory, Settings},
-        display_discovery::Discovery,
+        connection_discovery::Discovery,
     };
     use std::time::{Duration, Instant};
     let root = tempfile::tempdir().unwrap();

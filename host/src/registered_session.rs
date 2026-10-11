@@ -2,12 +2,13 @@
 //! Native listener/runtime bindings stay outside the lifecycle contracts.
 use crate::{
     attachment::Attachment,
-    display_discovery::Candidate,
+    connection_discovery::Candidate,
     display_slots::{Reservations, Ticket},
-    registered_display::{Display, Registration, State},
+    registered_display::{Display, State},
 };
 use anyhow::{ensure, Result};
 use blent_config::{
+    connection::registration_client::Factory as Registration,
     credentials::Entropy,
     tablets::{Identity, TabletSession},
 };

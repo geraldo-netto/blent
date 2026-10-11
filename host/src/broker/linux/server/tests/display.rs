@@ -7,8 +7,8 @@ use crate::{
         transport::{Event as WireEvent, Transport},
     },
     capture_contract::{CaptureBackend, CaptureContext, CaptureWorkers, Signal},
+    connection_discovery::Discovery,
     display_connections::{Connections, Decision},
-    display_discovery::Discovery,
     input::{
         backend::{InputBackend, InputSink, PenSample},
         InputConfig,

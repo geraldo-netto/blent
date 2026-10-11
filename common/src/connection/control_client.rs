@@ -45,3 +45,9 @@ pub trait Client: Send + Sync {
     /// status. Independent broker/media lifetimes are not owned by this handle.
     fn retired(&self) -> bool;
 }
+
+/// Prompt startup; native adapters retain exposed work until Client::retired.
+/// A startup error must occur before exposure, otherwise return an owning client.
+pub trait Factory: Send {
+    fn start(&mut self) -> anyhow::Result<Box<dyn Client>>;
+}

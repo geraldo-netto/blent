@@ -64,6 +64,30 @@ pub trait Client: Send + Sync {
     fn retired(&self) -> bool;
 }
 
+/// Bound registration adapter. Native listener capabilities remain outside this
+/// contract. Errors prove failure before exposure; uncertain work returns a
+/// retained client whose actual retirement must still be observed.
+pub trait Factory: Send {
+    fn start(&mut self, request: Request) -> Result<Box<dyn Client>>;
+}
+
+impl Status {
+    /// Shared snapshot invariants, independent of a resource-specific owner.
+    pub fn live(&self) -> bool {
+        if self.failure.is_some() || self.remote_retired {
+            return false;
+        }
+        match self.phase {
+            Phase::Starting | Phase::Registering => self.route.is_none(),
+            Phase::Queued | Phase::Active => self.route.is_some_and(|route| {
+                (1..=super::wire::MAX_COUNTER).contains(&route.owner)
+                    && (1..=super::wire::MAX_COUNTER).contains(&route.revision)
+            }),
+            _ => false,
+        }
+    }
+}
+
 /// Serialized protocol owner. Popping an outgoing message records possible
 /// exposure BEFORE native I/O; cancellation must not assume an interrupted send
 /// had no effect. The adapter must continue receiving cleanup proof after close.

@@ -7,19 +7,13 @@ use blent_config::{
     connection::{
         management::{Credential, Profile, Resource},
         pairing::PeerId,
-        registration_client::{Client, Phase, Request, Status},
+        registration_client::{Client, Factory as Registration, Phase, Request, Status},
         routes::{Link, RouteId},
     },
     credentials::Entropy,
 };
 use std::time::{Duration, Instant};
 
-/// Bound native adapter: owns listener capabilities outside this contract.
-/// An error proves startup failed before exposure. If native ownership becomes
-/// uncertain, return a client that retains it until actual retirement instead.
-pub trait Registration: Send {
-    fn start(&mut self, request: Request) -> Result<Box<dyn Client>>;
-}
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum State {
     Waiting,
@@ -58,7 +52,7 @@ impl Attempt {
         }
     }
     fn accepts(&mut self, status: &Status) -> bool {
-        if self.closing || !live_status(status) {
+        if self.closing || !status.live() {
             return false;
         }
         if self.id.is_some() && self.id != status.route {
@@ -76,19 +70,6 @@ impl Attempt {
         } else {
             State::Registering
         }
-    }
-}
-fn live_status(status: &Status) -> bool {
-    use blent_config::connection::wire::MAX_COUNTER;
-    if status.failure.is_some() || status.remote_retired {
-        return false;
-    }
-    match status.phase {
-        Phase::Starting | Phase::Registering => status.route.is_none(),
-        Phase::Queued | Phase::Active => status.route.is_some_and(|route| {
-            (1..=MAX_COUNTER).contains(&route.owner) && (1..=MAX_COUNTER).contains(&route.revision)
-        }),
-        _ => false,
     }
 }
 pub struct Display {

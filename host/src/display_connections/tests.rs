@@ -28,7 +28,7 @@ impl Client for Source {
         self.1.load(Ordering::SeqCst)
     }
 }
-impl crate::display_discovery::Factory for Source {
+impl blent_config::connection::control_client::Factory for Source {
     fn start(&mut self) -> Result<Box<dyn Client>> {
         Ok(Box::new(Self(self.0.clone(), self.1.clone())))
     }
@@ -379,7 +379,7 @@ fn t927_registration_failure_does_not_close_other_owner_or_hide_retirement() {
     assert!(f.connections.retired());
 }
 struct Failed;
-impl crate::display_discovery::Factory for Failed {
+impl blent_config::connection::control_client::Factory for Failed {
     fn start(&mut self) -> Result<Box<dyn Client>> {
         anyhow::bail!("T927 discovery unavailable")
     }

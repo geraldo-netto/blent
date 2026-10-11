@@ -2,7 +2,7 @@
 //! Native composition retains each admission while startup is in flight. An
 //! error may release it only after proving no native work or exposure remains.
 use crate::{
-    display_discovery::{Candidate, Discovery},
+    connection_discovery::{Candidate, Discovery},
     display_slots::{Owner, Plan, Slots, Ticket},
     registered_session::{Bindings, Request, Session},
 };
