@@ -286,4 +286,41 @@ class AudioTargetBindingTest {
         }
     }
 
+    @Test fun t986QueuedLegacyPermissionLossRejectsBeforeNativeFactoryAndOtherDirectionContinues() {
+        Rig(1).use { microphone -> Rig(2).use { speaker ->
+            microphone.binding.start(); speaker.binding.start()
+            microphone.adb.value = microphone.endpoint
+            val original = microphone.workers.single()
+            microphone.adb.value = microphone.endpoint.copy(port = 12346)
+            assertEquals(1, microphone.workers.size)
+            microphone.permission = false
+            original.release.complete(Unit)
+            assertEquals("T986 revoked queued microphone must not create native audio", 1, microphone.workers.size)
+            assertFalse(microphone.binding.sharing)
+            speaker.adb.value = speaker.endpoint
+            assertEquals(1, speaker.workers.single().started)
+            assertTrue(speaker.binding.sharing)
+            microphone.permission = true
+            microphone.adb.value = microphone.endpoint.copy(port = 12347)
+            assertEquals(2, microphone.workers.size)
+            assertEquals(1, microphone.workers.last().started)
+        } }
+    }
+
+    @Test fun t986LegacyPermissionLossAcrossFactoryKeepsCreatedWorkerUntilRealRetirement() {
+        Rig(1).use { rig ->
+            rig.binding.start(); rig.creation = { rig.permission = false }
+            rig.adb.value = rig.endpoint
+            val unopened = rig.workers.single()
+            assertEquals("T986 fresh permission must precede native execution", 0, unopened.started)
+            assertFalse(rig.binding.sharing); assertEquals(0, unopened.retired)
+            rig.permission = true; rig.creation = {}
+            rig.adb.value = rig.endpoint.copy(port = 12346)
+            assertEquals(1, rig.workers.size)
+            unopened.release.complete(Unit)
+            assertEquals(1, unopened.retired); assertEquals(2, rig.workers.size)
+            assertEquals(1, rig.workers.last().started)
+        }
+    }
+
 }

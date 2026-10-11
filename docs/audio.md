@@ -68,14 +68,15 @@ external ownership suppresses unrelated ADB invitations and legacy SDK prompts.
 Withdrawal does not revive an old invitation; a fresh explicit selection is
 required. Equal endpoint metadata never substitutes for original authority.
 
-Camera and selected audio targets share `MediaConsumerRun`: fresh permission,
+Camera and both legacy/selected audio targets share `MediaConsumerRun`: fresh permission,
 original claim and cancellation checks surround lazy native acquisition. A worker
 created during a permission change remains owned until its actual retirement.
 Failed cleanup quarantines its direction while the other direction remains
 independent. Binding construction rejects invalid direction/preferences before
 native ownership. These are adapter foundations; production USB audio remains
-disabled pending T978/T979/T859. Legacy audio's queued-factory permission gap is
-tracked separately as T986. [Regression and native counter evidence](reviews/artifacts/2026-10-11-t983/README.md).
+disabled pending T978/T979/T859. T986 also rechecks legacy permission before and after lazy native creation;
+queued permission loss cannot acquire a native worker. Created workers remain
+owned through real retirement. [Regression and native counter evidence](reviews/artifacts/2026-10-11-t983/README.md).
 
 ## Ownership and adapter integration
 

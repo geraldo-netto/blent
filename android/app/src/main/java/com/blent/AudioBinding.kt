@@ -130,7 +130,7 @@ internal class AudioBinding(
                     statusUpdates.submit { if (revision == generation) status = text }
                 }
             }
-            if (owner == null) create() else MediaConsumerRun(claim, permission, create)
+            MediaConsumerRun(claim, permission, create)
         }, { failure ->
             if (revision == generation) {
                 stopTarget(owner)

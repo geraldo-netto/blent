@@ -1,0 +1,22 @@
+[
+  {
+    "owner": "com/blent/MediaConsumerRun",
+    "name": "<init>",
+    "signature": "(Lcom/blent/MediaConsumerClaim;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V",
+    "line": 9,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true
+  },
+  {
+    "owner": "com/blent/AudioBinding",
+    "name": "<init>",
+    "signature": "(Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Lkotlinx/coroutines/flow/MutableStateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;)V",
+    "line": 9,
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true
+  }
+]
