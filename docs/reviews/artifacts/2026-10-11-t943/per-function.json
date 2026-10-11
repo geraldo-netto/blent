@@ -1,0 +1,892 @@
+{
+  "rust_platforms": [
+    "all"
+  ],
+  "excluded_platform_functions": [],
+  "minimum_percent": 80,
+  "scopes": [
+    "android/app/src/main/java/com/blent/CameraBinding.kt",
+    "android/app/src/main/java/com/blent/CameraCaptureContracts.kt",
+    "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt"
+  ],
+  "passes": true,
+  "summary": {
+    "kotlin": {
+      "functions": 37,
+      "passing": 37,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "get:endpoint",
+      "line": 21,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "getEndpoint",
+          "signature": "()Lcom/blent/CameraEndpoint;",
+          "line": 21,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "set:endpoint",
+      "line": 22,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "setEndpoint",
+          "signature": "(Lcom/blent/CameraEndpoint;)V",
+          "line": 22,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "get:selected",
+      "line": 24,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "getSelected",
+          "signature": "()Lcom/blent/CameraLens;",
+          "line": 24,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "set:selected",
+      "line": 25,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "setSelected",
+          "signature": "(Lcom/blent/CameraLens;)V",
+          "line": 25,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "get:status",
+      "line": 27,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "getStatus",
+          "signature": "()Ljava/lang/String;",
+          "line": 27,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "set:status",
+      "line": 28,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "setStatus",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 28,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "get:backgroundRunning",
+      "line": 32,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "getBackgroundRunning",
+          "signature": "()Z",
+          "line": 32,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 35,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$statusUpdates$1",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 35,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 38,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$guard$1",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 38,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "start",
+      "line": 40,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "start",
+          "signature": "()V",
+          "line": 41,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 45,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$start$2",
+          "name": "invokeSuspend",
+          "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+          "line": 46,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "useTarget",
+      "line": 53,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "useTarget",
+          "signature": "(Lcom/blent/CameraCaptureTarget;)V",
+          "line": 55,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "applyHost",
+      "line": 61,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "applyHost",
+          "signature": "(Lcom/blent/CameraEndpoint;)V",
+          "line": 62,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "stopTarget",
+      "line": 70,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "stopTarget",
+          "signature": "(Lcom/blent/CameraCaptureTarget;)V",
+          "line": 71,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "choose",
+      "line": 75,
+      "language": "kotlin",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "choose",
+          "signature": "(Lcom/blent/CameraLens;)V",
+          "line": 76,
+          "covered": 19,
+          "total": 19
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "allowCapture",
+      "line": 97,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "allowCapture",
+          "signature": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;)Z",
+          "line": 98,
+          "covered": 10,
+          "total": 10
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "permissionResult",
+      "line": 113,
+      "language": "kotlin",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "permissionResult",
+          "signature": "(Z)V",
+          "line": 114,
+          "covered": 7,
+          "total": 7
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "launch",
+      "line": 122,
+      "language": "kotlin",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "launch",
+          "signature": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;)V",
+          "line": 123,
+          "covered": 12,
+          "total": 12
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 130,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$2",
+          "name": "invoke",
+          "signature": "()Lcom/blent/LifecycleRun;",
+          "line": 130,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$2$1",
+          "name": "invoke",
+          "signature": "()Lcom/blent/LifecycleRun;",
+          "line": 131,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 130,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$2$1",
+          "name": "invoke",
+          "signature": "()Lcom/blent/LifecycleRun;",
+          "line": 131,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 132,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$2$1$1",
+          "name": "invoke",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 132,
+          "covered": 2,
+          "total": 2
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$2$1$1$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 132,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 134,
+      "language": "kotlin",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$3",
+          "name": "invoke",
+          "signature": "(Ljava/lang/Exception;)V",
+          "line": 135,
+          "covered": 6,
+          "total": 6
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "<lambda>",
+      "line": 141,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding$launch$4",
+          "name": "invoke",
+          "signature": "(Lcom/blent/ResourceRetirement;)V",
+          "line": 141,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "idleStatus",
+      "line": 148,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "idleStatus",
+          "signature": "()Ljava/lang/String;",
+          "line": 148,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "stopCapture",
+      "line": 151,
+      "language": "kotlin",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "stopCapture",
+          "signature": "()V",
+          "line": 152,
+          "covered": 4,
+          "total": 4
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "background",
+      "line": 157,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "background",
+          "signature": "(Z)V",
+          "line": 158,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "stopBackground",
+      "line": 164,
+      "language": "kotlin",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "stopBackground",
+          "signature": "()V",
+          "line": 165,
+          "covered": 8,
+          "total": 8
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "stop",
+      "line": 175,
+      "language": "kotlin",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "stop",
+          "signature": "()V",
+          "line": 176,
+          "covered": 5,
+          "total": 5
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "ownsBackground",
+      "line": 182,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "ownsBackground",
+          "signature": "(Ljava/lang/String;)Z",
+          "line": 182,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "backgroundStopped",
+      "line": 184,
+      "language": "kotlin",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "backgroundStopped",
+          "signature": "(Ljava/lang/String;)V",
+          "line": 185,
+          "covered": 2,
+          "total": 2
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "name": "shutdown",
+      "line": 188,
+      "language": "kotlin",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+          "owner": "com/blent/CameraBinding",
+          "name": "shutdown",
+          "signature": "()V",
+          "line": 189,
+          "covered": 11,
+          "total": 11
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+      "name": "get:endpoint",
+      "line": 11,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+          "owner": "com/blent/CameraCaptureSource",
+          "name": "getEndpoint",
+          "signature": "()Lcom/blent/CameraEndpoint;",
+          "line": 11,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+      "name": "invitation",
+      "line": 12,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+          "owner": "com/blent/CameraCaptureSource",
+          "name": "invitation",
+          "signature": "(Lcom/blent/CameraEndpoint;)Z",
+          "line": 13,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+      "name": "target",
+      "line": 17,
+      "language": "kotlin",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+          "owner": "com/blent/CameraCaptureSource",
+          "name": "target",
+          "signature": "(Lcom/blent/CameraCaptureTarget;)Z",
+          "line": 18,
+          "covered": 3,
+          "total": 3
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+      "name": "execute",
+      "line": 34,
+      "language": "kotlin",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+          "owner": "com/blent/CameraCaptureRun",
+          "name": "execute",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 35,
+          "covered": 13,
+          "total": 13
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+      "name": "cancel",
+      "line": 48,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+          "owner": "com/blent/CameraCaptureRun",
+          "name": "cancel",
+          "signature": "()V",
+          "line": 48,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+      "name": "retire",
+      "line": 49,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/CameraCaptureOwnership.kt",
+          "owner": "com/blent/CameraCaptureRun",
+          "name": "retire",
+          "signature": "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+          "line": 49,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    }
+  ]
+}

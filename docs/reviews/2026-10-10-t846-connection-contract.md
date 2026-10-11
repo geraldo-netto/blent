@@ -1808,3 +1808,24 @@ ownership behavior; they do not qualify real heap exhaustion or physical camera
 failure. Original error identity remains in the guard; coroutine handler evidence
 preserves class, message and original provenance across stack recovery. Camera
 capabilities remain disabled pending T943/T948/T944/T932; physical acceptance T858.
+
+## T943 portable capture ownership
+
+Camera capture contracts carry validated local metadata and focused original-owner
+claims independently of USB, UI and native backend implementations. Each possible
+native request retains one claim through actual resource-lane retirement or safe
+no-start; lens changes do not let one retired worker release a live successor.
+Lazy native creation rechecks permission and that exact claim before opening.
+Invalid lifecycle sequences cannot overwrite an owned worker or reopen after stop.
+
+Explicit targets take precedence while preserving the latest ADB fallback.
+Equal metadata cannot revive old target identity; status and completion remain
+scoped to their original capture. Local stop/permission loss revoke original
+camera only. Failed actual native exit retains its claim and blocks replacement;
+background/front/rear controls and independent resource ownership remain.
+
+[Permanent red/green, bounded input and individual native counter evidence](artifacts/2026-10-11-t943/README.md)
+covers 955 offline tests and all 37 scoped methods. These target/native
+authorities are synthetic; production capabilities remain display-only. T948
+supplies original USB-attempt/profile mapping, T944 Activity/permission adapters
+and T932 joined capability enablement. Physical camera acceptance remains T858.

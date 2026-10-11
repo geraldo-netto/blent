@@ -1,0 +1,5 @@
+8adbc46adeec607108504aca199aca693ec8bf164f89c53dc1290c25b53c4cec  android/app/src/main/java/com/blent/CameraBinding.kt
+d3dfc0c218b976a6ef3ed85066c851c80fce874047321b602b04e2157f8dbb8a  android/app/src/main/java/com/blent/CameraCaptureContracts.kt
+c1c03a9579f6d4bb8124d436f85bfec553f64071594759a9bb5a08aa73c8f308  android/app/src/main/java/com/blent/CameraCaptureOwnership.kt
+e6432c7f8a2f6a9fac2912befc5723397f8c5fc6dcdf58da91b2a4c7c76efdcf  android/app/src/test/java/com/blent/CameraCaptureOwnershipTest.kt
+ee7a6f7a74cb6bb1db5f4d6654699e07137c8729c1ba0ae290185388f2443a58  android/app/src/test/java/com/blent/CameraTargetBindingTest.kt
