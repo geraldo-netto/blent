@@ -185,3 +185,6 @@ pub enum Message {
     Result(Key, Outcome),
     Revoke(Key, Reason),
 }
+
+#[cfg(test)]
+mod boundary_tests;

@@ -1973,4 +1973,6 @@ one owner; display orchestration keeps its existing separate owner. Portable
 audio request/schema qualification does not enable Android audio capability or
 establish physical support. Audio contracts/adapters remain T977–T979; three
 pre-existing management enum coverage gaps found by the full native shared suite
-remain explicitly open under T981.
+were resolved under T981: permanent bounded tag/audio-profile properties and a
+fresh full common collection now pass the individual gate for all 10 management
+methods. T976 evidence remains its historical partial result.
