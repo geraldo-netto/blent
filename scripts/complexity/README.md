@@ -63,3 +63,11 @@ function tokens are untouched. Quoted/angle headers, continuations and nested
 conditions are covered by permanent bounded tests. Malformed conditions/bodies
 still fail closed. This adaptation addresses the pinned grammar's inability to
 parse header-name tokens as preprocessor call arguments; it is not a C compiler.
+
+T844: object-like annotation macros containing only compiler attributes (or
+nothing) are recognized from all definitions in the partial syntax tree. The
+adapter blanks only matching parsed declaration-type tokens at identical byte
+offsets. Executable compound statements remain untouched. Conflicting definitions,
+function-like macros and explicit undef prevent adaptation; unknown tokens and
+malformed bodies still fail. This does not evaluate conditional compilation or
+establish C compiler semantics. Archived owned source remains in the audit.

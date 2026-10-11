@@ -70,3 +70,50 @@ def descendants(node):
     yield node
     for child in node.children:
         yield from descendants(child)
+
+
+class AnnotationMacroTests(unittest.TestCase):
+    def test_t844_object_annotations_keep_every_body_branch_and_location(self):
+        source = ('#if FEATURE\n#define ISA __attribute__((target("avx2")))\n'
+                  '#else\n#define ISA\n#endif\n'
+                  'static inline ISA __attribute__((always_inline)) void first(int n) { if(n) return; }\n'
+                  'static ISA void second(int n) { while(n) --n; }\n')
+        self.assertEqual(list(syntax_scores(source, 'c')),
+                         [(6, 'first', 2), (7, 'second', 2)])
+        tree = parse(source, 'c')
+        bodies = [node.child_by_field_name('body') for node in descendants(tree)
+                  if node.type == 'function_definition']
+        for body in bodies:
+            self.assertEqual(body.text, source.encode()[body.start_byte:body.end_byte])
+
+    def test_t844_real_archived_candidate_is_not_excluded(self):
+        root = Path(__file__).resolve().parents[2]
+        rows = list(file_scores(root / 'docs/reviews/artifacts/2026-10-09-t790/candidate.c'))
+        self.assertIn((15, 'blend_pixel', 5), rows)
+        self.assertEqual(len(rows), 9)
+
+    def test_t844_unknown_macro_and_bad_executable_body_fail_closed(self):
+        for source in ['static UNKNOWN void f(void) {}',
+                       '#define ISA __attribute__((target("avx2")))\nstatic ISA void f(void){ if( }',
+                       '#define ISA if (x)\nstatic ISA void f(void) {}',
+                       '#define ISA __attribute__((target("avx2")))\nstatic ISA void f(void) { ISA int x = ; }']:
+            with self.subTest(source=source), self.assertRaises(ValueError):
+                list(syntax_scores(source, 'c'))
+
+    def test_t844_unsafe_redefinitions_undef_and_function_macros_are_not_erased(self):
+        for definition in ['#define ISA if (flag)\n', '#define ISA(x) __attribute__((x))\n',
+                           '#undef ISA // original annotation no longer exists\n']:
+            source = '#define ISA __attribute__((target("avx2")))\n' + definition
+            with self.subTest(definition=definition), self.assertRaises(ValueError):
+                list(syntax_scores(source + 'static ISA void f(void) {}', 'c'))
+
+    def test_t844_annotation_sizes_comments_literals_and_bodies_remain_intact(self):
+        for size in [1, 2, 127, 4096]:
+            source = '#define ISA __attribute__((section("' + 'x' * size + '")))\n'
+            source += 'const char *s="static ISA void untouched"; /* ISA */\n'
+            source += 'static ISA void f(int n) { if(n) f(n-1); }\n'
+            tree = parse(source, 'c')
+            self.assertEqual(list(syntax_scores(source, 'c')), [(3, 'f', 2)])
+            self.assertEqual(len(tree.text), len(source.encode()))
+            self.assertIn(b'"static ISA void untouched"', tree.text)
+            self.assertIn(b'if(n) f(n-1);', tree.text)
