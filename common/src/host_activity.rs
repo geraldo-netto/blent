@@ -4,8 +4,10 @@
 use anyhow::{ensure, Result};
 use serde::{Deserialize, Serialize};
 mod gate;
+mod observations;
 mod policy;
 pub use gate::{Gate, Plan, Ticket};
+pub use observations::Observations;
 pub use policy::Policy;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -22,6 +24,33 @@ impl Default for Settings {
             pause_on_display_off: true,
             pause_without_viewer: true,
         }
+    }
+}
+/// Portable source capacity/deadline contract, independent of native adapters.
+#[derive(Clone, Copy)]
+pub struct SourceSettings {
+    pub deadline: std::time::Duration,
+    pub queue: usize,
+}
+impl Default for SourceSettings {
+    fn default() -> Self {
+        Self {
+            deadline: std::time::Duration::from_secs(2),
+            queue: 32,
+        }
+    }
+}
+impl SourceSettings {
+    pub fn validate(self) -> Result<()> {
+        ensure!(
+            !self.deadline.is_zero() && self.deadline <= std::time::Duration::from_secs(60),
+            "invalid activity startup deadline"
+        );
+        ensure!(
+            (1..=256).contains(&self.queue),
+            "invalid activity queue capacity"
+        );
+        Ok(())
     }
 }
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

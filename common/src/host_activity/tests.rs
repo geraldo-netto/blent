@@ -406,3 +406,95 @@ async fn t913_stuck_native_retirement_cannot_block_independent_resource_gates() 
         Plan::Start { lifetime: 7 }
     );
 }
+
+#[test]
+fn t1008_bounded_observations_preserve_transitions_and_fail_closed_on_overflow() {
+    let mut observations = Observations::new(7, capabilities(), 2).unwrap();
+    assert_eq!(observations.publish(running()).unwrap(), true);
+    assert_eq!(observations.publish(running()).unwrap(), false);
+    let suspended = HostState {
+        power: Some(Power::Suspending),
+        ..running()
+    };
+    observations.publish(suspended).unwrap();
+    assert!(observations.publish(running()).is_err());
+    let event = observations.poll().unwrap().unwrap();
+    assert_eq!(event.epoch, 7);
+    assert_eq!(event.revision, 3);
+    assert_eq!(event.state, HostState::default());
+    assert!(observations.poll().is_err());
+    assert!(observations.publish(running()).is_err());
+    observations.stop();
+    observations.stop();
+    assert!(observations.poll().unwrap().is_none());
+}
+#[test]
+fn t1008_observation_boundaries_reject_without_reviving_epochs() {
+    for capacity in [0, 257, usize::MAX] {
+        assert!(Observations::new(1, capabilities(), capacity).is_err());
+    }
+    assert!(Observations::new(0, capabilities(), 32).is_err());
+    for capacity in [1, 32, 256] {
+        let mut observations = Observations::new(u64::MAX, capabilities(), capacity).unwrap();
+        observations.publish(running()).unwrap();
+        let first = observations.poll().unwrap().unwrap();
+        assert_eq!(first.revision, 1);
+        assert!(observations.poll().unwrap().is_none());
+        observations.revision = u64::MAX;
+        assert!(observations.publish(HostState::default()).is_err());
+        assert!(observations.poll().is_err());
+    }
+    let mut unsupported = Observations::new(1, Capabilities::default(), 32).unwrap();
+    assert!(unsupported.publish(running()).is_err());
+    assert_eq!(unsupported.current(), HostState::default());
+}
+
+#[test]
+fn t1008_bounded_capability_property_rejects_unsupported_native_fields() {
+    for mask in 0..8 {
+        let caps = Capabilities::from_mask(mask).unwrap();
+        for inputs in 0..8 {
+            let state = HostState {
+                power: (inputs & 1 != 0).then_some(Power::Running),
+                locked: (inputs & 2 != 0).then_some(false),
+                display_on: (inputs & 4 != 0).then_some(true),
+            };
+            let mut observations = Observations::new(1, caps, 1).unwrap();
+            assert_eq!(observations.publish(state).is_ok(), inputs & !mask == 0);
+            if inputs & !mask != 0 {
+                assert!(observations.poll().unwrap().is_none());
+            }
+        }
+    }
+}
+
+#[test]
+fn t1008_source_settings_contract_validates_independently_of_native_adapters() {
+    use std::time::Duration;
+    assert!(SourceSettings::default().validate().is_ok());
+    for deadline in [
+        Duration::from_nanos(1),
+        Duration::from_secs(2),
+        Duration::from_secs(60),
+    ] {
+        for queue in [1, 32, 256] {
+            assert!(SourceSettings { deadline, queue }.validate().is_ok());
+        }
+    }
+    for deadline in [Duration::ZERO, Duration::from_secs(61), Duration::MAX] {
+        assert!(SourceSettings {
+            deadline,
+            ..SourceSettings::default()
+        }
+        .validate()
+        .is_err());
+    }
+    for queue in [0, 257, usize::MAX] {
+        assert!(SourceSettings {
+            queue,
+            ..SourceSettings::default()
+        }
+        .validate()
+        .is_err());
+    }
+}

@@ -9,7 +9,8 @@ connection authority. Portable policy is implemented under T913; native integrat
 
 - `host/evdi/capture.c::on_dpms` records `dpms_on` and logs it. No production
   capture decision reads that flag; it also appears in diagnostic statistics.
-- No host suspend/resume event adapter was found in maintained host sources.
+- T1008 now supplies a read-only logind suspend/shutdown/resume and selected-session
+  lock observer. It is not activated in the daemon yet; T1009/T1010 own composition.
 - `host/evdi/writer.c::writer_frame_due` skips redundant motion-rate output but
   repeats the current frame at a default 200 ms interval (5 Hz). A valid local
   adaptive-idle lease can increase the interval to 500 ms (2 Hz).
@@ -50,8 +51,9 @@ registration IPC requires exact broker route retirement or verified death of
 the original native broker before quarantined ownership can be reused. T1007 now
 supplies retained Linux socket-bound process-exit proof, combined with actual
 local native cleanup; unsupported observers retain conservative quarantine.
-Linux activity observations and host display/auxiliary/Android lifecycle
-integration are decomposed under T1008–T1011, with T914 retaining final acceptance.
+Linux logind/compositor observations and host display/auxiliary/Android lifecycle
+integration are decomposed under T1008–T1011. Direct X11 display-power observation
+is T1013; T914 retains final acceptance.
 
 T915 separates content updates from connection liveness. Use existing damage and
 cursor evidence to avoid unnecessary conversion/encoding/payload delivery, while
@@ -113,8 +115,9 @@ Backend adapters must recheck the plan/authority before acquisition and retain
 the real startup owner independently of cancellation or task results.
 
 These are portable decisions and ownership rules, not running OS event integration
-or a claim of reduced native CPU/power. T914 supplies Linux sources, display/media
-lifecycle composition and fresh codec/keyframe recovery. T915 supplies cadence
+or a claim of reduced native CPU/power. T1008/T1013 supply Linux sources;
+T1009–T1011 supply display/media lifecycle composition and fresh codec/keyframe
+recovery, with final acceptance retained under T914. T915 supplies cadence
 changes. Physical lock/suspend/tablet acceptance remains postponed.
 
 Permanent normal-suite tests exercise all capability byte values, all eight
@@ -122,3 +125,55 @@ preference combinations, invalid TOML values, source/revision boundaries, concur
 settings edits, original authority loss, counter exhaustion and 32 independent
 resource cycles while actual retirement is held. Native counters and source
 attestation are retained in [T913 evidence](artifacts/2026-10-12-t913/README.md).
+
+## Linux observation adapters (T1008, 2026-10-12)
+
+`common/src/host_activity::SourceSettings` defines independent capacity/deadline
+contracts. `Observations` preserves each distinct full-state transition with
+strictly increasing revisions in one immutable epoch. A full queue discards its
+old snapshots, publishes unknown at the next revision and rejects further input;
+counter exhaustion closes publication without wrapping. Invalid fields leave the
+state unchanged. Stop discards outstanding observations and prevents late delivery.
+
+`host/src/activity::LinuxSource` implements the independent Source interface.
+One retained task owns logind power/lock observations and another owns supported
+Wayland compositor display-power observations. Each original D-Bus service is
+pinned by unique owner name; ownership replacement or malformed input makes only
+that backend's fields unknown. A later service does not inherit the original
+source. Fresh source owners use new epochs. Stop remains separate from actual
+native task retirement; polling performs no native I/O.
+
+Power uses logind's PreparingForSleep/PreparingForShutdown snapshots and explicit
+PrepareForSleep/PrepareForShutdown signals, preserving overlapping preparation
+states. Lock reads the selected session's LockedHint, never the Lock/Unlock request
+signals or IdleHint. Session selection first uses GetSessionByPID; an explicit
+local XDG_SESSION_ID fallback must resolve under the native session namespace and
+match the current user's UID. Missing session selection reports lock unsupported.
+These APIs report logind's observations, not physical screen/lock qualification.
+See the [native logind contract](https://github.com/systemd/systemd/blob/main/man/org.freedesktop.login1.xml).
+
+Wayland Cinnamon/Mutter selection uses the original compositor's PowerSaveMode:
+0 is on; 1–3 are off; -1 is unknown/unsupported. Other values reject. On X11 this
+property may be stale after direct XRandR changes, so automatic selection leaves
+that display capability unsupported until T1013 supplies actual DPMS observation.
+Other desktop interfaces also remain unsupported, with no hardware support claim.
+The [Muffin property contract](https://github.com/linuxmint/muffin/blob/master/src/org.cinnamon.Muffin.DisplayConfig.xml)
+defines these values and the XRandR limitation; a read-only current native query
+returned 0. No power-setting method is called.
+
+Native receive-position fences reject queued/replayed state older than each
+initial property snapshot. Invalidated lock/display fields first become unknown,
+then a bounded query to the same original owner may restore them. A second owner
+check prevents that reply from restoring authority after name replacement. Native
+payloads are limited to 8192 bytes before typed decoding; changed/invalidated
+property collections have at most 64 entries. Stock zbus framing/allocation remains
+inside the external dependency; this is a bound on Blent's decoding/publication.
+
+Source defaults are a 32-event queue (range 1–256) and a 2-second deadline (positive,
+at most 60 seconds). The deadline applies to each bus connection/adapter startup
+phase and to the entire invalidation refresh plus owner check. Larger queues retain
+more distinct transitions at a memory cost; longer deadlines tolerate slow native
+services while delaying startup or recovery. Source settings are typed parameters;
+user-facing connection capacity controls remain T898. Runtime composition and
+physical suspend/lock/display acceptance remain T1009–T1011/T1013/T914. No CPU or
+power improvement is claimed from these observation fixtures.

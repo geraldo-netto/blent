@@ -82,7 +82,7 @@ impl Policy {
         }
     }
 }
-fn validate(state: HostState, capabilities: Capabilities) -> Result<()> {
+pub(super) fn validate(state: HostState, capabilities: Capabilities) -> Result<()> {
     ensure!(
         state.power.is_none() || capabilities.power,
         "power observation backend is unsupported"
