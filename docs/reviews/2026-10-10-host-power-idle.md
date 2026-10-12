@@ -143,11 +143,11 @@ Capture composition is T1015, USB registration composition T1016 and joined host
 display acceptance T1009; auxiliary integration remains T1010. This decomposition
 preserves the remaining work and does not establish running pause/resume support.
 T1018 first composes the shared source/feed lifecycle and actual native ownership.
-T1015 awaits an explicit monitor-layout choice during lock/display-off pauses:
-keeping the monitor present or removing/recreating it. The current helper shutdown
-removes it and can move windows; retaining configuration alone does not specify
-that user-visible behavior. Source composition and independent work can proceed
-while that question is pending.
+Owner decision (2026-10-12): host lock/display-off must keep the virtual monitor in
+the desktop layout while capture/encoding pauses. T1015 separates retained monitor
+ownership from stoppable capture/encoder workers, preserving ordinary attachment
+loss and shutdown cleanup. Removing/recreating the output and moving windows on
+host lock/display-off is not an acceptable substitute for a capture pause.
 
 Permanent normal-suite tests exercise all capability byte values, all eight
 preference combinations, invalid TOML values, source/revision boundaries, concurrent
