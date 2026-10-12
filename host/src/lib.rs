@@ -2,8 +2,6 @@
 #[cfg(target_os = "linux")]
 pub mod activity;
 #[cfg(target_os = "linux")]
-pub mod dpms_probe;
-#[cfg(target_os = "linux")]
 pub mod audio;
 pub mod audio_control;
 #[cfg(target_os = "linux")]
@@ -14,6 +12,8 @@ pub mod capture_contract;
 pub mod config_jobs;
 mod control_outcome;
 pub mod control_workers;
+#[cfg(target_os = "linux")]
+pub mod dpms_probe;
 pub mod owned_task;
 pub mod persistence_port;
 mod session_adapters;

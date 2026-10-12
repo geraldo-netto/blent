@@ -27,8 +27,8 @@ pub mod version;
 pub mod video;
 pub use model::*;
 
-pub mod credentials;
 pub mod connection;
+pub mod credentials;
 
 #[cfg(feature = "platform")]
 pub mod diagnostics;

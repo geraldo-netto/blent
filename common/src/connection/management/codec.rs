@@ -159,7 +159,10 @@ impl Profile {
     }
     /// Exact extent is checked before the internal fixed-offset decoder runs.
     pub fn decode_for(resource: Resource, input: &[u8]) -> Result<Self> {
-        ensure!(input.len() == offer_length(resource) - 32, "invalid profile extent");
+        ensure!(
+            input.len() == offer_length(resource) - 32,
+            "invalid profile extent"
+        );
         Self::decode(resource, input)
     }
     fn encode(&self, out: &mut [u8]) {

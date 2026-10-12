@@ -6,7 +6,9 @@ use blent_config::connection::{
 };
 fn mux() -> Multiplexer {
     let mut owner = Multiplexer::new(7, 9, 64, 16, 4).unwrap();
-    for id in 1..CHANNELS { owner.activate(Channel::try_from(id).unwrap(), 9).unwrap(); }
+    for id in 1..CHANNELS {
+        owner.activate(Channel::try_from(id).unwrap(), 9).unwrap();
+    }
     owner
 }
 fn frame(owner: &mut Multiplexer) -> Option<(Header, Vec<u8>)> {
@@ -215,7 +217,10 @@ fn t846_channel_replacement_waits_for_peer_writer_and_consumer_retirement() {
     assert!(!left.retired(Channel::Camera));
     assert!(left.consumer_retired(Channel::Camera, 9).is_err());
     assert!(left.receive(ack).is_err());
-    assert!(frame(&mut left).is_none(), "T849: replacement remains inactive");
+    assert!(
+        frame(&mut left).is_none(),
+        "T849: replacement remains inactive"
+    );
     assert!(frame(&mut right).is_none());
     left.activate(Channel::Camera, 10).unwrap();
     right.activate(Channel::Camera, 10).unwrap();
@@ -251,16 +256,29 @@ fn t849_activation_rejects_stale_duplicate_closed_and_failed_without_mutation() 
         for generation in [0, 8, 10, i64::MAX as u64, u64::MAX] {
             assert!(owner.activate(channel, generation).is_err());
         }
-        let credit = Header { channel, ..management };
+        let credit = Header {
+            channel,
+            ..management
+        };
         assert!(owner.receive(credit).is_err());
-        assert!(owner.receive(Header { kind: Kind::Data, length: 1, credit: 0, ..credit }).is_err());
+        assert!(owner
+            .receive(Header {
+                kind: Kind::Data,
+                length: 1,
+                credit: 0,
+                ..credit
+            })
+            .is_err());
         assert!(owner.release(channel, 1).is_err());
         assert!(owner.offer(channel, vec![1]).is_err());
         assert!(frame(&mut owner).is_none());
         owner.activate(channel, 9).unwrap();
         assert!(owner.activate(channel, 9).is_err());
         let emitted = frame(&mut owner).unwrap().0;
-        assert_eq!((emitted.channel, emitted.sequence, emitted.credit), (channel, 0, 64));
+        assert_eq!(
+            (emitted.channel, emitted.sequence, emitted.credit),
+            (channel, 0, 64)
+        );
         assert!(frame(&mut owner).is_none());
         owner.receive(credit).unwrap(); // rejected headers never advanced sequence
         owner.offer(channel, vec![1]).unwrap();
@@ -274,7 +292,14 @@ fn t849_activation_rejects_stale_duplicate_closed_and_failed_without_mutation() 
     owner.offer(Channel::Management, vec![1]).unwrap();
     assert_eq!(frame(&mut owner).unwrap().0.channel, Channel::Management);
     let mut inactive = Multiplexer::new(7, 9, 64, 16, 4).unwrap();
-    inactive.receive(Header { channel: Channel::Control, kind: Kind::Close, credit: 0, ..management }).unwrap();
+    inactive
+        .receive(Header {
+            channel: Channel::Control,
+            kind: Kind::Close,
+            credit: 0,
+            ..management
+        })
+        .unwrap();
     assert!(inactive.activate(Channel::Control, 9).is_err());
     inactive.next().unwrap().unwrap();
     inactive.finish(false).unwrap();

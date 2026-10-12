@@ -70,7 +70,9 @@ impl Multiplexer {
     pub fn activate(&mut self, channel: Channel, generation: u64) -> Result<()> {
         let index = channel as usize - 1;
         ensure!(
-            !self.failed && !self.closing[index] && !self.enabled[index]
+            !self.failed
+                && !self.closing[index]
+                && !self.enabled[index]
                 && self.generations[index] == generation,
             "channel unavailable or stale activation"
         );
@@ -82,11 +84,14 @@ impl Multiplexer {
     /// header validation and must never revive delivery from cached permission.
     pub fn accepts_data(&self, channel: Channel, generation: u64) -> bool {
         let index = channel as usize - 1;
-        !self.failed && self.enabled[index] && !self.closing[index]
+        !self.failed
+            && self.enabled[index]
+            && !self.closing[index]
             && self.generations[index] == generation
     }
     pub fn offer(&mut self, channel: Channel, bytes: Vec<u8>) -> std::result::Result<(), Vec<u8>> {
-        if self.failed || self.closing[channel as usize - 1] || !self.enabled[channel as usize - 1] {
+        if self.failed || self.closing[channel as usize - 1] || !self.enabled[channel as usize - 1]
+        {
             return Err(bytes);
         }
         self.queue.offer(channel, bytes)
@@ -112,7 +117,10 @@ impl Multiplexer {
     }
     pub fn release(&mut self, channel: Channel, bytes: u32) -> Result<()> {
         let index = channel as usize - 1;
-        ensure!(!self.failed && !self.closing[index] && self.enabled[index], "channel unavailable");
+        ensure!(
+            !self.failed && !self.closing[index] && self.enabled[index],
+            "channel unavailable"
+        );
         self.flows[index].release(bytes)?;
         self.credit[index] += bytes;
         Ok(())

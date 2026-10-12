@@ -128,7 +128,9 @@ fn approve(server: &mut Server, client: u64, id: u64) -> PeerId {
         .snapshot()
         .iter()
         .find_map(|notice| match notice {
-            Notice::Link { connection, ticket, .. } if *connection == id => ticket.clone(),
+            Notice::Link {
+                connection, ticket, ..
+            } if *connection == id => ticket.clone(),
             _ => None,
         })
         .unwrap();
