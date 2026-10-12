@@ -4,6 +4,7 @@ use std::sync::{
     atomic::{AtomicBool, Ordering},
     Arc,
 };
+mod feed;
 
 fn capabilities() -> Capabilities {
     Capabilities {
@@ -25,6 +26,38 @@ fn event(revision: u64, state: HostState) -> Event {
         revision,
         state,
     }
+}
+#[test]
+fn t1014_coalesced_pause_resume_still_retires_only_the_original_affected_worker() {
+    let mut feed = Feed::new(7, capabilities(), Settings::default()).unwrap();
+    feed.observe(event(1, running())).unwrap();
+    let started = feed.snapshot(true, false).demand.stamp;
+    feed.observe(event(
+        2,
+        HostState {
+            locked: Some(true),
+            ..running()
+        },
+    ))
+    .unwrap();
+    feed.observe(event(3, running())).unwrap();
+    let latest = feed.snapshot(true, false);
+    assert!(latest.demand.display && latest.demand.auxiliary);
+    assert!(latest.must_retire(ActivityTarget::Display, started));
+    assert!(!latest.must_retire(ActivityTarget::Auxiliary, started));
+    assert!(!latest.must_retire(ActivityTarget::Display, latest.demand.stamp));
+    feed.observe(event(
+        4,
+        HostState {
+            power: Some(Power::Suspending),
+            ..running()
+        },
+    ))
+    .unwrap();
+    feed.observe(event(5, running())).unwrap();
+    let latest = feed.snapshot(true, false);
+    assert!(latest.must_retire(ActivityTarget::Display, started));
+    assert!(latest.must_retire(ActivityTarget::Auxiliary, started));
 }
 struct Current(u64);
 impl Authority for Current {

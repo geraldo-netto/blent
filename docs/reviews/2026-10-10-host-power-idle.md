@@ -126,6 +126,23 @@ T1009–T1011 supply display/media lifecycle composition and fresh codec/keyfram
 recovery, with final acceptance retained under T914. T915 supplies cadence
 changes. Physical lock/suspend/tablet acceptance remains postponed.
 
+T1014 adds a portable `Feed` and independently defined `ActivitySnapshot` contract.
+Each snapshot carries the latest display/auxiliary host stop revision. A coalescing
+watch subscriber can see a resumed desired state while still determining that its
+original worker must stop. Work acquired after the stop revision is unaffected;
+old work remains subject to the existing Gate's actual retirement and current
+authority checks. A changed source epoch or future/invalid start/fence fails
+closed. No snapshot grants native acquisition or substitutes for cleanup proof.
+
+Rejected source observations leave the feed unchanged. Explicit whole-source loss
+is terminal for that original feed and clears supported observations to unknown;
+unsupported capabilities preserve existing behavior. Viewer presence and unchanged
+content remain consumer inputs, separate from recorded host stop fences. Source
+loss does not fabricate a new native revision or infer shutdown from transport.
+Capture composition is T1015, USB registration composition T1016 and joined host
+display acceptance T1009; auxiliary integration remains T1010. This decomposition
+preserves the remaining work and does not establish running pause/resume support.
+
 Permanent normal-suite tests exercise all capability byte values, all eight
 preference combinations, invalid TOML values, source/revision boundaries, concurrent
 settings edits, original authority loss, counter exhaustion and 32 independent

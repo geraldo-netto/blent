@@ -11,6 +11,10 @@ pub use observations::Observations;
 pub use policy::Policy;
 mod display_observation;
 pub use display_observation::DisplayObservation;
+mod activity_snapshot;
+mod feed;
+pub use activity_snapshot::{ActivitySnapshot, ActivityTarget};
+pub use feed::Feed;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]

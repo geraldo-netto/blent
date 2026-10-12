@@ -19,6 +19,9 @@ impl Policy {
     pub fn capabilities(&self) -> Capabilities {
         self.capabilities
     }
+    pub(super) fn lost(&mut self) {
+        self.state = HostState::default();
+    }
     /// Rejected observations leave current policy unchanged. A new backend must
     /// create a new owner/epoch, never reset an existing source's revision.
     pub fn observe(&mut self, event: Event) -> Result<()> {
