@@ -77,6 +77,9 @@ use tracing::error;
 use tracing::{info, warn};
 
 fn main() -> Result<()> {
+    if let Some(result) = blent::dpms_probe::dispatch(std::env::args_os().skip(1)) {
+        return result;
+    }
     #[cfg(feature = "inproc-encoder")]
     if let Some(result) = encoder_worker::dispatch(std::env::args_os().skip(1)) {
         return result;

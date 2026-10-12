@@ -5,6 +5,12 @@ active webcam/audio continue. Host suspend/shutdown necessarily interrupts all
 resources. Resume should restore enabled resources without restoring stale
 connection authority. Portable policy is implemented under T913; native integration and unchanged-frame handling remain T914/T915 in TODO.md.
 
+Owner decision (2026-10-12): retain D-Bus for Linux power/session observations
+regardless of distribution. The adapter depends on the compatible
+`org.freedesktop.login1` provider, rather than the distribution name or init
+implementation. Absent/incompatible providers remain explicitly unsupported;
+these private API fixtures do not establish native acceptance on every distro.
+
 ## Native implementation, verified locally before T914 integration
 
 - `host/evdi/capture.c::on_dpms` records `dpms_on` and logs it. No production
@@ -52,8 +58,8 @@ the original native broker before quarantined ownership can be reused. T1007 now
 supplies retained Linux socket-bound process-exit proof, combined with actual
 local native cleanup; unsupported observers retain conservative quarantine.
 Linux logind/compositor observations and host display/auxiliary/Android lifecycle
-integration are decomposed under T1008–T1011. Direct X11 display-power observation
-is T1013; T914 retains final acceptance.
+integration are decomposed under T1008–T1011. T1013 supplies direct X11
+display-power observation; T914 retains final acceptance.
 
 T915 separates content updates from connection liveness. Use existing damage and
 cursor evidence to avoid unnecessary conversion/encoding/payload delivery, while
@@ -155,7 +161,8 @@ See the [native logind contract](https://github.com/systemd/systemd/blob/main/ma
 Wayland Cinnamon/Mutter selection uses the original compositor's PowerSaveMode:
 0 is on; 1–3 are off; -1 is unknown/unsupported. Other values reject. On X11 this
 property may be stale after direct XRandR changes, so automatic selection leaves
-that display capability unsupported until T1013 supplies actual DPMS observation.
+that compositor capability unsupported on X11; T1013 supplies direct DPMS
+observation there.
 Other desktop interfaces also remain unsupported, with no hardware support claim.
 The [Muffin property contract](https://github.com/linuxmint/muffin/blob/master/src/org.cinnamon.Muffin.DisplayConfig.xml)
 defines these values and the XRandR limitation; a read-only current native query
@@ -175,5 +182,39 @@ phase and to the entire invalidation refresh plus owner check. Larger queues ret
 more distinct transitions at a memory cost; longer deadlines tolerate slow native
 services while delaying startup or recovery. Source settings are typed parameters;
 user-facing connection capacity controls remain T898. Runtime composition and
-physical suspend/lock/display acceptance remain T1009–T1011/T1013/T914. No CPU or
+physical suspend/lock/display acceptance remain T1009–T1011/T914. No CPU or
 power improvement is claimed from these observation fixtures.
+
+## Direct X11 observations (T1013, 2026-10-12)
+
+An X11 session uses an independently owned, read-only DPMS helper. It queries
+extension support, capability and current power through the installed Xlib/Xext
+ABI. Enabled power level 0 is on; 1–3 are off. Disabled DPMS means on, with its
+undefined level ignored. Invalid native booleans/status/power levels reject;
+missing libraries, display access or DPMS capability report unsupported. This
+does not replace D-Bus power/lock or Wayland compositor observations.
+
+The existing Linux executable dispatches the private helper before daemon startup;
+there is no new package or native link dependency. Only that isolated process
+makes blocking Xlib calls, including connection and close. It emits bounded
+typed JSON snapshots over its original stdout pipe. Heartbeats repeat at the
+smaller of 250 ms or one quarter of the configured observation deadline (minimum
+1 ns); sample timeout/lost output makes only display power unknown. No replacement
+process inherits original authority. Blent bounds a frame to 256 bytes before
+decoding, checks the exact schema and rejects capability withdrawal.
+
+Logical stop wakes the async observer immediately. The source's retirement proof
+also retains the actual creator and original child, independently of task results.
+A creator that misses its startup deadline remains owned until it returns; any
+late child is then retired before ownership is released. A blocked Xlib connection
+cannot terminate or stall the daemon, and cancellation alone cannot free capacity.
+
+Permanent normal-suite tests exercise native ABI transitions/rejection, disabled
+and unsupported DPMS, a private Xvfb connection, the real executable dispatcher,
+a real Xlib connection blocked by a private TCP server, bounded pipe framing,
+timeout/loss, independent other fields, and a held creator with late cleanup.
+The heartbeat regression fails with the fixed 250 ms interval and passes when
+the configured deadline controls it. These establish the adapter and ownership
+boundaries; supported physical monitor transitions and joined host/tablet pause
+and resume remain T1009–T1011/T914. No desktop power-setting methods, forced host
+lock/suspend, tablet interruption or distro-wide qualification was performed.

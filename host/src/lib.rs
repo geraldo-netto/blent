@@ -2,6 +2,8 @@
 #[cfg(target_os = "linux")]
 pub mod activity;
 #[cfg(target_os = "linux")]
+pub mod dpms_probe;
+#[cfg(target_os = "linux")]
 pub mod audio;
 pub mod audio_control;
 #[cfg(target_os = "linux")]

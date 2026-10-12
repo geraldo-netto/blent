@@ -498,3 +498,28 @@ fn t1008_source_settings_contract_validates_independently_of_native_adapters() {
         .is_err());
     }
 }
+
+#[test]
+fn t1013_display_observation_contract_rejects_invalid_and_oversized_frames() {
+    for supported in [false, true] {
+        for on in [None, Some(false), Some(true)] {
+            let sample = DisplayObservation { supported, on };
+            assert_eq!(sample.encode().is_ok(), supported || on.is_none());
+            if let Ok(bytes) = sample.encode() {
+                assert_eq!(DisplayObservation::decode(&bytes).unwrap(), sample);
+            }
+        }
+    }
+    for bytes in [
+        b"".as_slice(),
+        b"null",
+        b"{",
+        b"{\"supported\":false,\"on\":true}",
+        b"{\"supported\":true,\"on\":1}",
+        b"{\"supported\":true,\"on\":null,\"extra\":1}",
+        &[0xff],
+    ] {
+        assert!(DisplayObservation::decode(bytes).is_err());
+    }
+    assert!(DisplayObservation::decode(&vec![b' '; 257]).is_err());
+}

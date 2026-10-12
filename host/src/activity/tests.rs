@@ -404,14 +404,14 @@ async fn t1008_source_stop_keeps_actual_held_native_retirement() {
         .unwrap();
     let (release, blocked) = std::sync::mpsc::channel();
     let (entered, entry) = tokio::sync::oneshot::channel();
-    source.tasks.lock().unwrap().push(
+    source.tasks.lock().unwrap().push(Work::asynchronous(
         Task::spawn_blocking(move || {
             entered.send(()).unwrap();
             blocked.recv_timeout(Duration::from_secs(5)).unwrap();
             Ok(())
         })
         .unwrap(),
-    );
+    ));
     entry.await.unwrap();
     source.stop();
     source.shared.update(native::Patch::Power(None)).unwrap(); // Late native callback cannot republish.

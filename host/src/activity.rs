@@ -29,6 +29,51 @@ fn epoch(counter: &AtomicU64) -> Result<u64> {
         .map(|value| value + 1)
         .map_err(|_| anyhow::anyhow!("activity source epochs exhausted"))
 }
+fn fresh_epoch() -> Result<u64> {
+    static EPOCH: AtomicU64 = AtomicU64::new(0);
+    epoch(&EPOCH)
+}
+/// One backend owns its native proof independently of its task result.
+trait Backend: Send {
+    fn include(&self, caps: &mut Capabilities, state: &mut HostState);
+    fn spawn(self: Box<Self>, shared: Arc<Shared>) -> Result<Work>;
+}
+struct Work {
+    task: Option<Task>,
+    native: Arc<Mutex<Vec<blent_config::retirement::Completion>>>,
+}
+impl Work {
+    fn asynchronous(task: Task) -> Self {
+        Self {
+            task: Some(task),
+            native: Arc::new(Mutex::new(Vec::new())),
+        }
+    }
+    fn retired(&mut self) -> bool {
+        if let Some(task) = &mut self.task {
+            if task.now_or_never().is_none() {
+                return false;
+            }
+            self.task = None;
+        }
+        self.native
+            .lock()
+            .unwrap()
+            .iter()
+            .all(blent_config::retirement::Completion::is_complete)
+    }
+}
+impl Backend for native::Actor {
+    fn include(&self, caps: &mut Capabilities, state: &mut HostState) {
+        self.include(caps, state);
+    }
+    fn spawn(self: Box<Self>, shared: Arc<Shared>) -> Result<Work> {
+        Ok(Work::asynchronous(Task::spawn(async move {
+            self.run(shared).await
+        })?))
+    }
+}
+mod dpms;
 struct Shared {
     observations: Mutex<Observations>,
     stopped: AtomicBool,
@@ -61,7 +106,7 @@ pub struct LinuxSource {
     epoch: u64,
     capabilities: Capabilities,
     shared: Arc<Shared>,
-    tasks: Mutex<Vec<Task>>,
+    tasks: Mutex<Vec<Work>>,
 }
 impl LinuxSource {
     pub async fn connect(settings: Settings) -> Result<Self> {
@@ -74,20 +119,26 @@ impl LinuxSource {
             .await
             .ok()
             .and_then(Result::ok);
-        // Compositor properties establish compositor-managed state on Wayland.
-        // Direct X11 DPMS can bypass them; its independent source is T1013.
+        let session_kind = std::env::var("XDG_SESSION_TYPE").unwrap_or_default();
         let desktop = compositor_desktop(
-            &std::env::var("XDG_SESSION_TYPE").unwrap_or_default(),
+            &session_kind,
             &std::env::var("XDG_CURRENT_DESKTOP").unwrap_or_default(),
         );
-        Self::on_buses(
+        let mut actors = Self::discover(
             system,
             session,
             settings,
             std::env::var("XDG_SESSION_ID").ok(),
             &desktop,
         )
-        .await
+        .await;
+        if session_kind == "x11" {
+            match dpms::Probe::start(dpms::Program::current(settings)?, settings).await {
+                Ok(probe) => actors.push(Box::new(probe)),
+                Err(error) => tracing::warn!(%error, "X11 display-power observation unavailable"),
+            }
+        }
+        Self::start(fresh_epoch()?, settings, actors)
     }
     async fn on_buses(
         system: Option<zbus::Connection>,
@@ -97,9 +148,17 @@ impl LinuxSource {
         desktop: &str,
     ) -> Result<Self> {
         settings.validate()?;
-        static EPOCH: AtomicU64 = AtomicU64::new(0);
-        let epoch = epoch(&EPOCH)?;
-        let mut actors = Vec::new();
+        let actors = Self::discover(system, session, settings, session_id, desktop).await;
+        Self::start(fresh_epoch()?, settings, actors)
+    }
+    async fn discover(
+        system: Option<zbus::Connection>,
+        session: Option<zbus::Connection>,
+        settings: Settings,
+        session_id: Option<String>,
+        desktop: &str,
+    ) -> Vec<Box<dyn Backend>> {
+        let mut actors: Vec<Box<dyn Backend>> = Vec::new();
         if let Some(bus) = system {
             match tokio::time::timeout(
                 settings.deadline,
@@ -107,7 +166,7 @@ impl LinuxSource {
             )
             .await
             {
-                Ok(Ok(actor)) => actors.push(actor),
+                Ok(Ok(actor)) => actors.push(Box::new(actor)),
                 error => tracing::warn!(?error, "Linux power/lock observations unsupported"),
             }
         }
@@ -118,16 +177,16 @@ impl LinuxSource {
             )
             .await
             {
-                Ok(Ok(actor)) => actors.push(actor),
+                Ok(Ok(actor)) => actors.push(Box::new(actor)),
                 error => tracing::warn!(
                     ?error,
                     "Linux compositor display-power observations unsupported"
                 ),
             }
         }
-        Self::start(epoch, settings, actors)
+        actors
     }
-    fn start(epoch: u64, settings: Settings, actors: Vec<native::Actor>) -> Result<Self> {
+    fn start(epoch: u64, settings: Settings, actors: Vec<Box<dyn Backend>>) -> Result<Self> {
         let mut capabilities = Capabilities::default();
         let mut state = HostState::default();
         for actor in &actors {
@@ -154,10 +213,9 @@ impl LinuxSource {
         }
         Ok(source)
     }
-    fn spawn(&self, actor: native::Actor) -> Result<()> {
-        let shared = self.shared.clone();
-        let task = Task::spawn(async move { actor.run(shared).await })?;
-        self.tasks.lock().unwrap().push(task);
+    fn spawn(&self, actor: Box<dyn Backend>) -> Result<()> {
+        let work = actor.spawn(self.shared.clone())?;
+        self.tasks.lock().unwrap().push(work);
         Ok(())
     }
     pub fn epoch(&self) -> u64 {
@@ -176,7 +234,7 @@ impl Source for LinuxSource {
     }
     fn retired(&self) -> bool {
         let mut tasks = self.tasks.lock().unwrap();
-        tasks.retain_mut(|task| task.now_or_never().is_none());
+        tasks.retain_mut(|work| !work.retired());
         tasks.is_empty()
     }
 }

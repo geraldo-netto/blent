@@ -9,6 +9,8 @@ mod policy;
 pub use gate::{Gate, Plan, Ticket};
 pub use observations::Observations;
 pub use policy::Policy;
+mod display_observation;
+pub use display_observation::DisplayObservation;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
