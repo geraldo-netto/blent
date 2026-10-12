@@ -317,3 +317,42 @@ fn t910_invalid_profile_and_response_before_exposure_do_not_start_native_work() 
     assert!(model.status().remote_retired);
     assert!(model.outgoing().is_none());
 }
+
+struct Broker(bool);
+impl BrokerLifetime for Broker {
+    fn exited(&self) -> bool {
+        self.0
+    }
+}
+#[test]
+fn t1007_original_exit_never_restores_authority_or_uses_socket_failure_as_proof() {
+    for failure in [
+        Failure::Native,
+        Failure::TimedOut,
+        Failure::Protocol,
+        Failure::Resource,
+    ] {
+        let mut model = registered();
+        progress(&mut model, 1, State::Active);
+        model.fail(failure);
+        model.observe_broker_exit(&Broker(false));
+        assert!(!model.status().remote_retired);
+        assert_eq!(model.status().failure, Some(failure));
+        model.observe_broker_exit(&Broker(true));
+        assert!(model.status().remote_retired);
+        assert_eq!(model.status().failure, Some(failure));
+        assert!(!model.status().live());
+        assert!(model.outgoing().is_none());
+        model.observe_broker_exit(&Broker(true));
+        assert!(!model.status().live());
+    }
+    let mut partial = model();
+    partial.outgoing(); // Death before Registered still proves no remote owner.
+    partial.observe_broker_exit(&Broker(true));
+    assert!(partial.status().remote_retired);
+    assert_eq!(partial.status().failure, Some(Failure::Native));
+    let mut untouched = model();
+    untouched.close();
+    untouched.observe_broker_exit(&Broker(true));
+    assert!(untouched.status().failure.is_none());
+}

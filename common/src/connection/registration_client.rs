@@ -51,9 +51,17 @@ pub struct Status {
     pub route: Option<RouteId>,
     pub failure: Option<Failure>,
     /// True only when no registration was exposed, a registration was rejected
-    /// before ownership, or the exact broker route explicitly retired. Never a
-    /// timeout, disconnected IPC socket, failed status or native worker exit.
+    /// before ownership, the exact broker route explicitly retired, or the
+    /// original broker process provably exited. Never a timeout, disconnected
+    /// IPC socket, failed status or native worker exit.
     pub remote_retired: bool,
+}
+
+/// Native adapter binds this observer to the original authenticated IPC peer
+/// before any registration exposure. A PID, socket EOF, replacement connection,
+/// timeout or caller assertion cannot implement this process-lifetime proof.
+pub trait BrokerLifetime: Send {
+    fn exited(&self) -> bool;
 }
 
 pub trait Client: Send + Sync {
@@ -152,6 +160,14 @@ impl Model {
         self.close();
         self.status.failure.get_or_insert(failure);
         self.status.phase = Phase::Failed;
+    }
+    /// Observe only this exchange's original retained broker lifetime. Failure
+    /// remains visible; proof retires remote ownership without restoring a grant.
+    pub fn observe_broker_exit(&mut self, original: &dyn BrokerLifetime) {
+        if !self.status.remote_retired && original.exited() {
+            self.fail(Failure::Native);
+            self.status.remote_retired = true;
+        }
     }
     pub fn receive(&mut self, message: Message) -> Result<()> {
         let result = self.apply(message);

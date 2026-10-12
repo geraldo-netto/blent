@@ -1393,11 +1393,19 @@ admission and wakes Unregister; the IPC cleanup path stays open for exact broker
 proof. Repeated close or malformed replies cannot extend cleanup deadlines.
 Active idle routes have no arbitrary media-read deadline.
 
-Capacity releases only after remote retirement (or proof of no registration) AND
-actual native thread/runtime retirement. Failed IPC, timeout or panic retains
-uncertain ownership/listeners while siblings progress. Lost IPC currently leaves
-that slot quarantined for the application lifetime; no transparent replay occurs.
-Safe recovery requires independent proof of the original broker's native death.
+Capacity releases only after remote retirement, proof of no registration, or
+proven exit of the original broker process, AND actual local native thread/runtime
+retirement. T1007 binds a kernel process-lifetime observer from the authenticated
+original socket before any registration exposure. The independently retained
+observer survives IPC timeout, failure and panic; it cannot refer to a later
+broker or a reused PID. Lost IPC while that process is alive retains ownership;
+its actual exit permits release only after local native cleanup also completes.
+No transparent registration replay or authority restoration occurs. If the kernel
+observer is unavailable, the adapter reports that limitation in its log and lost
+IPC remains conservatively quarantined for the application lifetime. This does
+not establish retirement of independent Android or native USB helper work.
+[Separate-process validation](artifacts/2026-10-12-t1007/README.md) covers original
+broker death, replacement isolation and held local native cleanup.
 
 [Validation](artifacts/2026-10-10-t911/README.md) covers isolated broker/TLS traffic,
 descriptor lifetime and bounded failures. T912/T908 still own session-listener
@@ -2100,7 +2108,8 @@ completed observer cannot retire a replacement in the same slot. Retry deadlines
 remain absolute, current peer authority is revalidated on fresh admission, and
 stalled cleanup leaves other peers progressing. The original T908 unknown-startup
 quarantine regression remains unchanged: no independently registered observer
-means no proven recovery. Broker registration IPC loss remains separate under T914.
+means no proven recovery. Broker registration IPC-loss recovery is implemented under T1007; activity
+lifecycle integration remains T914/T1008–T1011.
 
 Permanent tests cover retained native work after panic, cancellation before
 publication, shared-primary admission with one native session slot, bounded

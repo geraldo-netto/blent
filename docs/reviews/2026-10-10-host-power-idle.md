@@ -46,8 +46,12 @@ only after old work really retires; revalidate the current authenticated peer,
 restore fresh codec configuration and request a keyframe. Prevent rapid power
 transitions from creating duplicate workers or reconnect storms. A broken cable
 and host shutdown cannot be distinguished from transport loss alone. Lost local
-registration IPC also needs exact broker route retirement or verified death of
-the original native broker before quarantined ownership can be reused.
+registration IPC requires exact broker route retirement or verified death of
+the original native broker before quarantined ownership can be reused. T1007 now
+supplies retained Linux socket-bound process-exit proof, combined with actual
+local native cleanup; unsupported observers retain conservative quarantine.
+Linux activity observations and host display/auxiliary/Android lifecycle
+integration are decomposed under T1008–T1011, with T914 retaining final acceptance.
 
 T915 separates content updates from connection liveness. Use existing damage and
 cursor evidence to avoid unnecessary conversion/encoding/payload delivery, while

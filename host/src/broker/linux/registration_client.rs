@@ -2,7 +2,7 @@
 //! listener capabilities survive until both native exit and broker retirement.
 use super::{
     client::{Connector, Launch},
-    Endpoints,
+    lifetime, Endpoints,
 };
 use anyhow::{ensure, Result};
 use blent_config::{
@@ -119,6 +119,7 @@ impl Drop for Handle {
 struct State {
     model: Model,
     closing: Option<Instant>,
+    broker: Option<lifetime::Original>,
 }
 struct Shared {
     state: Mutex<State>,
@@ -130,6 +131,7 @@ impl Shared {
             state: Mutex::new(State {
                 model,
                 closing: None,
+                broker: None,
             }),
             wake: Notify::new(),
         }
@@ -169,7 +171,17 @@ struct Retained {
 impl Observe for Retained {
     fn poll_complete(&mut self) -> bool {
         let native = self.thread.poll_complete();
-        native && self.shared.state().model.status().remote_retired
+        if !native {
+            return false;
+        }
+        let mut state = self.shared.state();
+        // Only completed local work needs exit polling. Active/stuck native
+        // threads retain ownership without an additional kernel poll per turn.
+        let State { model, broker, .. } = &mut *state;
+        if let Some(original) = broker {
+            model.observe_broker_exit(original);
+        }
+        model.status().remote_retired
     }
 }
 #[cfg(test)]

@@ -46,6 +46,10 @@ impl AsyncSocket {
         })
     }
 
+    pub(super) fn original_lifetime(&self) -> io::Result<super::lifetime::Original> {
+        super::lifetime::Original::pin(self.socket()?.get_ref().as_raw_fd())
+    }
+
     fn socket(&self) -> io::Result<&AsyncFd<Socket>> {
         if self.closed.load(Ordering::Acquire) {
             return Err(io::Error::new(

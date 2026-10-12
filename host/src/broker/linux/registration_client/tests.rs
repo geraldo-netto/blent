@@ -419,3 +419,256 @@ async fn t911_remote_retirement_alone_does_not_release_a_blocked_native_owner() 
     until(|| completion.is_complete()).await;
     assert_eq!(pool.active(), 0);
 }
+
+// T1007: real separate process keeps received endpoints after closing IPC. The
+// parent proves socket loss alone cannot release them, then observes actual exit.
+#[tokio::test]
+async fn t1007_broker_process_fixture() {
+    use std::io::BufRead;
+    let Some(directory) = std::env::var_os("BLENT_T1007_BROKER_FIXTURE") else {
+        return;
+    };
+    let root = std::path::Path::new(&directory);
+    let listener = AsyncListener::new(Owner::bind(root, 8).unwrap()).unwrap();
+    std::fs::write(root.join("ready"), []).unwrap();
+    let (socket, _) = bounded(listener.accept()).await.unwrap();
+    let packet = bounded(socket.receive()).await.unwrap();
+    assert!(matches!(
+        packet.message,
+        Message::Register { request: 1, .. }
+    ));
+    socket
+        .send(
+            &Message::Registered {
+                request: 1,
+                route: route(),
+            },
+            &[],
+        )
+        .await
+        .unwrap();
+    status(&socket, 1, RouteState::Active).await;
+    let mut input = std::io::stdin().lock().lines();
+    assert_eq!(input.next().unwrap().unwrap(), "close");
+    socket.close();
+    std::fs::write(root.join("closed"), []).unwrap();
+    assert_eq!(input.next().unwrap().unwrap(), "exit");
+    drop(packet); // Native endpoint ownership survives the IPC loss.
+}
+struct ProcessFixture {
+    root: tempfile::TempDir,
+    child: std::process::Child,
+}
+impl ProcessFixture {
+    async fn start() -> Self {
+        let root = tempfile::Builder::new()
+            .permissions(std::fs::Permissions::from_mode(0o700))
+            .tempdir()
+            .unwrap();
+        let child = std::process::Command::new(std::env::current_exe().unwrap())
+            .args([
+                "--exact",
+                "broker::linux::registration_client::tests::t1007_broker_process_fixture",
+                "--nocapture",
+            ])
+            .env("BLENT_T1007_BROKER_FIXTURE", root.path())
+            .stdin(std::process::Stdio::piped())
+            .stdout(std::process::Stdio::null())
+            .spawn()
+            .unwrap();
+        let fixture = Self { root, child };
+        until(|| fixture.root.path().join("ready").exists()).await;
+        fixture
+    }
+    fn command(&mut self, command: &str) {
+        use std::io::Write;
+        writeln!(self.child.stdin.as_mut().unwrap(), "{command}").unwrap();
+    }
+    fn factory(&self) -> Factory {
+        let mut settings = Settings::new(Launch {
+            executable: "/bin/false".into(),
+            runtime: self.root.path().into(),
+            state: self.root.path().into(),
+            helper: "/bin/false".into(),
+        });
+        settings.capacity = 1;
+        Factory::new(settings).unwrap()
+    }
+}
+impl Drop for ProcessFixture {
+    fn drop(&mut self) {
+        let _ = self.child.kill();
+        let _ = self.child.wait();
+    }
+}
+#[tokio::test]
+async fn t1007_original_broker_exit_recovers_lost_ipc_capacity_and_endpoints() {
+    let mut fixture = ProcessFixture::start().await;
+    let factory = fixture.factory();
+    let endpoints = listeners();
+    let addresses = endpoints
+        .iter()
+        .map(|v| v.local_addr().unwrap())
+        .collect::<Vec<_>>();
+    let client = factory.start(request(), endpoints).unwrap();
+    until(|| client.status().phase == Phase::Active).await;
+    fixture.command("close");
+    until(|| fixture.root.path().join("closed").exists()).await;
+    until(|| client.status().failure.is_some()).await;
+    client.close();
+    assert!(!client.retired());
+    assert!(!client.status().remote_retired);
+    assert_eq!(factory.pool.active(), 1);
+    assert!(factory.start(request(), listeners()).is_err());
+    assert!(addresses
+        .iter()
+        .all(|address| TcpListener::bind(address).is_err()));
+    fixture.command("exit");
+    assert!(fixture.child.wait().unwrap().success());
+    until(|| client.retired()).await;
+    assert!(client.status().remote_retired);
+    assert!(!client.status().live());
+    assert_eq!(factory.pool.active(), 0);
+    assert!(addresses
+        .iter()
+        .all(|address| TcpListener::bind(address).is_ok()));
+}
+
+#[tokio::test]
+async fn t1007_broker_death_waits_for_actual_local_native_cleanup() {
+    let mut fixture = ProcessFixture::start().await;
+    let socket = AsyncSocket::new(
+        crate::broker::linux::Socket::connect(&fixture.root.path().join("broker.sock"), unsafe {
+            libc::geteuid()
+        })
+        .unwrap(),
+    )
+    .unwrap();
+    let endpoints = Arc::new(
+        Endpoints::validate(
+            request().resource,
+            listeners().into_iter().map(OwnedFd::from).collect(),
+        )
+        .unwrap(),
+    );
+    let shared = Arc::new(Shared::new(Model::new(request()).unwrap()));
+    shared.state().broker = Some(socket.original_lifetime().unwrap());
+    let message = shared.update(Model::outgoing).unwrap();
+    bounded(socket.send(&message, &endpoints.descriptors()))
+        .await
+        .unwrap();
+    for _ in 0..2 {
+        let packet = bounded(socket.receive()).await.unwrap();
+        shared
+            .update(|model| model.receive(packet.message))
+            .unwrap();
+    }
+    assert_eq!(shared.state().model.status().phase, Phase::Active);
+    let (release, blocked) = std::sync::mpsc::channel();
+    let thread = std::thread::spawn(move || blocked.recv_timeout(Duration::from_secs(5)).unwrap());
+    let pool = Pool::new(1).unwrap();
+    let admission = pool.reserve().unwrap();
+    let completion = admission.completion();
+    admission.retain(Retained {
+        thread: retirement_work::Thread::new(thread),
+        shared: shared.clone(),
+        _endpoints: endpoints,
+    });
+    fixture.command("close");
+    until(|| fixture.root.path().join("closed").exists()).await;
+    assert!(bounded(socket.receive()).await.is_err());
+    shared.fail(Failure::Native);
+    assert!(!completion.is_complete());
+    fixture.command("exit");
+    assert!(fixture.child.wait().unwrap().success());
+    assert!(!completion.is_complete());
+    assert!(!shared.state().model.status().remote_retired);
+    assert_eq!(pool.active(), 1);
+    assert!(pool.reserve().is_err());
+    release.send(()).unwrap();
+    until(|| completion.is_complete()).await;
+    assert_eq!(pool.active(), 0);
+}
+
+#[tokio::test]
+async fn t1007_dead_original_and_unrelated_process_exit_cannot_release_replacement() {
+    let mut fixture = ProcessFixture::start().await;
+    let factory = fixture.factory();
+    let original = factory.start(request(), listeners()).unwrap();
+    until(|| original.status().phase == Phase::Active).await;
+    fixture.command("close");
+    until(|| fixture.root.path().join("closed").exists()).await;
+    fixture.command("exit");
+    assert!(fixture.child.wait().unwrap().success());
+    until(|| original.retired()).await;
+    let listener = AsyncListener::new(Owner::bind(fixture.root.path(), 8).unwrap()).unwrap();
+    let replacement = factory.start(request(), listeners()).unwrap();
+    let (server, _) = bounded(listener.accept()).await.unwrap();
+    let packet = bounded(server.receive()).await.unwrap();
+    drop(packet);
+    server
+        .send(
+            &Message::Registered {
+                request: 1,
+                route: route(),
+            },
+            &[],
+        )
+        .await
+        .unwrap();
+    status(&server, 1, RouteState::Active).await;
+    until(|| replacement.status().phase == Phase::Active).await;
+    assert!(std::process::Command::new("/bin/true")
+        .status()
+        .unwrap()
+        .success());
+    for _ in 0..32 {
+        original.close();
+        assert!(original.retired());
+        assert!(!replacement.retired());
+        assert!(replacement.status().live());
+    }
+    server.close();
+    until(|| replacement.status().failure.is_some()).await;
+    assert!(!replacement.retired());
+    assert_eq!(factory.pool.active(), 1);
+    // Exact route retirement only to clean the isolated, still-live parent broker.
+    replacement
+        .shared
+        .update(|model| {
+            model.receive(Message::Status {
+                request: 1,
+                route: route(),
+                state: RouteState::Retired,
+            })
+        })
+        .unwrap();
+    until(|| replacement.retired()).await;
+}
+
+#[test]
+fn t1007_unavailable_original_observer_preserves_quarantine() {
+    let shared = Arc::new(Shared::new(Model::new(request()).unwrap()));
+    shared.update(Model::outgoing);
+    shared.fail(Failure::Native);
+    let thread = std::thread::spawn(|| ());
+    while !thread.is_finished() {
+        std::thread::yield_now();
+    }
+    let endpoints = Arc::new(
+        Endpoints::validate(
+            request().resource,
+            listeners().into_iter().map(OwnedFd::from).collect(),
+        )
+        .unwrap(),
+    );
+    let mut retained = Retained {
+        thread: retirement_work::Thread::new(thread),
+        shared: shared.clone(),
+        _endpoints: endpoints,
+    };
+    for _ in 0..32 {
+        assert!(!retained.poll_complete());
+    }
+    assert!(!shared.state().model.status().remote_retired);
+}

@@ -52,7 +52,17 @@ impl Worker {
             _ = self.shared.wake.notified() => return Ok(()),
             result = self.connector.connect(self.settings.startup) => result.map_err(|_| Failure::Native)?,
         };
+        self.retain_broker(&socket);
         self.exchange(&socket).await
+    }
+    fn retain_broker(&self, socket: &AsyncSocket) {
+        self.shared.state().broker = match socket.original_lifetime() {
+            Ok(original) => Some(original),
+            Err(error) => {
+                tracing::warn!(%error, "broker exit observation unavailable; lost IPC remains quarantined");
+                None
+            }
+        };
     }
     async fn exchange(&self, socket: &AsyncSocket) -> Result<(), Failure> {
         let admission = Instant::now() + self.settings.admission;
@@ -140,6 +150,32 @@ mod tests {
             Arc::new(Shared::new(Model::new(request).unwrap())),
             Arc::new(endpoints),
         )
+    }
+    #[tokio::test]
+    async fn t1007_unavailable_socket_observer_cannot_retire_exposed_registration() {
+        use std::os::unix::fs::PermissionsExt;
+        let worker = worker();
+        let root = tempfile::Builder::new()
+            .permissions(std::fs::Permissions::from_mode(0o700))
+            .tempdir()
+            .unwrap();
+        let _listener =
+            crate::broker::linux::Listener::bind(&root.path().join("broker.sock"), 2).unwrap();
+        let socket = AsyncSocket::new(
+            crate::broker::linux::Socket::connect(&root.path().join("broker.sock"), unsafe {
+                libc::geteuid()
+            })
+            .unwrap(),
+        )
+        .unwrap();
+        socket.close();
+        worker.shared.update(Model::outgoing);
+        worker.retain_broker(&socket);
+        worker.shared.fail(Failure::Native);
+        let state = worker.shared.state();
+        assert!(state.broker.is_none());
+        assert!(!state.model.status().remote_retired);
+        assert!(!state.model.status().live());
     }
     #[test]
     fn t911_panic_revokes_before_blocked_native_runtime_cleanup_exits() {
