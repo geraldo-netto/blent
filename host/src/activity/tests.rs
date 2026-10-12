@@ -1,3 +1,16 @@
+impl LinuxSource {
+    async fn on_buses(
+        system: Option<zbus::Connection>,
+        session: Option<zbus::Connection>,
+        settings: Settings,
+        session_id: Option<String>,
+        desktop: &str,
+    ) -> Result<Self> {
+        settings.validate()?;
+        let actors = Self::discover(system, session, settings, session_id, desktop).await;
+        Self::start(fresh_epoch()?, settings, actors)
+    }
+}
 use super::*;
 use blent_config::host_activity::{Policy, Power};
 use std::sync::atomic::{AtomicI32, AtomicU8};

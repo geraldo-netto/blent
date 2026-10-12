@@ -140,17 +140,6 @@ impl LinuxSource {
         }
         Self::start(fresh_epoch()?, settings, actors)
     }
-    async fn on_buses(
-        system: Option<zbus::Connection>,
-        session: Option<zbus::Connection>,
-        settings: Settings,
-        session_id: Option<String>,
-        desktop: &str,
-    ) -> Result<Self> {
-        settings.validate()?;
-        let actors = Self::discover(system, session, settings, session_id, desktop).await;
-        Self::start(fresh_epoch()?, settings, actors)
-    }
     async fn discover(
         system: Option<zbus::Connection>,
         session: Option<zbus::Connection>,
