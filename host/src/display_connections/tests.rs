@@ -384,6 +384,35 @@ impl blent_config::connection::control_client::Factory for Failed {
         anyhow::bail!("T927 discovery unavailable")
     }
 }
+
+#[test]
+fn t930_idle_poll_retains_candidates_without_an_additional_allocation_or_copy() {
+    for count in 0..=4 {
+        let mut f = Fixture::new(count.max(1));
+        let links: Vec<_> = (1..=u64::from(count)).map(|id| (id, id + 1, 1)).collect();
+        f.links(&links);
+        let (expected, source_cost) =
+            crate::allocation_probe::measure(|| f.connections.source.poll(f.now).unwrap());
+        let (_, joined_cost) = crate::allocation_probe::measure(|| f.poll());
+        assert_eq!(f.connections.candidates.len(), expected.len());
+        for (actual, original) in f.connections.candidates.iter().zip(&expected) {
+            assert!(actual.same_connection(original));
+        }
+        assert_eq!(
+            joined_cost.allocations, source_cost.allocations,
+            "T930: extra candidate allocations for {count} peers"
+        );
+        assert_eq!(joined_cost.reallocations, source_cost.reallocations);
+        assert_eq!(
+            joined_cost.requested_bytes, source_cost.requested_bytes,
+            "T930: extra candidate copy for {count} peers"
+        );
+    }
+}
+
+#[cfg(target_os = "linux")]
+#[path = "../../../scripts/benchmarks/usb-discovery.rs"]
+mod discovery_profile;
 #[test]
 fn t927_discovery_failure_still_processes_retained_cleanup() {
     let now = Instant::now();

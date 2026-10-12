@@ -89,10 +89,12 @@ impl Connections {
         })
     }
     pub fn poll(&mut self, slots: &mut Slots, now: Instant) -> Result<()> {
-        let discovery = self.source.poll(now);
-        self.candidates = discovery.as_ref().map_or_else(|_| vec![], Clone::clone);
+        let (candidates, mut error) = match self.source.poll(now) {
+            Ok(candidates) => (candidates, None),
+            Err(error) => (Vec::new(), Some(error)),
+        };
+        self.candidates = candidates;
         self.invalidate_startup(slots);
-        let mut error = discovery.err();
         for session in &mut self.sessions {
             if let Err(failure) = observe(session, &self.source, self.closed, slots, now) {
                 error.get_or_insert(failure);
