@@ -13,8 +13,13 @@ mod display_observation;
 pub use display_observation::DisplayObservation;
 mod activity_snapshot;
 mod feed;
+mod source_contract;
+mod source_lifetime;
 pub use activity_snapshot::{ActivitySnapshot, ActivityTarget};
 pub use feed::Feed;
+pub use source_contract::{
+    Publication, SourceCreation, SourceFactory, SourceLifetime, StartedSource,
+};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]

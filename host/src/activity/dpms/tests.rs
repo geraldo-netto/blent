@@ -46,12 +46,15 @@ impl Backend for OtherFields {
 async fn t1013_native_pipe_transitions_retain_original_process_until_actual_exit() {
     let root = tempfile::tempdir().unwrap();
     let producer = program(root.path(), "#!/bin/sh\nprintf '%s\\n' '{\"supported\":true,\"on\":true}'\nsleep .03\nprintf '%s\\n' '{\"supported\":true,\"on\":false}'\nsleep .03\nprintf '%s\\n' '{\"supported\":true,\"on\":true}'\nsleep 5\n");
-    let probe = Probe::start(producer, Settings::default()).await.unwrap();
+    let probe = Probe::start(producer, Settings::default(), lifetime())
+        .await
+        .unwrap();
     let proofs = probe.startup.native.clone();
     let mut source = LinuxSource::start(
         fresh_epoch().unwrap(),
         Settings::default(),
         vec![Box::new(probe)],
+        lifetime(),
     )
     .unwrap();
     assert!(source.capabilities().display);
@@ -76,10 +79,15 @@ async fn t1013_native_pipe_extent_schema_and_timeout_reject_before_authority() {
             deadline: Duration::from_millis(50),
             ..Settings::default()
         };
-        let probe = Probe::start(producer, settings).await.unwrap();
+        let probe = Probe::start(producer, settings, lifetime()).await.unwrap();
         assert!(!probe.initial.supported);
-        let mut source =
-            LinuxSource::start(fresh_epoch().unwrap(), settings, vec![Box::new(probe)]).unwrap();
+        let mut source = LinuxSource::start(
+            fresh_epoch().unwrap(),
+            settings,
+            vec![Box::new(probe)],
+            lifetime(),
+        )
+        .unwrap();
         source.stop();
         retired(&source).await;
     }
@@ -96,11 +104,12 @@ async fn t1013_capability_withdrawal_or_stalled_original_clears_only_display_sta
             deadline: Duration::from_millis(100),
             ..Settings::default()
         };
-        let probe = Probe::start(producer, settings).await.unwrap();
+        let probe = Probe::start(producer, settings, lifetime()).await.unwrap();
         let mut source = LinuxSource::start(
             fresh_epoch().unwrap(),
             settings,
             vec![Box::new(OtherFields), Box::new(probe)],
+            lifetime(),
         )
         .unwrap();
         event(&mut source).await;
@@ -121,7 +130,8 @@ async fn t1013_unavailable_and_invalid_programs_retire_without_forged_capabiliti
             executable: "relative".into(),
             arguments: vec![]
         },
-        Settings::default()
+        Settings::default(),
+        lifetime()
     )
     .await
     .is_err());
@@ -131,6 +141,7 @@ async fn t1013_unavailable_and_invalid_programs_retire_without_forged_capabiliti
             arguments: vec![],
         },
         Settings::default(),
+        lifetime(),
     )
     .await
     .unwrap();
@@ -171,13 +182,16 @@ async fn t1013_timed_out_creator_keeps_native_proof_until_late_child_is_reaped()
     let producer = program(root.path(), "#!/bin/sh\nsleep 5\n");
     let (release, hold) = std::sync::mpsc::channel();
     let (entered, start) = tokio::sync::oneshot::channel();
-    let startup = Startup::launch(move || {
-        entered.send(()).unwrap();
-        hold.recv().unwrap();
-        let mut command = Command::new(producer.executable);
-        command.stdout(Stdio::piped()).stderr(Stdio::null());
-        Ok(OwnedChild::spawn(&mut command)?)
-    })
+    let startup = Startup::launch(
+        move || {
+            entered.send(()).unwrap();
+            hold.recv().unwrap();
+            let mut command = Command::new(producer.executable);
+            command.stdout(Stdio::piped()).stderr(Stdio::null());
+            Ok(OwnedChild::spawn(&mut command)?)
+        },
+        lifetime(),
+    )
     .unwrap();
     start.await.unwrap();
     let settings = Settings {
@@ -186,12 +200,72 @@ async fn t1013_timed_out_creator_keeps_native_proof_until_late_child_is_reaped()
     };
     let probe = Probe::from_startup(startup, settings).await.unwrap();
     let proofs = probe.startup.native.clone();
-    let mut source =
-        LinuxSource::start(fresh_epoch().unwrap(), settings, vec![Box::new(probe)]).unwrap();
+    let mut source = LinuxSource::start(
+        fresh_epoch().unwrap(),
+        settings,
+        vec![Box::new(probe)],
+        lifetime(),
+    )
+    .unwrap();
     source.stop();
     assert!(!source.retired());
     release.send(()).unwrap();
     retired(&source).await;
     assert_eq!(proofs.lock().unwrap().len(), 2);
     assert!(proofs.lock().unwrap().iter().all(Completion::is_complete));
+}
+
+#[tokio::test]
+async fn t1018_cancelled_native_constructor_retains_scope_through_late_child_creation_and_reap() {
+    let root = tempfile::tempdir().unwrap();
+    let producer = program(root.path(), "#!/bin/sh\nsleep 5\n");
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let owner = SourceLifetime::new(pool.reserve().unwrap());
+    let proof = owner.completion();
+    let (release, hold) = std::sync::mpsc::channel();
+    let (entered, start) = tokio::sync::oneshot::channel();
+    let native = Arc::new(Mutex::new(None));
+    let child_proof = native.clone();
+    let startup = Startup::launch(
+        move || {
+            entered.send(()).unwrap();
+            hold.recv().unwrap();
+            let mut command = Command::new(producer.executable);
+            command.stdout(Stdio::piped()).stderr(Stdio::null());
+            let child = OwnedChild::spawn(&mut command)?;
+            *child_proof.lock().unwrap() = Some(child.completion());
+            Ok(child)
+        },
+        owner.clone(),
+    )
+    .unwrap();
+    start.await.unwrap();
+    assert!(tokio::time::timeout(
+        Duration::from_millis(10),
+        Probe::from_startup(startup, Settings::default())
+    )
+    .await
+    .is_err());
+    drop(owner);
+    assert!(!proof.is_complete());
+    assert!(pool.reserve().is_err());
+    release.send(()).unwrap();
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while !proof.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(native.lock().unwrap().as_ref().unwrap().is_complete());
+    assert!(pool.reserve().is_ok());
+}
+
+fn lifetime() -> SourceLifetime {
+    SourceLifetime::new(
+        blent_config::retirement::Pool::new(1)
+            .unwrap()
+            .reserve()
+            .unwrap(),
+    )
 }

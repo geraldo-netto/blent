@@ -14,6 +14,7 @@ pub struct Task {
     handle: Option<JoinHandle<Result<()>>>,
     admission: Option<Admission>,
     completion: Completion,
+    leases: Vec<Box<dyn Send + Sync>>,
 }
 impl Task {
     fn reserve() -> io::Result<Admission> {
@@ -34,6 +35,7 @@ impl Task {
             completion: admission.completion(),
             handle: Some(handle),
             admission: Some(admission),
+            leases: Vec::new(),
         }
     }
     pub fn spawn(work: impl Future<Output = Result<()>> + Send + 'static) -> io::Result<Self> {
@@ -52,6 +54,10 @@ impl Task {
     pub fn completion(&self) -> Completion {
         self.completion.clone()
     }
+    /// Keep original dependent ownership through actual task destruction AND join.
+    pub fn keep_alive(&mut self, lease: impl Send + Sync + 'static) {
+        self.leases.push(Box::new(lease));
+    }
 }
 impl Future for Task {
     type Output = Result<Result<()>, JoinError>;
@@ -68,17 +74,23 @@ impl Drop for Task {
     fn drop(&mut self) {
         if let Some(handle) = self.handle.take() {
             handle.abort();
-            self.admission.take().unwrap().retain(Retiring(handle));
+            self.admission.take().unwrap().retain(Retiring {
+                handle,
+                _leases: std::mem::take(&mut self.leases),
+            });
         }
     }
 }
-struct Retiring(JoinHandle<Result<()>>);
+struct Retiring {
+    handle: JoinHandle<Result<()>>,
+    _leases: Vec<Box<dyn Send + Sync>>,
+}
 impl Observe for Retiring {
     fn poll_complete(&mut self) -> bool {
-        if !self.0.is_finished() {
+        if !self.handle.is_finished() {
             return false;
         }
-        let Some(result) = (&mut self.0).now_or_never() else {
+        let Some(result) = (&mut self.handle).now_or_never() else {
             return false;
         };
         match result {

@@ -556,3 +556,34 @@ fn t1013_display_observation_contract_rejects_invalid_and_oversized_frames() {
     }
     assert!(DisplayObservation::decode(&vec![b' '; 257]).is_err());
 }
+
+#[test]
+fn t1018_independent_lifetime_contract_requires_every_original_certificate_and_last_clone() {
+    for hold_clone in [false, true] {
+        let owners = Pool::new(1).unwrap();
+        let native = Pool::new(2).unwrap();
+        let first = native.reserve().unwrap();
+        let second = native.reserve().unwrap();
+        let lifetime = SourceLifetime::new(owners.reserve().unwrap());
+        lifetime.retain(first.completion());
+        lifetime.retain(second.completion());
+        let completion = lifetime.completion();
+        let mut clone = hold_clone.then(|| lifetime.clone());
+        drop(lifetime);
+        drop(first);
+        assert!(!completion.is_complete());
+        assert!(owners.reserve().is_err());
+        drop(second);
+        if hold_clone {
+            assert!(!completion.is_complete());
+            assert!(owners.reserve().is_err());
+            drop(clone.take());
+        }
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(3);
+        while !completion.is_complete() {
+            assert!(std::time::Instant::now() < deadline);
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert!(owners.reserve().is_ok());
+    }
+}

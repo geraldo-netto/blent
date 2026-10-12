@@ -8,7 +8,7 @@ impl LinuxSource {
     ) -> Result<Self> {
         settings.validate()?;
         let actors = Self::discover(system, session, settings, session_id, desktop).await;
-        Self::start(fresh_epoch()?, settings, actors)
+        Self::start(fresh_epoch()?, settings, actors, lifetime())
     }
 }
 use super::*;
@@ -210,7 +210,9 @@ async fn t1008_private_native_transitions_and_actual_source_retirement() {
         return;
     }
     let fixture = Fixture::new().await;
-    let mut source = LinuxSource::connect(Settings::default()).await.unwrap();
+    let mut source = LinuxSource::connect(Settings::default(), lifetime())
+        .await
+        .unwrap();
     assert_eq!(
         source.capabilities(),
         Capabilities {
@@ -358,18 +360,24 @@ async fn t1008_unavailable_buses_and_invalid_settings_remain_explicit() {
     assert!(source.retired());
     source.stop();
     for deadline in [Duration::ZERO, Duration::from_secs(61), Duration::MAX] {
-        assert!(LinuxSource::connect(Settings {
-            deadline,
-            ..Settings::default()
-        })
+        assert!(LinuxSource::connect(
+            Settings {
+                deadline,
+                ..Settings::default()
+            },
+            lifetime()
+        )
         .await
         .is_err());
     }
     for queue in [0, 257, usize::MAX] {
-        assert!(LinuxSource::connect(Settings {
-            queue,
-            ..Settings::default()
-        })
+        assert!(LinuxSource::connect(
+            Settings {
+                queue,
+                ..Settings::default()
+            },
+            lifetime()
+        )
         .await
         .is_err());
     }
@@ -436,7 +444,9 @@ async fn t1008_source_stop_keeps_actual_held_native_retirement() {
 #[tokio::test]
 async fn t1008_private_missing_owners_are_unsupported_and_cannot_invent_observations() {
     if !private("activity::tests::t1008_private_missing_owners_are_unsupported_and_cannot_invent_observations") { return; }
-    let mut source = LinuxSource::connect(Settings::default()).await.unwrap();
+    let mut source = LinuxSource::connect(Settings::default(), lifetime())
+        .await
+        .unwrap();
     assert_eq!(source.capabilities(), Capabilities::default());
     assert_eq!(event(&mut source).await.state, HostState::default());
     source.stop();
@@ -449,4 +459,118 @@ fn t1008_compositor_properties_do_not_claim_direct_x11_display_power() {
     for session in ["", "x11", "tty", "Wayland", "unknown"] {
         assert_eq!(compositor_desktop(session, "Cinnamon"), "");
     }
+}
+
+async fn followed(
+    reader: &mut tokio::sync::watch::Receiver<blent_config::host_activity::Publication>,
+    predicate: impl Fn(blent_config::host_activity::ActivitySnapshot) -> bool,
+) -> blent_config::host_activity::ActivitySnapshot {
+    use blent_config::host_activity::Publication;
+    let ready = tokio::time::timeout(
+        Duration::from_secs(3),
+        reader.wait_for(
+            |value| matches!(value, Publication::Observed { snapshot, .. } if predicate(*snapshot)),
+        ),
+    )
+    .await
+    .unwrap()
+    .unwrap();
+    let Publication::Observed { snapshot, .. } = *ready else {
+        unreachable!()
+    };
+    snapshot
+}
+#[tokio::test]
+async fn t1018_private_native_factory_follows_configured_preferences_and_original_source_cleanup() {
+    if !private("activity::tests::t1018_private_native_factory_follows_configured_preferences_and_original_source_cleanup") { return; }
+    let fixture = Fixture::new().await;
+    let following = crate::activity_follow::Following::start(
+        Arc::new(Factory),
+        crate::activity_follow::Settings {
+            interval: Duration::from_millis(1),
+            ..Default::default()
+        },
+        blent_config::host_activity::Settings {
+            pause_on_lock: false,
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    let mut reader = following.subscribe();
+    let first = followed(&mut reader, |snapshot| snapshot.demand.stamp.revision > 0).await;
+    assert!(first.demand.display && first.demand.auxiliary);
+    fixture
+        .changed(SESSION_PATH, SESSION, "LockedHint", Some(true.into()))
+        .await;
+    let locked = followed(&mut reader, |snapshot| {
+        snapshot.demand.stamp.revision > first.demand.stamp.revision
+    })
+    .await;
+    assert!(locked.demand.display && locked.demand.auxiliary);
+    fixture.power("PrepareForSleep", true).await;
+    let asleep = followed(&mut reader, |snapshot| !snapshot.demand.auxiliary).await;
+    assert!(!asleep.demand.display);
+    fixture.power("PrepareForSleep", false).await;
+    let resumed = followed(&mut reader, |snapshot| snapshot.demand.auxiliary).await;
+    assert!(resumed.must_retire(
+        blent_config::host_activity::ActivityTarget::Auxiliary,
+        first.demand.stamp
+    ));
+    following.stop();
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while !following.retired() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert_eq!(
+        *reader.borrow(),
+        blent_config::host_activity::Publication::Stopped
+    );
+}
+
+fn lifetime() -> SourceLifetime {
+    SourceLifetime::new(
+        blent_config::retirement::Pool::new(1)
+            .unwrap()
+            .reserve()
+            .unwrap(),
+    )
+}
+
+#[tokio::test]
+async fn t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power() {
+    if !private("activity::tests::t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power") { return; }
+    // This isolated test executable lacks the daemon's private helper dispatcher.
+    // Failed helper framing must not borrow a potentially stale X11 compositor hint.
+    std::env::set_var("XDG_SESSION_TYPE", "x11");
+    let fixture = Fixture::new().await;
+    fixture.values.display.store(3, Ordering::Release);
+    let following = crate::activity_follow::Following::start(
+        Arc::new(Factory),
+        crate::activity_follow::Settings {
+            interval: Duration::from_millis(1),
+            ..Default::default()
+        },
+        Default::default(),
+    )
+    .unwrap();
+    let mut reader = following.subscribe();
+    let snapshot = followed(&mut reader, |snapshot| snapshot.demand.stamp.revision > 0).await;
+    let blent_config::host_activity::Publication::Observed { capabilities, .. } = *reader.borrow()
+    else {
+        unreachable!()
+    };
+    assert!(capabilities.power && capabilities.lock);
+    assert!(!capabilities.display);
+    assert!(snapshot.demand.display && snapshot.demand.auxiliary);
+    following.stop();
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while !following.retired() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
 }

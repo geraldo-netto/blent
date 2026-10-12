@@ -142,12 +142,53 @@ loss does not fabricate a new native revision or infer shutdown from transport.
 Capture composition is T1015, USB registration composition T1016 and joined host
 display acceptance T1009; auxiliary integration remains T1010. This decomposition
 preserves the remaining work and does not establish running pause/resume support.
-T1018 first composes the shared source/feed lifecycle and actual native ownership.
+T1018 supplies the shared source/feed lifecycle and actual native ownership.
 Owner decision (2026-10-12): host lock/display-off must keep the virtual monitor in
 the desktop layout while capture/encoding pauses. T1015 separates retained monitor
 ownership from stoppable capture/encoder workers, preserving ordinary attachment
 loss and shutdown cleanup. Removing/recreating the output and moving windows on
 host lock/display-off is not an acceptable substitute for a capture pause.
+
+## Owned source following (T1018, 2026-10-12)
+
+`SourceFactory`, `StartedSource`, `SourceLifetime` and `Publication` are independent
+common contracts. `host/src/activity_follow::Following` reserves capacity before
+exposing asynchronous creation. Publication distinguishes pending, observed,
+failed and stopped; observed values include immutable capabilities and retained
+host stop fences. All-false capabilities explicitly mean unsupported. Supported
+source loss publishes conservatively unknown fields and is terminal for that feed.
+The Linux factory retains D-Bus and the separately owned X11 helper adapters.
+
+Source lifetimes register the exact creator/task/child completion certificates.
+Both last-lease destruction and every registered certificate must complete before
+the reservation can be reused. Native task leases survive actual task destruction
+and join; helper leases survive process reap and cleanup. Dropped or timed-out
+creation cannot release a late original native owner. Logical stop publishes its
+terminal state immediately and wakes the controller; late publication cannot revive
+it, and its actual retirement remains a separate observation.
+
+The controller consumes at most the configured source queue capacity per turn.
+Concurrent replenishment leaves events for a later turn rather than pretending
+that the source overflowed. The adapter owns actual queue overflow enforcement.
+Identical snapshots do not wake subscribers. Replayed/foreign/invalid events and
+source errors close following conservatively; creator and observer panics cannot
+publish an acquisition grant. Each resource still requires its own current
+authority and actual retirement under the existing Gate.
+
+Defaults are a 10-second total creation deadline and 50 ms observation interval;
+valid intervals are 1 ms–1 second and creation deadlines positive–600 seconds.
+Existing source defaults remain 2 seconds per native operation and 32 events.
+Short intervals improve event response at a polling cost; larger intervals reduce
+polling but delay following and need enough queue capacity for transitions. The
+`BLENT_ACTIVITY_LIMIT` bounds concurrently active/retiring source owners, default 1,
+range 1–4; exhausted capacity rejects before creation. These are typed/backend
+controls; persisted user-facing capacity controls remain T898.
+
+This controller and the Linux factory are validated library components. Daemon
+capture/monitor and independent auxiliary composition remain T1015/T1016/T1010,
+with Android and final acceptance under T1011/T1009/T914. Native private fixtures
+do not establish physical lock/suspend, monitor-layout retention, distro-wide
+acceptance or power savings. No such production integration claim is made.
 
 Permanent normal-suite tests exercise all capability byte values, all eight
 preference combinations, invalid TOML values, source/revision boundaries, concurrent

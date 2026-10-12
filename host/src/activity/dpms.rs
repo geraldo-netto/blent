@@ -35,32 +35,43 @@ struct Startup {
     native: Arc<Mutex<Vec<Completion>>>,
 }
 impl Startup {
-    fn begin(program: Program) -> Result<Self> {
+    fn begin(program: Program, lifetime: SourceLifetime) -> Result<Self> {
         ensure!(
             program.executable.is_absolute(),
             "invalid DPMS helper executable"
         );
-        Self::launch(move || {
-            let mut command = Command::new(program.executable);
-            command
-                .args(program.arguments)
-                .stdin(Stdio::null())
-                .stdout(Stdio::piped())
-                .stderr(Stdio::null());
-            Ok(OwnedChild::spawn(&mut command)?)
-        })
+        Self::launch(
+            move || {
+                let mut command = Command::new(program.executable);
+                command
+                    .args(program.arguments)
+                    .stdin(Stdio::null())
+                    .stdout(Stdio::piped())
+                    .stderr(Stdio::null());
+                Ok(OwnedChild::spawn(&mut command)?)
+            },
+            lifetime,
+        )
     }
-    fn launch(create: impl FnOnce() -> Result<OwnedChild> + Send + 'static) -> Result<Self> {
+    fn launch(
+        create: impl FnOnce() -> Result<OwnedChild> + Send + 'static,
+        lifetime: SourceLifetime,
+    ) -> Result<Self> {
         let (send, child) = oneshot::channel();
         let native = Arc::new(Mutex::new(Vec::new()));
         let proof = native.clone();
-        let task = Task::spawn_blocking(move || {
-            let child = create()?;
+        let child_lifetime = lifetime.clone();
+        let mut task = Task::spawn_blocking(move || {
+            let mut child = create()?;
+            child_lifetime.retain(child.completion());
+            child.keep_alive(child_lifetime);
             // Capture original native ownership BEFORE any cancellable result.
             proof.lock().unwrap().push(child.completion());
             let _ = send.send(child);
             Ok(())
         })?;
+        lifetime.retain(task.completion());
+        task.keep_alive(lifetime);
         native.lock().unwrap().push(task.completion());
         Ok(Self {
             task: Some(task),
@@ -116,9 +127,13 @@ pub(super) struct Probe {
     live: bool,
 }
 impl Probe {
-    pub async fn start(program: Program, settings: Settings) -> Result<Self> {
+    pub async fn start(
+        program: Program,
+        settings: Settings,
+        lifetime: SourceLifetime,
+    ) -> Result<Self> {
         settings.validate()?;
-        Self::from_startup(Startup::begin(program)?, settings).await
+        Self::from_startup(Startup::begin(program, lifetime)?, settings).await
     }
     async fn from_startup(mut startup: Startup, settings: Settings) -> Result<Self> {
         let mut child = startup

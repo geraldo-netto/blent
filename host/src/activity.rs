@@ -1,7 +1,9 @@
 //! T1008: read-only Linux activity observations, independently owned per backend.
 use crate::owned_task::Task;
 use anyhow::{ensure, Result};
-use blent_config::host_activity::{Capabilities, Event, HostState, Observations, Source};
+use blent_config::host_activity::{
+    Capabilities, Event, HostState, Observations, Source, SourceLifetime,
+};
 use futures_util::FutureExt;
 use std::{
     sync::{
@@ -78,6 +80,7 @@ struct Shared {
     observations: Mutex<Observations>,
     stopped: AtomicBool,
     wake: Notify,
+    lifetime: SourceLifetime,
 }
 impl Shared {
     fn state(&self) -> std::sync::MutexGuard<'_, Observations> {
@@ -109,8 +112,9 @@ pub struct LinuxSource {
     tasks: Mutex<Vec<Work>>,
 }
 impl LinuxSource {
-    pub async fn connect(settings: Settings) -> Result<Self> {
+    pub async fn connect(settings: Settings, lifetime: SourceLifetime) -> Result<Self> {
         settings.validate()?;
+        let epoch = fresh_epoch()?; // Reserve identity before acquiring any native owner.
         let system = tokio::time::timeout(settings.deadline, zbus::Connection::system())
             .await
             .ok()
@@ -133,12 +137,18 @@ impl LinuxSource {
         )
         .await;
         if session_kind == "x11" {
-            match dpms::Probe::start(dpms::Program::current(settings)?, settings).await {
+            match dpms::Probe::start(
+                dpms::Program::current(settings)?,
+                settings,
+                lifetime.clone(),
+            )
+            .await
+            {
                 Ok(probe) => actors.push(Box::new(probe)),
                 Err(error) => tracing::warn!(%error, "X11 display-power observation unavailable"),
             }
         }
-        Self::start(fresh_epoch()?, settings, actors)
+        Self::start(epoch, settings, actors, lifetime)
     }
     async fn discover(
         system: Option<zbus::Connection>,
@@ -175,7 +185,12 @@ impl LinuxSource {
         }
         actors
     }
-    fn start(epoch: u64, settings: Settings, actors: Vec<Box<dyn Backend>>) -> Result<Self> {
+    fn start(
+        epoch: u64,
+        settings: Settings,
+        actors: Vec<Box<dyn Backend>>,
+        lifetime: SourceLifetime,
+    ) -> Result<Self> {
         let mut capabilities = Capabilities::default();
         let mut state = HostState::default();
         for actor in &actors {
@@ -187,6 +202,7 @@ impl LinuxSource {
             observations: Mutex::new(observations),
             stopped: AtomicBool::new(false),
             wake: Notify::new(),
+            lifetime,
         });
         let mut source = Self {
             epoch,
@@ -203,12 +219,39 @@ impl LinuxSource {
         Ok(source)
     }
     fn spawn(&self, actor: Box<dyn Backend>) -> Result<()> {
-        let work = actor.spawn(self.shared.clone())?;
+        let mut work = actor.spawn(self.shared.clone())?;
+        self.shared.lifetime.retain(
+            work.task
+                .as_ref()
+                .expect("unexposed activity task")
+                .completion(),
+        );
+        work.task
+            .as_mut()
+            .expect("unexposed activity task")
+            .keep_alive(self.shared.lifetime.clone());
         self.tasks.lock().unwrap().push(work);
         Ok(())
     }
     pub fn epoch(&self) -> u64 {
         self.epoch
+    }
+}
+/// Native implementation of the independently defined source factory contract.
+pub struct Factory;
+impl blent_config::host_activity::SourceFactory for Factory {
+    fn create(
+        &self,
+        settings: Settings,
+        lifetime: SourceLifetime,
+    ) -> blent_config::host_activity::SourceCreation {
+        Box::pin(async move {
+            let source = LinuxSource::connect(settings, lifetime).await?;
+            Ok(blent_config::host_activity::StartedSource {
+                epoch: source.epoch(),
+                source: Box::new(source),
+            })
+        })
     }
 }
 impl Source for LinuxSource {
