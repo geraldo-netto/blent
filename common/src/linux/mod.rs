@@ -29,4 +29,5 @@ pub fn daemon_is_running(pid: u32) -> bool {
         .unwrap_or(false)
 }
 
+pub mod capture_control;
 pub mod packet;
