@@ -1566,6 +1566,17 @@ no media authority.
 shared schema and changed Linux consumers. Native Windows test checking exposed
 an older fixture initializer defect, retained separately as T926.
 
+## T990 immutable media endpoint metadata
+
+The shared Android media access adapter now projects typed endpoint metadata
+once per exact publication. Choice or peer replacement reprojects equal-looking
+metadata, withdrawal clears it, and current authentication, publication identity
+and target matching remain necessary on every capture. The bounded local JVM
+fixture reduces median allocation from approximately 21.4 KB to 24 bytes per
+capture; this is not Android power or physical media acceptance evidence.
+[Permanent regressions, measurements and native per-method counters](artifacts/2026-10-16-t990/README.md)
+retain the evidence and its limits.
+
 ## T924 selected USB discovery lifetime
 
 One portable `connection_discovery::Discovery` owns a nonblocking broker-control client.

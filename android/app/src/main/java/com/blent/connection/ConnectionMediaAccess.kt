@@ -15,9 +15,9 @@ internal class ConnectionMediaAccess<C : ConnectionMediaChoice, O : MediaAccessO
     private val permission: (C, Boolean, MediaLocalConsent) -> Boolean,
 ) {
     private class Original(val peer: ConnectionChoice, val lease: ConnectionResourceLease) { val identity = Any() }
+    private class Publication<C, O, E>(val choice: C, val offer: O, val endpoint: E?)
     private var original: Original? = null
-    private var published: C? = null
-    private var access: O? = null
+    private var published: Publication<C, O, E>? = null
     private val targets = targets
     val offers: Flow<O?> = binding.state.map { project(binding.state.value) }
     val captures: Flow<MediaConsumerPublication<T>?> = combine(binding.state, targets) { _, _ -> capture() }
@@ -26,20 +26,23 @@ internal class ConnectionMediaAccess<C : ConnectionMediaChoice, O : MediaAccessO
         val offer = project() ?: return null
         if (!offer.admitted) return null
         val choice = currentChoice(binding.state.value) ?: return null
+        val publication = published ?: return null
         val target = targets.value ?: return null
-        if (target.endpoint != endpoint(choice)) return null
+        if (publication.choice !== choice || target.endpoint != publication.endpoint) return null
         return MediaConsumerPublication(offer.owner, target)
     }
     fun project(view: ConnectionView = binding.state.value): O? {
         val choice = currentChoice(view)
         if (choice == null) { clear(); return null }
         val peer = checkNotNull(view.peer)
-        if (published === choice && original?.peer === peer) return access
+        val previous = published
+        if (previous?.choice === choice && original?.peer === peer) return previous.offer
         val owner = original(peer, choice.lease)
-        published = choice
-        return offer(owner.identity, choice, authority(owner, choice)).also { access = it }
+        val publication = Publication(choice, offer(owner.identity, choice, authority(owner, choice)), endpoint(choice))
+        published = publication
+        return publication.offer
     }
-    private fun clear() { original = null; published = null; access = null }
+    private fun clear() { original = null; published = null }
     private fun original(peer: ConnectionChoice, lease: ConnectionResourceLease): Original {
         val previous = original
         if (previous?.peer === peer && previous.lease == lease) return previous
