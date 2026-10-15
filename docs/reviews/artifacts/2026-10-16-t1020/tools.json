@@ -1,0 +1,7 @@
+{
+  "rust": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "coverage": "cargo-llvm-cov 0.8.7",
+  "complexity": "repository Sonar-rule source audit; tree-sitter 0.25.2; tree-sitter-rust 0.24.2",
+  "sdk": "org.freedesktop.Sdk 25.08; libavcodec 61.19.101",
+  "native_sonar": "unavailable; T1019"
+}

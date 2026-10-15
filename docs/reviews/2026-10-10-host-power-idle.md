@@ -198,6 +198,15 @@ attestation are retained in [T913 evidence](artifacts/2026-10-12-t913/README.md)
 
 ## Linux observation adapters (T1008, 2026-10-12)
 
+T1020 (2026-10-16) now retains the original capture helper's native completion
+before awaiting its startup handshake. Cancellation or malformed startup cannot
+permit another helper while original reap-dependent cleanup is held. Permanent
+normal-suite cancellation/error regressions and joined CLI/SDK per-function
+counters are retained in [startup ownership evidence](artifacts/2026-10-16-t1020/README.md).
+Retained-monitor native pause remains T1021; source/capture and late stdout
+publication composition remain T1015. This prerequisite is not activity-runtime
+acceptance or a claim that a physical display was paused.
+
 `common/src/host_activity::SourceSettings` defines independent capacity/deadline
 contracts. `Observations` preserves each distinct full-state transition with
 strictly increasing revisions in one immutable epoch. A full queue discards its

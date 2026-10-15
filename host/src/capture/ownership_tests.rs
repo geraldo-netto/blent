@@ -2,7 +2,7 @@
 use super::*;
 use std::os::unix::fs::{FileTypeExt, MetadataExt, PermissionsExt};
 
-fn isolated(name: &str) -> bool {
+pub(super) fn isolated(name: &str) -> bool {
     if std::env::var_os("BLENT_T429_RUNTIME").is_none() {
         let root = tempfile::Builder::new()
             .permissions(std::fs::Permissions::from_mode(0o700))

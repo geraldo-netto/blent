@@ -191,6 +191,14 @@ impl HelperProcess {
     }
 
     pub(super) async fn start(&mut self, config: &CaptureConfig) -> Result<()> {
+        self.start_with(config, Child::spawn).await
+    }
+
+    async fn start_with(
+        &mut self,
+        config: &CaptureConfig,
+        spawn: impl FnOnce(&mut Command) -> std::io::Result<Child>,
+    ) -> Result<()> {
         process::ensure_retired(&self.pending)?;
         crate::config::validate_encoder_for_build(&config.encoder)?;
         if config.shared_raw() {
@@ -203,7 +211,10 @@ impl HelperProcess {
         let mut command = self.command(config, &fifo)?;
         #[cfg(feature = "inproc-encoder")]
         self.attach_raw_socket(config, &mut command)?;
-        let mut child = Child::spawn(&mut command).context("Failed to spawn evdi-helper")?;
+        let mut child = spawn(&mut command).context("Failed to spawn evdi-helper")?;
+        // The handshake can be canceled or fail after native exposure. Retain
+        // its exact cleanup certificate before the first fallible/awaiting step.
+        self.pending = Some(child.completion());
         child.keep_alive(self.fifo.clone());
         let stdout = child
             .stdout
@@ -233,6 +244,7 @@ impl HelperProcess {
             Ok(())
         })?);
         self.child = Some(child);
+        self.pending = None;
         Ok(())
     }
 
@@ -380,6 +392,10 @@ impl HelperProcess {
         let _ = mode_tx.send(Some(mode));
     }
 }
+
+#[cfg(test)]
+#[path = "helper/startup_ownership_tests.rs"]
+mod startup_ownership_tests;
 
 pub(super) fn ensure_fifo(path: &Path) -> Result<()> {
     // Anything already there is replaced, whatever it is: a stale FIFO
