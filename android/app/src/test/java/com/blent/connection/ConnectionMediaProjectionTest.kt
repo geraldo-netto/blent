@@ -8,13 +8,6 @@ import org.junit.Test
 
 /** T990: metadata reuse never substitutes for original publication authority. */
 class ConnectionMediaProjectionTest {
-    private class Allocations {
-        private val bean = Class.forName("java.lang.management.ManagementFactory")
-            .getMethod("getThreadMXBean").invoke(null)
-        private val getter = Class.forName("com.sun.management.ThreadMXBean")
-            .getMethod("getThreadAllocatedBytes", Long::class.javaPrimitiveType)
-        fun read() = (getter.invoke(bean, Thread.currentThread().id) as Long).also { assertTrue(it >= 0) }
-    }
     private class Worker(val report: (ConnectionWorkerEvent) -> Unit) : ConnectionWorker {
         val release = CompletableDeferred<Unit>()
         override suspend fun execute() = awaitCancellation()
@@ -118,7 +111,7 @@ class ConnectionMediaProjectionTest {
     @Test fun t990BoundedJvmAllocationAndTimingMeasurement() = Rig().use { rig ->
         rig.connect(); rig.select()
         repeat(128) { checkNotNull(rig.access.capture()) }
-        val allocations = Allocations()
+        val allocations = JvmAllocations()
         repeat(3) { sample ->
             val before = allocations.read()
             val started = System.nanoTime()

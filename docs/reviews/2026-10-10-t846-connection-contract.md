@@ -1577,6 +1577,18 @@ capture; this is not Android power or physical media acceptance evidence.
 [Permanent regressions, measurements and native per-method counters](artifacts/2026-10-16-t990/README.md)
 retain the evidence and its limits.
 
+## T987 completed producer scratch reuse
+
+Local channel producers now reuse completed partial/empty-read scratch only after
+pending copied bytes are accepted. Full blocks permanently transfer their own
+arrays and continue using independent storage for subsequent reads. Cancellation
+and timeout cannot release native ownership, and stale completion rejection
+still uses exact request identity even when array storage is reused.
+The bounded local JVM fixture saves one 65,552-byte allocation per completed
+partial/empty read with a 65,536-byte block. Held idle reads and full-block
+allocation are unchanged. [Permanent regressions and native counters](artifacts/2026-10-16-t987/README.md)
+retain the measured scope; physical media/power acceptance remains separate.
+
 ## T924 selected USB discovery lifetime
 
 One portable `connection_discovery::Discovery` owns a nonblocking broker-control client.

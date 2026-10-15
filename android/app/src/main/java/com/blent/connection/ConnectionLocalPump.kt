@@ -86,6 +86,7 @@ internal class LocalChannelProducer(private val block: Int, timeoutMs: Long) {
     private val clock = ConnectionFrameClock(timeoutMs)
     private var native: ConnectionIoRequest.Read? = null
     private var pending: ByteArray? = null
+    private var reusable: ByteArray? = null
     init { require(block in 1..ConnectionWire.MAX_PAYLOAD) }
 
     fun tick(now: Long) = clock.check(now)
@@ -98,7 +99,9 @@ internal class LocalChannelProducer(private val block: Int, timeoutMs: Long) {
             clock.clear()
         }
         if (native != null) return
-        val request = ConnectionIoRequest.Read(ConnectionBuffer(ByteArray(block), 0, block))
+        val bytes = reusable ?: ByteArray(block)
+        reusable = null
+        val request = ConnectionIoRequest.Read(ConnectionBuffer(bytes, 0, block))
         native = request
         check(io.submit(request)) { "Local read admission lost" }
     }
@@ -109,6 +112,9 @@ internal class LocalChannelProducer(private val block: Int, timeoutMs: Long) {
         if (stopped) return
         result.failure?.let { throw it }
         require(result.count in 0..request.loan.length) { "Local producer EOF or invalid read extent" }
+        // Partial payloads own a copy; only their completed scratch can return.
+        // Full blocks transfer permanently through pending and endpoint.offer.
+        reusable = if (result.count < block) request.loan.bytes else null
         if (result.count == 0) return
         clock.start(now)
         pending = if (result.count == block) request.loan.bytes else request.loan.bytes.copyOf(result.count)
