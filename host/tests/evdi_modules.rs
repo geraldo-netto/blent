@@ -26,6 +26,8 @@ fn t380_independent_contexts_preserve_frame_and_callback_lifetimes() {
                 "frame_exchange.c",
                 "fifo_writer.c",
                 "capture.c",
+                "capture_activity.c",
+                "capture_control.c",
                 "cursor_overlay.c",
                 "raw_ring.c",
                 "writer.c",

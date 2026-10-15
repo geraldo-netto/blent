@@ -7,6 +7,21 @@ use std::{path::PathBuf, process::Command};
 struct Harness(PathBuf);
 
 #[test]
+fn t1021_pause_retains_monitor_and_waits_for_original_writer() {
+    let harness = Harness::build("T1021");
+    for case in [
+        "T1021-wire",
+        "T1021-control",
+        "T1021-pause",
+        "T1021-raw",
+        "T1021-boundaries",
+        "T1021-rights",
+    ] {
+        harness.run(case);
+    }
+}
+
+#[test]
 fn t789_owned_cursor_retains_native_pixels() {
     Harness::build("T753").run("T789");
 }
@@ -82,7 +97,8 @@ impl Harness {
             compiler.args(["-fsanitize=undefined", "-fno-sanitize-recover=undefined"]);
         } else if matches!(
             case,
-            "T752"
+            "T1021"
+                | "T752"
                 | "T753"
                 | "T760"
                 | "T762"

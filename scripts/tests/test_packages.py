@@ -99,6 +99,9 @@ exit 0
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 self.assertTrue((root / f'dist/blent-{version}-linux-x86_64.tar.gz').is_file())
                 self.assertFalse((root / 'INJECTED').exists())
+                arguments = (root / 'native-helper-arguments').read_text()
+                self.assertIn('host/evdi/capture_activity.c', arguments, 'T1021: release links wire contract')
+                self.assertIn('host/evdi/capture_control.c', arguments, 'T1021: release links native control')
 
     def test_t236_release_rejects_new_glibc_in_bundled_evdi(self):
         from test_notices import NoticeTest
@@ -126,6 +129,7 @@ exit 0
         }
         for name in ['cargo', 'make', 'gcc']:
             files['bin/' + name] = '#!/bin/sh\nexit 0\n'
+        files['bin/gcc'] = '#!/bin/sh\nprintf "%s\\n" "$*" > "$PWD/native-helper-arguments"\n'
         for name in ['release/blent', 'release/blent-gui', 'release/blent-audio', 'evdi_helper', 'evdi-src/library/libevdi.so.1.15.0']:
             files['target-deb12/' + name] = '#!/bin/sh\nexit 0\n'
         for name, text in files.items():

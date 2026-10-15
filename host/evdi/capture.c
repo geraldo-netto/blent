@@ -84,16 +84,28 @@ static void draw_cursor(capture_context_t *capture) {
         capture->mode_w, capture->mode_h, capture->mode_stride));
 }
 
-static void publish_frame(capture_context_t *capture) {
+static int capture_active(const capture_context_t *capture)
+{
+    if (!capture->control)
+        return 1;
+    return capture->control->current.active;
+}
+
+static void publish_frame(capture_context_t *capture)
+{
+    if (!capture_active(capture))
+        return;
     if (!frame_exchange_is_ready(capture->frames) || !capture->framebuffer)
         return;
-    if (capture->raw_ring) {
+    if (capture->raw_ring)
+    {
         capture->raw_pending = 1;
         return;
     }
 
     unsigned generation;
-    if (!frame_exchange_begin(capture->frames, &generation)) return;
+    if (!frame_exchange_begin(capture->frames, &generation))
+        return;
     /* Reconnecting FIFO readers need a full refresh, otherwise convert only
      * the chroma-aligned regions this particular buffer is missing. */
     frame_target_t target = frame_exchange_target(capture->frames);
@@ -322,7 +334,10 @@ static void normalize_framebuffer(capture_context_t *capture, const struct evdi_
     for (int i = 0; i < count; i++) normalize_framebuffer_rect(capture, rects[i]);
 }
 
-static void grab_now(capture_context_t *capture) {
+static void grab_now(capture_context_t *capture)
+{
+    if (!capture_active(capture))
+        return;
     struct evdi_rect rects[64];
     int num_rects = 64;
     restore_cursor(capture);
@@ -333,8 +348,10 @@ static void grab_now(capture_context_t *capture) {
     normalize_framebuffer(capture, rects, num_rects);
     draw_cursor(capture);
     capture->grab_n++;
-    if (num_rects <= 0) capture->empty_n++;
-    if (num_rects > 0) {
+    if (num_rects <= 0)
+        capture->empty_n++;
+    if (num_rects > 0)
+    {
         capture->grab_count++;
         capture->grab_us = grabbed_us;
         /* Under the swap lock: the writer thread reassigns the mask pointers
@@ -349,11 +366,14 @@ static void grab_now(capture_context_t *capture) {
     }
 }
 
-static void on_update_ready(int buffer_to_be_updated, void *user_data) {
+static void on_update_ready(int buffer_to_be_updated, void *user_data)
+{
     capture_context_t *capture = user_data;
     (void)buffer_to_be_updated;
-    if (capture->capture_failed) return;
-    if (capture->update_pending) {
+    if (capture->capture_failed || !capture_active(capture))
+        return;
+    if (capture->update_pending)
+    {
         capture->wait_sum_us += capture_now_us() - capture->req_us;
         capture->wait_n++;
     }
@@ -429,7 +449,10 @@ static long capture_period_ms(capture_context_t *capture) {
     return (long)((1000 + fps - 1) / fps);
 }
 
-static int capture_poll_timeout(capture_context_t *capture, long request_period_ms) {
+static int capture_poll_timeout(capture_context_t *capture, long request_period_ms)
+{
+    if (!capture_active(capture))
+        return 100;
     /* Sleep exactly until the next capture request is due instead of a
        fixed 4ms tick. The fixed tick quantised every request to a 4ms grid,
        adding up to 4ms of jitter per frame — a quarter of the entire budget
@@ -438,9 +461,12 @@ static int capture_poll_timeout(capture_context_t *capture, long request_period_
        would sit permanently in the past — poll would return instantly and
        the loop would spin at 100% of a core. Wait on events only. */
     long long timeout_ms;
-    if (!capture->have_mode) {
+    if (!capture->have_mode)
+    {
         timeout_ms = 100;
-    } else if (capture->update_pending) {
+    }
+    else if (capture->update_pending)
+    {
         /* Waiting for update_ready. The capture deadline below has already
            passed and cannot advance until the request completes, so
            deriving a timeout from it yields 0 forever and poll returns
@@ -453,13 +479,17 @@ static int capture_poll_timeout(capture_context_t *capture, long request_period_
            compositor is actually running. */
         long long left = capture->last_request_ms + 250 - capture_now_ms();
         timeout_ms = left < 0 ? 0 : (left > 250 ? 250 : (int)left);
-    } else {
+    }
+    else
+    {
         long long due = capture->last_request_ms + request_period_ms;
         /* Keep overdue deadlines wide until bounded, including a first
            request after weeks of system uptime. */
         timeout_ms = due - capture_now_ms();
-        if (timeout_ms < 0) timeout_ms = 0;
-        if (timeout_ms > INT_MAX) timeout_ms = INT_MAX;
+        if (timeout_ms < 0)
+            timeout_ms = 0;
+        if (timeout_ms > INT_MAX)
+            timeout_ms = INT_MAX;
     }
 
     return (int)timeout_ms;
@@ -535,42 +565,127 @@ static int capture_wakeup_fd(const capture_context_t *capture) {
     return frame_exchange_wakeup_fd(capture->frames);
 }
 
+static void resume_capture(capture_context_t *capture)
+{
+    if (!capture->have_mode || capture->capture_failed)
+        return;
+    mark_all_dirty(capture);
+    frame_exchange_set_ready(capture->frames, 1);
+    capture->update_pending = 0;
+    capture->last_request_ms = capture_now_ms();
+    capture->raw_sent_us = 0;
+    long long previous = capture->grab_count;
+    /* A queued flip must be acknowledged before any new update request (T599).
+     * Even an unchanged image must seed the new encoder's first full frame. */
+    grab_now(capture);
+    if (capture->grab_count == previous)
+        publish_frame(capture);
+}
+
+static void apply_capture_activity(capture_context_t *capture)
+{
+    if (capture_active(capture))
+        resume_capture(capture);
+    else
+    {
+        /* Invalidate exactly once. A timeout preserves all original buffers;
+         * later iterations observe completion without manufacturing a lease. */
+        frame_exchange_retire(capture->frames);
+        capture->raw_pending = 0;
+    }
+}
+
+static int acknowledge_capture_activity(capture_context_t *capture)
+{
+    if (!capture_active(capture) && !frame_exchange_quiescent(capture->frames))
+        return 1;
+    return capture_control_ack(capture->control) >= 0;
+}
+
+static int service_capture_control(capture_context_t *capture)
+{
+    if (!capture || !capture->control)
+        return 1;
+    int changed = capture_control_poll(capture->control);
+    if (changed < 0)
+        return 0;
+    if (changed)
+        apply_capture_activity(capture);
+    return acknowledge_capture_activity(capture);
+}
+
+static int capture_event_count(capture_context_t *capture, struct pollfd *fds)
+{
+    if (capture && capture->control)
+    {
+        capture_control_t *control = capture->control;
+        fds[2] = (struct pollfd){.fd = -1, .events = POLLIN};
+        if (control->current.sequence == control->acknowledged)
+            fds[2].fd = control->fd;
+        return 3;
+    }
+    return capture_wakeup_fd(capture) >= 0 ? 2 : 1;
+}
+
+static void dispatch_capture_events(evdi_handle handle, struct evdi_event_context *events,
+                                    struct pollfd *fds, int ready)
+{
+    if (ready > 0 && (fds->revents & POLLIN))
+        evdi_handle_events(handle, events);
+    capture_context_t *capture = events->user_data;
+    if (capture && frame_exchange_take_request(capture->frames))
+        publish_frame(capture);
+}
+
 static int poll_capture_events(evdi_handle handle, struct evdi_event_context *evtctx,
-                               struct pollfd *fd, int timeout_ms) {
+                               struct pollfd *fd, int timeout_ms)
+{
     capture_context_t *capture = evtctx->user_data;
-    int count = capture_wakeup_fd(capture) >= 0 ? 2 : 1;
+    if (!service_capture_control(capture))
+        return -1;
+    int count = capture_event_count(capture, fd);
     int ret = poll(fd, count, timeout_ms);
-    if (ret < 0) {
-        if (errno == EINTR) return 0;
+    if (ret < 0)
+    {
+        if (errno == EINTR)
+            return 0;
         fprintf(stderr, "[evdi-helper] poll() error: %s\n", strerror(errno));
         return -1;
     }
-    if (fd->revents & (POLLHUP | POLLERR | POLLNVAL)) {
+    if (fd->revents & (POLLHUP | POLLERR | POLLNVAL))
+    {
         fprintf(stderr, "[evdi-helper] Event channel failed (poll flags 0x%x)\n", fd->revents);
         return -1;
     }
-    if (ret > 0 && (fd->revents & POLLIN)) {
-        /* update_ready / mode_changed handlers fire from here */
-        evdi_handle_events(handle, evtctx);
-    }
-    if (capture && frame_exchange_take_request(capture->frames)) publish_frame(capture);
+    /* Apply pause before dispatching a simultaneously queued pixel callback. */
+    if (!service_capture_control(capture))
+        return -1;
+    dispatch_capture_events(handle, evtctx, fd, ret);
     return 1;
 }
 
-static int publish_shared_capture(capture_context_t *capture) {
-    if (!capture->have_mode || !frame_exchange_is_ready(capture->frames)) return 1;
+static int publish_shared_capture(capture_context_t *capture)
+{
+    if (!capture_active(capture))
+        return 1;
+    if (!capture->have_mode || !frame_exchange_is_ready(capture->frames))
+        return 1;
     long long now = capture_now_us();
     long long interval = capture->raw_pending ? 1000000 / capture->fps : 200000;
-    if (now - capture->raw_sent_us < interval) return 1;
+    if (now - capture->raw_sent_us < interval)
+        return 1;
     uint32_t slot;
     unsigned char *pixels = raw_ring_acquire(capture->raw_ring, &slot);
-    if (!pixels) return 1; /* Keep latest unencoded update pending while all slots are leased. */
+    if (!pixels)
+        return 1; /* Keep latest unencoded update pending while all slots are leased. */
     raw_ring_t *ring = capture->raw_ring;
     capture_to_nv12(capture, capture->framebuffer, pixels, ring->dirty[slot], ring->spans[slot]);
     raw_ring_converted(ring, slot);
     int result = raw_ring_publish(capture->raw_ring, slot, capture->grab_us);
-    if (result < 0) return 0;
-    if (result > 0) {
+    if (result < 0)
+        return 0;
+    if (result > 0)
+    {
         capture->raw_sent_us = now;
         capture->raw_pending = 0;
     }
@@ -582,8 +697,12 @@ static int service_shared_capture(capture_context_t *capture) {
     return raw_ring_service(capture->raw_ring) && publish_shared_capture(capture);
 }
 
-static int shared_poll_timeout(capture_context_t *capture, int timeout_ms) {
-    if (!capture->raw_ring || !capture->have_mode) return timeout_ms;
+static int shared_poll_timeout(capture_context_t *capture, int timeout_ms)
+{
+    if (!capture_active(capture))
+        return timeout_ms;
+    if (!capture->raw_ring || !capture->have_mode)
+        return timeout_ms;
     long long interval = capture->raw_pending ? 1000000 / capture->fps : 200000;
     long long remaining = capture->raw_sent_us + interval - capture_now_us();
     /* A full ring must not spin while libavcodec retains all slots. Release
@@ -593,9 +712,13 @@ static int shared_poll_timeout(capture_context_t *capture, int timeout_ms) {
 }
 
 static int capture_tick(capture_context_t *capture, evdi_handle handle, long request_period_ms,
-                         long long *last_fallback_grab_ms, long long *last_stats_ms,
-                         long long *stats_grab_base) {
-    if (!capture->have_mode) return 1;
+                        long long *last_fallback_grab_ms, long long *last_stats_ms,
+                        long long *stats_grab_base)
+{
+    if (!capture_active(capture))
+        return service_shared_capture(capture);
+    if (!capture->have_mode)
+        return 1;
     long long now = capture_now_ms();
     request_capture_if_due(capture, handle, now, request_period_ms);
     recover_capture_if_stalled(capture, now, last_fallback_grab_ms);
@@ -604,7 +727,8 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long req
     return service_shared_capture(capture);
 }
 
-int capture_run(capture_context_t *capture, evdi_handle handle) {
+int capture_run(capture_context_t *capture, evdi_handle handle)
+{
     evdi_enable_cursor_events(handle, true);
     struct evdi_event_context evtctx = {
         .dpms_handler = on_dpms,
@@ -616,7 +740,7 @@ int capture_run(capture_context_t *capture, evdi_handle handle) {
         .user_data = capture,
     };
 
-    struct pollfd fds[2] = {0};
+    struct pollfd fds[3] = {0};
     fds[0].fd = evdi_get_event_ready(handle);
     fds[0].events = POLLIN;
     fds[1].fd = capture_wakeup_fd(capture);
@@ -627,17 +751,22 @@ int capture_run(capture_context_t *capture, evdi_handle handle) {
     long long stats_grab_base = 0;
     long request_period_ms = capture_period_ms(capture);
 
-    while ((*capture->running)) {
+    while ((*capture->running))
+    {
         int timeout_ms = capture_poll_timeout(capture, request_period_ms);
         timeout_ms = shared_poll_timeout(capture, timeout_ms);
 
         int ret = poll_capture_events(handle, &evtctx, fds, timeout_ms);
-        if (ret < 0) return 1;
-        if (ret == 0) continue;
-        if (!service_shared_capture(capture)) return 1;
+        if (ret < 0)
+            return 1;
+        if (ret == 0)
+            continue;
+        if (!service_shared_capture(capture))
+            return 1;
 
         if (!capture_tick(capture, handle, request_period_ms, &last_fallback_grab_ms,
-                          &last_stats_ms, &stats_grab_base)) return 1;
+                          &last_stats_ms, &stats_grab_base))
+            return 1;
     }
     return capture->capture_failed;
 }

@@ -41,6 +41,8 @@ class ArchBuildTest(unittest.TestCase):
             self.assertIn('-levdi -lpthread -Wl,-rpath,$ORIGIN', commands[3])
             self.assertIn('host/evdi/frame_exchange.c host/evdi/fifo_writer.c', commands[3])
             self.assertIn('host/evdi/raw_ring.c', commands[3], 'T418: shared capture must link in Arch packages')
+            self.assertIn('host/evdi/capture_activity.c', commands[3], 'T1021: link portable activity records')
+            self.assertIn('host/evdi/capture_control.c', commands[3], 'T1021: link native activity adapter')
 
 
 if __name__ == '__main__':

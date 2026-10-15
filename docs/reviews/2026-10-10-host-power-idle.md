@@ -291,3 +291,37 @@ the configured deadline controls it. These establish the adapter and ownership
 boundaries; supported physical monitor transitions and joined host/tablet pause
 and resume remain T1009–T1011/T914. No desktop power-setting methods, forced host
 lock/suspend, tablet interruption or distro-wide qualification was performed.
+
+## Native retained-monitor pause boundary (T1021, 2026-10-16)
+
+The Linux capture helper accepts an optional private `--capture-activity-fd`
+sequenced-packet endpoint and starts paused when it is present. Its independent
+nine-byte request/acknowledgment schema is shared with the portable contract
+added under T1023: a nonzero, consecutive big-endian u64 sequence followed by a
+strict boolean. The helper echoes the exact record only after the transition
+completes. Malformed, replayed, out-of-order, truncated and descriptor-bearing
+commands fail the helper; acknowledgments never imply unrelated process cleanup.
+
+Pause retains the connected monitor, registered native framebuffer, mode and
+capture process. It stops update requests, pixel grabs, NV12 conversion and frame
+publication while continuing native/control event service. It invalidates the
+original FIFO frame generation exactly once. A writer that exceeds the bounded
+retirement wait retains its original immutable lease and every allocation; the
+pause acknowledgment stays pending until that same writer releases. Subsequent
+iterations observe completion rather than invalidating again or replacing owners.
+
+Resume invalidates damage and obtains a fresh pixel snapshot before another
+update request, preserving the native flip acknowledgment ordering. An unchanged
+snapshot still seeds a full frame for the new encoder. FIFO reader transitions
+and shared-raw control continue to work. Shared-raw reader references remain owned
+by their original encoder process: this native producer acknowledgment does not
+replace the separate encoder retirement certificate required by T1015.
+
+Permanent fake-device tests cover held leases, queued callbacks, retained monitor
+and buffer identity, malformed records, acknowledgment backpressure and received
+descriptor cleanup. A real Rust exec/socket handoff drives sixteen transitions
+through the production C event loop and asserts fresh resume ordering before each
+acknowledgment. Sanitizers cover native accesses. These are component acceptance
+tests; application activity composition remains T1015/T1016/T1009, and physical
+host/tablet acceptance remains T914. No lock, suspend or display setting was
+changed, and no runtime power/CPU improvement is claimed from these fixtures.

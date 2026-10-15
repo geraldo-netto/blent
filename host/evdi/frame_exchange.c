@@ -126,6 +126,14 @@ int frame_exchange_allocated(const frame_exchange_t *frames) {
     return frames->fill && frames->latest && frames->write && histories_allocated(frames);
 }
 
+int frame_exchange_quiescent(frame_exchange_t *frames)
+{
+    pthread_mutex_lock(&frames->mutex);
+    int quiescent = !frames->buffers_ready && !frames->writer_busy;
+    pthread_mutex_unlock(&frames->mutex);
+    return quiescent;
+}
+
 int frame_exchange_retire(frame_exchange_t *frames) {
     struct timespec deadline;
     clock_gettime(CLOCK_MONOTONIC, &deadline);

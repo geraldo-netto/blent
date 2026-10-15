@@ -56,6 +56,9 @@ int frame_exchange_begin(frame_exchange_t *frames, unsigned *generation);
 /* Invalidate generation, then wait boundedly for the writer's last lease.
  * On failure every old allocation must survive until the writer is joined. */
 int frame_exchange_retire(frame_exchange_t *frames);
+/* Observe completion after bounded retire() timed out; never invalidates or
+ * replaces the original lease. Capture owner only, with no concurrent resize. */
+int frame_exchange_quiescent(frame_exchange_t *frames);
 /* Capture thread only: retire() must have succeeded; dimensions are validated
  * positive/even and size-safe by the mode owner before this call. */
 void frame_exchange_resize(frame_exchange_t *frames, int width, int height);

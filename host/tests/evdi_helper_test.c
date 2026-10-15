@@ -43,6 +43,8 @@ static int mock_pthread_cond_timedwait(pthread_cond_t *, pthread_mutex_t *, cons
 #include "../evdi/fifo_writer.c"
 #include "../evdi/raw_ring.c"
 #include "../evdi/cursor_overlay.c"
+#include "../evdi/capture_activity.c"
+#include "../evdi/capture_control.c"
 static size_t t779_normalized_pixels;
 static void t779_counted_copy(unsigned char *destination, const unsigned char *source, size_t pixels) {
     t779_normalized_pixels += pixels;
@@ -1486,6 +1488,7 @@ static void test_t415_rounding(void) {
 #include "c_boundary_fuzz.c"
 #include "failed_mode.c"
 #include "helper_arguments.c"
+#include "capture_pause.c"
 
 static void canonical_format_fixture(const char *id) {
     if (!strncmp(id, "T752", 4) || !strcmp(id, "T779") || !strcmp(id, "T780")) g_capture.normalize_rgba = 1;
@@ -1499,6 +1502,12 @@ int main(int argc, char **argv) {
     assert(argc == 2);
     canonical_format_fixture(argv[1]);
     static const struct { const char *id; void (*run)(void); } cases[] = {
+        {"T1021-wire", test_t1021_wire},
+        {"T1021-control", test_t1021_control},
+        {"T1021-pause", test_t1021_pause},
+        {"T1021-raw", test_t1021_raw},
+        {"T1021-boundaries", test_t1021_boundaries},
+        {"T1021-rights", test_t1021_rights},
         {"T580", test_t580_no_reader},
         {"T580-reconnect", test_t580_reconnect},
         {"T580-tsan", test_t580_reconnect},

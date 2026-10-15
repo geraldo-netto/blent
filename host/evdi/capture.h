@@ -5,6 +5,7 @@
 #include "conversion.h"
 #include "raw_ring.h"
 #include "cursor_overlay.h"
+#include "capture_control.h"
 
 /* Event-loop-owned mode, registered framebuffer and capture statistics.
  * EVDI callbacks borrow this context via user_data and never outlive run().
@@ -18,6 +19,7 @@ typedef struct {
     evdi_handle handle;
     int device_index;
     int capture_failed;
+    capture_control_t *control; /* optional, borrowed for the whole capture loop */
     unsigned char * framebuffer; /* native pixels, or canonical BGRA fallback, with local cursor */
     unsigned char *native_framebuffer; /* owned only for canonical RGBA fallback */
     int swap_rb;
