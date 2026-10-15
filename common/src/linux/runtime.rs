@@ -7,6 +7,7 @@
 //! and creation errors are rejected before a token or FIFO path is returned.
 
 use anyhow::{Context, Result};
+use std::io::{Read, Write};
 use std::os::unix::fs::{DirBuilderExt, OpenOptionsExt};
 use std::path::PathBuf;
 
@@ -109,6 +110,10 @@ pub fn new_session_token() -> Result<String> {
     f.write_all(token.as_bytes())?;
     Ok(token)
 }
+
+#[cfg(test)]
+#[path = "runtime/session_tests.rs"]
+mod session_tests;
 
 #[cfg(test)]
 mod tests {
@@ -469,7 +474,23 @@ pub use crate::tablets::TabletSession;
 struct SessionSnapshot {
     pid: u32,
     start_ticks: u64,
+    #[serde(deserialize_with = "crate::tablets::batch::deserialize")]
     sessions: Vec<TabletSession>,
+}
+
+/// Bound serialized status before JSON allocation, including trailing whitespace.
+const MAX_SNAPSHOT_BYTES: u64 = 65_536;
+
+fn read_snapshot(source: impl Read) -> Option<SessionSnapshot> {
+    let mut bytes = Vec::new();
+    source
+        .take(MAX_SNAPSHOT_BYTES + 1)
+        .read_to_end(&mut bytes)
+        .ok()?;
+    if bytes.len() > MAX_SNAPSHOT_BYTES as usize {
+        return None;
+    }
+    serde_json::from_slice(&bytes).ok()
 }
 
 fn process_start(pid: u32) -> Option<u64> {
@@ -477,7 +498,7 @@ fn process_start(pid: u32) -> Option<u64> {
 }
 
 pub fn load_sessions(path: &std::path::Path) -> Option<Vec<TabletSession>> {
-    let snapshot: SessionSnapshot = serde_json::from_slice(&std::fs::read(path).ok()?).ok()?;
+    let snapshot = read_snapshot(std::fs::File::open(path).ok()?)?;
     (crate::daemon_is_running(snapshot.pid)
         && process_start(snapshot.pid) == Some(snapshot.start_ticks))
     .then_some(snapshot.sessions)
@@ -505,14 +526,20 @@ impl SessionLedger {
     }
 
     fn write(&self) -> Result<()> {
+        let bytes = serde_json::to_vec(&self.snapshot)?;
+        anyhow::ensure!(
+            bytes.len() <= MAX_SNAPSHOT_BYTES as usize,
+            "session snapshot too large"
+        );
         let mut temporary =
             tempfile::NamedTempFile::new_in(self.path.parent().context("session directory")?)?;
-        serde_json::to_writer(&mut temporary, &self.snapshot)?;
+        temporary.write_all(&bytes)?;
         temporary.persist(&self.path)?;
         Ok(())
     }
 
     pub fn update(&mut self, mut sessions: Vec<TabletSession>) -> Result<()> {
+        crate::tablets::batch::validate(&sessions)?;
         sessions.sort_by_key(|session| session.instance);
         if self.snapshot.sessions != sessions {
             let previous = std::mem::replace(&mut self.snapshot.sessions, sessions);
@@ -526,8 +553,8 @@ impl SessionLedger {
 }
 impl Drop for SessionLedger {
     fn drop(&mut self) {
-        if let Ok(data) = std::fs::read(&self.path) {
-            if let Ok(snapshot) = serde_json::from_slice::<SessionSnapshot>(&data) {
+        if let Ok(file) = std::fs::File::open(&self.path) {
+            if let Some(snapshot) = read_snapshot(file) {
                 if snapshot.pid == self.snapshot.pid
                     && snapshot.start_ticks == self.snapshot.start_ticks
                 {

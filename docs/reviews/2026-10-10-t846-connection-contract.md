@@ -1556,8 +1556,11 @@ presentation only; status is descriptive and grants no registration authority.
 
 Native publication and display composition remain T908. Windows consumers migrate
 to the shared schema, but Windows native USB remains unsupported; its native
-status-adapter validation remains tracked under T902. The pre-existing Linux
-snapshot byte/batch-boundary gap is separately tracked under T923.
+status-adapter validation remains tracked under T902. T923 now bounds Linux status snapshots to 65,536 serialized bytes and four
+unique display slots before acceptance. Publication validates batches before
+changing retained state, preserves rollback on write failure, and keeps the
+PID/start-time liveness checks. [Boundary regressions and native counters](artifacts/2026-10-16-t923/README.md) cover the Linux change; status still grants
+no media authority.
 
 [Regression and counter evidence](artifacts/2026-10-10-t922/README.md) covers the
 shared schema and changed Linux consumers. Native Windows test checking exposed

@@ -4,6 +4,11 @@ use crate::connection::pairing::PeerId;
 use anyhow::{ensure, Result};
 use serde::{Deserialize, Serialize};
 
+pub(crate) mod batch;
+
+/// Maximum number of simultaneous display assignments (slots 0 through 3).
+pub const MAX_SESSIONS: usize = 4;
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Identity {
     Adb(String),
@@ -48,7 +53,10 @@ pub struct TabletSession {
 impl TabletSession {
     fn validate(&self) -> Result<()> {
         self.identity.validate()?;
-        ensure!(self.instance < 4, "invalid display instance");
+        ensure!(
+            self.instance < MAX_SESSIONS as u32,
+            "invalid display instance"
+        );
         ensure!(
             self.video_port != 0 && self.input_port != 0 && self.video_port != self.input_port,
             "invalid display ports"
