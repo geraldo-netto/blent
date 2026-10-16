@@ -1,12 +1,13 @@
 //! Native/async capture tasks retain admission through actual task destruction.
 use anyhow::Result;
-use blent_config::retirement::{Admission, Completion, Observe, Pool};
+#[cfg(test)]
+use blent_config::retirement::Pool;
+use blent_config::retirement::{Admission, Completion, Observe};
 use futures_util::FutureExt;
 use std::{
     future::Future,
     io,
     pin::Pin,
-    sync::OnceLock,
     task::{Context, Poll},
 };
 use tokio::task::{JoinError, JoinHandle};
@@ -17,19 +18,6 @@ pub struct Task {
     leases: Vec<Box<dyn Send + Sync>>,
 }
 impl Task {
-    fn reserve() -> io::Result<Admission> {
-        static POOL: OnceLock<io::Result<Pool>> = OnceLock::new();
-        POOL.get_or_init(|| {
-            Pool::new(blent_config::retirement_limits::configured(
-                "BLENT_TASK_LIMIT",
-                64,
-                4096,
-            )?)
-        })
-        .as_ref()
-        .map_err(|error| io::Error::new(error.kind(), error.to_string()))?
-        .reserve()
-    }
     fn owned(admission: Admission, handle: JoinHandle<Result<()>>) -> Self {
         Self {
             completion: admission.completion(),
@@ -39,11 +27,11 @@ impl Task {
         }
     }
     pub fn spawn(work: impl Future<Output = Result<()>> + Send + 'static) -> io::Result<Self> {
-        let admission = Self::reserve()?;
+        let admission = crate::work_admission::reserve()?;
         Ok(Self::owned(admission, tokio::spawn(work)))
     }
     pub fn spawn_blocking(work: impl FnOnce() -> Result<()> + Send + 'static) -> io::Result<Self> {
-        let admission = Self::reserve()?;
+        let admission = crate::work_admission::reserve()?;
         Ok(Self::owned(admission, tokio::task::spawn_blocking(work)))
     }
     pub fn abort(&self) {

@@ -9,13 +9,11 @@ use std::{
     io::{Read, Write},
     os::unix::fs::{FileTypeExt, MetadataExt, OpenOptionsExt},
     path::{Path, PathBuf},
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc, Mutex,
-    },
+    sync::{Arc, Mutex},
     time::Duration,
 };
 use tokio::time::Instant;
+mod worker;
 
 const MAX_TIMINGS: usize = 256;
 static LEASE_FILES: Mutex<()> = Mutex::new(());
@@ -31,7 +29,8 @@ type Timings = Arc<Mutex<VecDeque<Encoded>>>;
 pub(super) struct Handle {
     timings: Timings,
     lease: Arc<Lease>,
-    task: blent::owned_task::Task,
+    // Lease views drop before native retirement exposes final dependency cleanup.
+    task: worker::Worker,
 }
 impl Handle {
     pub(super) fn completion(&self) -> blent_config::retirement::Completion {
@@ -52,12 +51,11 @@ impl Handle {
 }
 impl Drop for Handle {
     fn drop(&mut self) {
-        self.lease.retire();
         self.task.abort();
     }
 }
 
-pub(super) fn start(
+pub(super) async fn start(
     config: &CaptureConfig,
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
@@ -67,14 +65,18 @@ pub(super) fn start(
     if !config.adaptive_idle || evidence.decoder.is_none() {
         return None;
     }
-    let lease = match super::fifo_path_for(config.instance).and_then(|path| Lease::new(&path)) {
-        Ok(lease) => lease,
-        Err(error) => {
-            tracing::warn!("Adaptive idle unavailable: {error}");
-            return None;
-        }
-    };
-    match launch(lease, evidence, tracker, viewers, scope) {
+    let instance = config.instance;
+    let stop = Arc::new(worker::Stop::default());
+    let create_stop = stop.clone();
+    let startup = spawn(
+        stop,
+        move || Lease::open(&super::fifo_path_for(instance)?, create_stop),
+        evidence,
+        tracker,
+        viewers,
+        scope,
+    );
+    match finish_startup(startup).await {
         Ok(handle) => Some(handle),
         Err(error) => {
             tracing::warn!("Adaptive idle unavailable: {error}");
@@ -82,35 +84,66 @@ pub(super) fn start(
         }
     }
 }
-
-fn launch(
-    lease: Lease,
+// Queue views must drop before the worker retires its original held lease.
+struct Startup {
+    ready: tokio::sync::oneshot::Receiver<Arc<Lease>>,
+    timings: Timings,
+    task: Option<worker::Worker>,
+}
+impl Startup {
+    async fn finish(mut self) -> Result<Handle> {
+        let lease = (&mut self.ready)
+            .await
+            .context("native idle startup failed")?;
+        Ok(Handle {
+            timings: self.timings.clone(),
+            lease,
+            task: self.task.take().unwrap(),
+        })
+    }
+}
+async fn finish_startup(startup: Result<Startup>) -> Result<Handle> {
+    startup?.finish().await
+}
+fn spawn(
+    stop: Arc<worker::Stop>,
+    create: impl FnOnce() -> Result<Lease> + Send + 'static,
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
     viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
     scope: &blent::native_scope::Scope,
-) -> Result<Handle> {
-    let lease = Arc::new(lease);
+) -> Result<Startup> {
     let timings = Timings::default();
-    let work = run(
-        lease.clone(),
-        timings.clone(),
-        evidence,
-        tracker,
-        Instant::now(),
-        viewers.clone(),
-        viewers.epoch(),
-    );
-    let mut task = blent::owned_task::Task::spawn(async move {
-        work.await;
+    let work_timings = timings.clone();
+    let runtime = tokio::runtime::Handle::current();
+    let origin = Instant::now();
+    let epoch = viewers.epoch();
+    let (ready, receiver) = tokio::sync::oneshot::channel();
+    let running = stop.clone();
+    let task = worker::Worker::spawn(stop, scope, move |holder| {
+        if !running.active() {
+            return Ok(());
+        }
+        let lease = Arc::new(create()?);
+        holder.retain(lease.clone())?;
+        if ready.send(lease.clone()).is_err() {
+            return Ok(());
+        }
+        runtime.block_on(run(
+            lease,
+            work_timings,
+            evidence,
+            tracker,
+            origin,
+            viewers,
+            epoch,
+        ));
         Ok(())
     })?;
-    scope.retain(task.completion());
-    task.keep_alive(lease.clone());
-    Ok(Handle {
+    Ok(Startup {
+        ready: receiver,
         timings,
-        lease,
-        task,
+        task: Some(task),
     })
 }
 
@@ -128,7 +161,7 @@ async fn run(
     let mut ordinal = 0;
     let mut policy = Policy::new(evidence.decoder.is_some());
     let mut previous = policy.phase;
-    while evidence.active() {
+    while evidence.active() && lease.stop.active() {
         if viewers.epoch() != viewer_epoch {
             lease.clear();
             return;
@@ -151,7 +184,7 @@ async fn run(
         if policy.phase == Phase::Rejected {
             return;
         }
-        tokio::select! { _ = timer.tick() => {}, _ = updates.changed() => {} }
+        tokio::select! { _ = timer.tick() => {}, _ = updates.changed() => {}, _ = lease.stop.changed() => {} }
     }
     lease.clear();
 }
@@ -207,12 +240,12 @@ struct Lease {
     path: PathBuf,
     identity: (u64, u64),
     token: u64,
-    retired: AtomicBool,
+    stop: Arc<worker::Stop>,
     _inode: std::fs::File,
     _token: std::fs::File,
 }
 impl Lease {
-    fn new(fifo: &Path) -> Result<Self> {
+    fn open(fifo: &Path, stop: Arc<worker::Stop>) -> Result<Self> {
         let inode = std::fs::OpenOptions::new()
             .read(true)
             .custom_flags(libc::O_PATH | libc::O_NOFOLLOW | libc::O_CLOEXEC)
@@ -227,7 +260,7 @@ impl Lease {
             path: fifo.with_extension("idle"),
             identity: (metadata.dev(), metadata.ino()),
             token: token.metadata()?.ino(),
-            retired: AtomicBool::new(false),
+            stop,
             _inode: inode,
             _token: token,
         })
@@ -240,8 +273,9 @@ impl Cadence for Lease {
             self.clear();
             return Ok(());
         }
+        anyhow::ensure!(self.stop.active(), "idle lease retired");
         let _guard = LEASE_FILES.lock().unwrap();
-        anyhow::ensure!(!self.retired.load(Ordering::Relaxed), "idle lease retired");
+        anyhow::ensure!(self.stop.active(), "idle lease retired");
         anyhow::ensure!(interval == 500, "unsupported sparse cadence");
         let mut clock = libc::timespec {
             tv_sec: 0,
@@ -280,12 +314,6 @@ impl Lease {
         let mut text = String::new();
         file.take(160).read_to_string(&mut text)?;
         Ok(text)
-    }
-
-    fn retire(&self) {
-        let _guard = LEASE_FILES.lock().unwrap();
-        self.retired.store(true, Ordering::Relaxed);
-        self.clear_locked();
     }
 
     fn clear_locked(&self) {

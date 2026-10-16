@@ -464,3 +464,25 @@ Held task, post-join dependency, deadline/retry, production startup and capacity
 regressions pass in normal suites with native function counters. File effects
 inside idle drop/run remain synchronous and are independently tracked as T1034;
 this ownership result does not establish bounded control-worker responsiveness.
+
+
+T1034 moves idle lease creation, cadence file effects and final dependency cleanup
+off Tokio control workers. One owned native thread runs the existing portable
+policy against its Linux file adapter; bounded history and coalesced activity/
+stop notifications remain unchanged. Revocation publishes an atomic stop and wake
+without taking the file mutex. Original native join and lease destruction remain
+separate, retained completion requirements. This uses dedicated native ownership
+rather than a runtime-owned blocking task, so a stuck file effect does not force
+Tokio runtime destruction to join it. Shared async/native admission retains the
+existing configured task limit through one independent capacity boundary.
+
+Async encoder startup awaits native lease readiness after reporting the original
+creator. Queued lease views drop before native retirement is exposed; a retained
+lease registry also covers creation after parent cancellation. Actual thread
+join/TLS teardown and dependent destruction use the established isolated
+retirement helpers. Panics, failed/closed startup and already-revoked requests
+fail visibly without granting replacement. The held-file regressions originally
+blocked caller drop/runtime for about 400 ms and now meet their <100 ms control
+bound while original cleanup stays pending. Existing cadence, token and timing
+assertions remain, with explicit native completion barriers replacing assumptions
+about Tokio task scheduling. Activity source/policy composition remains T1027/T1015.

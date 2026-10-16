@@ -81,7 +81,7 @@ impl EncoderProcess {
     }
 
     #[cfg(not(feature = "inproc-encoder"))]
-    pub(super) fn spawn_session(
+    pub(super) async fn spawn_session(
         &mut self,
         config: &CaptureConfig,
         mode: Option<(u32, u32)>,
@@ -114,7 +114,8 @@ impl EncoderProcess {
             output.latency.clone(),
             output.tx.viewers(),
             &blent::native_scope::Scope::new(self.retirement.clone()),
-        );
+        )
+        .await;
         let idle_retirement = idle.as_ref().map(super::idle::Handle::completion);
         let handle = blent::owned_task::Task::spawn(super::cli_encoder::read_loop_with_idle(
             stdout,
@@ -133,7 +134,7 @@ impl EncoderProcess {
     }
 
     #[cfg(feature = "inproc-encoder")]
-    pub(super) fn spawn_session(
+    pub(super) async fn spawn_session(
         &mut self,
         config: &CaptureConfig,
         mode: Option<(u32, u32)>,

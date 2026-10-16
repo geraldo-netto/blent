@@ -433,7 +433,8 @@ impl CaptureManager {
         };
         let mut encode_task = self
             .encoder
-            .spawn_session(&self.config, run.encoder_mode, output)?;
+            .spawn_session(&self.config, run.encoder_mode, output)
+            .await?;
 
         let mut settings_changed = false;
         let mut fifo_reset = false;

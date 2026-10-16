@@ -105,3 +105,5 @@ pub mod broker;
 mod display_test_support;
 
 pub mod native_scope;
+
+pub mod work_admission;

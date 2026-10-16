@@ -99,7 +99,7 @@ impl NativeCapture {
             Resource::Probe => (Self::probe(&self.config, self.held, manager).await, None),
             #[cfg(not(feature = "inproc-encoder"))]
             Resource::Encoder | Resource::Reader => {
-                Self::encoder(&self.config, self.resource, self.held, manager, context)
+                Self::encoder(&self.config, self.resource, self.held, manager, context).await
             }
         };
         self.ready.send(original).unwrap();
@@ -169,7 +169,7 @@ impl NativeCapture {
         proof
     }
     #[cfg(not(feature = "inproc-encoder"))]
-    fn encoder(
+    async fn encoder(
         config: &CaptureConfig,
         resource: Resource,
         held: Held,
@@ -201,6 +201,7 @@ impl NativeCapture {
                     idr_wanted: manager.idr_request_flag(),
                 },
             )
+            .await
             .unwrap();
         reader.handle.keep_alive(held);
         (reader.handle.completion(), Some(reader))

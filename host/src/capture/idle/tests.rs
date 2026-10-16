@@ -1,16 +1,35 @@
 use super::*;
 use blent_config::negotiation::{DecoderChoice, Profile, StreamProfile};
-use std::sync::atomic::AtomicU64;
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 
-fn launch(lease: Lease, evidence: Arc<EncoderEvidence>, tracker: LatencyTracker) -> Handle {
-    super::launch(
+async fn launch(lease: Lease, evidence: Arc<EncoderEvidence>, tracker: LatencyTracker) -> Handle {
+    launch_with(
         lease,
         evidence,
         tracker,
         Arc::new(AtomicU64::new(0)),
         &Default::default(),
     )
+    .await
     .unwrap()
+}
+async fn launch_with(
+    lease: Lease,
+    evidence: Arc<EncoderEvidence>,
+    tracker: LatencyTracker,
+    viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
+    scope: &blent::native_scope::Scope,
+) -> Result<Handle> {
+    let stop = lease.stop.clone();
+    finish_startup(spawn(
+        stop,
+        move || Ok(lease),
+        evidence,
+        tracker,
+        viewers,
+        scope,
+    ))
+    .await
 }
 
 fn evidence(tracker: &LatencyTracker) -> Arc<EncoderEvidence> {
@@ -36,7 +55,18 @@ fn evidence(tracker: &LatencyTracker) -> Arc<EncoderEvidence> {
 fn lease(directory: &Path) -> Lease {
     let fifo = directory.join("capture.nv12");
     super::super::helper::ensure_fifo(&fifo).unwrap();
-    Lease::new(&fifo).unwrap()
+    Lease::open(&fifo, Default::default()).unwrap()
+}
+
+async fn native_until(mut completed: impl FnMut() -> bool) {
+    let deadline = std::time::Instant::now() + Duration::from_secs(3);
+    while !completed() {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "T1034 native effect did not finish"
+        );
+        tokio::task::yield_now().await;
+    }
 }
 
 async fn ack(
@@ -54,7 +84,15 @@ async fn ack(
         100,
         Some(&evidence.decoder.as_ref().unwrap().receipt()),
     );
-    tokio::task::yield_now().await;
+    native_until(|| {
+        !handle
+            .timings
+            .lock()
+            .unwrap()
+            .iter()
+            .any(|frame| frame.sequence == seq)
+    })
+    .await;
 }
 
 #[tokio::test(start_paused = true)]
@@ -63,11 +101,12 @@ async fn t492_controller_trials_current_receipts_then_restores_cadence_on_stall(
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let activity = tracker.encoder_activity(evidence.clone());
-    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone());
+    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
     for seq in 0..=16 {
         ack(&handle, &tracker, &evidence, seq, i64::from(seq) * 200_000).await;
         tokio::time::advance(Duration::from_millis(190)).await;
     }
+    native_until(|| handle.lease.path.exists()).await;
     assert!(
         handle.lease.path.exists(),
         "T492: measured baseline must start a sparse trial"
@@ -86,7 +125,7 @@ async fn t492_controller_trials_current_receipts_then_restores_cadence_on_stall(
     }
     assert!(handle.lease.path.exists());
     tokio::time::advance(Duration::from_secs(2)).await;
-    tokio::task::yield_now().await;
+    native_until(|| !handle.lease.path.exists()).await;
     assert!(
         !handle.lease.path.exists(),
         "T492: no ACK progress must restore five updates/s"
@@ -100,7 +139,7 @@ async fn t492_retired_stream_and_cancellation_cannot_publish_into_successor() {
     let tracker = LatencyTracker::new();
     let old = evidence(&tracker);
     let activity = tracker.encoder_activity(old.clone());
-    let handle = launch(lease(dir.path()), old, tracker.clone());
+    let handle = launch(lease(dir.path()), old, tracker.clone()).await;
     handle.lease.publish(500).unwrap();
     let next = Arc::new(lease(dir.path()));
     next.publish(500).unwrap();
@@ -114,10 +153,10 @@ async fn t492_retired_stream_and_cancellation_cannot_publish_into_successor() {
     drop(activity);
     let current = evidence(&tracker);
     let activity = tracker.encoder_activity(current.clone());
-    let handle = launch(lease(dir.path()), current, tracker);
+    let handle = launch(lease(dir.path()), current, tracker).await;
     tokio::task::yield_now().await;
     drop(activity);
-    tokio::task::yield_now().await;
+    native_until(|| handle.task.is_finished()).await;
     assert!(handle.task.is_finished());
     next.clear();
     assert!(!next.path.exists());
@@ -135,6 +174,7 @@ async fn t492_unknown_decoder_disabled_setting_and_invalid_fifo_never_start() {
         Arc::new(AtomicU64::new(0)),
         &Default::default(),
     )
+    .await
     .is_none());
     config.adaptive_idle = true;
     let unknown = tracker.encoder_started("libx264", known.format);
@@ -145,6 +185,7 @@ async fn t492_unknown_decoder_disabled_setting_and_invalid_fifo_never_start() {
         Arc::new(AtomicU64::new(0)),
         &Default::default(),
     )
+    .await
     .is_none());
     config.instance = u32::MAX;
     assert!(start(
@@ -154,10 +195,11 @@ async fn t492_unknown_decoder_disabled_setting_and_invalid_fifo_never_start() {
         Arc::new(AtomicU64::new(0)),
         &Default::default()
     )
+    .await
     .is_none());
     let dir = tempfile::tempdir().unwrap();
-    assert!(Lease::new(&dir.path().join("absent")).is_err());
-    assert!(Lease::new(dir.path()).is_err());
+    assert!(Lease::open(&dir.path().join("absent"), Default::default()).is_err());
+    assert!(Lease::open(dir.path(), Default::default()).is_err());
 }
 
 #[tokio::test(start_paused = true)]
@@ -165,7 +207,7 @@ async fn t492_late_join_missing_timestamps_and_bounded_history_fail_closed() {
     let dir = tempfile::tempdir().unwrap();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
-    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone());
+    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
     let origin = Instant::now();
     for seq in 0..300 {
         handle.note(seq, Some(i64::from(seq)), false);
@@ -265,12 +307,13 @@ async fn t492_control_publish_error_stops_the_controller() {
     let dir = tempfile::tempdir().unwrap();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
-    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone());
+    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
     std::fs::create_dir(&handle.lease.path).unwrap();
     for seq in 0..=16 {
         ack(&handle, &tracker, &evidence, seq, i64::from(seq) * 200_000).await;
         tokio::time::advance(Duration::from_millis(190)).await;
     }
+    native_until(|| handle.task.is_finished()).await;
     assert!(handle.task.is_finished());
 }
 
@@ -280,11 +323,7 @@ async fn t492_completed_packets_retain_their_own_timing_before_broadcast() {
     let dir = tempfile::tempdir().unwrap();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
-    let handle = Handle {
-        timings: Timings::default(),
-        lease: Arc::new(lease(dir.path())),
-        task: blent::owned_task::Task::spawn(std::future::pending()).unwrap(),
-    };
+    let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
     let timings = handle.timings.clone();
     let pictures = vec![
         vec![
@@ -323,19 +362,20 @@ async fn t492_new_viewer_invalidates_sparse_admission_even_without_missing_frame
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let (tx, _initial) = crate::video_queue::channel(8, Arc::new(AtomicBool::new(false)));
-    let handle = super::launch(
+    let handle = launch_with(
         lease(dir.path()),
         evidence,
         tracker,
         tx.viewer_epoch(),
         &Default::default(),
     )
+    .await
     .unwrap();
     tokio::task::yield_now().await;
     handle.lease.publish(500).unwrap();
     let _new_viewer = tx.subscribe();
     tokio::time::advance(Duration::from_millis(250)).await;
-    tokio::task::yield_now().await;
+    native_until(|| handle.task.is_finished()).await;
     assert!(!handle.lease.path.exists());
     assert!(
         handle.task.is_finished(),
@@ -378,8 +418,9 @@ async fn t1029_aborted_idle_controller_retains_original_task_cleanup() {
         release: Mutex::new(held),
     });
     let (scope, retired) = blent::native_scope::Scope::default().group();
-    let handle =
-        super::launch(lease(directory.path()), evidence, tracker, viewers, &scope).unwrap();
+    let handle = launch_with(lease(directory.path()), evidence, tracker, viewers, &scope)
+        .await
+        .unwrap();
     entered.recv_timeout(Duration::from_secs(5)).unwrap();
     assert!(
         !handle.task.is_finished(),
@@ -425,6 +466,7 @@ async fn t1029_start_reports_original_cleanup_before_exposing_handle() {
         Arc::new(AtomicU64::new(0)),
         &scope,
     )
+    .await
     .unwrap();
     let original = handle.completion();
     drop(scope);
@@ -461,6 +503,7 @@ async fn t1029_capacity_exhaustion_preserves_compatible_cadence_without_worker()
         Arc::new(AtomicU64::new(0)),
         &scope
     )
+    .await
     .is_none());
     assert!(!fifo.with_extension("idle").exists());
     drop(scope);
@@ -469,4 +512,206 @@ async fn t1029_capacity_exhaustion_preserves_compatible_cadence_without_worker()
     other.abort();
     assert!((&mut other).await.unwrap_err().is_cancelled());
     assert!(other.is_finished());
+}
+
+fn held_files() -> (std::sync::mpsc::Sender<()>, std::thread::JoinHandle<()>) {
+    let (entered_tx, entered) = std::sync::mpsc::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let worker = std::thread::spawn(move || {
+        let _files = LEASE_FILES.lock().unwrap();
+        entered_tx.send(()).unwrap();
+        let _ = held.recv_timeout(Duration::from_millis(400));
+    });
+    entered.recv_timeout(Duration::from_secs(5)).unwrap();
+    (release, worker)
+}
+async fn idle_completed(original: &blent_config::retirement::Completion) {
+    tokio::time::timeout(Duration::from_secs(5), async {
+        while !original.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+}
+#[tokio::test]
+async fn t1034_idle_drop_revokes_without_waiting_for_native_file_lock() {
+    let directory = tempfile::tempdir().unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let _activity = tracker.encoder_activity(evidence.clone());
+    let handle = launch(lease(directory.path()), evidence, tracker).await;
+    let original = handle.completion();
+    let (release, worker) = held_files();
+    let start = std::time::Instant::now();
+    drop(handle);
+    let elapsed = start.elapsed();
+    let retained = !original.is_complete();
+    let _ = release.send(());
+    worker.join().unwrap();
+    idle_completed(&original).await;
+    assert!(retained, "T1034 lock wait cannot grant native cleanup");
+    assert!(
+        elapsed < Duration::from_millis(100),
+        "T1034 idle drop blocked control for {elapsed:?}"
+    );
+}
+#[tokio::test]
+async fn t1034_idle_file_effects_do_not_block_control_runtime() {
+    let directory = tempfile::tempdir().unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let _activity = tracker.encoder_activity(evidence.clone());
+    let native = lease(directory.path());
+    let (release, worker) = held_files();
+    let handle = launch(native, evidence, tracker).await;
+    let original = handle.completion();
+    let start = std::time::Instant::now();
+    tokio::time::sleep(Duration::from_millis(10)).await;
+    let elapsed = start.elapsed();
+    drop(handle);
+    let _ = release.send(());
+    worker.join().unwrap();
+    idle_completed(&original).await;
+    assert!(
+        elapsed < Duration::from_millis(100),
+        "T1034 native file effect blocked runtime for {elapsed:?}"
+    );
+}
+
+#[tokio::test]
+async fn t1034_unobserved_completed_startup_retains_queued_lease_cleanup() {
+    let directory = tempfile::tempdir().unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    drop(tracker.encoder_activity(evidence.clone()));
+    let native = lease(directory.path());
+    let stop = native.stop.clone();
+    let (scope, retired) = blent::native_scope::Scope::default().group();
+    let startup = spawn(
+        stop,
+        move || Ok(native),
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &scope,
+    )
+    .unwrap();
+    let original = startup.task.as_ref().unwrap().completion();
+    native_until(|| startup.task.as_ref().unwrap().is_finished()).await;
+    drop(scope);
+    let (release, worker) = held_files();
+    let start = std::time::Instant::now();
+    drop(startup);
+    let elapsed = start.elapsed();
+    let retained = !original.is_complete();
+    let _ = release.send(());
+    worker.join().unwrap();
+    idle_completed(&original).await;
+    assert!(retired.is_complete());
+    assert!(retained, "T1034 queued startup lost original lease cleanup");
+    assert!(
+        elapsed < Duration::from_millis(100),
+        "T1034 queued startup cleanup blocked caller for {elapsed:?}"
+    );
+}
+
+#[tokio::test]
+async fn t1034_canceled_startup_keeps_late_native_lease_creation() {
+    let directory = tempfile::tempdir().unwrap();
+    let fifo = directory.path().join("late.nv12");
+    super::super::helper::ensure_fifo(&fifo).unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let stop = Arc::new(worker::Stop::default());
+    let creating = stop.clone();
+    let (entered_tx, entered) = std::sync::mpsc::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let release = ReleaseViewer(release);
+    let (created_tx, created) = tokio::sync::oneshot::channel();
+    let (scope, retired) = blent::native_scope::Scope::default().group();
+    let startup = spawn(
+        stop,
+        move || {
+            entered_tx.send(()).unwrap();
+            held.recv().unwrap();
+            let lease = Lease::open(&fifo, creating)?;
+            created_tx.send(()).unwrap();
+            Ok(lease)
+        },
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &scope,
+    )
+    .unwrap();
+    let original = startup.task.as_ref().unwrap().completion();
+    let parent = tokio::spawn(startup.finish());
+    entered.recv_timeout(Duration::from_secs(5)).unwrap();
+    parent.abort();
+    assert!(matches!(parent.await, Err(error) if error.is_cancelled()));
+    drop(scope);
+    assert!(!retired.is_complete());
+    let (unblock, worker) = held_files();
+    drop(release);
+    created.await.unwrap();
+    let retained = !original.is_complete();
+    let _ = unblock.send(());
+    worker.join().unwrap();
+    idle_completed(&original).await;
+    assert!(retired.is_complete());
+    assert!(
+        retained,
+        "T1034 late lease creation escaped canceled startup"
+    );
+}
+
+#[tokio::test]
+async fn t1034_revoked_startup_rejects_before_native_file_creation() {
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let stop = Arc::new(worker::Stop::default());
+    stop.revoke();
+    let opened = Arc::new(AtomicBool::new(false));
+    let observed = opened.clone();
+    let (scope, retired) = blent::native_scope::Scope::default().group();
+    let startup = spawn(
+        stop,
+        move || {
+            observed.store(true, Ordering::Release);
+            anyhow::bail!("T1034 forbidden native creation");
+        },
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &scope,
+    )
+    .unwrap();
+    let original = startup.task.as_ref().unwrap().completion();
+    assert!(startup.finish().await.is_err());
+    drop(scope);
+    idle_completed(&original).await;
+    assert!(!opened.load(Ordering::Acquire));
+    assert!(retired.is_complete());
+}
+
+#[tokio::test]
+async fn t1034_native_startup_panic_retains_original_retirement() {
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let (scope, retired) = blent::native_scope::Scope::default().group();
+    let startup = spawn(
+        Arc::default(),
+        || panic!("T1034 native constructor panic"),
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &scope,
+    )
+    .unwrap();
+    let original = startup.task.as_ref().unwrap().completion();
+    assert!(startup.finish().await.is_err());
+    drop(scope);
+    idle_completed(&original).await;
+    assert!(retired.is_complete());
 }
