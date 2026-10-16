@@ -49,7 +49,7 @@ async fn t1037_coalesced_pause_resume_cancels_the_original_pending_trial() {
     let (_owner, mut stop) = watch::channel(false);
     let mut feed = feed();
     let (publish, source) = watch::channel(state(&feed));
-    let activity = blent::activity_view::View::new(ActivityTarget::Display, Some(source));
+    let activity = blent::display_work::View::new(Some(source), None, true);
     let attachment = crate::attachment::Attachment::new(settings);
     let authority = TrialAuthority {
         activity: &activity,
@@ -87,7 +87,7 @@ async fn t1037_ready_old_result_cannot_complete_after_activity_stops() {
     let (_visible, mut display) = watch::channel(true);
     let (_owner, mut stop) = watch::channel(false);
     let (publish, source) = watch::channel(state(&feed()));
-    let activity = blent::activity_view::View::new(ActivityTarget::Display, Some(source));
+    let activity = blent::display_work::View::new(Some(source), None, true);
     let attachment = crate::attachment::Attachment::new(settings);
     let authority = TrialAuthority {
         activity: &activity,
@@ -123,7 +123,7 @@ async fn t1037_invalidated_activity_cannot_poll_even_first_work_effect() {
         let (_visible, mut display) = watch::channel(true);
         let (_owner, mut stop) = watch::channel(false);
         let (publish, source) = watch::channel(state(&feed()));
-        let activity = blent::activity_view::View::new(ActivityTarget::Display, Some(source));
+        let activity = blent::display_work::View::new(Some(source), None, true);
         let attachment = crate::attachment::Attachment::new(settings);
         let authority = TrialAuthority {
             activity: &activity,
@@ -229,7 +229,7 @@ async fn selected(updates: &mut watch::Receiver<EncoderSettings>) {
 }
 #[tokio::test]
 async fn t1037_controller_observes_pending_resume_coalesced_fences_and_completed_work() {
-    if isolated_controller() {
+    if isolated_controller("selection::worker::activity::tests::t1037_controller_observes_pending_resume_coalesced_fences_and_completed_work") {
         return;
     }
     let snapshot = super::super::tests::settings();
@@ -250,7 +250,7 @@ async fn t1037_controller_observes_pending_resume_coalesced_fences_and_completed
         Default::default(),
         Arc::new(attachment),
         Default::default(),
-        Some(source),
+        Arc::new(blent::display_work::View::new(Some(source), None, true)),
     ));
     assert!(timeout(Duration::from_millis(20), updates.changed())
         .await
@@ -386,7 +386,7 @@ async fn t1037_controller_cannot_overlap_original_cache_preparation_or_lose_late
         Default::default(),
         Arc::new(attachment),
         scope,
-        Some(source),
+        Arc::new(blent::display_work::View::new(Some(source), None, true)),
     ));
     let original = first_proof(&report).await;
     fingerprint.writer = Some(writer(&fifo).await); // Actual preflight reader now blocks on the original FIFO.
@@ -421,7 +421,7 @@ async fn t1037_controller_cannot_overlap_original_cache_preparation_or_lose_late
 }
 
 // Isolate the harmless failing encoder adapter without changing global process state.
-fn isolated_controller() -> bool {
+fn isolated_controller(test: &str) -> bool {
     if std::env::var_os("BLENT_T1037_CONTROLLER_CHILD").is_some() {
         return false;
     }
@@ -432,9 +432,11 @@ fn isolated_controller() -> bool {
     std::fs::write(&ffmpeg, b"#!/bin/sh\nexit 17\n").unwrap();
     std::fs::set_permissions(ffmpeg, std::fs::Permissions::from_mode(0o700)).unwrap();
     let output = std::process::Command::new(std::env::current_exe().unwrap())
-        .args(["--exact","selection::worker::activity::tests::t1037_controller_observes_pending_resume_coalesced_fences_and_completed_work","--nocapture"])
-        .env("BLENT_T1037_CONTROLLER_CHILD","1").env("PATH",root.path())
-        .output_timeout(Duration::from_secs(20)).unwrap();
+        .args(["--exact", test, "--nocapture"])
+        .env("BLENT_T1037_CONTROLLER_CHILD", "1")
+        .env("PATH", root.path())
+        .output_timeout(Duration::from_secs(20))
+        .unwrap();
     assert!(
         output.status.success(),
         "{}{}",
@@ -495,4 +497,76 @@ async fn t1037_profile_handoff_cannot_accept_old_result_with_unchanged_selection
         result, None,
         "T1037 old attachment completed under unchanged metadata"
     );
+}
+
+#[tokio::test]
+async fn t1045_selector_uses_original_viewer_demand_and_saved_preference() {
+    if isolated_controller("selection::worker::activity::tests::t1045_selector_uses_original_viewer_demand_and_saved_preference") {
+        return;
+    }
+    for pause in [true, false] {
+        let (video, initial) = blent::video_queue::channel(8, Default::default());
+        drop(initial);
+        let (settings, mut updates) = watch::channel(super::super::tests::settings());
+        let attachment = crate::attachment::Attachment::new(settings.clone());
+        let (_visible, display) = watch::channel(true);
+        let (owner, stop) = watch::channel(false);
+        let work = Arc::new(blent::display_work::View::new(
+            None,
+            Some(video.viewer_activity()),
+            pause,
+        ));
+        let task = tokio::spawn(run(
+            CaptureConfig {
+                instance: u32::MAX,
+                gpu_policy: blent_config::gpu::Policy::Software,
+                ..Default::default()
+            },
+            settings.clone(),
+            display,
+            stop,
+            Default::default(),
+            Arc::new(attachment),
+            Default::default(),
+            work,
+        ));
+        if pause {
+            assert!(
+                timeout(Duration::from_millis(20), updates.changed())
+                    .await
+                    .is_err(),
+                "T1045 empty session calibrated"
+            );
+        } else {
+            selected(&mut updates).await;
+        }
+        let receiver = video.subscribe();
+        selected(&mut updates).await;
+        updates.borrow_and_update();
+        let second = video.subscribe();
+        drop(second);
+        assert!(
+            timeout(Duration::from_millis(20), updates.changed())
+                .await
+                .is_err(),
+            "T1045 continuous viewers repeated calibration"
+        );
+        drop(receiver);
+        let _replacement = video.subscribe();
+        if pause {
+            timeout(Duration::from_secs(2), updates.changed())
+                .await
+                .unwrap()
+                .unwrap();
+        } else {
+            assert!(timeout(Duration::from_millis(20), updates.changed())
+                .await
+                .is_err());
+        }
+        owner.send_replace(true);
+        timeout(Duration::from_secs(2), task)
+            .await
+            .unwrap()
+            .unwrap();
+    }
 }

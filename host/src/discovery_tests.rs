@@ -296,6 +296,7 @@ async fn t390_initial_discovery_connects_fast_tablet_before_slow_probe() {
         mode_tx: mode,
         shutdown_rx: stop_rx,
         activity: None,
+        activity_preferences: Default::default(),
     };
     let command = adb.to_str().unwrap().to_owned();
     let task = tokio::spawn(async move {
@@ -367,6 +368,7 @@ pub(crate) fn monitor_inputs(
         mode_tx: mode,
         shutdown_rx,
         activity: None,
+        activity_preferences: Default::default(),
     };
     (tablet, extra, stop)
 }

@@ -2,23 +2,19 @@
 use blent::capture_contract::ProfileLease;
 #[cfg(test)]
 use blent::capture_contract::ProfileSource;
-#[cfg(test)]
-use blent_config::host_activity::ActivityTarget;
-use blent_config::host_activity::WorkObservation;
+use blent::display_work::Observation;
 
 pub(super) struct TrialAuthority<'a> {
-    pub(super) activity: &'a blent::activity_view::View,
-    pub(super) work: WorkObservation,
+    pub(super) activity: &'a blent::display_work::View,
+    pub(super) work: Observation,
     pub(super) profile: Box<dyn ProfileLease>,
 }
 impl TrialAuthority<'_> {
     // Existing unmanaged compositions retain their explicit unsupported view.
     #[cfg(test)]
     pub(super) fn legacy(profile: &dyn ProfileSource) -> TrialAuthority<'static> {
-        static VIEW: std::sync::LazyLock<blent::activity_view::View> =
-            std::sync::LazyLock::new(|| {
-                blent::activity_view::View::new(ActivityTarget::Display, None)
-            });
+        static VIEW: std::sync::LazyLock<blent::display_work::View> =
+            std::sync::LazyLock::new(|| blent::display_work::View::new(None, None, true));
         TrialAuthority {
             activity: &VIEW,
             work: VIEW.begin().unwrap(),
@@ -26,7 +22,7 @@ impl TrialAuthority<'_> {
         }
     }
     pub(super) fn current(&self) -> bool {
-        self.activity.permits(self.work) && self.profile.active()
+        self.activity.permits(&self.work) && self.profile.active()
     }
 }
 

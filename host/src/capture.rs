@@ -40,6 +40,7 @@ const RECONNECT_DELAY_MS: u64 = 2000;
 pub struct CaptureManager {
     // Read-only source view; display policy consumption is T1015.
     activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+    display_work: Option<Arc<blent::display_work::View>>,
     config: CaptureConfig,
     helper: HelperProcess,
     encoder: EncoderProcess,
@@ -51,6 +52,7 @@ impl CaptureManager {
     pub fn new(config: CaptureConfig) -> Self {
         Self {
             activity: None,
+            display_work: None,
             config,
             helper: HelperProcess::new(),
             encoder: EncoderProcess::new(),
@@ -64,6 +66,9 @@ impl CaptureManager {
         activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     ) {
         self.activity = activity;
+    }
+    pub(crate) fn bind_display_work(&mut self, work: Arc<blent::display_work::View>) {
+        self.display_work = Some(work);
     }
     /// The session construction adapter binds its original recorder before the
     /// fresh manager can expose native work. Both owners share that same scope.

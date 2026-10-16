@@ -26,12 +26,8 @@ pub(crate) async fn run(
     latency: LatencyTracker,
     attachment: Arc<dyn blent::capture_contract::ProfileSource>,
     scope: blent::native_scope::Scope,
-    publication: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+    activity: Arc<blent::display_work::View>,
 ) {
-    let activity = blent::activity_view::View::new(
-        blent_config::host_activity::ActivityTarget::Display,
-        publication,
-    );
     let mut updates = settings.subscribe();
     let mut completed: Option<Completed<'_>> = None;
     loop {
@@ -107,8 +103,8 @@ fn pending_work(
     visible: bool,
     key: &Key,
     completed: Option<&Completed<'_>>,
-    activity: &blent::activity_view::View,
-) -> Option<blent_config::host_activity::WorkObservation> {
+    activity: &blent::display_work::View,
+) -> Option<blent::display_work::Observation> {
     if !eligible(settings, visible)
         || completed.is_some_and(|completed| completed.key == *key && completed.authority.current())
     {
@@ -587,6 +583,6 @@ fn spawn(
         latency,
         Arc::new(attachment),
         Default::default(),
-        None,
+        Arc::new(blent::display_work::View::new(None, None, true)),
     ))
 }

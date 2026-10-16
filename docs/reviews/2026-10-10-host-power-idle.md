@@ -669,3 +669,28 @@ production functions measure 100% native executable-line coverage; the source
 audit covers 36 functions at maximum complexity 8. Seven architecture checks and
 the separate T1044 production compilation regression pass. Native SonarQube remains
 T1019, and these fixtures establish no physical monitor acceptance.
+
+
+T1045 composes machine observations with original per-session viewer membership.
+Saved `pause_without_viewer` reaches primary and extra ADB/USB prepared sessions
+and their independent capture context. One read-only display-work view is shared
+by selection and the capture adapter; selector now honors the saved local viewer
+preference. Native capture consumption remains T1015.
+
+Viewer continuity belongs to the original receiver registry. The registry replaces
+an opaque immutable continuity identity only after membership becomes empty;
+coalesced last-viewer replacement therefore cannot revive old work. Additional
+viewers and departures that leave another viewer present do not invalidate it.
+Retained observations/notices own no receiver, grant or native resource. Presence
+is independent of liveness acknowledgement: legacy viewers count as viewers,
+and an ACK without actual receiver membership does not create demand. Explicitly
+unsupported presence observation preserves its fallback; disabling the preference
+keeps work eligible without viewers. Machine stop fences/loss still deny work.
+The adapter adds no idle polling or copied mutable grant state. This local demand
+composition does not establish retained-monitor runtime or physical acceptance.
+
+T1045 final native suites pass 808 library and 508 daemon tests, with three/four
+existing ignores. Thirty scoped production functions measure at least 83.33%
+executable-line coverage individually; 28 measure 100%. The source audit covers
+79 changed functions at maximum complexity 8. Seven architecture checks pass;
+native SonarQube remains T1019.

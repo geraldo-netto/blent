@@ -26,7 +26,30 @@ pub trait LivenessCapability: Send + Sync {
     fn changed(&self) -> Signal<'static>;
 }
 
+/// Immutable observation of continuous viewer membership, never a media grant.
+#[derive(Clone)]
+pub struct ViewerPresence {
+    count: usize,
+    continuity: Arc<()>,
+}
+impl ViewerPresence {
+    pub fn new(count: usize, continuity: Arc<()>) -> Self {
+        Self { count, continuity }
+    }
+    pub fn present(&self) -> bool {
+        self.count != 0
+    }
+    pub fn continues(&self, original: &Self) -> bool {
+        self.present() && original.present() && Arc::ptr_eq(&self.continuity, &original.continuity)
+    }
+}
+
 pub trait ViewerActivity: Send + Sync {
+    /// None explicitly denotes a composition without viewer-presence observation.
+    fn presence(&self) -> Option<ViewerPresence> {
+        None
+    }
+
     /// Monotonic connection epoch; a changed value invalidates idle evidence.
     fn epoch(&self) -> u64;
     /// True only with viewers present and every original viewer acknowledging
@@ -87,6 +110,7 @@ pub trait ProfileSource: Send + Sync {
 }
 
 pub struct CaptureContext {
+    pub activity_preferences: blent_config::host_activity::Settings,
     /// Shared read-only machine observations. None explicitly means this
     /// composition supplies no supported activity source; never native authority.
     pub activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,

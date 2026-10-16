@@ -109,3 +109,5 @@ pub mod native_scope;
 pub mod work_admission;
 
 pub mod activity_view;
+
+pub mod display_work;

@@ -79,6 +79,7 @@ impl Spec {
         .with_attachment(tablet.clone());
         Prepared {
             activity: None,
+            activity_preferences: Default::default(),
             settings,
             settings_rx,
             tablet,
@@ -94,6 +95,7 @@ impl Spec {
 }
 
 pub struct Prepared {
+    pub activity_preferences: blent_config::host_activity::Settings,
     pub activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     pub settings: watch::Sender<media::EncoderSettings>,
     pub settings_rx: watch::Receiver<media::EncoderSettings>,
@@ -114,6 +116,13 @@ impl Prepared {
         activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     ) -> Self {
         self.activity = activity;
+        self
+    }
+    pub fn with_activity_preferences(
+        mut self,
+        preferences: blent_config::host_activity::Settings,
+    ) -> Self {
+        self.activity_preferences = preferences;
         self
     }
     pub async fn start(self, daemon_stop: watch::Receiver<bool>) -> Result<Runtime> {
@@ -151,6 +160,7 @@ impl Prepared {
         let workers = catch_unwind(AssertUnwindSafe(|| {
             self.capture.start(CaptureContext {
                 activity: self.activity,
+                activity_preferences: self.activity_preferences,
                 retirement: retirement.clone(),
                 video: video.clone().into(),
                 headers: Arc::new(self.resources.codec_config),

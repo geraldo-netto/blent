@@ -75,7 +75,13 @@ impl CaptureBackend for LinuxCapture {
             mut manager,
             config,
         } = *self;
-        manager.bind_activity(context.activity.clone());
+        let work = Arc::new(blent::display_work::View::new(
+            context.activity.clone(),
+            Some(context.video.viewers()),
+            context.activity_preferences.pause_without_viewer,
+        ));
+        manager.bind_activity(context.activity);
+        manager.bind_display_work(work.clone());
         manager.bind_retirement(context.retirement.clone());
         #[cfg(feature = "inproc-encoder")]
         let _ = config;
@@ -88,7 +94,7 @@ impl CaptureBackend for LinuxCapture {
             manager.latency_tracker(),
             context.identity,
             blent::native_scope::Scope::new(Some(context.retirement)),
-            context.activity,
+            work,
         );
         let capture = Box::pin(async move {
             manager

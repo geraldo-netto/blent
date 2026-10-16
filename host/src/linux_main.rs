@@ -1699,7 +1699,8 @@ where
         ),
     }
     .prepare(mode_tx.clone())
-    .with_activity(Some(activity.subscribe()));
+    .with_activity(Some(activity.subscribe()))
+    .with_activity_preferences(file_cfg.host_activity);
     let settings_rx = prepared.settings.subscribe();
     let tablet_tx = prepared.tablet.clone();
     let tray_tablet_rx = tablet_tx.subscribe();
@@ -1783,6 +1784,7 @@ where
         mode_tx: mode_tx.clone(),
         shutdown_rx: shutdown_tx.subscribe(),
         activity: Some(activity.subscribe()),
+        activity_preferences: file_cfg.host_activity,
     };
     let monitor = monitor::with_usb(
         monitor::Config {
@@ -2197,6 +2199,7 @@ struct ExtraSessionTemplate {
     mode_tx: watch::Sender<bool>,
     shutdown_rx: watch::Receiver<bool>,
     activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+    activity_preferences: blent_config::host_activity::Settings,
 }
 
 /// Each automatic session has its own FIFO and acquires an exclusive helper
@@ -2241,7 +2244,8 @@ fn prepare_extra_session(
         devices: (t.input_touch, t.input_pen, t.input_pointer),
     }
     .prepare(t.mode_tx.clone())
-    .with_activity(t.activity.clone()))
+    .with_activity(t.activity.clone())
+    .with_activity_preferences(t.activity_preferences))
 }
 
 #[cfg(test)]
