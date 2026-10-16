@@ -13,14 +13,18 @@ pub async fn inspect(
     width: u32,
     height: u32,
     frame: &VideoPacket,
+    scope: &crate::native_scope::Scope,
 ) -> Result<StreamProfile> {
     let bytes = sample(codec, width, height, frame);
     if codec == Codec::Hevc {
         ensure!(hevc_main_tier(&bytes), "Unknown or unsupported HEVC tier");
     }
-    tokio::time::timeout(Duration::from_secs(2), query(codec, width, height, &bytes))
-        .await
-        .context("Format probe deadline")?
+    tokio::time::timeout(
+        Duration::from_secs(2),
+        query(codec, width, height, &bytes, scope),
+    )
+    .await
+    .context("Format probe deadline")?
 }
 
 pub(crate) fn hevc_main_tier(bytes: &[u8]) -> bool {
@@ -74,8 +78,22 @@ pub fn sample(codec: Codec, width: u32, height: u32, frame: &VideoPacket) -> Vec
     bytes
 }
 
-async fn query(codec: Codec, width: u32, height: u32, bytes: &[u8]) -> Result<StreamProfile> {
-    inspect_bytes(std::ffi::OsStr::new("ffprobe"), codec, width, height, bytes).await
+async fn query(
+    codec: Codec,
+    width: u32,
+    height: u32,
+    bytes: &[u8],
+    scope: &crate::native_scope::Scope,
+) -> Result<StreamProfile> {
+    inspect_bytes(
+        std::ffi::OsStr::new("ffprobe"),
+        codec,
+        width,
+        height,
+        bytes,
+        scope,
+    )
+    .await
 }
 
 pub(crate) async fn inspect_bytes(
@@ -84,6 +102,7 @@ pub(crate) async fn inspect_bytes(
     width: u32,
     height: u32,
     bytes: &[u8],
+    scope: &crate::native_scope::Scope,
 ) -> Result<StreamProfile> {
     if codec == Codec::Hevc {
         ensure!(hevc_main_tier(bytes), "Unknown or unsupported HEVC tier");
@@ -105,7 +124,7 @@ pub(crate) async fn inspect_bytes(
         .stdout(Stdio::piped())
         .stderr(Stdio::null())
         .kill_on_drop(true);
-    let mut child = blent_config::commands::OwnedChild::spawn(&mut command)?;
+    let mut child = scope.spawn(&mut command)?;
     let mut input = child.take_stdin().unwrap();
     let output = child.take_stdout().unwrap();
     let write = async {

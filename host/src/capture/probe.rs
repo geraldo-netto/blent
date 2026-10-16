@@ -24,15 +24,25 @@ pub(crate) struct Measurement {
     pub quality_db: Option<f64>,
 }
 
-pub(crate) async fn measure(config: &CaptureConfig) -> Result<Measurement> {
-    // Includes startup, input, drain, wait and failure cleanup. kill_on_drop
-    // retires the isolated child on deadline or selection cancellation.
-    tokio::time::timeout(Duration::from_secs(8), run(config))
+pub(crate) async fn measure(
+    config: &CaptureConfig,
+    scope: &blent::native_scope::Scope,
+) -> Result<Measurement> {
+    // Includes startup, input, drain, wait and failure cleanup. The original
+    // native proof survives this deadline or selection cancellation.
+    tokio::time::timeout(Duration::from_secs(8), run(config, scope))
         .await
         .context("Encoder probe exceeded eight seconds")?
 }
 
-async fn run(config: &CaptureConfig) -> Result<Measurement> {
+async fn run(config: &CaptureConfig, scope: &blent::native_scope::Scope) -> Result<Measurement> {
+    run_with(config, scope, blent_config::commands::OwnedChild::spawn).await
+}
+pub(super) async fn run_with(
+    config: &CaptureConfig,
+    scope: &blent::native_scope::Scope,
+    spawn: impl FnOnce(&mut Command) -> std::io::Result<blent_config::commands::OwnedChild>,
+) -> Result<Measurement> {
     let (w, h) = (config.width, config.height);
     ensure!(
         (2..=4096).contains(&w) && (2..=4096).contains(&h),
@@ -42,11 +52,11 @@ async fn run(config: &CaptureConfig) -> Result<Measurement> {
     let depth = super::cli_encoder::supports_async_depth(
         std::ffi::OsStr::new("ffmpeg"),
         crate::config::ffmpeg_encoder_name(&config.encoder),
+        scope,
     )
     .await;
-    let mut child = command(config, depth)?
-        .spawn()
-        .context("Start isolated encoder probe")?;
+    let mut child =
+        scope.child(spawn(&mut command(config, depth)?).context("Start isolated encoder probe")?);
     let stdin = child.stdin.take().unwrap();
     let stdout = child.stdout.take().unwrap();
     let started = Instant::now();
@@ -63,10 +73,10 @@ async fn run(config: &CaptureConfig) -> Result<Measurement> {
             measured.workers_effective =
                 blent_config::encoder_workers::effective_x264(&sample.data);
         }
-        measured.stream = super::probe_format::inspect(codec, w, h, &sample)
+        measured.stream = super::probe_format::inspect(codec, w, h, &sample, scope)
             .await
             .ok();
-        measured.quality_db = super::probe_quality::inspect(codec, w, h, &sample)
+        measured.quality_db = super::probe_quality::inspect(codec, w, h, &sample, scope)
             .await
             .ok();
     }
@@ -179,7 +189,7 @@ mod tests {
                 instance: u32::MAX,
                 ..Default::default()
             };
-            let measured = measure(&config)
+            let measured = measure(&config, &Default::default())
                 .await
                 .expect("T434: supported stock probe failed");
             assert_eq!(measured.encoder, encoder);
@@ -210,10 +220,10 @@ mod tests {
             instance: u32::MAX,
             ..Default::default()
         };
-        assert!(measure(&config).await.is_err());
+        assert!(measure(&config, &Default::default()).await.is_err());
         config.encoder = "vp9_vaapi".into();
         config.vaapi_device = "/nonexistent/blent-t434-render-node".into();
-        assert!(measure(&config).await.is_err());
+        assert!(measure(&config, &Default::default()).await.is_err());
     }
 
     #[test]

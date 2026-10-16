@@ -37,6 +37,7 @@ pub(in crate::selection::worker) fn setup() -> (EncoderSettings, Candidate) {
 }
 pub(in crate::selection::worker) fn store(path: PathBuf) -> Cache {
     Cache {
+        scope: Default::default(),
         path,
         fingerprint: "a".repeat(64),
         lease: None,
@@ -259,11 +260,21 @@ async fn t480_t714_cache_requires_proven_identity_and_software_context() {
     let (tx, _) = tokio::sync::watch::channel(snapshot.clone());
     let attachment = Attachment::new(tx);
     let mut config = CaptureConfig::default();
-    assert!(Cache::open(&config, &snapshot, &attachment).await.is_none());
-    assert!(Cache::open(&config, &snapshot, &attachment).await.is_none());
+    assert!(
+        Cache::open(&config, &snapshot, &attachment, &Default::default())
+            .await
+            .is_none()
+    );
+    assert!(
+        Cache::open(&config, &snapshot, &attachment, &Default::default())
+            .await
+            .is_none()
+    );
     attachment.begin_with_transport(Some("device:tablet".into()), Some(Transport::Usb));
     config.helper_path = std::env::current_exe().unwrap();
-    let cache = Cache::open(&config, &snapshot, &attachment).await.unwrap();
+    let cache = Cache::open(&config, &snapshot, &attachment, &Default::default())
+        .await
+        .unwrap();
     assert!(cache.active());
     assert_eq!(cache.fingerprint.len(), 64);
     assert_eq!(
@@ -376,7 +387,9 @@ async fn t714_tuning_is_automatic_even_for_old_opt_out_configs() {
         ..Default::default()
     };
     assert!(
-        Cache::open(&config, &snapshot, &attachment).await.is_some(),
+        Cache::open(&config, &snapshot, &attachment, &Default::default())
+            .await
+            .is_some(),
         "T714: old profile_cache=false must not repeat calibration"
     );
 }
@@ -386,6 +399,7 @@ pub(in crate::selection::worker) fn attached_store(
     lease: crate::attachment::Lease,
 ) -> Cache {
     Cache {
+        scope: Default::default(),
         lease: Some(Box::new(lease)),
         ..store(path)
     }
@@ -470,5 +484,53 @@ fn t727_gpu_policy_changes_invalidate_saved_candidates() {
     assert_ne!(
         context::fingerprint(&identity, "host", &snapshot, &base).unwrap(),
         pinned
+    );
+}
+
+#[derive(Default)]
+struct NativeReport(std::sync::Mutex<Vec<blent_config::retirement::Completion>>);
+impl blent::capture_contract::NativeRetirement for NativeReport {
+    fn retain(&self, proof: blent_config::retirement::Completion) {
+        self.0.lock().unwrap().push(proof);
+    }
+}
+#[tokio::test]
+async fn t1032_cache_creation_and_persistence_report_original_creators() {
+    let report = std::sync::Arc::new(NativeReport::default());
+    let scope = blent::native_scope::Scope::new(Some(report.clone()));
+    let (snapshot, row) = setup();
+    let (tx, _) = tokio::sync::watch::channel(snapshot.clone());
+    let attachment = Attachment::new(tx);
+    attachment.begin_with_transport(Some("device:T1032-tablet".into()), Some(Transport::Usb));
+    let config = CaptureConfig {
+        helper_path: std::env::current_exe().unwrap(),
+        ..Default::default()
+    };
+    let cache = Cache::open(&config, &snapshot, &attachment, &scope)
+        .await
+        .unwrap();
+    let created = report.0.lock().unwrap().len();
+    let directory = tempfile::tempdir().unwrap();
+    let mut cache = std::sync::Arc::try_unwrap(cache).ok().unwrap();
+    cache.path = directory.path().join("cache.json");
+    let cache = std::sync::Arc::new(cache);
+    cache.remember(&row).await;
+    assert!(cache.path.exists());
+    let originals = report.0.lock().unwrap().clone();
+    tokio::time::timeout(std::time::Duration::from_secs(5), async {
+        while originals.iter().any(|proof| !proof.is_complete()) {
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert_eq!(
+        created, 3,
+        "T1032 cache lost original creator or command proofs"
+    );
+    assert_eq!(
+        originals.len(),
+        4,
+        "T1032 cache persistence lost original creator"
     );
 }

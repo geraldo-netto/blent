@@ -1,7 +1,6 @@
 use super::*;
 use crate::capture::CaptureConfig;
 use blent::capture_contract::ProfileSource;
-use blent_config::commands::SyncCommandExt;
 use sha2::{Digest, Sha256};
 use std::path::Path;
 
@@ -10,28 +9,31 @@ impl Cache {
         base: &CaptureConfig,
         snapshot: &EncoderSettings,
         attachment: &dyn ProfileSource,
+        scope: &blent::native_scope::Scope,
     ) -> Option<std::sync::Arc<Self>> {
         let lease = attachment.profile();
         let identity = lease.identity()?;
         fingerprint(&identity, "", snapshot, base)?;
         let base = base.clone();
         let snapshot = snapshot.clone();
-        let cache = tokio::task::spawn_blocking(move || {
-            let stamp = host_stamp(&base)?;
-            let fingerprint = fingerprint(&identity, &stamp, &snapshot, &base)?;
-            let path = blent_config::config_path()
-                .ok()?
-                .with_file_name("tuned-profiles")
-                .join(format!("{fingerprint}.json"));
-            Some(Self {
-                path,
-                fingerprint,
-                lease: Some(lease),
+        let cache = scope
+            .blocking(move |scope| {
+                let stamp = host_stamp(&base, &scope)?;
+                let fingerprint = fingerprint(&identity, &stamp, &snapshot, &base)?;
+                let path = blent_config::config_path()
+                    .ok()?
+                    .with_file_name("tuned-profiles")
+                    .join(format!("{fingerprint}.json"));
+                Some(Self {
+                    scope,
+                    path,
+                    fingerprint,
+                    lease: Some(lease),
+                })
             })
-        })
-        .await
-        .ok()
-        .flatten()?;
+            .await
+            .ok()
+            .flatten()?;
         cache.active().then(|| std::sync::Arc::new(cache))
     }
 }
@@ -86,7 +88,7 @@ fn hash_file(digest: &mut Sha256, path: &Path) -> Option<()> {
     Some(())
 }
 
-fn host_stamp(base: &CaptureConfig) -> Option<String> {
+fn host_stamp(base: &CaptureConfig, scope: &blent::native_scope::Scope) -> Option<String> {
     let mut digest = Sha256::new();
     let ffmpeg = blent_config::linux::programs::find_in("ffmpeg", &std::env::var_os("PATH")?)?;
     for path in [
@@ -102,9 +104,11 @@ fn host_stamp(base: &CaptureConfig) -> Option<String> {
         Path::new("/sys"),
         &base.vaapi_device,
     )?);
-    let version = std::process::Command::new(ffmpeg)
-        .arg("-version")
-        .output_bounded()
+    let version = scope
+        .sync_output(
+            std::process::Command::new(ffmpeg).arg("-version"),
+            blent_config::commands::COMMAND_TIMEOUT,
+        )
         .ok()?;
     if !version.status.success() {
         return None;

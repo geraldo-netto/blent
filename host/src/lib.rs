@@ -103,3 +103,5 @@ pub mod broker;
 
 #[cfg(test)]
 mod display_test_support;
+
+pub mod native_scope;

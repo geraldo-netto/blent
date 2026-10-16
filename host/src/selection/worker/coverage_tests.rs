@@ -72,7 +72,7 @@ async fn calibration_contract(root: &Path, base: &CaptureConfig, snapshot: &Enco
     assert_eq!(configured.instance, u32::MAX);
     let mut manual = base.clone();
     manual.encoder_workers = 1;
-    let candidates = calibrate(&manual, snapshot).await;
+    let candidates = calibrate(&manual, snapshot, &Default::default()).await;
     assert_eq!(candidates.len(), 1, "{}", crate::test_logging::text());
     assert_eq!(candidates[0].measurement.encoder, "libx264");
     assert!(candidates[0].measurement.quality_db.unwrap() > 0.0);

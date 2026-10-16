@@ -55,6 +55,8 @@ enum Resource {
     #[cfg(not(feature = "inproc-encoder"))]
     Encoder,
     #[cfg(not(feature = "inproc-encoder"))]
+    Probe,
+    #[cfg(not(feature = "inproc-encoder"))]
     Reader,
 }
 struct NativeCapture {
@@ -94,6 +96,8 @@ impl NativeCapture {
                 None,
             ),
             #[cfg(not(feature = "inproc-encoder"))]
+            Resource::Probe => (Self::probe(&self.config, self.held, manager).await, None),
+            #[cfg(not(feature = "inproc-encoder"))]
             Resource::Encoder | Resource::Reader => {
                 Self::encoder(&self.config, self.resource, self.held, manager, context)
             }
@@ -132,6 +136,37 @@ impl NativeCapture {
         }
         let retained = original.lock().unwrap().clone().unwrap();
         retained
+    }
+    #[cfg(not(feature = "inproc-encoder"))]
+    async fn probe(
+        config: &CaptureConfig,
+        held: Held,
+        manager: &crate::capture::CaptureManager,
+    ) -> Completion {
+        let original = Arc::new(Mutex::new(None));
+        let observed = original.clone();
+        let scope = blent::native_scope::Scope::new(manager.encoder.retirement.clone());
+        let outcome = tokio::time::timeout(
+            Duration::from_millis(100),
+            crate::capture::probe::run_with(config, &scope, |_| {
+                let mut command = Command::new("/bin/sleep");
+                command
+                    .arg("60")
+                    .stdin(Stdio::piped())
+                    .stdout(Stdio::piped());
+                let mut child = Child::spawn(&mut command)?;
+                *observed.lock().unwrap() = Some(child.completion());
+                child.keep_alive(held);
+                Ok(child)
+            }),
+        )
+        .await;
+        assert!(
+            outcome.is_err(),
+            "T1032 fixture must cancel a live actual probe"
+        );
+        let proof = original.lock().unwrap().clone().unwrap();
+        proof
     }
     #[cfg(not(feature = "inproc-encoder"))]
     fn encoder(
@@ -292,4 +327,11 @@ async fn t1028_canceled_startup_cleanup_survives_whole_session_stop() {
 async fn t1028_failed_startup_cleanup_survives_whole_session_stop() {
     if crate::capture::ownership_tests::isolated("capture::helper::session_retirement_tests::t1028_failed_startup_cleanup_survives_whole_session_stop") { return; }
     exercise(Resource::StartupError).await;
+}
+
+#[cfg(not(feature = "inproc-encoder"))]
+#[tokio::test]
+async fn t1032_probe_cleanup_survives_whole_session_stop() {
+    if crate::capture::ownership_tests::isolated("capture::helper::session_retirement_tests::t1032_probe_cleanup_survives_whole_session_stop") { return; }
+    exercise(Resource::Probe).await;
 }

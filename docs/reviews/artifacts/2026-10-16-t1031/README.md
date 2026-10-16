@@ -2,13 +2,16 @@
 
 Shared sync/async command adapters now accept independent completion observers.
 Existing entry points delegate to that same execution path. Immediately after
-collector creation they report its original thread-join proof; immediately after
-child creation they report the original native-child admission. Spawn failure
+collector creation they report its original thread-join proof; after successful
+child construction they report the original native-child admission. Spawn failure
 still reports the already exposed collector. Cancellation, timeout or a returned
 output value never substitute for thread/process retirement. Observer callbacks
 must not block. Synchronous observer panic after exposure explicitly retires the
 original child before resuming unwinding; async child ownership already supplies
-that guarantee through its retained Drop path.
+that guarantee through its retained Drop path. Windows asynchronous job
+assignment happens inside child construction; assignment failure before the
+observer callback remains unvalidated and unresolved under T737. Linux has no
+equivalent post-spawn assignment step.
 
 Five permanent regressions were added before forwarding and failed with missing
 sync/async/failed-spawn/canceled/held-collector proofs. The same assertions pass

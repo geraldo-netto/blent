@@ -21,6 +21,7 @@ pub(crate) async fn run(
     mut stop: watch::Receiver<bool>,
     latency: LatencyTracker,
     attachment: Arc<dyn blent::capture_contract::ProfileSource>,
+    scope: blent::native_scope::Scope,
 ) {
     let mut updates = settings.subscribe();
     let mut completed = None;
@@ -36,7 +37,14 @@ pub(crate) async fn run(
                 &mut updates,
                 &mut display,
                 &mut stop,
-                optimize(&config, &settings, &snapshot, &latency, attachment.as_ref()),
+                optimize(
+                    &config,
+                    &settings,
+                    &snapshot,
+                    &latency,
+                    attachment.as_ref(),
+                    &scope,
+                ),
             )
             .await;
             if finished.is_some() {
@@ -317,7 +325,11 @@ struct Candidate {
     observation: Option<super::trial::Observation>,
 }
 
-async fn calibrate(base: &CaptureConfig, snapshot: &EncoderSettings) -> Vec<Candidate> {
+async fn calibrate(
+    base: &CaptureConfig,
+    snapshot: &EncoderSettings,
+    scope: &blent::native_scope::Scope,
+) -> Vec<Candidate> {
     let deadline = tokio::time::Instant::now() + Duration::from_secs(30);
     let mut candidates = Vec::new();
     'probes: for encoder in allowed_encoders(base) {
@@ -328,7 +340,8 @@ async fn calibrate(base: &CaptureConfig, snapshot: &EncoderSettings) -> Vec<Cand
         for workers in probe_budgets(base, snapshot, encoder.name) {
             let mut config = probe_config(base, snapshot, encoder.name);
             config.selected_workers = workers;
-            let Ok(result) = tokio::time::timeout_at(deadline, probe::measure(&config)).await
+            let Ok(result) =
+                tokio::time::timeout_at(deadline, probe::measure(&config, scope)).await
             else {
                 break 'probes;
             };
@@ -483,5 +496,6 @@ fn spawn(
         stop,
         latency,
         Arc::new(attachment),
+        Default::default(),
     ))
 }

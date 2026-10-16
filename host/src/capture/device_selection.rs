@@ -17,7 +17,9 @@ pub(crate) async fn select_gpu(config: &mut CaptureConfig, request: &str) {
     );
     #[cfg(not(feature = "inproc-encoder"))]
     validate_requested(config, |config| async move {
-        super::probe::measure(&config).await.is_ok()
+        super::probe::measure(&config, &Default::default())
+            .await
+            .is_ok()
     })
     .await;
     tracing::info!(requested_gpu = request, ?config.gpu_policy, encoder = %config.encoder, device = %config.vaapi_device,

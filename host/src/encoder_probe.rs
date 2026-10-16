@@ -146,6 +146,7 @@ impl Programs {
                 key.decoders.width,
                 key.decoders.height,
                 &sample,
+                &Default::default(),
             )
             .await?;
             let mut measured = summarize(&times, stream)?;

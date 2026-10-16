@@ -144,6 +144,7 @@ async fn t480_legacy_peers_use_uncached_host_path_and_optional_save_failures_do_
         &snapshot,
         &LatencyTracker::new(),
         &attachment,
+        &Default::default(),
     )
     .await;
     assert!(tx

@@ -75,7 +75,7 @@ impl CaptureBackend for LinuxCapture {
             mut manager,
             config,
         } = *self;
-        manager.bind_retirement(context.retirement);
+        manager.bind_retirement(context.retirement.clone());
         #[cfg(feature = "inproc-encoder")]
         let _ = config;
         #[cfg(not(feature = "inproc-encoder"))]
@@ -86,6 +86,7 @@ impl CaptureBackend for LinuxCapture {
             context.stop.clone(),
             manager.latency_tracker(),
             context.identity,
+            blent::native_scope::Scope::new(Some(context.retirement)),
         );
         let capture = Box::pin(async move {
             manager

@@ -185,9 +185,15 @@ async fn t530_reused_format_inspection_supports_bounded_native_samples() {
     let mut parser =
         crate::framed_annex_b::FramedAnnexB::new(crate::media::Codec::H264, Default::default());
     let (_, frames) = parser.read_from(&mut reader).await.unwrap();
-    let stream = crate::probe_format::inspect(crate::media::Codec::H264, 64, 48, &frames[0])
-        .await
-        .unwrap();
+    let stream = crate::probe_format::inspect(
+        crate::media::Codec::H264,
+        64,
+        48,
+        &frames[0],
+        &Default::default(),
+    )
+    .await
+    .unwrap();
     assert_eq!(stream.codec, "h264");
 }
 

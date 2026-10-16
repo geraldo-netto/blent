@@ -102,14 +102,20 @@ impl CliEncoder<'_> {
 
 /// T400: distribution FFmpeg options vary; probe the selected stock encoder.
 /// Uses the shared asynchronous deadline/cancellation implementation.
-pub(super) async fn supports_async_depth(program: &std::ffi::OsStr, encoder: &str) -> bool {
-    use blent_config::commands::AsyncCommandExt;
+pub(super) async fn supports_async_depth(
+    program: &std::ffi::OsStr,
+    encoder: &str,
+    scope: &blent::native_scope::Scope,
+) -> bool {
     if !encoder.ends_with("_vaapi") {
         return false;
     }
-    let output = Command::new(program)
-        .args(["-hide_banner", "-h", &format!("encoder={encoder}")])
-        .output_bounded()
+    let output = scope
+        .output(
+            Command::new(program).args(["-hide_banner", "-h", &format!("encoder={encoder}")]),
+            None,
+            blent_config::commands::COMMAND_TIMEOUT,
+        )
         .await;
     match output {
         Ok(output) if output.status.success() => {
@@ -543,14 +549,16 @@ mod encoder_policy_tests {
             std::fs::write(&program, format!("#!/bin/sh\n[ \"$1 $2 $3\" = '-hide_banner -h encoder=h264_vaapi' ] || exit 2\nprintf '%s\\n' '{help}' >&{stream}\nexit {status}\n")).unwrap();
             std::fs::set_permissions(&program, std::fs::Permissions::from_mode(0o700)).unwrap();
             assert_eq!(
-                supports_async_depth(program.as_os_str(), "h264_vaapi").await,
+                supports_async_depth(program.as_os_str(), "h264_vaapi", &Default::default()).await,
                 expected,
                 "T400: {help}/{status}/{stream}"
             );
         }
         std::fs::remove_file(&program).unwrap();
-        assert!(!supports_async_depth(program.as_os_str(), "libx264").await);
-        assert!(!supports_async_depth(program.as_os_str(), "hevc_vaapi").await);
+        assert!(!supports_async_depth(program.as_os_str(), "libx264", &Default::default()).await);
+        assert!(
+            !supports_async_depth(program.as_os_str(), "hevc_vaapi", &Default::default()).await
+        );
     }
 
     #[test]

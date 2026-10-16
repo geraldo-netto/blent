@@ -12,16 +12,26 @@ pub(super) async fn inspect(
     width: u32,
     height: u32,
     frame: &VideoPacket,
+    scope: &blent::native_scope::Scope,
 ) -> Result<f64> {
     let bytes = super::probe_format::sample(codec, width, height, frame);
     let reference = super::probe::reference(width, height);
-    tokio::time::timeout(Duration::from_secs(2), decode(codec, &bytes, &reference))
-        .await
-        .context("Quality probe deadline")?
+    tokio::time::timeout(
+        Duration::from_secs(2),
+        decode(codec, &bytes, &reference, scope),
+    )
+    .await
+    .context("Quality probe deadline")?
 }
 
-async fn decode(codec: Codec, bytes: &[u8], reference: &[u8]) -> Result<f64> {
-    let mut child = Command::new("ffmpeg")
+async fn decode(
+    codec: Codec,
+    bytes: &[u8],
+    reference: &[u8],
+    scope: &blent::native_scope::Scope,
+) -> Result<f64> {
+    let mut command = Command::new("ffmpeg");
+    command
         .args([
             "-v",
             "error",
@@ -43,8 +53,8 @@ async fn decode(codec: Codec, bytes: &[u8], reference: &[u8]) -> Result<f64> {
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::null())
-        .kill_on_drop(true)
-        .spawn()?;
+        .kill_on_drop(true);
+    let mut child = scope.spawn(&mut command)?;
     let mut input = child.stdin.take().unwrap();
     let output = child.stdout.take().unwrap();
     let write = async {

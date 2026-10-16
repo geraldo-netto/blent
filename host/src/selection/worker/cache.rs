@@ -14,6 +14,7 @@ pub(super) mod tests;
 const MAX_BYTES: u64 = 65536;
 
 pub(super) struct Cache {
+    scope: blent::native_scope::Scope,
     path: PathBuf,
     fingerprint: String,
     lease: Option<Box<dyn blent::capture_contract::ProfileLease>>,
@@ -37,7 +38,10 @@ impl Cache {
     pub async fn remember(self: &std::sync::Arc<Self>, candidate: &Candidate) {
         let cache = self.clone();
         let candidate = candidate.clone();
-        let result = tokio::task::spawn_blocking(move || cache.save(now(), &candidate)).await;
+        let result = self
+            .scope
+            .blocking(move |_| cache.save(now(), &candidate))
+            .await;
         if !matches!(result, Ok(Ok(()))) {
             tracing::debug!("Measured profile could not be persisted");
         }

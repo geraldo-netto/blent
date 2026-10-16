@@ -152,6 +152,7 @@ async fn t448_packet_framing_profile() {
     let depth = supports_async_depth(
         std::ffi::OsStr::new("ffmpeg"),
         crate::config::ffmpeg_encoder_name(&encoder),
+        &Default::default(),
     )
     .await;
     let mut samples = Vec::new();

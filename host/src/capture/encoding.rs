@@ -38,8 +38,12 @@ impl EncoderProcess {
         mode: (u32, u32),
     ) -> Result<(u32, u32)> {
         let encoder = crate::config::ffmpeg_encoder_name(&config.encoder);
-        let async_depth =
-            super::cli_encoder::supports_async_depth(std::ffi::OsStr::new("ffmpeg"), encoder).await;
+        let async_depth = super::cli_encoder::supports_async_depth(
+            std::ffi::OsStr::new("ffmpeg"),
+            encoder,
+            &blent::native_scope::Scope::new(self.retirement.clone()),
+        )
+        .await;
         self.start_with(config, mode, async_depth, |mut command| {
             Child::spawn(&mut command)
         })

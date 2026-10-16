@@ -404,10 +404,33 @@ T1031 adds original completion observation to the shared bounded synchronous and
 asynchronous command adapters. Both existing and observed calls execute through
 one implementation. Collector completion now remains available in production;
 its actual thread join is independent of delivered output or cancellation.
-Collector proofs register before child creation; child proofs register before
-fallible Windows setup or awaiting process/output completion. A synchronous
+Collector proofs register before child creation; child proofs register after
+successful construction and before awaiting process/output completion. Sync
+observation precedes Windows setup; async Windows assignment is internal to
+construction and its failure/reporting boundary remains unresolved under T737. A synchronous
 observer panic retires the already exposed original child before unwinding.
 Command deadlines, output bounds and sensitive stdin handling remain unchanged.
 Caller-owned blocking creators must retain their own reporting lifetime until
 late command creation is impossible; capture/selection wiring remains T1032.
 Native Windows validation of these observations remains explicitly under T737.
+
+
+T1032 propagates one immutable original reporting scope through Linux selection,
+async-depth queries, throughput/format/quality probes and cache creation/writes.
+Probe children now use retained native ownership and publish original proofs
+before another fallible step or await. Bounded commands forward both child and
+collector proofs through the same scope. Blocking cache creators retain their
+actual owned-task join certificate and reporting lifetime independently of their
+parent future or returned value. A canceled creator can still report a later
+child, whose original dependent cleanup continues to fence session replacement.
+Standalone probes use an explicit unbound scope; no runtime or OS authority is
+invented by that value. Public capture contracts remain independent of this
+implementation adapter.
+
+Retained regressions cover canceled creators after alias release, actual held
+child cleanup, a later child exposed after cancellation, whole-session stop during
+a live held probe, command forwarding and cache creation/persistence reporting.
+All pass with individual native counters. The global calibration semaphore is a
+separate remaining owner: its parent currently releases the permit before native
+proofs settle. T1033 records that contradiction and owns its independent fix;
+idle task retirement remains T1029. Activity integration is still T1027/T1015.

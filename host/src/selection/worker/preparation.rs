@@ -12,18 +12,19 @@ pub(super) async fn optimize(
     snapshot: &EncoderSettings,
     latency: &LatencyTracker,
     attachment: &dyn ProfileSource,
+    scope: &blent::native_scope::Scope,
 ) {
-    let cache = cache::Cache::open(base, snapshot, attachment).await;
-    optimize_with(&HostProbes(base), settings, snapshot, latency, cache).await;
+    let cache = cache::Cache::open(base, snapshot, attachment, scope).await;
+    optimize_with(&HostProbes(base, scope), settings, snapshot, latency, cache).await;
 }
 
 trait Probes {
     async fn candidates(&self, snapshot: &EncoderSettings) -> Vec<Candidate>;
 }
-struct HostProbes<'a>(&'a CaptureConfig);
+struct HostProbes<'a>(&'a CaptureConfig, &'a blent::native_scope::Scope);
 impl Probes for HostProbes<'_> {
     async fn candidates(&self, snapshot: &EncoderSettings) -> Vec<Candidate> {
-        calibrate(self.0, snapshot).await
+        calibrate(self.0, snapshot, self.1).await
     }
 }
 
