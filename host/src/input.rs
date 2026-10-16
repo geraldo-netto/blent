@@ -1940,6 +1940,16 @@ fi
     }
 
     #[test]
+    fn t1038_liveness_offer_requires_media_settings_and_explicit_socket_ack() {
+        let config = InputConfig::default();
+        let (publisher, _view) = watch::channel(settings("libx264"));
+        let connected = config.response("connected", false, &Some(publisher));
+        assert_eq!(connected.video_liveness, Some(1));
+        let standalone = config.response("connected", false, &None);
+        assert!(serde_json::to_value(standalone).unwrap().get("video_liveness").is_none());
+    }
+
+    #[test]
     fn t332_manual_geometry_validates_selected_dimensions_at_current_fps() {
         let mut current = settings("libx264");
         current.fps = 90;

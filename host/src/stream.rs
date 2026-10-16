@@ -1,3 +1,4 @@
+mod liveness;
 mod negotiation;
 #[cfg(test)]
 mod wake_tests;
@@ -200,12 +201,13 @@ impl StreamServer {
         Self::set_send_buffer(&socket, SEND_BUFFER_BYTES);
 
         // Only admitted peers count as viewers or request encoder work.
+        let liveness = liveness::configured_interval()?;
         let rx = video_tx.subscribe();
         idr_wanted.store(true, Ordering::SeqCst);
         let (mut reader, writer) = socket.into_split();
-        let (negotiated, _capabilities) = negotiation::channel();
+        let (negotiated, capabilities) = negotiation::channel();
         tokio::select! {
-            result = Self::stream_packets(writer, rx, codec_config, video_tx.budget()) => result,
+            result = Self::stream_packets(writer, rx, codec_config, video_tx.budget(), liveness, capabilities) => result,
             // Disabled authentication accepts the Android client's saved token
             // as an optional prelude, without delaying tokenless legacy clients.
             // EOF, malformed/extra input and incomplete preludes end the viewer.
@@ -218,26 +220,21 @@ impl StreamServer {
         mut rx: broadcast::Receiver<VideoPacket>,
         codec_config: CodecConfig,
         budget: Arc<crate::media_storage::Budget>,
+        liveness: blent_config::video::liveness::Interval,
+        capabilities: negotiation::View,
     ) -> Result<()> {
         let mut client = ClientPlayback {
             socket,
             last_sent_config: None,
+            last_write: tokio::time::Instant::now(),
+            capabilities,
             last_generation: None,
             wait_for_idr: true,
             dropped: 0,
             scratch: VecDeque::with_capacity(crate::video_queue::QUEUE_PACKETS),
         };
         client.send_initial_config(&codec_config, &budget).await?;
-        loop {
-            let first = match rx.recv().await {
-                Ok(d) => d,
-                Err(broadcast::error::RecvError::Lagged(n)) => {
-                    warn!("Client lagged {} frames, resuming at next IDR", n);
-                    client.wait_for_idr = true;
-                    continue;
-                }
-                Err(broadcast::error::RecvError::Closed) => break,
-            };
+        while let Some(first) = client.next_packet(&mut rx, liveness).await? {
             let batch = client.drain_batch(&mut rx, first);
             // Retained batch lifetime is bounded too, including a client
             // that makes tiny progress before each individual write deadline.
@@ -344,13 +341,76 @@ async fn watch_client_input(
 struct ClientPlayback {
     socket: tokio::net::tcp::OwnedWriteHalf,
     last_sent_config: Option<Bytes>,
+    last_write: tokio::time::Instant,
+    capabilities: negotiation::View,
     last_generation: Option<Arc<AtomicBool>>,
     wait_for_idr: bool,
     dropped: u64,
     scratch: VecDeque<VideoPacket>,
 }
 
+enum PlaybackEvent {
+    Packet(std::result::Result<VideoPacket, broadcast::error::RecvError>),
+    Capability,
+    Liveness,
+}
+
 impl ClientPlayback {
+    async fn send_liveness(&mut self) -> Result<()> {
+        use blent_config::video::liveness;
+        if !self.capabilities.supported() {
+            return Ok(());
+        }
+        StreamServer::write_packet(&mut self.socket, liveness::PACKET_TYPE, &liveness::PAYLOAD)
+            .await?;
+        self.last_write = tokio::time::Instant::now();
+        Ok(())
+    }
+    async fn next_event(
+        &mut self,
+        rx: &mut broadcast::Receiver<VideoPacket>,
+        interval: std::time::Duration,
+    ) -> PlaybackEvent {
+        let deadline = self.last_write + interval;
+        let supported = self.capabilities.supported();
+        let tick = async {
+            if !supported {
+                std::future::pending::<()>().await;
+            }
+            tokio::time::sleep_until(deadline).await;
+        };
+        tokio::select! {
+            _ = self.capabilities.changed() => PlaybackEvent::Capability,
+            _ = tick => PlaybackEvent::Liveness,
+            packet = rx.recv() => PlaybackEvent::Packet(packet),
+        }
+    }
+
+    async fn next_packet(
+        &mut self,
+        rx: &mut broadcast::Receiver<VideoPacket>,
+        interval: blent_config::video::liveness::Interval,
+    ) -> Result<Option<VideoPacket>> {
+        let interval = interval.duration();
+        loop {
+            // Ready but obsolete producer traffic cannot postpone wire liveness.
+            if self.capabilities.supported()
+                && tokio::time::Instant::now() >= self.last_write + interval
+            {
+                self.send_liveness().await?;
+            }
+            match self.next_event(rx, interval).await {
+                PlaybackEvent::Liveness => self.send_liveness().await?,
+                PlaybackEvent::Capability => {}
+                PlaybackEvent::Packet(Ok(packet)) => return Ok(Some(packet)),
+                PlaybackEvent::Packet(Err(broadcast::error::RecvError::Lagged(n))) => {
+                    warn!("Client lagged {} frames, resuming at next IDR", n);
+                    self.wait_for_idr = true;
+                }
+                PlaybackEvent::Packet(Err(broadcast::error::RecvError::Closed)) => return Ok(None),
+            }
+        }
+    }
     async fn send_initial_config(
         &mut self,
         codec_config: &CodecConfig,
@@ -369,6 +429,7 @@ impl ClientPlayback {
         );
         info!("Sending codec config to client ({} bytes)", config.len());
         StreamServer::write_packet(&mut self.socket, PACKET_TYPE_CONFIG, &config).await?;
+        self.last_write = tokio::time::Instant::now();
         self.last_sent_config = Some(config);
         Ok(())
     }
@@ -427,6 +488,7 @@ impl ClientPlayback {
         }
         if self.last_sent_config.as_ref() != Some(config) {
             StreamServer::write_packet(&mut self.socket, PACKET_TYPE_CONFIG, config).await?;
+            self.last_write = tokio::time::Instant::now();
             self.last_sent_config = Some(config.clone());
             self.wait_for_idr = true;
         }
@@ -452,6 +514,7 @@ impl ClientPlayback {
                 self.wait_for_idr = false;
             }
             StreamServer::write_frame(&mut self.socket, packet.seq, &packet.data).await?;
+            self.last_write = tokio::time::Instant::now();
         }
         self.scratch = batch;
         Ok(())
@@ -478,6 +541,8 @@ mod tests {
         let mut playback = ClientPlayback {
             socket,
             last_sent_config: None,
+            last_write: tokio::time::Instant::now(),
+            capabilities: negotiation::channel().1,
             last_generation: None,
             wait_for_idr: false,
             dropped: 0,
@@ -571,6 +636,8 @@ mod tests {
         let mut playback = ClientPlayback {
             socket,
             last_sent_config: None,
+            last_write: tokio::time::Instant::now(),
+            capabilities: negotiation::channel().1,
             last_generation: None,
             wait_for_idr: true,
             dropped: 0,
@@ -643,6 +710,8 @@ mod tests {
             rx,
             CodecConfig::new(Some(new.clone())),
             tx.budget(),
+            blent_config::video::liveness::interval(2000).unwrap(),
+            negotiation::channel().1,
         ));
         assert_eq!(
             t227_read_packet(&mut viewer).await,
@@ -670,6 +739,8 @@ mod tests {
         let mut playback = ClientPlayback {
             socket,
             last_sent_config: None,
+            last_write: tokio::time::Instant::now(),
+            capabilities: negotiation::channel().1,
             last_generation: None,
             wait_for_idr: true,
             dropped: 0,
@@ -1108,6 +1179,9 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod liveness_tests;
 
 #[cfg(test)]
 mod negotiation_tests;

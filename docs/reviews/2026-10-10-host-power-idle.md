@@ -559,8 +559,8 @@ video TCP socket, retaining the existing optional legacy-token prelude. Only the
 exact bounded eight-byte version-1 record publishes the connection-owned grant;
 its first byte starts the existing three-second completion budget. A read-only
 view becomes unsupported when its original publisher closes. Other sockets never
-inherit that watch or its grant. Host advertisement remains absent until T1038's
-emission path is ready; legacy traffic therefore keeps its existing framing.
+inherit that watch or its grant. At the T1039 checkpoint, host advertisement remained absent pending T1038's
+emission path; legacy traffic kept its existing framing.
 
 Android accepts offers only from its current protected connected greeting. That
 configuration travels separately from codec format in an immutable display-worker
@@ -581,3 +581,24 @@ notification now preserves cleanup and the same oracle passes. Native function
 coverage and full normal suites pass. T1041 owns exposing original negotiated
 viewer capability to capture, and T1040 records bounded early invalid-packet
 read/allocation work; neither is implied complete by negotiation readiness.
+
+
+T1038 enables bounded frame-independent heartbeats only after the original video
+socket acknowledges protocol 1. The protected media control greeting advertises
+that offer; input-only compositions omit it. A six-byte record renews transport
+progress without codec/frame/render callbacks. The two-second default is
+configurable from 100 to 5000 ms; invalid values reject before capture subscription
+or IDR demand. Successful configuration/frame/liveness writes renew the deadline;
+obsolete producer traffic cannot starve it. Legacy sockets wait without a heartbeat
+timer, late acknowledgement wakes the same playback, and closed grants deny writes.
+Authentication, attachment fencing, initial five-second CSD wait and existing
+one-second write/batch budgets remain in force. Fresh resume still requires the
+current generation's configuration and IDR. These records retain a quiet TCP
+connection; registration policy, retained monitor and Android decoder/wake activity
+policy remain their separately tracked integration work.
+
+The retained T1038 suite passes 787 host-library, 343 shared-contract and 1,996
+Android tests. Twelve scoped Rust production functions measure >=95.65% native
+line coverage; unchanged Android production methods retain T1039's native
+counters. The source audit covers 36 changed functions at complexity <=9; native
+SonarQube remains unavailable under T1019.

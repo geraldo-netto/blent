@@ -611,18 +611,27 @@ Android implements the strict negotiated type-2 receiver contract: body length
 2, type byte 2 and version byte 1, with no codec/frame/render callback. The
 protected `connected` greeting's optional `video_liveness: 1` offer is carried
 separately from codec format through the immutable display-worker request.
-Capability changes retire the prior display run before its replacement. The
-current host keeps this offer absent until the emission integration in T1038;
-this receiver/negotiation readiness does not claim active host heartbeats.
+Capability changes retire the prior display run before its replacement. Hosts with a media-settings source advertise protocol 1; standalone input-only
+compositions omit the offer. Each video socket must still acknowledge it before
+any new packet type is sent. After the existing initial configuration wait (at
+most five seconds), an acknowledged idle socket gets one six-byte liveness
+record every two seconds without requiring pixels or an encoder. Successful
+configuration/frame writes reset that deadline; obsolete queued frames do not.
+`BLENT_VIDEO_LIVENESS_MS` accepts 100–5000 ms (default 2000): shorter intervals
+add traffic/wakeups, longer intervals reduce them while remaining below Android’s
+10-second read timeout. Invalid values reject the admitted connection before it
+subscribes or requests an IDR. Legacy sockets add no heartbeat timer. The existing
+one-second whole-write and batch deadlines also bound liveness writes.
 
 The server sends:
 
 | Field | Encoding |
 | --- | --- |
 | Packet length | Four-byte unsigned big-endian integer; excludes these four bytes, includes type and all payload bytes |
-| Packet type | One byte: 0 for codec configuration, 1 for frame |
+| Packet type | One byte: 0 for codec configuration, 1 for frame, negotiated 2 for liveness |
 | Type 0 payload | H.264/HEVC Annex B parameter sets, or the [VP9/AV1 configuration envelope](video-codecs.md#framing) |
 | Type 1 payload | Four-byte unsigned big-endian sequence number, then encoded access-unit bytes |
+| Type 2 payload | Exact version byte 1; whole body length 2; original socket ACK required |
 
 The codec is announced on the input/control connection; there is no separate
 codec-name field in the video packet header.
