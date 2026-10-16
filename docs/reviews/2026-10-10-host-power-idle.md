@@ -15,8 +15,12 @@ these private API fixtures do not establish native acceptance on every distro.
 
 - `host/evdi/capture.c::on_dpms` records `dpms_on` and logs it. No production
   capture decision reads that flag; it also appears in diagnostic statistics.
-- T1008 now supplies a read-only logind suspend/shutdown/resume and selected-session
-  lock observer. It is not activated in the daemon yet; T1009/T1010 own composition.
+- T1008 supplies a read-only logind suspend/shutdown/resume and selected-session
+  lock observer. T1027 now starts one original source through
+  `linux_main.rs::run_daemon_with`/`daemon_activity::start` and passes read-only
+  publications to primary and extra sessions. Consuming that publication to gate
+  selection/display/auxiliary work remains T1037/T1015/T1010; observation startup
+  alone does not establish activity-aware media behavior.
 - `host/evdi/writer.c::writer_frame_due` skips redundant motion-rate output but
   repeats the current frame at a default 200 ms interval (5 Hz). A valid local
   adaptive-idle lease can increase the interval to 500 ms (2 Hz).
@@ -27,9 +31,13 @@ these private API fixtures do not establish native acceptance on every distro.
 - The optional in-process path in
   `capture.c::{publish_shared_capture,shared_poll_timeout}` retains 200 ms idle
   output. It does not consume the CLI adaptive-idle lease.
-- Android `VideoTransport.connect` sets a 10-second read timeout;
-  `VideoReceiver.connectAndReceive` treats timeout as reconnect. Suppressing all
-  repeated frames without revising that contract would cause periodic reconnects.
+- Android `VideoTransport.connect` retains a 10-second read timeout;
+  `VideoReceiver.connectAndReceive` treats expiry as reconnect. T1038 now supplies
+  bounded independent liveness records after the original socket's explicit
+  protocol-1 acknowledgement; those records keep negotiated no-frame connections
+  alive without decoder/frame/render callbacks. Legacy viewers retain their
+  existing framing and timeout behavior. T915 still owns safe frame suppression
+  and its configurable compatibility fallback.
 - Host `selection/health.rs` already distinguishes idle content from outstanding
   unrendered work. Preserve that behavior rather than adding frame-count-based
   failure detection.
