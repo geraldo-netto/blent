@@ -7,7 +7,7 @@ use std::{
     time::Duration,
 };
 
-fn configuration() -> CaptureConfig {
+pub(in crate::capture) fn configuration() -> CaptureConfig {
     use std::os::unix::fs::PermissionsExt;
     let root = crate::runtime::runtime_dir().unwrap();
     let path = root.join("t1035-helper");

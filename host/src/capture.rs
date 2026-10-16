@@ -5,6 +5,7 @@ mod config;
 mod device_selection;
 pub(crate) use device_selection::{initial_encoder, select_gpu};
 mod encoding;
+mod display_pause;
 mod fifo;
 #[cfg(not(feature = "inproc-encoder"))]
 mod gpu;

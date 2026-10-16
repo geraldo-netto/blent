@@ -608,4 +608,4 @@ mod session_retirement_tests;
 
 #[cfg(test)]
 #[path = "helper/activity_tests.rs"]
-mod activity_tests;
+pub(super) mod activity_tests;

@@ -284,7 +284,7 @@ impl EncoderTask {
                 anyhow::anyhow!("encoder task retirement incomplete; replacement forbidden")
             })?
     }
-    async fn retire(&mut self, already_finished: bool) -> Result<()> {
+    pub(super) async fn retire(&mut self, already_finished: bool) -> Result<()> {
         // The reader's generation guard and its original idle controller must
         // both retire before the supervisor can rotate/reuse the FIFO.
         if !already_finished && !self.handle.is_joined() {
@@ -488,3 +488,6 @@ mod retirement_tests {
 
 #[cfg(test)]
 mod generation_tests;
+
+#[cfg(test)]
+mod pause_tests;

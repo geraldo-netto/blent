@@ -708,3 +708,22 @@ This prerequisite supports T1046's interruptible retained-monitor transaction.
 T1047 native capture suite passes 160 tests with two existing ignores. Both scoped
 production functions measure 100% executable-line coverage; the source audit
 covers three functions at maximum complexity 7. Native SonarQube remains T1019.
+
+
+T1046 adds one retained-monitor quiescence transaction: stop the original encoder
+child/reader alongside the original helper pause ACK, await exact native generation
+creators/proofs, then clear headers, request fresh IDR and rotate the FIFO. The
+helper/card/stdout/control ownership stays intact. Cancellation retains the
+original request and quarantine. Original reader join keeps making progress after
+normal stop grace; its timeout cannot substitute for cleanup or abandon the
+still-owned result. Foreign ACK and uncontrolled helper operation fail explicitly.
+Seven permanent native fixture regressions include sixteen same-helper cycles,
+held cleanup, canceled ACK/native startup, malformed ACK and post-grace blocking
+reader completion. These are process/socket ownership fixtures, not physical
+monitor acceptance. Daemon enabling and guarded resume remain T1015.
+
+T1046 final normal CLI suite passes 516 tests with four existing ignores; installed
+SDK passes 81 capture and nine encoder-worker tests. All five production functions
+measure 100% native executable-line coverage in each configuration. Nineteen
+changed functions measure source complexity <=7; native SonarQube remains T1019.
+Seven architecture checks and normal production compilation pass.
