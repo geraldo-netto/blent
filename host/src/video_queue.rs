@@ -2,6 +2,7 @@
 use crate::media::VideoPacket;
 use crate::media_storage::Budget;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+mod viewers;
 use std::sync::{Arc, Mutex};
 use tokio::sync::broadcast;
 
@@ -14,21 +15,20 @@ pub const MAX_CONFIG_BYTES: usize = 8 * 1024 * 1024;
 #[derive(Clone)]
 pub struct VideoSender {
     sender: broadcast::Sender<VideoPacket>,
-    viewer_epoch: Arc<AtomicU64>,
+    viewers: Arc<viewers::Registry>,
     budget: Arc<Budget>,
     needs_idr: Arc<Mutex<bool>>,
     idr_wanted: Arc<AtomicBool>,
 }
 
-pub fn channel(
-    capacity: usize,
-    idr_wanted: Arc<AtomicBool>,
-) -> (VideoSender, broadcast::Receiver<VideoPacket>) {
+pub fn channel(capacity: usize, idr_wanted: Arc<AtomicBool>) -> (VideoSender, VideoReceiver) {
     let (sender, receiver) = broadcast::channel(capacity);
+    let viewers = viewers::Registry::new();
+    let receiver = VideoReceiver::new(receiver, viewers.clone(), None);
     (
         VideoSender {
             sender,
-            viewer_epoch: Default::default(),
+            viewers,
             budget: Budget::new(RETAINED_BYTES),
             needs_idr: Default::default(),
             idr_wanted,
@@ -48,12 +48,28 @@ impl VideoSender {
     }
 
     pub fn viewer_epoch(&self) -> Arc<AtomicU64> {
-        self.viewer_epoch.clone()
+        self.viewers.epoch.clone()
     }
 
-    pub fn subscribe(&self) -> broadcast::Receiver<VideoPacket> {
-        self.viewer_epoch.fetch_add(1, Ordering::AcqRel);
-        self.sender.subscribe()
+    pub fn viewer_activity(&self) -> Arc<dyn crate::capture_contract::ViewerActivity> {
+        self.viewers.clone()
+    }
+
+    pub fn subscribe(&self) -> VideoReceiver {
+        self.subscriber(None)
+    }
+    pub fn subscribe_negotiated(
+        &self,
+        capability: Arc<dyn crate::capture_contract::LivenessCapability>,
+    ) -> VideoReceiver {
+        self.subscriber(Some(capability))
+    }
+    fn subscriber(
+        &self,
+        capability: Option<Arc<dyn crate::capture_contract::LivenessCapability>>,
+    ) -> VideoReceiver {
+        self.viewers.epoch.fetch_add(1, Ordering::AcqRel);
+        VideoReceiver::new(self.sender.subscribe(), self.viewers.clone(), capability)
     }
     pub fn receiver_count(&self) -> usize {
         self.sender.receiver_count()
@@ -86,6 +102,39 @@ impl VideoSender {
                 config.len() <= MAX_CONFIG_BYTES && config.charge(&self.budget)
             })
             && packet.data.charge(&self.budget)
+    }
+}
+
+/// One original receiver owns its membership. Read-only observation may outlive
+/// it, but dropping this owner removes membership and the actual subscription.
+pub struct VideoReceiver {
+    receiver: Option<broadcast::Receiver<VideoPacket>>,
+    viewers: Arc<viewers::Registry>,
+    original: Arc<viewers::Entry>,
+}
+impl VideoReceiver {
+    fn new(
+        receiver: broadcast::Receiver<VideoPacket>,
+        viewers: Arc<viewers::Registry>,
+        capability: Option<Arc<dyn crate::capture_contract::LivenessCapability>>,
+    ) -> Self {
+        let original = viewers.add(capability);
+        Self {
+            receiver: Some(receiver),
+            viewers,
+            original,
+        }
+    }
+    pub async fn recv(&mut self) -> Result<VideoPacket, broadcast::error::RecvError> {
+        self.receiver.as_mut().unwrap().recv().await
+    }
+    pub fn try_recv(&mut self) -> Result<VideoPacket, broadcast::error::TryRecvError> {
+        self.receiver.as_mut().unwrap().try_recv()
+    }
+}
+impl Drop for VideoReceiver {
+    fn drop(&mut self) {
+        self.viewers.remove(&self.original, &mut self.receiver);
     }
 }
 

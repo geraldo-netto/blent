@@ -104,7 +104,7 @@ async fn decode(packet: VideoPacket) -> Vec<u8> {
 async fn live_recovery(
     root: &Path,
     first: &VideoPacket,
-    rx: &mut broadcast::Receiver<VideoPacket>,
+    rx: &mut crate::video_queue::VideoReceiver,
 ) -> VideoPacket {
     std::fs::write(root.join("request-live"), "").unwrap();
     let next = next_generation(first, rx).await;
@@ -125,7 +125,7 @@ async fn live_recovery(
 
 async fn next_generation(
     first: &VideoPacket,
-    rx: &mut broadcast::Receiver<VideoPacket>,
+    rx: &mut crate::video_queue::VideoReceiver,
 ) -> VideoPacket {
     let next = tokio::time::timeout(std::time::Duration::from_secs(5), async {
         loop {

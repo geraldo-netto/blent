@@ -57,3 +57,21 @@ impl View {
         let _ = self.0.changed().await;
     }
 }
+
+impl crate::capture_contract::LivenessCapability for View {
+    fn supported(&self) -> bool {
+        View::supported(self)
+    }
+    fn changed(&self) -> crate::capture_contract::Signal<'static> {
+        let mut view = self.0.clone();
+        let open = view.has_changed().is_ok();
+        view.borrow_and_update();
+        Box::pin(async move {
+            if open {
+                let _ = view.changed().await;
+            } else {
+                std::future::pending::<()>().await;
+            }
+        })
+    }
+}

@@ -34,7 +34,6 @@ use helper::{DetectedMode, HelperProcess};
 use std::sync::Arc;
 use std::time::Instant;
 #[cfg(test)]
-use tokio::sync::broadcast;
 use tokio::sync::watch;
 use tracing::{error, info, warn};
 const RECONNECT_DELAY_MS: u64 = 2000;

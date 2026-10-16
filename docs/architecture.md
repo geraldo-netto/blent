@@ -607,6 +607,18 @@ or extra acknowledgement input ends this viewer. The grant belongs to that
 original socket; closure revokes its read-only view and a replacement starts
 without a grant. An absent control greeting offer means legacy behavior.
 
+Capture observes viewers through the independent read-only `ViewerActivity`
+contract. Each original queue receiver owns one membership; its drop removes that
+membership and actual subscription together. The registry retains weak membership
+references and reads the original connection's grant source, without copying its
+mutable capability. Liveness readiness requires viewers present and every member
+acknowledged; legacy/unmanaged receivers and closed sources deny it. Structural
+membership changes and original ACK/source closure wake an observation armed before
+reading current state. Old observations may retain read views, but cannot retain
+membership or grant replacements permission. Empty/closed views wait without
+periodic polling. Production TCP admission still bounds viewers to sixteen.
+These observations provide desired policy input, never native retirement proof.
+
 Android implements the strict negotiated type-2 receiver contract: body length
 2, type byte 2 and version byte 1, with no codec/frame/render callback. The
 protected `connected` greeting's optional `video_liveness: 1` offer is carried

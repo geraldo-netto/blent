@@ -602,3 +602,19 @@ Android tests. Twelve scoped Rust production functions measure >=95.65% native
 line coverage; unchanged Android production methods retain T1039's native
 counters. The source audit covers 36 changed functions at complexity <=9; native
 SonarQube remains unavailable under T1019.
+
+
+T1041 projects original video-socket grants through independent read-only capture
+contracts. Receiver ownership and weak registry membership share one lifecycle;
+actual subscription and membership retire together. Readiness requires current
+viewers and acknowledgements from every member. Legacy/unmanaged/closed sources
+deny peer-dependent pause eligibility. Synchronously armed structural/source
+notices wake on ACK, replacement and loss; observation retains neither mutable
+grants nor receiver/native authority. Old notices cannot retain membership or
+retarget replacement grants. Empty/already-closed views wait without polling.
+The existing production sixteen-client admission bounds concurrent TCP sources.
+Permanent actual-authentication, mixed-viewer, 1,000-cycle late-replacement and
+membership-retention regressions pass. Fresh counters cover all 35 scoped
+production functions at >=94.74%; 794 host-library, 343 shared-contract, two native
+FIFO and seven architecture/portability checks pass. The source audit covers
+50 scoped functions with maximum complexity 9; native SonarQube remains T1019.

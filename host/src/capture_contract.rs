@@ -17,9 +17,27 @@ pub trait NativeRetirement: Send + Sync {
     fn retain(&self, original: blent_config::retirement::Completion);
 }
 
+/// Read-only original connection grant. A source owns its publication; closed
+/// sources deny support. Observation conveys no capture or retirement authority.
+pub trait LivenessCapability: Send + Sync {
+    fn supported(&self) -> bool;
+    /// Arm before inspecting supported(), so a concurrent change cannot be lost.
+    /// The returned observation owns only a read view of this original source.
+    fn changed(&self) -> Signal<'static>;
+}
+
 pub trait ViewerActivity: Send + Sync {
     /// Monotonic connection epoch; a changed value invalidates idle evidence.
     fn epoch(&self) -> u64;
+    /// True only with viewers present and every original viewer acknowledging
+    /// liveness. Unmanaged/legacy/closed sources deny peer-dependent pausing.
+    fn liveness_ready(&self) -> bool {
+        false
+    }
+    /// Arm before reading current state. Unsupported compositions have no wake.
+    fn changed(&self) -> Signal<'static> {
+        Box::pin(std::future::pending())
+    }
 }
 pub trait PacketOutput: Send + Sync {
     /// Publish without copying payloads. Rejection returns the same owned packet.

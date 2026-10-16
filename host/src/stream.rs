@@ -202,10 +202,10 @@ impl StreamServer {
 
         // Only admitted peers count as viewers or request encoder work.
         let liveness = liveness::configured_interval()?;
-        let rx = video_tx.subscribe();
+        let (negotiated, capabilities) = negotiation::channel();
+        let rx = video_tx.subscribe_negotiated(Arc::new(capabilities.clone()));
         idr_wanted.store(true, Ordering::SeqCst);
         let (mut reader, writer) = socket.into_split();
-        let (negotiated, capabilities) = negotiation::channel();
         tokio::select! {
             result = Self::stream_packets(writer, rx, codec_config, video_tx.budget(), liveness, capabilities) => result,
             // Disabled authentication accepts the Android client's saved token
@@ -217,7 +217,7 @@ impl StreamServer {
 
     async fn stream_packets(
         socket: tokio::net::tcp::OwnedWriteHalf,
-        mut rx: broadcast::Receiver<VideoPacket>,
+        mut rx: crate::video_queue::VideoReceiver,
         codec_config: CodecConfig,
         budget: Arc<crate::media_storage::Budget>,
         liveness: blent_config::video::liveness::Interval,
@@ -368,7 +368,7 @@ impl ClientPlayback {
     }
     async fn next_event(
         &mut self,
-        rx: &mut broadcast::Receiver<VideoPacket>,
+        rx: &mut crate::video_queue::VideoReceiver,
         interval: std::time::Duration,
     ) -> PlaybackEvent {
         let deadline = self.last_write + interval;
@@ -388,7 +388,7 @@ impl ClientPlayback {
 
     async fn next_packet(
         &mut self,
-        rx: &mut broadcast::Receiver<VideoPacket>,
+        rx: &mut crate::video_queue::VideoReceiver,
         interval: blent_config::video::liveness::Interval,
     ) -> Result<Option<VideoPacket>> {
         let interval = interval.duration();
@@ -436,7 +436,7 @@ impl ClientPlayback {
 
     fn drain_batch(
         &mut self,
-        rx: &mut broadcast::Receiver<VideoPacket>,
+        rx: &mut crate::video_queue::VideoReceiver,
         first: VideoPacket,
     ) -> VecDeque<VideoPacket> {
         // Drain whatever else is already queued so we can see how far
@@ -1185,3 +1185,6 @@ mod liveness_tests;
 
 #[cfg(test)]
 mod negotiation_tests;
+
+#[cfg(test)]
+mod viewer_tests;

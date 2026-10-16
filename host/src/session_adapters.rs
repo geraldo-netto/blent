@@ -18,7 +18,7 @@ impl PacketOutput for VideoSender {
         VideoSender::receiver_count(self)
     }
     fn viewers(&self) -> Arc<dyn ViewerActivity> {
-        self.viewer_epoch()
+        self.viewer_activity()
     }
 }
 impl From<VideoSender> for VideoOutput {

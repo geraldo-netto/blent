@@ -18,10 +18,7 @@ fn job() -> Job {
         parent: std::process::id(),
     }
 }
-fn output() -> (
-    Output,
-    tokio::sync::broadcast::Receiver<crate::media::VideoPacket>,
-) {
+fn output() -> (Output, crate::video_queue::VideoReceiver) {
     let (video, receiver) = crate::video_queue::channel(8, Default::default());
     (
         Output {
