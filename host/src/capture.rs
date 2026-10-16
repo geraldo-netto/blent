@@ -6,6 +6,8 @@ mod device_selection;
 pub(crate) use device_selection::{initial_encoder, select_gpu};
 mod encoding;
 mod display_pause;
+mod activity;
+mod supervision;
 mod fifo;
 #[cfg(not(feature = "inproc-encoder"))]
 mod gpu;
@@ -42,6 +44,7 @@ pub struct CaptureManager {
     // Read-only source view; display policy consumption is T1015.
     activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     display_work: Option<Arc<blent::display_work::View>>,
+    profile: Option<Arc<dyn blent::capture_contract::ProfileSource>>,
     config: CaptureConfig,
     helper: HelperProcess,
     encoder: EncoderProcess,
@@ -54,6 +57,7 @@ impl CaptureManager {
         Self {
             activity: None,
             display_work: None,
+            profile: None,
             config,
             helper: HelperProcess::new(),
             encoder: EncoderProcess::new(),
@@ -71,6 +75,9 @@ impl CaptureManager {
     pub(crate) fn bind_display_work(&mut self, work: Arc<blent::display_work::View>) {
         self.display_work = Some(work);
     }
+    pub(crate) fn bind_profile(&mut self, profile: Arc<dyn blent::capture_contract::ProfileSource>) {
+        self.profile = Some(profile);
+    }
     /// The session construction adapter binds its original recorder before the
     /// fresh manager can expose native work. Both owners share that same scope.
     pub(crate) fn bind_retirement(
@@ -81,6 +88,9 @@ impl CaptureManager {
         self.encoder.retirement = Some(retirement);
     }
     async fn start_helper(&mut self) -> Result<()> {
+        if self.display_work.is_some() {
+            self.helper.enable_activity();
+        }
         self.helper.start(&self.config).await
     }
     fn active_mode(&self) -> (u32, u32) {
@@ -202,27 +212,7 @@ impl CaptureManager {
             pipeline_started_at: Instant::now(),
             encoder_mode: None,
         };
-        loop {
-            if run.stopped() {
-                self.shutdown().await;
-                return Ok(());
-            }
-            self.apply_stream_settings(&mut run).await;
-            if !*run.display_rx.borrow() || !run.settings_rx.borrow().geometry_ready {
-                if self.idle_until_screen_change(&mut run).await {
-                    return Ok(());
-                }
-                continue;
-            }
-            if !self.prepare_capture_pipeline(&mut run).await {
-                continue;
-            }
-            let Some(changes) = self.run_encoder_session(&tx, &mut run).await? else {
-                return Ok(());
-            };
-            run.adjust_backoff(changes);
-            self.finish_encoder_session(changes, &mut run).await?;
-        }
+        self.follow_capture(&tx, &mut run).await
     }
 
     fn helper_settings_changed(&self, settings: &EncoderSettings) -> bool {
@@ -392,7 +382,10 @@ impl CaptureManager {
         run.mode_rx.borrow_and_update();
         run.stream_rx.borrow_and_update();
 
-        self.ensure_session_encoder(run).await
+        if !self.ensure_session_encoder(run).await {
+            return false;
+        }
+        self.resume_capture(run).await
     }
 
     async fn ensure_session_encoder(&mut self, run: &mut CaptureRun) -> bool {
@@ -597,7 +590,7 @@ impl CaptureManager {
         self.encoder.shutdown().await;
         self.encoder.ensure_retired()?;
         process::ensure_retired(&self.helper.pending)?;
-        if changes.keep_helper() {
+        if changes.keep_helper() && self.display_work.is_none() {
             self.helper.rotate_fifo()?;
         }
         run.encoder_mode = None;
@@ -743,3 +736,6 @@ mod closed_settings_tests;
 #[cfg(test)]
 #[path = "capture/raw_transport_tests.rs"]
 mod raw_transport_tests;
+
+#[cfg(test)]
+mod activity_tests;

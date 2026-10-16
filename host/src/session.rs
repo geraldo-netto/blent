@@ -82,6 +82,7 @@ impl CaptureBackend for LinuxCapture {
         ));
         manager.bind_activity(context.activity);
         manager.bind_display_work(work.clone());
+        manager.bind_profile(context.identity.clone());
         manager.bind_retirement(context.retirement.clone());
         #[cfg(feature = "inproc-encoder")]
         let _ = config;

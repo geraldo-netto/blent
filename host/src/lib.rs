@@ -111,3 +111,5 @@ pub mod work_admission;
 pub mod activity_view;
 
 pub mod display_work;
+
+pub mod current_work;

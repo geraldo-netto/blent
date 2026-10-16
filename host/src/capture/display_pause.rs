@@ -22,13 +22,16 @@ impl CaptureManager {
         retired(&self.encoder).await;
         joined?;
         paused?;
-        self.codec_config.publish(None);
-        self.idr_wanted
-            .store(true, std::sync::atomic::Ordering::Release);
+        self.reset_codec();
         if self.helper.is_running() {
             self.helper.rotate_fifo()?;
         }
         Ok(())
+    }
+    pub(super) fn reset_codec(&self) {
+        self.codec_config.publish(None);
+        self.idr_wanted
+            .store(true, std::sync::atomic::Ordering::Release);
     }
 }
 async fn pause_helper(helper: &mut HelperProcess) -> anyhow::Result<()> {

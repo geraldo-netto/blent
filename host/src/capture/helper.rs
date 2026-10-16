@@ -267,6 +267,18 @@ impl HelperProcess {
         }
     }
 
+    pub(super) fn restart_ready(&self) -> Result<()> {
+        if self.child.is_some() {
+            anyhow::bail!("capture helper is still owned");
+        }
+        if self.stdout_task.is_some() {
+            anyhow::bail!("capture stdout is still owned");
+        }
+        process::ensure_retired(&self.pending)?;
+        process::ensure_retired(&self.stdout_pending)?;
+        Ok(())
+    }
+
     pub(super) async fn start(&mut self, config: &CaptureConfig) -> Result<()> {
         self.start_with(config, Child::spawn).await
     }
@@ -276,14 +288,7 @@ impl HelperProcess {
         config: &CaptureConfig,
         spawn: impl FnOnce(&mut Command) -> std::io::Result<Child>,
     ) -> Result<()> {
-        if self.child.is_some() {
-            anyhow::bail!("capture helper is still owned");
-        }
-        if self.stdout_task.is_some() {
-            anyhow::bail!("capture stdout is still owned");
-        }
-        process::ensure_retired(&self.pending)?;
-        process::ensure_retired(&self.stdout_pending)?;
+        self.restart_ready()?;
         self.stdout_pending = None;
         crate::config::validate_encoder_for_build(&config.encoder)?;
         if config.shared_raw() {

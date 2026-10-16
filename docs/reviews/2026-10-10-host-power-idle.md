@@ -18,10 +18,12 @@ these private API fixtures do not establish native acceptance on every distro.
 - T1008 supplies a read-only logind suspend/shutdown/resume and selected-session
   lock observer. T1027 now starts one original source through
   `linux_main.rs::run_daemon_with`/`daemon_activity::start` and passes read-only
-  publications to primary and extra sessions. Consuming that publication to gate
-  selection/display/auxiliary work is implemented for selection under T1037;
-  display and auxiliary integration remain T1015/T1010; observation startup
-  alone does not establish activity-aware media behavior.
+  publications to primary and extra sessions. Selection consumes the original
+  publication under T1037; T1015 now guards native display startup and running
+  work with the same machine/viewer view and original attachment lease. Healthy
+  helpers retain their monitor during activity pause while capture/encoding
+  retire. Auxiliary integration remains T1010; USB registration renewal remains
+  T1016, and joined host/Android acceptance remains T1009/T1011/T914.
 - `host/evdi/writer.c::writer_frame_due` skips redundant motion-rate output but
   repeats the current frame at a default 200 ms interval (5 Hz). A valid local
   adaptive-idle lease can increase the interval to 500 ms (2 Hz).
@@ -727,3 +729,57 @@ SDK passes 81 capture and nine encoder-worker tests. All five production functio
 measure 100% native executable-line coverage in each configuration. Nineteen
 changed functions measure source complexity <=7; native SonarQube remains T1019.
 Seven architecture checks and normal production compilation pass.
+
+
+## Guarded display runtime (T1015, 2026-10-16)
+
+Primary and extra Linux ADB/USB capture managers now consume the same original
+machine/viewer work view as selection, plus the original attachment profile.
+One current-work guard checks before and after each workflow poll/result;
+selection shares that check instead of retaining a second implementation.
+Original source/profile notices are armed before inspection. Pending, failed,
+stopped or lost supported sources deny work; explicitly unsupported capabilities
+retain their fallback. Saved no-viewer policy remains independent of transport
+ACKs. Coalesced stop/resume and same-identity attachment changes still retire
+the original work before a new attempt, even when current settings match.
+
+Managed helpers start inactive. A current guarded attempt awaits exact original
+encoder creators, reader and native completion proofs before preparing and
+resuming capture. Activity pause uses T1046's original helper acknowledgement
+and native quiescence, clears headers, requests fresh IDR and rotates the FIFO
+while retaining the healthy helper/card/control/stdout owner. Desired resume
+cannot bypass pending retirement. Ordinary explicit display detach and shutdown
+continue removing the output. Invalid resume acknowledgement retires the helper
+and uses bounded recovery backoff; retained output is not promised after native
+failure. Existing settings, input and independent media owners remain separate.
+
+A permanent regression also reproduced stale header ownership on explicit
+display-mode restart: identical header bytes were deduplicated across retired
+generations. Header ownership is now cleared after exact old generation
+retirement and before replacement, including ordinary mode restart. Fourteen
+new normal-suite regressions exercise actual synthetic helper processes, FIFO
+pixels and CLI/in-process encoders: pending startup, running/coalesced pause,
+profile replacement, local viewer policy, source loss/closure/failure, unsupported
+fallback, explicit mode detach, interrupted handshake, malformed resume ACK,
+stale ready result and whole-manager shutdown/drop with held original native
+startup. Retained original completion stays pending after the parent returns
+and completes only when the actual held worker exits.
+
+Fixtures use private sockets/processes and synthetic frames, with desktop
+environment and executable paths isolated from physical capture. They establish
+no physical monitor/tablet acceptance or power savings. Negotiated video
+liveness remains T1038; legacy framing/read timeouts remain unchanged. USB
+registration integration is T1016, joined host acceptance T1009, Android resource
+handling T1011, independent auxiliary handling T1010 and physical acceptance
+T914. Native SonarQube measurement remains T1019. No downloads, installation,
+live lock/suspend or push occurred.
+
+Final T1015 native suites pass 808 host-library and 530 CLI daemon tests with
+three/four existing ignores, plus 95 SDK capture and nine encoder-worker tests
+without ignores. Every scoped production function passes individual executable-
+line coverage: 32 CLI and 30 SDK functions, minimum 80% in each configuration.
+The source audit covers 65 changed functions with maximum complexity 7; seven
+architecture checks and production compilation pass. The broad SDK private-
+bus/namespace fixture prerequisites remain explicitly blocked under T835.
+[Retained red/green logs, native counters and source/native-object attestations](artifacts/2026-10-16-t1015/README.md)
+record the exact validation scope.

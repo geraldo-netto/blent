@@ -74,22 +74,6 @@ impl<'a> Inputs<'a> {
             && self.settings.borrow().selection_matches(self.key)
             && authority.current()
     }
-    fn poll<T>(
-        &self,
-        authority: &TrialAuthority<'_>,
-        work: std::pin::Pin<&mut impl std::future::Future<Output = T>>,
-        cx: &mut std::task::Context<'_>,
-    ) -> std::task::Poll<Option<T>> {
-        if !self.current(authority) {
-            return std::task::Poll::Ready(None);
-        }
-        let result = work.poll(cx);
-        // Work may make progress at the same instant an original input retires.
-        if !self.current(authority) {
-            return std::task::Poll::Ready(None);
-        }
-        result.map(Some)
-    }
 }
 
 pub(super) async fn guarded<T>(
@@ -97,8 +81,7 @@ pub(super) async fn guarded<T>(
     authority: &TrialAuthority<'_>,
     work: impl std::future::Future<Output = T>,
 ) -> Option<T> {
-    tokio::pin!(work);
-    std::future::poll_fn(|cx| inputs.poll(authority, work.as_mut(), cx)).await
+    blent::current_work::guarded(|| inputs.current(authority), work).await
 }
 
 #[cfg(test)]

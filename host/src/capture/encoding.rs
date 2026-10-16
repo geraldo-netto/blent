@@ -491,3 +491,6 @@ mod generation_tests;
 
 #[cfg(test)]
 mod pause_tests;
+
+#[cfg(test)]
+mod activity_retirement_tests;
