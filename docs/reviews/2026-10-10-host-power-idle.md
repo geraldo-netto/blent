@@ -325,3 +325,9 @@ acknowledgment. Sanitizers cover native accesses. These are component acceptance
 tests; application activity composition remains T1015/T1016/T1009, and physical
 host/tablet acceptance remains T914. No lock, suspend or display setting was
 changed, and no runtime power/CPU improvement is claimed from these fixtures.
+
+T1025 moves the fallback deadline into the capture owner's pacing state. A
+successful resume snapshot advances that same deadline, so the first resumed
+tick does not perform a second fallback grab before the configured request is
+due. The 250 ms lost-update watchdog and subsequent fallback recovery retain
+their existing deadlines; permanent mock-clock tests cover both paths.

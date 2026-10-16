@@ -101,8 +101,8 @@ static void t1021_idle(void)
     on_update_ready(0, &g_capture);
     grab_now(&g_capture);
     publish_frame(&g_capture);
-    long long fallback = 0, stats = 0, base = 0;
-    assert(capture_tick(&g_capture, EVDI_INVALID_HANDLE, 17, &fallback, &stats, &base));
+    long long stats = 0, base = 0;
+    assert(capture_tick(&g_capture, EVDI_INVALID_HANDLE, 17, &stats, &base));
     assert(capture_poll_timeout(&g_capture, 17) == 100);
     assert(shared_poll_timeout(&g_capture, 100) == 100);
     assert(mock_grab_calls == grabs && t623_request_calls == requests);
@@ -306,4 +306,39 @@ static void test_t1021_rights(void)
     close(control.fd);
     close(pipefd[0]);
     close(pipefd[1]);
+}
+
+/* T1025: a successful resume snapshot satisfies the fallback deadline. */
+static void test_t1025_resume_pacing(void)
+{
+    mock_monotonic_ms = 100000;
+    capture_control_t control;
+    int peer = t1021_pair(&control);
+    t1021_mode(&control);
+    t1021_send(peer, 1, 1);
+    t1021_poll(&control);
+    t1021_ack(peer, 1, 1);
+    assert(mock_grab_calls == 1 && t623_request_calls == 0);
+    long long stats = mock_monotonic_ms, base = 0;
+    assert(capture_tick(&g_capture, EVDI_INVALID_HANDLE, 17, &stats, &base));
+    assert(mock_grab_calls == 1 && "T1025: resume snapshot must satisfy fallback deadline");
+    mock_monotonic_ms += 17;
+    assert(capture_tick(&g_capture, EVDI_INVALID_HANDLE, 17, &stats, &base));
+    assert(t623_request_calls == 1 && g_capture.update_pending);
+    mock_monotonic_ms += 250;
+    assert(capture_tick(&g_capture, EVDI_INVALID_HANDLE, 17, &stats, &base));
+    assert(mock_grab_calls == 2 && !g_capture.update_pending);
+    t1021_send(peer, 2, 0);
+    t1021_poll(&control);
+    t1021_ack(peer, 2, 0);
+    mock_monotonic_ms += 100000;
+    t1021_send(peer, 3, 1);
+    t1021_poll(&control);
+    t1021_ack(peer, 3, 1);
+    assert(mock_grab_calls == 3);
+    assert(capture_tick(&g_capture, EVDI_INVALID_HANDLE, 17, &stats, &base));
+    assert(mock_grab_calls == 3);
+    close(peer);
+    close(control.fd);
+    t497_free_capture();
 }

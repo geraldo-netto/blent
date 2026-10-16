@@ -7,6 +7,11 @@ use std::{path::PathBuf, process::Command};
 struct Harness(PathBuf);
 
 #[test]
+fn t1025_resume_snapshot_satisfies_fallback_deadline() {
+    Harness::build("T1021").run("T1025");
+}
+
+#[test]
 fn t1021_pause_retains_monitor_and_waits_for_original_writer() {
     let harness = Harness::build("T1021");
     for case in [

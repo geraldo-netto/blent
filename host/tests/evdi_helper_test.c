@@ -1508,6 +1508,7 @@ int main(int argc, char **argv) {
         {"T1021-raw", test_t1021_raw},
         {"T1021-boundaries", test_t1021_boundaries},
         {"T1021-rights", test_t1021_rights},
+        {"T1025", test_t1025_resume_pacing},
         {"T580", test_t580_no_reader},
         {"T580-reconnect", test_t580_reconnect},
         {"T580-tsan", test_t580_reconnect},

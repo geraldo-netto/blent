@@ -44,6 +44,7 @@ typedef struct {
     int immediate_n;
     int empty_n;
     long long last_request_ms;
+    long long last_fallback_grab_ms; /* capture-owner pacing, including resume snapshots */
     int buffer_registered;
     raw_ring_t *raw_ring;
     int raw_pending;

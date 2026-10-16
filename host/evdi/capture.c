@@ -578,6 +578,7 @@ static void resume_capture(capture_context_t *capture)
     /* A queued flip must be acknowledged before any new update request (T599).
      * Even an unchanged image must seed the new encoder's first full frame. */
     grab_now(capture);
+    capture->last_fallback_grab_ms = capture_now_ms();
     if (capture->grab_count == previous)
         publish_frame(capture);
 }
@@ -712,8 +713,7 @@ static int shared_poll_timeout(capture_context_t *capture, int timeout_ms)
 }
 
 static int capture_tick(capture_context_t *capture, evdi_handle handle, long request_period_ms,
-                        long long *last_fallback_grab_ms, long long *last_stats_ms,
-                        long long *stats_grab_base)
+                        long long *last_stats_ms, long long *stats_grab_base)
 {
     if (!capture_active(capture))
         return service_shared_capture(capture);
@@ -721,7 +721,7 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long req
         return 1;
     long long now = capture_now_ms();
     request_capture_if_due(capture, handle, now, request_period_ms);
-    recover_capture_if_stalled(capture, now, last_fallback_grab_ms);
+    recover_capture_if_stalled(capture, now, &capture->last_fallback_grab_ms);
     if (now - *last_stats_ms >= 5000)
         report_capture_stats(capture, now, last_stats_ms, stats_grab_base);
     return service_shared_capture(capture);
@@ -747,7 +747,6 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
     fds[1].events = POLLIN;
 
     long long last_stats_ms = capture_now_ms();
-    long long last_fallback_grab_ms = 0;
     long long stats_grab_base = 0;
     long request_period_ms = capture_period_ms(capture);
 
@@ -764,8 +763,7 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
         if (!service_shared_capture(capture))
             return 1;
 
-        if (!capture_tick(capture, handle, request_period_ms, &last_fallback_grab_ms,
-                          &last_stats_ms, &stats_grab_base))
+        if (!capture_tick(capture, handle, request_period_ms, &last_stats_ms, &stats_grab_base))
             return 1;
     }
     return capture->capture_failed;
