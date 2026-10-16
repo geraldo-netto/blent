@@ -54,6 +54,9 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+      - name: Check production capture without test imports (T1044)
+        run: cargo check --locked -p blent --features accessory-transport --bin blent
+
       - name: Enforce host and common Clippy warnings (T842)
         run: cargo clippy --locked -p blent -p blent-config --lib --tests -- -D warnings
 
