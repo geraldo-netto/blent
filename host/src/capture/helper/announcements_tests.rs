@@ -42,13 +42,7 @@ async fn failed_announcements(script: &str) {
     .unwrap();
     let mut helper = HelperProcess::new();
     let lines = HelperLines::new(child.take_stdout().unwrap());
-    let work = HelperProcess::drain_helper_stdout(
-        lines,
-        helper.mode_tx.clone(),
-        helper.stream_tx.clone(),
-        helper.fifo_reset_tx.clone(),
-        report,
-    );
+    let work = HelperProcess::drain_helper_stdout(lines, helper.stdout_publisher(), report);
     helper.stdout_task = Some(blent::owned_task::Task::spawn(work).unwrap());
     helper.child = Some(child);
     let outcome = tokio::time::timeout(Duration::from_millis(200), helper.wait()).await;

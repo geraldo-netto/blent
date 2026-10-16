@@ -9,6 +9,7 @@ use tokio::process::Command;
 use tokio::sync::watch;
 use tracing::{info, warn};
 mod lines;
+mod publication;
 type HelperLines = lines::Lines<tokio::process::ChildStdout>;
 
 /// Why the helper cannot get an EVDI device, in the words of someone who can
@@ -71,6 +72,8 @@ pub(super) struct HelperProcess {
     pub(super) raw_socket: Option<crate::raw_socket::Socket>,
     stdout_task: Option<blent::owned_task::Task>,
     stdout_failure: Option<String>,
+    stdout_owner: Option<publication::Owner>,
+    stdout_pending: Option<blent_config::retirement::Completion>,
     /// Retained across restarts as a preference, never a reservation.
     pub(super) card: Option<u32>,
     pub(super) mode_tx: watch::Sender<Option<DetectedMode>>,
@@ -95,6 +98,8 @@ impl HelperProcess {
             raw_socket: None,
             stdout_task: None,
             stdout_failure: None,
+            stdout_owner: None,
+            stdout_pending: None,
             card: None,
             mode_tx,
             mode_rx,
@@ -144,14 +149,27 @@ impl HelperProcess {
             outcome = stdout => outcome,
         };
         self.stdout_task = None;
+        self.abort_stdout();
         let reason = format!("capture helper stdout stopped: {outcome:?}");
         self.stdout_failure = Some(reason.clone());
         Err(std::io::Error::other(reason))
     }
     pub(super) fn abort_stdout(&mut self) {
+        drop(self.stdout_owner.take());
         if let Some(task) = self.stdout_task.take() {
+            self.stdout_pending = Some(task.completion());
             task.abort();
         }
+    }
+    fn stdout_publisher(&mut self) -> publication::Publisher {
+        drop(self.stdout_owner.take());
+        let (owner, publisher) = publication::open(
+            self.mode_tx.clone(),
+            self.stream_tx.clone(),
+            self.fifo_reset_tx.clone(),
+        );
+        self.stdout_owner = Some(owner);
+        publisher
     }
     pub(super) fn stop(&mut self) {
         self.abort_stdout();
@@ -162,10 +180,33 @@ impl HelperProcess {
         }
     }
     pub(super) async fn terminate(&mut self) {
+        self.abort_stdout();
         if let Some(mut child) = self.child.take() {
             child.keep_alive(self.fifo.clone());
             self.pending = Some(child.completion());
             process::terminate(child, "evdi_helper").await;
+        }
+        self.wait_stdout_retirement().await;
+    }
+    async fn wait_stdout_retirement(&self) {
+        let Some(original) = &self.stdout_pending else {
+            return;
+        };
+        let budget = match blent_config::retirement_limits::reap_budget() {
+            Ok(budget) => budget,
+            Err(error) => {
+                warn!(%error, "Cannot wait for original helper stdout cleanup");
+                return;
+            }
+        };
+        let settled = tokio::time::timeout(budget, async {
+            while !original.is_complete() {
+                tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+            }
+        })
+        .await;
+        if settled.is_err() {
+            warn!("Original helper stdout cleanup still pending");
         }
     }
     /// Frame size the encoder must be configured for.
@@ -214,7 +255,15 @@ impl HelperProcess {
         config: &CaptureConfig,
         spawn: impl FnOnce(&mut Command) -> std::io::Result<Child>,
     ) -> Result<()> {
+        if self.child.is_some() {
+            anyhow::bail!("capture helper is still owned");
+        }
+        if self.stdout_task.is_some() {
+            anyhow::bail!("capture stdout is still owned");
+        }
         process::ensure_retired(&self.pending)?;
+        process::ensure_retired(&self.stdout_pending)?;
+        self.stdout_pending = None;
         crate::config::validate_encoder_for_build(&config.encoder)?;
         if config.shared_raw() {
             blent_config::raw_frame::Layout::new(2, 2, config.raw_slots)?;
@@ -237,24 +286,25 @@ impl HelperProcess {
             .ok_or_else(|| anyhow::anyhow!("No stdout from helper"))?;
         let mut lines = HelperLines::new(stdout);
         let card = Self::await_helper_card(&mut lines).await?;
+        self.abort_stdout();
         self.card = Some(card);
         let _ = self.card_tx.send(Some(card));
         // A fresh helper has not negotiated a mode yet.
         let _ = self.mode_tx.send(None);
         let _ = self.fifo_reset_tx.send(None);
         let _ = self.stream_tx.send(None);
-        self.abort_stdout();
+        let publisher = self.stdout_publisher();
         let drain = Self::drain_helper_stdout(
             lines,
-            self.mode_tx.clone(),
-            self.stream_tx.clone(),
-            self.fifo_reset_tx.clone(),
+            publisher,
             blent_config::linux::pipe::ReportFile::new(
                 fifo,
                 child.id().context("helper has no PID")?,
             )?,
         );
-        self.stdout_task = Some(blent::owned_task::Task::spawn(drain)?);
+        let mut task = blent::owned_task::Task::spawn(drain)?;
+        task.keep_alive(self.fifo.clone());
+        self.stdout_task = Some(task);
         self.stdout_failure = None;
         self.child = Some(child);
         self.pending = None;
@@ -345,29 +395,24 @@ impl HelperProcess {
     // do not hit EPIPE after the initial connection handshake.
     async fn drain_helper_stdout(
         mut lines: HelperLines,
-        mode_tx: watch::Sender<Option<DetectedMode>>,
-        stream_tx: watch::Sender<Option<(u32, u32)>>,
-        fifo_reset_tx: watch::Sender<Option<fifo::Identity>>,
+        publisher: publication::Publisher,
         pipe_report: blent_config::linux::pipe::ReportFile,
     ) -> Result<()> {
         while let Some(line) = lines.next_line().await? {
+            anyhow::ensure!(publisher.active(), "original helper stdout revoked");
             if let Err(error) = pipe_report.observe(&line) {
                 warn!(%error, "Cannot update capture pipe status");
             }
             if let Some(retired) = fifo::Identity::from_reset_line(&line) {
-                let _ = fifo_reset_tx.send(Some(retired));
+                publisher.fifo(retired);
             } else {
-                Self::publish_helper_line(&line, &mode_tx, &stream_tx);
+                Self::publish_helper_line(&line, &publisher);
             }
         }
         anyhow::bail!("capture helper stdout closed");
     }
 
-    fn publish_helper_line(
-        line: &str,
-        mode_tx: &watch::Sender<Option<DetectedMode>>,
-        stream_tx: &watch::Sender<Option<(u32, u32)>>,
-    ) {
+    fn publish_helper_line(line: &str, publisher: &publication::Publisher) {
         if let Some(rest) = line.strip_prefix("STREAM_SIZE ") {
             let mut p = rest.split_whitespace();
             if let (Some(Ok(w)), Some(Ok(h))) = (
@@ -376,7 +421,7 @@ impl HelperProcess {
             ) {
                 if w > 0 && h > 0 {
                     info!("Helper emits {}x{} frames to the encoder", w, h);
-                    let _ = stream_tx.send(Some((w, h)));
+                    publisher.stream((w, h));
                 }
             }
             return;
@@ -403,7 +448,7 @@ impl HelperProcess {
             "Compositor negotiated {}x{}@{}Hz on the virtual output",
             mode.width, mode.height, mode.refresh
         );
-        let _ = mode_tx.send(Some(mode));
+        publisher.mode(mode);
     }
 }
 
@@ -414,6 +459,10 @@ mod startup_ownership_tests;
 #[cfg(test)]
 #[path = "helper/announcements_tests.rs"]
 mod announcements_tests;
+
+#[cfg(test)]
+#[path = "helper/publication_tests.rs"]
+mod publication_tests;
 
 pub(super) fn ensure_fifo(path: &Path) -> Result<()> {
     // Anything already there is replaced, whatever it is: a stale FIFO

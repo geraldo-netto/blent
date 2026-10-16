@@ -73,13 +73,10 @@ fn t497_helper_command_prepares_private_edid_and_respects_card_priority() {
 
 #[test]
 fn t497_malformed_helper_reports_never_replace_the_last_valid_geometry() {
-    let helper = HelperProcess::new();
-    HelperProcess::publish_helper_line("STREAM_SIZE 640 480", &helper.mode_tx, &helper.stream_tx);
-    HelperProcess::publish_helper_line(
-        "MODE_CHANGED 1280 960 60",
-        &helper.mode_tx,
-        &helper.stream_tx,
-    );
+    let mut helper = HelperProcess::new();
+    let publisher = helper.stdout_publisher();
+    HelperProcess::publish_helper_line("STREAM_SIZE 640 480", &publisher);
+    HelperProcess::publish_helper_line("MODE_CHANGED 1280 960 60", &publisher);
     for token in [
         "",
         "0",
@@ -95,7 +92,7 @@ fn t497_malformed_helper_reports_never_replace_the_last_valid_geometry() {
             format!("MODE_CHANGED {token} 960 60"),
             format!("MODE_CHANGED 1280 {token} 60"),
         ] {
-            HelperProcess::publish_helper_line(&line, &helper.mode_tx, &helper.stream_tx);
+            HelperProcess::publish_helper_line(&line, &publisher);
         }
     }
     assert_eq!(*helper.stream_rx.borrow(), Some((640, 480)));

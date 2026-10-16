@@ -23,7 +23,7 @@ impl Drop for Release {
         let _ = self.0.send(());
     }
 }
-fn configuration() -> CaptureConfig {
+pub(super) fn configuration() -> CaptureConfig {
     use std::os::unix::fs::PermissionsExt;
     let root = crate::runtime::runtime_dir().unwrap();
     let path = root.join("t1020-helper");

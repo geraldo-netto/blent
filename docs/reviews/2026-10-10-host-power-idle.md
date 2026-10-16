@@ -340,5 +340,16 @@ unterminated-line behavior is preserved, including a lone CR at EOF. Framing or
 I/O failure poisons that reader. EOF or stdout task failure wakes the capture
 owner and remains failed on repeated waits until fresh successful startup. The
 original native child and its independent cleanup certificate remain retained;
-stdout task completion is never native process retirement. Late publication
-revocation and original stdout cleanup before replacement remain T1024.
+stdout task completion is never native process retirement.
+
+T1024 gives each original stdout drain a private publication authority. Revoking
+it precedes cancellation and synchronizes each watch update; callbacks check
+authority inside the same write transaction. Old mode, stream and FIFO notices
+cannot cross revocation into current state. The original stdout task completion
+and FIFO lease survive asynchronous abort, and helper replacement checks that
+completion independently of native child cleanup. Reentry with a live helper or
+owned stdout task rejects before FIFO changes or another spawn. Termination waits
+within the existing configured reap budget; expiry retains the original pending
+certificate. Fresh startup clears the old stdout failure latch only on success.
+Whole-session dependent retirement and activity propagation remain T1026/T1027;
+display policy composition remains T1015.
