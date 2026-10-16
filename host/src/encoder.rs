@@ -515,6 +515,16 @@ mod tests {
         assert!(encoder.drain().unwrap().is_empty(), "T265: EOF is normal");
     }
 
+    fn next_video_packet(
+        receiver: &mut crate::video_queue::VideoReceiver,
+    ) -> crate::media::VideoPacket {
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(receiver.recv())
+            .unwrap()
+    }
+
     fn encode_one_from_fifo(
         latency: crate::latency::LatencyTracker,
         name: &std::ffi::OsStr,
@@ -554,7 +564,7 @@ mod tests {
             .open(writer_path)
             .unwrap();
         writer.write_all(&vec![128; 64 * 64 * 3 / 2]).unwrap();
-        let packet = rx.blocking_recv().unwrap();
+        let packet = next_video_packet(&mut rx);
         stop.request();
         task.join().unwrap().unwrap();
         packet.seq

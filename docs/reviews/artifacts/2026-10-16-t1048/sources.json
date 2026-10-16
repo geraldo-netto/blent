@@ -1,0 +1,6 @@
+{
+  "file": "host/src/encoder.rs",
+  "before": "b9261c4ed816700d28b5c1c180d39d3db459991198200df4f2499eeea727c94a",
+  "after": "ffe6e20bf52af05882ff9f3ded50e28d07cf23e0228d4bc3858d7ed9ea6e82cd",
+  "scope": "test adapter only; no maintained production function changed"
+}
