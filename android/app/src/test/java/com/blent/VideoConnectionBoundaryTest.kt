@@ -126,4 +126,54 @@ class VideoConnectionBoundaryTest {
             } finally { receiver.stop(); socket.close() }
         }
     }
+    private class LivenessSocket : Socket() {
+        val acknowledgement = ByteArrayOutputStream()
+        override fun getOutputStream(): java.io.OutputStream = acknowledgement
+        val consumed = CountDownLatch(1)
+        private val released = CountDownLatch(1)
+        val deadline = java.util.concurrent.atomic.AtomicInteger()
+        private val bytes = ByteArray(6 * 12) { byteArrayOf(0, 0, 0, 2, 2, 1)[it % 6] }
+        override fun connect(endpoint: SocketAddress?, timeout: Int) {}
+        override fun setTcpNoDelay(value: Boolean) {}
+        override fun setSoTimeout(value: Int) { deadline.set(value) }
+        override fun setReceiveBufferSize(value: Int) {}
+        override fun getInputStream(): InputStream = object : java.io.ByteArrayInputStream(bytes) {
+            override fun read(data: ByteArray, offset: Int, size: Int): Int {
+                if (available() != 0) return super.read(data, offset, size)
+                consumed.countDown()
+                check(released.await(5, TimeUnit.SECONDS))
+                return -1
+            }
+        }
+        override fun close() { super.close(); released.countDown() }
+    }
+    @Test fun t1038_livenessRetainsActualReceiverWithoutFrameRenderOrConnectionCallbacks() {
+        val socket = LivenessSocket()
+        val opens = java.util.concurrent.atomic.AtomicInteger()
+        val connected = java.util.concurrent.atomic.AtomicInteger()
+        val disconnected = java.util.concurrent.atomic.AtomicInteger()
+        val rendered = java.util.concurrent.atomic.AtomicInteger()
+        val receiver = VideoReceiver { opens.incrementAndGet(); socket }
+        receiver.mimeType = "video/x-vnd.on2.vp9"
+        receiver.setVideoLiveness(true)
+        ReflectionHelpers.getField<AtomicBoolean>(receiver, "surfaceReady").set(true)
+        receiver.onConnected = { connected.incrementAndGet() }
+        receiver.onDisconnected = { disconnected.incrementAndGet() }
+        receiver.onFrameRendered = { rendered.incrementAndGet() }
+        try {
+            receiver.start()
+            assertTrue("T1038 actual receiver rejected liveness", socket.consumed.await(2, TimeUnit.SECONDS))
+            assertArrayEquals("!BLENT1\n".toByteArray(Charsets.US_ASCII), socket.acknowledgement.toByteArray())
+            assertEquals(10000, socket.deadline.get())
+            assertEquals(1, opens.get())
+            assertEquals(0, connected.get())
+            assertEquals(0, disconnected.get())
+            assertEquals(0, rendered.get())
+            val job = ReflectionHelpers.getField<kotlinx.coroutines.Job>(receiver, "job")
+            receiver.stop()
+            runBlocking { withTimeout(2000) { job.join() } }
+            assertTrue(socket.isClosed)
+        } finally { receiver.stop(); socket.close() }
+    }
+
 }

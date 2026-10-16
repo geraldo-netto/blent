@@ -28,6 +28,9 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
     var onModeKnown: ((Boolean) -> Unit)?
         get() = control.onModeKnown
         set(value) { control.onModeKnown = value }
+    internal var onVideoLivenessKnown: ((Boolean) -> Unit)?
+        get() = control.onVideoLivenessKnown
+        set(value) { control.onVideoLivenessKnown = value }
     var onCodecKnown: ((String) -> Unit)?
         get() = control.onCodecKnown
         set(value) { control.onCodecKnown = value }

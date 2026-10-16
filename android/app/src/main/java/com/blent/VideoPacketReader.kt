@@ -6,6 +6,8 @@ import com.blent.VideoWire.FRAME_HEADER_SIZE
 import com.blent.VideoWire.MAX_FRAME_SIZE
 import com.blent.VideoWire.PACKET_TYPE_CONFIG
 import com.blent.VideoWire.PACKET_TYPE_FRAME
+import com.blent.VideoWire.PACKET_TYPE_LIVENESS
+import com.blent.VideoWire.LIVENESS_VERSION
 
 /** Synchronous consumers must finish using the borrowed bytes before read(). */
 internal interface VideoPacketSink {
@@ -15,7 +17,7 @@ internal interface VideoPacketSink {
 
 /** Length/type/sequence framing, independent of codec, Surface and session state.
  * Storage belongs to this connection and is reused without per-frame allocation. */
-internal class VideoPacketReader(private val input: InputStream, private val diagnostic: (String) -> Unit = {}) {
+internal class VideoPacketReader(private val input: InputStream, private val livenessEnabled: Boolean = false, private val diagnostic: (String) -> Unit = {}) {
     private val header = ByteArray(4)
     private var data = ByteArray(512 * 1024)
     var size = 0; private set
@@ -36,6 +38,7 @@ internal class VideoPacketReader(private val input: InputStream, private val dia
     fun dispatch(sink: VideoPacketSink): Boolean {
         when (val type = data[0].toInt() and 0xff) {
             PACKET_TYPE_CONFIG -> sink.configuration(data, 1, size - 1)
+            PACKET_TYPE_LIVENESS -> return liveness()
             PACKET_TYPE_FRAME -> {
                 if (size <= FRAME_HEADER_SIZE) {
                     diagnostic("Truncated frame packet: $size, reconnecting")
@@ -47,6 +50,15 @@ internal class VideoPacketReader(private val input: InputStream, private val dia
                 diagnostic("Unknown packet type: $type, reconnecting")
                 return false
             }
+        }
+        return true
+    }
+
+    // Transport-only progress: no decoder input, connection/frame callback or ACK.
+    private fun liveness(): Boolean {
+        if (!livenessEnabled || size != 2 || data[1].toInt() != LIVENESS_VERSION) {
+            diagnostic("Invalid liveness packet: $size, reconnecting")
+            return false
         }
         return true
     }

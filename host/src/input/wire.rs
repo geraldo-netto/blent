@@ -83,6 +83,9 @@ pub enum InputEvent {
 
 #[derive(Serialize)]
 pub struct InputResponse {
+    /// Offered only once the host emission path implements this protocol.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub video_liveness: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub direct_input: Option<super::direct::Status>,
     pub status: String,

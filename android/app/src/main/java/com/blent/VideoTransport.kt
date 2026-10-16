@@ -34,6 +34,25 @@ internal class VideoTransport(
         return input
     }
 
+    fun open(generation: Long, connection: Socket, routes: DisplayRoutes, liveness: Boolean): InputStream? {
+        val input = connect(generation, connection, routes) ?: return null
+        routes.token?.let { token ->
+            connection.getOutputStream().apply { write(token.toByteArray(Charsets.US_ASCII)); flush() }
+        }
+        if (!acknowledge(generation, connection, liveness)) return null
+        return input
+    }
+    fun acknowledge(generation: Long, connection: Socket, enabled: Boolean): Boolean {
+        if (!owns(generation, connection)) return false
+        if (enabled) {
+            connection.getOutputStream().apply { write(VideoNegotiation.acknowledgement()); flush() }
+        }
+        return owns(generation, connection)
+    }
+    private fun owns(generation: Long, connection: Socket): Boolean = synchronized(monitor) {
+        current(generation) && socket === connection
+    }
+
     fun retire(connection: Socket?) {
         try { connection?.close() } catch (_: Exception) {}
         synchronized(monitor) {

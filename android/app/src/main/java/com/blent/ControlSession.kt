@@ -70,6 +70,7 @@ internal class ControlSession(
      *  its own screen, so no video will arrive and none should be waited for. */
     @Volatile var isPenOnly = false
         private set
+    var onVideoLivenessKnown: ((Boolean) -> Unit)? = null
     var onModeKnown: ((penOnly: Boolean) -> Unit)? = null
     var onCodecKnown: ((codec: String) -> Unit)? = null
     var onFpsKnown: ((fps: Int) -> Unit)? = null
@@ -153,6 +154,7 @@ internal class ControlSession(
                     // T673: negotiation can fail synchronously and retire this socket.
                     if (isStale(webSocket)) return
                     if (o.has("calibrating")) calibration.value = o.opt("calibrating") == true
+                    applyVideoGreeting(o)
                     applyCapabilityGreeting(o)
                     applyDecoderGreeting(o)
                     requestDecoderCapabilities(webSocket, streamFormat.takeIf { encodedDimensionsKnown })
@@ -237,6 +239,7 @@ internal class ControlSession(
     }
 
     private fun resetGreeting() {
+        notifyVideoLiveness(false)
         calibration.value = false
         input.setDirectInput(null)
         capabilityJob?.cancel()
@@ -254,6 +257,17 @@ internal class ControlSession(
         if (message.optString("status") != "connected") return
         connection.value = ControlConnection(true, StreamTransport.from(message.optString("transport")))
         authenticatedControl.value = true
+    }
+
+    // Optional presentation observers cannot interrupt original control revocation.
+    private fun notifyVideoLiveness(enabled: Boolean) {
+        try { onVideoLivenessKnown?.invoke(enabled) }
+        catch (_: Exception) { Log.w(TAG, "Video liveness observer failed") }
+    }
+
+    private fun applyVideoGreeting(message: JSONObject) {
+        if (message.optString("status") != "connected") return
+        notifyVideoLiveness(VideoNegotiation.offered(message))
     }
 
     private fun applyInputGreeting(o: JSONObject) {

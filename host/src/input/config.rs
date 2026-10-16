@@ -51,6 +51,8 @@ impl InputConfig {
             .map(|s| (s.width, s.height))
             .unwrap_or((self.virtual_width, self.virtual_height));
         InputResponse {
+            // Protocol parsing is ready; actual liveness emission is T1038.
+            video_liveness: None,
             direct_input: None,
             status: status.into(),
             transport: None,

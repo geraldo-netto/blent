@@ -551,3 +551,33 @@ failure and bounded invalid SDK job regressions preserve rejection/retry behavio
 Fresh CLI/SDK counters and normal suites pass. T1038 records the independent
 Android 10-second read-timeout contradiction discovered while reviewing no-frame
 activity integration; transport liveness must land before host pause is enabled.
+
+
+T1039 enforces the accepted explicit-acknowledgement boundary before new liveness
+packets can be emitted. An acknowledgement follows authentication on the original
+video TCP socket, retaining the existing optional legacy-token prelude. Only the
+exact bounded eight-byte version-1 record publishes the connection-owned grant;
+its first byte starts the existing three-second completion budget. A read-only
+view becomes unsupported when its original publisher closes. Other sockets never
+inherit that watch or its grant. Host advertisement remains absent until T1038's
+emission path is ready; legacy traffic therefore keeps its existing framing.
+
+Android accepts offers only from its current protected connected greeting. That
+configuration travels separately from codec format in an immutable display-worker
+request and retires prior display work before replacement. The video adapter
+writes authentication first, then the acknowledged feature record, checking
+original socket/generation ownership around the write. Blocking writes retain
+only their original socket and stop can close it without waiting for the receiver
+monitor. The parser accepts version-1 liveness only when that connection enabled
+it; transport progress produces no decoder input, first-frame connection event or
+render acknowledgement. Unrelated audio/camera ownership is unchanged.
+
+Permanent red/green regressions cover strict bounded records, partial deadlines,
+legacy silence, failed authentication, source closure/replacement, malformed offers,
+immutable worker boundaries, stale queued UI callbacks, blocked acknowledgement
+cancellation and frame isolation. An additional draft regression reproduced an
+optional observer throwing before control revocation/socket close; protected
+notification now preserves cleanup and the same oracle passes. Native function
+coverage and full normal suites pass. T1041 owns exposing original negotiated
+viewer capability to capture, and T1040 records bounded early invalid-packet
+read/allocation work; neither is implied complete by negotiation readiness.

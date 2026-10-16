@@ -189,6 +189,9 @@ internal class SessionCoordinator(
     }
 
     private fun connectFormatCallbacks() {
+        touchCapture?.onVideoLivenessKnown = { enabled ->
+            withCurrentControl { videoReceiver?.setVideoLiveness(enabled) }
+        }
         touchCapture?.onStreamFormat = { format ->
             withCurrentControl {
                 codecSupported = format != null

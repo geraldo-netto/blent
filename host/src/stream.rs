@@ -1,3 +1,4 @@
+mod negotiation;
 #[cfg(test)]
 mod wake_tests;
 #[cfg(test)]
@@ -202,12 +203,13 @@ impl StreamServer {
         let rx = video_tx.subscribe();
         idr_wanted.store(true, Ordering::SeqCst);
         let (mut reader, writer) = socket.into_split();
+        let (negotiated, _capabilities) = negotiation::channel();
         tokio::select! {
             result = Self::stream_packets(writer, rx, codec_config, video_tx.budget()) => result,
             // Disabled authentication accepts the Android client's saved token
             // as an optional prelude, without delaying tokenless legacy clients.
             // EOF, malformed/extra input and incomplete preludes end the viewer.
-            _ = watch_client_input(&mut reader, token.is_none()) => Ok(()),
+            _ = watch_client_input(&mut reader, token.is_none(), negotiated) => Ok(()),
         }
     }
 
@@ -333,20 +335,9 @@ impl StreamServer {
 async fn watch_client_input(
     reader: &mut (impl tokio::io::AsyncRead + Unpin),
     optional_token: bool,
+    negotiated: tokio::sync::watch::Sender<bool>,
 ) -> Result<()> {
-    use tokio::io::AsyncReadExt;
-    let first = reader.read_u8().await?;
-    if !optional_token || !first.is_ascii_hexdigit() {
-        return Ok(());
-    }
-    let mut rest = [0u8; 63];
-    tokio::time::timeout(AUTH_TIMEOUT, reader.read_exact(&mut rest)).await??;
-    if !rest.iter().all(u8::is_ascii_hexdigit) {
-        return Ok(());
-    }
-    // No more client input belongs on the video socket after this prelude.
-    let _ = reader.read_u8().await?;
-    Ok(())
+    negotiation::watch(reader, optional_token, negotiated).await
 }
 
 /// Decode readiness and backlog state owned by one admitted viewer.
@@ -1117,3 +1108,6 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod negotiation_tests;

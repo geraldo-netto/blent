@@ -59,7 +59,7 @@ internal object MediaTaskJson {
         require(f.codecPrivate == null) { "Codec bytes belong to the video transport" }
         return JSONObject().put("kind", "display").put("token", task.routes.token).put("routeRevision", task.routes.revision)
             .put("videoPort", task.routes.videoPort).put("controlPort", task.routes.controlPort).put("mime", f.mimeType)
-            .put("width", f.width).put("height", f.height).put("fps", f.fps).put("selection", selection(f.selection))
+            .put("width", f.width).put("height", f.height).put("fps", f.fps).put("selection", selection(f.selection)).put("liveness", task.liveness)
     }
     private fun readDisplay(v: JSONObject): MediaTask.Display {
         val token = v.getString("token")
@@ -69,7 +69,9 @@ internal object MediaTaskJson {
         require(format.width in 1..16384 && format.height in 1..16384 && format.fps in 10..90)
         val routes = DisplayRoutes(routeNumber(v, "routeRevision", Long.MAX_VALUE), token,
             routeNumber(v, "videoPort", 65535).toInt(), routeNumber(v, "controlPort", 65535).toInt())
-        return MediaTask.Display(routes, format)
+        val liveness = v.opt("liveness")
+        require(liveness == null || liveness is Boolean)
+        return MediaTask.Display(routes, format, liveness == true)
     }
     private fun routeNumber(value: JSONObject, name: String, maximum: Long): Long {
         val number = value.get(name)

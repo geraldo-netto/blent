@@ -11,6 +11,7 @@ internal class RemoteDisplay(context: Context,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate),
     private val worker: (MediaTask.Display, Surface, (WorkerEvent) -> Unit) -> LifecycleRun = { task, surface, events -> AndroidWorkerRun(context, task, surface, events) },
 ) : DisplaySession<SurfaceView> {
+    private var liveness = false
     private var format = DecoderFormat(VideoWire.MIME_TYPE, 1920, 1080, Prefs.DEFAULT_FPS)
     private var configuredRoutes: DisplayRoutes? = AdbDisplayRoutes.create()
     private var routeRevision = 1L
@@ -51,6 +52,11 @@ internal class RemoteDisplay(context: Context,
         onConnected = connected; onDisconnected = disconnected
         if (this.connected) connected() else disconnected()
     }
+    override fun setVideoLiveness(enabled: Boolean) {
+        if (liveness == enabled) return
+        liveness = enabled
+        replace()
+    }
     override fun setStreamFormat(format: DecoderFormat) {
         if (this.format == format) return
         this.format = format
@@ -75,7 +81,7 @@ internal class RemoteDisplay(context: Context,
         if (selected.token == null) return
         if (!wanted) return
         startupStatus.value = "Starting isolated display worker…"
-        val request = MediaTask.Display(selected, format)
+        val request = MediaTask.Display(selected, format, liveness)
         try {
             lane.replace({ worker(request, output) { event -> receive(revision, event) } }, { failure ->
                 scope.launch {

@@ -199,4 +199,33 @@ class RemoteDisplayTest {
             native.cancel(); native.retire()
         } finally { surface.release() }
     }
+    @Test fun t1039_transportOfferReplacesDisplayOnlyAfterOriginalNativeRetirement() = runBlocking {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        val requests = mutableListOf<MediaTask.Display>()
+        val retired = CompletableDeferred<Unit>()
+        val surface = Surface(SurfaceTexture(0))
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope) { task, _, _ ->
+            requests.add(task)
+            object : LifecycleRun {
+                override suspend fun execute() = awaitCancellation()
+                override fun cancel() {}
+                override suspend fun retire() { retired.await() }
+            }
+        }
+        try {
+            receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
+            assertFalse(requests.single().liveness)
+            receiver.setVideoLiveness(true)
+            receiver.setVideoLiveness(true)
+            assertEquals(1, requests.size)
+            retired.complete(Unit)
+            withTimeout(2000) { while (requests.size != 2) delay(1) }
+            assertTrue(requests.last().liveness)
+            assertEquals(requests.first().routes, requests.last().routes)
+            receiver.setVideoLiveness(false)
+            withTimeout(2000) { while (requests.size != 3) delay(1) }
+            assertFalse(requests.last().liveness)
+        } finally { retired.complete(Unit); receiver.stop(); scope.cancel(); surface.release() }
+    }
+
 }

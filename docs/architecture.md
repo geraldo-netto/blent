@@ -599,6 +599,22 @@ server starts sending immediately and concurrently consumes an optional token.
 Once that optional prefix begins, its remaining bytes must arrive within three
 seconds. Malformed, incomplete or extra client input closes the viewer; EOF
 releases its capture subscription even when no video frames are available.
+A new client can acknowledge display-liveness protocol 1 on this same video
+connection with the exact eight bytes `!BLENT1\n` after authentication (and after
+an optional saved-token prelude when authentication is disabled). Its first byte
+starts a separate three-second completion deadline. Malformed, partial, repeated
+or extra acknowledgement input ends this viewer. The grant belongs to that
+original socket; closure revokes its read-only view and a replacement starts
+without a grant. An absent control greeting offer means legacy behavior.
+
+Android implements the strict negotiated type-2 receiver contract: body length
+2, type byte 2 and version byte 1, with no codec/frame/render callback. The
+protected `connected` greeting's optional `video_liveness: 1` offer is carried
+separately from codec format through the immutable display-worker request.
+Capability changes retire the prior display run before its replacement. The
+current host keeps this offer absent until the emission integration in T1038;
+this receiver/negotiation readiness does not claim active host heartbeats.
+
 The server sends:
 
 | Field | Encoding |

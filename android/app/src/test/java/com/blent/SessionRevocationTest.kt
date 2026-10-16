@@ -114,4 +114,25 @@ class SessionRevocationTest {
             } finally { session.stop() }
         }
     }
+    @Test fun t1039_queuedOldLivenessOfferCannotRetargetCurrentDisplayRun() {
+        val fixture = Fixture()
+        with(fixture) {
+            session.start()
+            receiver.start()
+            try {
+                capture.onVideoLivenessKnown!!.invoke(true)
+                callbacks.toList().forEach { it() }; callbacks.clear()
+                assertTrue(ReflectionHelpers.getField(receiver, "livenessEnabled"))
+                capture.onVideoLivenessKnown!!.invoke(false)
+                callbacks.toList().forEach { it() }; callbacks.clear()
+                assertFalse(ReflectionHelpers.getField(receiver, "livenessEnabled"))
+                capture.onVideoLivenessKnown!!.invoke(true)
+                clear()
+                callbacks.toList().forEach { it() }
+                assertFalse(ReflectionHelpers.getField(receiver, "livenessEnabled"))
+                assertNull(job())
+            } finally { session.stop() }
+        }
+    }
+
 }

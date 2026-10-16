@@ -7,6 +7,8 @@ internal object VideoWire {
     const val MAX_FRAME_SIZE = 8 * 1024 * 1024
     const val PACKET_TYPE_CONFIG = 0
     const val PACKET_TYPE_FRAME = 1
+    const val PACKET_TYPE_LIVENESS = 2
+    const val LIVENESS_VERSION = 1
     const val FRAME_HEADER_SIZE = 5
 }
 

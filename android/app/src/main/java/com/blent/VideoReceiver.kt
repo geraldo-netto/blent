@@ -41,6 +41,7 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
         const val ARRIVAL_RING = 64
     }
 
+    private var livenessEnabled = false
     @Volatile private var isRunning = false
     private val sessionGeneration = AtomicLong(0)
     private fun isCurrent(generation: Long) = isRunning && sessionGeneration.get() == generation
@@ -117,6 +118,14 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
             }
         }
 
+    @Synchronized override fun setVideoLiveness(enabled: Boolean) {
+        if (livenessEnabled == enabled) return
+        val restart = isRunning
+        if (restart) stop()
+        livenessEnabled = enabled
+        if (restart) start()
+    }
+
     /** Retire once, then publish all format fields before a replacement worker starts. */
     @Synchronized override fun setStreamFormat(format: DecoderFormat) {
         if (format == DecoderFormat(mimeType, formatWidth, formatHeight, streamFps, selection = decoderSelection)) return
@@ -192,6 +201,7 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
             videoConnected = false
             val generation = sessionGeneration.incrementAndGet()
             surfaceChanges.update { it + 1 }
+            val sessionLiveness = livenessEnabled
             val sessionStatistics = ReceiverStatistics()
             statistics = sessionStatistics
             // Fresh job/scope per start — see the field docs.
@@ -201,7 +211,7 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
             scope = newScope
 
             newScope.launch {
-                connectAndReceive(generation, sessionRoutes, sessionStatistics)
+                connectAndReceive(generation, sessionRoutes, sessionStatistics, sessionLiveness)
             }
 
             newScope.launch {
@@ -215,7 +225,8 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
     }
 
     private suspend fun connectAndReceive(
-        generation: Long, sessionRoutes: DisplayRoutes, sessionStatistics: ReceiverStatistics
+        generation: Long, sessionRoutes: DisplayRoutes, sessionStatistics: ReceiverStatistics,
+        sessionLiveness: Boolean
     ) {
         while (isCurrent(generation)) {
             var sessionSocket: Socket? = null
@@ -231,16 +242,10 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
                 Log.i(TAG, "Connecting to local video port ${sessionRoutes.videoPort}...")
                 val connection = transport.newConnection()
                 sessionSocket = connection
-                val input = transport.connect(generation, connection, sessionRoutes) ?: return
-                sessionRoutes.token?.let { t ->
-                    connection.getOutputStream().apply {
-                        write(t.toByteArray(Charsets.US_ASCII))
-                        flush()
-                    }
-                }
+                val input = transport.open(generation, connection, sessionRoutes, sessionLiveness) ?: return
                 Log.i(TAG, "Connected to video stream")
 
-                receivePackets(generation, connection, input, sessionStatistics)
+                receivePackets(generation, connection, input, sessionStatistics, sessionLiveness)
                 // Protocol rejection and decoder retirement return normally.
                 // They still end the visible connection, just like EOF does.
                 disconnectAndPause(generation, 500) { Log.i(TAG, "Stream retired, reconnecting") }
@@ -288,9 +293,10 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
     }
 
     private fun receivePackets(
-        generation: Long, connection: Socket, input: InputStream, sessionStatistics: ReceiverStatistics
+        generation: Long, connection: Socket, input: InputStream, sessionStatistics: ReceiverStatistics,
+        sessionLiveness: Boolean = false
     ) {
-        val reader = VideoPacketReader(input) { Log.w(TAG, it) }
+        val reader = VideoPacketReader(input, livenessEnabled = sessionLiveness) { Log.w(TAG, it) }
         val packets = VideoPackets(generation)
         while (isCurrent(generation) && !connection.isClosed) {
             val codec = synchronized(this@VideoReceiver) {

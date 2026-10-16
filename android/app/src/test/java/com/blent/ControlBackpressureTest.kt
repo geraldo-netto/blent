@@ -17,6 +17,7 @@ class ControlBackpressureTest {
         val attempted = mutableListOf<JSONObject>()
         val accepted = mutableListOf<JSONObject>()
         var rejectType: String? = null
+        var closed = false
         var cancelled = false
         var queued = 0L
         override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
@@ -30,7 +31,7 @@ class ControlBackpressureTest {
             return true
         }
         override fun send(bytes: ByteString) = false
-        override fun close(code: Int, reason: String?) = true
+        override fun close(code: Int, reason: String?): Boolean { closed = true; return true }
         override fun cancel() { cancelled = true }
         fun open() {
             listener.onOpen(this, Response.Builder().request(request()).protocol(Protocol.HTTP_1_1)
@@ -223,6 +224,43 @@ class ControlBackpressureTest {
         stats.record(true, 5, 20, -2)
         stats.record(false, 20, 20, null)
         assertEquals(ControlStatisticsSnapshot(2, 1, 7, 30, 2, 15, 15), stats.snapshot(7))
+    }
+
+    @Test fun t1039_livenessOfferResetsWithOriginalControlAndStaleGreetingCannotGrant() {
+        val connection = Connection()
+        val capture = connection.capture
+        val offered = mutableListOf<Boolean>()
+        capture.onVideoLivenessKnown = { offered.add(it) }
+        try {
+            val old = connection.recover()
+            assertFalse(offered.last())
+            old.listener.onMessage(old, """{"status":"connected","video_liveness":1}""")
+            assertTrue(offered.last())
+            old.listener.onMessage(old, """{"status":"mode","video_liveness":1}""")
+            assertTrue(offered.last())
+            capture.disconnect()
+            assertFalse(offered.last())
+            val next = connection.recover()
+            val count = offered.size
+            old.listener.onMessage(old, """{"status":"connected","video_liveness":1}""")
+            assertEquals(count, offered.size)
+            assertFalse(offered.last())
+            next.listener.onMessage(next, """{"status":"connected","video_liveness":"1"}""")
+            assertFalse(offered.last())
+        } finally { capture.disconnect() }
+    }
+
+    @Test fun t1039_faultyOptionalObserverCannotPreventControlRevocationAndOriginalClose() {
+        val connection = Connection()
+        val capture = connection.capture
+        val original = connection.recover()
+        capture.onVideoLivenessKnown = { error("T1039 observer fault") }
+        try {
+            val stopped = runCatching { capture.disconnect() }
+            assertTrue("T1039 optional observer interrupted native control cleanup", stopped.isSuccess)
+            assertFalse(capture.controlConnected.value)
+            assertTrue(original.closed)
+        } finally { capture.onVideoLivenessKnown = null; capture.disconnect() }
     }
 
 }
