@@ -800,3 +800,16 @@ fn t612_capture_budget_prefers_manual_and_falls_back_to_one() {
     config.encoder_workers = 7;
     assert_eq!(config.worker_count(), 7);
 }
+
+#[test]
+fn t1027_capture_manager_retains_only_the_original_read_only_activity_view() {
+    let mut manager = test_manager();
+    assert!(manager.activity.is_none());
+    let (published, view) = watch::channel(blent_config::host_activity::Publication::Pending);
+    manager.bind_activity(Some(view.clone()));
+    assert!(manager.activity.as_ref().unwrap().same_channel(&view));
+    published.send_replace(blent_config::host_activity::Publication::Failed);
+    assert_eq!(*manager.activity.as_ref().unwrap().borrow(), blent_config::host_activity::Publication::Failed);
+    manager.bind_activity(None);
+    assert!(manager.activity.is_none());
+}

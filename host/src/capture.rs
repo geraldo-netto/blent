@@ -40,6 +40,8 @@ use tracing::{error, info, warn};
 const RECONNECT_DELAY_MS: u64 = 2000;
 
 pub struct CaptureManager {
+    // Read-only source view; display policy consumption is T1015.
+    activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     config: CaptureConfig,
     helper: HelperProcess,
     encoder: EncoderProcess,
@@ -55,6 +57,7 @@ impl CaptureManager {
             ..Default::default()
         };
         Self {
+            activity: None,
             config,
             helper: HelperProcess::new(),
             encoder,
@@ -62,6 +65,12 @@ impl CaptureManager {
             latency: crate::latency::LatencyTracker::new(),
             idr_wanted: Arc::new(std::sync::atomic::AtomicBool::new(false)),
         }
+    }
+    pub(crate) fn bind_activity(
+        &mut self,
+        activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+    ) {
+        self.activity = activity;
     }
     /// The session construction adapter binds its original recorder before the
     /// fresh manager can expose native work. Both owners share that same scope.

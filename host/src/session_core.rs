@@ -78,6 +78,7 @@ impl Spec {
         )
         .with_attachment(tablet.clone());
         Prepared {
+            activity: None,
             settings,
             settings_rx,
             tablet,
@@ -93,6 +94,7 @@ impl Spec {
 }
 
 pub struct Prepared {
+    pub activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     pub settings: watch::Sender<media::EncoderSettings>,
     pub settings_rx: watch::Receiver<media::EncoderSettings>,
     pub tablet: Attachment,
@@ -106,6 +108,14 @@ pub struct Prepared {
 }
 
 impl Prepared {
+    /// Bind an existing source view without creating another source or feed.
+    pub fn with_activity(
+        mut self,
+        activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+    ) -> Self {
+        self.activity = activity;
+        self
+    }
     pub async fn start(self, daemon_stop: watch::Receiver<bool>) -> Result<Runtime> {
         self.start_exported(daemon_stop)
             .await
@@ -140,6 +150,7 @@ impl Prepared {
         let retirement = retained_workers.capture_lifetime();
         let workers = catch_unwind(AssertUnwindSafe(|| {
             self.capture.start(CaptureContext {
+                activity: self.activity,
                 retirement: retirement.clone(),
                 video: video.clone().into(),
                 headers: Arc::new(self.resources.codec_config),

@@ -486,3 +486,21 @@ blocked caller drop/runtime for about 400 ms and now meet their <100 ms control
 bound while original cleanup stays pending. Existing cadence, token and timing
 assertions remain, with explicit native completion barriers replacing assumptions
 about Tokio task scheduling. Activity source/policy composition remains T1027/T1015.
+
+
+T1027 composes one activity follower at the Linux daemon boundary, using saved
+host-activity preferences and the existing native source factory. Primary and
+extra ADB/USB construction receive clones of the same original read-only watch;
+portable prepared sessions forward that watch into the independent capture
+context. Linux capture retains the view without creating another feed/source.
+Other compositions explicitly default to no supported activity source. Original
+capability reports, loss state and coalesced stop fences remain intact.
+
+Daemon shutdown requests source stop and waits for original native retirement
+within the existing shared shutdown budget. Expiry/cancellation drops the same
+retained follower; it cannot manufacture completion or release native admission.
+The OS signal adapter is separate from daemon orchestration, allowing normal
+startup/shutdown validation with an injected source in private PID/runtime/config
+namespaces. Fixtures disable input, updates and native USB startup, expose no
+attached tablet, and never change a live display. Actual display pause/resume
+policy remains T1015; auxiliary machine-availability policy remains T1010.

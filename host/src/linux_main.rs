@@ -15,6 +15,7 @@ use blent::attachment;
 use blent::camera;
 mod capture;
 use blent::config;
+mod daemon_activity;
 mod desktop;
 mod device_tasks;
 mod discovery;
@@ -1598,6 +1599,18 @@ printf '%s\n' "$2" >> "$0.log"
 }
 
 async fn run_daemon(cli: Cli) -> Result<()> {
+    run_daemon_with(cli, std::sync::Arc::new(blent::activity::Factory), wait_daemon_shutdown).await
+}
+
+async fn run_daemon_with<S, F>(
+    cli: Cli,
+    activity_factory: std::sync::Arc<dyn blent_config::host_activity::SourceFactory>,
+    shutdown: S,
+) -> Result<()>
+where
+    S: FnOnce(watch::Receiver<bool>) -> F,
+    F: std::future::Future<Output = Result<()>>,
+{
     // Validate the complete effective range before claiming resources.
     let file_cfg = blent_config::storage::ConfigStore::default().load();
     let effective = effective_config(&cli, &file_cfg);
@@ -1674,6 +1687,7 @@ async fn run_daemon(cli: Cli) -> Result<()> {
     let token = create_session_token(file_cfg.require_token)?;
     let token_dir = token.as_ref().map(|_| runtime::runtime_dir()).transpose()?;
     let (mode_tx, mode_persistence) = mode_channel(pen_only);
+    let activity = daemon_activity::start(activity_factory, file_cfg.host_activity)?;
     let prepared = session::Spec {
         capture: cap_config.clone(),
         ports: (video_port, input_port),
@@ -1684,7 +1698,8 @@ async fn run_daemon(cli: Cli) -> Result<()> {
             file_cfg.input_pointer,
         ),
     }
-    .prepare(mode_tx.clone());
+    .prepare(mode_tx.clone())
+    .with_activity(Some(activity.subscribe()));
     let settings_rx = prepared.settings.subscribe();
     let tablet_tx = prepared.tablet.clone();
     let tray_tablet_rx = tablet_tx.subscribe();
@@ -1767,6 +1782,7 @@ async fn run_daemon(cli: Cli) -> Result<()> {
         token: token.clone(),
         mode_tx: mode_tx.clone(),
         shutdown_rx: shutdown_tx.subscribe(),
+        activity: Some(activity.subscribe()),
     };
     let monitor = monitor::with_usb(
         monitor::Config {
@@ -1796,28 +1812,18 @@ async fn run_daemon(cli: Cli) -> Result<()> {
     println!("================================================");
     println!();
 
-    // `blent stop` (and the GUI) send SIGTERM, not SIGINT — without a
-    // handler for it, the kernel kills the process with its default
-    // disposition and none of our cleanup (which is what kills the
-    // evdi_helper/ffmpeg children via kill_on_drop) ever runs, orphaning
-    // them to fight over the shared FIFO with the next daemon that starts.
-    let mut sigterm = signal::unix::signal(signal::unix::SignalKind::terminate())?;
-    // Quit from the tray raises the same flag the signal handlers do, so it
-    // has to be waited on here too — otherwise the pipeline winds down while
-    // the process itself stays alive with nothing left to run.
-    let quit_rx = shutdown_tx.subscribe();
-    tokio::select! {
-        _ = signal::ctrl_c() => {}
-        _ = sigterm.recv() => {}
-        _ = wait_for_shutdown(quit_rx) => {}
-    }
+    shutdown(shutdown_tx.subscribe()).await?;
     info!("Shutting down...");
 
     // Ask the capture pipeline to wind down, and give it a bounded moment to
     // actually reap its children before pulling the rug out.
     let _ = shutdown_tx.send(true);
     if tokio::time::timeout(std::time::Duration::from_secs(5), async {
-        let _ = tokio::join!(primary.stop(), &mut adb_handle);
+        let _ = tokio::join!(
+            primary.stop(),
+            &mut adb_handle,
+            daemon_activity::retire(activity)
+        );
     })
     .await
     .is_err()
@@ -1848,6 +1854,24 @@ async fn run_daemon(cli: Cli) -> Result<()> {
     remove_pid_file_if_ours(&pid_path, pid);
 
     info!("blent daemon stopped");
+    Ok(())
+}
+
+async fn wait_daemon_shutdown(quit_rx: watch::Receiver<bool>) -> Result<()> {
+    // `blent stop` (and the GUI) send SIGTERM, not SIGINT — without a
+    // handler for it, the kernel kills the process with its default
+    // disposition and none of our cleanup (which is what kills the
+    // evdi_helper/ffmpeg children via kill_on_drop) ever runs, orphaning
+    // them to fight over the shared FIFO with the next daemon that starts.
+    let mut sigterm = signal::unix::signal(signal::unix::SignalKind::terminate())?;
+    // Quit from the tray raises the same flag the signal handlers do, so it
+    // has to be waited on here too — otherwise the pipeline winds down while
+    // the process itself stays alive with nothing left to run.
+    tokio::select! {
+        _ = signal::ctrl_c() => {}
+        _ = sigterm.recv() => {}
+        _ = wait_for_shutdown(quit_rx) => {}
+    }
     Ok(())
 }
 
@@ -2172,6 +2196,7 @@ struct ExtraSessionTemplate {
     input_pointer: bool,
     mode_tx: watch::Sender<bool>,
     shutdown_rx: watch::Receiver<bool>,
+    activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
 }
 
 /// Each automatic session has its own FIFO and acquires an exclusive helper
@@ -2215,7 +2240,8 @@ fn prepare_extra_session(
         token: t.token.clone(),
         devices: (t.input_touch, t.input_pen, t.input_pointer),
     }
-    .prepare(t.mode_tx.clone()))
+    .prepare(t.mode_tx.clone())
+    .with_activity(t.activity.clone()))
 }
 
 #[cfg(test)]

@@ -258,3 +258,6 @@ async fn t928_legacy_server_work_serves_both_channels_and_releases_owned_ports()
         std::net::TcpListener::bind(("127.0.0.1", port)).unwrap();
     }
 }
+
+#[path = "activity_tests.rs"]
+mod activity_tests;

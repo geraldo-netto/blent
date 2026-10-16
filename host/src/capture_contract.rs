@@ -66,6 +66,9 @@ pub trait ProfileSource: Send + Sync {
 }
 
 pub struct CaptureContext {
+    /// Shared read-only machine observations. None explicitly means this
+    /// composition supplies no supported activity source; never native authority.
+    pub activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     pub retirement: Arc<dyn NativeRetirement>,
     pub video: VideoOutput,
     pub headers: Arc<dyn HeaderPublication>,

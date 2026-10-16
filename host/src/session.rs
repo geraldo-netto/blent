@@ -75,6 +75,7 @@ impl CaptureBackend for LinuxCapture {
             mut manager,
             config,
         } = *self;
+        manager.bind_activity(context.activity);
         manager.bind_retirement(context.retirement.clone());
         #[cfg(feature = "inproc-encoder")]
         let _ = config;
