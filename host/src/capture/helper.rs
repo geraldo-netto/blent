@@ -5,11 +5,11 @@ use blent_config::commands::OwnedChild as Child;
 use std::os::unix::ffi::OsStrExt;
 use std::path::Path;
 use std::process::Stdio;
-use tokio::io::{AsyncBufReadExt, BufReader};
 use tokio::process::Command;
 use tokio::sync::watch;
 use tracing::{info, warn};
-type HelperLines = tokio::io::Lines<BufReader<tokio::process::ChildStdout>>;
+mod lines;
+type HelperLines = lines::Lines<tokio::process::ChildStdout>;
 
 /// Why the helper cannot get an EVDI device, in the words of someone who can
 /// fix it. Returns None when the state looks fine and the failure was
@@ -70,6 +70,7 @@ pub(super) struct HelperProcess {
     #[cfg(feature = "inproc-encoder")]
     pub(super) raw_socket: Option<crate::raw_socket::Socket>,
     stdout_task: Option<blent::owned_task::Task>,
+    stdout_failure: Option<String>,
     /// Retained across restarts as a preference, never a reservation.
     pub(super) card: Option<u32>,
     pub(super) mode_tx: watch::Sender<Option<DetectedMode>>,
@@ -93,6 +94,7 @@ impl HelperProcess {
             #[cfg(feature = "inproc-encoder")]
             raw_socket: None,
             stdout_task: None,
+            stdout_failure: None,
             card: None,
             mode_tx,
             mode_rx,
@@ -128,10 +130,23 @@ impl HelperProcess {
         self.child.is_some()
     }
     pub(super) async fn wait(&mut self) -> std::io::Result<std::process::ExitStatus> {
-        match self.child.as_mut() {
-            Some(child) => child.wait().await,
-            None => std::future::pending().await,
+        let Some(child) = self.child.as_mut() else {
+            return std::future::pending().await;
+        };
+        if let Some(reason) = &self.stdout_failure {
+            return Err(std::io::Error::other(reason.clone()));
         }
+        let Some(stdout) = self.stdout_task.as_mut() else {
+            return child.wait().await;
+        };
+        let outcome = tokio::select! {
+            status = child.wait() => return status,
+            outcome = stdout => outcome,
+        };
+        self.stdout_task = None;
+        let reason = format!("capture helper stdout stopped: {outcome:?}");
+        self.stdout_failure = Some(reason.clone());
+        Err(std::io::Error::other(reason))
     }
     pub(super) fn abort_stdout(&mut self) {
         if let Some(task) = self.stdout_task.take() {
@@ -220,7 +235,7 @@ impl HelperProcess {
             .stdout
             .take()
             .ok_or_else(|| anyhow::anyhow!("No stdout from helper"))?;
-        let mut lines = BufReader::new(stdout).lines();
+        let mut lines = HelperLines::new(stdout);
         let card = Self::await_helper_card(&mut lines).await?;
         self.card = Some(card);
         let _ = self.card_tx.send(Some(card));
@@ -239,10 +254,8 @@ impl HelperProcess {
                 child.id().context("helper has no PID")?,
             )?,
         );
-        self.stdout_task = Some(blent::owned_task::Task::spawn(async move {
-            drain.await;
-            Ok(())
-        })?);
+        self.stdout_task = Some(blent::owned_task::Task::spawn(drain)?);
+        self.stdout_failure = None;
         self.child = Some(child);
         self.pending = None;
         Ok(())
@@ -336,8 +349,8 @@ impl HelperProcess {
         stream_tx: watch::Sender<Option<(u32, u32)>>,
         fifo_reset_tx: watch::Sender<Option<fifo::Identity>>,
         pipe_report: blent_config::linux::pipe::ReportFile,
-    ) {
-        while let Ok(Some(line)) = lines.next_line().await {
+    ) -> Result<()> {
+        while let Some(line) = lines.next_line().await? {
             if let Err(error) = pipe_report.observe(&line) {
                 warn!(%error, "Cannot update capture pipe status");
             }
@@ -347,6 +360,7 @@ impl HelperProcess {
                 Self::publish_helper_line(&line, &mode_tx, &stream_tx);
             }
         }
+        anyhow::bail!("capture helper stdout closed");
     }
 
     fn publish_helper_line(
@@ -396,6 +410,10 @@ impl HelperProcess {
 #[cfg(test)]
 #[path = "helper/startup_ownership_tests.rs"]
 mod startup_ownership_tests;
+
+#[cfg(test)]
+#[path = "helper/announcements_tests.rs"]
+mod announcements_tests;
 
 pub(super) fn ensure_fifo(path: &Path) -> Result<()> {
     // Anything already there is replaced, whatever it is: a stale FIFO

@@ -122,7 +122,7 @@ async fn t497_helper_handshake_reports_eof_bad_numbers_and_invalid_utf8() {
             .stdout(Stdio::piped())
             .spawn()
             .unwrap();
-        let mut lines = tokio::io::BufReader::new(child.stdout.take().unwrap()).lines();
+        let mut lines = HelperLines::new(child.stdout.take().unwrap());
         let result = HelperProcess::await_helper_card(&mut lines).await;
         assert_eq!(result.ok(), expected, "T497 script: {script}");
         assert!(child.wait().await.unwrap().success());

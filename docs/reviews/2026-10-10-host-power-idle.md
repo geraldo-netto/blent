@@ -331,3 +331,14 @@ successful resume snapshot advances that same deadline, so the first resumed
 tick does not perform a second fallback grab before the configured request is
 due. The 250 ms lost-update watchdog and subsequent fallback recovery retain
 their existing deadlines; permanent mock-clock tests cover both paths.
+
+T1022 bounds helper announcements to 1024 wire bytes per record, including any
+LF/CRLF terminator. Fixed-size read buffering and bounded accumulation reject
+oversized terminated or unterminated lines before payload growth. Partial bytes
+remain owned across canceled reads. Standard UTF-8, blank-line, CRLF and final
+unterminated-line behavior is preserved, including a lone CR at EOF. Framing or
+I/O failure poisons that reader. EOF or stdout task failure wakes the capture
+owner and remains failed on repeated waits until fresh successful startup. The
+original native child and its independent cleanup certificate remain retained;
+stdout task completion is never native process retirement. Late publication
+revocation and original stdout cleanup before replacement remain T1024.
