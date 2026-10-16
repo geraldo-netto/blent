@@ -30,6 +30,12 @@ impl ProfileSource for attachment::Attachment {
     fn profile(&self) -> Box<dyn ProfileLease> {
         Box::new(self.lease())
     }
+    fn changed(&self) -> Signal<'static> {
+        let mut original = self.generation_updates();
+        Box::pin(async move {
+            let _ = original.changed().await;
+        })
+    }
 }
 impl ProfileLease for attachment::Lease {
     fn identity(&self) -> Option<(String, &'static str)> {

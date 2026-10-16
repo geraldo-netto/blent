@@ -143,6 +143,10 @@ impl Attachment {
         self.0.presence.subscribe()
     }
 
+    pub(crate) fn generation_updates(&self) -> watch::Receiver<u64> {
+        self.0.generation.subscribe()
+    }
+
     /// Capture at accept time, before WebSocket/authentication can await.
     pub fn lease(&self) -> Lease {
         let state = self.0.state.lock().unwrap();

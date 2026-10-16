@@ -224,9 +224,16 @@ async fn t434_peer_change_cancels_pending_work_but_selection_updates_do_not() {
         });
         std::future::pending::<()>().await;
     };
-    assert!(until_changed(&key, &mut rx, &mut display, &mut stop, work)
-        .await
-        .is_none());
+    assert!(until_changed(
+        &key,
+        &mut rx,
+        &mut display,
+        &mut stop,
+        &TrialAuthority::legacy(&crate::attachment::Attachment::new(tx.clone())),
+        work
+    )
+    .await
+    .is_none());
     assert_eq!(tx.borrow().effective_encoder(), "libx264");
 }
 fn rx_snapshot(tx: &watch::Sender<EncoderSettings>) -> EncoderSettings {

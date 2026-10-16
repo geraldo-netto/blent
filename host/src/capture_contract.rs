@@ -81,6 +81,9 @@ pub trait ProfileLease: Send + Sync {
 }
 pub trait ProfileSource: Send + Sync {
     fn profile(&self) -> Box<dyn ProfileLease>;
+    /// Arm before reading profile(), so replacement/loss cannot be missed.
+    /// This notification provides no authority to acquire or retire resources.
+    fn changed(&self) -> Signal<'static>;
 }
 
 pub struct CaptureContext {

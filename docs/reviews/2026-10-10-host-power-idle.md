@@ -19,7 +19,8 @@ these private API fixtures do not establish native acceptance on every distro.
   lock observer. T1027 now starts one original source through
   `linux_main.rs::run_daemon_with`/`daemon_activity::start` and passes read-only
   publications to primary and extra sessions. Consuming that publication to gate
-  selection/display/auxiliary work remains T1037/T1015/T1010; observation startup
+  selection/display/auxiliary work is implemented for selection under T1037;
+  display and auxiliary integration remain T1015/T1010; observation startup
   alone does not establish activity-aware media behavior.
 - `host/evdi/writer.c::writer_frame_due` skips redundant motion-rate output but
   repeats the current frame at a default 200 ms interval (5 Hz). A valid local
@@ -642,3 +643,29 @@ interpretation and pass unchanged. All eleven production functions have 100%
 native line coverage; 797 host-library, 350 shared-contract and seven architecture
 checks pass. Source scores cover 25 functions at complexity <=9; native SonarQube
 remains T1019. Runtime consumers remain their separate integration items.
+
+
+T1037 gates automatic selection with the same original activity publication and
+shared work observation as capture will consume. Each trial captures the original
+attachment lease; synchronous profile-change notices prevent same-identity route
+replacement from disappearing behind unchanged settings. Current activity/profile
+and local settings/mode/stop inputs are checked around every workflow poll and
+ready result. Coalesced stop fences invalidate completed trials even if the
+selection key is unchanged. Supported-source loss/closure and pending/failed/stopped
+publications deny work; explicitly unsupported capabilities retain their fallback.
+
+A reporting group is reserved before cache/environment preparation, not only
+calibration admission. Canceled parent return cannot admit another trial until
+all original native creators/proofs finish. Stop leaves those proofs retained by
+the enclosing session rather than pretending cleanup succeeded. Permanent tests
+hold the actual cache fingerprint FIFO before admission and observe the original
+late version subprocess through cleanup; native resources and no physical capture
+are isolated in harmless fixtures. Eight new regressions join the normal suite.
+Per-session viewer preference composition remains T1045, with native retained-monitor
+pause/resume and final display acceptance still T1015.
+
+Final T1037 suite passes 506 tests with four existing ignores. Fourteen scoped
+production functions measure 100% native executable-line coverage; the source
+audit covers 36 functions at maximum complexity 8. Seven architecture checks and
+the separate T1044 production compilation regression pass. Native SonarQube remains
+T1019, and these fixtures establish no physical monitor acceptance.

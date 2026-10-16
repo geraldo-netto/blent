@@ -14,7 +14,9 @@ use tokio::sync::watch;
 // continue normally; concurrent probes would distort comparative measurements.
 static ADMISSION: std::sync::LazyLock<Arc<tokio::sync::Semaphore>> =
     std::sync::LazyLock::new(|| Arc::new(tokio::sync::Semaphore::new(1)));
+mod activity;
 mod admission;
+use activity::TrialAuthority;
 
 pub(crate) async fn run(
     config: CaptureConfig,
@@ -24,48 +26,131 @@ pub(crate) async fn run(
     latency: LatencyTracker,
     attachment: Arc<dyn blent::capture_contract::ProfileSource>,
     scope: blent::native_scope::Scope,
+    publication: Option<watch::Receiver<blent_config::host_activity::Publication>>,
 ) {
+    let activity = blent::activity_view::View::new(
+        blent_config::host_activity::ActivityTarget::Display,
+        publication,
+    );
     let mut updates = settings.subscribe();
-    let mut completed = None;
+    let mut completed: Option<Completed<'_>> = None;
     loop {
+        let activity_change = activity.changed();
+        let profile_change = attachment.changed();
+        let profile = attachment.profile();
         if stopped(&stop) || display.has_changed().is_err() {
             return;
         }
         let snapshot = updates.borrow_and_update().clone();
         let key = snapshot.selection_key();
-        if eligible(&snapshot, *display.borrow()) && completed.as_ref() != Some(&key) {
+        let work = pending_work(
+            &snapshot,
+            *display.borrow(),
+            &key,
+            completed.as_ref(),
+            &activity,
+        )
+        .filter(|_| profile.active());
+        if let Some(work) = work {
+            let authority = TrialAuthority {
+                activity: &activity,
+                work,
+                profile,
+            };
+            // Reserve observation before cache/environment preparation can create
+            // native work, including preparation before calibration admission.
+            let (trial, original) = scope.group();
             let finished = until_changed(
                 &key,
                 &mut updates,
                 &mut display,
                 &mut stop,
+                &authority,
                 optimize(
                     &config,
                     &settings,
                     &snapshot,
                     &latency,
                     attachment.as_ref(),
-                    &scope,
+                    &trial,
                 ),
             )
-            .await;
-            if finished.is_some() {
-                completed = Some(key);
-            } else {
-                publish(
-                    &settings,
-                    &key,
-                    fallback_encoder(&snapshot),
-                    "Cancelled trial; restored fallback",
-                );
+            .await
+            .is_some();
+            drop(trial);
+            if !activity::retired(&original, &mut stop).await {
+                return;
             }
+            completed = finish_trial(&settings, &snapshot, key, authority, finished);
             continue;
         }
-        tokio::select! {
-            r = updates.changed() => if r.is_err() { return; },
-            r = display.changed() => if r.is_err() { return; },
-            _ = stop.changed() => return,
+        if !wait_inputs(
+            &mut updates,
+            &mut display,
+            &mut stop,
+            activity_change,
+            profile_change,
+        )
+        .await
+        {
+            return;
         }
+    }
+}
+
+struct Completed<'a> {
+    key: Key,
+    authority: TrialAuthority<'a>,
+}
+fn pending_work(
+    settings: &EncoderSettings,
+    visible: bool,
+    key: &Key,
+    completed: Option<&Completed<'_>>,
+    activity: &blent::activity_view::View,
+) -> Option<blent_config::host_activity::WorkObservation> {
+    if !eligible(settings, visible)
+        || completed.is_some_and(|completed| completed.key == *key && completed.authority.current())
+    {
+        return None;
+    }
+    activity.begin()
+}
+
+fn finish_trial<'a>(
+    settings: &watch::Sender<EncoderSettings>,
+    snapshot: &EncoderSettings,
+    key: Key,
+    authority: TrialAuthority<'a>,
+    finished: bool,
+) -> Option<Completed<'a>> {
+    if finished && authority.current() {
+        return Some(Completed { key, authority });
+    }
+    if authority.profile.active() {
+        publish(
+            settings,
+            &key,
+            fallback_encoder(snapshot),
+            "Cancelled trial; restored fallback",
+        );
+    }
+    None
+}
+
+async fn wait_inputs(
+    updates: &mut watch::Receiver<EncoderSettings>,
+    display: &mut watch::Receiver<bool>,
+    stop: &mut watch::Receiver<bool>,
+    activity: blent::activity_view::Change,
+    profile: blent::capture_contract::Signal<'static>,
+) -> bool {
+    tokio::select! {
+        result = updates.changed() => result.is_ok(),
+        result = display.changed() => result.is_ok(),
+        _ = stop.changed() => false,
+        _ = activity => true,
+        _ = profile => true,
     }
 }
 
@@ -84,18 +169,21 @@ async fn until_changed<T>(
     updates: &mut watch::Receiver<EncoderSettings>,
     display: &mut watch::Receiver<bool>,
     stop: &mut watch::Receiver<bool>,
+    authority: &TrialAuthority<'_>,
     work: impl Future<Output = T>,
 ) -> Option<T> {
-    tokio::pin!(work);
+    let inputs = activity::Inputs::new(key, updates, display, stop);
+    let guarded = activity::guarded(inputs, authority, work);
+    tokio::pin!(guarded);
     loop {
-        if stopped(stop) || !*display.borrow() || !updates.borrow().selection_matches(key) {
-            return None;
-        }
         tokio::select! {
-            result = &mut work => return Some(result),
-            r = updates.changed() => if r.is_err() { return None; },
-            r = display.changed() => if r.is_err() { return None; },
-            _ = stop.changed() => return None,
+            biased;
+            result = &mut guarded => return result,
+            _ = updates.changed() => {},
+            _ = display.changed() => {},
+            _ = stop.changed() => {},
+            _ = authority.activity.changed() => {},
+            _ = authority.profile.retired() => {},
         }
     }
 }
@@ -499,5 +587,6 @@ fn spawn(
         latency,
         Arc::new(attachment),
         Default::default(),
+        None,
     ))
 }
