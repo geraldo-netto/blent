@@ -10,6 +10,13 @@ use tokio::sync::watch;
 pub type Work = Pin<Box<dyn Future<Output = anyhow::Result<()>> + Send + 'static>>;
 pub type Signal<'a> = Pin<Box<dyn Future<Output = ()> + Send + 'a>>;
 
+/// Retain each original native completion before exposure or another await.
+/// Cloned handles also retain creator lifetime, including delayed creation after
+/// cancellation. This grants no authority to acquire or restart media.
+pub trait NativeRetirement: Send + Sync {
+    fn retain(&self, original: blent_config::retirement::Completion);
+}
+
 pub trait ViewerActivity: Send + Sync {
     /// Monotonic connection epoch; a changed value invalidates idle evidence.
     fn epoch(&self) -> u64;
@@ -59,6 +66,7 @@ pub trait ProfileSource: Send + Sync {
 }
 
 pub struct CaptureContext {
+    pub retirement: Arc<dyn NativeRetirement>,
     pub video: VideoOutput,
     pub headers: Arc<dyn HeaderPublication>,
     pub refresh: Arc<dyn RefreshRequests>,

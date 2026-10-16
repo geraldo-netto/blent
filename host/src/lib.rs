@@ -10,6 +10,7 @@ pub mod camera;
 pub mod camera_control;
 pub mod camera_registration;
 pub mod capture_contract;
+mod capture_retirement;
 pub mod config_jobs;
 mod control_outcome;
 pub mod control_workers;

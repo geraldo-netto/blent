@@ -15,6 +15,9 @@ use std::{
     },
     time::Duration,
 };
+
+#[path = "native_retirement_tests.rs"]
+mod native_retirement_tests;
 struct Input;
 impl InputSink for Input {
     fn release_all(&self) {}

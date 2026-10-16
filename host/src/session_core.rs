@@ -136,8 +136,11 @@ impl Prepared {
         let servers = BoundServers::bind(self.stream, self.input).await?;
         let (gate_tx, gate_rx) = watch::channel(false);
         let (stop_tx, stop_rx) = watch::channel(false);
+        let mut retained_workers = Workers::empty(admission);
+        let retirement = retained_workers.capture_lifetime();
         let workers = catch_unwind(AssertUnwindSafe(|| {
             self.capture.start(CaptureContext {
+                retirement: retirement.clone(),
                 video: video.clone().into(),
                 headers: Arc::new(self.resources.codec_config),
                 refresh: self.resources.idr_wanted,
@@ -150,7 +153,6 @@ impl Prepared {
         }))
         .map_err(|_| anyhow::anyhow!("Capture startup panicked"))?;
         let ports = servers.retained.ports();
-        let mut retained_workers = Workers::empty(admission);
         let retained = servers.start_retained(video, &mut retained_workers);
         retained_workers.add(
             "Display gate",
@@ -163,7 +165,10 @@ impl Prepared {
         for work in workers.auxiliary {
             retained_workers.add("Capture auxiliary", spawn_server("Capture auxiliary", work));
         }
-        retained_workers.add("Capture", spawn_server("Capture", workers.capture));
+        retained_workers.add(
+            "Capture",
+            spawn_server("Capture", retain_creation(workers.capture, retirement)),
+        );
         Ok((
             Runtime::from_workers(
                 self.instance,
@@ -176,6 +181,17 @@ impl Prepared {
             retained,
         ))
     }
+}
+
+fn retain_creation(
+    work: crate::capture_contract::Work,
+    retirement: Arc<dyn crate::capture_contract::NativeRetirement>,
+) -> crate::capture_contract::Work {
+    Box::pin(async move {
+        let result = work.await;
+        drop(retirement);
+        result
+    })
 }
 
 /// The supervisor owns task handles; consumers observe independent state values.

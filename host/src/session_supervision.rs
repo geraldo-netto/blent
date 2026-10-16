@@ -42,6 +42,8 @@ pub struct SessionAdmission {
     slot: Admission,
     grace: Duration,
     reap: Duration,
+    creation: Option<std::sync::Arc<dyn crate::capture_contract::NativeRetirement>>,
+    native: crate::capture_retirement::Observation,
 }
 impl SessionAdmission {
     /// Independent observer retained before startup is exposed to a task.
@@ -74,7 +76,14 @@ impl Workers {
             60_000,
         )? as u64);
         let reap = blent_config::retirement_limits::reap_budget()?;
-        Ok(SessionAdmission { slot, grace, reap })
+        let (creation, native) = crate::capture_retirement::channel();
+        Ok(SessionAdmission {
+            slot,
+            grace,
+            reap,
+            creation: Some(creation),
+            native,
+        })
     }
     pub fn new(
         admission: SessionAdmission,
@@ -99,6 +108,16 @@ impl Workers {
     pub fn add(&mut self, name: &'static str, handle: JoinHandle<Result<()>>) {
         self.tasks.push(NamedTask { name, handle });
     }
+    pub(crate) fn capture_lifetime(
+        &mut self,
+    ) -> std::sync::Arc<dyn crate::capture_contract::NativeRetirement> {
+        self.admission
+            .as_mut()
+            .unwrap()
+            .creation
+            .take()
+            .expect("unstarted capture lifetime")
+    }
     pub(super) fn completion(&self) -> blent_config::retirement::Completion {
         self.admission.as_ref().unwrap().slot.completion()
     }
@@ -122,6 +141,7 @@ impl Workers {
         }
     }
     async fn retire(&mut self) {
+        drop(self.admission.as_mut().unwrap().creation.take());
         self.abort(false);
         let admission = self.admission.as_ref().unwrap();
         let (grace, reap) = (admission.grace, admission.reap);
@@ -129,17 +149,20 @@ impl Workers {
             self.abort(true);
             let _ = tokio::time::timeout(reap, self.drain()).await;
         }
-        publish_retirement(self.status.as_ref(), self.tasks.is_empty());
+        let complete = self.tasks.is_empty() && self.admission.as_ref().unwrap().native.complete();
+        publish_retirement(self.status.as_ref(), complete);
     }
 }
 impl Drop for Workers {
     fn drop(&mut self) {
         self.abort(true);
-        let admission = self.admission.take().unwrap();
-        if !self.tasks.is_empty() {
+        let mut admission = self.admission.take().unwrap();
+        drop(admission.creation.take());
+        if !self.tasks.is_empty() || !admission.native.complete() {
             admission.slot.retain(Retiring {
                 tasks: std::mem::take(&mut self.tasks),
                 status: self.status.take(),
+                native: admission.native,
             });
         }
     }
@@ -147,6 +170,7 @@ impl Drop for Workers {
 struct Retiring {
     tasks: FuturesUnordered<NamedTask>,
     status: Option<watch::Sender<State>>,
+    native: crate::capture_retirement::Observation,
 }
 impl Observe for Retiring {
     fn poll_complete(&mut self) -> bool {
@@ -155,7 +179,7 @@ impl Observe for Retiring {
         while let Poll::Ready(Some((name, result))) = self.tasks.poll_next_unpin(&mut context) {
             publish_cleanup(self.status.as_ref(), name, result);
         }
-        if !self.tasks.is_empty() {
+        if !self.tasks.is_empty() || !self.native.complete() {
             return false;
         }
         publish_retirement(self.status.as_ref(), true);
@@ -237,13 +261,20 @@ pub(super) async fn run(
 }
 
 #[cfg(test)]
+#[path = "session_supervision/native_tests.rs"]
+mod native_tests;
+
+#[cfg(test)]
 mod tests {
     use super::*;
-    fn admission(pool: &Pool) -> SessionAdmission {
+    pub(super) fn admission(pool: &Pool) -> SessionAdmission {
+        let (creation, native) = crate::capture_retirement::channel();
         SessionAdmission {
             slot: pool.reserve().unwrap(),
             grace: Duration::from_millis(10),
             reap: Duration::from_millis(10),
+            creation: Some(creation),
+            native,
         }
     }
     #[tokio::test]

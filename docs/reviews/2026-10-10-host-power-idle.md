@@ -353,3 +353,20 @@ within the existing configured reap budget; expiry retains the original pending
 certificate. Fresh startup clears the old stdout failure latch only on success.
 Whole-session dependent retirement and activity propagation remain T1026/T1027;
 display policy composition remains T1015.
+
+T1026 adds an independent native-retirement recorder to the portable capture
+contract. Recorder clones retain creation authority; each original task/thread
+and dependent native resource separately registers its exact completion before
+exposure or another await. The session installs retained ownership before calling
+the capture factory, including factories that panic after native exposure.
+Supervision retains admission until all parent tasks, original creators and
+registered native completions finish. Parent success, failure, panic, cancellation
+or supervisor completion cannot free that admission. Completed registration
+history is pruned across repeated restarts; failures stay visible during cleanup.
+
+Portable acceptance covers held original native admissions, real owned blocking
+creators that produce late resources, independent sibling progress, factory panic
+and runtime route retirement after supervisor exit. These fixtures verify the
+reporting/supervision contract. Actual Linux helper/encoder registration remains
+T1028, auxiliary command/idle registration T1029, and activity source wiring T1027;
+the portable contract alone does not establish native runtime support.
