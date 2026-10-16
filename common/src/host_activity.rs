@@ -12,6 +12,8 @@ pub use policy::Policy;
 mod display_observation;
 pub use display_observation::DisplayObservation;
 mod activity_snapshot;
+mod work_observation;
+pub use work_observation::WorkObservation;
 mod feed;
 mod source_contract;
 mod source_lifetime;

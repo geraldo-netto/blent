@@ -626,3 +626,19 @@ membership-retention regressions pass. Fresh counters cover all 35 scoped
 production functions at >=94.74%; 794 host-library, 343 shared-contract, two native
 FIFO and seven architecture/portability checks pass. The source audit covers
 50 scoped functions with maximum complexity 9; native SonarQube remains T1019.
+
+
+T1043 centralizes desired-work interpretation in the independent
+`WorkObservation` contract and host `activity_view::View` adapter. Each immutable
+observation binds its target and original stamp, retains coalesced stop fences,
+and rejects invalid/future/foreign state, supported-source loss/closure and target
+mismatch. Explicit unsupported target capabilities preserve their fallback on
+loss; no-viewer demand remains independent. Lock/display pauses affect display;
+suspension affects both display and auxiliary work. The original watch adapter
+arms before inspection and wakes on changes/closure before first poll, without
+copying mutable source state or adding idle polling. It grants no native or
+attachment authority. Five initial independent regressions fail before strict
+interpretation and pass unchanged. All eleven production functions have 100%
+native line coverage; 797 host-library, 350 shared-contract and seven architecture
+checks pass. Source scores cover 25 functions at complexity <=9; native SonarQube
+remains T1019. Runtime consumers remain their separate integration items.
