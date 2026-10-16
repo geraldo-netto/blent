@@ -504,3 +504,23 @@ startup/shutdown validation with an injected source in private PID/runtime/confi
 namespaces. Fixtures disable input, updates and native USB startup, expose no
 attached tablet, and never change a live display. Actual display pause/resume
 policy remains T1015; auxiliary machine-availability policy remains T1010.
+
+
+T1035 adds an optional Linux helper activity adapter. It attaches only the
+reserved inherited endpoint before spawn and binds the original controller socket
+lease to the same native child immediately after construction. Failed/canceled
+handshakes retain that lease through actual child cleanup. Stop/terminate revoke
+issuing access while native resource retention remains independent. Requests use
+the existing strict acknowledged transport, including its original pending
+transition across caller cancellation and terminal foreign-ack rejection. Each
+fresh helper gets a fresh channel/sequence, only after original child/stdout
+retirement permits restart. Shared raw and activity endpoints remain independent.
+
+This adapter remains explicitly opt-in. Controlled helpers start capture inactive,
+so enabling it in daemon composition before policy integration would stall normal
+streaming. The current daemon therefore retains its existing uncontrolled helper
+behavior; T1015 owns enabling it together with source-driven pause/resume. Seven
+CLI helper regressions and an additional SDK shared-raw coexistence regression
+use harmless native subprocess fixtures. Removing original socket retention
+reproduces both held-startup failures; the unchanged assertions pass after restore.
+No physical monitor/power acceptance is implied by these process/socket checks.

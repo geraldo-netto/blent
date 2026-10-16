@@ -9,6 +9,7 @@ use std::sync::Arc;
 use tokio::process::Command;
 use tokio::sync::watch;
 use tracing::{info, warn};
+mod activity;
 mod lines;
 mod publication;
 type HelperLines = lines::Lines<tokio::process::ChildStdout>;
@@ -66,6 +67,7 @@ pub(super) struct DetectedMode {
 }
 
 pub(super) struct HelperProcess {
+    activity: activity::Channel,
     pub(super) retirement: Option<Arc<dyn blent::capture_contract::NativeRetirement>>,
     pub(super) child: Option<Child>,
     pub(super) pending: Option<blent_config::retirement::Completion>,
@@ -93,6 +95,7 @@ impl HelperProcess {
         let (fifo_reset_tx, fifo_reset_rx) = watch::channel(None);
         let (stream_tx, stream_rx) = watch::channel(None);
         Self {
+            activity: Default::default(),
             retirement: None,
             child: None,
             pending: None,
@@ -112,6 +115,17 @@ impl HelperProcess {
             fifo_reset_tx,
             fifo_reset_rx,
         }
+    }
+    /// Opt in only when the supervisor also supplies capture pause/resume policy.
+    pub(super) fn enable_activity(&mut self) {
+        self.activity.enable();
+    }
+    pub(super) async fn set_capture_active(
+        &mut self,
+        active: bool,
+    ) -> Result<blent_config::capture_activity::Request> {
+        anyhow::ensure!(self.child.is_some(), "capture helper is not running");
+        self.activity.set_active(active).await
     }
     pub(super) fn fifo_reset_pending(&self, instance: u32) -> Result<bool> {
         match *self.fifo_reset_rx.borrow() {
@@ -177,6 +191,7 @@ impl HelperProcess {
         publisher
     }
     pub(super) fn stop(&mut self) {
+        self.activity.disconnect();
         self.abort_stdout();
         if let Some(mut child) = self.child.take() {
             child.keep_alive(self.fifo.clone());
@@ -185,6 +200,7 @@ impl HelperProcess {
         }
     }
     pub(super) async fn terminate(&mut self) {
+        self.activity.disconnect();
         self.abort_stdout();
         if let Some(mut child) = self.child.take() {
             child.keep_alive(self.fifo.clone());
@@ -278,9 +294,11 @@ impl HelperProcess {
         process::retire_orphan_capture(&fifo).await?;
         self.fifo = Some(fifo::Owned::create(&fifo)?);
         let mut command = self.command(config, &fifo)?;
+        self.activity.attach(&mut command)?;
         #[cfg(feature = "inproc-encoder")]
         self.attach_raw_socket(config, &mut command)?;
         let mut child = spawn(&mut command).context("Failed to spawn evdi-helper")?;
+        self.activity.retain(&mut child);
         // The handshake can be canceled or fail after native exposure. Retain
         // its exact cleanup certificate before the first fallible/awaiting step.
         self.pending = Some(child.completion());
@@ -587,3 +605,7 @@ mod tests {
 
 #[cfg(test)]
 mod session_retirement_tests;
+
+#[cfg(test)]
+#[path = "helper/activity_tests.rs"]
+mod activity_tests;
