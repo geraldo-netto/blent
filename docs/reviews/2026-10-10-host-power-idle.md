@@ -351,7 +351,8 @@ completion independently of native child cleanup. Reentry with a live helper or
 owned stdout task rejects before FIFO changes or another spawn. Termination waits
 within the existing configured reap budget; expiry retains the original pending
 certificate. Fresh startup clears the old stdout failure latch only on success.
-Whole-session dependent retirement and activity propagation remain T1026/T1027;
+Whole-session dependent retirement is implemented under T1026/T1028; auxiliary
+registration and activity propagation remain T1029/T1027;
 display policy composition remains T1015.
 
 T1026 adds an independent native-retirement recorder to the portable capture
@@ -367,8 +368,8 @@ history is pruned across repeated restarts; failures stay visible during cleanup
 Portable acceptance covers held original native admissions, real owned blocking
 creators that produce late resources, independent sibling progress, factory panic
 and runtime route retirement after supervisor exit. These fixtures verify the
-reporting/supervision contract. Actual Linux helper/encoder registration remains
-T1028, auxiliary command/idle registration T1029, and activity source wiring T1027;
+reporting/supervision contract. Linux helper/encoder registration is implemented under T1028; auxiliary
+command/idle registration remains T1029 and activity source wiring T1027;
 the portable contract alone does not establish native runtime support.
 
 T1030 keeps owned-task admission through dependent lease destruction after join.
@@ -380,3 +381,20 @@ pending. X11 startup retains its original creator certificate in startup state;
 both initial and repeated joins wait for that proof even after a canceled wait.
 The unchanged unsupported-program startup regression and added held-cleanup
 regressions pass. No elapsed deadline or destructor entry certifies completion.
+
+
+T1028 binds the original session recorder before Linux capture construction can
+start native work. Helper startup records its native child before handshake or
+fallible stdout setup, and records the drain task before exposure. CLI, optional
+GPU and isolated native encoders record their actual child and packet-reader task
+proofs before another fallible step or await. The isolated worker adapter also
+records children whose subsequent reader admission fails. Shared FIFO/raw leases
+remain owned by those same original native resources. Whole-session stop/drop
+cannot release admission while any registered cleanup remains held.
+
+Permanent real-child and task fixtures cover successful helper/CLI startup,
+stdout and packet-reader post-join leases, canceled/failed helper handshake and
+post-spawn encoder task admission failure. Their enclosing session can finish
+while exact native cleanup remains pending; release is certified only after
+actual original completion. This closes core native registration, with auxiliary
+probe/idle registration T1029 and activity composition T1027/T1015 still open.

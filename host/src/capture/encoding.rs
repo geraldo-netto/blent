@@ -7,6 +7,7 @@ use std::sync::Arc;
 
 #[derive(Default)]
 pub(super) struct EncoderProcess {
+    pub(super) retirement: Option<Arc<dyn blent::capture_contract::NativeRetirement>>,
     pub(super) child: Option<Child>,
     pub(super) pending: Option<blent_config::retirement::Completion>,
     #[cfg(not(feature = "inproc-encoder"))]
@@ -69,6 +70,7 @@ impl EncoderProcess {
         adapter.log_encoder_dimensions(w, h);
         let child = spawn(adapter.encoder_command(w, h, async_depth_supported)?)
             .context("Failed to spawn ffmpeg encoder")?;
+        process::retain(&self.retirement, child.completion());
         tracing::info!("Encoder started (PID: {})", child.id().unwrap_or(0));
         self.child = Some(child);
         Ok(mode)
@@ -117,6 +119,7 @@ impl EncoderProcess {
             evidence,
             idle,
         ))?;
+        process::retain(&self.retirement, handle.completion());
         Ok(EncoderTask { handle })
     }
 
@@ -153,6 +156,7 @@ impl EncoderProcess {
             &fifo,
             output.raw_socket,
             crate::encoder_worker::Output {
+                retirement: self.retirement.clone(),
                 video: output.tx,
                 headers: output.codec_config,
                 latency: output.latency,

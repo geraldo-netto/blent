@@ -5,6 +5,7 @@ use blent_config::commands::OwnedChild as Child;
 use std::os::unix::ffi::OsStrExt;
 use std::path::Path;
 use std::process::Stdio;
+use std::sync::Arc;
 use tokio::process::Command;
 use tokio::sync::watch;
 use tracing::{info, warn};
@@ -65,6 +66,7 @@ pub(super) struct DetectedMode {
 }
 
 pub(super) struct HelperProcess {
+    pub(super) retirement: Option<Arc<dyn blent::capture_contract::NativeRetirement>>,
     pub(super) child: Option<Child>,
     pub(super) pending: Option<blent_config::retirement::Completion>,
     pub(super) fifo: Option<fifo::Owned>,
@@ -91,6 +93,7 @@ impl HelperProcess {
         let (fifo_reset_tx, fifo_reset_rx) = watch::channel(None);
         let (stream_tx, stream_rx) = watch::channel(None);
         Self {
+            retirement: None,
             child: None,
             pending: None,
             fifo: None,
@@ -281,6 +284,7 @@ impl HelperProcess {
         // The handshake can be canceled or fail after native exposure. Retain
         // its exact cleanup certificate before the first fallible/awaiting step.
         self.pending = Some(child.completion());
+        process::retain(&self.retirement, child.completion());
         child.keep_alive(self.fifo.clone());
         let stdout = child
             .stdout
@@ -305,6 +309,7 @@ impl HelperProcess {
             )?,
         );
         let mut task = blent::owned_task::Task::spawn(drain)?;
+        process::retain(&self.retirement, task.completion());
         task.keep_alive(self.fifo.clone());
         self.stdout_task = Some(task);
         self.stdout_failure = None;
@@ -579,3 +584,6 @@ mod tests {
         let _ = std::fs::remove_dir_all(&dir);
     }
 }
+
+#[cfg(test)]
+mod session_retirement_tests;

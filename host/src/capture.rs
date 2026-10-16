@@ -63,6 +63,15 @@ impl CaptureManager {
             idr_wanted: Arc::new(std::sync::atomic::AtomicBool::new(false)),
         }
     }
+    /// The session construction adapter binds its original recorder before the
+    /// fresh manager can expose native work. Both owners share that same scope.
+    pub(crate) fn bind_retirement(
+        &mut self,
+        retirement: Arc<dyn blent::capture_contract::NativeRetirement>,
+    ) {
+        self.helper.retirement = Some(retirement.clone());
+        self.encoder.retirement = Some(retirement);
+    }
     async fn start_helper(&mut self) -> Result<()> {
         self.helper.start(&self.config).await
     }
@@ -79,6 +88,7 @@ impl CaptureManager {
             .gpu
             .try_start(&self.config, mode, self.helper.card)
         {
+            process::retain(&self.encoder.retirement, child.completion());
             child.keep_alive(self.helper.fifo.clone());
             self.encoder.child = Some(child);
             return Ok(mode);

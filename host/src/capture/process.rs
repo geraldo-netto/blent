@@ -51,3 +51,14 @@ pub(super) async fn retire_orphan_capture(path: &Path) -> Result<()> {
     }
     Ok(())
 }
+
+/// Forward the original resource proof to the bound session before another
+/// fallible step or await. Standalone capture owners have no enclosing session.
+pub(super) fn retain(
+    retirement: &Option<std::sync::Arc<dyn blent::capture_contract::NativeRetirement>>,
+    original: blent_config::retirement::Completion,
+) {
+    if let Some(retirement) = retirement {
+        retirement.retain(original);
+    }
+}

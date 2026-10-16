@@ -14,6 +14,7 @@ use std::{
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 pub(crate) struct Output {
+    pub retirement: Option<Arc<dyn blent::capture_contract::NativeRetirement>>,
     pub video: blent::capture_contract::VideoOutput,
     pub headers: crate::media::CodecConfig,
     pub latency: crate::latency::LatencyTracker,
@@ -59,6 +60,7 @@ fn spawn_at(
         socket.attach(&mut command)?;
     }
     let mut child = blent_config::commands::OwnedChild::spawn(&mut command)?;
+    retain(&output.retirement, child.completion());
     child.keep_alive(guard);
     let input = child
         .take_stdin()
@@ -66,9 +68,20 @@ fn spawn_at(
     let stdout = child
         .take_stdout()
         .context("Encoder worker stdout unavailable")?;
+    let retirement = output.retirement.clone();
     let handle = blent::owned_task::Task::spawn(receive(job, input, stdout, output))?;
+    retain(&retirement, handle.completion());
     Ok((child, handle))
 }
+fn retain(
+    retirement: &Option<Arc<dyn blent::capture_contract::NativeRetirement>>,
+    original: blent_config::retirement::Completion,
+) {
+    if let Some(retirement) = retirement {
+        retirement.retain(original);
+    }
+}
+
 async fn receive(
     job: Job,
     mut input: tokio::process::ChildStdin,

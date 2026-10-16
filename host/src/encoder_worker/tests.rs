@@ -25,6 +25,7 @@ fn output() -> (
     let (video, receiver) = crate::video_queue::channel(8, Default::default());
     (
         Output {
+            retirement: None,
             video: video.into(),
             headers: Default::default(),
             latency: Default::default(),
@@ -390,4 +391,145 @@ async fn t819_parent_identity_failure_and_absent_executable_propagate() {
         .await
         .completion
         .is_complete());
+}
+
+// T1028: report the actual child and reader, including retained native leases.
+#[derive(Default)]
+struct Retained(Mutex<Vec<blent_config::retirement::Completion>>);
+impl blent::capture_contract::NativeRetirement for Retained {
+    fn retain(&self, original: blent_config::retirement::Completion) {
+        self.0.lock().unwrap().push(original);
+    }
+}
+struct HeldCleanup {
+    entered: std::sync::mpsc::Sender<()>,
+    release: Mutex<std::sync::mpsc::Receiver<()>>,
+}
+impl Drop for HeldCleanup {
+    fn drop(&mut self) {
+        let _ = self.entered.send(());
+        let _ = self.release.lock().unwrap().recv();
+    }
+}
+struct Release(std::sync::mpsc::Sender<()>);
+impl Drop for Release {
+    fn drop(&mut self) {
+        let _ = self.0.send(());
+    }
+}
+#[tokio::test]
+async fn t1028_isolated_encoder_reports_original_child_and_reader() {
+    use std::os::unix::fs::PermissionsExt;
+    let root = tempfile::tempdir().unwrap();
+    let script = root.path().join("worker");
+    std::fs::write(&script, "#!/bin/sh\nexec sleep 60\n").unwrap();
+    std::fs::set_permissions(&script, std::fs::Permissions::from_mode(0o700)).unwrap();
+    let report = Arc::new(Retained::default());
+    let (mut output, _receiver) = output();
+    output.retirement = Some(report.clone());
+    let (entered_tx, entered) = std::sync::mpsc::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let release = Release(release);
+    let (mut child, task) = spawn_at(
+        &script,
+        job(),
+        &root.path().join("fifo"),
+        None,
+        output,
+        HeldCleanup {
+            entered: entered_tx,
+            release: Mutex::new(held),
+        },
+    )
+    .unwrap();
+    let original = child.completion();
+    let reader = task.completion();
+    let recorded = report.0.lock().unwrap().clone();
+    child.start_kill().unwrap();
+    drop(child);
+    task.abort();
+    drop(task);
+    entered.recv_timeout(Duration::from_secs(5)).unwrap();
+    assert!(!original.is_complete());
+    let held_recorded = recorded.iter().any(|proof| !proof.is_complete());
+    drop(release);
+    for proof in [&original, &reader] {
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while !proof.is_complete() {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .unwrap();
+    }
+    assert_eq!(recorded.len(), 2, "T1028 missing original encoder proofs");
+    assert!(held_recorded, "T1028 original child cleanup not retained");
+    assert!(recorded.iter().all(|proof| proof.is_complete()));
+}
+
+#[tokio::test]
+async fn t1028_failed_reader_admission_keeps_original_child_proof() {
+    if std::env::var_os("BLENT_T1028_WORKER_LIMIT").is_none() {
+        let result = std::process::Command::new(std::env::current_exe().unwrap())
+            .args([
+                "--exact",
+                "encoder_worker::tests::t1028_failed_reader_admission_keeps_original_child_proof",
+                "--nocapture",
+            ])
+            .env("BLENT_T1028_WORKER_LIMIT", "1")
+            .env("BLENT_TASK_LIMIT", "1")
+            .output()
+            .unwrap();
+        assert!(
+            result.status.success(),
+            "{}{}",
+            String::from_utf8_lossy(&result.stdout),
+            String::from_utf8_lossy(&result.stderr)
+        );
+        return;
+    }
+    use std::os::unix::fs::PermissionsExt;
+    let root = tempfile::tempdir().unwrap();
+    let script = root.path().join("worker");
+    std::fs::write(&script, "#!/bin/sh\nexec sleep 60\n").unwrap();
+    std::fs::set_permissions(&script, std::fs::Permissions::from_mode(0o700)).unwrap();
+    let blocker = blent::owned_task::Task::spawn(std::future::pending()).unwrap();
+    let report = Arc::new(Retained::default());
+    let (mut output, _receiver) = output();
+    output.retirement = Some(report.clone());
+    let (entered_tx, entered) = std::sync::mpsc::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let release = Release(release);
+    assert!(spawn_at(
+        &script,
+        job(),
+        &root.path().join("fifo"),
+        None,
+        output,
+        HeldCleanup {
+            entered: entered_tx,
+            release: Mutex::new(held)
+        }
+    )
+    .is_err());
+    entered.recv_timeout(Duration::from_secs(5)).unwrap();
+    let originals = report.0.lock().unwrap().clone();
+    let pending = originals.iter().any(|proof| !proof.is_complete());
+    drop(release);
+    for proof in &originals {
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while !proof.is_complete() {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .unwrap();
+    }
+    drop(blocker);
+    assert_eq!(
+        originals.len(),
+        1,
+        "T1028 post-spawn failure lost original child"
+    );
+    assert!(pending, "T1028 failed reader erased held native cleanup");
 }
