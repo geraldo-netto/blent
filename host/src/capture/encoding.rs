@@ -287,7 +287,7 @@ impl EncoderTask {
     async fn retire(&mut self, already_finished: bool) -> Result<()> {
         // The reader's generation guard and its original idle controller must
         // both retire before the supervisor can rotate/reuse the FIFO.
-        if !already_finished {
+        if !already_finished && !self.handle.is_joined() {
             match (&mut self.handle).await {
                 Ok(result) => result?,
                 Err(error) if error.is_cancelled() => {}
@@ -372,6 +372,50 @@ mod retirement_tests {
         .unwrap();
         reader.finish(true).await.unwrap();
         assert!(pending, "T1029 joined reader ignored original idle cleanup");
+    }
+
+    #[tokio::test]
+    async fn t1047_canceled_retirement_retries_after_original_reader_join_and_held_idle() {
+        let mut idle = blent::owned_task::Task::spawn(std::future::pending()).unwrap();
+        let original = idle.completion();
+        let (entered, ready) = std::sync::mpsc::channel();
+        let (release, held) = std::sync::mpsc::channel();
+        let release = ReleaseIdle(release);
+        idle.keep_alive(HeldIdle {
+            entered,
+            release: std::sync::Mutex::new(held),
+        });
+        idle.abort();
+        assert!((&mut idle).await.unwrap_err().is_cancelled());
+        drop(idle);
+        ready
+            .recv_timeout(std::time::Duration::from_secs(5))
+            .unwrap();
+        let mut reader = EncoderTask {
+            idle: Some(original.clone()),
+            handle: blent::owned_task::Task::spawn(std::future::pending()).unwrap(),
+        };
+        assert!(
+            tokio::time::timeout(std::time::Duration::from_millis(20), reader.finish(false))
+                .await
+                .is_err()
+        );
+        assert!(
+            reader.handle.is_joined(),
+            "T1047 fixture must cancel after reader join"
+        );
+        assert!(
+            !original.is_complete(),
+            "T1047 held idle cleanup falsely retired"
+        );
+        drop(release);
+        tokio::time::timeout(std::time::Duration::from_secs(5), reader.finish(false))
+            .await
+            .unwrap()
+            .unwrap();
+        assert!(original.is_complete());
+        reader.finish(false).await.unwrap();
+        reader.finish(true).await.unwrap();
     }
 
     #[tokio::test]

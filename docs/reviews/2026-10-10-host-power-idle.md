@@ -694,3 +694,17 @@ existing ignores. Thirty scoped production functions measure at least 83.33%
 executable-line coverage individually; 28 measure 100%. The source audit covers
 79 changed functions at maximum complexity 8. Seven architecture checks pass;
 native SonarQube remains T1019.
+
+
+T1047 fixes encoder retirement retry after cancellation between original reader
+join and idle-controller native cleanup. Previously a retry polled the consumed
+`Task` handle and panicked. A read-only joined-result observer checks the original
+handle state, without copying completion state or granting native retirement.
+The permanent held-idle regression proves the cancellation point and reproduces
+the original panic before the fix; unchanged assertions now permit safe repeated
+retirement only after exact cleanup. Existing error/panic semantics remain tested.
+This prerequisite supports T1046's interruptible retained-monitor transaction.
+
+T1047 native capture suite passes 160 tests with two existing ignores. Both scoped
+production functions measure 100% executable-line coverage; the source audit
+covers three functions at maximum complexity 7. Native SonarQube remains T1019.

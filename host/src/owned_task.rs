@@ -47,6 +47,11 @@ impl Task {
             None => true,
         }
     }
+    /// The task result has been consumed. This is not native retirement proof;
+    /// original dependent cleanup can still be pending through completion().
+    pub fn is_joined(&self) -> bool {
+        self.handle.is_none()
+    }
     pub fn completion(&self) -> Completion {
         self.completion.clone()
     }
