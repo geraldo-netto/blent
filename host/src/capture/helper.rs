@@ -144,10 +144,12 @@ impl HelperProcess {
         let Some(stdout) = self.stdout_task.as_mut() else {
             return child.wait().await;
         };
+        let original = stdout.completion();
         let outcome = tokio::select! {
             status = child.wait() => return status,
             outcome = stdout => outcome,
         };
+        self.stdout_pending = Some(original);
         self.stdout_task = None;
         self.abort_stdout();
         let reason = format!("capture helper stdout stopped: {outcome:?}");

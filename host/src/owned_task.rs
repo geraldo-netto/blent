@@ -58,6 +58,17 @@ impl Task {
     pub fn keep_alive(&mut self, lease: impl Send + Sync + 'static) {
         self.leases.push(Box::new(lease));
     }
+    fn retire_leases(&mut self) {
+        let admission = self.admission.take().unwrap();
+        if self.leases.is_empty() {
+            drop(admission);
+        } else {
+            let leases = std::mem::take(&mut self.leases);
+            admission.retain(blent_config::retirement_work::Cleanup::new(move || {
+                drop(leases)
+            }));
+        }
+    }
 }
 impl Future for Task {
     type Output = Result<Result<()>, JoinError>;
@@ -65,7 +76,7 @@ impl Future for Task {
         let result = self.handle.as_mut().unwrap().poll_unpin(context);
         if result.is_ready() {
             self.handle.take();
-            self.admission.take();
+            self.retire_leases();
         }
         result
     }
@@ -75,34 +86,66 @@ impl Drop for Task {
         if let Some(handle) = self.handle.take() {
             handle.abort();
             self.admission.take().unwrap().retain(Retiring {
-                handle,
-                _leases: std::mem::take(&mut self.leases),
+                handle: Some(handle),
+                leases: std::mem::take(&mut self.leases),
+                cleanup: None,
             });
         }
     }
 }
 struct Retiring {
-    handle: JoinHandle<Result<()>>,
-    _leases: Vec<Box<dyn Send + Sync>>,
+    handle: Option<JoinHandle<Result<()>>>,
+    leases: Vec<Box<dyn Send + Sync>>,
+    cleanup: Option<blent_config::retirement_work::Cleanup>,
 }
-impl Observe for Retiring {
-    fn poll_complete(&mut self) -> bool {
-        if !self.handle.is_finished() {
+impl Retiring {
+    fn joined(&mut self) -> bool {
+        let Some(handle) = self.handle.as_mut() else {
+            return true;
+        };
+        if !handle.is_finished() {
             return false;
         }
-        let Some(result) = (&mut self.handle).now_or_never() else {
+        let Some(result) = handle.now_or_never() else {
             return false;
         };
-        match result {
-            Ok(Err(error)) => tracing::error!("Retired capture task failed: {error:#}"),
-            Err(error) if !error.is_cancelled() => {
-                tracing::error!("Retired capture task panicked: {error}")
-            }
-            _ => {}
-        }
+        self.handle.take();
+        report_outcome(result);
         true
     }
 }
+impl Observe for Retiring {
+    fn poll_complete(&mut self) -> bool {
+        if !self.joined() {
+            return false;
+        }
+        if let Some(cleanup) = &mut self.cleanup {
+            return cleanup.poll_complete();
+        }
+        if self.leases.is_empty() {
+            return true;
+        }
+        let leases = std::mem::take(&mut self.leases);
+        self.cleanup = Some(blent_config::retirement_work::Cleanup::new(move || {
+            drop(leases)
+        }));
+        self.cleanup.as_mut().unwrap().poll_complete()
+    }
+}
+
+fn report_outcome(result: Result<Result<()>, JoinError>) {
+    match result {
+        Ok(Err(error)) => tracing::error!("Retired capture task failed: {error:#}"),
+        Err(error) if !error.is_cancelled() => {
+            tracing::error!("Retired capture task panicked: {error}")
+        }
+        _ => {}
+    }
+}
+#[cfg(test)]
+#[path = "owned_task/lease_tests.rs"]
+mod lease_tests;
+
 #[cfg(test)]
 mod tests {
     use super::*;

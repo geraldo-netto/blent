@@ -3,7 +3,7 @@ use super::*;
 use crate::capture::ownership_tests::isolated;
 use std::sync::{
     atomic::{AtomicUsize, Ordering},
-    mpsc, Arc,
+    mpsc, Arc, Mutex,
 };
 use std::time::Duration;
 
@@ -145,4 +145,60 @@ async fn t1024_live_helper_reentry_preserves_original_child_and_fifo() {
     );
     assert!(running);
     assert_eq!((retained.dev(), retained.ino()), (inode.dev(), inode.ino()));
+}
+
+struct JoinedLease {
+    entered: mpsc::Sender<()>,
+    release: Mutex<mpsc::Receiver<()>>,
+}
+
+impl Drop for JoinedLease {
+    fn drop(&mut self) {
+        self.entered.send(()).unwrap();
+        self.release
+            .lock()
+            .unwrap()
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap();
+    }
+}
+
+#[tokio::test]
+async fn t1030_joined_stdout_keeps_original_cleanup_before_helper_restart() {
+    if isolated("capture::helper::publication_tests::t1030_joined_stdout_keeps_original_cleanup_before_helper_restart") { return; }
+    let config = super::startup_ownership_tests::configuration();
+    let mut helper = HelperProcess::new();
+    helper.child = Some(Child::spawn(Command::new("/bin/sleep").arg("60")).unwrap());
+    let (entered, waiting) = mpsc::channel();
+    let (release, held) = mpsc::channel();
+    let mut task = blent::owned_task::Task::spawn(async { Ok(()) }).unwrap();
+    task.keep_alive(JoinedLease {
+        entered,
+        release: Mutex::new(held),
+    });
+    let original = task.completion();
+    helper.stdout_task = Some(task);
+    assert!(helper.wait().await.is_err());
+    waiting.recv_timeout(Duration::from_secs(3)).unwrap();
+    helper.terminate().await;
+    let spawns = Arc::new(AtomicUsize::new(0));
+    let count = spawns.clone();
+    let result = helper
+        .start_with(&config, |_| {
+            count.fetch_add(1, Ordering::SeqCst);
+            Err(std::io::Error::other("T1030 forbidden helper restart"))
+        })
+        .await;
+    let retained = !original.is_complete();
+    release.send(()).unwrap();
+    completed(&original).await;
+    assert!(result.is_err());
+    assert!(retained);
+    assert_eq!(
+        spawns.load(Ordering::SeqCst),
+        0,
+        "T1030 joined stdout lost original cleanup before restart"
+    );
+    helper.start(&config).await.unwrap();
+    helper.terminate().await;
 }

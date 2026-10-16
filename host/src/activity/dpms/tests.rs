@@ -1,4 +1,57 @@
 use super::*;
+
+struct StartupLease {
+    entered: Option<oneshot::Sender<()>>,
+    release: Mutex<std::sync::mpsc::Receiver<()>>,
+}
+
+impl Drop for StartupLease {
+    fn drop(&mut self) {
+        self.entered.take().unwrap().send(()).unwrap();
+        self.release
+            .lock()
+            .unwrap()
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap();
+    }
+}
+
+#[tokio::test]
+async fn t1030_joined_startup_waits_for_original_dependent_cleanup() {
+    let mut startup = Startup::launch(|| anyhow::bail!("T1030 startup error"), lifetime()).unwrap();
+    let (entered, waiting) = oneshot::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    startup.task.as_mut().unwrap().keep_alive(StartupLease {
+        entered: Some(entered),
+        release: Mutex::new(held),
+    });
+    let waited_first = tokio::time::timeout(Duration::from_millis(10), startup.joined())
+        .await
+        .is_err();
+    let (joined, mut done) = oneshot::channel();
+    let (started, observing) = oneshot::channel();
+    let observer = tokio::spawn(async move {
+        started.send(()).unwrap();
+        startup.joined().await;
+        joined.send(()).unwrap();
+    });
+    tokio::time::timeout(Duration::from_secs(3), waiting)
+        .await
+        .unwrap()
+        .unwrap();
+    observing.await.unwrap();
+    let released_early = done.try_recv().is_ok();
+    release.send(()).unwrap();
+    observer.await.unwrap();
+    assert!(
+        waited_first,
+        "T1030 first startup join ignored dependent cleanup"
+    );
+    assert!(
+        !released_early,
+        "T1030 startup join released live dependent cleanup"
+    );
+}
 use std::os::unix::fs::PermissionsExt;
 fn program(root: &std::path::Path, source: &str) -> Program {
     let path = root.join("dpms-fixture");

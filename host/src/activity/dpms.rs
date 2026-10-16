@@ -31,6 +31,7 @@ impl Program {
 }
 struct Startup {
     task: Option<Task>,
+    creator: Completion,
     child: oneshot::Receiver<OwnedChild>,
     native: Arc<Mutex<Vec<Completion>>>,
 }
@@ -70,11 +71,13 @@ impl Startup {
             let _ = send.send(child);
             Ok(())
         })?;
-        lifetime.retain(task.completion());
+        let creator = task.completion();
+        lifetime.retain(creator.clone());
         task.keep_alive(lifetime);
         native.lock().unwrap().push(task.completion());
         Ok(Self {
             task: Some(task),
+            creator,
             child,
             native,
         })
@@ -88,6 +91,9 @@ impl Startup {
     async fn joined(&mut self) {
         if let Some(task) = self.task.take() {
             let _ = task.await;
+        }
+        while !self.creator.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
         }
     }
 }

@@ -370,3 +370,13 @@ and runtime route retirement after supervisor exit. These fixtures verify the
 reporting/supervision contract. Actual Linux helper/encoder registration remains
 T1028, auxiliary command/idle registration T1029, and activity source wiring T1027;
 the portable contract alone does not establish native runtime support.
+
+T1030 keeps owned-task admission through dependent lease destruction after join.
+Cleanup uses the existing isolated retirement worker under the original budget,
+so a blocked destructor retains its own certificate without blocking unrelated
+retirements. Joined work results remain distinct from resource completion.
+Helper wait retains the original stdout certificate when post-join cleanup is
+pending. X11 startup retains its original creator certificate in startup state;
+both initial and repeated joins wait for that proof even after a canceled wait.
+The unchanged unsupported-program startup regression and added held-cleanup
+regressions pass. No elapsed deadline or destructor entry certifies completion.
