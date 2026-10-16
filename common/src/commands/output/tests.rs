@@ -210,3 +210,39 @@ async fn t815_collection_failure_panic_and_cancellation_retire_owners() {
         io::ErrorKind::BrokenPipe
     );
 }
+
+#[test]
+fn t1031_held_collector_reports_exact_original_thread_until_join() {
+    let slot = Pool::new(1).unwrap().reserve().unwrap();
+    let original = slot.completion();
+    let (started, entered) = mpsc::channel();
+    let (release, held) = mpsc::channel();
+    let capture = CapturedOutput::start(
+        [
+            Box::new(Held {
+                entered: started,
+                release: held,
+            }),
+            Box::new(io::empty()),
+        ],
+        limits(),
+        Instant::now() + Duration::from_secs(5),
+        slot,
+    )
+    .unwrap();
+    let observed = std::sync::Mutex::new(Vec::new());
+    capture.observe(&|proof| observed.lock().unwrap().push(proof));
+    entered.recv_timeout(Duration::from_secs(2)).unwrap();
+    drop(capture);
+    let originals = observed.into_inner().unwrap();
+    let retained = originals.iter().any(|proof| !proof.is_complete());
+    assert!(!original.is_complete());
+    release.send(()).unwrap();
+    completed(&original);
+    assert_eq!(originals.len(), 1, "T1031 missing original held collector");
+    assert!(
+        retained,
+        "T1031 collector cancellation replaced actual thread join"
+    );
+    assert!(originals[0].is_complete());
+}

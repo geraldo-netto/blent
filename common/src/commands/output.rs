@@ -4,7 +4,6 @@ use super::{
     output_pipe::Reader,
     timed_out,
 };
-#[cfg(test)]
 use crate::retirement::Completion;
 use crate::retirement::{Admission, Pool};
 use std::{
@@ -40,7 +39,6 @@ fn reserve() -> io::Result<Admission> {
 pub(super) struct CapturedOutput {
     state: Arc<AtomicU8>,
     receiver: oneshot::Receiver<Collected>,
-    #[cfg(test)]
     completion: Completion,
 }
 impl CapturedOutput {
@@ -65,7 +63,6 @@ impl CapturedOutput {
         let state = Arc::new(AtomicU8::new(RUNNING));
         let owner = state.clone();
         let (sender, receiver) = oneshot::channel();
-        #[cfg(test)]
         let completion = admission.completion();
         let handle = std::thread::Builder::new()
             .name("blent-output".into())
@@ -77,9 +74,11 @@ impl CapturedOutput {
         Ok(Self {
             state,
             receiver,
-            #[cfg(test)]
             completion,
         })
+    }
+    pub fn observe(&self, observer: &(dyn Fn(Completion) + Send + Sync)) {
+        observer(self.completion.clone());
     }
     pub fn child_exited(&self) {
         let _ = self

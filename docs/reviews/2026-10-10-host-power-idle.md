@@ -398,3 +398,16 @@ post-spawn encoder task admission failure. Their enclosing session can finish
 while exact native cleanup remains pending; release is certified only after
 actual original completion. This closes core native registration, with auxiliary
 probe/idle registration T1029 and activity composition T1027/T1015 still open.
+
+
+T1031 adds original completion observation to the shared bounded synchronous and
+asynchronous command adapters. Both existing and observed calls execute through
+one implementation. Collector completion now remains available in production;
+its actual thread join is independent of delivered output or cancellation.
+Collector proofs register before child creation; child proofs register before
+fallible Windows setup or awaiting process/output completion. A synchronous
+observer panic retires the already exposed original child before unwinding.
+Command deadlines, output bounds and sensitive stdin handling remain unchanged.
+Caller-owned blocking creators must retain their own reporting lifetime until
+late command creation is impossible; capture/selection wiring remains T1032.
+Native Windows validation of these observations remains explicitly under T737.

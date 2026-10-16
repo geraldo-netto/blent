@@ -2,7 +2,7 @@ use super::*;
 use std::io::Read;
 
 // T496: re-exec the native test executable; no shell or external sleep program.
-fn fixture(path: &std::path::Path, role: &str) -> Command {
+pub(super) fn fixture(path: &std::path::Path, role: &str) -> Command {
     let mut command = Command::new(std::env::current_exe().unwrap());
     command
         .args([
@@ -38,7 +38,7 @@ fn t496_fixture_process() {
     std::fs::write(path.with_extension("done"), "done").unwrap();
 }
 
-fn assert_exited(pid: u32) {
+pub(super) fn assert_exited(pid: u32) {
     #[cfg(target_os = "linux")]
     assert!(!std::path::Path::new(&format!("/proc/{pid}")).exists());
     #[cfg(windows)]

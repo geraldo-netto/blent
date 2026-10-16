@@ -49,6 +49,13 @@ pub trait SyncCommandExt {
         self.output_timeout(COMMAND_TIMEOUT)
     }
     fn output_timeout(&mut self, timeout: Duration) -> io::Result<Output>;
+    /// Report each original child/collector before further creation or awaiting.
+    /// The observer grants no execution authority and must not block.
+    fn output_timeout_observed(
+        &mut self,
+        timeout: Duration,
+        observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
+    ) -> io::Result<Output>;
 }
 fn command_deadline(timeout: Duration) -> io::Result<std::time::Instant> {
     std::time::Instant::now()
@@ -134,14 +141,29 @@ fn reap_reserved(
 
 impl SyncCommandExt for Command {
     fn output_timeout(&mut self, timeout: Duration) -> io::Result<Output> {
+        self.output_timeout_observed(timeout, &|_| {})
+    }
+    fn output_timeout_observed(
+        &mut self,
+        timeout: Duration,
+        observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
+    ) -> io::Result<Output> {
         let admission = retirement::reserve()?;
         crate::retirement_limits::reap_budget()?;
         let deadline = command_deadline(timeout)?;
         let mut output = CapturedOutput::new(self, deadline)?;
+        output.observe(observer);
         #[cfg(windows)]
         let job = windows::Job::new()?;
         prepare_group(self);
         let mut child = self.stdin(Stdio::null()).spawn()?;
+        let reported = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            observer(admission.completion());
+        }));
+        if let Err(panic) = reported {
+            retire_sync(child, admission);
+            std::panic::resume_unwind(panic);
+        }
         #[cfg(windows)]
         {
             use std::os::windows::io::AsRawHandle;
@@ -192,6 +214,15 @@ pub trait AsyncCommandExt {
         input: Option<&[u8]>,
         timeout: Duration,
     ) -> impl std::future::Future<Output = io::Result<Output>> + Send;
+    /// Retain exact child and collector proofs, including startup failure and
+    /// cancellation. Independent caller tasks must retain their own creator
+    /// lifetime until they can no longer start commands or report late proofs.
+    fn output_input_timeout_observed(
+        &mut self,
+        input: Option<&[u8]>,
+        timeout: Duration,
+        observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
+    ) -> impl std::future::Future<Output = io::Result<Output>> + Send;
 }
 impl AsyncCommandExt for tokio::process::Command {
     async fn output_timeout(&mut self, timeout: Duration) -> io::Result<Output> {
@@ -203,14 +234,26 @@ impl AsyncCommandExt for tokio::process::Command {
         input: Option<&[u8]>,
         timeout: Duration,
     ) -> io::Result<Output> {
+        self.output_input_timeout_observed(input, timeout, &|_| {})
+            .await
+    }
+
+    async fn output_input_timeout_observed(
+        &mut self,
+        input: Option<&[u8]>,
+        timeout: Duration,
+        observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
+    ) -> io::Result<Output> {
         let deadline = command_deadline(timeout)?;
         let mut output = CapturedOutput::new(self.as_std_mut(), deadline)?;
+        output.observe(observer);
         self.stdin(if input.is_some() {
             Stdio::piped()
         } else {
             Stdio::null()
         });
         let mut child = OwnedChild::spawn(self)?;
+        observer(child.completion());
         let operation = async {
             let status = tokio::select! {
                 status = feed_and_wait(&mut child,input) => status?,
@@ -243,3 +286,7 @@ async fn feed_and_wait(child: &mut OwnedChild, input: Option<&[u8]>) -> io::Resu
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+#[path = "commands/observation_tests.rs"]
+mod observation_tests;
