@@ -49,6 +49,7 @@ async fn joined(mode: u8) {
     let original = task.completion();
     let outcome = (&mut task).await;
     let retained_at_join = !original.is_complete();
+    let work_finished = task.is_finished();
     let dropper = std::thread::spawn(move || drop(task));
     waiting.recv_timeout(Duration::from_secs(3)).unwrap();
     let retained_at_destructor = !original.is_complete();
@@ -65,6 +66,10 @@ async fn joined(mode: u8) {
         "T1030 destructor entry released original completion"
     );
     assert!(capacity_held);
+    assert!(
+        work_finished,
+        "T1029 joined work result was not ready during retained cleanup"
+    );
     match mode {
         0 => outcome.unwrap().unwrap(),
         1 => assert!(outcome.unwrap().is_err()),

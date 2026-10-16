@@ -3,7 +3,14 @@ use blent_config::negotiation::{DecoderChoice, Profile, StreamProfile};
 use std::sync::atomic::AtomicU64;
 
 fn launch(lease: Lease, evidence: Arc<EncoderEvidence>, tracker: LatencyTracker) -> Handle {
-    super::launch(lease, evidence, tracker, Arc::new(AtomicU64::new(0)))
+    super::launch(
+        lease,
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &Default::default(),
+    )
+    .unwrap()
 }
 
 fn evidence(tracker: &LatencyTracker) -> Arc<EncoderEvidence> {
@@ -125,7 +132,8 @@ async fn t492_unknown_decoder_disabled_setting_and_invalid_fifo_never_start() {
         &config,
         known.clone(),
         tracker.clone(),
-        Arc::new(AtomicU64::new(0))
+        Arc::new(AtomicU64::new(0)),
+        &Default::default(),
     )
     .is_none());
     config.adaptive_idle = true;
@@ -134,11 +142,19 @@ async fn t492_unknown_decoder_disabled_setting_and_invalid_fifo_never_start() {
         &config,
         unknown,
         tracker.clone(),
-        Arc::new(AtomicU64::new(0))
+        Arc::new(AtomicU64::new(0)),
+        &Default::default(),
     )
     .is_none());
     config.instance = u32::MAX;
-    assert!(start(&config, known, tracker, Arc::new(AtomicU64::new(0))).is_none());
+    assert!(start(
+        &config,
+        known,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &Default::default()
+    )
+    .is_none());
     let dir = tempfile::tempdir().unwrap();
     assert!(Lease::new(&dir.path().join("absent")).is_err());
     assert!(Lease::new(dir.path()).is_err());
@@ -267,7 +283,7 @@ async fn t492_completed_packets_retain_their_own_timing_before_broadcast() {
     let handle = Handle {
         timings: Timings::default(),
         lease: Arc::new(lease(dir.path())),
-        task: tokio::spawn(std::future::pending()),
+        task: blent::owned_task::Task::spawn(std::future::pending()).unwrap(),
     };
     let timings = handle.timings.clone();
     let pictures = vec![
@@ -307,7 +323,14 @@ async fn t492_new_viewer_invalidates_sparse_admission_even_without_missing_frame
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let (tx, _initial) = crate::video_queue::channel(8, Arc::new(AtomicBool::new(false)));
-    let handle = super::launch(lease(dir.path()), evidence, tracker, tx.viewer_epoch());
+    let handle = super::launch(
+        lease(dir.path()),
+        evidence,
+        tracker,
+        tx.viewer_epoch(),
+        &Default::default(),
+    )
+    .unwrap();
     tokio::task::yield_now().await;
     handle.lease.publish(500).unwrap();
     let _new_viewer = tx.subscribe();
@@ -318,4 +341,132 @@ async fn t492_new_viewer_invalidates_sparse_admission_even_without_missing_frame
         handle.task.is_finished(),
         "T492: reconnect requires fresh encoder admission"
     );
+}
+
+struct HeldViewer {
+    calls: std::sync::atomic::AtomicUsize,
+    entered: std::sync::mpsc::Sender<()>,
+    release: Mutex<std::sync::mpsc::Receiver<()>>,
+}
+impl blent::capture_contract::ViewerActivity for HeldViewer {
+    fn epoch(&self) -> u64 {
+        if self.calls.fetch_add(1, Ordering::SeqCst) == 1 {
+            self.entered.send(()).unwrap();
+            self.release.lock().unwrap().recv().unwrap();
+        }
+        0
+    }
+}
+struct ReleaseViewer(std::sync::mpsc::Sender<()>);
+impl Drop for ReleaseViewer {
+    fn drop(&mut self) {
+        let _ = self.0.send(());
+    }
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn t1029_aborted_idle_controller_retains_original_task_cleanup() {
+    let directory = tempfile::tempdir().unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let _activity = tracker.encoder_activity(evidence.clone());
+    let (entered_tx, entered) = std::sync::mpsc::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let release = ReleaseViewer(release);
+    let viewers = Arc::new(HeldViewer {
+        calls: std::sync::atomic::AtomicUsize::new(0),
+        entered: entered_tx,
+        release: Mutex::new(held),
+    });
+    let (scope, retired) = blent::native_scope::Scope::default().group();
+    let handle =
+        super::launch(lease(directory.path()), evidence, tracker, viewers, &scope).unwrap();
+    entered.recv_timeout(Duration::from_secs(5)).unwrap();
+    assert!(
+        !handle.task.is_finished(),
+        "T1029 original task must remain held"
+    );
+    drop(scope);
+    drop(handle);
+    let retained = !retired.is_complete();
+    drop(release);
+    tokio::time::timeout(Duration::from_secs(5), async {
+        while !retired.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(
+        retained,
+        "T1029 idle controller lost original task retirement"
+    );
+}
+
+#[tokio::test]
+async fn t1029_start_reports_original_cleanup_before_exposing_handle() {
+    if crate::capture::ownership_tests::isolated(
+        "capture::idle::tests::t1029_start_reports_original_cleanup_before_exposing_handle",
+    ) {
+        return;
+    }
+    let config = CaptureConfig {
+        adaptive_idle: true,
+        ..Default::default()
+    };
+    super::super::helper::ensure_fifo(&super::super::fifo_path_for(config.instance).unwrap())
+        .unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let (scope, retired) = blent::native_scope::Scope::default().group();
+    let handle = start(
+        &config,
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &scope,
+    )
+    .unwrap();
+    let original = handle.completion();
+    drop(scope);
+    assert!(!retired.is_complete());
+    drop(handle);
+    tokio::time::timeout(Duration::from_secs(5), async {
+        while !original.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(retired.is_complete());
+}
+
+#[tokio::test]
+async fn t1029_capacity_exhaustion_preserves_compatible_cadence_without_worker() {
+    if crate::capture::ownership_tests::isolated("capture::idle::tests::t1029_capacity_exhaustion_preserves_compatible_cadence_without_worker") { return; }
+    std::env::set_var("BLENT_TASK_LIMIT", "1");
+    let mut other = blent::owned_task::Task::spawn(std::future::pending()).unwrap();
+    let config = CaptureConfig {
+        adaptive_idle: true,
+        ..Default::default()
+    };
+    let fifo = super::super::fifo_path_for(config.instance).unwrap();
+    super::super::helper::ensure_fifo(&fifo).unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let (scope, retired) = blent::native_scope::Scope::default().group();
+    assert!(start(
+        &config,
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &scope
+    )
+    .is_none());
+    assert!(!fifo.with_extension("idle").exists());
+    drop(scope);
+    assert!(retired.is_complete());
+    assert!(!other.is_finished());
+    other.abort();
+    assert!((&mut other).await.unwrap_err().is_cancelled());
+    assert!(other.is_finished());
 }

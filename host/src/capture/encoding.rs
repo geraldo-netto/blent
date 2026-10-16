@@ -113,7 +113,9 @@ impl EncoderProcess {
             evidence.clone(),
             output.latency.clone(),
             output.tx.viewers(),
+            &blent::native_scope::Scope::new(self.retirement.clone()),
         );
+        let idle_retirement = idle.as_ref().map(super::idle::Handle::completion);
         let handle = blent::owned_task::Task::spawn(super::cli_encoder::read_loop_with_idle(
             stdout,
             output.tx,
@@ -124,7 +126,10 @@ impl EncoderProcess {
             idle,
         ))?;
         process::retain(&self.retirement, handle.completion());
-        Ok(EncoderTask { handle })
+        Ok(EncoderTask {
+            handle,
+            idle: idle_retirement,
+        })
     }
 
     #[cfg(feature = "inproc-encoder")]
@@ -169,7 +174,7 @@ impl EncoderProcess {
             output.fifo,
         )?;
         self.child = Some(child);
-        Ok(EncoderTask { handle })
+        Ok(EncoderTask { handle, idle: None })
     }
 
     pub(super) fn stop(&mut self) {
@@ -192,6 +197,7 @@ impl EncoderProcess {
 }
 
 pub(super) struct EncoderTask {
+    idle: Option<blent_config::retirement::Completion>,
     pub(super) handle: blent::owned_task::Task,
 }
 
@@ -202,25 +208,32 @@ impl EncoderTask {
 
     pub(super) async fn finish(&mut self, already_finished: bool) -> Result<()> {
         self.handle.abort();
-        // Observe task destruction before rebuilding: the packetizer's
-        // generation guard must retire every queued old access unit first.
+        let budget = std::time::Duration::from_millis(blent_config::retirement_limits::configured(
+            "BLENT_ENCODER_STOP_MS",
+            1000,
+            60_000,
+        )? as u64);
+        tokio::time::timeout(budget, self.retire(already_finished))
+            .await
+            .map_err(|_| {
+                anyhow::anyhow!("encoder task retirement incomplete; replacement forbidden")
+            })?
+    }
+    async fn retire(&mut self, already_finished: bool) -> Result<()> {
+        // The reader's generation guard and its original idle controller must
+        // both retire before the supervisor can rotate/reuse the FIFO.
         if !already_finished {
-            let budget = std::time::Duration::from_millis(
-                blent_config::retirement_limits::configured("BLENT_ENCODER_STOP_MS", 1000, 60_000)?
-                    as u64,
-            );
-            let outcome = tokio::time::timeout(budget, &mut self.handle)
-                .await
-                .map_err(|_| {
-                    anyhow::anyhow!("encoder task retirement incomplete; replacement forbidden")
-                })?;
-            match outcome {
+            match (&mut self.handle).await {
                 Ok(result) => result?,
                 Err(error) if error.is_cancelled() => {}
                 Err(error) => return Err(error.into()),
             }
         }
-        self.handle.abort();
+        if let Some(idle) = &self.idle {
+            while !idle.is_complete() {
+                tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+            }
+        }
         Ok(())
     }
 }
@@ -228,6 +241,74 @@ impl EncoderTask {
 #[cfg(test)]
 mod retirement_tests {
     use super::*;
+    struct HeldIdle {
+        entered: std::sync::mpsc::Sender<()>,
+        release: std::sync::Mutex<std::sync::mpsc::Receiver<()>>,
+    }
+    impl Drop for HeldIdle {
+        fn drop(&mut self) {
+            let _ = self.entered.send(());
+            let _ = self.release.lock().unwrap().recv();
+        }
+    }
+    struct ReleaseIdle(std::sync::mpsc::Sender<()>);
+    impl Drop for ReleaseIdle {
+        fn drop(&mut self) {
+            let _ = self.0.send(());
+        }
+    }
+    #[tokio::test]
+    async fn t1029_joined_reader_waits_for_original_idle_cleanup() {
+        if crate::capture::ownership_tests::isolated("capture::encoding::retirement_tests::t1029_joined_reader_waits_for_original_idle_cleanup") { return; }
+        std::env::set_var("BLENT_ENCODER_STOP_MS", "1000");
+        let mut idle = blent::owned_task::Task::spawn(std::future::pending()).unwrap();
+        let original = idle.completion();
+        let (entered_tx, entered) = std::sync::mpsc::channel();
+        let (release, held) = std::sync::mpsc::channel();
+        let release = ReleaseIdle(release);
+        idle.keep_alive(HeldIdle {
+            entered: entered_tx,
+            release: std::sync::Mutex::new(held),
+        });
+        idle.abort();
+        assert!((&mut idle).await.unwrap_err().is_cancelled());
+        drop(idle);
+        entered
+            .recv_timeout(std::time::Duration::from_secs(5))
+            .unwrap();
+        let mut handle = blent::owned_task::Task::spawn(async { Ok(()) }).unwrap();
+        (&mut handle).await.unwrap().unwrap();
+        let mut reader = EncoderTask {
+            handle,
+            idle: Some(original.clone()),
+        };
+        let pending =
+            tokio::time::timeout(std::time::Duration::from_millis(25), reader.finish(true))
+                .await
+                .is_err();
+        assert!(!original.is_complete());
+        std::env::set_var("BLENT_ENCODER_STOP_MS", "10");
+        let deadline = reader
+            .finish(true)
+            .await
+            .expect_err("T1029 deadline must reject original idle cleanup");
+        assert!(deadline.to_string().contains("retirement incomplete"));
+        assert!(
+            !original.is_complete(),
+            "T1029 deadline released original idle work"
+        );
+        drop(release);
+        tokio::time::timeout(std::time::Duration::from_secs(5), async {
+            while !original.is_complete() {
+                tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .unwrap();
+        reader.finish(true).await.unwrap();
+        assert!(pending, "T1029 joined reader ignored original idle cleanup");
+    }
+
     #[tokio::test]
     async fn t814_encoder_cleanup_errors_and_panics_are_not_success() {
         for panic in [false, true] {
@@ -236,7 +317,7 @@ mod retirement_tests {
                 anyhow::bail!("T814 cleanup error")
             })
             .unwrap();
-            let mut task = EncoderTask { handle };
+            let mut task = EncoderTask { handle, idle: None };
             tokio::time::sleep(std::time::Duration::from_millis(10)).await;
             assert!(
                 task.finish(false).await.is_err(),
@@ -247,11 +328,13 @@ mod retirement_tests {
     #[tokio::test]
     async fn t819_async_encoder_task_cancellation_and_completion_are_observed() {
         let mut done = EncoderTask {
+            idle: None,
             handle: blent::owned_task::Task::spawn(async { Ok(()) }).unwrap(),
         };
         tokio::task::yield_now().await;
         done.finish(false).await.unwrap();
         let mut pending = EncoderTask {
+            idle: None,
             handle: blent::owned_task::Task::spawn(std::future::pending()).unwrap(),
         };
         pending.abort();

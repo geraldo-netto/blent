@@ -51,6 +51,14 @@ impl Task {
             handle.abort();
         }
     }
+    /// The work result is ready; resource retirement is observed separately
+    /// through completion(), including any post-join dependency cleanup.
+    pub fn is_finished(&self) -> bool {
+        match &self.handle {
+            Some(handle) => handle.is_finished(),
+            None => true,
+        }
+    }
     pub fn completion(&self) -> Completion {
         self.completion.clone()
     }

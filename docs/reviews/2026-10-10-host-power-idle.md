@@ -449,3 +449,18 @@ Cached healthy profiles continue to bypass this workflow. Real preparation,
 held child/creator, late native creation and sibling regressions pass; source
 and native function evidence is retained with T1033. Idle ownership remains
 T1029 and activity composition T1027/T1015.
+
+
+T1029 moves idle controllers into original owned-task admission and reports
+completion before exposing a handle. The same task retains its dependent lease
+through actual join and isolated post-join cleanup. Work-result readiness remains
+a distinct query. Encoder readers retain the exact original idle completion and
+wait for it before a successful rebuild/rotation boundary, including when the
+reader result has already been consumed. The existing encoder-stop budget covers
+that wait; cancellation and expiry retain the original proof and forbid successful
+replacement. Capacity exhaustion rejects idle startup and preserves compatible
+cadence. Existing lease revocation and successor-token behavior remain unchanged.
+Held task, post-join dependency, deadline/retry, production startup and capacity
+regressions pass in normal suites with native function counters. File effects
+inside idle drop/run remain synchronous and are independently tracked as T1034;
+this ownership result does not establish bounded control-worker responsiveness.

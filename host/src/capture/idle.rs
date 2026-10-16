@@ -31,9 +31,12 @@ type Timings = Arc<Mutex<VecDeque<Encoded>>>;
 pub(super) struct Handle {
     timings: Timings,
     lease: Arc<Lease>,
-    task: tokio::task::JoinHandle<()>,
+    task: blent::owned_task::Task,
 }
 impl Handle {
+    pub(super) fn completion(&self) -> blent_config::retirement::Completion {
+        self.task.completion()
+    }
     pub(super) fn note(&self, sequence: u32, pts_us: Option<i64>, keyframe: bool) {
         let mut timings = self.timings.lock().unwrap();
         timings.push_back(Encoded {
@@ -59,6 +62,7 @@ pub(super) fn start(
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
     viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
+    scope: &blent::native_scope::Scope,
 ) -> Option<Handle> {
     if !config.adaptive_idle || evidence.decoder.is_none() {
         return None;
@@ -70,7 +74,13 @@ pub(super) fn start(
             return None;
         }
     };
-    Some(launch(lease, evidence, tracker, viewers))
+    match launch(lease, evidence, tracker, viewers, scope) {
+        Ok(handle) => Some(handle),
+        Err(error) => {
+            tracing::warn!("Adaptive idle unavailable: {error}");
+            None
+        }
+    }
 }
 
 fn launch(
@@ -78,10 +88,11 @@ fn launch(
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
     viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
-) -> Handle {
+    scope: &blent::native_scope::Scope,
+) -> Result<Handle> {
     let lease = Arc::new(lease);
     let timings = Timings::default();
-    let task = tokio::spawn(run(
+    let work = run(
         lease.clone(),
         timings.clone(),
         evidence,
@@ -89,12 +100,18 @@ fn launch(
         Instant::now(),
         viewers.clone(),
         viewers.epoch(),
-    ));
-    Handle {
+    );
+    let mut task = blent::owned_task::Task::spawn(async move {
+        work.await;
+        Ok(())
+    })?;
+    scope.retain(task.completion());
+    task.keep_alive(lease.clone());
+    Ok(Handle {
         timings,
         lease,
         task,
-    }
+    })
 }
 
 async fn run(
