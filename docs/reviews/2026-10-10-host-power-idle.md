@@ -524,3 +524,30 @@ CLI helper regressions and an additional SDK shared-raw coexistence regression
 use harmless native subprocess fixtures. Removing original socket retention
 reproduces both held-startup failures; the unchanged assertions pass after restore.
 No physical monitor/power acceptance is implied by these process/socket checks.
+
+
+T1036 reserves an independent original reporting group before encoder acquisition,
+including asynchronous capability preflight and optional GPU startup. The original
+observation is stored before the creator is exposed; cancellation drops only the
+creator view. Actual task/native proofs and late creator aliases still forbid a
+new generation. Successful acquisition retains one active reporting view through
+child, reader and idle creation. Closing revokes that view independently of the
+read-only completion observation. Every original proof also reaches the enclosing
+session through the existing reporting boundary.
+
+Encoder construction now owns its private generation state and GPU adapter setup.
+Session startup adopts already-owned children into the same scope; SDK worker
+creation errors close the unexposed generation without inventing native completion.
+Both encoder replacement and FIFO recovery/rotation check original generation
+retirement. Helper/monitor ownership remains outside that encoder group: the
+same actual harmless helper process survives repeated closed encoder generations.
+Policy-specific waiting with a retained physical monitor remains T1015.
+
+Six initial retirement assertions fail before group observation and pass unchanged
+afterward. Retained cases cover canceled production preflight, creator alias versus
+actual join, joined reader dependency, later child surviving creator join, actual
+idle file cleanup and repeated generation boundaries. Additional native spawn
+failure and bounded invalid SDK job regressions preserve rejection/retry behavior.
+Fresh CLI/SDK counters and normal suites pass. T1038 records the independent
+Android 10-second read-timeout contradiction discovered while reviewing no-frame
+activity integration; transport liveness must land before host pause is enabled.

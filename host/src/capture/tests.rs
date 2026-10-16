@@ -387,9 +387,10 @@ async fn t116_idle_stream_provides_regular_decodable_join_points() {
         manager.config.width = 32;
         manager.config.height = 32;
         manager.config.fps = fps;
+        let scope = manager.encoder.begin_generation().unwrap();
         manager
             .encoder
-            .start_with(&manager.config, manager.active_mode(), true, |command| {
+            .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
                 let mut args: Vec<_> = command.as_std().get_args().map(|a| a.to_owned()).collect();
                 let input = args.iter().position(|a| a == "-i").unwrap() + 1;
                 args[input] = "pipe:0".into();
@@ -609,9 +610,10 @@ async fn t020_encoder_records_the_dimensions_passed_to_its_process() {
     let mut manager = test_manager();
     manager.helper.stream_tx.send(Some((1280, 720))).unwrap();
     let stream_tx = manager.helper.stream_tx.clone();
+    let scope = manager.encoder.begin_generation().unwrap();
     let used = manager
         .encoder
-        .start_with(&manager.config, manager.active_mode(), true, |command| {
+        .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
             let args: Vec<_> = command.as_std().get_args().collect();
             assert!(args.windows(2).any(|pair| pair == ["-s", "1280x720"]));
             // A helper announcement races with spawning the encoder.
@@ -628,9 +630,10 @@ async fn t054_vaapi_uses_the_configured_render_node() {
     manager.config.encoder = "h264_vaapi".into();
     manager.config.vaapi_device = "/dev/dri/renderD129".into();
     let mut args = Vec::new();
+    let scope = manager.encoder.begin_generation().unwrap();
     manager
         .encoder
-        .start_with(&manager.config, manager.active_mode(), true, |command| {
+        .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
             args = command
                 .as_std()
                 .get_args()
@@ -651,10 +654,11 @@ async fn t055_hevc_vaapi_supports_eight_and_ten_bit_output() {
         manager.config.encoder = "hevc_vaapi".into();
         manager.config.ten_bit = ten_bit;
         let mut args = Vec::new();
+        let scope = manager.encoder.begin_generation().unwrap();
         let result =
             manager
                 .encoder
-                .start_with(&manager.config, manager.active_mode(), true, |command| {
+                .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
                     args = command
                         .as_std()
                         .get_args()

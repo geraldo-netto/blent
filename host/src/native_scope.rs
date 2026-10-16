@@ -22,6 +22,11 @@ impl NativeRetirement for GroupReporter {
         self.local.retain(original);
     }
 }
+impl NativeRetirement for Scope {
+    fn retain(&self, original: Completion) {
+        Scope::retain(self, original);
+    }
+}
 impl Scope {
     pub fn new(retirement: Option<Arc<dyn NativeRetirement>>) -> Self {
         Self(retirement)

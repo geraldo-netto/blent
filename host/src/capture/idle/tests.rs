@@ -715,3 +715,40 @@ async fn t1034_native_startup_panic_retains_original_retirement() {
     idle_completed(&original).await;
     assert!(retired.is_complete());
 }
+
+#[tokio::test]
+async fn t1036_encoder_generation_waits_for_original_native_idle_file_cleanup() {
+    let directory = tempfile::tempdir().unwrap();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let _activity = tracker.encoder_activity(evidence.clone());
+    let mut encoder = super::super::encoding::EncoderProcess::default();
+    let scope = encoder.begin_generation().unwrap();
+    let idle_scope = scope.clone();
+    let config = super::super::CaptureConfig { encoder: "libx264".into(), ..Default::default() };
+    encoder.start_with(&config, (64, 64), false, scope, |_| {
+        blent_config::commands::OwnedChild::spawn(tokio::process::Command::new("/bin/sleep").arg("60"))
+    }).unwrap();
+    let handle = launch_with(lease(directory.path()), evidence, tracker, Arc::new(AtomicU64::new(0)), &idle_scope).await.unwrap();
+    let original = handle.completion();
+    drop(idle_scope);
+    let (entered, ready) = std::sync::mpsc::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let release = ReleaseViewer(release);
+    let files = std::thread::spawn(move || {
+        let _lock = LEASE_FILES.lock().unwrap();
+        entered.send(()).unwrap();
+        held.recv().unwrap();
+    });
+    ready.recv_timeout(Duration::from_secs(5)).unwrap();
+    drop(handle);
+    encoder.stop();
+    idle_completed(encoder.pending.as_ref().unwrap()).await;
+    let denied = encoder.begin_generation().is_err();
+    assert!(!original.is_complete());
+    drop(release);
+    files.join().unwrap();
+    idle_completed(&original).await;
+    assert!(encoder.ensure_retired().is_ok());
+    assert!(denied, "T1036 encoder replacement ignored original idle file cleanup");
+}

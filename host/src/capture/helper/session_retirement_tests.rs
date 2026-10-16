@@ -176,9 +176,10 @@ impl NativeCapture {
         manager: &mut crate::capture::CaptureManager,
         context: &CaptureContext,
     ) -> (Completion, Option<crate::capture::encoding::EncoderTask>) {
+        let scope = manager.encoder.begin_generation().unwrap();
         manager
             .encoder
-            .start_with(config, (640, 480), false, |_| {
+            .start_with(config, (640, 480), false, scope, |_| {
                 let mut command = Command::new("/bin/sleep");
                 command.arg("60").stdout(Stdio::piped());
                 Child::spawn(&mut command)

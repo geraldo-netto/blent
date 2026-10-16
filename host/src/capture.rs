@@ -51,16 +51,11 @@ pub struct CaptureManager {
 }
 impl CaptureManager {
     pub fn new(config: CaptureConfig) -> Self {
-        let encoder = EncoderProcess {
-            #[cfg(not(feature = "inproc-encoder"))]
-            gpu: gpu::Adapter::from_environment(),
-            ..Default::default()
-        };
         Self {
             activity: None,
             config,
             helper: HelperProcess::new(),
-            encoder,
+            encoder: EncoderProcess::new(),
             codec_config: CodecConfig::default(),
             latency: crate::latency::LatencyTracker::new(),
             idr_wanted: Arc::new(std::sync::atomic::AtomicBool::new(false)),
@@ -88,21 +83,21 @@ impl CaptureManager {
         self.helper.active_mode(&self.config)
     }
     async fn start_session_encoder(&mut self) -> Result<(u32, u32)> {
-        process::ensure_retired(&self.encoder.pending)?;
+        self.encoder.ensure_retired()?;
         self.helper.recover_fifo()?;
         let mode = self.active_mode();
+        let scope = self.encoder.begin_generation()?;
         #[cfg(not(feature = "inproc-encoder"))]
         if let Some(mut child) = self
             .encoder
             .gpu
             .try_start(&self.config, mode, self.helper.card)
         {
-            process::retain(&self.encoder.retirement, child.completion());
             child.keep_alive(self.helper.fifo.clone());
-            self.encoder.child = Some(child);
+            self.encoder.adopt(child, scope);
             return Ok(mode);
         }
-        let result = self.encoder.start(&self.config, mode).await;
+        let result = self.encoder.start(&self.config, mode, scope).await;
         if let Some(child) = self.encoder.child.as_mut() {
             child.keep_alive(self.helper.fifo.clone());
         }
@@ -596,7 +591,7 @@ impl CaptureManager {
         // Every replacement reader needs a whole-frame boundary, even when
         // the writer has not yet reported a partial write. Reap before rotation.
         self.encoder.shutdown().await;
-        process::ensure_retired(&self.encoder.pending)?;
+        self.encoder.ensure_retired()?;
         process::ensure_retired(&self.helper.pending)?;
         if changes.keep_helper() {
             self.helper.rotate_fifo()?;

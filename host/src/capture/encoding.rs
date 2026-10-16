@@ -2,11 +2,14 @@
 use super::{process, CaptureConfig};
 use crate::media::CodecConfig;
 use anyhow::Result;
+use blent::native_scope::Scope;
 use blent_config::commands::OwnedChild as Child;
 use std::sync::Arc;
+mod generation;
 
 #[derive(Default)]
 pub(super) struct EncoderProcess {
+    generation: generation::Generation,
     pub(super) retirement: Option<Arc<dyn blent::capture_contract::NativeRetirement>>,
     pub(super) child: Option<Child>,
     pub(super) pending: Option<blent_config::retirement::Completion>,
@@ -27,6 +30,38 @@ pub(super) struct EncoderOutput {
 }
 
 impl EncoderProcess {
+    pub(super) fn new() -> Self {
+        Self {
+            #[cfg(not(feature = "inproc-encoder"))]
+            gpu: super::gpu::Adapter::from_environment(),
+            ..Default::default()
+        }
+    }
+    pub(super) fn begin_generation(&mut self) -> Result<Scope> {
+        anyhow::ensure!(self.child.is_none(), "encoder child still owned");
+        process::ensure_retired(&self.pending)?;
+        self.generation.begin(&self.retirement)
+    }
+    pub(super) fn ensure_retired(&self) -> Result<()> {
+        process::ensure_retired(&self.pending)?;
+        self.generation.ensure_retired()
+    }
+    fn session_report(&mut self) -> Result<Arc<dyn blent::capture_contract::NativeRetirement>> {
+        if let Some(report) = self.generation.report() {
+            return Ok(report);
+        }
+        let scope = self.generation.begin(&self.retirement)?;
+        if let Some(child) = &self.child {
+            scope.retain(child.completion());
+        }
+        self.generation.activate(scope);
+        Ok(self.generation.report().unwrap())
+    }
+    pub(super) fn adopt(&mut self, child: Child, scope: Scope) {
+        scope.retain(child.completion());
+        self.child = Some(child);
+        self.generation.activate(scope);
+    }
     pub(super) fn is_running(&self) -> bool {
         self.child.is_some()
     }
@@ -36,15 +71,29 @@ impl EncoderProcess {
         &mut self,
         config: &CaptureConfig,
         mode: (u32, u32),
+        scope: Scope,
     ) -> Result<(u32, u32)> {
-        let encoder = crate::config::ffmpeg_encoder_name(&config.encoder);
-        let async_depth = super::cli_encoder::supports_async_depth(
-            std::ffi::OsStr::new("ffmpeg"),
-            encoder,
-            &blent::native_scope::Scope::new(self.retirement.clone()),
-        )
-        .await;
-        self.start_with(config, mode, async_depth, |mut command| {
+        self.start_using(config, mode, scope, |scope| async move {
+            super::cli_encoder::supports_async_depth(
+                std::ffi::OsStr::new("ffmpeg"),
+                crate::config::ffmpeg_encoder_name(&config.encoder),
+                &scope,
+            )
+            .await
+        })
+        .await
+    }
+
+    #[cfg(not(feature = "inproc-encoder"))]
+    async fn start_using<F: std::future::Future<Output = bool>>(
+        &mut self,
+        config: &CaptureConfig,
+        mode: (u32, u32),
+        scope: Scope,
+        preflight: impl FnOnce(Scope) -> F,
+    ) -> Result<(u32, u32)> {
+        let async_depth = preflight(scope.clone()).await;
+        self.start_with(config, mode, async_depth, scope, |mut command| {
             Child::spawn(&mut command)
         })
     }
@@ -54,8 +103,10 @@ impl EncoderProcess {
         &mut self,
         config: &CaptureConfig,
         mode: (u32, u32),
+        scope: Scope,
     ) -> Result<(u32, u32)> {
         crate::config::validate_encoder_for_build(&config.encoder)?;
+        self.generation.activate(scope);
         Ok(mode)
     }
 
@@ -65,18 +116,19 @@ impl EncoderProcess {
         config: &CaptureConfig,
         mode: (u32, u32),
         async_depth_supported: bool,
+        scope: Scope,
         spawn: impl FnOnce(tokio::process::Command) -> std::io::Result<Child>,
     ) -> Result<(u32, u32)> {
         use anyhow::Context;
         process::ensure_retired(&self.pending)?;
+        anyhow::ensure!(self.child.is_none(), "encoder child still owned");
         let adapter = super::cli_encoder::CliEncoder { config };
         let (w, h) = mode;
         adapter.log_encoder_dimensions(w, h);
         let child = spawn(adapter.encoder_command(w, h, async_depth_supported)?)
             .context("Failed to spawn ffmpeg encoder")?;
-        process::retain(&self.retirement, child.completion());
         tracing::info!("Encoder started (PID: {})", child.id().unwrap_or(0));
-        self.child = Some(child);
+        self.adopt(child, scope);
         Ok(mode)
     }
 
@@ -87,6 +139,7 @@ impl EncoderProcess {
         mode: Option<(u32, u32)>,
         output: EncoderOutput,
     ) -> Result<EncoderTask> {
+        let report = self.session_report()?;
         let stdout = self
             .child
             .as_mut()
@@ -113,7 +166,7 @@ impl EncoderProcess {
             evidence.clone(),
             output.latency.clone(),
             output.tx.viewers(),
-            &blent::native_scope::Scope::new(self.retirement.clone()),
+            &blent::native_scope::Scope::new(Some(report.clone())),
         )
         .await;
         let idle_retirement = idle.as_ref().map(super::idle::Handle::completion);
@@ -126,7 +179,7 @@ impl EncoderProcess {
             evidence,
             idle,
         ))?;
-        process::retain(&self.retirement, handle.completion());
+        report.retain(handle.completion());
         Ok(EncoderTask {
             handle,
             idle: idle_retirement,
@@ -141,6 +194,7 @@ impl EncoderProcess {
         output: EncoderOutput,
     ) -> Result<EncoderTask> {
         process::ensure_retired(&self.pending)?;
+        anyhow::ensure!(self.child.is_none(), "encoder child still owned");
         let (w, h) = mode.ok_or_else(|| anyhow::anyhow!("Encoder size unavailable"))?;
         if config.ten_bit {
             tracing::warn!(
@@ -161,24 +215,33 @@ impl EncoderProcess {
             parent: std::process::id(),
         };
         let fifo = super::fifo_path_for(config.instance)?;
-        let (child, handle) = crate::encoder_worker::spawn(
+        let report = self.session_report()?;
+        let started = crate::encoder_worker::spawn(
             job,
             &fifo,
             output.raw_socket,
             crate::encoder_worker::Output {
-                retirement: self.retirement.clone(),
+                retirement: Some(report),
                 video: output.tx,
                 headers: output.codec_config,
                 latency: output.latency,
                 refresh: output.idr_wanted,
             },
             output.fifo,
-        )?;
+        );
+        let (child, handle) = match started {
+            Ok(started) => started,
+            Err(error) => {
+                self.generation.close();
+                return Err(error);
+            }
+        };
         self.child = Some(child);
         Ok(EncoderTask { handle, idle: None })
     }
 
     pub(super) fn stop(&mut self) {
+        self.generation.close();
         #[cfg(not(feature = "inproc-encoder"))]
         self.gpu.stopped();
         if let Some(mut child) = self.child.take() {
@@ -188,6 +251,7 @@ impl EncoderProcess {
     }
 
     pub(super) async fn shutdown(&mut self) {
+        self.generation.close();
         #[cfg(not(feature = "inproc-encoder"))]
         self.gpu.stopped();
         if let Some(child) = self.child.take() {
@@ -351,7 +415,11 @@ mod retirement_tests {
             encoder: "libx264".into(),
             ..Default::default()
         };
-        assert_eq!(process.start(&config, (64, 64)).await.unwrap(), (64, 64));
+        let scope = process.begin_generation().unwrap();
+        assert_eq!(
+            process.start(&config, (64, 64), scope).await.unwrap(),
+            (64, 64)
+        );
         for explicit in [false, true] {
             process.child =
                 Some(Child::spawn(tokio::process::Command::new("/bin/sleep").arg("30")).unwrap());
@@ -373,3 +441,6 @@ mod retirement_tests {
         process.shutdown().await;
     }
 }
+
+#[cfg(test)]
+mod generation_tests;
