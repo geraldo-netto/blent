@@ -19,12 +19,24 @@ pub(super) async fn optimize(
 }
 
 trait Probes {
-    async fn candidates(&self, snapshot: &EncoderSettings) -> Vec<Candidate>;
+    fn scope(&self) -> blent::native_scope::Scope;
+    async fn candidates(
+        &self,
+        snapshot: &EncoderSettings,
+        scope: &blent::native_scope::Scope,
+    ) -> Vec<Candidate>;
 }
 struct HostProbes<'a>(&'a CaptureConfig, &'a blent::native_scope::Scope);
 impl Probes for HostProbes<'_> {
-    async fn candidates(&self, snapshot: &EncoderSettings) -> Vec<Candidate> {
-        calibrate(self.0, snapshot, self.1).await
+    fn scope(&self) -> blent::native_scope::Scope {
+        self.1.clone()
+    }
+    async fn candidates(
+        &self,
+        snapshot: &EncoderSettings,
+        scope: &blent::native_scope::Scope,
+    ) -> Vec<Candidate> {
+        calibrate(self.0, snapshot, scope).await
     }
 }
 
@@ -88,11 +100,8 @@ async fn prepare(
         return None;
     }
     let work = async {
-        let _permit = tokio::time::timeout(Duration::from_secs(3), ADMISSION.acquire())
-            .await
-            .ok()?
-            .ok()?;
-        let candidates = probes.candidates(snapshot).await;
+        let admission = admission::begin(&probes.scope()).await?;
+        let candidates = probes.candidates(snapshot, admission.scope()).await;
         let candidates = if rich {
             measured::benchmark(settings, snapshot, latency, candidates).await
         } else {

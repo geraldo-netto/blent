@@ -12,7 +12,9 @@ use tokio::sync::watch;
 
 // Calibrate one encoder at a time across all tablet sessions. Current streams
 // continue normally; concurrent probes would distort comparative measurements.
-static ADMISSION: tokio::sync::Semaphore = tokio::sync::Semaphore::const_new(1);
+static ADMISSION: std::sync::LazyLock<Arc<tokio::sync::Semaphore>> =
+    std::sync::LazyLock::new(|| Arc::new(tokio::sync::Semaphore::new(1)));
+mod admission;
 
 pub(crate) async fn run(
     config: CaptureConfig,

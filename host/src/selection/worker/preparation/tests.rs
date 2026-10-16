@@ -8,7 +8,14 @@ struct FakeProbes {
     calls: AtomicUsize,
 }
 impl Probes for FakeProbes {
-    async fn candidates(&self, _: &EncoderSettings) -> Vec<Candidate> {
+    fn scope(&self) -> blent::native_scope::Scope {
+        Default::default()
+    }
+    async fn candidates(
+        &self,
+        _: &EncoderSettings,
+        _: &blent::native_scope::Scope,
+    ) -> Vec<Candidate> {
         self.calls.fetch_add(1, Ordering::SeqCst);
         vec![self.row.clone()]
     }
@@ -277,4 +284,90 @@ async fn t715_saved_profile_waits_for_native_encoder_start_without_recalibrating
         assert!(cache.load(cache::now(), &snapshot).is_some());
         assert!(tx.borrow().selection.as_ref().unwrap().verified);
     }
+}
+
+struct HeldProbe {
+    parent: blent::native_scope::Scope,
+    cleanup: std::sync::Mutex<Option<ProbeCleanup>>,
+    started: std::sync::Mutex<Option<tokio::sync::oneshot::Sender<()>>>,
+}
+struct ProbeCleanup {
+    entered: std::sync::mpsc::Sender<()>,
+    release: std::sync::Mutex<std::sync::mpsc::Receiver<()>>,
+}
+impl Drop for ProbeCleanup {
+    fn drop(&mut self) {
+        let _ = self.entered.send(());
+        let _ = self.release.lock().unwrap().recv();
+    }
+}
+struct ReleaseProbe(std::sync::mpsc::Sender<()>);
+impl Drop for ReleaseProbe {
+    fn drop(&mut self) {
+        let _ = self.0.send(());
+    }
+}
+impl Probes for HeldProbe {
+    fn scope(&self) -> blent::native_scope::Scope {
+        self.parent.clone()
+    }
+    async fn candidates(
+        &self,
+        _: &EncoderSettings,
+        scope: &blent::native_scope::Scope,
+    ) -> Vec<Candidate> {
+        let mut command = tokio::process::Command::new("/bin/sleep");
+        command.arg("60");
+        let mut child = scope.spawn(&mut command).unwrap();
+        child.keep_alive(self.cleanup.lock().unwrap().take().unwrap());
+        self.started
+            .lock()
+            .unwrap()
+            .take()
+            .unwrap()
+            .send(())
+            .unwrap();
+        let _child = child;
+        std::future::pending().await
+    }
+}
+#[tokio::test]
+async fn t1033_preparation_cancellation_retains_original_global_probe_admission() {
+    let (entered_tx, entered) = std::sync::mpsc::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let release = ReleaseProbe(release);
+    let (started_tx, started) = tokio::sync::oneshot::channel();
+    let probes = HeldProbe {
+        parent: Default::default(),
+        cleanup: std::sync::Mutex::new(Some(ProbeCleanup {
+            entered: entered_tx,
+            release: std::sync::Mutex::new(held),
+        })),
+        started: std::sync::Mutex::new(Some(started_tx)),
+    };
+    let snapshot = super::super::tests::settings();
+    let (settings, _) = watch::channel(snapshot.clone());
+    let work = tokio::spawn(async move {
+        prepare(&probes, &settings, &snapshot, &LatencyTracker::new(), None).await;
+    });
+    started.await.unwrap();
+    work.abort();
+    assert!(work.await.unwrap_err().is_cancelled());
+    entered.recv_timeout(Duration::from_secs(5)).unwrap();
+    let retained = ADMISSION.try_acquire().is_err();
+    drop(release);
+    tokio::time::timeout(Duration::from_secs(5), async {
+        loop {
+            if ADMISSION.try_acquire().is_ok() {
+                return;
+            }
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(
+        retained,
+        "T1033 preparation bypassed original native admission scope"
+    );
 }

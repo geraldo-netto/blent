@@ -434,3 +434,18 @@ All pass with individual native counters. The global calibration semaphore is a
 separate remaining owner: its parent currently releases the permit before native
 proofs settle. T1033 records that contradiction and owns its independent fix;
 idle task retirement remains T1029. Activity integration is still T1027/T1015.
+
+
+T1033 retains the global calibration permit through original native retirement.
+Each calibration gets an independent observation group that forwards all original
+proofs to its enclosing session and retains late creator aliases. Dropping the
+parent revokes its group alias first. If that group is already complete, the
+same permit and admission release immediately; otherwise their original owner
+transfers into the bounded retirement observer. Neither a canceled parent nor a
+joined creator permits replacement while a later child remains live. The
+original three-second admission deadline covers both semaphore acquisition and
+pending retirement-budget handoff. Closed admission rejects without native work.
+Cached healthy profiles continue to bypass this workflow. Real preparation,
+held child/creator, late native creation and sibling regressions pass; source
+and native function evidence is retained with T1033. Idle ownership remains
+T1029 and activity composition T1027/T1015.

@@ -5,9 +5,36 @@ use std::sync::Arc;
 
 #[derive(Clone, Default)]
 pub struct Scope(Option<Arc<dyn NativeRetirement>>);
+/// Read-only completion of one original creator/native resource group.
+pub struct Retirement(crate::capture_retirement::Observation);
+impl Retirement {
+    pub fn is_complete(&self) -> bool {
+        self.0.complete()
+    }
+}
+struct GroupReporter {
+    parent: Scope,
+    local: Arc<dyn NativeRetirement>,
+}
+impl NativeRetirement for GroupReporter {
+    fn retain(&self, original: Completion) {
+        self.parent.retain(original.clone());
+        self.local.retain(original);
+    }
+}
 impl Scope {
     pub fn new(retirement: Option<Arc<dyn NativeRetirement>>) -> Self {
         Self(retirement)
+    }
+    /// Observe a subset independently while forwarding every original proof to
+    /// the enclosing owner. Group aliases retain the same creation lifetime.
+    pub fn group(&self) -> (Self, Retirement) {
+        let (local, observed) = crate::capture_retirement::channel();
+        let scope = Self::new(Some(Arc::new(GroupReporter {
+            parent: self.clone(),
+            local,
+        })));
+        (scope, Retirement(observed))
     }
     pub fn retain(&self, original: Completion) {
         if let Some(retirement) = &self.0 {
@@ -295,5 +322,48 @@ mod command_tests {
             4,
             "T1032 capture command lost original child/collector proofs"
         );
+    }
+}
+
+#[cfg(test)]
+mod group_tests {
+    use super::*;
+    #[test]
+    fn t1033_group_forwards_original_proofs_and_retains_late_creation() {
+        let (parent, observed) = crate::capture_retirement::channel();
+        let parent = Scope::new(Some(parent));
+        let (group, retirement) = parent.group();
+        let creator = group.clone();
+        let native = blent_config::retirement::Pool::new(1)
+            .unwrap()
+            .reserve()
+            .unwrap();
+        drop(parent);
+        drop(group);
+        assert!(!retirement.is_complete());
+        creator.retain(native.completion());
+        drop(creator);
+        assert!(!retirement.is_complete());
+        assert!(!observed.complete());
+        drop(native);
+        assert!(retirement.is_complete());
+        assert!(observed.complete());
+    }
+    #[test]
+    fn t1033_group_retirement_is_independent_of_sibling_native_work() {
+        let parent = Scope::default();
+        let (held, retirement) = parent.group();
+        let native = blent_config::retirement::Pool::new(1)
+            .unwrap()
+            .reserve()
+            .unwrap();
+        held.retain(native.completion());
+        let (sibling, sibling_retirement) = parent.group();
+        drop(held);
+        drop(sibling);
+        assert!(!retirement.is_complete());
+        assert!(sibling_retirement.is_complete());
+        drop(native);
+        assert!(retirement.is_complete());
     }
 }
