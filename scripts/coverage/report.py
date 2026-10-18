@@ -6,7 +6,6 @@ from dataclasses import asdict
 import json
 from pathlib import Path
 
-from inventory import coverage_source, fixture, owned_functions, source_files
 from kotlin_inventory import functions as kotlin_functions
 from kotlin_report import assign_methods, function_key, function_result, read as read_kotlin
 from model import Function, fingerprint, result, verify_sources
@@ -16,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def sources(root):
+    from inventory import coverage_source, source_files
     paths = {path for path in source_files(root) if coverage_source(path)}
     app_run = Path('packaging/appimage/AppRun')
     if (root / app_run).is_file():
@@ -24,6 +24,7 @@ def sources(root):
 
 
 def build_source_paths(root):
+    from inventory import source_files
     # Rust test/example/benchmark modules can be compiled into measured objects.
     # Fingerprinting their inputs does not make their functions threshold owners.
     return sorted(path for path in source_files(root) if path.suffix == '.rs')
@@ -36,6 +37,7 @@ def validate_build_sources(root, hashes):
 
 
 def snapshot(root):
+    from inventory import coverage_source, fixture, owned_functions
     paths = sources(root)
     functions = [function for function in owned_functions(root) if coverage_source(Path(function.file))]
     kotlin = [root / path for path in paths if path.suffix in {'.kt', '.kts'} and not fixture(path)]
