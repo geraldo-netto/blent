@@ -596,3 +596,6 @@ async fn t1015_current_guard_denies_first_effect_and_obsolete_ready_profile_resu
         "T1015 ready obsolete profile result escaped current-work guard"
     );
 }
+
+#[path = "registered_tests.rs"]
+mod registered;

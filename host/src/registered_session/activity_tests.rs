@@ -331,3 +331,6 @@ fn t1051_registration_failure_retires_before_retry_and_gates_native_work() {
     fixture.poll(now + Duration::from_secs(61));
     assert_eq!(fixture.count(), 3);
 }
+
+#[path = "activity_acceptance.rs"]
+mod acceptance;

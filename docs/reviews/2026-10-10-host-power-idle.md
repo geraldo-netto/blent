@@ -852,3 +852,13 @@ those earlier checkpoints; production composition is now implemented. The
 [T1051 evidence](artifacts/2026-10-18-t1051/README.md) retains regressions and native
 individual counters. Joined acceptance remains T1016/T1009 and physical acceptance
 T914; auxiliary and Android lifecycle remain T1010/T1011.
+
+T1016 completes automated renewable USB activity acceptance: 112 bounded joined
+cycles exercise every original broker/capture/selector retirement order and retain
+independent camera, microphone and speaker owners. A private native joined
+registration/session/helper/encoder fixture confirms codec withdrawal, old packet
+invalidation, fresh-generation header-bearing IDR and retained helper PID. The
+[retained acceptance evidence](artifacts/2026-10-18-t1016/README.md) includes fresh
+CLI and installed SDK counters for 24 production functions, individually >=83.33%,
+and source audit maximum 5. Native fixture/contract bounds remain explicit; joined
+host acceptance remains T1009 and physical host/tablet acceptance T914.
