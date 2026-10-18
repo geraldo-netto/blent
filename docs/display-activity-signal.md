@@ -138,3 +138,33 @@ reject malformed/stale signals and exercise legacy fallback plus configuration
 callbacks. Dispatch tests cover 1,000 coalesced views and scheduling/report faults;
 bounded counter-transition tests cover invalid ranges. Physical native wake and
 host/tablet acceptance remain T1058/T914.
+
+
+## Retained support history
+
+T1067 adds one immutable `supportKnown` bit to each original inbox view. An
+Observed view requires it; an explicit Unsupported view forbids it. Unavailable
+may carry either value: a source that has announced activity observation, including
+a malformed announcement, retains that requirement through closure. Closure is
+terminal and preserves original identity; late messages cannot modify its view.
+History never changes Unavailable's desired state, authenticates a peer or supplies
+native retirement proof.
+
+The control owner carries the previous bit into its fresh inbox before opening a
+replacement socket. That socket receives a fresh opaque identity and starts
+Unavailable. Coalescing observed/lost/replacement updates therefore cannot erase
+known source loss before UI delivery. Only the fresh source's own explicit legacy
+greeting resets the bit and records Unsupported. A late old greeting or optional
+observer failure cannot reset current history. This is local bounded metadata;
+the wire schema and host protocol stay unchanged. Activity wake projection remains
+T1061; native power ownership is T1060 and joined acceptance T1058/T1011.
+
+The existing original control lock serializes receive/close/replacement. One inbox
+owns its mutable support bit and current immutable snapshot; readers borrow those
+snapshots without mutating the owner. Replacement copies one Boolean, not an old
+source's authority or callbacks. The added state has two values and allocates no
+native resource, thread, queue or timer. The containing control owner and existing
+one-latest UI delivery bound retained views and settle them through their original
+lifetimes. Permanent SDK 27/34 regressions cover closure, malformed claims, closed
+legacy sources, fresh identities, explicit fallback, old callbacks and observer
+faults, alongside the existing bounded counter-transition checks.

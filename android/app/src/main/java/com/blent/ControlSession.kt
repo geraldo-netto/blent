@@ -415,7 +415,7 @@ internal class ControlSession(
         val selected = configuredRoutes ?: return@synchronized
         connectionGeneration++
         resetGreeting()
-        activityInbox = DisplayActivityInbox()
+        activityInbox = DisplayActivityInbox(activityInbox.update.supportKnown)
         input.reset()
         val previous = webSocket
         webSocket = null

@@ -9,19 +9,32 @@ internal sealed interface DisplayActivityState {
 }
 
 /** Immutable observation; source identity belongs to the original control inbox,
- * not its wire counters. Retaining it grants no media/native authority. */
-internal class DisplayActivityUpdate(val source: Any, val state: DisplayActivityState)
+ * not its wire counters. supportKnown retains an announced/inherited requirement
+ * through loss, including malformed announcements; only a fresh legacy greeting
+ * may reset it. Retaining history grants no media/native authority. */
+internal class DisplayActivityUpdate(
+    val source: Any,
+    val state: DisplayActivityState,
+    val supportKnown: Boolean = state is DisplayActivityState.Observed,
+) {
+    init {
+        require(state !is DisplayActivityState.Observed || supportKnown)
+        require(state !== DisplayActivityState.Unsupported || !supportKnown)
+    }
+}
 
-/** One current observation, one opaque source identity and a terminal close bit.
+/** One current observation, one opaque source identity, one support bit and a terminal close bit.
  * The control owner serializes receive/close. UI reads only immutable snapshots. */
-internal class DisplayActivityInbox {
+internal class DisplayActivityInbox(previousSupport: Boolean = false) {
     private val source = Any()
-    @Volatile var update = DisplayActivityUpdate(source, DisplayActivityState.Unavailable)
+    private var supportKnown = previousSupport
+    @Volatile var update = DisplayActivityUpdate(source, DisplayActivityState.Unavailable, supportKnown)
         private set
     private var closed = false
 
     fun receive(message: JSONObject): Boolean = try {
         check(!closed) { "Original display activity source closed" }
+        if (message.has("display_activity")) supportKnown = true
         if (message.optString("status") == "connected") greeting(message)
         else if (message.has("display_activity")) accept(DisplayActivitySignal.read(message.getJSONObject("display_activity")))
         else false
@@ -34,8 +47,8 @@ internal class DisplayActivityInbox {
             return false
         }
         val state = if (message.has("display_activity")) DisplayActivityState.Observed(DisplayActivitySignal.read(message.getJSONObject("display_activity")))
-            else DisplayActivityState.Unsupported
-        update = DisplayActivityUpdate(source, state)
+            else { supportKnown = false; DisplayActivityState.Unsupported }
+        update = DisplayActivityUpdate(source, state, supportKnown)
         return true
     }
     private fun accept(next: DisplayActivitySignal): Boolean {
@@ -48,13 +61,13 @@ internal class DisplayActivityInbox {
         }
         require(next.stopped >= previous.stopped) { "Display stop fence regressed" }
         require(!previous.active || next.active || next.stopped > previous.stopped) { "Missing original display stop fence" }
-        update = DisplayActivityUpdate(source, DisplayActivityState.Observed(next))
+        update = DisplayActivityUpdate(source, DisplayActivityState.Observed(next), supportKnown)
         return true
     }
     fun close() {
         if (closed) return
         closed = true
-        update = DisplayActivityUpdate(source, DisplayActivityState.Unavailable)
+        update = DisplayActivityUpdate(source, DisplayActivityState.Unavailable, supportKnown)
     }
 }
 
