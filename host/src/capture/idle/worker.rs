@@ -74,6 +74,8 @@ impl Worker {
     pub(super) fn completion(&self) -> Completion {
         self.admission.as_ref().unwrap().completion()
     }
+    // Test observation only; thread exit does not prove native lease retirement.
+    #[cfg(test)]
     pub(super) fn is_finished(&self) -> bool {
         self.thread.as_ref().unwrap().is_finished()
     }

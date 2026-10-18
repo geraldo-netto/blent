@@ -28,7 +28,8 @@ type Timings = Arc<Mutex<VecDeque<Encoded>>>;
 
 pub(super) struct Handle {
     timings: Timings,
-    lease: Arc<Lease>,
+    // Retain this view through Handle destruction, before task retirement.
+    _lease: Arc<Lease>,
     // Lease views drop before native retirement exposes final dependency cleanup.
     task: worker::Worker,
 }
@@ -97,7 +98,7 @@ impl Startup {
             .context("native idle startup failed")?;
         Ok(Handle {
             timings: self.timings.clone(),
-            lease,
+            _lease: lease,
             task: self.task.take().unwrap(),
         })
     }

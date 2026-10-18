@@ -106,9 +106,9 @@ async fn t492_controller_trials_current_receipts_then_restores_cadence_on_stall(
         ack(&handle, &tracker, &evidence, seq, i64::from(seq) * 200_000).await;
         tokio::time::advance(Duration::from_millis(190)).await;
     }
-    native_until(|| handle.lease.path.exists()).await;
+    native_until(|| handle._lease.path.exists()).await;
     assert!(
-        handle.lease.path.exists(),
+        handle._lease.path.exists(),
         "T492: measured baseline must start a sparse trial"
     );
     for seq in 17..=32 {
@@ -123,11 +123,11 @@ async fn t492_controller_trials_current_receipts_then_restores_cadence_on_stall(
         .await;
         tokio::time::advance(Duration::from_millis(190)).await;
     }
-    assert!(handle.lease.path.exists());
+    assert!(handle._lease.path.exists());
     tokio::time::advance(Duration::from_secs(2)).await;
-    native_until(|| !handle.lease.path.exists()).await;
+    native_until(|| !handle._lease.path.exists()).await;
     assert!(
-        !handle.lease.path.exists(),
+        !handle._lease.path.exists(),
         "T492: no ACK progress must restore five updates/s"
     );
     drop(activity);
@@ -140,10 +140,10 @@ async fn t492_retired_stream_and_cancellation_cannot_publish_into_successor() {
     let old = evidence(&tracker);
     let activity = tracker.encoder_activity(old.clone());
     let handle = launch(lease(dir.path()), old, tracker.clone()).await;
-    handle.lease.publish(500).unwrap();
+    handle._lease.publish(500).unwrap();
     let next = Arc::new(lease(dir.path()));
     next.publish(500).unwrap();
-    let retained = handle.lease.clone();
+    let retained = handle._lease.clone();
     drop(handle);
     assert!(retained.publish(500).is_err());
     assert!(next
@@ -308,7 +308,7 @@ async fn t492_control_publish_error_stops_the_controller() {
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
-    std::fs::create_dir(&handle.lease.path).unwrap();
+    std::fs::create_dir(&handle._lease.path).unwrap();
     for seq in 0..=16 {
         ack(&handle, &tracker, &evidence, seq, i64::from(seq) * 200_000).await;
         tokio::time::advance(Duration::from_millis(190)).await;
@@ -372,11 +372,11 @@ async fn t492_new_viewer_invalidates_sparse_admission_even_without_missing_frame
     .await
     .unwrap();
     tokio::task::yield_now().await;
-    handle.lease.publish(500).unwrap();
+    handle._lease.publish(500).unwrap();
     let _new_viewer = tx.subscribe();
     tokio::time::advance(Duration::from_millis(250)).await;
     native_until(|| handle.task.is_finished()).await;
-    assert!(!handle.lease.path.exists());
+    assert!(!handle._lease.path.exists());
     assert!(
         handle.task.is_finished(),
         "T492: reconnect requires fresh encoder admission"
