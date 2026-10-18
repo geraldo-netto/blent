@@ -214,12 +214,13 @@ count within their enclosing function/method. Lambda body-entry lines disambigua
 callbacks declared on a parent's first statement line. Native method counters
 prevent allocating a callback from counting as executing it. Multiple compiled
 variants must all pass. JaCoCo 0.8.15 applies its supported Kotlin inline and
-Compose filters, excluding generated scaffolding. T1074 checks native XML for
-filtered `$$inlined$` classes associated with original compiled method owners.
+Compose filters, excluding generated scaffolding. T1074/T1077 check native XML
+for `$$inlined$` classes associated with original compiled method owners.
 When an authored lambda lacks its own counters and that enclosing method has a
-filtered inline class, both the body and enclosing method remain unmeasured:
+compiled inline class, both the body and enclosing method remain unmeasured:
 covered factory lines alone cannot pass. This includes same-line transforms,
-nested compiled names and partially filtered classes. Explicitly owned callback
+nested compiled names and partially filtered classes. Complete library-method
+counters also cannot establish attribution of the authored transform. Owned callback
 counters resolve the ambiguity; library-only inline wrappers without authored
 callbacks do not create a new function requirement. Raw native counters remain
 unchanged in diagnostic variants. This conservative check does not reconstruct

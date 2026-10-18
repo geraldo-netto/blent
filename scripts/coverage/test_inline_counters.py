@@ -61,6 +61,11 @@ class InlineCountersTest(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.rows('<class sourcefilename="Emitters.kt"/>')
 
+    def test_t1077_library_counters_cannot_prove_unattributed_authored_transform(self):
+        generated = '<class name="example/A$flow$$inlined$map$1" sourcefilename="Emitters.kt"><method name="collect" desc="()V" line="1"><counter type="LINE" covered="5" missed="0"/></method><counter type="LINE" covered="5" missed="0"/></class>'
+        rows = self.rows(generated)
+        self.assertFalse(any(row['passes'] for row in rows), 'T1077 library counters hid authored transform')
+
     def test_t1074_nested_filtered_names_keep_the_original_enclosing_owner(self):
         rows = self.rows('<class name="example/A$flow$1$$inlined$map$1" sourcefilename="Emitters.kt"/>')
         self.assertFalse(any(row['passes'] for row in rows))

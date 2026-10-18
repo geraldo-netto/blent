@@ -1,23 +1,18 @@
-"""T1074: filtered inline classes cannot borrow factory-only coverage.
+"""T1074/T1077: inline classes cannot borrow factory/library-only coverage.
 
 XML and records belong to one bounded native report. Original compiled owner names
-associate filtered inline classes with their enclosing authored methods; ambiguous
+associate compiled inline classes with their enclosing authored methods; ambiguous
 bodies fail closed. No class/file is excluded and no missing counter is invented.
 """
 
 
-def filtered_origins(package):
+def inline_origins(package):
     origins = []
     for owner in package.findall('class'):
         prefix, separator, _ = owner.attrib['name'].partition('$$inlined$')
-        if separator and absent_inline_counters(owner):
+        if separator:
             origins.append((prefix, owner.attrib['name']))
     return origins
-
-
-def absent_inline_counters(owner):
-    methods = owner.findall('method')
-    return not methods or any(method.find("counter[@type='LINE']") is None for method in methods)
 
 
 def missing_classes(method, origins):
