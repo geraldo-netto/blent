@@ -1,7 +1,8 @@
 # Android display wake policy
 
 Status: independent desired-policy values and framework value conversion are
-implemented under T1059. Original native service ownership is T1060; Activity
+implemented under T1059; independent original-request admission is T1062.
+Original native service ownership is T1060; Activity
 observation/window integration is T1061; joined acceptance remains T1058/T1011
 and physical wake/power evidence remains T914. Current production Activity requests
 still use Waiting. Value conversion alone does not establish native enforcement
@@ -55,3 +56,52 @@ tests round-trip those values on SDK 27 and 34, retain missing-field fallback,
 and reject malformed-state demand, including a wrong native extra type and a
 4,096-character invalid value. These tests establish value/adapter behavior,
 not native lock timing, physical screen state or battery savings.
+
+## Original request admission
+
+T1062 supplies independent foreground-producer and native-receiver interfaces plus
+a bounded request implementation. Production service integration remains T1060.
+One opaque owner identifies each original foreground claim; a request carries that
+owner and an immutable desired policy, or null policy for withdrawal. Identity
+does not wrap or derive from wire/process counters. Retaining an old view keeps
+its identity distinct; it cannot compare equal to a new owner or current snapshot.
+
+The channel retains one latest request, one dirty bit and at most one original
+queued notice. Updates replace latest policy without issuing another notice while
+that original notice is outstanding. Replacement immediately withdraws old producer
+authority but retains the original queued admission. Its exact receipt can issue
+one fresh notice for the replacement owner; it cannot return replacement policy
+as an old owner's request. Foreign, duplicate and stale notices cannot consume a
+new admission. Closure is terminal for its owner. A current original receipt after
+closure yields withdrawal, and old producers cannot publish or close a replacement.
+Applying a returned snapshot still requires exact current-view relevance.
+
+Initialization has no owner/notice. Open installs a fresh immutable request before
+admission. Publish/close require the exact live owner; closure installs withdrawal
+before denying future writes. Receipt clears only the exact original notice, takes
+latest state only for that same owner, then admits a still-dirty successor once.
+The dirty bit always implies a latest request. These transitions preserve one
+admitted notice and at most two retained immutable requests/owner identities within
+the channel. Outputs are borrowed immutable views; callers bound additional retained
+views and their containing native handoff lifetimes. No Context, callback, coroutine,
+queue implementation or native handle is retained by this pure contract.
+
+Unknown native delivery keeps the original notice and bounded capacity retained;
+there is no timer-based settlement, counter reset or inferred native proof.
+Conditional eventual notice cleanup requires original receipt and forwarding of
+any returned successor. The backend must account for submission rejection, partial
+failure and cancellation using actual original handoff evidence. Receipt only
+settles this logical notice slot. Native service/lock cutoff, quiescence, settlement,
+cleanup sponsorship and reuse remain separate T1060 obligations. In particular,
+`current` is a snapshot relevance check, not an asynchronous native lease: native
+adapters must serialize current-authority validation and effects within their
+actual owner and keep original resource obligations through uncertain cleanup.
+
+Permanent tests cover foreign/closed/replaced owners, retained snapshots, duplicate
+notices and 1,000 coalesced updates. An independent finite model exhausts all 4,096
+four-step histories over two producer slots, replacement, publish, close, receive
+and duplicate receipt. Each trace allocates at most five local original owner names;
+these are bounded test names, not production epochs. A deliberate foreign-owner
+control is rejected by the permanent original-notice regression. The model covers
+linearized channel operations, including forbidden stale publication/admission;
+it does not establish native delivery fairness or unrestricted hardware safety.
