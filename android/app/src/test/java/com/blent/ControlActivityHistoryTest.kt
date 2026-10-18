@@ -55,6 +55,20 @@ class ControlActivityHistoryTest {
             assertFalse(rig.control.displayActivityUpdate.supportKnown)
         }
     }
+    @Test fun t1068ControlKeepsOnePureReaderThroughOriginalSourceReplacement() {
+        Rig().use { rig ->
+            val view = rig.control.control.displayActivityView
+            rig.open(); rig.message(greeting(active()))
+            val original = view.update
+            assertSame(original, rig.control.displayActivityUpdate)
+            assertTrue(view.current(original))
+            rig.control.disconnect(); rig.open()
+            assertSame(view, rig.control.control.displayActivityView)
+            assertFalse(view.current(original))
+            assertSame(view.update, rig.control.displayActivityUpdate)
+            assertTrue(view.current(view.update))
+        }
+    }
     @Test fun t1067MalformedAnnouncementAndObserverFaultRetainLossAcrossReplacement() {
         Rig().use { rig ->
             rig.control.onDisplayActivityKnown = { error("T1067 UI observer unavailable") }

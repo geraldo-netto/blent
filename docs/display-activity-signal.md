@@ -168,3 +168,26 @@ one-latest UI delivery bound retained views and settle them through their origin
 lifetimes. Permanent SDK 27/34 regressions cover closure, malformed claims, closed
 legacy sources, fresh identities, explicit fallback, old callbacks and observer
 faults, alongside the existing bounded counter-transition checks.
+
+
+## Current source view
+
+T1068 composes the existing inbox in one control-lifetime `DisplayActivitySource`.
+`DisplayActivityView` exposes only the current immutable update and exact snapshot
+relevance. A distinct snapshot with equal fields or the same opaque source identity
+is not current. Closing invalidates the former observed view; the current closed
+Unavailable view remains readable metadata. Replacement invalidates that closed
+view and preserves its history in a fresh identity. Exact duplicate messages keep
+the original current view.
+
+The control actor serializes receive, close and replacement. Read-side relevance
+uses volatile original-inbox/current-update publication, with a snapshot read
+linearization point; it supplies no lease across later source changes. The reader
+retains only this pure owner, its one current inbox and bounded scalar metadata.
+It does not retain ControlSession, sockets, callbacks, a UI object or a native
+resource. Caller-owned messages are read synchronously and not retained. Additional
+borrowed snapshots remain bounded by their containing delivery/request owners;
+release is ordinary containing-owner settlement, with no native cleanup allocation.
+Queued/native power consumption of this narrow relevance contract remains T1069,
+and Activity/window projection remains T1061. Current-view relevance alone never
+supplies authentication, native permission, quiescence or retirement proof.

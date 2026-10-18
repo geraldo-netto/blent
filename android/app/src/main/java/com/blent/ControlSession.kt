@@ -1,7 +1,8 @@
 package com.blent
 
 import android.util.Log
-import com.blent.activity.DisplayActivityInbox
+import com.blent.activity.DisplayActivitySource
+import com.blent.activity.DisplayActivityView
 import com.blent.activity.DisplayActivityUpdate
 import android.os.SystemClock
 import kotlinx.coroutines.*
@@ -41,8 +42,9 @@ internal class ControlSession(
         const val RECONNECT_DELAY_MS = TouchCapture.RECONNECT_DELAY_MS
     }
 
-    @Volatile private var activityInbox = DisplayActivityInbox()
-    val displayActivityUpdate get() = activityInbox.update
+    private val activity = DisplayActivitySource()
+    val displayActivityView: DisplayActivityView get() = activity
+    val displayActivityUpdate get() = activity.update
     var onDisplayActivityKnown: ((DisplayActivityUpdate) -> Unit)? = null
 
     @Volatile private var webSocket: WebSocket? = null
@@ -217,14 +219,14 @@ internal class ControlSession(
         if (activityChanged) notifyDisplayActivity()
     }
     private fun receiveDisplayActivity(message: JSONObject): Boolean? = try {
-        activityInbox.receive(message)
+        activity.receive(message)
     } catch (failure: Exception) {
         Log.w(TAG, "Invalid original display activity; retiring control", failure)
         disconnect()
         null
     }
     private fun notifyDisplayActivity() {
-        try { onDisplayActivityKnown?.invoke(activityInbox.update) }
+        try { onDisplayActivityKnown?.invoke(activity.update) }
         catch (_: Exception) { Log.w(TAG, "Display activity observer failed") }
     }
 
@@ -261,7 +263,7 @@ internal class ControlSession(
     }
 
     private fun resetGreeting() {
-        activityInbox.close()
+        activity.close()
         notifyDisplayActivity()
         notifyVideoLiveness(false)
         calibration.value = false
@@ -415,7 +417,7 @@ internal class ControlSession(
         val selected = configuredRoutes ?: return@synchronized
         connectionGeneration++
         resetGreeting()
-        activityInbox = DisplayActivityInbox(activityInbox.update.supportKnown)
+        activity.replace()
         input.reset()
         val previous = webSocket
         webSocket = null
