@@ -1,12 +1,11 @@
 # Android display wake policy
 
-Status: independent desired-policy values and framework value conversion are
-implemented under T1059; independent original-request admission is T1062 and original handle ownership T1063.
-Original native service ownership is T1060; Activity
-observation/window integration is T1061; joined acceptance remains T1058/T1011
-and physical wake/power evidence remains T914. Current production Activity requests
-still use Waiting. Value conversion alone does not establish native enforcement
-of the new display states or a measured power saving.
+Status: independent desired policy (T1059), original-request admission (T1062),
+handle ownership (T1063) and foreground native service ownership (T1060) are
+implemented. Activity observation/window integration remains T1061; joined
+acceptance remains T1058/T1011 and physical wake/power evidence remains T914.
+Current production Activity requests still use Waiting. Native handling of the
+other states is covered separately; it does not establish a measured power saving.
 
 `StreamingPower` is an immutable, platform-independent policy input containing
 battery-saver preference, authenticated media activity, observed transport and
@@ -60,7 +59,7 @@ not native lock timing, physical screen state or battery savings.
 ## Original request admission
 
 T1062 supplies independent foreground-producer and native-receiver interfaces plus
-a bounded request implementation. Production service integration remains T1060.
+a bounded request implementation. T1060 binds it to the foreground service.
 One opaque owner identifies each original foreground claim; a request carries that
 owner and an immutable desired policy, or null policy for withdrawal. Identity
 does not wrap or derive from wire/process counters. Retaining an old view keeps
@@ -108,8 +107,8 @@ it does not establish native delivery fairness or unrestricted hardware safety.
 
 ## Original wake-handle ownership
 
-T1063 supplies the independent WakeHandle contract and WakeLease owner. Native
-backend integration remains T1060. A factory returns a fresh, unadmitted handle;
+T1063 supplies the independent WakeHandle contract and WakeLease owner; T1060
+implements its Android backend. A factory returns a fresh, unadmitted handle;
 it owns cleanup of any partial factory failure. The lease installs that handle's
 cleanup owner before calling acquisition. Its operation guard covers the factory
 as well as native effects. Settlement requires both no admitted handle and no
@@ -153,3 +152,70 @@ deliberate early-release control fails the permanent retirement/fatal regression
 the factory-settlement regression was observed failing before its fix. These checks
 prove bounded pure-owner behavior under the handle contract, not Android hardware
 or native backend conformance.
+
+
+## Foreground native service ownership
+
+`StreamingPowerBinding` owns one opaque foreground claim and its policy observer.
+Stopping it cancels that actual observer and withdraws only its original claim.
+`StreamingPowerRuntime` owns the application handoff channel, one retiring native
+worker plus one latest replacement, and one original idle-timer callback plus one
+latest target. The manifest Application owns this runtime strongly for its process lifetime,
+including outstanding handoffs and quarantined work after producer loss. There is
+no weak-registry reset or second runtime for the same Application. Active bindings,
+queued Binder capabilities and actual jobs borrow that original runtime.
+All request/service/timer effects serialize on the main actor; native wake work
+runs through `AndroidWorkerRun` in the private `:power` process. Independent camera,
+microphone, speaker, display and metadata workers retain their separate owners.
+
+The Android component remains private to the application. Its foreground
+notification does not imply native lock ownership. A local Binder capability names
+the exact original queued notice; immutable Intent fields must match that notice's
+initial policy. Unknown, duplicate and stale capabilities cannot consume a newer
+admission. Pending identity is checked before foreground promotion. A confirmed
+never-admitted start/post rejection may settle that slot; an ambiguous exception
+retains it, withdraws original authority and denies extra admission. Destruction
+first detaches its original port, then fences its exact queued callback. Failed
+cancellation keeps the slot until the original guarded callback arrives. An old
+component or foreground producer cannot revoke a replacement owner.
+
+The current original receiver publishes immutable request/task views. A lazy
+worker waits for actual current delivery before native admission. Same native
+tasks retain the original process; changed tasks cut off the old view and enter
+the existing retirement lane. Late creators remain owned and joined. Original
+native readiness must match its task and opaque stamp. Wrong readiness or worker
+loss cuts off that original owner before UI reporting; it cannot automatically
+reacquire. Actual original Binder death and in-flight control settlement precede
+replacement admission. A framework disconnect, canceled coroutine, stopped flag,
+readiness event or elapsed timeout is not that fence. Missing proof retains the
+original lane and funded cleanup sponsor.
+
+`PowerWakeRun` installs the CPU/Wi-Fi leases before native acquisition, stops
+without native IO on the Binder/UI thread, and attempts both original retirements
+even if either fails. Its Android handle requires normal original API release;
+an uncertain unheld acquisition cannot manufacture proof from `isHeld == false`.
+Factory/acquire/release faults retain the exact handle. The containing original
+private process provides the final process-access fence for blocked/unknown calls.
+The existing CPU grant is bounded to four hours; a subsequent current policy
+receipt after that budget renews through an actual retired predecessor. This is
+not an unlimited CPU-grant guarantee. Wi-Fi uses low-latency mode from API 29 and
+the previous high-performance mode on older supported SDKs.
+
+Idle Wi-Fi grace requires matching actual acquisition readiness. Its original
+absolute five-second due time survives repeated idle requests; USB, pause and
+source/background loss bypass grace. Enqueue/cancel ambiguity preserves one
+original callback and withdraws grace demand. Negative/overflowing clock values
+fail closed; a bad queued callback clock is contained and reported on the main
+loop. Duplicate old callbacks cannot acknowledge a successor or release it early.
+
+Conservation pairs every queued admission/native grant or unknown obligation
+with its original retained cleanup owner. Reuse requires original receipt/callback
+fencing or actual worker retirement respectively, never logical completion alone.
+The containing runtime settles with its Application/process; its bounded queues
+and native grants retain their separate original settlement obligations.
+Conditional eventual cleanup assumes native delivery/scheduling, original control
+calls and OS process/token cleanup eventually progress. Selected cached SDK 27/34
+framework bytecode shows local held-state changes after synchronous release calls;
+it does not prove unrestricted system-server/kernel cleanup timing. Robolectric
+checks real adapters against bounded independent fault models and joined local
+worker cleanup; physical process, device wake and battery acceptance remain T914.

@@ -132,7 +132,7 @@ internal class WorkerTestBridge(
                 setUnbindServiceCallsOnServiceDisconnected(false)
                 setComponentNameAndServiceForBindService(ComponentName(app, MetadataWorkerService::class.java), binder)
                 val types = listOf(DisplayWorkerService::class.java, CameraWorkerService::class.java,
-                    MicrophoneWorkerService::class.java, SpeakerWorkerService::class.java, MetadataWorkerService::class.java)
+                    MicrophoneWorkerService::class.java, SpeakerWorkerService::class.java, MetadataWorkerService::class.java, PowerWorkerService::class.java)
                 types.forEach { type ->
                     val native = if (type == MetadataWorkerService::class.java) binder else WorkerTestBridge()
                     setComponentNameAndServiceForBindServiceForIntent(Intent(app, type), ComponentName(app, type), native)

@@ -6,49 +6,97 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
-import android.net.wifi.WifiManager
-import android.os.PowerManager
 import android.util.Log
 
-class StreamingService : Service() {
+class StreamingService internal constructor(
+    private val suppliedRuntime: StreamingPowerRuntime? = null,
+    private val schedule: PowerSchedule = HandlerPowerSchedule(),
+) : Service() {
     companion object {
         const val CHANNEL_ID = "blent_streaming"
         const val NOTIFICATION_ID = 1
         private const val TAG = "BlentService"
     }
 
-    private var wakeLock: PowerManager.WakeLock? = null
-    private var wifiLock: WifiManager.WifiLock? = null
+    private lateinit var runtime: StreamingPowerRuntime
+    private var attached = false
+    private var destroyed = false
+    private var pending: Posted? = null
+    private val port = object : PowerServicePort {
+        override fun post(notice: DisplayPowerNotice) = postNotice(notice)
+        override fun stop() { stopSelf() }
+    }
 
-    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
-    private var releasePending = false
-    private val releaseIdleWifi = Runnable { releasePending = false; releaseWifi() }
+    private class Posted(
+        private val runtime: StreamingPowerRuntime,
+        val notice: DisplayPowerNotice,
+        private val deliver: (Posted) -> Unit,
+    ) {
+        private val live = java.util.concurrent.atomic.AtomicBoolean(true)
+        private val done = java.util.concurrent.atomic.AtomicBoolean()
+        val action = Runnable {
+            if (done.compareAndSet(false, true)) {
+                if (live.get()) deliver(this) else runtime.canceled(notice)
+            }
+        }
+        fun refused() { live.set(false); done.set(true) }
+        fun cancel(schedule: PowerSchedule) {
+            live.set(false)
+            schedule.cancel(action)
+            if (done.compareAndSet(false, true)) runtime.canceled(notice)
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
+        runtime = suppliedRuntime ?: StreamingPowerRuntime.forApp(this)
         createNotificationChannel()
-        promote() // Satisfy the foreground-start contract before waiting for commands.
+        attached = promote() && runtime.attach(port)
+        if (!attached) stopSelf()
     }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent == null || !promote()) {
-            releaseLocks()
-            stopSelf()
+        val envelope = PowerServiceNotice.read(intent)
+        if (envelope?.runtime !== runtime) {
+            if (!runtime.hasOwner) stopSelf()
             return START_NOT_STICKY
         }
-        applyPower(StreamingPower.read(intent))
-        return START_NOT_STICKY // No useful work without the owning Activity.
+        deliver(envelope, envelope.matches(requireNotNull(intent)))
+        return START_NOT_STICKY
     }
-
+    private fun deliver(envelope: PowerServiceNotice, matches: Boolean) {
+        if (!runtime.pending(envelope.notice)) {
+            if (!runtime.hasOwner) stopSelf()
+            return
+        }
+        if (destroyed) { runtime.canceled(envelope.notice); return }
+        if (!promote()) {
+            runtime.detach(port); attached = false
+            runtime.rejectedReceipt(envelope.notice, IllegalStateException("Foreground promotion rejected"))
+            stopSelf()
+            return
+        }
+        if (!attached) attached = runtime.attach(port)
+        runtime.receive(port, envelope, matches && attached)
+    }
+    private fun postNotice(notice: DisplayPowerNotice): Boolean {
+        if (!attached || destroyed) return false
+        check(pending == null) { "Original power callback still admitted" }
+        val original = Posted(runtime, notice) {
+            if (pending === it) pending = null
+            deliver(PowerServiceNotice(runtime, it.notice), true)
+        }
+        pending = original
+        if (schedule.post(0, original.action)) return true
+        if (pending === original) pending = null
+        original.refused()
+        return false
+    }
     private fun promote(): Boolean = try {
         startForeground(NOTIFICATION_ID, notification())
         true
     } catch (error: Exception) {
         Log.w(TAG, "Foreground promotion rejected", error)
-        releaseLocks()
-        stopSelf()
         false
     }
 
@@ -59,57 +107,15 @@ class StreamingService : Service() {
             .setSmallIcon(android.R.drawable.ic_menu_view).setContentIntent(pending).setOngoing(true).build()
     }
 
-    private fun applyPower(power: StreamingPower) {
-        // The visible Activity already holds FLAG_KEEP_SCREEN_ON. Preserve the
-        // original locks in normal mode; battery mode needs no extra CPU lock.
-        if (power.batterySaver) releaseWake() else acquireWake()
-        if (power.needsWifi) {
-            cancelIdleRelease()
-            acquireWifi()
-        } else if (power.transport == StreamTransport.USB) {
-            cancelIdleRelease()
-            releaseWifi()
-        } else if (wifiLock?.isHeld == true && !releasePending) {
-            releasePending = true
-            handler.postDelayed(releaseIdleWifi, 5000)
-        }
-    }
-
-    private fun acquireWake() {
-        if (wakeLock?.isHeld == true) return
-        try {
-            val manager = getSystemService(POWER_SERVICE) as PowerManager
-            wakeLock = manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Blent::StreamingWakeLock").apply {
-                setReferenceCounted(false)
-                acquire(4 * 60 * 60 * 1000L)
-            }
-        } catch (error: Exception) { Log.w(TAG, "CPU lock unavailable", error) }
-    }
-
-    private fun acquireWifi() {
-        if (wifiLock?.isHeld == true) return
-        try {
-            val manager = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
-            val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) WifiManager.WIFI_MODE_FULL_LOW_LATENCY
-                else @Suppress("DEPRECATION") WifiManager.WIFI_MODE_FULL_HIGH_PERF
-            wifiLock = manager.createWifiLock(mode, "Blent::StreamingWifiLock").apply {
-                setReferenceCounted(false)
-                acquire()
-            }
-        } catch (error: Exception) { Log.w(TAG, "Wi-Fi lock unavailable", error) }
-    }
-
-    private fun cancelIdleRelease() {
-        handler.removeCallbacks(releaseIdleWifi)
-        releasePending = false
-    }
-    private fun releaseWake() { wakeLock?.let { if (it.isHeld) it.release() } }
-    private fun releaseWifi() { wifiLock?.let { if (it.isHeld) it.release() } }
-    private fun releaseLocks() { cancelIdleRelease(); releaseWake(); releaseWifi() }
-
     override fun onDestroy() {
-        releaseLocks()
-        super.onDestroy()
+        destroyed = true
+        val original = pending
+        pending = null
+        try {
+            runtime.detach(port); attached = false
+            try { original?.cancel(schedule) }
+            catch (failure: Exception) { Log.w(TAG, "Original queued power callback remains owned", failure) }
+        } finally { super.onDestroy() }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null

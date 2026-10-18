@@ -106,3 +106,4 @@ class CameraWorkerService : MediaWorkerService() { override fun accepts(task: Me
 class MicrophoneWorkerService : MediaWorkerService() { override fun accepts(task: MediaTask) = task is MediaTask.Audio && task.endpoint.direction == 1 }
 class SpeakerWorkerService : MediaWorkerService() { override fun accepts(task: MediaTask) = task is MediaTask.Audio && task.endpoint.direction == 2 }
 class MetadataWorkerService : MediaWorkerService() { override fun accepts(task: MediaTask) = task is MediaTask.Metadata }
+class PowerWorkerService : MediaWorkerService() { override fun accepts(task: MediaTask) = task is MediaTask.Wake }

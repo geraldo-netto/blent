@@ -11,6 +11,7 @@ internal object WorkerEventJson {
         is WorkerEvent.Ended -> JSONObject().put("type", "ended").put("failure", event.failure?.take(2048))
         is WorkerEvent.Rendered -> JSONObject().put("type", "rendered").put("sequence", event.sequence).put("decode", event.decodeMicros).put("decoder", event.decoder)
         is WorkerEvent.Display -> display(event)
+        is WorkerEvent.WakeReady -> WakeTaskJson.encodeReady(event)
     }.toString().also { require(it.length <= LIMIT) }
 
     fun decode(text: String): WorkerEvent {
@@ -21,6 +22,7 @@ internal object WorkerEventJson {
             "result" -> WorkerEvent.Result(v.getString("text"))
             "ended" -> WorkerEvent.Ended(optional(v, "failure"))
             "rendered" -> WorkerEvent.Rendered(v.getInt("sequence"), v.getInt("decode"), optional(v, "decoder"))
+            "wake_ready" -> WakeTaskJson.decodeReady(v)
             "display" -> WorkerEvent.Display(v.getBoolean("connected"), v.getDouble("fps").toFloat(), v.getDouble("mbps").toFloat(),
                 optional(v, "startup"), optional(v, "retirement"), DecoderDiagnostics(readActive(v.optJSONObject("active")), v.getBoolean("fallback")))
             else -> error("Unknown media worker event")

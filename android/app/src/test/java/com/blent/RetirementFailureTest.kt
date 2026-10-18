@@ -1,8 +1,5 @@
 package com.blent
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.*
@@ -86,9 +83,14 @@ class RetirementFailureTest {
         fun field(target: Any, name: String) = target.javaClass.getDeclaredField(name).apply { isAccessible = true }
         field(activity.session, "touchCapture").set(activity.session, null)
         field(activity.session, "videoReceiver").set(activity.session, null)
-        val broken = StreamingPowerBinding(object : ContextWrapper(app) {
-            override fun stopService(intent: Intent): Boolean = error("power stop failed")
-        })
+        val rig = PowerRuntimeFixture()
+        var failures = 0
+        val port = object : PowerServicePort {
+            override fun post(notice: DisplayPowerNotice): Boolean { rig.notices.add(notice); return true }
+            override fun stop() { failures++; error("T807 actual power service stop failed") }
+        }
+        check(rig.runtime.attach(port))
+        val broken = StreamingPowerBinding(app, rig.runtime)
         var previous: StreamingPowerBinding? = null
         try {
             controller.start()
@@ -99,12 +101,18 @@ class RetirementFailureTest {
             original.stop()
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             check(originalJob.isCompleted) { "T1064 old observer must settle before fixture replacement" }
-            field(broken, "active").setBoolean(broken, true)
+            broken.start(StreamingPower(), MutableStateFlow(StreamingPower()))
             field(activity, "powerBinding").set(activity, broken)
             controller.stop()
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             assertTrue("T1064 original foreground observer leaked across fixture handoff", originalJob.isCompleted)
+            assertEquals("T807 fixture did not exercise actual stop failure", 1, failures)
             assertFalse("T807 one failure skipped session retirement", field(activity.session, "started").getBoolean(activity.session))
-        } finally { previous?.stop(); controller.destroy() }
+        } finally {
+            previous?.stop(); controller.destroy()
+            rig.runtime.detach(port)
+            while (true) rig.runtime.canceled(rig.notices.poll() ?: break)
+            rig.scope.cancel()
+        }
     }
 }

@@ -2,106 +2,99 @@ package com.blent
 
 import android.content.Intent
 import android.net.wifi.WifiManager
-import android.os.PowerManager
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.Implementation
 import org.robolectric.annotation.Implements
 import org.robolectric.shadow.api.Shadow
+import org.robolectric.shadows.ShadowPowerManager
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34], shadows = [PowerTestWifiManager::class, PowerTestWifiLock::class])
 class StreamingPowerTest {
-    @Test fun t497_foregroundServiceDoesNotExposeAnIpcBinder() {
-        val controller = Robolectric.buildService(StreamingService::class.java).create()
-        try { assertNull(controller.get().onBind(Intent())) }
-        finally { controller.destroy() }
-    }
+    private fun cpuHeld() = ShadowPowerManager.getLatestWakeLock()?.isHeld == true
+    private fun wifiHeld() = PowerTestWifiManager.latest?.isHeld == true
 
-    private fun held(service: StreamingService, name: String): Boolean {
-        val value = StreamingService::class.java.getDeclaredField(name).apply { isAccessible = true }.get(service)
-        return when (value) {
-            is PowerManager.WakeLock -> value.isHeld
-            is WifiManager.WifiLock -> value.isHeld
-            else -> false
-        }
+    @Test fun t497_foregroundServiceDoesNotExposeAnIpcBinder() = runBlocking {
+        val rig = NativePowerServiceFixture()
+        try { assertNull(rig.service.onBind(Intent())) }
+        finally { rig.close() }
     }
-
-    @Test fun t388_battery_profile_releases_usb_and_waiting_locks() {
-        val controller = Robolectric.buildService(StreamingService::class.java).create()
-        val service = controller.get()
+    @Test fun t388_battery_profile_releases_usb_and_waiting_locks() = runBlocking {
+        val rig = NativePowerServiceFixture()
         try {
-            service.onStartCommand(Intent().putExtra("battery_saver", true)
-                .putExtra("stream_connected", true).putExtra("stream_transport", "usb"), 0, 1)
-            assertFalse("T388: USB battery profile must not hold the Wi-Fi radio", held(service, "wifiLock"))
-            assertFalse("T388: visible Activity already keeps the screen/device awake", held(service, "wakeLock"))
-        } finally { controller.destroy() }
+            rig.update(StreamingPower(true, true, StreamTransport.USB))
+            assertFalse("T388: USB battery profile must not hold the Wi-Fi radio", wifiHeld())
+            assertFalse("T388: visible Activity already keeps the screen/device awake", cpuHeld())
+        } finally { rig.close() }
     }
-
-    private fun update(service: StreamingService, active: Boolean, route: String, saver: Boolean = true) {
-        service.onStartCommand(Intent().putExtra("battery_saver", saver)
-            .putExtra("stream_connected", active).putExtra("stream_transport", route), 0, 2)
-    }
-
-    @Test fun t388_network_disconnect_hysteresis_cancels_on_recovery_and_destroy() {
-        val controller = Robolectric.buildService(StreamingService::class.java).create()
-        val service = controller.get()
-        val looper = org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper())
+    @Test fun t388_network_disconnect_hysteresis_cancels_on_recovery_and_destroy() = runBlocking {
+        val rig = NativePowerServiceFixture()
+        val looper = shadowOf(android.os.Looper.getMainLooper())
         try {
-            update(service, true, "network")
-            assertTrue(held(service, "wifiLock")); assertFalse(held(service, "wakeLock"))
-            update(service, false, "unknown")
+            rig.update(StreamingPower(true, true, StreamTransport.NETWORK)); rig.ready(1)
+            assertTrue(wifiHeld()); assertFalse(cpuHeld())
+            rig.update(StreamingPower(true, false))
             looper.idleFor(java.time.Duration.ofSeconds(4))
-            assertTrue(held(service, "wifiLock"))
-            update(service, false, "unknown") // Repeated updates must not extend the deadline.
+            assertTrue(wifiHeld())
+            rig.update(StreamingPower(true, false))
             looper.idleFor(java.time.Duration.ofSeconds(1))
-            assertFalse(held(service, "wifiLock"))
-            update(service, true, "unknown") // Older hosts get conservative network behavior.
-            assertTrue(held(service, "wifiLock"))
-            update(service, false, "unknown")
+            rig.until { !wifiHeld() }; assertFalse(wifiHeld())
+            rig.update(StreamingPower(true, true)); rig.ready(2)
+            assertTrue(wifiHeld())
+            rig.update(StreamingPower(true, false))
             looper.idleFor(java.time.Duration.ofSeconds(4))
-            update(service, true, "network")
+            rig.update(StreamingPower(true, true, StreamTransport.NETWORK))
             looper.idleFor(java.time.Duration.ofSeconds(2))
-            assertTrue(held(service, "wifiLock"))
-            update(service, true, "usb")
-            assertFalse(held(service, "wifiLock"))
-            update(service, true, "network")
-            update(service, false, "unknown")
-        } finally { controller.destroy() }
+            assertTrue(wifiHeld())
+            rig.update(StreamingPower(true, true, StreamTransport.USB))
+            rig.until { !wifiHeld() }; assertFalse(wifiHeld())
+            rig.update(StreamingPower(true, true, StreamTransport.NETWORK)); rig.ready(3)
+            rig.update(StreamingPower(true, false))
+        } finally { rig.close() }
         looper.idleFor(java.time.Duration.ofSeconds(6))
-        assertFalse(held(service, "wifiLock")); assertFalse(held(service, "wakeLock"))
+        assertFalse(wifiHeld()); assertFalse(cpuHeld())
     }
-
-    @Test fun t388_foreground_rejection_releases_previously_acquired_locks() {
-        val controller = Robolectric.buildService(StreamingService::class.java).create()
-        val service = controller.get()
+    @Test fun t1060PausedDisplayReleasesBothNativeLocksWithoutIdleGrace() = runBlocking {
+        val rig = NativePowerServiceFixture()
         try {
-            update(service, true, "network", false)
-            org.robolectric.Shadows.shadowOf(service).setThrowInStartForeground(SecurityException("T388 rejected"))
-            update(service, true, "network", false)
-            assertFalse(held(service, "wifiLock")); assertFalse(held(service, "wakeLock"))
-            assertTrue(org.robolectric.Shadows.shadowOf(service).isStoppedBySelf)
-        } finally { controller.destroy() }
+            rig.update(StreamingPower(false, true, StreamTransport.NETWORK)); rig.ready(1)
+            assertTrue(cpuHeld()); assertTrue(wifiHeld())
+            rig.update(StreamingPower(false, true, StreamTransport.NETWORK, DisplayWakeState.PAUSED))
+            rig.until { !cpuHeld() && !wifiHeld() }
+            assertFalse("T1060 paused display retained native CPU wake", cpuHeld())
+            assertFalse("T1060 paused display retained native Wi-Fi wake through idle grace", wifiHeld())
+        } finally { rig.close() }
     }
-
-    @Test fun t388_foreground_promotion_does_not_wait_for_start_command() {
-        val controller = Robolectric.buildService(StreamingService::class.java).create()
-        try { assertNotNull(org.robolectric.Shadows.shadowOf(controller.get()).lastForegroundNotification) }
-        finally { controller.destroy() }
+    @Test fun t388_foreground_rejection_releases_previously_acquired_locks() = runBlocking {
+        val rig = NativePowerServiceFixture()
+        try {
+            rig.update(StreamingPower(false, true, StreamTransport.NETWORK)); rig.ready(1)
+            shadowOf(rig.service).setThrowInStartForeground(SecurityException("T388 rejected"))
+            rig.update(StreamingPower(false, true, StreamTransport.NETWORK))
+            rig.until { !cpuHeld() && !wifiHeld() }
+            assertFalse(wifiHeld()); assertFalse(cpuHeld())
+            assertTrue(shadowOf(rig.service).isStoppedBySelf)
+        } finally { rig.close() }
     }
-
-    @Test fun t388_normal_mode_retains_existing_locks_and_destroy_releases_them() {
-        val controller = Robolectric.buildService(StreamingService::class.java).create()
-        val service = controller.get()
-        service.onStartCommand(Intent(), 0, 1)
-        service.onStartCommand(Intent(), 0, 2)
-        assertTrue(held(service, "wakeLock")); assertTrue(held(service, "wifiLock"))
-        controller.destroy()
-        assertFalse(held(service, "wakeLock")); assertFalse(held(service, "wifiLock"))
+    @Test fun t388_foreground_promotion_does_not_wait_for_start_command() = runBlocking {
+        val rig = NativePowerServiceFixture()
+        try { assertNotNull(shadowOf(rig.service).lastForegroundNotification) }
+        finally { rig.close() }
+    }
+    @Test fun t388_normal_mode_retains_existing_locks_and_destroy_releases_them() = runBlocking {
+        val rig = NativePowerServiceFixture()
+        try {
+            rig.update(StreamingPower()); rig.ready(1)
+            rig.update(StreamingPower())
+            assertTrue(cpuHeld()); assertTrue(wifiHeld())
+        } finally { rig.close() }
+        assertFalse(cpuHeld()); assertFalse(wifiHeld())
     }
 }
 
@@ -109,14 +102,19 @@ class StreamingPowerTest {
 @Implements(WifiManager::class)
 class PowerTestWifiManager {
     @Implementation
-    fun createWifiLock(mode: Int, tag: String): WifiManager.WifiLock =
-        Shadow.newInstanceOf(WifiManager.WifiLock::class.java)
+    @Suppress("DEPRECATION")
+    fun createWifiLock(mode: Int, tag: String): WifiManager.WifiLock {
+        check(mode == WifiManager.WIFI_MODE_FULL_LOW_LATENCY || mode == WifiManager.WIFI_MODE_FULL_HIGH_PERF)
+        check(tag == "Blent::StreamingWifiLock")
+        return Shadow.newInstanceOf(WifiManager.WifiLock::class.java).also { latest = it }
+    }
+    companion object { @Volatile var latest: WifiManager.WifiLock? = null }
 }
 
 @Implements(WifiManager.WifiLock::class)
 class PowerTestWifiLock {
-    private var held = false
-    @Implementation fun setReferenceCounted(enabled: Boolean) = Unit
+    @Volatile private var held = false
+    @Implementation fun setReferenceCounted(enabled: Boolean) { check(!enabled) }
     @Implementation fun acquire() { held = true }
     @Implementation fun release() { check(held); held = false }
     @Implementation fun isHeld(): Boolean = held

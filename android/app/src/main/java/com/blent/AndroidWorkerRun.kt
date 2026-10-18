@@ -167,5 +167,6 @@ internal class AndroidWorkerRun(
         is MediaTask.Camera -> CameraWorkerService::class.java
         is MediaTask.Audio -> if (value.endpoint.direction == 1) MicrophoneWorkerService::class.java else SpeakerWorkerService::class.java
         is MediaTask.Metadata -> MetadataWorkerService::class.java
+        is MediaTask.Wake -> PowerWorkerService::class.java
     }
 }

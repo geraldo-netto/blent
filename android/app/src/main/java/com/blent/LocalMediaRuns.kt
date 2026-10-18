@@ -11,6 +11,9 @@ internal object LocalMediaRuns {
         is MediaTask.Camera -> camera(context, task, report)
         is MediaTask.Display -> display(task, requireNotNull(surface), report)
         is MediaTask.Metadata -> metadata(task, report)
+        is MediaTask.Wake -> PowerWakeRun(task, { AndroidWakeHandles.cpu(context) }, { AndroidWakeHandles.wifi(context) }) {
+            report(WorkerEvent.WakeReady(task.cpu, task.wifi))
+        }
     }
     private fun audio(context: Context, task: MediaTask.Audio, report: (WorkerEvent) -> Unit): LifecycleRun {
         val resources = AudioResources()

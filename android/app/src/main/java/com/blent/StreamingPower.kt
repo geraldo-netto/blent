@@ -1,5 +1,8 @@
 package com.blent
 
+internal const val CPU_WAKE_MILLIS = 4 * 60 * 60 * 1000L
+internal const val WIFI_IDLE_GRACE_MILLIS = 5000L
+
 /** Host-reported ADB route; loopback and charging state cannot identify it. */
 internal enum class StreamTransport(val wire: String) {
     UNKNOWN("unknown"), USB("usb"), NETWORK("network");

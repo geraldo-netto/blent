@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config
 class WorkerManifestTest {
     @Test fun t809_nativeOwnersHavePrivateIndependentProcesses() {
         val app = RuntimeEnvironment.getApplication()
-        val processes = listOf("DisplayWorkerService", "CameraWorkerService", "MicrophoneWorkerService", "SpeakerWorkerService", "MetadataWorkerService").map { name ->
+        val processes = listOf("DisplayWorkerService", "CameraWorkerService", "MicrophoneWorkerService", "SpeakerWorkerService", "MetadataWorkerService", "PowerWorkerService").map { name ->
             val info = app.packageManager.getServiceInfo(ComponentName(app.packageName, "com.blent.$name"), PackageManager.GET_META_DATA)
             assertFalse("T809 worker exported", info.exported)
             assertNotEquals("T809 native worker shares UI process", app.applicationInfo.processName, info.processName)

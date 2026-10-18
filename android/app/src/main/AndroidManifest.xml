@@ -32,6 +32,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+        android:name=".BlentApplication"
         android:allowBackup="false"
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -100,6 +101,7 @@
         <service android:name=".MicrophoneWorkerService" android:process=":microphone" android:exported="false" />
         <service android:name=".SpeakerWorkerService" android:process=":speakers" android:exported="false" />
         <service android:name=".MetadataWorkerService" android:process=":metadata" android:exported="false" />
+        <service android:name=".PowerWorkerService" android:process=":power" android:exported="false" />
         <service android:name=".connection.ConnectionWorkerService" android:process=":connection" android:exported="false" />
     </application>
 </manifest>

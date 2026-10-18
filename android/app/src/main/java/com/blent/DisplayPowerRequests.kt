@@ -30,6 +30,7 @@ internal class DisplayPowerRequests : DisplayPowerChannel {
 
     @Synchronized override fun owns(owner: DisplayPowerOwner): Boolean = latest?.let { it.owner === owner && it.power != null } == true
     @Synchronized override fun current(request: DisplayPowerRequest): Boolean = latest === request
+    @Synchronized override fun pending(notice: DisplayPowerNotice): Boolean = queued === notice
 
     @Synchronized override fun receive(notice: DisplayPowerNotice): DisplayPowerDelivery {
         if (queued !== notice) return DisplayPowerDelivery(false, null, null)

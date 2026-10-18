@@ -9,6 +9,7 @@ internal object MediaTaskJson {
         is MediaTask.Audio -> audio(task)
         is MediaTask.Camera -> camera(task)
         is MediaTask.Display -> display(task)
+        is MediaTask.Wake -> WakeTaskJson.encode(task)
         is MediaTask.Metadata -> JSONObject().put("kind", "metadata").put("width", task.width).put("height", task.height)
             .put("fps", task.fps).put("shell", task.shellVersion)
     }.put("version", 1).toString().also { require(it.length <= LIMIT) }
@@ -22,6 +23,7 @@ internal object MediaTaskJson {
             "camera" -> readCamera(value)
             "display" -> readDisplay(value)
             "metadata" -> readMetadata(value)
+            "wake" -> WakeTaskJson.decode(value)
             else -> error("Unknown media worker request")
         }
     }
