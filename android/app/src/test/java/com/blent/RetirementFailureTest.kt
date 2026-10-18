@@ -89,12 +89,22 @@ class RetirementFailureTest {
         val broken = StreamingPowerBinding(object : ContextWrapper(app) {
             override fun stopService(intent: Intent): Boolean = error("power stop failed")
         })
+        var previous: StreamingPowerBinding? = null
         try {
             controller.start()
+            val original = field(activity, "powerBinding").get(activity) as StreamingPowerBinding
+            previous = original
+            val observed = field(original, "scope").get(original) as CoroutineScope
+            val originalJob = checkNotNull(observed.coroutineContext[Job])
+            original.stop()
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            check(originalJob.isCompleted) { "T1064 old observer must settle before fixture replacement" }
             field(broken, "active").setBoolean(broken, true)
             field(activity, "powerBinding").set(activity, broken)
             controller.stop()
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            assertTrue("T1064 original foreground observer leaked across fixture handoff", originalJob.isCompleted)
             assertFalse("T807 one failure skipped session retirement", field(activity.session, "started").getBoolean(activity.session))
-        } finally { controller.destroy() }
+        } finally { previous?.stop(); controller.destroy() }
     }
 }
