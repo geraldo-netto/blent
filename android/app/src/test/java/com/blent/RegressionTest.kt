@@ -34,10 +34,17 @@ class RegressionTest {
     }
     private fun get(target: Any, name: String): Any? {
         val owner = owner(target, name)
+        if (owner is SessionCoordinator && name == "started") {
+            return owner.javaClass.getDeclaredMethod("getStarted").apply { isAccessible = true }.invoke(owner)
+        }
         return owner.javaClass.getDeclaredField(name).apply { isAccessible = true }.get(owner)
     }
     private fun set(target: Any, name: String, value: Any?) {
         val owner = owner(target, name)
+        if (owner is SessionCoordinator && name == "started") {
+            owner.javaClass.getDeclaredMethod("setStarted", java.lang.Boolean.TYPE).apply { isAccessible = true }.invoke(owner, value)
+            return
+        }
         owner.javaClass.getDeclaredField(name).apply { isAccessible = true }.set(owner, value)
     }
 

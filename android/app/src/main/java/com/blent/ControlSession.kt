@@ -45,6 +45,10 @@ internal class ControlSession(
     private val activity = DisplayActivitySource()
     val displayActivityView: DisplayActivityView get() = activity
     val displayActivityUpdate get() = activity.update
+    // Conflated wake hints belong to the control/UI adapter. Native permits
+    // retain only the separate pure reader, never its UI subscriptions.
+    private val activityHints = MutableStateFlow(activity.update)
+    val displayActivityHints = activityHints.asStateFlow()
     var onDisplayActivityKnown: ((DisplayActivityUpdate) -> Unit)? = null
 
     @Volatile private var webSocket: WebSocket? = null
@@ -224,7 +228,7 @@ internal class ControlSession(
         Log.w(TAG, "Invalid original display activity; retiring control", failure)
         disconnect()
         null
-    }
+    } finally { activityHints.value = activity.update }
     private fun notifyDisplayActivity() {
         try { onDisplayActivityKnown?.invoke(activity.update) }
         catch (_: Exception) { Log.w(TAG, "Display activity observer failed") }
@@ -264,6 +268,7 @@ internal class ControlSession(
 
     private fun resetGreeting() {
         activity.close()
+        activityHints.value = activity.update
         notifyDisplayActivity()
         notifyVideoLiveness(false)
         calibration.value = false
@@ -418,6 +423,7 @@ internal class ControlSession(
         connectionGeneration++
         resetGreeting()
         activity.replace()
+        activityHints.value = activity.update
         input.reset()
         val previous = webSocket
         webSocket = null

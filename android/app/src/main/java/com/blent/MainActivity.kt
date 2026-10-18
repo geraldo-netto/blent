@@ -4,7 +4,6 @@ import android.content.Intent
 import android.hardware.usb.UsbManager
 import com.blent.connection.*
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import kotlin.math.roundToInt
@@ -41,7 +40,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val prefs = Prefs(this)
         connection = ConnectionOwner.get(applicationContext)
         cameras = CameraOwner.get(applicationContext)
@@ -142,6 +140,7 @@ class MainActivity : ComponentActivity() {
         cameraAttachment = CameraOwner.attach(cameraPermissionLauncher::launch)
         audioAttachment = AudioOwner.attach(microphonePermissionLauncher::launch)
         windowPolicy.start()
+        windowPolicy.startWake(session.powerDemandNow(), session.powerDemandUpdates())
         powerBinding.start(session.powerDemandNow(), session.powerDemandUpdates())
         session.checkUpdate {
             try { packageManager.getPackageInfo(packageName, 0).versionName ?: "0" } catch (_: Exception) { "0" }

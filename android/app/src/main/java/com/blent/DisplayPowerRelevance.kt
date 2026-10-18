@@ -4,5 +4,8 @@ package com.blent
  * views remain unadmitted until a fresh current view is actually delivered. */
 internal fun DisplayPowerRequest.permitsPower(): Boolean {
     if (power == null) return true
-    return try { permit.current() } catch (_: Exception) { false }
+    return permit.permitsPower()
 }
+
+/** Shared pure reader-fault boundary for independent service/window consumers. */
+internal fun DisplayPowerPermit.permitsPower(): Boolean = try { current() } catch (_: Exception) { false }

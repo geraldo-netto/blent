@@ -4,12 +4,23 @@ import android.app.Activity
 import android.os.Build
 import android.view.View
 import android.view.WindowInsetsController
+import android.view.WindowManager
+import kotlinx.coroutines.flow.Flow
 import kotlin.math.abs
 
 /** Activity-window overrides and sensor ownership; never writes system settings. */
 internal class ActivityWindowPolicy(private val activity: Activity, private val prefs: Prefs) {
+    private val wake = WindowPowerBinding(::keepScreenOn)
     fun start() { started = true; applyOrientation() }
-    fun stop() { started = false; stopTiltListener() }
+    fun startWake(initial: DisplayPowerDemand, updates: Flow<DisplayPowerDemand>) { wake.start(initial, updates) }
+    fun stop() {
+        started = false
+        cleanupAll(wake::stop, ::stopTiltListener).firstOrNull()?.let { throw it }
+    }
+    private fun keepScreenOn(enabled: Boolean) {
+        val flag = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        if (enabled) activity.window.addFlags(flag) else activity.window.clearFlags(flag)
+    }
 
     /** Window overrides apply only while Blent is foreground. */
     fun applyDisplaySettings() {

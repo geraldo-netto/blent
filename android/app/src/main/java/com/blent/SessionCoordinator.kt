@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOf
 
 /** Read-only stream observations for Compose; owning a view never starts video. */
 internal class StreamPresentation(private val receiver: DisplaySession<android.view.SurfaceView>?, control: TouchCapture?) {
@@ -78,30 +79,45 @@ internal class SessionCoordinator(
     var updateAvailable by mutableStateOf<String?>(null); private set
     var settings by mutableStateOf(SettingsValues.read(prefs)); private set
     private val updates = ReleaseCheckOwner(releaseChecks, { prefs.checkUpdates }, dispatchUi) { updateAvailable = it }
-    private var appliedActivity: DisplayActivityUpdate? = null
-    private var modeSource: Any? = null
+    private var appliedActivity by mutableStateOf<DisplayActivityUpdate?>(null)
+    private var modeSource by mutableStateOf<Any?>(null)
     private val activityDelivery = DisplayActivityDelivery(dispatchUi, ::applyDisplayActivity) { failure ->
         Log.w("Blent", "Display activity UI unavailable", failure)
     }
-    private var started = false
+    private var started by mutableStateOf(false)
     private var stopTokenObservation: (() -> Unit)? = null
     private data class DecoderSupport(val format: Boolean = true, val codec: Boolean = true) {
         val available get() = format && codec
     }
-    private var decoderSupport = DecoderSupport()
+    private var decoderSupport by mutableStateOf(DecoderSupport())
     private var externalDisplay = false
     private var externalAvailable = false
     val presentation = StreamPresentation(videoReceiver, touchCapture)
 
-    fun powerDemandNow() = DisplayPowerDemand(powerNow())
-    fun powerNow(): StreamingPower = powerFor(settings.batterySaver, presentation.connected, penOnlyMode, presentation.connectionState.value)
+    private data class WakeLocal(
+        val saver: Boolean, val video: Boolean, val pen: Boolean, val foreground: Boolean,
+        val applied: DisplayActivityUpdate?, val mode: Any?, val decoder: Boolean,
+    )
+    private fun wakeLocal() = WakeLocal(settings.batterySaver, presentation.connected, penOnlyMode,
+        started, appliedActivity, modeSource, decoderSupport.available)
+    fun powerDemandNow() = powerFor(wakeLocal(), presentation.connectionState.value)
+    fun powerNow(): StreamingPower = powerDemandNow().power
     fun powerDemandUpdates() = combine(
-        snapshotFlow { Triple(settings.batterySaver, presentation.connected, penOnlyMode) },
-        presentation.connectionState,
-    ) { local, connection -> DisplayPowerDemand(powerFor(local.first, local.second, local.third, connection)) }.distinctUntilChanged()
+        snapshotFlow { wakeLocal() }, presentation.connectionState,
+        touchCapture?.control?.displayActivityHints ?: flowOf(null),
+    ) { local, connection, _ -> powerFor(local, connection) }.distinctUntilChanged()
 
-    private fun powerFor(saver: Boolean, video: Boolean, pen: Boolean, connection: ControlConnection) =
-        StreamingPower(saver, connection.authenticated && (video || pen), connection.transport)
+    private fun powerFor(local: WakeLocal, connection: ControlConnection): DisplayPowerDemand {
+        val source = touchCapture?.control?.displayActivityView
+        val update = source?.update
+        val state = DisplayWakeSnapshot(local.foreground, connection.authenticated, metadataCurrent(local, update), update).wakeState()
+        val permit = if (source == null || update == null) FixedDisplayPowerPermit else ActivityPowerPermit(source, update)
+        return DisplayPowerDemand(powerValues(local, connection, state), permit)
+    }
+    private fun metadataCurrent(local: WakeLocal, update: DisplayActivityUpdate?): Boolean =
+        update != null && local.applied === update && local.mode === update.source && (local.pen || local.decoder)
+    private fun powerValues(local: WakeLocal, connection: ControlConnection, state: DisplayWakeState) =
+        StreamingPower(local.saver, connection.authenticated && (local.video || local.pen), connection.transport, state)
 
     init { touchCapture?.setQueueBudget(prefs.controlQueueBytes); applyToken(false); connectStreamCallbacks() }
 

@@ -2,10 +2,10 @@
 
 Status: independent desired policy (T1059), original-request admission (T1062),
 handle ownership (T1063) and foreground native service ownership (T1060) are
-implemented. Activity observation/window integration remains T1061; joined
-acceptance remains T1058/T1011 and physical wake/power evidence remains T914.
-Current production Activity requests still use Waiting. Native handling of the
-other states is covered separately; it does not establish a measured power saving.
+implemented. T1061 integrates original control observations with foreground native
+and Window demand. Joined acceptance remains T1058/T1011; physical wake/power
+evidence remains T914. Automated adapter checks establish policy behavior, without
+claiming measured power savings.
 
 `StreamingPower` is an immutable, platform-independent policy input containing
 battery-saver preference, authenticated media activity, observed transport and
@@ -250,9 +250,8 @@ readiness still describes that original native task's acquired handles, rather t
 a new source permission. Idle timers additionally require current source relevance.
 
 Foreground delivery compares whole immutable demands, so equal power values with
-a changed source permit still publish. Current Activity wrappers use the fixed
-permit until T1061 wires the independent source reader and window projection;
-this contract alone does not implement that projection. Each request retains one
+a changed source permit still publish. Activity wrappers retain only the pure
+source reader and exact original observation. Each request retains one
 permit reference and its caller-bounded read view. Production readers must retain
 only narrow pure metadata rather than UI/socket/callback owners. The existing
 channel, execution lane and original cleanup sponsors retain their prior bounds.
@@ -285,3 +284,36 @@ The original scope and its callbacks remain funded until they settle, with immut
 old demands incapable of retargeting a replacement. Logging carries diagnostics
 without coupling failure to independent camera/audio owners. An explicit collector
 method retains separate native counters for policy delivery and observer settlement.
+
+
+## Activity observation and Window ownership
+
+T1061 reads the live original control source independently of queued UI delivery.
+Observed activity requires foreground ownership, authentication and current applied
+mode/decoder metadata. Pause denies wake immediately, even before its UI hint is
+applied. Supported source loss stays Unavailable through notification coalescing;
+a fresh explicit unsupported greeting retains the documented legacy fallback.
+An initial source without support history waits normally. Existing pen mode can
+operate without a decoder, but cannot override pause or background cutoff.
+
+The ControlSession owns conflated notification hints; its pure source retains no
+subscribers, UI, socket or callback. Native requests borrow only that source's
+read view and immutable snapshot. Distinct current views publish even with equal
+power values. Observable foreground, settings and metadata state wake the policy
+flow without depending on incoming frames. Notification hints are not authority.
+
+ActivityWindowPolicy owns a separate Main-actor Window observer. MainActivity no
+longer acquires screen wake in onCreate. Foreground start installs one original
+epoch before its initial write; reentrant stop/replacement cannot install an old
+observer. Every write rechecks original epoch and source relevance. Stop cuts off
+old callbacks, cancels that observer and clears screen demand; sensor cleanup is
+attempted independently. Canceled inputs withdraw without logging normal
+cancellation; ordinary flow/write/reporter faults stay contained. Completed flows
+retain foreground ownership until explicit stop. Actual observer jobs and hint
+subscriptions settle in the permanent joined fixtures.
+
+The Window is borrowed from Android for the containing Activity lifetime. No new
+native allocation or Window release occurs here; uncertain flag writes retain the
+framework/lifecycle owner. Native wake-worker retirement remains separately fenced
+by the runtime. A cleared flag, canceled observer or fresh source view never proves
+decoder or native wake retirement. Camera/audio owners remain independent.

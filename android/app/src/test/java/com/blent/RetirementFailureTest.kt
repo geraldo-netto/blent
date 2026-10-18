@@ -107,7 +107,7 @@ class RetirementFailureTest {
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             assertTrue("T1064 original foreground observer leaked across fixture handoff", originalJob.isCompleted)
             assertEquals("T807 fixture did not exercise actual stop failure", 1, failures)
-            assertFalse("T807 one failure skipped session retirement", field(activity.session, "started").getBoolean(activity.session))
+            assertEquals("T807 one failure skipped session retirement", DisplayWakeState.BACKGROUND, activity.session.powerNow().display)
         } finally {
             previous?.stop(); controller.destroy()
             rig.runtime.detach(port)
