@@ -20,7 +20,7 @@ import org.robolectric.util.ReflectionHelpers
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class DisplayWakeIntegrationTest {
-    private class Rig {
+    internal class Rig {
         val sockets = ArrayList<Pair<DisplayRouteSocket, WebSocketListener>>()
         val control = TouchCapture(WebSocket.Factory { request, listener ->
             DisplayRouteSocket(request).also { sockets.add(it to listener) }
