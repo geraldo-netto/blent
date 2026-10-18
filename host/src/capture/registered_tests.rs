@@ -48,7 +48,11 @@ struct Source(View, Arc<AtomicBool>);
 impl control_client::Client for Source {
     fn status(&self) -> control_client::Status {
         control_client::Status {
-            phase: control_client::Phase::Ready,
+            phase: if self.1.load(Ordering::SeqCst) {
+                control_client::Phase::Closed
+            } else {
+                control_client::Phase::Ready
+            },
             view: Some(self.0.clone()),
             message: None,
             outcome: None,
@@ -151,6 +155,8 @@ struct Fixture {
     received: blent::video_queue::VideoReceiver,
     headers: CodecConfig,
     count: Arc<AtomicUsize>,
+    source_closed: Arc<AtomicBool>,
+    retirement: blent_config::retirement::Completion,
     _shutdown: watch::Sender<bool>,
     _listeners: blent::session_network::RetainedListeners,
 }
@@ -190,8 +196,9 @@ impl Fixture {
         let (runtime, listeners) = prepared.start_exported(stopped).await.unwrap();
         let ports = listeners.ports();
         let now = Instant::now();
+        let source_closed = Arc::new(AtomicBool::new(false));
         let discovery = Discovery::new(
-            Box::new(Source(authenticated(), Arc::new(AtomicBool::new(false)))),
+            Box::new(Source(authenticated(), source_closed.clone())),
             Duration::from_secs(1),
             now,
         )
@@ -204,6 +211,7 @@ impl Fixture {
             panic!("T1016 original authenticated admission missing")
         };
         let count = Arc::new(AtomicUsize::new(0));
+        let retirement = runtime.retirement.clone();
         connections.bind(
             &mut slots,
             admission,
@@ -226,6 +234,8 @@ impl Fixture {
             received,
             headers,
             count,
+            source_closed,
+            retirement,
             _shutdown: shutdown,
             _listeners: listeners,
         }
@@ -258,6 +268,10 @@ impl Fixture {
         .await
         .unwrap();
     }
+    async fn finish<T>(self, outcome: std::thread::Result<T>) -> std::thread::Result<T> {
+        self.stop().await;
+        outcome
+    }
     async fn stop(mut self) {
         self.connections.close(&mut self.slots);
         timeout(Duration::from_secs(5), async {
@@ -281,32 +295,41 @@ async fn t1016_registration_pause_waits_for_actual_native_generation_and_resumes
     observe(&mut feed, 1, false);
     let (published, source) = watch::channel(publication(&feed));
     let mut fixture = Fixture::new(source).await;
-    let now = Instant::now();
-    fixture.active(now).await;
-    let first = packet(&mut fixture.received).await;
-    assert!(first.is_idr && first.codec_config.is_some());
-    let root = crate::runtime::runtime_dir().unwrap();
-    let helper = std::fs::read_to_string(root.join("helper.pid")).unwrap();
-    observe(&mut feed, 2, true);
-    published.send_replace(publication(&feed));
-    fixture.paused(&first, now).await;
-    assert_eq!(fixture.count.load(Ordering::SeqCst), 1);
-    while fixture.received.try_recv().is_ok() {}
-    assert!(timeout(Duration::from_millis(30), fixture.received.recv())
-        .await
-        .is_err());
-    observe(&mut feed, 3, false);
-    published.send_replace(publication(&feed));
-    fixture.active(now + Duration::from_secs(2)).await;
-    let fresh = packet(&mut fixture.received).await;
-    assert_eq!(fixture.count.load(Ordering::SeqCst), 2);
-    assert!(fresh.is_idr && fresh.codec_config.is_some());
-    assert!(fresh.generation.load(Ordering::Acquire));
-    assert!(!Arc::ptr_eq(&first.generation, &fresh.generation));
-    assert_ne!(first.seq, fresh.seq);
-    assert_eq!(
-        std::fs::read_to_string(root.join("helper.pid")).unwrap(),
-        helper
-    );
-    fixture.stop().await;
+    let outcome = futures_util::FutureExt::catch_unwind(std::panic::AssertUnwindSafe(async {
+        let now = Instant::now();
+        fixture.active(now).await;
+        let first = packet(&mut fixture.received).await;
+        assert!(first.is_idr && first.codec_config.is_some());
+        let root = crate::runtime::runtime_dir().unwrap();
+        let helper = std::fs::read_to_string(root.join("helper.pid")).unwrap();
+        observe(&mut feed, 2, true);
+        published.send_replace(publication(&feed));
+        fixture.paused(&first, now).await;
+        assert_eq!(fixture.count.load(Ordering::SeqCst), 1);
+        while fixture.received.try_recv().is_ok() {}
+        assert!(timeout(Duration::from_millis(30), fixture.received.recv())
+            .await
+            .is_err());
+        observe(&mut feed, 3, false);
+        published.send_replace(publication(&feed));
+        fixture.active(now + Duration::from_secs(2)).await;
+        let fresh = packet(&mut fixture.received).await;
+        assert_eq!(fixture.count.load(Ordering::SeqCst), 2);
+        assert!(fresh.is_idr && fresh.codec_config.is_some());
+        assert!(fresh.generation.load(Ordering::Acquire));
+        assert!(!Arc::ptr_eq(&first.generation, &fresh.generation));
+        assert_ne!(first.seq, fresh.seq);
+        assert_eq!(
+            std::fs::read_to_string(root.join("helper.pid")).unwrap(),
+            helper
+        );
+    }))
+    .await;
+    let outcome = fixture.finish(outcome).await;
+    if let Err(failure) = outcome {
+        std::panic::resume_unwind(failure);
+    }
 }
+
+#[path = "joined_activity_tests.rs"]
+mod joined;

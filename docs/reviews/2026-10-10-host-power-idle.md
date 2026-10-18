@@ -862,3 +862,18 @@ invalidation, fresh-generation header-bearing IDR and retained helper PID. The
 CLI and installed SDK counters for 24 production functions, individually >=83.33%,
 and source audit maximum 5. Native fixture/contract bounds remain explicit; joined
 host acceptance remains T1009 and physical host/tablet acceptance T914.
+
+T1009 completes automated joined host display activity acceptance. New private
+native cases join display-off, suspending and unavailable observations to actual
+helper/encoder retirement, retain capacity while an original writer ACK is held,
+and require fresh codec/keyframe generation after release. Coalesced suspend/resume
+invalidates old pixels; original discovery loss stops only its original runtime.
+A deliberate assertion-unwind control fails before unconditional asynchronous
+native fixture cleanup and passes afterward. The [retained evidence](artifacts/2026-10-18-t1009/README.md)
+records final CLI 19 session/18 USB/191 capture and SDK 19/18/105 passing cases,
+with two existing CLI capture ignores. All 24 scoped production functions measure
+>=83.33% individual native line coverage. T1054 separately fixes the fixture trace
+race exposed by the first SDK run; fresh final collections pass without weakened
+assertions. Android decoder/wake integration remains T1011, auxiliary integration
+T1010 and physical host/tablet acceptance T914. No battery or physical presentation
+result follows from these synthetic machine observations.

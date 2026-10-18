@@ -2,8 +2,8 @@
 
 Status: portable contract and Linux adapters implemented under T1050; production
 USB activity composition implemented under T1051 and renewable USB acceptance
-verified under T1016. Joined host acceptance remains T1009; physical acceptance
-remains T914.
+verified under T1016; automated joined host acceptance verified under T1009.
+Android decoder/wake integration remains T1011; physical acceptance remains T914.
 
 One display runtime owns one controller state. Its capture and selector producers
 are bound before startup, with a fixed capacity of one or two. Controller clones

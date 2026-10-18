@@ -102,6 +102,9 @@ while True:
         if not active and writer is not None:
             os.close(writer)
             writer = None
+        if not active:
+            (root / 'pause-requested').write_text('original writer closed; ACK held if requested')
+            while (root / 'hold-pause').exists() and not (root / 'release-pause').exists(): select.select([], [], [], 0.01)
         if (root / 'foreign-ack').exists(): request = request[:8] + bytes([1 - request[8]])
         if (root / 'hold-record').exists():
             (root / 'record-waiting').write_text('original request received; record held')
