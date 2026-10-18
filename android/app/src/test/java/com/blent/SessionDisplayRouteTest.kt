@@ -1,7 +1,7 @@
 package com.blent
 
 import android.os.Looper
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import okhttp3.*
 import okio.ByteString
 import org.junit.Assert.*
@@ -31,17 +31,25 @@ internal class SessionDisplayRig(sequence: DisplayRouteSequence = DisplayRouteSe
         DisplayRouteSocket(request).also { sockets.add(it to listener) }
     })
     val receiver = VideoReceiver { error("T907 no native video without a Surface") }
-    val callbacks = ArrayList<() -> Unit>()
+    val callbacks = java.util.concurrent.ConcurrentLinkedQueue<() -> Unit>()
     val session = SessionCoordinator(prefs, { callbacks.add(it) }, receiver, control, routeSequence = sequence)
     val endpoint = DisplayEndpoint("b".repeat(64), 23456, 23457)
     fun job(): Job? = ReflectionHelpers.getField(receiver, "job")
+    fun drain() { while (true) { val action = callbacks.poll() ?: return; action() } }
+    suspend fun greet() {
+        val (socket, listener) = sockets.last()
+        listener.onOpen(socket, Response.Builder().request(socket.request()).protocol(Protocol.HTTP_1_1).code(101).message("T907 current source").build())
+        listener.onMessage(socket, """{"status":"connected","codec":"h264","fps":30,"video_width":64,"video_height":32,"pen_only":false}""")
+        withTimeout(2000) { while (job() == null) { drain(); delay(1) } }
+        drain()
+    }
 }
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 @LooperMode(LooperMode.Mode.PAUSED)
 class SessionDisplayRouteTest {
-    @Test fun t907RouteSelectionRetiresOldControlAndVideoBeforeApplyingNewCredentialAndPorts() {
+    @Test fun t907RouteSelectionRetiresOldControlAndVideoBeforeApplyingNewCredentialAndPorts() = runBlocking {
         val rig = SessionDisplayRig()
         with(rig) {
             session.start(); receiver.start(); val oldJob = checkNotNull(job())
@@ -54,9 +62,9 @@ class SessionDisplayRouteTest {
                 assertEquals(endpoint.controlPort, sockets.last().first.request().url.port)
                 assertEquals(endpoint.videoPort, receiver.routes?.videoPort)
                 assertEquals(control.routes, receiver.routes); assertEquals(2L, receiver.routes?.revision)
-                callbacks.forEach { it() }; assertNull(job())
-                control.onModeKnown!!.invoke(false); callbacks.last()(); assertNotNull(job())
-                session.selectDisplay(null); callbacks.forEach { it() }
+                drain(); assertNull(job())
+                greet(); assertNotNull(job())
+                session.selectDisplay(null); drain()
                 assertNull(control.routes); assertNull(receiver.routes); assertNull(job())
                 assertTrue(sockets.last().first.cancelled)
             } finally { session.stop() }

@@ -2,7 +2,7 @@
 
 Status: independent Rust projection/schema and Kotlin schema validation implemented
 under T1055; original host control publication implemented under T1056. Android
-decoder consumption remains T1057 and wake ownership T1058. No peer resource release is claimed from this
+decoder consumption is implemented under T1057; wake ownership remains T1058. No peer resource release is claimed from this
 contract alone; joined Android acceptance remains T1011 and physical acceptance T914.
 
 The original authenticated control connection owns the signal sequence. A hint
@@ -84,3 +84,57 @@ one latest source view and at most one pending serialized response/notice. The
 wire hint remains below 256 bytes. Original socket/task/attachment owners sponsor
 cleanup on errors, cancellation, peer loss and native shutdown; hints do not
 release their resources or alter camera/audio consent.
+
+## Original Android decoder consumption
+
+Each original control connection owns one inbox, an opaque identity and one
+immutable current observation. Its identity is independent of wire counters and
+remains distinct while any old view is retained. Initial/unavailable/closed views
+deny decoding. A connected greeting without the field explicitly selects the
+unsupported-source fallback for that connection. Supported observations cannot
+withdraw their protocol, regress counters, conflict at the same revision or omit
+a stop fence when active becomes inactive. Invalid observations terminally close
+the original inbox and retire its control connection. Closing cannot be undone by
+late messages; only a new original connection gets a new inbox. Duplicate valid
+signals preserve the same immutable current view.
+
+The Activity coordinator applies only the exact current view while foreground,
+authenticated and holding the mode from that same original connection. Format and
+codec eligibility remain separate requirements. A changed original identity or
+remembered stop fence stops the decoder before reconsidering latest desired work,
+including coalesced Active observations. Current source withdrawal is checked
+before configuration setters that can restart a receiver, including FPS restoration
+after a rejected settings request. The selected route, settings, Surface and local
+foreground intent remain retained. No hint changes camera/audio owners or consent.
+
+The existing ResourceLane remains the sole isolated-decoder execution/retirement
+owner. Resume can replace its latest request but cannot admit it before the old
+execute job and original native retirement complete. Failed or unknown native
+cleanup retains that original obligation and denies reuse. New workers obtain the
+existing fresh video connection, codec/configuration and keyframe path; hints do
+not carry video packets or authorize a stale render receipt. The Activity owns its
+Surface and lends it to a run; tests release it only after every original run
+settles. The wire hint alone establishes no hardware decode/presentation result.
+
+Delivery owns one foreground identity, one latest immutable view and one admitted
+UI drain across stop/start. Clearing latest observations never creates another
+admission while an old drain is queued. Each scheduled continuation has an exact
+once guard, including enqueue-then-throw and duplicate callback faults. Rejected
+scheduling cancels that original drain and runs its cancellation cleanup without
+applying a native/UI update from a fallback thread. A Default-dispatch hop prevents
+inline UI callbacks from recursively resuming yielded work. Stop cuts off the
+foreground identity and clears borrowed views; late callbacks cannot apply a new
+epoch. Reporting failures cannot bypass drain settlement.
+
+Conservation is at most one admitted drain plus one replaceable pending view, and
+at most one original native run plus one latest request per existing lane. No old
+view, render receipt or canceled continuation can authorize access after its
+original owner is cut off. Conditional eventual UI cleanup requires scheduler/UI
+progress; native cleanup additionally requires original worker/native retirement
+evidence. Missing evidence keeps ownership and capacity retained, rather than
+being converted into a timeout permission. Permanent SDK 27/34 lifecycle tests
+hold retirement open, coalesce interruptions, replace/background control owners,
+reject malformed/stale signals and exercise legacy fallback plus configuration
+callbacks. Dispatch tests cover 1,000 coalesced views and scheduling/report faults;
+bounded counter-transition tests cover invalid ranges. Physical native wake and
+host/tablet acceptance remain T1058/T914.

@@ -1,5 +1,8 @@
 package com.blent
 
+import com.blent.activity.DisplayActivityState
+import com.blent.activity.DisplayActivityUpdate
+import com.blent.activity.desired
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -75,9 +78,17 @@ internal class SessionCoordinator(
     var updateAvailable by mutableStateOf<String?>(null); private set
     var settings by mutableStateOf(SettingsValues.read(prefs)); private set
     private val updates = ReleaseCheckOwner(releaseChecks, { prefs.checkUpdates }, dispatchUi) { updateAvailable = it }
+    private var appliedActivity: DisplayActivityUpdate? = null
+    private var modeSource: Any? = null
+    private val activityDelivery = DisplayActivityDelivery(dispatchUi, ::applyDisplayActivity) { failure ->
+        Log.w("Blent", "Display activity UI unavailable", failure)
+    }
     private var started = false
     private var stopTokenObservation: (() -> Unit)? = null
-    private var codecSupported = true
+    private data class DecoderSupport(val format: Boolean = true, val codec: Boolean = true) {
+        val available get() = format && codec
+    }
+    private var decoderSupport = DecoderSupport()
     private var externalDisplay = false
     private var externalAvailable = false
     val presentation = StreamPresentation(videoReceiver, touchCapture)
@@ -122,6 +133,7 @@ internal class SessionCoordinator(
     }
 
     private fun requestStreamSettings(event: SettingsEvent.Stream) {
+        if (!displayAllowed()) videoReceiver?.stop()
         settings = settings.copy(streamError = null)
         applyStreamSettings(prefs, touchCapture, videoReceiver, event.bitrate, event.fps)
     }
@@ -142,6 +154,7 @@ internal class SessionCoordinator(
 
     fun start() {
         started = true
+        activityDelivery.start()
         updates.start()
         stopTokenObservation?.invoke()
         stopTokenObservation = prefs.observeHostToken { if (started) applyToken(restart = true) }
@@ -154,6 +167,9 @@ internal class SessionCoordinator(
     }
     fun stop() {
         started = false
+        activityDelivery.stop()
+        appliedActivity = null
+        modeSource = null
         updates.stop()
         stopTokenObservation?.invoke()
         stopTokenObservation = null
@@ -165,6 +181,7 @@ internal class SessionCoordinator(
     }
 
     private fun connectStreamCallbacks() {
+        touchCapture?.onDisplayActivityKnown = { update -> activityDelivery.submit(update) }
         // Close the host's latency measurement loop: every acknowledged frame
         // lets the host time encoded-packet readiness to receipt of the
         // render acknowledgement, including the return message path.
@@ -182,7 +199,8 @@ internal class SessionCoordinator(
         touchCapture?.onModeKnown = { penOnly ->
             withCurrentControl {
                 penOnlyMode = penOnly
-                if (penOnly || !codecSupported) videoReceiver?.stop() else videoReceiver?.start()
+                modeSource = touchCapture?.displayActivityUpdate?.source
+                reconcileDisplay()
             }
         }
 
@@ -190,18 +208,18 @@ internal class SessionCoordinator(
 
     private fun connectFormatCallbacks() {
         touchCapture?.onVideoLivenessKnown = { enabled ->
-            withCurrentControl { videoReceiver?.setVideoLiveness(enabled) }
+            withCurrentControl { configureVideo { it.setVideoLiveness(enabled) } }
         }
         touchCapture?.onStreamFormat = { format ->
             withCurrentControl {
-                codecSupported = format != null
-                if (format == null) videoReceiver?.stop() else videoReceiver?.setStreamFormat(format)
+                decoderSupport = decoderSupport.copy(format = format != null)
+                configureVideo { if (format != null) it.setStreamFormat(format) }
             }
         }
         touchCapture?.onCodecKnown = { codec ->
             withCurrentControl {
                 val mime = VideoCodec.types[codec]
-                codecSupported = mime != null
+                decoderSupport = decoderSupport.copy(codec = mime != null)
                 if (mime == null) {
                     Log.w("Blent", "Unsupported host video codec: $codec")
                     videoReceiver?.stop()
@@ -212,7 +230,7 @@ internal class SessionCoordinator(
                     Log.i("Blent", "Host is sending $codec — rebuilding the decoder")
                     if (!penOnlyMode) vr.stop()
                     vr.mimeType = mime
-                    if (!penOnlyMode) vr.start()
+                    reconcileDisplay()
                 }
             }
         }
@@ -220,7 +238,7 @@ internal class SessionCoordinator(
 
     private fun connectSettingsCallbacks() {
         touchCapture?.onFpsKnown = { fps ->
-            withCurrentControl { videoReceiver?.streamFps = fps }
+            withCurrentControl { configureVideo { it.streamFps = fps } }
         }
         touchCapture?.onSettingsRejected = { rejected ->
             withCurrentControl {
@@ -234,8 +252,40 @@ internal class SessionCoordinator(
     private fun restoreStreamSettings(reason: String, bitrate: Int, fps: Int) {
         prefs.bitrateKbps = bitrate
         prefs.fps = fps
-        videoReceiver?.streamFps = fps
+        configureVideo { it.streamFps = fps }
         settings = SettingsValues.read(prefs).copy(streamError = reason)
+    }
+
+    private fun applyDisplayActivity(update: DisplayActivityUpdate) {
+        val source = touchCapture ?: return
+        if (!started || source.displayActivityUpdate !== update) return
+        val previous = appliedActivity
+        if (previous?.source !== update.source || interrupted(previous, update)) videoReceiver?.stop()
+        appliedActivity = update
+        reconcileDisplay()
+    }
+    private fun interrupted(previous: DisplayActivityUpdate?, next: DisplayActivityUpdate): Boolean {
+        val old = (previous?.state as? DisplayActivityState.Observed)?.signal
+        val current = (next.state as? DisplayActivityState.Observed)?.signal
+        return old?.stopped != current?.stopped
+    }
+    private fun currentActivity(): DisplayActivityUpdate? {
+        val source = touchCapture ?: return null
+        val update = appliedActivity ?: return null
+        if (source.displayActivityUpdate !== update || !source.connectionState.value.authenticated) return null
+        return update
+    }
+    private fun displayAllowed(): Boolean = started && !penOnlyMode && decoderSupport.available && currentActivity().let {
+        it != null && modeSource === it.source && it.state.desired
+    }
+    private fun reconcileDisplay() {
+        if (displayAllowed()) videoReceiver?.start() else videoReceiver?.stop()
+    }
+    private fun configureVideo(change: (DisplaySession<android.view.SurfaceView>) -> Unit) {
+        val receiver = videoReceiver ?: return
+        if (!displayAllowed()) receiver.stop()
+        change(receiver)
+        reconcileDisplay()
     }
 
     // A greeting can already be queued on the UI thread when onStop or a
@@ -262,9 +312,9 @@ internal class SessionCoordinator(
             Log.i("Blent", "New session token — reconnecting")
             touchCapture?.disconnect()
             touchCapture?.connect()
-            if (!penOnlyMode && codecSupported) {
+            if (!penOnlyMode && decoderSupport.available) {
                 videoReceiver?.stop()
-                videoReceiver?.start()
+                reconcileDisplay()
             }
         }
     }
@@ -288,7 +338,7 @@ internal class SessionCoordinator(
         touchCapture?.routes = routes
         videoReceiver?.routes = routes
         // Codec and mode come from the new control greeting before video starts.
-        codecSupported = true
+        decoderSupport = DecoderSupport()
         settings = settings.copy(streamError = null)
         if (started) connectControl()
     }

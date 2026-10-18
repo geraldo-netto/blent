@@ -1,6 +1,8 @@
 package com.blent
 
 import android.util.Log
+import com.blent.activity.DisplayActivityInbox
+import com.blent.activity.DisplayActivityUpdate
 import android.os.SystemClock
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +40,10 @@ internal class ControlSession(
         const val TAG = TouchCapture.TAG
         const val RECONNECT_DELAY_MS = TouchCapture.RECONNECT_DELAY_MS
     }
+
+    @Volatile private var activityInbox = DisplayActivityInbox()
+    val displayActivityUpdate get() = activityInbox.update
+    var onDisplayActivityKnown: ((DisplayActivityUpdate) -> Unit)? = null
 
     @Volatile private var webSocket: WebSocket? = null
     @Volatile var connectionGeneration = 0L
@@ -146,20 +152,7 @@ internal class ControlSession(
                 // capabilities and can reject unsupported settings changes.
                 try {
                     val o = JSONObject(text)
-                    if (o.optString("status") == "settings_rejected") {
-                        applySettingsRejection(o)
-                        return
-                    }
-                    applyInputGreeting(o)
-                    // T673: negotiation can fail synchronously and retire this socket.
-                    if (isStale(webSocket)) return
-                    if (o.has("calibrating")) calibration.value = o.opt("calibrating") == true
-                    applyVideoGreeting(o)
-                    applyCapabilityGreeting(o)
-                    applyDecoderGreeting(o)
-                    requestDecoderCapabilities(webSocket, streamFormat.takeIf { encodedDimensionsKnown })
-                    applyModeGreeting(o)
-                    acceptGreeting(o)
+                    receiveControl(webSocket, o)
                 } catch (_: Exception) {}
             }
         }
@@ -205,7 +198,36 @@ internal class ControlSession(
         private fun isStale(ws: WebSocket) = ws !== this@ControlSession.webSocket
     }
 
-    // Authentication must be accepted before any other message is offered.
+    // Process one original control message; hints do not grant authentication.
+    private fun receiveControl(source: WebSocket, message: JSONObject) {
+        if (message.optString("status") == "settings_rejected") { applySettingsRejection(message); return }
+        applyInputGreeting(message)
+        if (source !== webSocket) return
+        val activityChanged = receiveDisplayActivity(message) ?: return
+        // Retire on a valid stop even if later unrelated metadata is malformed.
+        if (activityChanged) notifyDisplayActivity()
+        if (message.has("calibrating")) calibration.value = message.opt("calibrating") == true
+        applyVideoGreeting(message)
+        applyCapabilityGreeting(message)
+        applyDecoderGreeting(message)
+        requestDecoderCapabilities(source, streamFormat.takeIf { encodedDimensionsKnown })
+        applyModeGreeting(message)
+        acceptGreeting(message)
+        // Fresh authentication can now admit otherwise eligible retained intent.
+        if (activityChanged) notifyDisplayActivity()
+    }
+    private fun receiveDisplayActivity(message: JSONObject): Boolean? = try {
+        activityInbox.receive(message)
+    } catch (failure: Exception) {
+        Log.w(TAG, "Invalid original display activity; retiring control", failure)
+        disconnect()
+        null
+    }
+    private fun notifyDisplayActivity() {
+        try { onDisplayActivityKnown?.invoke(activityInbox.update) }
+        catch (_: Exception) { Log.w(TAG, "Display activity observer failed") }
+    }
+
     private fun sendAuthentication(): Boolean {
         val currentToken = connectionRoutes?.token
         if (currentToken == null) {
@@ -239,6 +261,8 @@ internal class ControlSession(
     }
 
     private fun resetGreeting() {
+        activityInbox.close()
+        notifyDisplayActivity()
         notifyVideoLiveness(false)
         calibration.value = false
         input.setDirectInput(null)
@@ -391,6 +415,7 @@ internal class ControlSession(
         val selected = configuredRoutes ?: return@synchronized
         connectionGeneration++
         resetGreeting()
+        activityInbox = DisplayActivityInbox()
         input.reset()
         val previous = webSocket
         webSocket = null

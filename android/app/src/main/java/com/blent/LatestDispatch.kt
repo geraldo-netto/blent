@@ -25,6 +25,9 @@ internal class LatestDispatch(private val scope: CoroutineScope, private val rep
             finally { finish(token) }
         }
     }
+    /** Discard replaceable observations; keep the single scheduled admission. */
+    @Synchronized fun clear() { pending = null }
+
     private suspend fun drain(token: Any) {
         while (true) {
             currentCoroutineContext().ensureActive()

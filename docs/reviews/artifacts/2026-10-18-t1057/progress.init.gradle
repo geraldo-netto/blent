@@ -1,0 +1,9 @@
+allprojects { project ->
+    project.afterEvaluate {
+        tasks.withType(Test).configureEach {
+            afterTest { descriptor, result ->
+                new File('/tmp/blent-t1057-evidence/completed-tests.log').append("${descriptor.className}.${descriptor.name}: ${result.resultType}\n")
+            }
+        }
+    }
+}

@@ -18,6 +18,10 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
     val connectionGeneration get() = control.connectionGeneration
     val controlConnected get() = control.controlConnected
     internal val connectionState get() = control.connectionState
+    internal val displayActivityUpdate get() = control.displayActivityUpdate
+    internal var onDisplayActivityKnown: ((com.blent.activity.DisplayActivityUpdate) -> Unit)?
+        get() = control.onDisplayActivityKnown
+        set(value) { control.onDisplayActivityKnown = value }
     val isPenOnly get() = control.isPenOnly
     internal var routes: DisplayRoutes?
         get() = control.routes

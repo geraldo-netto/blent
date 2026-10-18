@@ -403,26 +403,23 @@ class SettingsLayoutTest {
         override fun cancel() {}
     }
 
-    private fun install(capture: TouchCapture, socket: WebSocket) {
-        ControlSession::class.java.getDeclaredField("webSocket").apply { isAccessible = true }.set(capture.control, socket)
-    }
-
     @Test fun t241_t247_penModeRequiresAuthenticatedControlAndRecoversWithoutVideo() {
         // T247: the Rust suite verifies this resource against InputResponse serialization.
         val greeting = javaClass.getResource("/control-connected.json")!!.readText()
-        val capture = TouchCapture()
+        val old = Socket()
+        val fresh = Socket()
+        val sockets = java.util.ArrayDeque(listOf(old, fresh))
+        val capture = TouchCapture(WebSocket.Factory { _, _ -> sockets.removeFirst() })
         val receiver = VideoReceiver()
         val listener = ControlSession::class.java.getDeclaredField("wsListener")
             .apply { isAccessible = true }.get(capture.control) as WebSocketListener
-        val old = Socket()
-        val fresh = Socket()
         val response = Response.Builder().request(old.request()).protocol(Protocol.HTTP_1_1)
             .code(101).message("Switching Protocols").build()
         val presentation = StreamPresentation(receiver, capture)
         compose.setContent { BlentTheme { BlentMain({}, penOnly = true, presentation = presentation) } }
         try {
             compose.onNodeWithText(draw).assertDoesNotExist()
-            compose.runOnIdle { install(capture, old); listener.onOpen(old, response) }
+            compose.runOnIdle { capture.connect(); listener.onOpen(old, response) }
             compose.onNodeWithText(draw).assertDoesNotExist() // WebSocket open is not authentication.
             compose.runOnIdle { listener.onMessage(old, greeting) }
             compose.onNodeWithText(draw).assertIsDisplayed()
@@ -430,7 +427,7 @@ class SettingsLayoutTest {
             compose.onNodeWithText(draw).assertDoesNotExist()
             compose.onNodeWithText("Reconnecting to your computer…").assertIsDisplayed()
             compose.runOnIdle {
-                install(capture, fresh)
+                capture.connect()
                 listener.onOpen(fresh, response)
                 listener.onMessage(old, greeting)
             }
