@@ -97,13 +97,17 @@ while True:
     if ready:
         request = control.recv(32)
         if not request: break
+        received = request.hex()
         active = request[8] == 1
         if not active and writer is not None:
             os.close(writer)
             writer = None
         if (root / 'foreign-ack').exists(): request = request[:8] + bytes([1 - request[8]])
+        if (root / 'hold-record').exists():
+            (root / 'record-waiting').write_text('original request received; record held')
+            while not (root / 'release-record').exists(): select.select([], [], [], 0.01)
+        with (root / 'requests').open('a') as output: output.write(received + '\n')
         control.send(request)
-        with (root / 'requests').open('a') as output: output.write(request.hex() + '\n')
     if not active: continue
     try:
         if writer is None: writer = os.open(fifo, os.O_WRONLY | os.O_NONBLOCK)
@@ -599,3 +603,69 @@ async fn t1015_current_guard_denies_first_effect_and_obsolete_ready_profile_resu
 
 #[path = "registered_tests.rs"]
 mod registered;
+
+#[tokio::test]
+async fn t1054_original_request_record_precedes_ack_even_when_recording_is_held() {
+    if ownership_tests::isolated("capture::activity_tests::t1054_original_request_record_precedes_ack_even_when_recording_is_held") { return; }
+    let mut manager = streaming_manager();
+    manager.bind_display_work(Arc::new(blent::display_work::View::new(None, None, false)));
+    manager.start_helper().await.unwrap();
+    let child = manager.helper.child.as_ref().unwrap().completion();
+    let root = crate::runtime::runtime_dir().unwrap();
+    std::fs::write(root.join("hold-record"), b"hold original request trace").unwrap();
+    let acknowledged = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let observed = acknowledged.clone();
+    let (release, mut cleanup) = watch::channel(false);
+    let native = blent::owned_task::Task::spawn(async move {
+        let result = manager.helper.set_capture_active(true).await;
+        observed.store(result.is_ok(), std::sync::atomic::Ordering::Release);
+        let _ = cleanup.wait_for(|done| *done).await;
+        manager.shutdown().await;
+        while manager.helper.restart_ready().is_err() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+        result.map(|_| ())
+    })
+    .unwrap();
+    until(|| root.join("record-waiting").exists()).await;
+    tokio::time::sleep(Duration::from_millis(30)).await;
+    let published_early = acknowledged.load(std::sync::atomic::Ordering::Acquire);
+    let recorded_early = requests();
+    std::fs::write(root.join("release-record"), b"release original trace").unwrap();
+    release.send_replace(true);
+    native.await.unwrap().unwrap();
+    until(|| child.is_complete()).await;
+    assert!(
+        !published_early,
+        "T1054 ACK preceded original request trace"
+    );
+    assert!(recorded_early.is_empty());
+    assert_eq!(requests().len(), 1);
+}
+
+#[tokio::test]
+async fn t1054_forged_ack_cannot_replace_original_request_identity_in_trace() {
+    if ownership_tests::isolated("capture::activity_tests::t1054_forged_ack_cannot_replace_original_request_identity_in_trace") { return; }
+    let mut manager = streaming_manager();
+    manager.bind_display_work(Arc::new(blent::display_work::View::new(None, None, false)));
+    manager.start_helper().await.unwrap();
+    let root = crate::runtime::runtime_dir().unwrap();
+    std::fs::write(
+        root.join("foreign-ack"),
+        b"forge reply; retain original request",
+    )
+    .unwrap();
+    let result = manager.helper.set_capture_active(true).await;
+    manager.shutdown().await;
+    while manager.helper.restart_ready().is_err() {
+        tokio::time::sleep(Duration::from_millis(1)).await;
+    }
+    assert!(result.is_err());
+    let original = requests();
+    assert_eq!(original.len(), 1);
+    assert_eq!(original[0].len(), 18);
+    assert!(
+        original[0].ends_with("01"),
+        "T1054 forged reply overwrote original request trace"
+    );
+}
