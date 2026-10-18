@@ -14,7 +14,9 @@ import org.robolectric.annotation.LooperMode
 
 @OptIn(ExperimentalTestApi::class)
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [27, 34], qualifiers = "w960dp-h900dp-land", instrumentedPackages = ["androidx.compose.ui.platform"])
+// T1076: ordinary setContent fixtures use the normal UI sandbox. Orientation
+// retains separate Compose platform instrumentation for real Activity teardown.
+@Config(sdk = [27, 34], qualifiers = "w960dp-h900dp-land")
 @LooperMode(LooperMode.Mode.PAUSED)
 class ConnectionControlsTest {
     @get:Rule val compose = createComposeRule()
