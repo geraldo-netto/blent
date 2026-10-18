@@ -1,0 +1,13 @@
+// T1071 faulty control: keep an old caller in the task's recorded output snapshot.
+allprojects { project ->
+    project.afterEvaluate {
+        tasks.matching { it.name == 'compileDebugUnitTestKotlin' }.configureEach {
+            doLast {
+                if (rootProject.file('inject-stale-caller').exists()) {
+                    new File(destinationDirectory.get().asFile, 'probe/UntouchedTest.class').bytes =
+                        rootProject.file('stale-caller.class').bytes
+                }
+            }
+        }
+    }
+}

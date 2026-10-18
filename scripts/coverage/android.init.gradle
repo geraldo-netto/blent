@@ -9,6 +9,13 @@ allprojects { project ->
                     if (dependency.requested.group == 'org.jacoco') dependency.useVersion('0.8.15')
                 }
             }
+            // T1071: coverage never trusts previously cached unit-test callers.
+            // Recompile all callers even when a prior incremental task recorded
+            // stale bytecode as current output. Application builds stay unchanged.
+            tasks.matching { it.name.endsWith('UnitTestKotlin') }.configureEach {
+                incremental = false
+                outputs.upToDateWhen { false }
+            }
             tasks.withType(Test).configureEach {
                 jacoco {
                     includeNoLocationClasses = true
