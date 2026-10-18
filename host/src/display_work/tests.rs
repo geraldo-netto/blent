@@ -1,5 +1,29 @@
 //! T1045: local viewer demand is independent of machine capability and ACKs.
 use super::*;
+
+#[tokio::test]
+async fn t1050_registration_pause_fences_current_and_future_work_until_exact_receipts() {
+    let (control, participants) = crate::display_quiescence::channel(1).unwrap();
+    let legacy = View::new(None, None, false);
+    let unmanaged = legacy.begin().unwrap();
+    let gated = legacy.with_gate(participants[0].source());
+    assert!(!gated.permits(&unmanaged));
+    let original = gated.begin().unwrap();
+    assert!(gated.permits(&original));
+    let notice = gated.changed();
+    let fence = control.pause();
+    assert!(gated.begin().is_none());
+    assert!(!gated.permits(&original));
+    participants[0].acknowledge(&participants[0].pending().unwrap());
+    assert!(control.resume(&fence));
+    notice.await;
+    assert!(!gated.permits(&original), "T1050 coalesced pause revived old work");
+    let renewed = gated.begin().unwrap();
+    assert!(!View::new(None, None, false).permits(&renewed));
+    drop(control);
+    assert!(gated.begin().is_none());
+    assert!(!gated.permits(&renewed));
+}
 use crate::{capture_contract::LivenessCapability, video_queue};
 use blent_config::host_activity::*;
 use tokio::time::{timeout, Duration};

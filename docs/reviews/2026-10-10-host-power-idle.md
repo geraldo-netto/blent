@@ -817,3 +817,25 @@ three existing ignores, and source complexity <=6. This supplies only registrati
 suspension. Independent native capture/selector fencing remains T1050, production
 activity composition remains T1051, and T1016 retains joined automated acceptance.
 A resume request is not native cleanup evidence or physical USB acceptance.
+
+
+T1050 provides original native display quiescence receipts before registration
+policy integration. Linux binds capture and CLI selector participants before
+startup; the optional in-process encoder binds capture alone. The same controller
+reaches the runtime. Its independent [contract](../display-quiescence.md) fences
+old/current work through private immutable request identities. Capture reports
+only after original reader/encoder/native creators retire and the retained helper
+acknowledges writer pause, or original terminated helper/stdout owners retire.
+Selector reports only after its original trial group and late creators retire.
+Closed producers/controllers and stale/foreign receipts deny resume.
+
+The [retained T1050 evidence](artifacts/2026-10-18-t1050/README.md) includes 1,024
+bounded model traces, native held-owner/late-creator/helper-ACK/cancellation tests,
+startup handoff and idle wakeup. A deliberately premature receipt fails the
+permanent native oracle. Final CLI suites pass 819 library and 536 daemon tests
+with three/four existing ignores; installed SDK suites pass 99 capture, nine
+encoder-worker, seven session and six portable tests. All 34 CLI and 32 SDK
+scoped production functions individually measure above 96% native line coverage;
+source audit maximum is 8. Native SonarQube remains T1019. Production registration
+activity composition remains T1051 and joined acceptance remains T1016/T1009;
+this prerequisite does not establish physical host/tablet acceptance.

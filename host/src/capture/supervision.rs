@@ -32,12 +32,12 @@ impl CaptureManager {
         sources: &Sources,
         quiescent: &mut bool,
     ) -> Result<bool> {
+        let notice = sources.changed();
         if run.inactive() {
             self.apply_stream_settings(run).await;
             *quiescent = false;
-            return Ok(self.idle_until_screen_change(run).await);
+            return self.idle_until_screen_change(run, notice).await;
         }
-        let notice = sources.changed();
         if let Some(authority) = sources.begin(&run.display_rx, &run.shutdown_rx) {
             let needs_pause = !*quiescent;
             *quiescent = false;
@@ -94,10 +94,11 @@ impl CaptureManager {
         Ok(())
     }
     async fn pause_capture(&mut self, run: &mut CaptureRun) -> Result<bool> {
+        let pause = self.pending_pause();
         let result = Self::while_active(
             &mut run.display_rx,
             &mut run.shutdown_rx,
-            self.quiesce_display(None),
+            self.quiesce_and_publish(pause),
         )
         .await;
         match result {

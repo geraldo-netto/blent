@@ -39,6 +39,13 @@ impl Spec {
     }
 
     pub fn prepare(self, mode: watch::Sender<bool>) -> Prepared {
+        let count = if cfg!(feature = "inproc-encoder") {
+            1
+        } else {
+            2
+        };
+        let (quiescence, participants) = blent::display_quiescence::channel(count)
+            .expect("fixed native display participant capacity");
         let settings = self.settings();
         let manager = capture::CaptureManager::new(self.capture.clone());
         let backend = Arc::new(input::LinuxBackend::new(manager.card_rx()));
@@ -59,27 +66,36 @@ impl Spec {
             Box::new(LinuxCapture {
                 manager,
                 config: self.capture,
+                participants,
             }),
             backend,
         )
+        .with_quiescence(quiescence)
     }
 }
 
 struct LinuxCapture {
     manager: capture::CaptureManager,
     config: capture::CaptureConfig,
+    participants: Vec<blent::display_quiescence::Participant>,
 }
 impl CaptureBackend for LinuxCapture {
     fn start(self: Box<Self>, context: CaptureContext) -> CaptureWorkers {
         let Self {
             mut manager,
             config,
+            mut participants,
         } = *self;
-        let work = Arc::new(blent::display_work::View::new(
-            context.activity.clone(),
-            Some(context.video.viewers()),
-            context.activity_preferences.pause_without_viewer,
-        ));
+        let capture = participants.remove(0);
+        let work = Arc::new(
+            blent::display_work::View::new(
+                context.activity.clone(),
+                Some(context.video.viewers()),
+                context.activity_preferences.pause_without_viewer,
+            )
+            .with_gate(capture.source()),
+        );
+        manager.bind_quiescence(capture);
         manager.bind_activity(context.activity);
         manager.bind_display_work(work.clone());
         manager.bind_profile(context.identity.clone());
@@ -96,6 +112,7 @@ impl CaptureBackend for LinuxCapture {
             context.identity,
             blent::native_scope::Scope::new(Some(context.retirement)),
             work,
+            participants.pop(),
         );
         let capture = Box::pin(async move {
             manager
@@ -317,6 +334,31 @@ mod tests {
         tokio::net::TcpListener::bind(("127.0.0.1", ports.1))
             .await
             .unwrap();
+    }
+
+    #[tokio::test]
+    async fn t1050_original_quiescence_owner_is_bound_before_startup_and_reaches_runtime() {
+        let (mode, _) = watch::channel(false);
+        let (_stop, stopped) = watch::channel(false);
+        let prepared = spec((0, 0)).prepare(mode);
+        let control = prepared.quiescence.as_ref().unwrap().clone();
+        let fence = control.pause();
+        assert!(
+            !fence.complete(),
+            "T1050 unpublished startup was declared quiescent"
+        );
+        let runtime = prepared.start(stopped).await.unwrap();
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while !fence.complete() {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .unwrap();
+        assert!(runtime.quiescence.as_ref().unwrap().resume(&fence));
+        runtime.stop().await;
+        assert!(!fence.complete());
+        assert!(!control.resume(&fence));
     }
 }
 

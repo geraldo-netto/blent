@@ -30,6 +30,7 @@ pub mod config;
 pub mod connection_discovery;
 pub mod display_connections;
 pub mod display_slots;
+pub mod display_quiescence;
 pub mod ffmpeg_args;
 pub mod latency;
 pub mod media;

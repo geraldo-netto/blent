@@ -8,6 +8,7 @@ mod encoding;
 mod display_pause;
 mod activity;
 mod supervision;
+mod quiescence;
 mod fifo;
 #[cfg(not(feature = "inproc-encoder"))]
 mod gpu;
@@ -45,6 +46,7 @@ pub struct CaptureManager {
     activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     display_work: Option<Arc<blent::display_work::View>>,
     profile: Option<Arc<dyn blent::capture_contract::ProfileSource>>,
+    quiescence: Option<blent::display_quiescence::Participant>,
     config: CaptureConfig,
     helper: HelperProcess,
     encoder: EncoderProcess,
@@ -58,6 +60,7 @@ impl CaptureManager {
             activity: None,
             display_work: None,
             profile: None,
+            quiescence: None,
             config,
             helper: HelperProcess::new(),
             encoder: EncoderProcess::new(),
@@ -77,6 +80,9 @@ impl CaptureManager {
     }
     pub(crate) fn bind_profile(&mut self, profile: Arc<dyn blent::capture_contract::ProfileSource>) {
         self.profile = Some(profile);
+    }
+    pub(crate) fn bind_quiescence(&mut self, participant: blent::display_quiescence::Participant) {
+        self.quiescence = Some(participant);
     }
     /// The session construction adapter binds its original recorder before the
     /// fresh manager can expose native work. Both owners share that same scope.
@@ -284,22 +290,28 @@ impl CaptureManager {
     }
 
     /// Keep the virtual monitor disconnected until a tablet uses it as a screen.
-    async fn idle_until_screen_change(&mut self, run: &mut CaptureRun) -> bool {
+    async fn idle_until_screen_change(
+        &mut self,
+        run: &mut CaptureRun,
+        notice: blent::capture_contract::Signal<'static>,
+    ) -> Result<bool> {
         if self.helper.is_running() {
             info!("No tablet is a screen — disconnecting the virtual display");
             self.helper.terminate().await;
         }
         self.encoder.stop();
         run.encoder_mode = None;
+        self.pause_requested(&run.shutdown_rx).await?;
         tokio::select! {
+            _ = notice => {}
             _ = run.display_rx.changed() => {}
             _ = run.settings_rx.changed() => {}
             _ = run.shutdown_rx.changed() => {
                 self.shutdown().await;
-                return true;
+                return Ok(true);
             }
         }
-        false
+        Ok(false)
     }
 
     async fn ensure_capture_helper(&mut self, run: &mut CaptureRun) -> bool {

@@ -78,6 +78,7 @@ impl Spec {
         )
         .with_attachment(tablet.clone());
         Prepared {
+            quiescence: None,
             activity: None,
             activity_preferences: Default::default(),
             settings,
@@ -95,6 +96,7 @@ impl Spec {
 }
 
 pub struct Prepared {
+    pub quiescence: Option<crate::display_quiescence::Control>,
     pub activity_preferences: blent_config::host_activity::Settings,
     pub activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     pub settings: watch::Sender<media::EncoderSettings>,
@@ -110,6 +112,10 @@ pub struct Prepared {
 }
 
 impl Prepared {
+    pub fn with_quiescence(mut self, control: crate::display_quiescence::Control) -> Self {
+        self.quiescence = Some(control);
+        self
+    }
     /// Bind an existing source view without creating another source or feed.
     pub fn with_activity(
         mut self,
@@ -190,17 +196,16 @@ impl Prepared {
             "Capture",
             spawn_server("Capture", retain_creation(workers.capture, retirement)),
         );
-        Ok((
-            Runtime::from_workers(
-                self.instance,
-                self.tablet,
-                self.relaunch,
-                stop_tx,
-                retained_workers,
-                ports,
-            ),
-            retained,
-        ))
+        let mut runtime = Runtime::from_workers(
+            self.instance,
+            self.tablet,
+            self.relaunch,
+            stop_tx,
+            retained_workers,
+            ports,
+        );
+        runtime.quiescence = self.quiescence;
+        Ok((runtime, retained))
     }
 }
 
@@ -217,6 +222,7 @@ fn retain_creation(
 
 /// The supervisor owns task handles; consumers observe independent state values.
 pub struct Runtime {
+    pub quiescence: Option<crate::display_quiescence::Control>,
     pub instance: u32,
     pub tablet_tx: Attachment,
     pub relaunch: Arc<Notify>,
@@ -246,6 +252,7 @@ impl Runtime {
             state.clone(),
         ));
         Self {
+            quiescence: None,
             instance,
             tablet_tx,
             relaunch,

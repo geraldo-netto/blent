@@ -251,6 +251,7 @@ async fn t1037_controller_observes_pending_resume_coalesced_fences_and_completed
         Arc::new(attachment),
         Default::default(),
         Arc::new(blent::display_work::View::new(Some(source), None, true)),
+        None,
     ));
     assert!(timeout(Duration::from_millis(20), updates.changed())
         .await
@@ -341,55 +342,26 @@ async fn joined(report: &Report) {
 }
 #[tokio::test]
 async fn t1037_controller_cannot_overlap_original_cache_preparation_or_lose_late_native_proof() {
-    use blent_config::connection::routes::{Identity, Link};
-    use std::os::unix::ffi::OsStrExt;
-    let directory = tempfile::tempdir().unwrap();
-    let fifo = directory.path().join("held-helper-fingerprint");
-    let name = std::ffi::CString::new(fifo.as_os_str().as_bytes()).unwrap();
-    assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
-    let fallback = directory.path().join("retired-helper-fingerprint");
-    std::fs::write(&fallback, b"T1037 harmless retired fingerprint").unwrap();
-    let mut fingerprint = Fingerprint {
-        path: fifo.clone(),
-        fallback,
-        writer: None,
-    };
-    let (mut snapshot, _) = super::super::cache::tests::setup();
-    snapshot.decoder_epoch = 7; // Exact scope in the independent protocol-2 fixture.
-    let (settings, _updates) = watch::channel(snapshot.clone());
-    let attachment = crate::attachment::Attachment::new(settings.clone());
-    attachment.begin_route(
-        Some(
-            Identity::observed("T1037-preparation".into(), Some("T1037-preparation".into()))
-                .unwrap(),
-        ),
-        Some(Link::Usb),
-    );
-    settings.send_replace(snapshot);
+    let mut preparation = Preparation::new();
     let (_visible, display) = watch::channel(true);
     let (owner, stop) = watch::channel(false);
     let mut feed = feed();
     let (publish, source) = watch::channel(state(&feed));
     let report = Arc::new(Report::default());
     let scope = blent::native_scope::Scope::new(Some(report.clone()));
-    let config = CaptureConfig {
-        instance: u32::MAX,
-        helper_path: fifo.clone(),
-        gpu_policy: blent_config::gpu::Policy::Software,
-        ..Default::default()
-    };
     let task = tokio::spawn(run(
-        config,
-        settings,
+        preparation.config.clone(),
+        preparation.settings.clone(),
         display,
         stop,
         Default::default(),
-        Arc::new(attachment),
+        Arc::new(preparation.attachment.clone()),
         scope,
         Arc::new(blent::display_work::View::new(Some(source), None, true)),
+        None,
     ));
     let original = first_proof(&report).await;
-    fingerprint.writer = Some(writer(&fifo).await); // Actual preflight reader now blocks on the original FIFO.
+    preparation.hold().await; // Actual preflight reader now blocks on the original FIFO.
     observe(&mut feed, 2, true);
     publish.send_replace(state(&feed));
     observe(&mut feed, 3, false);
@@ -403,7 +375,7 @@ async fn t1037_controller_cannot_overlap_original_cache_preparation_or_lose_late
         .unwrap()
         .unwrap();
     let retained_after_parent = !original.is_complete();
-    drop(fingerprint);
+    preparation.release();
     joined(&report).await;
     assert!(
         !overlapping,
@@ -529,6 +501,7 @@ async fn t1045_selector_uses_original_viewer_demand_and_saved_preference() {
             Arc::new(attachment),
             Default::default(),
             work,
+            None,
         ));
         if pause {
             assert!(
@@ -569,4 +542,114 @@ async fn t1045_selector_uses_original_viewer_demand_and_saved_preference() {
             .unwrap()
             .unwrap();
     }
+}
+
+// Own the FIFO, rescue writer and temporary directory together. Native readers
+// retire before directory reuse; release remains available on panic through Drop.
+struct Preparation {
+    fingerprint: Option<Fingerprint>,
+    config: CaptureConfig,
+    settings: watch::Sender<crate::media::EncoderSettings>,
+    attachment: crate::attachment::Attachment,
+    _directory: tempfile::TempDir,
+}
+impl Preparation {
+    fn new() -> Self {
+        use blent_config::connection::routes::{Identity, Link};
+        use std::os::unix::ffi::OsStrExt;
+        let directory = tempfile::tempdir().unwrap();
+        let fifo = directory.path().join("held-helper-fingerprint");
+        let name = std::ffi::CString::new(fifo.as_os_str().as_bytes()).unwrap();
+        assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
+        let fallback = directory.path().join("retired-helper-fingerprint");
+        std::fs::write(&fallback, b"T1037 harmless retired fingerprint").unwrap();
+        let fingerprint = Fingerprint {
+            path: fifo.clone(),
+            fallback,
+            writer: None,
+        };
+        let (mut snapshot, _) = super::super::cache::tests::setup();
+        snapshot.decoder_epoch = 7;
+        let (settings, _) = watch::channel(snapshot.clone());
+        let attachment = crate::attachment::Attachment::new(settings.clone());
+        attachment.begin_route(
+            Some(
+                Identity::observed("T1037-preparation".into(), Some("T1037-preparation".into()))
+                    .unwrap(),
+            ),
+            Some(Link::Usb),
+        );
+        settings.send_replace(snapshot);
+        Self {
+            fingerprint: Some(fingerprint),
+            config: CaptureConfig {
+                instance: u32::MAX,
+                helper_path: fifo,
+                gpu_policy: blent_config::gpu::Policy::Software,
+                ..Default::default()
+            },
+            settings,
+            attachment,
+            _directory: directory,
+        }
+    }
+    async fn hold(&mut self) {
+        self.fingerprint.as_mut().unwrap().writer = Some(writer(&self.config.helper_path).await);
+    }
+    fn release(&mut self) {
+        drop(self.fingerprint.take());
+    }
+}
+
+#[tokio::test]
+async fn t1050_selector_receipt_waits_for_original_late_native_preparation() {
+    let mut preparation = Preparation::new();
+    let (control, mut participants) = blent::display_quiescence::channel(1).unwrap();
+    let participant = participants.pop().unwrap();
+    let work =
+        Arc::new(blent::display_work::View::new(None, None, false).with_gate(participant.source()));
+    let (_visible, display) = watch::channel(true);
+    let (owner, stop) = watch::channel(false);
+    let report = Arc::new(Report::default());
+    let scope = blent::native_scope::Scope::new(Some(report.clone()));
+    let task = tokio::spawn(run(
+        preparation.config.clone(),
+        preparation.settings.clone(),
+        display,
+        stop,
+        Default::default(),
+        Arc::new(preparation.attachment.clone()),
+        scope,
+        work,
+        Some(participant),
+    ));
+    let original = first_proof(&report).await;
+    preparation.hold().await;
+    let fence = control.pause();
+    tokio::time::sleep(Duration::from_millis(30)).await;
+    assert!(
+        !fence.complete(),
+        "T1050 selector reported before native preparation retired"
+    );
+    assert!(!control.resume(&fence));
+    assert!(!original.is_complete());
+    preparation.release();
+    timeout(Duration::from_secs(10), async {
+        while !fence.complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(original.is_complete());
+    assert!(report
+        .0
+        .lock()
+        .unwrap()
+        .iter()
+        .all(|proof| proof.is_complete()));
+    assert!(control.resume(&fence));
+    owner.send_replace(true);
+    task.await.unwrap();
+    joined(&report).await;
 }

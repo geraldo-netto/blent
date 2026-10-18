@@ -27,10 +27,12 @@ pub(crate) async fn run(
     attachment: Arc<dyn blent::capture_contract::ProfileSource>,
     scope: blent::native_scope::Scope,
     activity: Arc<blent::display_work::View>,
+    quiescence: Option<blent::display_quiescence::Participant>,
 ) {
     let mut updates = settings.subscribe();
     let mut completed: Option<Completed<'_>> = None;
     loop {
+        acknowledge_pause(quiescence.as_ref());
         let activity_change = activity.changed();
         let profile_change = attachment.changed();
         let profile = attachment.profile();
@@ -91,6 +93,15 @@ pub(crate) async fn run(
         {
             return;
         }
+    }
+}
+
+fn acknowledge_pause(participant: Option<&blent::display_quiescence::Participant>) {
+    let Some(participant) = participant else { return; };
+    if let Some(pause) = participant.pending() {
+        // Initial idle or the preceding original native group was fully retired
+        // below before control returned here. The shared gate forbids new work.
+        participant.acknowledge(&pause);
     }
 }
 
@@ -584,5 +595,6 @@ fn spawn(
         Arc::new(attachment),
         Default::default(),
         Arc::new(blent::display_work::View::new(None, None, true)),
+        None,
     ))
 }

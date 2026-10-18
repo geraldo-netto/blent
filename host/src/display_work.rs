@@ -12,11 +12,13 @@ pub struct View {
     activity: activity_view::View,
     viewers: Option<Arc<dyn ViewerActivity>>,
     pause_without_viewer: bool,
+    gate: Option<crate::display_quiescence::Source>,
 }
 #[derive(Clone)]
 pub struct Observation {
     activity: WorkObservation,
     presence: Option<ViewerPresence>,
+    gate: Option<crate::display_quiescence::Permit>,
 }
 impl View {
     pub fn new(
@@ -28,7 +30,12 @@ impl View {
             activity: activity_view::View::new(ActivityTarget::Display, source),
             viewers,
             pause_without_viewer,
+            gate: None,
         }
+    }
+    pub fn with_gate(mut self, gate: crate::display_quiescence::Source) -> Self {
+        self.gate = Some(gate);
+        self
     }
     pub fn begin(&self) -> Option<Observation> {
         let presence = self.presence();
@@ -41,10 +48,26 @@ impl View {
         Some(Observation {
             activity: self.activity.begin()?,
             presence,
+            gate: self.gate_observation()?,
         })
     }
     pub fn permits(&self, original: &Observation) -> bool {
-        self.activity.permits(original.activity) && self.continuous(original)
+        self.activity.permits(original.activity)
+            && self.continuous(original)
+            && self.gate_continues(original)
+    }
+    fn gate_observation(&self) -> Option<Option<crate::display_quiescence::Permit>> {
+        match &self.gate {
+            Some(gate) => Some(Some(gate.begin()?)),
+            None => Some(None),
+        }
+    }
+    fn gate_continues(&self, original: &Observation) -> bool {
+        match (&self.gate, &original.gate) {
+            (Some(gate), Some(original)) => gate.permits(original),
+            (None, None) => true,
+            _ => false,
+        }
     }
     fn presence(&self) -> Option<ViewerPresence> {
         if !self.pause_without_viewer {
@@ -61,15 +84,21 @@ impl View {
     }
     pub fn changed(&self) -> Signal<'static> {
         let activity = self.activity.changed();
+        let gate = self.gate.as_ref().map(|gate| gate.changed());
         let viewers = self.viewers.as_ref().map(|viewers| viewers.changed());
         Box::pin(async move {
-            match viewers {
-                Some(viewers) => {
-                    tokio::select! { _ = activity => {}, _ = viewers => {} }
-                }
-                None => activity.await,
+            tokio::select! {
+                _ = activity => {},
+                _ = optional_notice(viewers) => {},
+                _ = optional_notice(gate) => {},
             }
         })
+    }
+}
+async fn optional_notice(notice: Option<Signal<'static>>) {
+    match notice {
+        Some(notice) => notice.await,
+        None => std::future::pending().await,
     }
 }
 #[cfg(test)]
