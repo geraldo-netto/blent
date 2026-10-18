@@ -20,6 +20,29 @@ class AndroidConnectionWorkerRunTest {
     private suspend fun until(condition: () -> Boolean) = withTimeout(1500) { while (!condition()) delay(1) }
     private fun await(latch: CountDownLatch) { check(latch.await(3, TimeUnit.SECONDS)) }
 
+    @Test fun t1078NullBindingFixtureUsesAvailableSdkCallbackWithoutNativeAdmission() {
+        val endpoint = ConnectionWorkerEndpoint()
+        val context = ConnectionWorkerContext(endpoint).apply { nullBinding = true }
+        val events = ArrayList<String>()
+        val connection = object : android.content.ServiceConnection {
+            override fun onServiceConnected(name: android.content.ComponentName?, service: android.os.IBinder?) {
+                assertNull(service)
+                events.add("legacy-null")
+            }
+            override fun onNullBinding(name: android.content.ComponentName?) { events.add("null-binding") }
+            override fun onServiceDisconnected(name: android.content.ComponentName?) { error("Unexpected disconnect") }
+        }
+        val intent = android.content.Intent(context, ConnectionWorkerService::class.java)
+        assertTrue(context.bindService(intent, connection, android.content.Context.BIND_AUTO_CREATE))
+        try {
+            val expected = if (android.os.Build.VERSION.SDK_INT >= 28) "null-binding" else "legacy-null"
+            assertEquals("T1078: one available rejection callback", listOf(expected), events)
+            assertTrue(endpoint.codes.isEmpty())
+            assertEquals(0, endpoint.links)
+        } finally { context.unbindService(connection) }
+        assertEquals(1, context.unbinds)
+    }
+
     @Test fun t890ConfiguredNativeCleanupMustNotBeKilledAtFixedHalfSecond() = runBlocking {
         val endpoint = ConnectionWorkerEndpoint().apply { start = {} }
         val context = ConnectionWorkerContext(endpoint)

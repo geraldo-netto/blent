@@ -72,8 +72,11 @@ internal class ConnectionWorkerContext(val endpoint: ConnectionWorkerEndpoint) :
         checkIntent(intent)
         if (bindFailure) throw SecurityException("bind denied")
         if (!accepts) return false
-        if (nullBinding) connection.onNullBinding(component)
-        else if (connect) connection.onServiceConnected(component, endpoint)
+        if (nullBinding) {
+            // API 27 has no onNullBinding; its nullable connected callback exercises rejection.
+            if (Build.VERSION.SDK_INT >= 28) connection.onNullBinding(component)
+            else connection.onServiceConnected(component, null)
+        } else if (connect) connection.onServiceConnected(component, endpoint)
         return true
     }
     override fun unbindService(connection: ServiceConnection) {
