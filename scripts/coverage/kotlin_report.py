@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 
 from model import add_line, result, source_path, validate_count
 from readers import read_bounded
+from kotlin_inline import filtered_origins, missing_classes
 
 
 def jvm_names(name):
@@ -65,6 +66,11 @@ def read_methods(package, directory, root):
             record = method_record(file, owner.attrib['name'], method)
             if record is not None:
                 output.append(record)
+    origins = filtered_origins(package)
+    for record in output:
+        missing = missing_classes(record, origins)
+        if missing:
+            record['unmeasured_inline_classes'] = missing
     return output
 
 

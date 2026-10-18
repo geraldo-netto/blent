@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from kotlin_inventory import functions as kotlin_functions
+from kotlin_inline import unmeasured_bodies, require_body_counters
 from kotlin_report import assign_methods, function_key, function_result, read as read_kotlin
 from model import Function, fingerprint, result, verify_sources
 import readers
@@ -86,19 +87,27 @@ def collect(manifest, data, kotlin, scopes, python_calls=frozenset()):
     methods, kotlin_lines = kotlin
     functions = [Function(**entry) for entry in manifest['functions']]
     assigned = assign_methods([function for function in functions if function.language == 'kotlin'], methods)
+    gaps = unmeasured_bodies(functions, assigned, function_key)
     for function in functions:
         if not selected(function, scopes):
             continue
         native = assigned.get(function_key(function), [])
-        if inline_body(function, native, kotlin_lines):
+        if inline_body(function, native, kotlin_lines) and function_key(function) not in gaps:
             continue
-        row = function_result(function, native, kotlin_lines) if function.language == 'kotlin' else result(function, data)
-        if function.language == 'python':
-            require_invocation(row, function, python_calls)
-        rows.append(row)
+        rows.append(measured_row(function, native, data, kotlin_lines,
+                                 gaps.get(function_key(function), []), python_calls))
     if not rows:
         raise ValueError('coverage scope contains no maintained functions')
     return rows
+
+
+def measured_row(function, native, data, kotlin_lines, gaps, python_calls):
+    row = function_result(function, native, kotlin_lines) if function.language == 'kotlin' else result(function, data)
+    if gaps:
+        require_body_counters(row, gaps)
+    if function.language == 'python':
+        require_invocation(row, function, python_calls)
+    return row
 
 
 def require_invocation(row, function, observed):
