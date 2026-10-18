@@ -41,6 +41,7 @@ pub fn request(
 
 /// The native adapter accepts one validated immutable request. A separate
 /// bootstrap token must describe its exact credential before native setup.
+#[cfg(any(test, all(target_os = "linux", feature = "accessory-transport")))]
 pub(crate) fn validate_original(request: &Request, token: &str) -> Result<()> {
     ensure!(
         request.resource != Resource::DisplaySession,

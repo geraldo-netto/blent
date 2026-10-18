@@ -57,6 +57,7 @@ impl EncoderProcess {
         self.generation.activate(scope);
         Ok(self.generation.report().unwrap())
     }
+    #[cfg(any(test, not(feature = "inproc-encoder")))]
     pub(super) fn adopt(&mut self, child: Child, scope: Scope) {
         scope.retain(child.completion());
         self.child = Some(child);

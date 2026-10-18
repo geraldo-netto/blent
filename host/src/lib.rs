@@ -34,6 +34,7 @@ pub mod display_quiescence;
 pub mod ffmpeg_args;
 pub mod latency;
 pub mod media;
+#[cfg(any(test, all(target_os = "linux", feature = "accessory-transport")))]
 pub(crate) mod media_connection;
 pub mod media_registration;
 pub mod media_request;
