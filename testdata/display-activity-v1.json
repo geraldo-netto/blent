@@ -1,0 +1,78 @@
+{
+  "valid": [
+    {
+      "name": "active",
+      "json": "{\"version\":1,\"revision\":1,\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "paused",
+      "json": "{\"version\":1,\"revision\":2,\"stopped\":1,\"active\":false}"
+    },
+    {
+      "name": "coalesced",
+      "json": "{\"version\":1,\"revision\":3,\"stopped\":1,\"active\":true}"
+    },
+    {
+      "name": "max",
+      "json": "{\"version\":1,\"revision\":9223372036854775807,\"stopped\":9223372036854775807,\"active\":false}"
+    }
+  ],
+  "invalid": [
+    {
+      "name": "version",
+      "json": "{\"version\":2,\"revision\":1,\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "missing",
+      "json": "{\"version\":1,\"revision\":1,\"active\":true}"
+    },
+    {
+      "name": "extra",
+      "json": "{\"version\":1,\"revision\":1,\"stopped\":0,\"active\":true,\"grant\":true}"
+    },
+    {
+      "name": "zero",
+      "json": "{\"version\":1,\"revision\":0,\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "negative",
+      "json": "{\"version\":1,\"revision\":-1,\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "overflow",
+      "json": "{\"version\":1,\"revision\":9223372036854775808,\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "negative-stop",
+      "json": "{\"version\":1,\"revision\":1,\"stopped\":-1,\"active\":true}"
+    },
+    {
+      "name": "future-stop",
+      "json": "{\"version\":1,\"revision\":1,\"stopped\":2,\"active\":true}"
+    },
+    {
+      "name": "string",
+      "json": "{\"version\":1,\"revision\":\"1\",\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "float",
+      "json": "{\"version\":1,\"revision\":1.0,\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "string-active",
+      "json": "{\"version\":1,\"revision\":1,\"stopped\":0,\"active\":\"true\"}"
+    },
+    {
+      "name": "null",
+      "json": "{\"version\":1,\"revision\":1,\"stopped\":0,\"active\":null}"
+    },
+    {
+      "name": "float-version",
+      "json": "{\"version\":1.0,\"revision\":1,\"stopped\":0,\"active\":true}"
+    },
+    {
+      "name": "stop-string",
+      "json": "{\"version\":1,\"revision\":1,\"stopped\":\"0\",\"active\":true}"
+    }
+  ]
+}
