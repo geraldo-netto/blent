@@ -43,7 +43,7 @@ internal class PowerServicePolicy(
         require(now >= 0)
         return Idle(Math.addExact(now, WIFI_IDLE_GRACE_MILLIS), request).also { idle = it }
     }
-    private fun current(original: Idle): Boolean = idle === original && worker.alive && access.current(original.request)
+    private fun current(original: Idle): Boolean = idle === original && worker.alive && access.current(original.request) && original.request.permitsPower()
     private fun release(original: Idle) {
         if (!current(original)) return
         try { if (!worker.update(original.request, false, schedule.now())) lost(worker.owner, null) }

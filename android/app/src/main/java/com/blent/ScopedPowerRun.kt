@@ -21,15 +21,31 @@ internal class ScopedPowerRun(
     override suspend fun execute() {
         currentCoroutineContext().ensureActive()
         check(admitted.compareAndSet(false, true)) { "Scoped power worker already executed" }
-        val view = views.first { observable(it) }
-        if (!eligible(view)) return
+        if (!awaitEligible()) return
         val original = create()
         owned = original
         currentCoroutineContext().ensureActive()
-        if (stopped.get()) original.cancel() else original.execute()
+        if (!awaitEligible()) return
+        currentCoroutineContext().ensureActive()
+        original.execute()
     }
-    private fun observable(view: PowerWorkerView?): Boolean = stopped.get() || cutoff.get() || view == null || view.stamp !== stamp || access.current(view.request)
-    private fun eligible(view: PowerWorkerView?): Boolean = !stopped.get() && !cutoff.get() && view != null && view.stamp === stamp && access.current(view.request)
+    private suspend fun awaitEligible(): Boolean {
+        while (true) {
+            val view = views.first { observable(it) }
+            if (ended(view)) return false
+            if (relevant(checkNotNull(view))) return true
+        }
+    }
+    private fun observable(view: PowerWorkerView?): Boolean {
+        if (ended(view)) return true
+        return relevant(checkNotNull(view))
+    }
+    private fun ended(view: PowerWorkerView?): Boolean = stopped.get() || cutoff.get() || view == null || view.stamp !== stamp
+    private fun relevant(view: PowerWorkerView): Boolean {
+        val request = view.request
+        if (!access.current(request)) return false
+        return request.permitsPower() && access.current(request)
+    }
     override fun cancel() { stopped.set(true); owned?.cancel() }
     override suspend fun retire() { cancel(); owned?.retire() }
 }

@@ -142,7 +142,7 @@ class MainActivity : ComponentActivity() {
         cameraAttachment = CameraOwner.attach(cameraPermissionLauncher::launch)
         audioAttachment = AudioOwner.attach(microphonePermissionLauncher::launch)
         windowPolicy.start()
-        powerBinding.start(session.powerNow(), session.powerUpdates())
+        powerBinding.start(session.powerDemandNow(), session.powerDemandUpdates())
         session.checkUpdate {
             try { packageManager.getPackageInfo(packageName, 0).versionName ?: "0" } catch (_: Exception) { "0" }
         }

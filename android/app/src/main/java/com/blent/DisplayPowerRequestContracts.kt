@@ -3,7 +3,11 @@ package com.blent
 /** Opaque original foreground identity; retained references cannot compare equal
  * to a later allocation, independently of wire/process counters. */
 internal class DisplayPowerOwner internal constructor()
-internal class DisplayPowerRequest internal constructor(val owner: DisplayPowerOwner, val power: StreamingPower?)
+internal class DisplayPowerRequest internal constructor(
+    val owner: DisplayPowerOwner,
+    val power: StreamingPower?,
+    val permit: DisplayPowerPermit = FixedDisplayPowerPermit,
+)
 internal class DisplayPowerNotice internal constructor(val original: DisplayPowerRequest)
 internal class DisplayPowerAdmission internal constructor(val owner: DisplayPowerOwner, val notice: DisplayPowerNotice?)
 internal class DisplayPowerDelivery internal constructor(val accepted: Boolean, val request: DisplayPowerRequest?, val next: DisplayPowerNotice?)
@@ -15,8 +19,8 @@ internal interface DisplayPowerView {
 }
 
 internal interface DisplayPowerPublisher : DisplayPowerView {
-    fun open(power: StreamingPower): DisplayPowerAdmission
-    fun publish(owner: DisplayPowerOwner, power: StreamingPower): DisplayPowerNotice?
+    fun open(power: StreamingPower, permit: DisplayPowerPermit = FixedDisplayPowerPermit): DisplayPowerAdmission
+    fun publish(owner: DisplayPowerOwner, power: StreamingPower, permit: DisplayPowerPermit = FixedDisplayPowerPermit): DisplayPowerNotice?
     fun close(owner: DisplayPowerOwner): DisplayPowerNotice?
 }
 

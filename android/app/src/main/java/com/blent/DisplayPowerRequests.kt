@@ -7,16 +7,16 @@ internal class DisplayPowerRequests : DisplayPowerChannel {
     private var queued: DisplayPowerNotice? = null
     private var dirty = false
 
-    @Synchronized override fun open(power: StreamingPower): DisplayPowerAdmission {
+    @Synchronized override fun open(power: StreamingPower, permit: DisplayPowerPermit): DisplayPowerAdmission {
         val owner = DisplayPowerOwner()
-        latest = DisplayPowerRequest(owner, power)
+        latest = DisplayPowerRequest(owner, power, permit)
         dirty = true
         return DisplayPowerAdmission(owner, admit())
     }
 
-    @Synchronized override fun publish(owner: DisplayPowerOwner, power: StreamingPower): DisplayPowerNotice? {
+    @Synchronized override fun publish(owner: DisplayPowerOwner, power: StreamingPower, permit: DisplayPowerPermit): DisplayPowerNotice? {
         if (!owns(owner)) return null
-        latest = DisplayPowerRequest(owner, power)
+        latest = DisplayPowerRequest(owner, power, permit)
         dirty = true
         return admit()
     }

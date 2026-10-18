@@ -101,7 +101,7 @@ class RetirementFailureTest {
             original.stop()
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             check(originalJob.isCompleted) { "T1064 old observer must settle before fixture replacement" }
-            broken.start(StreamingPower(), MutableStateFlow(StreamingPower()))
+            broken.start(DisplayPowerDemand(StreamingPower()), MutableStateFlow(DisplayPowerDemand(StreamingPower())))
             field(activity, "powerBinding").set(activity, broken)
             controller.stop()
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()

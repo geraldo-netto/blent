@@ -93,11 +93,12 @@ internal class SessionCoordinator(
     private var externalAvailable = false
     val presentation = StreamPresentation(videoReceiver, touchCapture)
 
+    fun powerDemandNow() = DisplayPowerDemand(powerNow())
     fun powerNow(): StreamingPower = powerFor(settings.batterySaver, presentation.connected, penOnlyMode, presentation.connectionState.value)
-    fun powerUpdates() = combine(
+    fun powerDemandUpdates() = combine(
         snapshotFlow { Triple(settings.batterySaver, presentation.connected, penOnlyMode) },
         presentation.connectionState,
-    ) { local, connection -> powerFor(local.first, local.second, local.third, connection) }.distinctUntilChanged()
+    ) { local, connection -> DisplayPowerDemand(powerFor(local.first, local.second, local.third, connection)) }.distinctUntilChanged()
 
     private fun powerFor(saver: Boolean, video: Boolean, pen: Boolean, connection: ControlConnection) =
         StreamingPower(saver, connection.authenticated && (video || pen), connection.transport)

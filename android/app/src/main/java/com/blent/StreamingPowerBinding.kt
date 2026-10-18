@@ -14,9 +14,9 @@ internal class StreamingPowerBinding(
     private var active = false
     private var owner: DisplayPowerOwner? = null
 
-    fun start(initial: StreamingPower, requests: Flow<StreamingPower>) {
+    fun start(initial: DisplayPowerDemand, requests: Flow<DisplayPowerDemand>) {
         if (active) return
-        val original = runtime.open(initial)
+        val original = runtime.open(initial.power, initial.permit)
         if (!runtime.owns(original)) return
         owner = original
         active = true
@@ -27,7 +27,7 @@ internal class StreamingPowerBinding(
             requests.collect { request ->
                 if (active && owner === original && request != previous) {
                     previous = request
-                    if (!runtime.publish(original, request)) stop()
+                    if (!runtime.publish(original, request.power, request.permit)) stop()
                 }
             }
         }

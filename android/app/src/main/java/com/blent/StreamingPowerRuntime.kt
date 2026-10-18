@@ -23,8 +23,8 @@ internal class StreamingPowerRuntime(
     private var service: PowerServicePort? = null
     private var session: Session? = null
 
-    fun open(power: StreamingPower): DisplayPowerOwner {
-        val admission = channel.open(power)
+    fun open(power: StreamingPower, permit: DisplayPowerPermit = FixedDisplayPowerPermit): DisplayPowerOwner {
+        val admission = channel.open(power, permit)
         client = admission.owner
         cutoff()
         issue(admission.notice)
@@ -34,10 +34,10 @@ internal class StreamingPowerRuntime(
     fun pending(notice: DisplayPowerNotice): Boolean = channel.pending(notice)
     val hasOwner get() = client?.let(channel::owns) == true
 
-    fun publish(owner: DisplayPowerOwner, power: StreamingPower): Boolean {
+    fun publish(owner: DisplayPowerOwner, power: StreamingPower, permit: DisplayPowerPermit = FixedDisplayPowerPermit): Boolean {
         if (!channel.owns(owner)) return false
         if (session?.let { it.owner === owner && !it.worker.alive } == true) { close(owner); return false }
-        issue(channel.publish(owner, power))
+        issue(channel.publish(owner, power, permit))
         return channel.owns(owner)
     }
     fun close(owner: DisplayPowerOwner) {
@@ -83,11 +83,13 @@ internal class StreamingPowerRuntime(
     private fun apply(port: PowerServicePort, request: DisplayPowerRequest) {
         if (!channel.current(request)) return
         if (request.power == null) { if (session?.owner === request.owner) cutoff(); finishIfIdle(); return }
-        if (client !== request.owner || !channel.owns(request.owner)) return
         try {
+            if (!currentDesired(request)) return
             if (!activeSession(port, request).policy.apply(request)) lost(request.owner, null)
         } catch (failure: Exception) { lost(request.owner, failure) }
     }
+    private fun currentDesired(request: DisplayPowerRequest): Boolean =
+        client === request.owner && channel.owns(request.owner) && request.permitsPower() && channel.current(request)
     private fun activeSession(port: PowerServicePort, request: DisplayPowerRequest): Session {
         session?.let { if (it.owner === request.owner && it.port === port) return it }
         cutoff()
@@ -113,7 +115,7 @@ internal class StreamingPowerRuntime(
         val delivery = channel.receive(notice)
         if (!delivery.accepted) return
         val request = delivery.request
-        if (request?.power != null && channel.current(request)) issue(channel.publish(request.owner, request.power))
+        if (request?.power != null && channel.current(request)) issue(channel.publish(request.owner, request.power, request.permit))
         else issue(delivery.next)
         finishIfIdle()
     }

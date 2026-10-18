@@ -219,3 +219,49 @@ framework bytecode shows local held-state changes after synchronous release call
 it does not prove unrestricted system-server/kernel cleanup timing. Robolectric
 checks real adapters against bounded independent fault models and joined local
 worker cleanup; physical process, device wake and battery acceptance remain T914.
+
+
+## Original source-view relevance
+
+T1069 adds an independent `DisplayPowerPermit` to immutable desired requests and
+`DisplayPowerDemand` values. A fixed policy has no changing external view and uses
+the fixed permit; actual foreground identity still applies. A dynamic permit reads
+one original source view without blocking or mutation and is safe on UI/worker
+threads. Once its original view is invalid it cannot revive; a fresh view supplies
+a fresh permit. Normal reader exceptions fail closed; fatal failures propagate.
+A permit supplies neither authentication nor native ownership/quiescence proof.
+
+Channel `current(request)` retains its original exact-latest-request meaning.
+Logical receipt can settle an original notice even when its desired source is no
+longer relevant. Actual receiver validation checks both source relevance and latest
+foreground identity, rechecking identity after a reader call so faulty reentrant
+readers cannot install a retired owner's workflow. A stale request is unadmitted;
+it does not close a valid foreground claim that is awaiting a fresh view. Withdrawal
+never borrows a vanished source. Exact callback retry preserves the actual current
+request's permit, including when its policy equals the original carrier value.
+
+The lazy worker waits for actual delivered current policy plus a relevant original
+view. After creating its lazy native wrapper it retains that wrapper and waits for
+current relevance again before execution. A blocked late creator cannot skip this
+second gate. Changed views with an unchanged native task refresh the existing view
+and wake its waiter; they do not allocate a second process or imply retirement.
+Native retirement and source relevance remain independent gates. Actual matching
+readiness still describes that original native task's acquired handles, rather than
+a new source permission. Idle timers additionally require current source relevance.
+
+Foreground delivery compares whole immutable demands, so equal power values with
+a changed source permit still publish. Current Activity wrappers use the fixed
+permit until T1061 wires the independent source reader and window projection;
+this contract alone does not implement that projection. Each request retains one
+permit reference and its caller-bounded read view. Production readers must retain
+only narrow pure metadata rather than UI/socket/callback owners. The existing
+channel, execution lane and original cleanup sponsors retain their prior bounds.
+No new queue, timer, native allocator or deadline is introduced. Conditional
+progress while a desired view is invalid requires a fresh current publication or
+original owner cutoff; missing evidence cannot substitute for native retirement.
+
+Permanent regressions cover stale receiver admission, pre-creation source loss,
+source change during a held lazy creator, fenced callback retry and reentrant-reader
+cutoff. Further tests retain equal-policy fresh-view delivery, 1,000 coalesced views,
+reader faults, stale idle callbacks and independent source/native-retirement gates.
+The containing original job is joined before retiring even an unopened late wrapper.
