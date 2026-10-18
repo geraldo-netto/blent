@@ -15,6 +15,7 @@ mod event_writer;
 mod linux;
 #[cfg(target_os = "linux")]
 pub use linux::Backend as LinuxBackend;
+mod activity;
 #[cfg(target_os = "linux")]
 mod mapping;
 mod settings;
@@ -92,6 +93,7 @@ impl Drop for ControllerLease {
 }
 
 pub struct InputServer {
+    activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     fixed_mode: Option<bool>,
     attachment: Option<crate::attachment::Attachment>,
     backend: Arc<dyn InputBackend>,
@@ -143,6 +145,7 @@ impl InputServer {
         backend: Arc<dyn InputBackend>,
     ) -> Self {
         Self {
+            activity: None,
             attachment: None,
             fixed_mode: None,
             backend,
@@ -153,6 +156,15 @@ impl InputServer {
             relaunch,
             tablet_rx,
         }
+    }
+
+    /// Borrow the existing machine source; this creates no source or media grant.
+    pub fn with_activity(
+        mut self,
+        activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+    ) -> Self {
+        self.activity = activity;
+        self
     }
 
     /// A backend without display switching can retain its supported protocol mode.
@@ -229,6 +241,7 @@ impl InputServer {
             };
             let mut incoming = PendingInput::new(socket);
             incoming.fixed_mode = self.fixed_mode;
+            incoming.activity = self.activity.clone();
             incoming.attachment = self
                 .attachment
                 .as_ref()
@@ -254,6 +267,7 @@ impl InputServer {
 }
 
 struct PendingInput {
+    activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
     fixed_mode: Option<bool>,
     attachment: Option<crate::attachment::Lease>,
     stream: tokio::net::TcpStream,
@@ -262,12 +276,20 @@ struct PendingInput {
 impl PendingInput {
     fn new(stream: tokio::net::TcpStream) -> Self {
         Self {
+            activity: None,
             attachment: None,
             fixed_mode: None,
             stream,
             deadline: tokio::time::Instant::now() + std::time::Duration::from_secs(3),
         }
     }
+}
+
+struct ControlChannels {
+    settings: Option<watch::Sender<EncoderSettings>>,
+    mode: watch::Sender<bool>,
+    fixed_mode: Option<bool>,
+    activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
 }
 
 async fn handle_connection(
@@ -306,7 +328,12 @@ async fn handle_connection(
         return Ok(());
     }
 
-    let channels = (settings_tx, mode_tx, incoming.fixed_mode);
+    let channels = ControlChannels {
+        settings: settings_tx,
+        mode: mode_tx,
+        fixed_mode: incoming.fixed_mode,
+        activity: incoming.activity,
+    };
     let attachment = incoming.attachment;
     let mut retirement = attachment
         .as_ref()
@@ -338,16 +365,18 @@ async fn serve_controller(
     mut ws_sender: futures_util::stream::SplitSink<InputSocket, Message>,
     mut ws_receiver: futures_util::stream::SplitStream<InputSocket>,
     config: InputConfig,
-    channels: (
-        Option<watch::Sender<EncoderSettings>>,
-        watch::Sender<bool>,
-        Option<bool>,
-    ),
+    channels: ControlChannels,
     attachment: Option<&crate::attachment::Lease>,
     latency: crate::latency::LatencyTracker,
     controllers: Arc<Controllers>,
 ) -> Result<()> {
-    let (settings_tx, mode_tx, fixed_mode) = channels;
+    let ControlChannels {
+        settings: settings_tx,
+        mode: mode_tx,
+        fixed_mode,
+        activity,
+    } = channels;
+    let mut activity = activity::Observer::new(activity);
     let settings =
         SessionSettings::new(&settings_tx, &mode_tx, config.pen).with_fixed_mode(fixed_mode);
     let mut mode_rx = mode_tx.subscribe();
@@ -373,6 +402,7 @@ async fn serve_controller(
     let mut resp = config.response("connected", *mode_rx.borrow_and_update(), &settings_tx);
     resp.direct_input = controllers.devices.direct_status();
     resp.transport = attachment.and_then(crate::attachment::Lease::transport);
+    resp.display_activity = activity.update()?;
 
     if !send_controller_message(
         &mut ws_sender,
@@ -385,6 +415,16 @@ async fn serve_controller(
     }
 
     loop {
+        // Arm before reading current demand, including changes during greeting or
+        // a prior socket write. Projection remembers coalesced original stops.
+        let notice = activity.changed();
+        if let Some(signal) = activity.update()? {
+            if !send_controller_message(&mut ws_sender, activity::message(signal)?, &mut ownership)
+                .await?
+            {
+                break;
+            }
+        }
         let msg = tokio::select! {
             biased;
             _ = ownership.changed() => break,
@@ -392,6 +432,7 @@ async fn serve_controller(
                 Some(m) => m,
                 None => break,
             },
+            _ = notice => continue,
             changed = async {
                 match settings_rx.as_mut() {
                     Some(rx) => rx.changed().await,
@@ -1946,7 +1987,10 @@ fi
         let connected = config.response("connected", false, &Some(publisher));
         assert_eq!(connected.video_liveness, Some(1));
         let standalone = config.response("connected", false, &None);
-        assert!(serde_json::to_value(standalone).unwrap().get("video_liveness").is_none());
+        assert!(serde_json::to_value(standalone)
+            .unwrap()
+            .get("video_liveness")
+            .is_none());
     }
 
     #[test]

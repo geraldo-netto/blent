@@ -1,8 +1,8 @@
 # Display activity signal contract
 
 Status: independent Rust projection/schema and Kotlin schema validation implemented
-under T1055. Host control publication remains T1056, Android decoder consumption
-T1057 and wake ownership T1058. No peer resource release is claimed from this
+under T1055; original host control publication implemented under T1056. Android
+decoder consumption remains T1057 and wake ownership T1058. No peer resource release is claimed from this
 contract alone; joined Android acceptance remains T1011 and physical acceptance T914.
 
 The original authenticated control connection owns the signal sequence. A hint
@@ -56,3 +56,31 @@ with the existing original control/decoder/wake owners; serialization and model
 checks cannot prove native safety. Permanent tests cover shared valid/invalid
 vectors, numeric boundaries, terminal exhaustion and 1,024 five-step transition
 traces against an independent stop model.
+
+## Original host control publication
+
+Portable session startup binds the same read-only machine source to capture and
+input before exposing listeners/work. Each accepted controller retains that view;
+authentication and the original attachment gate precede any hint. The initial
+`connected` response includes `display_activity` only for configured observation.
+Later standalone `display_activity` responses carry the same validated Signal.
+Configured Pending/Failed/Stopped or lost supported observations report inactive;
+absence of a configured source omits the protocol rather than claiming support.
+Underlying backend capabilities remain their independent observation contract.
+
+Each original socket owns one projection. The control loop arms a source notice
+before every current-state read, including the first turn after greeting or write.
+It observes coalesced stop fences and suppresses unchanged hints. Original
+controller replacement/attachment retirement cut off pending publication through
+existing guards. Projection errors propagate out of the original handler, closing
+its socket and controller lease; finite exhaustion is proven in the common
+contract tests, without claiming a native full-counter-cycle experiment.
+
+The source notice is shared with other read-only activity views. Closure publishes
+an inactive observation once; subsequent closed notices remain pending. There is
+no periodic input timer, new source factory, detached publication task or hint
+queue. Input admission remains bounded to 16 sockets, each retaining one projection,
+one latest source view and at most one pending serialized response/notice. The
+wire hint remains below 256 bytes. Original socket/task/attachment owners sponsor
+cleanup on errors, cancellation, peer loss and native shutdown; hints do not
+release their resources or alter camera/audio consent.

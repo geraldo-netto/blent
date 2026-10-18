@@ -83,6 +83,8 @@ pub enum InputEvent {
 
 #[derive(Serialize)]
 pub struct InputResponse {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub display_activity: Option<blent_config::display_activity::Signal>,
     /// Offered only once the host emission path implements this protocol.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub video_liveness: Option<u32>,
@@ -117,4 +119,11 @@ pub struct InputResponse {
     pub pen_only: bool,
     pub touch: bool,
     pub pen: bool,
+}
+
+/// Standalone hint updates carry no media/configuration grant.
+#[derive(Serialize)]
+pub(super) struct ActivityResponse {
+    pub(super) status: &'static str,
+    pub(super) display_activity: blent_config::display_activity::Signal,
 }

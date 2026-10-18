@@ -158,7 +158,9 @@ impl Prepared {
             video_queue::QUEUE_PACKETS,
             self.resources.idr_wanted.clone(),
         );
-        let servers = BoundServers::bind(self.stream, self.input).await?;
+        let servers =
+            BoundServers::bind(self.stream, self.input.with_activity(self.activity.clone()))
+                .await?;
         let (gate_tx, gate_rx) = watch::channel(false);
         let (stop_tx, stop_rx) = watch::channel(false);
         let mut retained_workers = Workers::empty(admission);

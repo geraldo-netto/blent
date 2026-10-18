@@ -30,20 +30,25 @@ impl View {
     /// Arm synchronously before reading begin()/permits(); closure or publication
     /// before first poll must still wake this original read-only observation.
     pub fn changed(&self) -> Change {
-        let Some(source) = &self.source else {
-            return Box::pin(std::future::pending());
-        };
-        let mut source = source.clone();
-        let open = source.has_changed().is_ok();
-        source.borrow_and_update();
-        Box::pin(async move {
-            if open {
-                let _ = source.changed().await;
-            } else {
-                std::future::pending::<()>().await;
-            }
-        })
+        notice(self.source.as_ref())
     }
+}
+
+/// Shared read-only arm-before-read notice; a closed source cannot spin.
+pub(crate) fn notice(source: Option<&watch::Receiver<Publication>>) -> Change {
+    let Some(source) = source else {
+        return Box::pin(std::future::pending());
+    };
+    let mut source = source.clone();
+    let open = source.has_changed().is_ok();
+    source.borrow_and_update();
+    Box::pin(async move {
+        if open {
+            let _ = source.changed().await;
+        } else {
+            std::future::pending::<()>().await;
+        }
+    })
 }
 
 #[cfg(test)]
