@@ -783,3 +783,20 @@ architecture checks and production compilation pass. The broad SDK private-
 bus/namespace fixture prerequisites remain explicitly blocked under T835.
 [Retained red/green logs, native counters and source/native-object attestations](artifacts/2026-10-16-t1015/README.md)
 record the exact validation scope.
+
+
+T1040 moves video type and type-specific size admission ahead of payload reads
+and reusable backing growth. Generic invalid sizes consume only the four-byte
+length; unknown types, short frames, unnegotiated liveness and malformed liveness
+lengths consume only length plus type. Invalid headers now return false from
+`read`; valid packets retain full-payload EOF behavior and synchronous borrowed
+byte ownership. Version rejection remains after the valid two-byte liveness body
+is read. Configuration/frame offsets, sequence interpretation, bounded growth
+headroom and following-packet framing stay covered by the retained oracles.
+
+The permanent T1040 tests exhaust unknown type bytes, cover generic and
+type-specific length boundaries, and spy on reads and backing identity. The
+[retained evidence](artifacts/2026-10-18-t1040/README.md) records failing-before
+and passing-after results, the normal Android suite and native per-method
+counters. This is an invalid-input efficiency correction, not a battery,
+physical-device or unrestricted memory-safety claim.

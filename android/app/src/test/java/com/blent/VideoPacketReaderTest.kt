@@ -74,8 +74,7 @@ class VideoPacketReaderTest {
         for (bytes in listOf(packet(9, byteArrayOf(42)), packet(1, byteArrayOf(0, 0, 0, 1)))) {
             val reader = VideoPacketReader(bytes.inputStream())
             val sink = Sink()
-            assertTrue(reader.read())
-            assertFalse(reader.dispatch(sink))
+            assertFalse("T1040 invalid header rejected before payload I/O", reader.read())
             assertTrue(sink.frames.isEmpty())
             assertTrue(sink.configs.isEmpty())
         }

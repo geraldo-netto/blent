@@ -62,8 +62,7 @@ class VideoLivenessTest {
     @Test fun t1039_absentNegotiationRejectsNewPacketTypeWithoutMediaCallbacks() {
         val reader = VideoPacketReader(byteArrayOf(0, 0, 0, 2, 2, 1).inputStream())
         val sink = Sink()
-        assertTrue(reader.read())
-        assertFalse("T1039 unnegotiated liveness accepted", reader.dispatch(sink))
+        assertFalse("T1039 unnegotiated liveness accepted", reader.read() && reader.dispatch(sink))
         assertEquals(0, sink.frames)
         assertEquals(0, sink.configurations)
     }
