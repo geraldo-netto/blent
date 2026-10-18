@@ -342,6 +342,7 @@ async fn t908_real_tls_exported_session_carries_config_frame_ack_and_touch_then_
         &mut slots,
         admission,
         Bindings {
+            activity: None,
             attachment: runtime.tablet_tx.clone(),
             registration: Box::new(Bound::new(factory, Arc::new(listeners))),
             entropy: blent_config::credentials::system_entropy,

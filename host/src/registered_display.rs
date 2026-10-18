@@ -32,6 +32,15 @@ struct Attempt {
     revoked: Option<Lease>,
 }
 impl Attempt {
+    fn apply(&self, action: impl FnOnce()) -> bool {
+        if self.closing {
+            self.revoked
+                .as_ref()
+                .is_some_and(|lease| lease.apply(action))
+        } else {
+            self.route.apply(action)
+        }
+    }
     fn close(&mut self) {
         if !self.closing {
             self.closing = true;
@@ -85,6 +94,17 @@ pub struct Display {
     closing: bool,
 }
 impl Display {
+    /// Apply only to this exact original live or revoked attachment generation.
+    /// The action must be prompt; a stale owner cannot command its replacement.
+    pub fn apply(&self, action: impl FnOnce()) -> bool {
+        match &self.attempt {
+            Some(attempt) => attempt.apply(action),
+            None => self
+                .authority
+                .as_ref()
+                .is_some_and(|lease| lease.apply(action)),
+        }
+    }
     /// Desired registration suspension, not proof of native capture quiescence.
     /// Revoke only this original route; retain intent, settings and its client
     /// until actual registration retirement. Repeated pauses are idempotent.

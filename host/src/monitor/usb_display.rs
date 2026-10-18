@@ -6,7 +6,7 @@ use blent::{
     },
     connection_discovery::Discovery,
     display_connections::{Admission, Connections, Decision},
-    registered_session::Bindings,
+    registered_session::{ActivityBinding, Bindings},
     session_network::RetainedListeners,
     session_work::RuntimeWork,
 };
@@ -14,11 +14,13 @@ use blent::{
 type Started = (Admission, Result<Bindings>);
 type StartupProof = blent::display_connections::Recovery;
 struct Primary {
+    activity: ActivityBinding,
     attachment: attachment::Attachment,
     status: watch::Receiver<blent::session_state::State>,
     listeners: Arc<RetainedListeners>,
 }
 pub(crate) struct Native {
+    activity: blent::activity_view::View,
     connections: Connections,
     registration: Arc<registration_client::Factory>,
     primary: Primary,
@@ -50,11 +52,16 @@ impl Native {
             Instant::now(),
         )?;
         Ok(Self {
+            activity: blent::activity_view::View::new(
+                blent_config::host_activity::ActivityTarget::Display,
+                config.extra.activity.clone(),
+            ),
             connections: Connections::new(source, ports, Duration::from_secs(1))?,
             registration: Arc::new(registration_client::Factory::new(
                 registration_client::Settings::new(launch),
             )?),
             primary: Primary {
+                activity: activity_binding(runtime, config.extra.activity.clone())?,
                 attachment: runtime.tablet_tx.clone(),
                 status: runtime.status.clone(),
                 listeners: Arc::new(listeners),
@@ -114,6 +121,7 @@ impl Native {
             }
         };
         let bindings = Bindings {
+            activity: Some(self.primary.activity.clone()),
             attachment: self.primary.attachment.clone(),
             registration: Box::new(Bound::new(
                 self.registration.clone(),
@@ -236,14 +244,30 @@ impl Native {
         }
     }
 }
+fn activity_binding(
+    runtime: &ExtraSession,
+    source: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+) -> Result<ActivityBinding> {
+    Ok(ActivityBinding {
+        control: runtime
+            .quiescence
+            .clone()
+            .ok_or_else(|| anyhow::anyhow!("native display quiescence unsupported"))?,
+        retirement: runtime.retirement.clone(),
+        source,
+    })
+}
 async fn extra_bindings(
     prepared: Result<blent::session::Prepared>,
     shutdown: watch::Receiver<bool>,
     registration: Arc<registration_client::Factory>,
     owner: blent::session::SessionAdmission,
 ) -> Result<Bindings> {
-    let (runtime, listeners) = prepared?.start_exported_reserved(shutdown, owner).await?;
+    let prepared = prepared?;
+    let source = prepared.activity.clone();
+    let (runtime, listeners) = prepared.start_exported_reserved(shutdown, owner).await?;
     Ok(Bindings {
+        activity: Some(activity_binding(&runtime, source)?),
         attachment: runtime.tablet_tx.clone(),
         registration: Box::new(Bound::new(registration, Arc::new(listeners))),
         entropy: blent_config::credentials::system_entropy,
@@ -273,7 +297,9 @@ pub(super) async fn event(usb: &mut Option<Native>, interval: &mut tokio::time::
     let Some(usb) = usb else {
         return std::future::pending().await;
     };
+    let activity = usb.activity.changed();
     tokio::select! {
+        _ = activity => Event::UsbTick,
         _ = interval.tick() => Event::UsbTick,
         result = usb.next(), if usb.starting() => Event::UsbStartup(result),
     }

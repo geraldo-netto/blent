@@ -122,6 +122,7 @@ impl Fixture {
             &mut self.slots,
             admission,
             Bindings {
+                activity: None,
                 attachment,
                 registration: Box::new(Backend(calls.clone())),
                 entropy,
@@ -224,6 +225,7 @@ fn t927_cancelled_start_is_retained_and_cannot_publish_late_authority() {
         &mut f.slots,
         admission,
         Bindings {
+            activity: None,
             attachment: Attachment::new(watch::channel(settings()).0),
             registration: Box::new(Backend(calls.clone())),
             entropy,
@@ -353,6 +355,7 @@ fn t927_registration_failure_does_not_close_other_owner_or_hide_retirement() {
         &mut f.slots,
         second,
         Bindings {
+            activity: None,
             attachment: Attachment::new(watch::channel(settings()).0),
             registration: Box::new(Backend(calls.clone())),
             entropy,

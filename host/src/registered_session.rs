@@ -13,6 +13,8 @@ use blent_config::{
     tablets::{Identity, TabletSession},
 };
 use std::time::{Duration, Instant};
+mod activity;
+use activity::Activity;
 
 /// Prompt, nonblocking native session port. A reusable primary binding owns no
 /// per-assignment capture runtime. Owned extras must prove actual retirement.
@@ -63,7 +65,7 @@ impl Request {
     pub fn bind(self, slots: &dyn Reservations, bindings: Bindings) -> Session {
         let current = self.current(slots);
         let mut registration = Some(bindings.registration);
-        let display = current.then(|| {
+        let mut display = current.then(|| {
             Display::new(
                 self.candidate.peer().clone(),
                 bindings.attachment,
@@ -73,7 +75,13 @@ impl Request {
             )
             .expect("validated USB display request")
         });
+        let activity = display.as_mut().and_then(|display| {
+            bindings
+                .activity
+                .map(|binding| Activity::new(binding, display))
+        });
         let mut session = Session {
+            activity,
             request: self,
             display,
             _unregistered: registration,
@@ -90,12 +98,23 @@ impl Request {
     }
 }
 pub struct Bindings {
+    pub activity: Option<ActivityBinding>,
     pub attachment: Attachment,
     pub registration: Box<dyn Registration>,
     pub entropy: Entropy,
     pub work: Box<dyn Work>,
 }
+/// Original display runtime capabilities and shared machine observation. Bind
+/// the controller with its own actual whole-runtime completion before exposure.
+/// This contains no native backend representation or auxiliary media authority.
+#[derive(Clone)]
+pub struct ActivityBinding {
+    pub control: crate::display_quiescence::Control,
+    pub retirement: blent_config::retirement::Completion,
+    pub source: Option<tokio::sync::watch::Receiver<blent_config::host_activity::Publication>>,
+}
 pub struct Session {
+    activity: Option<Activity>,
     request: Request,
     display: Option<Display>,
     // Retain original native capabilities through cancelled startup cleanup.
@@ -117,14 +136,33 @@ impl Session {
         if !self.work.alive() {
             self.close();
         }
-        let Some(display) = &mut self.display else {
-            return Ok(());
-        };
-        let result = display.poll(now);
-        if display.state() == State::Retired {
+        self.reconcile_activity()?;
+        let result = self
+            .display
+            .as_mut()
+            .map_or(Ok(()), |display| display.poll(now));
+        self.reconcile_activity()?;
+        if self
+            .display
+            .as_ref()
+            .is_some_and(|display| display.state() == State::Retired)
+        {
             self.close();
         }
         result
+    }
+    fn reconcile_activity(&mut self) -> Result<()> {
+        if self.closing {
+            return Ok(());
+        }
+        let (Some(activity), Some(display)) = (&mut self.activity, &mut self.display) else {
+            return Ok(());
+        };
+        if let Err(error) = activity.reconcile(display) {
+            self.close();
+            return Err(error);
+        }
+        Ok(())
     }
     pub fn state(&self) -> State {
         if self.closing || !self.work.alive() {
@@ -153,6 +191,9 @@ impl Session {
         }
         self.closing = true;
         if let Some(display) = &mut self.display {
+            if let Some(activity) = &mut self.activity {
+                activity.close(display);
+            }
             display.close();
         }
         self.work.close();
@@ -164,6 +205,7 @@ impl Session {
                 .as_ref()
                 .is_none_or(|display| display.state() == State::Retired)
             && self.work.retired()
+            && self.activity.as_ref().is_none_or(Activity::retired)
     }
 }
 impl Drop for Session {

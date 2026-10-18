@@ -119,6 +119,10 @@ impl State {
     }
 }
 impl RegisteredRoute {
+    /// Serialize a prompt owner action with original route replacement.
+    pub fn apply(&self, action: impl FnOnce()) -> bool {
+        self.lease.apply(action)
+    }
     /// Exact current broker Active proof is required by the caller. Logical
     /// admission does not substitute for remote/native retirement ownership.
     pub fn admitted(&self) -> bool {

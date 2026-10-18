@@ -839,3 +839,16 @@ scoped production functions individually measure above 96% native line coverage;
 source audit maximum is 8. Native SonarQube remains T1019. Production registration
 activity composition remains T1051 and joined acceptance remains T1016/T1009;
 this prerequisite does not establish physical host/tablet acceptance.
+
+T1051 joins the original native controller and whole-runtime completion with each
+renewable USB assignment. Initial handoff and discontinuous machine activity
+pause only that display route, retain its selected ticket/configuration, and await
+original broker plus capture/selector retirement before fresh registration. Native
+admission opens after the new route is Active. Commands serialize with original
+attachment replacement; unavailable scoped proof retains capacity until actual
+original runtime retirement. Direct machine publication wakes the USB coordinator
+without closed-source spinning. The preceding T1049/T1050 paragraphs describe
+those earlier checkpoints; production composition is now implemented. The
+[T1051 evidence](artifacts/2026-10-18-t1051/README.md) retains regressions and native
+individual counters. Joined acceptance remains T1016/T1009 and physical acceptance
+T914; auxiliary and Android lifecycle remain T1010/T1011.

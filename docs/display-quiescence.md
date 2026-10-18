@@ -1,7 +1,8 @@
 # Display quiescence contract
 
-Status: portable contract and Linux adapters implemented under T1050. Production
-USB activity composition remains T1051; physical acceptance remains T914.
+Status: portable contract and Linux adapters implemented under T1050; production
+USB activity composition implemented under T1051. Joined acceptance remains
+T1016/T1009; physical acceptance remains T914.
 
 One display runtime owns one controller state. Its capture and selector producers
 are bound before startup, with a fixed capacity of one or two. Controller clones
@@ -37,3 +38,40 @@ receipts and resume. Native fixtures link receipts to held cleanup, late creator
 and exact helper ACKs; a deliberately premature adapter receipt is rejected by
 the oracle. These finite checks and hosted native traces complement each other;
 they do not prove unrestricted kernel/device safety or physical presentation.
+
+## Renewable USB composition
+
+One selected assignment owns its capacity ticket, original renewable display
+client and bounded activity binding. The native adapter supplies its original
+runtime controller and actual whole-runtime completion together, plus a borrowed
+view of the shared machine source. No new machine source or auxiliary resource
+owner is created. Unsupported native compositions reject the binding explicitly;
+absence of machine observation retains the existing unsupported-source policy.
+
+Initial handoff pauses original display work before exposing a USB registration.
+An unavailable observation or discontinuous work stamp revokes only the original
+display route and closes native admission. The selected ticket, listeners, geometry
+and other configuration remain owned. Original broker retirement and all original
+native receipts must settle before another attempt; retry uses the existing
+absolute deadline. Fresh credentials are prepared for the current authenticated
+discovery candidate. Native work opens only after that fresh route reports Active,
+so existing capture supervision must start a fresh codec generation/keyframe.
+The coordinator reconciles both before and after broker polling, fencing late
+startup and coalesced stop/resume. Machine publication wakes the daemon directly;
+its bounded tick remains a fallback. Closed observation does not create a spin.
+
+Prompt controller commands serialize against attachment replacement using the
+original live or revoked lease. A stale assignment cannot pause, resume or revoke
+a replacement. If its original scoped fence cannot be established, capacity stays
+owned until actual original whole-runtime completion. This conservative fallback
+can retain capacity until daemon shutdown; neither elapsed time nor a logically
+closed shared assignment is retirement evidence. Current native obligations keep
+their existing cleanup sponsors. Eventual reuse assumes original cleanup and
+continued scheduling, or eventual actual enclosing-runtime retirement after loss.
+
+At most four selected assignments retain one current native fence and one work
+observation each. Borrowed machine/controller views contain no capture allocator,
+media buffer or route grant. Closing/dropping requests original display and runtime
+cleanup; native owners and descriptor-bound clients retain actual obligations on
+partial failure, cancellation, owner loss and exhaustion. Auxiliary media has its
+own owners and grants; display activity never commands their close/retirement.

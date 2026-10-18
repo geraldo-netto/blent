@@ -36,6 +36,7 @@ impl blent_config::connection::control_client::Factory for Source {
 struct Fixture {
     state: Monitor,
     runtime: ExtraSession,
+    settings: watch::Sender<blent::media::EncoderSettings>,
     source: Arc<Mutex<Status>>,
     model: Model,
     revision: u64,
@@ -44,12 +45,19 @@ struct Fixture {
 }
 impl Fixture {
     async fn new(capacity: u32) -> Self {
+        Self::with_activity(capacity, None).await
+    }
+    async fn with_activity(
+        capacity: u32,
+        activity: Option<watch::Receiver<blent_config::host_activity::Publication>>,
+    ) -> Self {
         let mut state = super::super::tests::fixture();
+        state.config.extra.activity = activity.clone();
         state.slots = Slots::new(capacity).unwrap();
         state.config.extra.max_tablets = capacity;
         let (shutdown, receiver) = watch::channel(false);
         state.config.extra.shutdown_rx = receiver;
-        let (runtime, listeners) = session::Spec {
+        let prepared = session::Spec {
             capture: capture::CaptureConfig {
                 helper_path: "/missing-t908-helper".into(),
                 ..Default::default()
@@ -59,9 +67,12 @@ impl Fixture {
             devices: (false, false, false),
         }
         .prepare(state.config.extra.mode_tx.clone())
-        .start_exported(state.config.extra.shutdown_rx.clone())
-        .await
-        .unwrap();
+        .with_activity(activity);
+        let settings = prepared.settings.clone();
+        let (runtime, listeners) = prepared
+            .start_exported(state.config.extra.shutdown_rx.clone())
+            .await
+            .unwrap();
         state.config.ports = listeners.ports();
         state.config.extra.video_port = state.config.ports.0;
         state.config.extra.input_port = state.config.ports.1;
@@ -95,6 +106,7 @@ impl Fixture {
         Self {
             state,
             runtime,
+            settings,
             source,
             model: Model::default(),
             revision: 0,
@@ -344,6 +356,7 @@ async fn t908_active_native_status_and_usb_steps_do_not_queue_adb_inventory() {
         panic!("T908 admission missing")
     };
     let bindings = Bindings {
+        activity: None,
         attachment: fixture.runtime.tablet_tx.clone(),
         registration: Box::new(Registration),
         entropy: blent_config::credentials::system_entropy,
@@ -739,3 +752,6 @@ async fn t928_shared_startup_capacity_failure_releases_unexposed_binding() {
     drop(held);
     fixture.stop().await;
 }
+
+#[path = "activity_tests.rs"]
+mod activity;

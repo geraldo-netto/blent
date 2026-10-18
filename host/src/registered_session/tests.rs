@@ -18,6 +18,9 @@ struct Fixture {
 }
 impl Fixture {
     fn new() -> Self {
+        Self::with_activity(None)
+    }
+    fn with_activity(activity: Option<ActivityBinding>) -> Self {
         let candidate = candidate();
         let mut slots = Slots::new(1).unwrap();
         slots.select(Some(candidate.peer().clone()));
@@ -39,6 +42,7 @@ impl Fixture {
         let session = request.bind(
             &slots,
             Bindings {
+                activity,
                 attachment: attachment.clone(),
                 registration: Box::new(Backend(calls.clone())),
                 entropy,
@@ -69,6 +73,9 @@ impl Fixture {
         client
     }
 }
+
+#[path = "activity_tests.rs"]
+mod activity;
 #[test]
 fn t925_capacity_waits_for_both_registration_and_native_session() {
     for native_first in [false, true] {
@@ -308,6 +315,7 @@ fn t925_cancelled_preflight_cannot_bind_over_replacement_authority() {
     let mut session = request.bind(
         &slots,
         Bindings {
+            activity: None,
             attachment: attachment.clone(),
             registration: Box::new(Backend(calls.clone())),
             entropy,
