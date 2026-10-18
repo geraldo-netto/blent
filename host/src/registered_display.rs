@@ -17,6 +17,7 @@ use std::time::{Duration, Instant};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum State {
     Waiting,
+    Paused,
     Registering,
     Active,
     Retiring,
@@ -80,9 +81,28 @@ pub struct Display {
     next: Option<Instant>,
     attempt: Option<Attempt>,
     authority: Option<Lease>,
+    paused: bool,
     closing: bool,
 }
 impl Display {
+    /// Desired registration suspension, not proof of native capture quiescence.
+    /// Revoke only this original route; retain intent, settings and its client
+    /// until actual registration retirement. Repeated pauses are idempotent.
+    pub fn pause(&mut self) {
+        self.paused = true;
+        if let Some(attempt) = &mut self.attempt {
+            attempt.close();
+        }
+    }
+
+    /// Request fresh registration when the original client and retry deadline
+    /// permit it. Composition must first verify current authenticated connection
+    /// authority and its independent original native capture/selector fences.
+    /// This request cannot revive terminal cancellation or stale attachment leases.
+    pub fn resume(&mut self) {
+        self.paused = false;
+    }
+
     pub fn new(
         peer: PeerId,
         attachment: Attachment,
@@ -102,6 +122,7 @@ impl Display {
             retry,
             next: None,
             attempt: None,
+            paused: false,
             closing: false,
         })
     }
@@ -109,6 +130,7 @@ impl Display {
         match &self.attempt {
             Some(attempt) => attempt.state(),
             None if self.closing => State::Retired,
+            None if self.paused => State::Paused,
             None => State::Waiting,
         }
     }
@@ -116,7 +138,8 @@ impl Display {
     /// close and retired nonblocking. Absolute retry deadlines never slide.
     pub fn poll(&mut self, now: Instant) -> Result<()> {
         self.observe(now);
-        if self.closing
+        if self.paused
+            || self.closing
             || self.attempt.is_some()
             || self.next.is_some_and(|deadline| now < deadline)
         {

@@ -800,3 +800,20 @@ type-specific length boundaries, and spy on reads and backing identity. The
 and passing-after results, the normal Android suite and native per-method
 counters. This is an invalid-input efficiency correction, not a battery,
 physical-device or unrestricted memory-safety claim.
+
+
+T1049 adds reversible suspension to the portable renewable display registration
+owner. Pause synchronously revokes only its original attachment/socket authority
+and requests broker close while retaining configuration and desired presence.
+The owner continues polling original retirement while paused and issues no new
+registration. Resume requests fresh credentials only after actual client retirement
+and the original retry deadline; it cannot revive terminal cancellation or replace
+a newer attachment. Five permanent tests include 1,024 exhaustive five-transition
+traces over pause, resume, client retirement and terminal close.
+
+The [T1049 evidence](artifacts/2026-10-18-t1049/README.md) records native counters
+for all 13 registration functions (minimum 84.62%), 552 passing library tests with
+three existing ignores, and source complexity <=6. This supplies only registration
+suspension. Independent native capture/selector fencing remains T1050, production
+activity composition remains T1051, and T1016 retains joined automated acceptance.
+A resume request is not native cleanup evidence or physical USB acceptance.

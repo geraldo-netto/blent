@@ -432,3 +432,164 @@ fn t920_deadline_boundary_fails_without_registering() {
     assert_eq!(fixture.count(), 0);
     assert_eq!(fixture.display.state(), State::Waiting);
 }
+
+#[test]
+fn t1049_pause_retains_configuration_and_waits_for_original_registration() {
+    let now = Instant::now();
+    let mut fixture = Fixture::new();
+    let client = fixture.active(now);
+    fixture.settings.send_modify(|settings| {
+        settings.width = 1920;
+        settings.geometry_ready = true;
+    });
+    let original = fixture.attachment.lease();
+    fixture.display.pause();
+    assert_eq!(fixture.display.state(), State::Retiring);
+    assert!(client.0.closed.load(Ordering::SeqCst));
+    assert!(!original.apply(|| ()));
+    assert!(*fixture.attachment.subscribe().borrow());
+    fixture.display.resume();
+    fixture.display.poll(now + Duration::from_secs(60)).unwrap();
+    assert_eq!(
+        fixture.count(),
+        1,
+        "T1049 early resume renewed pending owner"
+    );
+    client.publish(Phase::Retired, Some(route(1)));
+    client.0.retired.store(true, Ordering::SeqCst);
+    fixture.display.poll(now + Duration::from_secs(60)).unwrap();
+    assert_eq!(fixture.display.state(), State::Waiting);
+    fixture
+        .display
+        .poll(now + Duration::from_millis(60999))
+        .unwrap();
+    assert_eq!(fixture.count(), 1);
+    fixture.display.poll(now + Duration::from_secs(61)).unwrap();
+    let calls = fixture.calls.lock().unwrap();
+    assert_eq!(calls.requests.len(), 2);
+    assert!(calls.requests[0].credential != calls.requests[1].credential);
+    assert_eq!(fixture.settings.borrow().width, 1920);
+    assert!(fixture.settings.borrow().geometry_ready);
+}
+
+#[test]
+fn t1049_idle_pause_and_terminal_close_never_start_registration() {
+    let mut fixture = Fixture::new();
+    let now = Instant::now();
+    fixture.display.pause();
+    fixture.display.pause();
+    for seconds in [0, 1, 60, 3600] {
+        fixture
+            .display
+            .poll(now + Duration::from_secs(seconds))
+            .unwrap();
+        assert_eq!(fixture.display.state(), State::Paused);
+    }
+    assert_eq!(fixture.count(), 0);
+    fixture.display.close();
+    fixture.display.resume();
+    fixture
+        .display
+        .poll(now + Duration::from_secs(7200))
+        .unwrap();
+    assert_eq!(fixture.count(), 0);
+    assert_eq!(fixture.display.state(), State::Retired);
+}
+
+#[test]
+fn t1049_late_active_reply_cannot_resume_a_paused_startup() {
+    let mut fixture = Fixture::new();
+    let now = Instant::now();
+    fixture.display.poll(now).unwrap();
+    let client = fixture.client();
+    fixture.display.pause();
+    client.publish(Phase::Active, Some(route(1)));
+    fixture.display.poll(now + Duration::from_secs(60)).unwrap();
+    assert_eq!(fixture.display.state(), State::Retiring);
+    assert!(!*fixture.attachment.subscribe().borrow());
+    client.publish(Phase::Retired, Some(route(1)));
+    client.0.retired.store(true, Ordering::SeqCst);
+    fixture.display.poll(now + Duration::from_secs(60)).unwrap();
+    assert_eq!(fixture.display.state(), State::Paused);
+    fixture
+        .display
+        .poll(now + Duration::from_secs(120))
+        .unwrap();
+    assert_eq!(fixture.count(), 1);
+    fixture.display.resume();
+    fixture
+        .display
+        .poll(now + Duration::from_secs(120))
+        .unwrap();
+    assert_eq!(fixture.count(), 2);
+}
+
+#[test]
+fn t1049_pause_close_and_resume_do_not_revoke_a_replacement() {
+    let mut fixture = Fixture::new();
+    let now = Instant::now();
+    let original = fixture.active(now);
+    fixture.display.pause();
+    let replacement = fixture
+        .attachment
+        .register_route(peer(2), Credential::new([47; 32]), Link::Usb)
+        .unwrap();
+    assert!(replacement.admitted());
+    fixture.display.pause();
+    original.publish(Phase::Retired, Some(route(1)));
+    original.0.retired.store(true, Ordering::SeqCst);
+    fixture.display.poll(now + Duration::from_secs(60)).unwrap();
+    assert_eq!(fixture.display.state(), State::Paused);
+    fixture.display.resume();
+    assert!(fixture.display.poll(now + Duration::from_secs(61)).is_err());
+    fixture.display.close();
+    assert_eq!(fixture.count(), 1);
+    assert!(
+        replacement.current(),
+        "T1049 stale pause touched replacement"
+    );
+}
+
+fn transition(fixture: &mut Fixture, action: u32) {
+    match action {
+        0 => fixture.display.pause(),
+        1 => fixture.display.resume(),
+        2 => {
+            if let Some(client) = fixture.calls.lock().unwrap().clients.last() {
+                client.publish(Phase::Retired, Some(route(1)));
+                client.0.retired.store(true, Ordering::SeqCst);
+            }
+        }
+        _ => fixture.display.close(),
+    }
+}
+
+#[test]
+fn t1049_bounded_transitions_preserve_retirement_before_renewal() {
+    let now = Instant::now();
+    for pattern in 0..1024u32 {
+        let mut fixture = Fixture::new();
+        fixture.display.poll(now).unwrap();
+        for step in 0..5 {
+            transition(&mut fixture, (pattern >> (step * 2)) & 3);
+            fixture
+                .display
+                .poll(now + Duration::from_secs(step + 1))
+                .unwrap();
+            let calls = fixture.calls.lock().unwrap();
+            for client in calls.clients.iter().take(calls.clients.len() - 1) {
+                assert!(
+                    client.0.retired.load(Ordering::SeqCst),
+                    "T1049 reused held owner"
+                );
+            }
+        }
+        fixture.display.close();
+        for client in &fixture.calls.lock().unwrap().clients {
+            client.publish(Phase::Retired, Some(route(1)));
+            client.0.retired.store(true, Ordering::SeqCst);
+        }
+        fixture.display.poll(now + Duration::from_secs(10)).unwrap();
+        assert_eq!(fixture.display.state(), State::Retired);
+    }
+}
