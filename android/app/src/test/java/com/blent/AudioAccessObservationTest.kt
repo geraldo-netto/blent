@@ -9,7 +9,7 @@ import org.junit.Test
 class AudioAccessObservationTest {
     private class Worker(val report: (ConnectionWorkerEvent) -> Unit) : ConnectionWorker {
         val release = CompletableDeferred<Unit>()
-        val commands = mutableListOf<ConnectionWorkerCommand>()
+        val commands = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerCommand>()
         override suspend fun execute() = awaitCancellation()
         override fun cancel() {}
         override suspend fun retire() = release.await()
@@ -38,6 +38,16 @@ class AudioAccessObservationTest {
             nativeRelease.complete(Unit); workers.forEach { it.release.complete(Unit) }
             observation.retire(); binding.shutdown(); connection.disconnect(); scope.cancel()
         }
+    }
+    @Test fun t1066CommandObservationKeepsASnapshotWhileNativeCallbackAppends() {
+        val worker = Worker {}
+        val first = ConnectionWorkerCommand.AudioConsumerRetired(audioRoute().lease)
+        worker.command(first)
+        val observation = worker.commands.iterator()
+        worker.command(first)
+        assertEquals(first, observation.next())
+        assertFalse("T1066 observation must retain its original bounded snapshot", observation.hasNext())
+        assertEquals(listOf(first, first), worker.commands.toList())
     }
     @Test fun t985LocalStartAdmissionWithdrawalAndActualAudioCleanupStayWithOriginalWorker() = runBlocking {
         Rig().use { rig ->
