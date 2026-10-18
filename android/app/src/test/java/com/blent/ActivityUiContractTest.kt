@@ -122,6 +122,8 @@ class ActivityUiContractTest {
         assertEquals("T497 unbalanced Activity composition trace", fixture.trace.starts.get(), fixture.trace.ends.get())
     }
 
+    // T1070: Drive the framework permission callback on both supported test SDKs.
+    @Suppress("DEPRECATION")
     @Test fun t539_cameraSelectionUsesAndroidPermissionResultAndForegroundOwner() {
         val activity = compose.activity
         org.robolectric.Shadows.shadowOf(RuntimeEnvironment.getApplication())
@@ -153,6 +155,8 @@ class ActivityUiContractTest {
         assertNull(activity.cameras.endpoint)
     }
 
+    // T1070: Drive the framework permission callback on both supported test SDKs.
+    @Suppress("DEPRECATION")
     @Test fun t718_microphoneSelectionUsesActivityPermissionAndDenialStopsSharing() {
         val activity = compose.activity
         org.robolectric.Shadows.shadowOf(RuntimeEnvironment.getApplication())
