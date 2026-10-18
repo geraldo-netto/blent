@@ -29,6 +29,8 @@ import org.robolectric.shadows.*
 class CameraEncoderShadow : ShadowMediaCodec() {
     companion object { var step = 0; var releases = 0; var afterPacket: () -> Unit = {}; var frames: List<Triple<Long, Long, Int>> = emptyList(); var nowUs = 0L; var syncRequests = 0; val bitrates = mutableListOf<Int>() }
     @Implementation fun createInputSurface() = Surface(SurfaceTexture(0))
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation fun dequeueOutputBuffer(info: MediaCodec.BufferInfo, timeout: Long): Int {
         if (frames.isNotEmpty() && step in 1..frames.size) {
             val (pts, now, flags) = frames[step++ - 1]
@@ -46,6 +48,8 @@ class CameraEncoderShadow : ShadowMediaCodec() {
         if (parameters.containsKey(MediaCodec.PARAMETER_KEY_REQUEST_SYNC_FRAME)) syncRequests++
         if (parameters.containsKey(MediaCodec.PARAMETER_KEY_VIDEO_BITRATE)) bitrates.add(parameters.getInt(MediaCodec.PARAMETER_KEY_VIDEO_BITRATE))
     }
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation fun getOutputBuffer(index: Int): ByteBuffer = ByteBuffer.wrap(byteArrayOf(9, 1, 2, 3, 9))
     @Implementation override fun getOutputFormat(): MediaFormat = MediaFormat().apply {
         setByteBuffer("csd-0", ByteBuffer.wrap(byteArrayOf(0, 0, 1, 0x67)))
@@ -60,6 +64,8 @@ class CameraManagerCaptureShadow {
     fun addCamera(id: String, metadata: CameraCharacteristics) { cameras[id] = metadata }
     @Implementation fun getCameraIdList(): Array<String> = cameras.keys.toTypedArray()
     @Implementation fun getCameraCharacteristics(id: String): CameraCharacteristics = cameras.getValue(id)
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation fun openCamera(id: String, callback: CameraDevice.StateCallback, handler: Handler) {
         val camera = org.robolectric.shadow.api.Shadow.newInstanceOf(
             Class.forName("android.hardware.camera2.impl.CameraDeviceImpl")) as CameraDevice
@@ -78,6 +84,8 @@ class CameraManagerCaptureShadow {
 @Implements(className = "android.hardware.camera2.impl.CameraCaptureSessionImpl", isInAndroidSdk = false)
 class CameraSessionCaptureShadow {
     var closes = 0
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation fun setRepeatingRequest(request: CaptureRequest, callback: CameraCaptureSession.CaptureCallback?, handler: Handler): Int = 1
     @Implementation fun close() { closes++ }
 }
@@ -85,16 +93,24 @@ class CameraSessionCaptureShadow {
 @Implements(className = "android.hardware.camera2.impl.CameraDeviceImpl", isInAndroidSdk = false)
 class CameraDeviceCaptureShadow {
     var closes = 0
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation(maxSdk = 27) fun __constructor__(id: String, callback: CameraDevice.StateCallback, handler: Handler, metadata: CameraCharacteristics, target: Int) {}
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation(minSdk = 28) fun __constructor__(id: String, callback: CameraDevice.StateCallback, executor: Executor, metadata: CameraCharacteristics, physical: Map<String, CameraCharacteristics>, target: Int, context: Context) {}
     @Implementation fun getId(): String = "test"
     companion object { var failSession = false; var beforeSession: () -> Unit = {}; var created: CameraCaptureSession? = null }
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation fun createCaptureSession(surfaces: List<Surface>, callback: CameraCaptureSession.StateCallback, handler: Handler) {
         val session = org.robolectric.shadow.api.Shadow.newInstanceOf(
             Class.forName("android.hardware.camera2.impl.CameraCaptureSessionImpl")) as CameraCaptureSession
         created = session
         handler.post { beforeSession(); if (failSession) callback.onConfigureFailed(session) else callback.onConfigured(session) }
     }
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation fun createCaptureRequest(template: Int): CaptureRequest.Builder {
         val type = Class.forName("android.hardware.camera2.impl.CameraMetadataNative")
         val metadata = org.robolectric.util.ReflectionHelpers.callConstructor(type)

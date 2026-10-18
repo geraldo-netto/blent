@@ -22,6 +22,8 @@ class AudioMicrophoneTest {
         }
         assertEquals("Microphone permission denied.", error.message)
     }
+    // T1072: exercise the retained AudioRecord source fixture on both supported SDKs.
+    @Suppress("DEPRECATION")
     @Test fun t718_nativeRecordPartialReadsPermissionAndRelease() = runBlocking {
         val app = RuntimeEnvironment.getApplication()
         Shadows.shadowOf(app).grantPermissions(Manifest.permission.RECORD_AUDIO)
@@ -46,6 +48,8 @@ class AudioMicrophoneTest {
         Shadows.shadowOf(app).grantPermissions(Manifest.permission.RECORD_AUDIO)
         try { AudioMicrophone(app, endpoint(), AudioPreferences()); fail("missing built-in route") } catch (_: IllegalStateException) {}
     }
+    // T1072: exercise the retained AudioRecord source fixture on both supported SDKs.
+    @Suppress("DEPRECATION")
     @Test fun t718_nativeRecordErrorCloses() = runBlocking {
         val app = RuntimeEnvironment.getApplication()
         Shadows.shadowOf(app).grantPermissions(Manifest.permission.RECORD_AUDIO)

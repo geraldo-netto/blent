@@ -15,7 +15,6 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
-import org.robolectric.shadows.ShadowSensor
 import org.robolectric.util.ReflectionHelpers
 
 @RunWith(RobolectricTestRunner::class)
@@ -84,7 +83,7 @@ class OrientationTest {
                              check: (MainActivity, OrientationEventListener) -> Unit) {
         val app = RuntimeEnvironment.getApplication()
         Prefs(app).apply { orientation = Prefs.ORIENTATION_AUTO; checkUpdates = false }
-        val sensor = ShadowSensor.newInstance(Sensor.TYPE_ACCELEROMETER)
+        val sensor = org.robolectric.shadows.ShadowSensor.newInstance(Sensor.TYPE_ACCELEROMETER)
         shadowOf(app.getSystemService(Context.SENSOR_SERVICE) as SensorManager).addSensor(sensor)
         val display = (app.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val quarterTurn = rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270

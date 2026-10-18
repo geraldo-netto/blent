@@ -22,6 +22,8 @@ class AudioNativeClockTest {
     @Implements(AudioRecord::class)
     class RecordClock {
         companion object {
+            // T1072: native shadow signature; this fixture does not inspect every platform argument.
+            @Suppress("UNUSED_PARAMETER")
             @JvmStatic @Implementation protected fun native_get_min_buff_size(rate: Int, channels: Int, format: Int) = 3840
         }
         @Implementation protected fun getTimestamp(stamp: AudioTimestamp, base: Int): Int {

@@ -53,7 +53,7 @@ class AudioBindingTest {
     @Test fun t718_retirementCompletesBeforeReplacementNativeOpen() = runBlocking {
         val commands = MutableStateFlow<AudioEndpoint?>(null)
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
-        val retirement = CompletableDeferred<Unit>(); var opens = 0; var failedRun: String? = null
+        val retirement = CompletableDeferred<Unit>(); var opens = 0
         val binding = AudioBinding(RuntimeEnvironment.getApplication(), {}, { true }, { _, _, _, _ ->
             opens++; try { awaitCancellation() } finally { withContext(NonCancellable) { retirement.await() } }
         }, commands, scope)

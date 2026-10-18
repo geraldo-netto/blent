@@ -34,6 +34,8 @@ class AudioSpeakerTest {
             val written = super.native_write_byte(bytes.array(), 0, bytes.capacity(), format, blocking)
             return if (written >= 0) written / 2 else written
         }
+        // T1072: native shadow signature; this fixture does not inspect every platform argument.
+        @Suppress("UNUSED_PARAMETER")
         @Implementation protected fun native_setOutputDevice(id: Int) = true
         @Implementation protected fun getPerformanceMode() = mode
     }

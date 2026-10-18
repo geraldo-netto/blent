@@ -54,6 +54,8 @@ class FaultCpuWakeLock {
 }
 @Implements(WifiManager::class)
 class FaultWifiManager {
+    // T1072: retained pre-29 Wi-Fi mode is part of the supported native adapter.
+    @Suppress("DEPRECATION")
     @Implementation fun createWifiLock(mode: Int, tag: String): WifiManager.WifiLock {
         check(mode == WifiManager.WIFI_MODE_FULL_LOW_LATENCY || mode == WifiManager.WIFI_MODE_FULL_HIGH_PERF)
         check(tag == "Blent::StreamingWifiLock")

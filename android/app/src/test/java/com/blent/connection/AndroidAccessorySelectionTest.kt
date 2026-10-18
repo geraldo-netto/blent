@@ -31,6 +31,8 @@ class AccessoryUsbShadow : ShadowUsbManager() {
         var failure: Exception? = null
         @JvmStatic @Resetter fun resetRequests() { requested = null; failure = null }
     }
+    // T1072: native shadow signature; this fixture does not inspect every platform argument.
+    @Suppress("UNUSED_PARAMETER")
     @Implementation fun requestPermission(accessory: UsbAccessory, pending: PendingIntent) {
         requested = pending
         failure?.let { throw it }

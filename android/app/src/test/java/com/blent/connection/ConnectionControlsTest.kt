@@ -94,6 +94,8 @@ class ConnectionControlsTest {
         }
     }
 
+    // T1072: exercise the native legacy Back callback, preserving its dismissal assertion.
+    @Suppress("DEPRECATION")
     @Test fun t893DismissingPairingNeverApproves() {
         ConnectionUiFixture().use { fixture ->
             render(fixture)

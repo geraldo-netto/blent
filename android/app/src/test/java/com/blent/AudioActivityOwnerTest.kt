@@ -15,7 +15,7 @@ class AudioActivityOwnerTest {
         var allowed = false
         val captures = mutableListOf<AudioEndpoint>()
         val services = mutableListOf<String?>()
-        lateinit var owner: AudioActivityOwner
+        val owner: AudioActivityOwner
         private fun binding(direction: Int) = AudioBinding(AudioPreferences(background = true),
             { owner.requestPermission() }, { direction == 2 || allowed }, { value, _, _ ->
                 object : LifecycleRun {
