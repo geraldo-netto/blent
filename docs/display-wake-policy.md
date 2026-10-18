@@ -265,3 +265,23 @@ source change during a held lazy creator, fenced callback retry and reentrant-re
 cutoff. Further tests retain equal-policy fresh-view delivery, 1,000 coalesced views,
 reader faults, stale idle callbacks and independent source/native-retirement gates.
 The containing original job is joined before retiring even an unopened late wrapper.
+
+
+## Policy observer failure
+
+T1073 adds a resource-local boundary around the original foreground policy observer.
+An ordinary flow or publish failure cuts off only that original producer, cancels
+its observer and withdraws its exact runtime claim. A canceled input also withdraws
+its original claim before propagating coroutine cancellation. Completed flows retain
+the foreground claim until explicit stop, preserving the existing waiting policy.
+A late old failure cannot stop a replacement producer. Cleanup/reporter failures
+are contained and attached without self-suppression; cancellation still reports an
+independent cleanup failure. Fatal errors retain normal propagation semantics.
+
+The observer owns no native handle. Its cutoff denies further publication before
+cleanup; application-scoped queued admissions and actual native retirement remain
+owned by the existing runtime/lane. Canceling an observer is not native quiescence.
+The original scope and its callbacks remain funded until they settle, with immutable
+old demands incapable of retargeting a replacement. Logging carries diagnostics
+without coupling failure to independent camera/audio owners. An explicit collector
+method retains separate native counters for policy delivery and observer settlement.

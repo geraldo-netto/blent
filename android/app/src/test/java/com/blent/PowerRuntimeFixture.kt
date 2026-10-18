@@ -67,6 +67,7 @@ internal class PowerRuntimeFixture(hold: Boolean = false, ready: Boolean = true)
     }, { ui.add(it) }, scope = scope)
     val notices = ConcurrentLinkedQueue<DisplayPowerNotice>()
     var stops = 0
+    var stopFailure: Exception? = null
     var postRefused = false
     var postThrows = false
     val port = object : PowerServicePort {
@@ -76,7 +77,7 @@ internal class PowerRuntimeFixture(hold: Boolean = false, ready: Boolean = true)
             if (postThrows) error("T1060 queued native notice then threw")
             return true
         }
-        override fun stop() { stops++ }
+        override fun stop() { stops++; stopFailure?.let { throw it } }
     }
     fun attachFirst() {
         assertTrue(runtime.attach(port))
