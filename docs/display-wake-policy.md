@@ -1,7 +1,7 @@
 # Android display wake policy
 
 Status: independent desired-policy values and framework value conversion are
-implemented under T1059; independent original-request admission is T1062.
+implemented under T1059; independent original-request admission is T1062 and original handle ownership T1063.
 Original native service ownership is T1060; Activity
 observation/window integration is T1061; joined acceptance remains T1058/T1011
 and physical wake/power evidence remains T914. Current production Activity requests
@@ -105,3 +105,51 @@ these are bounded test names, not production epochs. A deliberate foreign-owner
 control is rejected by the permanent original-notice regression. The model covers
 linearized channel operations, including forbidden stale publication/admission;
 it does not establish native delivery fairness or unrestricted hardware safety.
+
+## Original wake-handle ownership
+
+T1063 supplies the independent WakeHandle contract and WakeLease owner. Native
+backend integration remains T1060. A factory returns a fresh, unadmitted handle;
+it owns cleanup of any partial factory failure. The lease installs that handle's
+cleanup owner before calling acquisition. Its operation guard covers the factory
+as well as native effects. Settlement requires both no admitted handle and no
+in-flight operation; an unfinished factory cannot advertise settlement.
+
+Successful acquisition records a completed grant attempt. Repeated desired-on
+requests allocate nothing while that original known handle remains owned. An
+acquisition or retirement error retains the exact handle and failure, including
+fatal errors which propagate unchanged. Uncertain handles cannot be reacquired or
+replaced. Only that original handle's normal retirement return clears ownership
+and admits a fresh successor. Reentrant mutation is rejected before changing state;
+read-only settlement during an operation remains false. Native/backend calls are
+serialized and non-suspending; an implementation must not wait for another call
+back into this owner. The containing execution owner must isolate potentially
+blocking native calls and retain/join them before releasing their context.
+
+The lease retains at most one handle record, its last failure and an operation
+flag, plus the caller-owned factory. The caller bounds failure/factory objects and
+owns the containing lease lifetime and any external views. Backend callbacks and
+borrowed native objects must be cut off/fenced by the backend retirement contract.
+Configured native grant/deadline/capacity limits remain backend contracts; a grant
+is not an unlimited wake promise. No timeout, cancellation request, diagnostic
+held flag or reference count establishes actual retirement here.
+
+Conservation requires every admitted grant/unknown obligation to have its exact
+retained handle and cleanup sponsor. No second handle is allocated before original
+retirement. Initialization starts empty; the factory guard precedes allocation;
+admission precedes acquisition; failure preserves that owner; actual retirement
+alone clears it. Conditional eventual cleanup requires the sponsor to keep calling
+retirement and the backend eventually to supply actual original fence evidence.
+Missing evidence keeps the obligation owned and funded. A caller stopping its
+coroutine or losing foreground authority must retain the original native operation
+and cleanup context; this pure owner does not provide native process/thread proof.
+
+Permanent tests cover partial acquisition, factory failure, repeated desire,
+fresh successors, release failure, fatal effects and reentrant factory/native
+callbacks. An independent model checks all 1,296 four-step histories of desired-on,
+stop and acquisition/retirement fault toggles, including failure after a simulated
+grant. Its independent handle list supplies unconditional fixture cleanup. A
+deliberate early-release control fails the permanent retirement/fatal regressions;
+the factory-settlement regression was observed failing before its fix. These checks
+prove bounded pure-owner behavior under the handle contract, not Android hardware
+or native backend conformance.
