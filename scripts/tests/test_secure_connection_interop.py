@@ -16,12 +16,22 @@ class SecureConnectionInteropTest(unittest.TestCase):
                                        stdout=output, stderr=subprocess.STDOUT,
                                        start_new_session=True)
             try:
-                status = process.wait(timeout=300)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
-                process.wait(timeout=5)
-                self.fail('T846 integration command timed out: ' + logfile.read_text()[-12000:])
+                # T1079: builds have no elapsed kill cap; the caller monitors the log.
+                status = process.wait()
+            except BaseException:
+                self.cancel_command(process)
+                raise
         self.assertEqual(status, 0, logfile.read_text()[-12000:])
+
+    def cancel_command(self, process):
+        """Keep the original child/log owned until cancellation has joined it."""
+        try:
+            if process.poll() is None:
+                os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass  # Original group exited between observation and signal.
+        finally:
+            process.wait()
 
     def test_t846_native_rust_android_tls_interoperability(self):
         environment = dict(os.environ, CARGO_NET_OFFLINE='true')
