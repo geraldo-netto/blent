@@ -3,6 +3,7 @@
 //! A certificate is never persisted or transferred to another encoder epoch.
 
 pub mod control;
+pub mod unchanged;
 
 pub const COMPATIBLE_MS: u32 = 200;
 pub const SPARSE_MS: u32 = 500;
