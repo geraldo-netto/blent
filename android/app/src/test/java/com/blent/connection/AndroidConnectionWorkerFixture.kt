@@ -33,6 +33,10 @@ internal class ConnectionWorkerEndpoint : Binder() {
                 ConnectionWorkerCodec.spec(ConnectionWorkerIpc.bytes(data))
                 callback = data.readStrongBinder(); ConnectionWorkerIpc.end(data); start(this)
             }
+            ConnectionWorkerIpc.START_TRUST -> {
+                SavedTrustCodec.request(ConnectionWorkerIpc.bytes(data))
+                callback = data.readStrongBinder(); ConnectionWorkerIpc.end(data); start(this)
+            }
             ConnectionWorkerIpc.CONTROL -> {
                 controls.add(ConnectionWorkerCodec.command(ConnectionWorkerIpc.bytes(data)))
                 ConnectionWorkerIpc.end(data); control(this)

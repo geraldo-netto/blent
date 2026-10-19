@@ -22,6 +22,7 @@ open class ConnectionWorkerService : Service() {
     private val commands = Channel<ConnectionWorkerCommand>(32)
     private val events = Channel<ConnectionWorkerEvent>(32)
     private var generation = 0L
+    private var maintenance = false
     @Volatile private var worker: ConnectionWorker? = null
     @Volatile private var callback: IBinder? = null
     private var execution: Job? = null
@@ -30,6 +31,8 @@ open class ConnectionWorkerService : Service() {
 
     internal open fun createWorker(spec: ConnectionWorkerSpec, report: (ConnectionWorkerEvent) -> Unit): ConnectionWorker =
         AndroidConnectionFactory({ applicationContext }).create(spec, report)
+    internal open fun createTrustWorker(request: SavedTrustRequest, report: (ConnectionWorkerEvent) -> Unit): ConnectionWorker =
+        AndroidSavedTrustFactory({ applicationContext }).create(request, report)
     internal open fun terminate() { Process.killProcess(Process.myPid()) }
 
     private val binder = object : Binder() {
@@ -43,7 +46,8 @@ open class ConnectionWorkerService : Service() {
     @Synchronized private fun command(code: Int, revision: Long, data: Parcel): Boolean {
         if (revision != generation) return false
         when (code) {
-            ConnectionWorkerIpc.START -> start(data)
+            ConnectionWorkerIpc.START -> return start(data)
+            ConnectionWorkerIpc.START_TRUST -> return startTrust(data)
             ConnectionWorkerIpc.CONTROL -> control(data)
             ConnectionWorkerIpc.STOP -> { ConnectionWorkerIpc.end(data); stop() }
             ConnectionWorkerIpc.EXIT -> { ConnectionWorkerIpc.end(data); terminate() }
@@ -51,13 +55,25 @@ open class ConnectionWorkerService : Service() {
         }
         return true
     }
-    private fun start(data: Parcel) {
+    private fun start(data: Parcel): Boolean {
         val spec = ConnectionWorkerCodec.spec(ConnectionWorkerIpc.bytes(data))
         val remote = requireNotNull(data.readStrongBinder())
         ConnectionWorkerIpc.end(data)
+        if (maintenance && admitted.get()) return false
         check(!stopped.get() && admitted.compareAndSet(false, true))
         callback = remote
-        execution = scope.launch { execute(spec, remote) }
+        execution = scope.launch { execute(remote) { createWorker(spec, ::publish) } }
+        return true
+    }
+    private fun startTrust(data: Parcel): Boolean {
+        val request = SavedTrustCodec.request(ConnectionWorkerIpc.bytes(data))
+        val remote = requireNotNull(data.readStrongBinder())
+        ConnectionWorkerIpc.end(data)
+        if (stopped.get() || !admitted.compareAndSet(false, true)) return false
+        maintenance = true
+        callback = remote
+        execution = scope.launch { execute(remote) { createTrustWorker(request, ::publish) } }
+        return true
     }
     private fun control(data: Parcel) {
         val value = ConnectionWorkerCodec.command(ConnectionWorkerIpc.bytes(data))
@@ -66,12 +82,12 @@ open class ConnectionWorkerService : Service() {
         check(!stopped.get() || value is ConnectionWorkerCommand.CameraConsumerRetired)
         check(commands.trySend(value).isSuccess)
     }
-    private suspend fun execute(spec: ConnectionWorkerSpec, remote: IBinder) {
+    private suspend fun execute(remote: IBinder, create: () -> ConnectionWorker) {
         var failure: Exception? = null
         try {
             link(remote)
             scope.launch { deliver(remote) }
-            val owned = createWorker(spec, ::publish)
+            val owned = create()
             worker = owned
             if (!stopped.get()) {
                 controls = scope.launch { controls(owned) }

@@ -8,7 +8,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 
 /** Test-only provider with committed synthetic material. Exercises the production
  * loader/provider boundary; never evidence of device AndroidKeyStore isolation. */
-class ConnectionFactoryKeyStoreFixture : KeyStoreSpi() {
+open class ConnectionFactoryKeyStoreFixture : KeyStoreSpi() {
     private class OpaqueKey(private val source: ECPrivateKey) : ECPrivateKey by source {
         override fun getEncoded(): ByteArray? = null
         override fun getFormat(): String? = null

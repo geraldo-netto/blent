@@ -172,6 +172,7 @@ internal class ConnectionRuntimeOwner(
     private fun visible(event: ConnectionWorkerEvent): Boolean = when (event) {
         is ConnectionWorkerEvent.Pairing, is ConnectionWorkerEvent.Peer -> !stopped
         is ConnectionWorkerEvent.State -> !stopped || event.phase == ConnectionWorkerPhase.CLOSING
+        is ConnectionWorkerEvent.SavedComputers -> false
         is ConnectionWorkerEvent.Trust, is ConnectionWorkerEvent.Ended -> true
         is ConnectionWorkerEvent.Media -> false // Only guarded runner snapshots publish media.
     }

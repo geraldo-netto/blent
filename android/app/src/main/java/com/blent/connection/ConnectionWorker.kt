@@ -82,6 +82,8 @@ internal sealed interface ConnectionWorkerEvent {
     data class AudioClosed(override val lease: ConnectionResourceLease) : Audio {
         init { ConnectionAudioLease.validate(lease) }
     }
+    /** Bounded saved-trust metadata; never a pairing or media authority event. */
+    data class SavedComputers(val page: SavedComputersPage) : ConnectionWorkerEvent
     /** Execution ended; neither native retirement nor process death is implied. */
     data class Ended(val failure: String?) : ConnectionWorkerEvent
 }

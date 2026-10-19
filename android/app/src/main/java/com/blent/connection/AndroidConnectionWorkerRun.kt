@@ -33,7 +33,7 @@ internal class ConnectionWorkerGenerations(initial: Long = 0) {
  * Failed retirement retains the binding and jobs; a later retry can observe exit. */
 internal class AndroidConnectionWorkerRun(
     context: Context,
-    private val spec: ConnectionWorkerSpec,
+    private val launch: ConnectionProcessLaunch,
     private val report: (ConnectionWorkerEvent) -> Unit = {},
     private val bindMillis: Long = 5000,
     private val startMillis: Long = 5000,
@@ -42,10 +42,20 @@ internal class AndroidConnectionWorkerRun(
     generations: ConnectionWorkerGenerations = sharedGenerations,
     private val transmitDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ConnectionWorker {
+    constructor(
+        context: Context, spec: ConnectionWorkerSpec,
+        report: (ConnectionWorkerEvent) -> Unit = {},
+        bindMillis: Long = 5000, startMillis: Long = 5000,
+        graceMillis: Long? = null, retireMillis: Long? = null,
+        generations: ConnectionWorkerGenerations = sharedGenerations,
+        transmitDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    ) : this(context, ConnectionProcessLaunch.Connect(spec), report, bindMillis, startMillis,
+        graceMillis, retireMillis, generations, transmitDispatcher)
+
     companion object { private val sharedGenerations = ConnectionWorkerGenerations() }
     // Native retirement plus the maximum supported actor timer cadence. Explicit
     // overrides remain bounded to 60 seconds. Ended permits EXIT, never retirement.
-    private val grace = graceMillis ?: (spec.io.retirementTimeoutMs + 1000)
+    private val grace = graceMillis ?: (launch.retirementTimeoutMs + 1000)
     private val retirementWait = retireMillis ?: (grace + 5000)
     private val app = context.applicationContext
     private val generation = generations.next()
@@ -161,7 +171,7 @@ internal class AndroidConnectionWorkerRun(
                 outgoing!!.start()
             }
             withTimeout(startMillis) { started.await() }
-            observe()
+            observeOperation()
         } finally { cancel() }
     }
     private suspend fun transmit() {
@@ -171,8 +181,7 @@ internal class AndroidConnectionWorkerRun(
             currentCoroutineContext().ensureActive()
             check(!stopped.get())
             startExposed = true // START may take effect before transact returns or throws.
-            ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.START, generation,
-                ConnectionWorkerCodec.spec(spec), callback)
+            start(service)
             started.complete(Unit)
             for (bytes in commands) {
                 currentCoroutineContext().ensureActive()
@@ -184,6 +193,14 @@ internal class AndroidConnectionWorkerRun(
             else started.completeExceptionally(error)
         }
     }
+    private fun start(service: IBinder) {
+        when (val selected = launch) {
+            is ConnectionProcessLaunch.Connect -> ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.START,
+                generation, ConnectionWorkerCodec.spec(selected.spec), callback)
+            is ConnectionProcessLaunch.Trust -> ConnectionWorkerIpc.command(service, ConnectionWorkerIpc.START_TRUST,
+                generation, SavedTrustCodec.request(selected.request), callback)
+        }
+    }
     private fun bind() {
         check(!stopped.get())
         bound = true
@@ -191,6 +208,10 @@ internal class AndroidConnectionWorkerRun(
             val intent = Intent(app, ConnectionWorkerService::class.java).putExtra("connection_generation", generation)
             check(app.bindService(intent, connection, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)) { "Cannot bind connection worker" }
         } catch (error: Exception) { bound = false; throw error }
+    }
+    private suspend fun observeOperation() {
+        if (launch is ConnectionProcessLaunch.Trust) withTimeout(startMillis) { observe() }
+        else observe()
     }
     private suspend fun observe() {
         while (true) {
@@ -200,8 +221,13 @@ internal class AndroidConnectionWorkerRun(
                 event.failure?.let { throw IOException(it) }
                 return
             }
+            check(expected(event)) { "Unexpected event for private worker operation" }
             if (!stopped.get()) report(event)
         }
+    }
+    private fun expected(event: ConnectionWorkerEvent): Boolean = when (launch) {
+        is ConnectionProcessLaunch.Connect -> event !is ConnectionWorkerEvent.SavedComputers
+        is ConnectionProcessLaunch.Trust -> event is ConnectionWorkerEvent.SavedComputers
     }
     override fun cancel() {
         if (!stopped.compareAndSet(false, true)) return

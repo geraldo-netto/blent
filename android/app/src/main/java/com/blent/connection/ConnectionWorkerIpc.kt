@@ -13,6 +13,7 @@ internal object ConnectionWorkerIpc {
     const val CONTROL = 2
     const val STOP = 3
     const val EXIT = 4
+    const val START_TRUST = 5
     const val MAX_PARCEL = 8192
     fun validate(data: Parcel, descriptor: String, flags: Int) {
         check(Binder.getCallingUid() == Process.myUid()) { "Foreign connection worker caller" }
@@ -26,14 +27,14 @@ internal object ConnectionWorkerIpc {
     }
     fun end(data: Parcel) { require(data.dataAvail() == 0) { "Trailing connection IPC data" } }
     fun command(remote: IBinder, code: Int, generation: Long, bytes: ByteArray? = null, callback: IBinder? = null) {
-        require(code in START..EXIT && generation > 0)
+        require(code in START..START_TRUST && generation > 0)
         val data = Parcel.obtain()
         try {
             data.writeInterfaceToken(REQUEST); data.writeLong(generation)
-            if (code == START || code == CONTROL) {
+            if (code == START || code == CONTROL || code == START_TRUST) {
                 requireNotNull(bytes); require(bytes.size in 2..ConnectionWorkerCodec.LIMIT); data.writeByteArray(bytes)
             }
-            if (code == START) data.writeStrongBinder(requireNotNull(callback))
+            if (code == START || code == START_TRUST) data.writeStrongBinder(requireNotNull(callback))
             send(remote, code, data)
         } finally { data.recycle() }
     }

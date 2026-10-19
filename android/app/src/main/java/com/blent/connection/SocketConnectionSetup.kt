@@ -3,7 +3,6 @@ package com.blent.connection
 import java.io.ByteArrayInputStream
 import java.net.Socket
 import java.net.SocketTimeoutException
-import java.security.MessageDigest
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.atomic.AtomicBoolean
@@ -109,8 +108,7 @@ internal class SocketConnectionSetup(
         val secured = secure(checkNotNull(loaded), expected, socket)
         adopt(secured)
         val certificate = (secured as SSLSocket).session.peerCertificates.first().encoded
-        val digest = MessageDigest.getInstance("SHA-256").digest(certificate)
-        val proven = ConnectionPeer.parse(digest.joinToString("") { "%02x".format(it.toInt() and 255) })
+        val proven = ConnectionIdentity(certificate).fingerprint()
         live(); authenticated = true
         return proven
     }

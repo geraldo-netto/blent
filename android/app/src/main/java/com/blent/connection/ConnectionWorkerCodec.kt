@@ -67,6 +67,7 @@ internal object ConnectionWorkerCodec {
             is ConnectionWorkerEvent.State -> { out.writeByte(2); out.writeByte(value.phase.ordinal) }
             is ConnectionWorkerEvent.Trust -> { out.writeByte(3); ConnectionAuthorityCodec.peer(out, value.peer); out.writeBoolean(value.remembered) }
             is ConnectionWorkerEvent.Media -> ConnectionMediaCodec.write(out, value)
+            is ConnectionWorkerEvent.SavedComputers -> { out.writeByte(14); SavedTrustCodec.page(out, value.page) }
             is ConnectionWorkerEvent.Ended -> {
                 out.writeByte(4); out.writeBoolean(value.failure != null)
                 value.failure?.let { string(out, it, 512) }
@@ -83,6 +84,7 @@ internal object ConnectionWorkerCodec {
             }
             3 -> ConnectionWorkerEvent.Trust(ConnectionAuthorityCodec.peer(input), ConnectionControlFields.bool(input))
             4 -> ended(input)
+            14 -> ConnectionWorkerEvent.SavedComputers(SavedTrustCodec.page(input))
             else -> ConnectionMediaCodec.read(input, code)
         }
     }

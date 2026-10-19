@@ -1,6 +1,5 @@
 package com.blent.connection
 
-import java.security.MessageDigest
 import java.util.ArrayDeque
 
 /** One native authority owner and a separately supervised closer. Pairing and
@@ -137,17 +136,12 @@ internal class ConnectionSetupOwner(
         synchronized(lock) { live(); deadline = end }
         event(ConnectionWorkerEvent.State(phase))
     }
-    private fun peer(identity: ConnectionIdentity): ConnectionPeer {
-        val digest = MessageDigest.getInstance("SHA-256").digest(identity.certificate())
-        return ConnectionPeer.parse(digest.joinToString("") { "%02x".format(it.toInt() and 255) })
-    }
-
     private fun runNative() {
         var trust: ConnectionTrust? = null
         val pairing = ConnectionPairing()
         try {
             stage(limits.nativeTimeoutMs, ConnectionWorkerPhase.OPENING)
-            val local = peer(backend.localIdentity())
+            val local = backend.localIdentity().fingerprint()
             live()
             trust = ConnectionTrust(store(local), local, limits.trustedPeers)
             establish(trust, pairing, local)
@@ -159,7 +153,7 @@ internal class ConnectionSetupOwner(
     private fun establish(trust: ConnectionTrust, pairing: ConnectionPairing, local: ConnectionPeer) {
         live()
         val identity = backend.discover(limits.nativeTimeoutMs)
-        val peer = peer(identity)
+        val peer = identity.fingerprint()
         val begun = now()
         val ticket = trust.begin(pairing, peer, begun, limits.approvalTimeoutMs)
         synchronized(lock) {
