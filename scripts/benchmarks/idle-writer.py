@@ -35,7 +35,7 @@ def build(folder, interval):
     command = ['cc', '-std=c11', '-O2', '-pthread', '-Wall', '-Wextra', '-Werror',
                '-I', str(folder), '-I', str(ROOT / 'host/evdi'),
                str(ROOT / 'scripts/benchmarks/idle_writer.c'),
-               str(ROOT / 'host/evdi/frame_exchange.c'), str(ROOT / 'host/evdi/fifo_writer.c'),
+               str(ROOT / 'host/evdi/frame_exchange.c'), str(ROOT / 'host/evdi/fifo_writer.c'), str(ROOT / 'host/evdi/idle_control.c'),
                '-o', str(folder / 'writer')]
     status = owned.logged(command, dict(os.environ), folder / 'build.log', ROOT)
     if status:

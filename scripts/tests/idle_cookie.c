@@ -1,7 +1,8 @@
 /* T1117: production C accepts numerically identical padded source cookies. */
 #define _GNU_SOURCE
-#include "writer.c"
+#include "idle_control.c"
 #include <assert.h>
+#include <stdio.h>
 
 int main(void)
 {

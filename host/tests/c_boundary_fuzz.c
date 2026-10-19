@@ -13,7 +13,8 @@ static int fuzz_integer(const unsigned char *data, unsigned index) {
     return value;
 }
 
-static void fuzz_text_fields(const unsigned char *data) {
+static void fuzz_text_fields(const unsigned char *data)
+{
     char text[160] = {0};
     memcpy(text, data, 128);
     int capacity = conversion_capacity(text);
@@ -21,7 +22,7 @@ static void fuzz_text_fields(const unsigned char *data) {
     int amount = capacity_value(text, (int)data[0] - 128);
     assert(amount == 1 || amount == 2 || amount == 4 || amount == 8);
     /* Invalid fd cannot authorize a sparse-idle lease, regardless of fields. */
-    assert(idle_control_value(text, (int)data[1] - 32, -1, fuzz_word(data, 1)) == 200);
+    assert(idle_control_value(text, (int)data[1] - 32, -1, fuzz_word(data, 1)) == 0);
 }
 
 static void fuzz_mode_dimensions(const unsigned char *data) {

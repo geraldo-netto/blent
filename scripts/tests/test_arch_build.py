@@ -43,6 +43,7 @@ class ArchBuildTest(unittest.TestCase):
             self.assertIn('host/evdi/raw_ring.c', commands[3], 'T418: shared capture must link in Arch packages')
             self.assertIn('host/evdi/capture_activity.c', commands[3], 'T1021: link portable activity records')
             self.assertIn('host/evdi/capture_control.c', commands[3], 'T1021: link native activity adapter')
+            self.assertIn('host/evdi/idle_control.c', commands[3], 'T1119: link shared idle validation')
 
 
 if __name__ == '__main__':

@@ -102,6 +102,7 @@ exit 0
                 arguments = (root / 'native-helper-arguments').read_text()
                 self.assertIn('host/evdi/capture_activity.c', arguments, 'T1021: release links wire contract')
                 self.assertIn('host/evdi/capture_control.c', arguments, 'T1021: release links native control')
+                self.assertIn('host/evdi/idle_control.c', arguments, 'T1119: release links shared idle validation')
 
     def test_t236_release_rejects_new_glibc_in_bundled_evdi(self):
         from test_notices import NoticeTest

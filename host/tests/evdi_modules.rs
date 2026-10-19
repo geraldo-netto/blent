@@ -31,6 +31,7 @@ fn t380_independent_contexts_preserve_frame_and_callback_lifetimes() {
                 "cursor_overlay.c",
                 "raw_ring.c",
                 "writer.c",
+                "idle_control.c",
             ]
             .map(|name| root.join("evdi").join(name)),
         )

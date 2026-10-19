@@ -104,6 +104,19 @@ fn t1122_native_fixture_owners_do_not_share_or_delete_each_others_binary() {
     first.run("T492");
 }
 
+#[test]
+fn t1119_one_second_request_preserves_expiry_and_removal() {
+    Harness::build("T1119-value").run("T1119-value");
+}
+
+#[test]
+fn t1119_sparse_writer_rechecks_advice_within_compatible_cadence() {
+    let harness = Harness::build("T1119-wait");
+    for case in ["T1119-wait", "T1119-second"] {
+        harness.run(case);
+    }
+}
+
 impl Harness {
     fn build(case: &str) -> Self {
         let dir = tempfile::Builder::new()
@@ -137,6 +150,8 @@ impl Harness {
                 | "T497"
                 | "T554"
                 | "T492"
+                | "T1119-value"
+                | "T1119-wait"
                 | "T570"
                 | "T580"
         ) {

@@ -54,6 +54,7 @@ static void t779_counted_copy(unsigned char *destination, const unsigned char *s
 #include "../evdi/capture.c"
 #undef conv_copy_rgba_to_bgra
 #undef add_period
+#include "../evdi/idle_control.c"
 #include "../evdi/writer.c"
 #include "../evdi/evdi_helper.c"
 #undef main
@@ -1474,6 +1475,7 @@ static void test_t415_rounding(void) {
 #include "coverage_capture.c"
 #include "damage_regions.c"
 #include "idle_capture.c"
+#include "idle_recheck.c"
 #include "shared_capture.c"
 #include "cursor_overlay.c"
 #include "frame_format.c"
@@ -1494,7 +1496,8 @@ static void canonical_format_fixture(const char *id) {
     if (!strncmp(id, "T752", 4) || !strcmp(id, "T779") || !strcmp(id, "T780")) g_capture.normalize_rgba = 1;
 }
 #ifndef BLENT_C_FUZZ_DRIVER
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     const char *fifo_fixture = getenv("BLENT_T226_ROOT");
     if (fifo_fixture) return t226_command(argc, argv, fifo_fixture);
     const char *root = getenv("BLENT_T330_DRM");
@@ -1522,6 +1525,9 @@ int main(int argc, char **argv) {
         {"T418-capture", test_t418_capture},
         {"T418-startup", test_t418_startup},
         {"T492", test_t492_idle},
+        {"T1119-value", test_t1119_interval},
+        {"T1119-wait", test_t1119_recheck},
+        {"T1119-second", test_t1119_one_second_recheck},
         {"T554", test_t554_regions},
         {"T497-callbacks", test_t497_callbacks},
         {"T497-main", test_t497_main},
@@ -1592,8 +1598,10 @@ int main(int argc, char **argv) {
         {"T051", test_t051},
         {"T052", test_t052},
     };
-    for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
-        if (strcmp(argv[1], cases[i].id) == 0) {
+    for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++)
+    {
+        if (strcmp(argv[1], cases[i].id) == 0)
+        {
             cases[i].run();
             return 0;
         }

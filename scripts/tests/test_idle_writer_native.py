@@ -38,7 +38,8 @@ class IdleWriterNativeTest(unittest.TestCase):
                        '-I', str(folder), '-I', str(ROOT / 'host/evdi'),
                        str(ROOT / 'scripts/tests/idle_writer_native.c'),
                        str(ROOT / 'host/evdi/frame_exchange.c'),
-                       str(ROOT / 'host/evdi/fifo_writer.c'), '-o', str(binary)]
+                       str(ROOT / 'host/evdi/fifo_writer.c'),
+                       str(ROOT / 'host/evdi/idle_control.c'), '-o', str(binary)]
             logfile = folder / 'native.log'
             self.assertEqual(owned.logged(command, dict(os.environ), logfile, ROOT), 0,
                              logfile.read_text())

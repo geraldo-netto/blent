@@ -1,27 +1,38 @@
-static void t492_invalid_control(int fifo) {
+static void t492_invalid_control(int fifo)
+{
     char text[160];
-    struct stat info; assert(fstat(fifo, &info) == 0);
-    const char *invalid[] = {"", "-1 1 1 1200 500\n", "1", "1 1 1 1200 500X",
-        "184467440737095516160000 1 1 1200 500\n", "1 1 1 1200 4294967796\n"};
-    for (size_t i = 0; i < sizeof(invalid)/sizeof(invalid[0]); i++) {
+    struct stat info;
+    assert(fstat(fifo, &info) == 0);
+    const char *invalid[] = {"",
+                             "-1 1 1 1200 500\n",
+                             "1",
+                             "1 1 1 1200 500X",
+                             "184467440737095516160000 1 1 1200 500\n",
+                             "1 1 1 1200 4294967796\n"};
+    for (size_t i = 0; i < sizeof(invalid) / sizeof(invalid[0]); i++)
+    {
         strcpy(text, invalid[i]);
-        assert(idle_control_value(text, strlen(text), fifo, 1000) == 200);
+        assert(idle_control_value(text, strlen(text), fifo, 1000) == 0);
     }
-    for (int delta = -2; delta <= 2002; delta++) {
-        int size = snprintf(text, sizeof(text), "%ju %ju 1 %d 500\n",
-                            (uintmax_t)info.st_dev, (uintmax_t)info.st_ino, 1000 + delta);
-        assert(idle_control_value(text, size, fifo, 1000) == ((delta > 0 && delta <= 2000) ? 500 : 200));
+    for (int delta = -2; delta <= 2002; delta++)
+    {
+        int size = snprintf(text, sizeof(text), "%ju %ju 1 %d 500\n", (uintmax_t)info.st_dev,
+                            (uintmax_t)info.st_ino, 1000 + delta);
+        assert(idle_control_value(text, size, fifo, 1000) ==
+               ((delta > 0 && delta <= 2000) ? 500 : 0));
     }
     strcpy(text, "1 2 3 1200 500\n");
-    assert(idle_control_value(text, strlen(text), fifo, 1000) == 200);
-    assert(idle_control_value(text, strlen(text), -1, 1000) == 200);
-    for (int size = -2; size <= 162; size++) {
+    assert(idle_control_value(text, strlen(text), fifo, 1000) == 0);
+    assert(idle_control_value(text, strlen(text), -1, 1000) == 0);
+    for (int size = -2; size <= 162; size++)
+    {
         memset(text, '9', sizeof(text));
-        assert(idle_control_value(text, size, fifo, 1000) == 200);
+        assert(idle_control_value(text, size, fifo, 1000) == 0);
     }
 }
 
-static void t492_file_restrictions(const char *path) {
+static void t492_file_restrictions(const char *path)
+{
     char text[160];
     assert(read_idle_control(NULL, text, sizeof(text)) < 0);
     assert(read_idle_control("/nonexistent/t492", text, sizeof(text)) < 0);
