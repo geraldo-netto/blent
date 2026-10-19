@@ -4,7 +4,7 @@ import java.nio.channels.OverlappingFileLockException
 
 /** Process-local admission before opening any child of the original directory.
  * Native fileKey identities are borrowed immutable values. Each slot is owned
- * until both original channels actually close; uncertain cleanup retains it for
+ * until the original native channels actually close; uncertain cleanup retains it for
  * the containing private process's lifetime. The OS lock still excludes other
  * processes. No timer, GC callback or logical completion releases a slot. */
 internal class TrustDirectoryOwnership(private val capacity: Int = 64) {

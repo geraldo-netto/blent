@@ -1,7 +1,6 @@
 package com.blent.connection
 
 import java.io.File
-import java.io.RandomAccessFile
 import java.security.AlgorithmParameters
 import java.security.KeyStore
 import java.security.GeneralSecurityException
@@ -36,12 +35,9 @@ internal class AndroidConnectionIdentity(
 ) {
     companion object { const val ALIAS = "blent.accessory.client.v1" }
 
-    fun load(): ClientTlsIdentity = RandomAccessFile(File(directory, "accessory-identity.lock"), "rw").use { file ->
-        val lock = file.channel.tryLock() ?: error("Client identity is owned by another worker")
-        lock.use {
-            if (!store.contains(ALIAS)) generator.generate(ALIAS)
-            validated(store.read(ALIAS))
-        }
+    fun load(): ClientTlsIdentity = IdentityFileLock.open(directory).use {
+        if (!store.contains(ALIAS)) generator.generate(ALIAS)
+        validated(store.read(ALIAS))
     }
 
     private fun validated(entry: KeyStore.PrivateKeyEntry): ClientTlsIdentity {
