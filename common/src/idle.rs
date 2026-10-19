@@ -5,6 +5,18 @@
 pub mod control;
 pub mod unchanged;
 
+/// Requested policy for one original session, never a qualification or grant.
+/// Adapters retain compatibility unless their current backend/decoder evidence
+/// and original observations satisfy the selected policy. Copy-only value; no
+/// allocations or retained views. All three variants form its closed domain.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum Mode {
+    #[default]
+    Compatible,
+    Adaptive,
+    Unchanged,
+}
+
 pub const COMPATIBLE_MS: u32 = 200;
 pub const SPARSE_MS: u32 = 500;
 const WINDOW: usize = 16;

@@ -23,17 +23,18 @@ async fn launch_with(
 ) -> Result<Handle> {
     let stop = lease.stop.clone();
     finish_startup(spawn(
+        Mode::Adaptive,
         stop,
         move || Ok(lease),
         evidence,
         tracker,
-        viewers,
+        subjects::Subjects::new(Mode::Adaptive, viewers),
         scope,
     ))
     .await
 }
 
-fn evidence(tracker: &LatencyTracker) -> Arc<EncoderEvidence> {
+pub(super) fn evidence(tracker: &LatencyTracker) -> Arc<EncoderEvidence> {
     tracker.encoder_started_with_decoder(
         "libx264",
         (640, 480, 30, 20000, 18),
@@ -53,13 +54,13 @@ fn evidence(tracker: &LatencyTracker) -> Arc<EncoderEvidence> {
     )
 }
 
-fn lease(directory: &Path) -> Lease {
+pub(super) fn lease(directory: &Path) -> Lease {
     let fifo = directory.join("capture.nv12");
     super::super::helper::ensure_fifo(&fifo).unwrap();
     Lease::open(&fifo, Default::default()).unwrap()
 }
 
-async fn native_until(completed: impl FnMut() -> bool) {
+pub(super) async fn native_until(completed: impl FnMut() -> bool) {
     observe_native(Duration::from_secs(3), completed).await;
 }
 
@@ -224,17 +225,31 @@ async fn t492_late_join_missing_timestamps_and_bounded_history_fail_closed() {
     handle.note(300, None, true);
     tracker.on_encoded_for(300, &evidence);
     tracker.on_rendered_from(300, 0, Some(&evidence.decoder.as_ref().unwrap().receipt()));
-    let mut policy = Policy::new(true);
-    consume(&mut policy, &handle.timings, &evidence, &mut 0, origin);
-    assert_eq!(policy.phase, Phase::Rejected);
+    let mut policy = Policy::new(Mode::Adaptive, false, true);
+    consume(
+        &mut policy,
+        Conditions::default(),
+        &handle.timings,
+        &evidence,
+        &mut 0,
+        origin,
+    );
+    assert_eq!(policy.phase(), Phase::Rejected);
     for seq in 301..600 {
         tracker.on_encoded_for(seq, &evidence);
         tracker.on_rendered_from(seq, 0, Some(&evidence.decoder.as_ref().unwrap().receipt()));
     }
-    let mut policy = Policy::new(true);
-    consume(&mut policy, &handle.timings, &evidence, &mut 0, origin);
+    let mut policy = Policy::new(Mode::Adaptive, false, true);
+    consume(
+        &mut policy,
+        Conditions::default(),
+        &handle.timings,
+        &evidence,
+        &mut 0,
+        origin,
+    );
     assert_eq!(
-        policy.phase,
+        policy.phase(),
         Phase::Rejected,
         "T492: discarded ACK history cannot certify a late join"
     );
@@ -538,7 +553,7 @@ fn hold_files(
     entered.recv_timeout(Duration::from_secs(5)).unwrap();
     (release, worker)
 }
-async fn idle_completed(original: &blent_config::retirement::Completion) {
+pub(super) async fn idle_completed(original: &blent_config::retirement::Completion) {
     observe_native(Duration::from_secs(5), || original.is_complete()).await;
 }
 
@@ -597,11 +612,12 @@ async fn t1034_unobserved_completed_startup_retains_queued_lease_cleanup() {
     let stop = native.stop.clone();
     let (scope, retired) = blent::native_scope::Scope::default().group();
     let startup = spawn(
+        Mode::Adaptive,
         stop,
         move || Ok(native),
         evidence,
         tracker,
-        Arc::new(AtomicU64::new(0)),
+        subjects::Subjects::new(Mode::Adaptive, Arc::new(AtomicU64::new(0))),
         &scope,
     )
     .unwrap();
@@ -639,6 +655,7 @@ async fn t1034_canceled_startup_keeps_late_native_lease_creation() {
     let (created_tx, created) = tokio::sync::oneshot::channel();
     let (scope, retired) = blent::native_scope::Scope::default().group();
     let startup = spawn(
+        Mode::Adaptive,
         stop,
         move || {
             entered_tx.send(()).unwrap();
@@ -649,7 +666,7 @@ async fn t1034_canceled_startup_keeps_late_native_lease_creation() {
         },
         evidence,
         tracker,
-        Arc::new(AtomicU64::new(0)),
+        subjects::Subjects::new(Mode::Adaptive, Arc::new(AtomicU64::new(0))),
         &scope,
     )
     .unwrap();
@@ -684,6 +701,7 @@ async fn t1034_revoked_startup_rejects_before_native_file_creation() {
     let observed = opened.clone();
     let (scope, retired) = blent::native_scope::Scope::default().group();
     let startup = spawn(
+        Mode::Adaptive,
         stop,
         move || {
             observed.store(true, Ordering::Release);
@@ -691,7 +709,7 @@ async fn t1034_revoked_startup_rejects_before_native_file_creation() {
         },
         evidence,
         tracker,
-        Arc::new(AtomicU64::new(0)),
+        subjects::Subjects::new(Mode::Adaptive, Arc::new(AtomicU64::new(0))),
         &scope,
     )
     .unwrap();
@@ -709,11 +727,12 @@ async fn t1034_native_startup_panic_retains_original_retirement() {
     let evidence = evidence(&tracker);
     let (scope, retired) = blent::native_scope::Scope::default().group();
     let startup = spawn(
+        Mode::Adaptive,
         Arc::default(),
         || panic!("T1034 native constructor panic"),
         evidence,
         tracker,
-        Arc::new(AtomicU64::new(0)),
+        subjects::Subjects::new(Mode::Adaptive, Arc::new(AtomicU64::new(0))),
         &scope,
     )
     .unwrap();
@@ -815,4 +834,35 @@ async fn t1123_media_clock_advance_does_not_spend_native_retirement_budget() {
         "T1123: virtual media time exhausted native retirement observation"
     );
     outcome.unwrap();
+}
+
+#[tokio::test]
+async fn t1115_unknown_view_observations_decline_before_worker_admission() {
+    if crate::capture::ownership_tests::isolated(
+        "capture::idle::tests::t1115_unknown_view_observations_decline_before_worker_admission",
+    ) {
+        return;
+    }
+    let config = CaptureConfig {
+        encoder: "libx264".into(),
+        ..Default::default()
+    };
+    let fifo = super::super::fifo_path_for(config.instance).unwrap();
+    super::super::helper::ensure_fifo(&fifo).unwrap();
+    let tracker = LatencyTracker::new();
+    let known = evidence(&tracker);
+    let _activity = tracker.encoder_activity(known.clone());
+    assert!(
+        start_mode(
+            Mode::Unchanged,
+            &config,
+            known,
+            tracker,
+            Arc::new(AtomicU64::new(0)),
+            &Default::default()
+        )
+        .await
+        .is_none(),
+        "T1115: unsupported viewer observations consumed an idle worker"
+    );
 }

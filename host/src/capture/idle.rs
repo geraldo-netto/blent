@@ -1,9 +1,10 @@
-//! Linux capture adapter for portable T492 policy. Requests expire after 1.5s.
+//! Linux capture adapter for portable T492/T1115 policies. Requests expire after 1.5s.
 use super::CaptureConfig;
 use crate::latency::{EncoderEvidence, LatencyTracker};
 use anyhow::{Context, Result};
 use blent_config::idle::control::{Cadence, LEASE_US};
-use blent_config::idle::{Phase, Policy, Sample, COMPATIBLE_MS};
+use blent_config::idle::{unchanged::Conditions, Mode, Sample, COMPATIBLE_MS};
+use policy::{Phase, Policy};
 use std::{
     collections::VecDeque,
     io::Read,
@@ -14,7 +15,9 @@ use std::{
 };
 use tokio::time::Instant;
 mod directory;
+mod policy;
 mod staging;
+mod subjects;
 mod worker;
 
 fn retire_request(mut cleanup: impl FnMut() -> Result<()>, mut pause: impl FnMut()) {
@@ -76,18 +79,39 @@ pub(super) async fn start(
     viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
     scope: &blent::native_scope::Scope,
 ) -> Option<Handle> {
-    if !config.adaptive_idle || evidence.decoder.is_none() {
+    if !config.adaptive_idle {
+        return None;
+    }
+    start_mode(Mode::Adaptive, config, evidence, tracker, viewers, scope).await
+}
+
+// Internal original-session choice. Configuration/UI selection remains T1111.
+pub(super) async fn start_mode(
+    mode: Mode,
+    config: &CaptureConfig,
+    evidence: Arc<EncoderEvidence>,
+    tracker: LatencyTracker,
+    viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
+    scope: &blent::native_scope::Scope,
+) -> Option<Handle> {
+    if mode == Mode::Compatible || evidence.decoder.is_none() {
+        return None;
+    }
+    let subjects = subjects::Subjects::new(mode, viewers);
+    if mode == Mode::Unchanged && !unchanged_available(config, &evidence, &subjects) {
+        tracing::warn!("Unchanged-frame admission unavailable; retaining compatible cadence");
         return None;
     }
     let instance = config.instance;
     let stop = Arc::new(worker::Stop::default());
     let create_stop = stop.clone();
     let startup = spawn(
+        mode,
         stop,
         move || Lease::open(&super::fifo_path_for(instance)?, create_stop),
         evidence,
         tracker,
-        viewers,
+        subjects,
         scope,
     );
     match finish_startup(startup).await {
@@ -98,6 +122,14 @@ pub(super) async fn start(
         }
     }
 }
+fn unchanged_available(
+    config: &CaptureConfig,
+    evidence: &EncoderEvidence,
+    subjects: &subjects::Subjects,
+) -> bool {
+    evidence.active() && policy::qualified(config, evidence) && subjects.ready()
+}
+
 // Queue views must drop before the worker retires its original held lease.
 struct Startup {
     ready: tokio::sync::oneshot::Receiver<Arc<Lease>>,
@@ -120,18 +152,18 @@ async fn finish_startup(startup: Result<Startup>) -> Result<Handle> {
     startup?.finish().await
 }
 fn spawn(
+    mode: Mode,
     stop: Arc<worker::Stop>,
     create: impl FnOnce() -> Result<Lease> + Send + 'static,
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
-    viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
+    subjects: subjects::Subjects,
     scope: &blent::native_scope::Scope,
 ) -> Result<Startup> {
     let timings = Timings::default();
     let work_timings = timings.clone();
     let runtime = tokio::runtime::Handle::current();
     let origin = Instant::now();
-    let epoch = viewers.epoch();
     let (ready, receiver) = tokio::sync::oneshot::channel();
     let running = stop.clone();
     let task = worker::Worker::spawn(stop, scope, move |holder| {
@@ -144,13 +176,13 @@ fn spawn(
             return Ok(());
         }
         runtime.block_on(run(
+            mode,
             lease,
             work_timings,
             evidence,
             tracker,
             origin,
-            viewers,
-            epoch,
+            subjects,
         ));
         Ok(())
     })?;
@@ -162,49 +194,82 @@ fn spawn(
 }
 
 async fn run(
+    mode: Mode,
     lease: Arc<Lease>,
     timings: Timings,
     evidence: Arc<EncoderEvidence>,
     tracker: LatencyTracker,
     origin: Instant,
-    viewers: Arc<dyn blent::capture_contract::ViewerActivity>,
-    viewer_epoch: u64,
+    subjects: subjects::Subjects,
 ) {
     let mut updates = tracker.activity_updates();
     let mut timer = tokio::time::interval(Duration::from_millis(250));
     let mut ordinal = 0;
-    let mut policy = Policy::new(evidence.decoder.is_some());
-    let mut previous = policy.phase;
+    let recipe = mode != Mode::Unchanged || policy::recipe(&evidence);
+    let mut policy = Policy::new(mode, recipe, evidence.decoder.is_some());
+    let mut previous = policy.phase();
     while evidence.active() && lease.stop.active() {
-        if viewers.epoch() != viewer_epoch {
+        let viewer_change = subjects.changed(mode);
+        if !subjects.same_epoch() {
             lease.clear();
             return;
         }
-        consume(&mut policy, &timings, &evidence, &mut ordinal, origin);
-        policy.tick(micros(origin, Instant::now()));
-        if policy.phase != previous {
+        let conditions = subjects.current(mode, &evidence, &lease.stop);
+        consume(
+            &mut policy,
+            conditions,
+            &timings,
+            &evidence,
+            &mut ordinal,
+            origin,
+        );
+        policy.tick(
+            subjects.current(mode, &evidence, &lease.stop),
+            micros(origin, Instant::now()),
+        );
+        if policy.phase() != previous {
             tracing::info!(
-                "Adaptive idle: {:?}, encoder={}",
-                policy.phase,
+                "Idle policy {mode:?}: {:?}, cadence={}ms, encoder={}",
+                policy.phase(),
+                policy.interval_ms(),
                 evidence.name
             );
-            previous = policy.phase;
+            previous = policy.phase();
         }
-        if let Err(error) = lease.publish(policy.interval_ms()) {
-            tracing::warn!("Adaptive idle restored compatibility: {error}");
+        if let Err(error) = publish_policy(&lease, &mut policy, mode, &subjects, &evidence, origin)
+        {
+            tracing::warn!("Idle policy restored compatibility: {error}");
             lease.clear();
             return;
         }
-        if policy.phase == Phase::Rejected {
+        if policy.phase() == Phase::Rejected {
             return;
         }
-        tokio::select! { _ = timer.tick() => {}, _ = updates.changed() => {}, _ = lease.stop.changed() => {} }
+        tokio::select! { _ = timer.tick() => {}, _ = updates.changed() => {}, _ = lease.stop.changed() => {}, _ = viewer_change => {} }
     }
     lease.clear();
 }
 
+fn publish_policy(
+    lease: &Lease,
+    policy: &mut Policy,
+    mode: Mode,
+    subjects: &subjects::Subjects,
+    evidence: &EncoderEvidence,
+    origin: Instant,
+) -> Result<()> {
+    lease.publish_while(policy.interval_ms(), || {
+        policy.tick(
+            subjects.current(mode, evidence, &lease.stop),
+            micros(origin, Instant::now()),
+        );
+        policy.phase() != Phase::Rejected && subjects.permits(mode, evidence, &lease.stop)
+    })
+}
+
 fn consume(
     policy: &mut Policy,
+    conditions: Conditions,
     timings: &Timings,
     evidence: &EncoderEvidence,
     ordinal: &mut u64,
@@ -226,7 +291,7 @@ fn consume(
                 keyframe: frame.keyframe,
             })
         }) {
-            Some(sample) => policy.observe(sample),
+            Some(sample) => policy.observe(conditions, sample),
             None => {
                 policy.reject();
                 return;
@@ -258,6 +323,8 @@ struct Lease {
     _inode: std::fs::File,
     _token: std::fs::File,
     directory: directory::Directory,
+    #[cfg(test)]
+    publication_observer: Mutex<Option<Arc<publication_tests::Hook>>>,
 }
 impl Lease {
     fn open(fifo: &Path, stop: Arc<worker::Stop>) -> Result<Self> {
@@ -283,19 +350,15 @@ impl Lease {
             _inode: inode,
             _token: token,
             directory,
+            #[cfg(test)]
+            publication_observer: Mutex::new(None),
         })
     }
 }
 
 impl Cadence for Lease {
     fn publish(&self, interval: u32) -> Result<()> {
-        if interval == COMPATIBLE_MS {
-            self.clear();
-            return Ok(());
-        }
-        anyhow::ensure!(self.stop.active(), "idle lease retired");
-        let _guard = LEASE_FILES.lock().unwrap();
-        self.publish_locked(interval, || {})
+        self.publish_while(interval, || true)
     }
 
     fn clear(&self) {
@@ -316,16 +379,51 @@ impl Lease {
 }
 
 impl Lease {
-    fn publish_locked(&self, interval: u32, before_wait: impl FnOnce()) -> Result<()> {
+    // Predicate is a synchronous original observation, never a native fence.
+    // Recheck after native waits and staging IO, before the advisory rename.
+    fn publish_while(&self, interval: u32, mut current: impl FnMut() -> bool) -> Result<()> {
+        if interval == COMPATIBLE_MS {
+            self.clear();
+            return Ok(());
+        }
         anyhow::ensure!(self.stop.active(), "idle lease retired");
-        anyhow::ensure!(interval == 500, "unsupported sparse cadence");
-        before_wait();
-        let directory = self.directory.lock()?;
-        anyhow::ensure!(self.stop.active(), "idle lease retired");
-        self.write_request(interval, &directory)
+        let _guard = LEASE_FILES.lock().unwrap();
+        #[cfg(test)]
+        let _observation =
+            publication_tests::Publication::new(self.publication_observer.lock().unwrap().take());
+        self.publish_locked(interval, || {}, &mut current)
     }
 
-    fn write_request(&self, interval: u32, directory: &directory::Guard<'_>) -> Result<()> {
+    fn check_current(&self, current: &mut impl FnMut() -> bool) -> Result<()> {
+        if !self.stop.active() {
+            anyhow::bail!("idle lease retired");
+        }
+        if !current() {
+            anyhow::bail!("original idle admission changed");
+        }
+        Ok(())
+    }
+
+    fn publish_locked(
+        &self,
+        interval: u32,
+        before_wait: impl FnOnce(),
+        current: &mut impl FnMut() -> bool,
+    ) -> Result<()> {
+        anyhow::ensure!(self.stop.active(), "idle lease retired");
+        anyhow::ensure!(matches!(interval, 500 | 1000), "unsupported sparse cadence");
+        before_wait();
+        let directory = self.directory.lock()?;
+        self.check_current(current)?;
+        self.write_request(interval, &directory, current)
+    }
+
+    fn write_request(
+        &self,
+        interval: u32,
+        directory: &directory::Guard<'_>,
+        current: &mut impl FnMut() -> bool,
+    ) -> Result<()> {
         let mut clock = libc::timespec {
             tv_sec: 0,
             tv_nsec: 0,
@@ -345,6 +443,7 @@ impl Lease {
             self.identity.1,
             self.token
         )?;
+        self.check_current(current)?;
         match file.persist(&self.path) {
             Ok(persisted) => {
                 drop(persisted);
@@ -431,3 +530,12 @@ mod lease_tests;
 
 #[cfg(test)]
 mod retirement_tests;
+
+#[cfg(test)]
+mod trial_tests;
+
+#[cfg(test)]
+mod interop_tests;
+
+#[cfg(test)]
+mod publication_tests;

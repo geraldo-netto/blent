@@ -12,7 +12,7 @@ pub struct Conditions {
     pub liveness_ready: bool,
 }
 impl Conditions {
-    fn permits(self) -> bool {
+    pub fn permits(self) -> bool {
         self.original_live && self.viewers_present && self.liveness_ready
     }
 }

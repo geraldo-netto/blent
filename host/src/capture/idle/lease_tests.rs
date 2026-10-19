@@ -130,9 +130,13 @@ fn t1114_stop_during_native_directory_wait_cannot_publish_late() {
     let (handshake, outcome) = std::thread::scope(|scope| {
         let held = directory.lock().unwrap();
         let writer = scope.spawn(|| {
-            lease.publish_locked(500, || {
-                entered.send(()).unwrap();
-            })
+            lease.publish_locked(
+                500,
+                || {
+                    entered.send(()).unwrap();
+                },
+                &mut || true,
+            )
         });
         let handshake = observed.recv_timeout(Duration::from_secs(5));
         lease.stop.revoke();
@@ -220,4 +224,61 @@ async fn t1114_directory_guard_coordinates_real_processes_until_original_unlock(
     assert!(released.status.success());
     assert_eq!(blocked.stdout, b"busy\n");
     assert_eq!(released.stdout, b"free\n");
+}
+
+#[test]
+fn t1115_native_cadence_contract_preserves_record_on_invalid_values() {
+    let root = private_root();
+    let fifo = root.path().join("frames");
+    super::super::helper::ensure_fifo(&fifo).unwrap();
+    let lease = Lease::open(&fifo, Default::default()).unwrap();
+    for interval in [500, 1000] {
+        lease
+            .publish(interval)
+            .expect("T1115: native-supported cadence rejected");
+        let record = lease.contents().unwrap();
+        let fields: Vec<u64> = record
+            .split_ascii_whitespace()
+            .map(|field| field.parse().unwrap())
+            .collect();
+        assert_eq!(fields.len(), 5);
+        assert_eq!(fields[4], u64::from(interval));
+        for invalid in [0, 1, 199, 201, 499, 501, 999, 1001, u32::MAX] {
+            assert!(lease.publish(invalid).is_err());
+            assert_eq!(
+                lease.contents().unwrap(),
+                record,
+                "T1115: rejected cadence changed original record"
+            );
+        }
+    }
+    lease.publish(200).unwrap();
+    assert!(!lease.path.exists());
+}
+
+#[test]
+fn t1115_loss_after_staging_cannot_replace_original_advice_or_leave_temp_debt() {
+    let root = private_root();
+    let fifo = root.path().join("frames");
+    super::super::helper::ensure_fifo(&fifo).unwrap();
+    let lease = Lease::open(&fifo, Default::default()).unwrap();
+    lease.publish(500).unwrap();
+    let original = lease.contents().unwrap();
+    let mut checks = 0;
+    assert!(lease
+        .publish_while(1000, || {
+            checks += 1;
+            checks == 1
+        })
+        .is_err());
+    assert_eq!(
+        checks, 2,
+        "T1115: missing original admission check before persist"
+    );
+    assert_eq!(lease.contents().unwrap(), original);
+    assert_eq!(
+        std::fs::read_dir(root.path()).unwrap().count(),
+        2,
+        "T1115: rejected stage retains named file debt"
+    );
 }
