@@ -7,7 +7,7 @@ import org.junit.Test
 class TabletConnectionRunTest {
     @Test fun t998ProductionMicrophoneOfferRequiresOriginalPermissionWithoutOpeningCapture() {
         val setup = RuntimeSetup(); val io = RunnerIo()
-        val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096))
+        val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096), {})
         val session = run.endpoints() as TabletSession
         val credit = checkNotNull(session.nextFrame(0)); session.written(credit, 0)
         session.receive(ConnectionFrame(ConnectionWire.Header(ConnectionWire.CREDIT, ConnectionWire.MANAGEMENT,
@@ -32,7 +32,7 @@ class TabletConnectionRunTest {
     @Test fun t932DefaultCompositionRetainsCameraOfferWithoutOpeningEndpointBeforePermission() {
         val setup = RuntimeSetup()
         val io = RunnerIo()
-        val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096))
+        val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096), {})
         val session = run.endpoints() as TabletSession
         val grant = session.nextFrame(0)!!
         assertEquals(ConnectionWire.CREDIT, grant.header.kind)
@@ -62,7 +62,7 @@ class TabletConnectionRunTest {
     }
     @Test fun t978ProductionCompositionAdvertisesImplementedMediaAndKeepsUnselectedAudioPending() {
         val setup = RuntimeSetup(); val io = RunnerIo()
-        val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096))
+        val run = tabletConnectionRun(ConnectionWorkerSpec("fixture"), ConnectionSetupReady(io, setup.approval, 4096), {})
         val session = run.endpoints() as TabletSession
         val credit = checkNotNull(session.nextFrame(0)); session.written(credit, 0)
         session.receive(ConnectionFrame(ConnectionWire.Header(ConnectionWire.CREDIT, ConnectionWire.MANAGEMENT,

@@ -20,11 +20,15 @@ internal class ConnectionLocalResources(
     private val endpoints: ConnectionEndpoints,
     capacity: Int,
     private val limits: ConnectionRunLimits = ConnectionRunLimits(),
-    private val factory: (Long) -> LocalEndpoint = { now -> LocalEndpointOwner(LocalSocketEndpoint(), now, limits) },
+    factory: ((Long) -> LocalEndpoint)? = null,
     private val cameraAuthority: ConnectionResourceAuthority? = null,
     private val audioAuthority: ConnectionResourceAuthority? = null,
     private val microphoneAuthority: ConnectionResourceAuthority? = null,
+    wake: () -> Unit = {},
 ) : LocalConnectionResources, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl {
+    private val factory = factory ?: { now: Long ->
+        LocalEndpointOwner(LocalSocketEndpoint(wake), now, limits, wake)
+    }
     private val block = minOf(capacity, ConnectionWire.MAX_PAYLOAD)
     private val slots = arrayOfNulls<LocalResourceOwnership>(4)
     private var stopped = false

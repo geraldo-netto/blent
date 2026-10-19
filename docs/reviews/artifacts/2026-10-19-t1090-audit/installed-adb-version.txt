@@ -1,0 +1,4 @@
+Android Debug Bridge version 1.0.41
+Version 34.0.4-debian
+Installed as /usr/lib/android-sdk/platform-tools/adb
+Running on Linux 7.0.0-38-generic (x86_64)

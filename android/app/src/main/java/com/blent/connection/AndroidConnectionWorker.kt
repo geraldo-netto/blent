@@ -12,10 +12,10 @@ import kotlinx.coroutines.withTimeoutOrNull
 
 /** Authenticated setup supplies the ticket/window; media consent remains owned
  * by its resource controller. No media device opens during composition. */
-internal fun tabletConnectionRun(spec: ConnectionWorkerSpec, ready: ConnectionSetupReady): ConnectionRun {
+internal fun tabletConnectionRun(spec: ConnectionWorkerSpec, ready: ConnectionSetupReady, wake: () -> Unit): ConnectionRun {
     val session = TabletSession(ready.approval.ticket, spec.session.copy(capacity = ready.capacity), 15)
     return ConnectionLocalRun(ConnectionSessionRunner(session, ready.io, spec.io),
-        ConnectionLocalResources(session, ready.capacity, spec.io, cameraAuthority = session, audioAuthority = session, microphoneAuthority = session))
+        ConnectionLocalResources(session, ready.capacity, spec.io, cameraAuthority = session, audioAuthority = session, microphoneAuthority = session, wake = wake))
 }
 
 /** One connection-process actor. Native opening, crypto and storage belong to
@@ -25,11 +25,12 @@ internal class AndroidConnectionWorker(
     private val setup: (current: () -> Boolean, wake: () -> Unit) -> ConnectionSetup,
     private val report: (ConnectionWorkerEvent) -> Unit,
     private val clock: () -> Long = SystemClock::elapsedRealtime,
-    private val runner: ConnectionRunFactory = ConnectionRunFactory { ready -> tabletConnectionRun(spec, ready) },
+    runner: ConnectionRunFactory? = null,
 ) : ConnectionWorker {
     private val state = AtomicInteger(0)
     private val stopping = AtomicBoolean()
     private val wake = Channel<Unit>(Channel.CONFLATED)
+    private val runner = runner ?: ConnectionRunFactory { ready -> tabletConnectionRun(spec, ready, ::signal) }
     private val commands = Channel<ConnectionWorkerCommand>(32)
     private val completed = CompletableDeferred<Unit>()
     private var displayed: LocalDisplayRoute? = null

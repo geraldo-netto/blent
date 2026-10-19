@@ -1,0 +1,6 @@
+{
+  "snapshot": "tcp:34567 -> tcp:12345",
+  "concurrent_rebind": "tcp:34567 -> tcp:54321",
+  "removed": "tcp:54321",
+  "foreign_mapping_deleted": true
+}
