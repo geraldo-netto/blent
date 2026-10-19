@@ -60,10 +60,12 @@ impl Worker {
         })
     }
     /// Failed submission returns exact Pairing ownership to the dispatcher.
-    pub fn submit(&self, job: AuthorityJob) -> std::result::Result<(), AuthorityJob> {
+    pub fn submit(&self, job: AuthorityJob) -> std::result::Result<(), Box<AuthorityJob>> {
         match &self.jobs {
-            Some(jobs) => jobs.try_send(job).map_err(|error| error.into_inner()),
-            None => Err(job),
+            Some(jobs) => jobs
+                .try_send(job)
+                .map_err(|error| Box::new(error.into_inner())),
+            None => Err(Box::new(job)),
         }
     }
     /// Stop accepting jobs after the controller has consumed outstanding replies.
