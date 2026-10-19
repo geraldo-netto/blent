@@ -11,7 +11,7 @@ pub enum Resource {
 #[derive(Default)]
 pub(super) struct Tracker {
     connection: Observations<1>,
-    // Two original output children and their two owned feeder tasks.
+    // Two original blocking output workers and their two owned controllers.
     producers: Observations<4>,
     decoder: Observations<1>,
 }

@@ -22,9 +22,10 @@ then **Restart camera** to apply the change.
 The camera helper is embedded in the host GUI through a reusable host library.
 No separate helper command or display daemon is needed. Keep the host window
 open while sharing; **Stop camera** or closing that window requests capture
-cleanup and black output. A replacement waits for the original FFmpeg resources
-and, for direct USB, the original registration to retire. Unconfirmed cleanup
-keeps replacement pending; Stop also cancels that pending start. Legacy ADB
+cleanup and black output. A replacement waits for the original output workers
+and FFmpeg decoder and, for direct USB, the original registration to retire.
+Unconfirmed cleanup keeps replacement pending; Stop also cancels that pending
+start. Legacy ADB
 reverse-map cleanup still has an ownership race with concurrent external changes
 (T1090). Camera operations never attach EVDI or restart display sharing.
 
@@ -106,8 +107,11 @@ kbit/s. These are request limits, not guaranteed modes: Android rejects profiles
 its camera does not advertise. A bitrate target is not a measured traffic rate.
 Larger profiles cost USB bandwidth, decoding/encoding work and tablet power.
 
-The desktop uses one persistent FFmpeg producer per virtual camera and an
-FFmpeg decoder for the selected camera. Android uses Camera2 and MediaCodec.
+Linux uses one owned native writer per virtual camera and an FFmpeg decoder for
+the selected camera. Each writer configures and writes the original locked file;
+it never reopens the device path. Unknown native completion keeps that ownership
+held. Closing the containing host process cannot leave an external output writer
+running. Android uses Camera2 and MediaCodec.
 The camera stream is independent of the display and pen connections. Legacy ADB
 uses a temporary reverse mapping for its authenticated local TCP connection.
 Direct USB uses the brokered accessory channel and a local TCP relay without ADB.
@@ -215,8 +219,9 @@ next connection. One additional fixed frame drains input when all leases are hel
 no replacement allocation or wait for a stalled reader occurs. Lower capacities
 use less memory but can discard more frames when readers are slow. Default pixel
 storage is four frames: 5.53 MB at 720p or 12.44 MB at 1080p, excluding allocator
-metadata and decoder/output process buffers. Held leases survive Stop/reconnect
-without being overwritten; partial input is never published.
+metadata, decoder buffers and the output workers' two fixed black frames. Held
+leases survive Stop/reconnect without being overwritten; partial input is never
+published.
 
 [T816 measurements](reviews/2026-10-10-camera-frame-reuse.md) cover the Rust frame
 staging stage, not end-to-end camera latency.

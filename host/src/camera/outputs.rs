@@ -1,6 +1,6 @@
-//! Persistent V4L2 producers. A stopped/stalled camera becomes a black frame.
+//! Original output-device admission and shared camera frame policy.
 use anyhow::{ensure, Context, Result};
-use blent_config::camera::{CameraOptions, CameraProfile};
+use blent_config::camera::CameraProfile;
 use std::{
     fs::File,
     os::unix::{
@@ -11,12 +11,7 @@ use std::{
     sync::Arc,
     time::Duration,
 };
-use tokio::{
-    io::AsyncWriteExt,
-    process::{Child, Command},
-    sync::watch,
-    time::Instant,
-};
+use tokio::sync::watch;
 
 pub type Frames = watch::Sender<Option<Arc<Vec<u8>>>>;
 
@@ -62,79 +57,10 @@ pub fn blank(options: &CameraProfile) -> Result<Vec<u8>> {
     Ok(frame)
 }
 
-pub fn producer(ffmpeg: &Path, device: &Path, options: &CameraOptions) -> Command {
-    let mut command = Command::new(ffmpeg);
-    command
-        .args([
-            "-nostdin",
-            "-hide_banner",
-            "-loglevel",
-            "error",
-            "-f",
-            "rawvideo",
-            "-pixel_format",
-            "yuv420p",
-            "-video_size",
-            &format!("{}x{}", options.width, options.height),
-            "-framerate",
-            &options.fps.to_string(),
-            "-i",
-            "pipe:0",
-            "-an",
-            "-c:v",
-            "rawvideo",
-            "-pix_fmt",
-            "yuv420p",
-            "-threads",
-            "1",
-            "-f",
-            "v4l2",
-        ])
-        .arg(device)
-        .stdin(std::process::Stdio::piped())
-        .stdout(std::process::Stdio::null())
-        .kill_on_drop(true);
-    command
-}
-
-pub async fn feed(
-    child: &mut Child,
-    mut frames: watch::Receiver<Option<Arc<Vec<u8>>>>,
-    options: &CameraOptions,
-) -> Result<()> {
-    let mut input = child.stdin.take().context("camera output stdin missing")?;
-    let black = blank(options)?;
-    let result = write_frames(child, &mut input, &mut frames, &black).await;
-    let _ = tokio::time::timeout(Duration::from_secs(2), input.write_all(&black)).await;
-    result
-}
-
-async fn write_frames(
-    child: &mut Child,
-    input: &mut tokio::process::ChildStdin,
-    frames: &mut watch::Receiver<Option<Arc<Vec<u8>>>>,
-    black: &[u8],
-) -> Result<()> {
-    let mut last_frame = Instant::now();
-    let mut tick = tokio::time::interval(Duration::from_secs(1));
-    loop {
-        tokio::select! {
-            change = frames.changed() => { change.context("camera outputs stopped")?; last_frame = Instant::now(); }
-            _ = tick.tick() => {}
-            status = child.wait() => { anyhow::bail!("camera output exited: {}", status?); }
-        }
-        let newest = frames.borrow_and_update().clone();
-        let bytes = current_frame(newest.as_deref(), black, last_frame.elapsed());
-        tokio::time::timeout(Duration::from_secs(2), input.write_all(bytes))
-            .await
-            .context("camera output stalled")??;
-    }
-}
-
 pub(super) const FRESH_FRAME_AGE: Duration = Duration::from_secs(2);
 
 pub(super) fn current_frame<'a>(
-    frame: Option<&'a Vec<u8>>,
+    frame: Option<&'a [u8]>,
     black: &'a [u8],
     age: Duration,
 ) -> &'a [u8] {
@@ -142,16 +68,6 @@ pub(super) fn current_frame<'a>(
         Some(bytes) if age < FRESH_FRAME_AGE => bytes,
         _ => black,
     }
-}
-
-pub async fn retire(
-    child: blent_config::commands::OwnedChild,
-) -> blent_config::commands::Retirement {
-    let retired = child.retire(Duration::from_secs(1)).await;
-    if !retired.completion.is_complete() {
-        tracing::warn!("Camera process retirement incomplete; capacity retained");
-    }
-    retired
 }
 
 #[cfg(test)]

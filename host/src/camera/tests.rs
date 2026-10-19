@@ -78,7 +78,9 @@ async fn t539_graceful_output_stop_allows_final_blank_to_flush() {
     )
     .unwrap();
     drop(child.stdin.take());
-    outputs::retire(child).await;
+    // T1137 has no output child; keep the original EOF/flush regression on
+    // the same child owner that still retires camera decoders.
+    decoder::retire(child).await;
     assert!(
         marker.exists(),
         "T539 output killed before final frame was flushed"
@@ -161,29 +163,25 @@ async fn t539_real_h264_upload_decodes_only_to_selected_endpoint() {
 async fn t539_virtual_camera_writes_black_on_start_and_stop() {
     let root = tempfile::tempdir().unwrap();
     let capture = root.path().join("frames");
-    let tool = script(
-        root.path(),
-        "writer",
-        &format!(
-            "import sys, pathlib\npathlib.Path({:?}).write_bytes(sys.stdin.buffer.read())",
-            capture
-        ),
-    );
     let profile = options();
-    let mut child = blent_config::commands::OwnedChild::spawn(&mut outputs::producer(
-        &tool,
-        Path::new("/unused"),
-        &profile,
-    ))
-    .unwrap();
     let (frames, receiver) = watch::channel(None);
+    let report = new_report();
+    let (controller, native) = output_worker::start_with(
+        Arc::new(std::fs::File::create(&capture).unwrap()),
+        &profile.profile,
+        receiver,
+        &report,
+        output_device::configure_fixture,
+    )
+    .unwrap();
     let stop = async {
         tokio::time::sleep(Duration::from_millis(100)).await;
         drop(frames);
     };
-    let (result, _) = tokio::join!(outputs::feed(&mut child, receiver, &profile), stop);
-    assert!(result.is_err());
-    outputs::retire(child).await;
+    let (result, _) = tokio::join!(controller, stop);
+    report.wait_native().await;
+    result.unwrap().unwrap();
+    assert!(native.is_complete());
     let bytes = std::fs::read(capture).unwrap();
     assert!(bytes.len() >= profile.frame_bytes().unwrap() * 2);
     assert_eq!(
@@ -380,12 +378,12 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
     let adb = script(root.path(), "adb", "print('Broadcast completed: result=1')");
     let ffmpeg = script(
         root.path(),
-        "producer",
-        &format!(
-            "import pathlib, select, sys\nstop = pathlib.Path({:?})\nwhile not stop.exists():\n if select.select([sys.stdin.buffer], [], [], 0.01)[0]:\n  if not sys.stdin.buffer.read1(4096): break",
-            root.path().join("retire-producers")
-        ),
+        "decoder",
+        "import sys\nsys.stdin.buffer.read()",
     );
+    let gate = std::fs::File::create(root.path().join("gate")).unwrap();
+    use std::os::fd::AsRawFd;
+    assert_eq!(unsafe { libc::flock(gate.as_raw_fd(), libc::LOCK_EX) }, 0);
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let bridge = bridge::Bridge {
         adb,
@@ -413,13 +411,13 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
         client.read_exact(&mut ack).await.unwrap();
         assert_eq!(&ack, b"OK");
         client.shutdown().await.unwrap();
-        std::fs::write(root.path().join("retire-producers"), "").unwrap();
+        drop(gate); // Original producer configuration fails only after client checks.
     };
     let (_stop, mut stopped) = watch::channel(false);
     let (status, _) = watch::channel(State::Starting);
     let status = Report::new(status, watch::channel(None).0);
     let (result, clients_finished) = fixture_outcome(
-        serve(
+        serve_with(
             Session {
                 listener: &listener,
                 invitation: &bridge,
@@ -430,9 +428,10 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
             &mut stopped,
             &status,
             &[
-                std::sync::Arc::new(tempfile::tempfile().unwrap()),
-                std::sync::Arc::new(tempfile::tempfile().unwrap()),
+                Arc::new(std::fs::File::create(root.path().join("front")).unwrap()),
+                Arc::new(std::fs::File::create(root.path().join("rear")).unwrap()),
             ],
+            fail_after_clients,
         ),
         clients,
     )
@@ -690,4 +689,29 @@ fn t938_invalid_black_frame_dimensions_are_rejected_before_allocation() {
         result.unwrap().is_err(),
         "T938 allocated unsupported black frame"
     );
+}
+
+fn fail_after_clients(
+    lease: Arc<std::fs::File>,
+    profile: &CameraProfile,
+    frames: watch::Receiver<Option<Arc<Vec<u8>>>>,
+    report: &Report,
+) -> Result<(
+    crate::owned_task::Task,
+    blent_config::retirement::Completion,
+)> {
+    output_worker::start_with(lease, profile, frames, report, reject_after_gate)
+}
+fn reject_after_gate(
+    file: std::fs::File,
+    _: output_device::Spec,
+) -> Result<output_device::ConfiguredOutput> {
+    use std::os::fd::AsRawFd;
+    let path = std::fs::read_link(format!("/proc/self/fd/{}", file.as_raw_fd()))?;
+    let gate = std::fs::File::open(path.parent().unwrap().join("gate"))?;
+    anyhow::ensure!(
+        unsafe { libc::flock(gate.as_raw_fd(), libc::LOCK_SH) } == 0,
+        "T539 gate failure"
+    );
+    anyhow::bail!("T539 intentional original producer configuration failure")
 }

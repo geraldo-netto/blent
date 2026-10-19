@@ -159,79 +159,71 @@ async fn serve(
     status: &Report,
     devices: &[Arc<std::fs::File>; 2],
 ) -> Result<()> {
+    serve_with(session, stop, status, devices, output_worker::start).await
+}
+
+type StartOutput = fn(
+    Arc<std::fs::File>,
+    &CameraProfile,
+    watch::Receiver<Option<Arc<Vec<u8>>>>,
+    &Report,
+) -> Result<(
+    crate::owned_task::Task,
+    blent_config::retirement::Completion,
+)>;
+
+async fn serve_with(
+    session: Session<'_>,
+    stop: &mut watch::Receiver<bool>,
+    status: &Report,
+    devices: &[Arc<std::fs::File>; 2],
+    start: StartOutput,
+) -> Result<()> {
     if *stop.borrow() {
         return Ok(());
     }
     let options = session.options;
-    let ffmpeg = session.ffmpeg;
     let (front, front_rx) = watch::channel(None);
     let (rear, rear_rx) = watch::channel(None);
     let mut producers = Producers::new();
     let mut completions = Vec::with_capacity(2);
-    for (index, (device, frames)) in [
-        (&options.front_device, front_rx),
-        (&options.rear_device, rear_rx),
-    ]
-    .into_iter()
-    .enumerate()
-    {
-        let (work, completion) = producer_work(
-            ffmpeg,
-            device,
-            options,
-            frames,
-            devices[index].clone(),
-            status,
-        )?;
+    for (index, frames) in [front_rx, rear_rx].into_iter().enumerate() {
+        let (work, completion) = start(devices[index].clone(), &options.profile, frames, status)?;
         completions.push(completion);
         producers.push(work);
     }
     let frames = [front, rear];
     let result = session.invited(&frames, &mut producers, stop, status).await;
     drop(frames);
-    if tokio::time::timeout(std::time::Duration::from_secs(3), async {
-        while producers.next().await.is_some() {}
-    })
-    .await
-    .is_err()
-    {
-        producers.clear();
-    }
+    let cleanup = finish_outputs(&mut producers).await;
     anyhow::ensure!(
         completions.iter().all(|ticket| ticket.is_complete()),
         "camera output retirement incomplete; device locks retained"
     );
-    result
+    result.and(cleanup)
 }
 
-fn producer_work(
-    ffmpeg: &std::path::Path,
-    device: &std::path::Path,
-    options: &CameraOptions,
-    frames: watch::Receiver<Option<Arc<Vec<u8>>>>,
-    lease: Arc<std::fs::File>,
-    status: &Report,
-) -> Result<(
-    crate::owned_task::Task,
-    blent_config::retirement::Completion,
-)> {
-    use crate::camera_control::NativeResource::Producer;
-    let child_slot = status.reserve_native(Producer)?;
-    let task_slot = status.reserve_native(Producer)?;
-    let mut child =
-        blent_config::commands::OwnedChild::spawn(&mut outputs::producer(ffmpeg, device, options))
-            .context("start virtual camera producer")?;
-    let completion = child.completion();
-    child_slot.bind(completion.clone());
-    child.keep_alive(lease);
-    let feed_options = options.clone();
-    let work = crate::owned_task::Task::spawn(async move {
-        let result = outputs::feed(&mut child, frames, &feed_options).await;
-        outputs::retire(child).await;
-        result
-    })?;
-    task_slot.bind(work.completion());
-    Ok((work, completion))
+async fn finish_outputs(producers: &mut Producers) -> Result<()> {
+    match tokio::time::timeout(std::time::Duration::from_secs(3), drain_outputs(producers)).await {
+        Ok(result) => result,
+        Err(_) => {
+            producers.clear();
+            anyhow::bail!("camera output cleanup exceeded its control budget; native completion remains unconfirmed")
+        }
+    }
+}
+async fn drain_outputs(producers: &mut Producers) -> Result<()> {
+    let mut outcome = Ok(());
+    while let Some(completed) = producers.next().await {
+        let completed = completed.unwrap_or_else(|error| Err(error.into()));
+        if let Err(error) = &completed {
+            tracing::warn!(%error, "Original camera output failed during cleanup");
+        }
+        if outcome.is_ok() {
+            outcome = completed;
+        }
+    }
+    outcome
 }
 
 struct Session<'a> {

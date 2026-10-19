@@ -34,6 +34,7 @@ def arguments():
     run.add_argument("--release", required=True)
     run.add_argument("--suite", default=SUITE)
     run.add_argument("--ffmpeg", type=Path)
+    run.add_argument("--camera-pair", action="store_true")
     modes.add_parser("check").add_argument("output", type=Path)
     options = parser.parse_args()
     options.output = options.output.resolve()
@@ -51,7 +52,13 @@ def validate_arguments(parser, options):
         parser.error("output path cannot contain a QEMU option delimiter")
 
 
-def modules(release, root):
+def loopback_options(pair):
+    if pair:
+        return " devices=2 video_nr=20,21 'card_label=\"Blent Front,Blent Rear\"' exclusive_caps=1,1"
+    return " devices=1 video_nr=20 'card_label=\"Blent Front\"' exclusive_caps=1"
+
+
+def modules(release, root, pair):
     paths = {}
     for name in ["9pnet_virtio", "9p", "v4l2loopback"]:
         output = subprocess.check_output(["modprobe", "--show-depends", "-S", release, name], text=True)
@@ -65,7 +72,7 @@ def modules(release, root):
             subprocess.run(["zstd", "-dq", "-c", str(source)], stdout=output, check=True)
         command = "insmod /modules/" + shlex.quote(target.name)
         if target.name == "v4l2loopback.ko":
-            command += " devices=1 video_nr=20 'card_label=\"Blent Front\"' exclusive_caps=1"
+            command += loopback_options(pair)
         commands.append(command)
     return commands
 
@@ -107,6 +114,7 @@ mount --bind /work/root/lib64 /lib64
 mount --bind /work/root/usr/lib /usr/lib
 export LLVM_PROFILE_FILE=/evidence/v4l2-%m-%p.profraw
 export BLENT_T1143_DEVICE=/dev/video20
+export BLENT_T1137_REAR=/dev/video21
 export BLENT_T1143_ORACLE=/work/bin/v4l2-oracle
 export BLENT_T1144_FFMPEG=/work/bin/ffmpeg
 echo T1143_DRIVER_READY
@@ -139,7 +147,7 @@ def prepare(options):
     copy(options.busybox, initrd / "bin/busybox")
     (initrd / "bin/sh").symlink_to("busybox")
     copy(options.kernel, options.output / "vmlinuz")
-    commands = modules(options.release, initrd)
+    commands = modules(options.release, initrd, options.camera_pair)
     programs(options, options.output / "stage")
     script = initrd / "init"
     script.write_text(init_script(commands, options.suite))

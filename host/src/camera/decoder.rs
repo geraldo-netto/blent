@@ -1,7 +1,4 @@
-use super::{
-    outputs::{self, Frames},
-    protocol,
-};
+use super::{outputs::Frames, protocol};
 use anyhow::{Context, Result};
 use blent_config::camera::CameraOptions;
 use std::{path::Path, process::Stdio, time::Duration};
@@ -94,7 +91,7 @@ pub async fn connection(
     original.bind(decoder.completion());
     let result = transfer(&mut socket, &mut decoder, options, &outputs[header.lens]).await;
     outputs[header.lens].send_replace(None);
-    let retired = outputs::retire(decoder).await;
+    let retired = retire(decoder).await;
     anyhow::ensure!(
         retired.completion.is_complete(),
         "Camera decoder retirement incomplete; capacity retained"
@@ -152,4 +149,14 @@ async fn transfer(
         Ok::<(), anyhow::Error>(())
     };
     tokio::select! { result = receive => result, result = decode => result }
+}
+
+pub(super) async fn retire(
+    child: blent_config::commands::OwnedChild,
+) -> blent_config::commands::Retirement {
+    let retired = child.retire(Duration::from_secs(1)).await;
+    if !retired.completion.is_complete() {
+        tracing::warn!("Camera process retirement incomplete; capacity retained");
+    }
+    retired
 }

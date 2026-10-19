@@ -137,7 +137,11 @@ async fn feed(
             Event::Tick => {}
         }
         let newest = frames.borrow_and_update().clone();
-        let bytes = outputs::current_frame(newest.as_deref(), &black, last_frame.elapsed());
+        let bytes = outputs::current_frame(
+            newest.as_deref().map(Vec::as_slice),
+            &black,
+            last_frame.elapsed(),
+        );
         write_frame(&mut writer, bytes, &mut operation)?;
     }
 }
