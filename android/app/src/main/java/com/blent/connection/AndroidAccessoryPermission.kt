@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.usb.UsbManager
 import android.net.Uri
-import android.os.Build
+import androidx.core.content.ContextCompat
 import java.io.Closeable
 import java.util.UUID
 
@@ -78,8 +78,7 @@ internal class AndroidAccessoryPermission(
     private fun register() {
         val filter = IntentFilter(action)
         val permission = "${app.packageName}.permission.USB_CALLBACK"
-        if (Build.VERSION.SDK_INT >= 33) app.registerReceiver(receiver, filter, permission, null, Context.RECEIVER_NOT_EXPORTED)
-        else app.registerReceiver(receiver, filter, permission, null)
+        ContextCompat.registerReceiver(app, receiver, filter, permission, null, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     private fun beginRequest(selection: AccessorySelection) = synchronized(gate) {

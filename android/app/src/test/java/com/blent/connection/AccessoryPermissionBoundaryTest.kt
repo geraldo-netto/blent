@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.usb.UsbManager
 import android.os.Handler
+import androidx.core.content.ContextCompat
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -43,7 +44,9 @@ private class AccessoryRegistrationContext(
 ) : ContextWrapper(app) {
     override fun getApplicationContext(): Context = this
     override fun registerReceiver(receiver: BroadcastReceiver?, filter: IntentFilter, permission: String?, scheduler: Handler?): Intent? {
-        before(); return super.registerReceiver(receiver, filter, permission, scheduler).also { after() }
+        before()
+        return ContextCompat.registerReceiver(baseContext, receiver, filter, permission, scheduler,
+            ContextCompat.RECEIVER_NOT_EXPORTED).also { after() }
     }
     override fun registerReceiver(receiver: BroadcastReceiver?, filter: IntentFilter, permission: String?, scheduler: Handler?, flags: Int): Intent? {
         before(); return super.registerReceiver(receiver, filter, permission, scheduler, flags).also { after() }

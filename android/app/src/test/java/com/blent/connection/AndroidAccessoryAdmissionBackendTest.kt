@@ -7,6 +7,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.usb.UsbManager
+import androidx.core.content.ContextCompat
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -30,7 +31,10 @@ private class AdmissionContext(app: Application) : ContextWrapper(app) {
     }
     private fun after(filter: IntentFilter) { if (filter.hasAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED)) after() }
     override fun registerReceiver(receiver: BroadcastReceiver?, filter: IntentFilter): Intent? {
-        before(receiver, filter); return super.registerReceiver(receiver, filter).also { after(filter) }
+        before(receiver, filter)
+        // This legacy overload observes the protected system detach broadcast.
+        return ContextCompat.registerReceiver(baseContext, receiver, filter,
+            ContextCompat.RECEIVER_EXPORTED).also { after(filter) }
     }
     override fun registerReceiver(receiver: BroadcastReceiver?, filter: IntentFilter, flags: Int): Intent? {
         before(receiver, filter); return super.registerReceiver(receiver, filter, flags).also { after(filter) }
