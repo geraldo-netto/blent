@@ -1,0 +1,15 @@
+allprojects { project ->
+    project.afterEvaluate {
+        tasks.withType(Test).configureEach {
+            filter {
+                includeTestsMatching 'com.blent.connection.ConnectionWaitTest'
+                includeTestsMatching 'com.blent.connection.ConnectionWorkerWaitTest'
+                includeTestsMatching 'com.blent.connection.ConnectionAdmissionWaitTest'
+                includeTestsMatching 'com.blent.connection.ConnectionWorkerCodecTest'
+            }
+            afterTest { descriptor, result ->
+                new File('/tmp/blent-t918-evidence/completed-tests.log').append("${descriptor.className}.${descriptor.name}: ${result.resultType}\n")
+            }
+        }
+    }
+}

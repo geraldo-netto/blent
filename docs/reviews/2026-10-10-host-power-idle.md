@@ -88,12 +88,27 @@ owner-approved physical window; existing deferred campaigns stay separate.
 
 ## Idle scheduling follow-up (T918)
 
-Local inspection also found a 10 ms default timer in both Android connection
-actors. The local endpoint factory currently supplies no native wake callback,
-so progress relies on the periodic fallback. T918 tracks completion-driven
-wakeups and nearest-deadline sleeps, with retained lost-wake fallback and matched
-CPU/wakeup/latency measurements. This is separate from video-frame suppression;
-no measured power saving is claimed.
+The Android connection actors receive original-owner completion hints and wait
+until the earlier of the next known absolute deadline or their bounded lost-hint
+fallback (T1091–T1096/T1092). The default fallback is 100 ms. Unknown deadline
+providers and retirement retain a maximum 10 ms fallback; configured shorter
+asynchronous budgets and earlier known deadlines still win. The typed fallback
+range remains 1–1000 ms; persisted user controls are T898.
+
+[Hosted measurements](artifacts/2026-10-19-t918/README.md) compare both production
+actors with synthetic idle setup/permission owners. In matched three-second
+windows, 100 ms produced 30 advances per actor versus 292–297 at 10 ms. Hinted
+p95 latency at 100 ms was 0.053–0.165 ms; deliberately missed hints took
+97.1–97.3 ms versus 7.0–7.1 ms at 10 ms. The 1000 ms setting reduced idle work
+further but missed hints took about 997 ms. These bounded hosted results support
+the 100 ms compromise; they establish no Android battery or physical-device
+latency claim. Whole-JVM CPU varies with compilation/GC, so raw thread counters
+and reverse-order controls are retained.
+
+The separate snapshot allocation probe found measurable allocation even for
+nonescaping idle `combine` consumption on the installed JVM. T1097 tracks immutable
+snapshot reuse; no scalar-replacement or Android ART optimization is assumed.
+Frame/encoder suppression remains T915, separate from actor scheduling.
 
 ## Portable policy and independent ownership (T913, 2026-10-12)
 

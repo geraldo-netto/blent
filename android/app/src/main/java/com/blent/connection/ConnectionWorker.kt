@@ -8,7 +8,7 @@ internal data class ConnectionWorkerSpec(
     val device: String, val session: ConnectionSessionLimits = ConnectionSessionLimits(),
     val io: ConnectionRunLimits = ConnectionRunLimits(), val approvalTimeoutMs: Long = 120000,
     val nativeTimeoutMs: Long = 10000, val trustedPeers: Int = 64,
-    val accessoryCapacity: Int = 32, val timerMs: Long = 10,
+    val accessoryCapacity: Int = 32, val timerMs: Long = 100,
 ) {
     init {
         require(device.isNotEmpty() && device.length <= 512 && '\u0000' !in device)

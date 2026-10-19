@@ -1,0 +1,15 @@
+allprojects { project ->
+    project.afterEvaluate {
+        if (plugins.hasPlugin('com.android.application')) {
+            def source = new File(rootProject.projectDir.parentFile, 'scripts/benchmarks/android-connection-idle/src')
+            android.sourceSets.getByName('test').java.srcDir(source)
+            tasks.register('connectionIdleBenchmark', JavaExec) {
+                dependsOn 'compileDebugUnitTestKotlin', 'compileDebugUnitTestJavaWithJavac',
+                    'processDebugUnitTestJavaRes', 'generateDebugUnitTestConfig'
+                classpath = tasks.named('testDebugUnitTest', Test).get().classpath
+                mainClass = providers.gradleProperty('blentIdleMain').getOrElse('com.blent.connection.ConnectionIdleBenchmarkKt')
+                args providers.gradleProperty('blentIdleOutput').get()
+            }
+        }
+    }
+}

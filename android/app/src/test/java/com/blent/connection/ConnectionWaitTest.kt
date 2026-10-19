@@ -4,6 +4,15 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ConnectionWaitTest {
+    @Test fun t918MeasuredIdleDefaultPreservesDeadlineAndRetirementBounds() {
+        val limits = ConnectionWorkerSpec("fixture").waitLimits()
+        assertEquals(100, limits.fallbackMs)
+        assertEquals(100, ConnectionWait.fallback(limits, false))
+        assertEquals(10, ConnectionWait.fallback(limits, true))
+        assertEquals(10, ConnectionWait.delayMs(0, ConnectionDeadline.UNKNOWN, limits.fallbackMs))
+        assertEquals(2, ConnectionWait.delayMs(5, ConnectionDeadline.at(7), limits.fallbackMs))
+    }
+
     @Test fun t1092UnknownFallbackAndKnownDeadlineAreIndependentBounds() {
         assertEquals(1000, ConnectionWait.delayMs(0, ConnectionDeadline.IDLE, 1000))
         assertEquals(10, ConnectionWait.delayMs(0, ConnectionDeadline.UNKNOWN, 1000))
@@ -34,7 +43,7 @@ class ConnectionWaitTest {
             assertEquals(1, ConnectionWait.fallback(spec.waitLimits(), false))
             assertEquals(1, ConnectionWait.fallback(spec.waitLimits(), true))
         }
-        assertEquals(10, ConnectionWorkerSpec("fixture").waitLimits().fallbackMs)
+        assertEquals(100, ConnectionWorkerSpec("fixture").waitLimits().fallbackMs)
     }
 
     @Test fun t1092InvalidBoundsRejectBeforeSchedulingOrArithmetic() {
