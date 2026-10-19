@@ -105,7 +105,7 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
     val worker = ConnectionAdmissionRun(ConnectionWorkerSpec("template", session = ConnectionSessionLimits(4096),
         io = ConnectionRunLimits(5000, 1000), timerMs = 1), { admission },
         { spec, report -> AndroidConnectionWorkerRun(context, spec, report, bindMillis = 1000, startMillis = 1000, retireMillis = 4000) },
-        { events.add(it); presentation.event(token, it); report(it) })
+        { events.add(it); presentation.event(token, it); report(it) }, clock = ::clock)
     init {
         service.factory = { spec, report ->
             val setup = RuntimeSetup().apply {

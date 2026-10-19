@@ -17,4 +17,4 @@ internal fun androidUsbConnection(
         AndroidConnectionFactory.profile, spec.accessoryCapacity, clock,
         spec.nativeTimeoutMs, spec.approvalTimeoutMs, spec.io.retirementTimeoutMs, wake,
     )
-}, { selected, events -> AndroidConnectionWorkerRun(context(), selected, events) }, report)
+}, { selected, events -> AndroidConnectionWorkerRun(context(), selected, events) }, report, clock = clock)

@@ -15,6 +15,7 @@ internal class ConnectionAdmissionRun(
     private val workerFactory: (ConnectionWorkerSpec, (ConnectionWorkerEvent) -> Unit) -> ConnectionWorker,
     private val report: (ConnectionWorkerEvent) -> Unit,
     dispatcher: CoroutineDispatcher = Dispatchers.Default,
+    private val clock: () -> Long,
 ) : ConnectionWorker {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
     private val gate = Any()
@@ -22,6 +23,7 @@ internal class ConnectionAdmissionRun(
     private val stopping = AtomicBoolean()
     private val error = AtomicReference<Exception?>()
     private val wake = Channel<Unit>(Channel.CONFLATED)
+    private val waitLimits = spec.waitLimits()
     private val completed = CompletableDeferred<Unit>()
     private var cleanup: Deferred<Unit>? = null
     @Volatile private var admission: AccessoryAdmission? = null
@@ -175,7 +177,12 @@ internal class ConnectionAdmissionRun(
         execution?.cancel()
         signal()
     }
-    private suspend fun waitWake() { withTimeoutOrNull(spec.timerMs) { wake.receive() } }
+    private suspend fun waitWake() {
+        val deadline = ConnectionDeadline.observe(admission as? ConnectionDeadlineSource)
+        val fallback = ConnectionWait.fallback(waitLimits, stopping.get())
+        val delay = ConnectionWait.delayMs(clock(), deadline, fallback)
+        withTimeoutOrNull(delay) { wake.receive() }
+    }
     private fun nativeCleanup(): Deferred<Unit> {
         val task = synchronized(gate) {
             val previous = cleanup

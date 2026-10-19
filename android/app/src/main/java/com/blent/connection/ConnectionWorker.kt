@@ -19,6 +19,11 @@ internal data class ConnectionWorkerSpec(
     fun setupLimits(): ConnectionSetupLimits = ConnectionSetupLimits(
         session.capacity, approvalTimeoutMs, nativeTimeoutMs, io.retirementTimeoutMs, trustedPeers,
     )
+    fun waitLimits(): ConnectionWaitLimits {
+        val native = minOf(nativeTimeoutMs, approvalTimeoutMs)
+        val transport = minOf(io.ioTimeoutMs, io.retirementTimeoutMs, session.resourceTimeoutMs)
+        return ConnectionWaitLimits(timerMs, minOf(native, transport))
+    }
 }
 internal sealed interface ConnectionWorkerCommand {
     data class Decide(val ticket: ConnectionTicket, val approved: Boolean, val remember: Boolean) : ConnectionWorkerCommand

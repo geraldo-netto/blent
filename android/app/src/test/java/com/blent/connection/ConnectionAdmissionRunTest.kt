@@ -60,7 +60,7 @@ private class AdmissionRunRig {
         wake = signal; admissionError?.let { throw it }; admission
     }, { spec, report ->
         made.incrementAndGet(); selected = spec; callback = report; workerError?.let { throw it }; afterFactory(); worker
-    }, reports::add)
+    }, reports::add, clock = { 0 })
     val peer = ConnectionPeer.parse("cd".repeat(32))
     val command = ConnectionWorkerCommand.Revoke(peer)
     fun grant() { admission.ready = admission.selection; wake?.invoke() }
@@ -121,7 +121,7 @@ class ConnectionAdmissionRunTest {
     @Test fun t854RetirementWaitsBothNativePermissionAndWorkerDeath() = runBlocking {
         val admission = RunAdmission().apply { ready = selection; stopRetires = false }
         val worker = AdmissionWorker()
-        val run = ConnectionAdmissionRun(ConnectionWorkerSpec("template", timerMs = 1), { admission }, { _, _ -> worker }, {})
+        val run = ConnectionAdmissionRun(ConnectionWorkerSpec("template", timerMs = 1), { admission }, { _, _ -> worker }, {}, clock = { 0 })
         val executing = async { outcome { run.execute() } }; worker.executing.await(); run.cancel()
         until { worker.retires.get() == 1 }; assertFalse(executing.isCompleted)
         worker.nativeEnd.complete(Unit); delay(5); assertFalse(executing.isCompleted)
@@ -145,7 +145,7 @@ class ConnectionAdmissionRunTest {
         val worker = AdmissionWorker().apply { nativeEnd.complete(Unit) }
         var callback: ((ConnectionWorkerEvent) -> Unit)? = null
         val run = ConnectionAdmissionRun(ConnectionWorkerSpec("template", timerMs = 1), { admission }, { _, report -> callback = report; worker },
-            { throw IOException("UI report failed") })
+            { throw IOException("UI report failed") }, clock = { 0 })
         val executing = async { outcome { run.execute() } }; worker.executing.await()
         checkNotNull(callback)(ConnectionWorkerEvent.State(ConnectionWorkerPhase.AUTHENTICATED))
         assertTrue(executing.await() is IOException); run.retire(); assertTrue(worker.stopped)
@@ -170,7 +170,7 @@ class ConnectionAdmissionRunTest {
         val worker = AdmissionWorker(); val events = java.util.Collections.synchronizedList(ArrayList<ConnectionWorkerEvent>())
         var callback: ((ConnectionWorkerEvent) -> Unit)? = null
         val run = ConnectionAdmissionRun(ConnectionWorkerSpec("template", timerMs = 1), { admission },
-            { _, report -> callback = report; worker }, events::add)
+            { _, report -> callback = report; worker }, events::add, clock = { 0 })
         val executing = async { outcome { run.execute() } }
         try {
             worker.executing.await(); val route = displayRoute()
@@ -189,7 +189,7 @@ class ConnectionAdmissionRunTest {
         val owned = AdmissionWorker().apply { terminalAllowed = true }; val events = java.util.Collections.synchronizedList(ArrayList<ConnectionWorkerEvent>())
         var callback: ((ConnectionWorkerEvent) -> Unit)? = null
         val run = ConnectionAdmissionRun(ConnectionWorkerSpec("template", timerMs = 1), { admission },
-            { _, report -> callback = report; owned }, events::add)
+            { _, report -> callback = report; owned }, events::add, clock = { 0 })
         val execution = async { outcome { run.execute() } }
         try {
             owned.executing.await(); checkNotNull(callback)(ConnectionWorkerEvent.Camera(cameraRoute()))
@@ -208,7 +208,7 @@ class ConnectionAdmissionRunTest {
         val worker = object : ConnectionWorker by rig.worker { override suspend fun retire() { hold.await() } }
         val events = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerEvent>()
         var callback: ((ConnectionWorkerEvent) -> Unit)? = null
-        val run = ConnectionAdmissionRun(rig.spec, { rig.admission }, { _, report -> callback = report; worker }, events::add)
+        val run = ConnectionAdmissionRun(rig.spec, { rig.admission }, { _, report -> callback = report; worker }, events::add, clock = { 0 })
         rig.grant(); val execution = async { outcome { run.execute() } }; rig.worker.executing.await()
         val resources = listOf(ConnectionManagement.Resource.MICROPHONE, ConnectionManagement.Resource.SPEAKERS)
         try {
@@ -237,7 +237,7 @@ class ConnectionAdmissionRunTest {
         val hold = CompletableDeferred<Unit>()
         val worker = object : ConnectionWorker by rig.worker { override suspend fun retire() { hold.await() } }
         var callback: ((ConnectionWorkerEvent) -> Unit)? = null
-        val run = ConnectionAdmissionRun(rig.spec, { rig.admission }, { _, report -> callback = report; worker }, {})
+        val run = ConnectionAdmissionRun(rig.spec, { rig.admission }, { _, report -> callback = report; worker }, {}, clock = { 0 })
         rig.grant(); val execution = async { outcome { run.execute() } }; rig.worker.executing.await()
         try {
             val route = audioRoute(); checkNotNull(callback)(ConnectionWorkerEvent.AudioRoute(route))

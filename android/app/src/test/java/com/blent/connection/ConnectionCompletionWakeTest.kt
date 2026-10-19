@@ -12,7 +12,7 @@ class ConnectionCompletionWakeTest {
         val worker = AdmissionWorker()
         var originalWake: (() -> Unit)? = null
         val run = ConnectionAdmissionRun(ConnectionWorkerSpec("fixture", timerMs = 1000),
-            { wake -> originalWake = wake; admission }, { _, _ -> worker }, {}, dispatcher = scheduler)
+            { wake -> originalWake = wake; admission }, { _, _ -> worker }, {}, dispatcher = scheduler, clock = { scheduler.now })
         val executing = scope.async { run.execute() }
         try {
             scheduler.runCurrent(); assertTrue(worker.executing.isCompleted)

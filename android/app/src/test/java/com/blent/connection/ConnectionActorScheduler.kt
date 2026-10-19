@@ -50,4 +50,5 @@ internal class ConnectionActorScheduler : CoroutineDispatcher(), Delay {
     }
     fun advanceTo(time: Long) { queueUntil(time); runCurrent() }
     fun empty(): Boolean = ready.isEmpty() && synchronized(timers) { timers.isEmpty() }
+    fun nextTimerAt(): Long? = synchronized(timers) { timers.minOfOrNull { it.at } }
 }

@@ -30,6 +30,7 @@ internal class AndroidConnectionWorker(
     private val state = AtomicInteger(0)
     private val stopping = AtomicBoolean()
     private val wake = Channel<Unit>(Channel.CONFLATED)
+    private val waitLimits = spec.waitLimits()
     private val runner = runner ?: ConnectionRunFactory { ready -> tabletConnectionRun(spec, ready, ::signal) }
     private val commands = Channel<ConnectionWorkerCommand>(32)
     private val completed = CompletableDeferred<Unit>()
@@ -63,7 +64,7 @@ internal class AndroidConnectionWorker(
         try {
             create()
             val owned = runtime ?: return
-            while (!step(owned)) waitWake()
+            while (!step(owned)) waitWake(owned)
         } finally {
             withContext(NonCancellable) { finish() }
         }
@@ -109,7 +110,12 @@ internal class AndroidConnectionWorker(
         microphone.update(projection?.audioOffered(ConnectionManagement.Resource.MICROPHONE), projection?.audio(ConnectionManagement.Resource.MICROPHONE))
         speakers.update(projection?.audioOffered(ConnectionManagement.Resource.SPEAKERS), projection?.audio(ConnectionManagement.Resource.SPEAKERS))
     }
-    private suspend fun waitWake() { withTimeoutOrNull(spec.timerMs) { wake.receive() } }
+    private suspend fun waitWake(owned: ConnectionRuntime) {
+        val deadline = ConnectionDeadline.observe(owned as? ConnectionDeadlineSource)
+        val fallback = ConnectionWait.fallback(waitLimits, stopping.get())
+        val delay = ConnectionWait.delayMs(clock(), deadline, fallback)
+        withTimeoutOrNull(delay) { wake.receive() }
+    }
     private suspend fun cleanup(owned: ConnectionRuntime): Boolean {
         owned.stop()
         val result = withTimeoutOrNull(spec.io.retirementTimeoutMs) {
@@ -117,7 +123,7 @@ internal class AndroidConnectionWorker(
                 controls(owned); owned.advance(); events(owned); display(owned); camera(owned); audio(owned)
                 if (owned.terminationRequired()) return@withTimeoutOrNull false
                 if (owned.retired()) return@withTimeoutOrNull true
-                waitWake()
+                waitWake(owned)
             }
             @Suppress("UNREACHABLE_CODE") false
         }
