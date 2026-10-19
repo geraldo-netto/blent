@@ -85,9 +85,14 @@ async fn remote_tls(
     ready::decode(&marker, true).unwrap();
     remote.write_all(&ready::encode(false)).await.unwrap();
     let host = PeerCertificate::parse(host.certificate().to_vec()).unwrap();
-    let mut tls = secure_connection::connect(remote, &tablet, &host)
-        .await
-        .unwrap();
+    let mut tls = secure_connection::connect(
+        remote,
+        &tablet,
+        &host,
+        blent_config::connection::handshake::Timeout::default(),
+    )
+    .await
+    .unwrap();
     let mut window = [0; protocol_window::BYTES];
     tls.read_exact(&mut window).await.unwrap();
     assert_eq!(protocol_window::decode(&window, true).unwrap(), 4096);

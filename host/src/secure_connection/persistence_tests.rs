@@ -65,8 +65,18 @@ async fn exchange(host: &mut Endpoint, tablet: &mut Endpoint, expected: Phase) {
     }
     let (left, right) = tokio::io::duplex(8192);
     let (host_io, tablet_io) = tokio::join!(
-        accept(left, &host.identity, &tablet_peer),
-        connect(right, &tablet.identity, &host_peer)
+        accept(
+            left,
+            &host.identity,
+            &tablet_peer,
+            blent_config::connection::handshake::Timeout::default()
+        ),
+        connect(
+            right,
+            &tablet.identity,
+            &host_peer,
+            blent_config::connection::handshake::Timeout::default()
+        )
     );
     let mut host_io = host_io.unwrap();
     let mut tablet_io = tablet_io.unwrap();
@@ -126,8 +136,18 @@ async fn t852_failed_stock_tls_does_not_persist_a_remembered_approval() {
     host.pairing.approve(&ticket, true, 1).unwrap();
     let (left, right) = tokio::io::duplex(8192);
     let (result, _peer) = tokio::join!(
-        accept(left, &host.identity, &wrong_peer),
-        connect(right, &tablet.identity, &host_peer)
+        accept(
+            left,
+            &host.identity,
+            &wrong_peer,
+            blent_config::connection::handshake::Timeout::default()
+        ),
+        connect(
+            right,
+            &tablet.identity,
+            &host_peer,
+            blent_config::connection::handshake::Timeout::default()
+        )
     );
     assert!(result.is_err());
     assert!(!hroot.path().join("trust.bin").exists());

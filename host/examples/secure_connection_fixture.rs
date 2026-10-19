@@ -65,7 +65,13 @@ async fn serve(directory: &Path, ready: &Path, mode: &str) -> Result<()> {
     if mode == "setup" {
         return setup_session(socket, &identity, &peer).await;
     }
-    let mut stream = accept(socket, &identity, &peer).await?;
+    let mut stream = accept(
+        socket,
+        &identity,
+        &peer,
+        blent_config::connection::handshake::Timeout::default(),
+    )
+    .await?;
     if matches!(mode, "window" | "session") {
         let limits = blent::broker::session::Limits {
             channel_bytes: 65536,

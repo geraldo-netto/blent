@@ -90,8 +90,18 @@ async fn t872_stock_mutual_tls_carries_admitted_duplex_control() {
     let tablet_pin = peer(&tablet_id);
     let (left, right) = tokio::io::duplex(256);
     let (server, client) = tokio::join!(
-        secure_connection::accept(left, &host, &tablet_pin),
-        secure_connection::connect(right, &tablet_id, &host_pin)
+        secure_connection::accept(
+            left,
+            &host,
+            &tablet_pin,
+            blent_config::connection::handshake::Timeout::default()
+        ),
+        secure_connection::connect(
+            right,
+            &tablet_id,
+            &host_pin,
+            blent_config::connection::handshake::Timeout::default()
+        )
     );
     let mut session = Session::new(
         server.unwrap(),

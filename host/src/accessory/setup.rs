@@ -43,7 +43,13 @@ impl Candidate {
         // Human approval can take longer than TLS's ten-second setup budget.
         // This untrusted marker coordinates scheduling, never peer authority.
         tokio::time::timeout(approval_timeout, synchronize(&mut *stream)).await??;
-        let stream = secure_connection::accept(stream, identity, &self.certificate).await?;
+        let stream = secure_connection::accept(
+            stream,
+            identity,
+            &self.certificate,
+            blent_config::connection::handshake::Timeout::default(),
+        )
+        .await?;
         Ok(Verified {
             resource: Resource {
                 stream: Box::new(stream),
@@ -175,7 +181,13 @@ pub(crate) mod tests {
                 remote.read_exact(&mut marker).await?;
                 ready::decode(&marker, true)?;
                 remote.write_all(&ready::encode(false)).await?;
-                secure_connection::connect(remote, &tablet, &certificate).await
+                secure_connection::connect(
+                    remote,
+                    &tablet,
+                    &certificate,
+                    blent_config::connection::handshake::Timeout::default(),
+                )
+                .await
             }
         );
         assert!(
@@ -249,7 +261,13 @@ pub(crate) mod tests {
                 remote.read_exact(&mut marker).await?;
                 ready::decode(&marker, true)?;
                 remote.write_all(&ready::encode(false)).await?;
-                secure_connection::connect(remote, &tablet, &approved_host).await
+                secure_connection::connect(
+                    remote,
+                    &tablet,
+                    &approved_host,
+                    blent_config::connection::handshake::Timeout::default(),
+                )
+                .await
             });
         let verified = verified.unwrap();
         let mut client = client.unwrap();
@@ -291,7 +309,13 @@ pub(crate) mod tests {
             remote.read_exact(&mut ready).await?;
             ensure!(&ready == b"BLPR\x01\x01\0\0", "wrong host readiness");
             remote.write_all(b"BLPR\x01\0\0\0").await?;
-            secure_connection::connect(remote, &tablet, &approved_host).await
+            secure_connection::connect(
+                remote,
+                &tablet,
+                &approved_host,
+                blent_config::connection::handshake::Timeout::default(),
+            )
+            .await
         };
         let (verified, peer) = tokio::join!(candidate.authenticate(&host, ticket), delayed_peer);
         assert!(

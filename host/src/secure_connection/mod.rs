@@ -6,9 +6,10 @@ use rustls::pki_types::{CertificateDer, PrivateKeyDer, PrivatePkcs8KeyDer, Serve
 use rustls::sign::{CertifiedKey, SingleCertAndKey};
 use rustls::{ClientConfig, RootCertStore, ServerConfig};
 use sha2::{Digest, Sha256};
-use std::{sync::Arc, time::Duration};
+use std::sync::Arc;
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
+pub use blent_config::connection::handshake::Timeout as HandshakeTimeout;
 pub mod identity_store;
 mod retained_identity;
 pub use retained_identity::RetainedIdentity;
@@ -19,7 +20,6 @@ pub mod trust_store;
 
 pub const MAX_CERTIFICATE: usize = 4096;
 pub const MAX_PRIVATE_KEY: usize = 4096;
-const HANDSHAKE_TIMEOUT: Duration = Duration::from_secs(10);
 const ALPN: &[u8] = b"blent-usb/1";
 const PREFACE: &[u8; 10] = b"BLENTUSB\0\x01";
 
@@ -164,9 +164,10 @@ pub async fn accept<S: AsyncRead + AsyncWrite + Unpin>(
     io: S,
     identity: &Identity,
     peer: &PeerCertificate,
+    timeout: HandshakeTimeout,
 ) -> Result<impl AsyncRead + AsyncWrite + Unpin> {
     let acceptor = tokio_rustls::TlsAcceptor::from(Arc::new(server_config(identity, peer)?));
-    tokio::time::timeout(HANDSHAKE_TIMEOUT, async {
+    tokio::time::timeout(timeout.duration(), async {
         let mut stream = acceptor.accept(io).await?;
         let (_, connection) = stream.get_ref();
         verify_peer(
@@ -183,10 +184,11 @@ pub async fn connect<S: AsyncRead + AsyncWrite + Unpin>(
     io: S,
     identity: &Identity,
     peer: &PeerCertificate,
+    timeout: HandshakeTimeout,
 ) -> Result<impl AsyncRead + AsyncWrite + Unpin> {
     let connector = tokio_rustls::TlsConnector::from(Arc::new(client_config(identity, peer)?));
     let name = ServerName::try_from("blent.local")?;
-    tokio::time::timeout(HANDSHAKE_TIMEOUT, async {
+    tokio::time::timeout(timeout.duration(), async {
         let mut stream = connector.connect(name, io).await?;
         let (_, connection) = stream.get_ref();
         verify_peer(
@@ -205,3 +207,6 @@ mod tests;
 
 #[cfg(all(test, target_os = "linux"))]
 mod persistence_tests;
+
+#[cfg(test)]
+mod timeout_tests;

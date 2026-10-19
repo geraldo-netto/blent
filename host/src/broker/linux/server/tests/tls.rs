@@ -113,9 +113,14 @@ async fn remote_tls(
     ready::decode(&marker, true).unwrap();
     remote.write_all(&ready::encode(false)).await.unwrap();
     let host = PeerCertificate::parse(host.certificate().to_vec()).unwrap();
-    let mut stream = secure_connection::connect(remote, &tablet, &host)
-        .await
-        .unwrap();
+    let mut stream = secure_connection::connect(
+        remote,
+        &tablet,
+        &host,
+        blent_config::connection::handshake::Timeout::default(),
+    )
+    .await
+    .unwrap();
     let mut bytes = [0; window::BYTES];
     stream.read_exact(&mut bytes).await.unwrap();
     assert_eq!(window::decode(&bytes, true).unwrap(), 4096);

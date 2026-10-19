@@ -1,4 +1,7 @@
 use super::*;
+use std::time::Duration;
+// Independent oracle for the unchanged public default.
+const HANDSHAKE_TIMEOUT: Duration = Duration::from_secs(10);
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 fn identity() -> Identity {
     Identity::load(IdentityRecord::generate().unwrap()).unwrap()
@@ -15,8 +18,18 @@ async fn t846_mutually_pinned_tls_carries_duplex_bytes() {
     let tablet_peer = peer(&tablet);
     let (left, right) = tokio::io::duplex(1024);
     let (server, client) = tokio::join!(
-        accept(left, &host, &tablet_peer),
-        connect(right, &tablet, &host_peer)
+        accept(
+            left,
+            &host,
+            &tablet_peer,
+            blent_config::connection::handshake::Timeout::default()
+        ),
+        connect(
+            right,
+            &tablet,
+            &host_peer,
+            blent_config::connection::handshake::Timeout::default()
+        )
     );
     let mut server = server.unwrap();
     let mut client = client.unwrap();
@@ -45,15 +58,35 @@ async fn t846_unapproved_peer_cannot_complete_tls() {
     let wrong_peer = peer(&stranger);
     let (left, right) = tokio::io::duplex(8192);
     let (server, _client) = tokio::join!(
-        accept(left, &host, &wrong_peer),
-        connect(right, &tablet, &host_peer)
+        accept(
+            left,
+            &host,
+            &wrong_peer,
+            blent_config::connection::handshake::Timeout::default()
+        ),
+        connect(
+            right,
+            &tablet,
+            &host_peer,
+            blent_config::connection::handshake::Timeout::default()
+        )
     );
     assert!(server.is_err());
     let (left, right) = tokio::io::duplex(8192);
     let tablet_peer = peer(&tablet);
     let (_server, client) = tokio::join!(
-        accept(left, &host, &tablet_peer),
-        connect(right, &tablet, &wrong_peer)
+        accept(
+            left,
+            &host,
+            &tablet_peer,
+            blent_config::connection::handshake::Timeout::default()
+        ),
+        connect(
+            right,
+            &tablet,
+            &wrong_peer,
+            blent_config::connection::handshake::Timeout::default()
+        )
     );
     assert!(client.is_err());
 }
@@ -63,9 +96,23 @@ async fn t846_silent_peer_handshake_has_deadline() {
     let tablet = identity();
     let peer = peer(&tablet);
     let (left, _silent) = tokio::io::duplex(1024);
-    assert!(accept(left, &host, &peer).await.is_err());
+    assert!(accept(
+        left,
+        &host,
+        &peer,
+        blent_config::connection::handshake::Timeout::default()
+    )
+    .await
+    .is_err());
     let (left, _silent) = tokio::io::duplex(1024);
-    assert!(connect(left, &host, &peer).await.is_err());
+    assert!(connect(
+        left,
+        &host,
+        &peer,
+        blent_config::connection::handshake::Timeout::default()
+    )
+    .await
+    .is_err());
 }
 #[test]
 fn t846_identity_and_certificate_bounds_and_pin_checks() {
@@ -118,7 +165,14 @@ async fn t846_no_alpn_requires_authenticated_protocol_preface() {
         stream.flush().await.unwrap();
     };
     let server = async {
-        let mut stream = accept(left, &host, &tablet_peer).await.unwrap();
+        let mut stream = accept(
+            left,
+            &host,
+            &tablet_peer,
+            blent_config::connection::handshake::Timeout::default(),
+        )
+        .await
+        .unwrap();
         let mut value = [0; 13];
         stream.read_exact(&mut value).await.unwrap();
         assert_eq!(&value, b"after preface");
@@ -143,7 +197,15 @@ async fn t846_matching_alpn_does_not_bypass_protocol_preface() {
             let _ = stream.write_all(wrong).await;
             let _ = stream.flush().await;
         };
-        let (server, ()) = tokio::join!(accept(left, &host, &tablet_peer), client);
+        let (server, ()) = tokio::join!(
+            accept(
+                left,
+                &host,
+                &tablet_peer,
+                blent_config::connection::handshake::Timeout::default()
+            ),
+            client
+        );
         assert!(
             server.is_err(),
             "T846: TLS alone admitted missing/wrong application protocol"
@@ -171,7 +233,14 @@ async fn t846_preface_wait_shares_handshake_deadline_in_both_roles() {
     };
     let checked = async {
         let start = tokio::time::Instant::now();
-        assert!(accept(left, &host, &tablet_peer).await.is_err());
+        assert!(accept(
+            left,
+            &host,
+            &tablet_peer,
+            blent_config::connection::handshake::Timeout::default()
+        )
+        .await
+        .is_err());
         assert_eq!(start.elapsed(), HANDSHAKE_TIMEOUT);
     };
     tokio::join!(checked, silent);
@@ -186,7 +255,14 @@ async fn t846_preface_wait_shares_handshake_deadline_in_both_roles() {
     };
     let checked = async {
         let start = tokio::time::Instant::now();
-        assert!(connect(right, &tablet, &host_peer).await.is_err());
+        assert!(connect(
+            right,
+            &tablet,
+            &host_peer,
+            blent_config::connection::handshake::Timeout::default()
+        )
+        .await
+        .is_err());
         assert_eq!(start.elapsed(), HANDSHAKE_TIMEOUT);
     };
     tokio::join!(silent, checked);
