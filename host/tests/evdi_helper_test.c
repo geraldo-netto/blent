@@ -1476,6 +1476,7 @@ static void test_t415_rounding(void) {
 #include "damage_regions.c"
 #include "idle_capture.c"
 #include "idle_recheck.c"
+#include "idle_record.c"
 #include "shared_capture.c"
 #include "cursor_overlay.c"
 #include "frame_format.c"
@@ -1528,6 +1529,7 @@ int main(int argc, char **argv)
         {"T1119-value", test_t1119_interval},
         {"T1119-wait", test_t1119_recheck},
         {"T1119-second", test_t1119_one_second_recheck},
+        {"T1121", test_t1121_exact_record},
         {"T554", test_t554_regions},
         {"T497-callbacks", test_t497_callbacks},
         {"T497-main", test_t497_main},

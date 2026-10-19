@@ -110,6 +110,11 @@ fn t1119_one_second_request_preserves_expiry_and_removal() {
 }
 
 #[test]
+fn t1121_native_idle_record_rejects_hidden_bytes_and_truncation() {
+    Harness::build("T492").run("T1121");
+}
+
+#[test]
 fn t1119_sparse_writer_rechecks_advice_within_compatible_cadence() {
     let harness = Harness::build("T1119-wait");
     for case in ["T1119-wait", "T1119-second"] {

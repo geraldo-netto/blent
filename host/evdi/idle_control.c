@@ -24,21 +24,21 @@ static ssize_t read_idle_control(const char *path, char *text, size_t capacity)
     return count;
 }
 
-/* Parse bounded unsigned fields; reject signs, overflow and trailing bytes. */
-static int idle_fields(char *text, uintmax_t fields[5])
+/* Five unsigned fields; return borrowed end cursor for exact-length validation. */
+static const char *idle_fields(const char *text, uintmax_t fields[5])
 {
     for (int index = 0; index < 5; index++)
     {
         if (!isdigit((unsigned char)*text))
-            return 0;
+            return NULL;
         char *end;
         errno = 0;
         fields[index] = strtoumax(text, &end, 10);
         if (errno == ERANGE || (*end != ' ' && *end != '\n'))
-            return 0;
+            return NULL;
         text = end + 1;
     }
-    return *text == '\0';
+    return text;
 }
 
 static int idle_source_matches(int source, const uintmax_t fields[5])
@@ -53,7 +53,7 @@ static int idle_control_value(char *text, ssize_t count, int source, long long n
         return 0;
     text[count] = '\0';
     uintmax_t fields[5];
-    if (!idle_fields(text, fields) || (fields[4] != 500 && fields[4] != 1000))
+    if (idle_fields(text, fields) != text + count || (fields[4] != 500 && fields[4] != 1000))
         return 0;
     if (fields[3] <= (uintmax_t)now || fields[3] - (uintmax_t)now > 2000)
         return 0;

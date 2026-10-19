@@ -1,0 +1,4 @@
+0e04adc67bf4de48fd72de8215c457794b0e6d7915ec697110b728a37c1e3414  host/evdi/idle_control.c
+73b99ef1fdd743fbc88a9c00d9160daff28f9c96d9a3592f2c2174ff1e6642a2  host/tests/idle_record.c
+9f5202e51fe7fe2b7aa4870b756cf42334b55e179a4ddecb34ff3f6644a38e4c  host/tests/evdi_helper.rs
+1c879f8fb34c95c36516ce1c95ab769d2a35a5c593561a61dc47075f28f71b01  host/tests/evdi_helper_test.c
