@@ -40,11 +40,7 @@ impl Fixture {
     async fn advance(&self, milliseconds: u64, expected: State) {
         tokio::time::advance(Duration::from_millis(milliseconds)).await;
         tokio::task::yield_now().await;
-        assert_eq!(
-            self.report.state(),
-            expected,
-            "T704 freshness boundary"
-        );
+        assert_eq!(self.report.state(), expected, "T704 freshness boundary");
     }
 
     async fn stop(self) {

@@ -17,7 +17,10 @@ async fn t1050_registration_pause_fences_current_and_future_work_until_exact_rec
     participants[0].acknowledge(&participants[0].pending().unwrap());
     assert!(control.resume(&fence));
     notice.await;
-    assert!(!gated.permits(&original), "T1050 coalesced pause revived old work");
+    assert!(
+        !gated.permits(&original),
+        "T1050 coalesced pause revived old work"
+    );
     let renewed = gated.begin().unwrap();
     assert!(!View::new(None, None, false).permits(&renewed));
     drop(control);

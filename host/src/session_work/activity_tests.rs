@@ -138,12 +138,17 @@ async fn t1027_session_receives_original_failure_stop_and_closed_source() {
 #[test]
 fn t1045_prepared_session_keeps_explicit_viewer_preferences() {
     let preferences = blent_config::host_activity::Settings {
-        pause_on_lock: false, pause_on_display_off: false, pause_without_viewer: false,
+        pause_on_lock: false,
+        pause_on_display_off: false,
+        pause_without_viewer: false,
     };
     let (ready, _started) = oneshot::channel();
-    let session = prepared(Box::new(ActivityCapture(ready)), (0, 0))
-        .with_activity_preferences(preferences);
-    assert_eq!(session.activity_preferences, preferences, "T1045 saved preferences lost");
+    let session =
+        prepared(Box::new(ActivityCapture(ready)), (0, 0)).with_activity_preferences(preferences);
+    assert_eq!(
+        session.activity_preferences, preferences,
+        "T1045 saved preferences lost"
+    );
 }
 
 struct PreferenceCapture(oneshot::Sender<blent_config::host_activity::Settings>);
@@ -162,12 +167,17 @@ impl CaptureBackend for PreferenceCapture {
 #[tokio::test]
 async fn t1045_original_saved_preferences_reach_the_capture_boundary() {
     let preferences = blent_config::host_activity::Settings {
-        pause_on_lock: false, pause_on_display_off: false, pause_without_viewer: false,
+        pause_on_lock: false,
+        pause_on_display_off: false,
+        pause_without_viewer: false,
     };
     let (ready, started) = oneshot::channel();
     let (_stop, stopped) = watch::channel(false);
     let (runtime, listeners) = prepared(Box::new(PreferenceCapture(ready)), (0, 0))
-        .with_activity_preferences(preferences).start_exported(stopped).await.unwrap();
+        .with_activity_preferences(preferences)
+        .start_exported(stopped)
+        .await
+        .unwrap();
     assert_eq!(started.await.unwrap(), preferences);
     runtime.stop().await;
     drop(listeners);

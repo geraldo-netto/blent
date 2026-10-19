@@ -1,0 +1,12 @@
+host/src/capture.rs
+host/src/capture/reader_capacity_tests.rs
+host/src/capture/tests.rs
+host/src/daemon_activity/tests.rs
+host/src/doctor/coverage_tests.rs
+host/src/linux_main.rs
+host/src/monitor/credential_tests.rs
+host/src/monitor/forwarding.rs
+host/src/monitor/inventory_tests.rs
+host/src/monitor/probe_tests.rs
+host/src/selection/worker.rs
+scripts/benchmarks/encoded-reader.rs

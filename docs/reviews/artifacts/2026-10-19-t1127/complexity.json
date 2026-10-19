@@ -1,0 +1,26 @@
+[
+  {
+    "file": "common/src/video.rs",
+    "maximum_source_complexity": 6
+  },
+  {
+    "file": "gui/src/camera_settings.rs",
+    "maximum_source_complexity": 8
+  },
+  {
+    "file": "host/src/camera/status_tests.rs",
+    "maximum_source_complexity": 1
+  },
+  {
+    "file": "host/src/display_work/tests.rs",
+    "maximum_source_complexity": 2
+  },
+  {
+    "file": "host/src/lib.rs",
+    "maximum_source_complexity": 0
+  },
+  {
+    "file": "host/src/session_work/activity_tests.rs",
+    "maximum_source_complexity": 4
+  }
+]
