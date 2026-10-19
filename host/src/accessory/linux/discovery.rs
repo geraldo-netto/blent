@@ -165,13 +165,13 @@ fn decode(bytes: &[u8], capacity: usize) -> Result<Vec<Candidate>> {
     );
     let mut candidates = Vec::with_capacity(count);
     let mut targets = BTreeSet::new();
-    for record in bytes[HEADER..].chunks_exact(RECORD) {
-        let candidate = candidate(record)?;
+    for record in bytes[HEADER..].as_chunks::<RECORD>().0 {
+        let decoded = candidate(record)?;
         ensure!(
-            targets.insert((candidate.target.bus, candidate.target.ports.clone())),
+            targets.insert((decoded.target.bus, decoded.target.ports.clone())),
             "duplicate USB physical target"
         );
-        candidates.push(candidate);
+        candidates.push(decoded);
     }
     Ok(candidates)
 }
