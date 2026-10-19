@@ -1,0 +1,10 @@
+{
+  "common/src/connection/media.rs": "58d65bfeae877f166200829654d6af2d904e94a4b4301475b54fb6ecd7c72334",
+  "common/src/connection/media/original.rs": "81e1342d183dba5b30ae693a9b7499d0a368273457388bf4608f4a0023008c3d",
+  "common/src/connection/media/original/tests.rs": "fa1dafcad2977f62a753d148dc6c5fd465578eea6a41e02a238ae3e15598c435",
+  "host/src/adb_command.rs": "eeabaadb42178d2b82ff1ab441173110e18f269b7012effc4a0dbbc584838d93",
+  "host/src/media_target.rs": "4809a6c2478f8973ea5522f334ea9f28e219edaef06e0a82eccec7ee438751d8",
+  "host/src/media_target/tests.rs": "0a2bce8dff16e4961964277cc83f86435602a3f72cca7cf7c8d8d7dcefa2170d",
+  "host/src/camera/bridge.rs": "2f99e9fe03d4d94db94476c40048182ac98ad80747b82804c3a41fedf909adc1",
+  "host/src/lib.rs": "2a323bfa057bcac5d4a9a8cc5b09b70844d16d0fd00c234584ab61a576f6eee8"
+}

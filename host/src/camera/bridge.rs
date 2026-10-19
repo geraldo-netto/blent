@@ -1,4 +1,5 @@
 //! A dedicated, temporary ADB reverse mapping and shell-protected invitation.
+use crate::adb_command::output;
 use anyhow::{ensure, Context, Result};
 use blent_config::{
     camera::{
@@ -7,10 +8,7 @@ use blent_config::{
     },
     commands::AsyncCommandExt,
 };
-use std::{
-    path::{Path, PathBuf},
-    time::Duration,
-};
+use std::{path::PathBuf, time::Duration};
 use tokio::process::Command;
 
 pub struct Bridge {
@@ -18,19 +16,6 @@ pub struct Bridge {
     pub serial: String,
     pub remote: String,
     pub local: String,
-}
-
-pub async fn output(adb: &Path, args: &[&str]) -> Result<String> {
-    let result = Command::new(adb)
-        .args(args)
-        .output_timeout(Duration::from_secs(5))
-        .await?;
-    ensure!(
-        result.status.success(),
-        "ADB camera command failed: {}",
-        String::from_utf8_lossy(&result.stderr)
-    );
-    Ok(String::from_utf8(result.stdout)?.trim().to_owned())
 }
 
 impl Bridge {

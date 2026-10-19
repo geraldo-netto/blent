@@ -72,3 +72,6 @@ pub fn valid_credential(value: &str) -> bool {
             .bytes()
             .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
 }
+
+/// Original target binding is independent of native lookup and media permission.
+pub mod original;
