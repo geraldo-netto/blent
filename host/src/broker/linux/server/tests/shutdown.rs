@@ -128,3 +128,5 @@ async fn t853_shutdown_drains_started_inventory_and_queued_durable_revocation() 
     assert!(fixture.server.controller.closing().is_empty());
     fixture.finish().await;
 }
+
+mod configured;

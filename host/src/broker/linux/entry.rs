@@ -40,6 +40,8 @@ pub struct Options {
     setup_ms: i64,
     #[arg(long, default_value_t = 120000)]
     approval_ms: i64,
+    #[arg(long, default_value_t = 5000)]
+    retirement_timeout_ms: u64,
 }
 impl Options {
     pub fn settings(self) -> Settings {
@@ -56,6 +58,7 @@ impl Options {
         settings.session.queued_messages = self.queued_messages;
         settings.session.quantum = self.quantum;
         settings.session.io_timeout = Duration::from_millis(self.io_timeout_ms);
+        settings.retirement_timeout = Duration::from_millis(self.retirement_timeout_ms);
         settings
     }
 }
@@ -74,12 +77,19 @@ pub async fn serve(
     settings: Settings,
     stop: impl std::future::Future<Output = Result<()>>,
 ) -> Result<()> {
-    let mut server = Server::open(settings).await?;
+    serve_opened(Server::open(settings).await?, stop).await
+}
+/// Coordinate one admitted backend owner; startup and policy validation precede
+/// this workflow. Shutdown keeps the same server's immutable observation budget.
+pub(super) async fn serve_opened(
+    mut server: Server,
+    stop: impl std::future::Future<Output = Result<()>>,
+) -> Result<()> {
     let result = tokio::select! {
         result = server.run() => result,
         stopped = stop => stopped,
     };
-    server.shutdown(Duration::from_secs(5)).await?;
+    server.shutdown_configured().await?;
     result
 }
 async fn stop_signal() -> Result<()> {

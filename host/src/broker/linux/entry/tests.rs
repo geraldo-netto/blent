@@ -128,3 +128,62 @@ async fn t853_entry_stop_and_failed_stop_retire_the_owner_socket() {
     assert_eq!(failure.to_string(), "fixture stop failure");
     assert!(!socket.exists());
 }
+
+#[test]
+fn t1101_cli_exposes_cleanup_observation_budget() {
+    for value in ["1", "5000", "60000"] {
+        let mut args = arguments();
+        args.extend([
+            OsString::from("--retirement-timeout-ms"),
+            OsString::from(value),
+        ]);
+        assert!(
+            Options::try_parse_from(args).is_ok(),
+            "T1101 cleanup budget unavailable: {value}"
+        );
+    }
+}
+
+fn cleanup_arguments(root: &std::path::Path, value: &str) -> Vec<OsString> {
+    vec![
+        "blent-usb-broker".into(),
+        "--runtime".into(),
+        root.join("runtime").into_os_string(),
+        "--state".into(),
+        root.join("state").into_os_string(),
+        "--helper".into(),
+        root.join("helper").into_os_string(),
+        "--retirement-timeout-ms".into(),
+        value.into(),
+    ]
+}
+#[tokio::test]
+async fn t1101_cli_cleanup_mapping_and_rejection_precede_native_effects() {
+    let defaults = Options::try_parse_from(arguments()).unwrap().settings();
+    assert_eq!(defaults.retirement_timeout, Duration::from_secs(5));
+    let root = tempfile::tempdir().unwrap();
+    for milliseconds in [1u64, 37, 5000, 60_000] {
+        let options =
+            Options::try_parse_from(cleanup_arguments(root.path(), &milliseconds.to_string()))
+                .unwrap()
+                .settings();
+        assert_eq!(
+            options.retirement_timeout,
+            Duration::from_millis(milliseconds)
+        );
+    }
+    for value in ["0", "60001", "18446744073709551615"] {
+        let options = Options::try_parse_from(cleanup_arguments(root.path(), value))
+            .unwrap()
+            .settings();
+        assert!(
+            Server::open(options).await.is_err(),
+            "T1101 invalid cleanup budget: {value}"
+        );
+        assert!(!root.path().join("runtime").exists());
+        assert!(!root.path().join("state").exists());
+    }
+    for value in ["", "-1", "NaN", "1.5", "18446744073709551616"] {
+        assert!(Options::try_parse_from(cleanup_arguments(root.path(), value)).is_err());
+    }
+}

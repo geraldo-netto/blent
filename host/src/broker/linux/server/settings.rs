@@ -12,6 +12,7 @@ pub struct Settings {
     pub registrations: usize,
     pub trust_peers: usize,
     pub block: usize,
+    pub retirement_timeout: Duration,
 }
 impl Settings {
     pub fn new(runtime: PathBuf, state: PathBuf, helper: PathBuf) -> Self {
@@ -24,9 +25,11 @@ impl Settings {
             registrations: 64,
             trust_peers: 64,
             block: 65536,
+            retirement_timeout: Duration::from_secs(5),
         }
     }
     pub(super) fn validate(&self) -> Result<()> {
+        blent_config::retirement_limits::observation_budget(self.retirement_timeout)?;
         ensure!(
             [&self.runtime, &self.state, &self.helper]
                 .iter()

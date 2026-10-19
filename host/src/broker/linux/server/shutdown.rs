@@ -1,12 +1,14 @@
 use super::*;
 impl Server {
+    /// Observe the immutable budget selected before this server started.
+    pub async fn shutdown_configured(&mut self) -> Result<()> {
+        self.shutdown(self.settings.retirement_timeout).await
+    }
+
     /// Stop accepting work, revoke local routes, then observe actual task/helper
     /// retirement. A timeout leaves this Server owning its quarantined records.
     pub async fn shutdown(&mut self, budget: Duration) -> Result<()> {
-        ensure!(
-            !budget.is_zero() && budget <= Duration::from_secs(60),
-            "invalid broker shutdown deadline"
-        );
+        let budget = blent_config::retirement_limits::observation_budget(budget)?;
         self.request_stop()?;
         tokio::time::timeout(budget, async {
             self.drain().await?;

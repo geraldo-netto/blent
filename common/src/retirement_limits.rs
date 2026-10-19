@@ -19,6 +19,17 @@ fn parse(value: &str, maximum: usize) -> io::Result<usize> {
     }
     Ok(value)
 }
+/// Validate an observation deadline only; expiry never proves native retirement.
+/// This pure contract retains no resource or borrowed input after returning.
+pub fn observation_budget(budget: Duration) -> io::Result<Duration> {
+    if budget.is_zero() || budget > Duration::from_secs(60) {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidInput,
+            "Invalid retirement observation budget",
+        ));
+    }
+    Ok(budget)
+}
 pub fn reap_budget() -> io::Result<Duration> {
     Ok(Duration::from_millis(
         configured("BLENT_REAP_TIMEOUT_MS", 100, 60_000)? as u64,
@@ -49,5 +60,40 @@ mod tests {
         assert_eq!(configured("BLENT_T814_ABSENT_LIMIT", 17, 20).unwrap(), 17);
         assert!(configured("BLENT_T814_ABSENT_LIMIT", 0, 20).is_err());
         assert!(reap_budget().is_ok());
+    }
+}
+
+#[cfg(test)]
+mod observation_tests {
+    use super::*;
+    #[test]
+    fn t1101_observation_budget_preserves_valid_precision_and_rejects_boundaries() {
+        for value in [
+            Duration::from_nanos(1),
+            Duration::from_millis(1),
+            Duration::from_secs(5),
+            Duration::from_secs(60),
+        ] {
+            assert_eq!(observation_budget(value).unwrap(), value);
+        }
+        for value in [
+            Duration::ZERO,
+            Duration::from_secs(60) + Duration::from_nanos(1),
+            Duration::MAX,
+        ] {
+            assert_eq!(
+                observation_budget(value).unwrap_err().kind(),
+                io::ErrorKind::InvalidInput
+            );
+        }
+        let mut seed = 1101u64;
+        for _ in 0..4096 {
+            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
+            let milliseconds = seed % 120_001;
+            assert_eq!(
+                observation_budget(Duration::from_millis(milliseconds)).is_ok(),
+                (1..=60_000).contains(&milliseconds)
+            );
+        }
     }
 }

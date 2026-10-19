@@ -813,11 +813,15 @@ Queued or cancelled links cannot unlock that store while their original identity
 consumer remains. The guard is an acyclic resource owner; logical task completion
 or a timeout alone is not evidence that native consumers have retired.
 Deadlines are `--io-timeout-ms 5000`, `--setup-ms 60000`, and
-`--approval-ms 120000`; approval permits up to 600000 ms and reaches native READY
+`--approval-ms 120000`, and `--retirement-timeout-ms 5000`; the retirement
+observation budget accepts 1–60000 ms. Approval permits up to 600000 ms and reaches native READY
 coordination, while the controller retains the original absolute deadline.
 Inventory refresh is two seconds with one five-second native scan at a time.
 Failed scans explicitly report unavailable inventory. SIGINT/SIGTERM stop new
-work and allow five seconds for actual retirement before process exit.
+work and observe retirement using the selected budget (five seconds by default).
+Expiry reports unresolved cleanup; it does not release original native admissions
+or identity consumers. Longer budgets wait longer; shorter budgets return cleanup
+failure sooner, without changing the evidence required for safe replacement.
 
 Permanent isolated tests exercise the executable, owner election, client loss,
 identity restart, real mutual TLS, durable trust/revoke, descriptor-only routing,
