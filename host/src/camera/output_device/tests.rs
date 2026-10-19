@@ -5,6 +5,7 @@ use std::{cell::RefCell, io, os::fd::BorrowedFd};
 mod corpus;
 mod oracle;
 mod virtual_driver;
+mod writer;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Stage {

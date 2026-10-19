@@ -7,6 +7,7 @@ mod frame_pool;
 #[cfg(test)]
 mod native_tests;
 pub mod output_device;
+pub mod output_writer;
 mod outputs;
 pub(crate) mod protocol;
 #[cfg(test)]
