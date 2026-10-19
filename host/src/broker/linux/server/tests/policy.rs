@@ -21,7 +21,10 @@ async fn t853_server_settings_validate_all_capacity_and_path_boundaries() {
     std::fs::set_permissions(&unsafe_path, std::fs::Permissions::from_mode(0o755)).unwrap();
     let mut bad = good;
     bad.runtime = unsafe_path;
-    assert!(bounded(Server::open(bad)).await.is_err());
+    let authority = Pool::new(1).unwrap();
+    assert!(bounded(Server::open_in(bad, Some(&authority)))
+        .await
+        .is_err());
 }
 fn invalidate(settings: &mut Settings, mode: u8) {
     match mode {

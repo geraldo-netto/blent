@@ -7,7 +7,7 @@ use blent_config::{
         pairing::PeerId,
         trust::{Trust, TrustStorage},
     },
-    retirement::{Completion, Pool},
+    retirement::{Admission, Completion, Pool},
     retirement_work::Thread,
 };
 use std::sync::Arc;
@@ -41,7 +41,14 @@ impl Worker {
         pool: &Pool,
         initialize: impl FnOnce() -> Result<Initialized<S>> + Send + 'static,
     ) -> Result<Self> {
-        let admission = pool.reserve()?;
+        Self::start_reserved(pool.reserve()?, initialize)
+    }
+    /// Transfer one original admission reserved before caller platform effects.
+    /// It remains owned through initializer failure, destructor and actual join.
+    pub fn start_reserved<S: TrustStorage + Send + 'static>(
+        admission: Admission,
+        initialize: impl FnOnce() -> Result<Initialized<S>> + Send + 'static,
+    ) -> Result<Self> {
         let completion = admission.completion();
         let (jobs, input) = mpsc::channel(1);
         let (output, events) = mpsc::channel(1);

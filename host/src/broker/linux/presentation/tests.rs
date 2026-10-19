@@ -433,7 +433,10 @@ async fn t901_production_broker_snapshot_runs_with_an_isolated_synthetic_invento
         root.path().join("state"),
         helper.clone(),
     );
-    let mut server = bounded(Server::open(options.clone())).await.unwrap();
+    let authority = blent_config::retirement::Pool::new(1).unwrap();
+    let mut server = bounded(Server::open_in(options.clone(), Some(&authority)))
+        .await
+        .unwrap();
     let (stop, stopped) = oneshot::channel::<()>();
     let task = tokio::spawn(async move {
         tokio::select! { result = server.run() => result.unwrap(), _ = stopped => () }

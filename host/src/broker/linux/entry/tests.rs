@@ -112,6 +112,7 @@ async fn t853_cli_invalid_arguments_fail_without_starting_native_work() {
 }
 #[tokio::test]
 async fn t853_entry_stop_and_failed_stop_retire_the_owner_socket() {
+    let _guard = crate::broker::linux::server::authority::test_guard();
     let root = tempfile::tempdir().unwrap();
     let options = settings(root.path());
     let socket = options.runtime.join("broker.sock");

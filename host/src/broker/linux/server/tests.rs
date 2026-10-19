@@ -47,7 +47,10 @@ impl Fixture {
             helper,
         );
         change(&mut options);
-        let server = bounded(Server::open(options)).await.unwrap();
+        let authority = Pool::new(1).unwrap();
+        let server = bounded(Server::open_in(options, Some(&authority)))
+            .await
+            .unwrap();
         Self {
             server,
             _root: root,
@@ -78,6 +81,7 @@ impl Fixture {
     }
 }
 
+mod authority;
 mod display;
 mod media_client;
 mod policy;

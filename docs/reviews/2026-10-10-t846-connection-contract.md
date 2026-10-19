@@ -797,6 +797,18 @@ Capacity options and defaults are: `--clients 16`, `--links 4`, `--devices 64`,
 `--channel-bytes 262144`, `--queued-messages 64`, and `--quantum 65536`.
 Higher limits permit more concurrent work and retained memory. Receive windows
 are negotiated to the smaller peer limit; producer blocks respect that window.
+
+Trust-worker admission is process-owned across broker startup attempts (T1100).
+`BLENT_USB_AUTHORITY_WORKERS` selects 1–4096 active/retiring authority threads,
+default 1, and is read once when the process initializes its admission context.
+The usual single broker per process shares that worker across its links. Higher
+values permit independent broker instances in one process and retain more thread
+and storage resources; they do not release an old admission early. Correct an
+initialization/configuration error before restarting the process; a cached failed
+context is not silently replaced. Admission precedes filesystem/socket effects,
+and cancellation or logical worker loss retains the original slot until actual
+thread exit, destruction and join. The separate identity-consumer guard fix
+remains T1102; this admission bound does not claim that runtime lifetime result.
 Deadlines are `--io-timeout-ms 5000`, `--setup-ms 60000`, and
 `--approval-ms 120000`; approval permits up to 600000 ms and reaches native READY
 coordination, while the controller retains the original absolute deadline.

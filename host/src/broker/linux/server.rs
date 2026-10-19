@@ -33,6 +33,7 @@ use blent_config::{
 };
 use std::{collections::BTreeMap, future::Future, pin::Pin, time::Duration};
 use tokio::time::Instant;
+pub(super) mod authority;
 mod commands;
 mod events;
 mod routes;
@@ -83,7 +84,17 @@ pub struct Server {
 }
 impl Server {
     pub async fn open(settings: Settings) -> Result<Self> {
+        Self::open_in(settings, None).await
+    }
+    /// Explicit isolated contexts belong to independent backend fixtures. Normal
+    /// process startup always uses the shared authority admission domain.
+    pub(super) async fn open_in(settings: Settings, context: Option<&Pool>) -> Result<Self> {
         settings.validate()?;
+        let pool = match context {
+            Some(pool) => pool,
+            None => authority::shared()?,
+        };
+        let admission = pool.reserve()?;
         settings.directories()?;
         let listener = AsyncListener::new(Owner::bind(
             &settings.runtime,
@@ -91,7 +102,7 @@ impl Server {
         )?)?;
         let state = settings.state.clone();
         let peers = settings.trust_peers;
-        let mut authority = Worker::start(&Pool::new(1)?, move || state::open(&state, peers))?;
+        let mut authority = Worker::start_reserved(admission, move || state::open(&state, peers))?;
         let AuthorityEvent::Ready(ready) = authority.next().await? else {
             anyhow::bail!("unexpected authority bootstrap");
         };
