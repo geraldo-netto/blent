@@ -1,0 +1,261 @@
+{
+  "tool": "Pinned Sonar-aligned source audit; not actual SonarQube (T1019)",
+  "versions": {
+    "tree-sitter": "0.25.2",
+    "tree-sitter-rust": "0.24.2"
+  },
+  "functions": [
+    {
+      "path": "host/src/control_outcome.rs",
+      "line": 8,
+      "function": "run",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/control_outcome.rs",
+      "line": 21,
+      "function": "worker",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/control_outcome.rs",
+      "line": 29,
+      "function": "with_signals",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/control_outcome.rs",
+      "line": 43,
+      "function": "finish_signal",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/control_outcome.rs",
+      "line": 56,
+      "function": "panic_error",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/control_outcome.rs",
+      "line": 69,
+      "function": "t812_outer_boundary_handles_return_unwind_and_unknown_payload",
+      "complexity": 9
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 7,
+      "function": "t1129_registration_failure_cannot_escape_original_native_cleanup",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 13,
+      "function": "t1129_normal_signal_preserves_work_result_after_actual_settlement",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 26,
+      "function": "t1129_termination_waits_for_original_cleanup_and_keeps_work_errors",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 32,
+      "function": "signal_outcome",
+      "complexity": 5
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 91,
+      "function": "fire",
+      "complexity": 4
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 110,
+      "function": "t1129_completed_work_does_not_request_an_unrelated_stop",
+      "complexity": 3
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 132,
+      "function": "t1129_media_cli_entrypoints_validate_without_native_devices",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/control_outcome/signal_tests.rs",
+      "line": 141,
+      "function": "check_result",
+      "complexity": 4
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 31,
+      "function": "transport_capabilities",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 38,
+      "function": "run",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 50,
+      "function": "run_controlled",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 66,
+      "function": "run_native",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 76,
+      "function": "run_attempt",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 107,
+      "function": "validate_transport",
+      "complexity": 4
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 117,
+      "function": "connection",
+      "complexity": 5
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 148,
+      "function": "executable",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 153,
+      "function": "serve",
+      "complexity": 5
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 204,
+      "function": "producer_work",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 243,
+      "function": "invited",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 267,
+      "function": "producer_stopped",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 275,
+      "function": "sessions",
+      "complexity": 3
+    },
+    {
+      "path": "host/src/camera.rs",
+      "line": 294,
+      "function": "frame_status",
+      "complexity": 5
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 25,
+      "function": "transport_capabilities",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 34,
+      "function": "run",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 65,
+      "function": "connection",
+      "complexity": 4
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 92,
+      "function": "executable",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 96,
+      "function": "helper",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 119,
+      "function": "serve",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 129,
+      "function": "serve_with",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 157,
+      "function": "stream",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 193,
+      "function": "transfer",
+      "complexity": 3
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 229,
+      "function": "lost",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 234,
+      "function": "microphone",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 250,
+      "function": "speakers",
+      "complexity": 1
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 258,
+      "function": "speakers_with_clock",
+      "complexity": 2
+    },
+    {
+      "path": "host/src/audio.rs",
+      "line": 282,
+      "function": "run_cli",
+      "complexity": 1
+    }
+  ]
+}

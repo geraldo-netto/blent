@@ -5,6 +5,8 @@ Linux/Android microphone transport, native source and controls described below.
 T719 adds the selectable speaker sink and Android playback. T720 integrates native
 device-clock correction; physical duplex/acoustic acceptance requires a device window.
 Unimplemented backend capabilities remain unsupported. No system default device changes or automatic audio startup occur.
+The audio CLI requests stop and awaits its original pipeline after Ctrl-C or
+SIGTERM, including a failed Ctrl-C registration, before returning the result.
 
 Native Rust applications enable the shared crate's `native-entropy` feature
 (included by default and by `platform`). A policy-only build compiles without

@@ -40,13 +40,11 @@ pub async fn run(options: &CameraOptions) -> Result<()> {
     let (status, _) = watch::channel(State::Starting);
     let status = Report::new(status, watch::channel(None).0);
     let mut terminate = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
-    let work = run_native(options.clone(), stopped, status);
-    tokio::pin!(work);
-    tokio::select! {
-        result = &mut work => result,
-        signal = tokio::signal::ctrl_c() => { signal?; stop.send_replace(true); work.await }
-        _ = terminate.recv() => { stop.send_replace(true); work.await }
-    }
+    let mut work = std::pin::pin!(run_native(options.clone(), stopped, status));
+    crate::control_outcome::with_signals(work.as_mut(), &stop, tokio::signal::ctrl_c(), async {
+        terminate.recv().await;
+    })
+    .await
 }
 
 pub async fn run_controlled(

@@ -282,14 +282,12 @@ async fn speakers_with_clock(
 pub async fn run_cli(options: AudioOptions) -> Result<()> {
     let (stop, stopped) = watch::channel(false);
     let (report, _) = watch::channel(Default::default());
-    let work = run(options, stopped, Report::new(report));
-    tokio::pin!(work);
+    let mut work = std::pin::pin!(run(options, stopped, Report::new(report)));
     let mut terminate = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
-    tokio::select! {
-        result = &mut work => result,
-        result = tokio::signal::ctrl_c() => { result?; stop.send_replace(true); work.await },
-        _ = terminate.recv() => { stop.send_replace(true); work.await },
-    }
+    crate::control_outcome::with_signals(work.as_mut(), &stop, tokio::signal::ctrl_c(), async {
+        terminate.recv().await;
+    })
+    .await
 }
 
 #[cfg(test)]

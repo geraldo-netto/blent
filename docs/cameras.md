@@ -94,7 +94,9 @@ blent cameras --lens rear --background --serial TABLET_SERIAL \
 ```
 
 The command explicitly starts the selected lens (default Front); omit
-`--background` for foreground-only capture. Ctrl-C/SIGTERM stops it. Do not run
+`--background` for foreground-only capture. Ctrl-C/SIGTERM requests stop and
+awaits the original pipeline cleanup. A Ctrl-C registration error also requests
+stop and awaits cleanup before returning its diagnostic. Do not run
 it alongside GUI camera sharing: both enforce exclusive output ownership.
 
 Default capture is 1280x720, 30 FPS and a 3000 kbit/s H.264 target. Optional

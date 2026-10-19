@@ -49,7 +49,7 @@ Clippy remains red on existing portable-connection and host issues, recorded
 independently as T1130/T1132–T1134. The EVDI-specific capture-control lint is
 explicitly deferred under T1131. No suppressions or dependency downloads were
 used. Cargo workspace formatting passes; the Linux-supervisor include formatting
-scope remains deferred under T1128. T1129 separately retains the CLI Ctrl-C
-registration-error cleanup gap. T1090 ADB ownership remains blocked by owner
+scope remains deferred under T1128. The CLI Ctrl-C registration-error gap present in this historical
+collection is resolved separately under [T1129](../2026-10-19-t1129/README.md). T1090 ADB ownership remains blocked by owner
 choice. Parent T1089 and machine-availability integration remain unresolved.
 No Windows/EVDI changes, live camera/tablet actions, installation or upload.

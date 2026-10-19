@@ -23,6 +23,36 @@ pub(crate) fn worker(action: impl FnOnce(), failed: impl FnOnce(anyhow::Error)) 
         failed(panic_error(panic));
     }
 }
+
+/// Observe caller-supplied signals without owning their OS adapters. A signal
+/// result never substitutes for the original workflow's actual settlement.
+pub(crate) async fn with_signals(
+    mut work: std::pin::Pin<&mut impl Future<Output = Result<()>>>,
+    stop: &tokio::sync::watch::Sender<bool>,
+    interrupt: impl Future<Output = std::io::Result<()>>,
+    terminate: impl Future<Output = ()>,
+) -> Result<()> {
+    let mut interrupt_wait = std::pin::pin!(interrupt);
+    let mut terminate_wait = std::pin::pin!(terminate);
+    tokio::select! {
+        result = &mut work => result,
+        signal = &mut interrupt_wait => finish_signal(stop, work, signal).await,
+        _ = &mut terminate_wait => finish_signal(stop, work, Ok(())).await,
+    }
+}
+async fn finish_signal(
+    stop: &tokio::sync::watch::Sender<bool>,
+    work: std::pin::Pin<&mut impl Future<Output = Result<()>>>,
+    signal: std::io::Result<()>,
+) -> Result<()> {
+    stop.send_replace(true);
+    let result = work.await;
+    signal?;
+    result
+}
+
+#[cfg(test)]
+mod signal_tests;
 fn panic_error(panic: Box<dyn Any + Send>) -> anyhow::Error {
     let message = panic
         .downcast_ref::<String>()
