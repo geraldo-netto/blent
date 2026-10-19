@@ -17,16 +17,19 @@ pub(super) fn fixture(path: &std::path::Path, role: &str) -> Command {
 
 #[test]
 fn t496_fixture_process() {
-    let Some(path) = std::env::var_os("BLENT_T496_PATH") else {
+    let Some(raw_path) = std::env::var_os("BLENT_T496_PATH") else {
         return;
     };
-    let path = std::path::PathBuf::from(path);
+    let path = std::path::PathBuf::from(raw_path);
     let stage = path.with_extension("tmp");
     std::fs::write(&stage, std::process::id().to_string()).unwrap();
     std::fs::rename(stage, &path).unwrap();
     let role = std::env::var("BLENT_T496_ROLE").unwrap();
+    if role == "input-delayed" {
+        std::thread::sleep(Duration::from_millis(350));
+    }
     match role.as_str() {
-        "input" => {
+        "input" | "input-delayed" => {
             let mut bytes = Vec::new();
             std::io::stdin().read_to_end(&mut bytes).unwrap();
             std::fs::write(path.with_extension("input"), bytes).unwrap();
