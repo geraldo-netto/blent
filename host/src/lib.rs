@@ -117,3 +117,6 @@ pub mod display_work;
 pub mod current_work;
 
 pub mod auxiliary_work;
+
+#[cfg(target_os = "linux")]
+pub mod auxiliary_source;

@@ -276,3 +276,5 @@ impl Drop for LinuxSource {
 }
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+pub(crate) use tests::private as private_bus_test;

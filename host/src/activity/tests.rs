@@ -178,7 +178,7 @@ async fn retired<S: Source + ?Sized>(source: &S) {
     .await
     .unwrap();
 }
-pub(super) fn private(test: &str) -> bool {
+pub(crate) fn private(test: &str) -> bool {
     if std::env::var_os("BLENT_T1008_PRIVATE_BUS").is_some() {
         std::env::set_var(
             "DBUS_SYSTEM_BUS_ADDRESS",

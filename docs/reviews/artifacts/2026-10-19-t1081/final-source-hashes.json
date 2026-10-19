@@ -1,0 +1,7 @@
+{
+  "host/src/auxiliary_source.rs": "a4ae44822078c6ff13f0f17d5a1c278db7c352565a1b538409fe9b6906d8c43f",
+  "host/src/auxiliary_source/worker.rs": "cffa6184527ab3aabf76a3de53fd5f7e771e13dd36a7f822f28fa0f00d273833",
+  "host/src/auxiliary_source/tests.rs": "c6063a6618088296f63975356a7578930b7e54b8df754d4c8d1e1d329288f207",
+  "host/src/auxiliary_source/worker_tests.rs": "695e30a055632936805621179459cb13d7c067039b78c25caa4687b224d7fcf0",
+  "host/src/auxiliary_source/tests/fixture.rs": "299409554d90412514e16e9d5ec6ee00df38957f1f27b56fb43e3ab538881a92"
+}
