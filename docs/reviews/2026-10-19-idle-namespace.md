@@ -16,10 +16,11 @@ have private permissions. Idle test fixtures now set their private modes
 explicitly rather than relying on installed tempfile/umask defaults; assertions
 and existing lifetime tests remain intact.
 
-All current application publishers and cleanup paths take locks in the same
+Final-request publication and cleanup take locks in the same
 order: process mutex, then original-directory native lock. This coordinates
 independent open file descriptions and processes without creating a persistent
-lock file. The private namespace is an application coordination boundary;
+lock file. Subsequent T1118 pre-admission staging collection takes only the fresh
+native directory lock and never reverses this order. The private namespace is an application coordination boundary;
 advisory locks do not exclude arbitrary nonparticipating same-user mutations.
 No claim of kernel compare-and-delete against such mutation is made. File
 ownership checks and original-directory pinning still apply on every effect.
@@ -32,9 +33,10 @@ actual completion and existing original worker retirement. Removing either the
 cleanup lock or post-wait Stop check deliberately fails its permanent regression.
 
 Atomic publication writes a bounded ASCII request (five existing numeric fields)
-to an owned temporary file. A failed `persist` contains an owned temporary path:
-that path is destroyed under the original directory borrow before returning its
-plain I/O error. It cannot escape and later dereference a reused directory FD.
+to an owned temporary file. T1114 kept failed-persist paths inside the original
+directory borrow; subsequent [T1118](2026-10-19-idle-staging.md) also observes exact
+temporary-file cleanup before returning the plain I/O error. A temporary path
+cannot escape and later dereference a reused directory FD.
 Success closes the returned publication File under the same guard. Partial
 startup and validation rejection unwind owned FDs. Failed persistence settles
 its temporary file while the lease keeps its directory/source/token pins; no
@@ -60,11 +62,11 @@ are restored byte-for-byte against the native coverage manifest before final
 normal verification. Raw evidence is in
 [the artifacts](artifacts/2026-10-19-t1114/README.md).
 
-This resolves namespace clobbering and retargeted cleanup. **T1117 remains open**:
-failed removal can leave short-lived advice after the lease's source/token pins
-close. That separate expiry fence must be fixed before longer advice is enabled
-by T1115/T1116. A completed destructor or expired logical owner does not prove
-that boundary. Existing original idle creator/worker/native completion regression
+This resolves namespace clobbering and retargeted cleanup. Subsequent
+[T1117](2026-10-19-idle-retirement.md) resolves failed final-request cleanup by
+retaining original identities until positive namespace settlement; T1118 resolves
+temporary staging cleanup. Longer advice remains T1115/T1116. A completed
+destructor or expired logical owner does not prove that boundary. Existing original idle creator/worker/native completion regression
 coverage remains; this change does not claim unrestricted leak freedom, native
 device support, or safety against uncoordinated external namespace writers.
 No installed application, display, suspend, tablet, network or battery action ran.

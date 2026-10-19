@@ -6,7 +6,7 @@ use blent_config::idle::control::{Cadence, LEASE_US};
 use blent_config::idle::{Phase, Policy, Sample, COMPATIBLE_MS};
 use std::{
     collections::VecDeque,
-    io::{Read, Write},
+    io::Read,
     os::unix::fs::{FileTypeExt, MetadataExt, OpenOptionsExt},
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
@@ -14,6 +14,7 @@ use std::{
 };
 use tokio::time::Instant;
 mod directory;
+mod staging;
 mod worker;
 
 fn retire_request(mut cleanup: impl FnMut() -> Result<()>, mut pause: impl FnMut()) {
@@ -261,6 +262,8 @@ struct Lease {
 impl Lease {
     fn open(fifo: &Path, stop: Arc<worker::Stop>) -> Result<Self> {
         let directory = directory::Directory::open(fifo.parent().context("FIFO directory")?)?;
+        let held = directory.lock()?;
+        staging::collect(&held)?;
         let inode = std::fs::OpenOptions::new()
             .read(true)
             .custom_flags(libc::O_PATH | libc::O_NOFOLLOW | libc::O_CLOEXEC)
@@ -271,6 +274,7 @@ impl Lease {
             "idle request needs an owned FIFO"
         );
         let token = tempfile::tempfile_in(directory.root())?;
+        drop(held);
         Ok(Self {
             path: fifo.with_extension("idle"),
             identity: (metadata.dev(), metadata.ino()),
@@ -316,12 +320,12 @@ impl Lease {
         anyhow::ensure!(self.stop.active(), "idle lease retired");
         anyhow::ensure!(interval == 500, "unsupported sparse cadence");
         before_wait();
-        let _directory = self.directory.lock()?;
+        let directory = self.directory.lock()?;
         anyhow::ensure!(self.stop.active(), "idle lease retired");
-        self.write_request(interval)
+        self.write_request(interval, &directory)
     }
 
-    fn write_request(&self, interval: u32) -> Result<()> {
+    fn write_request(&self, interval: u32, directory: &directory::Guard<'_>) -> Result<()> {
         let mut clock = libc::timespec {
             tv_sec: 0,
             tv_nsec: 0,
@@ -333,24 +337,20 @@ impl Lease {
         );
         let expires =
             clock.tv_sec as u64 * 1000 + clock.tv_nsec as u64 / 1_000_000 + LEASE_US / 1000;
-        let mut file = tempfile::NamedTempFile::new_in(self.directory.root())?;
+        let mut file = staging::Staging::create(directory)?;
         writeln!(
-            file,
+            file.writer(),
             "{} {} {} {expires} {interval}",
-            self.identity.0, self.identity.1, self.token
+            self.identity.0,
+            self.identity.1,
+            self.token
         )?;
-        match file.persist(self.directory.path(&self.path)?) {
+        match file.persist(&self.path) {
             Ok(persisted) => {
                 drop(persisted);
                 Ok(())
             }
-            Err(failure) => {
-                // PersistError owns a TempPath through /proc/self/fd. Delete it
-                // under this original directory borrow before returning an error.
-                let cause = failure.error;
-                drop(failure.file);
-                Err(cause).context("publish idle request")
-            }
+            Err(cause) => Err(cause).context("publish idle request"),
         }
     }
 }
@@ -388,11 +388,7 @@ impl Lease {
         }
         after_snapshot();
         let path = self.directory.path(&self.path)?;
-        match remove(&path) {
-            Ok(()) => Ok(()),
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(()),
-            Err(error) => Err(error).context("remove original idle request"),
-        }
+        directory::remove_owned(&path, remove).context("remove original idle request")
     }
 
     fn original_request(&self) -> Result<bool> {

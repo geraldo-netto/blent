@@ -14,5 +14,5 @@ Original source bytes match the native coverage manifest after restoration.
 Fresh offline LLVM counters cover all 32 production functions in the idle and
 directory modules individually at 90.9–100%. Source estimates cover 76 Rust
 functions (maximum 7), Python fixture (1), and C fixture (2); no native SonarQube
-claim (T1019). Five architecture tests pass. Staging cleanup remains T1118;
+claim (T1019). Five architecture tests pass. This evidence predates T1118 staging cleanup;
 replacement-source stale-advice admission remains T1115. No device/network work.

@@ -86,6 +86,7 @@ Cancellation hands ownership to the existing native reaper instead of detaching
 cleanup. Abrupt whole-process loss is not a successful cleanup receipt; T1115
 must reject/settle stale advice before exposing a replacement source/reader.
 
-Failed temporary publication cleanup remains independently tracked under T1118:
-best-effort staging-file destruction is not this final-request fence. No physical
+Subsequent [T1118](2026-10-19-idle-staging.md) resolves temporary publication
+cleanup with a borrowed staging owner and guarded recovery. This T1117 evidence
+covers the separate final-request fence. No physical
 display, tablet, suspend, application installation, network or battery action ran.

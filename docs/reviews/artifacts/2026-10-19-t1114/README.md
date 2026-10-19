@@ -1,8 +1,9 @@
 # T1114: coordinate the original idle namespace
 
 See ../../2026-10-19-idle-namespace.md for the exact two reproduced bugs,
-original directory/source/token ownership, synchronous callback bounds, private
-namespace assumptions and explicit remaining T1117 failed-removal expiry fence.
+original directory/source/token ownership, synchronous callback bounds and private
+namespace assumptions. This T1114 evidence predates the separate failed-removal
+fence subsequently resolved by T1117 and staging cleanup resolved by T1118.
 
 Both snapshot-clobber and renamed-directory regressions fail before the fix.
 The intermediate initial-green/green logs expose a fixture permission mismatch:

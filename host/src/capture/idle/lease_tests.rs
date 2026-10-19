@@ -1,6 +1,10 @@
 //! T1114: native independent-description interleavings, joined before assertions.
 use super::*;
-use std::{io, os::fd::AsRawFd, sync::mpsc};
+use std::{
+    io::{self, Write},
+    os::fd::AsRawFd,
+    sync::mpsc,
+};
 
 pub(super) fn private_root() -> tempfile::TempDir {
     use std::os::unix::fs::PermissionsExt;
@@ -172,7 +176,7 @@ fn t1114_directory_validation_and_bounded_name_views_fail_closed() {
         );
     }
     let info = std::fs::metadata(root.path()).unwrap();
-    assert!(directory::validate(&info, info.uid() + 1).is_err());
+    assert!(directory::validate_private(&info, info.uid() + 1).is_err());
     std::fs::set_permissions(root.path(), std::fs::Permissions::from_mode(0o777)).unwrap();
     let rejected = directory::Directory::open(root.path()).is_err();
     std::fs::set_permissions(root.path(), std::fs::Permissions::from_mode(0o700)).unwrap();

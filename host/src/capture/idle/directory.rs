@@ -19,19 +19,16 @@ impl Directory {
             .read(true)
             .custom_flags(libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC)
             .open(path)?;
-        validate(&file.metadata()?, unsafe { libc::geteuid() })?;
+        validate_private(&file.metadata()?, unsafe { libc::geteuid() })?;
         Ok(Self(file))
     }
 
     pub(super) fn root(&self) -> PathBuf {
-        PathBuf::from(format!("/proc/self/fd/{}", self.0.as_raw_fd()))
+        root(&self.0)
     }
 
     pub(super) fn path(&self, path: &Path) -> io::Result<PathBuf> {
-        let name = path.file_name().ok_or_else(|| {
-            io::Error::new(io::ErrorKind::InvalidInput, "idle effect needs a file name")
-        })?;
-        Ok(self.root().join(name))
+        scoped_path(&self.0, path)
     }
 
     pub(super) fn lock(&self) -> io::Result<Guard<'_>> {
@@ -40,11 +37,35 @@ impl Directory {
     }
 }
 
-pub(super) fn validate(info: &Metadata, uid: u32) -> Result<()> {
-    ensure!(info.uid() == uid, "idle directory has a foreign owner");
+impl Guard<'_> {
+    pub(super) fn root(&self) -> PathBuf {
+        root(self.0)
+    }
+
+    pub(super) fn path(&self, path: &Path) -> io::Result<PathBuf> {
+        scoped_path(self.0, path)
+    }
+}
+
+fn root(file: &File) -> PathBuf {
+    PathBuf::from(format!("/proc/self/fd/{}", file.as_raw_fd()))
+}
+
+fn scoped_path(file: &File, path: &Path) -> io::Result<PathBuf> {
+    let name = path.file_name().ok_or_else(|| {
+        io::Error::new(io::ErrorKind::InvalidInput, "idle effect needs a file name")
+    })?;
+    Ok(root(file).join(name))
+}
+
+pub(super) fn validate_private(info: &Metadata, uid: u32) -> Result<()> {
+    ensure!(
+        info.uid() == uid,
+        "idle namespace object has a foreign owner"
+    );
     ensure!(
         info.mode() & 0o022 == 0,
-        "idle directory is writable by others"
+        "idle namespace object is writable by others"
     );
     Ok(())
 }
@@ -54,6 +75,17 @@ pub(super) fn lock_fd(fd: RawFd, operation: i32) -> io::Result<()> {
         Ok(())
     } else {
         Err(io::Error::last_os_error())
+    }
+}
+
+pub(super) fn remove_owned(
+    path: &Path,
+    remove: impl FnOnce(&Path) -> io::Result<()>,
+) -> io::Result<()> {
+    match remove(path) {
+        Ok(()) => Ok(()),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(()),
+        Err(error) => Err(error),
     }
 }
 
