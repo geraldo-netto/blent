@@ -54,6 +54,7 @@ toml = "0.8"
 tempfile = "3"
 
 [target.'cfg(target_os = "linux")'.dependencies]
+linux-raw-sys = { version = "0.12.1", default-features = false, features = ["std", "ioctl"] }
 pipewire = { version = "0.8", optional = true }
 ffmpeg-next = { version = "9", optional = true }
 libc = "0.2"

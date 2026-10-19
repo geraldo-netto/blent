@@ -616,6 +616,7 @@ dependencies = [
  "futures-util",
  "ksni",
  "libc",
+ "linux-raw-sys 0.12.1",
  "pipewire",
  "rcgen",
  "rustls",
