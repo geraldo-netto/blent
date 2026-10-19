@@ -110,6 +110,36 @@ class CallbackDecoderTest {
         override fun close() { decoder.releaseCodec(); surface.release() }
     }
 
+    @Test fun t1107_emptyCallbackMailboxSurvivesIdleAndResumesCurrentCodec() {
+        Fixture().use { fixture ->
+            try {
+                val codec = fixture.decoder.mediaCodec!!
+                val callback = fixture.callback()
+                callback.onInputBufferAvailable(codec, 0)
+                fixture.feed(byteArrayOf(7), sequence = 1)
+                assertEquals(1L, CallbackCodecShadow.inputs.poll(1, TimeUnit.SECONDS)!!.sequence)
+                callback.onOutputBufferAvailable(codec, 0, MediaCodec.BufferInfo().apply { presentationTimeUs = 1 })
+                assertEquals(0, CallbackCodecShadow.outputs.poll(1, TimeUnit.SECONDS))
+                org.robolectric.shadows.ShadowSystemClock.advanceBy(java.time.Duration.ofSeconds(60))
+                val inspected = CountDownLatch(1)
+                val handler = checkNotNull(CallbackCodecShadow.handlers.peek())
+                assertTrue(handler.post { inspected.countDown() })
+                assertTrue(inspected.await(1, TimeUnit.SECONDS))
+                assertSame(codec, fixture.decoder.mediaCodec)
+                assertEquals(1L, fixture.invalidated.count)
+                callback.onInputBufferAvailable(codec, 1)
+                fixture.feed(byteArrayOf(9), sequence = 2)
+                assertEquals(2L, CallbackCodecShadow.inputs.poll(1, TimeUnit.SECONDS)!!.sequence)
+                callback.onOutputBufferAvailable(codec, 1, MediaCodec.BufferInfo().apply { presentationTimeUs = 2 })
+                assertEquals(1, CallbackCodecShadow.outputs.poll(1, TimeUnit.SECONDS))
+                assertSame(codec, fixture.decoder.mediaCodec)
+            } finally {
+                fixture.decoder.releaseCodec()
+                awaitDecoderRetirement(fixture.decoder)
+            }
+        }
+    }
+
     @Test fun t386_callbackInputOwnsBytesAndPreservesConfigurationSequenceAndOrder() {
         Fixture().use { fixture ->
             val codec = fixture.decoder.mediaCodec!!

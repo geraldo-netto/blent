@@ -11,6 +11,10 @@ mod framing_profile;
 mod startup_packet_tests;
 
 #[cfg(test)]
+#[path = "sparse_codec_tests.rs"]
+mod sparse_codec_tests;
+
+#[cfg(test)]
 #[path = "frame_timing_tests.rs"]
 mod frame_timing_tests;
 
