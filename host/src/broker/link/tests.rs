@@ -28,6 +28,7 @@ fn resource() -> (Resource, tokio::io::DuplexStream) {
 fn settings() -> Settings {
     Settings {
         resource_timeout: AdmissionTimeout::default(),
+        tls_timeout: blent_config::connection::handshake::Timeout::default(),
         identity: Arc::new(Identity::load(IdentityRecord::generate().unwrap()).unwrap()),
         limits: Limits::default(),
         block: 65536,

@@ -59,6 +59,7 @@ pub struct Settings {
     pub setup_timeout: Duration,
     pub approval_timeout: Duration,
     pub resource_timeout: AdmissionTimeout,
+    pub tls_timeout: blent_config::connection::handshake::Timeout,
     pub origin: Instant,
 }
 impl Handle {
@@ -150,7 +151,12 @@ async fn run(
         anyhow::bail!("expected exact pairing approval");
     };
     let mut verified = candidate
-        .authenticate_with_timeout(&settings.identity, ticket, settings.approval_timeout)
+        .authenticate_with_timeout(
+            &settings.identity,
+            ticket,
+            settings.approval_timeout,
+            settings.tls_timeout,
+        )
         .await?;
     let limits = window::negotiate(&mut verified.resource.stream, settings.limits).await?;
     emit(&output, Event::Verified(verified, limits))?;

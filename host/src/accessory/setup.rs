@@ -1,7 +1,7 @@
 //! Compose bounded public identity discovery and stock TLS over any owned byte
 //! transport. UI/approval and native device access remain separate adapters.
 use super::{Resource, Stream};
-use crate::secure_connection::{self, Identity, PeerCertificate};
+use crate::secure_connection::{self, HandshakeTimeout, Identity, PeerCertificate};
 use anyhow::{ensure, Result};
 use blent_config::connection::{
     hello::{Hello, HEADER_BYTES},
@@ -30,6 +30,7 @@ impl Candidate {
         identity: &Identity,
         ticket: Ticket,
         approval_timeout: Duration,
+        tls_timeout: HandshakeTimeout,
     ) -> Result<Verified> {
         ensure!(
             !approval_timeout.is_zero() && approval_timeout <= Duration::from_secs(600),
@@ -40,16 +41,11 @@ impl Candidate {
             "approval names a different identity"
         );
         let Resource { mut stream, owner } = self.resource;
-        // Human approval can take longer than TLS's ten-second setup budget.
+        // Human approval and the selected TLS setup budget are separate phases.
         // This untrusted marker coordinates scheduling, never peer authority.
         tokio::time::timeout(approval_timeout, synchronize(&mut *stream)).await??;
-        let stream = secure_connection::accept(
-            stream,
-            identity,
-            &self.certificate,
-            blent_config::connection::handshake::Timeout::default(),
-        )
-        .await?;
+        let stream =
+            secure_connection::accept(stream, identity, &self.certificate, tls_timeout).await?;
         Ok(Verified {
             resource: Resource {
                 stream: Box::new(stream),
@@ -63,8 +59,13 @@ impl Candidate {
     /// media lease: Pairing::authenticated must accept its ticket/proven peer
     /// after the await, rejecting intervening revocation, timeout or replacement.
     pub async fn authenticate(self, identity: &Identity, ticket: Ticket) -> Result<Verified> {
-        self.authenticate_with_timeout(identity, ticket, Duration::from_secs(120))
-            .await
+        self.authenticate_with_timeout(
+            identity,
+            ticket,
+            Duration::from_secs(120),
+            HandshakeTimeout::default(),
+        )
+        .await
     }
     /// Denial must observe actual native retirement; Drop alone only requests it.
     pub async fn reject(self) -> Result<()> {
@@ -174,7 +175,12 @@ pub(crate) mod tests {
         };
         let certificate = PeerCertificate::parse(host.certificate().to_vec()).unwrap();
         let (verified, client) = tokio::join!(
-            candidate.authenticate_with_timeout(&host, ticket, Duration::from_secs(300)),
+            candidate.authenticate_with_timeout(
+                &host,
+                ticket,
+                Duration::from_secs(300),
+                HandshakeTimeout::default()
+            ),
             async {
                 tokio::time::sleep(Duration::from_secs(121)).await;
                 let mut marker = [0; ready::BYTES];
@@ -213,7 +219,7 @@ pub(crate) mod tests {
                 peer: candidate.peer().clone(),
             };
             assert!(candidate
-                .authenticate_with_timeout(&host, ticket, timeout)
+                .authenticate_with_timeout(&host, ticket, timeout, HandshakeTimeout::default())
                 .await
                 .is_err());
             assert!(completion.is_complete());

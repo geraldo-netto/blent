@@ -240,3 +240,53 @@ async fn t1103_resource_timeout_mapping_and_validation_precede_native_effects() 
         assert!(Options::try_parse_from(resource_arguments(root.path(), value)).is_err());
     }
 }
+
+#[test]
+fn t1105_cli_exposes_tls_setup_deadline() {
+    for value in ["1", "10000", "60000"] {
+        let mut args = arguments();
+        args.extend([OsString::from("--tls-timeout-ms"), OsString::from(value)]);
+        assert!(
+            Options::try_parse_from(args).is_ok(),
+            "T1105 TLS timeout unavailable: {value}"
+        );
+    }
+}
+
+fn tls_arguments(root: &std::path::Path, value: &str) -> Vec<OsString> {
+    let mut args = cleanup_arguments(root, "5000");
+    args.extend(["--tls-timeout-ms".into(), value.into()]);
+    args
+}
+#[tokio::test]
+async fn t1105_tls_cli_mapping_and_rejection_precede_native_effects() {
+    assert_eq!(
+        Options::try_parse_from(arguments())
+            .unwrap()
+            .settings()
+            .tls_timeout,
+        Duration::from_secs(10)
+    );
+    let root = tempfile::tempdir().unwrap();
+    for milliseconds in [1u64, 37, 10000, 60000] {
+        let selected =
+            Options::try_parse_from(tls_arguments(root.path(), &milliseconds.to_string()))
+                .unwrap()
+                .settings();
+        assert_eq!(selected.tls_timeout, Duration::from_millis(milliseconds));
+    }
+    for value in ["0", "60001", "18446744073709551615"] {
+        let selected = Options::try_parse_from(tls_arguments(root.path(), value))
+            .unwrap()
+            .settings();
+        assert!(
+            Server::open(selected).await.is_err(),
+            "T1105 invalid TLS budget: {value}"
+        );
+        assert!(!root.path().join("runtime").exists());
+        assert!(!root.path().join("state").exists());
+    }
+    for value in ["", "-1", "NaN", "1.5", "18446744073709551616"] {
+        assert!(Options::try_parse_from(tls_arguments(root.path(), value)).is_err());
+    }
+}

@@ -44,6 +44,8 @@ pub struct Options {
     retirement_timeout_ms: u64,
     #[arg(long, default_value_t = blent_config::connection::resources::AdmissionTimeout::default().milliseconds())]
     resource_timeout_ms: i64,
+    #[arg(long, default_value_t = blent_config::connection::handshake::Timeout::default().duration().as_millis() as u64)]
+    tls_timeout_ms: u64,
 }
 impl Options {
     pub fn settings(self) -> Settings {
@@ -62,6 +64,7 @@ impl Options {
         settings.session.io_timeout = Duration::from_millis(self.io_timeout_ms);
         settings.retirement_timeout = Duration::from_millis(self.retirement_timeout_ms);
         settings.resource_timeout_ms = self.resource_timeout_ms;
+        settings.tls_timeout = Duration::from_millis(self.tls_timeout_ms);
         settings
     }
 }

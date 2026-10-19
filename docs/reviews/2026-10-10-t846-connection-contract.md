@@ -112,10 +112,12 @@ Persistent trust storage is implemented under T868 below; production approval UI
 
 After local approval, each peer sends the eight-byte `BLPR` readiness marker
 (version 1, endpoint role, two reserved zero bytes), then validates the peer's
-marker before starting the ten-second TLS deadline. Readiness is untrusted
+marker before starting the selected TLS deadline (ten seconds by default).
+Readiness is untrusted
 scheduling information, never authentication or permission. Android bounds it by
-the original approval deadline; the host candidate bounds its wait to 120 seconds,
-and its caller must recheck pairing authority after authentication. A permanent
+the original approval deadline; the host candidate uses the selected approval
+coordination budget, default 120 seconds, and its caller must recheck pairing
+authority after authentication. A permanent
 regression models twelve seconds of approval skew without consuming the TLS budget.
 
 Linux uses one supervised `blent-usb-io` process per physical USB path, with a
@@ -154,7 +156,8 @@ feature uses cached dependencies; all pre-existing locked package versions are
 preserved. New cached crypto dependency notices and archive checksums are retained in
 `licenses/accessory-transport/`, included by the existing distribution-docs list.
 
-The Rust adapter bounds the whole handshake to ten seconds. Android's temporary
+The Rust adapter bounds the whole handshake with its selected budget, default
+ten seconds. Android's temporary
 ten-second socket read timeout bounds individual handshake reads only; an isolated
 worker supervisor must additionally enforce an absolute handshake/write/close
 bound. Android restores the caller's read timeout after authentication. Permanent
@@ -525,8 +528,8 @@ application streams. Missing, truncated or mismatched prefixes fail closed.
 Android API 29+ continues to offer and require `blent-usb/1` ALPN. API 27/28 uses
 available TLS 1.2/1.3 protocols and the authenticated preface; Rust permits absent
 ALPN only through the same preface gate and rejects a negotiated different
-protocol. Rust's single ten-second deadline covers handshake, peer proof and
-preface, including a silent peer after successful TLS. Android restores the
+protocol. Rust's single selected deadline (ten seconds by default) covers
+handshake, peer proof and preface, including a silent peer after successful TLS. Android restores the
 caller's read timeout after setup; absolute native handshake/write/close
 supervision still belongs to the isolated connection worker and is not supplied
 by a per-read socket timeout.
@@ -812,11 +815,15 @@ and independently selected signers through their actual consumer lifetime (T1102
 Queued or cancelled links cannot unlock that store while their original identity
 consumer remains. The guard is an acyclic resource owner; logical task completion
 or a timeout alone is not evidence that native consumers have retired.
-Deadlines are `--io-timeout-ms 5000`, `--setup-ms 60000`, and
-`--approval-ms 120000`, `--resource-timeout-ms 120000`, and
-`--retirement-timeout-ms 5000`; resource admission accepts 1–600000 ms and the retirement
-observation budget accepts 1–60000 ms. Approval permits up to 600000 ms and reaches native READY
-coordination, while the controller retains the original absolute deadline.
+Deadline defaults are `--io-timeout-ms 5000`, `--setup-ms 60000`,
+`--approval-ms 120000`, `--resource-timeout-ms 120000`, `--tls-timeout-ms 10000`,
+and `--retirement-timeout-ms 5000`. Resource admission and approval accept
+1–600000 ms; TLS and retirement observation accept 1–60000 ms. TLS configuration
+is validated before native startup and retained by each original link snapshot.
+Human READY coordination uses the approval budget before the separate TLS budget
+starts; window exchange keeps the selected I/O budget. The controller retains its
+original absolute setup/approval deadline. Longer TLS budgets tolerate slower
+peers; shorter budgets reject stalled setup sooner without proving native retirement.
 Inventory refresh is two seconds with one five-second native scan at a time.
 Failed scans explicitly report unavailable inventory. SIGINT/SIGTERM stop new
 work and observe retirement using the selected budget (five seconds by default).

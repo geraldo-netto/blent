@@ -30,3 +30,43 @@ fn t1103_backend_link_mapping_retains_original_snapshot_and_identity() {
         assert!(settings.link(identity.clone(), origin).is_err());
     }
 }
+
+#[test]
+fn t1105_backend_link_mapping_retains_original_tls_budget_separate_from_other_stages() {
+    let identity =
+        std::sync::Arc::new(Identity::load(IdentityRecord::generate().unwrap()).unwrap());
+    let mut settings = Settings::new("/runtime".into(), "/state".into(), "/helper".into());
+    let origin = Instant::now();
+    assert_eq!(
+        settings
+            .link(identity.clone(), origin)
+            .unwrap()
+            .tls_timeout
+            .duration(),
+        Duration::from_secs(10)
+    );
+    for milliseconds in [1, 37, 10000, 60000] {
+        settings.tls_timeout = Duration::from_millis(milliseconds);
+        let original = settings.link(identity.clone(), origin).unwrap();
+        settings.tls_timeout = Duration::from_millis(17);
+        let future = settings.link(identity.clone(), origin).unwrap();
+        assert_eq!(
+            original.tls_timeout.duration(),
+            Duration::from_millis(milliseconds)
+        );
+        assert_eq!(future.tls_timeout.duration(), Duration::from_millis(17));
+        assert_eq!(original.approval_timeout, Duration::from_secs(120));
+        assert_eq!(original.setup_timeout, Duration::from_secs(60));
+        assert_eq!(original.limits.io_timeout, Duration::from_secs(5));
+        assert_eq!(original.resource_timeout.milliseconds(), 120000);
+        assert!(std::sync::Arc::ptr_eq(&original.identity, &identity));
+    }
+    for value in [
+        Duration::ZERO,
+        Duration::from_secs(60) + Duration::from_nanos(1),
+        Duration::MAX,
+    ] {
+        settings.tls_timeout = value;
+        assert!(settings.link(identity.clone(), origin).is_err());
+    }
+}

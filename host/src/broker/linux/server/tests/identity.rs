@@ -38,6 +38,8 @@ fn settings(server: &Server) -> link::Settings {
         .unwrap(),
         identity: server.identity.identity.clone(),
         limits: server.settings.session,
+        tls_timeout: blent_config::connection::handshake::Timeout::new(server.settings.tls_timeout)
+            .unwrap(),
         block: server.settings.block,
         setup_timeout: Duration::from_millis(server.settings.control.setup_ms as u64),
         approval_timeout: Duration::from_millis(server.settings.control.approval_ms as u64),

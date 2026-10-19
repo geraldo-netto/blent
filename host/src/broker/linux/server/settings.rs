@@ -14,6 +14,7 @@ pub struct Settings {
     pub block: usize,
     pub retirement_timeout: Duration,
     pub resource_timeout_ms: i64,
+    pub tls_timeout: Duration,
 }
 impl Settings {
     pub fn new(runtime: PathBuf, state: PathBuf, helper: PathBuf) -> Self {
@@ -27,6 +28,7 @@ impl Settings {
             trust_peers: 64,
             block: 65536,
             retirement_timeout: Duration::from_secs(5),
+            tls_timeout: blent_config::connection::handshake::Timeout::default().duration(),
             resource_timeout_ms: blent_config::connection::resources::AdmissionTimeout::default()
                 .milliseconds(),
         }
@@ -34,6 +36,7 @@ impl Settings {
     pub(super) fn validate(&self) -> Result<()> {
         blent_config::retirement_limits::observation_budget(self.retirement_timeout)?;
         blent_config::connection::resources::AdmissionTimeout::new(self.resource_timeout_ms)?;
+        blent_config::connection::handshake::Timeout::new(self.tls_timeout)?;
         ensure!(
             [&self.runtime, &self.state, &self.helper]
                 .iter()
@@ -73,6 +76,7 @@ impl Settings {
             resource_timeout: blent_config::connection::resources::AdmissionTimeout::new(
                 self.resource_timeout_ms,
             )?,
+            tls_timeout: blent_config::connection::handshake::Timeout::new(self.tls_timeout)?,
             origin,
         })
     }
