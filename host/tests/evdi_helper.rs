@@ -4,7 +4,9 @@
 
 use std::{path::PathBuf, process::Command};
 
-struct Harness(PathBuf);
+// Each fixture owns a unique directory until its compiler and native child
+// have returned. A case label identifies behavior, never filesystem ownership.
+struct Harness(tempfile::TempDir);
 
 #[test]
 fn t1025_resume_snapshot_satisfies_fallback_deadline() {
@@ -34,7 +36,7 @@ fn t789_owned_cursor_retains_native_pixels() {
 #[test]
 fn t775_timeout_guidance_uses_guarded_setup() {
     let harness = Harness::build("T775");
-    let output = Command::new(harness.0.join("helper-test"))
+    let output = Command::new(harness.0.path().join("helper-test"))
         .arg("T497-main")
         .output()
         .unwrap();
@@ -88,11 +90,26 @@ fn t492_sparse_capture_lease_preserves_fresh_frame_wakeup() {
     Harness::build("T492").run("T492");
 }
 
+#[test]
+fn t1122_native_fixture_owners_do_not_share_or_delete_each_others_binary() {
+    let first = Harness::build("T492");
+    let second = Harness::build("T492");
+    let first_path: &std::path::Path = first.0.as_ref();
+    let second_path: &std::path::Path = second.0.as_ref();
+    assert_ne!(
+        first_path, second_path,
+        "T1122: distinct fixture owners share one directory"
+    );
+    drop(second);
+    first.run("T492");
+}
+
 impl Harness {
     fn build(case: &str) -> Self {
-        let dir =
-            std::env::temp_dir().join(format!("blent-evdi-test-{}-{case}", std::process::id()));
-        std::fs::create_dir_all(&dir).unwrap();
+        let dir = tempfile::Builder::new()
+            .prefix(&format!("blent-evdi-test-{}-{case}-", std::process::id()))
+            .tempdir()
+            .unwrap();
         let harness = Self(dir);
         let source = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/evdi_helper_test.c");
         let mut compiler = Command::new("cc");
@@ -137,7 +154,7 @@ impl Harness {
             ])
             .arg(source)
             .arg("-o")
-            .arg(harness.0.join("helper-test"))
+            .arg(harness.0.path().join("helper-test"))
             .output()
             .expect("the EVDI regression suite requires a C compiler (cc)");
         assert!(
@@ -150,7 +167,7 @@ impl Harness {
     }
 
     fn run(&self, case: &str) -> String {
-        let binary = self.0.join("helper-test");
+        let binary = self.0.path().join("helper-test");
         let output = if matches!(case, "T083" | "T580-tsan") {
             // New kernels can place libraries inside GCC TSan's fixed shadow
             // range. Disable ASLR for this child only when permitted.
@@ -184,12 +201,6 @@ impl Harness {
             String::from_utf8_lossy(&output.stderr)
         );
         String::from_utf8(output.stdout).unwrap()
-    }
-}
-
-impl Drop for Harness {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.0);
     }
 }
 
