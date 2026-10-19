@@ -36,10 +36,7 @@ pub const fn transport_capabilities() -> blent_config::camera::connection::Trans
 pub async fn run(options: &CameraOptions) -> Result<()> {
     let (stop, stopped) = watch::channel(false);
     let (status, _) = watch::channel(State::Starting);
-    let status = Report {
-        state: status,
-        preview: watch::channel(None).0,
-    };
+    let status = Report::new(status, watch::channel(None).0);
     let mut terminate = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
     let work = run_native(options.clone(), stopped, status);
     tokio::pin!(work);
@@ -281,7 +278,7 @@ async fn frame_status(frames: &[outputs::Frames; 2], options: &CameraOptions, st
             )
             .ok()
             .map(std::sync::Arc::new);
-            status.preview.send_replace(preview);
+            status.publish_preview(preview);
             next_preview = tokio::time::Instant::now() + std::time::Duration::from_millis(200);
         }
     }

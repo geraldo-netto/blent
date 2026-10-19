@@ -599,3 +599,6 @@ async fn t1080_completed_attempt_destroys_its_future_before_native_settlement() 
     .unwrap();
     assert!(destroyed.load(Ordering::Acquire));
 }
+
+#[path = "progress_tests.rs"]
+mod progress_tests;

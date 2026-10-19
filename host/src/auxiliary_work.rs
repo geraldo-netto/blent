@@ -8,6 +8,7 @@
 //! keeps polling through settlement for graceful stop and automatic resume.
 use crate::activity_view::View;
 use anyhow::Result;
+pub use blent_config::auxiliary_activity::Phase;
 use blent_config::host_activity::{ActivityTarget, Publication, WorkObservation};
 use std::future::Future;
 use tokio::sync::watch;
@@ -20,7 +21,7 @@ enum End {
 
 pub async fn run<F, Fut, S, Settled>(
     source: Option<watch::Receiver<Publication>>,
-    mut stop: watch::Receiver<bool>,
+    stop: watch::Receiver<bool>,
     start: F,
     settle: S,
 ) -> Result<()>
@@ -30,27 +31,58 @@ where
     S: Fn() -> Settled,
     Settled: Future<Output = ()>,
 {
+    run_observed(source, stop, start, settle, |_| {}).await
+}
+
+/// Progress belongs to this workflow and is never retained in background tasks.
+/// Paused/Finished follow actual settlement, including native callback quiescence.
+/// Reporter panics become errors after original work and settlement, never replay.
+pub async fn run_observed<F, Fut, S, Settled>(
+    source: Option<watch::Receiver<Publication>>,
+    mut stop: watch::Receiver<bool>,
+    start: F,
+    settle: S,
+    progress: impl Fn(Phase),
+) -> Result<()>
+where
+    F: Fn(watch::Receiver<bool>) -> Fut,
+    Fut: Future<Output = Result<()>>,
+    S: Fn() -> Settled,
+    Settled: Future<Output = ()>,
+{
     let activity = View::new(ActivityTarget::Auxiliary, source);
-    while let Some(original) = admit(&activity, &mut stop).await {
-        match attempt(&activity, original, &mut stop, &start, &settle).await? {
-            End::Finished => return Ok(()),
+    while let Some(original) = admit(&activity, &mut stop, &progress).await? {
+        notify(&progress, Phase::Starting)?;
+        match attempt(&activity, original, &mut stop, &start, &settle, &progress).await? {
+            End::Finished => break,
             End::Paused => (),
         }
     }
-    Ok(())
+    notify(&progress, Phase::Finished)
 }
 
-async fn admit(activity: &View, stop: &mut watch::Receiver<bool>) -> Option<WorkObservation> {
+fn notify(progress: &impl Fn(Phase), phase: Phase) -> Result<()> {
+    let mut result = Ok(());
+    crate::control_outcome::worker(|| progress(phase), |error| result = Err(error));
+    result
+}
+
+async fn admit(
+    activity: &View,
+    stop: &mut watch::Receiver<bool>,
+    progress: &impl Fn(Phase),
+) -> Result<Option<WorkObservation>> {
     loop {
         let change = activity.changed();
         if *stop.borrow_and_update() || stop.has_changed().is_err() {
-            return None;
+            return Ok(None);
         }
         if let Some(original) = activity.begin() {
-            return Some(original);
+            return Ok(Some(original));
         }
+        notify(progress, Phase::Paused)?;
         tokio::select! { biased;
-            _ = stopped(stop) => return None,
+            _ = stopped(stop) => return Ok(None),
             _ = change => (),
         }
     }
@@ -83,6 +115,7 @@ async fn attempt<F, Fut, S, Settled>(
     manual: &mut watch::Receiver<bool>,
     start: &F,
     settle: &S,
+    progress: &impl Fn(Phase),
 ) -> Result<End>
 where
     F: Fn(watch::Receiver<bool>) -> Fut,
@@ -97,14 +130,18 @@ where
         _ = stopped(manual) => End::Finished,
         _ = withdrawn(activity, original) => End::Paused,
         result = &mut work => {
+            let progress = notify(progress, Phase::Retiring);
             settle().await;
+            progress?;
             return result.map(|()| End::Finished);
         }
     };
     stop.send_replace(true);
+    let progress = notify(progress, Phase::Retiring);
     let result = work.await;
     settle().await;
     result?;
+    progress?;
     Ok(end)
 }
 

@@ -3,6 +3,7 @@ pub mod adb;
 pub mod adb_reverse;
 pub mod android;
 pub mod audio;
+pub mod auxiliary_activity;
 pub mod camera;
 pub mod capture_activity;
 pub mod capture_capacity;

@@ -9,9 +9,18 @@ pub enum AudioState {
     #[default]
     Stopped,
     Starting,
+    /// Host manual intent retained; no native session is admitted while paused.
+    Paused,
     Streaming,
     Stopping,
     Failed,
+}
+
+impl AudioState {
+    /// Host controls retain Stop until the manual intent actually ends.
+    pub fn is_active(self) -> bool {
+        !matches!(self, Self::Stopped | Self::Failed)
+    }
 }
 
 struct Active {

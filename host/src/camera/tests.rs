@@ -413,10 +413,7 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
     };
     let (_stop, mut stopped) = watch::channel(false);
     let (status, _) = watch::channel(State::Starting);
-    let status = Report {
-        state: status,
-        preview: watch::channel(None).0,
-    };
+    let status = Report::new(status, watch::channel(None).0);
     let (result, clients_finished) = fixture_outcome(
         serve(
             Session {
@@ -469,20 +466,17 @@ async fn t543_host_reports_frames_and_rejects_unselected_lens() {
     .await;
     assert!(result.unwrap_err().to_string().contains("selected by host"));
     let (status, mut state) = watch::channel(State::Waiting);
-    let status = Report {
-        state: status,
-        preview: watch::channel(None).0,
-    };
+    let status = Report::new(status, watch::channel(None).0);
     let monitor = frame_status(&frames, &profile, &status);
     tokio::pin!(monitor);
     let checks = async {
         tokio::task::yield_now().await;
         frames[0].send_replace(Some(std::sync::Arc::new(outputs::blank(&profile).unwrap())));
         state.wait_for(|s| *s == State::Streaming).await.unwrap();
-        assert!(status.preview.borrow().is_some());
+        assert!(status.preview().is_some());
         frames[0].send_replace(None);
         state.wait_for(|s| *s == State::Waiting).await.unwrap();
-        assert!(status.preview.borrow().is_none());
+        assert!(status.preview().is_none());
     };
     tokio::select! { _ = &mut monitor => panic!(), _ = checks => {} }
 }
@@ -491,10 +485,7 @@ async fn t543_host_reports_frames_and_rejects_unselected_lens() {
 async fn t543_embedded_adapter_rejects_invalid_profile_before_native_work() {
     let (_stop, stopped) = watch::channel(false);
     let (status, _) = watch::channel(State::Stopped);
-    let status = Report {
-        state: status,
-        preview: watch::channel(None).0,
-    };
+    let status = Report::new(status, watch::channel(None).0);
     let profile = CameraProfile {
         fps: 0,
         ..Default::default()

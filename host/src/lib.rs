@@ -125,3 +125,5 @@ pub mod auxiliary_source;
 mod adb_command;
 #[cfg(target_os = "linux")]
 pub mod media_target;
+
+pub mod report_scope;

@@ -3278,4 +3278,93 @@ printf '%s' "$((existing + delta))" > "$count""#,
         assert_eq!(app.message, "Settings saved");
         assert_eq!(app.store.load().audio, app.cfg.audio);
     }
+    #[test]
+    fn t1085_paused_camera_stop_is_available_and_preferences_remain_passive() {
+        use blent_config::camera::{CameraBackend, CameraProfile, CameraState};
+        use std::{cell::RefCell, rc::Rc};
+        struct Backend(Rc<RefCell<CameraState>>);
+        impl CameraBackend for Backend {
+            fn start(&self, _: CameraProfile) -> blent_config::camera::BackendResult {
+                *self.0.borrow_mut() = CameraState::Starting;
+                Ok(())
+            }
+            fn stop(&self) {
+                *self.0.borrow_mut() = CameraState::Stopped;
+            }
+            fn state(&self) -> CameraState {
+                self.0.borrow().clone()
+            }
+            fn preview(&self) -> Option<std::sync::Arc<blent_config::camera::CameraPreview>> {
+                None
+            }
+        }
+        let (_directory, mut app) = settings_test_app(Tab::Camera);
+        let preferences = app.cfg.clone();
+        let state = Rc::new(RefCell::new(CameraState::Paused));
+        app.camera.backend = Some(Box::new(Backend(state.clone())));
+        let context = egui::Context::default();
+        let text = camera_test_frame(&mut app, &context, Vec::new());
+        assert!(text
+            .iter()
+            .any(|(text, _)| text.contains("Waiting for host availability")));
+        assert_eq!(*state.borrow(), CameraState::Paused);
+        click_settings_text(&mut app, &context, "Stop camera", camera_test_frame);
+        assert_eq!(*state.borrow(), CameraState::Stopped);
+        assert_eq!(app.cfg, preferences);
+    }
+
+    #[test]
+    fn t1085_both_paused_audio_directions_keep_stop_and_deny_duplicate_start() {
+        for direction in [
+            blent_config::audio::Direction::Microphone,
+            blent_config::audio::Direction::Speakers,
+        ] {
+            paused_audio_controls(direction);
+        }
+    }
+    fn paused_audio_controls(direction: blent_config::audio::Direction) {
+        use blent_config::audio::{
+            AudioController, AudioOptions, AudioState, AudioStatus, Direction,
+        };
+        use std::{cell::RefCell, rc::Rc};
+        struct Backend(Rc<RefCell<AudioState>>);
+        impl AudioController for Backend {
+            fn start(&self, _: AudioOptions) -> blent_config::camera::BackendResult {
+                *self.0.borrow_mut() = AudioState::Starting;
+                Ok(())
+            }
+            fn stop(&self) {
+                *self.0.borrow_mut() = AudioState::Stopped;
+            }
+            fn status(&self) -> AudioStatus {
+                AudioStatus {
+                    state: *self.0.borrow(),
+                    detail: "Waiting for host availability".into(),
+                }
+            }
+        }
+        let (_directory, mut app) = settings_test_app(Tab::Audio);
+        let preferences = app.cfg.clone();
+        let state = Rc::new(RefCell::new(AudioState::Paused));
+        let (frame, label) = match direction {
+            Direction::Microphone => {
+                app.microphone.backend = Some(Box::new(Backend(state.clone())));
+                (audio_test_frame as SettingsFrame, "microphone")
+            }
+            Direction::Speakers => {
+                app.speakers.backend = Some(Box::new(Backend(state.clone())));
+                (speaker_test_frame as SettingsFrame, "speakers")
+            }
+        };
+        let context = egui::Context::default();
+        click_settings_text(&mut app, &context, &format!("Start {label}"), frame);
+        assert_eq!(
+            *state.borrow(),
+            AudioState::Paused,
+            "T1085 duplicate Start enabled while intent retained"
+        );
+        click_settings_text(&mut app, &context, &format!("Stop {label}"), frame);
+        assert_eq!(*state.borrow(), AudioState::Stopped);
+        assert_eq!(app.cfg, preferences);
+    }
 }

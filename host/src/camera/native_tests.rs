@@ -109,10 +109,7 @@ else: print('fixture-tablet')"#
     options.rear_device = rear;
     for stopped in [true, false] {
         let (_stop, stop) = watch::channel(stopped);
-        let status = Report {
-            state: watch::channel(State::Starting).0,
-            preview: watch::channel(None).0,
-        };
+        let status = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
         let result = tokio::time::timeout(
             std::time::Duration::from_secs(10),
             run_native(options.clone(), stop, status),

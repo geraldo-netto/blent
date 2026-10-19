@@ -11,6 +11,7 @@ use tokio::sync::watch;
 pub struct Report {
     status: watch::Sender<AudioStatus>,
     retirement: Arc<Mutex<retirement::Tracker>>,
+    permit: Option<crate::report_scope::Permit>,
 }
 mod retirement;
 impl Report {
@@ -18,6 +19,20 @@ impl Report {
         Self {
             status,
             retirement: Arc::new(Mutex::new(Default::default())),
+            permit: None,
+        }
+    }
+    pub fn scoped(&self, permit: crate::report_scope::Permit) -> Self {
+        Self {
+            status: self.status.clone(),
+            retirement: self.retirement.clone(),
+            permit: Some(permit),
+        }
+    }
+    fn publish(&self, action: impl FnOnce()) {
+        match &self.permit {
+            Some(permit) => permit.publish(action),
+            None => action(),
         }
     }
     /// Record proof immediately after native creation, before publishing it or
@@ -49,10 +64,27 @@ impl Report {
             tokio::time::sleep(std::time::Duration::from_millis(10)).await;
         }
     }
+    /// Workflow progress is independent of native streaming reports. Paused is
+    /// published only after the previous attempt and native callbacks settle.
+    pub fn activity(&self, phase: blent_config::auxiliary_activity::Phase) {
+        use blent_config::auxiliary_activity::Phase;
+        let (state, detail) = match phase {
+            Phase::Paused => (
+                AudioState::Paused,
+                "Waiting for host availability. Stop cancels pending start or resume.",
+            ),
+            Phase::Starting => (AudioState::Starting, "Starting audio…"),
+            Phase::Retiring => (AudioState::Stopping, "Waiting for audio resource cleanup…"),
+            Phase::Finished => (AudioState::Stopped, "Stopped"),
+        };
+        self.update(state, detail);
+    }
     pub fn update(&self, state: AudioState, detail: impl Into<String>) {
-        self.status.send_replace(AudioStatus {
-            state,
-            detail: detail.into(),
+        self.publish(|| {
+            self.status.send_replace(AudioStatus {
+                state,
+                detail: detail.into(),
+            });
         });
     }
 }

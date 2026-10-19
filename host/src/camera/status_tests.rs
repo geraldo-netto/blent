@@ -20,10 +20,7 @@ impl Fixture {
             ..Default::default()
         };
         let frames = [watch::channel(None).0, watch::channel(None).0];
-        let report = Report {
-            state: watch::channel(State::Waiting).0,
-            preview: watch::channel(None).0,
-        };
+        let report = Report::new(watch::channel(State::Waiting).0, watch::channel(None).0);
         let owned = frames.clone();
         let status = report.clone();
         let worker = tokio::spawn(async move { frame_status(&owned, &options, &status).await });
@@ -44,7 +41,7 @@ impl Fixture {
         tokio::time::advance(Duration::from_millis(milliseconds)).await;
         tokio::task::yield_now().await;
         assert_eq!(
-            *self.report.state.borrow(),
+            self.report.state(),
             expected,
             "T704 freshness boundary"
         );
@@ -55,8 +52,8 @@ impl Fixture {
         assert!(self.worker.await.unwrap_err().is_cancelled());
         self.report.update(State::Stopped);
         tokio::time::advance(Duration::from_secs(3)).await;
-        assert_eq!(*self.report.state.borrow(), State::Stopped);
-        assert!(self.report.preview.borrow().is_none());
+        assert_eq!(self.report.state(), State::Stopped);
+        assert!(self.report.preview().is_none());
     }
 }
 
@@ -67,7 +64,7 @@ async fn t704_streaming_expires_at_two_seconds_and_recovers_on_selected_frames()
     fixture.advance(1999, State::Streaming).await;
     fixture.publish(1).await; // Another lens cannot extend the selected stream's lifetime.
     fixture.advance(1, State::Waiting).await;
-    assert!(fixture.report.preview.borrow().is_none());
+    assert!(fixture.report.preview().is_none());
     fixture.publish(0).await;
     fixture.advance(1999, State::Streaming).await;
     fixture.publish(0).await; // A fresh selected frame renews the full interval.

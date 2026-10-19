@@ -56,10 +56,7 @@ impl Panel {
             else { "Open Blent on the tablet for speaker controls and background consent. Other apps may pause playback through audio focus." });
     }
     fn buttons(&mut self, ui: &mut egui::Ui, options: &AudioOptions, state: AudioState) {
-        let active = matches!(
-            state,
-            AudioState::Starting | AudioState::Streaming | AudioState::Stopping
-        );
+        let active = state.is_active();
         let label = if options.profile.direction == Direction::Microphone {
             "microphone"
         } else {

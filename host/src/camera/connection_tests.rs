@@ -33,10 +33,7 @@ async fn t931_camera_session_invites_through_independent_port() {
     };
     let (stop, mut stopped) = watch::channel(false);
     let (state, observed) = watch::channel(State::Starting);
-    let report = Report {
-        state,
-        preview: watch::channel(None).0,
-    };
+    let report = Report::new(state, watch::channel(None).0);
     let frames = [watch::channel(None).0, watch::channel(None).0];
     let mut producers = Producers::new();
     // Keep the producer branch pending until the session has observed stop.
@@ -73,10 +70,7 @@ async fn t931_native_camera_selection_fails_before_output_device_ownership() {
     options.rear_device = root.path().join("missing-rear");
     options.usb_peer = Some("a".repeat(64));
     let (_stop, stopped) = watch::channel(false);
-    let report = Report {
-        state: watch::channel(State::Starting).0,
-        preview: watch::channel(None).0,
-    };
+    let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
     let error = run_native(options, stopped, report).await.unwrap_err();
     assert_eq!(
         error.to_string(),
@@ -126,10 +120,7 @@ async fn t971_stop_cancels_pending_invitation_before_output_retirement() {
         options: &options,
     };
     let (stop, mut stopped) = watch::channel(false);
-    let report = Report {
-        state: watch::channel(State::Starting).0,
-        preview: watch::channel(None).0,
-    };
+    let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
     let frames = [watch::channel(None).0, watch::channel(None).0];
     let mut producers = Producers::new();
     let producer = crate::owned_task::Task::spawn(std::future::pending()).unwrap();
@@ -169,10 +160,7 @@ async fn t971_producer_failure_interrupts_pending_invitation() {
         options: &options,
     };
     let (_stop, mut stopped) = watch::channel(false);
-    let report = Report {
-        state: watch::channel(State::Starting).0,
-        preview: watch::channel(None).0,
-    };
+    let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
     let frames = [watch::channel(None).0, watch::channel(None).0];
     for failure in [false, true] {
         let mut producers = Producers::new();
@@ -255,10 +243,7 @@ async fn t933_connection_loss_stops_sessions_without_claiming_producer_retiremen
         options: &options,
     };
     let (_stop, mut stopped) = watch::channel(false);
-    let report = Report {
-        state: watch::channel(State::Starting).0,
-        preview: watch::channel(None).0,
-    };
+    let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
     let frames = [watch::channel(None).0, watch::channel(None).0];
     let mut producers = Producers::new();
     producers.push(crate::owned_task::Task::spawn(std::future::pending()).unwrap());
@@ -290,10 +275,7 @@ async fn t933_usb_selection_reaches_output_ownership_without_adb() {
         ..Default::default()
     };
     let (_stop, stopped) = watch::channel(false);
-    let report = Report {
-        state: watch::channel(State::Starting).0,
-        preview: watch::channel(None).0,
-    };
+    let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
     let expected = format!("Open {}:", options.front_device.display());
     let error = run_native(options, stopped, report).await.unwrap_err();
     assert!(error.to_string().starts_with(&expected), "{error:#}");

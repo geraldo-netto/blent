@@ -1,0 +1,22 @@
+{
+  "common/src/audio/session.rs": "043504483067ffe3c3f2a95e0a0d7840ce76bfe14c44b945074ae726048b903c",
+  "common/src/camera.rs": "2b4f76be8985414dc643bd7a52cc62270cdbcc327f40a822e2f136f7a4e9c68e",
+  "common/src/lib.rs": "dad9585aba142a13e05b1b7c6d97d0833f84ed90edf36dd184137bc718de282d",
+  "gui/src/audio_settings.rs": "2ca85ee11ffb693125b68852a09be720230218d327804474e1cd732c2a77ef97",
+  "gui/src/camera_settings.rs": "dcdf4a95d6f634aacea0e6b82638066595f51b1e63ca89812dd2eb8627005631",
+  "gui/src/main.rs": "ae4b57a253557220a46f5369598f52b82e8f8b5da41556e43ab9dd313e17f10e",
+  "host/src/audio_control.rs": "991d07e47189d38096974230f46d758486ffb998106810bb96d52e49d59a2d2b",
+  "host/src/auxiliary_work.rs": "9451a66ae0c889caaa4994b977390b79aa93c471172ec4114b5765097766da92",
+  "host/src/auxiliary_work/tests.rs": "8a6ae41f001352dd05b42ac9384666c925ce682f2af226f9d8285ed2f46a6885",
+  "host/src/camera.rs": "8738d70e4e1be7723e2a928b70fda8894faf2dfd71426ccb61b23ea80fe21af9",
+  "host/src/camera/connection_tests.rs": "764187be2d2a810f30fc2990ac256fb271efb40d98fa996f3ec7761c4e171db2",
+  "host/src/camera/native_tests.rs": "827e47cee53f00503660a8053f4d9a9a22f889c5de220429b018bac31dbdfa97",
+  "host/src/camera/status_tests.rs": "d96305b4fe0fe8b1e81e39bc353a268e2f40eda93fc80998264b7af0b5d40537",
+  "host/src/camera/tests.rs": "16c2aafb27dceb3d552e25a6ce45a63bf5d8f4d9de38d8c0d998b172205b9006",
+  "host/src/camera_control.rs": "037917e3748cea32fa7cbb55e495f3b40836ec7cf47c301a7872777041d433f3",
+  "host/src/lib.rs": "46a9bc8487457c7035c77ba19a2c2227df05eda424e9f96889da42f58c258e6e",
+  "common/src/auxiliary_activity.rs": "fd836286004b73b4cb18267247e4dfe377c4c6c892d94414e6742af880d5d292",
+  "host/src/report_scope.rs": "4c49e8f95cdcd69434442dc7afdde78886c4543cf717c65bbd39e15700ef8c19",
+  "host/src/report_scope/tests.rs": "382431361ff9674d4af03a65967fd62859852ac4714436022e4bdc241cef5bde",
+  "host/src/auxiliary_work/progress_tests.rs": "1eadb739e0380ec1b4896da57b784306ff92549903b69bcfe27fb1f0f07bee8f"
+}

@@ -63,13 +63,7 @@ impl Panel {
     }
 
     fn buttons(&mut self, ui: &mut egui::Ui, options: &CameraProfile, state: &CameraState) {
-        let active = matches!(
-            state,
-            CameraState::Starting
-                | CameraState::Waiting
-                | CameraState::Streaming
-                | CameraState::Stopping
-        );
+        let active = state.is_active();
         ui.horizontal_wrapped(|ui| {
             let label = if active {
                 "Restart camera"
@@ -141,6 +135,7 @@ fn state_label(state: &CameraState) -> String {
     match state {
         CameraState::Stopped => "Stopped".into(),
         CameraState::Starting => "Starting camera…".into(),
+        CameraState::Paused => "Waiting for host availability. Stop camera cancels pending start or resume.".into(),
         CameraState::Waiting => {
             "Waiting for video. Open Blent on the tablet and allow camera access.".into()
         }

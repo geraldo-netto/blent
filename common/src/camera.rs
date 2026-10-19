@@ -72,10 +72,19 @@ pub struct CameraProfile {
 pub enum CameraState {
     Stopped,
     Starting,
+    /// Manual intent retained while host availability prevents admission.
+    Paused,
     Waiting,
     Streaming,
     Stopping,
     Failed(String),
+}
+
+impl CameraState {
+    /// A retained manual intent keeps Stop available, including while paused.
+    pub fn is_active(&self) -> bool {
+        !matches!(self, Self::Stopped | Self::Failed(_))
+    }
 }
 
 pub type BackendResult = Result<()>;
