@@ -24,6 +24,15 @@ class SavedComputersTest {
     }
     private fun rejected(body: () -> Unit) { assertThrows(Exception::class.java, body) }
 
+    @Test fun t1153RejectedListIsNeverCopiedOrReadBeforeAdmission() {
+        var reads = 0
+        val oversized = object : AbstractList<ConnectionPeer>() {
+            override val size: Int get() = 1025
+            override fun get(index: Int): ConnectionPeer { reads++; error("unadmitted element read") }
+        }
+        assertThrows(IllegalArgumentException::class.java) { SavedComputers(peer(0), 1, oversized) }
+        assertEquals("T1153 rejected list was accessed", 0, reads)
+    }
     @Test fun t1150EmptySnapshotDoesNotPublishOrGrantAuthority() {
         val store = Store()
         val trust = ConnectionTrust(store, peer(0))
