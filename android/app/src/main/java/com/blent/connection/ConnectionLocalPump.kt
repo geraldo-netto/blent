@@ -14,7 +14,7 @@ internal class ConnectionLocalPump(
     private val io: ConnectionIo,
     blockBytes: Int = ConnectionWire.MAX_PAYLOAD,
     private val limits: ConnectionRunLimits = ConnectionRunLimits(),
-) {
+) : ConnectionDeadlineSource {
     private val producer = LocalChannelProducer(blockBytes, limits.ioTimeoutMs)
     private val consumer = LocalChannelConsumer(blockBytes, limits.ioTimeoutMs)
     private var previous = 0L
@@ -77,12 +77,19 @@ internal class ConnectionLocalPump(
     fun failure(): Exception? = error
     fun retired(): Boolean = finished && closed
     fun quarantined(): Boolean = stoppedAt?.let { !retired() && (finished || previous - it >= limits.retirementTimeoutMs) } == true
+    override fun nextDeadline(): ConnectionDeadline {
+        if (finished) return ConnectionDeadline.IDLE
+        val stopped = stoppedAt
+        if (stopped != null) return if (quarantined()) ConnectionDeadline.IDLE
+            else ConnectionDeadline.at(stopped + limits.retirementTimeoutMs)
+        return producer.nextDeadline().combine(consumer.nextDeadline())
+    }
 }
 
 /** Local producer retains one block until the authenticated channel accepts it.
  * An idle native read has no data-progress deadline. Backpressure after bytes
  * arrive does; further wakeups never reset that absolute budget. */
-internal class LocalChannelProducer(private val block: Int, timeoutMs: Long) {
+internal class LocalChannelProducer(private val block: Int, timeoutMs: Long) : ConnectionDeadlineSource {
     private val clock = ConnectionFrameClock(timeoutMs)
     private var native: ConnectionIoRequest.Read? = null
     private var pending: ByteArray? = null
@@ -119,11 +126,12 @@ internal class LocalChannelProducer(private val block: Int, timeoutMs: Long) {
         clock.start(now)
         pending = if (result.count == block) request.loan.bytes else request.loan.bytes.copyOf(result.count)
     }
+    override fun nextDeadline(): ConnectionDeadline = clock.nextDeadline()
 }
 
 /** Serialized local consumer keeps the ring receipt while partial writes and
  * flush are pending. No credit or array reuse on cancellation, failure or timeout. */
-internal class LocalChannelConsumer(private val block: Int, timeoutMs: Long) {
+internal class LocalChannelConsumer(private val block: Int, timeoutMs: Long) : ConnectionDeadlineSource {
     private val clock = ConnectionFrameClock(timeoutMs)
     private var receipt: ConnectionChannelRead? = null
     private var offset = 0
@@ -169,4 +177,5 @@ internal class LocalChannelConsumer(private val block: Int, timeoutMs: Long) {
             else -> error("Local read delivered to consumer")
         }
     }
+    override fun nextDeadline(): ConnectionDeadline = clock.nextDeadline()
 }

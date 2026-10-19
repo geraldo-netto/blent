@@ -16,7 +16,7 @@ class LocalCameraOwnerTest {
     }
 }
 
-private class CameraOwnerRig : ConnectionResourceAuthority {
+internal class CameraOwnerRig : ConnectionResourceAuthority {
     val endpoint = ResourceEndpoints()
     val permissions = ArrayList<ConnectionResourceLease>()
     private val port = object : ConnectionEndpoints by endpoint {

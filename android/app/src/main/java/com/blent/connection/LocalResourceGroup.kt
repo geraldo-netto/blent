@@ -8,7 +8,7 @@ internal class LocalResourceGroup(
     private val block: Int,
     private val limits: ConnectionRunLimits,
     private val permit: LocalResourcePermit = DisplayLocalPermit,
-) : LocalResourceOwnership, LocalDisplayProjection {
+) : LocalResourceOwnership, LocalDisplayProjection, ConnectionDeadlineSource {
     private class Channel(val id: Int, val endpoint: LocalEndpoint) {
         var pump: ConnectionLocalPump? = null
     }
@@ -134,4 +134,16 @@ internal class LocalResourceGroup(
     override fun retired(): Boolean = closing && !uncertain && channels.all { it.endpoint.retired() && it.pump?.retired() != false }
     override fun quarantined(): Boolean = uncertain || channels.any { it.endpoint.quarantined() || it.pump?.quarantined() == true }
     fun failure(): Exception? = error
+    override fun nextDeadline(): ConnectionDeadline {
+        if (retired()) return ConnectionDeadline.IDLE
+        var deadline = if (uncertain) ConnectionDeadline.UNKNOWN else ConnectionDeadline.IDLE
+        for (channel in channels) {
+            if (!channel.endpoint.retired()) {
+                deadline = deadline.combine(ConnectionDeadline.observe(channel.endpoint as? ConnectionDeadlineSource))
+            }
+            val pump = channel.pump
+            if (pump != null) deadline = deadline.combine(pump.nextDeadline())
+        }
+        return deadline
+    }
 }

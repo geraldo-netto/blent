@@ -4,7 +4,7 @@ import com.blent.MediaLocalConsent
 import org.junit.Assert.*
 import org.junit.Test
 
-private class SpeakerRig(val background: Boolean = false) : ConnectionResourceAuthority {
+internal class SpeakerRig(val background: Boolean = false) : ConnectionResourceAuthority {
     val endpoints = ResourceEndpoints()
     val display = LocalPumpRig().lease
     val lease = display.copy(key = display.key.copy(resource = ConnectionManagement.Resource.SPEAKERS))

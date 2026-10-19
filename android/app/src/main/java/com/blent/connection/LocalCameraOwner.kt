@@ -7,7 +7,7 @@ internal class LocalCameraOwner(
     block: Int,
     private val limits: ConnectionRunLimits,
     authority: ConnectionResourceAuthority,
-) : LocalResourceOwnership, LocalCameraControl, CameraConsentAuthority {
+) : LocalResourceOwnership, LocalCameraControl, CameraConsentAuthority, ConnectionDeadlineSource {
     private var previous = 0L
     private var choice = CameraConsentChoice(false, false)
     private val consent = ConnectionCameraConsent(offer, this)
@@ -58,4 +58,5 @@ internal class LocalCameraOwner(
     override fun consumerRetired(lease: ConnectionResourceLease, now: Long): Boolean { time(now); return native.consumerRetired(lease, now) }
     override fun retired(): Boolean = native.retired()
     override fun quarantined(): Boolean = native.quarantined()
+    override fun nextDeadline(): ConnectionDeadline = native.nextDeadline()
 }

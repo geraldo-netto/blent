@@ -25,7 +25,7 @@ internal class ConnectionLocalResources(
     private val audioAuthority: ConnectionResourceAuthority? = null,
     private val microphoneAuthority: ConnectionResourceAuthority? = null,
     wake: () -> Unit = {},
-) : LocalConnectionResources, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl {
+) : LocalConnectionResources, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl, ConnectionDeadlineSource {
     private val factory = factory ?: { now: Long ->
         LocalEndpointOwner(LocalSocketEndpoint(wake), now, limits, wake)
     }
@@ -131,6 +131,13 @@ internal class ConnectionLocalResources(
     }
     override fun retired(): Boolean = stopped && slots.all { it == null || it.retired() }
     override fun quarantined(): Boolean = slots.any { it?.quarantined() == true }
+    override fun nextDeadline(): ConnectionDeadline {
+        var deadline = ConnectionDeadline.IDLE
+        for (slot in slots) {
+            if (slot != null) deadline = deadline.combine(ConnectionDeadline.observe(slot as? ConnectionDeadlineSource))
+        }
+        return deadline
+    }
 }
 
 /** Composition retains transport and local ownership independently. A local
@@ -140,7 +147,7 @@ internal class ConnectionLocalResources(
 internal class ConnectionLocalRun(
     private val transport: ConnectionRun,
     private val local: LocalConnectionResources,
-) : ConnectionRun, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl {
+) : ConnectionRun, LocalCameraControl, LocalAudioControl, LocalAudioPermissionControl, ConnectionDeadlineSource {
     private var stopping = false
     override fun display(): LocalDisplayRoute? = if (stopping) null else local.display()
     private fun cameraControl(): LocalCameraControl? = local as? LocalCameraControl
@@ -180,4 +187,6 @@ internal class ConnectionLocalRun(
     override fun failure(): Exception? = transport.failure()
     override fun retired(): Boolean = transport.retired() && local.retired()
     override fun terminationRequired(): Boolean = transport.terminationRequired() || (stopping && local.quarantined())
+    override fun nextDeadline(): ConnectionDeadline = ConnectionDeadline.observe(transport as? ConnectionDeadlineSource)
+        .combine(ConnectionDeadline.observe(local as? ConnectionDeadlineSource))
 }

@@ -31,7 +31,7 @@ internal class LocalEndpointOwner(
     private val limits: ConnectionRunLimits = ConnectionRunLimits(),
     private val wake: () -> Unit = {},
     private val threads: (String, Runnable) -> Thread = { name, work -> Thread(work, name).apply { isDaemon = true } },
-) : LocalEndpoint {
+) : LocalEndpoint, ConnectionDeadlineSource {
     private val gate = Object()
     private var previous = startedAt
     private var bound: Int? = null
@@ -120,5 +120,15 @@ internal class LocalEndpointOwner(
     override fun quarantined(): Boolean = synchronized(gate) {
         val stopped = stoppedAt ?: return@synchronized false
         !retired() && (closeError != null || previous - stopped >= limits.retirementTimeoutMs)
+    }
+    override fun nextDeadline(): ConnectionDeadline = synchronized(gate) {
+        val stopped = stoppedAt
+        if (stopped != null) {
+            val expired = previous - stopped >= limits.retirementTimeoutMs
+            return@synchronized if (retired() || closeError != null || expired) ConnectionDeadline.IDLE
+                else ConnectionDeadline.at(stopped + limits.retirementTimeoutMs)
+        }
+        val origin = if (bound == null) startedAt else admittedAt
+        if (accepted || origin == null) ConnectionDeadline.IDLE else ConnectionDeadline.at(origin + limits.ioTimeoutMs)
     }
 }

@@ -12,7 +12,7 @@ internal class LocalAudioOwner(
     private val limits: ConnectionRunLimits,
     authority: ConnectionResourceAuthority,
 ) : LocalResourceOwnership, LocalAudioControl, LocalAudioPermissionControl,
-    LocalResourcePermit, ConnectionMediaConsentAuthority {
+    LocalResourcePermit, ConnectionMediaConsentAuthority, ConnectionDeadlineSource {
     private var previous = 0L
     private var selected = false
     private var publication = validate(offer)
@@ -79,4 +79,5 @@ internal class LocalAudioOwner(
     }
     override fun retired(): Boolean = native.retired()
     override fun quarantined(): Boolean = native.quarantined()
+    override fun nextDeadline(): ConnectionDeadline = native.nextDeadline()
 }

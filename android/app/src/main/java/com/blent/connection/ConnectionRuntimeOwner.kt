@@ -5,7 +5,7 @@ internal class ConnectionRuntimeOwner(
     private val setup: ConnectionSetup,
     private val factory: ConnectionRunFactory,
     private val clock: () -> Long,
-) : ConnectionRuntime, LocalCameraProjection, LocalAudioProjection {
+) : ConnectionRuntime, LocalCameraProjection, LocalAudioProjection, ConnectionDeadlineSource {
     private var runner: ConnectionRun? = null
     private var approval: ConnectionApproval? = null
     private var attempted = false
@@ -187,4 +187,11 @@ internal class ConnectionRuntimeOwner(
     override fun failure(): Exception? = error ?: setup.failure() ?: runner?.failure()
     override fun retired(): Boolean = stopped && !uncertain && setup.retired() && (runner?.retired() != false)
     override fun terminationRequired(): Boolean = uncertain || setup.terminationRequired() || runner?.terminationRequired() == true
+    override fun nextDeadline(): ConnectionDeadline {
+        val selected = runner
+        val installed = if (selected == null) ConnectionDeadline.IDLE else ConnectionDeadline.observe(selected as? ConnectionDeadlineSource)
+        var deadline = ConnectionDeadline.observe(setup as? ConnectionDeadlineSource).combine(installed)
+        if (uncertain) deadline = deadline.combine(ConnectionDeadline.UNKNOWN)
+        return deadline
+    }
 }

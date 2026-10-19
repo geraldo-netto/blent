@@ -3,7 +3,7 @@ package com.blent.connection
 /** Typed permission-free playback boundary. Native ownership and logical consent
  * are shared with microphone without allowing playback to request SDK permission. */
 internal class LocalSpeakerOwner private constructor(private val owner: LocalAudioOwner) :
-    LocalResourceOwnership by owner, LocalAudioControl by owner {
+    LocalResourceOwnership by owner, LocalAudioControl by owner, ConnectionDeadlineSource by owner {
     constructor(offer: ConnectionSessionEvent.Offered, endpoints: ConnectionEndpoints, block: Int,
                 limits: ConnectionRunLimits, authority: ConnectionResourceAuthority) :
         this(LocalAudioOwner(speaker(offer), endpoints, block, limits, authority))

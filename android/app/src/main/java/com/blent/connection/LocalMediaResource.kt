@@ -12,7 +12,7 @@ internal class LocalMediaResource(
     private val authority: ConnectionResourceAuthority,
     private val permit: LocalResourcePermit,
     private val onClosed: () -> Unit,
-) {
+) : ConnectionDeadlineSource {
     private var previous = 0L
     private var factory: ((Long) -> LocalEndpoint)? = null
     private var group: LocalResourceGroup? = null
@@ -93,5 +93,16 @@ internal class LocalMediaResource(
         if (uncertain || group?.quarantined() == true) return true
         val stopped = closedAt ?: return false
         return consumerPossible && !consumerGone && previous - stopped >= limits.retirementTimeoutMs
+    }
+    override fun nextDeadline(): ConnectionDeadline {
+        if (retired()) return ConnectionDeadline.IDLE
+        var deadline = group?.nextDeadline() ?: ConnectionDeadline.IDLE
+        if (uncertain) deadline = deadline.combine(ConnectionDeadline.UNKNOWN)
+        val stopped = closedAt
+        if (stopped != null && consumerPossible && !consumerGone) {
+            val until = stopped + limits.retirementTimeoutMs
+            if (previous < until) deadline = deadline.combine(ConnectionDeadline.at(until))
+        }
+        return deadline
     }
 }
