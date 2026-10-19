@@ -1,14 +1,24 @@
 //! T543 manual host ownership. Preferences never start capture by themselves.
 use anyhow::Result;
 use blent_config::camera::{CameraBackend, CameraPreview, CameraProfile, CameraState as State};
-use std::{future::Future, sync::Arc};
+use std::{
+    future::Future,
+    sync::{Arc, Mutex},
+};
 use tokio::sync::watch;
+
+pub(crate) mod native;
+pub use native::Resource as NativeResource;
+#[cfg(test)]
+mod retirement_tests;
 
 #[derive(Clone)]
 pub struct Report {
     state: watch::Sender<State>,
     preview: watch::Sender<Option<Arc<CameraPreview>>>,
     permit: Option<crate::report_scope::Permit>,
+    original: Option<crate::report_scope::Permit>,
+    native: Arc<Mutex<native::Tracker>>,
 }
 impl Report {
     pub fn new(
@@ -19,6 +29,8 @@ impl Report {
             state,
             preview,
             permit: None,
+            original: None,
+            native: Arc::new(Mutex::new(Default::default())),
         }
     }
     /// Native callbacks receive only their original attempt's publication permit.
@@ -27,9 +39,22 @@ impl Report {
             state: self.state.clone(),
             preview: self.preview.clone(),
             permit: Some(permit),
+            original: self.original.clone(),
+            native: self.native.clone(),
         }
     }
+    fn original(&self, permit: crate::report_scope::Permit) -> Self {
+        let mut report = self.clone();
+        report.original = Some(permit);
+        report
+    }
     fn publish(&self, action: impl FnOnce()) {
+        match &self.original {
+            Some(original) => original.publish(|| self.publish_current(action)),
+            None => self.publish_current(action),
+        }
+    }
+    fn publish_current(&self, action: impl FnOnce()) {
         match &self.permit {
             Some(permit) => permit.publish(action),
             None => action(),
@@ -37,6 +62,40 @@ impl Report {
     }
     pub fn state(&self) -> State {
         self.state.borrow().clone()
+    }
+    /// Reserve before native effects, then bind their original proof before
+    /// yielding/returning the creator. This observes; it never cancels or owns it.
+    pub fn reserve_native(
+        &self,
+        resource: native::Resource,
+    ) -> Result<blent_config::retirement::observations::Reservation> {
+        let mut result = Err(anyhow::anyhow!(
+            "Original camera attempt is no longer current"
+        ));
+        self.publish(|| {
+            result = self
+                .native
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .reserve(resource)
+                .map_err(Into::into);
+        });
+        result
+    }
+    fn native_retired(&self) -> bool {
+        self.native
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .complete()
+    }
+    pub(crate) async fn wait_native(&self) {
+        if self.native_retired() {
+            return;
+        }
+        self.update(State::Stopping);
+        while !self.native_retired() {
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        }
     }
     pub fn preview(&self) -> Option<Arc<CameraPreview>> {
         self.preview.borrow().clone()
@@ -98,7 +157,10 @@ impl Controller {
         let worker = crate::control_workers::Worker::spawn(pool, "blent-camera", move || {
             crate::control_outcome::worker(
                 || runtime.block_on(supervise(commands, report.clone(), session)),
-                |error| report.update(State::Failed(format!("{error:#}"))),
+                |error| {
+                    runtime.block_on(report.wait_native());
+                    report.update(State::Failed(format!("{error:#}")));
+                },
             );
         })?;
         Ok(Self {
@@ -180,10 +242,15 @@ where
 {
     let (stop, stopped) = watch::channel(false);
     status.update(State::Starting);
-    let work = crate::control_outcome::run(|| session(options, stopped, status.clone()));
+    let scope = crate::report_scope::Owner::default();
+    scope.begin();
+    let report = status.original(scope.permit().expect("new original camera scope"));
+    let work = crate::control_outcome::run(|| session(options, stopped, report));
     tokio::pin!(work);
     tokio::select! {
         result = &mut work => {
+            scope.revoke();
+            status.wait_native().await;
             status.update(match result {
                 Ok(()) => State::Stopped,
                 Err(error) => State::Failed(format!("{error:#}")),
@@ -192,10 +259,13 @@ where
             commands.changed().await.is_ok()
         }
         changed = commands.changed() => {
+            scope.revoke();
             status.update(State::Stopping);
             stop.send_replace(true);
             // Completion still owns final frames, child retirement and ADB cleanup.
-            if let Err(error) = work.await {
+            let result = work.await;
+            status.wait_native().await;
+            if let Err(error) = result {
                 status.update(State::Failed(format!("{error:#}")));
                 return changed.is_ok() && commands.changed().await.is_ok();
             }
