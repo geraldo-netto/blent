@@ -19,7 +19,7 @@ pub fn open_device(path: &Path, label: &str) -> Result<File> {
     let file = std::fs::OpenOptions::new()
         .read(true)
         .write(true)
-        .custom_flags(libc::O_NOFOLLOW)
+        .custom_flags(libc::O_NOFOLLOW | libc::O_NOCTTY)
         .open(path)
         .with_context(|| {
             format!(
