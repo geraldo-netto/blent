@@ -1,8 +1,8 @@
-# USB preference contract and Android controls (T1098/T1099)
+# USB capacity/deadline controls (T1098/T1099/T898)
 
-The portable contract and Android storage/controls are implemented. Host option
-parity and joined configurable-capacity acceptance remain T898. Hosted SDK tests
-do not establish new physical device acceptance; application acceptance remains
+The portable Android preference contract, storage/controls and Linux broker
+capacity/deadline controls have joined software acceptance. Hosted tests do not
+establish new physical device acceptance; application acceptance remains
 T846, with older native provider/accessory qualification still under T863.
 
 Open Settings (⚙), then **USB capacity and deadlines**. Edit values and choose
@@ -61,8 +61,8 @@ The permanent `ConnectionPreferencesTest` covers independent defaults, all eleve
 field boundaries, simultaneous edits, strict/overflow/oversized rejection,
 unknown/duplicate/missing fields and retained-input isolation. Deliberate faulty
 length and unknown-field guards must fail the invalid-input controls. Per-method
-native coverage and source complexity evidence accompany T1098's completion;
-interface readiness is not completion of T1099/T898.
+native coverage and source complexity evidence accompany T1098/T1099. The shared
+T898 fixture now checks corresponding host controls independently of their implementations.
 
 ## Storage and start ownership
 
@@ -97,3 +97,61 @@ regression that reproduced a two-state width/layout loop passes on hosted SDKs
 weakened. [T1099 evidence](artifacts/2026-10-19-t1099/README.md) records the exact
 hosted test, ownership-model and per-function coverage scope. Physical storage
 reload after application restart remains part of T846 application acceptance.
+
+## Host mapping and application scope
+
+The independent `testdata/connection-settings-v1.tsv` fixes nine corresponding
+user settings. Rust exercises actual CLI parsing and the backend validator;
+Android exercises typed preference parsing, rejection, encoding and reopening
+private storage on hosted SDKs 27/34. The TLS row has the stage distinction below.
+
+| Android field | Linux broker option | Default | Inclusive range |
+| --- | --- | --- | --- |
+| `channel_bytes` | `--channel-bytes` | 262144 | 4096–1048576 |
+| `queued_messages` | `--queued-messages` | 64 | 1–1024 |
+| `quantum` | `--quantum` | 65536 | 1–65536 |
+| `resource_timeout_ms` | `--resource-timeout-ms` | 120000 | 1–600000 |
+| `io_timeout_ms` | `--io-timeout-ms` | 5000 | 1–60000 |
+| `retirement_timeout_ms` | `--retirement-timeout-ms` | 5000 | 1–60000 |
+| `approval_timeout_ms` | `--approval-ms` | 120000 | 1–600000 |
+| `native_timeout_ms` | `--tls-timeout-ms` | 10000 | 1–60000 |
+| `trusted_peers` | `--trust-peers` | 64 | 1–1024 |
+
+Host options apply when its broker starts. Each link retains that broker's original
+policy; parsing future arguments does not reconfigure an existing broker. Host
+changes use normal broker retirement and an explicit later startup. Android saves
+persistently and applies the saved snapshot to the next connection worker.
+Neither saving Android settings nor preparing future host arguments restarts
+active media. No automatic live service/application restart is performed here.
+
+Android's native budget covers its opening, discovery, TLS and window stages.
+The host TLS knob covers authenticated TLS, peer proof and preface as one deadline.
+Its discovery/controller setup uses `--setup-ms` (60000 by default, 1–60000),
+READY uses the approval budget, and window exchange uses the I/O budget. Smaller
+underlying I/O limits can still win; for example Android's TLS adapter retains its
+per-read socket bound while the supervisor enforces the selected absolute phase
+budget. Settings are limits, not promises that every operation lasts that long.
+
+Inventory is also platform-specific: Android `accessory_capacity` defaults to 32
+(1–1024); host `--devices` defaults to 64 (1–512). These bound inventory metadata,
+not simultaneous tablet ownership. Android `fallback_ms` controls its known-idle
+lost-hint recovery; the host uses asynchronous Tokio notifications/timers and a
+20 ms resource-maintenance tick, without that same actor fallback option.
+
+Host-only capacities include `--clients` (16, range 1–1024), `--links` (4, 1–64),
+`--registrations` (64, 1–1024) and `--block-bytes` (65536, 1–65536). The startup-only
+`BLENT_USB_AUTHORITY_WORKERS` environment setting defaults to 1 (1–4096), shared
+across broker attempts in that process. Higher capacities permit more retained
+work/memory; larger blocks favor throughput over interleaving. All sessions still
+have the protocol's four independent resource slots. None of these capacities
+waives consent, trust, negotiated windows, native retirement or quarantine.
+
+Native host regressions retain unrelated camera protocol traffic when another
+resource expires, retain original identity/native admission after cancellation,
+and separate delayed approval from selected TLS expiry. Android integration tests
+retain the current worker while saving future settings, including failed and
+unconfirmed publication. The shared contract rejects boundary drift independently
+in both languages. These are software acceptance results, with production-method
+counters in the corresponding implementation artifacts. Physical media, saved
+settings across actual app restarts and unsupported platform qualification remain
+T846/T863 and their dependencies; no battery/performance gain is claimed here.

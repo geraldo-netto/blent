@@ -1,0 +1,10 @@
+android_field	host_option	default	minimum	maximum
+channel_bytes	--channel-bytes	262144	4096	1048576
+queued_messages	--queued-messages	64	1	1024
+quantum	--quantum	65536	1	65536
+resource_timeout_ms	--resource-timeout-ms	120000	1	600000
+io_timeout_ms	--io-timeout-ms	5000	1	60000
+retirement_timeout_ms	--retirement-timeout-ms	5000	1	60000
+approval_timeout_ms	--approval-ms	120000	1	600000
+trusted_peers	--trust-peers	64	1	1024
+native_timeout_ms	--tls-timeout-ms	10000	1	60000

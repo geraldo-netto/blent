@@ -61,4 +61,19 @@ class AndroidConnectionPreferencesTest {
             assertTrue(first.load().isSuccess)
         } finally { ReflectionHelpers.setStaticField(AndroidConnectionPreferences::class.java, "store", previous) }
     }
+    @Test fun t898SharedBoundarySnapshotsPersistAcrossPrivateStoreOwners() = runBlocking {
+        val context = RuntimeEnvironment.getApplication()
+        val preferences = context.getSharedPreferences("usb_connection", Context.MODE_PRIVATE)
+        assertTrue(preferences.edit().clear().commit())
+        val store = ConnectionPreferenceStore(AndroidConnectionPreferenceStorage(context))
+        val current = ConnectionWorkerSpec("usb")
+        val fields = ConnectionPreferences.fields(current)
+        for (range in usbSettingsContract()) for (value in listOf(range.minimum, range.maximum)) {
+            val selected = store.save(fields + (range.field to value.toString())).getOrThrow()
+            val reopened = ConnectionPreferenceStore(AndroidConnectionPreferenceStorage(context))
+            assertEquals(selected, reopened.load().getOrThrow())
+            assertEquals(ConnectionPreferences.encode(selected), preferences.getString("settings", null))
+            assertEquals(fields, ConnectionPreferences.fields(current))
+        }
+    }
 }

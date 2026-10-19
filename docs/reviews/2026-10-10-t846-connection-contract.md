@@ -108,7 +108,8 @@ and a 1..4096-byte public certificate. Discovery is untrusted. The pairing state
 machine binds approval and subsequent TLS proof to an exact certificate fingerprint
 and epoch; stale callbacks, deadline expiry and revoked leases cannot authorize
 streams. Cancellation enters Closing, with no replacement until native retirement.
-Persistent trust storage is implemented under T868 below; production approval UI remains pending.
+Persistent trust storage and production approval UI are implemented under
+T868/T892/T893; joined physical approval qualification remains T855.
 
 After local approval, each peer sends the eight-byte `BLPR` readiness marker
 (version 1, endpoint role, two reserved zero bytes), then validates the peer's
@@ -151,7 +152,9 @@ with mutual certificate authentication, exact approved leaf-certificate pins,
 and an authenticated protocol preface; API 29+ also requires `blent-usb/1` ALPN. These adapters require an approved certificate from their
 caller; parsing a certificate does not grant approval. Persistent trust, explicit
 revocation policy and authenticated admission are implemented under T868/T852 below.
-The Linux broker runtime is implemented under T853 below. Production approval UI and Android service wiring remain pending. The optional Cargo
+The Linux broker runtime, production approval UI and Android connection service
+are implemented under T853/T854/T892/T893. Their full physical application
+qualification remains T846/T855. The optional Cargo
 feature uses cached dependencies; all pre-existing locked package versions are
 preserved. New cached crypto dependency notices and archive checksums are retained in
 `licenses/accessory-transport/`, included by the existing distribution-docs list.
@@ -838,8 +841,8 @@ a shorter timeout rejects slow admission sooner.
 Permanent isolated tests exercise the executable, owner election, client loss,
 identity restart, real mutual TLS, durable trust/revoke, descriptor-only routing,
 duplex control bytes and stuck native shutdown. These tests do not establish
-debugging-off production media acceptance: Android service T854, pairing UI T855
-and display/touch T857 remain required. Linux is the implemented broker backend;
+debugging-off production media acceptance: pairing qualification T855 and display/touch T857 remain
+required alongside T846; Android service T854 is implemented. Linux is the implemented broker backend;
 Windows runtime support is unavailable, and macOS remains declined.
 
 ## T881 Android transport ownership
@@ -1032,7 +1035,7 @@ arriving before the peer is discovered prevents that peer's later admission.
 `ConnectionSetupReady` lends its framed I/O handle, approval and selected capacity;
 the setup owner retains ownership. Consumers must check `current(approval)` before
 dispatch and disconnect immediately after revocation. `TabletSession` has no
-injected approval callback; that integration gate belongs to T854. Successful
+injected approval callback; T854 composes approval through its connection owner. Successful
 remember writes emit a durable Trust(true) fact even if cancellation prevents
 admission; a subsequent revoke emits Trust(false) only after its deletion succeeds.
 Cancellation alone does not undo previously granted remember consent.
@@ -1049,8 +1052,8 @@ owned and close when cancellation already began. The single close admission is
 shared with framed I/O; failed socket/bridge close cannot establish retirement.
 Actual native setup and I/O worker exits remain part of aggregate owner retirement.
 
-Defaults are 10 seconds for each native setup phase, 120 seconds for approval,
-2 seconds for retirement and 64 remembered peers. Supported deadline ranges are
+The standalone setup contract defaults to 10 seconds for each native phase,
+120 seconds for approval, 2 seconds for retirement and 64 remembered peers. Supported deadline ranges are
 1–60000 ms for native/retirement phases and 1–600000 ms for approval; trust capacity
 is 1–1024 peers. Larger capacities retain more trust state; longer deadlines delay
 failure recovery. These are configuration contracts, not measured performance gains.
