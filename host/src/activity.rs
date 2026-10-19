@@ -14,6 +14,8 @@ use std::{
 };
 use tokio::sync::Notify;
 mod native;
+mod power;
+pub use power::PowerFactory;
 
 pub use blent_config::host_activity::SourceSettings as Settings;
 fn compositor_desktop(session: &str, desktop: &str) -> String {
@@ -115,10 +117,7 @@ impl LinuxSource {
     pub async fn connect(settings: Settings, lifetime: SourceLifetime) -> Result<Self> {
         settings.validate()?;
         let epoch = fresh_epoch()?; // Reserve identity before acquiring any native owner.
-        let system = tokio::time::timeout(settings.deadline, zbus::Connection::system())
-            .await
-            .ok()
-            .and_then(Result::ok);
+        let system = power::system_bus(settings).await;
         let session = tokio::time::timeout(settings.deadline, zbus::Connection::session())
             .await
             .ok()

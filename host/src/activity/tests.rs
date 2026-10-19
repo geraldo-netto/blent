@@ -157,7 +157,7 @@ impl Fixture {
             .unwrap();
     }
 }
-async fn event(source: &mut LinuxSource) -> Event {
+async fn event<S: Source + ?Sized>(source: &mut S) -> Event {
     tokio::time::timeout(Duration::from_secs(3), async {
         loop {
             if let Some(event) = source.poll().unwrap() {
@@ -169,7 +169,7 @@ async fn event(source: &mut LinuxSource) -> Event {
     .await
     .unwrap()
 }
-async fn retired(source: &LinuxSource) {
+async fn retired<S: Source + ?Sized>(source: &S) {
     tokio::time::timeout(Duration::from_secs(3), async {
         while !source.retired() {
             tokio::time::sleep(Duration::from_millis(1)).await;
@@ -573,4 +573,101 @@ async fn t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_
     })
     .await
     .unwrap();
+}
+
+#[tokio::test]
+async fn t1084_private_power_factory_ignores_desktop_helpers_and_follows_original_logind() {
+    use blent_config::host_activity::SourceFactory;
+    if !private("activity::tests::t1084_private_power_factory_ignores_desktop_helpers_and_follows_original_logind") { return; }
+    let fixture = Fixture::new().await;
+    for session in ["wayland", "x11"] {
+        std::env::set_var("XDG_SESSION_TYPE", session);
+        let lifetime = lifetime();
+        let proof = lifetime.completion();
+        let mut original = PowerFactory
+            .create(Settings::default(), lifetime)
+            .await
+            .unwrap();
+        assert!(original.epoch > 0);
+        assert_eq!(
+            original.source.capabilities(),
+            Capabilities {
+                power: true,
+                lock: true,
+                display: false
+            }
+        );
+        assert_eq!(
+            event(&mut *original.source).await.state.power,
+            Some(Power::Running)
+        );
+        for (member, value, expected) in [
+            ("PrepareForSleep", true, Power::Suspending),
+            ("PrepareForSleep", false, Power::Running),
+            ("PrepareForShutdown", true, Power::Unavailable),
+            ("PrepareForShutdown", false, Power::Running),
+        ] {
+            fixture.power(member, value).await;
+            assert_eq!(
+                event(&mut *original.source).await.state.power,
+                Some(expected)
+            );
+        }
+        original.source.stop();
+        retired(&*original.source).await;
+        drop(original);
+        power_lifetime_released(proof).await;
+    }
+}
+
+#[tokio::test]
+async fn t1084_private_power_factory_reports_absent_logind_without_display_fallback() {
+    use blent_config::host_activity::SourceFactory;
+    if !private("activity::tests::t1084_private_power_factory_reports_absent_logind_without_display_fallback") { return; }
+    let mut original = PowerFactory
+        .create(Settings::default(), lifetime())
+        .await
+        .unwrap();
+    assert_eq!(original.source.capabilities(), Capabilities::default());
+    assert_eq!(
+        event(&mut *original.source).await.state,
+        HostState::default()
+    );
+    original.source.stop();
+    retired(&*original.source).await;
+}
+
+async fn power_lifetime_released(proof: blent_config::retirement::Completion) {
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while !proof.is_complete() {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+}
+
+async fn invalid_power_factory(settings: Settings) {
+    use blent_config::host_activity::SourceFactory;
+    let original = lifetime();
+    let proof = original.completion();
+    assert!(PowerFactory.create(settings, original).await.is_err());
+    power_lifetime_released(proof).await;
+}
+#[tokio::test]
+async fn t1084_power_factory_invalid_settings_release_original_unstarted_admission() {
+    for deadline in [Duration::ZERO, Duration::from_secs(61), Duration::MAX] {
+        invalid_power_factory(Settings {
+            deadline,
+            ..Settings::default()
+        })
+        .await;
+    }
+    for queue in [0, 257, usize::MAX] {
+        invalid_power_factory(Settings {
+            queue,
+            ..Settings::default()
+        })
+        .await;
+    }
 }
