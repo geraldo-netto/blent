@@ -9,6 +9,7 @@ import struct
 import subprocess
 import time
 from profile_usb_wire import TeePackets
+import profile_process as owned
 
 
 def module(name):
@@ -23,9 +24,9 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def policies(fps, bitrate, quality):
-    return json.loads(subprocess.check_output([
-        'cargo', 'run', '--quiet', '-p', 'blent-config', '--example', 'encoder-options', '--',
-        str(fps), str(bitrate), str(quality)], cwd=ROOT, text=True, timeout=60))
+    return json.loads(owned.output([
+        'cargo', 'run', '--offline', '--locked', '-p', 'blent-config', '--example', 'encoder-options', '--',
+        str(fps), str(bitrate), str(quality)], cwd=ROOT))
 
 
 def command(profile, meta, render_node):
@@ -101,15 +102,11 @@ def phase(args, row, meta, profile, connection, acks, offset, folder):
     size = paced['frames'] * meta['width'] * meta['height'] * 3 // 2
     with source.open('rb') as pixels, (folder / 'ffmpeg.log').open('wb') as log, \
             (folder / 'encoded.h264').open('wb') as encoded, mmap.mmap(pixels.fileno(), size, access=mmap.ACCESS_READ) as raw:
-        process = subprocess.Popen(command_line, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log, bufsize=0)
+        process = owned.start(command_line, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log, bufsize=0)
         try:
             with memoryview(raw) as view:
                 result = pump(process, view, paced, connection, acks, offset, encoded)
         finally:
-            if process.poll() is None:
-                process.kill()
-            process.wait(timeout=2)
-            process.stdin.close()
-            process.stdout.close()
+            owned.close(process)
     result.update(command=command_line, rate=row['rate'], frames_expected=paced['frames'])
     return result

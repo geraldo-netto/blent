@@ -3,35 +3,19 @@ from pathlib import Path
 import os
 import signal
 import subprocess
+import sys
 import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'scripts/benchmarks'))
+import profile_process as owned
 
 
 class SecureConnectionInteropTest(unittest.TestCase):
     def command(self, arguments, environment, logfile):
-        with logfile.open('w') as output:
-            process = subprocess.Popen(arguments, cwd=ROOT, env=environment,
-                                       stdout=output, stderr=subprocess.STDOUT,
-                                       start_new_session=True)
-            try:
-                # T1079: builds have no elapsed kill cap; the caller monitors the log.
-                status = process.wait()
-            except BaseException:
-                self.cancel_command(process)
-                raise
+        status = owned.logged(arguments, environment, logfile, ROOT)
         self.assertEqual(status, 0, logfile.read_text()[-12000:])
-
-    def cancel_command(self, process):
-        """Keep the original child/log owned until cancellation has joined it."""
-        try:
-            if process.poll() is None:
-                os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass  # Original group exited between observation and signal.
-        finally:
-            process.wait()
 
     def test_t846_native_rust_android_tls_interoperability(self):
         environment = dict(os.environ, CARGO_NET_OFFLINE='true')

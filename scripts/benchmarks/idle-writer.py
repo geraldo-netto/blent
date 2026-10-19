@@ -14,6 +14,7 @@ import subprocess
 import time
 
 import profile_usb_pipeline as pipeline
+import profile_process as owned
 from profile_usb_wire import TeePackets
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -36,7 +37,9 @@ def build(folder, interval):
                str(ROOT / 'scripts/benchmarks/idle_writer.c'),
                str(ROOT / 'host/evdi/frame_exchange.c'), str(ROOT / 'host/evdi/fifo_writer.c'),
                '-o', str(folder / 'writer')]
-    subprocess.run(command, check=True, timeout=30)
+    status = owned.logged(command, dict(os.environ), folder / 'build.log', ROOT)
+    if status:
+        raise subprocess.CalledProcessError(status, command)
     return command
 
 
@@ -59,36 +62,35 @@ def collect(process, folder):
     return rows
 
 
-def stop(process):
-    if process.poll() is None:
-        process.kill()
-    process.wait(timeout=3)
+def close_pipeline(producer, encoder):
+    try:
+        owned.close(producer)
+    finally:
+        if encoder is not None:
+            owned.close(encoder)
 
 
 def execute(binary, command, fps, mixed, folder):
     with (folder / 'writer.jsonl').open('wb') as log, (folder / 'ffmpeg.log').open('wb') as errors:
-        producer = subprocess.Popen([str(binary), str(fps), str(int(mixed))],
+        producer = owned.start([str(binary), str(fps), str(int(mixed))],
                                     stdout=subprocess.PIPE, stderr=log)
         encoder = None
         try:
-            encoder = subprocess.Popen(command, stdin=producer.stdout, stdout=subprocess.PIPE,
+            encoder = owned.start(command, stdin=producer.stdout, stdout=subprocess.PIPE,
                                        stderr=errors, bufsize=0)
             producer.stdout.close()
             rows = collect(encoder, folder)
-            if encoder.wait(timeout=3) or producer.wait(timeout=3):
+            if owned.wait(encoder) or owned.wait(producer):
                 raise RuntimeError('writer or encoder failed; inspect retained logs')
             return rows
         finally:
-            stop(producer)
-            if encoder is not None:
-                stop(encoder)
-                encoder.stdout.close()
+            close_pipeline(producer, encoder)
 
 
 def probe(folder, rows):
     command = ['ffprobe', '-v', 'error', '-f', 'h264', '-show_packets', '-show_entries',
                'packet=pos,size,flags', '-of', 'json', str(folder / 'encoded.h264')]
-    packets = json.loads(subprocess.check_output(command, text=True, timeout=10))['packets']
+    packets = json.loads(owned.output(command))['packets']
     if len(packets) != len(rows):
         raise ValueError('packet count differs from framed observations')
     position = 0
@@ -110,8 +112,8 @@ def independent_keys(folder, packets):
             continue
         command = ['ffmpeg', '-v', 'error', '-f', 'h264', '-i', 'pipe:0',
                    '-frames:v', '1', '-f', 'rawvideo', 'pipe:1']
-        result = subprocess.run(command, input=payload, capture_output=True, check=True, timeout=10)
-        if len(result.stdout) != 1280 * 800 * 3 // 2:
+        decoded_picture = owned.output(command, input=payload)
+        if len(decoded_picture) != 1280 * 800 * 3 // 2:
             raise ValueError('keyframe does not decode independently')
         decoded += 1
     return decoded
@@ -169,11 +171,13 @@ def cases(round_number, policies):
 def provenance(builds, policies):
     sources = list((ROOT / 'host/evdi').glob('*.[ch]'))
     sources += [Path(__file__), Path(__file__).with_name('idle_writer.c'), Path(pipeline.__file__),
-                Path(__file__).with_name('profile_usb_wire.py')]
+                Path(__file__).with_name('profile_usb_wire.py'), Path(owned.__file__)]
+    sources += sorted((ROOT / 'common/src').rglob('*.rs'))
+    sources += [ROOT / 'common/examples/encoder-options.rs', ROOT / 'Cargo.lock']
     executables = [Path(shutil.which(name)).resolve() for name in ['cc', 'ffmpeg', 'ffprobe']]
     return dict(builds=builds, policies=policies, variants=VARIANTS,
-         ffmpeg=subprocess.check_output(['ffmpeg', '-version'], text=True),
-         revision=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+         ffmpeg=owned.output(['ffmpeg', '-version']).decode(),
+         revision=owned.output(['git', 'rev-parse', 'HEAD'], cwd=ROOT).decode().strip(),
          tools={str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in executables},
          sources={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources})
 
