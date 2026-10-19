@@ -86,11 +86,12 @@ async fn run_native(
         options: &options,
     };
     let result = serve(session, &mut stop, &status, &devices).await;
-    if let Err(error) = bridge.close().await {
+    let cleanup = bridge.close().await;
+    if let Err(error) = &cleanup {
         tracing::warn!(%error, "camera mapping cleanup failed");
     }
     drop(devices);
-    result
+    result.and(cleanup)
 }
 
 fn validate_transport(target: Target<'_>) -> Result<()> {

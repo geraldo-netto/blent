@@ -6,9 +6,14 @@ const TEST: &str = "camera::native_tests::t572_isolated_native_devices_and_sessi
 
 #[test]
 fn t572_isolated_native_devices_and_session_cleanup() {
+    if private(TEST) {
+        fixture(|root, front, rear| runtime().block_on(lifecycle(root, front, rear)));
+    }
+}
+
+fn private(test: &str) -> bool {
     if std::env::var_os("BLENT_T572_MOUNTS").is_some() {
-        fixture();
-        return;
+        return true;
     }
     let mut command = Command::new("unshare");
     if unsafe { libc::geteuid() } != 0 {
@@ -17,16 +22,23 @@ fn t572_isolated_native_devices_and_session_cleanup() {
     let result = command
         .args(["--mount", "--fork", "--propagation", "private"])
         .arg(std::env::current_exe().unwrap())
-        .args(["--exact", TEST, "--nocapture"])
+        .args(["--exact", test, "--nocapture"])
         .env("BLENT_T572_MOUNTS", "1")
         .output()
         .unwrap();
     assert!(
         result.status.success(),
-        "T572 requires private mount fixtures: {}{}",
+        "Private camera fixture {test}: {}{}",
         String::from_utf8_lossy(&result.stdout),
         String::from_utf8_lossy(&result.stderr)
     );
+    false
+}
+fn runtime() -> tokio::runtime::Runtime {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .unwrap()
 }
 
 fn device(root: &std::path::Path, label: &str) -> (PathBuf, std::fs::File) {
@@ -54,7 +66,7 @@ fn device(root: &std::path::Path, label: &str) -> (PathBuf, std::fs::File) {
     (path, master)
 }
 
-fn fixture() {
+fn fixture(action: impl FnOnce(&std::path::Path, PathBuf, PathBuf)) {
     let root = tempfile::tempdir().unwrap();
     let (front, _front_owner) = device(root.path(), "Blent Front\n");
     let (rear, _rear_owner) = device(root.path(), "Blent Rear\n");
@@ -78,11 +90,7 @@ fn fixture() {
     std::os::unix::fs::symlink(&front, &link).unwrap();
     assert!(outputs::open_device(&link, "Blent Front").is_err());
     drop(file);
-    let runtime = tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()
-        .unwrap();
-    runtime.block_on(lifecycle(root.path(), front, rear));
+    action(root.path(), front, rear);
 }
 
 async fn lifecycle(root: &std::path::Path, front: PathBuf, rear: PathBuf) {
@@ -125,4 +133,50 @@ else: print('fixture-tablet')"#
         drop(outputs::open_device(&options.front_device, "Blent Front").unwrap());
         drop(outputs::open_device(&options.rear_device, "Blent Rear").unwrap());
     }
+}
+
+#[test]
+fn t1088_logical_camera_success_cannot_hide_original_cleanup_failure() {
+    if private(
+        "camera::native_tests::t1088_logical_camera_success_cannot_hide_original_cleanup_failure",
+    ) {
+        fixture(|root, front, rear| runtime().block_on(cleanup_failure(root, front, rear)));
+    }
+}
+async fn cleanup_failure(root: &std::path::Path, front: PathBuf, rear: PathBuf) {
+    tests::script(root, "ffmpeg", "import sys\nsys.exit(1)");
+    tests::script(
+        root,
+        "adb",
+        &format!(
+            r#"import pathlib, sys
+root = pathlib.Path({root:?})
+args = sys.argv[1:]
+if 'tcp:0' in args:
+    (root/'mapping').write_text(args[-1]); print('34567')
+elif '--list' in args:
+    print('T1088 original cleanup unavailable', file=sys.stderr); sys.exit(7)
+else:
+    print('fixture-tablet')
+"#
+        ),
+    );
+    std::env::set_var("PATH", root);
+    let mut options = tests::options();
+    options.front_device = front;
+    options.rear_device = rear;
+    let (_stop, stopped) = watch::channel(true);
+    let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
+    let result = run_native(options.clone(), stopped, report).await;
+    assert!(
+        root.join("mapping").exists(),
+        "T1088 fixture did not retain failed mapping"
+    );
+    // This is a private fake mapping file, never a real tablet mapping. Clean it
+    // and verify device leases before asserting even against the bad behavior.
+    std::fs::remove_file(root.join("mapping")).unwrap();
+    drop(outputs::open_device(&options.front_device, "Blent Front").unwrap());
+    drop(outputs::open_device(&options.rear_device, "Blent Rear").unwrap());
+    let error = result.expect_err("T1088 camera reported success after original cleanup failed");
+    assert!(format!("{error:#}").contains("T1088 original cleanup unavailable"));
 }
