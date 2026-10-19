@@ -26,13 +26,13 @@ async fn t1137_virtual_pair_uses_original_outputs_and_retires_before_reuse() {
         rear_device: rear.into(),
         ..Default::default()
     };
-    let devices = [
-        Arc::new(outputs::open_device(&options.front_device, "Blent Front").unwrap()),
-        Arc::new(outputs::open_device(&options.rear_device, "Blent Rear").unwrap()),
-    ];
-    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let (stop, mut stopped) = watch::channel(false);
     let report = tests::new_report();
+    let devices = output_admission::admit(&options, &mut stopped, &report)
+        .await
+        .unwrap()
+        .unwrap();
+    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let session = Session {
         listener: &listener,
         invitation: &retirement::Pending,
@@ -41,13 +41,16 @@ async fn t1137_virtual_pair_uses_original_outputs_and_retires_before_reuse() {
         options: &options,
     };
     let observe = async {
-        let result = observe_pair(&options, &devices).await;
+        let result = observe_pair(&options, devices.files()).await;
         stop.send_replace(true);
         result
     };
-    let (served, observed) = tokio::join!(serve(session, &mut stopped, &report, &devices), observe);
-    report.wait_native().await;
+    let (served, observed) = tokio::join!(
+        serve(session, &mut stopped, &report, devices.files()),
+        observe
+    );
     drop(devices);
+    report.wait_native().await;
     // Actual original native retirement precedes these fresh lock admissions.
     drop(outputs::open_device(&options.front_device, "Blent Front").unwrap());
     drop(outputs::open_device(&options.rear_device, "Blent Rear").unwrap());

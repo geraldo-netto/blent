@@ -127,6 +127,7 @@ fn t1125_owner_loss_keeps_native_fence_without_blocking_sibling() {
 fn t1125_group_bounds_reserve_before_effects_and_share_original_scopes() {
     for (kind, capacity) in [
         (native::Resource::Connection, 1),
+        (native::Resource::Devices, 2),
         (native::Resource::Producer, 4),
         (native::Resource::Decoder, 1),
     ] {

@@ -6,6 +6,7 @@ mod decoder;
 mod frame_pool;
 #[cfg(test)]
 mod native_tests;
+mod output_admission;
 pub mod output_device;
 pub mod output_worker;
 pub mod output_writer;
@@ -83,13 +84,15 @@ async fn run_attempt(
 ) -> Result<()> {
     options.validate()?;
     validate_transport(options.target()?)?;
-    let devices = [
-        Arc::new(outputs::open_device(&options.front_device, "Blent Front")?),
-        Arc::new(outputs::open_device(&options.rear_device, "Blent Rear")?),
-    ];
+    let Some(devices) = output_admission::admit(&options, &mut stop, &status).await? else {
+        return Ok(());
+    };
     let ffmpeg = executable("ffmpeg")?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let token = blent_config::runtime::random_token()?;
+    if output_admission::stopped(&stop) {
+        return Ok(());
+    }
     let bridge = connection(&options.profile, &listener, &token, &status).await?;
     let session = Session {
         listener: &listener,
@@ -98,7 +101,7 @@ async fn run_attempt(
         ffmpeg: &ffmpeg,
         options: &options,
     };
-    let result = serve(session, &mut stop, &status, &devices).await;
+    let result = serve(session, &mut stop, &status, devices.files()).await;
     let cleanup = bridge.close().await;
     if let Err(error) = &cleanup {
         tracing::warn!(%error, "camera mapping cleanup failed");

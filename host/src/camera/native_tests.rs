@@ -2,8 +2,10 @@
 use super::*;
 use std::{ffi::CStr, os::fd::FromRawFd, os::unix::fs::MetadataExt, process::Command};
 
+mod admission;
 mod ownership;
 mod retirement;
+mod startup;
 mod terminal;
 mod virtual_output;
 
@@ -158,7 +160,10 @@ async fn cleanup_failure(root: &std::path::Path, front: PathBuf, rear: PathBuf) 
 root = pathlib.Path({root:?})
 args = sys.argv[1:]
 if 'tcp:0' in args:
-    (root/'mapping').write_text(args[-1]); print('34567')
+    import fcntl
+    (root/'mapping').write_text(args[-1])
+    with (root/'stop-gate').open() as gate: fcntl.flock(gate, fcntl.LOCK_SH)
+    print('34567')
 elif '--list' in args:
     print('T1088 original cleanup unavailable', file=sys.stderr); sys.exit(7)
 else:
@@ -170,9 +175,25 @@ else:
     let mut options = tests::options();
     options.front_device = front;
     options.rear_device = rear;
-    let (_stop, stopped) = watch::channel(true);
+    let gate = std::fs::File::create(root.join("stop-gate")).unwrap();
+    use std::os::fd::AsRawFd;
+    assert_eq!(unsafe { libc::flock(gate.as_raw_fd(), libc::LOCK_EX) }, 0);
+    let (stop, stopped) = watch::channel(false);
     let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
-    let result = run_native(options.clone(), stopped, report).await;
+    let mut running = std::pin::pin!(run_native(options.clone(), stopped, report));
+    // T1147 rejects pre-stopped startup without creating anything. Preserve the
+    // T1088 cleanup oracle after a connection was actually admitted instead.
+    let stop_after_mapping = async {
+        while !root.join("mapping").exists() {
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+        stop.send_replace(true);
+        drop(gate);
+    };
+    let result = tokio::select! {
+        result = &mut running => result,
+        () = stop_after_mapping => running.await,
+    };
     assert!(
         root.join("mapping").exists(),
         "T1088 fixture did not retain failed mapping"
