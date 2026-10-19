@@ -25,7 +25,7 @@ impl Output {
         timeout: Duration,
     ) -> Poll<Result<Header>> {
         if !self.timer.active() {
-            let Some(frame) = mux.next()? else {
+            let Some(frame) = mux.next_frame()? else {
                 return Poll::Pending;
             };
             frame.header.encode(&mut self.header)?;

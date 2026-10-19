@@ -379,13 +379,13 @@ async fn t873_borrowed_reservation_preserves_original_buffer_and_revocation() {
     let mut mux = mux();
     assert!(!mux.accepts_data(Channel::Display, 1));
     assert!(!mux.accepts_data(Channel::Management, 2));
-    mux.next().unwrap().unwrap();
+    mux.next_frame().unwrap().unwrap();
     mux.finish(true).unwrap();
     mux.receive(header(Kind::Credit, 0, 0, 128)).unwrap();
     let bytes = vec![1; 12];
     let pointer = bytes.as_ptr();
     mux.offer(Channel::Management, bytes).unwrap();
-    mux.next().unwrap().unwrap();
+    mux.next_frame().unwrap().unwrap();
     assert_eq!(mux.reserved().unwrap().bytes.as_ptr(), pointer);
     mux.close(Channel::Management, Kind::Close).unwrap();
     assert_eq!(mux.reserved().unwrap().bytes.as_ptr(), pointer);

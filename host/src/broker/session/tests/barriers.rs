@@ -45,7 +45,7 @@ fn poll_and_receive(rig: &mut Rig) {
 // credits so these cases specifically exercise the management result barrier.
 fn send_management_only(rig: &mut Rig) {
     for _ in 0..20 {
-        let Some(frame) = rig.peer.next().unwrap() else {
+        let Some(frame) = rig.peer.next_frame().unwrap() else {
             return;
         };
         if frame.header.channel == Channel::Management {

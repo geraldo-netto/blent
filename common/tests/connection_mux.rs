@@ -12,7 +12,7 @@ fn mux() -> Multiplexer {
     owner
 }
 fn frame(owner: &mut Multiplexer) -> Option<(Header, Vec<u8>)> {
-    let frame = owner.next().unwrap()?;
+    let frame = owner.next_frame().unwrap()?;
     let value = (frame.header, frame.bytes.to_vec());
     owner.finish(true).unwrap();
     Some(value)
@@ -38,10 +38,10 @@ fn t846_mux_metadata_bootstraps_and_coalesces_consumer_credit() {
     let address = bytes.as_ptr();
     left.offer(Channel::Display, bytes).unwrap();
     for offset in [0, 4] {
-        let reserved = left.next().unwrap().unwrap();
+        let reserved = left.next_frame().unwrap().unwrap();
         assert_eq!(reserved.bytes.as_ptr(), address.wrapping_add(offset));
         let header = reserved.header;
-        assert!(left.next().unwrap().is_none());
+        assert!(left.next_frame().unwrap().is_none());
         assert!(right.receive(header).unwrap());
         left.finish(true).unwrap();
     }
@@ -65,7 +65,7 @@ fn t846_mux_terminal_drains_inflight_without_stalling_other_channels() {
     assert_eq!(first.channel, Channel::Control);
     assert!(right.receive(first).unwrap());
     right.release(first.channel, first.length).unwrap();
-    let pending = left.next().unwrap().unwrap().header;
+    let pending = left.next_frame().unwrap().unwrap().header;
     assert_eq!(pending.channel, Channel::Display);
     right.close(Channel::Display, Kind::Reset).unwrap();
     assert!(!right.receive(pending).unwrap()); // already authorized, discarded after local stop
@@ -138,10 +138,10 @@ fn t846_mux_invalid_input_and_failed_committed_writes_retire_connection() {
     let mut left = mux();
     assert!(left.finish(true).is_err());
     assert!(left.close(Channel::Control, Kind::Data).is_err());
-    let header = left.next().unwrap().unwrap().header;
+    let header = left.next_frame().unwrap().unwrap().header;
     assert_eq!(header.sequence, 0);
     left.finish(false).unwrap();
-    assert!(left.next().is_err());
+    assert!(left.next_frame().is_err());
     assert!(left.offer(Channel::Control, vec![1]).is_err());
     assert!(left.receive(header).is_err());
     assert!(left.release(Channel::Control, 1).is_err());
@@ -150,9 +150,9 @@ fn t846_mux_invalid_input_and_failed_committed_writes_retire_connection() {
     let (mut left, mut right) = (mux(), mux());
     grant(&mut left, &mut right);
     left.offer(Channel::Control, vec![1]).unwrap();
-    left.next().unwrap().unwrap();
+    left.next_frame().unwrap().unwrap();
     left.finish(false).unwrap();
-    assert!(left.next().is_err());
+    assert!(left.next_frame().is_err());
 }
 #[test]
 fn t846_flow_drain_validates_bounds_order_and_terminal_acknowledgement() {
@@ -202,7 +202,7 @@ fn t846_channel_replacement_waits_for_peer_writer_and_consumer_retirement() {
     assert!(!left.retired(Channel::Camera));
     let (close, _) = frame(&mut left).unwrap();
     right.receive(close).unwrap();
-    let ack = right.next().unwrap().unwrap().header;
+    let ack = right.next_frame().unwrap().unwrap().header;
     right.consumer_retired(Channel::Camera, 9).unwrap();
     assert!(!right.retired(Channel::Camera));
     left.receive(ack).unwrap();
@@ -301,7 +301,7 @@ fn t849_activation_rejects_stale_duplicate_closed_and_failed_without_mutation() 
         })
         .unwrap();
     assert!(inactive.activate(Channel::Control, 9).is_err());
-    inactive.next().unwrap().unwrap();
+    inactive.next_frame().unwrap().unwrap();
     inactive.finish(false).unwrap();
     assert!(inactive.activate(Channel::Display, 9).is_err());
 }

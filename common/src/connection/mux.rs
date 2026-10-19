@@ -161,7 +161,7 @@ impl Multiplexer {
         }
         Ok(None)
     }
-    pub fn next(&mut self) -> Result<Option<Frame<'_>>> {
+    pub fn next_frame(&mut self) -> Result<Option<Frame<'_>>> {
         ensure!(!self.failed, "connection failed");
         if self.active.is_some() {
             return Ok(None);

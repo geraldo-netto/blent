@@ -23,7 +23,7 @@ impl Request {
             peer: self.peer.clone(),
             resource: self.resource,
             credential: self.credential.clone(),
-            profile: self.profile.clone(),
+            profile: self.profile,
         }
     }
 }

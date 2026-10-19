@@ -37,7 +37,7 @@ async fn t878_large_requested_block_adapts_to_small_negotiated_window() {
         .transport()
         .unwrap()
         .multiplexer()
-        .next()
+        .next_frame()
         .unwrap()
         .unwrap();
     assert_eq!(frame.bytes, b"x");

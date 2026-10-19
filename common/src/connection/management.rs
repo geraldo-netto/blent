@@ -82,11 +82,11 @@ impl Camera {
     }
     fn validate_image(&self) -> Result<()> {
         ensure!(
-            (160..=1920).contains(&self.width) && self.width % 2 == 0,
+            (160..=1920).contains(&self.width) && self.width.is_multiple_of(2),
             "invalid camera width"
         );
         ensure!(
-            (120..=1080).contains(&self.height) && self.height % 2 == 0,
+            (120..=1080).contains(&self.height) && self.height.is_multiple_of(2),
             "invalid camera height"
         );
         ensure!((5..=30).contains(&self.fps), "invalid camera fps");
@@ -106,7 +106,7 @@ impl Audio {
             "invalid audio processing"
         );
         ensure!(
-            (20..=200).contains(&self.buffer_ms) && self.buffer_ms % 10 == 0,
+            (20..=200).contains(&self.buffer_ms) && self.buffer_ms.is_multiple_of(10),
             "invalid audio buffer"
         );
         Ok(())

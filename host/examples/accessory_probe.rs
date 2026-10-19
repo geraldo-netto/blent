@@ -68,7 +68,7 @@ mod linux {
         Ok(ticket)
     }
     async fn flush(stream: &mut dyn Stream, mux: &mut Multiplexer) -> Result<()> {
-        while let Some(frame) = mux.next()? {
+        while let Some(frame) = mux.next_frame()? {
             let mut header = [0; HEADER_BYTES];
             frame.header.encode(&mut header)?;
             stream.write_all(&header).await?;

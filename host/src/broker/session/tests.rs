@@ -107,7 +107,7 @@ impl Rig {
         Ok(events)
     }
     fn send(&mut self) -> Result<()> {
-        if let Some(frame) = self.peer.next()? {
+        if let Some(frame) = self.peer.next_frame()? {
             let mut bytes = [0; 40];
             frame.header.encode(&mut bytes)?;
             let mut io = self.io.lock().unwrap();

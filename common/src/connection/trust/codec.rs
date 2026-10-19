@@ -36,8 +36,10 @@ pub fn decode(bytes: &[u8]) -> Result<Snapshot> {
     let local = parse_peer(&bytes[8..72])?;
     let revision = u64::from_be_bytes(bytes[72..80].try_into()?);
     let peers = bytes[HEADER..]
-        .chunks_exact(64)
-        .map(parse_peer)
+        .as_chunks::<64>()
+        .0
+        .iter()
+        .map(|peer| parse_peer(peer))
         .collect::<Result<Vec<_>>>()?;
     let snapshot = Snapshot {
         local,

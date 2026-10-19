@@ -17,7 +17,7 @@ fn resource_owner(role: Role) -> Resources {
     .unwrap()
 }
 fn transfer(source: &mut Multiplexer, target: &mut Multiplexer) -> bool {
-    let Some(frame) = source.next().unwrap() else {
+    let Some(frame) = source.next_frame().unwrap() else {
         return false;
     };
     let header = frame.header;
@@ -63,7 +63,7 @@ fn t851_crossing_commit_drains_real_credits_and_preserves_display() {
     right.close(Channel::Camera, Kind::Reset).unwrap();
     assert!(right.offer(Channel::Camera, vec![1]).is_err());
     // Reserve the host's credit before it observes tablet's cancellation.
-    let credit = left.next().unwrap().unwrap().header;
+    let credit = left.next_frame().unwrap().unwrap().header;
     assert_eq!(credit.kind, Kind::Credit);
     assert_eq!(credit.channel, Channel::Camera);
     assert!(!right.receive(credit).unwrap());
