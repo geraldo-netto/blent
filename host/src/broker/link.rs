@@ -35,7 +35,7 @@ mod start;
 
 pub enum Command {
     Approve(Ticket),
-    Admit(Connection),
+    Admit(Box<Connection>),
     Register(Offer),
     Cancel(Lease),
 }
@@ -160,9 +160,10 @@ async fn run(
         .await?;
     let limits = window::negotiate(&mut verified.resource.stream, settings.limits).await?;
     emit(&output, Event::Verified(verified, limits))?;
-    let Some(Command::Admit(mut connection)) = input.recv().await else {
+    let Some(Command::Admit(admitted)) = input.recv().await else {
         anyhow::bail!("expected authenticated lease admission");
     };
+    let mut connection = *admitted;
     let mut bridges = Bridges::new(settings.block, limits.io_timeout)?;
     let result = media(
         &mut connection,

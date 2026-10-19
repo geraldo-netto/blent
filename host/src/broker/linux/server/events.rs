@@ -77,7 +77,7 @@ impl Server {
             .and_then(|link| link.verified.take())
             .context("native proof already retired")?;
         let connection = Connection::new(verified, self.controller.pairing(id)?, lease, limits)?;
-        self.send_link(id, link::Command::Admit(connection))
+        self.send_link(id, link::Command::Admit(Box::new(connection)))
     }
     fn revoke_replies(&mut self, peer: &PeerId, success: bool) {
         let clients: Vec<_> = self

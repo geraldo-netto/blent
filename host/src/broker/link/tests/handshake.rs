@@ -183,7 +183,15 @@ struct AdmittedLink {
     remote: Box<dyn Stream>,
 }
 impl VerifiedLink {
-    fn admit(mut self) -> AdmittedLink {
+    fn admit(self) -> AdmittedLink {
+        let (connection, link) = self.prepared();
+        assert!(link
+            .handle
+            .submit(Command::Admit(Box::new(connection)))
+            .is_ok());
+        link
+    }
+    fn prepared(mut self) -> (Connection, AdmittedLink) {
         let job = self
             .control
             .prepare_authentication(
@@ -206,13 +214,15 @@ impl VerifiedLink {
             self.limits,
         )
         .unwrap();
-        assert!(self.handle.submit(Command::Admit(connection)).is_ok());
-        AdmittedLink {
-            control: self.control,
-            id: self.id,
-            handle: self.handle,
-            remote: self.remote,
-        }
+        (
+            connection,
+            AdmittedLink {
+                control: self.control,
+                id: self.id,
+                handle: self.handle,
+                remote: self.remote,
+            },
+        )
     }
 }
 async fn completed(completion: &Completion) {
@@ -370,3 +380,5 @@ async fn t853_link_command_capacity_returns_exact_unsubmitted_ticket() {
 }
 
 mod deadline;
+
+mod ownership;
