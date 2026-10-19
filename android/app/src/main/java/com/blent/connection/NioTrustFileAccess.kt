@@ -21,17 +21,25 @@ internal class NioTrustFileAccess private constructor(
     private val directory: Path,
     private val owner: UserPrincipal,
     private val directoryChannel: FileChannel,
+    private val ownership: TrustDirectoryOwnership.Lease,
 ) : TrustFileAccess {
     private var lockChannel: FileChannel? = null
     private var heldLock: FileLock? = null
     private var closed = false
 
     companion object {
-        fun open(directory: Path): NioTrustFileAccess {
+        private val directories = TrustDirectoryOwnership()
+        fun open(directory: Path, openDirectory: (Path) -> FileChannel = { FileChannel.open(it, READ, NOFOLLOW_LINKS) }): NioTrustFileAccess {
             val attributes = Files.readAttributes(directory, PosixFileAttributes::class.java, NOFOLLOW_LINKS)
             require(attributes.isDirectory && attributes.permissions() == PosixFilePermissions.fromString("rwx------"))
-            val channel = FileChannel.open(directory, READ, NOFOLLOW_LINKS)
-            return NioTrustFileAccess(directory, attributes.owner(), channel)
+            val owner = attributes.owner()
+            val ownership = directories.reserve(checkNotNull(attributes.fileKey()) { "Stable directory identity unavailable" })
+            try {
+                return NioTrustFileAccess(directory, owner, openDirectory(directory), ownership)
+            } catch (failure: Exception) {
+                ownership.close() // No channel was returned; the opener must own failed acquisition.
+                throw failure
+            }
         }
     }
 
@@ -100,5 +108,6 @@ internal class NioTrustFileAccess private constructor(
         if (closed) return
         closed = true
         try { lockChannel?.close() } finally { directoryChannel.close() }
+        ownership.close() // Only actual successful native closes permit reuse.
     }
 }
