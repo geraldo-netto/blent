@@ -59,12 +59,16 @@ fn lease(directory: &Path) -> Lease {
     Lease::open(&fifo, Default::default()).unwrap()
 }
 
-async fn native_until(mut completed: impl FnMut() -> bool) {
-    let deadline = std::time::Instant::now() + Duration::from_secs(3);
+async fn native_until(completed: impl FnMut() -> bool) {
+    observe_native(Duration::from_secs(3), completed).await;
+}
+
+async fn observe_native(budget: Duration, mut completed: impl FnMut() -> bool) {
+    let deadline = std::time::Instant::now() + budget;
     while !completed() {
         assert!(
             std::time::Instant::now() < deadline,
-            "T1034 native effect did not finish"
+            "Native observation did not finish within {budget:?}"
         );
         tokio::task::yield_now().await;
     }
@@ -516,25 +520,28 @@ async fn t1029_capacity_exhaustion_preserves_compatible_cadence_without_worker()
 }
 
 fn held_files() -> (std::sync::mpsc::Sender<()>, std::thread::JoinHandle<()>) {
+    hold_files(|held| {
+        let _ = held.recv_timeout(Duration::from_millis(400));
+    })
+}
+
+fn hold_files(
+    wait: impl FnOnce(std::sync::mpsc::Receiver<()>) + Send + 'static,
+) -> (std::sync::mpsc::Sender<()>, std::thread::JoinHandle<()>) {
     let (entered_tx, entered) = std::sync::mpsc::channel();
     let (release, held) = std::sync::mpsc::channel();
     let worker = std::thread::spawn(move || {
         let _files = LEASE_FILES.lock().unwrap();
         entered_tx.send(()).unwrap();
-        let _ = held.recv_timeout(Duration::from_millis(400));
+        wait(held);
     });
     entered.recv_timeout(Duration::from_secs(5)).unwrap();
     (release, worker)
 }
 async fn idle_completed(original: &blent_config::retirement::Completion) {
-    tokio::time::timeout(Duration::from_secs(5), async {
-        while !original.is_complete() {
-            tokio::time::sleep(Duration::from_millis(1)).await;
-        }
-    })
-    .await
-    .unwrap();
+    observe_native(Duration::from_secs(5), || original.is_complete()).await;
 }
+
 #[tokio::test]
 async fn t1034_idle_drop_revokes_without_waiting_for_native_file_lock() {
     let directory = private_root();
@@ -770,4 +777,42 @@ async fn t1036_encoder_generation_waits_for_original_native_idle_file_cleanup() 
         denied,
         "T1036 encoder replacement ignored original idle file cleanup"
     );
+}
+
+#[tokio::test(start_paused = true)]
+async fn t1123_media_clock_advance_does_not_spend_native_retirement_budget() {
+    let directory = private_root();
+    let tracker = LatencyTracker::new();
+    let evidence = evidence(&tracker);
+    let _activity = tracker.encoder_activity(evidence.clone());
+    let handle = launch(lease(directory.path()), evidence, tracker).await;
+    let original = handle.completion();
+    let (release, files) = hold_files(|held| {
+        let _ = held.recv();
+    });
+    drop(handle);
+    let observed = original.clone();
+    let (entered, started) = tokio::sync::oneshot::channel();
+    let observing = tokio::spawn(async move {
+        entered.send(()).unwrap();
+        idle_completed(&observed).await;
+    });
+    started.await.unwrap();
+    tokio::time::advance(Duration::from_secs(6)).await;
+    tokio::task::yield_now().await;
+    let still_observing = !observing.is_finished();
+    let retained = !original.is_complete();
+    let _ = release.send(());
+    files.join().unwrap();
+    let outcome = observing.await;
+    native_until(|| original.is_complete()).await;
+    assert!(
+        retained,
+        "T1123: native cleanup completed without its original file fence"
+    );
+    assert!(
+        still_observing,
+        "T1123: virtual media time exhausted native retirement observation"
+    );
+    outcome.unwrap();
 }
