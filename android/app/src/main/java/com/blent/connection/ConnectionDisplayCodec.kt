@@ -7,7 +7,12 @@ import java.io.DataOutputStream
  * values are metadata, never proof that pairing or native resources are live. */
 internal object ConnectionAuthorityCodec {
     fun peer(output: DataOutputStream, value: ConnectionPeer) = output.writeUTF(value.fingerprint)
-    fun peer(input: DataInputStream): ConnectionPeer = ConnectionPeer.parse(input.readUTF())
+    fun peer(input: DataInputStream): ConnectionPeer {
+        require(input.readUnsignedShort() == 64)
+        val bytes = ByteArray(64)
+        input.readFully(bytes)
+        return ConnectionPeer.parse(String(bytes, Charsets.US_ASCII))
+    }
     fun ticket(output: DataOutputStream, value: ConnectionTicket) {
         require(value.epoch > 0); output.writeLong(value.epoch); peer(output, value.peer)
     }
