@@ -40,6 +40,22 @@ class ConnectionActivityUiTest {
     private val fixture = Fixture()
     @get:Rule val compose = AndroidComposeTestRule(fixture) { it.controller.get() }
 
+    @Test fun t1099ActivityControlsSaveAndStartWithExplicitCapacityWithoutMediaConsent() {
+        compose.onNodeWithText("⚙").performClick()
+        compose.onNodeWithText("USB capacity and deadlines").performScrollTo().performClick()
+        compose.onNodeWithText("Channel buffer (bytes)").performScrollTo().performTextReplacement("4096")
+        compose.onNodeWithText("Save USB settings").performClick()
+        compose.onNodeWithText("Saved for the next USB connection.").assertExists()
+        compose.onNodeWithText("Close settings").performClick()
+        compose.onNodeWithText("Connect USB").performScrollTo().performClick()
+        compose.runOnIdle {
+            assertEquals(4096, fixture.usb.specifications.single().session.capacity)
+            assertTrue(fixture.usb.workers.single().commands.isEmpty())
+            assertNull(compose.activity.cameras.selected)
+            assertFalse(compose.activity.microphone.sharing)
+        }
+    }
+
     @Test fun t893PairingPresentationFollowsForegroundWithoutRetiringItsOwner() {
         compose.onNodeWithText("⚙").performClick()
         compose.onNodeWithText("Connect USB").performScrollTo().performClick()

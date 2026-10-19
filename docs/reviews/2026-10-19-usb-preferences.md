@@ -1,9 +1,19 @@
-# USB preference contract (T1098)
+# USB preference contract and Android controls (T1098/T1099)
 
-The portable editing/persistence contract is implemented. Android storage and
-controls remain T1099; host option parity and joined acceptance remain T898.
-The application continues to use its existing defaults until those adapters
-are integrated. This document does not claim new native device acceptance.
+The portable contract and Android storage/controls are implemented. Host option
+parity and joined configurable-capacity acceptance remain T898. Hosted SDK tests
+do not establish new physical device acceptance; application acceptance remains
+T846, with older native provider/accessory qualification still under T863.
+
+Open Settings (⚙), then **USB capacity and deadlines**. Edit values and choose
+**Save USB settings**. **Use defaults** changes the editable draft; save it to
+replace the stored record. **Reload saved settings** discards unsaved edits only
+when reading succeeds. Read errors leave current fields unchanged; a new dialog
+starts with defaults before loading. Closing the dialog does not save a draft.
+
+Manual Connect and accessory attachment load the same saved snapshot, then
+recheck that another connection has not already started. Saving preferences never
+restarts an active worker, erases saved trust or grants camera/microphone consent.
 
 Settings describe one immutable **next-connection** configuration. They neither
 change an active worker nor grant trust, USB permission or media consent. The
@@ -53,3 +63,37 @@ unknown/duplicate/missing fields and retained-input isolation. Deliberate faulty
 length and unknown-field guards must fail the invalid-input controls. Per-method
 native coverage and source complexity evidence accompany T1098's completion;
 interface readiness is not completion of T1099/T898.
+
+## Storage and start ownership
+
+The Android adapter stores one bounded numeric record in the private
+`usb_connection` preferences namespace. It retains only application context.
+The application owns one store and admits one original storage API call at a
+time, rejecting competing calls before queueing native work. Cancellation of a
+request keeps its exact slot until that API call actually returns. The Android
+framework owns its internal preference file/writer resources; the store does
+not claim an independent native file-descriptor fence or expose those resources.
+
+A successful synchronous publication confirms the save. A false/failed write
+may already have changed a backend cache: the store therefore rejects connection
+reads until an explicit successful save resolves the unconfirmed publication.
+Absent settings select defaults; corrupt settings remain visible errors and are
+not silently replaced. Backend error presentation is bounded to 256 characters.
+No current worker is replaced because storage is busy, corrupt or unconfirmed.
+
+Each Activity's start controller retains one exact job/identity through actual
+completion. It rechecks cancellation and current connection authority after
+loading. Closing or losing the original Activity cannot later start its USB
+worker from an old result. Editable forms retain eleven bounded strings and own
+no active connection. Original API completion is required to release a storage
+slot; a configured connection cleanup timeout is not storage retirement proof.
+Eventual storage release assumes the framework call eventually returns; a stuck
+call keeps its single funded slot without admitting replacements.
+
+The settings dialog fixes its content width independently of platform intrinsic
+width probes and keeps actions outside its scroll area. The same small-window
+regression that reproduced a two-state width/layout loop passes on hosted SDKs
+27 and 34 after that change. No idling deadline, heap limit or assertion was
+weakened. [T1099 evidence](artifacts/2026-10-19-t1099/README.md) records the exact
+hosted test, ownership-model and per-function coverage scope. Physical storage
+reload after application restart remains part of T846 application acceptance.

@@ -15,15 +15,21 @@ import com.blent.SettingsSection
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun ConnectionControls(binding: ConnectionBinding) {
+internal fun ConnectionControls(binding: ConnectionBinding, configured: ConfiguredConnection) {
     val view by binding.state.collectAsState()
+    val configuration by configured.state.collectAsState()
+    var settings by remember { mutableStateOf(false) }
     SettingsSection("USB connection")
     Text(view.status)
     view.cleanup?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+    if (configuration.pending) Text("Loading USB connection settings…")
+    configuration.failure?.let { Text(it, color = MaterialTheme.colorScheme.error) }
     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Button(onClick = { binding.connect(ConnectionWorkerSpec("usb")) }, enabled = !view.active) { Text("Connect USB") }
-        OutlinedButton(onClick = binding::disconnect, enabled = view.active) { Text("Disconnect USB") }
+        Button(onClick = configured::connect, enabled = !view.active && !configuration.pending) { Text("Connect USB") }
+        OutlinedButton(onClick = configured::disconnect, enabled = view.active || configuration.pending) { Text("Disconnect USB") }
+        OutlinedButton(onClick = { settings = true }) { Text("USB capacity and deadlines") }
     }
+    if (settings) ConnectionPreferenceDialog(configured.preferences) { settings = false }
     view.peer?.let { selected ->
         ConnectionFingerprints(selected)
         Text(if (view.remembered == true) "Computer trust saved." else "Computer trust is not saved.")

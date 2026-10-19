@@ -22,8 +22,10 @@ class ConnectionControlsTest {
     @get:Rule val compose = createComposeRule()
 
     private fun render(fixture: ConnectionUiFixture) {
+        val configured = ConfiguredConnection(fixture.binding,
+            ConnectionPreferenceStore(PreferenceMemoryStorage(), kotlinx.coroutines.Dispatchers.Unconfined), fixture.scope)
         compose.setContent { BlentTheme { Column {
-            ConnectionControls(fixture.binding)
+            ConnectionControls(fixture.binding, configured)
             ConnectionPairingDialog(fixture.binding)
         } } }
     }

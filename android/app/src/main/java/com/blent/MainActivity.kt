@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     internal lateinit var connection: ConnectionBinding; private set
+    internal lateinit var configuredConnection: ConfiguredConnection; private set
     internal lateinit var microphone: AudioBinding; private set
     internal lateinit var speakers: AudioBinding; private set
     private val microphonePermission = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val prefs = Prefs(this)
         connection = ConnectionOwner.get(applicationContext)
+        configuredConnection = ConfiguredConnection(connection, AndroidConnectionPreferences.get(applicationContext), lifecycleScope)
         cameras = CameraOwner.get(applicationContext)
         val cameraAccess = checkNotNull(CameraOwner.access)
         microphone = AudioOwner.get(applicationContext)
@@ -69,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     onSurfaceDestroyed = session::surfaceDestroyed,
                     displayRefreshRates = windowPolicy.supportedDisplayModes().map { it.refreshRate },
                     onSettingsEvent = ::settingsEvent,
-                    connectionControls = { ConnectionControls(connection) },
+                    connectionControls = { ConnectionControls(connection, configuredConnection) },
                     cameraControls = { CameraControls(cameras, cameraAccess); AudioControls(microphone, microphoneAccess); AudioControls(speakers, speakerAccess) },
                     inputControls = { session.inputControls() },
                 )
@@ -120,7 +122,7 @@ class MainActivity : ComponentActivity() {
 
     private fun accessoryIntent(intent: Intent?): Boolean {
         if (intent?.action != UsbManager.ACTION_USB_ACCESSORY_ATTACHED) return false
-        if (!connection.state.value.active) connection.connect(ConnectionWorkerSpec("usb"))
+        configuredConnection.connect()
         return true
     }
 

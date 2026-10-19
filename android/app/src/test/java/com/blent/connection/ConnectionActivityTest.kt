@@ -14,6 +14,34 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34], instrumentedPackages = ["androidx.compose.ui.platform"])
 class ConnectionActivityTest {
+    @Test fun t1099SavedLimitsFollowAccessoryLaunchAndNextAttachAcrossRecreation() = kotlinx.coroutines.runBlocking {
+        ConnectionUiFixture().use { fixture ->
+            WorkerTestBridge.install()
+            try {
+                Prefs(RuntimeEnvironment.getApplication()).apply { checkUpdates = false; hostToken = null }
+                val original = ConnectionWorkerSpec("usb", ConnectionSessionLimits(4096, 8, 1024, 2000),
+                    ConnectionRunLimits(1234, 2345), 3000, 4000, 2, 3, 250)
+                assertTrue(fixture.preferences.save(ConnectionPreferences.fields(original)).isSuccess)
+                val first = Robolectric.buildActivity(MainActivity::class.java, Intent(UsbManager.ACTION_USB_ACCESSORY_ATTACHED)).create()
+                try { assertEquals(listOf(original), fixture.specifications) }
+                finally { first.destroy() }
+                val replacement = Robolectric.buildActivity(MainActivity::class.java).create()
+                try {
+                    val next = original.copy(timerMs = 1000)
+                    assertTrue(fixture.preferences.save(ConnectionPreferences.fields(next)).isSuccess)
+                    replacement.newIntent(Intent(UsbManager.ACTION_USB_ACCESSORY_ATTACHED))
+                    assertEquals(listOf(original), fixture.specifications)
+                    assertEquals(0, fixture.workers.single().cancelled)
+                    replacement.get().configuredConnection.disconnect()
+                    fixture.workers.single().released.complete(Unit)
+                    replacement.newIntent(Intent(UsbManager.ACTION_USB_ACCESSORY_ATTACHED))
+                    assertEquals(listOf(original, next), fixture.specifications)
+                    assertTrue(fixture.workers.last().commands.isEmpty())
+                } finally { replacement.destroy() }
+            } finally { CameraOwner.reset(); AudioOwner.reset() }
+        }
+    }
+
     @Test fun t893AccessoryIntentCannotApplyUnrelatedLegacyCredentials() {
         val fixture = ConnectionUiFixture()
         WorkerTestBridge.install()
