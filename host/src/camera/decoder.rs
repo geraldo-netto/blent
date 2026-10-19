@@ -7,6 +7,9 @@ use blent_config::camera::CameraOptions;
 use std::{path::Path, process::Stdio, time::Duration};
 use tokio::{io::AsyncWriteExt, net::TcpStream, process::Command};
 
+#[cfg(test)]
+mod retirement_tests;
+
 pub fn filters(rotation: u8, options: &CameraOptions) -> String {
     let rotation = (rotation + (options.rotation / 90) as u8) % 4;
     let turn = match rotation {
@@ -72,6 +75,7 @@ pub async fn connection(
     ffmpeg: &Path,
     options: &CameraOptions,
     outputs: &[Frames; 2],
+    status: crate::camera_control::Report,
 ) -> Result<()> {
     let header = tokio::time::timeout(Duration::from_secs(5), protocol::header(&mut socket, token))
         .await??;
@@ -83,9 +87,11 @@ pub async fn connection(
         header.lens == selected,
         "camera lens was not selected by host"
     );
+    let original = status.reserve_native(crate::camera_control::NativeResource::Decoder)?;
     let mut decoder =
         blent_config::commands::OwnedChild::spawn(&mut command(ffmpeg, header.rotation, options))
             .context("start camera decoder")?;
+    original.bind(decoder.completion());
     let result = transfer(&mut socket, &mut decoder, options, &outputs[header.lens]).await;
     outputs[header.lens].send_replace(None);
     let retired = outputs::retire(decoder).await;

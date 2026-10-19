@@ -2,6 +2,8 @@
 use super::*;
 use std::{ffi::CStr, os::fd::FromRawFd, os::unix::fs::MetadataExt, process::Command};
 
+mod retirement;
+
 const TEST: &str = "camera::native_tests::t572_isolated_native_devices_and_session_cleanup";
 
 #[test]

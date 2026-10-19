@@ -308,9 +308,10 @@ fn t933_connection_factory_uses_private_commands_and_explicit_transport() {
 }
 
 async fn factory_fixture() {
+    let report = tests::report();
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let token = "a".repeat(64);
-    let adb = connection(&CameraProfile::default(), &listener, &token)
+    let adb = connection(&CameraProfile::default(), &listener, &token, &report)
         .await
         .unwrap();
     assert!(
@@ -327,7 +328,7 @@ async fn factory_fixture() {
         validate_transport(profile.target().unwrap()).is_ok()
             == cfg!(feature = "accessory-transport")
     );
-    let usb = connection(&profile, &listener, &token).await;
+    let usb = connection(&profile, &listener, &token, &report).await;
     #[cfg(feature = "accessory-transport")]
     usb.unwrap().close().await.unwrap();
     #[cfg(not(feature = "accessory-transport"))]
@@ -336,5 +337,7 @@ async fn factory_fixture() {
         serial: Some("adb".into()),
         ..profile
     };
-    assert!(connection(&invalid, &listener, &token).await.is_err());
+    assert!(connection(&invalid, &listener, &token, &report)
+        .await
+        .is_err());
 }

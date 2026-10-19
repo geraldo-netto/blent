@@ -9,6 +9,8 @@ mod native_tests;
 mod outputs;
 pub(crate) mod protocol;
 #[cfg(test)]
+mod retirement_tests;
+#[cfg(test)]
 mod status_tests;
 #[cfg(test)]
 mod tests;
@@ -65,6 +67,16 @@ pub async fn run_controlled(
 
 async fn run_native(
     options: CameraOptions,
+    stop: watch::Receiver<bool>,
+    status: Report,
+) -> Result<()> {
+    let result = run_attempt(options, stop, status.clone()).await;
+    status.wait_native().await;
+    result
+}
+
+async fn run_attempt(
+    options: CameraOptions,
     mut stop: watch::Receiver<bool>,
     status: Report,
 ) -> Result<()> {
@@ -77,7 +89,7 @@ async fn run_native(
     let ffmpeg = executable("ffmpeg")?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let token = blent_config::runtime::random_token()?;
-    let bridge = connection(&options.profile, &listener, &token).await?;
+    let bridge = connection(&options.profile, &listener, &token, &status).await?;
     let session = Session {
         listener: &listener,
         invitation: bridge.as_ref(),
@@ -108,6 +120,7 @@ async fn connection(
     profile: &CameraProfile,
     listener: &TcpListener,
     _token: &str,
+    _status: &Report,
 ) -> Result<Box<dyn Connection<CameraProfile>>> {
     match profile.target()? {
         Target::Adb(serial) => Ok(Box::new(
@@ -117,12 +130,16 @@ async fn connection(
         #[cfg(feature = "accessory-transport")]
         Target::Usb(_) => {
             use std::os::fd::AsFd;
-            let retained = std::net::TcpListener::from(listener.as_fd().try_clone_to_owned()?);
             Ok(Box::new(usb::native(
                 profile,
                 _token,
-                retained,
+                || {
+                    Ok(std::net::TcpListener::from(
+                        listener.as_fd().try_clone_to_owned()?,
+                    ))
+                },
                 crate::broker::linux::client::Launch::from_environment()?,
+                _status,
             )?))
         }
         #[cfg(not(feature = "accessory-transport"))]
@@ -157,18 +174,16 @@ async fn serve(
     .into_iter()
     .enumerate()
     {
-        let mut child = blent_config::commands::OwnedChild::spawn(&mut outputs::producer(
-            ffmpeg, device, options,
-        ))
-        .context("start virtual camera producer")?;
-        child.keep_alive(devices[index].clone());
-        completions.push(child.completion());
-        let options = options.clone();
-        producers.push(crate::owned_task::Task::spawn(async move {
-            let result = outputs::feed(&mut child, frames, &options).await;
-            outputs::retire(child).await;
-            result
-        })?);
+        let (work, completion) = producer_work(
+            ffmpeg,
+            device,
+            options,
+            frames,
+            devices[index].clone(),
+            status,
+        )?;
+        completions.push(completion);
+        producers.push(work);
     }
     let frames = [front, rear];
     let result = session.invited(&frames, &mut producers, stop, status).await;
@@ -186,6 +201,36 @@ async fn serve(
         "camera output retirement incomplete; device locks retained"
     );
     result
+}
+
+fn producer_work(
+    ffmpeg: &std::path::Path,
+    device: &std::path::Path,
+    options: &CameraOptions,
+    frames: watch::Receiver<Option<Arc<Vec<u8>>>>,
+    lease: Arc<std::fs::File>,
+    status: &Report,
+) -> Result<(
+    crate::owned_task::Task,
+    blent_config::retirement::Completion,
+)> {
+    use crate::camera_control::NativeResource::Producer;
+    let child_slot = status.reserve_native(Producer)?;
+    let task_slot = status.reserve_native(Producer)?;
+    let mut child =
+        blent_config::commands::OwnedChild::spawn(&mut outputs::producer(ffmpeg, device, options))
+            .context("start virtual camera producer")?;
+    let completion = child.completion();
+    child_slot.bind(completion.clone());
+    child.keep_alive(lease);
+    let options = options.clone();
+    let work = crate::owned_task::Task::spawn(async move {
+        let result = outputs::feed(&mut child, frames, &options).await;
+        outputs::retire(child).await;
+        result
+    })?;
+    task_slot.bind(work.completion());
+    Ok((work, completion))
 }
 
 struct Session<'a> {
@@ -212,7 +257,7 @@ impl Session<'_> {
         status.update(State::Waiting);
         tracing::info!("Webcams ready; waiting for tablet permission and camera frames.");
         tokio::select! {
-            result = sessions(self.listener, self.token, self.ffmpeg, self.options, frames) => result,
+            result = sessions(self.listener, self.token, self.ffmpeg, self.options, frames, status) => result,
             _ = control::cancelled(stop) => Ok(()),
             _ = frame_status(frames, self.options, status) => Ok(()),
             result = producer_stopped(producers) => result,
@@ -235,11 +280,14 @@ async fn sessions(
     ffmpeg: &std::path::Path,
     options: &CameraOptions,
     frames: &[outputs::Frames; 2],
+    status: &Report,
 ) -> Result<()> {
     loop {
         let (socket, _) = listener.accept().await?;
         socket.set_nodelay(true)?;
-        if let Err(error) = decoder::connection(socket, token, ffmpeg, options, frames).await {
+        if let Err(error) =
+            decoder::connection(socket, token, ffmpeg, options, frames, status.clone()).await
+        {
             tracing::info!(%error, "camera connection ended; waiting for tablet selection");
         }
     }

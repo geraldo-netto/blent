@@ -21,9 +21,12 @@ then **Restart camera** to apply the change.
 
 The camera helper is embedded in the host GUI through a reusable host library.
 No separate helper command or display daemon is needed. Keep the host window
-open while sharing; **Stop camera** or closing that window releases capture,
-flushes black frames, retires its FFmpeg children and removes its own temporary
-ADB reverse mapping. Camera operations never attach EVDI or restart display sharing.
+open while sharing; **Stop camera** or closing that window requests capture
+cleanup and black output. A replacement waits for the original FFmpeg resources
+and, for direct USB, the original registration to retire. Unconfirmed cleanup
+keeps replacement pending; Stop also cancels that pending start. Legacy ADB
+reverse-map cleanup still has an ownership race with concurrent external changes
+(T1090). Camera operations never attach EVDI or restart display sharing.
 
 **Apply** saves camera preferences without starting capture. **Start camera**
 uses the current controls; **Restart camera** applies changed controls to an

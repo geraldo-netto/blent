@@ -32,7 +32,8 @@ individually, no exclusions. Raw counters/attestation remain under
 The pinned Rust source audit measures all 44 production/test/helper functions
 at <=6; this is not actual SonarQube evidence (T1019).
 
-T1126 must still wire real camera bridge/producer/decoder creations to these
-reservations. Therefore this prerequisite does not close T1089 or establish
-complete native camera retirement. T1090 ADB ownership remains explicitly blocked
+At the T1125 revision, native adapter wiring remained separate.
+[T1126](../2026-10-19-t1126/README.md) subsequently connects real camera
+bridge/producer/decoder creators. Neither prerequisite closes T1089 or
+establishes crash-surviving native ownership (T1137). T1090 ADB ownership remains explicitly blocked
 by owner choice; no Windows/EVDI integration or live device action occurred.

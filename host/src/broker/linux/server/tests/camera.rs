@@ -168,7 +168,17 @@ async fn t933_private_tls_camera_registration_preserves_protocol_and_delayed_ret
     listener.set_nonblocking(true).unwrap();
     let local = tokio::net::TcpListener::from_std(listener.try_clone().unwrap()).unwrap();
     let token = "ab".repeat(32);
-    let bridge = usb::native(&profile, &token, listener, launch).unwrap();
+    let bridge = usb::native(
+        &profile,
+        &token,
+        || Ok(listener),
+        launch,
+        &crate::camera_control::Report::new(
+            tokio::sync::watch::channel(blent_config::camera::CameraState::Starting).0,
+            tokio::sync::watch::channel(None).0,
+        ),
+    )
+    .unwrap();
     let (server_stop, server_done) = oneshot::channel();
     let running = tokio::spawn(async move {
         let mut fixture = auth.fixture;
