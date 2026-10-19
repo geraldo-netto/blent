@@ -13,6 +13,7 @@ pub struct Settings {
     pub trust_peers: usize,
     pub block: usize,
     pub retirement_timeout: Duration,
+    pub resource_timeout_ms: i64,
 }
 impl Settings {
     pub fn new(runtime: PathBuf, state: PathBuf, helper: PathBuf) -> Self {
@@ -26,10 +27,13 @@ impl Settings {
             trust_peers: 64,
             block: 65536,
             retirement_timeout: Duration::from_secs(5),
+            resource_timeout_ms: blent_config::connection::resources::AdmissionTimeout::default()
+                .milliseconds(),
         }
     }
     pub(super) fn validate(&self) -> Result<()> {
         blent_config::retirement_limits::observation_budget(self.retirement_timeout)?;
+        blent_config::connection::resources::AdmissionTimeout::new(self.resource_timeout_ms)?;
         ensure!(
             [&self.runtime, &self.state, &self.helper]
                 .iter()
@@ -54,6 +58,24 @@ impl Settings {
         let _ = session::Session::new(stream, ticket, self.session)?;
         Ok(())
     }
+    /// Map one validated backend snapshot into its original link's narrow view.
+    pub(super) fn link(
+        &self,
+        identity: std::sync::Arc<crate::secure_connection::Identity>,
+        origin: Instant,
+    ) -> Result<link::Settings> {
+        Ok(link::Settings {
+            identity,
+            limits: self.session,
+            block: self.block,
+            setup_timeout: Duration::from_millis(self.control.setup_ms as u64),
+            approval_timeout: Duration::from_millis(self.control.approval_ms as u64),
+            resource_timeout: blent_config::connection::resources::AdmissionTimeout::new(
+                self.resource_timeout_ms,
+            )?,
+            origin,
+        })
+    }
     pub(super) fn directories(&self) -> Result<()> {
         for path in [&self.runtime, &self.state] {
             std::fs::DirBuilder::new()
@@ -64,3 +86,6 @@ impl Settings {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests;

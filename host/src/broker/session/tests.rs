@@ -196,7 +196,7 @@ impl Rig {
             )
             .unwrap()
     }
-    fn admit(&mut self, resource: Resource) -> Lease {
+    pub(crate) fn admit(&mut self, resource: Resource) -> Lease {
         let lease = self.register(resource);
         self.pump(0).unwrap();
         self.message(Message::Prepared(lease.key));

@@ -11,7 +11,9 @@ use super::{
     wire::MAX_COUNTER,
 };
 use anyhow::{ensure, Result};
+mod timeout;
 mod transitions;
+pub use timeout::AdmissionTimeout;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Role {
@@ -137,10 +139,8 @@ impl Resources {
             self.connected && (1..=MAX_COUNTER).contains(&owner),
             "invalid registration"
         );
-        ensure!(
-            now >= 0 && (1..=600_000).contains(&timeout),
-            "invalid resource deadline"
-        );
+        ensure!(now >= 0, "invalid resource deadline");
+        let timeout = AdmissionTimeout::new(timeout)?.milliseconds();
         let deadline = now
             .checked_add(timeout)
             .ok_or_else(|| anyhow::anyhow!("deadline overflow"))?;

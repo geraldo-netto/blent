@@ -32,6 +32,10 @@ impl Drop for Original {
 }
 fn settings(server: &Server) -> link::Settings {
     link::Settings {
+        resource_timeout: blent_config::connection::resources::AdmissionTimeout::new(
+            server.settings.resource_timeout_ms,
+        )
+        .unwrap(),
         identity: server.identity.identity.clone(),
         limits: server.settings.session,
         block: server.settings.block,

@@ -27,6 +27,7 @@ fn resource() -> (Resource, tokio::io::DuplexStream) {
 }
 fn settings() -> Settings {
     Settings {
+        resource_timeout: AdmissionTimeout::default(),
         identity: Arc::new(Identity::load(IdentityRecord::generate().unwrap()).unwrap()),
         limits: Limits::default(),
         block: 65536,
@@ -101,3 +102,5 @@ async fn t853_repeated_link_next_after_task_completion_does_not_panic() {
 
 mod factory;
 mod handshake;
+
+mod timeout;

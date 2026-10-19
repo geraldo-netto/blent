@@ -63,14 +63,9 @@ impl Server {
     }
     fn start(&mut self, connection: u64, target: Candidate) -> Result<()> {
         let helper = self.settings.helper.clone();
-        let settings = link::Settings {
-            identity: self.identity.identity.clone(),
-            limits: self.settings.session,
-            block: self.settings.block,
-            setup_timeout: Duration::from_millis(self.settings.control.setup_ms as u64),
-            approval_timeout: Duration::from_millis(self.settings.control.approval_ms as u64),
-            origin: self.origin,
-        };
+        let settings = self
+            .settings
+            .link(self.identity.identity.clone(), self.origin)?;
         let handle = match Handle::start_factory(
             &self.link_pool,
             move || accessory::open_selected(&helper, &target),

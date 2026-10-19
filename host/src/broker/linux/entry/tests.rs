@@ -187,3 +187,56 @@ async fn t1101_cli_cleanup_mapping_and_rejection_precede_native_effects() {
         assert!(Options::try_parse_from(cleanup_arguments(root.path(), value)).is_err());
     }
 }
+
+#[test]
+fn t1103_cli_exposes_resource_admission_timeout() {
+    for value in ["1", "120000", "600000"] {
+        let mut args = arguments();
+        args.extend([
+            OsString::from("--resource-timeout-ms"),
+            OsString::from(value),
+        ]);
+        assert!(
+            Options::try_parse_from(args).is_ok(),
+            "T1103 resource timeout unavailable: {value}"
+        );
+    }
+}
+
+fn resource_arguments(root: &std::path::Path, value: &str) -> Vec<OsString> {
+    let mut arguments = cleanup_arguments(root, "5000");
+    arguments.extend(["--resource-timeout-ms".into(), value.into()]);
+    arguments
+}
+#[tokio::test]
+async fn t1103_resource_timeout_mapping_and_validation_precede_native_effects() {
+    assert_eq!(
+        Options::try_parse_from(arguments())
+            .unwrap()
+            .settings()
+            .resource_timeout_ms,
+        120_000
+    );
+    let root = tempfile::tempdir().unwrap();
+    for milliseconds in [1i64, 37, 120_000, 600_000] {
+        let selected =
+            Options::try_parse_from(resource_arguments(root.path(), &milliseconds.to_string()))
+                .unwrap()
+                .settings();
+        assert_eq!(selected.resource_timeout_ms, milliseconds);
+    }
+    for value in ["0", "600001", "9223372036854775807"] {
+        let selected = Options::try_parse_from(resource_arguments(root.path(), value))
+            .unwrap()
+            .settings();
+        assert!(
+            Server::open(selected).await.is_err(),
+            "T1103 invalid admission timeout: {value}"
+        );
+        assert!(!root.path().join("runtime").exists());
+        assert!(!root.path().join("state").exists());
+    }
+    for value in ["", "-1", "NaN", "1.5", "9223372036854775808"] {
+        assert!(Options::try_parse_from(resource_arguments(root.path(), value)).is_err());
+    }
+}

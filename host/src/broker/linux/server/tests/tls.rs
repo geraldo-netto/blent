@@ -62,6 +62,10 @@ fn attach(server: &mut Server, id: u64) -> tokio::io::DuplexStream {
     let handle = Handle::start(
         resource,
         link::Settings {
+            resource_timeout: blent_config::connection::resources::AdmissionTimeout::new(
+                server.settings.resource_timeout_ms,
+            )
+            .unwrap(),
             identity: server.identity.identity.clone(),
             limits: server.settings.session,
             block: server.settings.block,

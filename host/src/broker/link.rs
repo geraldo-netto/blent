@@ -17,7 +17,7 @@ use anyhow::{ensure, Context, Result};
 use blent_config::{
     connection::{
         pairing::{PeerId, Ticket},
-        resources::Lease,
+        resources::{AdmissionTimeout, Lease},
     },
     retirement::Completion,
 };
@@ -26,7 +26,11 @@ use std::{
     task::{Context as PollContext, Poll},
     time::Duration,
 };
-use tokio::{sync::mpsc, time::Instant};
+use tokio::{
+    io::{AsyncRead, AsyncWrite},
+    sync::mpsc,
+    time::Instant,
+};
 mod start;
 
 pub enum Command {
@@ -54,6 +58,7 @@ pub struct Settings {
     pub block: usize,
     pub setup_timeout: Duration,
     pub approval_timeout: Duration,
+    pub resource_timeout: AdmissionTimeout,
     pub origin: Instant,
 }
 impl Handle {
@@ -159,6 +164,7 @@ async fn run(
         &mut input,
         &output,
         settings.origin,
+        settings.resource_timeout,
     )
     .await;
     let _ = bridges.disconnect(connection.session());
@@ -171,12 +177,13 @@ async fn media(
     input: &mut mpsc::Receiver<Command>,
     output: &mpsc::Sender<Event>,
     origin: Instant,
+    resource_timeout: AdmissionTimeout,
 ) -> Result<()> {
     let mut clock = tokio::time::interval(Duration::from_millis(20));
     clock.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     loop {
         tokio::select! {
-            command = input.recv() => dispatch(connection, bridges, command.context("local link owner gone")?, output, now(origin)?)?,
+            command = input.recv() => dispatch(connection.session(), bridges, command.context("local link owner gone")?, output, now(origin)?, resource_timeout)?,
             _ = clock.tick() => connection.session().tick(now(origin)?)?,
             event = std::future::poll_fn(|cx| poll_media(connection, bridges, cx, origin)) => {
                 if let MediaEvent::State(lease, state) = event? { emit(output, Event::State(lease, state))?; }
@@ -184,20 +191,21 @@ async fn media(
         }
     }
 }
-fn dispatch(
-    connection: &mut Connection,
+fn dispatch<S: AsyncRead + AsyncWrite + Unpin>(
+    session: &mut super::session::Session<S>,
     bridges: &mut Bridges,
     command: Command,
     output: &mpsc::Sender<Event>,
     now: i64,
+    resource_timeout: AdmissionTimeout,
 ) -> Result<()> {
     match command {
         Command::Register(offer) => {
             let owner = offer.owner;
-            let result = bridges.register(connection.session(), offer, now, 120_000);
+            let result = bridges.register(session, offer, now, resource_timeout.milliseconds());
             emit(output, Event::Registered { owner, result })
         }
-        Command::Cancel(lease) => cancel_original(connection.session(), &lease),
+        Command::Cancel(lease) => cancel_original(session, &lease),
         _ => anyhow::bail!("unexpected setup command during media"),
     }
 }
