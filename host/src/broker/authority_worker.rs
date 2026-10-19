@@ -1,6 +1,6 @@
 //! One bounded persistence owner, independent of every media/control reactor.
 use super::control::{AuthorityJob, AuthorityReply};
-use crate::secure_connection::{Identity, PeerCertificate};
+use crate::secure_connection::{Identity, PeerCertificate, RetainedIdentity};
 use anyhow::{Context, Result};
 use blent_config::{
     connection::{
@@ -14,16 +14,13 @@ use std::sync::Arc;
 use tokio::sync::mpsc;
 
 pub struct Initialized<S: TrustStorage> {
-    pub identity: Arc<Identity>,
+    pub identity: RetainedIdentity,
     pub trust: Trust<S>,
-    /// Native identity-store ownership must outlive all identity consumers.
-    pub identity_owner: Arc<dyn Send + Sync>,
 }
 pub struct Ready {
     pub identity: Arc<Identity>,
     pub local: PeerId,
     pub saved: Vec<PeerId>,
-    pub identity_owner: Arc<dyn Send + Sync>,
 }
 pub enum Event {
     Ready(Result<Ready>),
@@ -85,10 +82,9 @@ fn public<S: TrustStorage>(state: &Initialized<S>) -> Result<Ready> {
     let certificate = PeerCertificate::parse(state.identity.certificate().to_vec())?;
     let local = certificate.peer_id();
     Ok(Ready {
-        identity: state.identity.clone(),
+        identity: state.identity.shared(),
         local,
         saved: state.trust.approved_peers()?.to_vec(),
-        identity_owner: state.identity_owner.clone(),
     })
 }
 fn run<S: TrustStorage>(

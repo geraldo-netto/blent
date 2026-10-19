@@ -3,12 +3,15 @@
 //! identities may cross the physical link before approval and TLS authentication.
 use anyhow::{ensure, Context, Result};
 use rustls::pki_types::{CertificateDer, PrivateKeyDer, PrivatePkcs8KeyDer, ServerName};
+use rustls::sign::{CertifiedKey, SingleCertAndKey};
 use rustls::{ClientConfig, RootCertStore, ServerConfig};
 use sha2::{Digest, Sha256};
 use std::{sync::Arc, time::Duration};
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
 pub mod identity_store;
+mod retained_identity;
+pub use retained_identity::RetainedIdentity;
 #[cfg(target_os = "linux")]
 mod private_directory;
 #[cfg(target_os = "linux")]
@@ -37,7 +40,7 @@ impl IdentityRecord {
 }
 pub struct Identity {
     certificate: CertificateDer<'static>,
-    private_key: PrivateKeyDer<'static>,
+    certified: CertifiedKey,
 }
 impl Identity {
     pub fn load(record: IdentityRecord) -> Result<Self> {
@@ -47,19 +50,13 @@ impl Identity {
             "invalid private key size"
         );
         let private_key = PrivateKeyDer::Pkcs8(PrivatePkcs8KeyDer::from(record.private_key));
-        let identity = Self {
+        // Same stock parsing/matching routine as rustls's single-cert builders.
+        let certified =
+            CertifiedKey::from_der(vec![certificate.clone()], private_key, &provider())?;
+        Ok(Self {
             certificate,
-            private_key,
-        };
-        // Stock TLS validation checks parsing, supported keys and key/cert match.
-        let _ = ClientConfig::builder_with_provider(provider())
-            .with_safe_default_protocol_versions()?
-            .with_root_certificates(RootCertStore::empty())
-            .with_client_auth_cert(
-                vec![identity.certificate.clone()],
-                identity.private_key.clone_key(),
-            )?;
-        Ok(identity)
+            certified,
+        })
     }
     pub fn certificate(&self) -> &[u8] {
         self.certificate.as_ref()
@@ -116,10 +113,7 @@ fn server_config(identity: &Identity, peer: &PeerCertificate) -> Result<ServerCo
     let mut config = ServerConfig::builder_with_provider(provider())
         .with_safe_default_protocol_versions()?
         .with_client_cert_verifier(verifier)
-        .with_single_cert(
-            vec![identity.certificate.clone()],
-            identity.private_key.clone_key(),
-        )?;
+        .with_cert_resolver(Arc::new(SingleCertAndKey::from(identity.certified.clone())));
     config.alpn_protocols = vec![ALPN.to_vec()];
     config.send_tls13_tickets = 0; // Every link must prove its current certificate.
     Ok(config)
@@ -128,10 +122,7 @@ fn client_config(identity: &Identity, peer: &PeerCertificate) -> Result<ClientCo
     let mut config = ClientConfig::builder_with_provider(provider())
         .with_safe_default_protocol_versions()?
         .with_root_certificates(roots(peer)?)
-        .with_client_auth_cert(
-            vec![identity.certificate.clone()],
-            identity.private_key.clone_key(),
-        )?;
+        .with_client_cert_resolver(Arc::new(SingleCertAndKey::from(identity.certified.clone())));
     config.alpn_protocols = vec![ALPN.to_vec()];
     config.resumption = rustls::client::Resumption::disabled();
     Ok(config)

@@ -9,6 +9,25 @@ fn root() -> tempfile::TempDir {
         .unwrap()
 }
 #[test]
+fn t1102_identity_consumer_retains_original_store_after_provider_state_drop() {
+    let root = root();
+    let state = open(root.path(), 2).unwrap();
+    let consumer = state.identity.clone();
+    let certificate = consumer.certificate().to_vec();
+    drop(state);
+    let unexpected = open(root.path(), 2);
+    let bypassed = unexpected.is_ok();
+    drop(unexpected);
+    assert!(
+        !bypassed,
+        "identity-store guard ended before its key consumer"
+    );
+    assert_eq!(consumer.certificate(), certificate);
+    drop(consumer);
+    assert!(open(root.path(), 2).is_ok());
+}
+
+#[test]
 fn t853_persistent_identity_and_trust_survive_restart_with_exclusive_ownership() {
     let root = root();
     let mut state = open(root.path(), 2).unwrap();
@@ -24,7 +43,7 @@ fn t853_persistent_identity_and_trust_survive_restart_with_exclusive_ownership()
         .authenticated(&mut pairing, &ticket, &peer, 2)
         .unwrap();
     assert_eq!(state.trust.approved_peers().unwrap(), &[peer.clone()]);
-    let owner = state.identity_owner.clone();
+    let owner = state.identity.clone();
     drop(state);
     assert!(open(root.path(), 2).is_err());
     drop(owner);

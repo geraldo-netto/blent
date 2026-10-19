@@ -58,7 +58,7 @@ fn peer(n: u64) -> PeerId {
     PeerId::parse(format!("{n:064x}")).unwrap()
 }
 fn initialized(gate: Option<Arc<Gate>>, fail: bool) -> Initialized<Store> {
-    let identity = Arc::new(Identity::load(IdentityRecord::generate().unwrap()).unwrap());
+    let identity = Identity::load(IdentityRecord::generate().unwrap()).unwrap();
     let certificate = PeerCertificate::parse(identity.certificate().to_vec()).unwrap();
     let local = PeerId::parse(
         certificate
@@ -79,9 +79,8 @@ fn initialized(gate: Option<Arc<Gate>>, fail: bool) -> Initialized<Store> {
     )
     .unwrap();
     Initialized {
-        identity,
+        identity: RetainedIdentity::new(identity, Arc::new(())),
         trust,
-        identity_owner: Arc::new(()),
     }
 }
 async fn until(mut predicate: impl FnMut() -> bool) {
@@ -309,7 +308,7 @@ async fn t853_worker_authentication_and_revoke_replies_drive_controller() {
     let state = ready(&mut worker).await;
     assert!(state.saved.is_empty());
     assert!(!state.identity.certificate().is_empty());
-    let owner = state.identity_owner.clone();
+    let owner = state.identity.clone();
     assert!(Arc::strong_count(&owner) >= 2);
     let mut pending = Prepared::new(state.local, peer(1));
     assert!(worker.submit(pending.take_job()).is_ok());

@@ -4,7 +4,7 @@ use crate::{
     secure_connection::{
         identity_store::{linux::LinuxIdentityStore, load_or_create},
         trust_store::LinuxTrustStore,
-        IdentityRecord, PeerCertificate,
+        IdentityRecord, PeerCertificate, RetainedIdentity,
     },
 };
 use anyhow::Result;
@@ -16,14 +16,11 @@ use std::{path::Path, sync::Arc};
 pub fn open(path: &Path, capacity: usize) -> Result<Initialized<LinuxTrustStore>> {
     let mut identity_owner = LinuxIdentityStore::open(path)?;
     let identity = load_or_create(&mut identity_owner, IdentityRecord::generate)?;
+    let identity = RetainedIdentity::new(identity, Arc::new(identity_owner));
     let certificate = PeerCertificate::parse(identity.certificate().to_vec())?;
     let peer = certificate.peer_id();
     let trust = Trust::open(LinuxTrustStore::open(path)?, peer, capacity)?;
-    Ok(Initialized {
-        identity: Arc::new(identity),
-        trust,
-        identity_owner: Arc::new(identity_owner),
-    })
+    Ok(Initialized { identity, trust })
 }
 
 #[cfg(test)]

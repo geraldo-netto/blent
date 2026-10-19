@@ -807,8 +807,11 @@ and storage resources; they do not release an old admission early. Correct an
 initialization/configuration error before restarting the process; a cached failed
 context is not silently replaced. Admission precedes filesystem/socket effects,
 and cancellation or logical worker loss retains the original slot until actual
-thread exit, destruction and join. The separate identity-consumer guard fix
-remains T1102; this admission bound does not claim that runtime lifetime result.
+thread exit, destruction and join. Original identity-store ownership follows published key views, TLS configurations
+and independently selected signers through their actual consumer lifetime (T1102).
+Queued or cancelled links cannot unlock that store while their original identity
+consumer remains. The guard is an acyclic resource owner; logical task completion
+or a timeout alone is not evidence that native consumers have retired.
 Deadlines are `--io-timeout-ms 5000`, `--setup-ms 60000`, and
 `--approval-ms 120000`; approval permits up to 600000 ms and reaches native READY
 coordination, while the controller retains the original absolute deadline.
