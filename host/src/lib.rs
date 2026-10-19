@@ -115,3 +115,5 @@ pub mod activity_view;
 pub mod display_work;
 
 pub mod current_work;
+
+pub mod auxiliary_work;
