@@ -1,4 +1,5 @@
 use super::*;
+use blent_config::connection::registration_client::Request as RegistrationRequest;
 impl Server {
     pub(super) fn request(&mut self, client: u64, received: Received) -> Result<()> {
         let request = received.message.request();
@@ -13,10 +14,12 @@ impl Server {
             } => self.register(
                 client,
                 request,
-                peer,
-                resource,
-                credential,
-                profile,
+                RegistrationRequest {
+                    peer,
+                    resource,
+                    credential,
+                    profile,
+                },
                 received.descriptors,
             ),
             Message::Unregister { route, .. } => self.unregister(client, request, route),

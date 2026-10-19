@@ -1,5 +1,6 @@
 //! T921: distinct native TLS links can prove the same persisted certificate.
 use super::*;
+use blent_config::connection::registration_client::Request as RegistrationRequest;
 use blent_config::connection::{
     control::State,
     management::{Credential, Profile},
@@ -61,10 +62,12 @@ fn register(server: &mut Server, client: u64, request: u64, pin: PeerId) -> Resu
     server.register(
         client,
         request,
-        pin,
-        Resource::DisplaySession,
-        Credential::new([1; 32]),
-        Profile::Display,
+        RegistrationRequest {
+            peer: pin,
+            resource: Resource::DisplaySession,
+            credential: Credential::new([1; 32]),
+            profile: Profile::Display,
+        },
         vec![video.into(), control.into()],
     )
 }

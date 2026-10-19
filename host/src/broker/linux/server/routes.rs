@@ -1,15 +1,12 @@
 use super::*;
-use blent_config::connection::management::{Credential, Profile, Resource};
+use blent_config::connection::registration_client::Request as RegistrationRequest;
 use std::os::fd::OwnedFd;
 impl Server {
     pub(super) fn register(
         &mut self,
         client: u64,
         request: u64,
-        peer: PeerId,
-        resource: Resource,
-        credential: Credential,
-        profile: Profile,
+        registration: RegistrationRequest,
         descriptors: Vec<OwnedFd>,
     ) -> Result<()> {
         ensure!(
@@ -20,6 +17,12 @@ impl Server {
             self.owner_id < i64::MAX as u64,
             "registration owner IDs exhausted"
         );
+        let RegistrationRequest {
+            peer,
+            resource,
+            credential,
+            profile,
+        } = registration;
         let connection = self.connection_for(&peer)?;
         let mut endpoints = Endpoints::validate(resource, descriptors)?;
         self.owner_id += 1;
