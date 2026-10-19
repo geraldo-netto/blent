@@ -66,11 +66,13 @@ fn t1114_snapshot_cleanup_cannot_unlink_a_foreign_publication() {
             waiting.recv()?;
             foreign_publish(path, payload, entered)
         });
-        lease.clear_locked_with(move || {
-            start.send(()).unwrap();
-            // A finite fixture handshake, never a compiler/native-cleanup cap.
-            observed.recv_timeout(Duration::from_secs(5)).unwrap();
-        });
+        lease
+            .clear_locked_with(move || {
+                start.send(()).unwrap();
+                // A finite fixture handshake, never a compiler/native-cleanup cap.
+                observed.recv_timeout(Duration::from_secs(5)).unwrap();
+            })
+            .unwrap();
         writer.join().unwrap()
     });
     outcome.unwrap();

@@ -16,6 +16,17 @@ use tokio::time::Instant;
 mod directory;
 mod worker;
 
+fn retire_request(mut cleanup: impl FnMut() -> Result<()>, mut pause: impl FnMut()) {
+    let mut warned = false;
+    while let Err(error) = cleanup() {
+        if !warned {
+            tracing::warn!(%error, "Idle request cleanup pending; original identities remain retained");
+            warned = true;
+        }
+        pause();
+    }
+}
+
 const MAX_TIMINGS: usize = 256;
 static LEASE_FILES: Mutex<()> = Mutex::new(());
 #[derive(Clone, Copy)]
@@ -284,8 +295,19 @@ impl Cadence for Lease {
     }
 
     fn clear(&self) {
+        let _ = self.try_clear();
+    }
+}
+
+impl Lease {
+    fn try_clear(&self) -> Result<()> {
         let _guard = LEASE_FILES.lock().unwrap();
-        self.clear_locked();
+        self.clear_locked().with_context(|| {
+            format!(
+                "idle request {:?}, source {:?}, token {}",
+                self.path, self.identity, self.token
+            )
+        })
     }
 }
 
@@ -344,26 +366,64 @@ impl Lease {
         Ok(text)
     }
 
-    fn clear_locked(&self) {
-        self.clear_locked_with(|| {});
+    fn clear_locked(&self) -> Result<()> {
+        self.clear_locked_with(|| {})
     }
 
-    fn clear_locked_with(&self, after_snapshot: impl FnOnce()) {
-        let Ok(_directory) = self.directory.lock() else {
-            return; // Keep unknown request ownership; its monotonic lease expires.
-        };
-        let prefix = format!("{} {} {} ", self.identity.0, self.identity.1, self.token);
-        if self.contents().is_ok_and(|text| text.starts_with(&prefix)) {
-            after_snapshot();
-            if let Ok(path) = self.directory.path(&self.path) {
-                let _ = std::fs::remove_file(path);
-            }
+    fn clear_locked_with(&self, after_snapshot: impl FnOnce()) -> Result<()> {
+        self.clear_using(after_snapshot, |path| std::fs::remove_file(path))
+    }
+
+    fn clear_using(
+        &self,
+        after_snapshot: impl FnOnce(),
+        remove: impl FnOnce(&Path) -> std::io::Result<()>,
+    ) -> Result<()> {
+        let _directory = self
+            .directory
+            .lock()
+            .context("lock original idle directory")?;
+        if !self.original_request()? {
+            return Ok(());
         }
+        after_snapshot();
+        let path = self.directory.path(&self.path)?;
+        match remove(&path) {
+            Ok(()) => Ok(()),
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(()),
+            Err(error) => Err(error).context("remove original idle request"),
+        }
+    }
+
+    fn original_request(&self) -> Result<bool> {
+        let info = match std::fs::symlink_metadata(self.directory.path(&self.path)?) {
+            Ok(info) => info,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(false),
+            Err(error) => return Err(error.into()),
+        };
+        if !info.file_type().is_file() {
+            return Ok(false); // C cannot read advice through this replacement.
+        }
+        self.owns_cookie(&self.contents()?)
+            .context("unknown original idle request")
+    }
+
+    fn owns_cookie(&self, text: &str) -> Option<bool> {
+        let mut fields = text.split_ascii_whitespace();
+        let identity = (
+            fields.next()?.parse::<u64>().ok()?,
+            fields.next()?.parse::<u64>().ok()?,
+        );
+        let token = fields.next()?.parse::<u64>().ok()?;
+        Some(identity == self.identity && token == self.token)
     }
 }
 impl Drop for Lease {
     fn drop(&mut self) {
-        self.clear();
+        retire_request(
+            || self.try_clear(),
+            || std::thread::sleep(Duration::from_millis(100)),
+        );
     }
 }
 
@@ -372,3 +432,6 @@ mod tests;
 
 #[cfg(test)]
 mod lease_tests;
+
+#[cfg(test)]
+mod retirement_tests;

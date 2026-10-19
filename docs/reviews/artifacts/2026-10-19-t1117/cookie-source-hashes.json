@@ -1,0 +1,10 @@
+{
+  "scripts/tests/idle_cookie.c": "5a4ee374ee696c79782560a21925195f1886a8a91b06703c25950f1a46108ff6",
+  "scripts/tests/test_idle_cookie.py": "906ab33871e38cdafd6e78b2af211b59c96c4dde77151d985678039490a126b6",
+  "host/evdi/writer.c": "c87dc9cb79fe2d0c3bf289b377f82e3bc0ea923037ec71818f6883ae9c0de1ce",
+  "host/evdi/frame_exchange.c": "eaddc2f8168aa736973d371fac10dc9c74386b42fd577dc703ad55cf83f9a24a",
+  "host/evdi/fifo_writer.c": "af9c42ce08d807cd303a1627b048200438c50b5444905e3432aebb7ff57e3430",
+  "host/evdi/writer.h": "1f389df1db53b8a01d792befa88a6a5d7fc72f76f9bb64865f13c6eb54ce55c4",
+  "host/evdi/frame_exchange.h": "a44201f44cc9483b7a90cc853e47b3e323a77936cad8c22109e04c2ad3798497",
+  "host/evdi/fifo_writer.h": "c49bc77663b8799680612ac7965d50d8b4ef6ff505f90494f28a1b4ce4246a19"
+}
