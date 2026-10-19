@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets.US_ASCII
 
 /** Canonical immutable trust data; pins are public certificate fingerprints. */
 internal class TrustSnapshot(val local: ConnectionPeer, val revision: Long, peers: List<ConnectionPeer>) {
-    private val values = peers.toList()
+    private val values = boundedPeerCopy(peers, 1024)
     val peers: List<ConnectionPeer> get() = values.toList()
     init {
         require(revision > 0 && values.size <= 1024)
