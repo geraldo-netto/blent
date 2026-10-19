@@ -108,8 +108,12 @@ Larger profiles cost USB bandwidth, decoding/encoding work and tablet power.
 
 The desktop uses one persistent FFmpeg producer per virtual camera and an
 FFmpeg decoder for the selected camera. Android uses Camera2 and MediaCodec.
-A dedicated authenticated local TCP connection crosses a temporary ADB reverse
-mapping, independent of the display and pen connections. Its `BLCAM002` header
+The camera stream is independent of the display and pen connections. Legacy ADB
+uses a temporary reverse mapping for its authenticated local TCP connection.
+Direct USB uses the brokered accessory channel and a local TCP relay without ADB.
+It remains experimental pending joined physical acceptance; see
+[integration status](#direct-usb-camera-integration-status). Both carry the same
+authenticated stream. Its `BLCAM002` header
 contains the session credential, lens identity and rotation, followed by bounded
 big-endian length-prefixed H.264 packets. Packets are capped at 2 MiB; connection,
 read/write and encoder-progress deadlines bound stalled sessions. Each new lens
