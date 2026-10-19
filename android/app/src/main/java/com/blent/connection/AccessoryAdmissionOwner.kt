@@ -15,7 +15,7 @@ internal class AccessoryAdmissionOwner(
     private val retirementTimeoutMs: Long = 5000,
     private val wake: () -> Unit = {},
     private val threads: (String, Runnable) -> Thread = { name, body -> Thread(body, name).apply { isDaemon = true } },
-) : AccessoryAdmission {
+) : AccessoryAdmission, ConnectionDeadlineSource {
     private val gate = Object()
     private val selection = AccessorySelectionOwner(profile, capacity)
     private val commands = ArrayDeque<() -> Unit>()
@@ -140,5 +140,14 @@ internal class AccessoryAdmissionOwner(
     }
     override fun terminationRequired(): Boolean = synchronized(gate) {
         closeError != null || (stopped && lastTime >= retirementDeadline && !retired())
+    }
+    override fun nextDeadline(): ConnectionDeadline = synchronized(gate) {
+        when {
+            !stopped -> ConnectionDeadline.at(minOf(deadline, nativeDeadline))
+            closeError != null -> ConnectionDeadline.IDLE
+            lastTime >= retirementDeadline -> ConnectionDeadline.IDLE
+            retired() -> ConnectionDeadline.IDLE
+            else -> ConnectionDeadline.at(retirementDeadline)
+        }
     }
 }

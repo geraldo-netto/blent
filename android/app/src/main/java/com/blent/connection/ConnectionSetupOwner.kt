@@ -12,7 +12,7 @@ internal class ConnectionSetupOwner(
     private val limits: ConnectionSetupLimits = ConnectionSetupLimits(),
     private val wake: () -> Unit = {},
     private val threads: (String, Runnable) -> Thread = { name, body -> Thread(body, name).apply { isDaemon = true } },
-) : ConnectionSetup {
+) : ConnectionSetup, ConnectionDeadlineSource {
     private class Decision(val ticket: ConnectionTicket, val approved: Boolean, val remember: Boolean)
     private val lock = Object()
     private val events = ArrayDeque<ConnectionWorkerEvent>()
@@ -275,5 +275,15 @@ internal class ConnectionSetupOwner(
             backend.close()
         } catch (failure: Exception) { synchronized(lock) { closeError = failure } }
         finally { synchronized(lock) { closeFinished = true }; signal() }
+    }
+    // MAX may be either the existing clock limit or a real stage budget.
+    override fun nextDeadline(): ConnectionDeadline = synchronized(lock) {
+        when {
+            !stopped -> ConnectionDeadline.at(deadline)
+            closeError != null -> ConnectionDeadline.IDLE
+            lastTime >= stopDeadline -> ConnectionDeadline.IDLE
+            retired() -> ConnectionDeadline.IDLE
+            else -> ConnectionDeadline.at(stopDeadline)
+        }
     }
 }

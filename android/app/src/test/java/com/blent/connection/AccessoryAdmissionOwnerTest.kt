@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong
 class AccessoryAdmissionOwnerTest {
     private val profile = AccessoryProfile("Blent", "Blent", "1")
     private val description = AccessoryDescription("Blent", "Blent", "test", "1", null, null)
-    private class Backend : AccessoryAdmissionBackend {
+    internal class Backend : AccessoryAdmissionBackend {
         lateinit var dispatch: (() -> Unit) -> Unit
         lateinit var report: (AccessorySelection, List<AccessoryDescription>, Boolean) -> Unit
         lateinit var detach: () -> Unit
