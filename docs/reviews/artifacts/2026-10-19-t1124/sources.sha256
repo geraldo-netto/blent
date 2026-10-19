@@ -1,0 +1,3 @@
+7b33361b1e1b76f96e393a4ef11eb460c345fe175d9e70f1a315bffcdb626cfc  common/src/retirement.rs
+789c8c78f887d63b298a3529740a01d8879fed83f4274a634ed8bd5aec06d45e  common/src/retirement/observations.rs
+cb13b701b05964d2ff5bd1210151173d136816a60b2fd0d9935012e79bb76305  common/src/retirement/observations/tests.rs

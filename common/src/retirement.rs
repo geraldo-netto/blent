@@ -10,6 +10,8 @@ use std::{
     time::Duration,
 };
 
+pub mod observations;
+
 /// Implementations must poll without blocking. True confirms actual completion,
 /// including any required join/reap. A deadline alone must never return true.
 pub trait Observe: Send + 'static {
