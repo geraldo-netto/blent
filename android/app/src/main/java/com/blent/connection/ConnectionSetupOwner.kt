@@ -241,11 +241,15 @@ internal class ConnectionSetupOwner(
         }
     }
 
-    private fun mutationDeadline(): Boolean = synchronized(lock) {
-        if (stopped) return false
-        live()
-        deadline = until(now(), limits.nativeTimeoutMs)
-        true
+    private fun mutationDeadline(): Boolean {
+        val bounded = synchronized(lock) {
+            if (stopped) return@synchronized false
+            live()
+            deadline = until(now(), limits.nativeTimeoutMs)
+            true
+        }
+        if (bounded) signal()
+        return bounded
     }
 
     private fun finish(trust: ConnectionTrust?, pairing: ConnectionPairing) {

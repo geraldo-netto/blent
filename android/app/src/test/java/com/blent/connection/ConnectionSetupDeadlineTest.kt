@@ -9,6 +9,34 @@ import org.junit.Test
 
 /** T1094: snapshots observe retained original budgets; no live USB or TLS. */
 class ConnectionSetupDeadlineTest {
+    @Test fun t1096OriginalAuthorityNotifiesTightenedStorageBudgetBeforeWriteBlocks() {
+        val backend = SetupBackend(); val store = SetupStore()
+        val other = ConnectionPeer.parse("cd".repeat(32))
+        store.bytes = ConnectionTrustCodec.encode(TrustSnapshot(setupPeer(backend.local), 1,
+            listOf(setupPeer(backend.remote), other).sortedBy { it.fingerprint }))
+        val authority = java.util.concurrent.atomic.AtomicReference<Thread>()
+        val owner = java.util.concurrent.atomic.AtomicReference<ConnectionSetupOwner>()
+        val notifications = java.util.concurrent.atomic.AtomicInteger()
+        val armed = java.util.concurrent.atomic.AtomicBoolean()
+        val wake = {
+            if (armed.get() && Thread.currentThread() === authority.get() &&
+                owner.get()?.nextDeadline() == ConnectionDeadline.at(110)) notifications.incrementAndGet()
+            Unit
+        }
+        SetupRig(backend, store, wake = wake, threads = { name, work ->
+            Thread(work, name).apply { isDaemon = true; if (name.endsWith("authority")) authority.set(this) }
+        }).use { rig ->
+            owner.set(rig.owner); rig.ready()
+            store.gate = CountDownLatch(1); armed.set(true)
+            try {
+                assertTrue(rig.owner.revoke(other))
+                assertTrue(store.entered.await(3, TimeUnit.SECONDS))
+                assertEquals(ConnectionDeadline.at(110), rig.owner.nextDeadline())
+                assertTrue("T1096 original authority did not notify storage deadline", notifications.get() > 0)
+            } finally { armed.set(false); store.gate.countDown() }
+        }
+    }
+
     @Test fun t1094SetupStagesKeepOriginalDiscoveryApprovalAndAuthenticationBudgets() {
         val backend = SetupBackend().apply {
             discoverGate = CountDownLatch(1); readyGate = CountDownLatch(1); authenticateGate = CountDownLatch(1)

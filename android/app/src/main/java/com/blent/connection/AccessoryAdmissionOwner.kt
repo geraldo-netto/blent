@@ -101,6 +101,8 @@ internal class AccessoryAdmissionOwner(
     }
     private fun nativeCall(action: () -> Unit) {
         synchronized(gate) { live(); nativeDeadline = minOf(deadline, now() + nativeTimeoutMs) }
+        signal()
+        synchronized(gate) { live() }
         action()
         synchronized(gate) { live(); nativeDeadline = Long.MAX_VALUE }
     }

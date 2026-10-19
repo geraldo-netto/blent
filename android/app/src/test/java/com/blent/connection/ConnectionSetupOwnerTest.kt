@@ -85,9 +85,10 @@ internal class SetupRig(
     val store: SetupStore = SetupStore(),
     wake: () -> Unit = {},
     limits: ConnectionSetupLimits = ConnectionSetupLimits(4096, 1000, 100, 50),
+    threads: (String, Runnable) -> Thread = { name, work -> Thread(work, name).apply { isDaemon = true } },
 ) : AutoCloseable {
     val clock = AtomicLong(10)
-    val owner = ConnectionSetupOwner(backend, { store }, clock::get, limits, wake)
+    val owner = ConnectionSetupOwner(backend, { store }, clock::get, limits, wake, threads)
     val events = mutableListOf<ConnectionWorkerEvent>()
     fun drain() { while (true) { events.add(owner.poll() ?: return) } }
     fun ticket(): ConnectionTicket {

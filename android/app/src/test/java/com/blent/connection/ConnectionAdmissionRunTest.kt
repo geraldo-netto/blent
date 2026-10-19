@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 import org.junit.Assert.*
 import org.junit.Test
 
-private class RunAdmission : AccessoryAdmission {
+internal class RunAdmission : AccessoryAdmission {
     val selection = AccessorySelection(7, "ab".repeat(32))
     @Volatile var ready: AccessorySelection? = null
     @Volatile var allowed = true
@@ -23,7 +23,7 @@ private class RunAdmission : AccessoryAdmission {
     override fun failure() = error
     override fun terminationRequired() = terminate
 }
-private class AdmissionWorker : ConnectionWorker {
+internal class AdmissionWorker : ConnectionWorker {
     val executing = CompletableDeferred<Unit>()
     val end = CompletableDeferred<Unit>()
     val nativeEnd = CompletableDeferred<Unit>()

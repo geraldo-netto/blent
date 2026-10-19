@@ -180,7 +180,10 @@ internal class ConnectionAdmissionRun(
         val task = synchronized(gate) {
             val previous = cleanup
             if (previous != null && !previous.isCancelled) return previous
-            scope.async<Unit>(start = CoroutineStart.LAZY) { worker?.retire() }.also { cleanup = it }
+            scope.async<Unit>(start = CoroutineStart.LAZY) { worker?.retire() }.also {
+                cleanup = it
+                it.invokeOnCompletion { signal() }
+            }
         }
         task.start()
         return task

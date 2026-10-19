@@ -11,6 +11,7 @@ private class AdmissionDeadlineRig(
     val backend: AccessoryAdmissionOwnerTest.Backend = AccessoryAdmissionOwnerTest.Backend(),
     initialTime: Long = 0,
     permissionMs: Long = 100,
+    wake: () -> Unit = {},
 ) : AutoCloseable {
     val clock = AtomicLong(initialTime)
     val releases = ArrayList<CountDownLatch>()
@@ -18,7 +19,7 @@ private class AdmissionDeadlineRig(
     init {
         backend.entries = listOf(AccessoryDescription("Blent", "Blent", "T1094", "1", null, null))
         owner = AccessoryAdmissionOwner(backend, AccessoryProfile("Blent", "Blent", "1"), clock = clock::get,
-            nativeTimeoutMs = 10, permissionTimeoutMs = permissionMs, retirementTimeoutMs = 20)
+            nativeTimeoutMs = 10, permissionTimeoutMs = permissionMs, retirementTimeoutMs = 20, wake = wake)
     }
     fun budget(expected: ConnectionDeadline) { setupAwait { owner.nextDeadline() == expected } }
     fun grant(): AccessorySelection {
@@ -38,6 +39,38 @@ private class AdmissionDeadlineRig(
 
 class AccessoryAdmissionDeadlineTest {
     private fun await(value: CountDownLatch) { check(value.await(3, TimeUnit.SECONDS)) }
+
+    @Test fun t1096AsynchronousShorterNativeBudgetNotifiesBeforeBlockingCallback() {
+        val notifications = java.util.concurrent.atomic.AtomicInteger()
+        AdmissionDeadlineRig(wake = { notifications.incrementAndGet(); Unit }).use { rig ->
+            rig.budget(ConnectionDeadline.at(100))
+            val before = notifications.get()
+            val entered = CountDownLatch(1); val release = CountDownLatch(1)
+            rig.releases.add(release); rig.clock.set(80)
+            rig.backend.dispatch { entered.countDown(); await(release) }
+            await(entered)
+            assertEquals(ConnectionDeadline.at(90), rig.owner.nextDeadline())
+            assertTrue("T1096 original actor missed tightened native deadline", notifications.get() > before)
+        }
+    }
+
+    @Test fun t1096FailedTighteningNotificationCannotStartNativeCallback() {
+        val armed = java.util.concurrent.atomic.AtomicBoolean()
+        val failed = java.util.concurrent.atomic.AtomicBoolean()
+        val calls = java.util.concurrent.atomic.AtomicInteger()
+        AdmissionDeadlineRig(wake = {
+            if (armed.get()) { failed.set(true); throw IOException("T1096 wake failed") }
+        }).use { rig ->
+            try {
+                rig.budget(ConnectionDeadline.at(100)); armed.set(true)
+                rig.backend.dispatch { calls.incrementAndGet(); Unit }
+                setupAwait { failed.get() || calls.get() > 0 }
+                assertEquals("T1096 callback entered after wake failure", 0, calls.get())
+                setupAwait { rig.owner.retired() }
+                assertNotNull(rig.owner.failure())
+            } finally { armed.set(false) }
+        }
+    }
 
     @Test fun t1094NativeStartAndRequestKeepShorterBudgetThanPermissionWait() {
         val start = CountDownLatch(1); val releaseStart = CountDownLatch(1)
