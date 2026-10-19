@@ -15,7 +15,7 @@ enum Stage {
 }
 type ImageChange = fn(&mut abi::Format, u32);
 type RateChange = fn(&mut abi::Parameters, u32);
-struct Control {
+pub(super) struct Control {
     fail: Option<Stage>,
     image: Option<(ImageChange, u32)>,
     rate: abi::Rate,

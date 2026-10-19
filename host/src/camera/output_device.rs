@@ -90,3 +90,10 @@ fn configure_rate(control: &impl native::Controls, output: &File, fps: u32) -> R
 
 #[cfg(test)]
 mod tests;
+
+/// Test-only native configuration port. It uses the same complete readback
+/// validation as the real adapter; it cannot construct unchecked readiness.
+#[cfg(test)]
+pub(super) fn configure_fixture(output: File, spec: Spec) -> Result<ConfiguredOutput> {
+    configure_with(&tests::Control::default(), output, spec)
+}

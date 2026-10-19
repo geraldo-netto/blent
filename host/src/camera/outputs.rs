@@ -1,6 +1,6 @@
 //! Persistent V4L2 producers. A stopped/stalled camera becomes a black frame.
 use anyhow::{ensure, Context, Result};
-use blent_config::camera::CameraOptions;
+use blent_config::camera::{CameraOptions, CameraProfile};
 use std::{
     fs::File,
     os::unix::{
@@ -54,7 +54,7 @@ pub fn open_device(path: &Path, label: &str) -> Result<File> {
     Ok(file)
 }
 
-pub fn blank(options: &CameraOptions) -> Result<Vec<u8>> {
+pub fn blank(options: &CameraProfile) -> Result<Vec<u8>> {
     let bytes = options.frame_bytes()?;
     let pixels = bytes / 3 * 2;
     let mut frame = vec![128; bytes];
@@ -133,7 +133,11 @@ async fn write_frames(
 
 pub(super) const FRESH_FRAME_AGE: Duration = Duration::from_secs(2);
 
-fn current_frame<'a>(frame: Option<&'a Vec<u8>>, black: &'a [u8], age: Duration) -> &'a [u8] {
+pub(super) fn current_frame<'a>(
+    frame: Option<&'a Vec<u8>>,
+    black: &'a [u8],
+    age: Duration,
+) -> &'a [u8] {
     match frame {
         Some(bytes) if age < FRESH_FRAME_AGE => bytes,
         _ => black,
