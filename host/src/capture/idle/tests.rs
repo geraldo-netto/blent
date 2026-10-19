@@ -1,3 +1,4 @@
+use super::lease_tests::private_root;
 use super::*;
 use blent_config::negotiation::{DecoderChoice, Profile, StreamProfile};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
@@ -97,7 +98,7 @@ async fn ack(
 
 #[tokio::test(start_paused = true)]
 async fn t492_controller_trials_current_receipts_then_restores_cadence_on_stall() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let activity = tracker.encoder_activity(evidence.clone());
@@ -135,7 +136,7 @@ async fn t492_controller_trials_current_receipts_then_restores_cadence_on_stall(
 
 #[tokio::test(start_paused = true)]
 async fn t492_retired_stream_and_cancellation_cannot_publish_into_successor() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     let tracker = LatencyTracker::new();
     let old = evidence(&tracker);
     let activity = tracker.encoder_activity(old.clone());
@@ -197,14 +198,14 @@ async fn t492_unknown_decoder_disabled_setting_and_invalid_fifo_never_start() {
     )
     .await
     .is_none());
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     assert!(Lease::open(&dir.path().join("absent"), Default::default()).is_err());
     assert!(Lease::open(dir.path(), Default::default()).is_err());
 }
 
 #[tokio::test(start_paused = true)]
 async fn t492_late_join_missing_timestamps_and_bounded_history_fail_closed() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
@@ -239,7 +240,7 @@ async fn t492_late_join_missing_timestamps_and_bounded_history_fail_closed() {
 #[test]
 fn t492_lease_files_are_private_bounded_expiring_and_inode_scoped() {
     use std::os::unix::fs::{symlink, PermissionsExt};
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     let first = lease(dir.path());
     first.publish(500).unwrap();
     assert_eq!(
@@ -276,7 +277,7 @@ fn t492_lease_files_are_private_bounded_expiring_and_inode_scoped() {
 
 #[test]
 fn t492_helper_and_encoder_share_explicit_idle_option() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     for enabled in [false, true] {
         let config = CaptureConfig {
             adaptive_idle: enabled,
@@ -304,7 +305,7 @@ fn t492_helper_and_encoder_share_explicit_idle_option() {
 
 #[tokio::test(start_paused = true)]
 async fn t492_control_publish_error_stops_the_controller() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
@@ -320,7 +321,7 @@ async fn t492_control_publish_error_stops_the_controller() {
 #[tokio::test]
 async fn t492_completed_packets_retain_their_own_timing_before_broadcast() {
     use crate::media::Codec;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let handle = launch(lease(dir.path()), evidence.clone(), tracker.clone()).await;
@@ -358,7 +359,7 @@ async fn t492_completed_packets_retain_their_own_timing_before_broadcast() {
 
 #[tokio::test(start_paused = true)]
 async fn t492_new_viewer_invalidates_sparse_admission_even_without_missing_frames() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let (tx, _initial) = crate::video_queue::channel(8, Arc::new(AtomicBool::new(false)));
@@ -405,7 +406,7 @@ impl Drop for ReleaseViewer {
 }
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn t1029_aborted_idle_controller_retains_original_task_cleanup() {
-    let directory = tempfile::tempdir().unwrap();
+    let directory = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let _activity = tracker.encoder_activity(evidence.clone());
@@ -536,7 +537,7 @@ async fn idle_completed(original: &blent_config::retirement::Completion) {
 }
 #[tokio::test]
 async fn t1034_idle_drop_revokes_without_waiting_for_native_file_lock() {
-    let directory = tempfile::tempdir().unwrap();
+    let directory = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let _activity = tracker.encoder_activity(evidence.clone());
@@ -558,7 +559,7 @@ async fn t1034_idle_drop_revokes_without_waiting_for_native_file_lock() {
 }
 #[tokio::test]
 async fn t1034_idle_file_effects_do_not_block_control_runtime() {
-    let directory = tempfile::tempdir().unwrap();
+    let directory = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let _activity = tracker.encoder_activity(evidence.clone());
@@ -581,7 +582,7 @@ async fn t1034_idle_file_effects_do_not_block_control_runtime() {
 
 #[tokio::test]
 async fn t1034_unobserved_completed_startup_retains_queued_lease_cleanup() {
-    let directory = tempfile::tempdir().unwrap();
+    let directory = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     drop(tracker.encoder_activity(evidence.clone()));
@@ -618,7 +619,7 @@ async fn t1034_unobserved_completed_startup_retains_queued_lease_cleanup() {
 
 #[tokio::test]
 async fn t1034_canceled_startup_keeps_late_native_lease_creation() {
-    let directory = tempfile::tempdir().unwrap();
+    let directory = private_root();
     let fifo = directory.path().join("late.nv12");
     super::super::helper::ensure_fifo(&fifo).unwrap();
     let tracker = LatencyTracker::new();
@@ -718,18 +719,33 @@ async fn t1034_native_startup_panic_retains_original_retirement() {
 
 #[tokio::test]
 async fn t1036_encoder_generation_waits_for_original_native_idle_file_cleanup() {
-    let directory = tempfile::tempdir().unwrap();
+    let directory = private_root();
     let tracker = LatencyTracker::new();
     let evidence = evidence(&tracker);
     let _activity = tracker.encoder_activity(evidence.clone());
     let mut encoder = super::super::encoding::EncoderProcess::default();
     let scope = encoder.begin_generation().unwrap();
     let idle_scope = scope.clone();
-    let config = super::super::CaptureConfig { encoder: "libx264".into(), ..Default::default() };
-    encoder.start_with(&config, (64, 64), false, scope, |_| {
-        blent_config::commands::OwnedChild::spawn(tokio::process::Command::new("/bin/sleep").arg("60"))
-    }).unwrap();
-    let handle = launch_with(lease(directory.path()), evidence, tracker, Arc::new(AtomicU64::new(0)), &idle_scope).await.unwrap();
+    let config = super::super::CaptureConfig {
+        encoder: "libx264".into(),
+        ..Default::default()
+    };
+    encoder
+        .start_with(&config, (64, 64), false, scope, |_| {
+            blent_config::commands::OwnedChild::spawn(
+                tokio::process::Command::new("/bin/sleep").arg("60"),
+            )
+        })
+        .unwrap();
+    let handle = launch_with(
+        lease(directory.path()),
+        evidence,
+        tracker,
+        Arc::new(AtomicU64::new(0)),
+        &idle_scope,
+    )
+    .await
+    .unwrap();
     let original = handle.completion();
     drop(idle_scope);
     let (entered, ready) = std::sync::mpsc::channel();
@@ -750,5 +766,8 @@ async fn t1036_encoder_generation_waits_for_original_native_idle_file_cleanup() 
     files.join().unwrap();
     idle_completed(&original).await;
     assert!(encoder.ensure_retired().is_ok());
-    assert!(denied, "T1036 encoder replacement ignored original idle file cleanup");
+    assert!(
+        denied,
+        "T1036 encoder replacement ignored original idle file cleanup"
+    );
 }

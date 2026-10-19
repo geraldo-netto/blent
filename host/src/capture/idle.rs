@@ -13,6 +13,7 @@ use std::{
     time::Duration,
 };
 use tokio::time::Instant;
+mod directory;
 mod worker;
 
 const MAX_TIMINGS: usize = 256;
@@ -244,19 +245,21 @@ struct Lease {
     stop: Arc<worker::Stop>,
     _inode: std::fs::File,
     _token: std::fs::File,
+    directory: directory::Directory,
 }
 impl Lease {
     fn open(fifo: &Path, stop: Arc<worker::Stop>) -> Result<Self> {
+        let directory = directory::Directory::open(fifo.parent().context("FIFO directory")?)?;
         let inode = std::fs::OpenOptions::new()
             .read(true)
             .custom_flags(libc::O_PATH | libc::O_NOFOLLOW | libc::O_CLOEXEC)
-            .open(fifo)?;
+            .open(directory.path(fifo)?)?;
         let metadata = inode.metadata()?;
         anyhow::ensure!(
             metadata.file_type().is_fifo(),
             "idle request needs an owned FIFO"
         );
-        let token = tempfile::tempfile_in(fifo.parent().context("FIFO directory")?)?;
+        let token = tempfile::tempfile_in(directory.root())?;
         Ok(Self {
             path: fifo.with_extension("idle"),
             identity: (metadata.dev(), metadata.ino()),
@@ -264,6 +267,7 @@ impl Lease {
             stop,
             _inode: inode,
             _token: token,
+            directory,
         })
     }
 }
@@ -276,8 +280,26 @@ impl Cadence for Lease {
         }
         anyhow::ensure!(self.stop.active(), "idle lease retired");
         let _guard = LEASE_FILES.lock().unwrap();
+        self.publish_locked(interval, || {})
+    }
+
+    fn clear(&self) {
+        let _guard = LEASE_FILES.lock().unwrap();
+        self.clear_locked();
+    }
+}
+
+impl Lease {
+    fn publish_locked(&self, interval: u32, before_wait: impl FnOnce()) -> Result<()> {
         anyhow::ensure!(self.stop.active(), "idle lease retired");
         anyhow::ensure!(interval == 500, "unsupported sparse cadence");
+        before_wait();
+        let _directory = self.directory.lock()?;
+        anyhow::ensure!(self.stop.active(), "idle lease retired");
+        self.write_request(interval)
+    }
+
+    fn write_request(&self, interval: u32) -> Result<()> {
         let mut clock = libc::timespec {
             tv_sec: 0,
             tv_nsec: 0,
@@ -289,20 +311,25 @@ impl Cadence for Lease {
         );
         let expires =
             clock.tv_sec as u64 * 1000 + clock.tv_nsec as u64 / 1_000_000 + LEASE_US / 1000;
-        let mut file =
-            tempfile::NamedTempFile::new_in(self.path.parent().context("idle control directory")?)?;
+        let mut file = tempfile::NamedTempFile::new_in(self.directory.root())?;
         writeln!(
             file,
             "{} {} {} {expires} {interval}",
             self.identity.0, self.identity.1, self.token
         )?;
-        file.persist(&self.path).context("publish idle request")?;
-        Ok(())
-    }
-
-    fn clear(&self) {
-        let _guard = LEASE_FILES.lock().unwrap();
-        self.clear_locked();
+        match file.persist(self.directory.path(&self.path)?) {
+            Ok(persisted) => {
+                drop(persisted);
+                Ok(())
+            }
+            Err(failure) => {
+                // PersistError owns a TempPath through /proc/self/fd. Delete it
+                // under this original directory borrow before returning an error.
+                let cause = failure.error;
+                drop(failure.file);
+                Err(cause).context("publish idle request")
+            }
+        }
     }
 }
 
@@ -311,16 +338,26 @@ impl Lease {
         let file = std::fs::OpenOptions::new()
             .read(true)
             .custom_flags(libc::O_NONBLOCK | libc::O_NOFOLLOW)
-            .open(&self.path)?;
+            .open(self.directory.path(&self.path)?)?;
         let mut text = String::new();
         file.take(160).read_to_string(&mut text)?;
         Ok(text)
     }
 
     fn clear_locked(&self) {
+        self.clear_locked_with(|| {});
+    }
+
+    fn clear_locked_with(&self, after_snapshot: impl FnOnce()) {
+        let Ok(_directory) = self.directory.lock() else {
+            return; // Keep unknown request ownership; its monotonic lease expires.
+        };
         let prefix = format!("{} {} {} ", self.identity.0, self.identity.1, self.token);
         if self.contents().is_ok_and(|text| text.starts_with(&prefix)) {
-            let _ = std::fs::remove_file(&self.path);
+            after_snapshot();
+            if let Ok(path) = self.directory.path(&self.path) {
+                let _ = std::fs::remove_file(path);
+            }
         }
     }
 }
@@ -332,3 +369,6 @@ impl Drop for Lease {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod lease_tests;
