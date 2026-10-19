@@ -41,6 +41,21 @@ internal class ConnectionTrust(
 
     fun trusted(peer: ConnectionPeer): Boolean = !closed && !poisoned && peers.contains(peer.fingerprint)
 
+    /** Bounded detached values, valid only while this serialized owner is ready. */
+    fun snapshot(): SavedComputers {
+        check(!closed && !poisoned)
+        return SavedComputers(local, revision, peers.map(ConnectionPeer::parse))
+    }
+
+    /** Validate the displayed identity/revision before revoking any authority.
+     * The broker still owns withdrawal and native retirement of every live view. */
+    fun forget(pairing: ConnectionPairing, selected: SavedComputerSelection): Boolean {
+        check(!closed && !poisoned)
+        check(selected.local == local && selected.revision == revision) { "Saved computer list changed; refresh it" }
+        if (!peers.contains(selected.peer.fingerprint)) return false
+        return revoke(pairing, selected.peer)
+    }
+
     /** Storage failure cannot silently become an unremembered pairing prompt. */
     fun begin(pairing: ConnectionPairing, peer: ConnectionPeer, now: Long, timeout: Long): ConnectionTicket {
         check(!closed && !poisoned)
