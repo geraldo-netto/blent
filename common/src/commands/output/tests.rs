@@ -27,66 +27,86 @@ fn completed(ticket: &Completion) {
 #[test]
 fn t815_held_collection_cannot_block_control_or_release_its_capacity() {
     for asynchronous in [false, true] {
-        let pool = Pool::new(1).unwrap();
-        let slot = pool.reserve().unwrap();
-        let (started, entered) = mpsc::channel();
-        let (release, hold) = mpsc::channel();
-        let (returned, result) = mpsc::channel();
-        let worker = std::thread::spawn(move || {
-            let runtime = tokio::runtime::Builder::new_current_thread()
-                .enable_all()
-                .build()
-                .unwrap();
-            runtime.block_on(async {
-                let mut capture = CapturedOutput::start(
-                    [
-                        Box::new(Held {
-                            entered: started,
-                            release: hold,
-                        }),
-                        Box::new(io::empty()),
-                    ],
-                    limits(),
-                    Instant::now() + Duration::from_millis(100),
-                    slot,
-                )
-                .unwrap();
-                let ticket = capture.completion.clone();
-                capture.child_exited();
-                let timed_out = if asynchronous {
-                    tokio::time::timeout(Duration::from_millis(25), capture.result())
-                        .await
-                        .is_err()
-                } else {
-                    let status = Command::new(std::env::current_exe().unwrap())
-                        .args(["--list"])
-                        .stdout(Stdio::null())
-                        .status()
-                        .unwrap();
-                    capture
-                        .finish_sync(status, Instant::now() + Duration::from_millis(25))
-                        .is_err_and(|error| error.kind() == io::ErrorKind::TimedOut)
-                };
-                returned.send((timed_out, ticket)).unwrap();
-            });
-        });
-        entered.recv_timeout(Duration::from_secs(2)).unwrap();
-        let response = result.recv_timeout(Duration::from_millis(200));
-        let held = pool.reserve().is_err();
-        let incomplete = response
-            .as_ref()
-            .is_ok_and(|(_, ticket)| !ticket.is_complete());
-        release.send(()).unwrap();
-        worker.join().unwrap();
-        assert!(
-            response.is_ok(),
-            "T815: held collection blocked control executor"
-        );
-        let (timed_out, ticket) = response.unwrap();
-        assert!(timed_out && held && incomplete);
-        completed(&ticket);
-        assert_eq!(pool.active(), 0);
+        held_collection(asynchronous, known_status);
     }
+}
+
+#[test]
+fn t1142_slow_preparation_does_not_count_as_blocked_collection_control() {
+    held_collection(false, || {
+        std::thread::sleep(Duration::from_millis(350));
+        known_status()
+    });
+}
+
+fn known_status() -> ExitStatus {
+    Command::new(std::env::current_exe().unwrap())
+        .args(["--list"])
+        .stdout(Stdio::null())
+        .status()
+        .unwrap()
+}
+
+fn held_collection(asynchronous: bool, prepare: impl FnOnce() -> ExitStatus + Send + 'static) {
+    // Native executable preparation is outside the collector-control window.
+    let prepared_status = if asynchronous { None } else { Some(prepare()) };
+    let pool = Pool::new(1).unwrap();
+    let slot = pool.reserve().unwrap();
+    let (started, entered) = mpsc::channel();
+    let (release, hold) = mpsc::channel();
+    let (returned, result) = mpsc::channel();
+    let worker = std::thread::spawn(move || {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        runtime.block_on(async {
+            let mut capture = CapturedOutput::start(
+                [
+                    Box::new(Held {
+                        entered: started,
+                        release: hold,
+                    }),
+                    Box::new(io::empty()),
+                ],
+                limits(),
+                Instant::now() + Duration::from_millis(100),
+                slot,
+            )
+            .unwrap();
+            let ticket = capture.completion.clone();
+            capture.child_exited();
+            let timed_out = if asynchronous {
+                tokio::time::timeout(Duration::from_millis(25), capture.result())
+                    .await
+                    .is_err()
+            } else {
+                capture
+                    .finish_sync(
+                        prepared_status.unwrap(),
+                        Instant::now() + Duration::from_millis(25),
+                    )
+                    .is_err_and(|error| error.kind() == io::ErrorKind::TimedOut)
+            };
+            returned.send((timed_out, ticket)).unwrap();
+        });
+    });
+    entered.recv_timeout(Duration::from_secs(2)).unwrap();
+    let response = result.recv_timeout(Duration::from_millis(200));
+    let held = pool.reserve().is_err();
+    let incomplete = response
+        .as_ref()
+        .is_ok_and(|(_, ticket)| !ticket.is_complete());
+    release.send(()).unwrap();
+    worker.join().unwrap();
+    assert!(
+        response.is_ok(),
+        "T815: held collection blocked control executor"
+    );
+    let (timed_out, ticket) = response.unwrap();
+    assert!(timed_out && held && incomplete);
+    completed(&ticket);
+    assert_eq!(pool.active(), 0);
 }
 
 struct Interrupted(bool);
