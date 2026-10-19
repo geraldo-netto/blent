@@ -37,11 +37,12 @@ impl<const N: usize> Default for Observations<N> {
 }
 impl<const N: usize> Observations<N> {
     pub fn reserve(&mut self) -> io::Result<Reservation> {
-        let slot = self
-            .entries
-            .iter_mut()
-            .find(|entry| entry.as_ref().is_none_or(|entry| state(entry).complete()));
-        let slot = slot.ok_or_else(|| {
+        let available = self.entries.iter_mut().find(|entry| {
+            entry
+                .as_ref()
+                .is_none_or(|original| state(original).complete())
+        });
+        let slot = available.ok_or_else(|| {
             io::Error::new(
                 io::ErrorKind::WouldBlock,
                 "Original native observations retained",
@@ -54,9 +55,11 @@ impl<const N: usize> Observations<N> {
         Ok(Reservation(original))
     }
     pub fn complete(&self) -> bool {
-        self.entries
-            .iter()
-            .all(|entry| entry.as_ref().is_none_or(|entry| state(entry).complete()))
+        self.entries.iter().all(|entry| {
+            entry
+                .as_ref()
+                .is_none_or(|original| state(original).complete())
+        })
     }
 }
 

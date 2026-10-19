@@ -3,7 +3,7 @@ use clap::Parser;
 use std::{os::unix::fs::PermissionsExt, path::Path, time::Duration};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
-pub(super) fn report() -> Report {
+pub(super) fn new_report() -> Report {
     Report::new(watch::channel(State::Starting).0, watch::channel(None).0)
 }
 
@@ -150,7 +150,7 @@ async fn t539_real_h264_upload_decodes_only_to_selected_endpoint() {
         client.shutdown().await.unwrap();
     };
     let (result, _) = tokio::join!(
-        decoder::connection(server, &token, &ffmpeg, &profile, &outputs, report()),
+        decoder::connection(server, &token, &ffmpeg, &profile, &outputs, new_report()),
         upload
     );
     assert!(result.is_err());
@@ -287,7 +287,7 @@ async fn t539_rejects_encoded_dimensions_above_negotiated_profile() {
         let _ = client.shutdown().await;
     };
     let (result, _) = tokio::join!(
-        decoder::connection(server, &token, &ffmpeg, &profile, &outputs, report()),
+        decoder::connection(server, &token, &ffmpeg, &profile, &outputs, new_report()),
         upload
     );
     assert!(result.is_err());
@@ -322,7 +322,7 @@ async fn t539_stalled_decoder_cannot_hold_camera_session_forever() {
     };
     let completed = tokio::time::timeout(Duration::from_secs(5), async {
         tokio::join!(
-            decoder::connection(server, &token, &decoder, &profile, &frames, report()),
+            decoder::connection(server, &token, &decoder, &profile, &frames, new_report()),
             upload
         )
     })
@@ -466,7 +466,7 @@ async fn t543_host_reports_frames_and_rejects_unselected_lens() {
         Path::new("/missing-ffmpeg"),
         &profile,
         &frames,
-        report(),
+        new_report(),
     )
     .await;
     assert!(result.unwrap_err().to_string().contains("selected by host"));
@@ -554,7 +554,7 @@ async fn transformed_test_frame(
         .unwrap()
     };
     tokio::select! {
-        result = decoder::connection(server, &token, &ffmpeg, profile, &frames, report()) => panic!("{result:?}"),
+        result = decoder::connection(server, &token, &ffmpeg, profile, &frames, new_report()) => panic!("{result:?}"),
         frame = upload => frame,
     }
 }

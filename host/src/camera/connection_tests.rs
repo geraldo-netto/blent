@@ -308,7 +308,7 @@ fn t933_connection_factory_uses_private_commands_and_explicit_transport() {
 }
 
 async fn factory_fixture() {
-    let report = tests::report();
+    let report = tests::new_report();
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let token = "a".repeat(64);
     let adb = connection(&CameraProfile::default(), &listener, &token, &report)

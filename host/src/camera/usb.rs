@@ -9,13 +9,13 @@ pub(crate) type Bridge = crate::media_connection::Bridge<CameraProfile>;
 pub(crate) fn native(
     profile: &CameraProfile,
     token: &str,
-    listener: impl FnOnce() -> std::io::Result<TcpListener>,
+    create_listener: impl FnOnce() -> std::io::Result<TcpListener>,
     launch: Launch,
     report: &crate::camera_control::Report,
 ) -> Result<Bridge> {
     let request = crate::camera_registration::request(profile, token)?;
     let original = report.reserve_native(crate::camera_control::NativeResource::Connection)?;
-    let listener = listener()?;
+    let listener = create_listener()?;
     let bridge = crate::media_connection::linux::native(profile, token, request, listener, launch)?;
     original.bind(bridge.completion());
     Ok(bridge)

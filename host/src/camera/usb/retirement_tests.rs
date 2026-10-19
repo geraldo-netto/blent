@@ -3,7 +3,7 @@ use super::*;
 use crate::camera_control::{NativeResource, Report};
 use futures_util::FutureExt;
 
-fn report() -> Report {
+fn new_report() -> Report {
     Report::new(
         tokio::sync::watch::channel(blent_config::camera::CameraState::Starting).0,
         tokio::sync::watch::channel(None).0,
@@ -20,7 +20,7 @@ fn launch(root: &std::path::Path) -> Launch {
 #[tokio::test]
 async fn t1126_usb_creation_requires_original_observation_before_native_setup() {
     let root = tempfile::tempdir().unwrap();
-    let report = report();
+    let report = new_report();
     let reserved = report.reserve_native(NativeResource::Connection).unwrap();
     let called = std::cell::Cell::new(false);
     let result = native(
@@ -50,7 +50,7 @@ async fn t1126_usb_creation_requires_original_observation_before_native_setup() 
 #[tokio::test]
 async fn t1126_usb_original_bridge_drop_not_logical_construction_settles_proof() {
     let root = tempfile::tempdir().unwrap();
-    let report = report();
+    let report = new_report();
     let bridge = native(
         &crate::camera_registration::test_support::profile(),
         &"ab".repeat(32),
@@ -73,7 +73,7 @@ async fn t1126_usb_original_bridge_drop_not_logical_construction_settles_proof()
 #[tokio::test]
 async fn t1126_failed_listener_creator_releases_unbound_original_observation() {
     let root = tempfile::tempdir().unwrap();
-    let report = report();
+    let report = new_report();
     let failed = native(
         &crate::camera_registration::test_support::profile(),
         &"ab".repeat(32),
@@ -99,7 +99,7 @@ async fn t1126_invalid_original_credential_never_invokes_listener_creator() {
     ];
     values.extend((0..32).map(|seed| char::from_u32(0x100 + seed).unwrap().to_string().repeat(32)));
     for token in values {
-        let report = report();
+        let report = new_report();
         let called = std::cell::Cell::new(false);
         let result = native(
             &crate::camera_registration::test_support::profile(),

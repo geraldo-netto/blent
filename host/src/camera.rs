@@ -221,9 +221,9 @@ fn producer_work(
     let completion = child.completion();
     child_slot.bind(completion.clone());
     child.keep_alive(lease);
-    let options = options.clone();
+    let feed_options = options.clone();
     let work = crate::owned_task::Task::spawn(async move {
-        let result = outputs::feed(&mut child, frames, &options).await;
+        let result = outputs::feed(&mut child, frames, &feed_options).await;
         outputs::retire(child).await;
         result
     })?;

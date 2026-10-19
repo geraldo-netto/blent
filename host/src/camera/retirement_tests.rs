@@ -4,7 +4,7 @@ use futures_util::FutureExt;
 
 #[tokio::test]
 async fn t1126_native_validation_failure_still_waits_for_original_report_obligations() {
-    let report = tests::report();
+    let report = tests::new_report();
     let original = blent_config::retirement::Pool::new(1)
         .unwrap()
         .reserve()
