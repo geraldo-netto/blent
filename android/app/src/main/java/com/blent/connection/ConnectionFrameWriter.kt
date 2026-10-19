@@ -4,7 +4,7 @@ package com.blent.connection
  * writes and flush. Its caller calls mux.finish only after flushComplete returns
  * the exact frame. Failed/cancelled native work retires the whole connection;
  * it is never retried as a new frame. Native deadlines belong to the supervisor. */
-internal class ConnectionFrameWriter(timeoutMs: Long) {
+internal class ConnectionFrameWriter(timeoutMs: Long) : ConnectionDeadlineSource {
     private val clock = ConnectionFrameClock(timeoutMs)
     private val headerBytes = ByteArray(ConnectionWire.HEADER_BYTES)
     private var active: ConnectionFrame? = null
@@ -65,4 +65,5 @@ internal class ConnectionFrameWriter(timeoutMs: Long) {
     fun nativePending(): Boolean = native != null || flushing != null
     fun tick(now: Long) = clock.check(now)
     fun cancel() = clock.cancel()
+    override fun nextDeadline(): ConnectionDeadline = clock.nextDeadline()
 }

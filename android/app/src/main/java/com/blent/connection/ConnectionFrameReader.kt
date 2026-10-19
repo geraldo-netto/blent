@@ -4,7 +4,7 @@ package com.blent.connection
  * at most one loan and one completed frame exist. A completed frame must be
  * dispatched/released before another read. Resource credit belongs to Session,
  * not this transport staging buffer. No stream, task or OS behavior lives here. */
-internal class ConnectionFrameReader(timeoutMs: Long) {
+internal class ConnectionFrameReader(timeoutMs: Long) : ConnectionDeadlineSource {
     private val clock = ConnectionFrameClock(timeoutMs)
     private val headerBytes = ByteArray(ConnectionWire.HEADER_BYTES)
     private val bodyBytes = ByteArray(ConnectionWire.MAX_PAYLOAD)
@@ -64,4 +64,5 @@ internal class ConnectionFrameReader(timeoutMs: Long) {
     fun nativePending(): Boolean = native != null
     fun tick(now: Long) = clock.check(now)
     fun cancel() = clock.cancel()
+    override fun nextDeadline(): ConnectionDeadline = clock.nextDeadline()
 }

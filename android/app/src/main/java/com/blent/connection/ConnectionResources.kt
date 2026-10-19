@@ -9,7 +9,7 @@ import com.blent.connection.ConnectionManagement.Resource
  * Reserve bounded management output before an outgoing transition; preserve FIFO
  * through cancellation. Commit/revokeWritten mean whole-record write completion.
  * Queue peer events behind those barriers. Failed writes disconnect; never undo. */
-internal class ConnectionResources(private val role: Role, private val connection: ConnectionTicket) {
+internal class ConnectionResources(private val role: Role, private val connection: ConnectionTicket) : ConnectionDeadlineSource {
     enum class Role { HOST, TABLET }
     enum class Install { ACTIVATE, DRAIN }
     private enum class Stage { OFFERED, PREPARED, COMMITTING, COMMITTED, ADMITTED }
@@ -204,5 +204,14 @@ internal class ConnectionResources(private val role: Role, private val connectio
             Role.HOST -> slot.revokeWritten
             Role.TABLET -> slot.peerRevoke && slot.nativeRetired && slot.channelsRetired
         }
+    }
+    override fun nextDeadline(): ConnectionDeadline {
+        var earliest: Long? = null
+        for (slot in slots) {
+            if (slot == null || slot.closing || slot.stage == Stage.ADMITTED) continue
+            val current = earliest
+            if (current == null || slot.deadline < current) earliest = slot.deadline
+        }
+        return ConnectionDeadline.at(earliest)
     }
 }

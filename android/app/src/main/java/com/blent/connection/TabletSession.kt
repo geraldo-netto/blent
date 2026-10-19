@@ -19,7 +19,7 @@ import java.util.ArrayDeque
 internal class TabletSession(
     ticket: ConnectionTicket, private val limits: ConnectionSessionLimits,
     private val capabilities: Int,
-) : ConnectionSession, ConnectionResourceAuthority {
+) : ConnectionSession, ConnectionResourceAuthority, ConnectionDeadlineSource {
     private class Binding(val lease: ConnectionResourceLease) {
         var installed = false
         var closing = false
@@ -329,4 +329,5 @@ internal class TabletSession(
         }
         return null
     }
+    override fun nextDeadline(): ConnectionDeadline = resources.nextDeadline()
 }

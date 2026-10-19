@@ -16,7 +16,7 @@ internal data class ConnectionFrame(
 /** Absolute active-I/O budget. Idle time and completed-frame dispatch are not
  * charged. The native supervisor must also observe this deadline while calls
  * block; a cooperative callback alone cannot bound a stuck syscall. */
-internal class ConnectionFrameClock(private val timeoutMs: Long) {
+internal class ConnectionFrameClock(private val timeoutMs: Long) : ConnectionDeadlineSource {
     private var previous = 0L
     private var deadline: Long? = null
     var failed = false
@@ -39,4 +39,6 @@ internal class ConnectionFrameClock(private val timeoutMs: Long) {
     }
     fun clear() { deadline = null }
     fun cancel() { failed = true }
+    override fun nextDeadline(): ConnectionDeadline =
+        if (failed) ConnectionDeadline.IDLE else ConnectionDeadline.at(deadline)
 }

@@ -7,7 +7,7 @@ internal class ConnectionSessionRunner(
     private val session: ConnectionSession,
     private val io: ConnectionIo,
     private val limits: ConnectionRunLimits = ConnectionRunLimits(),
-) : ConnectionRun {
+) : ConnectionRun, ConnectionDeadlineSource {
     private val reader = ConnectionFrameReader(limits.ioTimeoutMs)
     private val writer = ConnectionFrameWriter(limits.ioTimeoutMs)
     private var reading: ConnectionIoRequest.Read? = null
@@ -118,4 +118,11 @@ internal class ConnectionSessionRunner(
     override fun failure(): Exception? = error
     override fun retired(): Boolean = ended
     override fun terminationRequired(): Boolean = terminate
+    override fun nextDeadline(): ConnectionDeadline {
+        if (ended || terminate) return ConnectionDeadline.IDLE
+        val stopped = stoppedAt
+        if (stopped != null) return ConnectionDeadline.at(stopped + limits.retirementTimeoutMs)
+        return reader.nextDeadline().combine(writer.nextDeadline())
+            .combine(ConnectionDeadline.observe(session as? ConnectionDeadlineSource))
+    }
 }
