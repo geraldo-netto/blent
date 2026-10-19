@@ -115,6 +115,13 @@ pub(crate) struct Session<'a> {
     pub(crate) options: &'a AudioOptions,
     pub(crate) token: &'a str,
 }
+/// Immutable result of this stream's authenticated negotiation. Moving it
+/// transfers the original grant; it contains no device or process ownership.
+struct NegotiatedStream {
+    grant: blent_config::audio::AudioGrant,
+    processing: String,
+    clocked: bool,
+}
 impl Session<'_> {
     pub(crate) async fn serve(
         &self,
@@ -172,10 +179,12 @@ impl Session<'_> {
             &mut socket,
             &mut child,
             &mut session,
-            grant,
+            NegotiatedStream {
+                grant,
+                processing,
+                clocked,
+            },
             report,
-            processing,
-            clocked,
         );
         let result = tokio::select! {
             biased;
@@ -195,11 +204,14 @@ impl Session<'_> {
         socket: &mut TcpStream,
         child: &mut blent_config::commands::OwnedChild,
         session: &mut AudioSession,
-        grant: blent_config::audio::AudioGrant,
+        negotiated: NegotiatedStream,
         report: &Report,
-        processing: String,
-        clocked: bool,
     ) -> Result<()> {
+        let NegotiatedStream {
+            grant,
+            processing,
+            clocked,
+        } = negotiated;
         let started = std::time::Instant::now();
         process::ready(child)
             .await
