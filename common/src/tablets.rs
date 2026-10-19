@@ -4,6 +4,7 @@ use crate::connection::pairing::PeerId;
 use anyhow::{ensure, Result};
 use serde::{Deserialize, Serialize};
 
+#[cfg(all(target_os = "linux", feature = "platform"))]
 pub(crate) mod batch;
 
 /// Maximum number of simultaneous display assignments (slots 0 through 3).
