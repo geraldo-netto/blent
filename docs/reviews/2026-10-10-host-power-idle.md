@@ -106,9 +106,14 @@ latency claim. Whole-JVM CPU varies with compilation/GC, so raw thread counters
 and reverse-order controls are retained.
 
 The separate snapshot allocation probe found measurable allocation even for
-nonescaping idle `combine` consumption on the installed JVM. T1097 tracks immutable
-snapshot reuse; no scalar-replacement or Android ART optimization is assumed.
-Frame/encoder suppression remains T915, separate from actor scheduling.
+nonescaping idle `combine` consumption on the installed JVM. Immutable snapshot
+reuse (T1097) now returns the idle constant from `at(null)` and reuses either
+combination input when its complete value matches. A new snapshot is still
+created when partial knowledge requires a different value. Matched local probes
+reduced two million idle combinations from 96,000,168 to 168 measured bytes;
+[raw evidence](artifacts/2026-10-19-t1097/README.md) retains the finite hosted scope.
+No scalar-replacement or Android ART optimization is assumed. Frame/encoder
+suppression remains T915, separate from actor scheduling.
 
 ## Portable policy and independent ownership (T913, 2026-10-12)
 

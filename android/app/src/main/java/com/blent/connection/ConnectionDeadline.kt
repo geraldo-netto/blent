@@ -15,13 +15,16 @@ internal data class ConnectionDeadline(val atMs: Long?, val known: Boolean) {
             second == null -> first
             else -> minOf(first, second)
         }
-        return ConnectionDeadline(earliest, known && other.known)
+        val complete = known && other.known
+        if (earliest == first && complete == known) return this
+        if (earliest == second && complete == other.known) return other
+        return ConnectionDeadline(earliest, complete)
     }
 
     companion object {
         val IDLE = ConnectionDeadline(null, true)
         val UNKNOWN = ConnectionDeadline(null, false)
-        fun at(time: Long?): ConnectionDeadline = ConnectionDeadline(time, true)
+        fun at(time: Long?): ConnectionDeadline = if (time == null) IDLE else ConnectionDeadline(time, true)
         fun observe(source: ConnectionDeadlineSource?): ConnectionDeadline = source?.nextDeadline() ?: UNKNOWN
     }
 }
