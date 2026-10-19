@@ -1,12 +1,8 @@
 /* T492 isolated writer experiment. No EVDI, ADB, display or app lifecycle calls.
  * The runner supplies an unchanged or explicitly patched copy of writer.c. */
 #define _GNU_SOURCE
-#if __has_include("frame_exchange_private.h")
-#include "frame_exchange_private.h"
-#else
-#include "frame_exchange.h"
-#endif
 #include "fifo_writer.h"
+#include "frame_exchange_private.h"
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -15,19 +11,22 @@
 #include <string.h>
 #include <unistd.h>
 
-static long long monotonic_us(void) {
+static long long monotonic_us(void)
+{
     struct timespec now;
     assert(clock_gettime(CLOCK_MONOTONIC, &now) == 0);
     return (long long)now.tv_sec * 1000000 + now.tv_nsec / 1000;
 }
 
-static size_t observed_write(fifo_writer_t *fifo, const unsigned char *data,
-                             size_t size, unsigned generation) {
+static size_t observed_write(fifo_writer_t *fifo, const unsigned char *data, size_t size,
+                             unsigned generation)
+{
     long long start = monotonic_us();
     unsigned marker = data[0];
     size_t remaining = fifo_writer_write(fifo, data, size, generation);
-    fprintf(stderr, "{\"event\":\"write\",\"start_us\":%lld,\"end_us\":%lld,"
-                    "\"marker\":%u,\"remaining\":%zu}\n",
+    fprintf(stderr,
+            "{\"event\":\"write\",\"start_us\":%lld,\"end_us\":%lld,"
+            "\"marker\":%u,\"remaining\":%zu}\n",
             start, monotonic_us(), marker, remaining);
     return remaining;
 }
@@ -36,32 +35,42 @@ static size_t observed_write(fifo_writer_t *fifo, const unsigned char *data,
 #include "candidate_writer.c"
 #undef fifo_writer_write
 
-static void sleep_until(long long due_us) {
-    struct timespec due = {.tv_sec = due_us / 1000000,
-                           .tv_nsec = due_us % 1000000 * 1000};
+static void sleep_until(long long due_us)
+{
+    struct timespec due = {.tv_sec = due_us / 1000000, .tv_nsec = due_us % 1000000 * 1000};
     int result;
-    do { result = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &due, NULL); }
-    while (result == EINTR);
+    do
+    {
+        result = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &due, NULL);
+    } while (result == EINTR);
     assert(result == 0);
 }
 
-static void publish(frame_exchange_t *frames, unsigned marker) {
-    memset(frames->fill, (int)marker, (size_t)frames->width * frames->height);
-    memset(frames->fill + frames->width * frames->height, 128,
-           (size_t)frames->width * frames->height / 2);
+static void publish(frame_exchange_t *frames, unsigned marker)
+{
+    unsigned generation;
+    if (!frame_exchange_begin(frames, &generation))
+        return;
+    frame_target_t target = frame_exchange_target(frames);
+    size_t pixels = (size_t)target.width * target.height;
+    memset(target.data, (int)marker, pixels);
+    memset(target.data + pixels, 128, pixels / 2);
     long long now = monotonic_us();
     fprintf(stderr, "{\"event\":\"publish\",\"start_us\":%lld,\"marker\":%u}\n", now, marker);
-    frame_exchange_publish(frames, now);
+    frame_exchange_publish(frames, now, generation);
 }
 
-static void mixed_damage(frame_exchange_t *frames, long long start, int fps) {
+static void mixed_damage(frame_exchange_t *frames, long long start, int fps)
+{
     /* Damage just before candidate keepalive deadlines, then one second motion. */
     unsigned marker = 33;
-    for (int i = 1; i <= 4; i++) {
+    for (int i = 1; i <= 4; i++)
+    {
         sleep_until(start + i * 500000 - 1000);
         publish(frames, marker++);
     }
-    for (int i = 0; i < fps; i++) {
+    for (int i = 0; i < fps; i++)
+    {
         sleep_until(start + 3000000 + i * 1000000LL / fps);
         publish(frames, marker++);
     }
@@ -70,7 +79,8 @@ static void mixed_damage(frame_exchange_t *frames, long long start, int fps) {
     publish(frames, marker);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     assert(argc == 3);
     int fps = atoi(argv[1]), mixed = atoi(argv[2]);
     assert((fps == 30 || fps == 60) && (mixed == 0 || mixed == 1));
@@ -78,18 +88,20 @@ int main(int argc, char **argv) {
     frame_exchange_init(&frames);
     frame_exchange_resize(&frames, 1280, 800);
     assert(frame_exchange_allocated(&frames));
-    frames.buffers_ready = 1;
+    frame_exchange_set_ready(&frames, 1);
     atomic_int running = 1;
     fifo_writer_t fifo = FIFO_WRITER_INITIALIZER(&running, &frames.generation);
     fifo.fd = dup(STDOUT_FILENO);
     assert(fifo.fd >= 0);
     assert(fcntl(fifo.fd, F_SETFL, O_NONBLOCK) == 0);
-    writer_context_t writer = {&frames, &fifo, &running, fps};
+    writer_context_t writer = {
+        .frames = &frames, .fifo = &fifo, .running = &running, .fps = fps, .idle_control = NULL};
     long long start = monotonic_us();
     publish(&frames, 32);
     pthread_t thread;
     assert(pthread_create(&thread, NULL, writer_run, &writer) == 0);
-    if (mixed) mixed_damage(&frames, start, fps);
+    if (mixed)
+        mixed_damage(&frames, start, fps);
     sleep_until(start + (mixed ? 7500000 : 6000000));
     pthread_mutex_lock(&frames.mutex);
     /* End between complete frames. Deliberate mid-frame shutdown is covered
@@ -102,5 +114,7 @@ int main(int argc, char **argv) {
     assert(pthread_join(thread, NULL) == 0);
     fifo_writer_close(&fifo);
     frame_exchange_free(&frames);
+    assert(pthread_cond_destroy(&frames.ready) == 0);
+    assert(pthread_mutex_destroy(&frames.mutex) == 0);
     return 0;
 }
