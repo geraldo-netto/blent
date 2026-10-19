@@ -346,6 +346,7 @@ async fn t1145_cancelled_unstarted_job_never_configures_or_writes() {
         frames: rig.frames.subscribe(),
         stopped,
         configure: configured,
+        operation: watch::channel(None).0,
     };
     Task::spawn_blocking(move || job.run())
         .unwrap()
@@ -450,3 +451,5 @@ async fn t1145_invalid_profile_boundaries_never_admit_native_configuration() {
         rig.report.wait_native().await;
     }
 }
+
+mod operation_tests;

@@ -1,5 +1,5 @@
 //! Original-file output workflow. One admitted blocking worker owns all ioctls
-//! and writes; its async controller only owns cancellation and the actual join.
+//! and writes; its async controller owns cancellation, progress deadlines and join.
 use super::{
     output_device::{self, ConfiguredOutput, Spec},
     output_writer::Writer,
@@ -16,6 +16,8 @@ use tokio::{
     sync::watch,
     time::{Instant, Interval},
 };
+
+mod progress;
 
 type Configure = fn(File, Spec) -> Result<ConfiguredOutput>;
 type Frames = watch::Receiver<Option<Arc<Vec<u8>>>>;
@@ -38,7 +40,7 @@ pub fn start(
     )
 }
 
-fn start_with(
+pub(super) fn start_with(
     lease: Arc<File>,
     profile: &CameraProfile,
     frames: Frames,
@@ -50,6 +52,7 @@ fn start_with(
     let controller_slot = report.reserve_native(NativeResource::Producer)?;
     let black = outputs::blank(profile)?;
     let (running, stopped) = watch::channel(false);
+    let (operation, mut observed) = watch::channel(None);
     let job = Job {
         lease,
         spec,
@@ -57,16 +60,17 @@ fn start_with(
         frames,
         stopped,
         configure,
+        operation,
     };
-    let native = Task::spawn_blocking(move || job.run())?;
+    let mut native = Task::spawn_blocking(move || job.run())?;
     let completion = native.completion();
     native_slot.bind(completion.clone());
     let controller = Task::spawn(async move {
         // Retained even before the first poll; Drop also handles rejected admission.
         let cancellation = running;
-        let result = native.await;
+        let result = progress::monitor(&mut native, &mut observed).await;
         drop(cancellation);
-        result?
+        result
     })?;
     controller_slot.bind(controller.completion());
     Ok((controller, completion))
@@ -79,13 +83,18 @@ struct Job {
     frames: Frames,
     stopped: watch::Receiver<bool>,
     configure: Configure,
+    operation: progress::Sender,
 }
 impl Job {
-    fn run(self) -> Result<()> {
+    fn run(mut self) -> Result<()> {
         if self.stopped.has_changed().is_err() {
             return Ok(());
         }
-        let configured = (self.configure)(self.lease.try_clone()?, self.spec)?;
+        let configured = {
+            let _operation =
+                progress::Span::begin(&mut self.operation, progress::Kind::Configuration);
+            (self.configure)(self.lease.try_clone()?, self.spec)?
+        };
         if self.stopped.has_changed().is_err() {
             return Ok(());
         }
@@ -94,6 +103,7 @@ impl Job {
             self.frames,
             self.stopped,
             self.black,
+            self.operation,
         ))
     }
 }
@@ -116,19 +126,25 @@ async fn feed(
     mut frames: Frames,
     mut stop: watch::Receiver<bool>,
     black: Vec<u8>,
+    mut operation: progress::Sender,
 ) -> Result<()> {
     let mut last_frame = Instant::now();
     let mut tick = tokio::time::interval(Duration::from_secs(1));
     loop {
         match next(&mut frames, &mut stop, &mut tick).await {
-            Event::Stop => return Ok(writer.write(&black)?),
+            Event::Stop => return write_frame(&mut writer, &black, &mut operation),
             Event::Frame => last_frame = Instant::now(),
             Event::Tick => {}
         }
         let newest = frames.borrow_and_update().clone();
         let bytes = outputs::current_frame(newest.as_deref(), &black, last_frame.elapsed());
-        writer.write(bytes)?;
+        write_frame(&mut writer, bytes, &mut operation)?;
     }
+}
+
+fn write_frame(writer: &mut Writer, frame: &[u8], operation: &mut progress::Sender) -> Result<()> {
+    let _operation = progress::Span::begin(operation, progress::Kind::Write);
+    Ok(writer.write(frame)?)
 }
 
 #[cfg(test)]
