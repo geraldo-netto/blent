@@ -20,4 +20,32 @@
  * only bounded stack storage. No global state or allocations. */
 int idle_control_interval(const char *path, int source, long long now_ms);
 
+/* One native reader owns at most one O_PATH descriptor for advice present
+ * before its first source access. That ORIGINAL object is never admissible for
+ * this reader, even if a source inode is reused after publisher loss. Current
+ * publishers replace records atomically; they never rewrite a record in place.
+ *
+ * Initialize before begin; zero initialization is disabled and owns no fd.
+ * begin on a live reader rejects without disturbing its original ownership.
+ * Missing advice admits future publications. Any other admission failure keeps
+ * this reader compatible; no file is removed. Borrow this value only within its
+ * owning native worker. end follows its last source/control access and precedes
+ * return/join; it is idempotent. Logical expiry/clear never releases the pin.
+ * No callbacks, allocations or other retained resources. Admission accepts only
+ * a private regular file of at most 159 bytes; unknown objects disable advice. */
+typedef struct
+{
+    int fd;
+    int admitted;
+} idle_control_reader_t;
+
+#define IDLE_CONTROL_READER_INITIALIZER                                                            \
+    {                                                                                              \
+        .fd = -1, .admitted = 0                                                                    \
+    }
+int idle_control_begin(idle_control_reader_t *reader, const char *path);
+int idle_control_reader_interval(const idle_control_reader_t *reader, const char *path, int source,
+                                 long long now_ms);
+void idle_control_end(idle_control_reader_t *reader);
+
 #endif

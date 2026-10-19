@@ -1,3 +1,17 @@
+/* Atomic publication mirrors the production owner; old inode stays pinned. */
+static void t492_publish(const char *path, const char *text, size_t count)
+{
+    char temporary[PATH_MAX];
+    int length = snprintf(temporary, sizeof(temporary), "%s-new-XXXXXX", path);
+    assert(length > 0);
+    assert((size_t)length < sizeof(temporary));
+    int file = mkstemp(temporary);
+    assert(file >= 0);
+    assert(write(file, text, count) == (ssize_t)count);
+    assert(close(file) == 0);
+    assert(rename(temporary, path) == 0);
+}
+
 static void t492_invalid_control(int fifo)
 {
     char text[160];
@@ -34,19 +48,21 @@ static void t492_invalid_control(int fifo)
 static void t492_file_restrictions(const char *path)
 {
     char text[160];
-    assert(read_idle_control(NULL, text, sizeof(text)) < 0);
-    assert(read_idle_control("/nonexistent/t492", text, sizeof(text)) < 0);
+    assert(read_idle_control(NULL, text, sizeof(text), -1) < 0);
+    assert(read_idle_control("/nonexistent/t492", text, sizeof(text), -1) < 0);
     assert(chmod(path, 0666) == 0);
-    assert(read_idle_control(path, text, sizeof(text)) < 0);
+    assert(read_idle_control(path, text, sizeof(text), -1) < 0);
     assert(chmod(path, 0600) == 0);
-    char link[256]; snprintf(link, sizeof(link), "%s-link", path);
+    char link[256];
+    snprintf(link, sizeof(link), "%s-link", path);
     assert(symlink(path, link) == 0);
-    assert(read_idle_control(link, text, sizeof(text)) < 0);
+    assert(read_idle_control(link, text, sizeof(text), -1) < 0);
     unlink(link);
-    assert(read_idle_control("/tmp", text, sizeof(text)) < 0);
+    assert(read_idle_control("/tmp", text, sizeof(text), -1) < 0);
 }
 
-static void t492_sparse_deadlines(writer_state_t *state, long long now) {
+static void t492_sparse_deadlines(writer_state_t *state, long long now)
+{
     mock_monotonic_ms = now + 499;
     state->last_write_ms = now;
     assert(!writer_frame_due(&g_writer, state, 0));
@@ -61,28 +77,41 @@ static void t492_sparse_deadlines(writer_state_t *state, long long now) {
 }
 
 /* T492: a request is bounded to one FIFO inode and a short monotonic lease. */
-static void test_t492_idle(void) {
+static void test_t492_idle(void)
+{
     char path[] = "/tmp/blent-t492-idle-XXXXXX";
-    int file = mkstemp(path); assert(file >= 0);
-    int ends[2]; assert(pipe(ends) == 0);
-    struct stat identity; assert(fstat(ends[1], &identity) == 0);
+    int file = mkstemp(path);
+    assert(file >= 0);
+    int ends[2];
+    assert(pipe(ends) == 0);
+    struct stat identity;
+    assert(fstat(ends[1], &identity) == 0);
     char text[160];
     long long now = writer_now_ms();
     int size = snprintf(text, sizeof(text), "%ju %ju 1 %lld 500\n", (uintmax_t)identity.st_dev,
                         (uintmax_t)identity.st_ino, now + 1500);
-    assert(write(file, text, size) == size); close(file);
+    assert(close(file) == 0);
+    writer_state_t state = {.last_write_ms = now - 250, .idle = IDLE_CONTROL_READER_INITIALIZER};
+    assert(idle_control_begin(&state.idle, path));
+    t492_publish(path, text, (size_t)size);
     char *args[] = {"helper", "--idle-control-file", path};
     parse_helper_options(3, args);
     g_fifo.fd = ends[1];
-    writer_state_t state = {.last_write_ms = now - 250};
     frame_exchange_init(&g_frames);
-    assert(!writer_frame_due(&g_writer, &state, 0) && "T492: valid sparse lease still sends five idle frames/s");
-    assert(writer_frame_due(&g_writer, &state, 1) && "T492: fresh damage must bypass idle deadline");
+    assert(!writer_frame_due(&g_writer, &state, 0) &&
+           "T492: valid sparse lease still sends five idle frames/s");
+    assert(writer_frame_due(&g_writer, &state, 1) &&
+           "T492: fresh damage must bypass idle deadline");
     t492_sparse_deadlines(&state, now);
     t492_invalid_control(ends[1]);
     t492_file_restrictions(path);
     assert(unlink(path) == 0);
     state.last_write_ms = writer_now_ms() - 250;
     assert(writer_frame_due(&g_writer, &state, 0));
-    close(ends[0]); close(ends[1]); g_fifo.fd = -1; unlink(path);
+    idle_control_end(&state.idle);
+    assert(pthread_cond_destroy(&g_frames.ready) == 0);
+    close(ends[0]);
+    close(ends[1]);
+    g_fifo.fd = -1;
+    unlink(path);
 }

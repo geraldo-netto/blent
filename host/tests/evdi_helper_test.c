@@ -126,8 +126,11 @@ static int mock_clock_gettime(clockid_t clock, struct timespec *value) {
 }
 static int t405_idle_wait_seen;
 static int t405_check_idle_wait;
+static int (*t1120_wait_observer)(const struct timespec *deadline);
 static int mock_pthread_cond_timedwait(pthread_cond_t *condition, pthread_mutex_t *mutex,
-                                      const struct timespec *deadline) {
+                                      const struct timespec *deadline)
+{
+    if (t1120_wait_observer) return t1120_wait_observer(deadline);
     if (!t405_check_idle_wait) return pthread_cond_timedwait(condition, mutex, deadline);
     t405_idle_wait_seen++;
     assert(deadline->tv_sec == 1 && deadline->tv_nsec == 200000000L &&
@@ -1477,6 +1480,7 @@ static void test_t415_rounding(void) {
 #include "idle_capture.c"
 #include "idle_recheck.c"
 #include "idle_record.c"
+#include "idle_admission.c"
 #include "shared_capture.c"
 #include "cursor_overlay.c"
 #include "frame_format.c"
@@ -1530,6 +1534,12 @@ int main(int argc, char **argv)
         {"T1119-wait", test_t1119_recheck},
         {"T1119-second", test_t1119_one_second_recheck},
         {"T1121", test_t1121_exact_record},
+        {"T1120-stale", test_t1120_stale_advice},
+        {"T1120-current", test_t1120_current_advice},
+        {"T1120-lifetime", test_t1120_reader_lifetime},
+        {"T1120-boundaries", test_t1120_reader_boundaries},
+        {"T1120-exhaustion", test_t1120_reader_exhaustion},
+        {"T1120-unsafe", test_t1120_unsafe_writer_advice},
         {"T554", test_t554_regions},
         {"T497-callbacks", test_t497_callbacks},
         {"T497-main", test_t497_main},

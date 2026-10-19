@@ -26,9 +26,10 @@ static long long writer_now_ms(void)
     return writer_now_us() / 1000;
 }
 
-static int writer_idle_ms(writer_context_t *writer)
+static int writer_idle_ms(writer_context_t *writer, const idle_control_reader_t *reader)
 {
-    int interval = idle_control_interval(writer->idle_control, writer->fifo->fd, writer_now_ms());
+    int interval = idle_control_reader_interval(reader, writer->idle_control, writer->fifo->fd,
+                                                writer_now_ms());
     return interval ? interval : IDLE_KEEPALIVE_MS;
 }
 
@@ -47,6 +48,7 @@ typedef struct
     struct timespec next_allowed;
     frame_cursor_t frame;
     frame_lease_t lease;
+    idle_control_reader_t idle;
 } writer_state_t;
 
 static void add_period(struct timespec *time, long period_ns)
@@ -80,7 +82,7 @@ static int ensure_writer_fifo(writer_context_t *writer)
 static int claim_writer_frame(writer_context_t *writer, writer_state_t *state, int *size,
                               int *fresh)
 {
-    long long due = state->last_write_ms + writer_idle_ms(writer);
+    long long due = state->last_write_ms + writer_idle_ms(writer, &state->idle);
     /* Advice may be removed or expire while no damage is published. Recheck
      * within compatibility cadence; a poll is not a raw-frame write. */
     long long recheck = writer_now_ms() + 200;
@@ -107,7 +109,7 @@ static int writer_frame_due(writer_context_t *writer, writer_state_t *state, int
        transmit no new information. The occasional keepalive keeps the
        encoder and the client's read timeout alive. */
     long long now_ms_write = writer_now_ms();
-    if (!fresh && (now_ms_write - state->last_write_ms) < writer_idle_ms(writer))
+    if (!fresh && (now_ms_write - state->last_write_ms) < writer_idle_ms(writer, &state->idle))
     {
         frame_exchange_release(writer->frames);
         return 0;
@@ -161,7 +163,12 @@ void *writer_run(void *arg)
     writer_state_t state = {
         .period_ns = 1000000000L / (writer->fps > 0 ? writer->fps : 60),
         .frame = {.generation = UINT_MAX},
+        .idle = IDLE_CONTROL_READER_INITIALIZER,
     };
+    /* Snapshot before opening/accessing this reader's first source. Keep the
+     * original advice object pinned until the last native writer access. */
+    if (!idle_control_begin(&state.idle, writer->idle_control))
+        fprintf(stderr, "[evdi-helper] Idle admission unavailable; using compatible cadence\n");
     clock_gettime(CLOCK_MONOTONIC, &state.next_allowed);
     while ((*writer->running))
     {
@@ -178,5 +185,6 @@ void *writer_run(void *arg)
         pace_writer(&state);
         write_writer_frame(writer, &state, size, fresh);
     }
+    idle_control_end(&state.idle);
     return NULL;
 }

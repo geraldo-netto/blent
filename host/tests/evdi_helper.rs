@@ -115,6 +115,34 @@ fn t1121_native_idle_record_rejects_hidden_bytes_and_truncation() {
 }
 
 #[test]
+fn t1120_original_writer_rejects_preexisting_advice_and_accepts_new_publication() {
+    let harness = Harness::build("T492");
+    for case in [
+        "T1120-stale",
+        "T1120-current",
+        "T1120-lifetime",
+        "T1120-boundaries",
+        "T1120-exhaustion",
+        "T1120-unsafe",
+    ] {
+        let output = Command::new(harness.0.path().join("helper-test"))
+            .arg(case)
+            .env("BLENT_T1120_ROOT", harness.0.path())
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "T1120 {case}: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        if case == "T1120-unsafe" {
+            assert!(String::from_utf8_lossy(&output.stderr)
+                .contains("Idle admission unavailable; using compatible cadence"));
+        }
+    }
+}
+
+#[test]
 fn t1119_sparse_writer_rechecks_advice_within_compatible_cadence() {
     let harness = Harness::build("T1119-wait");
     for case in ["T1119-wait", "T1119-second"] {

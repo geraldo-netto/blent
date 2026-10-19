@@ -23,7 +23,8 @@ joins and existing retirement regressions remain the actual release boundaries.
 
 [Evidence](artifacts/2026-10-19-t1119/README.md): red/green regressions, faulty
 controls, 65 normal native tests, per-function native counters and source audits.
-Original ownership/admission after process loss remains T1120. T1121 now rejects
+T1120 now pins and rejects preexisting advice before the native writer first
+accesses its source; see [original-reader admission](2026-10-19-native-idle-admission.md). T1121 now rejects
 embedded NUL and hidden trailing bytes using an exact consumed-cursor comparison;
 its [native evidence](artifacts/2026-10-19-t1121/README.md) retains red/green and
 8,192 bounded hidden-suffix cases plus prefix mutations. No unrestricted lifecycle or hardware claim.
