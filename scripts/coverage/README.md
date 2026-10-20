@@ -102,7 +102,7 @@ kernel code remain outside this audit; no kernel sanitizer result is claimed.
 This runs the normal isolated tooling regressions and Python test suites,
 including retained tests outside the coverage scope. Only the essential-script
 inventory is subject to the threshold.
-Packaging prerequisites, including `rpmbuild`, must be available. `--report-only`
+Packaging prerequisites must be available. `--report-only`
 allows a report containing gaps to be written without failing the command; the
 report still says `passes: false`. Remove that option to enforce the threshold.
 Test failures always fail collection.
@@ -118,8 +118,8 @@ fixture disappears. Changed or ambiguous bodies receive no credit, and failed
 attestation fails the report. The trace records only source hashes,
 filenames and line numbers, never expanded commands, arguments or credentials.
 Shell coverage applies to Bash executions; code executed only by another shell
-remains unmeasured. Embedded Python and RPM scriptlet functions remain in the
-inventory even when the collector cannot yet measure them.
+remains unmeasured. Embedded Python functions remain in the inventory even
+when the collector cannot yet measure them.
 
 ## Linux Rust gate
 
@@ -312,8 +312,8 @@ fresh target directories.
 T1006 adds explicit `--bins` selection. Combine it with `--lib` for library and
 binary unit targets without integration targets. This changes the requested
 test targets only; it introduces no function/counter exclusions and preserves
-all existing tests. Full integration checks remain separate. In particular,
-RPM-dependent notice tests remain deferred under T833, not deleted or skipped.
+all existing tests. Full integration checks remain separate and retain current
+package-notice and release-version assertions.
 
 The output retains `manifest.json`, `rust.lcov`, Cargo logs, raw profiles/native
 objects and SHA-256 attestation of sources, report, collector and owned objects.

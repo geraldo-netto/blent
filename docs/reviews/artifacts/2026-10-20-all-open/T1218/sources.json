@@ -1,0 +1,5 @@
+{
+  "scripts/complexity/check.py": "99095e6ca5dfb364b150e617320a7b16046feb0b0f63e36f1078c8da1c4e06b5",
+  "scripts/complexity/test_metrics.py": "e152791702444198b4f08eb446b8206c9eaff479b501bdbab05254f0b6dfcf67",
+  "scripts/coverage/inventory.py": "a650e69d6053a8bd5203ac81f22996283fc87b0624609c5b548e4e30ea23f81f"
+}

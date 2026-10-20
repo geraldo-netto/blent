@@ -76,9 +76,9 @@ class MetricsTest(unittest.TestCase):
 
     def test_t381_package_functions_are_measured(self):
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / 'sample.spec'
-            path.write_text('Name: sample\n%post\n' + boundary('shell', 10) + '%files\n/bin/sample\n')
-            self.assertEqual(list(file_scores(path)), [(3, 'sample', 10)])
+            path = Path(directory) / 'postinst'
+            path.write_text('#!/bin/sh\n' + boundary('shell', 10))
+            self.assertEqual(list(file_scores(path)), [(2, 'sample', 10)])
 
     def test_t381_git_scope_includes_new_tests_and_excludes_generated(self):
         with tempfile.TemporaryDirectory() as directory:

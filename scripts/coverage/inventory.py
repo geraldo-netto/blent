@@ -5,7 +5,7 @@ import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'complexity'))
-from check import source_files, language, rpm_sections
+from check import source_files, language
 from syntax import parse, walk, function_name, embedded_python
 from model import Function
 
@@ -17,7 +17,7 @@ def fixture(path):
 
 def essential_script(path):
     if path.parts[0] == 'packaging':
-        return language(path) in {'python', 'shell', 'rpm'} or path.name == 'AppRun'
+        return language(path) in {'python', 'shell'} or path.name == 'AppRun'
     return str(path) in {
         'scripts/build-release.sh', 'scripts/copy-distribution-docs.sh', 'scripts/gen-edid.py',
         'scripts/install.sh', 'scripts/gpu-boot-order.sh', 'scripts/setup-evdi.sh', 'scripts/stage-linux-bundle.sh',
@@ -124,9 +124,7 @@ def file_functions(path, source, kind):
     if kind == 'shell':
         for offset, body in embedded_python(source):
             yield from python_functions(path, '\n' * offset + body)
-    elif kind == 'rpm':
-        for offset, body in rpm_sections(source):
-            yield from file_functions(path, '\n' * offset + body, 'shell')
+
 
 
 def owned_functions(root):

@@ -27,12 +27,12 @@ No Sonar implementation is vendored or required at runtime.
 Git-tracked files and untracked, nonignored files are included, including tests
 and this checker. Deleted files, dependency/build/cache directories, generated
 Gradle wrappers and the upstream `host/evdi/evdi_lib.h` are excluded explicitly.
-Kotlin build scripts, Arch `PKGBUILD`/`.install`, Debian `postinst`, RPM shell
-scriptlet functions and Python heredocs passed directly to `python`/`python3`
+Kotlin build scripts, Arch `PKGBUILD`/`.install`, Debian `postinst` and Python
+heredocs passed directly to `python`/`python3`
 are included. Embedded Python retains the containing script's line numbers.
 
-Only functions/methods are scored: top-level scripts, Make recipes and RPM
-scriptlet command sequences are not implicitly treated as functions. Source
+Only functions/methods are scored: top-level scripts and Make recipes are not
+implicitly treated as functions. Source
 strings containing fixtures or generated code are not analyzed as code.
 
 ## Pinned rules and limitations
@@ -47,7 +47,7 @@ fixtures deliberately when updating a parser or Sonar reference.
 | Kotlin | Authored functions, accessors, constructors/init owners and callbacks. Named-function baseline/count stays unchanged: if/loops, each when entry (including else), logical AND/OR; nested named functions contribute to their container. Follows [Sonar Kotlin at `b10cb30`](https://github.com/SonarSource/sonar-kotlin/blob/b10cb30596e0874f5a7ad10180fafaf6c09e8ef3/sonar-kotlin-metrics/src/main/java/org/sonarsource/kotlin/metrics/CyclomaticComplexityVisitor.kt). PSI parsing does not require type resolution. |
 | Python | Function baseline, if (excluding elif), for/while, conditional expressions, each logical operator and comprehension filter. Nested functions are scored separately. Follows [Sonar Python at `0161137`](https://github.com/SonarSource/sonar-python/blob/0161137cf31b6ead71293f5f35d5ced18f55bc0b/python-frontend/src/main/java/org/sonar/python/metrics/ComplexityVisitor.java); this intentionally differs from common generic Python counters. |
 | C | Approximation: one plus if/for/while/do, case/default labels, ternaries and logical operators. Source-tree parsing covers conditional-compilation branches but does not expand macros or use Sonar's proprietary C analyzer. Compiler/preprocessor semantics can differ; a passing count is not native CFamily certification. |
-| Shell | Maintainer-approved standard: one plus if/elif, loops, case alternatives and short-circuit operators. No native Sonar Shell metric is claimed. RPM macros are not expanded; scriptlets are parsed as shell. |
+| Shell | Maintainer-approved standard: one plus if/elif, loops, case alternatives and short-circuit operators. No native Sonar Shell metric is claimed. |
 
 `test_metrics.py` permanently checks 9/10 boundaries for every language,
 selected rule differences, parser rejection, embedded Python/package coverage,
