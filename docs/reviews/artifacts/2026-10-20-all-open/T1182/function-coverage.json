@@ -1,0 +1,373 @@
+{
+  "tool": "JaCoCo0.8.15 native JVM method-variant line counters; includes all CameraBinding callbacks/default variants and GenerationFence methods",
+  "functions": [
+    {
+      "owner": "com/blent/CameraBinding$launch$4",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$6",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/ResourceRetirement;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$5",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$statusUpdates$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$4$2",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;J)V",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getState",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getEndpoint",
+      "descriptor": "()Lcom/blent/CameraEndpoint;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "setEndpoint",
+      "descriptor": "(Lcom/blent/CameraEndpoint;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getSelected",
+      "descriptor": "()Lcom/blent/CameraLens;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "setSelected",
+      "descriptor": "(Lcom/blent/CameraLens;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getStatus",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "setStatus",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getBackgroundRunning",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getPermissionPending",
+      "descriptor": "()Lcom/blent/CameraCapturePermission;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "start",
+      "descriptor": "()V",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "useTarget",
+      "descriptor": "(Lcom/blent/CameraCaptureTarget;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "applyHost",
+      "descriptor": "(Lcom/blent/CameraEndpoint;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stopTarget",
+      "descriptor": "(Lcom/blent/CameraCaptureTarget;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "choose",
+      "descriptor": "(Lcom/blent/CameraLens;)V",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "hasPermission",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "permissionChanged",
+      "descriptor": "()V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "allowCapture",
+      "descriptor": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;)Z",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "permissionResult",
+      "descriptor": "(ZLcom/blent/CameraCapturePermission;)V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "permissionResult$default",
+      "descriptor": "(Lcom/blent/CameraBinding;ZLcom/blent/CameraCapturePermission;ILjava/lang/Object;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "launch",
+      "descriptor": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;J)V",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "idleStatus",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stopCapture",
+      "descriptor": "()V",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "background",
+      "descriptor": "(Z)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stopBackground",
+      "descriptor": "()V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stop",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "ownsBackground",
+      "descriptor": "(Ljava/lang/String;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "backgroundStopped",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "shutdown",
+      "descriptor": "()V",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$start$2$1",
+      "method": "emit",
+      "descriptor": "(Lcom/blent/CameraEndpoint;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$4$2$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "<init>",
+      "descriptor": "(J)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "<init>",
+      "descriptor": "(JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "available",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "acquire",
+      "descriptor": "()Ljava/lang/Long;",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "revoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "current",
+      "descriptor": "(J)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$4$2$1$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$guard$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$start$2",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    }
+  ]
+}

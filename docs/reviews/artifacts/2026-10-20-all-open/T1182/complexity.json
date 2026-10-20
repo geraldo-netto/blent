@@ -1,0 +1,701 @@
+{
+  "tool": "cached hash-verified Kotlin PSI1.9.20 source Sonar-style decision model; not native SonarQube",
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 9,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 22,
+      "name": "get:endpoint",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 23,
+      "name": "set:endpoint",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 23,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 25,
+      "name": "get:selected",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 26,
+      "name": "set:selected",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 26,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 28,
+      "name": "get:status",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 29,
+      "name": "set:status",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 29,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 33,
+      "name": "get:backgroundRunning",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 35,
+      "name": "get:permissionPending",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 37,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 40,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 42,
+      "name": "start",
+      "complexity": 6
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 45,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 47,
+      "name": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 48,
+      "name": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 56,
+      "name": "useTarget",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 63,
+      "name": "applyHost",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 72,
+      "name": "stopTarget",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 77,
+      "name": "choose",
+      "complexity": 7
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 88,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 89,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 101,
+      "name": "hasPermission",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 104,
+      "name": "permissionChanged",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 113,
+      "name": "allowCapture",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 135,
+      "name": "permissionResult",
+      "complexity": 6
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 145,
+      "name": "launch",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 146,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 151,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 153,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 154,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 154,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 155,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 156,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 158,
+      "name": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 166,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 173,
+      "name": "idleStatus",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 173,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 176,
+      "name": "stopCapture",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 182,
+      "name": "background",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 189,
+      "name": "stopBackground",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 200,
+      "name": "stop",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 207,
+      "name": "ownsBackground",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 209,
+      "name": "backgroundStopped",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/CameraBinding.kt",
+      "line": 213,
+      "name": "shutdown",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/GenerationFence.kt",
+      "line": 6,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/GenerationFence.kt",
+      "line": 12,
+      "name": "available",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/GenerationFence.kt",
+      "line": 14,
+      "name": "acquire",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/GenerationFence.kt",
+      "line": 22,
+      "name": "revoke",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/GenerationFence.kt",
+      "line": 24,
+      "name": "current",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 10,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 13,
+      "name": "<init>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 15,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 17,
+      "name": "execute",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 18,
+      "name": "cancel",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 19,
+      "name": "retire",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 22,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 25,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 27,
+      "name": "current",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 28,
+      "name": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 30,
+      "name": "retain",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 31,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 32,
+      "name": "stop",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 35,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 43,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 45,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 46,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 47,
+      "name": "invite",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 48,
+      "name": "close",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 49,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 52,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 56,
+      "name": "t1182TerminalAdmissionPrecedesPermissionBackgroundAndNativeEffects",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 57,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 71,
+      "name": "t1182LastGrantRejectsReplacementButRetainsOriginalClaimUntilNativeCleanup",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 72,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 81,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 99,
+      "name": "t1182ExecutionEndRevokesCallbacksBeforeHeldRetirement",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 100,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 117,
+      "name": "t1182OldPermissionCannotConsumeLastGrantOrReviveAfterPermissionLoss",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 118,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 143,
+      "name": "t1182TerminalTargetStopsOriginalWithoutRetainOrPermissionPrompt",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 144,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 160,
+      "name": "t1182BoundedStartsAndStopsMatchWiderIntegerAdmission",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 163,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 167,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 173,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 178,
+      "name": "t1182BackgroundWithdrawalCannotAdmitWorkerAfterOriginalRequestRevoked",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 179,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 180,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 191,
+      "name": "t1182NegativeSeedsCannotCreateBindingAuthority",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 196,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 197,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 197,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 197,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 197,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 198,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 201,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 11,
+      "name": "t1180DefaultStartsClosedAndOnlyFreshGrantBecomesCurrent",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 23,
+      "name": "t1180NegativeSeedsNeverCreateAuthority",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 25,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 29,
+      "name": "t1180ExhaustiveBoundedTracesMatchWideIndependentAuthorityModel",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 31,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 35,
+      "name": "checkTrace",
+      "complexity": 6
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 42,
+      "name": "<lambda>",
+      "complexity": 6
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 58,
+      "name": "checkState",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 67,
+      "name": "t1180ConcurrentTerminalReplacementNeverRevivesOriginalGrant",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 73,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 74,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 79,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/GenerationFenceTest.kt",
+      "line": 84,
+      "name": "<lambda>",
+      "complexity": 1
+    }
+  ]
+}

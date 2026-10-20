@@ -14,6 +14,7 @@ internal class CameraBinding(
     private val invitations: StateFlow<CameraEndpoint?>,
     private val scope: CoroutineScope,
     private val backgroundService: (String?) -> Unit,
+    initialGeneration: Long = 0,
 ) {
     private val mutableState = kotlinx.coroutines.flow.MutableStateFlow(CameraLifecycleState())
     val state = mutableState.asStateFlow()
@@ -34,7 +35,7 @@ internal class CameraBinding(
     val permissionPending: CameraCapturePermission? get() = pending
     private var observer: Job? = null
     private val statusUpdates = LatestDispatch(scope) { status = "Status update failed: ${it.message}" }
-    private var generation = 0L
+    private val generations = GenerationFence(initialGeneration)
     private var serviceError: Exception? = null
     private val guard = ResourceLane(scope, { status = it })
 
@@ -85,9 +86,11 @@ internal class CameraBinding(
         try {
             guard.checkAvailable()
             check(serviceError == null) { "Background cleanup incomplete: ${serviceError?.message}" }
+            val revision = checkNotNull(generations.acquire()) { "Camera generations exhausted" }
             background(host.background)
-            launch(host, lens)
+            launch(host, lens, revision)
         } catch (error: Exception) {
+            generations.revoke()
             selected = null
             status = error.message ?: "Camera background service unavailable."
             stopTarget(source.target)
@@ -108,6 +111,12 @@ internal class CameraBinding(
     }
 
     private fun allowCapture(host: CameraEndpoint, lens: CameraLens): Boolean {
+        if (!generations.available()) {
+            status = "Camera generations exhausted"
+            stopTarget(source.target)
+            background(false)
+            return false
+        }
         if (hasPermission()) return true
         if (source.target != null) {
             // External offers obtain permission before admission. Permission loss
@@ -133,20 +142,22 @@ internal class CameraBinding(
         choose(request.lens)
     }
 
-    private fun launch(host: CameraEndpoint, lens: CameraLens) {
-        val revision = generation
+    private fun launch(host: CameraEndpoint, lens: CameraLens, revision: Long) {
+        check(generations.current(revision)) { "Camera request no longer current" }
         selected = lens
         status = "${lens.label} camera selected."
         val target = source.target
         val claim = target?.authority?.retain()
         check(target == null || claim != null) { "Camera target no longer current" }
         try {
+            check(generations.current(revision)) { "Camera request no longer current" }
             guard.replace({ MediaConsumerRun(claim, ::hasPermission) {
                 createRun(host, lens, rotation) { text ->
-                    statusUpdates.submit { if (revision == generation) status = text }
+                    statusUpdates.submit { if (generations.current(revision)) status = text }
                 }
             } }, { failure ->
-                if (generation == revision) {
+                if (generations.current(revision)) {
+                    generations.revoke()
                     stopTarget(target)
                     if (failure != null) status = failure.message ?: "Camera sharing failed."
                     selected = null
@@ -163,7 +174,7 @@ internal class CameraBinding(
         ?: if (guard.stalled) "Native cleanup stalled; replacement waiting." else "Camera sharing is off."
 
     private fun stopCapture() {
-        generation++
+        generations.revoke()
         guard.stop()
         selected = null
     }

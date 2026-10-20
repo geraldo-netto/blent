@@ -1,0 +1,6 @@
+{
+  "android/app/src/main/java/com/blent/CameraBinding.kt": "9991ef0dc8bd9ed244c21157b17a8d09771b65fb9fdacb4a569e65a9047c5323",
+  "android/app/src/main/java/com/blent/GenerationFence.kt": "4ee7320bb836a4ca1ae5cc44a2f8ffb0ff06b853a1b494965000a07d28ce7a37",
+  "android/app/src/test/java/com/blent/CameraGenerationTest.kt": "cbb7af807379a6dbc8ef9008f17ee82701d5b58133523d1e822f38233b53c086",
+  "android/app/src/test/java/com/blent/GenerationFenceTest.kt": "450ec239417cc9f5154c42fbeed96878722e2a07a775a992e4b0c5686a061fd3"
+}

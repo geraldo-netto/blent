@@ -56,6 +56,7 @@ class GenerationFenceTest {
     }
 
     private fun checkState(fence: GenerationFence, expected: BigInteger, active: Boolean) {
+        assertEquals(expected < BigInteger.valueOf(Long.MAX_VALUE), fence.available())
         val probes = listOf(Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE,
             expected.toLong(), (expected - BigInteger.ONE).toLong())
         for (value in probes) {

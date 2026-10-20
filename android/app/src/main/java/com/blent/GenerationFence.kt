@@ -8,6 +8,9 @@ internal class GenerationFence(initial: Long = 0) {
     private var active = false
     init { require(initial >= 0) }
 
+    /** Preflight only; the serialized workflow must still acquire before effects. */
+    @Synchronized fun available(): Boolean = revision < Long.MAX_VALUE
+
     @Synchronized fun acquire(): Long? {
         active = false
         if (revision == Long.MAX_VALUE) return null

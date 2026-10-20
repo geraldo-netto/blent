@@ -1,0 +1,65 @@
+{
+  "total": 104,
+  "classes": [
+    {
+      "class": "com.blent.BoundedRetirementTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.CameraActivityOwnerTest",
+      "tests": 9
+    },
+    {
+      "class": "com.blent.CameraContractTest",
+      "tests": 18
+    },
+    {
+      "class": "com.blent.CameraControlsTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.CameraGenerationTest",
+      "tests": 8
+    },
+    {
+      "class": "com.blent.CameraHostControlTest",
+      "tests": 16
+    },
+    {
+      "class": "com.blent.CameraPermissionIdentityTest",
+      "tests": 3
+    },
+    {
+      "class": "com.blent.CameraRetirementTest",
+      "tests": 6
+    },
+    {
+      "class": "com.blent.CameraServiceOwnershipTest",
+      "tests": 8
+    },
+    {
+      "class": "com.blent.CameraTargetBindingTest",
+      "tests": 9
+    },
+    {
+      "class": "com.blent.CameraWaitStatusTest",
+      "tests": 2
+    },
+    {
+      "class": "com.blent.GenerationFenceTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.PortableLifecycleTest",
+      "tests": 2
+    },
+    {
+      "class": "com.blent.RetirementFailureTest",
+      "tests": 8
+    },
+    {
+      "class": "com.blent.StatusDispatchTest",
+      "tests": 3
+    }
+  ]
+}
