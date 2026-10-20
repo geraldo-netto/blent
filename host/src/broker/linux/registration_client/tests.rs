@@ -322,6 +322,40 @@ async fn t1228_admission_timeout_sends_unregister_and_receives_original_retireme
     assert_eq!(client.status().failure, Some(Failure::TimedOut));
     assert!(client.status().remote_retired);
 }
+
+#[tokio::test]
+async fn t1234_consent_default_matches_the_shared_resource_policy() {
+    let settings = Fixture::new().factory.settings;
+    assert_eq!(settings.admission, Duration::from_secs(120));
+    let shared = blent_config::connection::resources::AdmissionTimeout::default();
+    assert_eq!(
+        settings.admission.as_millis(),
+        shared.milliseconds() as u128
+    );
+    assert_eq!(settings.startup, Duration::from_secs(10));
+    assert_eq!(settings.cleanup, Duration::from_secs(5));
+}
+
+#[tokio::test]
+async fn t1234_consent_accepts_the_resource_domain_and_rejects_invalid_boundaries() {
+    let fixture = Fixture::new();
+    for milliseconds in [1, 37, 61_000, 120_000, 600_000] {
+        let mut settings = fixture.factory.settings.clone();
+        settings.admission = Duration::from_millis(milliseconds);
+        assert!(Factory::new(settings).is_ok(), "T1234 {milliseconds}ms");
+    }
+    for duration in [
+        Duration::ZERO,
+        Duration::from_nanos(999_999),
+        Duration::from_secs(600) + Duration::from_nanos(1),
+        Duration::MAX,
+    ] {
+        let mut settings = fixture.factory.settings.clone();
+        settings.admission = duration;
+        assert!(Factory::new(settings).is_err(), "T1234 {duration:?}");
+    }
+}
+
 #[tokio::test]
 async fn t911_drop_sends_cancellation_and_retains_owner_until_broker_proof() {
     let fixture = Fixture::new();
@@ -371,11 +405,10 @@ async fn t911_settings_and_endpoint_inputs_reject_invalid_boundaries() {
         assert!(Factory::new(settings).is_err());
     }
     for duration in [Duration::ZERO, Duration::from_secs(61), Duration::MAX] {
-        for field in 0..3 {
+        for field in 0..2 {
             let mut settings = fixture.factory.settings.clone();
             match field {
                 0 => settings.startup = duration,
-                1 => settings.admission = duration,
                 _ => settings.cleanup = duration,
             }
             assert!(Factory::new(settings).is_err());

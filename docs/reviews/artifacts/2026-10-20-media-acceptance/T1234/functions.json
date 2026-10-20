@@ -1,0 +1,44 @@
+[
+  {
+    "file": "host/src/broker/linux/registration_client.rs",
+    "function": "Settings::new",
+    "start": 32,
+    "end": 40,
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "lines": {
+      "32": 37,
+      "33": 37,
+      "34": 37,
+      "35": 37,
+      "36": 37,
+      "37": 37,
+      "38": 37,
+      "39": 37,
+      "40": 37
+    }
+  },
+  {
+    "file": "host/src/broker/linux/registration_client.rs",
+    "function": "Settings::validate",
+    "start": 41,
+    "end": 58,
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "lines": {
+      "41": 66,
+      "42": 66,
+      "43": 66,
+      "46": 114,
+      "47": 114,
+      "48": 114,
+      "52": 48,
+      "53": 42,
+      "54": 42,
+      "57": 40,
+      "58": 66
+    }
+  }
+]

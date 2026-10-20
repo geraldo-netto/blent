@@ -7,8 +7,9 @@ profile controls are under **Advanced camera settings**. Android shows status,
 its required camera permission prompt, and explicit **Start camera** / **Stop
 camera** actions; camera profile configuration stays on the computer.
 
-Choose a lens and press **Start camera**. Open Blent on the tablet and grant
-camera permission if requested. In Google Meet or another application, select
+Choose a lens and press **Start camera** on the computer. Open Blent on the
+tablet, then press its separate **Start camera** and grant camera permission
+if requested. Pairing alone does not start capture. In Google Meet or another application, select
 **Blent Front** or **Blent Rear**, matching the host selection. Both ordinary
 Linux webcams exist while sharing runs, but only the selected lens is live;
 the inactive endpoint is black. A browser's webcam picker does not switch lenses.
@@ -266,5 +267,14 @@ before acquiring camera devices. Production host GUI transport selection is impl
 acceptance remains T858 and older-device evidence remains T863. Device trials
 are postponed: private TLS/protocol and real H.264 fixtures do not establish
 physical debugging-off camera support.
+
+The host's direct USB registration allows two minutes for local media approval by
+default. Pairing and camera permission remain separate actions within the request
+window. The native client's admission setting uses the shared1–600000ms resource
+policy; startup and cleanup keep their separate short deadlines. Broker
+`--resource-timeout-ms`, tablet USB resource deadlines and the client's selected
+admission budget are independent: the first expiry cancels the request. Changing
+only the broker's limit does not extend the client's budget. Expiry ends the
+invitation; it never proves native cleanup or permits an automatic restart.
 
 [Native regression and per-function evidence](reviews/artifacts/2026-10-11-t933/README.md).

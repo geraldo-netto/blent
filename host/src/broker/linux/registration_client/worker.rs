@@ -214,6 +214,45 @@ mod tests {
         thread.join().unwrap();
     }
     #[tokio::test(start_paused = true)]
+    async fn t1234_default_wait_allows_consent_after_thirty_seconds() {
+        let mut worker = worker();
+        worker.shared.update(Model::outgoing);
+        worker
+            .shared
+            .update(|model| {
+                model.receive(Message::Registered {
+                    request: 1,
+                    route: blent_config::connection::routes::RouteId {
+                        owner: 7,
+                        revision: 4,
+                    },
+                })
+            })
+            .unwrap();
+        let admission = Instant::now() + worker.settings.admission;
+        let delayed = async {
+            tokio::time::sleep(Duration::from_secs(31)).await;
+            Ok(())
+        };
+        assert_eq!(worker.wait(admission, false, delayed).await, Ok(Some(())));
+        assert_eq!(worker.shared.state().model.status().phase, Phase::Queued);
+        assert!(!worker.shared.state().model.status().remote_retired);
+
+        // T1234 faulty control: the original 30s budget rejects this same wait.
+        worker.settings.admission = Duration::from_secs(30);
+        let admission = Instant::now() + worker.settings.admission;
+        let delayed = async {
+            tokio::time::sleep(Duration::from_secs(31)).await;
+            Ok(())
+        };
+        assert_eq!(
+            worker.wait(admission, false, delayed).await,
+            Err(Failure::TimedOut)
+        );
+        assert!(!worker.shared.state().model.status().remote_retired);
+    }
+
+    #[tokio::test(start_paused = true)]
     async fn t911_wake_cannot_extend_a_blocked_send_cleanup_deadline() {
         let worker = worker();
         worker.shared.update(Model::outgoing);

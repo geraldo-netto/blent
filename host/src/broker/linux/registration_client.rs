@@ -7,6 +7,7 @@ use super::{
 use anyhow::{ensure, Result};
 use blent_config::{
     connection::registration_client::{Client, Failure, Model, Phase, Request, Status},
+    connection::resources::AdmissionTimeout,
     retirement::{Completion, Observe, Pool},
     retirement_work,
 };
@@ -33,7 +34,7 @@ impl Settings {
             launch,
             capacity: 16,
             startup: Duration::from_secs(10),
-            admission: Duration::from_secs(30),
+            admission: Duration::from_millis(AdmissionTimeout::default().milliseconds() as u64),
             cleanup: Duration::from_secs(5),
         }
     }
@@ -42,12 +43,17 @@ impl Settings {
             (1..=256).contains(&self.capacity),
             "invalid registration capacity"
         );
-        for value in [self.startup, self.admission, self.cleanup] {
+        for value in [self.startup, self.cleanup] {
             ensure!(
                 !value.is_zero() && value <= Duration::from_secs(60),
                 "invalid registration deadline"
             );
         }
+        let admission = AdmissionTimeout::new(self.admission.as_millis().try_into()?)?;
+        ensure!(
+            self.admission == Duration::from_millis(admission.milliseconds() as u64),
+            "registration admission deadline must use whole milliseconds"
+        );
         Ok(())
     }
 }

@@ -1,0 +1,13 @@
+{
+  "tablet": "RugKing Pad2Pro API36",
+  "route": "production direct USB, debugging enabled",
+  "manual_local_Start": true,
+  "owner_start_instruction_delayed_seconds_at_least": 35,
+  "owner_report": "done",
+  "frames": 12,
+  "unique_frame_hashes": 11,
+  "output_width": 640,
+  "output_height": 360,
+  "raw_image_retained": false,
+  "debugging_off_acceptance_remains": "T858/T860/T859"
+}

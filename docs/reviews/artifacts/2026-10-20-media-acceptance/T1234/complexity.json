@@ -1,0 +1,9 @@
+{
+  "native_sonar": "unavailable; no tool transfer",
+  "inventory_obstacle": "T1221",
+  "estimates": {
+    "Settings::new": 1,
+    "Settings::validate_conservative_upper_bound": 8
+  },
+  "estimate_basis": "baseline1 plus loop, &&, all three ensure guards and both ? operators; not native SonarQube measurement"
+}

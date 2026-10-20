@@ -1,0 +1,5 @@
+{
+  "host/src/broker/linux/registration_client.rs": "ad2f3bdaa6a88c49abf0813a0651929e1e6cf4b2f8fb149085b37d83e385c090",
+  "host/src/broker/linux/registration_client/tests.rs": "1da4744253b7294d0acf127f6a66288d69756d8c545c0441a74fa7ffd125df0f",
+  "host/src/broker/linux/registration_client/worker.rs": "7063d00858d9db6a3a60e7005111837daa37225d71e4b3d37aa03e44e2adfcc6"
+}
