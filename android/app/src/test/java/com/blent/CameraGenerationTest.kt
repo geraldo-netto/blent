@@ -46,8 +46,8 @@ class CameraGenerationTest {
         }, invitations, scope, { background.add(it); backgroundHook(it) }, seed)
         fun invite(value: CameraEndpoint = endpoint) { binding.start(); invitations.value = value }
         override fun close() {
-            workers.forEach { it.release.complete(Unit) }
             binding.shutdown()
+            workers.forEach { it.release.complete(Unit) }
             owner.cancel()
             runBlocking { owner.join() }
         }
@@ -185,6 +185,25 @@ class CameraGenerationTest {
             assertNull(rig.background.last())
             rig.binding.choose(CameraLens.FRONT)
             assertTrue(rig.workers.isEmpty())
+        }
+    }
+
+    @Test fun t1200FixtureCleanupCutsPendingAdmissionBeforeReleasingNativeGate() {
+        val rig = Rig(0)
+        try {
+            rig.invite()
+            rig.binding.choose(CameraLens.REAR)
+            assertEquals(1, rig.workers.size)
+            val failure = runCatching { rig.close() }.exceptionOrNull()
+            assertNull("T1200 fixture failed to retire original scope: $failure", failure)
+            assertEquals("T1200 cleanup opened queued native replacement", 1, rig.workers.size)
+            assertEquals(1, rig.workers.single().retired)
+        } finally {
+            // Independent emergency sponsor also settles the deliberate faulty control.
+            rig.binding.shutdown()
+            rig.workers.toList().forEach { it.release.complete(Unit) }
+            rig.owner.cancel()
+            runBlocking { rig.owner.join() }
         }
     }
 
