@@ -84,9 +84,9 @@ most 128 bytes and at most 32 profile/level entries per decoder. Include exact
 format support, canonical profile/level/depth, nullable acceleration and
 nullable standard hint support. Missing, failed and unrecognized queries remain
 unknown; truncation must never turn an incomplete list into exhaustive rejection
-of the legacy fallback. No arbitrary keys, executable names or library paths
+of the current H.264 fallback. No arbitrary keys, executable names or library paths
 from a tablet may become host command arguments. The implemented format and
-old-peer behavior are described in [video codecs](video-codecs.md#negotiation).
+current scoped protocol are described in [video codecs](video-codecs.md#negotiation).
 
 Selection intersects **actual stock encoder output**, the conversion adapter,
 wire restrictions and one matching Android decoder. Inspect the probe bitstream

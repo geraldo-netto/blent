@@ -16,7 +16,8 @@ pub(super) fn settings() -> EncoderSettings {
         decoder_epoch: 1,
         selection: None,
         decoders: Some(DecoderCapabilities {
-            protocol: 1,
+            protocol: 2,
+            scope: Some("1".into()),
             width: 640,
             height: 480,
             fps: 60,
@@ -468,15 +469,12 @@ async fn t612_previous_worker_receipts_cannot_verify_a_new_budget() {
 }
 
 #[test]
-fn t612_legacy_peer_keeps_one_worker_and_manual_budget_is_fixed() {
-    let mut snapshot = settings();
+fn t612_current_worker_capacity_keeps_manual_budget_fixed() {
     let mut base = CaptureConfig::default();
-    assert_eq!(probe_budgets(&base, &snapshot, "libx264"), [1]);
-    snapshot.decoders.as_mut().unwrap().protocol = 2;
-    assert_eq!(probe_budgets(&base, &snapshot, "libx264"), [1, 2, 4]);
+    assert_eq!(probe_budgets(&base, "libx264"), [1, 2, 4]);
     base.encoder_workers = 7;
-    assert_eq!(probe_budgets(&base, &snapshot, "libx264"), [7]);
-    assert_eq!(probe_budgets(&base, &snapshot, "h264_vaapi"), [0]);
+    assert_eq!(probe_budgets(&base, "libx264"), [7]);
+    assert_eq!(probe_budgets(&base, "h264_vaapi"), [0]);
 }
 
 #[tokio::test(start_paused = true)]
@@ -561,4 +559,18 @@ fn t727_automatic_trials_respect_gpu_policy_and_retain_software_fallback() {
             policy != blent_config::gpu::Policy::Software
         );
     }
+}
+
+#[test]
+fn t1199_obsolete_capabilities_cannot_skip_profile_and_render_qualification() {
+    let mut snapshot = settings();
+    let caps = snapshot.decoders.as_mut().unwrap();
+    caps.protocol = 1;
+    caps.scope = None;
+    caps.details.clear();
+    let measured = candidate("libx264", true, 100.0, 10).measurement;
+    assert!(
+        compatible_candidate(&snapshot, measured, false).is_none(),
+        "T1199 obsolete family-only candidate admitted"
+    );
 }

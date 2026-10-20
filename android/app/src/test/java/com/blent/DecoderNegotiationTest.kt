@@ -70,7 +70,7 @@ class DecoderNegotiationTest {
         } finally { release.countDown(); control.disconnect() }
     }
 
-    @Test fun t478_newProtocolEchoesScopeButLegacyHostKeepsVersionOne() {
+    @Test fun t478_currentProtocolEchoesEachScopeAndRetainsDetails() {
         lateinit var socket: Socket
         val control = ControlSession(Any(), Input, WebSocket.Factory { _, listener -> Socket(listener).also { socket = it } }) {
                 width, height, fps ->
@@ -84,10 +84,11 @@ class DecoderNegotiationTest {
         }
         try {
             control.connect(); socket.open(); socket.greeting()
-            val old = receive()
-            assertEquals(1, old.getInt("protocol"))
-            assertFalse("T478: rich extension sent to old host", old.has("details"))
-            assertFalse("T480: no software extension for legacy host", old.has("software"))
+            val initial = receive()
+            assertEquals(2, initial.getInt("protocol"))
+            assertEquals("7", initial.getString("scope"))
+            assertTrue(initial.has("details"))
+            assertTrue(initial.has("software"))
             socket.sent.clear()
             socket.listener.onMessage(socket, """{"decoder_protocol":2,"decoder_scope":"9","codec":"h264","fps":60,"video_width":640,"video_height":400}""")
             val rich = receive()
@@ -108,7 +109,7 @@ class DecoderNegotiationTest {
         override fun cancel() {}
         fun open() = listener.onOpen(this, Response.Builder().request(request()).protocol(Protocol.HTTP_1_1).code(101).message("test").build())
         fun greeting(width: Int = 640) = listener.onMessage(this,
-            """{"status":"connected","codec":"h264","fps":60,"video_width":$width,"video_height":400}""")
+            """{"status":"connected","decoder_protocol":2,"decoder_scope":"7","codec":"h264","fps":60,"video_width":$width,"video_height":400}""")
     }
     private object Input : ControlInputState {
         override fun reset() {}
@@ -191,4 +192,48 @@ class DecoderNegotiationTest {
             assertEquals("auth", JSONObject(sockets[1].sent.first()).getString("type"))
         } finally { release.complete(Unit); control.disconnect() }
     }
+    @Test fun t1199MissingOrUnsupportedOfferDoesNotQueryOrDowngrade() {
+        lateinit var socket: Socket
+        val queried = CountDownLatch(1)
+        val control = ControlSession(Any(), Input, WebSocket.Factory { _, listener -> Socket(listener).also { socket = it } }) {
+            width, height, fps -> queried.countDown(); DecoderCapabilities.describe(width, height, fps) { _, _, _, _ -> true }
+        }
+        val invalid = listOf("{}", "{\"decoder_protocol\":1,\"decoder_scope\":\"7\"}",
+            "{\"decoder_protocol\":2}", "{\"decoder_protocol\":2,\"decoder_scope\":\"\"}",
+            "{\"decoder_protocol\":3,\"decoder_scope\":\"7\"}", "{\"decoder_protocol\":\"2\",\"decoder_scope\":\"7\"}",
+            "{\"decoder_protocol\":2,\"decoder_scope\":7}")
+        try {
+            control.connect(); socket.open()
+            for (offer in invalid) {
+                val greeting = JSONObject(offer).put("status", "connected").put("codec", "h264")
+                    .put("fps", 60).put("video_width", 640).put("video_height", 400)
+                socket.listener.onMessage(socket, greeting.toString())
+                assertFalse("T1199 unsupported offer admitted inventory: $offer", queried.await(200, TimeUnit.MILLISECONDS))
+                assertTrue(socket.sent.none { it.contains("capabilities") })
+            }
+        } finally { control.disconnect() }
+    }
+
+    @Test fun t1199WithdrawnOfferCannotPublishHeldOriginalInventory() {
+        lateinit var socket: Socket
+        val entered = CountDownLatch(1)
+        val release = CompletableDeferred<Unit>()
+        val completed = CountDownLatch(1)
+        val control = ControlSession(Any(), Input, WebSocket.Factory { _, listener -> Socket(listener).also { socket = it } }) {
+            width, height, fps ->
+            try { entered.countDown(); release.await(); DecoderCapabilities.describe(width, height, fps) { _, _, _, _ -> true } }
+            finally { completed.countDown() }
+        }
+        try {
+            control.connect(); socket.open()
+            socket.listener.onMessage(socket, """{"decoder_protocol":2,"decoder_scope":"7","codec":"h264","fps":60,"video_width":640,"video_height":400}""")
+            assertTrue(entered.await(2, TimeUnit.SECONDS))
+            socket.listener.onMessage(socket, """{"codec":"h264","fps":60,"video_width":640,"video_height":400}""")
+            release.complete(Unit)
+            assertTrue(completed.await(2, TimeUnit.SECONDS))
+            Thread.sleep(100)
+            assertTrue("T1199 withdrawn scope published inventory", socket.sent.none { it.contains("capabilities") })
+        } finally { release.complete(Unit); control.disconnect() }
+    }
+
 }

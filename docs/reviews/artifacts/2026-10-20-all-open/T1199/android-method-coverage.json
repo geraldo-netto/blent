@@ -1,0 +1,69 @@
+{
+  "tool": "JaCoCo0.8.15 native line counters, built-in Kotlin filters",
+  "methods": [
+    {
+      "owner": "com/blent/DecoderCapabilities",
+      "method": "describe$app_debug",
+      "descriptor": "(IIILkotlin/jvm/functions/Function4;)Lorg/json/JSONObject;",
+      "covered": 5,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "requestDecoderCapabilities",
+      "descriptor": "(Lokhttp3/WebSocket;Lcom/blent/DecoderFormat;)V",
+      "covered": 11,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "applyCapabilityGreeting",
+      "descriptor": "(Lorg/json/JSONObject;)V",
+      "covered": 6,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "scopedCapabilities",
+      "descriptor": "(Lorg/json/JSONObject;Ljava/lang/String;)Lorg/json/JSONObject;",
+      "covered": 2,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$CapabilityRequest",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/Triple;Ljava/lang/String;)V",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$CapabilityRequest",
+      "method": "getFormat",
+      "descriptor": "()Lkotlin/Triple;",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$CapabilityRequest",
+      "method": "getScope",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$requestDecoderCapabilities$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 8,
+      "missed": 0,
+      "percent": 100.0
+    }
+  ]
+}

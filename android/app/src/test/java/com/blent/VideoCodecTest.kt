@@ -103,7 +103,7 @@ class VideoCodecTest {
             assertEquals(Triple(1280, 800, 60), Triple(width, height, fps))
             mime == vp9
         }
-        assertEquals(1, report.getInt("protocol"))
+        assertEquals(2, report.getInt("protocol"))
         assertEquals(1280, report.getInt("width"))
         assertEquals(800, report.getInt("height"))
         assertEquals(60, report.getInt("fps"))

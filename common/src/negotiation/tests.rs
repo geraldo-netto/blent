@@ -91,7 +91,7 @@ fn t478_old_peer_and_duplicate_identity_are_not_rich_support() {
     report.protocol = 1;
     report.scope = None;
     report.details.clear();
-    assert!(report.valid());
+    assert!(!report.valid());
     assert!(report.choose(&stream("baseline", 8, 31), true).is_none());
     report = super::tests::report();
     report.details.push(report.details[0].clone());
@@ -109,7 +109,7 @@ fn t478_avc_level_one_b_orders_between_one_and_one_one() {
 }
 
 #[test]
-fn t480_software_fingerprint_is_bounded_and_optional_for_older_peers() {
+fn t480_software_fingerprint_is_bounded_and_unknown_is_optional() {
     let base = serde_json::to_value(report()).unwrap();
     for value in [
         "".to_string(),
@@ -176,7 +176,7 @@ fn t668_legacy_reports_reject_either_rich_extension() {
     legacy.protocol = 1;
     legacy.scope = None;
     legacy.details.clear();
-    assert!(legacy.valid());
+    assert!(!legacy.valid());
     let mut with_scope = legacy.clone();
     with_scope.scope = Some("7".into());
     assert!(!with_scope.valid());
@@ -245,5 +245,35 @@ fn t668_codec_profile_depth_and_level_contracts_are_independent() {
         invalid = valid;
         invalid.format.profile = "foreign".into();
         assert!(!invalid.valid());
+    }
+}
+
+#[test]
+fn t1199_obsolete_unscoped_reports_cannot_authorize_current_selection() {
+    let mut old = report();
+    old.protocol = 1;
+    old.scope = None;
+    old.details.clear();
+    assert!(!old.valid(), "T1199 protocol1 remains admitted");
+    assert!(!old.matches("7", 640, 480, 60));
+    assert!(old.choices(&stream("baseline", 8, 31), true).is_empty());
+}
+
+#[test]
+fn t1199_bounded_protocol_and_scope_matrix_requires_current_scoped_schema() {
+    for version in (0..=8).chain([u32::MAX]) {
+        for scoped in [false, true] {
+            for detailed in [false, true] {
+                let mut candidate = report();
+                candidate.protocol = version;
+                candidate.scope = scoped.then(|| "7".into());
+                if !detailed {
+                    candidate.details.clear();
+                }
+                assert_eq!(candidate.valid(), version == 2 && scoped);
+                assert_eq!(candidate.matches("7", 640, 480, 60), version == 2 && scoped);
+                assert!(!candidate.matches("foreign", 640, 480, 60));
+            }
+        }
     }
 }

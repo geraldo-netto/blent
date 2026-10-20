@@ -149,11 +149,7 @@ impl EncoderSettings {
         {
             return false;
         }
-        if self
-            .decoders
-            .as_ref()
-            .is_some_and(|caps| caps.protocol != 2)
-        {
+        if self.decoders.as_ref().is_some_and(|caps| !caps.valid()) {
             return false;
         }
         self.selection

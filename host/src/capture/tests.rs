@@ -730,7 +730,8 @@ fn t432_capability_metadata_restarts_only_when_effective_stream_changes() {
     manager.config.encoder = CaptureConfig::default().encoder;
     let mut settings = manager_settings(&manager);
     settings.decoders = Some(crate::media::DecoderCapabilities {
-        protocol: 1,
+        protocol: 2,
+        scope: settings.decoder_scope(),
         width: settings.width,
         height: settings.height,
         fps: settings.fps,

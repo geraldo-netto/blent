@@ -90,32 +90,25 @@ async fn prepare(
     latency: &LatencyTracker,
     cache: Option<&cache::Cache>,
 ) -> Option<Prepared> {
+    if !snapshot.decoders.as_ref()?.valid() {
+        return None;
+    }
     // T714: verify the saved winner before idle admission or expensive probes.
     if let Some(candidate) = cached(settings, snapshot, latency, cache).await {
         return Some(Prepared::Cached(Box::new(candidate)));
     }
-    let rich = snapshot.decoders.as_ref().is_some_and(|d| d.protocol == 2);
     let mut input = latency.interaction_updates();
-    if rich && !super::super::trial::quiet(&mut input).await {
+    if !super::super::trial::quiet(&mut input).await {
         return None;
     }
-    let work = async {
+    super::super::trial::uninterrupted(&mut input, async {
         let admission = admission::begin(&probes.scope()).await?;
         let candidates = probes.candidates(snapshot, admission.scope()).await;
-        let candidates = if rich {
-            measured::benchmark(settings, snapshot, latency, candidates).await
-        } else {
-            candidates
-        };
+        let candidates = measured::benchmark(settings, snapshot, latency, candidates).await;
         Some(Prepared::Measured(candidates))
-    };
-    if rich {
-        super::super::trial::uninterrupted(&mut input, work)
-            .await
-            .flatten()
-    } else {
-        work.await
-    }
+    })
+    .await
+    .flatten()
 }
 
 async fn cached(

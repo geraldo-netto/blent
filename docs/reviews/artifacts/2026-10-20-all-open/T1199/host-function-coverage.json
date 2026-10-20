@@ -1,0 +1,102 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7, source-matched native LCOV",
+  "functions": [
+    {
+      "file": "common/src/negotiation.rs",
+      "signature": "pub fn valid(",
+      "first": 76,
+      "last": 81,
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "common/src/negotiation.rs",
+      "signature": "fn valid_protocol(",
+      "first": 96,
+      "last": 98,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "common/src/negotiation.rs",
+      "signature": "pub fn matches(",
+      "first": 107,
+      "last": 111,
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "common/src/negotiation.rs",
+      "signature": "pub fn choices(",
+      "first": 119,
+      "last": 134,
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/media.rs",
+      "signature": "pub fn calibrating(",
+      "first": 145,
+      "last": 159,
+      "covered": 13,
+      "total": 14,
+      "percent": 92.85714285714286,
+      "missing": [
+        153
+      ]
+    },
+    {
+      "file": "host/src/selection/worker.rs",
+      "signature": "async fn calibrate(",
+      "first": 427,
+      "last": 463,
+      "covered": 29,
+      "total": 30,
+      "percent": 96.66666666666667,
+      "missing": [
+        445
+      ]
+    },
+    {
+      "file": "host/src/selection/worker.rs",
+      "signature": "fn probe_budgets(",
+      "first": 474,
+      "last": 476,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker.rs",
+      "signature": "fn compatible_candidate(",
+      "first": 487,
+      "last": 508,
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/selection/worker/preparation.rs",
+      "signature": "async fn prepare(",
+      "first": 86,
+      "last": 112,
+      "covered": 24,
+      "total": 26,
+      "percent": 92.3076923076923,
+      "missing": [
+        94,
+        102
+      ]
+    }
+  ]
+}

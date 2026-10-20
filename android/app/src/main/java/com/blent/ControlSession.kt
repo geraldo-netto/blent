@@ -71,7 +71,7 @@ internal class ControlSession(
     val connectionState = connection.asStateFlow()
     private var reconnectJob: Job? = null
     private var capabilityJob: Job? = null
-    private data class CapabilityRequest(val format: Triple<Int, Int, Int>, val scope: String?)
+    private data class CapabilityRequest(val format: Triple<Int, Int, Int>, val scope: String)
     private var capabilityRequest: CapabilityRequest? = null
     private var capabilityScope: String? = null
     private var streamFormat: DecoderFormat? = null
@@ -321,19 +321,18 @@ internal class ControlSession(
     }
 
     private fun requestDecoderCapabilities(source: WebSocket, format: DecoderFormat?) {
-        if (format == null) {
+        val offeredScope = capabilityScope
+        if (format == null || offeredScope == null) {
             capabilityJob?.cancel()
             capabilityRequest = null
             return
         }
-        val width = format.width
-        val height = format.height
-        val fps = format.fps
-        val request = CapabilityRequest(Triple(width, height, fps), capabilityScope)
+        val request = CapabilityRequest(Triple(format.width, format.height, format.fps), offeredScope)
         if (capabilityRequest == request) return
         capabilityRequest = request
         capabilityJob?.cancel()
         capabilityJob = scope.launch {
+            val (width, height, fps) = request.format
             val report = scopedCapabilities(decoderCapabilities(width, height, fps), request.scope)
             synchronized(lock) {
                 if (isActive && webSocket === source && isConnected && capabilityRequest == request) {
@@ -344,22 +343,17 @@ internal class ControlSession(
     }
 
     private fun applyCapabilityGreeting(message: JSONObject) {
-        if (!message.has("decoder_protocol")) return
-        capabilityScope = message.optString("decoder_scope").takeIf {
-            message.optInt("decoder_protocol") == 2 && it.length in 1..96 && it.all { char -> char.code in 33..126 }
+        if (!message.has("decoder_protocol") && !message.has("video_width") && message.optString("status") != "connected") return
+        val version = message.opt("decoder_protocol")
+        val candidate = message.opt("decoder_scope") as? String
+        capabilityScope = candidate?.takeIf {
+            version == 2 && it.length in 1..96 && it.all { char -> char.code in 33..126 }
         }
     }
 
-    private fun scopedCapabilities(report: JSONObject, scope: String?): JSONObject {
-        if (scope == null) {
-            report.put("protocol", 1)
-            report.remove("scope"); report.remove("details"); report.remove("software")
-        } else {
-            report.put("protocol", 2).put("scope", scope)
-                .put("software", ProfileSoftware.fingerprint(android.os.Build.FINGERPRINT, ProfileBuild.SOURCE_ID))
-        }
-        return report
-    }
+    private fun scopedCapabilities(report: JSONObject, scope: String): JSONObject =
+        report.put("protocol", 2).put("scope", scope)
+            .put("software", ProfileSoftware.fingerprint(android.os.Build.FINGERPRINT, ProfileBuild.SOURCE_ID))
 
     private fun matchesPendingConfig(requested: JSONObject): Boolean {
         val pending = pendingConfig ?: return false

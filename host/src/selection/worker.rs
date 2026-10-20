@@ -97,7 +97,9 @@ pub(crate) async fn run(
 }
 
 fn acknowledge_pause(participant: Option<&blent::display_quiescence::Participant>) {
-    let Some(participant) = participant else { return; };
+    let Some(participant) = participant else {
+        return;
+    };
     if let Some(pause) = participant.pending() {
         // Initial idle or the preceding original native group was fully retired
         // below before control returned here. The shared gate forbids new work.
@@ -434,7 +436,7 @@ async fn calibrate(
         if !snapshot.decoder_supports(codec) {
             continue;
         }
-        for workers in probe_budgets(base, snapshot, encoder.name) {
+        for workers in probe_budgets(base, encoder.name) {
             let mut config = probe_config(base, snapshot, encoder.name);
             config.selected_workers = workers;
             let Ok(result) =
@@ -469,13 +471,8 @@ fn allowed_encoders(base: &CaptureConfig) -> Vec<blent_config::encoding::Encoder
         .collect()
 }
 
-fn probe_budgets(base: &CaptureConfig, settings: &EncoderSettings, name: &str) -> Vec<u32> {
-    let requested = if settings.decoders.as_ref().is_some_and(|d| d.protocol == 2) {
-        base.encoder_workers
-    } else {
-        base.encoder_workers.max(1)
-    };
-    blent_config::encoder_workers::candidates(name, requested)
+fn probe_budgets(base: &CaptureConfig, name: &str) -> Vec<u32> {
+    blent_config::encoder_workers::candidates(name, base.encoder_workers)
 }
 
 fn probe_order(encoder: &str) -> u8 {
@@ -494,25 +491,18 @@ fn compatible_candidate(
 ) -> Option<Candidate> {
     let caps = settings.decoders.as_ref()?;
     let codec = crate::media::Codec::from_encoder(&measurement.encoder);
-    let decoder = if caps.protocol == 2 {
-        if !supported_output(&measurement, codec, ten_bit) {
-            return None;
-        }
-        Some(caps.choose(measurement.stream.as_ref()?, true)?)
-    } else {
-        None
-    };
-    let hardware = match &decoder {
-        Some(choice) => caps.details.iter().any(|d| {
-            d.name == choice.name && d.codec == codec.wire_name() && d.hardware == Some(true)
-        }),
-        None => caps.hardware.iter().any(|name| name == codec.wire_name()),
-    };
+    if !supported_output(&measurement, codec, ten_bit) {
+        return None;
+    }
+    let decoder = caps.choose(measurement.stream.as_ref()?, true)?;
+    let hardware = caps.details.iter().any(|d| {
+        d.name == decoder.name && d.codec == codec.wire_name() && d.hardware == Some(true)
+    });
     Some(Candidate {
         cached: false,
         measurement,
         hardware,
-        decoder,
+        decoder: Some(decoder),
         observation: None,
     })
 }

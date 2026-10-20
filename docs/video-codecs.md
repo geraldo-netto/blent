@@ -36,12 +36,12 @@ cannot run. Encoder support must be checked on the actual machine.
 
 ## Negotiation
 
-New host greetings include `video_width` and `video_height`: the requested
-encoded dimensions after stream scaling. Together with `fps`, these request an
-Android capability report:
+Current display greetings include `video_width` and `video_height`: the requested
+encoded dimensions after stream scaling. A valid `decoder_protocol: 2` offer and
+`decoder_scope`, together with `fps`, request an Android capability report:
 
 ```json
-{"type":"decoders","capabilities":{"protocol":1,"width":1280,"height":800,"fps":60,"codecs":["h264","hevc","vp9","av1"],"hardware":["h264","hevc","vp9"]}}
+{"type":"decoders","capabilities":{"protocol":2,"scope":"7","width":1280,"height":800,"fps":60,"codecs":["h264","hevc","vp9","av1"],"hardware":["h264","hevc","vp9"],"details":[]}}
 ```
 
 Android queries regular MediaCodec decoders for that format off the UI and
@@ -57,8 +57,8 @@ trial or measured performance. Encoder startup can still fail on an unsupported
 host. Android selects a decoder by the actual configuration dimensions. Unknown
 codec names and mismatched configuration envelopes fail closed.
 
-T478 adds opt-in protocol version 2: new greetings include `decoder_protocol: 2`
-and a `decoder_scope` string. Android echoes that scope with `protocol: 2` and
+Protocol version 2 is the current contract. Android echoes the offered scope with
+`protocol: 2` and
 adds an optional 64-hex `software` fingerprint and `details`: decoder name, codec, nullable hardware/standard-low-latency
 support, nullable supported operating rate, and profile/level/depth entries.
 The shared vector is [decoder-capabilities-v2.json](../testdata/decoder-capabilities-v2.json).
@@ -68,10 +68,14 @@ leaves standard low latency unknown. Unknown profiles/levels are omitted rather
 than guessed. Reports are bounded to four families, 16 decoders, 32 profile
 entries per decoder and 128 ASCII bytes per name, inside the 64 KiB message limit.
 
-A new tablet keeps version 1 and omits rich fields with an old host. Version-one
-peers keep the existing family policy. Version-two responses require the current
-scope; format changes advance it even when later returning to the same format.
-Malformed, unsupported-version or stale reports cannot replace current evidence.
+Only current scoped protocol-2 reports are accepted; there is no version-1
+contract or downgrade. Missing/invalid offers do not start inventory work. A
+complete greeting withdrawing its offer cancels publication of held inventory;
+partial unrelated messages retain the current offer. Format changes advance the
+scope even when later returning to the same format. Malformed, unsupported-version
+or stale reports cannot replace current evidence. Empty or unknown profile details
+do not qualify an automatic candidate; current output profile intersection and
+rendered-frame trials remain required.
 
 For automatic selection with version 2, the host inspects a bounded keyframe
 from the actual stock encoder probe using `ffprobe`, then intersects its codec,
@@ -88,8 +92,8 @@ The selected request appears as `decoder_selection` in the control reply and
 names a decoder, stream profile and supported standard hints. Android revalidates
 that exact decoder/format before allocation. Rich selections use only advertised
 standard low-latency/operating-rate hints and never forward arbitrary vendor keys;
-the watchdog may omit hints on recovery. Legacy/manual paths retain their
-compatibility profile. A null selection clears the request. Identity or hint
+the watchdog may omit hints on recovery. Manual requests keep current
+format-compatible platform decoder selection. A null selection clears the request. Identity or hint
 changes retire the decoder generation even when codec and dimensions are equal.
 Neither the request nor the probe metadata claims the live decoder honored a
 hint; fresh render acknowledgements remain required. This does not alter saved
@@ -110,7 +114,7 @@ preference remains `auto` when the effective encoder changes.
 Until the current peer advertises support for the requested encoded geometry
 and FPS, automatic mode uses `libx264`. Every controller claim and retirement
 invalidates capability and selection state, including a coalesced reconnect.
-A peer without the new negotiation remains on H.264. Android reports hardware
+Without current scoped evidence, automatic selection remains on H.264. Android reports hardware
 classification only when API 29+ provides it; older peers and versions remain
 unknown. [Hardware classification](https://developer.android.com/reference/android/media/MediaCodecInfo#isHardwareAccelerated())
 and [format support](https://developer.android.com/reference/android/media/MediaCodecInfo.CodecCapabilities#isFormatSupported(android.media.MediaFormat))
@@ -268,8 +272,8 @@ screen. Ordinary trial reconnections do not
 alternate the desktop with USB setup instructions. Authentication loss clears
 calibration state; pen-only mode retains its existing presentation. A two-minute
 presentation deadline reports a timeout, unaffected by repeated trial updates.
-Legacy hosts without `calibrating` metadata retain their existing behavior;
-legacy tablets ignore the added optional boolean and can still show trial flicker.
+Current clients use the host's calibration state through each trial and reset it
+when authentication ends.
 
 Linux **Video > Advanced video settings > Recalibrate display**, followed by
 **Apply & restart**, requests new tuning. The equivalent configuration operation

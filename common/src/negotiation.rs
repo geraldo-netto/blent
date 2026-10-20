@@ -77,7 +77,7 @@ impl DecoderCapabilities {
         let bounded = (2..=4096).contains(&self.width)
             && (2..=4096).contains(&self.height)
             && (10..=90).contains(&self.fps);
-        bounded && self.valid_software() && self.valid_families() && self.valid_extension()
+        bounded && self.valid_software() && self.valid_families() && self.valid_protocol()
     }
 
     fn valid_software(&self) -> bool {
@@ -93,12 +93,8 @@ impl DecoderCapabilities {
             && self.hardware.iter().all(|c| self.codecs.contains(c))
     }
 
-    fn valid_extension(&self) -> bool {
-        match self.protocol {
-            1 => self.scope.is_none() && self.details.is_empty(),
-            2 => self.valid_details(),
-            _ => false,
-        }
+    fn valid_protocol(&self) -> bool {
+        self.protocol == 2 && self.valid_details()
     }
 
     fn valid_details(&self) -> bool {
@@ -111,7 +107,7 @@ impl DecoderCapabilities {
     pub fn matches(&self, scope: &str, width: u32, height: u32, fps: u32) -> bool {
         self.valid()
             && (self.width, self.height, self.fps) == (width, height, fps)
-            && (self.protocol == 1 || self.scope.as_deref() == Some(scope))
+            && self.scope.as_deref() == Some(scope)
     }
 
     /// Rich support requires an actual encoder profile; unknown does not grant it.
@@ -121,7 +117,7 @@ impl DecoderCapabilities {
 
     /// Compatible alternatives in platform order, with hardware advertised first.
     pub fn choices(&self, stream: &StreamProfile, standard_hints: bool) -> Vec<DecoderChoice> {
-        if self.protocol != 2 || !self.valid() || !stream.valid() {
+        if !self.valid() || !stream.valid() {
             return Vec::new();
         }
         let mut decoders: Vec<_> = self.details.iter().filter(|d| d.supports(stream)).collect();

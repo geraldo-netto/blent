@@ -61,7 +61,7 @@ internal object DecoderCapabilities {
     internal fun describe(width: Int, height: Int, fps: Int, supports: (String, Int, Int, Int) -> Boolean): JSONObject {
         val names = VideoCodec.types.filter { (_, mime) -> supports(mime, width, height, fps) }.keys
         return JSONObject().apply {
-            put("protocol", 1); put("width", width); put("height", height); put("fps", fps)
+            put("protocol", 2); put("width", width); put("height", height); put("fps", fps)
             put("codecs", JSONArray(names.toList()))
         }
     }

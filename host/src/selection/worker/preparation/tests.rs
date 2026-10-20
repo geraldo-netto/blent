@@ -140,9 +140,10 @@ async fn t480_interaction_cancels_calibration_without_claiming_success() {
 }
 
 #[tokio::test(start_paused = true)]
-async fn t480_legacy_peers_use_uncached_host_path_and_optional_save_failures_do_not_escape() {
+async fn t480_empty_current_inventory_and_optional_save_failures_preserve_fallback() {
     let mut snapshot = super::super::tests::settings();
     snapshot.decoders.as_mut().unwrap().codecs.clear();
+    snapshot.decoders.as_mut().unwrap().hardware.clear();
     let (tx, _) = watch::channel(snapshot.clone());
     let attachment = Attachment::new(tx.clone());
     optimize(

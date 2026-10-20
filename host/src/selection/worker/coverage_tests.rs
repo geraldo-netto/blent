@@ -57,6 +57,12 @@ fn snapshot() -> EncoderSettings {
     caps.height = 64;
     caps.codecs = vec!["h264".into()];
     caps.hardware.clear();
+    let current: crate::media::DecoderCapabilities = serde_json::from_str(include_str!(
+        "../../../../testdata/decoder-capabilities-v2.json"
+    ))
+    .unwrap();
+    caps.details = current.details;
+    caps.details[0].hardware = Some(false);
     settings
 }
 
@@ -101,8 +107,12 @@ async fn wait_reason(updates: &mut watch::Receiver<EncoderSettings>, reason: &st
     .expect("T497 selection transition did not arrive");
 }
 
-async fn cancellation_contract(base: CaptureConfig, snapshot: EncoderSettings) {
+async fn cancellation_contract(mut base: CaptureConfig, snapshot: EncoderSettings) {
+    // T1199: explicitly fund one candidate; V1's hidden one-worker clamp is gone.
+    base.encoder_workers = 1;
     let latency = LatencyTracker::new();
+    let fallback = latency.encoder_started("libx264", snapshot.selection_key().format);
+    latency.on_encoded_for(latency.next_sequence(), &fallback);
     let (settings, mut updates) = watch::channel(snapshot);
     let (display, visible) = watch::channel(true);
     let (stop, stopped) = watch::channel(false);
@@ -115,12 +125,12 @@ async fn cancellation_contract(base: CaptureConfig, snapshot: EncoderSettings) {
         latency.clone(),
         attachment,
     );
-    wait_reason(&mut updates, "awaiting render ACKs").await;
+    wait_reason(&mut updates, "Measuring packet-ready").await;
     display.send(false).unwrap();
     wait_reason(&mut updates, "Cancelled trial").await;
     assert_eq!(settings.borrow().effective_encoder(), "libx264");
     display.send(true).unwrap();
-    wait_reason(&mut updates, "awaiting render ACKs").await;
+    wait_reason(&mut updates, "Measuring packet-ready").await;
     // T715: model a started encoder that never renders, rather than no native startup.
     {
         let current = settings.borrow();

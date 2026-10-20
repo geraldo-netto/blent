@@ -1,0 +1,50 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent-config",
+    "-p",
+    "blent",
+    "--lib",
+    "--bin",
+    "blent",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1199/coverage.lcov",
+    "--",
+    "negotiation::",
+    "selection::",
+    "input::",
+    "media::",
+    "t432_capability_metadata",
+    "t1199"
+  ],
+  "sources": {
+    "common/src/negotiation.rs": "1a5ae4dea5238c9b17c45b00d3b5011d51bba53903be32c7db5d63c612cdd8be",
+    "common/src/negotiation/tests.rs": "32a4ae1fbd43074d17e0b609b0835c50004d950034c7e0ce7e58ba8dce73e5f0",
+    "host/src/media.rs": "9f69e9186d3adc22878cc04725afcb3f07e24d80958cf7860237d62195db275b",
+    "host/src/selection/worker.rs": "b2694808ad50d862aa4d08b9ff4c147d715b57c685ecab3ccbe4602b72f69cce",
+    "host/src/selection/worker/tests.rs": "5ce3efbab0f5653ac3fe6b45163897ab294f79509bfead2b5e0509aa49265e05",
+    "host/src/selection/worker/preparation.rs": "21a9e40d2062c9d9d989dc3ddddd68aad6243247a64e693576bbde7215e197cd",
+    "host/src/selection/worker/preparation/tests.rs": "2e860be5de5ac3db05a29385c3f60e0682f858fd1b683f7ef65fb61a91c67b45",
+    "host/src/selection/worker/coverage_tests.rs": "4d5404022852970aca2bcd78441c416adea9be92af32e55c88879d923a9fbe45",
+    "host/src/input.rs": "495eeec0025c53fdf0c4a9b2a7d2ac9b5ec1eea72ee50d35dd2d5dbdb1626c40",
+    "host/src/capture/tests.rs": "1876291f856ed4416d79305602c9a15d0ea19bc07e7ce61f2f3b0526baf1c540"
+  },
+  "source_matched_export": [
+    "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-cov",
+    "export",
+    "--format=lcov",
+    "--instr-profile=/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/blent.profdata",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-d512991ead5280bc",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-2dde2f627934020f",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent_config-a3ad6fd4719dd738"
+  ]
+}

@@ -1925,7 +1925,8 @@ fi
         let mut initial = settings("libx264");
         initial.decoder_epoch = 7;
         initial.decoders = Some(crate::media::DecoderCapabilities {
-            protocol: 1,
+            protocol: 2,
+            scope: Some(initial.decoder_epoch.to_string()),
             width: 1920,
             height: 1080,
             fps: 60,
@@ -2322,7 +2323,8 @@ fi
         let mut initial = settings("libvpx-vp9");
         let (width, height) = initial.video_dimensions();
         initial.decoders = Some(crate::media::DecoderCapabilities {
-            protocol: 1,
+            protocol: 2,
+            scope: Some(initial.decoder_epoch.to_string()),
             width,
             height,
             fps: initial.fps,
@@ -2446,7 +2448,7 @@ fi
         assert_eq!(greeting["effective_encoder"], "libx264");
         let epoch = tx.borrow().decoder_epoch;
         client.send(Message::Text(serde_json::json!({"type":"decoders", "capabilities": {
-            "protocol": 1, "width": greeting["video_width"], "height": greeting["video_height"],
+            "protocol": 2, "scope": greeting["decoder_scope"], "width": greeting["video_width"], "height": greeting["video_height"],
             "fps": greeting["fps"], "codecs": ["h264"], "hardware": []
         }}).to_string())).await.unwrap();
         response(&mut client).await;
@@ -2470,7 +2472,7 @@ fi
             greeting["codec"], "h264",
             "T432: old/unknown peer needs fallback"
         );
-        let caps = serde_json::json!({ "protocol": 1, "width": greeting["video_width"],
+        let caps = serde_json::json!({ "protocol": 2, "scope": greeting["decoder_scope"], "width": greeting["video_width"],
             "height": greeting["video_height"], "fps": greeting["fps"], "codecs": [codec] });
         client
             .send(Message::Text(
