@@ -55,22 +55,26 @@ impl Controllers {
     }
     #[cfg(test)]
     fn claim(self: &Arc<Self>) -> ControllerLease {
-        self.claim_with(|| {})
+        self.claim_with(|| {}).expect("test controller admission")
     }
 
-    fn claim_with(self: &Arc<Self>, initialize: impl FnOnce()) -> ControllerLease {
-        let mut id = 0;
-        self.generation.send_modify(|generation| {
+    fn claim_with(self: &Arc<Self>, initialize: impl FnOnce()) -> Option<ControllerLease> {
+        let mut id = None;
+        self.generation.send_if_modified(|generation| {
+            let Some(next) = generation.checked_add(1) else {
+                return false;
+            };
             initialize();
             self.devices.release_all();
-            *generation = generation.wrapping_add(1);
-            id = *generation;
+            *generation = next;
+            id = Some(next);
+            true
         });
-        ControllerLease {
+        id.map(|id| ControllerLease {
             controllers: self.clone(),
             id,
             settings: None,
-        }
+        })
     }
 }
 struct ControllerLease {
@@ -541,9 +545,12 @@ fn claim_controller(
 ) -> Option<ControllerLease> {
     let mut lease = None;
     let mut claim = || {
-        let mut claimed = controllers.claim_with(|| settings.forget_decoders());
-        claimed.settings = settings.sender();
-        lease = Some(claimed);
+        lease = controllers
+            .claim_with(|| settings.forget_decoders())
+            .map(|mut claimed| {
+                claimed.settings = settings.sender();
+                claimed
+            });
     };
     match attachment {
         Some(attachment) => {
@@ -2334,6 +2341,24 @@ fi
         let _lease = claim_controller(&controllers, None, &session).unwrap();
         assert!(rx.borrow().decoders.is_none());
         assert_eq!(rx.borrow().effective_encoder(), "libx264");
+    }
+
+    #[test]
+    fn t1176_denied_workflow_preserves_decoder_settings() {
+        let mut initial = settings("libx264");
+        initial.decoder_epoch = 42;
+        initial.decoders = Some(Default::default());
+        let (sender, observer) = watch::channel(initial);
+        let source = Some(sender);
+        let (mode, _) = watch::channel(false);
+        let session = SessionSettings::new(&source, &mode, false);
+        let devices = Arc::new(std::sync::Mutex::new(InjectDevices::empty()));
+        let controllers = Arc::new(Controllers::new(devices));
+        controllers.generation.send_replace(u64::MAX);
+        assert!(claim_controller(&controllers, None, &session).is_none());
+        assert_eq!(observer.borrow().decoder_epoch, 42);
+        assert!(observer.borrow().decoders.is_some());
+        assert!(!observer.has_changed().unwrap());
     }
 
     #[tokio::test]

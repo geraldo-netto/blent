@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent",
+    "--lib",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1176/coverage.lcov",
+    "--",
+    "input::"
+  ],
+  "sources": {
+    "host/src/input.rs": "356519b0bb7bc1798e30344504e7d0cf23c6c9e76158f8f7b4c9d7e1755d1937",
+    "host/src/input/contracts.rs": "bbb8ca5eb95d6e22d4f9f3c04e514cd6ca63b051583df12c9b1317e04d21e9f0"
+  },
+  "profile_scope": "previous owned raw counters removed; compiled dependencies reused"
+}

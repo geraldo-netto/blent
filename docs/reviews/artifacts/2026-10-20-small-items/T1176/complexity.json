@@ -1,0 +1,18 @@
+{
+  "tool": "Authored Rust source decision/closure estimate; not native SonarQube; rustc1.98.1/rustfmt syntax validation",
+  "production": {
+    "Controllers::claim": 1,
+    "Controllers::claim_with": 4,
+    "claim_controller": 6
+  },
+  "regressions": {
+    "t1176_claim": 1,
+    "t1176_exhausted_claim_keeps_original_authority_and_cleanup": 2,
+    "t1176_denied_claim_has_no_initialization_or_device_effects": 2,
+    "t1176_concurrent_last_claim_has_one_winner_and_original_drop": 6,
+    "t1176_bounded_wide_oracle_preserves_lease_and_effect_counts": 2,
+    "t1176_check_seed": 3,
+    "t1176_denied_workflow_preserves_decoder_settings": 1
+  },
+  "limitation": "native SonarQube measurement unavailable; T1019 retained"
+}

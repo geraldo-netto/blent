@@ -1,0 +1,35 @@
+{
+  "tool": "rustc1.98.1; cargo-llvm-cov0.8.7; native LCOV line counters constrained to authored function ranges",
+  "functions": [
+    {
+      "file": "host/src/input.rs",
+      "name": "claim",
+      "first": 57,
+      "last": 59,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/input.rs",
+      "name": "claim_with",
+      "first": 61,
+      "last": 78,
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/input.rs",
+      "name": "claim_controller",
+      "first": 541,
+      "last": 562,
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}

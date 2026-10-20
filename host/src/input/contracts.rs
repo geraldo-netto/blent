@@ -307,3 +307,128 @@ fn t673_legacy_backend_declines_direct_events_explicitly() {
         .is_err());
     assert!(recorder.direct_status().is_none());
 }
+
+fn t1176_claim(controllers: &Arc<Controllers>) -> Option<ControllerLease> {
+    let (mode, _) = watch::channel(false);
+    claim_controller(
+        controllers,
+        None,
+        &SessionSettings::new(&None, &mode, false),
+    )
+}
+
+#[test]
+fn t1176_exhausted_claim_keeps_original_authority_and_cleanup() {
+    let sink = Arc::new(Recorder::default());
+    let controllers = Arc::new(Controllers::new(sink.clone()));
+    let old = t1176_claim(&controllers).unwrap();
+    controllers.generation.send_replace(u64::MAX - 1);
+    let original = t1176_claim(&controllers).unwrap();
+    assert_eq!(original.id, u64::MAX);
+    let observer = controllers.generation.subscribe();
+    for _ in 0..3 {
+        assert!(
+            t1176_claim(&controllers).is_none(),
+            "T1176: exhausted admission"
+        );
+        assert_eq!(*controllers.generation.borrow(), u64::MAX);
+        assert!(!observer.has_changed().unwrap());
+    }
+    let effects = sink.0.lock().unwrap().len();
+    drop(old);
+    assert_eq!(
+        sink.0.lock().unwrap().len(),
+        effects,
+        "T1176: stale drop released current input"
+    );
+    assert!(dispatch_controller_text(
+        r#"{"type":"touch","x":0.2,"y":0.3,"pressure":0.4,"action":0,"slot":2}"#,
+        &controllers,
+        original.id,
+        &Recorder::default(),
+        &crate::latency::LatencyTracker::new(),
+        true,
+    ));
+    drop(original);
+    assert_eq!(sink.0.lock().unwrap().len(), effects + 2);
+    assert_eq!(sink.0.lock().unwrap().last().unwrap(), "release");
+    assert_eq!(Arc::strong_count(&controllers), 1);
+}
+
+#[test]
+fn t1176_denied_claim_has_no_initialization_or_device_effects() {
+    let sink = Arc::new(Recorder::default());
+    let controllers = Arc::new(Controllers::new(sink.clone()));
+    controllers.generation.send_replace(u64::MAX);
+    let mut initialized = false;
+    let denied = controllers.claim_with(|| initialized = true);
+    assert!(!initialized, "T1176: denial ran replacement initialization");
+    assert!(sink.0.lock().unwrap().is_empty());
+    drop(denied);
+    assert!(sink.0.lock().unwrap().is_empty());
+    assert_eq!(Arc::strong_count(&controllers), 1);
+}
+
+#[test]
+fn t1176_concurrent_last_claim_has_one_winner_and_original_drop() {
+    let sink = Arc::new(Recorder::default());
+    let controllers = Arc::new(Controllers::new(sink.clone()));
+    controllers.generation.send_replace(u64::MAX - 1);
+    let gate = Arc::new(std::sync::Barrier::new(8));
+    let jobs: Vec<_> = (0..8)
+        .map(|_| {
+            let (controllers, gate) = (controllers.clone(), gate.clone());
+            std::thread::spawn(move || {
+                gate.wait();
+                t1176_claim(&controllers)
+            })
+        })
+        .collect();
+    let admitted: Vec<_> = jobs
+        .into_iter()
+        .filter_map(|job| job.join().unwrap())
+        .collect();
+    assert_eq!(
+        admitted.len(),
+        1,
+        "T1176: terminal claim admitted multiple owners"
+    );
+    assert_eq!(admitted[0].id, u64::MAX);
+    assert_eq!(*sink.0.lock().unwrap(), ["release"]);
+    drop(admitted);
+    assert_eq!(*sink.0.lock().unwrap(), ["release", "release"]);
+    assert_eq!(Arc::strong_count(&controllers), 1);
+}
+
+#[test]
+fn t1176_bounded_wide_oracle_preserves_lease_and_effect_counts() {
+    for seed in (0..=16).chain(u64::MAX - 16..=u64::MAX) {
+        t1176_check_seed(seed);
+    }
+}
+
+fn t1176_check_seed(seed: u64) {
+    let sink = Arc::new(Recorder::default());
+    let controllers = Arc::new(Controllers::new(sink.clone()));
+    controllers.generation.send_replace(seed);
+    let mut expected = u128::from(seed);
+    let mut original = None;
+    let mut admissions = 0;
+    for _ in 0..20 {
+        let next = t1176_claim(&controllers);
+        if expected < u128::from(u64::MAX) {
+            expected += 1;
+            admissions += 1;
+            assert_eq!(u128::from(next.as_ref().unwrap().id), expected);
+            original = next;
+        } else {
+            assert!(next.is_none(), "T1176: wide oracle rejects exhausted epoch");
+        }
+        assert_eq!(u128::from(*controllers.generation.borrow()), expected);
+        assert_eq!(sink.0.lock().unwrap().len(), admissions);
+    }
+    let retained = usize::from(original.is_some());
+    drop(original);
+    assert_eq!(sink.0.lock().unwrap().len(), admissions + retained);
+    assert_eq!(Arc::strong_count(&controllers), 1);
+}
