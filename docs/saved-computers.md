@@ -31,5 +31,11 @@ operation. Existing current-peer revocation and independent media controls keep
 their own lifecycle rules.
 
 Local automated UI/store/Binder checks are distinct from physical acceptance.
-Joined production device acceptance remains T855/T858/T846; native API27/28
-provider/accessory qualification remains T863.
+On the API36 RugKing Pad 2 Pro, the saved-computer list was read after the
+previous connection worker exited, and a new debugging-off USB connection
+authenticated using that saved trust without another computer approval.
+[T1237 evidence](reviews/artifacts/2026-10-21-t1237/saved-trust.json) records
+the independent list read. This does not qualify every device's store/provider,
+the native Forget flow, or remaining joined acceptance under T855/T858/T846.
+API27/28 provider/accessory qualification remains separate; current live checks
+are paused.

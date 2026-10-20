@@ -25,12 +25,22 @@ implemented shared behavior; those reviews also contain planned native behavior.
 `AudioOptions` and `blent audio --usb-peer <full-tablet-fingerprint>` now accept an
 explicit USB target independently for microphone and speakers. It conflicts with
 `--serial`; invalid, shortened or uppercase fingerprints fail validation.
-Existing settings and commands retain ADB selection by default. Saving a target
-starts no media or connection. The Linux accessory build now implements USB speaker PCM under T992. USB
-microphone remains unavailable and rejects before ADB, helper or device work;
-production selector controls are implemented under T979. Android leased
-speaker playback is composed under T978; microphone integration remains T859. These
-contracts do not establish physical USB audio support.
+Existing settings and commands retain ADB selection by default. Linux builds
+with `accessory-transport` implement both USB directions: speaker PCM under T992
+and microphone uplink under T999. Production selectors are implemented under
+T979/T999; Android playback and capture composition are T978/T998. These software
+adapters remain experimental pending physical speaker acceptance T860 and
+microphone/duplex acceptance T859.
+
+On the API36 RugKing Pad 2 Pro, production USB with debugging disabled has
+delivered real microphone PCM and owner-confirmed speaker tones, including
+fresh local consent and delivery after software-only reconnect. The
+[T1237 transport evidence](reviews/artifacts/2026-10-21-t1237/README.md) records
+the exact native setup and bounded results. This is one-device evidence;
+T859/T860 remain unfinished while T1238's reported Stop discrepancy is
+investigated. Live checks are paused. Speech-mode admission does not establish
+acoustic echo-cancellation quality or sustained clock-drift performance; raw
+microphone processing was explicitly unsupported on this tablet.
 
 Camera and audio use shared platform-independent `connection::media` transport
 and generic invitation/monitor/close interfaces. Profiles preserve direction,
@@ -94,7 +104,8 @@ Speaker channels use the existing bounded bidirectional local pump, preserving
 bootstrap, clock negotiation and PCM bytes. Control forwarding remains prompt;
 a stopped connection still accepts its exact late consumer completion. Android
 production composes the speaker authority under T989/T985/T978; physical
-acceptance remains T860. Microphone remains unavailable in this adapter until T859.
+acceptance remains T860. Microphone uses the shared leased adapter under
+T996–T998; its physical acceptance remains T859.
 [Private protocol/lifecycle and native counter evidence](reviews/artifacts/2026-10-11-t984/README.md).
 
 ## Private Android audio IPC contracts (T988)
@@ -129,9 +140,10 @@ replacement worker or revoke a sibling. `ConnectionBinding` now exposes typed
 microphone/speaker targets with original authority; its UI actions retain the
 exact current publication identity. Camera contracts and regressions remain.
 
-Android production composition advertises speakers with display/camera under
-T978. Microphone remains unavailable until T859; physical speaker acceptance
-remains T860. Local consent/Activity controls are implemented under T985.
+Android production composition advertises display, camera, microphone and
+speakers (mask 15) under T978/T998. Physical microphone/duplex acceptance remains
+T859 and speaker acceptance T860. Local consent/Activity controls are implemented
+under T985.
 [Private worker/lifecycle regressions and native counters](reviews/artifacts/2026-10-11-t989/README.md).
 
 ## Original Android audio consent and Activity controls (T985)
@@ -355,8 +367,9 @@ equal or reused endpoint data cannot grant or deny a replacement invitation.
 The SDK adapter retains its actual outstanding request slot until result or
 Activity destruction. Foreground detach stops only foreground audio; explicitly
 permitted background runs keep their service and actual native retirement owner.
-These lifecycle fixes are independent of USB speaker/microphone integration,
-which remains planned under T860/T859.
+These lifecycle fixes also govern the implemented USB speaker/microphone
+adapters. Physical speaker acceptance remains T860; microphone/duplex acceptance
+remains T859.
 
 The native implementation must intersect both endpoints' current capabilities before
 Start. A supported direction means its 48 kHz s16le channel layout is supported.

@@ -5,9 +5,14 @@ Current Android composition advertises display, camera, microphone and speakers
 USB audio directions T979/T999 are implemented. Original consent, permission,
 native consumer ownership and independent resource retirement remain required;
 T1000 qualifies joined automated duplex fixtures. Host and Android pairing and
-media controls are implemented. Physical pairing/display/camera/audio acceptance
-remains postponed under T855/T857/T858/T859/T860/T846; synthetic native results
-never establish debugging-off hardware or acoustic support.
+media controls are implemented. Production trials on the API36 RugKing Pad 2 Pro
+have delivered debugging-off USB camera frames, microphone PCM and audible
+speaker tones. Software-only reconnect, saved trust and fresh local media consent
+also passed; [T1237](artifacts/2026-10-21-t1237/README.md) retains that scoped
+evidence. T855/T858/T859/T860 and joined T846 qualification remain unfinished;
+T1238 tracks a later uninstrumented Stop discrepancy, and live checks are paused.
+Direct USB display/touch qualification T857 and other devices/providers remain
+separate. Synthetic native results never establish physical or acoustic support.
 
 Earlier milestone sections record historical implementation state, dependencies
 and scoped validation at that milestone. Later implementation sections supersede
