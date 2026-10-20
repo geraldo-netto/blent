@@ -1,0 +1,6 @@
+{
+  "flags": "fl=KEEP_SCREEN_ON LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS",
+  "main_window_visible": true,
+  "desktop_service_stopped": true,
+  "original_camera_pid": 5395
+}

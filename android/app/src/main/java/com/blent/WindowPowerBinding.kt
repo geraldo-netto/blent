@@ -15,7 +15,7 @@ internal class WindowPowerBinding(
     private class Original(val scope: CoroutineScope)
     private var current: Original? = null
 
-    fun start(initial: DisplayPowerDemand, updates: Flow<DisplayPowerDemand>) {
+    fun start(initial: ScreenWakeDemand, updates: Flow<ScreenWakeDemand>) {
         if (current != null) return
         val original = Original(CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()))
         current = original
@@ -23,19 +23,19 @@ internal class WindowPowerBinding(
         if (current !== original) return
         original.scope.launch { observe(original, updates) }
     }
-    private suspend fun observe(original: Original, updates: Flow<DisplayPowerDemand>) {
+    private suspend fun observe(original: Original, updates: Flow<ScreenWakeDemand>) {
         try {
-            updates.collect(object : FlowCollector<DisplayPowerDemand> {
-                override suspend fun emit(value: DisplayPowerDemand) { apply(original, value) }
+            updates.collect(object : FlowCollector<ScreenWakeDemand> {
+                override suspend fun emit(value: ScreenWakeDemand) { apply(original, value) }
             })
         }
         catch (canceled: CancellationException) { if (current === original) stop(); throw canceled }
         catch (failure: Exception) { failed(original, failure) }
     }
-    private fun apply(original: Original, demand: DisplayPowerDemand) {
+    private fun apply(original: Original, demand: ScreenWakeDemand) {
         if (current !== original) return
         try {
-            val keep = demand.power.keepScreenOn && demand.permit.permitsPower()
+            val keep = demand.keepScreenOn()
             if (current === original) write(keep)
         } catch (failure: Exception) { failed(original, failure) }
     }

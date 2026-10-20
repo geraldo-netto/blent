@@ -16,4 +16,6 @@ internal object FixedDisplayPowerPermit : DisplayPowerPermit {
 internal data class DisplayPowerDemand(
     val power: StreamingPower,
     val permit: DisplayPowerPermit = FixedDisplayPowerPermit,
-)
+) : ScreenWakeDemand {
+    override fun keepScreenOn(): Boolean = power.keepScreenOn && permit.permitsPower()
+}

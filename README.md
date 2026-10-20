@@ -164,6 +164,11 @@ When USB media is authenticated without a streaming desktop, the tablet shows
 the existing local controls directly; it grants no media consent. Pairing alone
 does not enable Start; media needs a current host request and local approval. The existing ADB desktop
 connection still requires USB debugging, independently of USB media pairing.
+While Blent is visible, active camera, microphone and speaker sharing keep the
+screen awake through the same window policy as display sharing. Stopping a
+resource removes its hold; another active resource may still need the screen.
+Home and manual screen lock retain the existing foreground/background consent
+rules. Blent does not change Android's system screen timeout or charging settings.
 The tray controls the running daemon.
 When `XDG_CONFIG_HOME` is an absolute path, host settings instead use
 `$XDG_CONFIG_HOME/blent/config.toml`. Empty or relative values use the default.

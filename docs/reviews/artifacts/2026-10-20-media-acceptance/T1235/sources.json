@@ -1,0 +1,11 @@
+{
+  "android/app/src/main/java/com/blent/ScreenWakeDemand.kt": "131f8b0ea9a9456f068c26dc5baff6770c3c384fe75f1d4bdf863770ed7fe181",
+  "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt": "f40cfd42b356fcb7c26fed29abc34748381258f8cbfb523ea0a5176e668367a1",
+  "android/app/src/main/java/com/blent/DisplayPowerDemand.kt": "1ea9d926cc112bec70c7101b9dde28c40d27b87c8741116a0250631c50c08c87",
+  "android/app/src/main/java/com/blent/WindowPowerBinding.kt": "9a5ebbbeca6dfa3f590f7d05bfe8b9f8f7009abe917f51714c28555c121abfe8",
+  "android/app/src/main/java/com/blent/ActivityWindowPolicy.kt": "b0fd60a8664a55c79171e01491092f0ae3ff7ed7c5b6000de25ce8b9c5f3edea",
+  "android/app/src/main/java/com/blent/MainActivity.kt": "70a96d46004d8c1a4f280fee0a5c0c9a2b63099f34369252dfe7b2a32e80b174",
+  "android/app/src/test/java/com/blent/MediaWindowWakeTest.kt": "7db842ec301ce54ff5a0cdb63506923e5d57081f9dd6f70e90c63e5cb5f5753a",
+  "android/app/src/test/java/com/blent/MediaScreenWakeSourceTest.kt": "82945c6ef9af180647f29ecb7f6fd831dd514ee092a86c5cfd8e331a36e81b9b",
+  "android/app/src/test/java/com/blent/CameraUsbCaptureOwnerTest.kt": "22131f7c7aebb8cf3c0c94be053f80bb978efa31975acd15cbb81e665bfddad0"
+}

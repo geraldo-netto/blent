@@ -11,6 +11,7 @@ import kotlin.math.roundToInt
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.combine
 
 class MainActivity : ComponentActivity() {
     internal lateinit var connection: ConnectionBinding; private set
@@ -146,7 +147,7 @@ class MainActivity : ComponentActivity() {
         cameraAttachment = CameraOwner.attach(cameraPermissionLauncher::launch)
         audioAttachment = AudioOwner.attach(microphonePermissionLauncher::launch)
         windowPolicy.start()
-        windowPolicy.startWake(session.powerDemandNow(), session.powerDemandUpdates())
+        startWindowWake()
         powerBinding.start(session.powerDemandNow(), session.powerDemandUpdates())
         session.checkUpdate {
             try { packageManager.getPackageInfo(packageName, 0).versionName ?: "0" } catch (_: Exception) { "0" }
@@ -155,6 +156,12 @@ class MainActivity : ComponentActivity() {
         session.start()
         displayObservation?.cancel()
         displayObservation = lifecycleScope.launch { connection.state.collect { displayRoutes.apply(it) } }
+    }
+
+    private fun startWindowWake() {
+        val media = MediaScreenWakeSource(cameras.state, microphone.state, speakers.state)
+        windowPolicy.startWake(combinedScreenWake(session.powerDemandNow(), media.current()),
+            combine(session.powerDemandUpdates(), media.updates, ::combinedScreenWake))
     }
 
     override fun onStop() {

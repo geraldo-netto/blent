@@ -12,7 +12,7 @@ import kotlin.math.abs
 internal class ActivityWindowPolicy(private val activity: Activity, private val prefs: Prefs) {
     private val wake = WindowPowerBinding(::keepScreenOn)
     fun start() { started = true; applyOrientation() }
-    fun startWake(initial: DisplayPowerDemand, updates: Flow<DisplayPowerDemand>) { wake.start(initial, updates) }
+    fun startWake(initial: ScreenWakeDemand, updates: Flow<ScreenWakeDemand>) { wake.start(initial, updates) }
     fun stop() {
         started = false
         cleanupAll(wake::stop, ::stopTiltListener).firstOrNull()?.let { throw it }

@@ -1,0 +1,80 @@
+[
+  {
+    "name": "com.blent.MediaWindowWakeTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.UsbMediaMainStatusTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.PowerWorkerIntegrationTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.AudioActivityAttachmentTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.DisplayWakeIntegrationTest",
+    "tests": 14,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.WindowPowerBindingTest",
+    "tests": 16,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.DisplayWakeAcceptanceTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.CameraConsentMainActivityTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.DisplaySettingsTest",
+    "tests": 16,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.CameraUsbCaptureOwnerTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.SettingsControlContractTest",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.MediaScreenWakeSourceTest",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.JoinedDisplayActivityTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  }
+]

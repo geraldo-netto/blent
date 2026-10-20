@@ -1,0 +1,9 @@
+{
+  "observed_utc": "2026-10-20T21:02:15.239509+00:00",
+  "owner_stopped_on_android": true,
+  "original_camera_pid": 5395,
+  "no_camera_worker_remains": true,
+  "window_flags": "fl=LAYOUT_IN_SCREEN FULLSCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS",
+  "screen_hold_released": true,
+  "system_override_restored": true
+}

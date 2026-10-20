@@ -16,7 +16,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class CameraUsbCaptureOwnerTest {
-    private class NativeEndpoint : Binder() {
+    internal class NativeEndpoint : Binder() {
         val deaths = CopyOnWriteArrayList<IBinder.DeathRecipient>()
         val tasks = CopyOnWriteArrayList<MediaTask>()
         val commands = CopyOnWriteArrayList<Int>()

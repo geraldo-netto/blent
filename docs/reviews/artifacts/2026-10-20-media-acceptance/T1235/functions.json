@@ -1,0 +1,379 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/ActivityWindowPolicy.kt",
+    "name": "startWake",
+    "line": 15,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ActivityWindowPolicy.kt",
+        "owner": "com/blent/ActivityWindowPolicy",
+        "name": "startWake",
+        "signature": "(Lcom/blent/ScreenWakeDemand;Lkotlinx/coroutines/flow/Flow;)V",
+        "line": 15,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/DisplayPowerDemand.kt",
+    "name": "keepScreenOn",
+    "line": 20,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/DisplayPowerDemand.kt",
+        "owner": "com/blent/DisplayPowerDemand",
+        "name": "keepScreenOn",
+        "signature": "()Z",
+        "line": 20,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+    "name": "onStart",
+    "line": 145,
+    "language": "kotlin",
+    "covered": 12,
+    "total": 12,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity",
+        "name": "onStart",
+        "signature": "()V",
+        "line": 146,
+        "covered": 12,
+        "total": 12
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+    "name": "startWindowWake",
+    "line": 161,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity",
+        "name": "startWindowWake",
+        "signature": "()V",
+        "line": 162,
+        "covered": 4,
+        "total": 4
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity",
+        "name": "startWindowWake$combinedScreenWake",
+        "signature": "(Lcom/blent/ScreenWakeDemand;Lcom/blent/ScreenWakeDemand;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 164,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+    "name": "<init>",
+    "line": 6,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+        "owner": "com/blent/MediaScreenWakeSource",
+        "name": "<init>",
+        "signature": "(Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/flow/StateFlow;)V",
+        "line": 9,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+    "name": "<lambda>",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+        "owner": "com/blent/MediaScreenWakeSource$updates$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 14,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+    "name": "current",
+    "line": 16,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+        "owner": "com/blent/MediaScreenWakeSource",
+        "name": "current",
+        "signature": "()Lcom/blent/ScreenWakeDemand;",
+        "line": 17,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+    "name": "<lambda>",
+    "line": 20,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+        "owner": "com/blent/MediaScreenWakeSource",
+        "name": "current$lambda$0",
+        "signature": "(Lcom/blent/MediaScreenWakeSource;Lcom/blent/CameraLifecycleState;Lcom/blent/AudioLifecycleState;Lcom/blent/AudioLifecycleState;)Z",
+        "line": 21,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+    "name": "cameraNeeded",
+    "line": 26,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+        "owner": "com/blent/MediaScreenWakeSource",
+        "name": "cameraNeeded",
+        "signature": "(Lcom/blent/CameraLifecycleState;)Z",
+        "line": 27,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+    "name": "audioNeeded",
+    "line": 29,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaScreenWakeSource.kt",
+        "owner": "com/blent/MediaScreenWakeSource",
+        "name": "audioNeeded",
+        "signature": "(Lkotlinx/coroutines/flow/StateFlow;Lcom/blent/AudioLifecycleState;)Z",
+        "line": 30,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ScreenWakeDemand.kt",
+    "name": "combinedScreenWake",
+    "line": 9,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ScreenWakeDemand.kt",
+        "owner": "com/blent/ScreenWakeDemandKt",
+        "name": "combinedScreenWake",
+        "signature": "(Lcom/blent/ScreenWakeDemand;Lcom/blent/ScreenWakeDemand;)Lcom/blent/ScreenWakeDemand;",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ScreenWakeDemand.kt",
+    "name": "<lambda>",
+    "line": 10,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ScreenWakeDemand.kt",
+        "owner": "com/blent/ScreenWakeDemandKt",
+        "name": "combinedScreenWake$lambda$0",
+        "signature": "(Lcom/blent/ScreenWakeDemand;Lcom/blent/ScreenWakeDemand;)Z",
+        "line": 10,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+    "name": "start",
+    "line": 18,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+        "owner": "com/blent/WindowPowerBinding",
+        "name": "start",
+        "signature": "(Lcom/blent/ScreenWakeDemand;Lkotlinx/coroutines/flow/Flow;)V",
+        "line": 19,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+    "name": "observe",
+    "line": 26,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+        "owner": "com/blent/WindowPowerBinding",
+        "name": "observe",
+        "signature": "(Lcom/blent/WindowPowerBinding$Original;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 27,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+    "name": "emit",
+    "line": 29,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+        "owner": "com/blent/WindowPowerBinding$observe$2",
+        "name": "emit",
+        "signature": "(Lcom/blent/ScreenWakeDemand;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 29,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+    "name": "apply",
+    "line": 35,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/WindowPowerBinding.kt",
+        "owner": "com/blent/WindowPowerBinding",
+        "name": "apply",
+        "signature": "(Lcom/blent/WindowPowerBinding$Original;Lcom/blent/ScreenWakeDemand;)V",
+        "line": 36,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  }
+]

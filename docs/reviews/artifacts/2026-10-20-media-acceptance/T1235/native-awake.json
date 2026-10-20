@@ -1,0 +1,14 @@
+{
+  "observed_utc": "2026-10-20T20:59:39.616171+00:00",
+  "frames": 12,
+  "unique_frames": 11,
+  "original_camera_pid": 5395,
+  "original_worker_still_live": true,
+  "power_fields": [
+    "mWakefulness=Awake",
+    "mScreenOffTimeoutSetting=15000",
+    "mStayOnWhilePluggedInSetting=0"
+  ],
+  "system_override_restored": true,
+  "desktop_service_stopped": true
+}
