@@ -411,7 +411,13 @@ fn t141_installers_launch_desktop_paths_with_reserved_characters() {
         sandbox.script("bin/systemctl", "#!/bin/sh\nexit 0\n");
         sandbox.script("bin/gtk-update-icon-cache", "#!/bin/sh\nexit 0\n");
         sandbox.script("bin/kbuildsycoca6", "#!/bin/sh\nexit 0\n");
-        for name in ["blent", "blent-gui", "evdi_helper"] {
+        for name in [
+            "blent",
+            "blent-gui",
+            "blent-usb-broker",
+            "blent-usb-io",
+            "evdi_helper",
+        ] {
             sandbox.script(
                 &format!("target/release/{name}"),
                 "#!/bin/sh\nprintf '%s' \"$0\" > \"$BLENT_TEST_LAUNCHED\"\n",
@@ -488,7 +494,7 @@ fn t096_desktop_launches_installed_gui_with_stale_path() {
     );
     let makefile = std::fs::read_to_string(repo().join("Makefile")).unwrap();
     sandbox.write("Makefile", &makefile);
-    for name in ["blent", "blent-gui"] {
+    for name in ["blent", "blent-gui", "blent-usb-broker", "blent-usb-io"] {
         sandbox.script(
             &format!("target/release/{name}"),
             "#!/bin/sh\necho installed\n",

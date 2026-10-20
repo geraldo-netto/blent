@@ -30,7 +30,7 @@ sudo apt-get update
 sudo apt-get install -y build-essential pkg-config git curl ca-certificates \
   libdrm-dev libxkbcommon-dev libwayland-dev libxcb-render0-dev \
   libxcb-shape0-dev libxcb-xfixes0-dev libssl-dev \
-  libpipewire-0.3-dev libspa-0.2-dev libclang-dev
+  libpipewire-0.3-dev libspa-0.2-dev libusb-1.0-0-dev libclang-dev
 # Install stable Rust with rustup if cargo/rustc are not already available.
 ```
 

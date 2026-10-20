@@ -1,0 +1,104 @@
+[
+  {
+    "file": "scripts/install.sh",
+    "line": 110,
+    "name": "install_debian_deps",
+    "score": 4
+  },
+  {
+    "file": "scripts/install.sh",
+    "line": 123,
+    "name": "install_arch_deps",
+    "score": 5
+  },
+  {
+    "file": "scripts/install.sh",
+    "line": 140,
+    "name": "install_suse_deps",
+    "score": 3
+  },
+  {
+    "file": "scripts/install.sh",
+    "line": 222,
+    "name": "stage_install_binaries",
+    "score": 9
+  },
+  {
+    "file": "packaging/arch/PKGBUILD",
+    "line": 19,
+    "name": "build",
+    "score": 1
+  },
+  {
+    "file": "packaging/arch/PKGBUILD",
+    "line": 31,
+    "name": "package",
+    "score": 1
+  },
+  {
+    "file": "packaging/appimage/build.py",
+    "line": 23,
+    "name": "stage",
+    "score": 4
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 18,
+    "name": "bundle",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 25,
+    "name": "test_t861_tar_layout_requires_and_preserves_both_usb_programs",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 38,
+    "name": "test_t861_partial_tar_inputs_are_rejected",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 49,
+    "name": "test_t861_user_install_copies_sibling_usb_programs",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 63,
+    "name": "test_t861_partial_user_install_is_rejected",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 74,
+    "name": "test_t861_appimage_validates_usb_abi_loader_and_transitive_libusb",
+    "score": 3
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 99,
+    "name": "test_t861_installer_requests_native_usb_runtime",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 110,
+    "name": "test_t861_arch_recipe_installs_both_usb_siblings",
+    "score": 3
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 133,
+    "name": "test_t861_unavailable_package_transactions_retain_actionable_guidance",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_usb_packaging.py",
+    "line": 142,
+    "name": "test_t861_arch_dependency_failure_retains_each_explicit_aur_route",
+    "score": 2
+  }
+]

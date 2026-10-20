@@ -1,6 +1,7 @@
 """T220: Make must share its jobserver with Cargo and respect dry runs."""
 from pathlib import Path
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -21,6 +22,13 @@ print('T220: cargo executed with usable jobserver')
 
 
 class MakeTest(unittest.TestCase):
+    def usb_make_fixture(self, root):
+        source = REPO/'host/accessory'
+        destination = root/'host/accessory'
+        destination.mkdir(parents=True)
+        for name in ['Makefile', 'stream.c', 'accessory.c', 'contract.c', 'discovery.c', 'accessory.h']:
+            shutil.copy(source/name, destination/name)
+
     def make_environment(self, tools=None):
         env = dict(os.environ)
         for name in ['MAKEFLAGS', 'MFLAGS', 'CARGO_MAKEFLAGS']:
@@ -32,6 +40,7 @@ class MakeTest(unittest.TestCase):
     def run_dist(self, portable, *flags, container=None, listed='blent-build'):
         with tempfile.TemporaryDirectory(prefix='blent-make-dist-') as tmp:
             root = Path(tmp)
+            self.usb_make_fixture(root)
             makefile = (REPO / 'Makefile').read_text()
             for directory in ['scripts', 'packaging', 'bin']:
                 (root / directory).mkdir()
@@ -98,6 +107,7 @@ class MakeTest(unittest.TestCase):
     def run_build(self, *flags):
         with tempfile.TemporaryDirectory(prefix='blent-make-') as tmp:
             root = Path(tmp)
+            self.usb_make_fixture(root)
             (root / 'Makefile').write_text((REPO / 'Makefile').read_text())
             cargo = root / 'cargo'
             cargo.write_text(CARGO)
@@ -108,6 +118,7 @@ class MakeTest(unittest.TestCase):
     def test_t261_failed_make_install_preserves_existing_binaries(self):
         with tempfile.TemporaryDirectory(prefix='blent-make-install-') as tmp:
             root = Path(tmp)
+            self.usb_make_fixture(root)
             (root / 'Makefile').write_text((REPO / 'Makefile').read_text())
             (root / 'scripts').mkdir()
             (root / 'scripts/install.sh').write_text((REPO / 'scripts/install.sh').read_text())
@@ -130,6 +141,7 @@ class MakeTest(unittest.TestCase):
     def test_t619_android_install_grants_runtime_permissions_without_starting_camera(self):
         with tempfile.TemporaryDirectory(prefix='blent-android-install-') as tmp:
             root = Path(tmp)
+            self.usb_make_fixture(root)
             (root / 'Makefile').write_text((REPO / 'Makefile').read_text())
             adb = root / 'adb'
             adb.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > adb-arguments\n')

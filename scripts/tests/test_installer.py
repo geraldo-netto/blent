@@ -143,7 +143,7 @@ install_distro_deps "$1"
     def test_t345_installed_binaries_are_executable(self):
         with tempfile.TemporaryDirectory(prefix='blent-executable-install-') as tmp:
             source, installed = self.upgrade_fixture(Path(tmp))
-            for name in ['blent', 'blent-gui', 'evdi_helper']:
+            for name in ['blent', 'blent-gui', 'blent-usb-broker', 'blent-usb-io', 'evdi_helper']:
                 (source / name).chmod(0o644)
             result = self.install_fixture(source, installed)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -160,7 +160,7 @@ install_distro_deps "$1"
             installed = root / 'installed bin'
             source.mkdir(parents=True)
             installed.mkdir()
-            for name in ['blent', 'blent-gui', 'evdi_helper']:
+            for name in ['blent', 'blent-gui', 'blent-usb-broker', 'blent-usb-io', 'evdi_helper']:
                 (source / name).write_text('#!/bin/sh\nexit 0\n')
             library = 'libevdi.so.1.15.0'
             (source / library).write_bytes(b'N' * 4096)
@@ -187,7 +187,7 @@ install_distro_deps "$1"
                 stub = 'cp() { case "$1" in */blent-gui) return 77 ;; *) command cp "$@" ;; esac; }\n' if failure == 'failed-copy' else ''
                 result = self.install_fixture(source, installed, stub)
                 self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
-                for name in ['blent', 'blent-gui', 'evdi_helper']:
+                for name in ['blent', 'blent-gui', 'blent-usb-broker', 'blent-usb-io', 'evdi_helper']:
                     self.assertEqual((installed / name).read_text(), 'old-' + name,
                                      'T261: failed staging replaced an installed executable')
                 self.assertEqual(list(installed.glob('.blent-*')), [])
@@ -208,7 +208,7 @@ install_distro_deps "$1"
         installed = root / 'installed bin'
         source.mkdir(parents=True)
         installed.mkdir()
-        for name in ['blent', 'blent-gui', 'evdi_helper']:
+        for name in ['blent', 'blent-gui', 'blent-usb-broker', 'blent-usb-io', 'evdi_helper']:
             (source / name).write_text('#!/bin/sh\nexit 0\n')
             (installed / name).write_text('old-' + name)
         return source, installed

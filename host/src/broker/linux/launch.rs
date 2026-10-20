@@ -13,7 +13,7 @@ impl Launch {
             std::env::var_os("HOME"),
         )
     }
-    // Local acceptance uses sibling binaries. Release discovery remains T861.
+    // Source builds, tarballs and AppImages carry both native siblings here.
     pub fn from_paths(
         executable: PathBuf,
         runtime: Option<OsString>,

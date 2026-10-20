@@ -1,0 +1,17 @@
+{
+  "usb": {
+    "blent-usb-broker": "8e2611e08959aa97e30dc018f49917a43a9ddf3de7adba0b7a59d956578e5ee7",
+    "blent-usb-io": "e39eea3dbb594682192b71f7dd69b05d8c1e6eff207c6992e559565f9cf20a83"
+  },
+  "apk": "20821b121afaf85a3caed3cd9a81f31eea62bebce2f83c2a1c4e614c5885b877",
+  "apk_notices": [
+    "assets/licenses/Apache-2.0.txt",
+    "assets/licenses/COPYRIGHT.md",
+    "assets/licenses/LICENSE",
+    "assets/licenses/MPL-2.0.txt",
+    "assets/licenses/README.txt",
+    "assets/licenses/THIRD_PARTY_LICENSES.md",
+    "assets/licenses/publicsuffix-NOTICE.txt",
+    "assets/licenses/runtime-dependencies.json"
+  ]
+}

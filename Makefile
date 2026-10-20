@@ -1,4 +1,4 @@
-.PHONY: all build build-helper build-gpu-helper test-gpu-helper install clean run android adb edid status stop list dist setup-system publish release-metadata
+.PHONY: all build build-usb-helper build-helper build-gpu-helper test-gpu-helper install clean run android adb edid status stop list dist setup-system publish release-metadata
 
 VERSION = 1.2.3
 
@@ -41,8 +41,11 @@ build-helper:
 	$(CC) -O3 -o host/evdi/evdi_helper host/evdi/evdi_helper.c host/evdi/conversion.c host/evdi/frame_exchange.c host/evdi/fifo_writer.c host/evdi/capture.c host/evdi/capture_activity.c host/evdi/capture_control.c host/evdi/cursor_overlay.c host/evdi/raw_ring.c host/evdi/writer.c host/evdi/idle_control.c -levdi -lpthread -Ihost/evdi -Wl,-rpath,'$$ORIGIN'
 	@echo "✓ EVDI helper: host/evdi/evdi_helper"
 
-build: build-helper
-	$(recursive_prefix)$(CARGO) build --release --features blent/native-audio --target-dir $(call quote,$(CURDIR)/target)
+build-usb-helper:
+	$(recursive_prefix)$(recursive_make) -C host/accessory OUTPUT=../../target/release/blent-usb-io
+
+build: build-helper build-usb-helper
+	$(recursive_prefix)$(CARGO) build --release --features blent/native-audio,blent/accessory-transport --target-dir $(call quote,$(CURDIR)/target)
 	@printf '✓ Binaries: %s/blent and blent-gui\n' $(call quote,$(CURDIR)/target/release)
 
 install: export BLENT_INSTALL_BIN_DIR = $(BIN_DIR)

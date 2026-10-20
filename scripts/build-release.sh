@@ -5,7 +5,7 @@
 #
 # Needs a distrobox container named "blent-build" made from debian:12 with
 # build-essential, pkg-config, libdrm-dev, the X11/Wayland dev packages for
-# the GUI, git, dpkg-dev, fakeroot, rpm and rustup.
+# the GUI, libusb-1.0 development headers, git, dpkg-dev, fakeroot, rpm and rustup.
 # The host also needs Python 3 and binutils for the bundle ABI check.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -22,8 +22,9 @@ distrobox enter "$CONTAINER" -- bash -lc '
   export PATH="$HOME/.cargo/bin:$PATH"
   cd "$1"
   export CARGO_TARGET_DIR="$PWD/target-deb12"
-  cargo build --release --locked --manifest-path host/Cargo.toml --features native-audio
+  cargo build --release --locked --manifest-path host/Cargo.toml --features native-audio,accessory-transport
   cargo build --release --locked --manifest-path gui/Cargo.toml
+  make -C host/accessory OUTPUT=../../target-deb12/release/blent-usb-io
 
   # Keep LGPL libevdi replaceable beside the helper, located via $ORIGIN.
   [ -d target-deb12/evdi-src ] || git clone -q --depth 1 --branch "$2" https://github.com/DisplayLink/evdi target-deb12/evdi-src

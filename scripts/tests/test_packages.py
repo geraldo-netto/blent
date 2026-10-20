@@ -131,7 +131,7 @@ exit 0
         for name in ['cargo', 'make', 'gcc']:
             files['bin/' + name] = '#!/bin/sh\nexit 0\n'
         files['bin/gcc'] = '#!/bin/sh\nprintf "%s\\n" "$*" > "$PWD/native-helper-arguments"\n'
-        for name in ['release/blent', 'release/blent-gui', 'release/blent-audio', 'evdi_helper', 'evdi-src/library/libevdi.so.1.15.0']:
+        for name in ['release/blent', 'release/blent-gui', 'release/blent-audio', 'release/blent-usb-broker', 'release/blent-usb-io', 'evdi_helper', 'evdi-src/library/libevdi.so.1.15.0']:
             files['target-deb12/' + name] = '#!/bin/sh\nexit 0\n'
         for name, text in files.items():
             path = root / name

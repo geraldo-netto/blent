@@ -50,7 +50,7 @@ install_debian_evdi_library() {
 
 # Shared runtime package names for RPM distributions. Repository selection
 # remains specific to each family; Enterprise Linux must never inherit Fedora's.
-RPM_RUNTIME_DEPS=(ffmpeg android-tools libX11 libX11-xcb libXcursor libXi libxkbcommon-x11)
+RPM_RUNTIME_DEPS=(ffmpeg android-tools libusb1 libX11 libX11-xcb libXcursor libXi libxkbcommon-x11)
 
 is_ostree_booted() {
     command -v rpm-ostree &>/dev/null && [ -e /run/ostree-booted ]
@@ -108,7 +108,7 @@ install_enterprise_deps() {
 }
 
 install_debian_deps() {
-    local gui_deps=(libx11-6 libx11-xcb1 libxcursor1 libxi6 libxkbcommon-x11-0)
+    local gui_deps=(libusb-1.0-0 libx11-6 libx11-xcb1 libxcursor1 libxi6 libxkbcommon-x11-0)
     sudo apt-get update
     # Independent transactions: missing libevdi or a failed DKMS build must
     # not prevent runtime tools from installing, including in prebuilt bundles.
@@ -121,7 +121,7 @@ install_debian_deps() {
 }
 
 install_arch_deps() {
-    sudo pacman -S --needed --noconfirm ffmpeg android-tools libx11 libxcursor libxi libxkbcommon-x11
+    sudo pacman -S --needed --noconfirm ffmpeg android-tools libusb libx11 libxcursor libxi libxkbcommon-x11
     # evdi is not in the official repositories on Arch — it only
     # exists in the AUR, so asking pacman for it can never succeed.
     if pacman -Qq evdi-dkms >/dev/null 2>&1 || pacman -Qq evdi >/dev/null 2>&1; then
@@ -138,7 +138,7 @@ install_arch_deps() {
 }
 
 install_suse_deps() {
-    local gui_deps=(libX11-6 libX11-xcb1 libXcursor1 libXi6 libxkbcommon-x11-0)
+    local gui_deps=(libusb-1_0-0 libX11-6 libX11-xcb1 libXcursor1 libXi6 libxkbcommon-x11-0)
     # The one distribution that has all of it in the default repos.
     # Split in two: the evdi kernel module package is tied to the
     # running kernel's ABI, and when that does not resolve it should
@@ -222,6 +222,7 @@ stage_optional_binaries() {
 stage_install_binaries() {
     local src_bin="$1" staged="$2" helper="$1/evdi_helper"
     cp "$src_bin/blent" "$staged/blent" || return
+    cp "$src_bin/blent-usb-broker" "$src_bin/blent-usb-io" "$staged/" || return
     stage_optional_binaries "$src_bin" "$staged" || return
     if [ ! -f "$helper" ]; then
         helper="$PROJECT_DIR/host/evdi/evdi_helper"

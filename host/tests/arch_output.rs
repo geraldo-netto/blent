@@ -25,7 +25,7 @@ fn prepare(root: &Path, version: &str) -> std::path::PathBuf {
         write(
             &source,
             &format!("{folder}/Cargo.toml"),
-            &format!("[package]\nname = \"{name}\"\nversion = \"0.1.0\"\nedition = \"2021\"\n[features]\nnative-audio = []\n"),
+            &format!("[package]\nname = \"{name}\"\nversion = \"0.1.0\"\nedition = \"2021\"\n[features]\nnative-audio = []\naccessory-transport = []\n"),
         );
         write(
             &source,
@@ -42,6 +42,11 @@ fn prepare(root: &Path, version: &str) -> std::path::PathBuf {
         &source,
         "host/src/bin/blent-audio.rs",
         "fn main() { println!(\"fresh-blent-audio\"); }\n",
+    );
+    write(
+        &source,
+        "host/src/bin/blent-usb-broker.rs",
+        "fn main() { println!(\"fresh-blent-usb-broker\"); }\n",
     );
     for name in [
         "scripts/setup-evdi.sh",
@@ -66,7 +71,7 @@ fn prepare(root: &Path, version: &str) -> std::path::PathBuf {
         "#!/bin/sh\nmkdir -p -- \"$1\"\n",
     );
     write(root, "evdi-1.15.0/library/libevdi.so.1.15.0", "fixture");
-    executable(root, "bin/make", "#!/bin/sh\nexit 0\n");
+    executable(root, "bin/make", "#!/bin/sh\ncase \"$*\" in *host/accessory*) mkdir -p target/release; printf '#!/bin/sh\\necho fresh-blent-usb-io\\n' > target/release/blent-usb-io;; esac\nexit 0\n");
     executable(root, "bin/gcc", "#!/bin/sh\nexit 0\n");
     let output = Command::new("cargo")
         .args(["generate-lockfile", "--offline"])
@@ -128,7 +133,13 @@ fn builds_fresh_package(config_override: bool) {
         String::from_utf8_lossy(&output.stdout),
         String::from_utf8_lossy(&output.stderr)
     );
-    for name in ["blent", "blent-gui", "blent-audio"] {
+    for name in [
+        "blent",
+        "blent-gui",
+        "blent-audio",
+        "blent-usb-broker",
+        "blent-usb-io",
+    ] {
         let output = Command::new(package.join("usr/bin").join(name))
             .output()
             .unwrap();
