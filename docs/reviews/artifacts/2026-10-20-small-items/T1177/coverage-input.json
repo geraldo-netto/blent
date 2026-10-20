@@ -1,0 +1,30 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent",
+    "--lib",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1177/coverage.lcov",
+    "--",
+    "stream::",
+    "video_queue::",
+    "display_work::",
+    "selection::worker::activity::",
+    "encoder_storage::"
+  ],
+  "sources": {
+    "host/src/video_queue.rs": "ddb01b736d1e306b9b0628f3895ad5ecf207ddac264acc7dad8bc5bf23e4a708",
+    "host/src/video_queue/viewers.rs": "da065cd29ce666be91a34f1a092eb4e2dcc043e783d9b04aeaecbe96bf990390",
+    "host/src/video_queue/viewers/exhaustion_tests.rs": "ff325a6aa3e9171dc2474d30cf282f3dd4a3a21a0dcf2b45e07d62ab2cd5a4b3",
+    "host/src/stream.rs": "ef0f29f279f8f541df2229baf1af2330af833d8edf7dbc34739bc8e07048c901",
+    "host/src/stream/viewer_tests.rs": "f4796aa14c7dc99a72c0b59582f611e2a8937ae9da4a2113a60863b2150f0058"
+  },
+  "profile_scope": "owned raw counters cleared; dependency build reused"
+}

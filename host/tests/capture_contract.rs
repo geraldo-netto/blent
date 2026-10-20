@@ -86,7 +86,7 @@ async fn t820_real_queue_and_attachment_adapters_obey_capture_contracts() {
     let output: VideoOutput = queue.clone().into();
     let observer = output.viewers();
     assert_eq!(observer.epoch(), 0);
-    let mut subscriber = queue.subscribe();
+    let mut subscriber = queue.subscribe().unwrap();
     assert_eq!(observer.epoch(), 1);
     assert_eq!(output.receiver_count(), 2);
     let generation = EncoderGeneration::new();

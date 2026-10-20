@@ -26,7 +26,7 @@ async fn t1041_capture_observes_original_grant_and_denies_unmanaged_or_closed_so
     let viewers = video.viewers();
     assert_eq!(viewers.epoch(), 0);
     let (grant, capability) = negotiation::channel();
-    let original = video.subscribe_negotiated(Arc::new(capability));
+    let original = video.subscribe_negotiated(Arc::new(capability)).unwrap();
     assert_eq!(viewers.epoch(), 1);
     assert_eq!(video.viewer_epoch().load(Ordering::Acquire), 1);
     grant.send_replace(true);
@@ -92,12 +92,12 @@ async fn t1041_mixed_original_viewers_wake_on_ack_and_legacy_departure() {
     drop(initial);
     let viewers = video.viewers();
     let (first, capability) = negotiation::channel();
-    let _first = video.subscribe_negotiated(Arc::new(capability));
+    let _first = video.subscribe_negotiated(Arc::new(capability)).unwrap();
     first.send_replace(true);
     assert!(viewers.liveness_ready());
     let added = viewers.changed();
     let (second, capability) = negotiation::channel();
-    let second_reader = video.subscribe_negotiated(Arc::new(capability));
+    let second_reader = video.subscribe_negotiated(Arc::new(capability)).unwrap();
     assert!(!viewers.liveness_ready());
     timeout(Duration::from_millis(100), added).await.unwrap();
     let acknowledged = viewers.changed();
@@ -106,7 +106,7 @@ async fn t1041_mixed_original_viewers_wake_on_ack_and_legacy_departure() {
         .await
         .unwrap();
     assert!(viewers.liveness_ready());
-    let legacy = video.subscribe();
+    let legacy = video.subscribe().unwrap();
     let departed = viewers.changed();
     assert!(!viewers.liveness_ready());
     drop(legacy);
@@ -127,12 +127,12 @@ async fn t1041_late_original_notices_never_grant_replacement_membership() {
     let viewers = video.viewers();
     for _ in 0..1000 {
         let (old, capability) = negotiation::channel();
-        let old_reader = video.subscribe_negotiated(Arc::new(capability));
+        let old_reader = video.subscribe_negotiated(Arc::new(capability)).unwrap();
         old.send_replace(true);
         let retained_notice = viewers.changed();
         drop(old_reader);
         let (new, capability) = negotiation::channel();
-        let replacement = video.subscribe_negotiated(Arc::new(capability));
+        let replacement = video.subscribe_negotiated(Arc::new(capability)).unwrap();
         old.send_replace(true);
         timeout(Duration::from_millis(100), retained_notice)
             .await
@@ -156,7 +156,7 @@ async fn t1041_read_only_wait_is_idle_and_closed_sources_do_not_spin() {
         .is_err());
     let (grant, capability) = negotiation::channel();
     grant.send_replace(true);
-    let original = video.subscribe_negotiated(Arc::new(capability));
+    let original = video.subscribe_negotiated(Arc::new(capability)).unwrap();
     drop(grant);
     assert!(!viewers.liveness_ready());
     assert!(timeout(Duration::from_millis(10), viewers.changed())
@@ -168,4 +168,36 @@ async fn t1041_read_only_wait_is_idle_and_closed_sources_do_not_spin() {
     assert!(timeout(Duration::from_millis(10), unsupported.changed())
         .await
         .is_err());
+}
+
+#[tokio::test]
+async fn t1177_exhausted_socket_rejects_without_requesting_encoder_work() {
+    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let peer = TcpStream::connect(listener.local_addr().unwrap())
+        .await
+        .unwrap();
+    let (socket, _) = listener.accept().await.unwrap();
+    let (video, raw) = crate::video_queue::channel(8, Default::default());
+    drop(raw);
+    video.viewer_epoch().store(u64::MAX, Ordering::Release);
+    let idr = Arc::new(AtomicBool::new(false));
+    drop(peer);
+    let result = StreamServer::handle_client(
+        socket,
+        video.clone(),
+        CodecConfig::new(None),
+        None,
+        idr.clone(),
+    )
+    .await;
+    assert!(
+        !idr.load(Ordering::Acquire),
+        "T1177: denied socket requested encoder work"
+    );
+    assert!(result
+        .unwrap_err()
+        .to_string()
+        .contains("viewer epochs exhausted"));
+    assert_eq!(video.receiver_count(), 0);
+    assert_eq!(video.viewer_epoch().load(Ordering::Acquire), u64::MAX);
 }

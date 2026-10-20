@@ -330,7 +330,7 @@ mod tests {
         let storage = PacketStorage::default();
         let releases = storage.registry.releases.clone();
         let (sender, mut fast) = crate::video_queue::channel(8, Default::default());
-        let mut slow = sender.subscribe();
+        let mut slow = sender.subscribe().unwrap();
         let budget = sender.budget();
         sender
             .send(crate::media::VideoPacket {

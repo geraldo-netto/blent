@@ -513,10 +513,10 @@ async fn t1045_selector_uses_original_viewer_demand_and_saved_preference() {
         } else {
             selected(&mut updates).await;
         }
-        let receiver = video.subscribe();
+        let receiver = video.subscribe().unwrap();
         selected(&mut updates).await;
         updates.borrow_and_update();
-        let second = video.subscribe();
+        let second = video.subscribe().unwrap();
         drop(second);
         assert!(
             timeout(Duration::from_millis(20), updates.changed())
@@ -525,7 +525,7 @@ async fn t1045_selector_uses_original_viewer_demand_and_saved_preference() {
             "T1045 continuous viewers repeated calibration"
         );
         drop(receiver);
-        let _replacement = video.subscribe();
+        let _replacement = video.subscribe().unwrap();
         if pause {
             timeout(Duration::from_secs(2), updates.changed())
                 .await

@@ -55,21 +55,31 @@ impl VideoSender {
         self.viewers.clone()
     }
 
-    pub fn subscribe(&self) -> VideoReceiver {
+    /// None at epoch exhaustion, before any subscription or membership is owned.
+    pub fn subscribe(&self) -> Option<VideoReceiver> {
         self.subscriber(None)
     }
     pub fn subscribe_negotiated(
         &self,
         capability: Arc<dyn crate::capture_contract::LivenessCapability>,
-    ) -> VideoReceiver {
+    ) -> Option<VideoReceiver> {
         self.subscriber(Some(capability))
     }
     fn subscriber(
         &self,
         capability: Option<Arc<dyn crate::capture_contract::LivenessCapability>>,
-    ) -> VideoReceiver {
-        self.viewers.epoch.fetch_add(1, Ordering::AcqRel);
-        VideoReceiver::new(self.sender.subscribe(), self.viewers.clone(), capability)
+    ) -> Option<VideoReceiver> {
+        self.viewers
+            .epoch
+            .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+                epoch.checked_add(1)
+            })
+            .ok()?;
+        Some(VideoReceiver::new(
+            self.sender.subscribe(),
+            self.viewers.clone(),
+            capability,
+        ))
     }
     pub fn receiver_count(&self) -> usize {
         self.sender.receiver_count()
@@ -185,7 +195,7 @@ mod tests {
         let config = MediaBytes::from_static(b"csd");
         assert!(tx.send(packet(0, true, &config)).is_err());
         assert_eq!(tx.budget.usage().0, 0);
-        let _rx = tx.subscribe();
+        let _rx = tx.subscribe().unwrap();
         let mut oversized = packet(1, true, &config);
         oversized.data = MediaBytes::from(vec![0; MAX_FRAME_BYTES + 1]);
         assert!(tx.send(oversized).is_err());

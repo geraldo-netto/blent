@@ -11,7 +11,7 @@ mod resources;
 use crate::media::CodecConfig;
 use crate::media::VideoPacket;
 use crate::media_storage::MediaBytes as Bytes;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use std::collections::VecDeque;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
@@ -203,7 +203,9 @@ impl StreamServer {
         // Only admitted peers count as viewers or request encoder work.
         let liveness = liveness::configured_interval()?;
         let (negotiated, capabilities) = negotiation::channel();
-        let rx = video_tx.subscribe_negotiated(Arc::new(capabilities.clone()));
+        let rx = video_tx
+            .subscribe_negotiated(Arc::new(capabilities.clone()))
+            .context("Video viewer epochs exhausted")?;
         idr_wanted.store(true, Ordering::SeqCst);
         let (mut reader, writer) = socket.into_split();
         tokio::select! {

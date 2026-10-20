@@ -118,7 +118,7 @@ mod tests {
         let (video, initial) = crate::video_queue::channel(8, Default::default());
         drop(initial);
         for _ in 0..1000 {
-            let original = video.subscribe();
+            let original = video.subscribe().unwrap();
             assert_eq!(video.viewers.members.lock().unwrap().entries.len(), 1);
             let retained_notice = video.viewers.changed();
             drop(original);
@@ -128,3 +128,6 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod exhaustion_tests;

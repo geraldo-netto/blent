@@ -1,0 +1,21 @@
+{
+  "tool": "Authored Rust decision/closure source estimates; not native SonarQube. rustc1.98.1/rustfmt syntax validation",
+  "production": {
+    "VideoSender::subscribe": 1,
+    "VideoSender::subscribe_negotiated": 1,
+    "VideoSender::subscriber": 2,
+    "StreamServer::handle_client": 7
+  },
+  "new_tests": {
+    "Capability::supported": 1,
+    "Capability::changed": 1,
+    "t1177_denial_keeps_original_presence_capability_and_subscription": 2,
+    "t1177_terminal_empty_registry_cannot_restart_continuity": 1,
+    "t1177_concurrent_final_admission_reserves_only_one_original": 6,
+    "t1177_bounded_wide_oracle_rejects_without_receivers_or_epoch_reuse": 2,
+    "check_seed": 2,
+    "t1177_exhausted_socket_rejects_without_requesting_encoder_work": 1
+  },
+  "existing_test_callers": "Only require successful normal admission with unwrap; decision structure unchanged.",
+  "limitation": "T1019 retains missing native SonarQube measurements; no tool download"
+}

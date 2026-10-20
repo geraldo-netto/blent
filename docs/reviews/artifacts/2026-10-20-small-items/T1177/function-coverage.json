@@ -1,0 +1,45 @@
+{
+  "tool": "rustc1.98.1; cargo-llvm-cov0.8.7; native LCOV counters in authored method ranges",
+  "functions": [
+    {
+      "file": "host/src/video_queue.rs",
+      "name": "subscribe",
+      "first": 59,
+      "last": 61,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/video_queue.rs",
+      "name": "subscribe_negotiated",
+      "first": 62,
+      "last": 67,
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/video_queue.rs",
+      "name": "subscriber",
+      "first": 68,
+      "last": 83,
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/stream.rs",
+      "name": "handle_client",
+      "first": 165,
+      "last": 218,
+      "covered": 32,
+      "total": 32,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}

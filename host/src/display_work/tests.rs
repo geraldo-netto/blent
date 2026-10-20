@@ -47,7 +47,7 @@ fn t1045_no_viewer_denies_work_even_without_machine_support_or_ack() {
         work.begin().is_none(),
         "T1045 empty session still creates work"
     );
-    let receiver = video.subscribe();
+    let receiver = video.subscribe().unwrap();
     assert!(!video.viewer_activity().liveness_ready());
     let original = work.begin().unwrap();
     assert!(work.permits(&original));
@@ -59,10 +59,10 @@ fn t1045_no_viewer_denies_work_even_without_machine_support_or_ack() {
 fn t1045_coalesced_last_viewer_replacement_cannot_revive_original_work() {
     let video = video();
     let work = view(&video, true);
-    let first = video.subscribe();
+    let first = video.subscribe().unwrap();
     let original = work.begin().unwrap();
     drop(first);
-    let _replacement = video.subscribe();
+    let _replacement = video.subscribe().unwrap();
     assert!(work.begin().is_some());
     assert!(
         !work.permits(&original),
@@ -73,9 +73,9 @@ fn t1045_coalesced_last_viewer_replacement_cannot_revive_original_work() {
 fn t1045_continuous_viewers_do_not_restart_work_for_late_joins_or_departures() {
     let video = video();
     let work = view(&video, true);
-    let first = video.subscribe();
+    let first = video.subscribe().unwrap();
     let original = work.begin().unwrap();
-    let second = video.subscribe();
+    let second = video.subscribe().unwrap();
     assert!(work.permits(&original));
     drop(first);
     assert!(work.permits(&original));
@@ -87,7 +87,7 @@ fn t1045_disabled_preference_and_explicit_unsupported_presence_keep_fallback() {
     let video = video();
     let work = view(&video, false);
     let original = work.begin().unwrap();
-    let receiver = video.subscribe();
+    let receiver = video.subscribe().unwrap();
     drop(receiver);
     assert!(work.permits(&original));
     let unsupported = View::new(None, None, true);
@@ -101,7 +101,7 @@ async fn t1045_viewer_notices_arm_before_first_poll_without_retaining_membership
     let video = video();
     let work = view(&video, true);
     let joined = work.changed();
-    let receiver = video.subscribe();
+    let receiver = video.subscribe().unwrap();
     timeout(Duration::from_millis(30), joined).await.unwrap();
     let left = work.changed();
     drop(receiver);
@@ -147,7 +147,7 @@ fn publication(feed: &Feed) -> Publication {
 #[tokio::test]
 async fn t1045_original_machine_fences_loss_and_pending_still_deny_with_viewers() {
     let video = video();
-    let _receiver = video.subscribe();
+    let _receiver = video.subscribe().unwrap();
     let mut feed = feed();
     let (publish, source) = watch::channel(publication(&feed));
     let work = View::new(Some(source), Some(video.viewer_activity()), true);
@@ -203,7 +203,7 @@ fn t1045_acknowledgement_is_not_a_viewer_or_capture_authority() {
     let source: Arc<dyn LivenessCapability> = Arc::new(Grant);
     assert!(source.supported());
     assert!(work.begin().is_none());
-    let receiver = video.subscribe_negotiated(source);
+    let receiver = video.subscribe_negotiated(source).unwrap();
     assert!(video.viewer_activity().liveness_ready());
     assert!(work.begin().is_some());
     drop(receiver);

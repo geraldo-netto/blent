@@ -54,7 +54,7 @@ impl Trial {
         let activity = tracker.encoder_activity(evidence.clone());
         let (video, initial) = video_queue::channel(8, Default::default());
         drop(initial);
-        let receiver = video.subscribe_negotiated(capability);
+        let receiver = video.subscribe_negotiated(capability).unwrap();
         let lease = super::tests::lease(root.path());
         let subjects = subjects::Subjects::new(Mode::Unchanged, video.viewer_activity());
         let handle = finish_startup(spawn(
@@ -162,7 +162,7 @@ async fn t1115_coalesced_viewer_replacement_cannot_reuse_current_qualification()
     let (_grant, capability) = watch::channel(true);
     let _replacement = trial
         .video
-        .subscribe_negotiated(Arc::new(Grant(capability)));
+        .subscribe_negotiated(Arc::new(Grant(capability))).unwrap();
     trial.cleared().await;
     tokio::time::advance(Duration::from_secs(3)).await;
     assert!(!trial.handle()._lease.path.exists());

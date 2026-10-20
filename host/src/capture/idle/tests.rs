@@ -393,7 +393,7 @@ async fn t492_new_viewer_invalidates_sparse_admission_even_without_missing_frame
     .unwrap();
     tokio::task::yield_now().await;
     handle._lease.publish(500).unwrap();
-    let _new_viewer = tx.subscribe();
+    let _new_viewer = tx.subscribe().unwrap();
     tokio::time::advance(Duration::from_millis(250)).await;
     native_until(|| handle.task.is_finished()).await;
     assert!(!handle._lease.path.exists());

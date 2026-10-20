@@ -405,7 +405,7 @@ async fn t1015_last_viewer_pause_retains_monitor_and_resumes_fresh_generation() 
     drop(stream.received.take());
     stream.paused().await;
     assert!(!first.generation.load(std::sync::atomic::Ordering::Acquire));
-    stream.received = Some(stream.video.subscribe());
+    stream.received = Some(stream.video.subscribe().unwrap());
     stream.fresh(&first).await;
     assert_eq!(stream.helper(), helper);
     stream.stop().await;
@@ -417,7 +417,7 @@ async fn t1015_disabled_no_viewer_preference_keeps_original_encoder_generation()
     let first = stream.packet().await;
     drop(stream.received.take());
     tokio::time::sleep(Duration::from_millis(30)).await;
-    stream.received = Some(stream.video.subscribe());
+    stream.received = Some(stream.video.subscribe().unwrap());
     let same = stream.packet().await;
     assert!(Arc::ptr_eq(&first.generation, &same.generation));
     assert!(stream.headers.current().is_some());
