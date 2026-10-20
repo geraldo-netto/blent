@@ -139,7 +139,12 @@ async fn setup_session(
     let mut pairing = Pairing::default();
     let ticket = pairing.begin(proven.clone(), true, 0, 10000)?;
     let verified = candidate
-        .authenticate_with_timeout(identity, ticket.clone(), Duration::from_secs(3))
+        .authenticate_with_timeout(
+            identity,
+            ticket.clone(),
+            Duration::from_secs(3),
+            blent::secure_connection::HandshakeTimeout::new(Duration::from_secs(3))?,
+        )
         .await?;
     let approved = pairing.authenticated(&ticket, &verified.peer, 0)?;
     ensure!(
@@ -355,4 +360,19 @@ async fn main() -> Result<()> {
         serve(Path::new(&args[1]), Path::new(&args[2]), mode),
     )
     .await?
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn t1208_committed_public_fixture_keys_match_current_setup_identity() {
+        let directory = Path::new(env!("CARGO_MANIFEST_DIR")).join("../testdata/connection-tls");
+        let identity = Identity::load(record(&directory).unwrap()).unwrap();
+        let tablet =
+            PeerCertificate::parse(std::fs::read(directory.join("tablet.der")).unwrap()).unwrap();
+        let host = PeerCertificate::parse(identity.certificate().to_vec()).unwrap();
+        assert_ne!(host.peer_id(), tablet.peer_id());
+    }
 }
