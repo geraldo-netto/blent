@@ -1,0 +1,61 @@
+{
+  "tool": "JaCoCo0.8.15 native JVM method-variant counters",
+  "functions": [
+    {
+      "owner": "com/blent/NativeDeadline$begin$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;JJ)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;JJILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "getStatus",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "begin",
+      "descriptor": "()V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "expired",
+      "descriptor": "(J)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "finish",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    }
+  ]
+}
