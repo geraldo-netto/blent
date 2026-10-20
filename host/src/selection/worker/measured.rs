@@ -80,6 +80,9 @@ pub(super) async fn benchmark(
     latency: &LatencyTracker,
     candidates: Vec<Candidate>,
 ) -> Vec<Candidate> {
+    if candidates.is_empty() {
+        return candidates;
+    }
     let key = snapshot.selection_key();
     if !super::super::trial::capture_ready(latency, &key).await {
         tracing::info!("Automatic trials skipped: capture did not become ready within 15s");
@@ -252,6 +255,36 @@ pub(super) fn reason(candidate: &Candidate) -> Option<String> {
 mod tests {
     use super::super::tests::candidate;
     use super::*;
+
+    #[tokio::test]
+    async fn t1207_empty_trials_finish_without_capture_readiness_or_native_work() {
+        use futures_util::FutureExt;
+        let snapshot = super::super::tests::settings();
+        let (settings, _) = watch::channel(snapshot.clone());
+        let result =
+            benchmark(&settings, &snapshot, &LatencyTracker::new(), Vec::new()).now_or_never();
+        assert!(
+            matches!(result, Some(values) if values.is_empty()),
+            "T1207 empty trials waited for capture"
+        );
+    }
+
+    #[tokio::test(start_paused = true)]
+    async fn t1207_nonempty_trials_preserve_the_original_capture_deadline() {
+        let snapshot = super::super::tests::settings();
+        let (settings, _) = watch::channel(snapshot.clone());
+        let started = tokio::time::Instant::now();
+        let result = benchmark(
+            &settings,
+            &snapshot,
+            &LatencyTracker::new(),
+            vec![candidate("libx264", true, 120.0, 1)],
+        )
+        .await;
+        assert!(result.is_empty());
+        assert_eq!(started.elapsed(), Duration::from_secs(15));
+        assert!(settings.borrow().selection.is_none());
+    }
 
     #[tokio::test(start_paused = true)]
     async fn t627_live_trials_wait_for_matching_capture_output_before_spending_window() {

@@ -1,0 +1,10 @@
+{
+  "file": "host/src/selection/worker/measured.rs",
+  "name": "benchmark",
+  "first": 77,
+  "last": 105,
+  "covered": 29,
+  "total": 29,
+  "missing": [],
+  "percent": 100.0
+}

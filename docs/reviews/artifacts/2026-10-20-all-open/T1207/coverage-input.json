@@ -1,0 +1,29 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent",
+    "--bin",
+    "blent",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1207/coverage.lcov",
+    "--",
+    "selection::worker::measured"
+  ],
+  "sources": {
+    "host/src/selection/worker/measured.rs": "3e45ddfec18c68bcd246a1da6f457ba71369d92eab120b40cd5f2fb846ca4326"
+  },
+  "source_matched_export": [
+    "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-cov",
+    "export",
+    "--format=lcov",
+    "--instr-profile=/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/blent.profdata",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-2dde2f627934020f"
+  ]
+}
