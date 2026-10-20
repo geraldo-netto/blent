@@ -1,0 +1,7 @@
+{
+  "docs/reviews/artifacts/2026-10-10-t846/live/debugging-off-03.log.gz": "20af2d00d12514c7e3d60d16b6abbfb6b0628007a12bb1521c7b3e9311fb4741",
+  "docs/reviews/artifacts/2026-10-10-t846/live/provenance.json": "74ee94f651f08cc1a0cdc085db2c1e1a14f43407a6e465a4d8679cfe13f94d1f",
+  "host/accessory/accessory.c": "ac675d37abec64321a17381423a23383408b5d3dc1b4aa0ac51f283502c54caa",
+  "scripts/tests/test_aoa_probe.py": "09a265f7627bca716d1ec12f9ae525120d96acd6e3bec7335da6a306a7c0fae0",
+  "scripts/tests/fixtures/aoa/enumeration.c": "8adab613be16268b245ea46b809b07ae5cfef16aaf40ae049418bbee1f4880b5"
+}
