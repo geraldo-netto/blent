@@ -1,5 +1,15 @@
 # Development
 
+## Compatibility policy
+
+Owner decision, 2026-10-20: Blent does not require backward compatibility.
+Avoid and remove compatibility-only shims, deprecated aliases, legacy APIs,
+configuration/data/wire formats, migrations, wrappers and fallback paths.
+Update current callers, schemas, documentation and permanent regressions together
+instead of preserving obsolete paths. Keep current correctness, independent
+contracts, platform boundaries and exact native resource ownership intact.
+Track discoveries in `TODO.md`, with one verified commit per removal.
+
 ## Building from source
 
 These instructions target the Linux host. The [Windows plan](windows-port.md)
