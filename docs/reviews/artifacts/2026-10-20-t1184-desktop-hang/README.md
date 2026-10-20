@@ -3,7 +3,11 @@
 The reproduced pause/flip failure is repaired under T1185; see the
 [implementation and permanent red/green evidence](../2026-10-20-t1185-fix/README.md).
 This report retains the incident and pre-fix diagnostic observations.
-Incident-specific attribution and physical target acceptance remain open.
+[Physical target off/wake acceptance](../2026-10-20-t1184-acceptance/README.md)
+passed on October 20 after activating the repair and diagnostics; the owner
+confirms desktop and tablet work normally. T1184 is resolved for the reproduced
+mechanism and current target acceptance. The original initiating request/control
+trace/binary identity remain an unrecoverable historical evidence limit.
 
 Host-read-only investigation requested by the maintainer on 2026-10-20. Times below
 are Europe/Rome (CEST, UTC+02:00). No live display, service, driver, package or

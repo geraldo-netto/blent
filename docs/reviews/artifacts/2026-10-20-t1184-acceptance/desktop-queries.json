@@ -1,0 +1,50 @@
+[
+  {
+    "name": "cinnamon-power",
+    "command": [
+      "busctl",
+      "--user",
+      "--timeout=3s",
+      "get-property",
+      "org.cinnamon.Muffin.DisplayConfig",
+      "/org/cinnamon/Muffin/DisplayConfig",
+      "org.cinnamon.Muffin.DisplayConfig",
+      "PowerSaveMode"
+    ],
+    "exit": 0,
+    "elapsed_ms": 5.73
+  },
+  {
+    "name": "cinnamon-displays",
+    "command": [
+      "busctl",
+      "--user",
+      "--timeout=3s",
+      "call",
+      "org.cinnamon.Muffin.DisplayConfig",
+      "/org/cinnamon/Muffin/DisplayConfig",
+      "org.cinnamon.Muffin.DisplayConfig",
+      "GetCurrentState"
+    ],
+    "exit": 0,
+    "elapsed_ms": 5.75
+  },
+  {
+    "name": "xrandr-after",
+    "command": [
+      "xrandr",
+      "--current"
+    ],
+    "exit": 0,
+    "elapsed_ms": 5.02
+  },
+  {
+    "name": "xset-after",
+    "command": [
+      "xset",
+      "q"
+    ],
+    "exit": 0,
+    "elapsed_ms": 3.41
+  }
+]

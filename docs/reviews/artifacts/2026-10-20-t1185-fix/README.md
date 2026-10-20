@@ -143,9 +143,10 @@ disabled; no buffer is recycled during either observation.
 
 These hosted sanitizer results and bounded native traces do not prove every
 interleaving, kernel leak freedom or AMDGPU imported-buffer safety. There is no
-native KASAN/kmemleak claim. T1184 retains incident-specific attribution and
-physical Cinnamon/AMDGPU/-38 acceptance, and the distinct T748/T749/T750 findings
-retain their existing dispositions.
+native KASAN/kmemleak claim. At the isolated-verification checkpoint, T1184 retained incident-specific
+attribution and physical Cinnamon/AMDGPU/-38 acceptance. Later physical
+acceptance is linked below; distinct T748/T749/T750 findings retain their
+existing dispositions.
 
 ## Prepared local build
 
@@ -194,5 +195,8 @@ of T748/T749. Shutdown FFmpeg pipe errors accompany its clean signal 15 exit.
 `activation.json`, `activation-service.log.gz`, `activation-kernel.log.gz` and
 `activation-xrandr.txt.gz` retain the identities, hashes, counters and local logs.
 The approved restart did not include forced host display-off, lock or suspend.
-T1184 therefore retains physical pause/resume/wake acceptance and historical
-attribution limits. T914's broader acceptance window remains unapproved.
+At that checkpoint T1184 retained physical pause/resume/wake acceptance and
+historical attribution limits. The later [physical acceptance](../2026-10-20-t1184-acceptance/README.md)
+passes on the original Cinnamon/AMDGPU/-38 target with owner confirmation.
+T1184 is resolved; the historical attribution limit remains recorded. T914's
+broader joined-media/lock/suspend acceptance window remains unapproved.

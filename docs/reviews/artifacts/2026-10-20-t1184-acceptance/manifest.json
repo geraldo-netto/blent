@@ -1,0 +1,23 @@
+{
+  "files_sha256": {
+    "before.json": "e3ccb6014253515ae0b841651bfe9fb50c93cbfb6e8a0e43f34865f903c3f803",
+    "on-observation.log.gz": "542bbfdb1876e65589ef9e07b416b9d78ae20f202a250dba7d3a0ac23e360492",
+    "xset-after.stdout.gz": "542bbfdb1876e65589ef9e07b416b9d78ae20f202a250dba7d3a0ac23e360492",
+    "xset-before.txt.gz": "542bbfdb1876e65589ef9e07b416b9d78ae20f202a250dba7d3a0ac23e360492",
+    "off-observation.log.gz": "fdccfb14681799abbec3a40ca0258fe8f1fd03ac99decc18895347a7fbe4b412",
+    "diagnostic-restart.json": "54f2ee48d121901882ef6b8ccc2c480fd49b163d0fc856b266f0a593d16d816f",
+    "summary.json": "c49e475ea0b6734e46bc0de2bb04a044b092d0eea5f43675ab4fc1d33c8553f8",
+    "xrandr-before.txt.gz": "1b712b584baf4491a5a82b536bb5588a680e76cbc13d835315714a7b3e192fbf",
+    "service.log.gz": "31d5984af0f0bc97faf0db25ad593142b2c573d60bbef74e2c1a9c857d7567d8",
+    "README.md": "ba1f730cad299090c0537397e8bb2f4f1231e7c2403157b80b8756c2f50b2278",
+    "kernel.log.gz": "69705c8d4822a28eea6abd438193bce0c148f2fa1a3706cdaf00f1f667ad6e62",
+    "user-session.log.gz": "377095085b5116825ec8a6df7579cb09b3014062a4a4f2f25ed18bab0dc2538e",
+    "desktop-queries.json": "dac9c612304200cf2f67b99942198b15f0e4775b7776e6bcaaa5eed81d505d97",
+    "xrandr-after.stdout.gz": "1b712b584baf4491a5a82b536bb5588a680e76cbc13d835315714a7b3e192fbf",
+    "cinnamon-displays.stdout.gz": "78c071ede3037eba94f20fae69213dcfd9746a44636eec5fcfad0fbedf480dc6",
+    "power-cycle.json": "d55f2f810b97eefad26bcb981ed6e266ad6d0c261255407bcaddf8908a599487"
+  },
+  "source_commit": "8688e8ea2ddf3b019bc369ae4fddcd83b2494014",
+  "trial_scope": "One owner-approved diagnostic restart and one approximately three-second display-off/wake cycle; no lock/suspend/driver update.",
+  "native_lifetime": "Each of the four native xset children is waited/reaped. Original pre-restart helper/host retired before replacement. Connected helper remains owned and funded by unchanged running service."
+}

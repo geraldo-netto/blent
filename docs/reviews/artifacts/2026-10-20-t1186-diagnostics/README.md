@@ -90,11 +90,11 @@ The built bundle is `target/t1186/evdi_helper` plus unchanged sibling libevdi.
 The helper was backed up and atomically installed without restarting Blent.
 `installation.json` records installed SHA256
 `42617137d7a73df7d25bf32a1f831a3256a7fbfd1c9cdec9dd115a010b5dac5c`.
-The running helper PID 59391, start tick 448946, retains T1185 binary SHA256
+At the installation checkpoint, running helper PID 59391, start tick 448946, retained T1185 binary SHA256
 `9c4b48c66274d1936f0426820c4be883f47ca25b3645289999beca3045326475`.
-It continues capture/render progress without interruption. The diagnostic build
-will activate at the next ordinary service start; no physical diagnostic result
-is claimed before then. The old executable inode stays owned by its original
+Capture/render progress continued without interruption. Diagnostics required
+a subsequent service start; that later approved activation and physical result
+are recorded below. The old executable inode stays owned by its original
 running process until actual retirement; it was not overwritten in place.
 Backup: `/backups/disk2/blent-work/2026-10-20-t1186/deployment/evdi_helper.before`.
 No driver/library update, forced power transition, package transfer or push ran.
@@ -103,3 +103,14 @@ For recurrence evidence, read the existing service and kernel journals for the
 same boot/time window. Correlate original helper process, capture request/ACK,
 sampled native begin/end and EVDI commit timeouts. Preserve logs before any
 recovery/restart. Do not infer historical T1184 state from a later successful run.
+
+
+## Subsequent physical activation
+
+On October 20 the owner approved a diagnostic restart and one brief display-off/wake
+cycle. The installed diagnostic helper is now active as PID 95421. The original
+Cinnamon/AMDGPU/kernel-38 target passes pause/native-service/resume, compositor
+responsiveness and continuing tablet render ACK checks; the owner confirms
+“Both working normally”. [Retained evidence](../2026-10-20-t1184-acceptance/README.md)
+closes T1184's native acceptance, while preserving historical attribution limits
+and the separate T914/T748/T749/T750 scopes.

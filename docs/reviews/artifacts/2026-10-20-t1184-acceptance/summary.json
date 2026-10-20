@@ -1,0 +1,135 @@
+{
+  "start": "2026-10-20T11:46:30+02:00",
+  "power_off_request": "2026-10-20T11:47:21.577+02:00",
+  "power_cycle_end": "2026-10-20T11:47:24.825+02:00",
+  "observation_end": "2026-10-20T11:48:38+02:00",
+  "kernel": "7.0.0-38-generic",
+  "boot_id": "b759a08f-c81b-4ffc-a471-0ac0b0255e7b",
+  "helper_pid": 95421,
+  "helper_start_ticks": "777541",
+  "helper_sha256": "42617137d7a73df7d25bf32a1f831a3256a7fbfd1c9cdec9dd115a010b5dac5c",
+  "pause_sequence": 2,
+  "resume_sequence": 3,
+  "sampled_paused_native_bracket_us": 1162,
+  "native_xset_children_waited": [
+    {
+      "name": "off",
+      "pid": 96712,
+      "exit": 0,
+      "observed_retirement_ms": 3000.93
+    },
+    {
+      "name": "off-observation",
+      "pid": 96722,
+      "exit": 0,
+      "observed_retirement_ms": 2249.55
+    },
+    {
+      "name": "wake",
+      "pid": 96748,
+      "exit": 0,
+      "observed_retirement_ms": 200.37
+    },
+    {
+      "name": "on-observation",
+      "pid": 96751,
+      "exit": 0
+    }
+  ],
+  "desktop_query_results": [
+    {
+      "name": "cinnamon-power",
+      "command": [
+        "busctl",
+        "--user",
+        "--timeout=3s",
+        "get-property",
+        "org.cinnamon.Muffin.DisplayConfig",
+        "/org/cinnamon/Muffin/DisplayConfig",
+        "org.cinnamon.Muffin.DisplayConfig",
+        "PowerSaveMode"
+      ],
+      "exit": 0,
+      "elapsed_ms": 5.73
+    },
+    {
+      "name": "cinnamon-displays",
+      "command": [
+        "busctl",
+        "--user",
+        "--timeout=3s",
+        "call",
+        "org.cinnamon.Muffin.DisplayConfig",
+        "/org/cinnamon/Muffin/DisplayConfig",
+        "org.cinnamon.Muffin.DisplayConfig",
+        "GetCurrentState"
+      ],
+      "exit": 0,
+      "elapsed_ms": 5.75
+    },
+    {
+      "name": "xrandr-after",
+      "command": [
+        "xrandr",
+        "--current"
+      ],
+      "exit": 0,
+      "elapsed_ms": 5.02
+    },
+    {
+      "name": "xset-after",
+      "command": [
+        "xset",
+        "q"
+      ],
+      "exit": 0,
+      "elapsed_ms": 3.41
+    }
+  ],
+  "post_wake_grab_totals": [
+    1513,
+    1692,
+    1865,
+    2044,
+    2224,
+    2409,
+    2589,
+    2767,
+    2943,
+    3122,
+    3304,
+    3484,
+    3654,
+    3832,
+    4017
+  ],
+  "post_wake_render_ack_samples": [
+    63,
+    179,
+    173,
+    180,
+    180,
+    184,
+    181,
+    179,
+    176,
+    179,
+    182,
+    181,
+    169,
+    180,
+    185
+  ],
+  "matching_kernel_timeout_or_fault_lines": [],
+  "x11_power_observer_lost": false,
+  "visual_owner_confirmation": "Both working normally",
+  "historical_limit": "Original initiating request, capture-control trace and incident binary identity cannot be reconstructed from retained logs. Passing current acceptance does not prove that historical chain or all future interleavings.",
+  "original_paused_encoder_pid": 95687,
+  "original_paused_encoder_absent": true,
+  "resumed_encoder_pid": 96755,
+  "resumed_encoder_present": true,
+  "retained_cinnamon_pid": 2740,
+  "retained_xorg_pid": 1983,
+  "visual_confirmation_received": "2026-10-20T11:52:05+02:00",
+  "disposition": "T1184 resolved: confirmed pause/flip mechanism repaired under T1185, diagnostics active under T1186, current physical off/wake acceptance passed. Exact historical initiator remains an explicit unrecoverable evidence limit."
+}

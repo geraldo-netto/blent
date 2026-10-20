@@ -1,0 +1,29 @@
+{
+  "start": "2026-10-20T11:47:21.577+02:00",
+  "commands": [
+    {
+      "name": "off",
+      "pid": 96712,
+      "exit": 0,
+      "observed_retirement_ms": 3000.93
+    },
+    {
+      "name": "off-observation",
+      "pid": 96722,
+      "exit": 0,
+      "observed_retirement_ms": 2249.55
+    },
+    {
+      "name": "wake",
+      "pid": 96748,
+      "exit": 0,
+      "observed_retirement_ms": 200.37
+    },
+    {
+      "name": "on-observation",
+      "pid": 96751,
+      "exit": 0
+    }
+  ],
+  "end": "2026-10-20T11:47:24.825+02:00"
+}
