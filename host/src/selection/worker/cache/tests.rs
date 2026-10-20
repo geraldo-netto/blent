@@ -566,3 +566,14 @@ fn t1195_terminal_recalibration_never_reuses_initial_durable_record() {
     assert!(current.load(100, &snapshot).is_some());
     assert!(old.load(100, &snapshot).is_none());
 }
+
+#[test]
+fn t1187_terminal_snapshot_cannot_prepare_a_durable_profile_context() {
+    let (mut snapshot, _) = setup();
+    let base = CaptureConfig::default();
+    let identity = ("terminal-tablet".into(), "usb");
+    snapshot.decoder_epoch = u64::MAX - 1;
+    assert!(context::fingerprint(&identity, "host", &snapshot, &base).is_some());
+    snapshot.decoder_epoch = u64::MAX;
+    assert!(context::fingerprint(&identity, "host", &snapshot, &base).is_none());
+}

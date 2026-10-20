@@ -95,14 +95,13 @@ fn decoder_fields(
     Option<String>,
     Option<blent_config::negotiation::DecoderChoice>,
 ) {
-    match settings {
-        Some(s) => (
-            Some(2),
-            Some(s.decoder_epoch.to_string()),
-            s.decoder_choice().cloned(),
-        ),
-        None => (None, None, None),
-    }
+    let Some(settings) = settings else {
+        return (None, None, None);
+    };
+    let Some(scope) = settings.decoder_scope() else {
+        return (None, None, None);
+    };
+    (Some(2), Some(scope), settings.decoder_choice().cloned())
 }
 
 impl Default for InputConfig {

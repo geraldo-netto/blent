@@ -1,0 +1,46 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent",
+    "--lib",
+    "--bin",
+    "blent",
+    "--test",
+    "contract_build",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1187/coverage.lcov",
+    "--",
+    "media::",
+    "input::",
+    "selection::worker::",
+    "t827"
+  ],
+  "sources": {
+    "host/src/media.rs": "75e02e15125ccd7c04f56c1f120c503b64468bd2c5d3b143da60fff06d944ac9",
+    "host/src/media/exhaustion_tests.rs": "058f62db8c96eeef782eab0e6681db2b322eaa746e76979c880562067790527d",
+    "host/src/input.rs": "9f62e40fc65ee9e1fb72df49c1857b6b2e9f96946a65f23e95ae3826f3c6248e",
+    "host/src/input/config.rs": "81853a189e99c8bb7c93aaf5169f2517fb67d1b1744de060ad8320fc6a41b758",
+    "host/src/input/settings.rs": "b5922fe2ab5821f7de23bafe092be1fdcab9d2a41497e8c17ef9d87068c9bf26",
+    "host/src/selection/worker/activity/tests.rs": "91316bc37a3863ff1dc26e7f0db986e3378127e4ebbbf355487cf76aff651906",
+    "host/src/selection/worker/cache/context.rs": "9505e6e84da9d32dab9be0101a9c322b5833f88f81f78a8e0360a16a8d9609ba",
+    "host/src/selection/worker/cache/tests.rs": "ffde50834983524028bec5384cf6eb9e2ff8f77074dfbf729097f80664540d7e"
+  },
+  "source_matched_export": [
+    "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-cov",
+    "export",
+    "--format=lcov",
+    "--instr-profile=/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/blent.profdata",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-d512991ead5280bc",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-2dde2f627934020f",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/contract_build-421fcf426d0b126e"
+  ]
+}

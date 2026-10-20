@@ -99,6 +99,8 @@ pub struct EncoderSettings {
     /// Authenticated tablet metadata has supplied pixel and physical geometry.
     pub geometry_ready: bool,
     pub decoders: Option<DecoderCapabilities>,
+    /// Report/selection epochs satisfy 0 <= epoch < u64::MAX. MAX is terminal.
+    /// Numeric invalidation never proves original native retirement.
     pub decoder_epoch: u64,
     pub selection: Option<crate::selection::Selected>,
 }
@@ -106,6 +108,16 @@ pub struct EncoderSettings {
 pub use blent_config::negotiation::DecoderCapabilities;
 
 impl EncoderSettings {
+    /// A terminal settings owner cannot admit another decoder/selection scope.
+    pub fn decoder_admission_open(&self) -> bool {
+        self.decoder_epoch < u64::MAX
+    }
+
+    pub fn decoder_scope(&self) -> Option<String> {
+        self.decoder_admission_open()
+            .then(|| self.decoder_epoch.to_string())
+    }
+
     /// Immutable identity for a measured selection. Matching below borrows the
     /// existing metadata rather than cloning it on every frame/settings check.
     pub fn selection_key(&self) -> crate::selection::Key {
@@ -122,7 +134,8 @@ impl EncoderSettings {
     }
 
     pub fn selection_matches(&self, key: &crate::selection::Key) -> bool {
-        self.encoder == "auto"
+        self.decoder_admission_open()
+            && self.encoder == "auto"
             && self.geometry_ready
             && key.format == self.selection_format()
             && key.epoch == self.decoder_epoch
@@ -130,7 +143,10 @@ impl EncoderSettings {
     }
 
     pub fn calibrating(&self) -> bool {
-        if self.encoder != "auto" || cfg!(feature = "inproc-encoder") {
+        if !self.decoder_admission_open()
+            || self.encoder != "auto"
+            || cfg!(feature = "inproc-encoder")
+        {
             return false;
         }
         if self
@@ -171,9 +187,12 @@ impl EncoderSettings {
     pub fn clear_decoders(&mut self) {
         self.decoders = None;
         self.selection = None;
-        self.decoder_epoch = self.decoder_epoch.wrapping_add(1);
+        self.decoder_epoch = self.decoder_epoch.saturating_add(1);
     }
     pub fn selection_reason(&self) -> &str {
+        if !self.decoder_admission_open() {
+            return "Decoder metadata generations exhausted; restart Blent for new profile selection";
+        }
         if self.encoder != "auto" {
             return if self.effective_encoder() == self.encoder {
                 "Explicit encoder preference"
@@ -217,8 +236,11 @@ impl EncoderSettings {
         let Some(caps) = &self.decoders else {
             return false;
         };
+        let Some(scope) = self.decoder_scope() else {
+            return false;
+        };
         let (width, height) = self.video_dimensions();
-        caps.matches(&self.decoder_epoch.to_string(), width, height, self.fps)
+        caps.matches(&scope, width, height, self.fps)
             && caps.codecs.iter().any(|name| name == codec.wire_name())
     }
 
@@ -235,10 +257,14 @@ impl EncoderSettings {
 }
 
 #[cfg(test)]
+#[path = "media/exhaustion_tests.rs"]
+mod exhaustion_tests;
+
+#[cfg(test)]
 mod tests {
     use super::*;
 
-    fn selection_fixture() -> EncoderSettings {
+    pub(super) fn selection_fixture() -> EncoderSettings {
         EncoderSettings {
             encoder: "auto".into(),
             fps: 60,
@@ -303,7 +329,7 @@ mod tests {
                 settings.fps = width;
                 settings.bitrate = width;
                 settings.quality = width;
-                settings.decoder_epoch = u64::MAX;
+                settings.decoder_epoch = u64::MAX - 1;
                 let key = settings.selection_key();
                 assert!(settings.selection_matches(&key));
                 assert_eq!((key.format.0, key.format.1), settings.video_dimensions());

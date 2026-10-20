@@ -45,7 +45,8 @@ pub(super) fn fingerprint(
     base: &CaptureConfig,
 ) -> Option<String> {
     let mut caps = snapshot.decoders.clone()?;
-    if snapshot.encoder != "auto"
+    if !snapshot.decoder_admission_open()
+        || snapshot.encoder != "auto"
         || !snapshot.geometry_ready
         || !caps.valid()
         || caps.protocol != 2

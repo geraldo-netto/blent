@@ -1,0 +1,110 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7; LLVM native source-matched LCOV counters; equivalent canonical source paths combined",
+  "functions": [
+    {
+      "file": "host/src/media.rs",
+      "name": "decoder_admission_open",
+      "first": 112,
+      "last": 114,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/media.rs",
+      "name": "decoder_scope",
+      "first": 116,
+      "last": 119,
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/media.rs",
+      "name": "selection_matches",
+      "first": 136,
+      "last": 143,
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/media.rs",
+      "name": "calibrating",
+      "first": 145,
+      "last": 163,
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/media.rs",
+      "name": "clear_decoders",
+      "first": 187,
+      "last": 191,
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/media.rs",
+      "name": "selection_reason",
+      "first": 192,
+      "last": 211,
+      "covered": 17,
+      "total": 18,
+      "percent": 94.44444444444444,
+      "missing": [
+        204
+      ]
+    },
+    {
+      "file": "host/src/media.rs",
+      "name": "decoder_supports",
+      "first": 235,
+      "last": 245,
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/config.rs",
+      "name": "decoder_fields",
+      "first": 91,
+      "last": 105,
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/settings.rs",
+      "name": "SessionSettings::decoders",
+      "first": 96,
+      "last": 117,
+      "covered": 18,
+      "total": 20,
+      "percent": 90.0,
+      "missing": [
+        98,
+        112
+      ]
+    },
+    {
+      "file": "host/src/selection/worker/cache/context.rs",
+      "name": "fingerprint",
+      "first": 41,
+      "last": 77,
+      "covered": 36,
+      "total": 36,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}

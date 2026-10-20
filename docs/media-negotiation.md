@@ -169,6 +169,14 @@ saved measurements remain historical.
 It does not establish cross-tablet performance. A multi-tablet campaign remains
 outside this work (T382 declined).
 
+The host decoder epoch admits values `0 <= epoch < u64::MAX`; `u64::MAX`
+is a terminal sentinel. Clearing metadata advances toward that sentinel and
+never wraps. Terminal owners advertise no decoder scope/protocol, reject reports
+and measured selection, and stop requesting calibration. Existing native work
+retains its original cleanup owner; numeric exhaustion never certifies retirement.
+The host reports exhaustion in its selection reason; restart Blent to create a
+new settings owner for further profile selection.
+
 ## Permanent automated coverage required before behavior changes
 
 | Layer | Required regressions |

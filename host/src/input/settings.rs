@@ -101,13 +101,11 @@ impl SettingsSink for SessionSettings<'_> {
             return;
         }
         tx.send_if_modified(|settings| {
+            let Some(scope) = settings.decoder_scope() else {
+                return false;
+            };
             let (width, height) = settings.video_dimensions();
-            if !capabilities.matches(
-                &settings.decoder_epoch.to_string(),
-                width,
-                height,
-                settings.fps,
-            ) {
+            if !capabilities.matches(&scope, width, height, settings.fps) {
                 return false;
             }
             if settings.decoders.as_ref() == Some(&capabilities) {

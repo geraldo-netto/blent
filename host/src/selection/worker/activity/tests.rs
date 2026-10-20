@@ -653,3 +653,58 @@ async fn t1050_selector_receipt_waits_for_original_late_native_preparation() {
     task.await.unwrap();
     joined(&report).await;
 }
+
+#[tokio::test]
+async fn t1187_terminal_reset_cancels_trial_without_releasing_original_native_creator() {
+    use futures_util::FutureExt;
+    struct Release(std::sync::mpsc::Sender<()>);
+    impl Drop for Release {
+        fn drop(&mut self) { let _ = self.0.send(()); }
+    }
+    let mut initial = super::super::tests::settings();
+    initial.decoder_epoch = 0;
+    let mut caps: crate::media::DecoderCapabilities = serde_json::from_str(
+        include_str!("../../../../../testdata/decoder-capabilities-v2.json"),
+    ).unwrap();
+    (caps.width, caps.height) = initial.video_dimensions();
+    caps.scope = Some("0".into());
+    initial.decoders = Some(caps);
+    let original_caps = initial.decoders.clone();
+    let (settings, mut updates) = watch::channel(initial);
+    let key = settings.borrow().selection_key();
+    let (_visible, mut display) = watch::channel(true);
+    let (_owner, mut stop) = watch::channel(false);
+    let attachment = crate::attachment::Attachment::new(settings.clone());
+    let authority = TrialAuthority::legacy(&attachment);
+    let (native, proof) = blent::native_scope::Scope::default().group();
+    let (started, entered) = tokio::sync::oneshot::channel();
+    let (release, held) = std::sync::mpsc::channel();
+    let release = Release(release);
+    let cancelled = {
+        let work = native.blocking(move |original| {
+            drop(original); // The held native creator, not a scope alias, owns settlement.
+            let _ = started.send(());
+            held.recv().unwrap();
+        });
+        let guarded = until_changed(&key, &mut updates, &mut display, &mut stop, &authority, work);
+        tokio::pin!(guarded);
+        tokio::select! {
+            _ = &mut guarded => panic!("T1187 trial ended before native admission"),
+            ready = timeout(Duration::from_secs(5), entered) => ready.unwrap().unwrap(),
+        }
+        settings.send_modify(|current| {
+            current.decoder_epoch = u64::MAX;
+            current.clear_decoders();
+            current.decoders = original_caps;
+        });
+        matches!(guarded.as_mut().now_or_never(), Some(None))
+    };
+    drop(native);
+    let retained = !proof.is_complete();
+    drop(release);
+    timeout(Duration::from_secs(5), async {
+        while !proof.is_complete() { tokio::time::sleep(Duration::from_millis(1)).await; }
+    }).await.unwrap();
+    assert!(cancelled, "T1187 old zero key kept trial authority after exhaustion");
+    assert!(retained, "T1187 numeric cancellation released the held native creator");
+}

@@ -2367,6 +2367,46 @@ fi
     }
 
     #[test]
+    fn t1187_terminal_reports_cannot_restore_metadata_or_advertise_a_scope() {
+        use super::settings::SettingsSink;
+        let mut initial = settings("auto");
+        initial.decoder_epoch = u64::MAX;
+        let (tx, mut observer) = watch::channel(initial.clone());
+        let source = Some(tx.clone());
+        let (mode, _) = watch::channel(false);
+        let session = SessionSettings::new(&source, &mode, false);
+        let mut caps: crate::media::DecoderCapabilities =
+            serde_json::from_str(include_str!("../../testdata/decoder-capabilities-v2.json"))
+                .unwrap();
+        (caps.width, caps.height) = initial.video_dimensions();
+        for protocol in [1, 2, 99] {
+            caps.protocol = protocol;
+            caps.scope = if protocol == 2 {
+                Some(u64::MAX.to_string())
+            } else {
+                None
+            };
+            if protocol == 1 {
+                caps.details.clear();
+            }
+            session.decoders(caps.clone());
+            assert!(
+                observer.borrow_and_update().decoders.is_none(),
+                "T1187 terminal report admitted"
+            );
+        }
+        let reply = InputConfig::default().response("connected", false, &source);
+        let json = serde_json::to_value(reply).unwrap();
+        assert!(
+            json.get("decoder_scope").is_none(),
+            "T1187 terminal scope advertised"
+        );
+        assert!(json.get("decoder_protocol").is_none());
+        assert_eq!(json["calibrating"], false);
+        assert!(!observer.has_changed().unwrap());
+    }
+
+    #[test]
     fn t478_malformed_stale_and_away_back_reports_cannot_replace_current_scope() {
         use super::settings::SettingsSink;
         let initial = settings("auto");
