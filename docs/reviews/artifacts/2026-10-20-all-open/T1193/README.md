@@ -10,7 +10,7 @@ warn and select `auto`. No alias-specific migration remains.
 Two permanent normal-library T1193 regressions fail before removal: the obsolete
 name admitted a Profile and survived saved-configuration validation. Both pass
 afterward. All388 shared-library tests pass, including390 bounded obsolete-name
-variants (three padding characters,65 lengths, two placements; maximum203 UTF-8
+variants (three padding characters,65 lengths, two placements; maximum204 UTF-8
 bytes), current profiles, capability matrix and invalid inputs. Host/GUI targeted
 caller checks pass5 tests. Feature-gated native in-process tests require the
 separately tracked T835 environment; no all-features pass is claimed here.
