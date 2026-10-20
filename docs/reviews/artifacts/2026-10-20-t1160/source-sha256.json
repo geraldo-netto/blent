@@ -1,0 +1,7 @@
+{
+  "android/app/src/main/AndroidManifest.xml": "3b4ed74e6cbcc8419a5a66afbd29890788ce9606f717a830bfa6d3436550d944",
+  "android/app/src/main/res/xml/backup_rules.xml": "c030c0be52465cf2a363907f286cd829ddb7edf6d8e35c56edb1ce9b85fbb2c2",
+  "android/app/src/main/res/xml/data_extraction_rules.xml": "2116368e7426e2b9c3671268f6f6da9bcc1922e17761d242675b832252af5990",
+  "android/app/src/main/java/com/blent/connection/AndroidConnectionFactory.kt": "4eaa67943eadc078e0147c9b6a38b069e88b724f4e824eba0b150d9ba9671c32",
+  "android/app/src/test/java/com/blent/BackupRulesTest.kt": "8a3c70c3a5289bf5316f62bc507f016d8ee4e7ff82286699d0aec70055017b23"
+}
