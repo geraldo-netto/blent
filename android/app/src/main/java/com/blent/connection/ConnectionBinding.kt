@@ -18,6 +18,7 @@ internal class ConnectionBinding(
     scope: CoroutineScope,
     private val create: (ConnectionWorkerSpec, (ConnectionWorkerEvent) -> Unit) -> ConnectionWorker,
     cleanupNoticeMs: Long = 5000,
+    private val access: ConnectionAccess = ConnectionAccess(),
 ) {
     private class Attempt(val token: Any) {
         @Volatile var worker: ConnectionWorker? = null
@@ -101,7 +102,7 @@ internal class ConnectionBinding(
         val worker = create(spec) { receive(attempt, it) }
         attempt.worker = worker
         presentation.started(attempt.token)
-        return object : LifecycleRun {
+        val run = object : LifecycleRun {
             override suspend fun execute() = worker.execute()
             override fun cancel() { attempt.stopMedia(); worker.cancel() }
             override suspend fun retire() {
@@ -110,6 +111,7 @@ internal class ConnectionBinding(
                 presentation.retired(attempt.token)
             }
         }
+        return access.guard(ConnectionUse.CONNECTION, run)
     }
 
     @Synchronized fun disconnect() {
