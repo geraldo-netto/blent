@@ -16,6 +16,7 @@ internal class AudioBinding(
     private val service: (String?) -> Unit,
     val direction: Int,
     private val save: (AudioPreferences) -> Unit,
+    initialGeneration: Long = 0,
 ) {
     init { require(initial.valid(direction)) { "Invalid initial audio direction/preferences" } }
     private var target: AudioConsumerTarget? = null
@@ -42,7 +43,7 @@ internal class AudioBinding(
         }
     private var visible = false
     private val statusUpdates = LatestDispatch(scope) { status = "Status update failed: ${it.message}" }
-    private var generation = 0L
+    private val generations = GenerationFence(initialGeneration)
     private var observer: Job? = null
     private var backgroundRun: String? = null
     private var serviceError: Exception? = null
@@ -77,6 +78,7 @@ internal class AudioBinding(
         if (!visible || targetStarted) return
         targetStarted = true
         try {
+            check(generations.available()) { "Audio generations exhausted" }
             check(permission()) { "Audio permission unavailable" }
             launch(preferences.effective(value.endpoint), value)
         } catch (error: Exception) {
@@ -92,6 +94,7 @@ internal class AudioBinding(
         stopSharing()
         if (!visible) return
         if (!endpoint.valid() || endpoint.direction != direction) { status = "Invalid audio request."; return }
+        if (!generations.available()) { status = "Audio generations exhausted"; return }
         pending = endpoint
         if (!permission()) { requestPermission(); return }
         accept()
@@ -113,28 +116,31 @@ internal class AudioBinding(
     private fun launch(endpoint: AudioEndpoint, owner: AudioConsumerTarget?) {
         retirement.checkAvailable()
         check(serviceError == null) { "Background cleanup incomplete: ${serviceError?.message}" }
+        val revision = checkNotNull(generations.acquire()) { "Audio generations exhausted" }
         val claim = owner?.authority?.retain()
         check(owner == null || claim != null) { "Audio target no longer current" }
-        try { launchOwned(endpoint, owner, claim) }
+        try { launchOwned(endpoint, owner, claim, revision) }
         catch (error: Exception) { claim?.retired(ResourceRetirement.NOT_STARTED); throw error }
     }
-    private fun launchOwned(endpoint: AudioEndpoint, owner: AudioConsumerTarget?, claim: MediaConsumerClaim?) {
-        val revision = ++generation
+    private fun launchOwned(endpoint: AudioEndpoint, owner: AudioConsumerTarget?, claim: MediaConsumerClaim?, revision: Long) {
+        check(generations.current(revision)) { "Audio request no longer current" }
         val settings = preferences
         if (endpoint.background) {
             backgroundRun = java.util.UUID.randomUUID().toString()
             service(backgroundRun)
         }
+        check(generations.current(revision)) { "Audio request no longer current" }
         sharing = true; status = "Starting $label…"
         retirement.replace({
             val create = {
                 createRun(endpoint, settings) { text ->
-                    statusUpdates.submit { if (revision == generation) status = text }
+                    statusUpdates.submit { if (generations.current(revision)) status = text }
                 }
             }
             MediaConsumerRun(claim, permission, create)
         }, { failure ->
-            if (revision == generation) {
+            if (generations.current(revision)) {
+                generations.revoke()
                 stopTarget(owner)
                 if (failure != null) status = failure.message ?: "Audio stopped."
                 sharing = false
@@ -154,7 +160,7 @@ internal class AudioBinding(
         }
     }
     fun stopSharing() {
-        generation++
+        generations.revoke()
         pending = null
         targetStarted = true
         stopTarget(target)

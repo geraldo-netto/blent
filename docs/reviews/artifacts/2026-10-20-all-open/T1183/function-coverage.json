@@ -1,0 +1,333 @@
+{
+  "tool": "JaCoCo0.8.15 native JVM method-variant line counters; all AudioBinding callbacks and lined default variants",
+  "functions": [
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3$create$1",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$statusUpdates$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$start$2$1",
+      "method": "emit",
+      "descriptor": "(Lcom/blent/AudioEndpoint;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Lkotlinx/coroutines/flow/MutableStateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;J)V",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Lkotlinx/coroutines/flow/MutableStateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getDirection",
+      "descriptor": "()I",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getLabel",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getState",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getPreferences",
+      "descriptor": "()Lcom/blent/AudioPreferences;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setPreferences",
+      "descriptor": "(Lcom/blent/AudioPreferences;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getStatus",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setStatus",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getSharing",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setSharing",
+      "descriptor": "(Z)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getPermissionPending",
+      "descriptor": "()Lcom/blent/AudioCapturePermission;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getPending",
+      "descriptor": "()Lcom/blent/AudioEndpoint;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setPending",
+      "descriptor": "(Lcom/blent/AudioEndpoint;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "hasPermission",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "start",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "useTarget",
+      "descriptor": "(Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "startTarget",
+      "descriptor": "(Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stopTarget",
+      "descriptor": "(Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "invite",
+      "descriptor": "(Lcom/blent/AudioEndpoint;)V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "permissionResult",
+      "descriptor": "(ZLcom/blent/AudioCapturePermission;)V",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "accept",
+      "descriptor": "()V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "launch",
+      "descriptor": "(Lcom/blent/AudioEndpoint;Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "launchOwned",
+      "descriptor": "(Lcom/blent/AudioEndpoint;Lcom/blent/AudioConsumerTarget;Lcom/blent/MediaConsumerClaim;J)V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stopBackground",
+      "descriptor": "()V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stopSharing",
+      "descriptor": "()V",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "configure",
+      "descriptor": "(Lcom/blent/AudioPreferences;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stop",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "ownsBackground",
+      "descriptor": "(Ljava/lang/String;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "backgroundStopped",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "shutdown",
+      "descriptor": "()V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$start$2",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3$create$1$1$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$4",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$5",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/ResourceRetirement;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3$create$1$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$retirement$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    }
+  ]
+}

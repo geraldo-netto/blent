@@ -1,0 +1,965 @@
+{
+  "tool": "cached hash-verified Kotlin PSI1.9.20 Sonar-style model; not native SonarQube",
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 9,
+      "name": "<init>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 21,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 28,
+      "name": "get:preferences",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 29,
+      "name": "set:preferences",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 29,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 31,
+      "name": "get:status",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 32,
+      "name": "set:status",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 32,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 34,
+      "name": "get:sharing",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 35,
+      "name": "set:sharing",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 35,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 39,
+      "name": "get:pending",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 40,
+      "name": "set:pending",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 41,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 42,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 45,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 50,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 52,
+      "name": "hasPermission",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 54,
+      "name": "start",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 56,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 58,
+      "name": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 59,
+      "name": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 69,
+      "name": "useTarget",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 70,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 77,
+      "name": "startTarget",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 81,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 82,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 89,
+      "name": "stopTarget",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 93,
+      "name": "invite",
+      "complexity": 6
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 102,
+      "name": "permissionResult",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 107,
+      "name": "accept",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 116,
+      "name": "launch",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 118,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 119,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 121,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 125,
+      "name": "launchOwned",
+      "complexity": 5
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 126,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 132,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 134,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 135,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 136,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 137,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 141,
+      "name": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 149,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 151,
+      "name": "stopBackground",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 162,
+      "name": "stopSharing",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 171,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 173,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 175,
+      "name": "configure",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 179,
+      "name": "stop",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 185,
+      "name": "ownsBackground",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 186,
+      "name": "backgroundStopped",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/AudioBinding.kt",
+      "line": 187,
+      "name": "shutdown",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 11,
+      "name": "<init>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 13,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 15,
+      "name": "execute",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 16,
+      "name": "cancel",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 17,
+      "name": "retire",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 19,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 22,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 24,
+      "name": "current",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 25,
+      "name": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 27,
+      "name": "retain",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 28,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 29,
+      "name": "stop",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 31,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 41,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 42,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 42,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 42,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 43,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 45,
+      "name": "invite",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 46,
+      "name": "close",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 48,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 51,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 55,
+      "name": "t1183TerminalAdmissionPrecedesPermissionServiceAndNativeEffects",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 56,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 70,
+      "name": "t1183TerminalExternalTargetClosesWithoutRetainOrService",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 71,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 83,
+      "name": "t1183LastGrantRetainsOriginalClaimThroughConfigureAndDeniedReplacement",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 84,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 99,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 114,
+      "name": "t1183ExecutionEndRevokesLateStatusBeforeActualNativeRetirement",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 115,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 130,
+      "name": "t1183OriginalPermissionCannotConsumeLastGrantOrReviveAfterExhaustion",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 131,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 155,
+      "name": "t1183ExhaustedMicrophoneCannotRetireIndependentSpeaker",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 156,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 156,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 170,
+      "name": "t1183ServiceWithdrawalCannotAdmitWorkerAfterOriginalRequestRevoked",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 171,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 172,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 181,
+      "name": "t1183BoundedTwoDirectionStartsAndStopsMatchWideAdmissionModel",
+      "complexity": 4
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 185,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 188,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 194,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 200,
+      "name": "t1183NegativeSeedsCannotAdmitEitherDirection",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 205,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 206,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 206,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 206,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 207,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 207,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/AudioGenerationTest.kt",
+      "line": 210,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 10,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 13,
+      "name": "<init>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 15,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 17,
+      "name": "execute",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 18,
+      "name": "cancel",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 19,
+      "name": "retire",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 22,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 25,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 27,
+      "name": "current",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 28,
+      "name": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 30,
+      "name": "retain",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 31,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 32,
+      "name": "stop",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 35,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 43,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 44,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 45,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 46,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 47,
+      "name": "invite",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 48,
+      "name": "close",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 50,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 52,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 56,
+      "name": "t1182TerminalAdmissionPrecedesPermissionBackgroundAndNativeEffects",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 57,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 71,
+      "name": "t1182LastGrantRejectsReplacementButRetainsOriginalClaimUntilNativeCleanup",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 72,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 81,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 99,
+      "name": "t1182ExecutionEndRevokesCallbacksBeforeHeldRetirement",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 100,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 117,
+      "name": "t1182OldPermissionCannotConsumeLastGrantOrReviveAfterPermissionLoss",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 118,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 143,
+      "name": "t1182TerminalTargetStopsOriginalWithoutRetainOrPermissionPrompt",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 144,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 160,
+      "name": "t1182BoundedStartsAndStopsMatchWiderIntegerAdmission",
+      "complexity": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 163,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 167,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 173,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 178,
+      "name": "t1182BackgroundWithdrawalCannotAdmitWorkerAfterOriginalRequestRevoked",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 179,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 180,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 191,
+      "name": "t1200FixtureCleanupCutsPendingAdmissionBeforeReleasingNativeGate",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 197,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 204,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 206,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 210,
+      "name": "t1182NegativeSeedsCannotCreateBindingAuthority",
+      "complexity": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 215,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 216,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 216,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 216,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 216,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 217,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/CameraGenerationTest.kt",
+      "line": 220,
+      "name": "<lambda>",
+      "complexity": 1
+    }
+  ]
+}

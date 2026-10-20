@@ -1,0 +1,5 @@
+{
+  "android/app/src/main/java/com/blent/AudioBinding.kt": "6be30a536df67e489d6ab75f44fea4e2061155faebe9c3d9aa4e189adab7f416",
+  "android/app/src/test/java/com/blent/AudioGenerationTest.kt": "a4b91f01fdf37f3fa657256fd50dd3c7da05418d4e148eb12921007c0afa603a",
+  "android/app/src/test/java/com/blent/CameraGenerationTest.kt": "8ceb0815b3e76ca2d3ea49c6121102a1be3fd981f8e1d0eb2e5dbd9cae9e66fa"
+}

@@ -1,0 +1,69 @@
+{
+  "total": 109,
+  "classes": [
+    {
+      "class": "com.blent.AudioActivityOwnerTest",
+      "tests": 10
+    },
+    {
+      "class": "com.blent.AudioBindingTest",
+      "tests": 12
+    },
+    {
+      "class": "com.blent.AudioControlsTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.AudioGenerationTest",
+      "tests": 9
+    },
+    {
+      "class": "com.blent.AudioPermissionIdentityTest",
+      "tests": 1
+    },
+    {
+      "class": "com.blent.AudioRetirementTest",
+      "tests": 12
+    },
+    {
+      "class": "com.blent.AudioServiceTest",
+      "tests": 8
+    },
+    {
+      "class": "com.blent.AudioSpeakerOwnerTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.AudioTargetBindingTest",
+      "tests": 15
+    },
+    {
+      "class": "com.blent.BoundedRetirementTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.CameraGenerationTest",
+      "tests": 9
+    },
+    {
+      "class": "com.blent.GenerationFenceTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.PortableLifecycleTest",
+      "tests": 2
+    },
+    {
+      "class": "com.blent.RetirementFailureTest",
+      "tests": 8
+    },
+    {
+      "class": "com.blent.RetirementGuardTest",
+      "tests": 4
+    },
+    {
+      "class": "com.blent.StatusDispatchTest",
+      "tests": 3
+    }
+  ]
+}
