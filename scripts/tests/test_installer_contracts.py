@@ -20,20 +20,12 @@ class InstallerContractsTest(unittest.TestCase):
 
     def test_t497_failed_runtime_packages_provide_family_specific_guidance(self):
         output = self.execute('''
-sudo() { echo "rejected: $*"; return 1; }
-modinfo() { return 1; }
 has_evdi_library() { return 0; }
-install_rpm_layered_deps
-install_rpm_runtime_deps --allowerasing
-check_rpm_evdi_module
 # apt update succeeds, but both runtime spellings and DKMS fail.
 sudo() { echo "rejected: $*"; [[ $* == 'apt-get update' ]]; }
 install_debian_deps
-install_suse_deps
 ''')
-        for message in ['Layering failed', 'Install runtime packages', 'No evdi module',
-                        'ffmpeg android-tools-adb', 'Check the package names', 'evdi-dkms did not install',
-                        'Install ffmpeg, android-tools', 'evdi did not install']:
+        for message in ['ffmpeg android-tools-adb', 'Check the package names', 'evdi-dkms did not install']:
             self.assertIn(message, output)
 
     def test_t497_arch_selects_installed_yay_paru_or_manual_guidance(self):

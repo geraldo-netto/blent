@@ -11,7 +11,22 @@ import test_notices
 import test_packages
 
 
+def distribution_cases():
+    return [
+        test_distribution.DistributionTest('test_t102_apk_failure_and_bundled_helper_loading'),
+        test_notices.NoticeTest('test_t129_tar_appimage_and_arch_include_notices'),
+        test_packages.PackageTest('test_t235_portable_build_uses_literal_checkout_path'),
+        test_packages.PackageTest('test_t236_release_rejects_new_glibc_in_bundled_evdi'),
+    ]
+
+
 class VersionFixtureTest(unittest.TestCase):
+    def test_t1222_distribution_cases_resolve_current_methods(self):
+        cases = distribution_cases()
+        self.assertEqual(len(cases), 4)
+        self.assertIsInstance(cases[1], test_notices.NoticeTest)
+
+
     def test_t302_next_release_keeps_distribution_coverage(self):
         with tempfile.TemporaryDirectory(prefix='blent-next-release-') as tmp:
             root = Path(tmp)
@@ -22,12 +37,7 @@ class VersionFixtureTest(unittest.TestCase):
                                          lambda match: match[1] + '9.8.7', path.read_text())
                 self.assertEqual(count, 1)
                 path.write_text(updated)
-            cases = [
-                test_distribution.DistributionTest('test_t102_apk_failure_and_bundled_helper_loading'),
-                test_notices.NoticeTest('test_t129_tar_appimage_rpm_and_arch_include_notices'),
-                test_packages.PackageTest('test_t235_portable_build_uses_literal_checkout_path'),
-                test_packages.PackageTest('test_t236_release_rejects_new_glibc_in_bundled_evdi'),
-            ]
+            cases = distribution_cases()
             with ExitStack() as stack:
                 for module in [test_notices, test_packages]:
                     stack.enter_context(patch.object(module, 'REPO', root))

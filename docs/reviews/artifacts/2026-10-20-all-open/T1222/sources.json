@@ -1,0 +1,5 @@
+{
+  "scripts/tests/test_version_fixtures.py": "0d6c1f9890a33b1952b0aca6b38f84d3519fd1e7b79b4eedf9a06b323f3923cd",
+  "scripts/tests/test_installer_contracts.py": "0dabd40c10cb5b510506c3af57125836228605e1b6a57c5df711bfe6da16eb6a",
+  "scripts/tests/test_usb_packaging.py": "91e0b83a3d8e3abfe1c309fbe0c08708332d908b22f7459c3c485631b18b75c2"
+}
