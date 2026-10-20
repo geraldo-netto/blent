@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                     onSettingsEvent = ::settingsEvent,
                     connectionControls = { ConnectionControls(connection, configuredConnection, savedComputers) },
                     cameraControls = { CameraControls(cameras, cameraAccess); AudioControls(microphone, microphoneAccess); AudioControls(speakers, speakerAccess) },
-                    inputControls = { session.inputControls() },
+                    inputControls = { session.InputControls() },
                 )
                 ConnectionPairingDialog(connection)
             }

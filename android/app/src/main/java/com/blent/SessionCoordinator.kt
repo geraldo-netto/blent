@@ -156,7 +156,7 @@ internal class SessionCoordinator(
     }
 
     fun dismissThanks() { showThanks = false }
-    @Composable fun inputControls() { DirectInputControls(touchCapture) }
+    @Composable fun InputControls() { DirectInputControls(touchCapture) }
     fun surfaceReady(view: android.view.SurfaceView) {
         videoReceiver?.setSurface(view)
         touchCapture?.setSurfaceView(view)
