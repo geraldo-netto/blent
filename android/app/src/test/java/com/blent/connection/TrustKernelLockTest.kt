@@ -43,9 +43,9 @@ class TrustKernelLockTest {
     private fun observe(root: Path): Observed {
         val first = AndroidPeerTrustStore.open(root)
         val original = identity(root)
-        var before = -1
-        var after = -1
-        var rejected = false
+        val before: Int
+        val after: Int
+        val rejected: Boolean
         try {
             before = probe(root, original)
             val attempt = runCatching { AndroidPeerTrustStore.open(root) }
