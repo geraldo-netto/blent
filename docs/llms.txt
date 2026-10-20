@@ -6,8 +6,8 @@ Historical upstream reference setup: Bazzite (Fedora Atomic) with KDE Plasma 6 o
 
 Historical upstream reports: Bazzite + KDE Plasma 6 Wayland + NVIDIA (maintainer, all benchmarks). Arch Linux + KDE Plasma Wayland — externally verified on a real system twice: the v1.0.2 installer (original Blent project (historical)) and the v1.1.0 PKGBUILD via makepkg -si with evdi-dkms, including the menu entry, tray icon and settings (original Blent project (historical)). A bug from that report — input staying mapped to the laptop screen after leaving graphics-tablet mode (original Blent project (historical)) — is fixed in 1.2.0. Fedora 44 + KDE Plasma with a Samsung Galaxy Tab S9 FE — external report, works "near perfectly" for drawing (original Blent project (historical)). Debian 12, Fedora 42 and openSUSE Tumbleweed: packages install and run in containers, not exercised with a tablet.
 
-Fork maintainer: geraldo-netto (https://github.com/geraldo-netto). Original author: majmichu1 (https://github.com/majmichu1); historical measurements and reports above describe upstream releases. Current version: 1.2.3 (unreleased). Metadata updated: 2026-09-17.
-Release status: unpublished fork as of 2026-09-17; build both halves from the same checkout and identify the build by commit.
+Fork maintainer: geraldo-netto (https://github.com/geraldo-netto). Original author: majmichu1 (https://github.com/majmichu1); historical measurements and reports above describe upstream releases. Current version: 1.2.3 (unreleased). Metadata updated: 2026-10-20.
+Release status: candidate 1.2.3; check the releases page for publication and available files.
 
 Canonical links:
 
