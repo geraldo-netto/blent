@@ -1,0 +1,6 @@
+{
+  "android/app/src/main/AndroidManifest.xml": "3b4ed74e6cbcc8419a5a66afbd29890788ce9606f717a830bfa6d3436550d944",
+  "android/app/src/main/java/com/blent/ActivityWindowPolicy.kt": "7435acaac5090fa4601787e5ddc36faaef123dddad4b09dfeafa93c825c5bc3b",
+  "android/app/src/main/java/com/blent/OrientationPolicy.kt": "22b0d920d2f5ce064ee89d48bb2f0e0c61eea20cb6e811971548793bb122f6f9",
+  "android/app/src/test/java/com/blent/OrientationTest.kt": "3945bb3ac39b672ec1201f5a54a2d9123c17617f725c1929b419bb53a7b87a78"
+}

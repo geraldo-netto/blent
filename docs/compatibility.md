@@ -13,10 +13,26 @@ Container installation/build checks are described in [development.md](developmen
 | Bazzite (Fedora Atomic 42) | KDE Plasma 6, Wayland | NVIDIA RTX 5060 Laptop, `h264_nvenc` / `hevc_nvenc` | works; all measurements in [benchmarks.md](benchmarks.md) | maintainer |
 | Arch Linux | KDE Plasma, Wayland | — | works — externally verified on a real system twice. v1.0.2: installed through `install.sh` plus the EVDI initialisation described in the issue; the application connected and ran successfully. v1.1.0: the PKGBUILD via `makepkg -si` with `evdi-dkms` from the AUR, no dependency or path issues; menu entry, tray icon and its Settings entry all work. A bug from that report — input staying on the laptop screen after leaving graphics-tablet mode (issue #6 (historical upstream)) — is fixed in 1.2.0 | v1.0.2 report (historical upstream), v1.1.0 PKGBUILD report (historical upstream) |
 | KDE Neon (Plasma 6.7.5) | KDE Plasma, Wayland | AMD, `h264_vaapi` | works on 1.2.1 — touch lands on the tablet's own screen, confirmed by the reporter after the KWin D-Bus fix; evdi had to be installed by hand | issue #9 (historical upstream), #11 (historical upstream) |
-| Fedora 44 | KDE Plasma | — | works — "near perfectly" with a Galaxy Tab S9 FE, used for drawing; the reported orientation limitation is addressed by the current app’s automatic rotation and pinned landscape options | discussion #7 (historical upstream) |
+| Fedora 44 | KDE Plasma | — | works — "near perfectly" with a Galaxy Tab S9 FE, used for drawing; the current app implements automatic landscape flips and pinned landscape directions; this historical report does not validate those options on this tablet | discussion #7 (historical upstream) |
 | Debian 12 | — | — | package installs and binaries run; not exercised with a tablet | maintainer, container |
 | Fedora 42 | — | — | rpm installs; evdi must be built from source | maintainer, container |
 | openSUSE Tumbleweed | — | — | dependencies resolve; not exercised with a tablet | maintainer, container |
+
+## Android orientation
+
+Blent uses landscape orientation. Automatic mode chooses between its two landscape
+directions using the tilt sensor; it does not enable portrait UI. Camera-up and
+camera-down settings pin one landscape direction and stop sensor observation.
+The manifest supplies the initial sensorLandscape request, and ActivityWindowPolicy
+applies the saved setting on creation, foreground start and setting changes.
+Portrait or unknown sensor angles retain the last landscape direction.
+
+Retained hosted tests cover naturally portrait and naturally landscape panels,
+all four display rotations, dead bands and manual overrides on API27/34. They do
+not establish foldable, multi-window or OEM behavior. A fixed orientation request
+can be ignored or letterboxed by the system; native acceptance remains under the
+existing device-window items T855/T857/T846. No unrestricted form-factor support
+is claimed by the historical reports above.
 
 ## Desktop and encoder requirements
 
