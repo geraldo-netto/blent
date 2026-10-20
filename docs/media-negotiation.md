@@ -162,8 +162,10 @@ a universal weighted score. A winner is best tested under recorded conditions.
 Do not attach/restart EVDI for measurement while T222 remains unresolved; use an
 isolated path or retain the missing full-path evidence explicitly.
 
-An optional single-record historical profile cache is implemented separately
+Automatic mode retains durable profiles separately for each matching environment
 (see [cache validation and limits](video-codecs.md#optional-historical-profile-cache)).
+Current decoder compatibility and fresh render receipts remain required for reuse;
+saved measurements remain historical.
 It does not establish cross-tablet performance. A multi-tablet campaign remains
 outside this work (T382 declined).
 
