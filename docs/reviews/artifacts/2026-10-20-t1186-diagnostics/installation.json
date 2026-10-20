@@ -1,0 +1,11 @@
+{
+  "time_unix": 1792487148.611034,
+  "installed_path": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/evdi_helper",
+  "installed_sha256": "42617137d7a73df7d25bf32a1f831a3256a7fbfd1c9cdec9dd115a010b5dac5c",
+  "running_helper_pid": 59391,
+  "running_helper_start_ticks": "448946",
+  "running_helper_sha256": "9c4b48c66274d1936f0426820c4be883f47ca25b3645289999beca3045326475",
+  "backup": "/backups/disk2/blent-work/2026-10-20-t1186/deployment/evdi_helper.before",
+  "restart_performed": false,
+  "scope": "Atomic executable replacement only; current fixed helper and stream remain running. Diagnostics activate on next ordinary service start."
+}

@@ -1,0 +1,33 @@
+{
+  "source_and_binary_sha256": {
+    "host/evdi/capture.c": "53666f6394fcb4b720e9cfa7684aad4731213a3006537c26e9e5e29785c64965",
+    "host/evdi/capture.h": "ed1eb786f00a45d9c7b066926c62df3913920bf79ff4083a039470e08e6be4b8",
+    "host/evdi/capture_control.c": "ca52b1dfe5fec3bfa3ea2f2b0b46205e7ca1fcddbf394e4861565c2d1ed14320",
+    "host/tests/capture_diagnostics.c": "d2df5544b5e8873e2300d3eed307ef335180e927e7e2ecef356971c557809107",
+    "host/tests/evdi_helper_test.c": "b67f23869e07c545003357f8c75310c2a8753b6de2d324953b567ca001d7914a",
+    "host/tests/evdi_helper.rs": "dbaf4d1c8ebd9244696705935cf381d7dd4ba6a92b9c2172dd279962f0ed9245",
+    "target/t1186/evdi_helper": "42617137d7a73df7d25bf32a1f831a3256a7fbfd1c9cdec9dd115a010b5dac5c",
+    "target/t1186/libevdi.so.1": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a"
+  },
+  "native_guest": "cached kernel7.0.0-34-generic and stock EVDI1.14.15; no host GPU/device passthrough or network",
+  "raw_native_profiles": "/backups/disk2/blent-work/2026-10-20-t1186/coverage/native",
+  "suite_command": [
+    "cargo",
+    "test",
+    "--offline",
+    "--locked",
+    "-p",
+    "blent",
+    "--test",
+    "evdi_helper",
+    "--test",
+    "evdi_modules",
+    "--test",
+    "conversion",
+    "--test",
+    "frame_retirement",
+    "--test",
+    "capture_activity"
+  ],
+  "baseline_production_commit": "04e3fd82b347cc635029df7eeb512b3206475ae0"
+}

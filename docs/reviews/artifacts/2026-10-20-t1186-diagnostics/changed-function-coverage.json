@@ -1,0 +1,88 @@
+{
+  "tool": "GCC/gcov13.3.0 per-function native line counters merged from normal suite",
+  "source_sha256": {
+    "host/evdi/evdi_helper.c": "dcb1bdc915d9d20e59f18a1eb76f3752dfe417bcdf100b22c95ebc3e196a0cc1",
+    "host/evdi/writer.c": "a20e0d786fd698bacda3a427e0c5a7d7ccfcbd0ff19357457d1bf2e99a5a6264",
+    "host/evdi/idle_control.c": "3217e2a6e64c61695690c8cda7eae999420370502a87c15a8f5d0abc2c9a575f",
+    "host/evdi/capture.c": "53666f6394fcb4b720e9cfa7684aad4731213a3006537c26e9e5e29785c64965",
+    "host/evdi/pixel_span.h": "c3ae238e24069ffd2bd6988676917bb253a1b524286f666eb76f48e50c7de214",
+    "host/evdi/capture_control.c": "ca52b1dfe5fec3bfa3ea2f2b0b46205e7ca1fcddbf394e4861565c2d1ed14320",
+    "host/evdi/capture_activity.c": "d85f805e872f18a71944469437e08cb546840fb47da9f1cd8f1527f6a8b6458b",
+    "host/evdi/cursor_overlay.c": "9737c942e273a7679a5c0a6b652c8cb7eeeac567537b07f4227d9354a75ef8ff",
+    "host/evdi/pixel_format.h": "3f70e82260a75af041cce532a0c1d16beb5fb3f51444d95f681c285b37217e95",
+    "host/evdi/raw_ring.c": "867e3b3aec9f777e63d89423485053cd7b0e56b99a102b1be81c6312ee4d13c0",
+    "host/evdi/fifo_writer.c": "af9c42ce08d807cd303a1627b048200438c50b5444905e3432aebb7ff57e3430",
+    "host/evdi/frame_exchange.c": "eaddc2f8168aa736973d371fac10dc9c74386b42fd577dc703ad55cf83f9a24a",
+    "host/evdi/pixel_damage.h": "ce7a5e58d932f5f1d6b589b1a84ef161e12bfa8aaf8dad8f013ad1236b1583ca",
+    "host/evdi/conversion.c": "bfa9d15e80540a94585ec7009e589900666eeddc084d450d689e8e10c16e777e",
+    "host/evdi/conversion_box.h": "61be8fd17735533b3fbc017c2f0a121b28e4872df548f8acec2c6c4e2ae9f3b4"
+  },
+  "functions": [
+    {
+      "file": "host/evdi/capture.c",
+      "name": "apply_capture_activity",
+      "first": 604,
+      "last": 617,
+      "covered": 8,
+      "total": 8,
+      "missing": [],
+      "percent": 100.0,
+      "passes": true
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_run",
+      "first": 793,
+      "last": 839,
+      "covered": 25,
+      "total": 25,
+      "missing": [],
+      "percent": 100.0,
+      "passes": true
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "service_display_progress",
+      "first": 772,
+      "last": 791,
+      "covered": 16,
+      "total": 16,
+      "missing": [],
+      "percent": 100.0,
+      "passes": true
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "trace_display_progress",
+      "first": 754,
+      "last": 764,
+      "covered": 8,
+      "total": 8,
+      "missing": [],
+      "percent": 100.0,
+      "passes": true
+    },
+    {
+      "file": "host/evdi/capture_control.c",
+      "name": "capture_control_ack",
+      "first": 57,
+      "last": 72,
+      "covered": 11,
+      "total": 11,
+      "missing": [],
+      "percent": 100.0,
+      "passes": true
+    },
+    {
+      "file": "host/evdi/capture_control.c",
+      "name": "capture_control_poll",
+      "first": 32,
+      "last": 55,
+      "covered": 15,
+      "total": 15,
+      "missing": [],
+      "percent": 100.0,
+      "passes": true
+    }
+  ]
+}

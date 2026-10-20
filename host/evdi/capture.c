@@ -8,6 +8,7 @@
 #include <poll.h>
 #include <errno.h>
 #include <limits.h>
+#include <inttypes.h>
 #include <sys/mman.h>
 
 static long long capture_now_us(void) {
@@ -607,6 +608,7 @@ static void apply_capture_activity(capture_context_t *capture)
     else
     {
         capture->last_fallback_grab_ms = capture_now_ms();
+        capture->display_progress_trace.reported = 0;
         /* Invalidate exactly once. A timeout preserves all original buffers;
          * later iterations observe completion without manufacturing a lease. */
         frame_exchange_retire(capture->frames);
@@ -745,6 +747,22 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long req
     return service_shared_capture(capture);
 }
 
+/* A begin record precedes the native call; its matching end only reports
+ * synchronous return, not imported-buffer safety or DRM event identity. The
+ * original control sequence is scoped by this helper process in the journal.
+ * At most one pair per five seconds, plus the first grab of each pause. */
+static int trace_display_progress(capture_context_t *capture, long long now)
+{
+    capture_progress_trace_t *trace = &capture->display_progress_trace;
+    if (trace->reported && now - trace->report_ms < 5000)
+        return 0;
+    trace->reported = 1;
+    trace->report_ms = now;
+    fprintf(stderr, "[evdi-helper] display-progress begin sequence=%" PRIu64 "\n",
+            capture->control->current.sequence);
+    return 1;
+}
+
 /* The connected DRM output remains owned while media work is paused. Stock
  * EVDI acknowledges its deferred flips from GRABPIX, so continue only that
  * minimum backend service, at most 10Hz. The event-loop-owned registered native
@@ -763,7 +781,13 @@ static void service_display_progress(capture_context_t *capture, evdi_handle han
     restore_cursor(capture);
     struct evdi_rect rects[64];
     int count = 64;
+    long long started = capture_now_us();
+    int traced = trace_display_progress(capture, now);
     evdi_grab_pixels(handle, rects, &count);
+    if (traced)
+        fprintf(stderr, "[evdi-helper] display-progress end sequence=%" PRIu64
+                        " elapsed_us=%lld\n",
+                capture->control->current.sequence, capture_now_us() - started);
 }
 
 int capture_run(capture_context_t *capture, evdi_handle handle)
@@ -787,7 +811,10 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
 
     long long last_stats_ms = capture_now_ms();
     if (!capture_active(capture))
+    {
         capture->last_fallback_grab_ms = last_stats_ms;
+        capture->display_progress_trace.reported = 0;
+    }
     long long stats_grab_base = 0;
     long request_period_ms = capture_period_ms(capture);
 

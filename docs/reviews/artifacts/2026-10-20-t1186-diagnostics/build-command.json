@@ -1,0 +1,23 @@
+[
+  "gcc",
+  "-O3",
+  "-g",
+  "-Ihost/evdi",
+  "-o",
+  "target/t1186/evdi_helper",
+  "host/evdi/evdi_helper.c",
+  "host/evdi/conversion.c",
+  "host/evdi/frame_exchange.c",
+  "host/evdi/fifo_writer.c",
+  "host/evdi/capture.c",
+  "host/evdi/capture_activity.c",
+  "host/evdi/capture_control.c",
+  "host/evdi/cursor_overlay.c",
+  "host/evdi/raw_ring.c",
+  "host/evdi/writer.c",
+  "host/evdi/idle_control.c",
+  "-Ltarget/t1186",
+  "-l:libevdi.so.1",
+  "-lpthread",
+  "-Wl,-rpath,$ORIGIN"
+]

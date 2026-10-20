@@ -2,6 +2,8 @@
 #include "capture_control.h"
 #include <errno.h>
 #include <fcntl.h>
+#include <inttypes.h>
+#include <stdio.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 
@@ -47,6 +49,8 @@ int capture_control_poll(capture_control_t *control)
     if (!capture_activity_next(request, control->current.sequence))
         return -1;
     control->current = request;
+    fprintf(stderr, "[evdi-helper] capture-activity request sequence=%" PRIu64 " active=%d\n",
+            request.sequence, request.active);
     return 1;
 }
 
@@ -62,5 +66,7 @@ int capture_control_ack(capture_control_t *control)
     if (count != sizeof(bytes))
         return -1;
     control->acknowledged = control->current.sequence;
+    fprintf(stderr, "[evdi-helper] capture-activity ack sequence=%" PRIu64 " active=%d\n",
+            control->current.sequence, control->current.active);
     return 1;
 }

@@ -7,6 +7,14 @@
 #include "cursor_overlay.h"
 #include "capture_control.h"
 
+/* Event-loop-owned diagnostic cadence. Reset on media pause; no resource,
+ * callback or pixel borrow survives a synchronous diagnostic operation. */
+typedef struct
+{
+    long long report_ms;
+    int reported;
+} capture_progress_trace_t;
+
 /* Event-loop-owned mode, registered framebuffer and capture statistics.
  * EVDI callbacks borrow this context via user_data and never outlive run().
  * The exchange/pool/stop flag must outlive it; conversion completes before
@@ -45,6 +53,7 @@ typedef struct {
     int empty_n;
     long long last_request_ms;
     long long last_fallback_grab_ms; /* capture-owner pacing, including resume snapshots */
+    capture_progress_trace_t display_progress_trace;
     int buffer_registered;
     raw_ring_t *raw_ring;
     int raw_pending;

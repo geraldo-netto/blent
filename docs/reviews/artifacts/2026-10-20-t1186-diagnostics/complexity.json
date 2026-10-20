@@ -1,0 +1,86 @@
+{
+  "method": "Clang18.1.3 AST function bodies and authored C decisions/operators; Rust wrappers inspected directly. Source estimates only, not native SonarQube evidence (T1019).",
+  "functions": [
+    {
+      "file": "host/evdi/capture.c",
+      "name": "apply_capture_activity",
+      "line": 605,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_run",
+      "line": 794,
+      "complexity_estimate": 7
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "service_display_progress",
+      "line": 773,
+      "complexity_estimate": 8
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "trace_display_progress",
+      "line": 755,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "host/evdi/capture_control.c",
+      "name": "capture_control_poll",
+      "line": 33,
+      "complexity_estimate": 8
+    },
+    {
+      "file": "host/evdi/capture_control.c",
+      "name": "capture_control_ack",
+      "line": 58,
+      "complexity_estimate": 6
+    },
+    {
+      "file": "host/tests/capture_diagnostics.c",
+      "name": "t1186_pending_writer",
+      "line": 5,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/capture_diagnostics.c",
+      "name": "t1186_native_return",
+      "line": 11,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/capture_diagnostics.c",
+      "name": "test_t1186_trace",
+      "line": 20,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/tests/capture_diagnostics.c",
+      "name": "t1186_admission_case",
+      "line": 67,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/capture_diagnostics.c",
+      "name": "test_t1186_admission",
+      "line": 81,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "host/tests/evdi_helper.rs",
+      "name": "t1186_trace_preserves_request_ack_and_native_progress_order",
+      "complexity_estimate": 5
+    },
+    {
+      "file": "host/tests/evdi_helper.rs",
+      "name": "t1186_paused_native_admission_and_pacing_boundaries",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/evdi_helper_test.c",
+      "name": "main",
+      "complexity_estimate": 6
+    }
+  ]
+}

@@ -1521,6 +1521,7 @@ static void test_t415_rounding(void) {
 #include "helper_arguments.c"
 #include "capture_pause.c"
 #include "display_progress.c"
+#include "capture_diagnostics.c"
 
 static void canonical_format_fixture(const char *id) {
     if (!strncmp(id, "T752", 4) || !strcmp(id, "T779") || !strcmp(id, "T780")) g_capture.normalize_rgba = 1;
@@ -1535,6 +1536,8 @@ int main(int argc, char **argv)
     assert(argc == 2);
     canonical_format_fixture(argv[1]);
     static const struct { const char *id; void (*run)(void); } cases[] = {
+        {"T1186-trace", test_t1186_trace},
+        {"T1186-admission", test_t1186_admission},
         {"T1185-progress", test_t1185_progress},
         {"T1185-resume", test_t1185_resume_snapshot},
         {"T1021-wire", test_t1021_wire},

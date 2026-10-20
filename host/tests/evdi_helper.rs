@@ -9,6 +9,43 @@ use std::{path::PathBuf, process::Command};
 struct Harness(tempfile::TempDir);
 
 #[test]
+fn t1186_trace_preserves_request_ack_and_native_progress_order() {
+    let harness = Harness::build("T1021");
+    let output = Command::new(harness.0.path().join("helper-test"))
+        .arg("T1186-trace")
+        .output()
+        .unwrap();
+    let log = String::from_utf8(output.stderr).unwrap();
+    assert!(output.status.success(), "{log}");
+    for expected in [
+        "capture-activity request sequence=1 active=1",
+        "capture-activity ack sequence=1 active=1",
+        "capture-activity request sequence=2 active=0",
+        "capture-activity ack sequence=2 active=0",
+    ] {
+        assert_eq!(log.matches(expected).count(), 1, "T1186: {expected}\n{log}");
+    }
+    let request = log.find("capture-activity request sequence=2").unwrap();
+    let begin = log.find("display-progress begin sequence=2").unwrap();
+    let native = log.find("T1186_NATIVE_RETURN").unwrap();
+    let end = log
+        .find("display-progress end sequence=2 elapsed_us=5000")
+        .unwrap();
+    let released = log.find("T1186_WRITER_RELEASE").unwrap();
+    let ack = log.find("capture-activity ack sequence=2").unwrap();
+    assert!(request < begin && begin < native && native < end);
+    assert!(end < released && released < ack);
+    assert_eq!(log.matches("display-progress begin").count(), 3, "{log}");
+    assert_eq!(log.matches("display-progress end").count(), 3, "{log}");
+    assert!(log.contains("display-progress begin sequence=4"), "{log}");
+}
+
+#[test]
+fn t1186_paused_native_admission_and_pacing_boundaries() {
+    Harness::build("T1021").run("T1186-admission");
+}
+
+#[test]
 fn t1185_paused_monitor_completes_native_flips_without_media_work() {
     Harness::build("T1021").run("T1185-progress");
 }
