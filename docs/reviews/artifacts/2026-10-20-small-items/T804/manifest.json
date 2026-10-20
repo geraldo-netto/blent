@@ -1,0 +1,8 @@
+{
+  "sources": {
+    "android/app/src/main/java/com/blent/HttpReleaseChecks.kt": "bcc85c858e85db8b961d54d8d04c6acad2e808a958caa97341e430406b353ccd",
+    "android/app/src/test/java/com/blent/ReleaseCheckTest.kt": "fa89dbd56e0385e3e85395ebc4130aeca7b55670886064e82e2100d0507b73df"
+  },
+  "test_cases": 24,
+  "offline": true
+}

@@ -1,0 +1,425 @@
+{
+  "tool": "Pinned Kotlin PSI1.9.20 repository Sonar-rule model; not native SonarQube",
+  "functions": [
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 14,
+      "name": "<init>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 31,
+      "name": "newCall",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 39,
+      "name": "<init>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 42,
+      "name": "cancel",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 43,
+      "name": "start",
+      "complexity_estimate": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 45,
+      "name": "onFailure",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 46,
+      "name": "onResponse",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 47,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 55,
+      "name": "newer",
+      "complexity_estimate": 3
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+      "line": 63,
+      "name": "boundedBody",
+      "complexity_estimate": 6
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 16,
+      "name": "<init>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 20,
+      "name": "start",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 21,
+      "name": "cancel",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 22,
+      "name": "complete",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 28,
+      "name": "<init>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 29,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 32,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 32,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 33,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 35,
+      "name": "start",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 37,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 40,
+      "name": "drain",
+      "complexity_estimate": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 43,
+      "name": "t464_stoppedActivityRejectsLateCompletionAndCancels",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 53,
+      "name": "t464_disablingChecksRejectsAlreadyQueuedCompletion",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 64,
+      "name": "t464_recreationCannotUpdateTheRetiredOwner",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 78,
+      "name": "t464_restartRetriesCancelledCheckAndRejectsItsOldGeneration",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 91,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 96,
+      "name": "t464_disabledOrStoppedOwnerDoesNotStartRequests",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 98,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 112,
+      "name": "<init>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 117,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 118,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 119,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 121,
+      "name": "serve",
+      "complexity_estimate": 5
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 136,
+      "name": "close",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 142,
+      "name": "t464_httpAdapterReturnsNewerVersionFromLocalEndpoint",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 143,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 145,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 150,
+      "name": "t464_wholeCallDeadlineBoundsTricklingBody",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 151,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 156,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 163,
+      "name": "t464_cancelInterruptsActiveBodyRead",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 164,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 168,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 178,
+      "name": "<init>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 182,
+      "name": "read",
+      "complexity_estimate": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 189,
+      "name": "timeout",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 190,
+      "name": "close",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 192,
+      "name": "<init>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 193,
+      "name": "contentType",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 194,
+      "name": "contentLength",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 195,
+      "name": "source",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 197,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 201,
+      "name": "result",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 205,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 209,
+      "name": "close",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 217,
+      "name": "t804_oversizedKnownAndUnknownBodiesRejectBeforeJsonMaterialization",
+      "complexity_estimate": 2
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 220,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 227,
+      "name": "t804_byteLimitAcceptsExactUtf8BoundaryAndRejectsTruncatedDeclarations",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 233,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 234,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 238,
+      "name": "t804_configurableByteBoundsRejectInvalidAndOverflowInputs",
+      "complexity_estimate": 3
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 240,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 244,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 247,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 249,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 253,
+      "name": "t804_malformedExtentAndBomDecodingKeepBodyOwnership",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 255,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 259,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "android/app/src/test/java/com/blent/ReleaseCheckTest.kt",
+      "line": 260,
+      "name": "<lambda>",
+      "complexity_estimate": 1
+    }
+  ]
+}

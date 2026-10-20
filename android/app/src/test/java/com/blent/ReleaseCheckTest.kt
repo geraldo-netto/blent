@@ -1,5 +1,6 @@
 package com.blent
 
+import okio.buffer
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -171,4 +172,92 @@ class ReleaseCheckTest {
             } finally { call.cancel() }
         }
     }
+
+    // T804: this fixture owns its payload, HTTP dispatcher and original body
+    // until the response closes and every dispatcher task actually terminates.
+    private class BodyFixture(private val bytes: ByteArray, private val length: Long) : java.io.Closeable {
+        var consumed = 0
+        var closed = false
+        private val source = object : okio.Source {
+            override fun read(sink: okio.Buffer, byteCount: Long): Long {
+                if (consumed == bytes.size) return -1
+                val count = minOf(byteCount, (bytes.size - consumed).toLong()).toInt()
+                sink.write(bytes, consumed, count)
+                consumed += count
+                return count.toLong()
+            }
+            override fun timeout() = okio.Timeout.NONE
+            override fun close() { closed = true }
+        }.buffer()
+        private val body = object : okhttp3.ResponseBody() {
+            override fun contentType() = null
+            override fun contentLength() = length
+            override fun source() = source
+        }
+        private val client = okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+            okhttp3.Response.Builder().request(chain.request()).protocol(okhttp3.Protocol.HTTP_1_1)
+                .code(200).message("fixture").body(body).build()
+        }.build()
+        fun result(limit: Int = 256 * 1024): String {
+            val result = java.util.concurrent.ArrayBlockingQueue<String>(2)
+            val call = HttpReleaseChecks("http://localhost/release", client, maxResponseBytes = limit).newCall("1.0.0")
+            try {
+                call.start { result.add(it ?: "none") }
+                return result.poll(2, TimeUnit.SECONDS) ?: error("T804: callback absent")
+            } finally { call.cancel() }
+        }
+        override fun close() {
+            client.dispatcher.executorService.shutdown()
+            assertTrue("T804: dispatcher did not retire", client.dispatcher.executorService.awaitTermination(2, TimeUnit.SECONDS))
+            client.connectionPool.evictAll()
+            assertTrue("T804: response body leaked", closed)
+        }
+    }
+
+    @Test fun t804_oversizedKnownAndUnknownBodiesRejectBeforeJsonMaterialization() {
+        val oversized = ("{\"tag_name\":\"v9.0.0\",\"padding\":\"" + "x".repeat(256 * 1024) + "\"}").toByteArray()
+        for (length in listOf(oversized.size.toLong(), -1L)) {
+            BodyFixture(oversized, length).use { fixture ->
+                assertEquals("T804: oversized successful metadata accepted", "none", fixture.result())
+                assertTrue("T804: unbounded source consumption", fixture.consumed <= 256 * 1024 + 8192)
+            }
+        }
+    }
+
+    @Test fun t804_byteLimitAcceptsExactUtf8BoundaryAndRejectsTruncatedDeclarations() {
+        val prefix = "{\"tag_name\":\"v9.0.0\",\"padding\":\"é"
+        val suffix = "\"}"
+        val padding = 256 * 1024 - prefix.toByteArray().size - suffix.toByteArray().size
+        val bytes = (prefix + "x".repeat(padding) + suffix).toByteArray()
+        assertEquals(256 * 1024, bytes.size)
+        BodyFixture(bytes, -1).use { assertEquals("9.0.0", it.result()) }
+        BodyFixture(bytes, bytes.size + 1L).use { assertEquals("T804: truncated declared body accepted", "none", it.result()) }
+    }
+
+
+    @Test fun t804_configurableByteBoundsRejectInvalidAndOverflowInputs() {
+        for (limit in listOf(Int.MIN_VALUE, -1, 0, 1024 * 1024 + 1, Int.MAX_VALUE)) {
+            assertThrows(IllegalArgumentException::class.java) {
+                HttpReleaseChecks("http://localhost/release", maxResponseBytes = limit)
+            }
+        }
+        BodyFixture(byteArrayOf(32), -1).use { assertEquals("none", it.result(1)) }
+        val metadata = "{\"tag_name\":\"v9.0.0\"}"
+        for (limit in listOf(32, 64, 256, 4096, 1024 * 1024)) {
+            BodyFixture(metadata.toByteArray(), -1).use { assertEquals("9.0.0", it.result(limit)) }
+            val over = (metadata + " ".repeat(limit)).toByteArray()
+            BodyFixture(over, -1).use { assertEquals("none", it.result(limit)) }
+        }
+    }
+
+    @Test fun t804_malformedExtentAndBomDecodingKeepBodyOwnership() {
+        val metadata = "{\"tag_name\":\"v9.0.0\"}"
+        BodyFixture(metadata.toByteArray(), -2).use {
+            assertEquals("none", it.result())
+            assertEquals(0, it.consumed)
+        }
+        BodyFixture(metadata.toByteArray(Charsets.UTF_16), -1).use { assertEquals("9.0.0", it.result()) }
+        BodyFixture(byteArrayOf(), 0).use { assertEquals("none", it.result()) }
+    }
+
 }

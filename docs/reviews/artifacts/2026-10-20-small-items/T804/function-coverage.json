@@ -1,0 +1,93 @@
+{
+  "tool": "JaCoCo0.8.15 native JVM counters; Robolectric API27/34",
+  "methods": [
+    {
+      "owner": "com/blent/HttpReleaseCall$start$1",
+      "name": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function1;Lcom/blent/HttpReleaseCall;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseCall$start$1",
+      "name": "onFailure",
+      "descriptor": "(Lokhttp3/Call;Ljava/io/IOException;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseCall$start$1",
+      "name": "onResponse",
+      "descriptor": "(Lokhttp3/Call;Lokhttp3/Response;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseChecks",
+      "name": "<init>",
+      "descriptor": "(Ljava/lang/String;Lokhttp3/OkHttpClient;JI)V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseChecks",
+      "name": "<init>",
+      "descriptor": "(Ljava/lang/String;Lokhttp3/OkHttpClient;JIILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseChecks",
+      "name": "newCall",
+      "descriptor": "(Ljava/lang/String;)Lcom/blent/ReleaseCall;",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseCall",
+      "name": "<init>",
+      "descriptor": "(Lokhttp3/Call;Ljava/lang/String;I)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseCall",
+      "name": "cancel",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseCall",
+      "name": "start",
+      "descriptor": "(Lkotlin/jvm/functions/Function1;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseCall",
+      "name": "newer",
+      "descriptor": "(Lokhttp3/Response;)Ljava/lang/String;",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/HttpReleaseCall",
+      "name": "boundedBody",
+      "descriptor": "(Lokhttp3/Response;)Ljava/lang/String;",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    }
+  ]
+}
