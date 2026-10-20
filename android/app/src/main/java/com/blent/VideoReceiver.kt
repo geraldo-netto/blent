@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 
-internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.create(), createSocket: () -> Socket = { Socket() }) : DisplaySession<SurfaceView> {
+internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.create(), initialGeneration: Long = 0, createSocket: () -> Socket = { Socket() }) : DisplaySession<SurfaceView> {
     companion object {
         const val MIME_TYPE = VideoWire.MIME_TYPE
         const val MIME_TYPE_HEVC = VideoWire.MIME_TYPE_HEVC
@@ -41,9 +41,10 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
         const val ARRIVAL_RING = 64
     }
 
+    init { require(initialGeneration >= 0) }
     private var livenessEnabled = false
     @Volatile private var isRunning = false
-    private val sessionGeneration = AtomicLong(0)
+    private val sessionGeneration = AtomicLong(initialGeneration)
     private fun isCurrent(generation: Long) = isRunning && sessionGeneration.get() == generation
 
     private var videoConnected = false // Guarded by the receiver monitor.
@@ -197,9 +198,12 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
         synchronized(this) {
             if (isRunning) return
             val sessionRoutes = configuredRoutes ?: return
+            val previous = sessionGeneration.get()
+            check(previous in 0 until Long.MAX_VALUE) { "Video session generations exhausted" }
+            val generation = previous + 1
+            sessionGeneration.set(generation)
             isRunning = true
             videoConnected = false
-            val generation = sessionGeneration.incrementAndGet()
             surfaceChanges.update { it + 1 }
             val sessionLiveness = livenessEnabled
             val sessionStatistics = ReceiverStatistics()
@@ -379,7 +383,6 @@ internal class VideoReceiver(initialRoutes: DisplayRoutes? = AdbDisplayRoutes.cr
 
     @Synchronized override fun stop() {
         val wasRunning = isRunning
-        sessionGeneration.incrementAndGet()
         isRunning = false
         surfaceChanges.update { it + 1 }
         videoConnected = false

@@ -1,0 +1,53 @@
+{
+  "tool": "JaCoCo0.8.15 native JVM method-variant line counters",
+  "functions": [
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/DisplayRoutes;JLkotlin/jvm/functions/Function0;)V",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/DisplayRoutes;JLkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "start",
+      "descriptor": "()V",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "stop",
+      "descriptor": "()V",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver$start$1$4",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver$start$1$3",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    }
+  ]
+}
