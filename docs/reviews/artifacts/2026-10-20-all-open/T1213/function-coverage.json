@@ -1,0 +1,13 @@
+[
+  {
+    "file": "packaging/arch/PKGBUILD",
+    "name": "build",
+    "line": 19,
+    "language": "shell",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

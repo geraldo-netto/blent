@@ -1,0 +1,7 @@
+{
+  "Makefile": "7454591cf19129e39616f43a9e6ee39e59ec8aa3f66db91a0b15c31912c992b5",
+  "packaging/arch/PKGBUILD": "b6c93c19d54b32a4611116027b0e44b924060bec48daa88660b34eb840dd0904",
+  "scripts/build-release.sh": "382a9d9656f83a323ee490d17785c9f604cb249c253ee36c27dfb32f43620771",
+  "scripts/ci/build-artifacts.sh": "7abccd9f7d7f78a578c17737003ad1b25664d030b481a8ac19cfcc491cb28089",
+  "scripts/tests/test_make.py": "6eb48b302fb9d42890eefe1123a8eeaf0baabb4fc5866a8f039b620496811683"
+}

@@ -42,7 +42,7 @@ build-helper:
 	@echo "✓ EVDI helper: host/evdi/evdi_helper"
 
 build-usb-helper:
-	$(recursive_prefix)$(recursive_make) -C host/accessory OUTPUT=../../target/release/blent-usb-io
+	$(recursive_prefix)$(recursive_make) --always-make -C host/accessory CC=$(call quote,$(CC)) OUTPUT=../../target/release/blent-usb-io
 
 build: build-helper build-usb-helper
 	$(recursive_prefix)$(CARGO) build --release --features blent/native-audio,blent/accessory-transport --target-dir $(call quote,$(CURDIR)/target)

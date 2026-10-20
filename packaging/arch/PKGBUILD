@@ -20,7 +20,7 @@ build() {
   cd "blent-$pkgver"
   cargo build --release --locked --target-dir target --manifest-path host/Cargo.toml --features native-audio,accessory-transport
   cargo build --release --locked --target-dir target --manifest-path gui/Cargo.toml
-  make -C host/accessory OUTPUT=../../target/release/blent-usb-io
+  make --always-make -C host/accessory OUTPUT=../../target/release/blent-usb-io
   # libevdi built from upstream and shipped next to the helper (rpath $ORIGIN),
   # so the only thing the system must provide is the evdi kernel module.
   make -C "$srcdir/evdi-${_evdi#v}/library"

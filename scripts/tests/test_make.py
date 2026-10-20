@@ -153,6 +153,33 @@ class MakeTest(unittest.TestCase):
                              ['install', '-r', '-g', 'android/app/build/outputs/apk/debug/app-debug.apk'],
                              'T619: install must grant declared runtime permissions, with no launch/broadcast')
 
+    def test_t1213_explicit_usb_build_uses_selected_compiler_and_refreshes_output(self):
+        compiler = r'''#!/bin/sh
+previous=
+for argument do
+    if [ "$previous" = -o ]; then
+        printf 'fresh selected compiler\n' > "$argument"
+        exit 0
+    fi
+    previous=$argument
+done
+exit 43
+'''
+        for explicit, stale in [(False, False), (False, True), (True, True)]:
+            with self.subTest(explicit=explicit, stale=stale), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp); self.usb_make_fixture(root)
+                (root/'Makefile').write_text((REPO/'Makefile').read_text())
+                (root/'tools').mkdir()
+                for name, text in [('gcc', compiler), ('cc', '#!/bin/sh\nexit 42\n')]:
+                    path=root/'tools'/name; path.write_text(text); path.chmod(0o755)
+                output=root/'target/release/blent-usb-io'; output.parent.mkdir(parents=True)
+                if stale: output.write_text('stale output newer than source')
+                args=['make','build-usb-helper']
+                if explicit: args.append('CC='+str(root/'tools/gcc'))
+                result=subprocess.run(args,cwd=root,env=self.make_environment(root/'tools'),capture_output=True,text=True)
+                self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+                self.assertEqual(output.read_text(),'fresh selected compiler\n')
+
     def test_t220_parallel_build_passes_open_jobserver(self):
         result = self.run_build()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

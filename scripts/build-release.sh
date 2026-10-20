@@ -24,7 +24,7 @@ distrobox enter "$CONTAINER" -- bash -lc '
   export CARGO_TARGET_DIR="$PWD/target-deb12"
   cargo build --release --locked --manifest-path host/Cargo.toml --features native-audio,accessory-transport
   cargo build --release --locked --manifest-path gui/Cargo.toml
-  make -C host/accessory OUTPUT=../../target-deb12/release/blent-usb-io
+  make --always-make -C host/accessory OUTPUT=../../target-deb12/release/blent-usb-io
 
   # Keep LGPL libevdi replaceable beside the helper, located via $ORIGIN.
   [ -d target-deb12/evdi-src ] || git clone -q --depth 1 --branch "$2" https://github.com/DisplayLink/evdi target-deb12/evdi-src

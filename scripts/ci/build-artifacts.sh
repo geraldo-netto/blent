@@ -5,7 +5,7 @@ cd "$(dirname "$0")/../.."
 export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$PWD/target-portability}"
 cargo build --locked --release --workspace --features blent/native-audio,blent/accessory-transport
 make build-helper
-make -C host/accessory OUTPUT="$CARGO_TARGET_DIR/release/blent-usb-io"
+make --always-make -C host/accessory OUTPUT="$CARGO_TARGET_DIR/release/blent-usb-io"
 VERSION=$(sed -n 's/^VERSION = //p' Makefile)
 D="dist/blent-$VERSION"
 rm -rf "$D"
