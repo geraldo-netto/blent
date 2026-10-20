@@ -1,0 +1,74 @@
+{
+  "start": "2026-10-20T10:51:44+02:00",
+  "end": "2026-10-20T10:52:57+02:00",
+  "scope": "Owner-approved helper installation and service restart only; no forced host DPMS, lock or suspend.",
+  "old_helper_sha256": "260b1a5d7efc08c9b2897eb70482915f153e6a748e0fd28915b76061530cb9ff",
+  "new_helper_sha256": "9c4b48c66274d1936f0426820c4be883f47ca25b3645289999beca3045326475",
+  "library_sha256": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a",
+  "backup": "/backups/disk2/blent-work/2026-10-20-t1185/deployment/evdi_helper.before",
+  "old_processes": {
+    "host": {
+      "pid": 2861,
+      "proc_exists": false
+    },
+    "helper": {
+      "pid": 3189,
+      "proc_exists": false
+    },
+    "encoder": {
+      "pid": 3524,
+      "proc_exists": false
+    }
+  },
+  "new_host_pid": 59224,
+  "new_helper_pid": 59391,
+  "helper_start_ticks": "448946",
+  "boot_id": "b759a08f-c81b-4ffc-a471-0ac0b0255e7b",
+  "service_status": "MainPID=59224\nResult=success\nActiveState=active\nSubState=running\n",
+  "grab_totals": [
+    267,
+    545,
+    810,
+    1081,
+    1357,
+    1653,
+    1864,
+    2091,
+    2344,
+    2610,
+    2876,
+    3145
+  ],
+  "render_ack_samples_per_interval": [
+    288,
+    277,
+    266,
+    272,
+    276,
+    296,
+    213,
+    222,
+    257,
+    266,
+    265,
+    269
+  ],
+  "encoder_access_units_per_interval": [
+    285,
+    278,
+    265,
+    272,
+    276,
+    296,
+    211,
+    224,
+    254,
+    266,
+    266,
+    268
+  ],
+  "matching_kernel_timeout_or_fault_lines": [],
+  "imported_mmap_warning_count": 1,
+  "ddcci_warning_count": 32,
+  "limits": "Active streaming/restart acceptance only. No historical attribution, forced pause/resume, kernel native sanitizer, or unrestricted lifetime proof."
+}

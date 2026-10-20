@@ -100,8 +100,9 @@ The initramfs, kernel, module and complete raw counters remain local under
 vCPUs, no network, filesystem sharing, GPU, USB or host storage passthrough.
 It uses cached kernel7.0.0-34 and packaged EVDI1.14.15. The incident uses -38;
 its protected kernel image could not be read without administrator access.
-No current driver, desktop setting, live output or installed helper was changed.
-No download, installation, upload, fetch or push was performed.
+During isolated verification, no current driver, desktop setting, live output or
+installed helper was changed. No download, package installation, upload, fetch or
+push was performed. The later approved helper activation is recorded below.
 
 ## Verification and ownership limits
 
@@ -151,6 +152,47 @@ retain their existing dispositions.
 The verified helper and unchanged bundled libevdi are staged together at
 `target/t1185/evdi_helper` and `target/t1185/libevdi.so.1`. `ldd` confirms the
 helper resolves that sibling library. `manifest.json` records their hashes and
-the permanent regression source hashes. The running installed helper remains
-unchanged; activation requires a deliberate Blent restart, which briefly removes
-its virtual monitor. No live acceptance is claimed from preparing this build.
+the permanent regression source hashes. At the build checkpoint the running
+installed helper remained unchanged. The owner subsequently approved installing
+this helper and restarting Blent; activation evidence follows.
+
+
+## Approved physical activation
+
+Owner instruction: “Install and restart now”. Installation and restart completed
+on 2026-10-20 at **10:51:44 CEST** on Cinnamon/AMDGPU/kernel7.0.0-38-generic.
+Only the helper executable was replaced. The stock driver and bundled libevdi
+were unchanged. The installed and running `/proc/59391/exe` SHA256 is
+`9c4b48c66274d1936f0426820c4be883f47ca25b3645289999beca3045326475`, matching
+`manifest.json`. The old executable is retained for rollback at
+`/backups/disk2/blent-work/2026-10-20-t1185/deployment/evdi_helper.before`
+(SHA256 `260b1a5d7efc08c9b2897eb70482915f153e6a748e0fd28915b76061530cb9ff`).
+
+The backup was written and synced before an atomic replacement in the installed
+directory. The running old executable inode was never overwritten. Systemd
+restart returned success without reaching its stop deadline. The original host PID 2861,
+helper PID 3189 and encoder PID 3524 disappeared; the host reported both child exits cleanly,
+and the kernel recorded original helper PID 3189 disconnect and close before helper PID 59391
+opened the device. The new host PID 59224 and helper PID 59391 belong to `blent.service`.
+This establishes process/file retirement for this restart, not unrestricted proof
+of every kernel allocation or callback lifetime.
+
+The bounded observation ends at **10:52:57 CEST**. Twelve completed five-second
+capture/encoder/render-ACK intervals show grab totals increasing from 267 to 3145,
+211–296 encoded access units and 213–296 render ACKs per interval. The same Cinnamon
+process PID 2740 remains running. Read-only X11 queries return with physical HDMI output
+and virtual DVI-I-2-1 active at 1280x800@60. No EVDI flip/commit timeout, GPU reset,
+BUG, Oops or kernel call trace matches the retained kernel log during this window.
+
+Existing warning paths remain visible: one AMDGPU imported-object mmap rejection,
+32 ignored DDC/CI messages, KWin-unavailable warnings under Cinnamon, startup codec
+configuration wait, and X11 mapping retry exhaustion. Touch and pointer mapping
+both succeeded; Xinput lists Blent Pen as a keyboard, consistent with declined
+pen mapping work T592. These logs do not establish new regressions or resolution
+of T748/T749. Shutdown FFmpeg pipe errors accompany its clean signal 15 exit.
+
+`activation.json`, `activation-service.log.gz`, `activation-kernel.log.gz` and
+`activation-xrandr.txt.gz` retain the identities, hashes, counters and local logs.
+The approved restart did not include forced host display-off, lock or suspend.
+T1184 therefore retains physical pause/resume/wake acceptance and historical
+attribution limits. T914's broader acceptance window remains unapproved.
