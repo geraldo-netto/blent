@@ -78,9 +78,9 @@ functions in affected modules meet individual 80% coverage and complexity <=9.
 The existing T102 loader/distribution regression failed because its isolated C
 fixture omitted `cursor_overlay.c`, which the current Makefile links. The fixture
 now includes that unit; both permanent distribution tests pass offline. Production
-code and packaging assertions are unchanged. Full-workspace RPM notice validation
-was skipped by the maintainer for future RPM removal (T833); no dependencies
-were downloaded. AppImage does not require `rpmbuild`.
+code and packaging assertions are unchanged. Full-workspace Packaging notice validation
+was skipped by the maintainer for future package cleanup (T833); no dependencies
+were downloaded. AppImage does not require the external package builder.
 [Red/green evidence](artifacts/2026-10-10-t832/).
 
 ## T824: independent persistence contracts
@@ -103,7 +103,7 @@ store. The actual GUI starts and closes successfully under private Xvfb.
 Linux functions in affected files meet individual 80% coverage and complexity <=9;
 Windows-only functions remain visibly unmeasured under T737. Full workspace
 library/binary tests pass; the broader integration run exposed the separately
-fixed T832 fixture and missing RPM tool T833. No full-workspace pass is claimed.
+fixed T832 fixture and missing package tool T833. No full-workspace pass is claimed.
 [Source-attested coverage and red/green logs](artifacts/2026-10-10-t824/).
 
 ## T826: bounded asynchronous Wi-Fi persistence

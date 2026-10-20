@@ -31,7 +31,7 @@ library/application tests pass. Combined Linux coverage meets 80% for all
 files revised after the full run were recollected in full, and their old counters
 were excluded. Source-hash attestation accompanies the report. The report retains
 61 unavailable non-Linux functions; existing platform TODOs still apply.
-Temporary FFmpeg development headers and RPM tools supplied missing local test
+Temporary FFmpeg development headers and package tools supplied missing local test
 prerequisites; no system package installation was needed. T626 separately
 corrected the pre-existing CLI fixture's stale worker expectation.
 

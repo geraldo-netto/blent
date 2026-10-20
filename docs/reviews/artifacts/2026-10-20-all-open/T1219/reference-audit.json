@@ -1,0 +1,10 @@
+{
+  "scope": "tracked and nonignored source/documentation; UTF8 members of compressed records and tar archives; opaque binary media excluded",
+  "current_files": 10678,
+  "packaging_or_dependency_references": 0,
+  "opaque_native_build_object_identifiers_retained": 17,
+  "supporting_records_removed_intact": 329,
+  "removed_record_bytes": 88543845,
+  "direct_link_documents_adjusted": 6,
+  "fence_parity_changes": 0
+}

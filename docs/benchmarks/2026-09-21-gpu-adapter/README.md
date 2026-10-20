@@ -135,7 +135,7 @@ Windows GNU cross-compilation passes. Clippy passes with the existing T573
 All 5,528 inventoried functions meet cyclomatic complexity ≤9. Six Makefile
 tests and both GPU measurement/report integrity tests pass.
 
-The [evidence archive](evidence.tar.gz) contains checkpoint and final source
+The evidence archive contains checkpoint and final source
 copies, binary hashes, arguments, scene identities, encoded synthetic streams,
 ACKs, CPU observations, rejected cross-device pictures, native lifecycle logs,
 regression logs and GCC counters. Its hash is in [metadata](metadata.json).

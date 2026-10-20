@@ -18,7 +18,7 @@ the saved value and qualified diagnostic behavior.
 
 Validation: 91 common tests and both existing host diagnostic regressions
 passed; the changed method measured 18/20 executable lines (90%). Complexity
-remains at most 9. [Evidence](2026-09-21-follow-up-evidence/t566.tar.gz) retains
+remains at most 9. Evidence retains
 red/green logs, source manifest and the scoped coverage report. Other methods
 in that common-only report are outside this change's measurement scope; it is
 not a replacement for the full-platform coverage gate.
@@ -52,7 +52,7 @@ Ordinary strict Clippy also reports the pre-existing test parity expression
 tracked in T573. With only `manual_is_multiple_of` temporarily permitted on the
 lint command line, all-target host Clippy passes; no source lint suppression was
 added. This is a scoped lint result, not an unqualified clean strict-lint claim.
-[Evidence](2026-09-21-follow-up-evidence/t568.tar.gz) includes red/green logs,
+Evidence includes red/green logs,
 the final source manifest, scoped coverage and lint/format/complexity results.
 
 ## T523 — share host sessions and protocol ownership
@@ -91,7 +91,7 @@ two pre-existing camera gaps tracked in T572; 58 Windows-only methods remain
 unmeasured in the all-platform report. Formatting and complexity pass (5,366
 functions, none above nine). Default and optional all-target host Clippy pass
 with only the existing T573 `manual_is_multiple_of` finding permitted on the
-command line. [Evidence](2026-09-21-follow-up-evidence/t523.tar.gz) retains both
+command line. Evidence retains both
 test logs, platform checks, source manifest and coverage reports. Native Linux
 display behavior was tested through existing isolated regressions; this
 refactor was not reloaded into the live display during these checks.
@@ -120,7 +120,7 @@ in the changed portable/Linux measurement scope meet 80% line coverage.
 Formatting, Linux Clippy and GNU/MSVC all-target host/GUI Clippy pass, retaining
 only the existing T573 parity-lint exception on the command line. Complexity
 remains at most nine. The shared policy also checks on WebAssembly without
-default features. [Evidence](2026-09-21-follow-up-evidence/t533.tar.gz) contains
+default features. Evidence contains
 the initial contract failure, final test/check logs, source manifest and scoped
 coverage. Windows-native execution and per-function counters remain unavailable
 under T493/T497; cross-target compilation is not native acceptance. Display,

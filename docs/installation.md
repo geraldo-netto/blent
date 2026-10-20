@@ -31,7 +31,7 @@ unrelated driver/compositor faults.
 
 ## GPU ordering before EVDI (T700)
 
-The full source/tarball installer, `make setup-system`, and RPM/Arch installation
+The full source/tarball installer, `make setup-system`, and Arch installation
 hooks run `scripts/gpu-boot-order.sh` before EVDI provisioning. It creates
 `/etc/modprobe.d/blent-gpu-order.conf` with a `softdep evdi pre: ...` rule for the
 currently bound, loadable DRM drivers. Multiple modules are deduplicated;
@@ -72,12 +72,10 @@ attachment or tablet operation.
 | Artifact | Installation |
 | --- | --- |
 | `blent-<ver>-x86_64.AppImage` | Linux x86-64/glibc 2.36+: make executable and launch; see [AppImage setup, extraction and migration](appimage-plan.md) |
-| `blent-<ver>-1.x86_64.rpm` | openSUSE: `sudo zypper install ./blent-*.rpm`; Fedora: supply the required FFmpeg package (the build workflow uses RPM Fusion), then `sudo dnf install --allowerasing ./blent-*.rpm` |
 | `blent-<ver>-PKGBUILD.tar.gz` | Arch family: install AUR `evdi-dkms` first, extract the recipe and run `makepkg -si` |
 | `blent-<ver>-linux-x86_64.tar.gz` | Other compatible Linux setups: extract and inspect/run `./scripts/install.sh`; unsupported package managers need manual dependency installation |
 
-Review the package transaction, especially `dnf --allowerasing`, which permits
-removing conflicting packages. AppImage replaces the Debian release asset and
+Review the package transaction. AppImage replaces the Debian release asset and
 bundles userspace dependencies; it does not install EVDI/DKMS, GPU drivers or
 device permissions. A working EVDI kernel module is still required for an
 extended display. Install the appropriate module package for your kernel.
@@ -103,28 +101,17 @@ The native USB transport requires the libusb-1.0 shared runtime in addition to
 FFmpeg, adb, libevdi and the GUI libraries.
 
 Module and package availability depend on the distribution release and kernel.
-Do not assume a Bazzite/Nobara image includes every prerequisite. The full
-installer uses rpm-ostree on a detected booted ostree system and otherwise the
-selected distribution's package manager. Layering may require a reboot.
+Automatic dependency installation supports Debian/Ubuntu and Arch-family systems.
+Other families require manual installation with their own package manager.
 
 | Distribution family | FFmpeg/adb names used by the project | EVDI source to check |
 | --- | --- | --- |
 | Debian/Ubuntu | `ffmpeg`, `adb` | `evdi-dkms` for the running kernel |
 | Arch | `ffmpeg`, `android-tools` | AUR `evdi-dkms` |
-| Fedora | `ffmpeg` (RPM Fusion in the workflow), `android-tools` | image/vendor packages or an upstream module build |
-| RHEL/CentOS/Rocky/AlmaLinux | `ffmpeg`, `android-tools` from repositories configured for the installed Enterprise Linux release | distribution/vendor guidance or an upstream module build |
-| openSUSE | `ffmpeg`, `android-tools` | `evdi` and its matching kernel-module package |
 
-The installer matches complete `ID`/`ID_LIKE` words and gives Enterprise Linux
-precedence when its metadata also mentions Fedora. It tries that system's
-configured repositories and prints the detected release; if packages are
-missing, configure repositories for that Enterprise Linux major release before
-retrying. RPM Fusion publishes separate [Enterprise Linux](https://download1.rpmfusion.org/free/el/)
-and [Fedora](https://download1.rpmfusion.org/free/fedora/) repository packages.
-The installer only attempts Fedora repository setup for a Fedora-family system
-with a numeric Fedora release macro. Booted ostree systems use package layering
-from configured repositories. Unknown families require manual installation of
-the runtime prerequisites listed above, using their own package manager.
+The installer matches complete supported `ID`/`ID_LIKE` words. Unknown families
+receive manual guidance for the runtime prerequisites listed above; the installer
+does not configure their repositories or install their dependencies.
 
 Use `modinfo evdi` and, for DKMS installations, `dkms status` to inspect the
 installed module. If a DKMS build fails, inspect its build log and check the

@@ -107,28 +107,5 @@ Only cargo-mutants has been run. No PIT, Mull or mutmut integration was validate
 
 ## Local resume resources
 
-- Main branch: `configurable-input-devices`.
-- Previous batch was pushed through `c20717a`; this checkpoint has not been pushed.
-- Raw experiment root: `/backups/disk2/blent-mutation-evidence`.
-- Retained clean worktree: `/backups/disk2/blent-mutation-evidence/parser-worktree`,
-  detached at `c20717a`; no need to create it again.
-- Tool environment: `/tmp/blent-batch-venv/bin/python` provides existing coverage
-  and complexity dependencies. Recreate from repository requirements if missing.
-  Do not prepend that venv to PATH for full Python tests: system Python has Xlib.
-- Full Linux tooling requires `rpmbuild`; the prior private shim is
-  `/tmp/blent-batch-rpm/bin`. Missing external tools are failed validation, not
-  caught mutants. Normal all-features FFmpeg headers used the private
-  `/tmp/blent-batch-t612/ffmpeg-dev/usr/lib/x86_64-linux-gnu/pkgconfig` path.
-- Native Windows VM and credentials/preferences remain unchanged. Preserve its
-  disk, TPM and installation marker. Native helper scripts were copied from
-  `/tmp` into `/home/netto/.local/share/blent-dev/mutation-checkpoint` for resume.
-  Existing VM instructions and prior coverage commands remain in the private
-  `/home/netto/.local/share/blent-dev/implementation-batch-handoff.md`.
-- Guest `C:\src\blent` has the synchronized T651 sources over its older Git HEAD.
-  Do not reset/pull over those synchronized changes. Native mutation runs must
-  use isolated guest source copies and ordinary-user execution.
-- No physical tablet, display or camera acceptance is authorized by this pause.
-  Preserve existing blocked/deferred/declined dispositions, especially T382/T584.
-
 Do not push the checkpoint or future mutation changes without a new push request.
 The earlier push authorization was exercised for the completed implementation batch.

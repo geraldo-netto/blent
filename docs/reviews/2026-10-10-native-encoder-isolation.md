@@ -41,7 +41,7 @@ partial and interrupted writes, lost parent, missing executable, SIGSTOP/SIGKILL
 restart nonce, immutable headers and retired generation tests. Existing FIFO and
 native shared-lease regressions remain. 53 scoped native tests pass (2 preexisting
 ignored); default host library 330 and binary 416 pass. Broad default tooling has
-two known RPM failures (T833; deliberately not pursued). Windows tests cross-check;
+two known packaging-prerequisite failures (T833; deliberately not pursued). Windows tests cross-check;
 native Windows runtime remains T737. All 67 production functions in the affected
 native adapter/contract/runtime/capture/raw modules meet 80% line coverage and CC≤9.
 

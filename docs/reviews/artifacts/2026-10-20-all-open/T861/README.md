@@ -38,4 +38,4 @@ only after all required copies/chmod succeed. AppImage builder owns its output
 and stock dependency closure; user-selected build/cache paths retain artifacts
 until explicit cleanup. No new native lifetime/retirement mechanism. Original
 USB/runtime worker owners and device acceptance stay unchanged. No service,
-physical tablet/display, EVDI rebuild/replacement, RPM build, transfer or upload.
+physical tablet/display, EVDI rebuild/replacement, transfer or upload.

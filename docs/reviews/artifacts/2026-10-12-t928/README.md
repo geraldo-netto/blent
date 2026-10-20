@@ -29,8 +29,8 @@ collector were frozen from snapshot through native checks. ELF object fingerprin
 exact command, build inputs, counters and report hash are retained in final/.
 
 Diagnostic evidence belongs to earlier draft source hashes, not final counters.
-The earlier full integration run passed the host unit suites and non-RPM integration
-checks but failed retained RPM tests t129/t302 because `rpmbuild` is absent (T833,
+The earlier full integration run passed the host unit suites and other integration
+checks but failed retained packaging tests t129/t302 because the external package builder is absent (T833,
 explicitly deferred). Its manually exported counters/attestation record failure;
 this is not an all-integration passing claim. Earlier unit-only counters identified
 legacy service/Wake coverage gaps, subsequently covered by substantive normal-suite

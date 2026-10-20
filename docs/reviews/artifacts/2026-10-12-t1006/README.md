@@ -13,6 +13,6 @@ foreign object links, existing outputs, source mutation and failed/empty collect
 All 27 reviewed tool/test functions have complexity at most 8. Coverage tooling is
 nonessential development tooling; no production-function coverage exemption is added.
 
-Full RPM notice/version integration tests remain unchanged and explicitly deferred
+Full Packaging notice/version integration tests remain unchanged and explicitly deferred
 under T833. This selection does not claim those tests pass or remove their obstacle.
 No downloads, installation, live host services, USB/ADB or tablet changes.

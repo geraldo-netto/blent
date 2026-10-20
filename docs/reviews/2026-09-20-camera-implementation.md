@@ -70,7 +70,7 @@ Compose's dispatcher from unrelated reset loopers; assertions were retained.
 
 Evidence in the [artifact directory](artifacts/2026-09-20-tablet-cameras) includes
 source hashes, native coverage reports, raw counters, test logs, APK/binary hashes
-and browser statistics. Temporary local RPM and FFmpeg development packages
+and browser statistics. Temporary local FFmpeg development packages
 supplied missing test/build prerequisites without modifying system packages.
 
 ## Boundaries

@@ -65,7 +65,6 @@ or produced from the checkout you intend to install:
 | file | distribution |
 | --- | --- |
 | `blent-<ver>-x86_64.AppImage` | Linux x86-64/glibc 2.36+: `chmod +x blent-*.AppImage`; see [launch and user installation](docs/appimage-plan.md) |
-| `blent-<ver>-1.x86_64.rpm` | openSUSE (`zypper install`), Fedora (RPM Fusion first, then `dnf install --allowerasing`) |
 | `blent-<ver>-PKGBUILD.tar.gz` | Arch and derivatives — install AUR `evdi-dkms` first; extract, `makepkg -si` |
 | `blent-<ver>-linux-x86_64.tar.gz` | compatible Linux x86-64/glibc systems — extract, inspect `./scripts/install.sh` |
 
@@ -98,7 +97,7 @@ help the next Linux user find it.
 | Bazzite, KDE Plasma 6 Wayland, NVIDIA RTX 5060 | Galaxy Tab S9 Ultra, Android 14 | works — reference setup, all benchmarks |
 | Arch Linux, KDE Plasma Wayland | — | works — externally verified on a real system twice: the v1.0.2 installer (report (historical upstream)) and the v1.1.0 PKGBUILD via `makepkg -si`, with menu entry, tray and settings working out of the box (report (historical upstream)) |
 | Fedora 44, KDE Plasma | Galaxy Tab S9 FE | works — "near perfectly", external report (discussion #7 (historical upstream)) |
-| Debian 12 · Fedora 42 · openSUSE Tumbleweed | — | packages install and run (container-tested, no tablet) |
+| Debian 12 | — | packages install and run (container-tested, no tablet) |
 
 Android 8.1+ is the minimum; codec, profile, resolution and frame-rate support
 also matter. These reports describe upstream builds, not current fork validation. More in

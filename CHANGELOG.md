@@ -151,7 +151,7 @@ Selected fork changes (the commit history contains the individual fixes;
 
 - Security: session token between app and daemon; capture FIFO moved out of
   `/tmp` into the per-user runtime directory.
-- Packages: `.deb`, `.rpm`, PKGBUILD archive and `SHA256SUMS` in every release;
+- Packages: `.deb`, PKGBUILD archive and `SHA256SUMS` in every release;
   binaries built against Debian 12 glibc so they run on any current
   distribution.
 - Several tablets at once (`max_tablets`), each as its own screen.

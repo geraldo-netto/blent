@@ -15,8 +15,6 @@ Container installation/build checks are described in [development.md](developmen
 | KDE Neon (Plasma 6.7.5) | KDE Plasma, Wayland | AMD, `h264_vaapi` | works on 1.2.1 — touch lands on the tablet's own screen, confirmed by the reporter after the KWin D-Bus fix; evdi had to be installed by hand | issue #9 (historical upstream), #11 (historical upstream) |
 | Fedora 44 | KDE Plasma | — | works — "near perfectly" with a Galaxy Tab S9 FE, used for drawing; the current app implements automatic landscape flips and pinned landscape directions; this historical report does not validate those options on this tablet | discussion #7 (historical upstream) |
 | Debian 12 | — | — | package installs and binaries run; not exercised with a tablet | maintainer, container |
-| Fedora 42 | — | — | rpm installs; evdi must be built from source | maintainer, container |
-| openSUSE Tumbleweed | — | — | dependencies resolve; not exercised with a tablet | maintainer, container |
 
 ## Android orientation
 

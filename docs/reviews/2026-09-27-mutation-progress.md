@@ -67,12 +67,3 @@ their Windows campaigns remain unmeasured. Extend Windows descendant-process
 cleanup validation beyond the completed single-process timeout test. Preserve
 existing platform, benchmark/development-tool and declined-performance dispositions.
 No physical tablet/display/camera acceptance is implied or newly authorized.
-
-Persistent local resources are under `/backups/disk2/blent-mutation-evidence/`.
-`recovery-venv/bin/python` has the coverage/complexity dependencies; the private
-RPM runtime is `recovery/rpm-runtime/bin`. Do not prepend that Python environment
-for the full script suite, which uses system Xlib. Windows VM helpers remain under
-`/home/netto/.local/share/blent-dev/mutation-checkpoint`; serialize guest access.
-The existing VM is running. Preserve its disk/TPM and `C:\src\blent`; native
-campaigns used private ordinary-user copies under the guest temporary directory.
-Do not reset the synchronized source tree or push without a new push request.

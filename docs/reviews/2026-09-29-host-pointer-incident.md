@@ -13,7 +13,7 @@ Times below are September 29, 2026, CEST (UTC+02:00).
   coverage, and script coverage concurrently. Script coverage also invokes the
   Rust tooling suite and packaging tests (`scripts/coverage/script_check.py`).
 - 12:54:21: the maintainer first reported an unresponsive desktop.
-- 12:54:31: the process sample included active RPM packaging and gzip. This
+- 12:54:31: the process sample included active native package assembly and gzip. This
   establishes concurrent work, not a cause of the later mouse failure.
 - 12:54:59: the previous session restricted 13 owned test processes to CPUs
   30–31, nice 19, idle I/O priority. Symptoms persisted afterward.

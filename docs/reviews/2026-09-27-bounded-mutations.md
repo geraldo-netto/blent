@@ -48,7 +48,7 @@ regression selection. Review of the actual failed assertions established:
 
 ## Discovery and platform boundaries
 
-[The scope listing](artifacts/2026-09-27-bounded-mutations/scope.json) uses the
+The scope listing uses the
 maintained coverage inventory independently of cargo-mutants. It lists 238 files
 containing maintained functions, plus source files with no maintained functions;
 file hashes, all represented languages and unselected files remain visible.

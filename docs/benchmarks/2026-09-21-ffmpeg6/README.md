@@ -99,7 +99,7 @@ inputs/manifest. These are local artifacts, not a published release. GitHub
 workflows remain manual-only and were not run. Their build container now has
 the dependencies required for the pinned FFmpeg recipe.
 
-[`evidence.tar.gz`](evidence.tar.gz) retains red/green logs, final native probe
+`evidence.tar.gz` retains red/green logs, final native probe
 commands/results, build identity, script coverage and its source-hash manifest,
 complexity, clean-container validation and the installation record. Raw local
 build caches and binaries are not committed. The package was assembled before

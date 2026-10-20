@@ -1,7 +1,7 @@
 # AppImage distribution — T308
 
 AppImage replaces the Debian `.deb` release asset in the packaging and publishing
-code. RPM, Arch and the portable tarball remain available build formats. This
+code. Arch and the portable tarball remain available build formats. This
 change does not announce a published fork release.
 
 ## Launch and install for your user
@@ -130,7 +130,7 @@ contains dependency copyright files and a version/license/source manifest.
 Project source is supplied by the matching release tag. Keep the source asset,
 notices and matching project source alongside any redistribution.
 
-The publisher verifies the AppImage, source archive, RPM, Arch recipe, Linux tar,
+The publisher verifies the AppImage, source archive, Arch recipe, Linux tar,
 APK and `SHA256SUMS` as one complete asset set before publishing. Legacy Debian
 metadata remains only for historical regression coverage and is not a release
 format. Maintainer: [Geraldo Netto](https://github.com/geraldo-netto).

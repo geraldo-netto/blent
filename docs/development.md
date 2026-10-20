@@ -114,13 +114,13 @@ cargo clippy --workspace --all-targets -- -D warnings
 ```
 
 The normal host suite includes permanent C sanitizer, FFmpeg, GUI startup,
-installer, AppImage assembly and real RPM artifact tests. `.cargo/config.toml` serializes
+installer, AppImage assembly and current artifact tests. `.cargo/config.toml` serializes
 test functions to avoid Linux ETXTBSY races between fixture writes and other
 tests spawning processes; concurrency tests still run their own concurrent
 clients/tasks. On Debian/Ubuntu, add:
 
 ```bash
-sudo apt-get install -y python3 python3-xlib python3-tk python3-numpy python3-pil ffmpeg rpm fakeroot dpkg-dev \
+sudo apt-get install -y python3 python3-xlib python3-tk python3-numpy python3-pil ffmpeg fakeroot dpkg-dev \
   xvfb xauth x11-utils dbus-x11 at-spi2-core libglib2.0-bin libxkbcommon-x11-0 libegl1
 ```
 
@@ -196,7 +196,7 @@ host/              Rust daemon
 common/            settings, commands, version parsing, runtime session ledger
 gui/               egui desktop app: status, settings, start/stop
 android/           Kotlin/Compose app: MediaCodec decoder, touch/pen capture
-packaging/         AppImage builder, rpm spec, PKGBUILD (legacy deb fixtures retained), udev/modprobe files
+packaging/         AppImage builder, PKGBUILD (legacy deb fixtures retained), udev/modprobe files
 scripts/           install.sh, release build, fake tablet
 docs/              documentation and proposed static-site source
 ```
@@ -387,8 +387,8 @@ sudo apt-get install -y libclang-dev libavcodec-dev libavformat-dev libavutil-de
   libavfilter-dev libavdevice-dev libswresample-dev libswscale-dev
 ```
 
-On Fedora, install the equivalent FFmpeg development libraries (for example
-RPM Fusion's `ffmpeg-devel`) and clang development package. Check that
+On other systems, supply equivalent FFmpeg and clang development libraries.
+Check that
 `pkg-config` resolves all seven libraries above. On atomic distributions a
 container can supply the build environment; the installed binary still needs
 ABI-compatible FFmpeg shared libraries at runtime. `ten_bit` is not available
@@ -490,15 +490,14 @@ release APKs normally use different keys. See [release integrity](../SECURITY.md
 
 The portable workflow builds in a Debian 12 container and checks a glibc
 2.36 ceiling. This addresses the Linux x86-64 ABI baseline, not GPU/kernel
-compatibility. Packaging needs both `rpm` and `rpmbuild`; the host also needs
-Python 3.11+, binutils (including `readelf`), distrobox, Git and the Android
+compatibility. The host also needs Python 3.11+, binutils (including `readelf`), distrobox, Git and the Android
 build/signing environment:
 
 
 ```bash
 distrobox create --image debian:12 --name blent-build
 # Inside: install the host compiler/GUI prerequisites listed above,
-# plus dpkg-dev fakeroot rpm patchelf squashfs-tools file, and stable Rust through rustup.
+# plus dpkg-dev fakeroot patchelf squashfs-tools file, and stable Rust through rustup.
 # Enable matching deb-src repositories for the bundled package versions.
 # packaging/ci/Dockerfile provides the complete build environment.
 # build-release.sh builds and bundles pinned libevdi v1.15.0 itself.
@@ -579,12 +578,11 @@ userspace library, GUI libraries, sanitizers and the default workspace test
 tools. Optional-encoder FFmpeg/libclang development packages are installed
 by the separate build workflow, not this container.
 The Docker base image is pinned by digest; Cargo uses `Cargo.lock`. Debian
-security package updates remain enabled. Build/test tools include **both
-`rpm` and the `rpmbuild` executable**, plus `dpkg-dev`, `fakeroot`, `patchelf` and `squashfs-tools`.
+security package updates remain enabled. Build/test tools include `dpkg-dev`,
+`fakeroot`, `patchelf` and `squashfs-tools`.
 AppImage packaging downloads checksum-pinned AppImage tools and exact Debian
 source packages, so matching `deb-src` indexes and network access are needed.
-Installing only `librpmbuild9t64` does not supply those commands. These tools
-are not dependencies for running an installed Blent package.
+These tools are not dependencies for running an installed Blent package.
 
 From the checkout, reproduce the CI environment and suite with:
 
@@ -601,12 +599,10 @@ fallback to disable ASLR for its own child process. It needs no host sysctl
 change, display socket, device mount or privileged container.
 
 `.github/workflows/portability.yml` then builds real Linux packages and
-installs them in clean Debian 12, Fedora 44, Arch and openSUSE Leap 16
-containers. Arch runs the production `package()` recipe over the portable
+installs them in clean Debian 12 and Arch containers. Arch runs the production `package()` recipe over the portable
 binaries before installing its package in a second clean container. Only
 its external `evdi-dkms` kernel prerequisite is assumed installed; ordinary
-userspace dependencies are resolved by the package manager. Fedora uses
-RPM Fusion for the declared FFmpeg dependency.
+userspace dependencies are resolved by the package manager.
 
 The Arch source `build()` recipe pins both Cargo builds to `target/`, matching
 `package()` even when `CARGO_TARGET_DIR` or Cargo configuration redirects other
@@ -734,5 +730,5 @@ then it can be removed as one cache. The runner replaces its process with Cargo,
 preserving the caller's foreground process-group cancellation ownership. Clear
 global `LD_LIBRARY_PATH`/`LD_PRELOAD` before choosing this explicit ABI. This is a
 local verification environment, not a portable release build or device acceptance.
-T835 retains complete-suite acceptance when excluded EVDI/RPM fixtures are ready;
+T835 retains complete-suite acceptance when excluded EVDI fixtures are ready;
 no failed fixture is silently skipped.

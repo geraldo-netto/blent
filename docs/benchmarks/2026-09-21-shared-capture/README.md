@@ -85,7 +85,7 @@ red/green regression logs are in [evidence.tar.gz](evidence.tar.gz). See
 [summary.json](summary.json) for exact per-run values and
 [artifact-hashes.json](artifact-hashes.json) for video/replay-APK hashes.
 Final test logs, source manifests and scoped/full coverage reports are retained
-in [validation.tar.gz](validation.tar.gz).
+in validation.tar.gz.
 Percentiles use the sorted element at `floor(0.95 * (count - 1))`; medians use
 the mean of the middle two values. Join host sequence + 1 to ACK sequence and
 subtract `capture_ns` from `acknowledged_ns` (nanoseconds).

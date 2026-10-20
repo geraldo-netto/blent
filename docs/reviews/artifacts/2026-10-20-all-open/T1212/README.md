@@ -23,12 +23,10 @@ Retained deliberate missing-RPATH/Pulse/subordinate controls fail before repair.
 Native verification:1007 library cases,392 current CLI cases and11 audio cases
 pass (five preexisting ignores remain). Actual private-Xvfb activity2, native
 PipeWire/audio transport2, namespace lifecycle2, generated shared-encode replay1
-and Wi-Fi setup3 pass. The generated benchmark compiles the actual source and
-encodes/decodes real frames; no echo fixture substitutes for it. The retained
-broad native/tooling selection has exactly three excluded tooling failures:
-T102's combined EVDI fixture (T1211), and T129/T302 RPM fixtures (owner-deferred
-T833). Its38 other tooling cases pass; the additional new runner test passes
-separately. T835 retains complete-suite acceptance; no failed test is skipped.
+and Wi-Fi setup3 pass. The generated benchmark compiles actual source and
+encodes/decodes real frames. T835 retains complete-suite acceptance behind the
+excluded native distribution fixture; current supported-package checks and the
+latest tooling outcome are recorded under T833.
 
 Native LLVM counters measure every one of the64 maintained FFmpeg/PipeWire
 functions individually at85.714–100%. Direct export uses exact executed objects:
@@ -54,9 +52,9 @@ The owned cache remains funded until those original processes actually retire;
 the caller may remove it afterward. No background synchronization, live tablet,
 service restart, EVDI/Windows implementation change or transfer occurred.
 
-The final unfiltered all-features run completes all45 test targets:1640 pass,
-three fail, five existing ignores. The only failures are T102/T129/T302 named
-above;39 current tooling cases pass, including the new runner regression. Raw
-full-run log and target-by-target summary are retained. The owner subsequently
-authorizes removal of the obsolete package format under T833; this pre-removal
-run remains a failure record, never a claimed full-suite pass.
+The historical unfiltered all-features baseline completed all45 test targets:
+1640 passed, three failed and five existing ignores. Its target-by-target numeric
+summary remains. Subsequent packaging maintenance has a separate current tooling
+result under T833; neither record claims a complete-suite pass. Raw native LLVM
+counter/refresh/replay evidence remains; obsolete supporting records were removed
+intact during the owner-directed reference cleanup.

@@ -74,8 +74,8 @@ other commands fail. Calling `configure_boot_modules` produces count two.
 | `cargo test --locked -p blent-gui --bin blent-gui` | 71 passed. |
 | `cargo test --locked -p blent --test evdi_modules --test evdi_helper --test conversion` | 1 + 43 + 8 passed. Injected/native helper fixtures, not live EVDI acceptance. |
 | Android review probes | Four passed: two methods on API27/API34. No fresh full Android-suite pass claimed; existing T701 remains open. |
-| `python -m unittest discover -s scripts/tests` in recovery venv | 307 tests reported; two failures, three import errors, one existing Windows-only skip. Missing `rpmbuild` caused both failures; missing Pillow/Xlib caused import errors. |
-| Affected Python modules rerun with system Python | Visibility: 17 passed; corpus: one passed; research contracts: seven passed. RPM-dependent tests remain unvalidated in this environment. |
+| `python -m unittest discover -s scripts/tests` in recovery venv | 307 tests reported; two failures, three import errors, one existing Windows-only skip. Missing the external package builder caused both failures; missing Pillow/Xlib caused import errors. |
+| Affected Python modules rerun with system Python | Visibility: 17 passed; corpus: one passed; research contracts: seven passed. Packaging-dependent tests remain unvalidated in this environment. |
 | `python scripts/complexity/check.py` in recovery venv | 6,423 functions measured; none above nine. This is complexity evidence, not coverage evidence. |
 | Tracked Markdown relative file targets | No missing local target files found. External URLs and fragment anchors were not validated. |
 
@@ -88,6 +88,6 @@ evidence before changing timeouts.
 Retained logs (trailing whitespace normalized):
 [initial Rust run](artifacts/2026-09-27-project-rescan/rust-tests.log),
 [host rerun](artifacts/2026-09-27-project-rescan/host-bin-rerun.log),
-[script run](artifacts/2026-09-27-project-rescan/script-tests.log).
-Missing local RPM tooling is a validation limitation, not evidence of a package
+script run.
+Missing local package tooling is a validation limitation, not evidence of a package
 implementation defect. No thresholds, exclusions or tests were weakened.

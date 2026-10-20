@@ -11,7 +11,7 @@ function measures100% native Bash executable lines with original source/origin
 attestation. Raw red/green/trace/source evidence retained. Other changed build
 lines are module-level Make/Shell wiring, not new production functions.
 
-No native implementation, device operation, deployment, EVDI/RPM build, package
+No native implementation, device operation, deployment, EVDI build, package
 transfer or upload. Generated output belongs to the caller's build directory;
 compiler/make run in its existing foreground group and failure propagates before
 installation/staging. Existing installer publication/cleanup remains unchanged.

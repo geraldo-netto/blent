@@ -15,4 +15,4 @@ normal-suite fixture changes, exempt from production coverage; source estimates
 for every changed/new fixture function <=9. Raw logs/hashes retained; unavailable
 native Sonar remains T1019. Temporary-directory owners retain their generated
 programs/logs and subprocess handles until test settlement, then clean up. No
-native device, running service, EVDI/RPM implementation or network action.
+native device, running service, EVDI implementation or network action.

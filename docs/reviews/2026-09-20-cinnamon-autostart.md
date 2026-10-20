@@ -45,7 +45,7 @@ format checks passed.
 
 The complete essential-script coverage run passed for 48 Python and 57 shell
 functions, including the normal tooling, script, complexity and coverage suites.
-The host lacked RPM tools for the retained packaging regressions; those tools
+The host lacked package tools for the retained packaging regressions; those tools
 were extracted into a temporary directory, without installing system packages.
 
 Local deployment uses the AppImage, as requested by the maintainer. The host,

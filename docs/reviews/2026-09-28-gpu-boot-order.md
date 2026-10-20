@@ -21,7 +21,7 @@ file or symlink. It excludes EVDI/simpledrm and maps NVIDIA and virtio transport
 names to their DRM modules. Missing or built-in module metadata contributes no
 loadable dependency; no candidates produces an explicit warning.
 
-The source/tarball installer, Make setup and RPM/Arch hooks invoke it before
+The source/tarball installer, Make setup and Arch hooks invoke it before
 EVDI provisioning. AppImage includes it for explicit administrator setup, without
 adding privilege escalation to its user installer. The helper itself never
 loads/unloads a module or restarts a desktop. See [installation](../installation.md#gpu-ordering-before-evdi-t700)

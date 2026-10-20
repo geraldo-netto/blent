@@ -24,9 +24,9 @@ Windows encoding support. No native MSVC executable was linked or run here.
 
 Linux validation retains the normal suite: 367 daemon unit tests passed with
 three existing ignored tests; the C/architecture integration suites passed.
-The tooling run initially passed 29 tests and failed two because `rpmbuild`
+The tooling run initially passed 29 tests and failed two because the external package builder
 was absent from PATH. The same notice and version-bump checks were repeated
-with the existing extracted RPM tooling and both passed. The combined result
+with the existing extracted package tooling and both passed. The combined result
 covers all 31 tooling tests without changing or skipping their assertions.
 No tablet, installed application or active display attachment was changed.
 Per-function coverage remains separately tracked in T497.

@@ -13,4 +13,4 @@ writes. No real APK is accepted through these test-only tools.
 The same distribution suite now passes (two tests), notices pass (one test),
 and all 16 offline publication/metadata tests pass. The regressions remain in
 the normal Cargo tooling suite. [Red/green logs](artifacts/2026-09-19-packaging-fixtures/)
-retain the evidence; RPM checks used the existing isolated local RPM toolchain.
+retain the evidence; package checks used the existing isolated local package toolchain.
