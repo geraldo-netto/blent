@@ -992,10 +992,14 @@ impl App {
 
     fn setting_calibration(&mut self, ui: &mut egui::Ui) {
         ui.label("Automatic profiles");
-        if ui.button("Recalibrate display")
+        let available = self.cfg.calibration_generation < u32::MAX;
+        if ui.add_enabled(available, egui::Button::new("Recalibrate display"))
             .on_hover_text("Tune automatic profiles again on next Apply & restart. Saved profiles otherwise survive reconnects and reboots. Manual encoder choices take precedence.")
             .clicked() {
-            self.cfg.calibration_generation = self.cfg.calibration_generation.wrapping_add(1);
+            self.cfg.request_recalibration();
+        }
+        if !available {
+            ui.label("Recalibration limit reached.");
         }
         ui.end_row();
     }
@@ -1272,6 +1276,46 @@ mod tests {
         );
     }
 
+    fn calibration_test_frame(
+        app: &mut App,
+        ctx: &egui::Context,
+        events: Vec<egui::Event>,
+    ) -> Vec<(String, egui::Rect)> {
+        settings_test_frame(app, ctx, events, |app, ui| app.setting_calibration(ui))
+    }
+
+    #[test]
+    fn t1195_terminal_recalibration_clicks_preserve_original_cache_identity() {
+        for initial in [u32::MAX - 1, u32::MAX] {
+            let (_directory, mut app) = settings_test_app(Tab::Video);
+            app.cfg.calibration_generation = initial;
+            app.cfg.encoder = "h264_vaapi_baseline".into();
+            let ctx = egui::Context::default();
+            for attempt in 1..=3u64 {
+                click_settings_text(
+                    &mut app,
+                    &ctx,
+                    "Recalibrate display",
+                    calibration_test_frame,
+                );
+                let expected = (u64::from(initial) + attempt).min(u64::from(u32::MAX));
+                assert_eq!(
+                    u64::from(app.cfg.calibration_generation),
+                    expected,
+                    "T1195: recalibration reused an old cache identity"
+                );
+                assert_eq!(app.cfg.encoder, "h264_vaapi_baseline");
+            }
+            let text = calibration_test_frame(&mut app, &ctx, Vec::new());
+            assert!(text
+                .iter()
+                .any(|(value, _)| value == "Recalibration limit reached."));
+            app.apply(false);
+            wait_for_work(&mut app);
+            assert_eq!(app.store.load().calibration_generation, u32::MAX);
+        }
+    }
+
     #[test]
     fn t480_t714_recalibration_request_persists() {
         // T537: persistence checks must never write the developer's settings.
@@ -1280,26 +1324,34 @@ mod tests {
         app.store = ConfigStore::new(directory.path().join("config.toml"));
         let ctx = egui::Context::default();
         assert_eq!(app.cfg.calibration_generation, 0);
-        fn frame(
-            app: &mut App,
-            ctx: &egui::Context,
-            events: Vec<egui::Event>,
-        ) -> Vec<(String, egui::Rect)> {
-            settings_test_frame(app, ctx, events, |app, ui| app.setting_calibration(ui))
-        }
-        click_settings_text(&mut app, &ctx, "Recalibrate display", frame);
+        click_settings_text(
+            &mut app,
+            &ctx,
+            "Recalibrate display",
+            calibration_test_frame,
+        );
         assert_eq!(app.cfg.calibration_generation, 1);
         app.apply(false);
         wait_for_work(&mut app);
         assert_eq!(app.store.load().calibration_generation, 1);
-        click_settings_text(&mut app, &ctx, "Recalibrate display", frame);
+        click_settings_text(
+            &mut app,
+            &ctx,
+            "Recalibrate display",
+            calibration_test_frame,
+        );
         assert_eq!(app.cfg.calibration_generation, 2);
         app.cfg.calibration_generation = u32::MAX;
-        click_settings_text(&mut app, &ctx, "Recalibrate display", frame);
-        assert_eq!(app.cfg.calibration_generation, 0);
+        click_settings_text(
+            &mut app,
+            &ctx,
+            "Recalibrate display",
+            calibration_test_frame,
+        );
+        assert_eq!(app.cfg.calibration_generation, u32::MAX);
         app.apply(false);
         wait_for_work(&mut app);
-        assert_eq!(app.store.load().calibration_generation, 0);
+        assert_eq!(app.store.load().calibration_generation, u32::MAX);
     }
 
     #[test]

@@ -264,6 +264,16 @@ impl Position {
 }
 
 impl FileConfig {
+    /// Admit a new cache identity, or leave terminal settings unchanged.
+    /// Stopping/reusing existing profiles never requires a new identity.
+    pub fn request_recalibration(&mut self) -> bool {
+        let Some(next) = self.calibration_generation.checked_add(1) else {
+            return false;
+        };
+        self.calibration_generation = next;
+        true
+    }
+
     pub fn validate(&self) -> Result<()> {
         self.validate_input_mode()?;
         crate::display::pixel_clock_10khz(self.width, self.height, self.fps)?;
@@ -428,6 +438,34 @@ mod tests {
         let merged = edited.merge_edits(&baseline, latest).unwrap();
         assert_eq!(merged.fps, 30);
         assert_eq!(merged.camera, edited.camera);
+    }
+
+    #[test]
+    fn t1195_bounded_recalibration_admission_matches_wider_integer_oracle() {
+        for initial in (0..=32).chain(u32::MAX - 32..=u32::MAX) {
+            let mut config = FileConfig {
+                calibration_generation: initial,
+                ..Default::default()
+            };
+            let mut expected = u64::from(initial);
+            for _ in 0..40 {
+                let admitted = expected < u64::from(u32::MAX);
+                assert_eq!(config.request_recalibration(), admitted, "T1195");
+                expected = (expected + u64::from(admitted)).min(u64::from(u32::MAX));
+                assert_eq!(u64::from(config.calibration_generation), expected);
+            }
+            let restored: FileConfig = toml::from_str(&toml::to_string(&config).unwrap()).unwrap();
+            assert_eq!(restored, config);
+        }
+    }
+
+    #[test]
+    fn t1195_invalid_recalibration_values_cannot_admit_a_configuration() {
+        for value in ["-1", "4294967296", "1.5", "true", "'1'", "[]"] {
+            assert!(
+                toml::from_str::<FileConfig>(&format!("calibration_generation = {value}")).is_err()
+            );
+        }
     }
 
     #[test]

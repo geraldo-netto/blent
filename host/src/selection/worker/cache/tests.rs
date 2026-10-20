@@ -534,3 +534,35 @@ async fn t1032_cache_creation_and_persistence_report_original_creators() {
         "T1032 cache persistence lost original creator"
     );
 }
+
+#[test]
+fn t1195_terminal_recalibration_never_reuses_initial_durable_record() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("tuned.json");
+    let (snapshot, row) = setup();
+    let mut base = CaptureConfig::default();
+    let identity = ("tablet".into(), "usb");
+    let initial = context::fingerprint(&identity, "host", &snapshot, &base).unwrap();
+    let mut old = store(path.clone());
+    old.fingerprint = initial.clone();
+    old.save(100, &row).unwrap();
+    let mut config = blent_config::FileConfig {
+        calibration_generation: u32::MAX - 1,
+        ..Default::default()
+    };
+    assert!(config.request_recalibration());
+    base.calibration_generation = config.calibration_generation;
+    let terminal = context::fingerprint(&identity, "host", &snapshot, &base).unwrap();
+    assert_ne!(terminal, initial);
+    let mut current = store(path);
+    current.fingerprint = terminal.clone();
+    for _ in 0..3 {
+        assert!(!config.request_recalibration());
+        base.calibration_generation = config.calibration_generation;
+        assert_eq!(context::fingerprint(&identity, "host", &snapshot, &base).unwrap(), terminal);
+        assert!(current.load(100, &snapshot).is_none(), "T1195 stale record reused");
+    }
+    current.save(100, &row).unwrap();
+    assert!(current.load(100, &snapshot).is_some());
+    assert!(old.load(100, &snapshot).is_none());
+}

@@ -273,7 +273,10 @@ legacy tablets ignore the added optional boolean and can still show trial flicke
 
 Linux **Video > Advanced video settings > Recalibrate display**, followed by
 **Apply & restart**, requests new tuning. The equivalent configuration operation
-is incrementing `calibration_generation` before restarting. Manual encoder
+is incrementing `calibration_generation` before restarting. At its maximum
+(`4294967295`), further GUI recalibration requests are disabled and show
+“Recalibration limit reached.” Existing profiles remain usable; the counter
+cannot wrap and select an older cache identity. Manual encoder
 preferences take precedence. `profile_cache` is absent from the current schema;
 unknown configuration keys follow generic parsing policy and are not persisted
 by a current settings save. Automatic tuning remains durable.

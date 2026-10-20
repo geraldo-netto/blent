@@ -1,0 +1,25 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7; source-matched LLVM native LCOV counters",
+  "functions": [
+    {
+      "file": "common/src/model.rs",
+      "name": "FileConfig::request_recalibration",
+      "first": 269,
+      "last": 275,
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "App::setting_calibration",
+      "first": 993,
+      "last": 1005,
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}
