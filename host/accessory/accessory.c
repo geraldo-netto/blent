@@ -73,6 +73,53 @@ static void wait_accessory(accessory_usb *usb, accessory_target target) {
     if (last_error) fprintf(stderr,"Last USB open error %d during re-enumeration.\n",last_error);
     accessory_require(0,"accessory did not enumerate at the selected physical port");
 }
+
+static void wait_fresh_device(accessory_usb *usb, accessory_target target,
+                              libusb_device *original)
+{
+    struct timespec pause = {.tv_nsec = 100000000};
+    for (int attempt = 0; attempt < 100; attempt++)
+    {
+        int open_error = 0;
+        nanosleep(&pause, NULL);
+        usb->handle = find_device(usb, target, &open_error);
+        check_reopen(open_error);
+        if (!usb->handle)
+        {
+            continue;
+        }
+        if (libusb_get_device(usb->handle) != original)
+        {
+            return;
+        }
+        libusb_close(usb->handle);
+        usb->handle = NULL;
+    }
+    accessory_require(0, "reset did not produce a fresh USB device at the selected port");
+}
+
+static void claim_accessory(accessory_usb *usb);
+
+static void reset_accessory(accessory_usb *usb, accessory_target target)
+{
+    claim_accessory(usb);
+    /* Gadget queues survive a logical close. Keep the old device referenced so
+     * its memory address cannot be reused as evidence of a new native object. */
+    libusb_device *original = libusb_ref_device(libusb_get_device(usb->handle));
+    int status = libusb_reset_device(usb->handle);
+    accessory_require(status == 0 || status == LIBUSB_ERROR_NOT_FOUND ||
+                      status == LIBUSB_ERROR_NO_DEVICE, "USB reset failed");
+    libusb_close(usb->handle);
+    usb->handle = NULL;
+    usb->claimed = 0;
+    usb->interface = -1;
+    usb->input = 0;
+    usb->output = 0;
+    usb->output_packet = 0;
+    wait_fresh_device(usb, target, original);
+    libusb_unref_device(original);
+}
+
 static int accessory_interface(const struct libusb_interface_descriptor *desc) {
     return desc->bInterfaceClass==0xff && desc->bInterfaceSubClass==0xff &&
            desc->bInterfaceProtocol==0 && desc->bNumEndpoints==2 && desc->bAlternateSetting==0;
@@ -112,24 +159,34 @@ static void check_selection(libusb_device_handle *handle,const accessory_selecti
                       desc.idVendor==selected->vendor && desc.idProduct==selected->product,
                       "selected device changed; refresh inventory before retrying");
 }
-static void open_target(accessory_usb *usb, accessory_target target,const accessory_selection *selected) {
-    int open_error=0;
-    usb->interface=-1;
-    accessory_require(libusb_init(&usb->context)==0,"libusb initialization");
-    usb->handle=find_device(usb,target,&open_error);
-    accessory_require(open_error==0,"cannot open target; check USB permission");
-    accessory_require(usb->handle!=NULL,"target absent");
-    check_selection(usb->handle,selected);
-    if (!is_accessory(usb->handle)) {
-        start_accessory(usb->handle,selected!=NULL); libusb_close(usb->handle); usb->handle=NULL;
-        wait_accessory(usb,target);
+static void open_target(accessory_usb *usb, accessory_target target,
+                        const accessory_selection *selected)
+{
+    int open_error = 0;
+    usb->interface = -1;
+    accessory_require(libusb_init(&usb->context) == 0, "libusb initialization");
+    usb->handle = find_device(usb, target, &open_error);
+    accessory_require(open_error == 0, "cannot open target; check USB permission");
+    accessory_require(usb->handle != NULL, "target absent");
+    check_selection(usb->handle, selected);
+    if (is_accessory(usb->handle))
+    {
+        reset_accessory(usb, target);
+    }
+    if (!is_accessory(usb->handle))
+    {
+        start_accessory(usb->handle, selected != NULL);
+        libusb_close(usb->handle);
+        usb->handle = NULL;
+        wait_accessory(usb, target);
     }
     claim_accessory(usb);
     struct libusb_device_descriptor desc;
-    accessory_require(libusb_get_device_descriptor(libusb_get_device(usb->handle),&desc)==0,"accessory identity");
-    fprintf(stderr,"Accessory %04x:%04x interface %d; approve %s on tablet.\n",desc.idVendor,desc.idProduct,usb->interface,
-            selected?"Blent":"Blent USB Probe");
-    fprintf(stderr,"ADB interface advertised: %s\n",desc.idProduct==0x2d01?"yes":"no");
+    accessory_require(libusb_get_device_descriptor(libusb_get_device(usb->handle), &desc) == 0,
+                      "accessory identity");
+    fprintf(stderr, "Accessory %04x:%04x interface %d; approve %s on tablet.\n",
+            desc.idVendor, desc.idProduct, usb->interface, selected ? "Blent" : "Blent USB Probe");
+    fprintf(stderr, "ADB interface advertised: %s\n", desc.idProduct == 0x2d01 ? "yes" : "no");
 }
 void accessory_open(accessory_usb *usb,accessory_target target) { open_target(usb,target,NULL); }
 void accessory_open_selected(accessory_usb *usb,accessory_target target,accessory_selection selected) {

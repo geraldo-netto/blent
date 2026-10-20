@@ -1,0 +1,28 @@
+{
+  "original_connection": 6370,
+  "original_host_sessions": {
+    "camera": {
+      "session": 56354,
+      "exit": 1
+    },
+    "speakers": {
+      "session": 21728,
+      "exit": 1
+    },
+    "microphone": {
+      "session": 6145,
+      "exit": 1
+    }
+  },
+  "revocation": "Exact original peer; host trust removed; all three original host sessions reaped; original sink/source absent",
+  "new_connection": 8535,
+  "usb": "18d1:2d00",
+  "adb_interface": false,
+  "physical_cable_action": false,
+  "reconnect": "Current helper claims old interface, resets and fences a fresh native device object; host re-approves exact pending peer; tablet authenticates using saved computer trust",
+  "fresh_local_media_consent": "Owner started all three new Android offers",
+  "camera": "Rear180: 12 frames,11 distinct hashes",
+  "microphone": "144000 real samples; statistics only",
+  "speaker": "Owner heard second tone",
+  "remaining": "T1238 investigates a later reported Stop; no original Android worker death claim is inferred solely from host exits"
+}

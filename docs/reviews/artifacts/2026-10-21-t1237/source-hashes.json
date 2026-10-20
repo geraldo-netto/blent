@@ -1,0 +1,8 @@
+{
+  "host/accessory/accessory.c": "7a1628b96de67d620dfcfa1eede8de1be03be3af7cb8763cd3e567667edcfacf",
+  "scripts/tests/test_aoa_reconnect.py": "5690ca857329c79e6050acdba4acb32e691ccc740bf2db620efa3eb5f15b3fc6",
+  "scripts/tests/fixtures/aoa/reconnect.c": "cd81c4de4b59505ff7882eb40e44069cad97d0675e31b1de6303f718d0d6e196",
+  "scripts/tests/fixtures/aoa/libusb.h": "d627f0813d806cf84bfa994ddccf41ac1f01628f90f917cc8eeea2d2f8a81fc1",
+  "scripts/tests/fixtures/aoa/enumeration.c": "be30f0a9cc127d021955bdd7dc3eb281f21e99aefd9f46a114dc2a29b2416750",
+  "scripts/coverage/capture_check.py": "9f78cdbe7a08873e0bfc6c99006ee32d3d588411ecdba7de98067b0c27d5a834"
+}

@@ -1,0 +1,6 @@
+{
+  "helper": "/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/blent-usb-io",
+  "sha256": "160c1695ec19b9488c054643cc29705d0bf2afede7592a26e7c8b1321487d286",
+  "scope": "source broker helper; globally installed AppImage unchanged",
+  "physical_acceptance": "Debugging-off cold connection6370, exact-peer revoke, software-only hot-AOA reset/fresh authentication8535 and renewed explicit local consent/delivery passed."
+}

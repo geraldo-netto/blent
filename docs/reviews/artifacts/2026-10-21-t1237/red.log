@@ -1,0 +1,78 @@
+test_t1237_failed_reset_cannot_admit_or_read_queued_data (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_failed_reset_cannot_admit_or_read_queued_data) ... FAIL
+test_t1237_native_reenumeration_results_still_require_fresh_identity (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_native_reenumeration_results_still_require_fresh_identity) ...
+  test_t1237_native_reenumeration_results_still_require_fresh_identity (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_native_reenumeration_results_still_require_fresh_identity) (mode=3) ... FAIL
+  test_t1237_native_reenumeration_results_still_require_fresh_identity (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_native_reenumeration_results_still_require_fresh_identity) (mode=4) ... FAIL
+  test_t1237_native_reenumeration_results_still_require_fresh_identity (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_native_reenumeration_results_still_require_fresh_identity) (mode=5) ... FAIL
+test_t1237_reopening_delivers_current_approval_marker (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_reopening_delivers_current_approval_marker) ... FAIL
+test_t1237_same_original_device_cannot_establish_reset_completion (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_same_original_device_cannot_establish_reset_completion) ... FAIL
+
+======================================================================
+FAIL: test_t1237_failed_reset_cannot_admit_or_read_queued_data (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_failed_reset_cannot_admit_or_read_queued_data)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_accessory_reconnect.py", line 37, in test_t1237_failed_reset_cannot_admit_or_read_queued_data
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: -6 != 2 : Accessory 18d1:2d01 interface 0; approve Blent on tablet.
+ADB interface advertised: yes
+reconnect: /backups/disk2/projects/blent/scripts/tests/fixtures/aoa/reconnect.c:217: main: Assertion `!memcmp(bytes, expected, sizeof(expected)) && "T1237 old connection bytes survived reopening"' failed.
+
+
+======================================================================
+FAIL: test_t1237_native_reenumeration_results_still_require_fresh_identity (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_native_reenumeration_results_still_require_fresh_identity) (mode=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_accessory_reconnect.py", line 44, in test_t1237_native_reenumeration_results_still_require_fresh_identity
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: -6 != 0 : Accessory 18d1:2d01 interface 0; approve Blent on tablet.
+ADB interface advertised: yes
+reconnect: /backups/disk2/projects/blent/scripts/tests/fixtures/aoa/reconnect.c:217: main: Assertion `!memcmp(bytes, expected, sizeof(expected)) && "T1237 old connection bytes survived reopening"' failed.
+
+
+======================================================================
+FAIL: test_t1237_native_reenumeration_results_still_require_fresh_identity (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_native_reenumeration_results_still_require_fresh_identity) (mode=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_accessory_reconnect.py", line 44, in test_t1237_native_reenumeration_results_still_require_fresh_identity
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: -6 != 0 : Accessory 18d1:2d01 interface 0; approve Blent on tablet.
+ADB interface advertised: yes
+reconnect: /backups/disk2/projects/blent/scripts/tests/fixtures/aoa/reconnect.c:217: main: Assertion `!memcmp(bytes, expected, sizeof(expected)) && "T1237 old connection bytes survived reopening"' failed.
+
+
+======================================================================
+FAIL: test_t1237_native_reenumeration_results_still_require_fresh_identity (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_native_reenumeration_results_still_require_fresh_identity) (mode=5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_accessory_reconnect.py", line 44, in test_t1237_native_reenumeration_results_still_require_fresh_identity
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: -6 != 0 : Accessory 18d1:2d01 interface 0; approve Blent on tablet.
+ADB interface advertised: yes
+reconnect: /backups/disk2/projects/blent/scripts/tests/fixtures/aoa/reconnect.c:217: main: Assertion `!memcmp(bytes, expected, sizeof(expected)) && "T1237 old connection bytes survived reopening"' failed.
+
+
+======================================================================
+FAIL: test_t1237_reopening_delivers_current_approval_marker (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_reopening_delivers_current_approval_marker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_accessory_reconnect.py", line 28, in test_t1237_reopening_delivers_current_approval_marker
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: -6 != 0 : Accessory 18d1:2d01 interface 0; approve Blent on tablet.
+ADB interface advertised: yes
+reconnect: /backups/disk2/projects/blent/scripts/tests/fixtures/aoa/reconnect.c:217: main: Assertion `!memcmp(bytes, expected, sizeof(expected)) && "T1237 old connection bytes survived reopening"' failed.
+
+
+======================================================================
+FAIL: test_t1237_same_original_device_cannot_establish_reset_completion (test_accessory_reconnect.AccessoryReconnectTest.test_t1237_same_original_device_cannot_establish_reset_completion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_accessory_reconnect.py", line 32, in test_t1237_same_original_device_cannot_establish_reset_completion
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: -6 != 2 : Accessory 18d1:2d01 interface 0; approve Blent on tablet.
+ADB interface advertised: yes
+reconnect: /backups/disk2/projects/blent/scripts/tests/fixtures/aoa/reconnect.c:217: main: Assertion `!memcmp(bytes, expected, sizeof(expected)) && "T1237 old connection bytes survived reopening"' failed.
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.295s
+
+FAILED (failures=6)

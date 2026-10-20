@@ -1,0 +1,52 @@
+{
+  "revision": 1235,
+  "computer": "c6c673ea2435053791774273251ed125e57f554320901c15da7323be36c7c7e6",
+  "devices": [
+    {
+      "target": 8474,
+      "vendor": 32903,
+      "product": 50
+    },
+    {
+      "target": 8475,
+      "vendor": 6353,
+      "product": 11520
+    },
+    {
+      "target": 8476,
+      "vendor": 3725,
+      "product": 8196
+    },
+    {
+      "target": 8477,
+      "vendor": 10374,
+      "product": 32868
+    },
+    {
+      "target": 8478,
+      "vendor": 3034,
+      "product": 42848
+    },
+    {
+      "target": 8479,
+      "vendor": 9610,
+      "product": 483
+    },
+    {
+      "target": 8480,
+      "vendor": 1133,
+      "product": 50504
+    }
+  ],
+  "links": [
+    {
+      "connection": 6370,
+      "state": 3,
+      "epoch": 1,
+      "tablet": "71553fb755cebf27ecf5b9eac83816c7488231b575ffcfc89e756e7e9d87b484"
+    }
+  ],
+  "resources": [
+    "0300000000000004d337313535336662373535636562663237656366356239656163383338313663373438383233316235373566666366633839653735366537653964383762343834"
+  ]
+}

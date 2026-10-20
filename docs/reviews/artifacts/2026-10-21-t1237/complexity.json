@@ -1,0 +1,241 @@
+{
+  "kind": "source estimate; not licensed native SonarQube output",
+  "c_grammar_abi": 14,
+  "native_sonarqube": "unavailable offline",
+  "functions": [
+    {
+      "file": "host/accessory/accessory.c",
+      "function": "wait_fresh_device",
+      "line": 77,
+      "complexity_estimate": 4
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "function": "reset_accessory",
+      "line": 103,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "function": "open_target",
+      "line": 162,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_init",
+      "line": 24,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_exit",
+      "line": 30,
+      "complexity_estimate": 4
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_get_bus_number",
+      "line": 35,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_get_device_address",
+      "line": 41,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_get_port_numbers",
+      "line": 46,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_get_device_list",
+      "line": 53,
+      "complexity_estimate": 7
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_free_device_list",
+      "line": 72,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_open",
+      "line": 77,
+      "complexity_estimate": 6
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_close",
+      "line": 94,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_get_device",
+      "line": 105,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_ref_device",
+      "line": 111,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_unref_device",
+      "line": 118,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_reset_device",
+      "line": 124,
+      "complexity_estimate": 8
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_get_device_descriptor",
+      "line": 149,
+      "complexity_estimate": 6
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_control_transfer",
+      "line": 164,
+      "complexity_estimate": 6
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_get_active_config_descriptor",
+      "line": 183,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_free_config_descriptor",
+      "line": 190,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_claim_interface",
+      "line": 195,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_release_interface",
+      "line": 206,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "libusb_bulk_transfer",
+      "line": 213,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "nanosleep",
+      "line": 224,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/reconnect.c",
+      "function": "main",
+      "line": 232,
+      "complexity_estimate": 7
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/enumeration.c",
+      "function": "libusb_ref_device",
+      "line": 44,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/enumeration.c",
+      "function": "libusb_unref_device",
+      "line": 50,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/fixtures/aoa/enumeration.c",
+      "function": "libusb_reset_device",
+      "line": 56,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/coverage/capture_check.py",
+      "function": "suite",
+      "line": 46,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "setUpClass",
+      "line": 12,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "run_case",
+      "line": 23,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_reopening_delivers_current_approval_marker",
+      "line": 26,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_same_original_device_cannot_establish_reset_completion",
+      "line": 32,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_failed_reset_cannot_admit_or_read_queued_data",
+      "line": 37,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_native_reenumeration_results_still_require_fresh_identity",
+      "line": 42,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_absent_and_transient_replacement_preserve_original_reference",
+      "line": 48,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_stale_selection_rejects_before_reset",
+      "line": 54,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_foreign_accessory_claim_prevents_physical_reset",
+      "line": 59,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "scripts/tests/test_aoa_reconnect.py",
+      "function": "test_t1237_bounded_native_status_domain_rejects_unknown_results",
+      "line": 64,
+      "complexity_estimate": 3
+    }
+  ]
+}

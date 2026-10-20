@@ -1,0 +1,16 @@
+test_t1237_foreign_accessory_claim_prevents_physical_reset (test_aoa_reconnect.AccessoryReconnectTest.test_t1237_foreign_accessory_claim_prevents_physical_reset) ... FAIL
+
+======================================================================
+FAIL: test_t1237_foreign_accessory_claim_prevents_physical_reset (test_aoa_reconnect.AccessoryReconnectTest.test_t1237_foreign_accessory_claim_prevents_physical_reset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_aoa_reconnect.py", line 61, in test_t1237_foreign_accessory_claim_prevents_physical_reset
+    self.assertEqual(result.returncode, 2, result.stderr)
+AssertionError: 0 != 2 : Accessory 18d1:2d01 interface 0; approve Blent on tablet.
+ADB interface advertised: yes
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.248s
+
+FAILED (failures=1)

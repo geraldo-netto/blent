@@ -1,0 +1,48 @@
+{
+  "revision": 1247,
+  "computer": "c6c673ea2435053791774273251ed125e57f554320901c15da7323be36c7c7e6",
+  "devices": [
+    {
+      "target": 8527,
+      "vendor": 32903,
+      "product": 50
+    },
+    {
+      "target": 8528,
+      "vendor": 6353,
+      "product": 11520
+    },
+    {
+      "target": 8529,
+      "vendor": 3725,
+      "product": 8196
+    },
+    {
+      "target": 8530,
+      "vendor": 10374,
+      "product": 32868
+    },
+    {
+      "target": 8531,
+      "vendor": 3034,
+      "product": 42848
+    },
+    {
+      "target": 8532,
+      "vendor": 9610,
+      "product": 483
+    },
+    {
+      "target": 8533,
+      "vendor": 1133,
+      "product": 50504
+    }
+  ],
+  "links": [
+    {
+      "connection": 8535,
+      "state": 0
+    }
+  ],
+  "resources": []
+}

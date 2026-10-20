@@ -265,8 +265,19 @@ Source loss or revocation ends that camera registration. Start a new host camera
 invocation to issue another invitation. Builds without the feature fail explicitly
 before acquiring camera devices. Production host GUI transport selection is implemented under T974. Joined physical
 acceptance remains T858 and older-device evidence remains T863. Device trials
-are postponed: private TLS/protocol and real H.264 fixtures do not establish
-physical debugging-off camera support.
+have delivered camera frames on the API36 tablet with debugging on and off;
+final reconnect acceptance remains separate. Private TLS/protocol and real
+H.264 fixtures alone do not establish physical support on another device.
+
+Starting a new USB connection while the tablet is already in accessory mode
+resets that tablet's USB transport to discard bytes from the previous connection.
+The native helper first claims the accessory interface; a busy interface rejects
+the request before reset. It retains the original native device identity until
+a different device object appears at the same physical port, then establishes
+accessory mode and claims the new interface. A reset result or elapsed wait alone
+cannot admit the old device. This connection operation can briefly interrupt an
+ADB desktop connection. Starting camera sharing on an existing authenticated USB
+connection performs no USB reset.
 
 The host's direct USB registration allows two minutes for local media approval by
 default. Pairing and camera permission remain separate actions within the request

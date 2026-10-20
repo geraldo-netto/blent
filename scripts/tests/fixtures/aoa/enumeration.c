@@ -40,6 +40,25 @@ int libusb_open(libusb_device *value,libusb_device_handle **out) {
 }
 void libusb_close(libusb_device_handle *value) { assert(value==&handle); }
 libusb_device *libusb_get_device(libusb_device_handle *value) { assert(value==&handle); return &device; }
+
+libusb_device *libusb_ref_device(libusb_device *value)
+{
+    (void)value;
+    abort(); /* Cold mode switching must not reset an existing accessory. */
+}
+
+void libusb_unref_device(libusb_device *value)
+{
+    (void)value;
+    abort();
+}
+
+int libusb_reset_device(libusb_device_handle *value)
+{
+    (void)value;
+    abort();
+}
+
 int libusb_get_device_descriptor(libusb_device *value,struct libusb_device_descriptor *out) {
     assert(value==&device); out->idVendor=0x18d1; out->idProduct=switched?0x2d00:0x4ee8; return 0;
 }

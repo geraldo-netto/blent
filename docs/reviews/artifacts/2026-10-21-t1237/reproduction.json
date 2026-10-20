@@ -1,0 +1,14 @@
+{
+  "queued_discovery_connection": 1359,
+  "queued_discovery_cancelled_without_tablet_connection_worker": true,
+  "fresh_host_connection": 1397,
+  "fresh_android_connection_pid": 11579,
+  "owner_approved": true,
+  "android_failure": "Invalid approval-ready marker",
+  "host_terminal_failure": {
+    "phase": "Authentication",
+    "timed_out": true
+  },
+  "physical_reset_between_attempts": false,
+  "media_started": false
+}
