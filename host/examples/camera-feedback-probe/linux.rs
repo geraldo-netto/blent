@@ -1,5 +1,5 @@
 //! Opt-in native benchmark: real tablet → production decoder, no V4L2 required.
-//! Outputs timing/counts only; never stores camera pictures. Stops capture on exit.
+//! Outputs timing/counts only; never stores camera pictures. Requests scoped capture stop after measurement.
 #![allow(dead_code)]
 #[path = "../../src/camera/bridge.rs"]
 mod bridge;
@@ -20,15 +20,16 @@ mod policy;
 mod protocol;
 #[path = "samples.rs"]
 mod samples;
+mod stop;
 use options::Options;
+use stop::stop_capture;
 
 use anyhow::{Context, Result};
 use blent::camera_control::{self as control, Report};
 use blent_config::camera::CameraProfile;
-use blent_config::commands::AsyncCommandExt;
 use clap::Parser;
 use std::{path::Path, sync::Arc, time::Duration};
-use tokio::{net::TcpListener, process::Command, sync::watch, time::Instant};
+use tokio::{net::TcpListener, sync::watch, time::Instant};
 
 #[tokio::main]
 pub(super) async fn run() -> Result<()> {
@@ -52,25 +53,12 @@ pub(super) async fn run() -> Result<()> {
             result = proxy(&route, target, args.stall_feedback_ms) => result,
         }
     };
-    let stop = stop_capture(&bridge).await;
+    let stop = stop_capture(&bridge, &token).await;
     retirement.wait().await;
     let cleanup = bridge.close().await;
     result?;
     stop?;
     cleanup
-}
-
-async fn stop_capture(bridge: &bridge::Bridge) -> Result<()> {
-    // A valid invitation without a requested lens retires capture; no app stop,
-    // display restart or borrowed mapping deletion is required.
-    let token = blent_config::runtime::random_token()?;
-    let command = format!("am broadcast -n io.github.geraldo_netto.blent/com.blent.CameraReceiver --es token {token} --ei port 1 --ei width 1280 --ei height 720 --ei fps 30 --ei bitrate 3000\n");
-    let result = Command::new(&bridge.adb)
-        .args(["-s", &bridge.serial, "shell"])
-        .output_input_timeout(Some(command.as_bytes()), Duration::from_secs(5))
-        .await?;
-    anyhow::ensure!(result.status.success(), "probe camera stop failed");
-    Ok(())
 }
 
 async fn sample(

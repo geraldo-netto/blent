@@ -41,6 +41,16 @@ impl Bridge {
         })
     }
 
+    pub fn port(&self) -> Result<u16> {
+        let port: u16 = self
+            .remote
+            .strip_prefix("tcp:")
+            .context("invalid camera endpoint")?
+            .parse()?;
+        ensure!(port != 0, "invalid camera port");
+        Ok(port)
+    }
+
     pub async fn invite(&self, token: &str, options: &CameraProfile) -> Result<()> {
         // Only hex and typed numbers enter the remote shell command. The serial
         // stays a distinct local argv element, including spaces/metacharacters.
@@ -50,12 +60,7 @@ impl Bridge {
             options.usb_peer.is_none(),
             "ADB camera invitation cannot target USB"
         );
-        let port: u16 = self
-            .remote
-            .strip_prefix("tcp:")
-            .context("invalid camera endpoint")?
-            .parse()?;
-        ensure!(port != 0, "invalid camera port");
+        let port = self.port()?;
         let lens = match options.lens {
             blent_config::camera::Lens::Front => 0,
             blent_config::camera::Lens::Rear => 1,

@@ -1,0 +1,55 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7, source-matched native LCOV",
+  "functions": [
+    {
+      "file": "common/src/camera/stop.rs",
+      "signature": "pub fn new(",
+      "first": 13,
+      "last": 20,
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/stop.rs",
+      "signature": "pub fn credential(",
+      "first": 22,
+      "last": 24,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "common/src/camera/stop.rs",
+      "signature": "pub fn port(",
+      "first": 26,
+      "last": 28,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "signature": "pub fn port(",
+      "first": 44,
+      "last": 52,
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "signature": "pub async fn invite(",
+      "first": 54,
+      "last": 83,
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}

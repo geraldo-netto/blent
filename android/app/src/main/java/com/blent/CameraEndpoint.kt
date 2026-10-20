@@ -5,7 +5,7 @@ internal enum class CameraLens(val wire: Int, val label: String) { FRONT(0, "Fro
 internal data class CameraEndpoint(val token: String, val port: Int, val width: Int, val height: Int, val fps: Int, val bitrate: Int,
     val requestedLens: CameraLens? = null, val background: Boolean = false, val freshnessMs: Int = 150,
     val adaptiveBitrate: Boolean = true, val minBitrate: Int = 1000) {
-    fun valid(): Boolean = token.matches(Regex("[0-9a-f]{64}")) && port in 1..65535 && validProfile() && validFreshness()
+    fun valid(): Boolean = CameraCredential.valid(token) && port in 1..65535 && validProfile() && validFreshness()
 
     private fun validFreshness() = freshnessMs in 50..2000 && minBitrate in 256..20000
 

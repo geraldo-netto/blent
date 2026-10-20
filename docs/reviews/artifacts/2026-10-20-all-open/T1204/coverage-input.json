@@ -1,0 +1,43 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent-config",
+    "-p",
+    "blent",
+    "--lib",
+    "--test",
+    "camera_probe_stop",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1204/coverage.lcov",
+    "--",
+    "camera::",
+    "t1204"
+  ],
+  "sources": {
+    "common/src/camera/stop.rs": "446ae3b26bbb9bb43a26f97d094d37442eae01717d04a0644f2eed0124fe7e0b",
+    "common/src/camera.rs": "ac635fe65c19a92e4bb2d057d73875aecaea9741d5bf08f6ecae827b5e8f70d7",
+    "host/src/camera/bridge.rs": "d8947a304f0cc7c918ab37ea179c9630f2d6552f996074f74eac6b3dd36448ea",
+    "host/examples/camera-feedback-probe/linux.rs": "55de63fac242f11c123dbc670ed50d1a48107aa1e59df03d78219aa429a12ad0",
+    "host/examples/camera-feedback-probe/stop.rs": "aa371728805043cce39bb5c013751346e3b53364c65eea75d5aca9f2b6e3b3c5",
+    "host/tests/camera_probe_stop.rs": "073cfb0587e9366c0d6428454eaad261b82f599e92f92dca436a695b90165808",
+    "testdata/camera-stop.json": "9529b7cc0b23faa7178cdee9fab6744815b973a8b2573a379bb2af7ade1b29cd"
+  },
+  "source_matched_export": [
+    "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-cov",
+    "export",
+    "--format=lcov",
+    "--instr-profile=/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/blent.profdata",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-d512991ead5280bc",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/camera_probe_stop-5b79d33ed867e2dc",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent_config-a3ad6fd4719dd738"
+  ]
+}

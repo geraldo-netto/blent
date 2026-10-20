@@ -114,6 +114,13 @@ held. Closing the containing host process cannot leave an external output writer
 running. Android uses Camera2 and MediaCodec.
 The camera stream is independent of the display and pen connections. Legacy ADB
 uses a temporary reverse mapping for its authenticated local TCP connection.
+ADB start invitations require an explicit front/rear lens. The probe sends
+`com.blent.CAMERA_STOP` with `expected_token` and `expected_port` from its original
+endpoint. Android atomically withdraws that endpoint only if both still match;
+stale stops leave a newer endpoint intact. The processed acknowledgement is not
+native cleanup evidence: original camera/codec owners retain retirement before
+replacement. Lensless wire invitations are rejected. Internal local-lens offers
+still allow explicit selection on the tablet.
 Direct USB uses the brokered accessory channel and a local TCP relay without ADB.
 It remains experimental pending joined physical acceptance; see
 [integration status](#direct-usb-camera-integration-status). Both carry the same

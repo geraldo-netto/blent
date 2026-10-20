@@ -187,7 +187,7 @@ class CameraHostControlTest {
             .putExtra("port", 12345).putExtra("width", 1280).putExtra("height", 720).putExtra("fps", 30).putExtra("bitrate", 3000)
         for (lens in listOf(Int.MIN_VALUE, -2, -1, 0, 1, 2, Int.MAX_VALUE)) {
             val read = CameraEndpointIntent.read(Intent(base).putExtra("lens", lens).putExtra("background", true))
-            assertEquals(lens in -1..1, read != null)
+            assertEquals(lens in 0..1, read != null)
             if (read != null) {
                 assertTrue(read.background)
                 assertEquals(CameraLens.values().firstOrNull { it.wire == lens }, read.requestedLens)

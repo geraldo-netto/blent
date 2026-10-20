@@ -1,0 +1,9 @@
+{
+  "android/app/src/main/java/com/blent/CameraStop.kt": "4dfb4e167cbefa7d4c43a20754fb1cd17d34551a71408501fa320c2eb7eca40a",
+  "android/app/src/main/java/com/blent/CameraInvitations.kt": "891474a0558f133f73becee4f5c091d4b256fa5a00e522e9f522787753f08111",
+  "android/app/src/main/java/com/blent/CameraEndpoint.kt": "0a105b015d9c9c336c57e8e292300f8e8f72001361ee99bc94c95edf0d4b9dc9",
+  "android/app/src/main/java/com/blent/CameraReceiver.kt": "deaf77b84d0aa17ac848fa77dc6f83687d614df7e401f963d23572096298c69d",
+  "android/app/src/test/java/com/blent/CameraStopTest.kt": "e37a6d29734b3beb34bfffe1c4aa4025805dd94858079874a91463bba2827597",
+  "android/app/src/test/java/com/blent/CameraContractTest.kt": "ce44488190edf3c845cc5b6d6e0a00dfbcc1afdbe64d7d60ff53f9c103de9f81",
+  "android/app/src/test/java/com/blent/CameraHostControlTest.kt": "36e2accfba7bcf7cbb7dcbcea1f25e7f5acaae969a7492d30617ed6c12353f4c"
+}

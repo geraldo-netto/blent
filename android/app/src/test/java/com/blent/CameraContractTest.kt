@@ -40,10 +40,10 @@ class CameraContractTest {
         org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
         assertNull(CameraInvitations.endpoint.value)
         val intent = Intent(context, CameraReceiver::class.java).putExtra("token", endpoint().token).putExtra("port", 12345)
-            .putExtra("width", 1280).putExtra("height", 720).putExtra("fps", 30).putExtra("bitrate", 3000)
+            .putExtra("width", 1280).putExtra("height", 720).putExtra("fps", 30).putExtra("bitrate", 3000).putExtra("lens", 0)
         context.sendOrderedBroadcast(intent, null)
         org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
-        assertEquals(endpoint(), CameraInvitations.endpoint.value)
+        assertEquals(endpoint().copy(requestedLens = CameraLens.FRONT), CameraInvitations.endpoint.value)
         for (value in listOf(Int.MIN_VALUE, -1, 0, 1, 159, 160, 161, 1920, 1921, Int.MAX_VALUE)) {
             assertEquals(value in 160..1920 && value % 2 == 0, endpoint().copy(width = value).valid())
         }

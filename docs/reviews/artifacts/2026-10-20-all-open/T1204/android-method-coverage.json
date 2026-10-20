@@ -1,0 +1,101 @@
+{
+  "tool": "JaCoCo0.8.15 native executable-line counters; built-in Kotlin filters",
+  "methods": [
+    {
+      "owner": "com/blent/CameraStop",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;I)V",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraStop",
+      "method": "matches",
+      "descriptor": "(Lcom/blent/CameraEndpoint;)Z",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraInvitations",
+      "method": "getEndpoint",
+      "descriptor": "()Lkotlinx/coroutines/flow/MutableStateFlow;",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraInvitations",
+      "method": "stop",
+      "descriptor": "(Lcom/blent/CameraStop;)Z",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraInvitations",
+      "method": "<clinit>",
+      "descriptor": "()V",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraStopIntent",
+      "method": "read",
+      "descriptor": "(Landroid/content/Intent;)Lcom/blent/CameraStop;",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraCredential",
+      "method": "valid",
+      "descriptor": "(Ljava/lang/String;)Z",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraStop$Companion",
+      "method": "create",
+      "descriptor": "(Ljava/lang/String;I)Lcom/blent/CameraStop;",
+      "covered": 2,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraReceiver",
+      "method": "<init>",
+      "descriptor": "()V",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraReceiver",
+      "method": "onReceive",
+      "descriptor": "(Landroid/content/Context;Landroid/content/Intent;)V",
+      "covered": 8,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraEndpointIntent",
+      "method": "read",
+      "descriptor": "(Landroid/content/Intent;)Lcom/blent/CameraEndpoint;",
+      "covered": 8,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraEndpoint",
+      "method": "valid",
+      "descriptor": "()Z",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    }
+  ]
+}
