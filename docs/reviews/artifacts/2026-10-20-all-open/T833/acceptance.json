@@ -1,0 +1,26 @@
+{
+  "children": {
+    "build_release": "481cf91c",
+    "metric_formats": "670076f3",
+    "current_fixture_callers": "9707c4e7",
+    "manual_usb_runtime": "ac06f129",
+    "documentation_references": "5a6c01e3",
+    "candidate_metadata": "1ae7847d"
+  },
+  "tooling": {
+    "passed": 40,
+    "failed": 2,
+    "failures": [
+      "T102",
+      "T302"
+    ],
+    "cause": "same excluded native distribution fixture, T1211"
+  },
+  "native_source_attestations_match": true,
+  "maintained_native_sdk_functions": 64,
+  "minimum_individual_percent": 85.71428571428571,
+  "changed_installer_percent": 100,
+  "candidate_metadata_check": "1.2.3 / 2026-10-20 passes; unpublished",
+  "remaining_native_metric_environment_errors": 3,
+  "environment_prerequisite": "T1221"
+}
