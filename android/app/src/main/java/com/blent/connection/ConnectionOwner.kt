@@ -12,10 +12,17 @@ import kotlinx.coroutines.SupervisorJob
 internal object ConnectionOwner {
     private val access = ConnectionAccess()
     private var binding: ConnectionBinding? = null
+    private var saved: SavedTrustBinding? = null
 
     @Synchronized fun get(context: Context): ConnectionBinding {
         val app = context.applicationContext
         return binding ?: ConnectionBinding(CoroutineScope(SupervisorJob() + Dispatchers.Default),
             { spec, report -> androidUsbConnection({ app }, spec, report) }, access = access).also { binding = it }
+    }
+
+    @Synchronized fun getSaved(context: Context): SavedTrustBinding {
+        val app = context.applicationContext
+        return saved ?: SavedTrustBinding(CoroutineScope(SupervisorJob() + Dispatchers.Default),
+            access, SavedTrustRunFactory { request, report -> androidSavedTrustRun(app, request, report) }).also { saved = it }
     }
 }

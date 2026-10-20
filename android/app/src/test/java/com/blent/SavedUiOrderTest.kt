@@ -18,6 +18,20 @@ class SavedUiOrderTest {
     @Test fun t1171ActivityUiPreludeThenPairingApi27() = ordered("[27]")
     @Test fun t1171ActivityUiPreludeThenPairingApi34() = ordered("")
 
+    @Test fun t1171CompleteConnectionPreludeThenOriginalPairing() {
+        val runner = JUnitCore()
+        val names = checkNotNull(javaClass.getResourceAsStream("/t1171-ui-prelude.txt"))
+            .bufferedReader().use { it.readLines() }
+        assertEquals("T1171 explicit original prelude", 69, names.size)
+        for (name in names) {
+            val result = runner.run(Class.forName(name))
+            settled(name, result)
+            assertTrue("T1171 $name: ${result.failures}", result.wasSuccessful())
+            assertTrue("T1171 prelude was not executed: $name", result.runCount > 0)
+        }
+        for (sdk in listOf("[27]", "")) verifyPairing(runner, sdk)
+    }
+
     private fun verifyPairing(runner: JUnitCore, sdk: String) {
         val result = runner.run(Request.aClass(ConnectionControlsTest::class.java)
             .filterWith(filter(sdk, "t893DismissingPairingNeverApproves")))

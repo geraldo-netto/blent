@@ -75,6 +75,7 @@ internal class SavedTrustBinding(
 
 /** View-bound command ticket. Closing revokes commands, never accepted work. */
 internal class SavedTrustClient internal constructor(private val binding: SavedTrustBinding, private val viewer: Any) : AutoCloseable {
+    val current: Boolean get() = binding.state.value.viewer === viewer
     fun refresh(): Boolean = binding.refresh(viewer)
     fun choice(peer: ConnectionPeer): SavedTrustChoice? = binding.choice(viewer, peer)
     fun forget(choice: SavedTrustChoice): Boolean = binding.forget(viewer, choice)

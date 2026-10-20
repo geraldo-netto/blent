@@ -19,6 +19,12 @@ packet, decoder, resource-budget and power-policy changes. The current CLI
 fallback remains supported; proposed interfaces there are labelled separately
 from the existing implementation.
 
+Android [saved-computer controls](saved-computers.md) use an application-owned
+coordinator and the existing private trust worker. USB connection and offline
+maintenance share one access slot through original worker/store and completion-
+relay retirement. View loss revokes commands without discarding accepted work;
+independent media owners retain their separate cleanup obligations.
+
 ## Pipeline
 
 1. **Virtual display.** A C helper opens an EVDI device and presents a generated

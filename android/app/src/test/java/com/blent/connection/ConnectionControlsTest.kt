@@ -24,7 +24,7 @@ class ConnectionControlsTest {
         val configured = ConfiguredConnection(fixture.binding,
             ConnectionPreferenceStore(PreferenceMemoryStorage(), kotlinx.coroutines.Dispatchers.Unconfined), fixture.scope)
         compose.setContent { BlentTheme { Column {
-            ConnectionControls(fixture.binding, configured)
+            ConnectionControls(fixture.binding, configured, fixture.saved)
             ConnectionPairingDialog(fixture.binding)
         } } }
     }

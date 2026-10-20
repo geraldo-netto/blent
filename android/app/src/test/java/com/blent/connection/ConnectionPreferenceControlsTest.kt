@@ -21,7 +21,7 @@ class ConnectionPreferenceControlsTest {
     @get:Rule val compose = createComposeRule()
     private fun render(fixture: ConnectionUiFixture, store: ConnectionPreferenceStore): ConfiguredConnection {
         val configured = ConfiguredConnection(fixture.binding, store, fixture.scope)
-        compose.setContent { BlentTheme { Column { ConnectionControls(fixture.binding, configured) } } }
+        compose.setContent { BlentTheme { Column { ConnectionControls(fixture.binding, configured, fixture.saved) } } }
         return configured
     }
     private fun open() { compose.onNodeWithText("USB capacity and deadlines").performClick() }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     internal lateinit var connection: ConnectionBinding; private set
+    internal lateinit var savedComputers: SavedTrustBinding; private set
     internal lateinit var configuredConnection: ConfiguredConnection; private set
     internal lateinit var microphone: AudioBinding; private set
     internal lateinit var speakers: AudioBinding; private set
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val prefs = Prefs(this)
         connection = ConnectionOwner.get(applicationContext)
+        savedComputers = ConnectionOwner.getSaved(applicationContext)
         configuredConnection = ConfiguredConnection(connection, AndroidConnectionPreferences.get(applicationContext), lifecycleScope)
         cameras = CameraOwner.get(applicationContext)
         val cameraAccess = checkNotNull(CameraOwner.access)
@@ -71,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     onSurfaceDestroyed = session::surfaceDestroyed,
                     displayRefreshRates = windowPolicy.supportedDisplayModes().map { it.refreshRate },
                     onSettingsEvent = ::settingsEvent,
-                    connectionControls = { ConnectionControls(connection, configuredConnection) },
+                    connectionControls = { ConnectionControls(connection, configuredConnection, savedComputers) },
                     cameraControls = { CameraControls(cameras, cameraAccess); AudioControls(microphone, microphoneAccess); AudioControls(speakers, speakerAccess) },
                     inputControls = { session.inputControls() },
                 )
