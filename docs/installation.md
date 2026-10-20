@@ -99,6 +99,9 @@ separately first; see [makepkg(8)](https://man.archlinux.org/man/makepkg.8.en).
 The recipe downloads its declared source tag, so it needs that tag to exist;
 use the source workflow for an unreleased checkout.
 
+The native USB transport requires the libusb-1.0 shared runtime in addition to
+FFmpeg, adb, libevdi and the GUI libraries.
+
 Module and package availability depend on the distribution release and kernel.
 Do not assume a Bazzite/Nobara image includes every prerequisite. The full
 installer uses rpm-ostree on a detected booted ostree system and otherwise the

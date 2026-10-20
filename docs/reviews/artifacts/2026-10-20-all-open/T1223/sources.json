@@ -1,0 +1,4 @@
+{
+  "scripts/install.sh": "f25efaddeb8063056f057946424b3584047439b9c7b334922e5f864c091263c0",
+  "scripts/tests/test_usb_packaging.py": "1d5b0c5e108ec6dfe26d4349a14229c58acd7fd08ffc79f124b332b01dc211c0"
+}

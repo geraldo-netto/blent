@@ -83,7 +83,7 @@ install_distro_deps() {
     case " $1 " in
         *' debian '*|*' ubuntu '*) install_debian_deps ;;
         *' arch '*|*' manjaro '*|*' endeavouros '*|*' cachyos '*) install_arch_deps ;;
-        *) warn "Unknown distro. Install manually: ffmpeg, adb (android-tools), evdi + libevdi, and GUI libraries: X11, X11-xcb, Xcursor, Xi, xkbcommon-x11" ;;
+        *) warn "Unknown distro. Install manually: ffmpeg, adb (android-tools), libusb-1.0, evdi + libevdi, and GUI libraries: X11, X11-xcb, Xcursor, Xi, xkbcommon-x11" ;;
     esac
 }
 

@@ -106,6 +106,12 @@ class UsbDependencyTest(unittest.TestCase):
                 output = fixture.run_installer(stubs + f'install_distro_deps "{distro}"\n')
                 self.assertIn(package, output)
 
+    def test_t1223_manual_guidance_names_native_usb_runtime_without_installing(self):
+        import test_installer
+        output = test_installer.InstallerTest().distribution_fixture('unrecognized-family')
+        self.assertIn('libusb-1.0', output)
+        self.assertNotIn('packages:', output)
+
     def test_t861_arch_recipe_installs_both_usb_siblings(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "sources": {
+    "scripts/install.sh": "f25efaddeb8063056f057946424b3584047439b9c7b334922e5f864c091263c0"
+  },
+  "functions": [
+    {
+      "file": "scripts/install.sh",
+      "name": "install_distro_deps",
+      "first": 81,
+      "last": 88,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}
