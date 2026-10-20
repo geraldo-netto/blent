@@ -460,13 +460,7 @@ fn t814_unconfirmed_async_exit_retains_admission_after_control_deadline() {
             .await
             .unwrap();
             assert_exited(pid);
-            let child =
-                OwnedChild::spawn(&mut tokio::process::Command::from(fixture(&path, "denied")))
-                    .unwrap();
-            assert_eq!(
-                child.retire(Duration::from_secs(1)).await.phase,
-                RetirementPhase::Exited
-            );
+            assert_readmitted_retirement(&path).await;
         });
 }
 
@@ -635,4 +629,88 @@ fn t836_fixture_ready(path: &std::path::Path) {
         );
         std::thread::sleep(Duration::from_millis(1));
     }
+}
+
+#[cfg(target_os = "linux")]
+async fn readmitted_retirement(mut child: OwnedChild) -> Retirement {
+    // Readmission proves capacity recovery, not a bound on process startup/exit.
+    // Observe this original child's exit before asserting its exited phase.
+    assert!(child.wait().await.unwrap().success());
+    child.retire(Duration::ZERO).await
+}
+
+#[cfg(target_os = "linux")]
+fn readmitted_fixture(
+    path: &std::path::Path,
+) -> (OwnedChild, Option<std::os::unix::net::UnixStream>) {
+    use std::{os::fd::OwnedFd, os::unix::net::UnixStream};
+    let mut command = fixture(path, "denied");
+    let gate = if std::env::var_os("BLENT_T1197_CAUSAL_GATE").is_some() {
+        let (held, receiver) = UnixStream::pair().unwrap();
+        command = fixture(path, "input");
+        command.stdin(Stdio::from(OwnedFd::from(receiver)));
+        Some(held)
+    } else {
+        None
+    };
+    (
+        OwnedChild::spawn(&mut tokio::process::Command::from(command)).unwrap(),
+        gate,
+    )
+}
+
+#[cfg(target_os = "linux")]
+async fn assert_readmitted_retirement(path: &std::path::Path) {
+    let (child, gate) = readmitted_fixture(path);
+    let pid = child.id().unwrap();
+    let mut settling = Box::pin(readmitted_retirement(child));
+    let early = if gate.is_some() {
+        tokio::select! {
+            report = settling.as_mut() => Some(report),
+            // Exceed the original one-second grace plus 20ms reap contract.
+            _ = tokio::time::sleep(Duration::from_millis(1100)) => None,
+        }
+    } else {
+        None
+    };
+    let returned_before_release = early.is_some();
+    // The parent owns the sole writer. EOF also releases on panic/owner loss.
+    drop(gate);
+    let report = match early {
+        Some(report) => report,
+        None => settling.await,
+    };
+    while !report.completion.is_complete() {
+        tokio::time::sleep(Duration::from_millis(5)).await;
+    }
+    assert_exited(pid);
+    assert!(
+        !returned_before_release,
+        "T1197 native exit inferred before the fixture gate released"
+    );
+    assert_eq!(report.phase, RetirementPhase::Exited);
+    assert!(report.completion.is_complete());
+}
+
+#[cfg(target_os = "linux")]
+#[tokio::test]
+async fn t1197_readmitted_fixture_waits_for_actual_exit_without_a_startup_deadline() {
+    let mut command = tokio::process::Command::new(std::env::current_exe().unwrap());
+    command
+        .args([
+            "--exact",
+            "commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline",
+            "--nocapture",
+        ])
+        .env("BLENT_T1197_CAUSAL_GATE", "1")
+        .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit());
+    let mut child = OwnedChild::spawn(&mut command).unwrap();
+    let status = child.wait().await.unwrap();
+    let retired = child.retire(Duration::ZERO).await;
+    assert!(retired.completion.is_complete());
+    assert!(
+        status.success(),
+        "T1197 held native fixture reproduced the one-second phase assumption"
+    );
 }

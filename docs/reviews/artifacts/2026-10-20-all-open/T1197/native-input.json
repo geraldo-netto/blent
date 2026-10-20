@@ -1,0 +1,19 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent-config",
+    "--lib",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1197/coverage.lcov"
+  ],
+  "sources": {
+    "common/src/commands/tests.rs": "d2bd5432ffb718dfa6ddafbf67adbb9469269c8935975e21c9abedb36517b762"
+  }
+}
