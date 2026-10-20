@@ -1,5 +1,6 @@
 package com.blent.connection
 
+import com.blent.WorkerGenerations
 import android.os.RemoteException
 import kotlinx.coroutines.*
 import org.junit.Assert.*
@@ -267,10 +268,10 @@ class AndroidConnectionWorkerRunTest {
         worker.execute(); worker.retire()
     }
     @Test fun t884GenerationExhaustionAndTimingBoundsNeverWrap() {
-        val generations = ConnectionWorkerGenerations(Long.MAX_VALUE - 1)
+        val generations = WorkerGenerations(Long.MAX_VALUE - 1)
         assertEquals(Long.MAX_VALUE, generations.next())
         assertThrows(IllegalStateException::class.java) { generations.next() }
-        assertThrows(IllegalArgumentException::class.java) { ConnectionWorkerGenerations(-1) }
+        assertThrows(IllegalArgumentException::class.java) { WorkerGenerations(-1) }
         val context = ConnectionWorkerContext(ConnectionWorkerEndpoint())
         for (value in listOf(-1L, 60001L)) {
             assertThrows(IllegalArgumentException::class.java) { AndroidConnectionWorkerRun(context, spec, graceMillis = value) }
@@ -353,6 +354,20 @@ class AndroidConnectionWorkerRunTest {
         } finally { endpoint.die(); worker.retire() }
         val ended = ConnectionWorkerEndpoint(); val finished = run(ConnectionWorkerContext(ended))
         finished.execute(); assertFalse(finished.command(proof)); finished.retire()
+    }
+
+    @Test fun t1178PrimaryLaunchDefaultsAndTerminalAllocatorNeverBindRetiredWork() = runBlocking {
+        val context = ConnectionWorkerContext(ConnectionWorkerEndpoint())
+        val worker = AndroidConnectionWorkerRun(context, ConnectionProcessLaunch.Connect(spec))
+        worker.cancel()
+        worker.retire()
+        assertEquals(0, context.binds)
+        assertEquals(0, context.unbinds)
+        assertThrows(IllegalStateException::class.java) {
+            AndroidConnectionWorkerRun(context, ConnectionProcessLaunch.Connect(spec),
+                generations = WorkerGenerations(Long.MAX_VALUE))
+        }
+        assertEquals(0, context.binds)
     }
 
 }

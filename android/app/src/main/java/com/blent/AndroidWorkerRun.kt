@@ -6,7 +6,6 @@ import android.view.Surface
 import kotlinx.coroutines.*
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicLong
 
 /** Main-process boundary adapter. Native work and payload sockets live remotely.
  * Framework binding loss is not process death. Failed retirement retains the
@@ -15,10 +14,11 @@ internal class AndroidWorkerRun(
     context: Context, private val task: MediaTask, private val surface: Surface? = null,
     private val report: (WorkerEvent) -> Unit = {},
     private val graceMillis: Long = 500, private val exitMillis: Long = 3000,
+    generations: WorkerGenerations = sharedGenerations,
 ) : LifecycleRun {
-    companion object { private val revisions = AtomicLong() }
+    companion object { private val sharedGenerations = WorkerGenerations() }
+    private val generation = generations.next()
     private val app = context.applicationContext
-    private val generation = revisions.incrementAndGet()
     private val ready = CompletableDeferred<IBinder>()
     private val dead = CompletableDeferred<Unit>()
     private val mailbox = WorkerMailbox()

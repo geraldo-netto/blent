@@ -1,0 +1,23 @@
+[
+  {
+    "name": "com.blent.WorkerGenerationsTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "name": "com.blent.AndroidWorkerRunTest",
+    "tests": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "name": "com.blent.connection.AndroidConnectionWorkerRunTest",
+    "tests": 54,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+]

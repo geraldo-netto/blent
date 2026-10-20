@@ -12,21 +12,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.selects.select
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicLong
+import com.blent.WorkerGenerations
 import java.util.concurrent.atomic.AtomicReference
-
-/** Process-local callback generation; exhaustion is terminal, never wrapping. */
-internal class ConnectionWorkerGenerations(initial: Long = 0) {
-    private val value = AtomicLong(initial)
-    init { require(initial >= 0) }
-    fun next(): Long {
-        while (true) {
-            val previous = value.get()
-            check(previous < Long.MAX_VALUE) { "Connection worker generations exhausted" }
-            if (value.compareAndSet(previous, previous + 1)) return previous + 1
-        }
-    }
-}
 
 /** Main-process adapter. Native IPC jobs retain ownership independently of their
  * awaiting caller. Ended/framework disconnect never substitutes for Binder death.
@@ -39,7 +26,7 @@ internal class AndroidConnectionWorkerRun(
     private val startMillis: Long = 5000,
     graceMillis: Long? = null,
     retireMillis: Long? = null,
-    generations: ConnectionWorkerGenerations = sharedGenerations,
+    generations: WorkerGenerations = sharedGenerations,
     private val transmitDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ConnectionWorker {
     constructor(
@@ -47,12 +34,12 @@ internal class AndroidConnectionWorkerRun(
         report: (ConnectionWorkerEvent) -> Unit = {},
         bindMillis: Long = 5000, startMillis: Long = 5000,
         graceMillis: Long? = null, retireMillis: Long? = null,
-        generations: ConnectionWorkerGenerations = sharedGenerations,
+        generations: WorkerGenerations = sharedGenerations,
         transmitDispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) : this(context, ConnectionProcessLaunch.Connect(spec), report, bindMillis, startMillis,
         graceMillis, retireMillis, generations, transmitDispatcher)
 
-    companion object { private val sharedGenerations = ConnectionWorkerGenerations() }
+    companion object { private val sharedGenerations = WorkerGenerations() }
     // Native retirement plus the maximum supported actor timer cadence. Explicit
     // overrides remain bounded to 60 seconds. Ended permits EXIT, never retirement.
     private val grace = graceMillis ?: (launch.retirementTimeoutMs + 1000)

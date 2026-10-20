@@ -1,0 +1,77 @@
+{
+  "tool": "JaCoCo0.8.15 native JVM method-variant line counters; no measured variant omitted",
+  "functions": [
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionProcessLaunch;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+      "covered": 32,
+      "total": 32,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionProcessLaunch;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AndroidWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/MediaTask;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;JJLcom/blent/WorkerGenerations;)V",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AndroidWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/MediaTask;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;JJLcom/blent/WorkerGenerations;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/WorkerGenerations",
+      "method": "<init>",
+      "descriptor": "(J)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/WorkerGenerations",
+      "method": "<init>",
+      "descriptor": "(JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/WorkerGenerations",
+      "method": "next",
+      "descriptor": "()J",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    }
+  ]
+}

@@ -60,6 +60,7 @@ class AndroidWorkerRunTest {
     }
     private class Context(val endpoint: Endpoint) : ContextWrapper(RuntimeEnvironment.getApplication()) {
         var flags = 0
+        var applicationReads = 0
         var binds = 0
         var unbinds = 0
         var accept = true
@@ -69,7 +70,7 @@ class AndroidWorkerRunTest {
         var unbindError = false
         lateinit var connection: ServiceConnection
         lateinit var component: ComponentName
-        override fun getApplicationContext() = this
+        override fun getApplicationContext(): android.content.Context { applicationReads++; return this }
         override fun bindService(intent: Intent, connection: ServiceConnection, flags: Int): Boolean {
             binds++; this.flags = flags; this.connection = connection; component = intent.component!!
             if (error) throw SecurityException("bind denied")
@@ -267,6 +268,52 @@ class AndroidWorkerRunTest {
         for (value in listOf(1L, 60000L)) AndroidWorkerRun(context, task, graceMillis = value, exitMillis = value)
         AndroidWorkerRun(context, task, graceMillis = 0)
         assertEquals(0, context.binds)
+    }
+
+    @Test fun t1178ExhaustedConstructorRejectsBeforeContextBindingOrScopes() = runBlocking {
+        val context = Context(Endpoint())
+        val generations = WorkerGenerations(Long.MAX_VALUE)
+        var unexpected: AndroidWorkerRun? = null
+        try {
+            assertThrows(IllegalStateException::class.java) {
+                unexpected = AndroidWorkerRun(context, task, generations = generations)
+            }
+            assertEquals(0, context.applicationReads)
+            assertEquals(0, context.binds)
+            assertEquals(0, context.unbinds)
+            assertTrue(context.endpoint.commands.isEmpty())
+        } finally { unexpected?.retire() }
+    }
+
+    @Test fun t1178LastGenerationFiltersOldAndLateBinderEventsAndJoinsOriginal() = runBlocking {
+        val events = CopyOnWriteArrayList<WorkerEvent>()
+        val endpoint = Endpoint().apply { start = { remote ->
+            for (revision in listOf(Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE - 1)) {
+                remote.emit(WorkerEvent.Status("stale"), revision)
+            }
+            remote.emit(WorkerEvent.Result("current"))
+            remote.emit(WorkerEvent.Ended(null))
+        } }
+        val context = Context(endpoint)
+        val generations = WorkerGenerations(Long.MAX_VALUE - 1)
+        val run = AndroidWorkerRun(context, task, report = events::add,
+            graceMillis = 1, exitMillis = 1000, generations = generations)
+        try {
+            run.execute()
+            assertEquals(Long.MAX_VALUE, endpoint.revision)
+            assertEquals(listOf(WorkerEvent.Result("current")), events)
+            assertThrows(IllegalStateException::class.java) {
+                AndroidWorkerRun(context, task, generations = generations)
+            }
+            run.cancel()
+            endpoint.emit(WorkerEvent.Status("late"))
+            assertEquals(listOf(WorkerEvent.Result("current")), events)
+        } finally { run.retire() }
+        assertEquals(1, context.binds)
+        assertEquals(1, context.unbinds)
+        assertTrue(endpoint.deaths.isEmpty())
+        assertFalse(endpoint.alive)
+        assertTrue(endpoint.commands.containsAll(listOf(WorkerIpc.START, WorkerIpc.STOP, WorkerIpc.EXIT)))
     }
 
 }
