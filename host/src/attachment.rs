@@ -111,7 +111,7 @@ impl Attachment {
             self.0.presence.send_replace(false);
         }
     }
-    pub(super) fn advance_generation(&self, state: &mut State) -> anyhow::Result<()> {
+    fn advance_generation(&self, state: &mut State) -> anyhow::Result<()> {
         let next = state.generation.checked_add(1);
         match next {
             Some(next) => state.generation = next,

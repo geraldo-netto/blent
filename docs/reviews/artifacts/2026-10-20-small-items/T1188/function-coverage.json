@@ -1,0 +1,15 @@
+{
+  "functions": [
+    {
+      "file": "host/src/attachment.rs",
+      "name": "advance_generation",
+      "first": 114,
+      "last": 129,
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "missing": []
+    }
+  ],
+  "tool": "cargo-llvm-cov0.8.7; fresh native counters; authored ranges verified against unchanged function body"
+}
