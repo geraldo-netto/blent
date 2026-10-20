@@ -1,0 +1,81 @@
+[
+  {
+    "file": "host/evdi/capture.c",
+    "name": "apply_capture_activity",
+    "first": 603,
+    "last": 615,
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "missing": [],
+    "passes": true
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "name": "capture_run",
+    "first": 769,
+    "last": 812,
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "missing": [],
+    "passes": true
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "name": "grab_now",
+    "first": 381,
+    "last": 384,
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "missing": [],
+    "passes": true
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "name": "grab_snapshot",
+    "first": 349,
+    "last": 379,
+    "covered": 22,
+    "total": 22,
+    "percent": 100.0,
+    "missing": [],
+    "passes": true
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "name": "normalize_snapshot",
+    "first": 337,
+    "last": 347,
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "missing": [],
+    "passes": true
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "name": "resume_capture",
+    "first": 585,
+    "last": 601,
+    "covered": 12,
+    "total": 13,
+    "percent": 92.3076923076923,
+    "missing": [
+      588
+    ],
+    "passes": true
+  },
+  {
+    "file": "host/evdi/capture.c",
+    "name": "service_display_progress",
+    "first": 754,
+    "last": 767,
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "missing": [],
+    "passes": true
+  }
+]

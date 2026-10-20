@@ -1,5 +1,7 @@
 //! Capture activity records, independent of native capture and process storage.
 //! A peer echoes the exact record only after that transition has completed.
+//! Inactive stops media production; a retained display backend may continue
+//! the native completion service needed to keep its existing output usable.
 use anyhow::{ensure, Context, Result};
 
 pub const RECORD_BYTES: usize = 9;

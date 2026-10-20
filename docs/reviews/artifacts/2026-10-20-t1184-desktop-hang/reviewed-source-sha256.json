@@ -1,0 +1,7 @@
+{
+  "host/evdi/capture.c": "a8089325f69076e51c43b49b799eab491005975a04505548e09c5881ef4da980",
+  "host/tests/capture_pause.c": "7e231464351887a7970dda4f6ba5743de38746a7ead08961c0b0981cbbf351e8",
+  "host/src/activity/dpms.rs": "bc67d0edbb4fdb72f908db91e19ba790daac722e33786abdf203fe933fd46f5a",
+  "common/src/host_activity/policy.rs": "ac08ee2f670b7c972e421a7a97b7e073bd63ab44962aaa7afb1f70b1af443536",
+  "host/src/capture/display_pause.rs": "f97f9cb867707a96934d6ca5f2011dd96062130cbb6b1d3ffb5c56a5ad6489fe"
+}

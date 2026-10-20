@@ -106,6 +106,8 @@ static int t497_fail_writer;
 static int t497_poll_error;
 static int stall_once = 0;
 static int mock_poll_calls;
+static int (*t1185_poll_observer)(struct pollfd *, nfds_t, int);
+static void (*t1185_grab_observer)(evdi_handle, struct evdi_rect *, int *);
 static int add_result = 0;
 static int mock_add_calls;
 static int t751_xorg_running;
@@ -182,10 +184,21 @@ static int mock_sched_getaffinity(pid_t pid, size_t size, cpu_set_t *set) {
 static long mock_sysconf(int name) {
     return name == _SC_NPROCESSORS_ONLN ? 8 : sysconf(name);
 }
-static int mock_poll(struct pollfd *fds, nfds_t n, int timeout) {
+static int mock_poll(struct pollfd *fds, nfds_t n, int timeout)
+{
     mock_poll_calls++;
-    if (t497_poll_error) { errno = t497_poll_error; return -1; }
-    if (stall_once) { stall_once = 0; return 0; }
+    if (t1185_poll_observer)
+        return t1185_poll_observer(fds, n, timeout);
+    if (t497_poll_error)
+    {
+        errno = t497_poll_error;
+        return -1;
+    }
+    if (stall_once)
+    {
+        stall_once = 0;
+        return 0;
+    }
     return poll(fds, n, timeout);
 }
 int evdi_add_device(void) { mock_add_calls++; return add_result; }
@@ -245,18 +258,29 @@ bool evdi_request_update(evdi_handle handle, int buffer) {
 static struct evdi_buffer t752_registered;
 static int t752_grabs, t752_count;
 static struct evdi_rect t752_rects[64];
-void evdi_grab_pixels(evdi_handle handle, struct evdi_rect *rects, int *count) {
+void evdi_grab_pixels(evdi_handle handle, struct evdi_rect *rects, int *count)
+{
     (void)handle;
-    if (t752_grabs) {
-        memcpy(rects, t752_rects, sizeof(t752_rects)); *count=t752_count; return;
+    if (t1185_grab_observer)
+    {
+        t1185_grab_observer(handle, rects, count);
+        return;
     }
-    if (t497_capture_events) {
+    if (t752_grabs)
+    {
+        memcpy(rects, t752_rects, sizeof(t752_rects));
+        *count = t752_count;
+        return;
+    }
+    if (t497_capture_events)
+    {
         assert(*count == 64);
         rects[0] = (struct evdi_rect){.x1 = 0, .x2 = 8, .y1 = INT_MIN, .y2 = INT_MAX};
         *count = t497_rectangles;
         return;
     }
-    if (mock_grab_calls >= 0) {
+    if (mock_grab_calls >= 0)
+    {
         mock_grab_calls++;
         *count = 0;
         return;
@@ -1496,6 +1520,7 @@ static void test_t415_rounding(void) {
 #include "failed_mode.c"
 #include "helper_arguments.c"
 #include "capture_pause.c"
+#include "display_progress.c"
 
 static void canonical_format_fixture(const char *id) {
     if (!strncmp(id, "T752", 4) || !strcmp(id, "T779") || !strcmp(id, "T780")) g_capture.normalize_rgba = 1;
@@ -1510,6 +1535,8 @@ int main(int argc, char **argv)
     assert(argc == 2);
     canonical_format_fixture(argv[1]);
     static const struct { const char *id; void (*run)(void); } cases[] = {
+        {"T1185-progress", test_t1185_progress},
+        {"T1185-resume", test_t1185_resume_snapshot},
         {"T1021-wire", test_t1021_wire},
         {"T1021-control", test_t1021_control},
         {"T1021-pause", test_t1021_pause},

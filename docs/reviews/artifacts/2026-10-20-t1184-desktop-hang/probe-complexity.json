@@ -1,0 +1,97 @@
+{
+  "method": "Clang AST branch count aligned to documented C rules; not native SonarQube/CFamily evidence",
+  "tool": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+  "functions": [
+    {
+      "name": "require",
+      "line": 44,
+      "score": 2
+    },
+    {
+      "name": "now_ms",
+      "line": 53,
+      "score": 1
+    },
+    {
+      "name": "destroy_buffer",
+      "line": 60,
+      "score": 3
+    },
+    {
+      "name": "retire_helper",
+      "line": 71,
+      "score": 5
+    },
+    {
+      "name": "cleanup",
+      "line": 93,
+      "score": 5
+    },
+    {
+      "name": "require_guest",
+      "line": 108,
+      "score": 2
+    },
+    {
+      "name": "exec_helper",
+      "line": 118,
+      "score": 2
+    },
+    {
+      "name": "start_helper",
+      "line": 133,
+      "score": 2
+    },
+    {
+      "name": "control",
+      "line": 148,
+      "score": 1
+    },
+    {
+      "name": "connected",
+      "line": 162,
+      "score": 4
+    },
+    {
+      "name": "create_buffer",
+      "line": 179,
+      "score": 2
+    },
+    {
+      "name": "start_scanout",
+      "line": 196,
+      "score": 3
+    },
+    {
+      "name": "flip_received",
+      "line": 224,
+      "score": 1
+    },
+    {
+      "name": "observe_event",
+      "line": 236,
+      "score": 2
+    },
+    {
+      "name": "submit",
+      "line": 249,
+      "score": 4
+    },
+    {
+      "name": "blocking_modeset",
+      "line": 265,
+      "score": 1
+    },
+    {
+      "name": "run_trial",
+      "line": 276,
+      "score": 5
+    },
+    {
+      "name": "main",
+      "line": 300,
+      "score": 2
+    }
+  ],
+  "maximum": 5
+}

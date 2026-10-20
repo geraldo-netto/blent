@@ -1,0 +1,11 @@
+{
+  "/backups/disk2/blent-work/2026-10-20-t1185/initrd/evdi_helper": "9c4b48c66274d1936f0426820c4be883f47ca25b3645289999beca3045326475",
+  "/backups/disk2/blent-work/2026-10-20-t1185/initrd/libevdi.so.1": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a",
+  "/backups/disk2/blent-work/2026-10-20-t1185/initrd/pause-flip-probe": "4e633ab5729428fad9a5f9733fdde6e9bd80fe293edf8b7c6a4d343a09aea7c6",
+  "/backups/disk2/blent-work/2026-10-20-t1185/initrd/modules/evdi.ko": "ae2f1399ebc30a0cd5d22e55a4e6228cb514dd52b44330b931b1da80efbc3105",
+  "/backups/disk2/blent-work/2026-10-20-t1185/vmlinuz": "cfc5cd4c6bbad00758a9ee5110408d2c0146460b77b6f6a7ff65ddd87636fd87",
+  "/backups/disk2/blent-work/2026-10-20-t1185/initrd/init": "83ad69857dd10de450f166dd2498392578d888d0599a2940a16468ad80045132",
+  "host/evdi/capture.c": "34ba376dbed46541b57e4a93bb932ec7a243d92a6de77d1428c19a67977ef3ed",
+  "host/tests/display_progress.c": "eb56fd66cdc81d35cb68ae0a1831e5cb2eb90ad590b52fa1738cf65588c5fe39",
+  "host/tests/display_progress_native.c": "2f9d1c20e8b3a02f769314e89bdb1ce7978361eeacdf82080145a73414e4a6f2"
+}

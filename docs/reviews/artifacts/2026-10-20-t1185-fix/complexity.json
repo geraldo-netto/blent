@@ -1,0 +1,226 @@
+{
+  "method": "compiler function boundaries plus authored C decision/operator count; Rust wrappers inspected directly. Local source estimate, not native SonarQube. do/while contributes one loop.",
+  "tool": "Clang18.1.3; GCC/gcov13.3.0; Python3.12",
+  "functions": [
+    {
+      "file": "host/evdi/capture.c",
+      "name": "apply_capture_activity",
+      "line": 603,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "capture_run",
+      "line": 769,
+      "complexity_estimate": 7
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "grab_now",
+      "line": 381,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "grab_snapshot",
+      "line": 349,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "normalize_snapshot",
+      "line": 337,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "resume_capture",
+      "line": 585,
+      "complexity_estimate": 4
+    },
+    {
+      "file": "host/evdi/capture.c",
+      "name": "service_display_progress",
+      "line": 754,
+      "complexity_estimate": 7
+    },
+    {
+      "file": "host/tests/display_progress.c",
+      "name": "t1185_grab",
+      "line": 25,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "host/tests/display_progress.c",
+      "name": "t1185_poll",
+      "line": 15,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "host/tests/display_progress.c",
+      "name": "t1185_writer_lease",
+      "line": 43,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/display_progress.c",
+      "name": "test_t1185_progress",
+      "line": 55,
+      "complexity_estimate": 6
+    },
+    {
+      "file": "host/tests/display_progress.c",
+      "name": "test_t1185_resume_snapshot",
+      "line": 93,
+      "complexity_estimate": 8
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "blocking_modeset",
+      "line": 265,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "cleanup",
+      "line": 93,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "connected",
+      "line": 162,
+      "complexity_estimate": 4
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "control",
+      "line": 148,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "create_buffer",
+      "line": 179,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "destroy_buffer",
+      "line": 60,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "exec_helper",
+      "line": 118,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "flip_received",
+      "line": 224,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "main",
+      "line": 327,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "now_ms",
+      "line": 53,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "observe_event",
+      "line": 236,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "power_property",
+      "line": 277,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "power_transition",
+      "line": 296,
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "require",
+      "line": 44,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "require_guest",
+      "line": 108,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "retire_helper",
+      "line": 71,
+      "complexity_estimate": 5
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "run_trial",
+      "line": 307,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "start_helper",
+      "line": 133,
+      "complexity_estimate": 2
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "start_scanout",
+      "line": 196,
+      "complexity_estimate": 3
+    },
+    {
+      "file": "host/tests/display_progress_native.c",
+      "name": "submit",
+      "line": 249,
+      "complexity_estimate": 4
+    },
+    {
+      "file": "host/tests/evdi_helper_test.c",
+      "name": "evdi_grab_pixels",
+      "line": 261,
+      "complexity_estimate": 6
+    },
+    {
+      "file": "host/tests/evdi_helper_test.c",
+      "name": "main",
+      "line": 1529,
+      "complexity_estimate": 6
+    },
+    {
+      "file": "host/tests/evdi_helper_test.c",
+      "name": "mock_poll",
+      "line": 187,
+      "complexity_estimate": 4
+    },
+    {
+      "file": "host/tests/evdi_helper.rs",
+      "name": "t1185_paused_monitor_completes_native_flips_without_media_work",
+      "complexity_estimate": 1
+    },
+    {
+      "file": "host/tests/evdi_helper.rs",
+      "name": "t1185_resume_normalizes_the_latest_native_snapshot",
+      "complexity_estimate": 1
+    }
+  ]
+}

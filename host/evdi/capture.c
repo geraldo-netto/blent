@@ -334,7 +334,19 @@ static void normalize_framebuffer(capture_context_t *capture, const struct evdi_
     for (int i = 0; i < count; i++) normalize_framebuffer_rect(capture, rects[i]);
 }
 
-static void grab_now(capture_context_t *capture)
+static void normalize_snapshot(capture_context_t *capture, const struct evdi_rect *rects, int count,
+                               int full)
+{
+    if (full)
+    {
+        struct evdi_rect area = {0, 0, capture->mode_w, capture->mode_h};
+        normalize_framebuffer(capture, &area, 1);
+        return;
+    }
+    normalize_framebuffer(capture, rects, count);
+}
+
+static void grab_snapshot(capture_context_t *capture, int full)
 {
     if (!capture_active(capture))
         return;
@@ -345,7 +357,7 @@ static void grab_now(capture_context_t *capture)
     evdi_grab_pixels(capture->handle, rects, &num_rects);
     long long grabbed_us = capture_now_us();
     capture->grab_sum_us += grabbed_us - t0;
-    normalize_framebuffer(capture, rects, num_rects);
+    normalize_snapshot(capture, rects, num_rects, full);
     draw_cursor(capture);
     capture->grab_n++;
     if (num_rects <= 0)
@@ -364,6 +376,11 @@ static void grab_now(capture_context_t *capture)
             mark_damage(capture, rects, num_rects);
         publish_frame(capture);
     }
+}
+
+static void grab_now(capture_context_t *capture)
+{
+    grab_snapshot(capture, 0);
 }
 
 static void on_update_ready(int buffer_to_be_updated, void *user_data)
@@ -577,7 +594,7 @@ static void resume_capture(capture_context_t *capture)
     long long previous = capture->grab_count;
     /* A queued flip must be acknowledged before any new update request (T599).
      * Even an unchanged image must seed the new encoder's first full frame. */
-    grab_now(capture);
+    grab_snapshot(capture, 1);
     capture->last_fallback_grab_ms = capture_now_ms();
     if (capture->grab_count == previous)
         publish_frame(capture);
@@ -589,6 +606,7 @@ static void apply_capture_activity(capture_context_t *capture)
         resume_capture(capture);
     else
     {
+        capture->last_fallback_grab_ms = capture_now_ms();
         /* Invalidate exactly once. A timeout preserves all original buffers;
          * later iterations observe completion without manufacturing a lease. */
         frame_exchange_retire(capture->frames);
@@ -727,6 +745,27 @@ static int capture_tick(capture_context_t *capture, evdi_handle handle, long req
     return service_shared_capture(capture);
 }
 
+/* The connected DRM output remains owned while media work is paused. Stock
+ * EVDI acknowledges its deferred flips from GRABPIX, so continue only that
+ * minimum backend service, at most 10Hz. The event-loop-owned registered native
+ * buffer is distinct from leased FIFO/NV12 slots. No conversion, publication,
+ * new update request, disconnect or allocation belongs to this operation.
+ * Resume takes a full snapshot because these grabs consumed native damage. */
+static void service_display_progress(capture_context_t *capture, evdi_handle handle)
+{
+    if (capture_active(capture) || !capture->have_mode || capture->capture_failed ||
+        !capture->buffer_registered || !*capture->running)
+        return;
+    long long now = capture_now_ms();
+    if (now - capture->last_fallback_grab_ms < 100)
+        return;
+    capture->last_fallback_grab_ms = now;
+    restore_cursor(capture);
+    struct evdi_rect rects[64];
+    int count = 64;
+    evdi_grab_pixels(handle, rects, &count);
+}
+
 int capture_run(capture_context_t *capture, evdi_handle handle)
 {
     evdi_enable_cursor_events(handle, true);
@@ -747,6 +786,8 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
     fds[1].events = POLLIN;
 
     long long last_stats_ms = capture_now_ms();
+    if (!capture_active(capture))
+        capture->last_fallback_grab_ms = last_stats_ms;
     long long stats_grab_base = 0;
     long request_period_ms = capture_period_ms(capture);
 
@@ -760,6 +801,7 @@ int capture_run(capture_context_t *capture, evdi_handle handle)
             return 1;
         if (ret == 0)
             continue;
+        service_display_progress(capture, handle);
         if (!service_shared_capture(capture))
             return 1;
 

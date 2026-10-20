@@ -334,12 +334,32 @@ completes. Malformed, replayed, out-of-order, truncated and descriptor-bearing
 commands fail the helper; acknowledgments never imply unrelated process cleanup.
 
 Pause retains the connected monitor, registered native framebuffer, mode and
-capture process. It stops update requests, pixel grabs, NV12 conversion and frame
+capture process. It stops media update requests, NV12 conversion and frame
 publication while continuing native/control event service. It invalidates the
 original FIFO frame generation exactly once. A writer that exceeds the bounded
 retirement wait retains its original immutable lease and every allocation; the
 pause acknowledgment stays pending until that same writer releases. Subsequent
 iterations observe completion rather than invalidating again or replacing owners.
+
+T1185 fixes the native completion obligation missed by the original zero-grab
+implementation. Stock EVDI completes deferred DRM flips from GRABPIX, so the
+paused helper services that operation at most once per 100ms using its existing
+registered native buffer. It restores any local cursor overlay first and does
+not normalize, convert, publish, request another update, allocate a buffer or
+reconnect the output. This minimum backend readback has a CPU cost while media
+is paused; it is required to keep the retained output responsive. It uses the
+existing event loop and original buffer lifetime, with no extra worker or lease.
+Resume normalizes the full native snapshot before publication because backend
+service can consume native damage while media is paused. The control ACK still
+certifies media/writer quiescence, not retirement of the retained display.
+Permanent normal-suite T1185 regressions verify deferred completion, 100ms
+pacing, stop cutoff, held-frame immutability and resume freshness. An isolated
+stock-EVDI guest changes the reproduced paused modeset from 20,288ms with CRTC/
+plane timeouts to 1ms without timeouts; its paused flip and power off/on complete
+in about 100ms. These are observed guest results, not hard real-time guarantees
+or physical Cinnamon/AMDGPU acceptance. See the
+[repair evidence](artifacts/2026-10-20-t1185-fix/README.md) and
+[original incident/source trace](artifacts/2026-10-20-t1184-desktop-hang/README.md).
 
 Resume invalidates damage and obtains a fresh pixel snapshot before another
 update request, preserving the native flip acknowledgment ordering. An unchanged

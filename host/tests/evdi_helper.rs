@@ -9,6 +9,16 @@ use std::{path::PathBuf, process::Command};
 struct Harness(tempfile::TempDir);
 
 #[test]
+fn t1185_paused_monitor_completes_native_flips_without_media_work() {
+    Harness::build("T1021").run("T1185-progress");
+}
+
+#[test]
+fn t1185_resume_normalizes_the_latest_native_snapshot() {
+    Harness::build("T1021").run("T1185-resume");
+}
+
+#[test]
 fn t1025_resume_snapshot_satisfies_fallback_deadline() {
     Harness::build("T1021").run("T1025");
 }

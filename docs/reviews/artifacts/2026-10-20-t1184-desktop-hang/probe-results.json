@@ -1,0 +1,34 @@
+{
+  "resume-counterexample.log": {
+    "active_flip_ms": 17,
+    "paused_without_event_ms": 12013,
+    "original_pending_event_delivered": true,
+    "helper_wait_identity_and_exit": true,
+    "unique_flip_timeouts": 0,
+    "unique_crtc_timeouts": 0,
+    "unique_plane_timeouts": 0,
+    "driver_removed": true,
+    "guest_finished": true
+  },
+  "modeset-guest.log": {
+    "active_flip_ms": 16,
+    "paused_without_event_ms": 12012,
+    "original_pending_event_delivered": true,
+    "helper_wait_identity_and_exit": true,
+    "unique_flip_timeouts": 2,
+    "unique_crtc_timeouts": 1,
+    "unique_plane_timeouts": 1,
+    "driver_removed": true,
+    "guest_finished": true,
+    "blocking_modeset_ms": 20288
+  },
+  "final-resume.log": {
+    "active_flip_ms": 17,
+    "paused_without_event_ms": 12012,
+    "original_pending_event_delivered": true,
+    "helper_wait_identity_and_exit": true,
+    "unique_flip_timeouts": 0,
+    "driver_removed": true,
+    "guest_finished": true
+  }
+}

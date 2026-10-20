@@ -1,0 +1,12 @@
+{
+  "production": "host/evdi/capture.c",
+  "production_sha256": "34ba376dbed46541b57e4a93bb932ec7a243d92a6de77d1428c19a67977ef3ed",
+  "regression_sha256": {
+    "host/tests/display_progress.c": "be7574230fa171e50c535bddb9ef89f16633d4c6d3013f2cf3b3d102bdc438e6",
+    "host/tests/display_progress_native.c": "2f9d1c20e8b3a02f769314e89bdb1ce7978361eeacdf82080145a73414e4a6f2",
+    "host/tests/evdi_helper.rs": "657a5a3319663edbee05a369ae9a3d5c989c0a6dcec4fd81533735eab27608d2"
+  },
+  "stage": "/backups/disk2/projects/blent/target/t1185",
+  "helper_sha256": "9c4b48c66274d1936f0426820c4be883f47ca25b3645289999beca3045326475",
+  "library_sha256": "5ec8b7614074dd10dce5ba4b668203c70e77bf698da6614d839324955aead96a"
+}
