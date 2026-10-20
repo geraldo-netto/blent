@@ -1,0 +1,5 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt": "d83a3e48a67018fb7d85f5bb24b76f319ff787cb5267071ac160ff380bf49178",
+  "android/app/src/test/java/com/blent/connection/ConnectionStaleControlFailureTest.kt": "3d9cbee24aecb9b5023ee220394b07a050616aa89deb9ae4509e43daaa3f203f",
+  "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionBinding.class": "7ead45e3f1a9fc88c072e062a15e4105f31e4321aa95ae1f30f92ce63f0cef65"
+}

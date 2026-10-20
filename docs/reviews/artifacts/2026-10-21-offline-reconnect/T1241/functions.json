@@ -1,0 +1,48 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+    "name": "send",
+    "line": 160,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+        "owner": "com/blent/connection/ConnectionBinding",
+        "name": "send",
+        "signature": "(Lcom/blent/connection/ConnectionBinding$Attempt;Lcom/blent/connection/ConnectionWorkerCommand;)Z",
+        "line": 160,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+    "name": "controlFailed",
+    "line": 168,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+        "owner": "com/blent/connection/ConnectionBinding",
+        "name": "controlFailed",
+        "signature": "(Lcom/blent/connection/ConnectionBinding$Attempt;Ljava/lang/Exception;)V",
+        "line": 171,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  }
+]

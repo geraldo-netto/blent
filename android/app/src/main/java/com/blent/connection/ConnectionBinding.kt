@@ -161,10 +161,17 @@ internal class ConnectionBinding(
         check(attempt.worker?.command(command) == true) { "USB command rejected; reconnect to try again." }
         true
     } catch (failure: Exception) {
+        controlFailed(attempt, failure)
+        false
+    }
+
+    /** Replacement selection and failure cutoff share the public-action gate.
+     * Command delivery stays outside it; an old result owns no newer lane. */
+    @Synchronized private fun controlFailed(attempt: Attempt, failure: Exception) {
         attempt.stopMedia()
         clearTarget(attempt)
         presentation.ended(attempt.token, failure.message ?: "USB command failed.")
-        lane.stop()
-        false
+        // Presentation observers may select a replacement reentrantly.
+        if (current === attempt) lane.stop()
     }
 }
