@@ -1,0 +1,277 @@
+{
+  "targets": [
+    {
+      "target": "unittests src/lib.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-7669c2f8095d3888)",
+      "passed": 1007,
+      "failed": 0,
+      "ignored": 3
+    },
+    {
+      "target": "unittests src/main.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-bd313daf64c13f71)",
+      "passed": 392,
+      "failed": 0,
+      "ignored": 2
+    },
+    {
+      "target": "unittests src/bin/audio.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent_audio-c5c1e7505222a054)",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "unittests src/bin/usb_broker.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent_usb_broker-f841bf24c67e43cc)",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/activity_dpms.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/activity_dpms-0d6a4bfb76afc6b1)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/arch_output.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/arch_output-1ea446e25066b957)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/audio_native.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/audio_native-513bb73309d907d8)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/audio_staging.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/audio_staging-9f19373d8d1bc986)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/c_benchmarks.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/c_benchmarks-79c84eec541c88ab)",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/camera_pool.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/camera_pool-4ae10b908acde600)",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/camera_probe.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/camera_probe-ed65e16c45080ff5)",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/camera_probe_options.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/camera_probe_options-b806c8e6aeef9126)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/camera_probe_policy.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/camera_probe_policy-2871004aa10c8c04)",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/camera_probe_samples.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/camera_probe_samples-08649fe3b32237f2)",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/camera_probe_stop.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/camera_probe_stop-8245276c7bf7abb3)",
+      "passed": 7,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/capture_activity.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/capture_activity-aca89fa00756bf44)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/capture_contract.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/capture_contract-188c9171cd2b82c2)",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/config_diagnostics.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/config_diagnostics-7b06cc1e1129b113)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/connection_routes.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/connection_routes-c9452f857c7c1573)",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/contract_build.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/contract_build-849faf7b4c166cbc)",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/control_failure.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/control_failure-400a03a29d0b677c)",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/conversion.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/conversion-83abed070c59bf28)",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/evdi_helper.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/evdi_helper-8e72448e26892103)",
+      "passed": 69,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/evdi_modules.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/evdi_modules-a3fbefdb021e7a92)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/frame_retirement.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/frame_retirement-a839583c6e550271)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/gpu_capture.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/gpu_capture-01dc27af77d88fc3)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/guest_probe.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/guest_probe-aab7dea4704fdfd1)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/linux_lifecycle.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/linux_lifecycle-94d6045da051a437)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/portable_host.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/portable_host-87dd57bc6b7434ff)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/portable_session.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/portable_session-7a5dff73b38caa3c)",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/portable_usb.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/portable_usb-363cb4914256a832)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/rect_native.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/rect_native-85b51f827ea0b37b)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/runtime_exit.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/runtime_exit-2e0009ba45a26ba1)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/session_failure.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/session_failure-eb0660700a023cbf)",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/shared_encode_replay.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/shared_encode_replay-66587325864d8c9d)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/shutdown_deadline.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/shutdown_deadline-b8b95ea457469dd2)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/tooling.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/tooling-a3ed5c5f4f2545ff)",
+      "passed": 39,
+      "failed": 3,
+      "ignored": 0
+    },
+    {
+      "target": "tests/usb_broker.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/usb_broker-e6bfa28ae866da0c)",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/vdisplay.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/vdisplay-9cca03f889e799b5)",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/wifi_setup.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/wifi_setup-2f7c57ffb13fae25)",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/windows_autostart.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/windows_autostart-cf989e09d0c1ac85)",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/windows_cli.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/windows_cli-f1b9814a4c66ca1b)",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/windows_direct_usb.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/windows_direct_usb-ade5b45aa8b873bc)",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/windows_lifecycle.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/windows_lifecycle-ec451b44be97ab47)",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "target": "tests/windows_usb.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/windows_usb-7ba1089294a26b7f)",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "passed": 1640,
+  "failed": 3,
+  "ignored": 5
+}

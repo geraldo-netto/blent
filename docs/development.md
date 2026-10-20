@@ -706,3 +706,33 @@ decoder integration and original native retirement have permanent automated
 [verification](reviews/artifacts/2026-10-20-all-open/T1189/README.md).
 Physical camera acceptance remains separate; identity-safe ADB mapping removal
 still requires T1090's missing native contract or ownership decision.
+
+For an offline host test run using an already installed x86-64 Freedesktop SDK,
+keep the SDK and host fixture-tool ABIs explicit:
+
+```bash
+python3 scripts/ci/test-host-offline.py \
+  --sdk /absolute/path/to/cached-sdk/files \
+  --codecs /absolute/path/to/matching-codecs-extra/files \
+  --target-dir /absolute/path/to/owned-test-build \
+  --libclang /usr/lib/llvm-18/lib
+```
+
+The default runs `cargo test -p blent --all-features --no-fail-fast` offline and
+locked, including the normal integration fixtures. Extra Cargo commands follow
+`--`; `llvm-cov test` is supported too. The matching cached codecs-extra extension
+supplies libx264-enabled FFmpeg; the SDK supplies headers, remaining native Rust
+libraries, interpreter and transitive RPATH (including PulseAudio's private
+library directory). Real host PipeWire tools execute with their host plugin
+paths; Rust adapters use SDK plugins. D-Bus, Xvfb and namespace fixtures execute
+installed tools. Missing prerequisites and foreign cache prefixes/adapters fail
+explicitly. This performs no installation, synchronization, fetch or download.
+
+The selected target directory owns its sysroot link, tool environment adapters
+and build artifacts. Keep it until its original Cargo/fixture processes settle;
+then it can be removed as one cache. The runner replaces its process with Cargo,
+preserving the caller's foreground process-group cancellation ownership. Clear
+global `LD_LIBRARY_PATH`/`LD_PRELOAD` before choosing this explicit ABI. This is a
+local verification environment, not a portable release build or device acceptance.
+T835 retains complete-suite acceptance when excluded EVDI/RPM fixtures are ready;
+no failed fixture is silently skipped.

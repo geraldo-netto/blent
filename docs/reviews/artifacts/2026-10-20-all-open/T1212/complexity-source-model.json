@@ -1,0 +1,116 @@
+{
+  "tool": "unchanged repository Sonar-rule source model; cached tree-sitter0.25.2/ABI14 grammar, Python3.12 ast; not native Sonar",
+  "functions": {
+    "scripts/ci/test-host-offline.py": [
+      {
+        "line": 11,
+        "name": "arguments",
+        "complexity": 1
+      },
+      {
+        "line": 21,
+        "name": "dependencies",
+        "complexity": 5
+      },
+      {
+        "line": 32,
+        "name": "matching_codecs",
+        "complexity": 4
+      },
+      {
+        "line": 41,
+        "name": "sysroot",
+        "complexity": 5
+      },
+      {
+        "line": 53,
+        "name": "environment",
+        "complexity": 3
+      },
+      {
+        "line": 82,
+        "name": "native_tools",
+        "complexity": 4
+      },
+      {
+        "line": 95,
+        "name": "current_tool",
+        "complexity": 4
+      },
+      {
+        "line": 105,
+        "name": "publish_tool",
+        "complexity": 3
+      },
+      {
+        "line": 119,
+        "name": "command",
+        "complexity": 7
+      },
+      {
+        "line": 132,
+        "name": "main",
+        "complexity": 1
+      }
+    ],
+    "scripts/tests/test_host_offline.py": [
+      {
+        "line": 15,
+        "name": "test_t835_default_and_explicit_commands_are_offline_and_locked",
+        "complexity": 2
+      },
+      {
+        "line": 22,
+        "name": "test_t835_reuses_only_the_exact_sdk_prefix",
+        "complexity": 1
+      },
+      {
+        "line": 31,
+        "name": "test_t835_sdk_flags_preserve_argument_boundaries_and_host_tools",
+        "complexity": 1
+      },
+      {
+        "line": 49,
+        "name": "test_t835_global_loader_overrides_are_rejected",
+        "complexity": 2
+      },
+      {
+        "line": 55,
+        "name": "test_t835_tool_adapter_executes_original_with_its_own_plugin_environment",
+        "complexity": 2
+      },
+      {
+        "line": 72,
+        "name": "test_t835_missing_original_tool_never_creates_a_replacement",
+        "complexity": 1
+      },
+      {
+        "line": 78,
+        "name": "test_t835_tool_publication_reuses_original_and_settles_failed_staging",
+        "complexity": 1
+      },
+      {
+        "line": 92,
+        "name": "test_t835_codecs_require_matching_cached_sdk_versions",
+        "complexity": 2
+      },
+      {
+        "line": 107,
+        "name": "test_t835_concurrent_tool_winner_is_validated_without_replacement",
+        "complexity": 1
+      },
+      {
+        "line": 111,
+        "name": "winner",
+        "complexity": 1
+      }
+    ],
+    "host/tests/tooling.rs": [
+      {
+        "line": 926,
+        "name": "t1212_offline_host_runner_regressions_run_in_normal_suite",
+        "complexity": 1
+      }
+    ]
+  }
+}

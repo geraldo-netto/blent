@@ -921,3 +921,19 @@ fn t817_fused_camera_output_stall_blocks_preview() {
         String::from_utf8_lossy(&output.stderr)
     );
 }
+
+#[test]
+fn t1212_offline_host_runner_regressions_run_in_normal_suite() {
+    let output = Command::new("python3")
+        .args(["-m", "unittest", "discover", "-s"])
+        .arg(repo().join("scripts/tests"))
+        .args(["-p", "test_host_offline.py"])
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
