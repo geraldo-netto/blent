@@ -394,8 +394,8 @@ container can supply the build environment; the installed binary still needs
 ABI-compatible FFmpeg shared libraries at runtime. `ten_bit` is not available
 on this path. The default FFmpeg subprocess build needs no FFmpeg headers.
 The optional build accepts `h264_vaapi_baseline` through a stock VAAPI
-hardware-frame adapter using `vaapi_device`. Other VAAPI profiles (including the
-legacy `vaapih264enc` alias), VP9 and AV1 remain rejected before capture setup.
+hardware-frame adapter using `vaapi_device`. Other VAAPI profiles, VP9 and AV1
+remain rejected before capture setup.
 The named Encoding GPU selector remains unavailable in this optional build;
 use an empty `encoding_gpu` and an explicit `vaapi_device` for this path.
 Compiling the feature does not establish hardware availability. The selected

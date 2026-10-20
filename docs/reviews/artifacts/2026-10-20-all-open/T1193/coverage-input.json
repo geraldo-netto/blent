@@ -1,0 +1,28 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent-config",
+    "--lib",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1193/coverage.lcov"
+  ],
+  "sources": {
+    "common/src/encoding.rs": "660c4ec73dabb56a4db43b6d99b140b5acbfad51ca71b5000facc715b0079799",
+    "common/src/model.rs": "a846cab8202ec88136684d8d7c6fa6b2f7ed62623ef8b316d67764eb6bf03582"
+  },
+  "source_matched_export": [
+    "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-cov",
+    "export",
+    "--format=lcov",
+    "--instr-profile=/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/blent.profdata",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent_config-3c91fd8c3226d586"
+  ],
+  "export_scope": "Only the current blent-config test executable; exclude stale unrelated workspace objects retained in the shared target."
+}

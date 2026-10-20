@@ -1431,7 +1431,7 @@ mod tests {
     fn t284_doctor_rejects_vaapi_even_when_ffmpeg_lists_it() {
         use super::*;
         let inventory = " V....D h264_vaapi H.264/AVC\n V....D hevc_vaapi HEVC\n";
-        for encoder in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
+        for encoder in ["h264_vaapi", "hevc_vaapi"] {
             let cfg = FileConfig {
                 encoder: encoder.into(),
                 ..Default::default()
@@ -1697,10 +1697,10 @@ mod tests {
     }
 
     #[test]
-    fn t313_doctor_accepts_the_cli_vaapi_alias() {
+    fn t313_doctor_accepts_current_cli_vaapi_profiles() {
         use super::*;
         let inventory = " V....D h264_vaapi H.264/AVC (VAAPI)\n V....D libx264 H.264/AVC\n";
-        for (encoder, failures) in [("h264_vaapi", 0), ("vaapih264enc", 0), ("hevc_vaapi", 1)] {
+        for (encoder, failures) in [("h264_vaapi", 0), ("hevc_vaapi", 1)] {
             let mut cfg = FileConfig {
                 encoder: encoder.into(),
                 ..Default::default()

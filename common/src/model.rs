@@ -50,7 +50,7 @@ pub fn slot_ports(video: u16, input: u16, slots: u32) -> Result<Vec<(u16, u16)>>
     Ok(ports)
 }
 
-/// Resolve selected profiles and the legacy alias to the stock FFmpeg name.
+/// Resolve current selectable profiles to the stock FFmpeg name.
 pub fn ffmpeg_encoder_name(name: &str) -> &str {
     crate::encoding::ffmpeg_name(name)
 }

@@ -22,7 +22,7 @@ mod tests {
         for name in ["h264_nvenc", "hevc_nvenc", "libx264", "h264_vaapi_baseline"] {
             assert!(validate_encoder_for_build(name).is_ok(), "T284: {name}");
         }
-        for name in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
+        for name in ["h264_vaapi", "hevc_vaapi"] {
             assert_eq!(
                 validate_encoder_for_build(name).is_ok(),
                 !cfg!(feature = "inproc-encoder"),
@@ -30,5 +30,6 @@ mod tests {
             );
         }
         assert!(validate_encoder_for_build("unknown").is_err());
+        assert!(validate_encoder_for_build("vaapih264enc").is_err());
     }
 }

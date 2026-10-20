@@ -102,24 +102,16 @@ pub const ENCODERS: [Encoder; 11] = [
     },
 ];
 
-pub fn canonical_name(name: &str) -> &str {
-    match name {
-        "vaapih264enc" => "h264_vaapi",
-        _ => name,
-    }
-}
-
 /// A selectable profile is not necessarily a distinct FFmpeg encoder.
 pub fn ffmpeg_name(name: &str) -> &str {
-    match canonical_name(name) {
+    match name {
         "h264_vaapi_baseline" => "h264_vaapi",
         other => other,
     }
 }
 
 pub fn find(name: &str) -> Option<&'static Encoder> {
-    let canonical = canonical_name(name);
-    ENCODERS.iter().find(|encoder| encoder.name == canonical)
+    ENCODERS.iter().find(|encoder| encoder.name == name)
 }
 
 pub const INPROC_VAAPI_UNSUPPORTED: &str = "VAAPI is unavailable in this in-process build for this profile: only h264_vaapi_baseline has a validated hardware-frame adapter. Build without --features inproc-encoder for other VAAPI profiles, or select libx264/NVENC.";
@@ -507,8 +499,8 @@ mod tests {
     }
 
     #[test]
-    fn t373_registry_preserves_aliases_and_adapter_capabilities() {
-        assert_eq!(find("vaapih264enc").unwrap().name, "h264_vaapi");
+    fn t373_registry_preserves_current_profiles_and_adapter_capabilities() {
+        assert!(find("vaapih264enc").is_none());
         assert!(find("unknown").is_none());
         for encoder in ENCODERS {
             let inproc = ["libx264", "h264_nvenc", "hevc_nvenc", "h264_vaapi_baseline"]
@@ -522,5 +514,63 @@ mod tests {
                 assert_eq!(profile.inproc_options().is_ok(), inproc);
             }
         }
+    }
+
+    #[test]
+    fn t1193_obsolete_encoder_alias_cannot_admit_a_profile() {
+        for name in [
+            "vaapih264enc",
+            "VAAPIH264ENC",
+            "vaapih264enc ",
+            "vaapih264enc\0",
+        ] {
+            assert!(
+                find(name).is_none(),
+                "T1193: obsolete encoder admitted: {name:?}"
+            );
+            assert!(!crate::supported_encoder(name));
+            assert!(Profile::new(name, 30, 1000, 18).is_err());
+            assert_eq!(
+                ffmpeg_name(name),
+                name,
+                "T1193: obsolete encoder silently translated"
+            );
+        }
+        for name in ["h264_vaapi", "h264_vaapi_baseline"] {
+            assert!(find(name).is_some());
+            assert!(Profile::new(name, 30, 1000, 18).is_ok());
+            assert_eq!(ffmpeg_name(name), "h264_vaapi");
+        }
+    }
+
+    #[test]
+    fn t1193_bounded_invalid_alias_variants_never_resolve() {
+        for padding in ['\0', ' ', '界'] {
+            for length in 0..=64 {
+                let padding = padding.to_string().repeat(length);
+                for name in [
+                    format!("{padding}vaapih264enc"),
+                    format!("vaapih264enc{padding}"),
+                ] {
+                    assert!(find(&name).is_none(), "T1193: {name:?}");
+                    assert!(Profile::new(&name, 30, 1000, 18).is_err());
+                    assert_eq!(ffmpeg_name(&name), name);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn t1193_obsolete_encoder_configuration_follows_current_unknown_value_policy() {
+        let mut config = crate::FileConfig {
+            encoder: "vaapih264enc".into(),
+            ..Default::default()
+        };
+        config.sanitize_requested();
+        assert_eq!(
+            config.encoder, "auto",
+            "T1193: legacy alias survived current validation"
+        );
+        assert!(!toml::to_string(&config).unwrap().contains("vaapih264enc"));
     }
 }

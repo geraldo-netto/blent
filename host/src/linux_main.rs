@@ -340,7 +340,7 @@ exit 1
         ) {
             return;
         }
-        for encoder in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
+        for encoder in ["h264_vaapi", "hevc_vaapi"] {
             for explicit in [false, true] {
                 let saved = config::FileConfig {
                     encoder: if explicit { "libx264" } else { encoder }.into(),

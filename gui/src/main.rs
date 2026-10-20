@@ -3071,7 +3071,6 @@ printf '%s' "$((existing + delta))" > "$count""#,
             "hevc_vaapi",
             "vp9_vaapi",
             "av1_vaapi",
-            "vaapih264enc",
         ] {
             app.cfg.encoder = name.into();
             app.cfg.bitrate = 20_000;
@@ -3081,7 +3080,14 @@ printf '%s' "$((existing + delta))" > "$count""#,
                 "T259: {name} control must be disabled"
             );
         }
-        for name in ["libx264", "h264_nvenc", "libvpx-vp9", "libaom-av1", "auto"] {
+        for name in [
+            "libx264",
+            "h264_nvenc",
+            "libvpx-vp9",
+            "libaom-av1",
+            "auto",
+            "vaapih264enc",
+        ] {
             app.cfg.encoder = name.into();
             assert_eq!(
                 app.cfg.bitrate, 20_000,

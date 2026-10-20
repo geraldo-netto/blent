@@ -52,7 +52,7 @@ async fn t284_vaapi_is_rejected_before_fifo_or_helper_creation() {
         );
         return;
     }
-    for encoder in ["h264_vaapi", "hevc_vaapi", "vaapih264enc"] {
+    for encoder in ["h264_vaapi", "hevc_vaapi"] {
         let mut manager = CaptureManager::new(CaptureConfig {
             encoder: encoder.into(),
             helper_path: "/nonexistent-t284-helper".into(),

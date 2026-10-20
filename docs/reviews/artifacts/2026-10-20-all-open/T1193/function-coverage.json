@@ -1,0 +1,25 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7, source-matched LLVM native LCOV counters",
+  "functions": [
+    {
+      "file": "common/src/encoding.rs",
+      "name": "ffmpeg_name",
+      "first": 106,
+      "last": 111,
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "common/src/encoding.rs",
+      "name": "find",
+      "first": 113,
+      "last": 115,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}
