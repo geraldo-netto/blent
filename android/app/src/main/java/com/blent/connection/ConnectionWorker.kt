@@ -55,6 +55,11 @@ internal sealed interface ConnectionWorkerCommand {
     }
 
 }
+/** Terminal classification grants no authority: original owners still validate
+ * exact leases and native completion. Ordinary consent cannot cross Stop. */
+internal fun ConnectionWorkerCommand.isConsumerRetirement(): Boolean =
+    this is ConnectionWorkerCommand.CameraConsumerRetired || this is ConnectionWorkerCommand.AudioConsumerRetired
+
 internal enum class ConnectionWorkerPhase { OPENING, WAITING_APPROVAL, AUTHENTICATED, CLOSING }
 internal sealed interface ConnectionWorkerEvent {
     /** Claimed peer and stored trust are presentation metadata, never TLS proof. */

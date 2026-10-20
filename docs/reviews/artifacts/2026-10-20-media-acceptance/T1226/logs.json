@@ -1,0 +1,14 @@
+{
+  "red.log.gz": {
+    "raw_bytes": 3476,
+    "raw_sha256": "9c416bfa33c552a9cb1012a99fd90253520541ff9a4b9ebce1995756609be630"
+  },
+  "release.log.gz": {
+    "raw_bytes": 3211,
+    "raw_sha256": "dc4c0e3629376b1724bd78161941b9c9f5f2f922dec00f6dc31bfdf5abd65fef"
+  },
+  "final.log.gz": {
+    "raw_bytes": 2310,
+    "raw_sha256": "5c03698afd3cd81663455de07c72c4b7526799586d61324ff1c8b5a89d5dee70"
+  }
+}

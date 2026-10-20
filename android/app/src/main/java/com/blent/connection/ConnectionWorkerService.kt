@@ -79,7 +79,7 @@ open class ConnectionWorkerService : Service() {
         val value = ConnectionWorkerCodec.command(ConnectionWorkerIpc.bytes(data))
         ConnectionWorkerIpc.end(data)
         check(admitted.get() && !finished.get())
-        check(!stopped.get() || value is ConnectionWorkerCommand.CameraConsumerRetired)
+        check(!stopped.get() || value.isConsumerRetirement())
         check(commands.trySend(value).isSuccess)
     }
     private suspend fun execute(remote: IBinder, create: () -> ConnectionWorker) {
@@ -108,7 +108,7 @@ open class ConnectionWorkerService : Service() {
     private suspend fun controls(owned: ConnectionWorker) {
         try {
             for (value in commands) {
-                if (stopped.get() && value !is ConnectionWorkerCommand.CameraConsumerRetired) continue
+                if (stopped.get() && !value.isConsumerRetirement()) continue
                 check(owned.command(value)) { "Connection control backlog exceeded" }
             }
         } catch (error: Exception) { if (error !is CancellationException) terminate() }

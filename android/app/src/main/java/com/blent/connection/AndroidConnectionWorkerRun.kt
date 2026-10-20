@@ -124,7 +124,7 @@ internal class AndroidConnectionWorkerRun(
     }
     override fun command(value: ConnectionWorkerCommand): Boolean {
         val encoded = ConnectionWorkerCodec.command(value)
-        if (value is ConnectionWorkerCommand.CameraConsumerRetired) return cleanupCommand(encoded)
+        if (value.isConsumerRetirement()) return cleanupCommand(encoded)
         return !stopped.get() && commands.trySend(encoded).isSuccess
     }
     /** Only retained proof can use this independent bounded native relay. It

@@ -45,10 +45,8 @@ internal class AndroidConnectionWorker(
     private fun signal() { wake.trySend(Unit) }
     private fun current(): Boolean = !stopping.get()
     override fun command(value: ConnectionWorkerCommand): Boolean =
-        (current() || terminal(value)) && state.get() != 2 &&
+        (current() || value.isConsumerRetirement()) && state.get() != 2 &&
             commands.trySend(value).isSuccess.also { if (it) signal() }
-    private fun terminal(value: ConnectionWorkerCommand): Boolean =
-        value is ConnectionWorkerCommand.CameraConsumerRetired || value is ConnectionWorkerCommand.AudioConsumerRetired
     override fun cancel() { stopping.set(true); signal() }
 
     private fun create() {
@@ -72,7 +70,7 @@ internal class AndroidConnectionWorker(
     private fun controls(owned: ConnectionRuntime) {
         repeat(32) {
             val command = commands.tryReceive().getOrNull() ?: return
-            if (current() || terminal(command)) owned.command(command)
+            if (current() || command.isConsumerRetirement()) owned.command(command)
         }
     }
     private fun events(owned: ConnectionRuntime) {

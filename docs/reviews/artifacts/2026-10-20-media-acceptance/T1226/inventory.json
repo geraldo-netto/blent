@@ -1,0 +1,1612 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 6,
+    "last": 27,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 6
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "setupLimits",
+    "first": 19,
+    "last": 21,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 19
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "waitLimits",
+    "first": 22,
+    "last": 26,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 22
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 29,
+    "last": 29,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 29
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 30,
+    "last": 30,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 30
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 32,
+    "last": 35,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 32
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 36,
+    "last": 39,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 36
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 40,
+    "last": 43,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 40
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 45,
+    "last": 47,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 45
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 48,
+    "last": 51,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 48
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 52,
+    "last": 55,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 52
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "isConsumerRetirement",
+    "first": 58,
+    "last": 61,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 58
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<clinit>",
+    "first": 63,
+    "last": 63,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 63
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 65,
+    "last": 66,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 65
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 67,
+    "last": 67,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 67
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 68,
+    "last": 68,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 68
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 69,
+    "last": 70,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 69
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 73,
+    "last": 73,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 73
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 74,
+    "last": 76,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 74
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 77,
+    "last": 78,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 77
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 79,
+    "last": 79,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 79
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 80,
+    "last": 82,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 80
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 85,
+    "last": 85,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 85
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "get:lease",
+    "first": 85,
+    "last": 85,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 85
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 86,
+    "last": 86,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 86
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "get:lease",
+    "first": 86,
+    "last": 86,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 86
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 87,
+    "last": 89,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 87
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 90,
+    "last": 91,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 90
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "<init>",
+    "first": 92,
+    "last": 93,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 92
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "tabletConnectionRun",
+    "first": 13,
+    "last": 19,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 13
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<init>",
+    "first": 21,
+    "last": 148,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 21
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 34,
+    "last": 34,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 34
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "signal",
+    "first": 45,
+    "last": 45,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 45
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "current",
+    "first": 46,
+    "last": 46,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 46
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "command",
+    "first": 47,
+    "last": 49,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 47
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 49,
+    "last": 49,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 49
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "cancel",
+    "first": 50,
+    "last": 50,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 50
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "create",
+    "first": 52,
+    "last": 59,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 52
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "execute",
+    "first": 60,
+    "last": 69,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 60
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 61,
+    "last": 61,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 61
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 67,
+    "last": 67,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 67
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "controls",
+    "first": 70,
+    "last": 75,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 70
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 71,
+    "last": 74,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 72
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "events",
+    "first": 76,
+    "last": 82,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 76
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 77,
+    "last": 81,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 78
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "step",
+    "first": 83,
+    "last": 94,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 83
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 91,
+    "last": 91,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 91
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 92,
+    "last": 92,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 92
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "display",
+    "first": 95,
+    "last": 101,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 95
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 98,
+    "last": 98,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 98
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 100,
+    "last": 100,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 100
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "camera",
+    "first": 102,
+    "last": 105,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 102
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "audio",
+    "first": 106,
+    "last": 110,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 106
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "waitWake",
+    "first": 111,
+    "last": 116,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 111
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 115,
+    "last": 115,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 115
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "cleanup",
+    "first": 117,
+    "last": 129,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 117
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 119,
+    "last": 127,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 120
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "finish",
+    "first": 130,
+    "last": 139,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 130
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 134,
+    "last": 134,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 134
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "retire",
+    "first": 140,
+    "last": 147,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 140
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 143,
+    "last": 143,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 143
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 143,
+    "last": 145,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 144
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "<lambda>",
+    "first": 146,
+    "last": 146,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 146
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<init>",
+    "first": 18,
+    "last": 268,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 18
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 24,
+    "last": 24,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 24
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<init>",
+    "first": 32,
+    "last": 40,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 32
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 34,
+    "last": 34,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 34
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<clinit>",
+    "first": 42,
+    "last": 42,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 42
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 78,
+    "last": 81,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 79
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<init>",
+    "first": 82,
+    "last": 97,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 82
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "onTransact",
+    "first": 83,
+    "last": 96,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 83
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 93,
+    "last": 93,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 93
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "onServiceConnected",
+    "first": 99,
+    "last": 102,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 99
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "onServiceDisconnected",
+    "first": 103,
+    "last": 103,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 103
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "onBindingDied",
+    "first": 104,
+    "last": 104,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 104
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "onNullBinding",
+    "first": 105,
+    "last": 105,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 105
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "connected",
+    "first": 107,
+    "last": 114,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 107
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 108,
+    "last": 111,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 109
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "disconnected",
+    "first": 115,
+    "last": 118,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 115
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "fail",
+    "first": 119,
+    "last": 124,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 119
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "command",
+    "first": 125,
+    "last": 129,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 125
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "cleanupCommand",
+    "first": 130,
+    "last": 141,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 130
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 132,
+    "last": 141,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 133
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 137,
+    "last": 137,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 137
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "cleanupControls",
+    "first": 142,
+    "last": 151,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 142
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "execute",
+    "first": 152,
+    "last": 163,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 152
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 153,
+    "last": 153,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 153
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 155,
+    "last": 159,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 156
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 156,
+    "last": 156,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 156
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 157,
+    "last": 157,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 157
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 160,
+    "last": 160,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 160
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "transmit",
+    "first": 164,
+    "last": 182,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 164
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 167,
+    "last": 167,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 167
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "start",
+    "first": 183,
+    "last": 190,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 183
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "bind",
+    "first": 191,
+    "last": 198,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 191
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 196,
+    "last": 196,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 196
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "observeOperation",
+    "first": 199,
+    "last": 202,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 199
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 200,
+    "last": 200,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 200
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "observe",
+    "first": 203,
+    "last": 214,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 203
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 205,
+    "last": 205,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 205
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 208,
+    "last": 208,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 208
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 211,
+    "last": 211,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 211
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "expected",
+    "first": 215,
+    "last": 218,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 215
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "cancel",
+    "first": 219,
+    "last": 226,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 219
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 222,
+    "last": 225,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 223
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 224,
+    "last": 224,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 224
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "stopAndExit",
+    "first": 227,
+    "last": 237,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 227
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 229,
+    "last": 229,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 229
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 229,
+    "last": 229,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 229
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 231,
+    "last": 233,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 232
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 232,
+    "last": 232,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 232
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 232,
+    "last": 232,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 232
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 232,
+    "last": 232,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 232
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 235,
+    "last": 235,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 235
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 235,
+    "last": 235,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 235
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "retire",
+    "first": 238,
+    "last": 251,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 238
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 241,
+    "last": 248,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 242
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "requiresDeath",
+    "first": 252,
+    "last": 255,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 252
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 252,
+    "last": 255,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 253
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "awaitDeath",
+    "first": 256,
+    "last": 261,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 256
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "clean",
+    "first": 262,
+    "last": 267,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 262
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 262,
+    "last": 267,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 263
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 263,
+    "last": 266,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 264
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "<lambda>",
+    "first": 266,
+    "last": 266,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 266
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<init>",
+    "first": 13,
+    "last": 162,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 13
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 30,
+    "last": 30,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 30
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "createWorker",
+    "first": 32,
+    "last": 33,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 32
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 33,
+    "last": 33,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 33
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "createTrustWorker",
+    "first": 34,
+    "last": 35,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 34
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 35,
+    "last": 35,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 35
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "terminate",
+    "first": 36,
+    "last": 36,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 36
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<init>",
+    "first": 38,
+    "last": 45,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 38
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "onTransact",
+    "first": 39,
+    "last": 44,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 39
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "command",
+    "first": 46,
+    "last": 57,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 46
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "start",
+    "first": 58,
+    "last": 67,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 58
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 65,
+    "last": 65,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 65
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 65,
+    "last": 65,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 65
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "startTrust",
+    "first": 68,
+    "last": 77,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 68
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 75,
+    "last": 75,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 75
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 75,
+    "last": 75,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 75
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "control",
+    "first": 78,
+    "last": 84,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 78
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "execute",
+    "first": 85,
+    "last": 103,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 85
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 89,
+    "last": 89,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 89
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 93,
+    "last": 93,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 93
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 98,
+    "last": 101,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 99
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "link",
+    "first": 104,
+    "last": 107,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 104
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "controls",
+    "first": 108,
+    "last": 115,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 108
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 112,
+    "last": 112,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 112
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "deliver",
+    "first": 116,
+    "last": 119,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 116
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "publish",
+    "first": 120,
+    "last": 125,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 120
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 123,
+    "last": 123,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 123
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "cancelNative",
+    "first": 126,
+    "last": 128,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 126
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "finish",
+    "first": 129,
+    "last": 137,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 129
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 131,
+    "last": 134,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 132
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "stop",
+    "first": 138,
+    "last": 145,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 138
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 141,
+    "last": 144,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 142
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "onBind",
+    "first": 146,
+    "last": 152,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 146
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "<lambda>",
+    "first": 149,
+    "last": 149,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 149
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "onStartCommand",
+    "first": 153,
+    "last": 153,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 153
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "onUnbind",
+    "first": 154,
+    "last": 154,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 154
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "onDestroy",
+    "first": 155,
+    "last": 161,
+    "language": "kotlin",
+    "nested": [],
+    "entry": 0,
+    "body": 155
+  }
+]

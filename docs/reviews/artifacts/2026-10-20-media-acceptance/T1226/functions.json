@@ -1,0 +1,140 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+    "name": "isConsumerRetirement",
+    "line": 58,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+        "owner": "com/blent/connection/ConnectionWorkerKt",
+        "name": "isConsumerRetirement",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerCommand;)Z",
+        "line": 61,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "command",
+    "line": 47,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+        "owner": "com/blent/connection/AndroidConnectionWorker",
+        "name": "command",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerCommand;)Z",
+        "line": 48,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+    "name": "controls",
+    "line": 70,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorker.kt",
+        "owner": "com/blent/connection/AndroidConnectionWorker",
+        "name": "controls",
+        "signature": "(Lcom/blent/connection/ConnectionRuntime;)V",
+        "line": 71,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+    "name": "command",
+    "line": 125,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/AndroidConnectionWorkerRun.kt",
+        "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+        "name": "command",
+        "signature": "(Lcom/blent/connection/ConnectionWorkerCommand;)Z",
+        "line": 126,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "control",
+    "line": 78,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+        "owner": "com/blent/connection/ConnectionWorkerService",
+        "name": "control",
+        "signature": "(Landroid/os/Parcel;)V",
+        "line": 79,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "controls",
+    "line": 108,
+    "language": "kotlin",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+        "owner": "com/blent/connection/ConnectionWorkerService",
+        "name": "controls",
+        "signature": "(Lcom/blent/connection/ConnectionWorker;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 109,
+        "covered": 6,
+        "total": 6
+      }
+    ]
+  }
+]

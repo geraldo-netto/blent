@@ -1,0 +1,8 @@
+{
+  "apk": "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1226/blent-current.apk",
+  "sha256": "ce12280e4e00d9966c60fbb2eebe5859b3d88945053bab1744e421ea1036fa9b",
+  "certificate_sha256": "1b34ed115e476f4d178b49f6076cf9ed6cc07d474f9230ec952bc97bbba70400",
+  "application_id": "io.github.geraldo_netto.blent",
+  "debuggable": false,
+  "installed": false
+}

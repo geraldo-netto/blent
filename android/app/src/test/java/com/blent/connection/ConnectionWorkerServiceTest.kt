@@ -254,6 +254,30 @@ class ConnectionWorkerServiceTest {
         } finally { release.complete(Unit); controller.destroy() }
     }
 
+    @Test fun t1226PrivateServiceRelaysBothTerminalAudioProofsWhileRetiring() = runBlocking<Unit> {
+        for (resource in listOf(ConnectionManagement.Resource.MICROPHONE, ConnectionManagement.Resource.SPEAKERS)) {
+            val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
+            val service = controller.get(); val release = CompletableDeferred<Unit>()
+            val owned = Worker(release = release); val events = Events()
+            service.factory = { _, _ -> owned }
+            try {
+                val binder = bind(service); start(binder, events); owned.entered.await()
+                ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.STOP, 7)
+                until { owned.retired.get() == 1 }
+                val proof = ConnectionWorkerCommand.AudioConsumerRetired(audioLease(resource))
+                assertThrows(IllegalStateException::class.java) {
+                    ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.CONTROL, 8, ConnectionWorkerCodec.command(proof))
+                }
+                assertTrue(owned.commands.isEmpty())
+                ConnectionWorkerIpc.command(binder, ConnectionWorkerIpc.CONTROL, 7, ConnectionWorkerCodec.command(proof))
+                until { owned.commands.contains(proof) }
+                assertEquals("T1226 retained cleanup must not kill its original process", 0, service.exits.get())
+                assertTrue(events.values.none { it is ConnectionWorkerEvent.Ended })
+                release.complete(Unit); until { events.values.any { it is ConnectionWorkerEvent.Ended } }
+            } finally { release.complete(Unit); controller.destroy() }
+        }
+    }
+
     @Test fun t941StoppingServiceDropsQueuedConsentButPreservesExactGenerationProof() = runBlocking<Unit> {
         val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
         val service = controller.get(); val release = CompletableDeferred<Unit>()
