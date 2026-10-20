@@ -9,12 +9,11 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 @Config(sdk = [27, 34], qualifiers = "w960dp-h600dp-land")
 @LooperMode(LooperMode.Mode.PAUSED)
 class SettingsControlContractTest {

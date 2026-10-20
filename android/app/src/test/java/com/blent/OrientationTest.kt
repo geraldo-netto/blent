@@ -11,13 +11,12 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.util.ReflectionHelpers
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 // T539: foreground MainActivity owns asynchronous camera state. Isolate its
 // Compose dispatcher from rule.setContent tests after Robolectric resets loopers.
 @Config(sdk = [27, 34], instrumentedPackages = ["androidx.compose.ui.platform"])

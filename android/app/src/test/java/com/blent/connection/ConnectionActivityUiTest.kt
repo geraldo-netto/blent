@@ -8,13 +8,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import org.robolectric.util.ReflectionHelpers
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 @Config(sdk = [27, 34], qualifiers = "w960dp-h900dp-land", instrumentedPackages = ["androidx.compose.ui.platform"])
 @LooperMode(LooperMode.Mode.PAUSED)
 class ConnectionActivityUiTest {

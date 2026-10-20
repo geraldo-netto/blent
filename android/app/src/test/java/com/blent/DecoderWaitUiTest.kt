@@ -6,10 +6,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.Assert.*
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 @Config(sdk = [27, 34], qualifiers = "w1280dp-h800dp")
 class DecoderWaitUiTest {
     @get:Rule val compose = createComposeRule()

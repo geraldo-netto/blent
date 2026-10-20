@@ -8,14 +8,13 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 
 @OptIn(ExperimentalTestApi::class)
-@RunWith(RobolectricTestRunner::class)
-// T1076: ordinary setContent fixtures use the normal UI sandbox. Orientation
-// retains separate Compose platform instrumentation for real Activity teardown.
+@RunWith(com.blent.ComposeFixtureRunner::class)
+// T1076/T1171: ordinary controls own their dispatcher sandbox. Actual
+// Activity teardown retains its separate full Compose platform instrumentation.
 @Config(sdk = [27, 34], qualifiers = "w960dp-h900dp-land")
 @LooperMode(LooperMode.Mode.PAUSED)
 class ConnectionControlsTest {

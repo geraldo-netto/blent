@@ -9,7 +9,7 @@ import org.robolectric.*
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 @Config(sdk = [27, 34], instrumentedPackages = ["androidx.compose.ui.platform"])
 @LooperMode(LooperMode.Mode.PAUSED)
 class AudioActivityAttachmentTest {

@@ -7,14 +7,13 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowDisplayManager
 import org.robolectric.util.ReflectionHelpers
 import org.robolectric.util.ReflectionHelpers.ClassParameter
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 // T539: Activity-created Compose dispatchers must not outlive their test looper.
 @Config(sdk = [27, 34], instrumentedPackages = ["androidx.compose.ui.platform"])
 class DisplaySettingsTest {

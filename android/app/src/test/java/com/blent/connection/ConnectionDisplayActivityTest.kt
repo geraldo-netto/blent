@@ -6,13 +6,12 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import org.robolectric.util.ReflectionHelpers
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 @Config(sdk = [27, 34], instrumentedPackages = ["androidx.compose.ui.platform"])
 @LooperMode(LooperMode.Mode.PAUSED)
 class ConnectionDisplayActivityTest {

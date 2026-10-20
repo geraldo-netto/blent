@@ -8,7 +8,6 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
@@ -16,7 +15,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 // Keep Compose dispatcher caches separate from unrelated reset Robolectric loopers.
 @Config(sdk = [27, 34], qualifiers = "w960dp-h600dp-land",
     instrumentedPackages = ["androidx.compose.ui.platform"])

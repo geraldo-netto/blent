@@ -7,11 +7,10 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 @Config(sdk = [27, 34], instrumentedPackages = ["androidx.compose.ui.platform"])
 class ConnectionActivityTest {
     @Test fun t1099SavedLimitsFollowAccessoryLaunchAndNextAttachAcrossRecreation() = kotlinx.coroutines.runBlocking {

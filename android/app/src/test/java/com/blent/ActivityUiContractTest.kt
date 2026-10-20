@@ -12,13 +12,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import org.robolectric.util.ReflectionHelpers
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(com.blent.ComposeFixtureRunner::class)
 // The Activity installs Compose during onCreate, unlike rule.setContent tests.
 // Keep its AndroidUiDispatcher in a separate instrumented Robolectric sandbox:
 // reusing that dispatcher across reset loopers poisons later Compose tests.
