@@ -1,0 +1,18 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt": "d83a3e48a67018fb7d85f5bb24b76f319ff787cb5267071ac160ff380bf49178",
+  "android/app/src/main/java/com/blent/connection/ConnectionMediaAccess.kt": "2bcf73e2d2990cb6af1f5872b50b11f224e198f3c179ea85365a0ac383686e14",
+  "android/app/src/main/java/com/blent/connection/ConnectionMediaConsumerOwner.kt": "0a5513ce9248fc6993a5f6d039349235f746795b24397f0a06c653403d8d7720",
+  "android/app/src/main/java/com/blent/connection/ConnectionMediaConsumerSession.kt": "c9306f10f68985c6376f61daf67c661551b762d4d90ca455029a32df7e181588",
+  "android/app/src/main/java/com/blent/connection/ConnectionAccess.kt": "48f352b3f2b7d9b58470995e3713060bd17b46b64558f566c7504795b12e07fa",
+  "android/app/src/main/java/com/blent/MediaConsentPolicy.kt": "00a61f1382bd36793be5e76e3696309325c9b2e9ccf67c52f951791ead733a5e",
+  "android/app/src/main/java/com/blent/MediaConsentObservation.kt": "a2e0148d634487504b9ab0707766ee393134e83fad7f86987c881f5517d350df",
+  "android/app/src/main/java/com/blent/MediaConsumerObservation.kt": "b6db57b421b19435c891f7bd4bae39f73e793261eaf64a4e30a2fa1598867033",
+  "android/app/src/main/java/com/blent/MediaConsumerSelection.kt": "2cd2fa96b4566c9ca503a1503d1a4868be14fc6e9f14a9952bb9e1d9178d614f",
+  "host/src/media_connection.rs": "bef2a6305562e7550345681a8ba28b0dc938e63bbbbc36a49419510129956c71",
+  "host/src/media_registration.rs": "14929414bbf04142f7e782a04fb7b8e1a705cc4e6bb3abb12054881ce739c1b5",
+  "host/src/broker/linux/registration_client.rs": "ad2f3bdaa6a88c49abf0813a0651929e1e6cf4b2f8fb149085b37d83e385c090",
+  "host/src/broker/linux/registration_client/worker.rs": "7063d00858d9db6a3a60e7005111837daa37225d71e4b3d37aa03e44e2adfcc6",
+  "common/src/connection/registration_client.rs": "b4ff1372c9305d8856cd9c683b846ef628857cb05c87921bef1eb2b35ac76418",
+  "android/app/src/test/java/com/blent/connection/ConnectionReconnectStopTest.kt": "9a186a86a1af3e314420d30d605d500ccaf4579ba401fbe1732a39bfee0a2439",
+  "android/app/src/test/java/com/blent/connection/ConnectionStopInterleavingsTest.kt": "3e966ddf62adf7fb2324c2db3ce22e4d1b29a29feaa44a0977c970903dae9f4b"
+}

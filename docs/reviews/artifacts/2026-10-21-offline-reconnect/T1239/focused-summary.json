@@ -1,0 +1,30 @@
+[
+  {
+    "name": "com.blent.connection.ConnectionStopInterleavingsTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionStaleControlFailureTest",
+    "tests": "24",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionReconnectStopTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionBindingTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  }
+]

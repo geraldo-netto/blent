@@ -1,0 +1,10 @@
+{
+  "apk": "/backups/disk2/blent-work/2026-10-21-offline-reconnect/T1239/blent-offline-reconnect-unsigned.apk",
+  "bytes": 2203039,
+  "sha256": "770982ad49933e5e724fb6a16d8f822a5df0e9272190ca2a492f94faa9f6207b",
+  "signed": false,
+  "installed": false,
+  "network": "Gradle offline in a separate user/network namespace with loopback only",
+  "source_fix_commit": "8af17124",
+  "limits": "Default local signing configuration absent; original installed signed APK unchanged; no new signing key created"
+}
