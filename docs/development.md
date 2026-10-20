@@ -701,5 +701,8 @@ it never silently truncates timestamp history. Increase the cap for longer/faste
 trials when memory permits. Stored timestamps cost 8 bytes each (64 KiB by default,
 at most 8 MiB), plus allocator/JSON overhead. The compact timestamp array requires
 at most `21 * samples + 2` bytes including brackets. No camera frame is stored in
-this history. Duration still has its independent 1–30 second limit. Native probe
-integration/retirement work remains tracked separately in T1189 until verified.
+this history. Duration still has its independent 1–30 second limit. Current probe
+decoder integration and original native retirement have permanent automated
+[verification](reviews/artifacts/2026-10-20-all-open/T1189/README.md).
+Physical camera acceptance remains separate; identity-safe ADB mapping removal
+still requires T1090's missing native contract or ownership decision.
