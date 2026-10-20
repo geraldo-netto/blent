@@ -1,6 +1,6 @@
 """T841: live retirement owners must export strict, unmodified LLVM counters."""
-import json
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import tempfile
@@ -27,9 +27,13 @@ class RetirementCountersTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='blent-t841-') as directory:
             work = Path(directory)
             source = work / 'probe.rs'
+            # T1220: compile current bytes with their original child-module layout.
+            original = ROOT / 'common/src/retirement.rs'
+            shutil.copyfile(original, work / 'retirement.rs')
+            shutil.copytree(ROOT / 'common/src/retirement', work / 'retirement')
             source.write_text('extern crate self as tracing;\n'
                               '#[macro_export] macro_rules! error { ($($t:tt)*) => {} }\n'
-                              f'#[path = {json.dumps(str(ROOT / "common/src/retirement.rs"))}] mod retirement;\n'
+                              'mod retirement;\n'
                               'fn main() {\n'
                               '    let pool = retirement::Pool::new(1).unwrap();\n'
                               '    assert_eq!(pool.capacity(), 1);\n'
@@ -38,6 +42,7 @@ class RetirementCountersTest(unittest.TestCase):
                               '}\n')
             binary = work / ('probe' + suffix)
             run('rustc', '--edition=2021', '-Awarnings', '-Cinstrument-coverage',
+                f'--remap-path-prefix={work}={ROOT / "common/src"}',
                 str(source), '-o', str(binary))
             raw, profile, lcov = work / 'raw.profraw', work / 'data.profdata', work / 'report.lcov'
             run(str(binary), env={**os.environ, 'LLVM_PROFILE_FILE': str(raw)})
@@ -47,6 +52,8 @@ class RetirementCountersTest(unittest.TestCase):
             lcov.write_text(export.stdout)
             if evidence := os.environ.get('BLENT_T841_LCOV'):
                 Path(evidence).write_text(export.stdout)
+            self.assertEqual(original.read_bytes(), (work / 'retirement.rs').read_bytes(),
+                             'T1220 source changed during native collection')
             counters = {}
             readers.lcov(lcov, ROOT, counters)
             self.assertIn('common/src/retirement.rs', counters)
