@@ -1,0 +1,1300 @@
+{
+  "functions": [
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionProcessLaunch;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+      "covered": 32,
+      "total": 32,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionProcessLaunch;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/connection/AndroidConnectionWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;JJLjava/lang/Long;Ljava/lang/Long;Lcom/blent/WorkerGenerations;Lkotlinx/coroutines/CoroutineDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$wsListener$1",
+      "method": "onClosing",
+      "descriptor": "(Lokhttp3/WebSocket;ILjava/lang/String;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$wsListener$1",
+      "method": "onClosed",
+      "descriptor": "(Lokhttp3/WebSocket;ILjava/lang/String;)V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$wsListener$1",
+      "method": "onFailure",
+      "descriptor": "(Lokhttp3/WebSocket;Ljava/lang/Throwable;Lokhttp3/Response;)V",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$receive$1",
+      "method": "invoke",
+      "descriptor": "()Ljava/lang/Boolean;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$receive$2",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/DisplayRoutes;JLkotlin/jvm/functions/Function0;)V",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/DisplayRoutes;JLkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "start",
+      "descriptor": "()V",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver",
+      "method": "stop",
+      "descriptor": "()V",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$1$1$1",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/DisplaySession;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlEpoch",
+      "method": "<init>",
+      "descriptor": "(J)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlEpoch",
+      "method": "<init>",
+      "descriptor": "(JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlEpoch",
+      "method": "acquire",
+      "descriptor": "()Z",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlEpoch",
+      "method": "revoke",
+      "descriptor": "()V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlEpoch",
+      "method": "available",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlEpoch",
+      "method": "snapshot",
+      "descriptor": "()Lcom/blent/ControlNotice;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlEpoch",
+      "method": "current",
+      "descriptor": "(Lcom/blent/ControlNotice;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/TouchCapture",
+      "method": "<init>",
+      "descriptor": "(Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/TouchCapture",
+      "method": "<init>",
+      "descriptor": "(Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/TouchCapture",
+      "method": "getConnectionSnapshot$app_debug",
+      "descriptor": "()Lcom/blent/ControlNotice;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/TouchCapture",
+      "method": "isCurrentConnection$app_debug",
+      "descriptor": "(Lcom/blent/ControlNotice;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/TouchCapture",
+      "method": "getSettingsSnapshot$app_debug",
+      "descriptor": "()Lcom/blent/ControlNotice;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/TouchCapture",
+      "method": "isCurrentSettings$app_debug",
+      "descriptor": "(Lcom/blent/ControlNotice;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RejectedStreamSettings",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;IILcom/blent/ControlNotice;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RejectedStreamSettings",
+      "method": "getRequestSnapshot",
+      "descriptor": "()Lcom/blent/ControlNotice;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3$create$1",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/Object;Lcom/blent/ControlInputState;Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;)V",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/Object;Lcom/blent/ControlInputState;Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "getConnectionSnapshot",
+      "descriptor": "()Lcom/blent/ControlNotice;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "isCurrentConnection",
+      "descriptor": "(Lcom/blent/ControlNotice;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "getSettingsSnapshot",
+      "descriptor": "()Lcom/blent/ControlNotice;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "isCurrentSettings",
+      "descriptor": "(Lcom/blent/ControlNotice;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "applySettingsRejection",
+      "descriptor": "(Lorg/json/JSONObject;)V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "connectWebSocket",
+      "descriptor": "()V",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "scheduleReconnect",
+      "descriptor": "()V",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "sendConfig",
+      "descriptor": "(II)V",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "sendRendered",
+      "descriptor": "(IILjava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "sendRendered$default",
+      "descriptor": "(Lcom/blent/ControlSession;IILjava/lang/String;ILjava/lang/Object;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "sendRendered",
+      "descriptor": "(Lcom/blent/RenderAcknowledgement;)V",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "enqueue",
+      "descriptor": "(Lorg/json/JSONObject;Ljava/lang/Long;)Z",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "enqueue$default",
+      "descriptor": "(Lcom/blent/ControlSession;Lorg/json/JSONObject;Ljava/lang/Long;ILjava/lang/Object;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession",
+      "method": "disconnect",
+      "descriptor": "()V",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$4",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$6",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/ResourceRetirement;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$5",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$1$1",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/WorkerEvent;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$2$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$statusUpdates$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$4$2",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$2",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/RejectedStreamSettings;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$1",
+      "method": "invoke",
+      "descriptor": "(I)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLkotlin/jvm/functions/Function3;)V",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "replace",
+      "descriptor": "()V",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "receive",
+      "descriptor": "(JLcom/blent/WorkerEvent;)V",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;J)V",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function4;Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getState",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getEndpoint",
+      "descriptor": "()Lcom/blent/CameraEndpoint;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "setEndpoint",
+      "descriptor": "(Lcom/blent/CameraEndpoint;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getSelected",
+      "descriptor": "()Lcom/blent/CameraLens;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "setSelected",
+      "descriptor": "(Lcom/blent/CameraLens;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getStatus",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "setStatus",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getBackgroundRunning",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "getPermissionPending",
+      "descriptor": "()Lcom/blent/CameraCapturePermission;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "start",
+      "descriptor": "()V",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "useTarget",
+      "descriptor": "(Lcom/blent/CameraCaptureTarget;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "applyHost",
+      "descriptor": "(Lcom/blent/CameraEndpoint;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stopTarget",
+      "descriptor": "(Lcom/blent/CameraCaptureTarget;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "choose",
+      "descriptor": "(Lcom/blent/CameraLens;)V",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "hasPermission",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "permissionChanged",
+      "descriptor": "()V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "allowCapture",
+      "descriptor": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;)Z",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "permissionResult",
+      "descriptor": "(ZLcom/blent/CameraCapturePermission;)V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "permissionResult$default",
+      "descriptor": "(Lcom/blent/CameraBinding;ZLcom/blent/CameraCapturePermission;ILjava/lang/Object;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "launch",
+      "descriptor": "(Lcom/blent/CameraEndpoint;Lcom/blent/CameraLens;J)V",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "idleStatus",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stopCapture",
+      "descriptor": "()V",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "background",
+      "descriptor": "(Z)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stopBackground",
+      "descriptor": "()V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "stop",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "ownsBackground",
+      "descriptor": "(Ljava/lang/String;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "backgroundStopped",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding",
+      "method": "shutdown",
+      "descriptor": "()V",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$start$2$1",
+      "method": "emit",
+      "descriptor": "(Lcom/blent/CameraEndpoint;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$statusUpdates$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$2$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/SessionCoordinator$connectSettingsCallbacks$1$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/SessionCoordinator",
+      "method": "connectSettingsCallbacks",
+      "descriptor": "()V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/SessionCoordinator",
+      "method": "withCurrentControl",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;)V",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AndroidWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/MediaTask;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;JJLcom/blent/WorkerGenerations;)V",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AndroidWorkerRun",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lcom/blent/MediaTask;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;JJLcom/blent/WorkerGenerations;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$start$2$1",
+      "method": "emit",
+      "descriptor": "(Lcom/blent/AudioEndpoint;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Lkotlinx/coroutines/flow/MutableStateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;J)V",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/AudioPreferences;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Lkotlinx/coroutines/flow/MutableStateFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getDirection",
+      "descriptor": "()I",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getLabel",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getState",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getPreferences",
+      "descriptor": "()Lcom/blent/AudioPreferences;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setPreferences",
+      "descriptor": "(Lcom/blent/AudioPreferences;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getStatus",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setStatus",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getSharing",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setSharing",
+      "descriptor": "(Z)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getPermissionPending",
+      "descriptor": "()Lcom/blent/AudioCapturePermission;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "getPending",
+      "descriptor": "()Lcom/blent/AudioEndpoint;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "setPending",
+      "descriptor": "(Lcom/blent/AudioEndpoint;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "hasPermission",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "start",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "useTarget",
+      "descriptor": "(Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "startTarget",
+      "descriptor": "(Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stopTarget",
+      "descriptor": "(Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "invite",
+      "descriptor": "(Lcom/blent/AudioEndpoint;)V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "permissionResult",
+      "descriptor": "(ZLcom/blent/AudioCapturePermission;)V",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "accept",
+      "descriptor": "()V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "launch",
+      "descriptor": "(Lcom/blent/AudioEndpoint;Lcom/blent/AudioConsumerTarget;)V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "launchOwned",
+      "descriptor": "(Lcom/blent/AudioEndpoint;Lcom/blent/AudioConsumerTarget;Lcom/blent/MediaConsumerClaim;J)V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stopBackground",
+      "descriptor": "()V",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stopSharing",
+      "descriptor": "()V",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "configure",
+      "descriptor": "(Lcom/blent/AudioPreferences;)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "stop",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "ownsBackground",
+      "descriptor": "(Ljava/lang/String;)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "backgroundStopped",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding",
+      "method": "shutdown",
+      "descriptor": "()V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$start$2",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3$create$1$1$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$4",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$5",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/ResourceRetirement;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$4$2$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$launchOwned$3$create$1$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlSession$scheduleReconnect$1$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "<init>",
+      "descriptor": "(J)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "<init>",
+      "descriptor": "(JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "available",
+      "descriptor": "()Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "acquire",
+      "descriptor": "()Ljava/lang/Long;",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "revoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "current",
+      "descriptor": "(J)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver$start$1$4",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/VideoReceiver$start$1$3",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$launch$4$2$1$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline$begin$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/ControlNotice",
+      "method": "<init>",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$guard$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/WorkerGenerations",
+      "method": "<init>",
+      "descriptor": "(J)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/WorkerGenerations",
+      "method": "<init>",
+      "descriptor": "(JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/WorkerGenerations",
+      "method": "next",
+      "descriptor": "()J",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$2",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$1",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CameraBinding$start$2",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/AudioBinding$retirement$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;JJ)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;JJILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "getStatus",
+      "descriptor": "()Lkotlinx/coroutines/flow/StateFlow;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "begin",
+      "descriptor": "()V",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "expired",
+      "descriptor": "(J)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/NativeDeadline",
+      "method": "finish",
+      "descriptor": "()V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    }
+  ]
+}
