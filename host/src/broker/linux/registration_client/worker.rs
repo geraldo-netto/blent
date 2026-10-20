@@ -53,7 +53,15 @@ impl Worker {
             result = self.connector.connect(self.settings.startup) => result.map_err(|_| Failure::Native)?,
         };
         self.retain_broker(&socket);
-        self.exchange(&socket).await
+        let result = self.exchange(&socket).await;
+        if let Err(failure) = result {
+            self.shared.fail(failure);
+            // Admission failure revokes local authority, but the original IPC
+            // still owes Unregister/Retired. Use its existing cleanup deadline;
+            // never reconnect, reset that deadline or release uncertain owners.
+            let _ = self.exchange(&socket).await;
+        }
+        result
     }
     fn retain_broker(&self, socket: &AsyncSocket) {
         self.shared.state().broker = match socket.original_lifetime() {

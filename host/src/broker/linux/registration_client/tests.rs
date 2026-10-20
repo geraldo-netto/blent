@@ -285,6 +285,43 @@ async fn t911_timeout_and_repeated_close_cannot_release_uncertain_registration()
         .unwrap();
     until(|| client.retired()).await;
 }
+
+#[tokio::test]
+async fn t1228_admission_timeout_sends_unregister_and_receives_original_retirement() {
+    let mut fixture = Fixture::new();
+    fixture.factory.settings.admission = Duration::from_millis(40);
+    let (client, server) = fixture.connected().await;
+    server
+        .send(
+            &Message::Registered {
+                request: 1,
+                route: route(),
+            },
+            &[],
+        )
+        .await
+        .unwrap();
+    status(&server, 1, RouteState::Queued).await;
+    until(|| client.status().failure == Some(Failure::TimedOut)).await;
+    assert!(
+        !client.retired(),
+        "T1228 timeout cannot release original endpoints"
+    );
+    let packet = bounded(server.receive()).await.unwrap();
+    assert!(
+        packet.message
+            == Message::Unregister {
+                request: 2,
+                route: route()
+            }
+    );
+    assert!(packet.descriptors.is_empty());
+    assert!(!client.status().remote_retired);
+    status(&server, 2, RouteState::Retired).await;
+    until(|| client.retired()).await;
+    assert_eq!(client.status().failure, Some(Failure::TimedOut));
+    assert!(client.status().remote_retired);
+}
 #[tokio::test]
 async fn t911_drop_sends_cancellation_and_retains_owner_until_broker_proof() {
     let fixture = Fixture::new();
