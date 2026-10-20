@@ -135,7 +135,7 @@ fn t497_display_dropdowns_change_only_the_requested_preference() {
     click_settings_text(&mut app, &ctx, "Above the other screens", position_frame);
     assert_eq!(app.cfg.position, "above");
     click_settings_text(&mut app, &ctx, "Full — sharpest", detail_frame);
-    click_settings_text(&mut app, &ctx, "Half — lowest latency", detail_frame);
+    click_settings_text(&mut app, &ctx, "Half — fewer pixels", detail_frame);
     assert_eq!(app.cfg.stream_scale, 2);
     assert_eq!(app.cfg.fps, 30);
     assert_eq!(app.cfg.width, app.saved_cfg.width + 2);
@@ -143,6 +143,33 @@ fn t497_display_dropdowns_change_only_the_requested_preference() {
         app.cfg.stream_scale = value;
         let labels = detail_frame(&mut app, &ctx, vec![]);
         assert!(labels.iter().any(|(label, _)| label == scale_label(value)));
+    }
+}
+
+#[test]
+fn t1230_lower_stream_presets_save_exact_output_without_starting_display() {
+    let (_directory, mut app) = settings_test_app(Tab::Video);
+    app.cfg = app.saved_cfg.clone();
+    let original = app.cfg.clone();
+    let ctx = egui::Context::default();
+    for (label, scale, expected) in [
+        ("180p (320 × 180)", 4, (320, 180)),
+        ("360p (640 × 360)", 2, (640, 360)),
+    ] {
+        click_settings_text(&mut app, &ctx, label, detail_frame);
+        assert!(!app.cfg.auto_resolution);
+        assert_eq!((app.cfg.width, app.cfg.height), (1280, 720));
+        assert_eq!(app.cfg.stream_scale, scale);
+        assert_eq!((app.cfg.width / scale, app.cfg.height / scale), expected);
+        assert_eq!(
+            (app.cfg.fps, app.cfg.bitrate),
+            (original.fps, original.bitrate)
+        );
+        app.cfg.sanitize();
+        assert_eq!((app.cfg.width / scale, app.cfg.height / scale), expected);
+        app.apply(false);
+        wait_for_work(&mut app);
+        assert_eq!(app.store.load(), app.cfg);
     }
 }
 

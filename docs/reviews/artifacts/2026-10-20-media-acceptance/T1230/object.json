@@ -1,0 +1,6 @@
+{
+  "object": "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1230/coverage/llvm-cov-target/debug/deps/blent_gui-f95a744e3342585f",
+  "sha256": "281ead417c5271cb096821972eed9f35bc41a008fda010c3b5bebca3e50c6663",
+  "rustc": "1.98.1",
+  "cargo-llvm-cov": "0.8.7"
+}

@@ -1,0 +1,67 @@
+[
+  {
+    "function": "low_resolutions",
+    "file": "gui/src/stream_settings.rs",
+    "range": [
+      5,
+      23
+    ],
+    "native_line_counts": {
+      "5": 27,
+      "6": 27,
+      "7": 54,
+      "8": 54,
+      "9": 2,
+      "10": 2,
+      "11": 2,
+      "12": 2,
+      "13": 52,
+      "15": 27,
+      "16": 27,
+      "17": 27,
+      "20": 27,
+      "21": 27,
+      "23": 27
+    },
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "complexity_source_estimate": 4,
+    "native_sonar": "unavailable"
+  },
+  {
+    "function": "setting_stream_detail",
+    "file": "gui/src/main.rs",
+    "range": [
+      937,
+      961
+    ],
+    "native_line_counts": {
+      "937": 27,
+      "938": 27,
+      "939": 27,
+      "940": 27,
+      "941": 27,
+      "942": 21,
+      "943": 0,
+      "944": 6,
+      "946": 27,
+      "947": 4,
+      "948": 4,
+      "949": 4,
+      "950": 27,
+      "951": 27,
+      "955": 27,
+      "956": 27,
+      "958": 27,
+      "959": 27,
+      "960": 27,
+      "961": 27
+    },
+    "covered": 19,
+    "total": 20,
+    "percent": 95.0,
+    "complexity_source_estimate": 6,
+    "native_sonar": "unavailable"
+  }
+]

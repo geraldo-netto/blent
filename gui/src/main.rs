@@ -16,6 +16,7 @@ mod pipe_settings;
 mod platform;
 mod platform_diagnostics;
 mod settings;
+mod stream_settings;
 use platform::*;
 mod status_poll;
 mod status_worker;
@@ -939,22 +940,22 @@ impl App {
             egui::ComboBox::from_id_salt("stream_scale")
                 .selected_text(match self.cfg.stream_scale {
                     1 => "Full — sharpest",
-                    2 => "Half — lowest latency",
+                    2 => "Half — fewer pixels",
                     n => scale_label(n),
                 })
                 .show_ui(ui, |ui| {
                     ui.selectable_value(&mut self.cfg.stream_scale, 1, "Full — sharpest");
-                    ui.selectable_value(&mut self.cfg.stream_scale, 2, "Half — lowest latency");
+                    ui.selectable_value(&mut self.cfg.stream_scale, 2, "Half — fewer pixels");
                 });
             ui.label(
                 egui::RichText::new(
-                    "The desktop keeps its full resolution either way. Half sends \
-                     a quarter of the pixels, which the tablet decodes sooner — \
-                     good for games, softer for text.",
+                    "The desktop keeps its full resolution. Half sends a quarter \
+                     of the pixels with softer text.",
                 )
                 .weak()
                 .size(11.0),
             );
+            stream_settings::low_resolutions(ui, &mut self.cfg);
         });
         ui.end_row();
     }

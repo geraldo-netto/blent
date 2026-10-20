@@ -198,6 +198,11 @@ When `XDG_CONFIG_HOME` is an absolute path, host settings instead use
 - **Stream scale** — `stream_scale = 2` sends a quarter of the pixels for a
   historical ~6 ms lower packet-to-ack median on the reference tablet, at the
   cost of softer text; other devices differ.
+  The desktop GUI also offers **180p (320×180)** and **360p (640×360)** stream
+  presets. These select a 1280×720 desktop and scale its stream by 4 or 2; restart
+  display sharing to apply. FPS, bitrate and quality stay under your control.
+  Lower detail is useful for constrained links, but configured bitrate is not
+  measured traffic and a calling application's upload settings remain separate.
 - **Several tablets** — `max_tablets` supports 1–4 slots. Historical testing
   used one physical tablet plus a simulated client. Automated tests cover
   independent slots and busy-card fallback. Multiple physical tablets have not
