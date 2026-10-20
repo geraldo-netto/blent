@@ -687,6 +687,11 @@ not merged, and bounded launch-history exhaustion falls back to manual opening.
 
 ## Camera feedback probe timestamp capacity
 
+The camera feedback probe supports ADB targets; an explicit USB target is rejected
+before native setup. Probe duration must be 1–30 seconds and the optional
+`--stall-feedback-ms` injection must be 0–1000 milliseconds. Argument policy is
+checked before listeners, device discovery or ADB commands.
+
 `camera-feedback-probe` accepts `--max-samples` (default 8192, range 1–1048576).
 The probe reserves storage before native setup and fails measurement on exhaustion;
 it never silently truncates timestamp history. Increase the cap for longer/faster

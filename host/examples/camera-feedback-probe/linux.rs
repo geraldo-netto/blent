@@ -10,6 +10,8 @@ mod decoder;
 mod frame_pool;
 #[path = "../../src/camera/outputs.rs"]
 mod outputs;
+#[path = "policy.rs"]
+mod policy;
 #[path = "../../src/camera/protocol.rs"]
 mod protocol;
 #[path = "samples.rs"]
@@ -37,11 +39,7 @@ struct Options {
 #[tokio::main]
 pub(super) async fn run() -> Result<()> {
     let args = Options::parse();
-    args.camera.validate()?;
-    anyhow::ensure!(
-        (1..=30).contains(&args.seconds),
-        "probe duration must be 1–30 seconds"
-    );
+    policy::validate(&args.camera.profile, args.seconds, args.stall_feedback_ms)?;
     let samples = samples::Samples::new(args.max_samples)?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let route = TcpListener::bind("127.0.0.1:0").await?;
@@ -133,7 +131,6 @@ async fn sample(
 }
 
 async fn proxy(listener: &TcpListener, target: std::net::SocketAddr, stall_ms: u64) -> Result<()> {
-    anyhow::ensure!(stall_ms <= 1000, "stall must be ≤1000 ms");
     let started = Instant::now();
     let mut stalled = stall_ms == 0;
     loop {
