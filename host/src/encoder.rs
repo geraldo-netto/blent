@@ -515,34 +515,97 @@ mod tests {
         assert!(encoder.drain().unwrap().is_empty(), "T265: EOF is normal");
     }
 
+    struct FifoFixture {
+        stop: Arc<StopSignal>,
+        task: Option<std::thread::JoinHandle<Result<()>>>,
+    }
+
+    impl FifoFixture {
+        fn finished(&self) -> bool {
+            self.task
+                .as_ref()
+                .is_none_or(std::thread::JoinHandle::is_finished)
+        }
+
+        fn settle(&mut self) -> Result<()> {
+            self.stop.request();
+            if let Some(task) = self.task.take() {
+                task.join()
+                    .map_err(|_| anyhow::anyhow!("FIFO fixture reader panicked"))??;
+            }
+            Ok(())
+        }
+    }
+
+    impl Drop for FifoFixture {
+        fn drop(&mut self) {
+            let _ = self.settle();
+        }
+    }
+
+    fn write_fixture_frame(
+        writer: &mut impl std::io::Write,
+        reader: &mut FifoFixture,
+    ) -> Result<()> {
+        let frame = vec![128; 64 * 64 * 3 / 2];
+        let mut remaining = frame.as_slice();
+        while !remaining.is_empty() {
+            match writer.write(remaining) {
+                Ok(0) => anyhow::bail!("FIFO fixture writer made no progress"),
+                Ok(count) => remaining = &remaining[count..],
+                Err(error) if error.kind() == std::io::ErrorKind::WouldBlock => {
+                    if reader.finished() {
+                        reader.settle()?;
+                        anyhow::bail!("FIFO fixture reader retired before a complete frame");
+                    }
+                    std::thread::sleep(std::time::Duration::from_millis(1));
+                }
+                Err(error) => return Err(error.into()),
+            }
+        }
+        Ok(())
+    }
+
     fn next_video_packet(
         receiver: &mut crate::video_queue::VideoReceiver,
-    ) -> crate::media::VideoPacket {
+    ) -> Result<crate::media::VideoPacket> {
         tokio::runtime::Builder::new_current_thread()
             .build()
             .unwrap()
             .block_on(receiver.recv())
-            .unwrap()
+            .map_err(Into::into)
     }
 
     fn encode_one_from_fifo(
         latency: crate::latency::LatencyTracker,
         name: &std::ffi::OsStr,
-    ) -> u32 {
-        use std::io::Write;
-        let dir = tempfile::tempdir().unwrap();
+        encoder_name: &'static str,
+    ) -> Result<u32> {
+        use std::os::unix::fs::OpenOptionsExt;
+        if std::path::Path::new(name).file_name() != Some(name) {
+            anyhow::bail!("FIFO fixture requires a single native file name");
+        }
+        let dir = tempfile::tempdir()?;
         use std::os::unix::ffi::OsStrExt;
         let fifo = dir.path().join(name);
-        let path = std::ffi::CString::new(fifo.as_os_str().as_bytes()).unwrap();
-        assert_eq!(unsafe { libc::mkfifo(path.as_ptr(), 0o600) }, 0);
+        let path = std::ffi::CString::new(fifo.as_os_str().as_bytes())?;
+        if unsafe { libc::mkfifo(path.as_ptr(), 0o600) } != 0 {
+            return Err(std::io::Error::last_os_error().into());
+        }
         let (tx, mut rx) = crate::video_queue::channel(8, Default::default());
-        let stop = StopSignal::new().unwrap();
+        let stop = StopSignal::new()?;
         let stopped = stop.clone();
-        let writer_path = fifo.clone();
+        // This fixture owns both pipe ends until the original reader settles.
+        // Opening never waits for a reader that might fail before native startup.
+        let mut writer = std::fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .custom_flags(libc::O_NONBLOCK)
+            .open(&fifo)?;
         let task = std::thread::spawn(move || {
             run(
                 &fifo,
-                "libx264",
+                encoder_name,
                 64,
                 64,
                 60,
@@ -559,15 +622,152 @@ mod tests {
                 "/dev/dri/renderD128",
             )
         });
-        let mut writer = std::fs::OpenOptions::new()
-            .write(true)
-            .open(writer_path)
-            .unwrap();
-        writer.write_all(&vec![128; 64 * 64 * 3 / 2]).unwrap();
+        let mut reader = FifoFixture {
+            stop,
+            task: Some(task),
+        };
+        write_fixture_frame(&mut writer, &mut reader)?;
         let packet = next_video_packet(&mut rx);
-        stop.request();
-        task.join().unwrap().unwrap();
-        packet.seq
+        reader.settle()?;
+        Ok(packet?.seq)
+    }
+
+    fn held_fifo_fixture() -> (FifoFixture, Arc<AtomicBool>) {
+        let stop = StopSignal::new().unwrap();
+        let stopped = stop.clone();
+        let completed = Arc::new(AtomicBool::new(false));
+        let finished = completed.clone();
+        let task = std::thread::spawn(move || {
+            while !stopped.requested() {
+                std::thread::park_timeout(std::time::Duration::from_millis(1));
+            }
+            finished.store(true, std::sync::atomic::Ordering::SeqCst);
+            Ok(())
+        });
+        (
+            FifoFixture {
+                stop,
+                task: Some(task),
+            },
+            completed,
+        )
+    }
+
+    struct FixtureWriter {
+        limit: usize,
+        block_once: bool,
+        bytes: Vec<u8>,
+    }
+
+    impl std::io::Write for FixtureWriter {
+        fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+            if std::mem::take(&mut self.block_once) {
+                return Err(std::io::ErrorKind::WouldBlock.into());
+            }
+            let count = self.limit.min(bytes.len());
+            self.bytes.extend_from_slice(&bytes[..count]);
+            Ok(count)
+        }
+
+        fn flush(&mut self) -> std::io::Result<()> {
+            Ok(())
+        }
+    }
+
+    #[test]
+    fn t1214_partial_writes_and_zero_progress_preserve_original_reader() {
+        for limit in (0..=64).chain([usize::MAX]) {
+            let (mut reader, completed) = held_fifo_fixture();
+            let mut writer = FixtureWriter {
+                limit,
+                block_once: true,
+                bytes: Vec::new(),
+            };
+            assert_eq!(
+                write_fixture_frame(&mut writer, &mut reader).is_ok(),
+                limit != 0
+            );
+            reader.settle().unwrap();
+            reader.settle().unwrap();
+            assert!(completed.load(std::sync::atomic::Ordering::SeqCst));
+            assert_eq!(writer.bytes, vec![128; if limit == 0 { 0 } else { 6144 }]);
+        }
+    }
+
+    #[test]
+    fn t1214_unwind_joins_original_reader() {
+        let (reader, completed) = held_fifo_fixture();
+        let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(move || {
+            let _original_reader = reader;
+            panic!("T1214 deliberate fixture unwind");
+        }));
+        assert!(result.is_err());
+        assert!(completed.load(std::sync::atomic::Ordering::SeqCst));
+    }
+
+    #[test]
+    fn t1214_rejects_invalid_fifo_names_before_native_admission() {
+        for name in ["", ".", "..", "a/b", "bad\0name"] {
+            assert!(encode_one_from_fifo(
+                crate::latency::LatencyTracker::new(),
+                std::ffi::OsStr::new(name),
+                "libx264",
+            )
+            .is_err());
+        }
+    }
+
+    #[tokio::test]
+    async fn t1214_missing_encoder_settles_original_fifo_fixture() {
+        const MISSING: &str = "blent-t1214-unavailable-encoder";
+        if std::env::var_os("BLENT_T1214_CHILD").is_some() {
+            let error = tokio::task::spawn_blocking(|| {
+                encode_one_from_fifo(
+                    crate::latency::LatencyTracker::new(),
+                    std::ffi::OsStr::new("frames"),
+                    MISSING,
+                )
+            })
+            .await
+            .unwrap()
+            .unwrap_err();
+            assert!(error.to_string().contains(MISSING));
+            return;
+        }
+        use std::os::unix::fs::PermissionsExt;
+        let root = Arc::new(
+            tempfile::Builder::new()
+                .permissions(std::fs::Permissions::from_mode(0o700))
+                .tempdir()
+                .unwrap(),
+        );
+        let mut command = tokio::process::Command::new(std::env::current_exe().unwrap());
+        command
+            .args([
+                "--exact",
+                "encoder::tests::t1214_missing_encoder_settles_original_fifo_fixture",
+                "--nocapture",
+            ])
+            .env("BLENT_T1214_CHILD", "1")
+            .env("TMPDIR", root.path())
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::inherit());
+        let mut child = blent_config::commands::OwnedChild::spawn(&mut command).unwrap();
+        child.keep_alive(root.clone());
+        let status = tokio::time::timeout(std::time::Duration::from_secs(5), child.wait()).await;
+        let retired = child.retire(std::time::Duration::ZERO).await;
+        assert!(
+            retired.completion.is_complete(),
+            "T1214 original child not reaped"
+        );
+        assert!(status
+            .expect("T1214 reader failed but writer stayed blocked")
+            .unwrap()
+            .success());
+        assert!(
+            std::fs::read_dir(root.path()).unwrap().next().is_none(),
+            "T1214 leaked original FIFO"
+        );
     }
 
     #[test]
@@ -578,15 +778,23 @@ mod tests {
             b"ordinary frames".as_slice(),
             b"native-\xff frames".as_slice(),
         ] {
-            encode_one_from_fifo(latency.clone(), std::ffi::OsStr::from_bytes(name));
+            encode_one_from_fifo(
+                latency.clone(),
+                std::ffi::OsStr::from_bytes(name),
+                "libx264",
+            )
+            .unwrap();
         }
     }
 
     #[test]
     fn t228_inproc_sequences_survive_restart() {
         let latency = crate::latency::LatencyTracker::new();
-        let old = encode_one_from_fifo(latency.clone(), std::ffi::OsStr::new("frames"));
-        let fresh = encode_one_from_fifo(latency.clone(), std::ffi::OsStr::new("frames"));
+        let old = encode_one_from_fifo(latency.clone(), std::ffi::OsStr::new("frames"), "libx264")
+            .unwrap();
+        let fresh =
+            encode_one_from_fifo(latency.clone(), std::ffi::OsStr::new("frames"), "libx264")
+                .unwrap();
         assert_ne!(
             old, fresh,
             "T228: old and fresh frames cannot share an ACK identifier"

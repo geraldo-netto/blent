@@ -1,0 +1,20 @@
+{
+  "573271": {
+    "stat": "573271 (bash) S 4870 573271 573271 0 -1 4194304 2887 8226 0 0 0 0 9 2 20 0 1 0 3307471 10608640 894 18446744073709551615 109691714240512 109691715216173 140730775650624 0 0 0 65536 4 65538 1 0 0 17 27 0 0 0 0 0 109691715439024 109691715487664 109692138631168 140730775653080 140730775654710 140730775654710 140730775658478 0\n",
+    "cmdline": "/bin/bash -c python3 - <<'PY'\nfrom pathlib import Path\np=Path('scripts/tests/test_host_offline.py');s=p.read_text().replace(\"self.assertEqual(env['BINDGEN_EXTRA_CLANG_ARGS'],env['CFLAGS'])\",\"self.assertIn(f'link-arg=-Wl,-rpath,{sdk}/lib/x86_64-linux-gnu/pulseaudio',env['CARGO_ENCODED_RUSTFLAGS'].split('\\\\x1f'))\\n            self.assertEqual(env['BINDGEN_EXTRA_CLANG_ARGS'],env['CFLAGS'])\");p.write_text(s)\nPY\npython3 -m unittest discover -s scripts/tests -p test_host_offline.py > /backups/disk2/blent-work/2026-10-20-all-open/T835/runner-red-pulse.log 2>&1\npython3 - <<'PY'\nfrom pathlib import Path\np=Path('scripts/ci/test-host-offline.py');s=p.read_text().replace(\"'-C', f'link-arg=-Wl,-rpath,{library}', '-C', f'link-arg=-Wl,-rpath-link,{library}']\",\"'-C', f'link-arg=-Wl,-rpath,{library}', '-C', f'link-arg=-Wl,-rpath-link,{library}',\\n             '-C', f'link-arg=-Wl,-rpath,{library}/pulseaudio',\\n             '-C', f'link-arg=-Wl,-rpath-link,{library}/pulseaudio']\");p.write_text(s)\nPY\npython3 -m unittest discover -s scripts/tests -p test_host_offline.py > /backups/disk2/blent-work/2026-10-20-all-open/T835/runner-tests.log 2>&1\npython3 scripts/ci/test-host-offline.py --sdk /home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/active/files --target-dir /backups/disk2/blent-work/2026-10-20-all-open/T835/target --libclang /usr/lib/llvm-18/lib -- test -p blent --all-features --lib --bins --test activity_dpms --test audio_native --test linux_lifecycle --test wifi_setup --test shared_encode_replay --no-fail-fast -j 2 > /backups/disk2/blent-work/2026-10-20-all-open/T835/affected-final.log 2>&1 "
+  },
+  "573284": {
+    "stat": "573284 (cargo) S 573271 573271 573271 0 -1 4194304 123476 13228269 0 501 27 97 17669 3464 20 0 2 0 3307487 465190912 25690 18446744073709551615 110453537545600 110453562204448 140734314917680 0 0 0 0 16781312 1600 0 0 0 17 3 0 0 0 0 0 110453563357816 110453563427456 110453866811392 140734314926706 140734314926970 140734314926970 140734314934191 0\n",
+    "cmdline": "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --offline --locked -p blent --all-features --lib --bins --test activity_dpms --test audio_native --test linux_lifecycle --test wifi_setup --test shared_encode_replay --no-fail-fast -j 2 "
+  },
+  "598265": {
+    "stat": "598265 (blent-7062022fb) S 573284 573271 573271 0 -1 4194304 5342 904017 71 49 22 29 929 469 20 0 11 0 3325013 1239523328 14027 18446744073709551615 111032973798624 111033000966768 140732984568672 0 0 0 0 16781312 1088 0 0 0 17 24 0 0 0 0 0 111033002242144 111033002256608 111033358905344 140732984577612 140732984577704 140732984577704 140732984586140 0\n",
+    "cmdline": "/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-7062022fbdc05e69 "
+  },
+  "fifo": {
+    "path": "/tmp/.tmpurxQ5k/frames",
+    "inode": 262201,
+    "uid": 1000,
+    "ctime_ns": 1792515188076175808
+  }
+}
