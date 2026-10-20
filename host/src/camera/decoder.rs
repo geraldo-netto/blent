@@ -20,10 +20,12 @@ pub fn filters(rotation: u8, options: &CameraProfile) -> String {
         options.width, options.height, options.width, options.height)
 }
 
-fn command(ffmpeg: &Path, rotation: u8, options: &CameraProfile) -> Command {
+fn command(ffmpeg: &Path, rotation: u8, options: &CameraProfile) -> Result<Command> {
     // FFmpeg also checks aligned decoder buffers against max_pixels. Allow
     // SIMD/macroblock padding while keeping the decode allocation bounded.
-    let pixels = options.width.div_ceil(64) * 64 * options.height.div_ceil(64) * 64;
+    let capture = options.invitation_profile()?;
+    let pixels =
+        u32::from(capture.width).div_ceil(64) * 64 * u32::from(capture.height).div_ceil(64) * 64;
     let mut command = Command::new(ffmpeg);
     command
         .args([
@@ -63,7 +65,7 @@ fn command(ffmpeg: &Path, rotation: u8, options: &CameraProfile) -> Command {
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .kill_on_drop(true);
-    command
+    Ok(command)
 }
 
 pub async fn connection(
@@ -84,10 +86,10 @@ pub async fn connection(
         header.lens == selected,
         "camera lens was not selected by host"
     );
+    let mut command = command(ffmpeg, header.rotation, options)?;
     let original = status.reserve_native(crate::camera_control::NativeResource::Decoder)?;
     let mut decoder =
-        blent_config::commands::OwnedChild::spawn(&mut command(ffmpeg, header.rotation, options))
-            .context("start camera decoder")?;
+        blent_config::commands::OwnedChild::spawn(&mut command).context("start camera decoder")?;
     original.bind(decoder.completion());
     let result = transfer(&mut socket, &mut decoder, options, &outputs[header.lens]).await;
     outputs[header.lens].send_replace(None);

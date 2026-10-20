@@ -11,13 +11,18 @@ impl CameraProfile {
         Target::parse(self.serial.as_deref(), self.usb_peer.as_deref())
     }
 
-    /// Checked projection to the existing remote camera schema. Rotation/mirror
-    /// remain host decoder transforms; transport selectors never enter the wire.
+    /// Native capture profile, distinct from exported webcam dimensions. The
+    /// 180p output uses 360p capture and host downscaling; Camera2 still requires
+    /// an advertised native size. Rotation/mirror remain host transforms.
     pub fn invitation_profile(&self) -> Result<Camera> {
         self.validate()?;
+        let (width, height) = match (self.width, self.height) {
+            (320, 180) => (640, 360),
+            dimensions => dimensions,
+        };
         Ok(Camera {
-            width: self.width as u16,
-            height: self.height as u16,
+            width: width as u16,
+            height: height as u16,
             fps: self.fps as u8,
             bitrate: self.bitrate as u16,
             min_bitrate: self.min_bitrate as u16,

@@ -69,6 +69,28 @@ print('Broadcast completed: result=1')"#,
 }
 
 #[tokio::test]
+async fn t1231_adb_invites_capture_size_without_changing_export_size() {
+    let root = tempfile::tempdir().unwrap();
+    let adb = script(root.path(), "adb", &format!(
+        "import sys,pathlib\npathlib.Path({:?}).write_text(sys.stdin.read())\nprint('Broadcast completed: result=1')",
+        root.path().join("invitation")
+    ));
+    let bridge = bridge::Bridge {
+        adb,
+        serial: "tablet-1231".into(),
+        remote: "tcp:34567".into(),
+        local: "tcp:12345".into(),
+    };
+    let mut profile = options();
+    profile.width = 320;
+    profile.height = 180;
+    bridge.invite(&"a".repeat(64), &profile).await.unwrap();
+    let invitation = std::fs::read_to_string(root.path().join("invitation")).unwrap();
+    assert!(invitation.contains(" --ei width 640 --ei height 360 "));
+    assert_eq!((profile.width, profile.height), (320, 180));
+}
+
+#[tokio::test]
 async fn t539_graceful_output_stop_allows_final_blank_to_flush() {
     let root = tempfile::tempdir().unwrap();
     let marker = root.path().join("flushed");
@@ -576,6 +598,46 @@ async fn transformed_test_frame(
     tokio::select! {
         result = decoder::connection(server, &token, &ffmpeg, &profile.profile, &frames, new_report()) => panic!("{result:?}"),
         frame = upload => frame,
+    }
+}
+
+#[tokio::test]
+async fn t1231_native_360p_capture_decodes_into_exact_180p_and_360p_outputs() {
+    let ffmpeg = executable("ffmpeg").unwrap();
+    let encoded = tokio::process::Command::new(ffmpeg)
+        .args([
+            "-v",
+            "error",
+            "-f",
+            "lavfi",
+            "-i",
+            "color=red:s=640x360:r=30",
+            "-frames:v",
+            "8",
+            "-c:v",
+            "libx264",
+            "-threads",
+            "1",
+            "-tune",
+            "zerolatency",
+            "-f",
+            "h264",
+            "pipe:1",
+        ])
+        .output()
+        .await
+        .unwrap();
+    assert!(encoded.status.success());
+    for (width, height) in [(320, 180), (640, 360)] {
+        let mut profile = options();
+        profile.width = width;
+        profile.height = height;
+        let frame = transformed_test_frame(&encoded.stdout, &profile).await;
+        assert_eq!(frame.len(), (width * height * 3 / 2) as usize);
+        assert!(
+            frame[0] > 16,
+            "T1231 decoded camera must carry the red source, not blank output"
+        );
     }
 }
 

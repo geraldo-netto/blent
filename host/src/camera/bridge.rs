@@ -55,19 +55,16 @@ impl Bridge {
         // Only hex and typed numbers enter the remote shell command. The serial
         // stays a distinct local argv element, including spaces/metacharacters.
         validate_credential(token)?;
-        options.validate()?;
+        let capture = options.invitation_profile()?;
         ensure!(
             options.usb_peer.is_none(),
             "ADB camera invitation cannot target USB"
         );
         let port = self.port()?;
-        let lens = match options.lens {
-            blent_config::camera::Lens::Front => 0,
-            blent_config::camera::Lens::Rear => 1,
-        };
+        let lens = capture.lens;
         let command = format!(
             "am broadcast -n io.github.geraldo_netto.blent/com.blent.CameraReceiver --es token {token} --ei port {port} --ei width {} --ei height {} --ei fps {} --ei lens {lens} --ez background {} --ei bitrate {} --ei freshness_ms {} --ez adaptive_bitrate {} --ei min_bitrate {}\n",
-            options.width, options.height, options.fps, options.background, options.bitrate, options.freshness_ms, options.adaptive_bitrate, options.min_bitrate,
+            capture.width, capture.height, capture.fps, capture.background, capture.bitrate, capture.freshness_ms, capture.adaptive, capture.min_bitrate,
         );
         let result = Command::new(&self.adb)
             .args(["-s", &self.serial, "shell"])

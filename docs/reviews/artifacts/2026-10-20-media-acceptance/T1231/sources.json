@@ -1,0 +1,7 @@
+{
+  "common/src/camera/connection.rs": "67784c979e5a69cab32c43263f5a257769ff1f6a9403a8c792350d978701e265",
+  "common/src/camera/connection_tests.rs": "e6dc873bbaa01d798ddb455caa3d101c8cb393a1aa2ae9c1cc695513e64b2991",
+  "host/src/camera/bridge.rs": "764eb1ca23c51a4a3eb19e90ce2e2b55512e57acfa30cfeef6a054fa8760402c",
+  "host/src/camera/decoder.rs": "77bccf7dade76031e66a49dfd7b3eb2a08d87ca76a345d3ed944fc4b6924a5e3",
+  "host/src/camera/tests.rs": "de41533e92e7dd788a3bd6fbe54b2cf640838c554b030cd9513b96d4a26126ef"
+}

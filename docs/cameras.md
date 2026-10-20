@@ -109,10 +109,11 @@ Larger profiles cost USB bandwidth, decoding/encoding work and tablet power.
 
 The resolution chooser also offers **320×180 (180p)** and **640×360 (360p)**
 for low-detail calls. These preserve the same explicit Start and Android consent.
-Support depends on the camera advertising the requested size; unsupported sizes
-report an error rather than silently substituting another profile. The default
-remains 720p. Lower FPS and bitrate can further reduce the tablet-to-computer
-stream. The calling application's own resolution, bitrate and network behavior
+The 180p output deliberately uses native 640×360 capture and host downscaling;
+both presets therefore require the camera to advertise 640×360. Other profiles
+use their selected dimensions for native capture. Unsupported native sizes report
+an error. The default remains 720p. Lower FPS and bitrate can further reduce the
+tablet-to-computer stream. The calling application's own resolution, bitrate and network behavior
 determine internet usage; the Blent camera bitrate controls its USB stream.
 
 Linux uses one owned native writer per virtual camera and an FFmpeg decoder for

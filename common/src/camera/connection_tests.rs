@@ -1,6 +1,28 @@
 use super::*;
 
 #[test]
+fn t1231_export_and_native_capture_profiles_have_explicit_dimensions() {
+    for (width, height, native_width, native_height) in [
+        (320, 180, 640, 360),
+        (640, 360, 640, 360),
+        (640, 480, 640, 480),
+        (1280, 720, 1280, 720),
+        (160, 120, 160, 120),
+    ] {
+        let profile = CameraProfile {
+            width,
+            height,
+            ..Default::default()
+        };
+        let native = profile.invitation_profile().unwrap();
+        assert_eq!((native.width, native.height), (native_width, native_height));
+        assert_eq!((profile.width, profile.height), (width, height));
+        assert_eq!(native.fps, profile.fps as u8);
+        assert_eq!(native.bitrate, profile.bitrate as u16);
+    }
+}
+
+#[test]
 fn t974_camera_transport_capabilities_are_independent_and_fail_closed() {
     use connection::{Target, Transports};
     let peer = crate::connection::pairing::PeerId::parse("ab".repeat(32)).unwrap();

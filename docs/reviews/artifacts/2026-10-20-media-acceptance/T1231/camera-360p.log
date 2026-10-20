@@ -1,0 +1,7 @@
+2026-10-20T19:55:27.894610Z  INFO blent::camera: 254: Webcams ready; waiting for tablet permission and camera frames.
+[vost#0:0/rawvideo @ 0x57336ccb3900] Error submitting a packet to the muxer: Broken pipe
+[out#0/rawvideo @ 0x57336ccad480] Error muxing a packet
+[out#0/rawvideo @ 0x57336ccad480] Error writing trailer: Broken pipe
+[out#0/rawvideo @ 0x57336ccad480] Error closing file: Broken pipe
+2026-10-20T19:59:53.230099Z  INFO blent::camera: 294: camera connection ended; waiting for tablet selection error=unexpected end of file
+Error: USB media registration unavailable
