@@ -1,0 +1,7 @@
+{
+  "host/src/bin/usb_broker.rs": "007e961643f88e07c483b954ffbf1829ea2d235c7e5980914c5bc3589c506031",
+  "host/src/broker/link.rs": "353057f9afed03279fd893b07516eee78e514b1cb355d5a720b7429e7fcac18f",
+  "host/src/broker/linux/server.rs": "4f41d58f39e76c253a474dc418c522f9dd6ff5d3d619b85839b1f414ea9989e5",
+  "host/src/broker/linux/server/tests.rs": "265addeb9e09095342709c8330790c84f9fc33bbccff4b35aa1035daefb2a21d",
+  "host/src/broker/linux/server/tests/diagnostics.rs": "df81350184978a93ac1a6a128d24c3e04c9aba0b847fa4cdaba270c29aee8c2f"
+}

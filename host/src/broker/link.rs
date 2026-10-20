@@ -33,6 +33,22 @@ use tokio::{
 };
 mod start;
 
+/// Fixed public phase labels; never format a peer-controlled error payload.
+#[derive(Debug)]
+pub(crate) enum FailureStage {
+    Opening,
+    Discovery,
+    Authentication,
+    Window,
+    Media,
+    Control,
+}
+impl std::fmt::Display for FailureStage {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(formatter, "{self:?}")
+    }
+}
+
 pub enum Command {
     Approve(Ticket),
     Admit(Box<Connection>),
@@ -75,8 +91,9 @@ impl Handle {
         let (commands, input) = mpsc::channel(8);
         let (output, events) = mpsc::channel(32);
         let task = Task::spawn(async move {
-            let resource =
-                tokio::task::spawn_blocking(move || start::open(admission, factory)).await??;
+            let resource = tokio::task::spawn_blocking(move || start::open(admission, factory))
+                .await?
+                .context(FailureStage::Opening)?;
             run(resource, settings, input, output).await
         })?;
         Ok(Self {
@@ -145,7 +162,9 @@ async fn run(
     mut input: mpsc::Receiver<Command>,
     output: mpsc::Sender<Event>,
 ) -> Result<()> {
-    let candidate = setup::discover(resource, &settings.identity, settings.setup_timeout).await?;
+    let candidate = setup::discover(resource, &settings.identity, settings.setup_timeout)
+        .await
+        .context(FailureStage::Discovery)?;
     emit(&output, Event::Identified(candidate.peer().clone()))?;
     let Some(Command::Approve(ticket)) = input.recv().await else {
         anyhow::bail!("expected exact pairing approval");
@@ -157,8 +176,11 @@ async fn run(
             settings.approval_timeout,
             settings.tls_timeout,
         )
-        .await?;
-    let limits = window::negotiate(&mut verified.resource.stream, settings.limits).await?;
+        .await
+        .context(FailureStage::Authentication)?;
+    let limits = window::negotiate(&mut verified.resource.stream, settings.limits)
+        .await
+        .context(FailureStage::Window)?;
     emit(&output, Event::Verified(verified, limits))?;
     let Some(Command::Admit(admitted)) = input.recv().await else {
         anyhow::bail!("expected authenticated lease admission");
@@ -176,7 +198,7 @@ async fn run(
     .await;
     let _ = bridges.disconnect(connection.session());
     let _ = connection.retire().await;
-    result
+    result.context(FailureStage::Media)
 }
 async fn media(
     connection: &mut Connection,

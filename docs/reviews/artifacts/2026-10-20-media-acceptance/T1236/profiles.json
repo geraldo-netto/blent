@@ -1,0 +1,18 @@
+{
+  "selection": "raw profiles with mtime at or after current native library test object build",
+  "objects": [
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/debug/deps/blent-5f0a54e80be30bbc",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/debug/deps/blent_usb_broker-7c90a106e607047c"
+  ],
+  "profiles": [
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1019507-5194229518191454416_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015511-14476481440724793945_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015855-14476481440724793945_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015677-14476481440724793945_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015871-14476481440724793945_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015846-14476481440724793945_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015862-14476481440724793945_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015725-14476481440724793945_0.profraw",
+    "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1234/coverage/llvm-cov-target/blent-1015676-14476481440724793945_0.profraw"
+  ]
+}

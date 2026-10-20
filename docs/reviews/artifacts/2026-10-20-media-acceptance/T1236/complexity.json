@@ -1,0 +1,23 @@
+{
+  "kind": "manual source estimate; not SonarQube evidence",
+  "native_sonarqube": "unavailable offline; no tool transfer authorized",
+  "production": {
+    "FailureStage::fmt": 1,
+    "Handle::start_factory": 3,
+    "link::run": 3,
+    "Server::input": 6,
+    "Server::link_failed": 1,
+    "Linux broker main": 2
+  },
+  "tests": {
+    "Capture::write": 1,
+    "Capture::flush": 1,
+    "native diagnostic test including callbacks": 3,
+    "phase label test": 2,
+    "entry startup test": 1
+  },
+  "native_tools": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "cargo-llvm-cov": "cargo-llvm-cov 0.8.7"
+  }
+}

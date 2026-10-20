@@ -82,6 +82,7 @@ impl Fixture {
 }
 
 mod authority;
+mod diagnostics;
 mod display;
 mod identity;
 mod media_client;

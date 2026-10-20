@@ -174,13 +174,28 @@ impl Server {
             Input::Client(id, Ok(received)) => self.request(id, received),
             Input::Client(id, Err(_)) => self.close_client(id),
             Input::Link(id, Ok(event)) => {
-                if self.link_event(id, event).is_err() {
-                    self.controller.failed(id)?;
+                if let Err(error) = self.link_event(id, event) {
+                    self.link_failed(id, error.context(link::FailureStage::Control))?;
                 }
                 Ok(())
             }
-            Input::Link(id, Err(_)) => self.controller.failed(id),
+            Input::Link(id, Err(error)) => self.link_failed(id, error),
         }
+    }
+    fn link_failed(&mut self, id: u64, error: anyhow::Error) -> Result<()> {
+        let phase = error.downcast_ref::<link::FailureStage>();
+        let io_kind = error
+            .downcast_ref::<std::io::Error>()
+            .map(std::io::Error::kind);
+        let timed_out = error.is::<tokio::time::error::Elapsed>();
+        tracing::warn!(
+            connection = id,
+            ?phase,
+            ?io_kind,
+            timed_out,
+            "USB link failed"
+        );
+        self.controller.failed(id)
     }
     fn reply(&mut self, client: u64, messages: Vec<Message>) {
         let failed = self
