@@ -6,6 +6,8 @@ import okhttp3.WebSocket
 
 /** Activity-facing input facade. The shared monitor orders socket handshakes and input. */
 class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
+    initialConnectionGeneration: Long = 0,
+    initialSettingsGeneration: Long = 0,
     capabilities: suspend (Int, Int, Int) -> org.json.JSONObject = DecoderCapabilities::report,
 ) {
     companion object {
@@ -14,8 +16,9 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
     }
 
     internal val motion: MotionTranslator = MotionTranslator { message, sampleTimeMs -> control.sendWhenConnected(message, sampleTimeMs) }
-    internal val control: ControlSession = ControlSession(this, motion, factory, capabilities)
-    val connectionGeneration get() = control.connectionGeneration
+    internal val control: ControlSession = ControlSession(this, motion, factory, initialConnectionGeneration, initialSettingsGeneration, capabilities)
+    internal val connectionSnapshot get() = control.connectionSnapshot
+    internal fun isCurrentConnection(original: ControlNotice): Boolean = control.isCurrentConnection(original)
     val controlConnected get() = control.controlConnected
     internal val connectionState get() = control.connectionState
     internal val displayActivityUpdate get() = control.displayActivityUpdate
@@ -46,7 +49,8 @@ class TouchCapture(factory: WebSocket.Factory = defaultControlClient(),
         get() = control.onStreamFormat
         set(value) { control.onStreamFormat = value }
 
-    internal val settingsGeneration get() = control.settingsGeneration
+    internal val settingsSnapshot get() = control.settingsSnapshot
+    internal fun isCurrentSettings(original: ControlNotice): Boolean = control.isCurrentSettings(original)
     internal var onSettingsRejected: ((RejectedStreamSettings) -> Unit)?
         get() = control.onSettingsRejected
         set(value) { control.onSettingsRejected = value }

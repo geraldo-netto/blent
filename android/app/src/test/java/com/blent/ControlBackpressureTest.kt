@@ -179,18 +179,18 @@ class ControlBackpressureTest {
         val capture = connection.capture
         try {
             val socket = connection.recover()
-            val generation = capture.connectionGeneration
+            val generation = capture.connectionSnapshot
             socket.rejectType = "rendered"
             capture.sendRendered(10, 20)
             assertFalse(capture.isControlConnected())
             assertTrue(socket.cancelled)
-            assertTrue(capture.connectionGeneration > generation)
+            assertTrue(!capture.isCurrentConnection(generation))
             val next = connection.recover()
-            val current = capture.connectionGeneration
+            val current = capture.connectionSnapshot
             socket.listener.onFailure(socket, java.io.IOException("late failure"), null)
             socket.listener.onClosed(socket, 1000, "late close")
             socket.open()
-            assertEquals(current, capture.connectionGeneration)
+            assertEquals(current, capture.connectionSnapshot)
             capture.sendRendered(11, 30)
             assertEquals(11, next.accepted.last().getInt("seq"))
         } finally { capture.disconnect() }

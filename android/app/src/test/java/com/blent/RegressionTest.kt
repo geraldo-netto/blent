@@ -289,11 +289,11 @@ class RegressionTest {
             set(activity, "started", true)
             receiver.start() // No surface; session waits without real video I/O.
             assertFalse(capture.isControlConnected())
-            val generation = capture.connectionGeneration
+            val generation = capture.connectionSnapshot
             val oldJob = get(receiver, "job") as kotlinx.coroutines.Job
             prefs.hostToken = "b".repeat(64)
             activity.session.applyToken(true)
-            assertTrue("Disconnected control session must rotate", capture.connectionGeneration > generation)
+            assertTrue("Disconnected control session must rotate", !capture.isCurrentConnection(generation))
             assertTrue("Video retry must retire captured old token", oldJob.isCancelled)
             assertNotSame(oldJob, get(receiver, "job"))
             assertEquals(prefs.hostToken, receiver.token)
@@ -302,11 +302,11 @@ class RegressionTest {
             set(activity, "started", false)
             capture.disconnect()
             receiver.stop()
-            val stoppedGeneration = capture.connectionGeneration
+            val stoppedGeneration = capture.connectionSnapshot
             val stoppedJob = get(receiver, "job")
             prefs.hostToken = "c".repeat(64)
             activity.session.applyToken(true)
-            assertEquals(stoppedGeneration, capture.connectionGeneration)
+            assertEquals(stoppedGeneration, capture.connectionSnapshot)
             assertSame(stoppedJob, get(receiver, "job"))
             assertFalse(get(receiver, "isRunning") as Boolean)
         } finally {

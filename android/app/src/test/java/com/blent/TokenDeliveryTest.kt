@@ -53,11 +53,11 @@ class TokenDeliveryTest {
         val session = SessionCoordinator(prefs, { it() }, null, capture)
         session.start()
         try {
-            val old = capture.connectionGeneration
+            val old = capture.connectionSnapshot
             prefs.hostToken = "b".repeat(64)
             shadowOf(Looper.getMainLooper()).idle()
             assertEquals("T420: foreground retries must consume delivered credentials", prefs.hostToken, capture.token)
-            assertTrue(capture.connectionGeneration > old)
+            assertTrue(!capture.isCurrentConnection(old))
         } finally { session.stop() }
     }
 
@@ -67,10 +67,10 @@ class TokenDeliveryTest {
         val session = SessionCoordinator(prefs, { it() }, null, capture)
         session.start()
         session.stop()
-        val stopped = capture.connectionGeneration
+        val stopped = capture.connectionSnapshot
         prefs.hostToken = "b".repeat(64)
         shadowOf(Looper.getMainLooper()).idle()
-        assertEquals("T420: background delivery must not connect", stopped, capture.connectionGeneration)
+        assertEquals("T420: background delivery must not connect", stopped, capture.connectionSnapshot)
         session.start()
         try { assertEquals("T420: resume must use the latest delivered token", prefs.hostToken, capture.token) }
         finally { session.stop() }

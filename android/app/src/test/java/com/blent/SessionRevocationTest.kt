@@ -44,12 +44,12 @@ class SessionRevocationTest {
             session.start()
             receiver.start() // No Surface: job waits, no video or codec I/O.
             val oldJob = checkNotNull(job())
-            val oldGeneration = capture.connectionGeneration
+            val oldGeneration = capture.connectionSnapshot
             val (socket, listener) = sockets.single()
             capture.onModeKnown!!.invoke(false) // Queue UI callback from the old generation.
             try {
                 clear()
-                assertTrue("T904 clearing credentials must retire old control", capture.connectionGeneration > oldGeneration)
+                assertTrue("T904 clearing credentials must retire old control", !capture.isCurrentConnection(oldGeneration))
                 assertTrue("T904 clearing credentials must cancel captured video token", oldJob.isCancelled)
                 assertTrue(socket.cancelled)
                 assertNull(capture.token)
@@ -106,9 +106,9 @@ class SessionRevocationTest {
         with(fixture) {
             try {
                 session.start()
-                val generation = capture.connectionGeneration
+                val generation = capture.connectionSnapshot
                 session.applyToken(true)
-                assertEquals(generation, capture.connectionGeneration)
+                assertEquals(generation, capture.connectionSnapshot)
                 assertEquals(1, sockets.size)
                 assertNull(receiver.token)
             } finally { session.stop() }

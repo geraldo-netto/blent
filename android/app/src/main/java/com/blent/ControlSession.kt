@@ -28,13 +28,15 @@ internal interface ControlInputState {
     fun setDirectInput(status: JSONObject?) {}
 }
 
-internal data class RejectedStreamSettings(val reason: String, val bitrate: Int, val fps: Int, val requestGeneration: Long)
+internal data class RejectedStreamSettings(val reason: String, val bitrate: Int, val fps: Int, val requestSnapshot: ControlNotice)
 
 /** Owns authentication, host metadata and socket lifetime; never interprets MotionEvents. */
 internal class ControlSession(
     private val lock: Any,
     private val input: ControlInputState,
     private val client: WebSocket.Factory,
+    initialConnectionGeneration: Long = 0,
+    initialSettingsGeneration: Long = 0,
     private val decoderCapabilities: suspend (Int, Int, Int) -> JSONObject = DecoderCapabilities::report,
 ) {
     private companion object {
@@ -52,8 +54,9 @@ internal class ControlSession(
     var onDisplayActivityKnown: ((DisplayActivityUpdate) -> Unit)? = null
 
     @Volatile private var webSocket: WebSocket? = null
-    @Volatile var connectionGeneration = 0L
-        private set
+    private val connectionEpoch = ControlEpoch(initialConnectionGeneration)
+    val connectionSnapshot get() = connectionEpoch.snapshot()
+    fun isCurrentConnection(original: ControlNotice): Boolean = connectionEpoch.current(original)
     private var connectionWanted = false
     private val statistics = ControlStatistics()
     private var queueBudget = ControlCapacity.DEFAULT
@@ -88,8 +91,9 @@ internal class ControlSession(
     var onFpsKnown: ((fps: Int) -> Unit)? = null
     var onStreamFormat: ((DecoderFormat?) -> Unit)? = null
     var onSettingsRejected: ((RejectedStreamSettings) -> Unit)? = null
-    @Volatile var settingsGeneration = 0L
-        private set
+    private val settingsEpoch = ControlEpoch(initialSettingsGeneration)
+    val settingsSnapshot get() = settingsEpoch.snapshot()
+    fun isCurrentSettings(original: ControlNotice): Boolean = settingsEpoch.current(original)
 
     /// Attachment token from the host, delivered through the protected ADB
     /// receiver or initial token Activity. The token store updates a running
@@ -166,6 +170,8 @@ internal class ControlSession(
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
             synchronized(lock) {
                 if (isStale(webSocket)) return
+                connectionEpoch.revoke()
+                isConnected = false
                 resetGreeting()
                 webSocket.close(1000, null)
             }
@@ -175,7 +181,7 @@ internal class ControlSession(
             synchronized(lock) {
                 if (isStale(webSocket)) return
                 this@ControlSession.webSocket = null
-                connectionGeneration++
+                connectionEpoch.revoke()
                 isConnected = false
                 resetGreeting()
                 scheduleReconnect()
@@ -186,7 +192,7 @@ internal class ControlSession(
             synchronized(lock) {
                 if (isStale(webSocket)) return
                 this@ControlSession.webSocket = null
-                connectionGeneration++
+                connectionEpoch.revoke()
                 isConnected = false
                 resetGreeting()
                 Log.w(TAG, "Connection failed: ${t.message}")
@@ -371,7 +377,7 @@ internal class ControlSession(
         // Reconnect must resend confirmed settings rather than the rejected request.
         pendingConfig?.put("fps", fps)?.put("bitrate", bitrate)
         onSettingsRejected?.invoke(RejectedStreamSettings(
-            message.optString("error", "Unsupported stream settings"), bitrate, fps, settingsGeneration))
+            message.optString("error", "Unsupported stream settings"), bitrate, fps, settingsEpoch.snapshot()))
     }
 
     private fun applyDecoderGreeting(o: JSONObject) {
@@ -414,7 +420,14 @@ internal class ControlSession(
 
     private fun connectWebSocket(): Unit = synchronized(lock) {
         val selected = configuredRoutes ?: return@synchronized
-        connectionGeneration++
+        if (!connectionEpoch.acquire()) {
+            connectionWanted = false
+            isConnected = false
+            resetGreeting()
+            input.forgetTouches()
+            Log.w(TAG, "Control session capacity reached; reopen Blent to reconnect")
+            return@synchronized
+        }
         resetGreeting()
         activity.replace()
         activityHints.value = activity.update
@@ -431,11 +444,12 @@ internal class ControlSession(
 
     private fun scheduleReconnect(): Unit = synchronized(lock) {
         reconnectJob?.cancel()
-        val generation = connectionGeneration
+        if (!connectionEpoch.available()) return@synchronized
+        val original = connectionEpoch.snapshot()
         reconnectJob = scope.launch {
             delay(RECONNECT_DELAY_MS)
             synchronized(lock) {
-                if (connectionWanted && generation == connectionGeneration && !isConnected) {
+                if (connectionWanted && connectionEpoch.current(original) && !isConnected) {
                     connectWebSocket()
                 }
             }
@@ -448,7 +462,11 @@ internal class ControlSession(
      * also remembered here and re-sent on every reconnect.
      */
     fun sendConfig(bitrateKbps: Int, fps: Int): Unit = synchronized(lock) {
-        settingsGeneration++
+        if (!settingsEpoch.acquire()) {
+            pendingConfig = null
+            Log.w(TAG, "Settings request capacity reached; reopen Blent to change stream settings")
+            return@synchronized
+        }
         val msg = JSONObject().apply {
             put("type", "config")
             put("bitrate", bitrateKbps)
@@ -468,7 +486,7 @@ internal class ControlSession(
         sendRendered(RenderAcknowledgement(seq, decodeUs, decoder))
 
     fun sendRendered(receipt: RenderAcknowledgement) {
-        val generation = connectionGeneration
+        val original = connectionEpoch.snapshot()
         if (!isConnected) return
         val msg = JSONObject().apply {
             put("type", "rendered")
@@ -477,7 +495,7 @@ internal class ControlSession(
             if (receipt.decodeMicros >= 0) put("decode_us", receipt.decodeMicros)
         }
         synchronized(lock) {
-            if (connectionGeneration == generation && receipt.current()) enqueue(msg)
+            if (connectionEpoch.current(original) && receipt.current() && connectionEpoch.current(original)) enqueue(msg)
         }
     }
 
@@ -520,7 +538,7 @@ internal class ControlSession(
         // Never buffer/replay a partial stroke on a replacement connection.
         Log.w(TAG, "Control send rejected; reconnecting (queued_bytes=${socket.queueSize()})")
         webSocket = null
-        connectionGeneration++
+        connectionEpoch.revoke()
         isConnected = false
         resetGreeting()
         input.forgetTouches()
@@ -537,7 +555,7 @@ internal class ControlSession(
         if (webSocket != null) Log.i(TAG, "Control statistics: ${statistics()}")
         connectionWanted = false
         input.forgetTouches()
-        connectionGeneration++
+        connectionEpoch.revoke()
         reconnectJob?.cancel()
         val previous = webSocket
         webSocket = null

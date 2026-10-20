@@ -23,7 +23,7 @@ class DisplayWakeIntegrationTest {
         val sockets = ArrayList<Pair<DisplayRouteSocket, WebSocketListener>>()
         val control = TouchCapture(WebSocket.Factory { request, listener ->
             DisplayRouteSocket(request).also { sockets.add(it to listener) }
-        }, { _, _, _ -> JSONObject() })
+        }, capabilities = { _, _, _ -> JSONObject() })
         val actions = ConcurrentLinkedQueue<() -> Unit>()
         val prefs = Prefs(RuntimeEnvironment.getApplication()).apply { hostToken = "ab".repeat(32); checkUpdates = false }
         val session = SessionCoordinator(prefs, { actions.add(it) }, receiver, control)

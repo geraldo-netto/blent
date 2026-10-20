@@ -18,7 +18,7 @@ class ControlActivityHistoryTest {
         val sockets = ArrayList<Pair<DisplayRouteSocket, WebSocketListener>>()
         val control = TouchCapture(WebSocket.Factory { request, listener ->
             DisplayRouteSocket(request).also { sockets.add(it to listener) }
-        }, { _, _, _ -> JSONObject() })
+        }, capabilities = { _, _, _ -> JSONObject() })
         init { control.token = "ab".repeat(32) }
         fun open() {
             control.connect()

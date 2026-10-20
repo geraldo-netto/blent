@@ -1,0 +1,12 @@
+{
+  "ControlGenerationTest": 20,
+  "ControlBackpressureTest": 20,
+  "RegressionTest": 54,
+  "SessionRevocationTest": 10,
+  "TokenDeliveryTest": 6,
+  "DisplayRoutesTest": 10,
+  "DisplayActivityLifecycleTest": 16,
+  "ControlActivityHistoryTest": 6,
+  "DisplayWakeIntegrationTest": 14,
+  "DecoderNegotiationTest": 16
+}

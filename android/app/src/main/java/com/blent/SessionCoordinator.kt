@@ -260,7 +260,7 @@ internal class SessionCoordinator(
         }
         touchCapture?.onSettingsRejected = { rejected ->
             withCurrentControl {
-                if (touchCapture?.settingsGeneration == rejected.requestGeneration) {
+                if (touchCapture?.isCurrentSettings(rejected.requestSnapshot) == true) {
                     restoreStreamSettings(rejected.reason, rejected.bitrate, rejected.fps)
                 }
             }
@@ -310,9 +310,9 @@ internal class SessionCoordinator(
     // token change retires its socket. Validate again when the action runs.
     private fun withCurrentControl(action: () -> Unit) {
         val source = touchCapture ?: return
-        val generation = source.connectionGeneration
+        val original = source.connectionSnapshot
         dispatchUi {
-            if (started && touchCapture === source && source.connectionGeneration == generation) action()
+            if (started && touchCapture === source && source.isCurrentConnection(original)) action()
         }
     }
 

@@ -74,9 +74,9 @@ class DisplayRoutesTest {
             assertEquals(12002, sockets[0].request().url.port)
             capture.token = "b".repeat(64); sockets[0].open()
             assertEquals(token, JSONObject(sockets[0].sent.single()).getString("token"))
-            val before = capture.connectionGeneration
+            val before = capture.connectionSnapshot
             val replacement = DisplayRoutes(3, "c".repeat(64), 13001, 13002)
-            capture.routes = replacement; assertTrue(capture.connectionGeneration > before)
+            capture.routes = replacement; assertTrue(!capture.isCurrentConnection(before))
             assertEquals(13002, sockets[1].request().url.port)
             val oldCount = sockets[0].sent.size; sockets[0].open(); assertEquals(oldCount, sockets[0].sent.size)
             sockets[1].open(); assertEquals(replacement.token, JSONObject(sockets[1].sent.single()).getString("token"))

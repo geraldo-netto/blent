@@ -173,7 +173,7 @@ class DisplayActivityLifecycleTest {
         try {
             rig.signal(1, 0, true, true); rig.awaitRequests(1)
             rig.signal(2, 1, false)
-            rig.control.onSettingsRejected!!.invoke(RejectedStreamSettings("rejected", 12000, 60, rig.control.settingsGeneration))
+            rig.control.onSettingsRejected!!.invoke(RejectedStreamSettings("rejected", 12000, 60, rig.control.settingsSnapshot))
             // Execute the settings callback first, independent of UI hint scheduling.
             val pending = ArrayList<() -> Unit>()
             while (true) { pending.add(rig.actions.poll() ?: break) }
