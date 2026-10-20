@@ -1,0 +1,43 @@
+{
+  "function": "resolution",
+  "range": [
+    206,
+    231
+  ],
+  "native_line_counts": {
+    "206": 79,
+    "207": 79,
+    "208": 79,
+    "209": 79,
+    "210": 79,
+    "211": 60,
+    "212": 12,
+    "213": 12,
+    "214": 12,
+    "215": 12,
+    "216": 12,
+    "217": 12,
+    "218": 60,
+    "219": 60,
+    "220": 60,
+    "221": 60,
+    "222": 60,
+    "223": 60,
+    "224": 3,
+    "225": 3,
+    "226": 3,
+    "227": 57,
+    "229": 12,
+    "230": 79,
+    "231": 79
+  },
+  "covered": 25,
+  "total": 25,
+  "percent": 100,
+  "rustc": "1.98.1",
+  "cargo-llvm-cov": "0.8.7",
+  "complexity_source_estimate": 5,
+  "native_sonar": "unavailable",
+  "object": "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1229/formatted-coverage/llvm-cov-target/debug/deps/blent_gui-f95a744e3342585f",
+  "object_sha256": "9d1c0d843a0df952d909aefb4bc05af91b2c64df0463e17fac0a1085549f2926"
+}

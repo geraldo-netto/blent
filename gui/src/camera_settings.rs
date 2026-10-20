@@ -208,7 +208,13 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
     egui::ComboBox::from_id_salt("camera-resolution")
         .selected_text(format!("{} × {}", options.width, options.height))
         .show_ui(ui, |ui| {
-            for (width, height) in [(640, 480), (1280, 720), (1920, 1080)] {
+            for (width, height) in [
+                (320, 180),
+                (640, 360),
+                (640, 480),
+                (1280, 720),
+                (1920, 1080),
+            ] {
                 if ui
                     .selectable_label(
                         (options.width, options.height) == (width, height),

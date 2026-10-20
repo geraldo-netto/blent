@@ -107,6 +107,14 @@ kbit/s. These are request limits, not guaranteed modes: Android rejects profiles
 its camera does not advertise. A bitrate target is not a measured traffic rate.
 Larger profiles cost USB bandwidth, decoding/encoding work and tablet power.
 
+The resolution chooser also offers **320×180 (180p)** and **640×360 (360p)**
+for low-detail calls. These preserve the same explicit Start and Android consent.
+Support depends on the camera advertising the requested size; unsupported sizes
+report an error rather than silently substituting another profile. The default
+remains 720p. Lower FPS and bitrate can further reduce the tablet-to-computer
+stream. The calling application's own resolution, bitrate and network behavior
+determine internet usage; the Blent camera bitrate controls its USB stream.
+
 Linux uses one owned native writer per virtual camera and an FFmpeg decoder for
 the selected camera. Each writer configures and writes the original locked file;
 it never reopens the device path. Unknown native completion keeps that ownership

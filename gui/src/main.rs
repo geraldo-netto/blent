@@ -2253,6 +2253,51 @@ mod tests {
     }
 
     #[test]
+    fn t1229_low_camera_resolutions_save_without_start_or_display_changes() {
+        let (_directory, mut app) = settings_test_app(Tab::Camera);
+        app.cfg = app.saved_cfg.clone();
+        let original = app.cfg.clone();
+        let ctx = egui::Context::default();
+        ctx.style_mut(|style| style.animation_time = 0.0);
+        click_settings_text(
+            &mut app,
+            &ctx,
+            "Advanced camera settings",
+            camera_test_frame,
+        );
+        for (width, height) in [(640, 360), (320, 180)] {
+            let current = format!(
+                "{} × {}",
+                app.cfg.camera.options.width, app.cfg.camera.options.height
+            );
+            click_settings_text(&mut app, &ctx, &current, camera_test_frame);
+            click_settings_text(
+                &mut app,
+                &ctx,
+                &format!("{width} × {height}"),
+                camera_test_frame,
+            );
+            assert_eq!(
+                (app.cfg.camera.options.width, app.cfg.camera.options.height),
+                (width, height)
+            );
+            app.cfg.camera.options.validate().unwrap();
+            assert!(!app.cfg.requires_restart_from(&original));
+            assert_eq!(
+                (app.cfg.width, app.cfg.height),
+                (original.width, original.height)
+            );
+            assert!(
+                app.camera.backend.is_none(),
+                "T1229 editing a preset must not start capture"
+            );
+            app.apply(true);
+            wait_for_work(&mut app);
+            assert_eq!(app.store.load().camera.options, app.cfg.camera.options);
+        }
+    }
+
+    #[test]
     fn t543_camera_tab_controls_only_camera_profile_and_saves_without_display_restart() {
         use blent_config::camera::{CameraBackend, CameraProfile, CameraState, Lens};
         use std::{cell::RefCell, rc::Rc};
