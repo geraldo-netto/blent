@@ -12,6 +12,8 @@ mod frame_pool;
 mod outputs;
 #[path = "../../src/camera/protocol.rs"]
 mod protocol;
+#[path = "samples.rs"]
+mod samples;
 
 use anyhow::{Context, Result};
 use blent_config::{camera::CameraOptions, commands::AsyncCommandExt};
@@ -27,6 +29,9 @@ struct Options {
     seconds: u64,
     #[arg(long, default_value_t = 0)]
     stall_feedback_ms: u64,
+    /// Timestamp admission cap; exhaustion fails the measurement.
+    #[arg(long, default_value_t = samples::DEFAULT_CAPACITY)]
+    max_samples: usize,
 }
 
 #[tokio::main]
@@ -37,6 +42,7 @@ pub(super) async fn run() -> Result<()> {
         (1..=30).contains(&args.seconds),
         "probe duration must be 1–30 seconds"
     );
+    let samples = samples::Samples::new(args.max_samples)?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let route = TcpListener::bind("127.0.0.1:0").await?;
     let bridge = bridge::Bridge::create(
@@ -47,7 +53,7 @@ pub(super) async fn run() -> Result<()> {
     .await?;
     let token = blent_config::runtime::random_token()?;
     let result = tokio::select! {
-        result = sample(&listener, &bridge, &token, &args) => result,
+        result = sample(&listener, &bridge, &token, &args, samples) => result,
         result = proxy(&route, listener.local_addr()?, args.stall_feedback_ms) => result,
     };
     let stop = stop_capture(&bridge).await;
@@ -75,6 +81,7 @@ async fn sample(
     bridge: &bridge::Bridge,
     token: &str,
     args: &Options,
+    mut samples: samples::Samples,
 ) -> Result<()> {
     let (front, mut received) = watch::channel(None);
     let (rear, _) = watch::channel(None);
@@ -84,9 +91,6 @@ async fn sample(
     }
     bridge.invite(token, &args.camera).await?;
     let started = Instant::now();
-    let mut count = 0u64;
-    let mut decoded_ms = Vec::with_capacity((args.seconds * 30) as usize);
-    let mut first_ms = None;
     let accept = async {
         loop {
             let (socket, _) = listener.accept().await?;
@@ -107,9 +111,7 @@ async fn sample(
         loop {
             received.changed().await.context("probe output closed")?;
             if received.borrow_and_update().is_some() {
-                count += 1;
-                decoded_ms.push(started.elapsed().as_millis());
-                first_ms.get_or_insert(started.elapsed().as_millis());
+                samples.record(started.elapsed())?;
             }
         }
         #[allow(unreachable_code)]
@@ -122,11 +124,11 @@ async fn sample(
     }
     println!(
         "{}",
-        serde_json::json!({"seconds": args.seconds, "frames": count, "decoded_ms": decoded_ms, "stall_feedback_ms": args.stall_feedback_ms, "first_frame_ms": first_ms,
+        serde_json::json!({"seconds": args.seconds, "frames": samples.count(), "decoded_ms": samples.timestamps(), "stall_feedback_ms": args.stall_feedback_ms, "first_frame_ms": samples.first(),
         "bitrate_kbps": args.camera.bitrate, "adaptive": args.camera.adaptive_bitrate,
         "freshness_ms": args.camera.freshness_ms, "boundary": "camera sensor through production decoder; no V4L2/presentation"})
     );
-    anyhow::ensure!(count > 0, "no native camera frames decoded");
+    anyhow::ensure!(samples.count() > 0, "no native camera frames decoded");
     Ok(())
 }
 

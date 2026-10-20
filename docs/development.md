@@ -684,3 +684,14 @@ the initial launch allowance; an attempted Activity launch consumes it even if
 ADB's result is lost. A confirmed absence permits one launch on reattachment.
 Daemon restart begins a new observation lifetime. Unknown tablet identities are
 not merged, and bounded launch-history exhaustion falls back to manual opening.
+
+## Camera feedback probe timestamp capacity
+
+`camera-feedback-probe` accepts `--max-samples` (default 8192, range 1–1048576).
+The probe reserves storage before native setup and fails measurement on exhaustion;
+it never silently truncates timestamp history. Increase the cap for longer/faster
+trials when memory permits. Stored timestamps cost 8 bytes each (64 KiB by default,
+at most 8 MiB), plus allocator/JSON overhead. The compact timestamp array requires
+at most `21 * samples + 2` bytes including brackets. No camera frame is stored in
+this history. Duration still has its independent 1–30 second limit. Native probe
+integration/retirement work remains tracked separately in T1189 until verified.

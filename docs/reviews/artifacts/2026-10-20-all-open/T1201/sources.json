@@ -1,0 +1,5 @@
+{
+  "host/examples/camera-feedback-probe/linux.rs": "ee425f44f59c682059c17adf7e70065b77fcffe25bf35a9d955c0d849bd9efda",
+  "host/examples/camera-feedback-probe/samples.rs": "78edb9b16702b727e463aaa5742afe03d4ab29cae2eb91bbf0674abedf41cc13",
+  "host/tests/camera_probe_samples.rs": "24d37fcd293a99ae888f244e8a68ac5ee3be8aaa73c8d1b6775cbcb716f3bd27"
+}
