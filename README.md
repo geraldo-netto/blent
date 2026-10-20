@@ -159,6 +159,11 @@ under **App & diagnostics**. The decoder panel shows the active codec, advertise
 capabilities, requested performance hints and watchdog fallback; effective hints
 remain unknown. Camera Start/Stop is explicit and independent of
 display sharing; opening settings or pressing Apply does not start capture.
+When USB media is authenticated without a streaming desktop, the tablet shows
+**USB media connected** and **Open camera and audio controls**. That button opens
+the existing local controls directly; it grants no media consent. Pairing alone
+does not enable Start; media needs a current host request and local approval. The existing ADB desktop
+connection still requires USB debugging, independently of USB media pairing.
 The tray controls the running daemon.
 When `XDG_CONFIG_HOME` is an absolute path, host settings instead use
 `$XDG_CONFIG_HOME/blent/config.toml`. Empty or relative values use the default.

@@ -6,6 +6,7 @@ import com.blent.connection.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.collectAsState
 import kotlin.math.roundToInt
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Job
@@ -68,6 +69,7 @@ class MainActivity : ComponentActivity() {
                     showThanks = session.showThanks,
                     onDismissThanks = session::dismissThanks,
                     presentation = session.presentation,
+                    usbAuthenticated = connection.state.collectAsState().value.authenticated,
                     settings = session.settings,
                     onSurfaceReady = session::surfaceReady,
                     onSurfaceDestroyed = session::surfaceDestroyed,

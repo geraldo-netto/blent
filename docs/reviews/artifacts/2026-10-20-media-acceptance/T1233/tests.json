@@ -1,0 +1,50 @@
+[
+  {
+    "name": "com.blent.DecoderWaitUiTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.UsbMediaMainStatusTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.SettingsLayoutTest",
+    "tests": 38,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.CalibrationStartupTest",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.SurfaceCallbackContractTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.CameraConsentMainActivityTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.DisplaySettingsTest",
+    "tests": 16,
+    "failures": 0,
+    "errors": 0
+  },
+  {
+    "name": "com.blent.SettingsControlContractTest",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0
+  }
+]

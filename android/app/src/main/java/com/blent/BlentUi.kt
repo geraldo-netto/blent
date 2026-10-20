@@ -59,6 +59,7 @@ internal fun BlentMain(
     onDismissThanks: () -> Unit = {},
     onSurfaceDestroyed: () -> Unit = {},
     presentation: StreamPresentation? = null,
+    usbAuthenticated: Boolean = false,
     settings: SettingsValues = SettingsValues(),
     displayRefreshRates: List<Float> = listOf(Prefs.DEFAULT_DISPLAY_REFRESH_RATE),
     onSettingsEvent: (SettingsEvent) -> Unit = {},
@@ -68,11 +69,11 @@ internal fun BlentMain(
 ) {
     val isConnected = presentation?.connected ?: false
     val calibrating = presentation?.calibrating?.collectAsState()?.value ?: false
-    var showSettings by remember { mutableStateOf(false) }
+    var controls by remember { mutableStateOf<MainControls?>(null) }
     val context = LocalContext.current
 
     LaunchedEffect(settings.streamError) {
-        if (settings.streamError != null) showSettings = true
+        if (settings.streamError != null) controls = MainControls.SETTINGS
     }
 
     LaunchedEffect(presentation, isConnected, settings.showStats) {
@@ -88,7 +89,8 @@ internal fun BlentMain(
             .background(Color.Black)
     ) {
         StreamSurface(onSurfaceReady, onSurfaceDestroyed)
-        ConnectionLayers(penOnly, isConnected, controlConnected(presentation), settings.showStats, presentation?.fps ?: 0f, presentation?.mbps ?: 0f, presentation?.directInput?.collectAsState()?.value != null, calibrating)
+        ConnectionLayers(penOnly, isConnected, controlConnected(presentation), settings.showStats, presentation?.fps ?: 0f, presentation?.mbps ?: 0f, presentation?.directInput?.collectAsState()?.value != null, calibrating,
+            usbAuthenticated, { controls = MainControls.MEDIA })
 
         // Keep settings above the video surface so its taps stay on the tablet.
         Box(
@@ -100,7 +102,7 @@ internal fun BlentMain(
                 .clip(CircleShape)
                 .background(Color(0xAA20202C))
                 .semantics { contentDescription = "Open settings" }
-                .clickable(role = Role.Button) { showSettings = true },
+                .clickable(role = Role.Button) { controls = MainControls.SETTINGS },
             contentAlignment = Alignment.Center
         ) {
             Text("⚙", fontSize = 18.sp, color = Color.White)
@@ -110,21 +112,23 @@ internal fun BlentMain(
         StreamNotices(showThanks && !calibrating, onDismissThanks, updateAvailable)
         Box(Modifier.align(Alignment.BottomStart)) { inputControls() }
 
-        if (showSettings) {
-            SettingsSheet(
+        when (controls) {
+            MainControls.SETTINGS -> SettingsSheet(
                 settings = settings,
                 updateAvailable = updateAvailable,
                 onOpenUpdate = {
                     openWebLink(context, UpdateCheck.RELEASES_PAGE)
                 },
                 penOnly = penOnly,
-                onDismiss = { showSettings = false },
+                onDismiss = { controls = null },
                 displayRefreshRates = displayRefreshRates,
                 onSettingsEvent = onSettingsEvent,
                 cameraControls = cameraControls,
                 connectionControls = connectionControls,
                 decoderDiagnostics = decoderDiagnostics(presentation),
             )
+            MainControls.MEDIA -> MediaControlsSheet(cameraControls) { controls = null }
+            null -> Unit
         }
     }
 }
@@ -168,7 +172,7 @@ private fun controlConnected(presentation: StreamPresentation?): Boolean =
     presentation?.controlConnected?.collectAsState()?.value ?: false
 
 @Composable
-private fun BoxScope.ConnectionLayers(penOnly: Boolean, isConnected: Boolean, controlConnected: Boolean, showStats: Boolean, fps: Float, mbps: Float, directInput: Boolean, calibrating: Boolean) {
+private fun BoxScope.ConnectionLayers(penOnly: Boolean, isConnected: Boolean, controlConnected: Boolean, showStats: Boolean, fps: Float, mbps: Float, directInput: Boolean, calibrating: Boolean, usbAuthenticated: Boolean, onOpenMedia: () -> Unit) {
     val tuning = calibrating && controlConnected && !penOnly
     val expired = calibrationExpired(tuning)
     // Drawing is available only while the authenticated control channel is alive.
@@ -189,7 +193,7 @@ private fun BoxScope.ConnectionLayers(penOnly: Boolean, isConnected: Boolean, co
         exit = ExitTransition.None,
         modifier = Modifier.fillMaxSize()
     ) {
-        ConnectionScreen(penOnly, tuning, expired)
+        ConnectionScreen(penOnly, tuning, expired, usbAuthenticated, onOpenMedia)
     }
 
     // Stats chip (top-left, only while streaming)
@@ -310,7 +314,8 @@ private fun PenOnlyScreen(directInput: Boolean) {
 }
 
 @Composable
-private fun ConnectionScreen(penOnly: Boolean, tuning: Boolean = false, expired: Boolean = false) {
+private fun ConnectionScreen(penOnly: Boolean, tuning: Boolean, expired: Boolean, usbAuthenticated: Boolean, onOpenMedia: () -> Unit) {
+    val mediaConnected = usbAuthenticated && !tuning
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -338,11 +343,13 @@ private fun ConnectionScreen(penOnly: Boolean, tuning: Boolean = false, expired:
                 color = AccentSoft
             )
             Spacer(modifier = Modifier.height(24.dp))
-            CircularProgressIndicator(
-                color = Accent,
-                strokeWidth = 3.dp,
-                modifier = Modifier.size(40.dp)
-            )
+            if (!mediaConnected) {
+                CircularProgressIndicator(
+                    color = Accent,
+                    strokeWidth = 3.dp,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(24.dp))
             Card(
                 shape = RoundedCornerShape(16.dp),
@@ -353,26 +360,37 @@ private fun ConnectionScreen(penOnly: Boolean, tuning: Boolean = false, expired:
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = connectionTitle(penOnly, tuning, expired),
+                        text = if (mediaConnected) "USB media connected" else connectionTitle(penOnly, tuning, expired),
                         fontSize = 16.sp,
-                        color = Warn,
+                        color = if (mediaConnected) Ok else Warn,
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = if (tuning) "Blent is tuning this setup. Your desktop opens when ready." else "1. Connect the USB cable\n" +
-                            "2. Allow USB debugging if asked\n" +
-                            "3. Open Blent on your computer and start sharing\n\n" +
-                            "An already paired network connection reconnects automatically.",
+                        text = connectionInstructions(tuning, mediaConnected),
                         fontSize = 13.sp,
                         lineHeight = 22.sp,
                         color = Color(0xFF9A9AAE),
                         textAlign = TextAlign.Start
                     )
+                    if (mediaConnected) {
+                        Button(onClick = onOpenMedia) { Text("Open camera and audio controls") }
+                    }
                 }
             }
         }
     }
+}
+
+internal fun connectionInstructions(tuning: Boolean, mediaConnected: Boolean): String = when {
+    tuning -> "Blent is tuning this setup. Your desktop opens when ready."
+    mediaConnected -> "Virtual desktop is not streaming.\n" +
+        "Camera, microphone and speakers can use this USB connection independently. Each needs its own Start action.\n\n" +
+        "For a virtual desktop, start display sharing on your computer."
+    else -> "1. Connect the USB cable\n" +
+        "2. Allow USB debugging if asked\n" +
+        "3. Open Blent on your computer and start sharing\n\n" +
+        "An already paired network connection reconnects automatically."
 }
 
 // T714: repeated trial metadata must not extend one calibration presentation forever.

@@ -1,0 +1,454 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "BlentMain",
+    "line": 52,
+    "language": "kotlin",
+    "covered": 55,
+    "total": 55,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt",
+        "name": "BlentMain",
+        "signature": "(Lkotlin/jvm/functions/Function1;ZLjava/lang/String;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lcom/blent/StreamPresentation;ZLcom/blent/SettingsValues;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V",
+        "line": 56,
+        "covered": 55,
+        "total": 55
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "<lambda>",
+    "line": 75,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt$BlentMain$4",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 76,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "<lambda>",
+    "line": 93,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt$BlentMain$6$1$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 93,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "<lambda>",
+    "line": 107,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "source lines with all instructions covered (conservative fallback)"
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "<lambda>",
+    "line": 123,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt$BlentMain$6$7$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 123,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "<lambda>",
+    "line": 130,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt$BlentMain$6$8$1",
+        "name": "invoke",
+        "signature": "()V",
+        "line": 130,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "ConnectionLayers",
+    "line": 174,
+    "language": "kotlin",
+    "covered": 23,
+    "total": 23,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt",
+        "name": "ConnectionLayers",
+        "signature": "(Landroidx/compose/foundation/layout/BoxScope;ZZZZFFZZZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V",
+        "line": 175,
+        "covered": 23,
+        "total": 23
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "ConnectionScreen",
+    "line": 316,
+    "language": "kotlin",
+    "covered": 35,
+    "total": 35,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt",
+        "name": "ConnectionScreen",
+        "signature": "(ZZZZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V",
+        "line": 317,
+        "covered": 35,
+        "total": 35
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+    "name": "connectionInstructions",
+    "line": 385,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/BlentUi.kt",
+        "owner": "com/blent/BlentUiKt",
+        "name": "connectionInstructions",
+        "signature": "(ZZ)Ljava/lang/String;",
+        "line": 385,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+    "name": "onCreate",
+    "line": 44,
+    "language": "kotlin",
+    "covered": 23,
+    "total": 23,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity",
+        "name": "onCreate",
+        "signature": "(Landroid/os/Bundle;)V",
+        "line": 45,
+        "covered": 23,
+        "total": 23
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+    "name": "<clinit>",
+    "line": 17,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+        "owner": "com/blent/MainControls",
+        "name": "<clinit>",
+        "signature": "()V",
+        "line": 17,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+    "name": "MediaControlsSheet",
+    "line": 19,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+        "owner": "com/blent/MediaControlsSheetKt",
+        "name": "MediaControlsSheet",
+        "signature": "(Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V",
+        "line": 23,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+    "name": "<lambda>",
+    "line": 25,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+        "owner": "com/blent/MediaControlsSheetKt$MediaControlsSheet$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/ColumnScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 26,
+        "covered": 5,
+        "total": 5
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+        "owner": "com/blent/ComposableSingletons$MediaControlsSheetKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 28,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+    "name": "<lambda>",
+    "line": 26,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+        "owner": "com/blent/ComposableSingletons$MediaControlsSheetKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 28,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+    "name": "<lambda>",
+    "line": 28,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MediaControlsSheet.kt",
+        "owner": "com/blent/ComposableSingletons$MediaControlsSheetKt$lambda-1$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+        "line": 28,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+    "name": "<lambda>",
+    "line": 64,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1$7",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 78,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1$8",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 80,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1$6",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 79,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 65,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 66,
+        "covered": 16,
+        "total": 16
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+    "name": "<lambda>",
+    "line": 65,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1$7",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 78,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1$8",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 80,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1$6",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 79,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/MainActivity.kt",
+        "owner": "com/blent/MainActivity$onCreate$3$1",
+        "name": "invoke",
+        "signature": "(Landroidx/compose/runtime/Composer;I)V",
+        "line": 66,
+        "covered": 16,
+        "total": 16
+      }
+    ]
+  }
+]
