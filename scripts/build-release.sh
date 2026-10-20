@@ -5,7 +5,7 @@
 #
 # Needs a distrobox container named "blent-build" made from debian:12 with
 # build-essential, pkg-config, libdrm-dev, the X11/Wayland dev packages for
-# the GUI, libusb-1.0 development headers, git, dpkg-dev, fakeroot, rpm and rustup.
+# the GUI, libusb-1.0 development headers, git, dpkg-dev, fakeroot and rustup.
 # The host also needs Python 3 and binutils for the bundle ABI check.
 set -euo pipefail
 cd "$(dirname "$0")/.."

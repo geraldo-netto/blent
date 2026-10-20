@@ -1,0 +1,641 @@
+{
+  "tool": "unchanged repository source model; Python3.12 / cached tree-sitter0.25.2 ABI14 Bash; not native Sonar",
+  "functions": {
+    "packaging/build-packages.sh": [],
+    "scripts/install.sh": [
+      {
+        "line": 11,
+        "name": "xdg_base",
+        "complexity": 3
+      },
+      {
+        "line": 22,
+        "name": "info",
+        "complexity": 1
+      },
+      {
+        "line": 23,
+        "name": "warn",
+        "complexity": 1
+      },
+      {
+        "line": 24,
+        "name": "error",
+        "complexity": 1
+      },
+      {
+        "line": 26,
+        "name": "is_prebuilt",
+        "complexity": 1
+      },
+      {
+        "line": 28,
+        "name": "has_evdi_library",
+        "complexity": 5
+      },
+      {
+        "line": 43,
+        "name": "install_debian_evdi_library",
+        "complexity": 4
+      },
+      {
+        "line": 51,
+        "name": "install_debian_deps",
+        "complexity": 4
+      },
+      {
+        "line": 64,
+        "name": "install_arch_deps",
+        "complexity": 5
+      },
+      {
+        "line": 81,
+        "name": "install_distro_deps",
+        "complexity": 4
+      },
+      {
+        "line": 90,
+        "name": "install_deps",
+        "complexity": 2
+      },
+      {
+        "line": 99,
+        "name": "check_deps",
+        "complexity": 5
+      },
+      {
+        "line": 112,
+        "name": "check_path",
+        "complexity": 2
+      },
+      {
+        "line": 121,
+        "name": "build_if_needed",
+        "complexity": 2
+      },
+      {
+        "line": 132,
+        "name": "stage_optional_binaries",
+        "complexity": 4
+      },
+      {
+        "line": 143,
+        "name": "stage_install_binaries",
+        "complexity": 9
+      },
+      {
+        "line": 159,
+        "name": "install_binaries",
+        "complexity": 5
+      },
+      {
+        "line": 181,
+        "name": "install_desktop_entry",
+        "complexity": 2
+      },
+      {
+        "line": 189,
+        "name": "install_icons",
+        "complexity": 7
+      },
+      {
+        "line": 203,
+        "name": "write_user_service",
+        "complexity": 1
+      },
+      {
+        "line": 207,
+        "name": "write_installed_user_service",
+        "complexity": 5
+      },
+      {
+        "line": 219,
+        "name": "install_autostart_entry",
+        "complexity": 5
+      },
+      {
+        "line": 230,
+        "name": "install_desktop_autostart",
+        "complexity": 2
+      },
+      {
+        "line": 238,
+        "name": "configure_managed_autostart",
+        "complexity": 5
+      },
+      {
+        "line": 249,
+        "name": "install_user_service",
+        "complexity": 6
+      },
+      {
+        "line": 263,
+        "name": "install_files",
+        "complexity": 1
+      },
+      {
+        "line": 271,
+        "name": "configure_boot_modules",
+        "complexity": 5
+      },
+      {
+        "line": 296,
+        "name": "configure_uinput",
+        "complexity": 7
+      },
+      {
+        "line": 311,
+        "name": "activate_evdi",
+        "complexity": 2
+      },
+      {
+        "line": 315,
+        "name": "system_setup",
+        "complexity": 1
+      },
+      {
+        "line": 322,
+        "name": "main",
+        "complexity": 3
+      }
+    ],
+    "scripts/publish-release.sh": [
+      {
+        "line": 26,
+        "name": "check_release_refs",
+        "complexity": 4
+      },
+      {
+        "line": 40,
+        "name": "check_release_sources",
+        "complexity": 4
+      },
+      {
+        "line": 50,
+        "name": "require_metadata_line",
+        "complexity": 2
+      }
+    ],
+    "scripts/update-release-metadata.sh": [
+      {
+        "line": 21,
+        "name": "usage",
+        "complexity": 1
+      }
+    ],
+    "scripts/ci/package-smoke.sh": [],
+    "scripts/build-release.sh": [],
+    "scripts/tests/test_packages.py": [
+      {
+        "line": 13,
+        "name": "test_t428_portable_build_rejects_unverified_evdi_cache",
+        "complexity": 5
+      },
+      {
+        "line": 56,
+        "name": "test_t101_container_and_appimage_failures_reject_stale_assets",
+        "complexity": 5
+      },
+      {
+        "line": 73,
+        "name": "test_t1217_supported_outputs_need_only_current_package_tools",
+        "complexity": 2
+      },
+      {
+        "line": 85,
+        "name": "test_t235_checkout_paths_are_literal_container_arguments",
+        "complexity": 2
+      },
+      {
+        "line": 100,
+        "name": "test_t235_portable_build_uses_literal_checkout_path",
+        "complexity": 2
+      },
+      {
+        "line": 119,
+        "name": "test_t236_release_rejects_new_glibc_in_bundled_evdi",
+        "complexity": 1
+      },
+      {
+        "line": 132,
+        "name": "portable_fixture",
+        "complexity": 4
+      },
+      {
+        "line": 154,
+        "name": "test_t235_make_preserves_release_notes_path",
+        "complexity": 1
+      },
+      {
+        "line": 169,
+        "name": "create_fixture",
+        "complexity": 7
+      },
+      {
+        "line": 170,
+        "name": "write",
+        "complexity": 2
+      }
+    ],
+    "scripts/tests/test_installer.py": [
+      {
+        "line": 31,
+        "name": "test_t231_other_init_systems_receive_boot_module_guidance",
+        "complexity": 1
+      },
+      {
+        "line": 43,
+        "name": "distribution_fixture",
+        "complexity": 1
+      },
+      {
+        "line": 56,
+        "name": "test_t230_retired_families_require_manual_dependencies",
+        "complexity": 2
+      },
+      {
+        "line": 63,
+        "name": "test_t230_mixed_retired_families_do_not_install_packages",
+        "complexity": 2
+      },
+      {
+        "line": 70,
+        "name": "test_t230_unknown_ids_do_not_match_substrings_of_supported_families",
+        "complexity": 2
+      },
+      {
+        "line": 77,
+        "name": "dependency_fixture",
+        "complexity": 4
+      },
+      {
+        "line": 91,
+        "name": "dependency_output",
+        "complexity": 1
+      },
+      {
+        "line": 97,
+        "name": "test_t229_missing_evdi_packages_do_not_block_runtime_tools",
+        "complexity": 4
+      },
+      {
+        "line": 107,
+        "name": "test_t229_library_requirements_follow_bundle_or_source",
+        "complexity": 5
+      },
+      {
+        "line": 128,
+        "name": "test_t345_installed_binaries_are_executable",
+        "complexity": 3
+      },
+      {
+        "line": 140,
+        "name": "test_t249_upgrade_preserves_a_running_library_mapping",
+        "complexity": 2
+      },
+      {
+        "line": 166,
+        "name": "test_t261_failed_upgrade_preserves_installed_executables",
+        "complexity": 5
+      },
+      {
+        "line": 180,
+        "name": "test_t261_omitted_optional_gui_keeps_existing_installation",
+        "complexity": 2
+      },
+      {
+        "line": 191,
+        "name": "upgrade_fixture",
+        "complexity": 2
+      },
+      {
+        "line": 201,
+        "name": "install_fixture",
+        "complexity": 1
+      },
+      {
+        "line": 205,
+        "name": "run_installer",
+        "complexity": 1
+      },
+      {
+        "line": 210,
+        "name": "test_t316_tarball_installs_gui_x11_runtime_libraries",
+        "complexity": 4
+      },
+      {
+        "line": 235,
+        "name": "test_t214_distro_dependencies_keep_commands_and_fallbacks",
+        "complexity": 3
+      },
+      {
+        "line": 253,
+        "name": "test_t214_debian_fallback_keeps_kernel_install_independent",
+        "complexity": 1
+      },
+      {
+        "line": 266,
+        "name": "test_t216_system_setup_keeps_boot_configuration_and_live_fallback",
+        "complexity": 2
+      }
+    ],
+    "scripts/tests/test_release.py": [
+      {
+        "line": 15,
+        "name": "setUp",
+        "complexity": 4
+      },
+      {
+        "line": 50,
+        "name": "write",
+        "complexity": 2
+      },
+      {
+        "line": 58,
+        "name": "git",
+        "complexity": 1
+      },
+      {
+        "line": 61,
+        "name": "publish",
+        "complexity": 1
+      },
+      {
+        "line": 65,
+        "name": "reject_before_build",
+        "complexity": 1
+      },
+      {
+        "line": 70,
+        "name": "retag_fixture",
+        "complexity": 1
+      },
+      {
+        "line": 76,
+        "name": "test_t262_metadata_requires_literal_versions_and_date",
+        "complexity": 2
+      },
+      {
+        "line": 96,
+        "name": "enable_uploads",
+        "complexity": 3
+      },
+      {
+        "line": 120,
+        "name": "test_t308_release_replaces_deb_with_appimage_and_dependency_sources",
+        "complexity": 2
+      },
+      {
+        "line": 133,
+        "name": "test_t250_wrong_certificate_prevents_all_release_api_writes",
+        "complexity": 1
+      },
+      {
+        "line": 142,
+        "name": "test_t117_failed_uploads_never_publish",
+        "complexity": 3
+      },
+      {
+        "line": 156,
+        "name": "test_t263_source_changes_during_build_prevent_api_requests",
+        "complexity": 3
+      },
+      {
+        "line": 172,
+        "name": "test_t117_verifies_uploaded_set_and_digests",
+        "complexity": 2
+      },
+      {
+        "line": 183,
+        "name": "test_t117_only_complete_verified_release_is_published",
+        "complexity": 1
+      },
+      {
+        "line": 195,
+        "name": "test_t118_credentials_absent_from_arguments_and_logs",
+        "complexity": 1
+      },
+      {
+        "line": 206,
+        "name": "test_t225_t661_publisher_routes_every_request_to_fork",
+        "complexity": 2
+      },
+      {
+        "line": 220,
+        "name": "test_t225_t661_active_project_links_target_fork",
+        "complexity": 4
+      },
+      {
+        "line": 244,
+        "name": "test_t100_newer_head_rejected",
+        "complexity": 1
+      },
+      {
+        "line": 250,
+        "name": "test_t100_divergent_remote_tag_rejected",
+        "complexity": 1
+      },
+      {
+        "line": 254,
+        "name": "test_t100_missing_remote_tag_rejected",
+        "complexity": 1
+      },
+      {
+        "line": 258,
+        "name": "test_t100_matching_annotated_refs_reach_build",
+        "complexity": 1
+      },
+      {
+        "line": 267,
+        "name": "setUp",
+        "complexity": 2
+      },
+      {
+        "line": 276,
+        "name": "update",
+        "complexity": 2
+      },
+      {
+        "line": 281,
+        "name": "test_t277_invalid_input_preserves_all_metadata",
+        "complexity": 6
+      },
+      {
+        "line": 299,
+        "name": "test_t277_check_is_read_only_and_valid_update_completes",
+        "complexity": 2
+      },
+      {
+        "line": 312,
+        "name": "test_t350_prepare_release_from_unpublished_fork",
+        "complexity": 3
+      }
+    ],
+    "scripts/tests/test_notices.py": [
+      {
+        "line": 16,
+        "name": "test_t129_tar_appimage_and_arch_include_notices",
+        "complexity": 3
+      },
+      {
+        "line": 71,
+        "name": "copy_sources",
+        "complexity": 4
+      },
+      {
+        "line": 85,
+        "name": "verify_docs",
+        "complexity": 5
+      },
+      {
+        "line": 20,
+        "name": "write",
+        "complexity": 2
+      },
+      {
+        "line": 36,
+        "name": "run",
+        "complexity": 1
+      }
+    ],
+    "scripts/tests/test_evdi_setup.py": [
+      {
+        "line": 44,
+        "name": "setup_program",
+        "complexity": 4
+      },
+      {
+        "line": 57,
+        "name": "run_setup",
+        "complexity": 5
+      },
+      {
+        "line": 89,
+        "name": "test_t751_xorg_defers_module_loading_and_capacity_growth",
+        "complexity": 4
+      },
+      {
+        "line": 99,
+        "name": "test_t751_existing_capacity_needs_no_process_probe",
+        "complexity": 2
+      },
+      {
+        "line": 106,
+        "name": "test_t751_failed_process_inventory_defers_device_mutation",
+        "complexity": 3
+      },
+      {
+        "line": 114,
+        "name": "test_t269_install_and_upgrade_never_unload_and_add_only_missing_capacity",
+        "complexity": 6
+      },
+      {
+        "line": 125,
+        "name": "test_t269_setup_failure_defers_to_reboot_without_unloading",
+        "complexity": 4
+      },
+      {
+        "line": 134,
+        "name": "test_t497_capacity_is_confirmed_after_a_successful_sysfs_write",
+        "complexity": 2
+      },
+      {
+        "line": 143,
+        "name": "test_t497_invalid_capacity_never_runs_system_commands",
+        "complexity": 2
+      }
+    ],
+    "scripts/tests/test_installer_gpu_order.py": [
+      {
+        "line": 31,
+        "name": "helper",
+        "complexity": 1
+      },
+      {
+        "line": 36,
+        "name": "card",
+        "complexity": 2
+      },
+      {
+        "line": 51,
+        "name": "configure",
+        "complexity": 1
+      },
+      {
+        "line": 57,
+        "name": "test_t700_real_gpu_is_a_predependency_of_boot_evdi",
+        "complexity": 2
+      },
+      {
+        "line": 70,
+        "name": "test_t700_multiple_gpus_are_deduplicated_and_connectors_are_ignored",
+        "complexity": 2
+      },
+      {
+        "line": 81,
+        "name": "test_t700_existing_admin_gpu_order_is_preserved",
+        "complexity": 1
+      },
+      {
+        "line": 92,
+        "name": "test_t700_failed_write_does_not_publish_partial_boot_configuration",
+        "complexity": 1
+      },
+      {
+        "line": 107,
+        "name": "test_t700_invalid_module_metadata_never_becomes_configuration",
+        "complexity": 2
+      },
+      {
+        "line": 121,
+        "name": "test_t700_module_token_boundaries",
+        "complexity": 2
+      },
+      {
+        "line": 131,
+        "name": "test_t700_drm_provider_takes_precedence_over_transport_module",
+        "complexity": 1
+      },
+      {
+        "line": 148,
+        "name": "test_t700_missing_builtin_virtual_and_vanished_devices_do_not_invent_drivers",
+        "complexity": 3
+      },
+      {
+        "line": 162,
+        "name": "test_t700_managed_links_are_preserved_without_following_them",
+        "complexity": 1
+      },
+      {
+        "line": 176,
+        "name": "test_t700_staging_and_publish_failures_leave_no_owned_files",
+        "complexity": 2
+      },
+      {
+        "line": 186,
+        "name": "test_t700_concurrent_admin_creation_is_preserved",
+        "complexity": 1
+      },
+      {
+        "line": 199,
+        "name": "test_t700_concurrent_directory_cannot_redirect_publication",
+        "complexity": 1
+      },
+      {
+        "line": 212,
+        "name": "test_t700_native_package_hooks_configure_gpu_before_evdi",
+        "complexity": 2
+      },
+      {
+        "line": 242,
+        "name": "test_t700_invalid_helper_arguments_and_config_directory_fail",
+        "complexity": 1
+      },
+      {
+        "line": 253,
+        "name": "test_t700_make_setup_configures_order_before_loading_evdi",
+        "complexity": 1
+      }
+    ]
+  }
+}

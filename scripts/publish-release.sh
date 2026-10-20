@@ -72,7 +72,6 @@ ASSETS=(
   "dist/blent-$VERSION-linux-x86_64.tar.gz:application/gzip"
   "dist/blent-$VERSION-x86_64.AppImage:application/octet-stream"
   "dist/blent-$VERSION-AppImage-sources.tar.gz:application/gzip"
-  "dist/blent-$VERSION-1.x86_64.rpm:application/x-rpm"
   "dist/blent-$VERSION-PKGBUILD.tar.gz:application/gzip"
   "dist/blent-$VERSION/blent.apk:application/vnd.android.package-archive"
 )
@@ -86,7 +85,7 @@ python3 scripts/verify-release-apk.py "dist/blent-$VERSION/blent.apk"
 
 # Checksums for everything above, published alongside.
 ( cd dist && sha256sum "blent-$VERSION-linux-x86_64.tar.gz" "blent-$VERSION-x86_64.AppImage" "blent-$VERSION-AppImage-sources.tar.gz" \
-    "blent-$VERSION-1.x86_64.rpm" "blent-$VERSION-PKGBUILD.tar.gz" > SHA256SUMS \
+    "blent-$VERSION-PKGBUILD.tar.gz" > SHA256SUMS \
   && cp "blent-$VERSION/blent.apk" . && sha256sum blent.apk >> SHA256SUMS && rm blent.apk )
 ASSETS+=("dist/SHA256SUMS:text/plain")
 

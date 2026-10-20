@@ -1,0 +1,13 @@
+[
+  {
+    "file": "scripts/install.sh",
+    "name": "install_distro_deps",
+    "line": 81,
+    "language": "shell",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

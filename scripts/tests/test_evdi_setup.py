@@ -49,9 +49,6 @@ def setup_program(entry):
         return source + '\nSCRIPT_DIR=$1\nactivate_evdi\n', [str(REPO / 'scripts')]
     if entry == 'deb':
         return (REPO / 'packaging/deb/postinst').read_text(), ['configure', '1.2.2']
-    if entry == 'rpm':
-        source = (REPO / 'packaging/rpm/blent.spec').read_text()
-        return source.split('\n%post\n')[1].split('\n%files\n')[0], ['2']
     source = (REPO / 'packaging/arch/blent.install').read_text()
     return source + '\n' + entry + '\n', []
 
@@ -70,7 +67,6 @@ class EvdiSetupTest(unittest.TestCase):
                 program.chmod(0o755)
             source, args = setup_program(entry)
             # Map the installed, architecture-independent script into the source fixture.
-            source = source.replace('%{_datadir}', '/usr/share')
             source = '''sh() {
     [[ $1 == /usr/share/blent/setup-evdi.sh ]] || return 91
     command sh "$BLENT_SETUP_SCRIPT" "${@:2}"
@@ -91,7 +87,7 @@ bash() {
             return result, trace, final
 
     def test_t751_xorg_defers_module_loading_and_capacity_growth(self):
-        for entry in ['script', 'installer', 'deb', 'rpm', 'post_install', 'post_upgrade']:
+        for entry in ['script', 'installer', 'deb', 'post_install', 'post_upgrade']:
             for count in [None, 0, 1]:
                 with self.subTest(entry=entry, count=count):
                     result, trace, final = self.run_setup(entry, count, 'XORG_PRESENT')
@@ -116,7 +112,7 @@ bash() {
             self.assertIn('reboot', result.stderr)
 
     def test_t269_install_and_upgrade_never_unload_and_add_only_missing_capacity(self):
-        for entry in ['script', 'installer', 'deb', 'rpm', 'post_install', 'post_upgrade']:
+        for entry in ['script', 'installer', 'deb', 'post_install', 'post_upgrade']:
             for count in [None, 0, 1, 2, 4]:
                 with self.subTest(entry=entry, existing=count):
                     result, trace, final = self.run_setup(entry, count)
@@ -127,7 +123,7 @@ bash() {
                         self.assertNotIn(['tee', '/sys/devices/evdi/add'], trace)
 
     def test_t269_setup_failure_defers_to_reboot_without_unloading(self):
-        for entry in ['script', 'installer', 'deb', 'rpm', 'post_install', 'post_upgrade']:
+        for entry in ['script', 'installer', 'deb', 'post_install', 'post_upgrade']:
             for count, failure in [(None, 'FAIL_LOAD'), (0, 'FAIL_ADD'), ('invalid', '')]:
                 with self.subTest(entry=entry, existing=count, failure=failure):
                     result, trace, final = self.run_setup(entry, count, failure)

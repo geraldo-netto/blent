@@ -210,7 +210,7 @@ export -f ln
             self.assertEqual(list(config.parent.iterdir()), [config])
 
     def test_t700_native_package_hooks_configure_gpu_before_evdi(self):
-        for entry in ['rpm', 'post_install', 'post_upgrade']:
+        for entry in ['post_install', 'post_upgrade']:
             with self.subTest(entry=entry), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 self.card(root, 'card0', 'amdgpu')

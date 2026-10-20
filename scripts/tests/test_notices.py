@@ -13,7 +13,7 @@ NOTICES = ['LICENSE', 'COPYRIGHT.md', 'THIRD_PARTY_LICENSES.md', 'licenses/libev
 
 
 class NoticeTest(unittest.TestCase):
-    def test_t129_tar_appimage_rpm_and_arch_include_notices(self):
+    def test_t129_tar_appimage_and_arch_include_notices(self):
         with tempfile.TemporaryDirectory(prefix='blent-notices-') as tmp:
             root = Path(tmp)
             version = self.copy_sources(root)
@@ -53,19 +53,6 @@ class NoticeTest(unittest.TestCase):
             self.verify_docs(root / 'dist/appimage-docs-fixture')
             self.assertEqual((root / 'dist/appimage-docs-fixture/scripts/setup-evdi.sh').read_bytes(),
                              (REPO / 'scripts/setup-evdi.sh').read_bytes(), 'T269: AppImage setup missing')
-            rpm_files = run('rpm', '-qpl', f'dist/blent-{version}-1.x86_64.rpm').splitlines()
-            self.assertIn('/usr/share/blent/setup-evdi.sh', rpm_files, 'T269: RPM setup missing')
-            self.assertIn('/usr/share/blent/gpu-boot-order.sh', rpm_files, 'T700: RPM GPU ordering missing')
-            for name in NOTICES:
-                self.assertIn('/usr/share/doc/blent/' + name, rpm_files)
-            for link in re.findall(r'\]\(([^)]+)\)', (docs / 'README.md').read_text()):
-                if ':' not in link and not link.startswith('#'):
-                    self.assertIn('/usr/share/doc/blent/' + link.split('#')[0], rpm_files)
-            # The real RPM install recipe generated these files before packing.
-            rpm_roots = list((root / 'dist/rpmbuild/BUILDROOT').glob('*/usr/share/doc/blent'))
-            # RPM normally cleans BUILDROOT; the archive inventory remains authoritative.
-            for folder in rpm_roots:
-                self.verify_docs(folder)
             source = root / f'blent-{version}'
             shutil.copytree(docs, source)
             (source / 'target/release').mkdir(parents=True)

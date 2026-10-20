@@ -1,0 +1,17 @@
+{
+  "packaging/build-packages.sh": "0e043dccc65c6affce760db78fc38af1cb97ad09b441858f769d26d133390e1a",
+  "scripts/install.sh": "4d5ca7779e870f72034ac562e84299c3615640ebb2122c6d0ca94c19b7b4481e",
+  "scripts/publish-release.sh": "1bebce981439f3e888c760af1c8a0d4ee6234aa86055ef604790bdb2f914cc1f",
+  "scripts/update-release-metadata.sh": "bfef529f8b2e36d2e4c85cfb7b77f347a01caa862eaa0866a8d0e2f396761a13",
+  "scripts/ci/package-smoke.sh": "db70f212df65f9c54463a973a16c89eb412385cc693756818f409db2968d2eb8",
+  "scripts/build-release.sh": "7b5028c340fb7688341779f12d00f4c193dcf451410d88b651df5afb00c6d151",
+  "scripts/tests/test_packages.py": "69dc3b5490203226298fe6d7eb6554cc71d8c495d53a08c55474b6f0c68e2199",
+  "scripts/tests/test_installer.py": "84fab52a465629965286cd5ef88c14c2d46776401fab5c78e090d24a6cadebd9",
+  "scripts/tests/test_release.py": "37e76516b7954fc72ca0d8f06fe0743e64ceb8b126f06335bf208668f14a5839",
+  "scripts/tests/test_notices.py": "dec4d7db27829e642229c322bf118e340c365ac6e041e6c59d81fb321a222450",
+  "scripts/tests/test_evdi_setup.py": "2fa88b4b4b8f4ff41aa37c62f7c95617f73d478a2c2a4006d43c584952647b46",
+  "scripts/tests/test_installer_gpu_order.py": "823d8c5a0d3d98b81bce18272d9164158babc5939589a41ae42de9c61f7c6bae",
+  ".github/workflows/build.yml": "bf7881026665516117ccaf707f3ae08727250deb54be4c586a668b2d9e4e98fd",
+  ".github/workflows/portability.yml": "b75c65f983a0f9b3a45eb9df581c8a6220ab43e3885c1be1aba544a9f4429eb8",
+  "packaging/ci/Dockerfile": "669e0e95ecf3111faa7c2d56f0ba7a64fa182851960321ceab9698b3a6dd8a5a"
+}

@@ -97,7 +97,7 @@ class ReleaseTest(unittest.TestCase):
         for name in ['scripts/build-release.sh', 'packaging/build-packages.sh']:
             self.write(name, '#!/bin/sh\nexit 0\n', True)
         for name in ['blent-1.2.3-linux-x86_64.tar.gz', 'blent-1.2.3-x86_64.AppImage', 'blent-1.2.3-AppImage-sources.tar.gz',
-                     'blent-1.2.3-1.x86_64.rpm', 'blent-1.2.3-PKGBUILD.tar.gz',
+                     'blent-1.2.3-PKGBUILD.tar.gz',
                      'blent-1.2.3/blent.apk']:
             self.write('dist/' + name, 'asset ' + name)
         self.git('add', '.')
@@ -143,7 +143,7 @@ class ReleaseTest(unittest.TestCase):
         import json
         self.enable_uploads()
         for failure in ['http', 'api']:
-            for index in range(7):
+            for index in range(6):
                 with self.subTest(failure=failure, index=index):
                     (self.base / 'api-state').unlink(missing_ok=True)
                     self.env.update(BLENT_TEST_FAILURE=failure, BLENT_TEST_FAIL_INDEX=str(index))
@@ -187,7 +187,7 @@ class ReleaseTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         state = json.loads((self.base / 'api-state').read_text())
         self.assertTrue(state['published'])
-        self.assertEqual(len(state['assets']), 7)
+        self.assertEqual(len(state['assets']), 6)
         requests = [json.loads(line) for line in (self.base / 'requests').read_text().splitlines()]
         self.assertEqual(requests[-1]['method'], 'PATCH')
         self.assertTrue(any(r['method'] == 'GET' for r in requests))
@@ -223,7 +223,7 @@ class ReleaseTest(unittest.TestCase):
             'README.md', 'CHANGELOG.md', 'CITATION.cff', 'host/src/update.rs',
             'common/src/release.rs',
             'gui/src/main.rs', 'scripts/blent.service', 'scripts/publish-release.sh',
-            'packaging/arch/PKGBUILD', 'packaging/deb/control', 'packaging/rpm/blent.spec',
+            'packaging/arch/PKGBUILD', 'packaging/deb/control',
             'android/app/src/main/java/com/blent/UpdateCheck.kt',
             'android/app/src/main/java/com/blent/MainActivity.kt',
         ]
@@ -321,7 +321,6 @@ class MetadataTest(unittest.TestCase):
 <span id="source-version">1.2.3</span>
 <time datetime="2026-09-17">2026-09-17</time>
 blent-1.2.3-x86_64.AppImage
-blent-1.2.3-1.x86_64.rpm
 blent-1.2.3-PKGBUILD.tar.gz
 blent-1.2.3-linux-x86_64.tar.gz
 ''')

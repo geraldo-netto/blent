@@ -53,8 +53,8 @@ exit 0
                     self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                     self.assertEqual((root / 'clone-called').exists(), mode == 'missing')
 
-    def test_t101_container_and_rpmbuild_failures_reject_stale_assets(self):
-        for mode in ['container', 'appimage', 'rpm', 'success']:
+    def test_t101_container_and_appimage_failures_reject_stale_assets(self):
+        for mode in ['container', 'appimage', 'success']:
             with self.subTest(mode=mode), tempfile.TemporaryDirectory(prefix='blent-packages-') as tmp:
                 root = Path(tmp)
                 assets = self.create_fixture(root)
@@ -69,6 +69,18 @@ exit 0
                     for name in assets[:-1]:
                         path = root / 'dist' / name
                         self.assertFalse(path.exists() and path.read_text() == 'stale')
+
+    def test_t1217_supported_outputs_need_only_current_package_tools(self):
+        with tempfile.TemporaryDirectory(prefix='blent-supported-packages-') as tmp:
+            root = Path(tmp)
+            assets = self.create_fixture(root)
+            env = dict(os.environ, PATH=f'{root}/bin:{os.environ["PATH"]}', BLENT_TEST_MODE='success')
+            result = subprocess.run(['bash', 'packaging/build-packages.sh'], cwd=root,
+                                    env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            for name in assets:
+                self.assertNotEqual((root/'dist'/name).read_bytes(), b'stale')
+            self.assertEqual(len(assets), 3)
 
     def test_t235_checkout_paths_are_literal_container_arguments(self):
         for name in ["project with spaces", "project'quote", 'project$(touch INJECTED)`touch INJECTED`']:
@@ -162,7 +174,7 @@ exit 0
             if executable:
                 path.chmod(0o755)
         for name in ['packaging/build-packages.sh', 'packaging/deb/control', 'packaging/deb/postinst',
-                     'packaging/rpm/blent.spec', 'packaging/arch/PKGBUILD', 'packaging/arch/blent.install']:
+                     'packaging/arch/PKGBUILD', 'packaging/arch/blent.install']:
             write(name, (REPO / name).read_text(), name.endswith('.sh'))
         for name in ['README.md', 'LICENSE', 'COPYRIGHT.md', 'THIRD_PARTY_LICENSES.md', 'licenses', 'SECURITY.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'docs']:
             source = REPO / name
@@ -177,13 +189,12 @@ exit 0
                      'packaging/blent.service', 'packaging/blent-evdi.conf', 'packaging/blent-modules.conf',
                      'packaging/60-blent-uinput.rules']:
             write(name, 'fixture')
-        assets = ['blent-1.2.3-x86_64.AppImage', 'blent-1.2.3-AppImage-sources.tar.gz', 'blent-1.2.3-1.x86_64.rpm', 'blent-1.2.3-PKGBUILD.tar.gz']
+        assets = ['blent-1.2.3-x86_64.AppImage', 'blent-1.2.3-AppImage-sources.tar.gz', 'blent-1.2.3-PKGBUILD.tar.gz']
         for name in assets + ['blent-1.2.3-linux-x86_64.tar.gz', '.packages-ok']:
             write('dist/' + name, 'stale')
         write('bin/distrobox', '#!/bin/bash\nif [ "$BLENT_TEST_MODE" != container ]; then shift 3; shift 2; bash -c "$@"; fi\nexit 0\n', True)
         write('bin/fakeroot', '#!/bin/sh\nexec "$@"\n', True)
         write('bin/dpkg-deb', '#!/bin/bash\nif [ "$1" = --info ]; then echo "Package: blent"; else echo new > "${@: -1}"; fi\n', True)
-        write('bin/rpmbuild', '#!/bin/sh\nRB=${2#_topdir }\nmkdir -p "$RB/RPMS/x86_64"\necho new > "$RB/RPMS/x86_64/blent-1.2.3-1.x86_64.rpm"\necho Wrote\n[ "$BLENT_TEST_MODE" != rpm ]\n', True)
         import appimage_fixture
         appimage_fixture.install(root)
         return assets

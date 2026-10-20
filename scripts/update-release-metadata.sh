@@ -48,7 +48,6 @@ RULES = {
         (rf'<span id="source-version">{NUM}</span>', f'<span id="source-version">{version}</span>'),
         (rf'<time datetime="{DAY}">{DAY}</time>', f'<time datetime="{date}">{date}</time>'),
         (rf"blent-{NUM}-x86_64\.AppImage", f"blent-{version}-x86_64.AppImage"),
-        (rf"blent-{NUM}-1\.x86_64\.rpm", f"blent-{version}-1.x86_64.rpm"),
         (rf"blent-{NUM}-PKGBUILD\.tar\.gz", f"blent-{version}-PKGBUILD.tar.gz"),
         (rf"blent-{NUM}-linux-x86_64\.tar\.gz", f"blent-{version}-linux-x86_64.tar.gz"),
     ],

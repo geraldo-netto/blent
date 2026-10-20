@@ -48,65 +48,6 @@ install_debian_evdi_library() {
         warn "$package did not install — supply libevdi separately (see docs/development.md)"
 }
 
-# Shared runtime package names for RPM distributions. Repository selection
-# remains specific to each family; Enterprise Linux must never inherit Fedora's.
-RPM_RUNTIME_DEPS=(ffmpeg android-tools libusb1 libX11 libX11-xcb libXcursor libXi libxkbcommon-x11)
-
-is_ostree_booted() {
-    command -v rpm-ostree &>/dev/null && [ -e /run/ostree-booted ]
-}
-
-install_rpm_layered_deps() {
-    info "Immutable RPM system detected — layering packages (reboot needed afterwards)"
-    sudo rpm-ostree install --idempotent --allow-inactive "${RPM_RUNTIME_DEPS[@]}" || \
-        warn "Layering failed — check repositories and package names against your image"
-}
-
-install_rpm_runtime_deps() {
-    sudo dnf install -y "$@" "${RPM_RUNTIME_DEPS[@]}" || \
-        warn "Install runtime packages for this distribution manually: ${RPM_RUNTIME_DEPS[*]}"
-}
-
-check_rpm_evdi_module() {
-    if ! modinfo evdi >/dev/null 2>&1; then
-        warn "No evdi module found for the running kernel. Check your image/vendor or build a compatible module; see docs/installation.md."
-    fi
-}
-
-enable_fedora_rpmfusion() {
-    local release
-    release=$(rpm -E %fedora)
-    case "$release" in
-        ''|*[!0-9]*) warn "Cannot identify the Fedora release. Configure repositories manually for your release; see docs/installation.md."; return ;;
-    esac
-    info "Enabling RPM Fusion for Fedora $release (ffmpeg is unavailable in configured repositories)"
-    sudo dnf install -y \
-        "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$release.noarch.rpm" || \
-        warn "Could not enable RPM Fusion"
-}
-
-install_fedora_deps() {
-    if is_ostree_booted; then
-        install_rpm_layered_deps
-    else
-        if ! dnf -q info ffmpeg >/dev/null 2>&1; then enable_fedora_rpmfusion; fi
-        # Permit replacing conflicting ffmpeg-free packages on Fedora.
-        install_rpm_runtime_deps --allowerasing
-    fi
-    check_rpm_evdi_module
-}
-
-install_enterprise_deps() {
-    info "Enterprise Linux ${VERSION_ID:-unknown version}: using configured repositories"
-    warn "If packages are unavailable, configure repositories for your Enterprise Linux release (see docs/installation.md), then retry."
-    if is_ostree_booted; then
-        install_rpm_layered_deps
-    else
-        install_rpm_runtime_deps
-    fi
-    check_rpm_evdi_module
-}
-
 install_debian_deps() {
     local gui_deps=(libusb-1.0-0 libx11-6 libx11-xcb1 libxcursor1 libxi6 libxkbcommon-x11-0)
     sudo apt-get update
@@ -137,31 +78,11 @@ install_arch_deps() {
     fi
 }
 
-install_suse_deps() {
-    local gui_deps=(libusb-1_0-0 libX11-6 libX11-xcb1 libXcursor1 libXi6 libxkbcommon-x11-0)
-    # The one distribution that has all of it in the default repos.
-    # Split in two: the evdi kernel module package is tied to the
-    # running kernel's ABI, and when that does not resolve it should
-    # not take ffmpeg and adb down with it.
-    sudo zypper --non-interactive install --no-recommends \
-        ffmpeg android-tools "${gui_deps[@]}" || \
-        warn "Install ffmpeg, android-tools and the GUI libraries (${gui_deps[*]}) manually"
-    # libevdi1 requires evdi-kmp, so the library and the kernel module
-    # stand or fall together here — nothing to be gained by splitting
-    # them further.
-    sudo zypper --non-interactive install --no-recommends evdi libevdi1 || \
-        warn "evdi did not install — usually a kernel/module version mismatch"
-}
-
 install_distro_deps() {
-    # Match whole ID/ID_LIKE tokens. EL derivatives can also list Fedora;
-    # their more specific family takes precedence.
+    # Match whole supported ID/ID_LIKE tokens.
     case " $1 " in
-        *' rhel '*|*' centos '*|*' rocky '*|*' almalinux '*) install_enterprise_deps ;;
-        *' fedora '*) install_fedora_deps ;;
         *' debian '*|*' ubuntu '*) install_debian_deps ;;
         *' arch '*|*' manjaro '*|*' endeavouros '*|*' cachyos '*) install_arch_deps ;;
-        *' suse '*|*' opensuse '*|*' opensuse-leap '*|*' opensuse-tumbleweed '*) install_suse_deps ;;
         *) warn "Unknown distro. Install manually: ffmpeg, adb (android-tools), evdi + libevdi, and GUI libraries: X11, X11-xcb, Xcursor, Xi, xkbcommon-x11" ;;
     esac
 }

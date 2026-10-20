@@ -5,7 +5,7 @@ RUN sed -i "s/^Types: deb$/Types: deb deb-src/" /etc/apt/sources.list.d/debian.s
     build-essential pkg-config git ca-certificates python3 python3-xlib python3-tk \
     libpipewire-0.3-dev libusb-1.0-0-dev libclang-dev pipewire-bin libdrm-dev libxkbcommon-dev libxkbcommon-x11-0 libegl1 libwayland-dev libxcb-render0-dev \
     libxcb-shape0-dev libxcb-xfixes0-dev libssl-dev \
-    ffmpeg adb rpm fakeroot dpkg-dev binutils patchelf squashfs-tools file \
+    ffmpeg adb fakeroot dpkg-dev binutils patchelf squashfs-tools file \
     nasm libx264-dev libx265-dev libvpx-dev libaom-dev libva-dev zlib1g-dev \
     xvfb xauth x11-utils dbus-x11 at-spi2-core libglib2.0-bin libgl1-mesa-dri
 # Source indexes are required for exact corresponding-source downloads.
