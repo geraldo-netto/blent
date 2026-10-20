@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.flowOf
 /** Read-only stream observations for Compose; owning a view never starts video. */
 internal class StreamPresentation(private val receiver: DisplaySession<android.view.SurfaceView>?, control: TouchCapture?) {
     var connected by mutableStateOf(false); private set
+    // Observation inputs are Float; retain boxed signed-zero/NaN equality.
     var fps by mutableStateOf(0f); private set
     var mbps by mutableStateOf(0f); private set
     val decoderStartup = receiver?.startupStatus ?: MutableStateFlow<String?>(null)

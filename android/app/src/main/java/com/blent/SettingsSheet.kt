@@ -36,10 +36,11 @@ internal fun SettingsSheet(
     connectionControls: @Composable () -> Unit = {},
     decoderDiagnostics: DecoderDiagnostics = DecoderDiagnostics(),
 ) {
+    // Boxed Float equality preserves signed zero and stable NaN semantics.
     var bitrateMbps by remember(settings.bitrateKbps) {
         mutableStateOf(settings.bitrateKbps / 1000f)
     }
-    var fpsChoice by remember(settings.fps) { mutableStateOf(settings.fps) }
+    var fpsChoice by remember(settings.fps) { mutableIntStateOf(settings.fps) }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
