@@ -1,0 +1,17 @@
+{
+  "tool": "cached Kotlin PSI1.9.20 source audit; native Sonar unavailable T1019",
+  "rows": [
+    [
+      "/backups/disk2/projects/blent/android/app/src/test/java/com/blent/LauncherIconTest.kt",
+      14,
+      "t1164PackagedLauncherKeepsAdaptiveLayers",
+      1
+    ],
+    [
+      "/backups/disk2/projects/blent/android/app/src/test/java/com/blent/LauncherIconTest.kt",
+      23,
+      "t1166PackagedLauncherProvidesMonochromeLayer",
+      1
+    ]
+  ]
+}

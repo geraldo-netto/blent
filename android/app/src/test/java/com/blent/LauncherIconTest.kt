@@ -19,4 +19,12 @@ class LauncherIconTest {
         assertNotNull(adaptive.background)
         assertNotNull(adaptive.foreground)
     }
+
+    @Test @Config(sdk = [34]) fun t1166PackagedLauncherProvidesMonochromeLayer() {
+        val app = RuntimeEnvironment.getApplication()
+        val icon = app.getDrawable(R.mipmap.ic_launcher) as AdaptiveIconDrawable
+        assertNotNull("T1166 themed launcher has no monochrome layer", icon.monochrome)
+        assertTrue(icon.monochrome!!.intrinsicWidth > 0)
+        assertTrue(icon.monochrome!!.intrinsicHeight > 0)
+    }
 }
