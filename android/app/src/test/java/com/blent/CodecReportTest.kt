@@ -66,7 +66,7 @@ class CodecReportTest {
                     DecoderFormat("video/hevc", 640, 480, 30), profile, true)
                 assertFalse(known.containsKey("low-latency"))
                 assertFalse(known.containsKey("vendor.qti-ext-dec-low-latency.enable"))
-                assertTrue(decoderReport().startsWith("BLENT_CODECS_V1:"))
+                assertTrue(decoderReport().startsWith("BLENT_CODECS_V2:"))
             } finally { decoder.release() }
         } finally { ShadowMediaCodecList.reset() }
     }
@@ -183,13 +183,13 @@ class CodecReportTest {
     }
 
     @Test fun t098_decoderInventoryDistinguishesHardwareSoftwareAbsentAndUnknown() {
+        fun hevc(label: String) = "BLENT_CODECS_V2:h264=none;hevc=$label;vp9=none;av1=none"
         val hardware = codec("vendor.hevc", false, true)
-        assertEquals("BLENT_CODECS_V1:" + if (Build.VERSION.SDK_INT >= 29) "hw10" else "unknown10",
-            decoderReport { arrayOf(hardware) })
-        assertEquals("BLENT_CODECS_V1:sw8", decoderReport { arrayOf(codec("OMX.google.hevc", true, false)) })
-        assertEquals("BLENT_CODECS_V1:none", decoderReport { arrayOf(codec("vendor.encoder", false, true, true)) })
-        assertEquals("BLENT_CODECS_V1:none", decoderReport { emptyArray() })
-        assertEquals("BLENT_CODECS_V1:unknown", decoderReport { throw IllegalStateException("unavailable") })
+        assertEquals(hevc(if (Build.VERSION.SDK_INT >= 29) "hw10" else "unknown10"), decoderReport { arrayOf(hardware) })
+        assertEquals(hevc("sw8"), decoderReport { arrayOf(codec("OMX.google.hevc", true, false)) })
+        assertEquals(hevc("none"), decoderReport { arrayOf(codec("vendor.encoder", false, true, true)) })
+        assertEquals(hevc("none"), decoderReport { emptyArray() })
+        assertEquals("BLENT_CODECS_V2:h264=unknown;hevc=unknown;vp9=unknown;av1=unknown", decoderReport { throw IllegalStateException("unavailable") })
     }
 
     @Test fun t438_version_two_inventory_distinguishes_codec_families() {

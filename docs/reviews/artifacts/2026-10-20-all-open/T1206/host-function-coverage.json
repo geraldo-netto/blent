@@ -1,0 +1,15 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7, source-matched LLVM LCOV",
+  "functions": [
+    {
+      "file": "host/src/doctor/codecs.rs",
+      "name": "inventory",
+      "first": 114,
+      "last": 122,
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}

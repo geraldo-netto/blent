@@ -90,7 +90,7 @@ internal object MediaTaskJson {
     }
     private fun readMetadata(v: JSONObject): MediaTask.Metadata {
         val request = MediaTask.Metadata(v.getInt("width"), v.getInt("height"), v.getInt("fps"), v.getInt("shell"))
-        require(request.shellVersion in 0..2)
+        require(request.shellVersion == 0 || request.shellVersion == 2)
         if (request.shellVersion == 0) require(request.width in 1..16384 && request.height in 1..16384 && request.fps in 1..240)
         return request
     }

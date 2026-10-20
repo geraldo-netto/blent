@@ -20,7 +20,7 @@ class WorkerContractTest {
             MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", 1280, 720, 60)),
             MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/hevc", 1920, 1080, 30, selection = DecoderSelection("c2.fixture", "hevc", "main", 1, 8, true, 60))),
             MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", 1, 1, 10, selection = DecoderSelection("fixture", "h264", "baseline", 1, 8, false, null))),
-            MediaTask.Metadata(640, 480, 60), MediaTask.Metadata(shellVersion = 1), MediaTask.Metadata(shellVersion = 2))
+            MediaTask.Metadata(640, 480, 60), MediaTask.Metadata(shellVersion = 2))
         for (task in tasks) assertEquals(task, MediaTaskJson.decode(MediaTaskJson.encode(task)))
         assertThrows(IllegalArgumentException::class.java) { MediaTaskJson.encode(MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", 1, 1, 30, byteArrayOf(1)))) }
     }
@@ -41,7 +41,7 @@ class WorkerContractTest {
             MediaTask.Display(AdbDisplayRoutes.create("bad"), DecoderFormat("video/avc", 640, 480, 30)),
             MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("unknown", 640, 480, 30)),
             MediaTask.Display(AdbDisplayRoutes.create(token), DecoderFormat("video/avc", Int.MAX_VALUE, 480, 30)),
-            MediaTask.Metadata(0, 0, 0), MediaTask.Metadata(shellVersion = 3))
+            MediaTask.Metadata(0, 0, 0), MediaTask.Metadata(shellVersion = 1), MediaTask.Metadata(shellVersion = 3))
         for (task in badTasks) assertTrue(runCatching { MediaTaskJson.decode(MediaTaskJson.encode(task)) }.isFailure)
         assertTrue(runCatching { MediaTaskJson.decode(JSONObject(encoded).put("kind", "unknown").toString()) }.isFailure)
         assertTrue(runCatching { MediaTaskJson.decode(" ".repeat(MediaTaskJson.LIMIT + 1)) }.isFailure)

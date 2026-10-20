@@ -112,19 +112,13 @@ fn payload<'a>(output: Option<&'a str>, prefix: &str) -> Option<&'a str> {
         .map(|(_, tail)| tail.split(['"', '\r', '\n']).next().unwrap_or("").trim())
 }
 fn inventory(output: Option<&str>, codec: Codec) -> Option<&str> {
-    if let Some(text) = payload(output, "BLENT_CODECS_V2:") {
-        let mut matches = text
-            .split(';')
-            .filter_map(|entry| entry.split_once('='))
-            .filter(|(name, _)| *name == codec.wire_name());
-        let (_, value) = matches.next()?;
-        return matches.next().is_none().then_some(value);
-    }
-    if codec == Codec::Hevc {
-        payload(output, "BLENT_CODECS_V1:")
-    } else {
-        None
-    }
+    let text = payload(output, "BLENT_CODECS_V2:")?;
+    let mut matches = text
+        .split(';')
+        .filter_map(|entry| entry.split_once('='))
+        .filter(|(name, _)| *name == codec.wire_name());
+    let (_, value) = matches.next()?;
+    matches.next().is_none().then_some(value)
 }
 
 pub(super) async fn report_live_encoder(r: &mut Report, cfg: &FileConfig, instance: u32) {
@@ -219,5 +213,33 @@ mod tests {
             None
         );
         assert_eq!(inventory(Some("BLENT_CODECS_V1:hw10"), Codec::Av1), None);
+    }
+    #[test]
+    fn t1206_obsolete_shell_inventory_cannot_supply_decoder_evidence() {
+        for codec in [Codec::H264, Codec::Hevc, Codec::Vp9, Codec::Av1] {
+            for value in ["hw10", "hw8", "sw10", "none", "unknown10"] {
+                let old = format!("BLENT_CODECS_V1:{value}");
+                assert_eq!(
+                    inventory(Some(&old), codec),
+                    None,
+                    "T1206 {codec:?} {value}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn t1206_unknown_inventory_versions_are_not_assumed_current() {
+        for version in 0..=32 {
+            let text = format!("BLENT_CODECS_V{version}:hevc=hw10");
+            assert_eq!(
+                inventory(Some(&text), Codec::Hevc),
+                (version == 2).then_some("hw10")
+            );
+        }
+        assert_eq!(
+            inventory(Some("BLENT_CODECS_V4294967295:hevc=hw10"), Codec::Hevc),
+            None
+        );
     }
 }

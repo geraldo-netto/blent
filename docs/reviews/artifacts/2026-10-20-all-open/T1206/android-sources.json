@@ -1,0 +1,9 @@
+{
+  "android/app/src/main/java/com/blent/CodecReportReceiver.kt": "22572fa99b23f79d362af776bb1345f31f10348ddf807ddae45ea8b242c8d4c7",
+  "android/app/src/main/java/com/blent/RemoteMetadata.kt": "9f1113d5197fa17cebdac662d01fda24944d143634e0415d76b65bb59ddd396d",
+  "android/app/src/main/java/com/blent/MediaTaskJson.kt": "780745d6bf6a98a1a40bdab10a67f1d341f0d0cd91df6a08740af0fefecf677e",
+  "android/app/src/test/java/com/blent/CodecVersionTest.kt": "5afdfdc26ef3e77d8d34d602cd2ebaca285a4800bc93ebe66af4d6f24e0e0821",
+  "android/app/src/test/java/com/blent/CodecReportTest.kt": "26ab2648f14457454a33153db7c6a5febd78a50ec73745827a11c230c0e8ae51",
+  "android/app/src/test/java/com/blent/WorkerContractTest.kt": "8f8eee1aa7e8667c91d01fad889e26f5731afb38c6d0b4d8cb9092a2f984b025",
+  "android/app/src/test/java/com/blent/CapabilityIsolationTest.kt": "1a4e6615288a2b58847a837402666d2c2c61b5d77535da7d95730c2dee35769b"
+}

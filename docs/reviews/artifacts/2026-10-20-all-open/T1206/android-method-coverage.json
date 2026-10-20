@@ -1,0 +1,133 @@
+{
+  "tool": "JaCoCo0.8.15, native per-method executable lines; supported built-in Kotlin filters",
+  "methods": [
+    {
+      "owner": "com/blent/CodecReportReceiver$onReceive$1$1",
+      "method": "invoke",
+      "descriptor": "()Ljava/lang/String;",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt",
+      "method": "decoderReport",
+      "descriptor": "(ILkotlin/jvm/functions/Function0;)Ljava/lang/String;",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt",
+      "method": "decoderReport$default",
+      "descriptor": "(ILkotlin/jvm/functions/Function0;ILjava/lang/Object;)Ljava/lang/String;",
+      "covered": 3,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt",
+      "method": "formatDecoderReport",
+      "descriptor": "(I[Landroid/media/MediaCodecInfo;)Ljava/lang/String;",
+      "covered": 2,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt",
+      "method": "decoderInventory",
+      "descriptor": "([Landroid/media/MediaCodecInfo;Ljava/lang/String;)Ljava/lang/String;",
+      "covered": 6,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt",
+      "method": "decoderEntry",
+      "descriptor": "(Landroid/media/MediaCodecInfo;Ljava/lang/String;)Ljava/lang/String;",
+      "covered": 5,
+      "missed": 1,
+      "percent": 83.33333333333333
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt",
+      "method": "hevcDepth",
+      "descriptor": "(Landroid/media/MediaCodecInfo$CodecCapabilities;)Ljava/lang/String;",
+      "covered": 5,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt",
+      "method": "decoderAcceleration",
+      "descriptor": "(Landroid/media/MediaCodecInfo;)Ljava/lang/String;",
+      "covered": 6,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiver$onReceive$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 5,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteMetadata",
+      "method": "shell",
+      "descriptor": "(Landroid/content/Context;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+      "covered": 2,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiver",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function1;)V",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiver",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiver",
+      "method": "onReceive",
+      "descriptor": "(Landroid/content/Context;Landroid/content/Intent;)V",
+      "covered": 5,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt$decoderReport$1",
+      "method": "invoke",
+      "descriptor": "()[Landroid/media/MediaCodecInfo;",
+      "covered": 1,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/CodecReportReceiverKt$formatDecoderReport$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/util/Map$Entry;)Ljava/lang/CharSequence;",
+      "covered": 2,
+      "missed": 0,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/MediaTaskJson",
+      "method": "readMetadata",
+      "descriptor": "(Lorg/json/JSONObject;)Lcom/blent/MediaTask$Metadata;",
+      "covered": 4,
+      "missed": 0,
+      "percent": 100.0
+    }
+  ]
+}

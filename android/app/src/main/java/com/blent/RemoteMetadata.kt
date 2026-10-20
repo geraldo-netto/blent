@@ -15,6 +15,8 @@ internal object RemoteMetadata {
         return text?.let { WorkerJsonBoundary.parse(it, WorkerEventJson.LIMIT) } ?: DecoderCapabilities.describe(width, height, fps) { _, _, _, _ -> false }
             .put("hardware", JSONArray()).put("details", JSONArray()).put("status", "unavailable")
     }
-    suspend fun shell(context: Context, version: Int): String =
-        owner(context).query(MediaTask.Metadata(shellVersion = if (version == 2) 2 else 1)) ?: formatDecoderReport(version, null)
+    suspend fun shell(context: Context, version: Int): String {
+        require(version == 2)
+        return owner(context).query(MediaTask.Metadata(shellVersion = version)) ?: formatDecoderReport(version, null)
+    }
 }

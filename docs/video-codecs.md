@@ -416,6 +416,7 @@ listed, `unknown` means the query failed, and `unclassified` means a decoder was
 listed without a known acceleration class. HEVC retains its `hw8`/`hw10`, `sw8`/
 `sw10`, `unknown8`/`unknown10` profile entries. This is general inventory, not an
 exact-resolution decoder trial. Unsupported optional codecs do not fail automatic
-mode; missing required H.264 support does. Without the extra, the receiver keeps
-its HEVC-only `BLENT_CODECS_V1` response for older hosts. New hosts never use a
-legacy HEVC result to infer VP9, AV1 or H.264 support.
+mode; missing required H.264 support does. Missing, obsolete or invalid version
+extras are rejected before inventory queries or native worker admission. Only the
+current V2 inventory is emitted and accepted; HEVC-only V1 reports provide no
+decoder evidence.

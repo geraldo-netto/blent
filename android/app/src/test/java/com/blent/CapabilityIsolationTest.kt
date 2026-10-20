@@ -55,7 +55,7 @@ class CapabilityIsolationTest {
         context.registerReceiver(receiver, android.content.IntentFilter("com.blent.T808"), android.content.Context.RECEIVER_EXPORTED)
         try {
             timer.schedule({ release.countDown() }, 1, TimeUnit.SECONDS)
-            context.sendOrderedBroadcast(android.content.Intent("com.blent.T808"), null, completion, null, 0, null, null)
+            context.sendOrderedBroadcast(android.content.Intent("com.blent.T808").putExtra("blent_codecs_version", 2), null, completion, null, 0, null, null)
             val started = System.nanoTime()
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             assertTrue("T808 native query blocked broadcast dispatch", System.nanoTime() - started < TimeUnit.MILLISECONDS.toNanos(300))
