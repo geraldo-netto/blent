@@ -1,0 +1,17 @@
+{
+  "sources": {
+    "host/accessory/accessory.c": "1e68e44b513dc730a0e08e4f41caefb5cbe6f03a6982ee8dd862ec7b7cd808ac"
+  },
+  "functions": [
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_reopen",
+      "first": 33,
+      "last": 44,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

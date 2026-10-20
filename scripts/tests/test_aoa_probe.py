@@ -133,6 +133,13 @@ class AoaProbeEnumerationTest(unittest.TestCase):
         return subprocess.run([self.binary, str(error), str(persistent), str(strict), str(absent)],
                               capture_output=True, text=True, timeout=2)
 
+    def test_t1225_transient_io_during_mode_switch_recovers(self):
+        for absent in [0, 1]:
+            with self.subTest(absent=absent):
+                result = self.run_probe(-1, absent=absent)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn(f'attempts=3 sleeps={2 + absent}', result.stderr)
+
     def test_t846_transient_access_and_disappearance_recover(self):
         for error in [-3, -4]:
             for absent in [0, 1]:
@@ -174,12 +181,27 @@ class AoaProbeEnumerationTest(unittest.TestCase):
             self.assertIn('attempts=101 sleeps=100', result.stderr)
             self.assertIn(f'USB open error {error}', result.stderr)
 
+    def test_t1225_persistent_io_remains_bounded(self):
+        result = self.run_probe(-1, persistent=1)
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn('attempts=101 sleeps=100', result.stderr)
+        self.assertIn('USB open error -1', result.stderr)
+
+    def test_t1225_other_open_errors_fail_without_retries(self):
+        for error in range(-12, 2):
+            if error in (0, -1, -3, -4):
+                continue
+            with self.subTest(error=error):
+                result = self.run_probe(error)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn('attempts=2 sleeps=1', result.stderr)
+
     def test_t846_initial_open_and_nontransient_errors_remain_strict(self):
         for error in [-3, -4, -1]:
             result = self.run_probe(error, strict=1)
             self.assertEqual(result.returncode, 2, result.stderr)
             self.assertIn('attempts=1 sleeps=0', result.stderr)
-        result = self.run_probe(-1)
+        result = self.run_probe(-2)
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertIn('attempts=2 sleeps=1', result.stderr)
 

@@ -1,0 +1,39 @@
+FF
+======================================================================
+FAIL: test_t1225_transient_io_during_mode_switch_recovers (test_aoa_probe.AoaProbeEnumerationTest.test_t1225_transient_io_during_mode_switch_recovers) (absent=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_aoa_probe.py", line 140, in test_t1225_transient_io_during_mode_switch_recovers
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 2 != 0 : metadata[0]=Blent
+metadata[1]=Blent USB Probe
+metadata[2]=T846 synthetic USB integrity test
+metadata[3]=1
+metadata[4]=https://github.com/geraldo-netto/blent
+metadata[5]=blent-probe-1
+USB re-enumeration open error -1
+USB probe failed: cannot open re-enumerating target
+attempts=2 sleeps=1 controls=8
+
+
+======================================================================
+FAIL: test_t1225_transient_io_during_mode_switch_recovers (test_aoa_probe.AoaProbeEnumerationTest.test_t1225_transient_io_during_mode_switch_recovers) (absent=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_aoa_probe.py", line 140, in test_t1225_transient_io_during_mode_switch_recovers
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 2 != 0 : metadata[0]=Blent
+metadata[1]=Blent USB Probe
+metadata[2]=T846 synthetic USB integrity test
+metadata[3]=1
+metadata[4]=https://github.com/geraldo-netto/blent
+metadata[5]=blent-probe-1
+USB re-enumeration open error -1
+USB probe failed: cannot open re-enumerating target
+attempts=2 sleeps=2 controls=8
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.332s
+
+FAILED (failures=2)

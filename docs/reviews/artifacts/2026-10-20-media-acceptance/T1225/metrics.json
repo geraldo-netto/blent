@@ -1,0 +1,10 @@
+{
+  "tool": "repository syntax_scores/python_scores (cached tree-sitter ABI14 adapter); GCC/gcov 13.3.0",
+  "native_sonar_available": false,
+  "estimates": {
+    "check_reopen": 5,
+    "test_t1225_transient_io_during_mode_switch_recovers": 2,
+    "test_t1225_persistent_io_remains_bounded": 1,
+    "test_t1225_other_open_errors_fail_without_retries": 3
+  }
+}

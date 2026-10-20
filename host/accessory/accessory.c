@@ -30,11 +30,19 @@ static int is_accessory(libusb_device_handle *handle) {
     accessory_require(libusb_get_device_descriptor(libusb_get_device(handle),&desc)==0,"device descriptor");
     return desc.idVendor==0x18d1 && (desc.idProduct==0x2d00 || desc.idProduct==0x2d01);
 }
-static void check_reopen(int status) {
-    int retryable=status==0 || status==LIBUSB_ERROR_ACCESS || status==LIBUSB_ERROR_NO_DEVICE;
-    if (!retryable) fprintf(stderr,"USB re-enumeration open error %d\n",status);
-    accessory_require(retryable,"cannot open re-enumerating target");
+static void check_reopen(int status)
+{
+    /* The old device can still appear while its AOA replacement enumerates.
+     * Retry only inside wait_accessory's existing 100-attempt limit. */
+    int retryable = status == 0 || status == LIBUSB_ERROR_IO ||
+                    status == LIBUSB_ERROR_ACCESS || status == LIBUSB_ERROR_NO_DEVICE;
+    if (!retryable)
+    {
+        fprintf(stderr, "USB re-enumeration open error %d\n", status);
+    }
+    accessory_require(retryable, "cannot open re-enumerating target");
 }
+
 static void start_accessory(libusb_device_handle *handle, int production) {
     unsigned char version[2];
     int count=libusb_control_transfer(handle,0xc0,51,0,0,version,2,1000);

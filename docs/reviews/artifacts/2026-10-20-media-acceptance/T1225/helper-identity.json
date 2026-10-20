@@ -1,0 +1,6 @@
+{
+  "source": "host/accessory/accessory.c",
+  "source_sha256": "1e68e44b513dc730a0e08e4f41caefb5cbe6f03a6982ee8dd862ec7b7cd808ac",
+  "binary": "/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/blent-usb-io",
+  "binary_sha256": "9e5a346341737884a9e61eef49cd2f723dd29d5479df8d421143150f4f6e76a3"
+}
