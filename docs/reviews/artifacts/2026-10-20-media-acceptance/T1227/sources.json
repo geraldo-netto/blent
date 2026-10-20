@@ -1,0 +1,6 @@
+{
+  "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt": "1775b1eee20510c8b6a4e105c7983a29aa2eaea8a7a50b4c2cd91d23c52423d1",
+  "android/app/src/main/java/com/blent/connection/ConnectionWorkerIpc.kt": "2c4026fe2ea8fc83b9c47975812cc1bfa6a253fe3eae2ccac6bd55562f9b587f",
+  "android/app/src/test/java/com/blent/connection/ConnectionWorkerServiceTest.kt": "34870ddf4e8161068c038b1cca2e7fbed47c826d86d956021b173a484502aa9b",
+  "android/app/src/test/java/com/blent/connection/ConnectionWorkerIpcTest.kt": "86540d602b9b8d03c41dcac2cb2219fca60cee91752f46ba871482973947855a"
+}

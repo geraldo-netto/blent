@@ -17,7 +17,9 @@ internal object ConnectionWorkerIpc {
     const val MAX_PARCEL = 8192
     fun validate(data: Parcel, descriptor: String, flags: Int) {
         check(Binder.getCallingUid() == Process.myUid()) { "Foreign connection worker caller" }
-        require(flags == IBinder.FLAG_ONEWAY)
+        // Native Binder adds transport metadata such as TF_ACCEPT_FDS (16).
+        // Require asynchronous delivery; those extra bits grant no authority.
+        require((flags and IBinder.FLAG_ONEWAY) != 0)
         require(data.dataSize() in 1..MAX_PARCEL)
         data.enforceInterface(descriptor)
     }

@@ -1,0 +1,48 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerIpc.kt",
+    "name": "validate",
+    "line": 18,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerIpc.kt",
+        "owner": "com/blent/connection/ConnectionWorkerIpc",
+        "name": "validate",
+        "signature": "(Landroid/os/Parcel;Ljava/lang/String;I)V",
+        "line": 19,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+    "name": "onTransact",
+    "line": 39,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+        "owner": "com/blent/connection/ConnectionWorkerService$binder$1",
+        "name": "onTransact",
+        "signature": "(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z",
+        "line": 40,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  }
+]

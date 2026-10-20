@@ -1,0 +1,2 @@
+--------- beginning of main
+10-20 21:24:41.334 17450 17460 E BlentConnectionWorker: Rejected IPC code=1 flags=17 (IllegalArgumentException)

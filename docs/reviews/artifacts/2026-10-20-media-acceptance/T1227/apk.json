@@ -1,0 +1,6 @@
+{
+  "apk": "/backups/disk2/blent-work/2026-10-20-media-acceptance/T1227/fixed.apk",
+  "sha256": "9cf2de03d01509a80776b2ce263340e99a8dd60813e6aceb7ae570534d544211",
+  "certificate_sha256": "1b34ed115e476f4d178b49f6076cf9ed6cc07d474f9230ec952bc97bbba70400",
+  "installed": "2026-10-20; actual API36 native Binder/USB authenticated"
+}

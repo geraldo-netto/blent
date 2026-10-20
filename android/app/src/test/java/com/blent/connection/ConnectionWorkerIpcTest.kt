@@ -84,4 +84,22 @@ class ConnectionWorkerIpcTest {
         parcel { data -> data.writeLong(0); data.setDataPosition(0); rejected { ConnectionWorkerIpc.generation(data) } }
         parcel { data -> data.writeInt(1); data.setDataPosition(0); rejected { ConnectionWorkerIpc.end(data) } }
     }
+    @Test fun t1227NativeBinderTransportFlagsPreserveOneWayValidation() {
+        parcel { data ->
+            data.writeInterfaceToken(ConnectionWorkerIpc.REQUEST)
+            data.setDataPosition(0)
+            ConnectionWorkerIpc.validate(data, ConnectionWorkerIpc.REQUEST, 17)
+        }
+    }
+
+    @Test fun t1227OneWayBitIsIndependentOfOtherNativeFlagMetadata() {
+        val values = (0..255).toList() + listOf(Int.MIN_VALUE, Int.MIN_VALUE + 1, Int.MAX_VALUE - 1, Int.MAX_VALUE)
+        for (flags in values) parcel { data ->
+            data.writeInterfaceToken(ConnectionWorkerIpc.REQUEST)
+            data.setDataPosition(0)
+            if (flags % 2 != 0) ConnectionWorkerIpc.validate(data, ConnectionWorkerIpc.REQUEST, flags)
+            else rejected { ConnectionWorkerIpc.validate(data, ConnectionWorkerIpc.REQUEST, flags) }
+        }
+    }
+
 }

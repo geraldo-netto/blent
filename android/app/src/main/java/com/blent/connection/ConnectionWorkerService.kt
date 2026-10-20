@@ -40,7 +40,11 @@ open class ConnectionWorkerService : Service() {
             try {
                 ConnectionWorkerIpc.validate(data, ConnectionWorkerIpc.REQUEST, flags)
                 return command(code, ConnectionWorkerIpc.generation(data), data)
-            } catch (_: Exception) { terminate(); return false }
+            } catch (error: Exception) {
+                android.util.Log.e("BlentConnectionWorker",
+                    "Rejected IPC code=$code flags=$flags (${error.javaClass.simpleName.take(80)})")
+                terminate(); return false
+            }
         }
     }
     @Synchronized private fun command(code: Int, revision: Long, data: Parcel): Boolean {

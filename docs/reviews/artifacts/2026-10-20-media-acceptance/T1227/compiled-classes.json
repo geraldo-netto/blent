@@ -1,0 +1,234 @@
+[
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorker.class",
+    "sha256": "59b37fe89faf67b33a9d4205adaa2908757352885052a330e3c4edbe1f45f80a"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCodec$command$1.class",
+    "sha256": "c2c272eeddc34649f007f207255e4b9548233965efbe2d4fda8b360e1da8cbff"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCodec$command$2.class",
+    "sha256": "776e72c8f4243881b4d1312ae406fab54fab47a9a6cd3aebda8e1567bfba130a"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCodec$event$1.class",
+    "sha256": "806a9436194c0ed91ced4a089da05c51d6fff5206ecfb94d083de9c064a1809e"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCodec$event$2.class",
+    "sha256": "47062da3b5277ba69e73faa16fb8de5c4faa7dee2900fb74d156dbd05c9b0e8a"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCodec$spec$1.class",
+    "sha256": "78cabe0bd9fe4a813a77ba7713faedf63a7b33ac22f1bd4e6d453a8a2f445f64"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCodec$spec$2.class",
+    "sha256": "ac316ea8adabc62168de15d039ee4d345c386d8562d51a9bda869a27febd7b48"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCodec.class",
+    "sha256": "35e30c4e7b67178f4de2f0b926279f2a1d5975b67502cd70dd6cadfefdc7a0ef"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$Audio.class",
+    "sha256": "2f74a5b9b86ee70e1c6555bb1d594851446bd1c32389239e2a23ec154c86573c"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$AudioChoice.class",
+    "sha256": "e1e78f87cdcb0bd7855e1eb0f2feb0210b76387e40e0d5d60f8e81e9aec6e3ee"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$AudioConsumerRetired.class",
+    "sha256": "602addb3c5cfd19cad9eac8dd207ce72632ed292ccceb4a5b2b7426818fe133a"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$AudioPermission.class",
+    "sha256": "4ac2d9c3c8f3c2a9b01b7e8cb7b203a69dc1c0d838c3b9e9608591b048e87484"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$Camera.class",
+    "sha256": "422de5932186fa1fab7ff0bbb3a37fb56c08ed45474e82cb975e86973af6e731"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$CameraChoice.class",
+    "sha256": "9a137a484cef46eb682ea1656c03b8841a2ba25a3803595f0b747705e7ba3c21"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$CameraConsumerRetired.class",
+    "sha256": "7c59e0a10880fe3d2f5d00069311e161619aef3dba283370aeeae4723743b2f5"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$CameraPermission.class",
+    "sha256": "0a3fe3293120fe616ab461f68842aa792e86a9f066e89466fa48ac01276a56eb"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$Decide.class",
+    "sha256": "c08333cc5856f65e2b4156288ce9d6cd2ecd408c0354540f61ddf1eca88ea767"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand$Revoke.class",
+    "sha256": "4cff6c080f9d584743dccb10fdd394bafebbb47d1429822cd2daddd858627844"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerCommand.class",
+    "sha256": "4a68e32a683c2290d20acdcedb3a45bfb79c177d0dac08d71e5e10906a15b462"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Audio.class",
+    "sha256": "d8aed77ebab8029784f57c2bc3cc0bf576bba737c6dd5c8079a295c2f8ad6c30"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$AudioClosed.class",
+    "sha256": "db382ad8fed76acf2d1e73625bd59066bcb326f605dec21b45eab0e00be1cc87"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$AudioOffered.class",
+    "sha256": "15908d1116bad8106bf71dfdfb4096c0ba689d1f41954ad20df9efc2643baf31"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$AudioRoute.class",
+    "sha256": "c309e6323f60aa2c2d5ee536e08786928124a571a3aafee368ce82a9171bb346"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Camera.class",
+    "sha256": "5580fe1a781a2a938da4ac612f3b2d8e5f515bf74c2495abaeaa129cbb9f565b"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$CameraClosed.class",
+    "sha256": "9cca729bdc5ed60749b92d3e7348d69d48bc805c370af33ff86c6022777084ab"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$CameraOffered.class",
+    "sha256": "235418c5cf0a6c4fe2cfc701a4708448f52b42444547f21f81340831bf940286"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Display.class",
+    "sha256": "9d630d7703dd6e89b5250e18b9b3e64eaa21566a38c673604c7dc7acc36a2391"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$DisplayClosed.class",
+    "sha256": "497905ed3c269ced24b4e2e6c8a9d1d1c759c6733e397b8fd5f7dbb689b56238"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Ended.class",
+    "sha256": "92881ebbebe9fc792482baeb5e382d66222ca5829aea7f5558e8eef30d69b77d"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Media.class",
+    "sha256": "42ceda7ff3f06a99a8df789c5f5cb818a94d7204e779d33e9ef2db29323ac641"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Pairing.class",
+    "sha256": "62a56913325a5f86a88d36e37cd685f8bdf070c008862cc27540e07451d9f2be"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Peer.class",
+    "sha256": "f4a9ddc609a870966f35f9f9ac9e2096f0a9873d0faeddd186e1f794d9e31f10"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$SavedComputers.class",
+    "sha256": "7963cfa13f13e096ba1993aac5162028049bad3770f97cc28fe1ec7f41638219"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$State.class",
+    "sha256": "57cea31c62bc20dc250b405c3090edbbaec9eb6af71706f9409724307113f529"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent$Trust.class",
+    "sha256": "4ac904af021296623bf389dab8b15f833e71d6b1f63f3cf5596ccf4b1e813603"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerEvent.class",
+    "sha256": "a24d6ae6baddc48b15d1063e3667bbbad2b3489e0026e3727560d445d9af2a66"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerIpc.class",
+    "sha256": "ba5c8c83f4ccef0dc366dde6a12e2b1ceec3507bc6baf454dac396c5dd1f6482"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerKt.class",
+    "sha256": "c8182273e47304560bed614410ef03a9bf1abb5016b186739b1409eb13d6d713"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerPhase.class",
+    "sha256": "6dc353ef63ca4803b5d15b45a3a04b87f939048936bad8d9d3703c166cc98c04"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$binder$1.class",
+    "sha256": "de82d35f9ed0801168118b3d3fe704c89b8810b18a06419be05df91b6ed4b672"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$controls$1.class",
+    "sha256": "96de8f973ddc21f7af1cf308cde45413873380af5746aa72008e41358f05aff1"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$createTrustWorker$1.class",
+    "sha256": "b659c4e670f9973dcd54c97ae03d10ddea50e6e1f13619b9123cb2948826671d"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$createWorker$1.class",
+    "sha256": "6e1d69704e6693624bafd7125435c72901eea314496bc938ba9b8a785089dbc9"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$deliver$1.class",
+    "sha256": "7e20c2e2bd68205c2c481eaf3af89f286123a315acc0b3e5707aedf966d7e5ab"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$execute$1.class",
+    "sha256": "1cea2796b6fcdf367972e6ddfe9fdf2a86725e216013d297192d6e835d177dc6"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$execute$2.class",
+    "sha256": "5b54429d981d7b8ebda60e97705bc55b988356dc85182775f9b05e3c5dcb61bd"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$execute$3.class",
+    "sha256": "9ab63403e03c73fdb5d32bbf49a3f0f1921a30c0d5f2351746e7003387e34c18"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$execute$4.class",
+    "sha256": "4e4483627e9edb663638e7846b7edc61524ba7c55f791b20b2c4750b595d4bb8"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$finish$1.class",
+    "sha256": "be87d503529b5f55a377e88b3c623bb204dcbe99e52ebbf204b6cdf53033e481"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$start$1$1$1.class",
+    "sha256": "e87ec12ca619ce7de69144867f437ccc13dec5bc9aca21912a73fae631437a3f"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$start$1$1.class",
+    "sha256": "b108c622e0eaf03e5c4e2e97a42173c449e8ccb083eaf32fa28f773cd0da6c01"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$start$1.class",
+    "sha256": "8fc2f3dece89cf3816dde42bfd211ca27a5478e0ec6c887f8d354bb7d387c197"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$startTrust$1$1$1.class",
+    "sha256": "a28873bcd099ee86e5c2bce8a4fe827aa4ccc4ae010b597252ff0edc9d26fb35"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$startTrust$1$1.class",
+    "sha256": "b153f4a533bf246ee888856c2bceb30efc3028d267671ae16ba1c7142e1a659e"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$startTrust$1.class",
+    "sha256": "70dac90d55d9a469559e14e5d86e1ffe6f9ef39ab964ce54c0d9cadcd8a8a5e2"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService$stop$1.class",
+    "sha256": "f5a89be16778754cf18047901d1eb2e12abab854ce90dd64a5071d927611e6c4"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerService.class",
+    "sha256": "93f46c43ceb964c4eb67dc7f422254af795c6e6f9633bc855e01ad32f737085e"
+  },
+  {
+    "file": "android/app/build/tmp/kotlin-classes/debug/com/blent/connection/ConnectionWorkerSpec.class",
+    "sha256": "4af58234a0dd7058b31c75fc2408a47be16459d30f1a1d0bcc95357bb9541c85"
+  }
+]

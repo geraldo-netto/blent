@@ -303,4 +303,50 @@ class ConnectionWorkerServiceTest {
         } finally { release.complete(Unit); controller.destroy() }
     }
 
+    @Test fun t1227RejectedPrivateCallsLogBoundedMetadataBeforeExit() {
+        val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
+        val service = controller.get()
+        try {
+            val binder = bind(service)
+            val data = Parcel.obtain()
+            try {
+                data.writeInterfaceToken(ConnectionWorkerIpc.REQUEST)
+                data.writeLong(7)
+                data.writeString("private-payload-must-not-be-logged")
+                assertFalse(binder.transact(ConnectionWorkerIpc.START, data, null, 0))
+            } finally { data.recycle() }
+            val logs = org.robolectric.shadows.ShadowLog.getLogsForTag("BlentConnectionWorker")
+            assertTrue("T1227 original Binder rejection cause must be visible before process exit", logs.isNotEmpty())
+            val text = logs.last().msg
+            assertTrue(text.contains("code=1 flags=0"))
+            assertTrue(text.contains("IllegalArgumentException"))
+            assertTrue(text.length <= 180)
+            assertFalse(text.contains("private-payload"))
+            assertEquals(1, service.exits.get())
+        } finally { controller.destroy() }
+    }
+
+    @Test fun t1227NativeTransportFlagsReachOriginalBoundWorker() = runBlocking<Unit> {
+        val controller = Robolectric.buildService(ConnectionProbeService::class.java).create()
+        val service = controller.get()
+        val worker = Worker()
+        val events = Events()
+        service.factory = { _, _ -> worker }
+        try {
+            val binder = bind(service)
+            val data = Parcel.obtain()
+            try {
+                data.writeInterfaceToken(ConnectionWorkerIpc.REQUEST)
+                data.writeLong(7)
+                data.writeByteArray(ConnectionWorkerCodec.spec(ConnectionWorkerSpec("usb")))
+                data.writeStrongBinder(events)
+                assertTrue("T1227 native one-way flags must admit the original START", binder.transact(ConnectionWorkerIpc.START, data, null, 17))
+            } finally { data.recycle() }
+            until { events.values.any { it is ConnectionWorkerEvent.Ended } }
+            assertTrue(worker.entered.isCompleted)
+            assertEquals(1, worker.retired.get())
+            assertEquals(0, service.exits.get())
+        } finally { controller.destroy() }
+    }
+
 }
