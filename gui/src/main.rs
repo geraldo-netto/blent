@@ -990,7 +990,7 @@ impl App {
         ui.end_row();
     }
 
-    fn setting_profile_cache(&mut self, ui: &mut egui::Ui) {
+    fn setting_calibration(&mut self, ui: &mut egui::Ui) {
         ui.label("Automatic profiles");
         if ui.button("Recalibrate display")
             .on_hover_text("Tune automatic profiles again on next Apply & restart. Saved profiles otherwise survive reconnects and reboots. Manual encoder choices take precedence.")
@@ -1026,7 +1026,7 @@ impl App {
 
     fn show_advanced_video_settings(&mut self, ui: &mut egui::Ui) {
         if capabilities().display {
-            self.setting_profile_cache(ui);
+            self.setting_calibration(ui);
             self.setting_adaptive_idle(ui);
         }
         self.setting_quality(ui);
@@ -1285,7 +1285,7 @@ mod tests {
             ctx: &egui::Context,
             events: Vec<egui::Event>,
         ) -> Vec<(String, egui::Rect)> {
-            settings_test_frame(app, ctx, events, |app, ui| app.setting_profile_cache(ui))
+            settings_test_frame(app, ctx, events, |app, ui| app.setting_calibration(ui))
         }
         click_settings_text(&mut app, &ctx, "Recalibrate display", frame);
         assert_eq!(app.cfg.calibration_generation, 1);

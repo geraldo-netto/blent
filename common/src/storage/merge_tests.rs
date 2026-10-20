@@ -66,7 +66,7 @@ fn t703_optional_serial_removal_and_addition_preserve_other_edits() {
             };
             let mut other = baseline.clone();
             other.camera.options.rotation = 90;
-            other.profile_cache = true;
+            other.adaptive_idle = true;
             let edits = if reverse {
                 [&other, &serial]
             } else {
@@ -83,5 +83,32 @@ fn t703_optional_serial_removal_and_addition_preserve_other_edits() {
                 "T703: optional field and independent edit interfered"
             );
         }
+    }
+}
+
+#[test]
+fn t1194_real_locked_edit_rewrites_only_the_current_schema() {
+    for value in [false, true] {
+        let root = tempfile::tempdir().unwrap();
+        let path = root.path().join("config.toml");
+        std::fs::write(
+            &path,
+            format!("profile_cache = {value}\ncalibration_generation = 7\nwidth = 1280\n"),
+        )
+        .unwrap();
+        let store = ConfigStore::new(path.clone());
+        let baseline = store.load();
+        let mut edited = baseline.clone();
+        edited.camera.options.rotation = 90;
+        let current = store.save_edits(&edited, &baseline).unwrap();
+        assert_eq!(current.camera.options.rotation, 90);
+        assert_eq!(current.calibration_generation, 7);
+        assert_eq!(current.width, 1280);
+        assert!(
+            !std::fs::read_to_string(path)
+                .unwrap()
+                .contains("profile_cache"),
+            "T1194: obsolete schema survived current transaction"
+        );
     }
 }

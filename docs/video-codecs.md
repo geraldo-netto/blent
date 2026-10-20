@@ -274,8 +274,9 @@ legacy tablets ignore the added optional boolean and can still show trial flicke
 Linux **Video > Advanced video settings > Recalibrate display**, followed by
 **Apply & restart**, requests new tuning. The equivalent configuration operation
 is incrementing `calibration_generation` before restarting. Manual encoder
-preferences take precedence. The old `profile_cache` boolean remains readable
-for configuration compatibility but no longer disables persistence or reuse.
+preferences take precedence. `profile_cache` is absent from the current schema;
+unknown configuration keys follow generic parsing policy and are not persisted
+by a current settings save. Automatic tuning remains durable.
 
 Profiles are written atomically, mode 0600, under `tuned-profiles/<digest>.json`
 beside the host configuration. Separate compatible environments retain separate

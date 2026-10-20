@@ -377,7 +377,7 @@ fn t714_tuned_profile_survives_elapsed_time_and_process_reopen() {
 }
 
 #[tokio::test]
-async fn t714_tuning_is_automatic_even_for_old_opt_out_configs() {
+async fn t714_tuning_is_automatic_with_default_preferences() {
     let (snapshot, _) = setup();
     let (tx, _) = tokio::sync::watch::channel(snapshot.clone());
     let attachment = Attachment::new(tx);
@@ -390,7 +390,7 @@ async fn t714_tuning_is_automatic_even_for_old_opt_out_configs() {
         Cache::open(&config, &snapshot, &attachment, &Default::default())
             .await
             .is_some(),
-        "T714: old profile_cache=false must not repeat calibration"
+        "T714: default preferences must enable durable tuning"
     );
 }
 

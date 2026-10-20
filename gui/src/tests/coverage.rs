@@ -2,11 +2,11 @@
 use super::*;
 
 #[test]
-fn t537_profile_cache_test_preserves_external_configuration() {
+fn t537_calibration_test_preserves_external_configuration() {
     let root = tempfile::tempdir().unwrap();
     let config = root.path().join("blent/config.toml");
     std::fs::create_dir_all(config.parent().unwrap()).unwrap();
-    let original = b"# T537 external user preferences\nwidth = 1280\nprofile_cache = false\n";
+    let original = b"# T537 external user preferences\nwidth = 1280\nadaptive_idle = false\n";
     std::fs::write(&config, original).unwrap();
     let output = Command::new(std::env::current_exe().unwrap())
         .args([
@@ -29,7 +29,7 @@ fn t537_profile_cache_test_preserves_external_configuration() {
     assert_eq!(
         std::fs::read(config).unwrap(),
         original,
-        "T537 profile-cache test must preserve external user settings"
+        "T537 calibration test must preserve external user settings"
     );
 }
 

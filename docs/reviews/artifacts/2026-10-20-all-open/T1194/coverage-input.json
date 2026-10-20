@@ -1,0 +1,44 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "--workspace",
+    "--lib",
+    "--bins",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1194/coverage.lcov",
+    "--",
+    "t1194",
+    "t703_",
+    "t714_",
+    "t537_calibration",
+    "t480_t714"
+  ],
+  "sources": {
+    "common/src/model.rs": "b120d84eba0af897d7dacf3d7f29b64507c9a6209a3947448d63356cf6bae50c",
+    "common/src/storage/merge_tests.rs": "84ce0533b76047afd45e2f8b0e63771b7b8752aa76d16144a7f10f8e2937c6f8",
+    "gui/src/main.rs": "653f0522b0ef265e84d9ab8f28d7e07485cfe47aea53bf046dbf0727185b9d22",
+    "gui/src/tests/coverage.rs": "21c0ab4896d617571e3a873a24e15c3ad2b8c66a52e8b48701b963a3817af5cc",
+    "host/src/selection/worker/cache/tests.rs": "8f547ad23c85c9d029f55bf43bae81fec487bf0558352b532a4dcbbce57fca8e"
+  },
+  "source_matched_export": [
+    "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-cov",
+    "export",
+    "--format=lcov",
+    "--instr-profile=/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/blent.profdata",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-74de745a54d1c2f6",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-8461f18b025039c8",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent_usb_broker-c2f2bfdcfca6809a",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent_config-231ae1cf2c79af4a",
+    "--object",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent_gui-e3f576ac45b177c4"
+  ]
+}

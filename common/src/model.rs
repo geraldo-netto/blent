@@ -90,8 +90,6 @@ pub struct FileConfig {
     /// Saved audio preferences never restore an active session.
     pub audio: crate::audio::AudioSettings,
     pub encoder: String,
-    /// Legacy preference retained for configuration round trips; automatic tuning is durable.
-    pub profile_cache: bool,
     /// Increment to discard previously tuned automatic environments on next start.
     pub calibration_generation: u32,
     /// Opt-in measured sparse cadence for the current encoder/decoder session.
@@ -193,7 +191,6 @@ impl Default for FileConfig {
             camera: Default::default(),
             audio: Default::default(),
             encoder: "auto".into(),
-            profile_cache: false,
             calibration_generation: 0,
             adaptive_idle: false,
             host_activity: Default::default(),
@@ -434,16 +431,37 @@ mod tests {
     }
 
     #[test]
-    fn t480_profile_cache_is_opt_in_and_persists() {
-        for (input, expected) in [("", false), ("profile_cache = true", true)] {
+    fn t480_t1194_obsolete_cache_preference_is_not_in_current_schema() {
+        for input in ["", "profile_cache = true", "profile_cache = false"] {
             let config: FileConfig = toml::from_str(input).unwrap();
-            assert_eq!(
-                toml::Value::try_from(config)
-                    .unwrap()
-                    .get("profile_cache")
-                    .and_then(toml::Value::as_bool),
-                Some(expected)
+            let value = toml::Value::try_from(config).unwrap();
+            assert!(
+                value.get("profile_cache").is_none(),
+                "T1194: obsolete preference persisted: {input:?}"
             );
+            assert_eq!(value["calibration_generation"].as_integer(), Some(0));
+        }
+    }
+
+    #[test]
+    fn t1194_unknown_obsolete_values_cannot_change_current_tuning_controls() {
+        for value in [
+            "true",
+            "false",
+            "0",
+            "-1",
+            "4294967296",
+            "[]",
+            "{}",
+            "'unused'",
+        ] {
+            let input = format!(
+                "profile_cache = {value}\ncalibration_generation = 42\nadaptive_idle = true"
+            );
+            let config: FileConfig = toml::from_str(&input).unwrap();
+            assert_eq!(config.calibration_generation, 42);
+            assert!(config.adaptive_idle);
+            assert!(!toml::to_string(&config).unwrap().contains("profile_cache"));
         }
     }
 

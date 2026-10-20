@@ -1,0 +1,25 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7, LLVM native LCOV, only current compiled executable objects",
+  "functions": [
+    {
+      "file": "common/src/model.rs",
+      "name": "FileConfig::default",
+      "first": 188,
+      "last": 227,
+      "covered": 40,
+      "total": 40,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "App::setting_calibration",
+      "first": 993,
+      "last": 1001,
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}
