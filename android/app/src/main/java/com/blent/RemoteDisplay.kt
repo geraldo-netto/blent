@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 /** Activity adapter. Format/Surface replacements share one bounded retirement lane. */
 internal class RemoteDisplay(context: Context,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate),
+    initialGeneration: Long = 0,
     private val worker: (MediaTask.Display, Surface, (WorkerEvent) -> Unit) -> LifecycleRun = { task, surface, events -> AndroidWorkerRun(context, task, surface, events) },
 ) : DisplaySession<SurfaceView> {
     private var liveness = false
@@ -41,7 +42,7 @@ internal class RemoteDisplay(context: Context,
     private val lane = ResourceLane(scope, { retirementStatus.value = it })
     private var wanted = false
     private var surface: Surface? = null
-    @Volatile private var generation = 0L
+    private val generations = GenerationFence(initialGeneration)
     @Volatile private var connected = false
     @Volatile private var fps = 0f
     @Volatile private var mbps = 0f
@@ -73,20 +74,26 @@ internal class RemoteDisplay(context: Context,
     override fun start() { if (!wanted) { wanted = true; replace() } }
     override fun stop() { wanted = false; replace() }
     private fun replace() {
-        val revision = ++generation
+        generations.revoke()
         lane.stop()
         disconnect()
         val output = surface ?: return
         val selected = configuredRoutes ?: return
         if (selected.token == null) return
         if (!wanted) return
+        val revision = generations.acquire()
+        if (revision == null) {
+            wanted = false
+            startupStatus.value = "Display generations exhausted"
+            return
+        }
         startupStatus.value = "Starting isolated display worker…"
         val request = MediaTask.Display(selected, format, liveness)
         try {
             lane.replace({ worker(request, output) { event -> receive(revision, event) } }, { failure ->
                 scope.launch {
-                    if (generation == revision) {
-                        generation++
+                    if (generations.current(revision)) {
+                        generations.revoke()
                         wanted = false
                         disconnect()
                         startupStatus.value = failure?.message
@@ -96,10 +103,10 @@ internal class RemoteDisplay(context: Context,
         } catch (error: Exception) { startupStatus.value = error.message }
     }
     private fun receive(revision: Long, event: WorkerEvent) {
-        if (generation != revision) return
+        if (!generations.current(revision)) return
         when (event) {
-            is WorkerEvent.Rendered -> onFrameRendered?.invoke(RenderAcknowledgement(event.sequence, event.decodeMicros, event.decoder) { generation == revision })
-            is WorkerEvent.Display -> snapshots.submit { if (generation == revision) publish(event) }
+            is WorkerEvent.Rendered -> onFrameRendered?.invoke(RenderAcknowledgement(event.sequence, event.decodeMicros, event.decoder) { generations.current(revision) })
+            is WorkerEvent.Display -> snapshots.submit { if (generations.current(revision)) publish(event) }
             else -> Unit
         }
     }

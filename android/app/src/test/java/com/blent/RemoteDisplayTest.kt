@@ -228,4 +228,158 @@ class RemoteDisplayTest {
         } finally { retired.complete(Unit); receiver.stop(); scope.cancel(); surface.release() }
     }
 
+    @Test fun t1180TerminalGenerationRejectsBeforeWorkerAdmission() = runBlocking {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        val surface = Surface(SurfaceTexture(0))
+        var admitted = 0
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope,
+            initialGeneration = Long.MAX_VALUE) { _, _, _ ->
+            admitted++
+            object : LifecycleRun {
+                override suspend fun execute() = awaitCancellation()
+                override fun cancel() {}
+                override suspend fun retire() {}
+            }
+        }
+        try {
+            receiver.token = "a".repeat(64)
+            receiver.setSurface(view(surface))
+            receiver.start()
+            assertEquals("T1180: terminal display admitted worker", 0, admitted)
+            assertTrue(receiver.startupStatus.value!!.contains("generations exhausted"))
+            repeat(3) { receiver.stop(); receiver.start() }
+            assertEquals(0, admitted)
+        } finally {
+            receiver.stop(); scope.coroutineContext[Job]!!.cancelAndJoin(); surface.release()
+        }
+    }
+
+    @Test fun t1180LastAdmissionRevokesReceiptsAndFundsStuckOriginalCleanup() = runBlocking {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        val surface = Surface(SurfaceTexture(0))
+        val retired = CompletableDeferred<Unit>()
+        val callbacks = mutableListOf<(WorkerEvent) -> Unit>()
+        var settlements = 0
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope,
+            initialGeneration = Long.MAX_VALUE - 1) { _, _, report ->
+            callbacks.add(report)
+            object : LifecycleRun {
+                override suspend fun execute() = awaitCancellation()
+                override fun cancel() {}
+                override suspend fun retire() { retired.await(); settlements++ }
+            }
+        }
+        try {
+            receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
+            var receipt: RenderAcknowledgement? = null
+            receiver.onFrameRendered = { receipt = it }
+            callbacks.single()(WorkerEvent.Rendered(1, 1, null))
+            assertTrue(receipt!!.current())
+            receiver.setStreamFormat(DecoderFormat("video/avc", 640, 480, 30))
+            assertFalse(receipt!!.current())
+            callbacks.single()(WorkerEvent.Display(true, 99f, 99f, "stale", null, DecoderDiagnostics()))
+            callbacks.single()(WorkerEvent.Rendered(2, 2, null))
+            assertEquals(1, receipt!!.sequence)
+            assertEquals(0f, receiver.getFps())
+            assertEquals(1, callbacks.size)
+            assertEquals(0, settlements)
+            retired.complete(Unit)
+            yield()
+            assertEquals("T1180: exhausted replacement admitted after original retirement", 1, callbacks.size)
+            assertEquals(1, settlements)
+            repeat(3) { receiver.stop(); receiver.start() }
+            assertEquals(1, callbacks.size)
+        } finally {
+            retired.complete(Unit); receiver.stop()
+            scope.coroutineContext[Job]!!.cancelAndJoin(); surface.release()
+        }
+    }
+
+    @Test fun t1180TerminalFailedCompletionRevokesReceiptsAndCannotRestart() = runBlocking {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        val surface = Surface(SurfaceTexture(0))
+        val completed = CompletableDeferred<Unit>()
+        val callbacks = mutableListOf<(WorkerEvent) -> Unit>()
+        var settlements = 0
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope,
+            initialGeneration = Long.MAX_VALUE - 1) { _, _, report ->
+            callbacks.add(report)
+            object : LifecycleRun {
+                override suspend fun execute() { completed.await(); error("terminal worker failed") }
+                override fun cancel() {}
+                override suspend fun retire() { settlements++ }
+            }
+        }
+        try {
+            receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
+            var receipt: RenderAcknowledgement? = null
+            receiver.onFrameRendered = { receipt = it }
+            callbacks.single()(WorkerEvent.Rendered(1, 1, null))
+            assertTrue(receipt!!.current())
+            completed.complete(Unit)
+            assertFalse(receipt!!.current())
+            assertEquals("terminal worker failed", receiver.startupStatus.value)
+            assertEquals(1, settlements)
+            receiver.start()
+            assertEquals("T1180: terminal failure revived worker", 1, callbacks.size)
+            callbacks.single()(WorkerEvent.Display(true, 99f, 99f, "stale", null, DecoderDiagnostics()))
+            assertEquals(0f, receiver.getFps())
+        } finally {
+            completed.complete(Unit); receiver.stop()
+            scope.coroutineContext[Job]!!.cancelAndJoin(); surface.release()
+        }
+    }
+
+    private class Queued : CoroutineDispatcher() {
+        private val pending = ArrayDeque<Runnable>()
+        override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) { pending.add(block) }
+        fun drain() { while (pending.isNotEmpty()) pending.removeFirst().run() }
+    }
+
+    @Test fun t1180QueuedOriginalStatusCannotPublishAfterTerminalReplacement() = runBlocking {
+        val dispatcher = Queued()
+        val scope = CoroutineScope(SupervisorJob() + dispatcher)
+        val surface = Surface(SurfaceTexture(0))
+        val callbacks = mutableListOf<(WorkerEvent) -> Unit>()
+        var settlements = 0
+        val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope,
+            initialGeneration = Long.MAX_VALUE - 1) { _, _, report ->
+            callbacks.add(report)
+            object : LifecycleRun {
+                override suspend fun execute() = awaitCancellation()
+                override fun cancel() {}
+                override suspend fun retire() { settlements++ }
+            }
+        }
+        try {
+            receiver.token = "a".repeat(64); receiver.setSurface(view(surface)); receiver.start()
+            dispatcher.drain()
+            callbacks.single()(WorkerEvent.Display(true, 99f, 99f, "stale queued", null, DecoderDiagnostics()))
+            receiver.setVideoLiveness(true)
+            dispatcher.drain()
+            assertEquals(0f, receiver.getFps())
+            assertNotEquals("stale queued", receiver.startupStatus.value)
+            assertEquals(1, callbacks.size)
+            assertEquals(1, settlements)
+        } finally {
+            receiver.stop(); scope.cancel(); dispatcher.drain()
+            scope.coroutineContext[Job]!!.join(); surface.release()
+        }
+    }
+
+    @Test fun t1180InvalidSeedRejectsBeforeWorkerFactory() {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        var admitted = 0
+        try {
+            for (seed in listOf(Long.MIN_VALUE, -1L)) {
+                assertThrows(IllegalArgumentException::class.java) {
+                    RemoteDisplay(RuntimeEnvironment.getApplication(), scope, initialGeneration = seed) { _, _, _ ->
+                        admitted++; error("Worker must not be admitted")
+                    }
+                }
+            }
+            assertEquals(0, admitted)
+        } finally { scope.cancel() }
+    }
+
 }

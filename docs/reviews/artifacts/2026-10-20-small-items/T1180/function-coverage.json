@@ -1,0 +1,125 @@
+{
+  "tool": "JaCoCo0.8.15 native JVM method-variant line counters; includes changed callback methods",
+  "functions": [
+    {
+      "owner": "com/blent/RemoteDisplay$receive$1",
+      "method": "invoke",
+      "descriptor": "()Ljava/lang/Boolean;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$receive$2",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$1$1",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/WorkerEvent;)V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLkotlin/jvm/functions/Function3;)V",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "replace",
+      "descriptor": "()V",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay",
+      "method": "receive",
+      "descriptor": "(JLcom/blent/WorkerEvent;)V",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$2$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "<init>",
+      "descriptor": "(J)V",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "<init>",
+      "descriptor": "(JILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "acquire",
+      "descriptor": "()Ljava/lang/Long;",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "revoke",
+      "descriptor": "()V",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/GenerationFence",
+      "method": "current",
+      "descriptor": "(J)Z",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$2",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0
+    },
+    {
+      "owner": "com/blent/RemoteDisplay$replace$1",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0
+    }
+  ]
+}
