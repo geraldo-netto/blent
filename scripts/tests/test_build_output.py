@@ -25,20 +25,35 @@ def write(root, name, body, executable=False):
 
 def fixture(root, selection, stale):
     version = test_notices.NoticeTest().copy_sources(root)
+    import test_make
+    test_make.MakeTest().usb_make_fixture(root)
     tools = root / 'tools'
     tools.mkdir()
     import release_signing_fixture
     release_signing_fixture.install_tools(tools)
     shutil.copy(REPO / 'testdata/cargo_output.py', tools / 'cargo')
     (tools / 'cargo').chmod(0o755)
-    write(root, 'tools/gcc', '#!/bin/sh\nmkdir -p host/evdi\nprintf "#!/bin/sh\\necho fresh-helper\\n" > host/evdi/evdi_helper\nchmod +x host/evdi/evdi_helper\n', True)
+    write(root, 'tools/gcc', r'''#!/bin/sh
+output=
+previous=
+for argument do
+    if [ "$previous" = -o ]; then output=$argument; break; fi
+    previous=$argument
+done
+mkdir -p "$(dirname "$output")"
+case "$output" in
+    *blent-usb-io) printf '#!/bin/sh\nprintf "fresh-blent-usb-io %%s\\n" "${1:-}"\n' > "$output" ;;
+    *) printf '#!/bin/sh\necho fresh-helper\n' > "$output" ;;
+esac
+chmod +x "$output"
+''', True)
     for tool in ['sudo', 'systemctl', 'gtk-update-icon-cache', 'kbuildsycoca6']:
         write(root, 'tools/' + tool, '#!/bin/sh\nexit 0\n', True)
     write(root, 'android/gradlew', '#!/bin/sh\nexit 0\n', True)
     write(root, 'android/app/build/outputs/apk/release/app-release.apk', 'fixture-apk')
     write(root, 'fixture.so', 'fixture-library')
     if stale:
-        for name in ['blent', 'blent-gui', 'blent-audio']:
+        for name in ['blent', 'blent-gui', 'blent-audio', 'blent-usb-broker', 'blent-usb-io']:
             write(root, 'target/release/' + name, '#!/bin/sh\necho stale\n', True)
     env = dict(os.environ, HOME=str(root / 'home'), PATH=str(tools) + os.pathsep + os.environ['PATH'],
                BLENT_T336_CARGO_LOG=str(root / 'cargo.log'))
@@ -56,6 +71,14 @@ def fixture(root, selection, stale):
 
 
 class BuildOutputTest(unittest.TestCase):
+    def test_t1210_cargo_fixture_emits_current_broker_without_claiming_native_helper(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            env, _ = fixture(root, 'relative', False)
+            self.run_command(root, env, str(root/'tools/cargo'), 'build', '--target-dir', str(root/'target'))
+            self.assertTrue((root/'target/release/blent-usb-broker').is_file())
+            self.assertFalse((root/'target/release/blent-usb-io').exists())
+
     def test_t757_run_uses_safe_capacity_setup_and_stops_on_failure(self):
         for status in [0, 1]:
             with self.subTest(status=status), tempfile.TemporaryDirectory() as temp:
@@ -98,7 +121,7 @@ class BuildOutputTest(unittest.TestCase):
         return result.stdout
 
     def verify_installed(self, root, env, installed):
-        for name in ['blent', 'blent-gui', 'blent-audio']:
+        for name in ['blent', 'blent-gui', 'blent-audio', 'blent-usb-broker', 'blent-usb-io']:
             output = self.run_command(root, env, str(installed / name), 'probe')
             self.assertEqual(output, f'fresh-{name} probe\n', 'T336: stale artifact installed')
         self.assertEqual(self.run_command(root, env, str(installed / 'evdi_helper')), 'fresh-helper\n')
@@ -129,7 +152,7 @@ class BuildOutputTest(unittest.TestCase):
                     self.assertIn(f'fresh-blent {argument}\n', output, 'T336: stale Make action')
                 self.run_command(root, env, 'make', 'dist-local', 'LIBEVDI=fixture.so')
                 with tarfile.open(root / f'dist/blent-{version}-linux-x86_64.tar.gz') as archive:
-                    for name in ['blent', 'blent-gui', 'blent-audio']:
+                    for name in ['blent', 'blent-gui', 'blent-audio', 'blent-usb-broker', 'blent-usb-io']:
                         binary = archive.extractfile(f'blent-{version}/bin/{name}').read()
                         self.assertIn(f'fresh-{name}'.encode(), binary, 'T336: stale distribution')
                 self.run_command(root, env, 'make', 'clean')
@@ -139,7 +162,7 @@ class BuildOutputTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             env, _ = fixture(root, 'relative', True)
-            for name in ['blent', 'blent-gui', 'blent-audio', 'evdi_helper']:
+            for name in ['blent', 'blent-gui', 'blent-audio', 'blent-usb-broker', 'blent-usb-io', 'evdi_helper']:
                 write(root, 'bin/' + name, '#!/bin/sh\necho prebuilt\n', True)
             installed = root / 'installed'
             self.run_command(root, env, 'bash', 'scripts/install.sh', '--binaries-only', str(installed))

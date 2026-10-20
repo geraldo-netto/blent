@@ -1,0 +1,80 @@
+[
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 17,
+    "name": "write",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 26,
+    "name": "fixture",
+    "score": 6
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 74,
+    "name": "test_t1210_cargo_fixture_emits_current_broker_without_claiming_native_helper",
+    "score": 1
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 82,
+    "name": "test_t757_run_uses_safe_capacity_setup_and_stops_on_failure",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 95,
+    "name": "test_t640_linux_ci_checks_private_namespaces_before_collection",
+    "score": 1
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 105,
+    "name": "test_t639_android_ci_avoids_retired_sdk_tools",
+    "score": 3
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 117,
+    "name": "run_command",
+    "score": 1
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 123,
+    "name": "verify_installed",
+    "score": 2
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 129,
+    "name": "test_t336_source_installer_builds_the_artifacts_it_installs",
+    "score": 3
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 143,
+    "name": "test_t336_make_build_install_run_and_dist_share_outputs",
+    "score": 4
+  },
+  {
+    "file": "scripts/tests/test_build_output.py",
+    "line": 161,
+    "name": "test_t336_prebuilt_install_uses_bundle_without_cargo",
+    "score": 2
+  },
+  {
+    "file": "testdata/cargo_output.py",
+    "line": 11,
+    "name": "target_directory",
+    "score": 4
+  },
+  {
+    "file": "testdata/cargo_output.py",
+    "line": 22,
+    "name": "main",
+    "score": 3
+  }
+]
