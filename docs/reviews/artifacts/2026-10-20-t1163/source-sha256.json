@@ -1,0 +1,5 @@
+{
+  "android/app/build.gradle.kts": "ddb6aa9f95574f02cf92ccb0640f827e594852ab19d0cd45b3b202a9a559077e",
+  "android/app/src/main/java/com/blent/connection/SecureConnection.kt": "68c03a8918796afeebd4ca559bc56186e69c1be042cf1fee516de932c037d1ac",
+  "android/app/src/test/java/com/blent/connection/SecureConnectionTest.kt": "9521079777e0ef81a2ff116677c9c7212b36ab1e690f601e28f0bea39739f9e5"
+}
