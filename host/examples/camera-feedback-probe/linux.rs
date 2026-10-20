@@ -8,6 +8,8 @@ mod decoder;
 // T816: compile the production decoder with its bounded lease owner.
 #[path = "../../src/camera/frame_pool.rs"]
 mod frame_pool;
+#[path = "options.rs"]
+mod options;
 #[path = "../../src/camera/outputs.rs"]
 mod outputs;
 #[path = "policy.rs"]
@@ -16,30 +18,18 @@ mod policy;
 mod protocol;
 #[path = "samples.rs"]
 mod samples;
+use options::Options;
 
 use anyhow::{Context, Result};
-use blent_config::{camera::CameraOptions, commands::AsyncCommandExt};
+use blent_config::commands::AsyncCommandExt;
 use clap::Parser;
 use std::{path::Path, time::Duration};
 use tokio::{net::TcpListener, process::Command, sync::watch, time::Instant};
 
-#[derive(Parser)]
-struct Options {
-    #[command(flatten)]
-    camera: CameraOptions,
-    #[arg(long, default_value_t = 10)]
-    seconds: u64,
-    #[arg(long, default_value_t = 0)]
-    stall_feedback_ms: u64,
-    /// Timestamp admission cap; exhaustion fails the measurement.
-    #[arg(long, default_value_t = samples::DEFAULT_CAPACITY)]
-    max_samples: usize,
-}
-
 #[tokio::main]
 pub(super) async fn run() -> Result<()> {
     let args = Options::parse();
-    policy::validate(&args.camera.profile, args.seconds, args.stall_feedback_ms)?;
+    policy::validate(&args.camera, args.seconds, args.stall_feedback_ms)?;
     let samples = samples::Samples::new(args.max_samples)?;
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let route = TcpListener::bind("127.0.0.1:0").await?;

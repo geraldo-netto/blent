@@ -281,8 +281,15 @@ async fn sessions(
     loop {
         let (socket, _) = listener.accept().await?;
         socket.set_nodelay(true)?;
-        if let Err(error) =
-            decoder::connection(socket, token, ffmpeg, options, frames, status.clone()).await
+        if let Err(error) = decoder::connection(
+            socket,
+            token,
+            ffmpeg,
+            &options.profile,
+            frames,
+            status.clone(),
+        )
+        .await
         {
             tracing::info!(%error, "camera connection ended; waiting for tablet selection");
         }

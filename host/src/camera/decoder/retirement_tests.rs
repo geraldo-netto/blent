@@ -38,7 +38,7 @@ async fn t1126_pending_original_decoder_rejects_native_replacement_before_spawn(
         socket,
         &token,
         &ffmpeg,
-        &new_options(),
+        &new_options().profile,
         &frames,
         report.clone(),
     )
@@ -81,7 +81,7 @@ async fn t1126_live_decoder_is_observed_until_its_cancelled_future_retires() {
         socket,
         &token,
         &ffmpeg,
-        &options,
+        &options.profile,
         &frames,
         report.clone(),
     ));

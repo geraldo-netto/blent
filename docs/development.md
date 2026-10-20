@@ -687,7 +687,10 @@ not merged, and bounded launch-history exhaustion falls back to manual opening.
 
 ## Camera feedback probe timestamp capacity
 
-The camera feedback probe supports ADB targets; an explicit USB target is rejected
+The camera feedback probe uses the portable camera profile and measurement options;
+its CLI does not expose virtual-camera output paths. The native decoder receives
+only the camera profile it needs, independently of V4L2 output configuration.
+The probe supports ADB targets; an explicit USB target is rejected
 before native setup. Probe duration must be 1–30 seconds and the optional
 `--stall-feedback-ms` injection must be 0–1000 milliseconds. Argument policy is
 checked before listeners, device discovery or ADB commands.

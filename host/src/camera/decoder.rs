@@ -1,13 +1,13 @@
 use super::{outputs::Frames, protocol};
 use anyhow::{Context, Result};
-use blent_config::camera::CameraOptions;
+use blent_config::camera::CameraProfile;
 use std::{path::Path, process::Stdio, time::Duration};
 use tokio::{io::AsyncWriteExt, net::TcpStream, process::Command};
 
 #[cfg(test)]
 mod retirement_tests;
 
-pub fn filters(rotation: u8, options: &CameraOptions) -> String {
+pub fn filters(rotation: u8, options: &CameraProfile) -> String {
     let rotation = (rotation + (options.rotation / 90) as u8) % 4;
     let turn = match rotation {
         1 => "transpose=clock,",
@@ -20,7 +20,7 @@ pub fn filters(rotation: u8, options: &CameraOptions) -> String {
         options.width, options.height, options.width, options.height)
 }
 
-fn command(ffmpeg: &Path, rotation: u8, options: &CameraOptions) -> Command {
+fn command(ffmpeg: &Path, rotation: u8, options: &CameraProfile) -> Command {
     // FFmpeg also checks aligned decoder buffers against max_pixels. Allow
     // SIMD/macroblock padding while keeping the decode allocation bounded.
     let pixels = options.width.div_ceil(64) * 64 * options.height.div_ceil(64) * 64;
@@ -70,7 +70,7 @@ pub async fn connection(
     mut socket: TcpStream,
     token: &str,
     ffmpeg: &Path,
-    options: &CameraOptions,
+    options: &CameraProfile,
     outputs: &[Frames; 2],
     status: crate::camera_control::Report,
 ) -> Result<()> {
@@ -102,7 +102,7 @@ pub async fn connection(
 async fn transfer(
     socket: &mut TcpStream,
     decoder: &mut tokio::process::Child,
-    options: &CameraOptions,
+    options: &CameraProfile,
     frames: &Frames,
 ) -> Result<()> {
     let mut input = decoder

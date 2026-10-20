@@ -152,7 +152,14 @@ async fn t539_real_h264_upload_decodes_only_to_selected_endpoint() {
         client.shutdown().await.unwrap();
     };
     let (result, _) = tokio::join!(
-        decoder::connection(server, &token, &ffmpeg, &profile, &outputs, new_report()),
+        decoder::connection(
+            server,
+            &token,
+            &ffmpeg,
+            &profile.profile,
+            &outputs,
+            new_report()
+        ),
         upload
     );
     assert!(result.is_err());
@@ -222,10 +229,10 @@ fn t539_rotation_and_mirroring_are_bounded_filter_choices() {
         (2, "hflip,vflip,"),
         (3, "transpose=cclock,"),
     ] {
-        assert!(decoder::filters(rotation, &profile).starts_with(prefix));
+        assert!(decoder::filters(rotation, &profile.profile).starts_with(prefix));
     }
     profile.mirror = true;
-    assert!(decoder::filters(0, &profile).starts_with("hflip,scale="));
+    assert!(decoder::filters(0, &profile.profile).starts_with("hflip,scale="));
     assert!(executable("blent-t539-missing-executable").is_err());
 }
 
@@ -285,7 +292,14 @@ async fn t539_rejects_encoded_dimensions_above_negotiated_profile() {
         let _ = client.shutdown().await;
     };
     let (result, _) = tokio::join!(
-        decoder::connection(server, &token, &ffmpeg, &profile, &outputs, new_report()),
+        decoder::connection(
+            server,
+            &token,
+            &ffmpeg,
+            &profile.profile,
+            &outputs,
+            new_report()
+        ),
         upload
     );
     assert!(result.is_err());
@@ -320,7 +334,14 @@ async fn t539_stalled_decoder_cannot_hold_camera_session_forever() {
     };
     let completed = tokio::time::timeout(Duration::from_secs(5), async {
         tokio::join!(
-            decoder::connection(server, &token, &decoder, &profile, &frames, new_report()),
+            decoder::connection(
+                server,
+                &token,
+                &decoder,
+                &profile.profile,
+                &frames,
+                new_report()
+            ),
             upload
         )
     })
@@ -463,7 +484,7 @@ async fn t543_host_reports_frames_and_rejects_unselected_lens() {
         server,
         &token,
         Path::new("/missing-ffmpeg"),
-        &profile,
+        &profile.profile,
         &frames,
         new_report(),
     )
@@ -513,12 +534,12 @@ fn t543_desktop_rotation_combines_sensor_orientation_before_mirroring() {
                 2 => "hflip,vflip,",
                 _ => "transpose=cclock,",
             };
-            assert!(decoder::filters(sensor, &profile).starts_with(expected));
+            assert!(decoder::filters(sensor, &profile.profile).starts_with(expected));
         }
     }
     profile.rotation = 180;
     profile.mirror = true;
-    assert!(decoder::filters(0, &profile).starts_with("hflip,vflip,hflip,"));
+    assert!(decoder::filters(0, &profile.profile).starts_with("hflip,vflip,hflip,"));
 }
 
 async fn transformed_test_frame(
@@ -553,7 +574,7 @@ async fn transformed_test_frame(
         .unwrap()
     };
     tokio::select! {
-        result = decoder::connection(server, &token, &ffmpeg, profile, &frames, new_report()) => panic!("{result:?}"),
+        result = decoder::connection(server, &token, &ffmpeg, &profile.profile, &frames, new_report()) => panic!("{result:?}"),
         frame = upload => frame,
     }
 }

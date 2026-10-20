@@ -1,0 +1,58 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7, source-matched native LLVM LCOV",
+  "functions": [
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "filters",
+      "first": 10,
+      "last": 21,
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "command",
+      "first": 23,
+      "last": 67,
+      "covered": 43,
+      "total": 43,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "connection",
+      "first": 69,
+      "last": 100,
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/decoder.rs",
+      "name": "transfer",
+      "first": 102,
+      "last": 152,
+      "covered": 43,
+      "total": 43,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "sessions",
+      "first": 273,
+      "last": 297,
+      "covered": 19,
+      "total": 21,
+      "percent": 90.47619047619048,
+      "missing": [
+        295,
+        297
+      ]
+    }
+  ]
+}
