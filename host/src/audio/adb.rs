@@ -36,7 +36,7 @@ impl Bridge {
             .output_input_timeout(Some(command.as_bytes()), Duration::from_secs(5))
             .await?;
         ensure!(
-            result.status.success() && String::from_utf8_lossy(&result.stdout).contains("result=1"),
+            result.status.success() && crate::adb_command::broadcast_accepted(&result.stdout),
             "Tablet did not accept audio request. Install updated Blent and open it."
         );
         Ok(())
@@ -84,5 +84,43 @@ mod tests {
             .await
             .is_err());
         assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 0);
+    }
+    #[tokio::test]
+    async fn t1205_audio_requires_exact_single_current_broadcast_acknowledgement() {
+        let root = tempfile::tempdir().unwrap();
+        for (stdout, expected) in crate::adb_command::broadcast_tests::cases() {
+            let bridge = Bridge(crate::camera::bridge::Bridge {
+                adb: crate::adb_command::broadcast_tests::fixture(root.path(), &stdout, true),
+                serial: "private-test".into(),
+                remote: "tcp:34567".into(),
+                local: "tcp:12345".into(),
+            });
+            let profile = AudioProfile::new(blent_config::audio::Direction::Speakers);
+            let accepted = bridge.invite(&"ab".repeat(32), &profile).await.is_ok();
+            assert_eq!(accepted, expected, "T1205 audio acknowledgement {stdout:?}");
+        }
+    }
+    #[tokio::test]
+    async fn t1205_audio_command_failure_cannot_grant_acceptance_or_leak_credential() {
+        let root = tempfile::tempdir().unwrap();
+        let bridge = Bridge(crate::camera::bridge::Bridge {
+            adb: crate::adb_command::broadcast_tests::fixture(
+                root.path(),
+                b"Broadcast completed: result=1\n",
+                false,
+            ),
+            serial: "private-test".into(),
+            remote: "tcp:34567".into(),
+            local: "tcp:12345".into(),
+        });
+        let credential = "ab".repeat(32);
+        let profile = AudioProfile::new(blent_config::audio::Direction::Microphone);
+        let error = bridge
+            .invite(&credential, &profile)
+            .await
+            .unwrap_err()
+            .to_string();
+        assert!(!error.contains(&credential));
+        assert!(error.contains("did not accept audio"));
     }
 }

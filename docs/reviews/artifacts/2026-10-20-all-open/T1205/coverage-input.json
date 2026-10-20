@@ -1,0 +1,34 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent",
+    "--lib",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T1205/coverage.lcov",
+    "--",
+    "camera::",
+    "audio::",
+    "t1205"
+  ],
+  "sources": {
+    "host/src/adb_command.rs": "13bab1e14707a0dcb456cacdb3e891bab8c0a3beca9a0807bf3ba7a526db475b",
+    "host/src/adb_command/broadcast_tests.rs": "d687a5ed4bb70838f1a4e092ae86cdf9e5753a84b61af99b98fde13f958f4051",
+    "host/src/camera/bridge.rs": "3e77461c7d3b3488a0b0ab9a901f7dfee7b233b40ae72738877399833deade41",
+    "host/src/camera/tests.rs": "05c0fe85a2bf793c30e8037bf77250d2c1e62fb37bee535ec24c6801ef8e37a8",
+    "host/src/audio/adb.rs": "4f3da97b51eb5dcfad080aca77cdc1badd88cff7578bab074f36ce6f0720ef17"
+  },
+  "source_matched_export": [
+    "/home/netto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-cov",
+    "export",
+    "--format=lcov",
+    "--instr-profile=/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/blent.profdata",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage-target/debug/deps/blent-d512991ead5280bc"
+  ]
+}

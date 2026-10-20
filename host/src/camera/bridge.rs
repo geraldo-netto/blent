@@ -1,5 +1,5 @@
 //! A dedicated, temporary ADB reverse mapping and shell-protected invitation.
-use crate::adb_command::output;
+use crate::adb_command::{broadcast_accepted, output};
 use anyhow::{ensure, Context, Result};
 use blent_config::{
     camera::{
@@ -70,9 +70,8 @@ impl Bridge {
             .await?;
         // ADB may echo the shell input in diagnostics; never surface it.
         ensure!(result.status.success(), "ADB camera invitation failed");
-        let result = String::from_utf8_lossy(&result.stdout);
         ensure!(
-            result.contains("result=1"),
+            broadcast_accepted(&result.stdout),
             "tablet did not accept camera invitation; install updated Blent APK and open it"
         );
         Ok(())

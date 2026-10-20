@@ -736,3 +736,21 @@ fn reject_after_gate(
     );
     anyhow::bail!("T539 intentional original producer configuration failure")
 }
+
+#[tokio::test]
+async fn t1205_camera_requires_exact_single_current_broadcast_acknowledgement() {
+    let root = tempfile::tempdir().unwrap();
+    for (stdout, expected) in crate::adb_command::broadcast_tests::cases() {
+        let bridge = bridge::Bridge {
+            adb: crate::adb_command::broadcast_tests::fixture(root.path(), &stdout, true),
+            serial: "private-test".into(),
+            remote: "tcp:34567".into(),
+            local: "tcp:12345".into(),
+        };
+        let accepted = bridge.invite(&"ab".repeat(32), &options()).await.is_ok();
+        assert_eq!(
+            accepted, expected,
+            "T1205 camera acknowledgement {stdout:?}"
+        );
+    }
+}

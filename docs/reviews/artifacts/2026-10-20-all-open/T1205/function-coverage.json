@@ -1,0 +1,35 @@
+{
+  "tool": "rustc1.98.1 / cargo-llvm-cov0.8.7, source-matched native LLVM LCOV",
+  "functions": [
+    {
+      "file": "host/src/adb_command.rs",
+      "name": "broadcast_accepted",
+      "first": 30,
+      "last": 38,
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "invite",
+      "first": 44,
+      "last": 78,
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/adb.rs",
+      "name": "broadcast",
+      "first": 20,
+      "last": 43,
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}
