@@ -100,5 +100,8 @@ internal class JoinedDisplayWorkerFixture {
         assertTrue(originals.all { it.originalJob?.isCompleted != false })
         assertTrue(JoinedDisplayCodecShadow.instances.all { it.released })
         surface.release(); texture.release()
+        // T1172: this sequential SDK fixture owns the bounded codec history.
+        // Return its metadata capacity only after actual original settlement.
+        JoinedDisplayCodecShadow.clear()
     }
 }
