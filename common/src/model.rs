@@ -101,7 +101,7 @@ pub struct FileConfig {
     /// Bounded shared slots: more tolerate retained encoder frames, costing RAM.
     pub raw_slots: u32,
     /// DRM render node used by VA-API encoders.
-    /// Opaque native adapter identity; empty preserves legacy automatic/device choices.
+    /// Opaque native adapter identity; empty selects current automatic/pinned VA-API choices.
     pub encoding_gpu: String,
     pub vaapi_device: String,
     pub fps: u32,

@@ -211,7 +211,7 @@ impl StreamServer {
         tokio::select! {
             result = Self::stream_packets(writer, rx, codec_config, video_tx.budget(), liveness, capabilities) => result,
             // Disabled authentication accepts the Android client's saved token
-            // as an optional prelude, without delaying tokenless legacy clients.
+            // as an optional prelude, without delaying current clients without a saved token.
             // EOF, malformed/extra input and incomplete preludes end the viewer.
             _ = watch_client_input(&mut reader, token.is_none(), negotiated) => Ok(()),
         }
