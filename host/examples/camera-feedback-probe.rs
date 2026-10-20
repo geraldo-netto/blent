@@ -1,5 +1,8 @@
 //! T631: retain the Linux native camera probe without importing it on Windows.
 #[cfg(target_os = "linux")]
+use blent::camera_control;
+
+#[cfg(target_os = "linux")]
 #[path = "../src/adb_command.rs"]
 mod adb_command;
 
