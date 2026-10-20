@@ -1,0 +1,65 @@
+{
+  "tool": "rustc 1.98.1 (48a229cea 2026-09-01); cargo-llvm-cov0.8.7 LCOV native counters; per-function authored ranges",
+  "functions": [
+    {
+      "file": "host/src/attachment.rs",
+      "name": "begin_route",
+      "first": 72,
+      "last": 89,
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment.rs",
+      "name": "retire",
+      "first": 93,
+      "last": 113,
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment.rs",
+      "name": "advance_generation",
+      "first": 114,
+      "last": 129,
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "detach_registered",
+      "first": 26,
+      "last": 43,
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "register_guarded",
+      "first": 57,
+      "last": 84,
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "missing": []
+    },
+    {
+      "file": "host/src/attachment/registered.rs",
+      "name": "revoke",
+      "first": 124,
+      "last": 137,
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "missing": []
+    }
+  ]
+}

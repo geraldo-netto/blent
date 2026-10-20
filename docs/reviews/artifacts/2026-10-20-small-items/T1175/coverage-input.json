@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "llvm-cov",
+    "test",
+    "--offline",
+    "--locked",
+    "--no-clean",
+    "-p",
+    "blent",
+    "--lib",
+    "--lcov",
+    "--output-path",
+    "/backups/disk2/blent-work/2026-10-20-small-items/T1175/coverage.lcov",
+    "--",
+    "attachment::"
+  ],
+  "sources": {
+    "host/src/attachment.rs": "a458b6348f64c1249bf5c41a77363e97ad6c89a57c5b47f739341b7f2d7147d7",
+    "host/src/attachment/registered.rs": "81964ad7553a3cb07cafd06c46175aa351f7d9d0ead3180e1cbdda7d6694599b",
+    "host/src/attachment/exhaustion_tests.rs": "ef5e2ca516c3012e7aa2a6e2c0dd0c4cdbb1e15c497c7a3e7eb1cceb920d3df6"
+  }
+}

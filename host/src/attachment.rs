@@ -75,12 +75,8 @@ impl Attachment {
             return;
         }
         let preserve = identity.is_some() && state.identity == identity;
-        if state.registered {
-            if self.advance_registered(&mut state).is_err() {
-                return;
-            }
-        } else {
-            state.generation = state.generation.wrapping_add(1);
+        if self.advance_generation(&mut state).is_err() {
+            return;
         }
         state.observed_authentication(&identity, preserve);
         state.transport = transport.filter(|_| identity.is_some());
@@ -110,10 +106,26 @@ impl Attachment {
         state.authentication = Authentication::Unavailable;
         state.identity = None;
         state.transport = None;
-        state.generation = state.generation.wrapping_add(1);
-        self.reset_metadata();
+        if self.advance_generation(&mut state).is_ok() {
+            self.reset_metadata();
+            self.0.presence.send_replace(false);
+        }
+    }
+    pub(super) fn advance_generation(&self, state: &mut State) -> anyhow::Result<()> {
+        let next = state.generation.checked_add(1);
+        match next {
+            Some(next) => state.generation = next,
+            None => {
+                state.closed = true;
+                state.authentication = Authentication::Unavailable;
+                self.0.presence.send_replace(false);
+                self.reset_metadata();
+            }
+        }
+        // send_replace wakes outstanding retirement watchers even at exhaustion.
         self.0.generation.send_replace(state.generation);
-        self.0.presence.send_replace(false);
+        anyhow::ensure!(next.is_some(), "attachment generation exhausted");
+        Ok(())
     }
     fn reset_metadata(&self) {
         self.0.settings.send_if_modified(|settings| {
@@ -242,3 +254,6 @@ impl Retirement {
         }
     }
 }
+
+#[cfg(test)]
+mod exhaustion_tests;

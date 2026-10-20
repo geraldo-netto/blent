@@ -38,7 +38,7 @@ impl Lease {
         state.transport = None;
         attachment.reset_metadata();
         attachment.0.presence.send_replace(false);
-        let _ = attachment.advance_registered(&mut state);
+        let _ = attachment.advance_generation(&mut state);
         true
     }
 }
@@ -69,7 +69,7 @@ impl Attachment {
             "stale display owner"
         );
         let preserve = state.identity.as_ref() == Some(&identity);
-        self.advance_registered(&mut state)?;
+        self.advance_generation(&mut state)?;
         state.authentication = Authentication::Required(token(&credential));
         state.registered = true;
         state.identity = Some(identity);
@@ -81,21 +81,6 @@ impl Attachment {
         Ok(RegisteredRoute {
             lease: self.lease_locked(&state),
         })
-    }
-    pub(super) fn advance_registered(&self, state: &mut State) -> Result<()> {
-        match state.generation.checked_add(1) {
-            Some(next) => state.generation = next,
-            None => {
-                state.closed = true;
-                state.authentication = Authentication::Unavailable;
-                self.0.presence.send_replace(false);
-                self.reset_metadata();
-            }
-        }
-        // send_replace wakes outstanding retirement watchers even at exhaustion.
-        self.0.generation.send_replace(state.generation);
-        ensure!(!state.closed, "attachment generation exhausted");
-        Ok(())
     }
 }
 impl State {
@@ -147,7 +132,7 @@ impl RegisteredRoute {
             return None;
         }
         state.authentication = Authentication::Unavailable;
-        attachment.advance_registered(&mut state).ok()?;
+        attachment.advance_generation(&mut state).ok()?;
         Some(attachment.lease_locked(&state))
     }
     pub fn close(&self) {

@@ -1,0 +1,17 @@
+{
+  "method": "Authored Rust source decision/closure audit following repository Sonar-rule model; rustfmt/rustc syntax and native function bounds; tree_sitter grammar unavailable and no native SonarQube (T1019).",
+  "function_estimates": {
+    "Attachment::begin_route": 6,
+    "Attachment::retire": 4,
+    "Attachment::advance_generation": 3,
+    "Lease::detach_registered": 5,
+    "Attachment::register_guarded": 3,
+    "RegisteredRoute::revoke": 4,
+    "seeded": 1,
+    "t1175_legacy_handoff_exhaustion_cannot_revive_zero_or_current_leases": 5,
+    "t1175_retirement_pins_maximum_without_overflow_or_lease_revival": 3,
+    "t1175_last_valid_handoff_admits_once_and_notifies_terminal_watchers": 3,
+    "t1175_bounded_handoffs_preserve_the_independent_u128_boundary_model": 4,
+    "t1175_poisoned_original_action_can_only_retire_not_revive": 4
+  }
+}
