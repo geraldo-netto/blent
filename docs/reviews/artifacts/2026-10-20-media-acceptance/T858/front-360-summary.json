@@ -1,0 +1,11 @@
+{
+  "debugging": false,
+  "accessory_id": "18d1:2d00",
+  "physical_path": "3-2.4.4",
+  "serial": "8002RH1010011900",
+  "host_connection": 20784,
+  "host_camera_pid": 998051,
+  "front_360_frames": 12,
+  "unique_hashes": 9,
+  "raw_images_retained": false
+}

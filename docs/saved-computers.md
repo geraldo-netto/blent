@@ -36,6 +36,7 @@ previous connection worker exited, and a new debugging-off USB connection
 authenticated using that saved trust without another computer approval.
 [T1237 evidence](reviews/artifacts/2026-10-21-t1237/saved-trust.json) records
 the independent list read. This does not qualify every device's store/provider,
-the native Forget flow, or remaining joined acceptance under T855/T858/T846.
-API27/28 provider/accessory qualification remains separate; current live checks
-are paused.
+the native Forget flow, or remaining pairing/joined acceptance under T855/T846.
+Camera acceptance T858 subsequently passes on this selected API36 device;
+API27/28 provider/accessory qualification remains separate. The remaining T855
+pairing checks retain their explicit pause.

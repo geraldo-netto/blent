@@ -1,0 +1,68 @@
+ACTIVITY MANAGER PROCESS EXIT INFO (dumpsys activity exit-info)
+Last Timestamp of Persistence Into Persistent Storage: 2026-10-21 00:08:02.102
+  package: io.github.geraldo_netto.blent
+    Historical Process Exit for uid=10325
+        ApplicationExitInfo #0:
+          timestamp=2026-10-21 00:34:49.840 pid=17074 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:metadata reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #1:
+          timestamp=2026-10-21 00:34:47.064 pid=16457 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:connection reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #2:
+          timestamp=2026-10-21 00:34:35.071 pid=16522 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:camera reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #3:
+          timestamp=2026-10-21 00:34:35.069 pid=16718 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:microphone reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #4:
+          timestamp=2026-10-21 00:34:35.067 pid=16747 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:speakers reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #5:
+          timestamp=2026-10-21 00:30:32.992 pid=16023 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:connection reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=90MB description=null state=empty trace=null
+        ApplicationExitInfo #6:
+          timestamp=2026-10-21 00:30:32.920 pid=16367 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:microphone reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=89MB description=null state=empty trace=null
+        ApplicationExitInfo #7:
+          timestamp=2026-10-21 00:30:27.284 pid=16398 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:speakers reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #8:
+          timestamp=2026-10-21 00:30:27.272 pid=16177 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:camera reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #9:
+          timestamp=2026-10-21 00:19:42.822 pid=13902 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:power reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=78MB description=null state=empty trace=null
+        ApplicationExitInfo #10:
+          timestamp=2026-10-21 00:19:42.671 pid=13885 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:display reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=400 pss=0.00 rss=104MB description=null state=empty trace=null
+        ApplicationExitInfo #11:
+          timestamp=2026-10-21 00:15:15.392 pid=15167 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:connection reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #12:
+          timestamp=2026-10-21 00:14:45.019 pid=13839 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:connection reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #13:
+          timestamp=2026-10-21 00:08:15.623 pid=13882 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:metadata reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=0.00 description=null state=empty trace=null
+        ApplicationExitInfo #14:
+          timestamp=2026-10-21 00:08:10.622 pid=12358 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:power reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=79MB description=null state=empty trace=null
+        ApplicationExitInfo #15:
+          timestamp=2026-10-21 00:08:10.610 pid=12341 realUid=10325 packageUid=10325 definingUid=10325 user=0
+          process=io.github.geraldo_netto.blent:display reason=2 (SIGNALED) subreason=0 (UNKNOWN) status=9
+          importance=100 pss=0.00 rss=103MB description=null state=empty trace=null

@@ -132,7 +132,7 @@ native cleanup evidence: original camera/codec owners retain retirement before
 replacement. Lensless wire invitations are rejected. Internal local-lens offers
 still allow explicit selection on the tablet.
 Direct USB uses the brokered accessory channel and a local TCP relay without ADB.
-It remains experimental pending joined physical acceptance; see
+It remains labelled experimental; selected-device physical evidence is described in
 [integration status](#direct-usb-camera-integration-status). Both carry the same
 authenticated stream. Its `BLCAM002` header
 contains the session credential, lens identity and rotation, followed by bounded
@@ -250,7 +250,8 @@ settings**, choose **Direct USB** and paste the full **Tablet** fingerprint from
 **USB connection** controls. Selecting USB clears the camera's ADB serial; choosing
 ADB clears its USB peer. Apply saves only; Start/Restart applies the camera profile
 without restarting display. Invalid or unavailable targets fail before backend
-creation. Direct USB is labelled experimental until joined physical acceptance. T932 implements
+creation. Direct USB remains labelled experimental, with physical acceptance
+scoped to the API36 RugKing Pad 2 Pro described below. T932 implements
 Android's original-consent/isolated-capture composition for direct USB. T973 exposes
 it in the regular app's Settings: a USB request shows its lens and requires local
 **Start camera** before admission. **Stop camera** affects only camera sharing.
@@ -263,11 +264,16 @@ Linux host registration and pipeline composition in builds with
 selects that peer independently of display; credentials are fresh per invocation.
 Source loss or revocation ends that camera registration. Start a new host camera
 invocation to issue another invitation. Builds without the feature fail explicitly
-before acquiring camera devices. Production host GUI transport selection is implemented under T974. Joined physical
-acceptance remains T858 and older-device evidence remains T863. Device trials
-have delivered camera frames on the API36 tablet with debugging on and off;
-final reconnect acceptance remains separate. Private TLS/protocol and real
-H.264 fixtures alone do not establish physical support on another device.
+before acquiring camera devices. Production host GUI transport selection is
+implemented under T974. [T858 physical acceptance](reviews/artifacts/2026-10-20-media-acceptance/T858/README.md)
+passes on the selected API36 RugKing Pad 2 Pro: debugging-on/off delivery, fresh
+local consent after software-only reconnect, separate Stop and original native
+worker retirement before debugging restoration. Front640×360 and rear320×180
+delivery are recorded; the latter requires native640×360 capture as described
+above. Older devices and other native providers remain unqualified. Private
+TLS/protocol and real H.264 fixtures alone do not establish physical support on
+another device, and these bounded observations make no unrestricted latency or
+leak-freedom claim.
 
 Starting a new USB connection while the tablet is already in accessory mode
 resets that tablet's USB transport to discard bytes from the previous connection.

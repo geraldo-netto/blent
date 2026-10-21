@@ -1,0 +1,12 @@
+{
+  "rear_180_frames": 12,
+  "unique_hashes": 11,
+  "original_connection": 20784,
+  "revoked_peer": "71553fb755cebf27ecf5b9eac83816c7488231b575ffcfc89e756e7e9d87b484",
+  "camera_cli_exit": 1,
+  "camera_cli_error": "USB media registration unavailable",
+  "links_after_revocation": [],
+  "trusted_peers_after_revocation": [],
+  "first_reconnect_connection": 21428,
+  "first_reconnect_result": "closed before pairing; awaiting Android state evidence"
+}
