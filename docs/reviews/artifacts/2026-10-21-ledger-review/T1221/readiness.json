@@ -1,0 +1,40 @@
+{
+  "scope": "Dependency availability/source inspection only; no new parser or metric is implemented and no failing test is declared passed.",
+  "network": "Private unshare -Urn namespace; Cargo offline then offline/locked",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "packages": [
+    {
+      "name": "blent-t1221-parser-readiness",
+      "version": "0.0.0",
+      "manifest_path": "/backups/disk2/blent-work/2026-10-21-ledger-review/T1221/parser-readiness/Cargo.toml",
+      "manifest_sha256": "0a21a729eccc892f5fdc24baf0be83c5e163397d9475ac9f5eb981e2bd2f2250"
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.107",
+      "manifest_path": "/home/netto/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.107/Cargo.toml",
+      "manifest_sha256": "6bdbe54a7f052e552dcfca90351764476e2767237ec3f954df8bd9f602861056"
+    },
+    {
+      "name": "quote",
+      "version": "1.0.47",
+      "manifest_path": "/home/netto/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.47/Cargo.toml",
+      "manifest_sha256": "13d8c50837f14aff48cd622349f98fb2c46350b7a0c08fd574cf7de4def27d06"
+    },
+    {
+      "name": "syn",
+      "version": "2.0.119",
+      "manifest_path": "/home/netto/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.119/Cargo.toml",
+      "manifest_sha256": "da8b83ac2c66a7b404dc55d88ae42592f70714823251f51b620ae349b246a18f"
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.26",
+      "manifest_path": "/home/netto/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.26/Cargo.toml",
+      "manifest_sha256": "f70dabc0fe831788a202762e62cc76c19941680960e2e2710d1ee9e79877d9af"
+    }
+  ],
+  "syn_async_closure_source_sha256": "eb2b886403cfe0b3c27122a9013e882fe7194b16ec87202c239f2b3619c36d31",
+  "existing_failure_source_sha256": "0c1eab4af8371ce060e3796ab4f33bb2af0b4195e8587dc27555a46c922a653d"
+}
