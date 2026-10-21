@@ -34,9 +34,9 @@ No additional production defect was confirmed in this bounded audit. Production
 code and existing tests remain unchanged. The new Rust source functions have
 cyclomatic estimates4 and1 using the project counter, tree-sitter0.25.2 and the
 cached tree-sitter-languages1.10.2 Rust ABI14 grammar, which parses this file.
-`rustfmt --edition 2021 --check host/src/audio/session_tests.rs` passes. Native
-SonarQube remains unavailable under T1244; the separate T1221 grammar limitation
-elsewhere in the repository remains unresolved. No native Rust coverage was
+`rustfmt --edition 2021 --check host/src/audio/session_tests.rs` passes. Owner clarification2026-10-21 accepts local cyclomatic tools; T1244 verifies
+these archived results against unchanged source and closes that tool prerequisite.
+The separate T1221 grammar limitation elsewhere remains unresolved. No native Rust coverage was
 recollected or whole-project coverage claimed; production functions are unchanged.
 
 ## Ownership and limits

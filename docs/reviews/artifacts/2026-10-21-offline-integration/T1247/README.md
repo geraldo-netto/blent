@@ -55,7 +55,9 @@ hashes. All214 scoped production functions/methods across thirteen source files
 pass individually at80–100% executable-line coverage. No
 aggregate substitute or exclusion is used. Cached Kotlin PSI1.9.20 reports
 maximum7 source cyclomatic complexity across the changed production/test scope.
-These estimates are not native SonarQube evidence; T1244 retains that prerequisite.
+Owner clarification2026-10-21 accepts local cyclomatic tools. T1244 verifies
+these source measurements and closes the former native analyzer prerequisite;
+no SonarQube certification is claimed.
 
 All validation uses cached providers, Gradle offline and isolated loopback-only
 network namespaces. An initial incremental production compile lost metadata for

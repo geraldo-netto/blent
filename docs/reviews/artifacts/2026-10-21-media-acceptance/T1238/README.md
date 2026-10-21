@@ -97,8 +97,8 @@ clean-success exit. No raw camera images or microphone PCM are retained.
 
 Existing normal-suite regressions and per-method native counters under
 T1241/T1242/T1245/T1247/T1248 remain supporting evidence; no new production bug
-is established by these acceptance observations. T1244 still records unavailable
-native SonarQube measurements. No sustained drift/AEC/acoustic-quality campaign,
+is established by these acceptance observations. Owner clarification2026-10-21 accepts local cyclomatic tools; T1244 verifies
+and accepts the existing scoped source measurements. No sustained drift/AEC/acoustic-quality campaign,
 other-device support, Windows/macOS acceptance, EVDI qualification, default audio
 device change, package download, repository fetch/push or artifact upload occurs.
 Earlier profile/background/denial/revocation evidence remains historical and

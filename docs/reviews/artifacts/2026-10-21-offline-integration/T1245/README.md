@@ -49,7 +49,9 @@ and actual original native completion remain eventual-cleanup assumptions.
 Speaker PCM is fixed synthetic data; no physical microphone audio is captured or
 stored. The held microphone case observes bootstrap/read entry, not delivered
 microphone PCM. Per-function production counters, source complexity estimates
-and unavailable native SonarQube evidence remain explicit under T1247/T1244.
+remain explicit under T1247. Owner clarification2026-10-21 accepts local
+cyclomatic tools; T1244 verifies these measurements and closes the former
+native-analyzer prerequisite.
 All execution uses cached tools in user/network namespaces with loopback only.
 No physical check, service installation, upload, download or push occurs; live
 acceptance and T1238 remain unfinished and paused.

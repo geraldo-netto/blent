@@ -21,8 +21,9 @@ regression owns one unstarted Robolectric fixture and destroys its service in
 epoch is private test setup, not a production clock or retirement witness.
 
 Cached Kotlin PSI1.9.20 measures the changed fixture and test files at maximum3
-source cyclomatic complexity; these are estimates, not native SonarQube evidence.
-T1244 retains the unavailable native analyzer. Production function coverage is
+source cyclomatic complexity; owner clarification2026-10-21 accepts
+these local measurements. T1244 verifies them and closes the former native
+analyzer prerequisite; no vendor certification is claimed. Production function coverage is
 unchanged because no production function changes.
 
 All Gradle checks use cached providers, `--offline --no-daemon`, explicit existing

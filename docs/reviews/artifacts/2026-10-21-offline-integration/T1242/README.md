@@ -36,8 +36,9 @@ it is not whole-project, native Android or Windows coverage. Raw execution data
 remains outside the repository in the local evidence directory below.
 
 Cached Kotlin PSI1.9.20 counts every new method, initializer and callback at<=3
-cyclomatic complexity. These are source estimates, not native SonarQube evidence;
-T1244 retains the missing analyzer prerequisite. No metric suppression or coverage
+cyclomatic complexity. These are local source counts, without a native SonarQube claim. Owner
+clarification2026-10-21 accepts these measurements; T1244 verifies and closes
+the former tool prerequisite. No metric suppression or coverage
 exclusion is added.
 
 ## Resource ownership and bounds

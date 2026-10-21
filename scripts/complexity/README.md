@@ -22,6 +22,14 @@ in `kotlin.py`. The first run downloads those jars from Maven Central into
 Subsequent runs reuse verified jars and a checker jar keyed by source hash.
 No Sonar implementation is vendored or required at runtime.
 
+Owner clarification2026-10-21 accepts local cyclomatic tools as sufficient gate
+evidence; a SonarQube installation or vendor certification is not required.
+This checker remains a source analysis with the rules and limitations below.
+Keep per-function results, tool versions, source hashes and supported scope;
+parse failures or unavailable measurements still cannot pass. T1244's scoped
+verification is recorded in
+[the local analysis evidence](../../docs/reviews/artifacts/2026-10-21-local-complexity/T1244/README.md).
+
 ## Scope
 
 Git-tracked files and untracked, nonignored files are included, including tests

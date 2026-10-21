@@ -27,7 +27,8 @@ real loopback sockets and synthetic SDK/devices/process-death notifications;
 they provide no physical or kernel process-death proof.
 
 Kotlin PSI source estimates (maximum3) and exact source/class hashes are
-retained. Native SonarQube remains unavailable under T1244. Production coverage is
+retained. Owner clarification2026-10-21 accepts local cyclomatic tools;
+T1244 verifies these measurements and closes the former native analyzer prerequisite. Production coverage is
 unchanged by this test-only fix. All commands run offline with cached tools in
 isolated network namespaces. No physical checks, installation, transfer, push or
 EVDI work occur; the owner's live-check pause remains intact.
