@@ -7,7 +7,7 @@ use std::{ffi::OsString, path::PathBuf, time::Duration};
 #[derive(Parser)]
 #[command(
     name = "blent-usb-broker",
-    about = "Experimental per-user USB broker; production media integration pending"
+    about = "Experimental per-user USB broker for paired display and media"
 )]
 pub struct Options {
     #[arg(long)]

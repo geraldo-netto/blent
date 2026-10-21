@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1250 | open | low | small | Correct obsolete USB broker CLI documentation: host/src/broker/linux/entry.rs:10 and native --help say production media integration pending, while T932/T933/T978/T998/T999 implement the production adapters and T1238 now verifies selected API36 native retirement. Replace only the stale help description, preserve the experimental label and platform limits, and verify the rebuilt native --help offline. |
 | T855 | open | medium | medium | Complete production pairing acceptance in the owner-authorized tablet window: approve/deny, persisted trust/reconnect/revoke, stale callbacks and separate media consent. Actual matching Computer/Tablet fingerprints and authenticated production USB sessions now pass after T1225/T1227. Verify durable trust against the native saved-computer view on a fresh connection, then debugging-off pairing/revocation; automated integrated native presentation/TLS/revocation tests remain required. Do not infer saved trust from an authenticated session alone. Extracted from T846. Live checks paused by owner2026-10-21; retain this work unfinished and send no new offers until live-check resumption. |
 
 
