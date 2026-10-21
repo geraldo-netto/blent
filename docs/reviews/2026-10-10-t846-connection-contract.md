@@ -9,8 +9,11 @@ media controls are implemented. Production trials on the API36 RugKing Pad 2 Pro
 have delivered debugging-off USB camera frames, microphone PCM and audible
 speaker tones. Software-only reconnect, saved trust and fresh local media consent
 also passed; [T1237](artifacts/2026-10-21-t1237/README.md) retains that scoped
-evidence. T855/T858/T859/T860 and joined T846 qualification remain unfinished;
-T1238 tracks a later uninstrumented Stop discrepancy, and live checks are paused.
+evidence. The [T1238 current-build comparison](artifacts/2026-10-21-media-acceptance/T1238/README.md)
+now verifies separate original camera/audio worker retirement after debugging-off
+hot reconnect, before debugging restoration. Earlier uninstrumented Stop reports
+have no established cause. Media acceptance closure is recorded separately under
+T858/T859/T860; pairing T855 and joined T846 qualification remain unfinished.
 Direct USB display/touch qualification T857 and other devices/providers remain
 separate. Synthetic native results never establish physical or acoustic support.
 

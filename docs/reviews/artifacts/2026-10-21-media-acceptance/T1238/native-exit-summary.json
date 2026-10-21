@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "device_timezone": "Europe/Rome",
+  "boot_id": "c203a04b-14b8-4562-87bd-3781dba5f515",
+  "workers": {
+    "speakers": {
+      "timestamp": "2026-10-21 12:08:04.698",
+      "pid": 4742,
+      "uid": 10325,
+      "process": "io.github.geraldo_netto.blent:speakers",
+      "reason": 2,
+      "reason_name": "SIGNALED",
+      "status": 9,
+      "epoch": 1792577284.698
+    },
+    "microphone": {
+      "timestamp": "2026-10-21 12:09:23.204",
+      "pid": 4713,
+      "uid": 10325,
+      "process": "io.github.geraldo_netto.blent:microphone",
+      "reason": 2,
+      "reason_name": "SIGNALED",
+      "status": 9,
+      "epoch": 1792577363.204
+    },
+    "camera": {
+      "timestamp": "2026-10-21 12:11:36.427",
+      "pid": 4501,
+      "uid": 10325,
+      "process": "io.github.geraldo_netto.blent:camera",
+      "reason": 2,
+      "reason_name": "SIGNALED",
+      "status": 9,
+      "epoch": 1792577496.427
+    }
+  },
+  "pre_restoration_host_observation_epoch": 1792577516.5083299,
+  "later_transport_worker_exit": {
+    "timestamp": "2026-10-21 12:21:02.894",
+    "pid": 4429,
+    "uid": 10325,
+    "process": "io.github.geraldo_netto.blent:connection",
+    "reason": 2,
+    "reason_name": "SIGNALED",
+    "status": 9,
+    "epoch": 1792578062.894
+  },
+  "media_workers_absent_after_restore": true,
+  "camera_clients_empty": true,
+  "audio_endpoints_absent": true,
+  "adb_restored": true,
+  "usb_awake_override": 0,
+  "screen_timeout_ms": 15000,
+  "claim": "Current selected API36 native hot-reconnect and independent original Stop acceptance; no cause inferred for earlier uninstrumented episode"
+}

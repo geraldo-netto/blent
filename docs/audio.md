@@ -37,8 +37,10 @@ delivered real microphone PCM and owner-confirmed speaker tones, including
 fresh local consent and delivery after software-only reconnect. The
 [T1237 transport evidence](reviews/artifacts/2026-10-21-t1237/README.md) records
 the exact native setup and bounded results. This is one-device evidence;
-T859/T860 remain unfinished while T1238's reported Stop discrepancy is
-investigated. Live checks are paused. Speech-mode admission does not establish
+The [current-build Stop comparison](reviews/artifacts/2026-10-21-media-acceptance/T1238/README.md)
+verifies separate original camera/audio worker retirement after debugging-off
+hot reconnect. Android exit records precede debugging restoration; this does not
+establish the cause of earlier uninstrumented Stop reports. Speech-mode admission does not establish
 acoustic echo-cancellation quality or sustained clock-drift performance; raw
 microphone processing was explicitly unsupported on this tablet.
 

@@ -1,7 +1,8 @@
 # T1237 USB reconnect transport fence
 
 T1237 reconnect acceptance passed on the API36 RugKing Pad 2 Pro.
-Camera/audio parent acceptance retains a later Stop discrepancy under T1238.
+The later [T1238 comparison](../2026-10-21-media-acceptance/T1238/README.md)
+verifies original camera/audio Stop retirement on the current selected-device build.
 
 A cancelled discovery wrote a public greeting into the Android accessory queue.
 A later logical close/open reused the same USB transport and read that old
@@ -56,6 +57,8 @@ Start actions delivered rear180 frames, microphone PCM and a second confirmed
 tone. See `physical-acceptance.json` and the bounded retained evidence.
 
 This trial validates this tablet, not every Android USB reset implementation.
-The later reported Stop discrepancy is T1238 and does not invalidate the
-observed transport fence or fresh authenticated media delivery. No images, raw recordings or private
+T1238 subsequently verifies original media worker death after debugging-off hot
+reconnect and local Stop, before debugging restoration. The earlier uninstrumented
+report has no established cause; it does not invalidate the observed transport
+fence or fresh authenticated media delivery. No images, raw recordings or private
 pairing keys are retained.
