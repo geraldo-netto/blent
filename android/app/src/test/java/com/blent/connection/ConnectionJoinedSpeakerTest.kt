@@ -13,6 +13,35 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class ConnectionJoinedSpeakerTest {
+    @Test fun t1248ReplacementAdmissionWaitsForItsExactPreparedKey() = runBlocking {
+        repeat(4) { replacementAdmission() }
+    }
+
+    private suspend fun replacementAdmission() {
+        val shared = JoinedMediaConnectionFixture()
+        val rig = ConnectionJoinedAudioFixture(ConnectionManagement.Resource.SPEAKERS, shared)
+        try {
+            rig.connect()
+            val route = rig.admit(rig.offer())
+            rig.until { rig.link.payload(ConnectionWire.SPEAKER).size == 76 }
+            assertTrue(rig.stop(checkNotNull(rig.policy.state.value.offer)))
+            rig.until { rig.native.exitRequested }; rig.native.release.complete(Unit)
+            rig.until { rig.link.controls.contains(ConnectionWorkerCommand.AudioConsumerRetired(route.lease)) }
+            shared.retirePeer(route.lease)
+            rig.until { rig.link.messages().contains(ConnectionManagement.ResultMessage(route.lease.key, ConnectionManagement.Outcome.REVOKED)) }
+            shared.replaceChannel(route.lease)
+            val fresh = JoinedAudioWorkerFixture(2)
+            rig.native.next = fresh
+            assertTrue(rig.start(rig.offer(request = 4, generation = 2)))
+            val replacement = rig.admitPrepared()
+            assertEquals(2L, replacement.lease.key.generation)
+            assertTrue(rig.link.messages().contains(ConnectionManagement.Prepared(replacement.lease.key)))
+            assertTrue(rig.connection.state.value.authenticated)
+        } finally {
+            try { rig.close() } finally { shared.close() }
+        }
+    }
+
     private fun grant(endpoint: AudioEndpoint) = endpoint.token.toByteArray() + ByteBuffer.allocate(92)
         .put("BLAUD002".toByteArray()).put("ab".repeat(32).toByteArray()).putLong(1)
         .put(2).put(2).putInt(48000).putShort(480).put(endpoint.processing.toByte())

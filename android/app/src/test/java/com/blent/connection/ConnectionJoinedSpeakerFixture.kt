@@ -48,10 +48,10 @@ internal class ConnectionJoinedAudioFixture(
         return admitPrepared()
     }
     suspend fun admitPrepared(): LocalAudioRoute {
-        until { link.messages().any { it is ConnectionManagement.Prepared && it.key.resource == resource } }
         val lease = checkNotNull(selectedOffer()).lease
+        until { link.messages().contains(ConnectionManagement.Prepared(lease.key)) }
         link.commit(lease)
-        try { until { selectedRoute() != null && native.tasks.isNotEmpty() } }
+        try { until { selectedRoute()?.lease == lease && native.tasks.isNotEmpty() } }
         catch (failure: TimeoutCancellationException) {
             throw AssertionError("Joined $resource admission: connection=${connection.state.value}; audio=${binding.state.value}; events=${link.events}; cancellations=${link.cancellations}; endpointFailures=${link.nativeEndpoints.map { it.failure() }}; consent=${policy.state.value}; controls=${link.controls}; tasks=${native.tasks.size}; alive=${native.alive}; exit=${native.exitRequested}; messages=${link.messages()}", failure)
         }
