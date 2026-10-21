@@ -1,0 +1,33 @@
+{
+  "connection": 9641,
+  "kind": "Exact native current USB Stop controls, debugging enabled",
+  "original_workers": {
+    "camera": 17788,
+    "microphone": 17987,
+    "speakers": 18020
+  },
+  "actions": [
+    {
+      "control": "Stop speakers",
+      "bounds": "[393,567][578,639]",
+      "host_session": 67909,
+      "exit": 1,
+      "observation": "Original speaker process and sink disappeared; original camera and microphone retained"
+    },
+    {
+      "control": "Stop microphone",
+      "bounds": "[415,323][621,395]",
+      "host_session": 19540,
+      "exit": 1,
+      "observation": "Original microphone process and source disappeared; original camera retained"
+    },
+    {
+      "control": "Stop camera",
+      "bounds": "[380,490][551,562]",
+      "host_session": 71985,
+      "exit": 1,
+      "observation": "Original camera process disappeared; display and authenticated connection retained"
+    }
+  ],
+  "remaining": "Original debugging-off reported Stop was not instrumented; repeat hot-reconnect Start offers expired without fresh local approval; no hot-reconnect Stop conclusion or confirmed code defect inferred"
+}

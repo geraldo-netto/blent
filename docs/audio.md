@@ -29,8 +29,8 @@ Existing settings and commands retain ADB selection by default. Linux builds
 with `accessory-transport` implement both USB directions: speaker PCM under T992
 and microphone uplink under T999. Production selectors are implemented under
 T979/T999; Android playback and capture composition are T978/T998. These software
-adapters remain experimental pending physical speaker acceptance T860 and
-microphone/duplex acceptance T859.
+adapters remain labelled experimental. [T860 selected-device speaker acceptance](reviews/artifacts/2026-10-20-media-acceptance/T860/README.md)
+passes on the API36 RugKing Pad 2 Pro; microphone/duplex acceptance is T859.
 
 On the API36 RugKing Pad 2 Pro, production USB with debugging disabled has
 delivered real microphone PCM and owner-confirmed speaker tones, including
@@ -51,7 +51,8 @@ the wire schema. Audio clock negotiation remains its authenticated PCM bootstrap
 Invitation success is transport acceptance only; cancellation, timeout or a
 failed close does not prove native/remote retirement. Adapters retain original
 ownership independently. [Offline contract and native fixtures](reviews/artifacts/2026-10-11-t977/README.md)
-qualify this boundary; actual USB speaker/microphone acceptance remains T860/T859.
+qualify this boundary; separate selected-device physical speaker evidence is T860
+and microphone/duplex acceptance is T859.
 
 ## Shared Android consent policy (T982)
 
@@ -87,7 +88,7 @@ created during a permission change remains owned until its actual retirement.
 Failed cleanup quarantines its direction while the other direction remains
 independent. Binding construction rejects invalid direction/preferences before
 native ownership. These are adapter foundations; production USB speaker playback is composed under T978, with
-host PCM transport is implemented under T992, with production controls under T979; physical acceptance T860 remains pending. T986 also rechecks legacy permission before and after lazy native creation;
+host PCM transport is implemented under T992, with production controls under T979; selected-device physical speaker acceptance T860 passes. T986 also rechecks legacy permission before and after lazy native creation;
 queued permission loss cannot acquire a native worker. Created workers remain
 owned through real retirement. [Regression and native counter evidence](reviews/artifacts/2026-10-11-t983/README.md).
 
@@ -105,8 +106,8 @@ its resource without retrying proof or releasing capacity.
 Speaker channels use the existing bounded bidirectional local pump, preserving
 bootstrap, clock negotiation and PCM bytes. Control forwarding remains prompt;
 a stopped connection still accepts its exact late consumer completion. Android
-production composes the speaker authority under T989/T985/T978; physical
-acceptance remains T860. Microphone uses the shared leased adapter under
+production composes the speaker authority under T989/T985/T978; selected-device physical
+speaker acceptance T860 passes. Microphone uses the shared leased adapter under
 T996–T998; its physical acceptance remains T859.
 [Private protocol/lifecycle and native counter evidence](reviews/artifacts/2026-10-11-t984/README.md).
 
@@ -144,7 +145,7 @@ exact current publication identity. Camera contracts and regressions remain.
 
 Android production composition advertises display, camera, microphone and
 speakers (mask 15) under T978/T998. Physical microphone/duplex acceptance remains
-T859 and speaker acceptance T860. Local consent/Activity controls are implemented
+T859; selected-device speaker acceptance T860 passes. Local consent/Activity controls are implemented
 under T985.
 [Private worker/lifecycle regressions and native counters](reviews/artifacts/2026-10-11-t989/README.md).
 
@@ -170,7 +171,8 @@ Actual audio worker cleanup remains independent of logical Stop and UI lifecycle
 The passive audio settings and legacy invitation/SDK behavior remain available
 when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979. Android microphone composition is T998; Linux uplink is implemented under T999; physical acceptance remains T859.
 [Permanent UI/lifecycle/projection tests and native counters](reviews/artifacts/2026-10-11-t985/README.md)
-are synthetic evidence; physical qualification remains postponed under T860.
+are synthetic evidence; separate selected-device physical speaker qualification
+passes under T860.
 
 ## Joined Android leased USB speaker playback (T978)
 
@@ -193,7 +195,7 @@ alone proves actual original consumer retirement.
 
 The fixture's audio device and process-death notifications are synthetic. It
 establishes joined protocol and ownership behavior, not acoustic performance or
-physical process/accessory qualification. Native speaker-only acceptance remains
+physical process/accessory qualification. Separate selected-device physical speaker acceptance passes under
 T860; Linux PCM composition remains T992 and controls T979. [Joined tests and individual native counters](reviews/artifacts/2026-10-11-t978/README.md).
 
 ## Joined Android leased USB microphone capture (T996–T998)
@@ -240,7 +242,7 @@ monitor/close and held actual retirement. The private mutual-TLS camera fixture
 still carries unchanged framing and feedback through the native descriptor path.
 Native counters cover the default and accessory configurations; Windows runtime
 validation remains unavailable under T902. Speaker PCM integration is T992,
-controls T979 and postponed physical acceptance T860.
+controls T979 and selected-device physical speaker acceptance T860.
 
 ## Linux leased USB speaker PCM (T992)
 
@@ -267,8 +269,8 @@ retirement. T994 fixes an obsolete local cancellation race revealed by this join
 Helper and original-route cleanup retain their own actual proof after deadlines.
 T995 keeps per-direction controller admission occupied while that proof is
 pending. No physical/acoustic qualification follows from these
-fixtures. Production GUI selection is implemented under T979; postponed acceptance T860 and
-SDK-wide native-audio validation T835 remain explicit.
+fixtures. Production GUI selection is implemented under T979. Separate selected-device
+speaker acceptance T860 passes; SDK-wide native-audio validation T835 remains explicit.
 [Offline tests and individual native counters](reviews/artifacts/2026-10-11-t992/README.md).
 
 ## Linux leased USB microphone PCM (T999)
@@ -320,8 +322,8 @@ of a malformed full target to a permissive backend. The same regression passes.
 Interactive tests cover exact speaker USB selection, passive save, manual Start/
 Stop, retained processing/buffer/background choices and display independence.
 Unavailable-direction and failed-constructor tests reject without retaining a
-backend. No physical media result is claimed; speaker acceptance T860 remains
-postponed and SDK-wide native-audio validation T835 remains explicit.
+backend. These GUI fixtures claim no physical result; separate selected-device
+speaker acceptance T860 passes, while SDK-wide native-audio validation T835 remains explicit.
 [GUI regressions and individual native counters](reviews/artifacts/2026-10-11-t979/README.md).
 
 ## Audio admission follows actual retirement (T995)
@@ -344,7 +346,8 @@ The Linux CLI/pipeline drops the original connection owner before waiting for it
 proof, avoiding a self-held barrier. Actual helper and route retirement retain
 their existing native owners independently of this observation. Private error,
 success, panic, held-lease and sibling-control regressions qualify the ordering;
-physical audio acceptance remains T860/T859 and SDK-wide qualification T835.
+selected-device speaker acceptance T860 passes, microphone/duplex acceptance is
+T859, and SDK-wide qualification T835 remains separate.
 [Regression and individual native counters](reviews/artifacts/2026-10-11-t995/README.md).
 
 ## Native helper argument validation (T993)
@@ -370,7 +373,7 @@ The SDK adapter retains its actual outstanding request slot until result or
 Activity destruction. Foreground detach stops only foreground audio; explicitly
 permitted background runs keep their service and actual native retirement owner.
 These lifecycle fixes also govern the implemented USB speaker/microphone
-adapters. Physical speaker acceptance remains T860; microphone/duplex acceptance
+adapters. Selected-device physical speaker acceptance T860 passes; microphone/duplex acceptance
 remains T859.
 
 The native implementation must intersect both endpoints' current capabilities before
