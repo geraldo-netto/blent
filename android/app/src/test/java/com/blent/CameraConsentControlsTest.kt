@@ -41,9 +41,62 @@ class CameraConsentControlsTest {
         val policy = MediaConsentPolicy<CameraAccessOffer>({ permission }, prompts)
         init { prompts.attach { requested.add(it); true }; policy.foreground(true) }
         fun offer(authority: Authority, permissionRequired: Boolean = true, admitted: Boolean = false,
-            background: Boolean = true, lens: CameraLens = CameraLens.FRONT) =
-            CameraAccessOffer(Any(), lens, background, permissionRequired, admitted, authority)
+            background: Boolean = true, lens: CameraLens = CameraLens.FRONT, owner: Any = Any()) =
+            CameraAccessOffer(owner, lens, background, permissionRequired, admitted, authority)
         override fun close() { policy.clear(); prompts.clear(); binding.shutdown(); scope.cancel() }
+    }
+
+    @Test fun t1247RenderedOldStartCannotFollowARecomposedCameraOffer() {
+        Rig().use { rig ->
+            val firstOwner = listOf("T1247 equal metadata")
+            rig.policy.observe(rig.offer(Authority(), owner = firstOwner))
+            compose.setContent { BlentTheme { CameraControls(rig.binding, rig.policy) } }
+            val old = compose.onNodeWithText("Start camera").fetchSemanticsNode()
+                .config[SemanticsActions.OnClick].action!!
+            val next = Authority()
+            val nextOwner = listOf("T1247 equal metadata")
+            assertEquals(firstOwner, nextOwner); assertNotSame(firstOwner, nextOwner)
+            compose.runOnIdle { rig.policy.observe(rig.offer(next, lens = CameraLens.REAR, owner = nextOwner)) }
+            compose.onNodeWithText("USB camera request: Rear.").assertExists()
+            compose.runOnIdle { old(); assertFalse("T1247 old camera action granted replacement", rig.policy.state.value.enabled) }
+            assertTrue(next.contexts.isEmpty())
+            assertTrue(rig.requested.isEmpty())
+        }
+    }
+
+    @Test fun t1247RenderedOldStopCannotStopARecomposedCameraOffer() = Rig().use { rig ->
+        rig.permission = true
+        rig.policy.observe(rig.offer(Authority(), false));
+        compose.setContent { BlentTheme { CameraControls(rig.binding, rig.policy) } }
+        compose.onNodeWithText("Start camera").performClick()
+        val old = compose.onNodeWithText("Stop camera").fetchSemanticsNode().config[SemanticsActions.OnClick].action!!
+        compose.runOnIdle { rig.policy.observe(rig.offer(Authority(), false, lens = CameraLens.REAR)) }
+        compose.onNodeWithText("Start camera").performClick()
+        compose.runOnIdle { old(); assertTrue("T1247 old Stop stopped camera replacement", rig.policy.state.value.enabled) }
+    }
+
+    @Test fun t1247RenderedOldBackgroundToggleCannotGrantCameraReplacement() = Rig().use { rig ->
+        rig.policy.observe(rig.offer(Authority()))
+        compose.setContent { BlentTheme { CameraControls(rig.binding, rig.policy) } }
+        val old = compose.onNodeWithContentDescription("Allow camera in background").fetchSemanticsNode()
+            .config[SemanticsActions.OnClick].action!!
+        compose.runOnIdle { rig.policy.observe(rig.offer(Authority(), lens = CameraLens.REAR)) }
+        compose.onNodeWithText("USB camera request: Rear.").assertExists()
+        compose.runOnIdle { old(); assertFalse("T1247 old toggle granted camera background", rig.policy.state.value.backgroundAllowed) }
+    }
+
+    @Test fun t1247SameCameraOwnerPublicationRetainsItsCurrentRenderedControl() = Rig().use { rig ->
+        rig.permission = true
+        val owner = Any()
+        rig.policy.observe(rig.offer(Authority(), false, owner = owner))
+        compose.setContent { BlentTheme { CameraControls(rig.binding, rig.policy) } }
+        val old = compose.onNodeWithText("Start camera").fetchSemanticsNode().config[SemanticsActions.OnClick].action!!
+        val current = Authority()
+        compose.runOnIdle { rig.policy.observe(rig.offer(current, false, true, owner = owner)) }
+        compose.onNodeWithText("Start camera").assertIsEnabled()
+        assertTrue(rig.policy.state.value.offer!!.admitted)
+        compose.runOnIdle { old(); assertTrue(rig.policy.state.value.enabled) }
+        assertTrue(current.contexts.last().enabled)
     }
 
     @Test fun t973UsbOfferHasLocalStartBeforeAdmissionAndDeniedPermissionCannotEnableCapture() {
