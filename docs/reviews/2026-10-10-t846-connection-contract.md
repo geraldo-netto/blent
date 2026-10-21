@@ -13,9 +13,14 @@ evidence. The [T1238 current-build comparison](artifacts/2026-10-21-media-accept
 now verifies separate original camera/audio worker retirement after debugging-off
 hot reconnect, before debugging restoration. Earlier uninstrumented Stop reports
 have no established cause. Selected-device camera T858, speaker T860 and
-microphone/duplex T859 acceptance now pass; pairing T855 and joined T846
-qualification remain unfinished. The owner resumed T855 on2026-10-21; T1251's
-offline prerequisite passes and T1252 retains the physical pairing checks.
+microphone/duplex T859 acceptance now pass. [Selected-device pairing T855](artifacts/2026-10-21-pairing-acceptance/T855/README.md)
+also passes after T1251's236 host/129 Android cases and T1252's physical
+saved-list/Forget/denial/remembered-approval, debugging-off persisted reconnect
+and original-peer revocation checks. Original native workers retire before
+debugging restoration; independent new reads confirm saved trust removal.
+Denial can leave the other endpoint within its own approval/readiness window;
+local link removal alone is not native retirement evidence. Broader joined T846
+qualification remains unfinished.
 Direct USB display/touch qualification T857 and other devices/providers remain
 separate. Synthetic native results never establish physical or acoustic support.
 

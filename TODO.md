@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T855 | in_progress | medium | medium | Complete selected-device production pairing acceptance after dependent T1251 automated presentation/TLS/trust/revocation verification and T1252 physical saved-computer/approve/deny/reconnect/revoke checks. Owner explicitly resumed this item on2026-10-21. Retain exact native original-worker retirement and permanent stale/invalid/permission regressions; pairing approval must not grant media consent. Close only after both child completion conditions and current documentation/evidence agree; other devices/providers and broader T846 qualification remain separate. |
 
 
 ## Other items

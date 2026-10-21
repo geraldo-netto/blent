@@ -28,9 +28,11 @@ Portrait or unknown sensor angles retain the last landscape direction.
 Retained hosted tests cover naturally portrait and naturally landscape panels,
 all four display rotations, dead bands and manual overrides on API27/34. They do
 not establish foldable, multi-window or OEM behavior. A fixed orientation request
-can be ignored or letterboxed by the system; native acceptance remains under the
-existing device-window items T855/T857/T846. No unrestricted form-factor support
-is claimed by the historical reports above.
+can be ignored or letterboxed by the system; broader native device-window
+acceptance remains under T857/T846. [T855 pairing acceptance](reviews/artifacts/2026-10-21-pairing-acceptance/T855/README.md)
+qualifies the selected API36 RugKing Pad 2 Pro's connection/trust workflow, not
+foldable or multi-window behavior. No unrestricted form-factor support is claimed
+by that selected run or the historical reports above.
 
 ## Desktop and encoder requirements
 
