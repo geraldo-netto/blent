@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1252 | in_progress | medium | medium | Finish T855 physical acceptance on selected API36 RugKing tablet: independently refresh saved-computer trust after original worker exit, native Forget/confirmation, denial and fresh explicit approval, persisted reconnect with debugging off, and exact original-peer revocation/cleanup. Pairing must leave camera/audio off; preserve other identities and native resource ownership. T1251 offline prerequisite now passes236 host and129 Android cases without skips. Close with bounded original-instance evidence and restored debugging. |
 | T855 | in_progress | medium | medium | Complete selected-device production pairing acceptance after dependent T1251 automated presentation/TLS/trust/revocation verification and T1252 physical saved-computer/approve/deny/reconnect/revoke checks. Owner explicitly resumed this item on2026-10-21. Retain exact native original-worker retirement and permanent stale/invalid/permission regressions; pairing approval must not grant media consent. Close only after both child completion conditions and current documentation/evidence agree; other devices/providers and broader T846 qualification remain separate. |
 
 
