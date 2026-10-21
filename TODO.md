@@ -4,6 +4,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1254 | open | low | small | Attribute the Android power-worker startup exit observed during the2026-10-21 selected API36 RugKing reinstall/reload: native exit-info records UID10325 PID20161 at13:39:13.043CEST, reason13 OTHER KILLS BY SYSTEM, description Died when creating service. Replacement20306 stays alive and display render acknowledgements continue; this is not an established behavioral regression. [Evidence](docs/reviews/artifacts/2026-10-21-reinstall/T1254/README.md). Review the force-stop/install/start timeline and existing startup/cancellation ownership contracts offline first. Close with evidence of expected cancellation or a diagnosed defect with permanent failing-before/passing-after regression, native cleanup and per-function measurements. No additional physical campaign is authorized by this observation. |
 
 
 ## Other items

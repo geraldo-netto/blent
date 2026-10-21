@@ -1,0 +1,85 @@
+{
+  "files": [
+    {
+      "name": "android-after.txt",
+      "size": 5673,
+      "sha256": "4e21e0cc9d6f42e3fec7d04f3d6fa8d13ea4d936400161e408ee2c0e9d223c2e"
+    },
+    {
+      "name": "android-foreground.txt",
+      "size": 437,
+      "sha256": "297946076cf993fc5500f3f0af993430de38416b40fabfeace982e785c26d9c9"
+    },
+    {
+      "name": "android-process-events.txt",
+      "size": 700,
+      "sha256": "a12658c94b93b5fd8777c7705e8db7ec4f849ddbbaa81e201f261a278d83a3fa"
+    },
+    {
+      "name": "android-original-processes.txt",
+      "size": 78,
+      "sha256": "b9a130de14df2f135437693ca74febc781f049f0d2c4780157f05460f3c2064f"
+    },
+    {
+      "name": "android-install.log",
+      "size": 136,
+      "sha256": "b1c73c8d0e099668902ca9467b9da328848fbfceef88ca7283b136dc96856332"
+    },
+    {
+      "name": "android-start.log",
+      "size": 208,
+      "sha256": "f4700d36b0898956617514a41eba982e49fde3419249c298105ea753970e5699"
+    },
+    {
+      "name": "host-original-exits.json",
+      "size": 3298,
+      "sha256": "32df3979e88b39093abce0c0f072eb01c3334b5aa5a5c8725728cf1bd7fe7420"
+    },
+    {
+      "name": "host-stop.json",
+      "size": 83,
+      "sha256": "c1a6e0548fe1dcc9e6dc87b9001370ebfdcebdd200d27e76d578ecb2982404da"
+    },
+    {
+      "name": "host-install.log",
+      "size": 137,
+      "sha256": "b8e2967ec2a77ab256612d79eb7548d58c6c1997b4a146cefadc8ddd8e6ca026"
+    },
+    {
+      "name": "host-reload-timeline.log",
+      "size": 20120,
+      "sha256": "377161f401a21e68005fd4e41b7017675423fd6a02a843e297814cc90e2d6d94"
+    },
+    {
+      "name": "host-render-observation.log",
+      "size": 3760,
+      "sha256": "2769669d31619fb4fc018147953cc1ed2b0f8e8a4ded8b33d7e8da7b4b3ce0b1"
+    },
+    {
+      "name": "installed-host-sha256.json",
+      "size": 718,
+      "sha256": "3390df3fc21258d2a09a21ba3e8149db456163db7973a2414926cd7a83cb7a08"
+    },
+    {
+      "name": "installed-android-sha256.json",
+      "size": 318,
+      "sha256": "0fbf062fcee5c10695675f6ccdfcac0f493c36d8720f40afdab04c01cacf7de7"
+    },
+    {
+      "name": "host-gui-window.json",
+      "size": 237,
+      "sha256": "35be910ac073ef387a68b4717192ca695edb6688841ab7387603f9599d6829cd"
+    },
+    {
+      "name": "host-status.txt",
+      "size": 31,
+      "sha256": "7a9d1bf6c5faf86c4b3e0d7cc3d331c29616cdaf5f6310e6ff1c4eaff3354ce5"
+    },
+    {
+      "name": "completion.json",
+      "size": 545,
+      "sha256": "c0456724584e9f6647e05605f0578888071f2427520d25a7c060437cadcd76a2"
+    }
+  ],
+  "archive_sha256": "adbbaa74d9f0e59adcb96cb431104a7b6dd920e5bafa14af8f4d20c715c94a78"
+}
