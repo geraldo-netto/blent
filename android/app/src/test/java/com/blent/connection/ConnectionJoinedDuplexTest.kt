@@ -41,11 +41,11 @@ private class DuplexFixture {
     suspend fun close() { microphone.close(); speakers.close(); original.close() }
 }
 
-private fun duplexGrant(endpoint: AudioEndpoint) = endpoint.token.toByteArray() + ByteBuffer.allocate(92)
+internal fun duplexGrant(endpoint: AudioEndpoint) = endpoint.token.toByteArray() + ByteBuffer.allocate(92)
     .put("BLAUD002".toByteArray()).put("ab".repeat(32).toByteArray()).putLong(1)
     .put(endpoint.direction.toByte()).put(endpoint.direction.toByte()).putInt(48000).putShort(480)
     .put(endpoint.processing.toByte()).put(if (endpoint.background) 1.toByte() else 0.toByte()).putShort(endpoint.bufferMs.toShort()).array()
-private fun duplexSpeakerPcm(sequence: Long): ByteArray {
+internal fun duplexSpeakerPcm(sequence: Long): ByteArray {
     val bytes = ByteBuffer.allocate(1972).putLong(1).putLong(sequence).putLong(sequence * 10000)
         .putShort(1944).put(2).put(0).putLong(7).putLong(sequence * 480).putLong(1000000000 + sequence * 10000000)
         .order(ByteOrder.LITTLE_ENDIAN)
