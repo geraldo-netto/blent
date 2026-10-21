@@ -1,0 +1,19 @@
+{
+  "sources": {
+    "host/src/audio/session_tests.rs": "0db7f58332da48235dce789d06ccb12599f07d167a031f527a89d51606cb6410",
+    "host/src/audio.rs": "0ae28b8519ec2074245511cb8be9cf028c4e4b15e388cb9801894a77a2432ab4",
+    "host/src/audio/protocol.rs": "f98302d2581f4c42a9b0f4393cd86e00485d3fe69bff8af916c1549d26239288",
+    "host/src/audio/process.rs": "084ecdfe81c631a4b4a47a3f3bcd1bb5f39dcee905eb587a4854f41c0d41f7c4",
+    "host/src/audio_control.rs": "991d07e47189d38096974230f46d758486ffb998106810bb96d52e49d59a2d2b",
+    "host/src/media_connection.rs": "bef2a6305562e7550345681a8ba28b0dc938e63bbbbc36a49419510129956c71",
+    "host/src/media_registration.rs": "14929414bbf04142f7e782a04fb7b8e1a705cc4e6bb3abb12054881ce739c1b5",
+    "host/src/broker/linux/registration_client/worker.rs": "7063d00858d9db6a3a60e7005111837daa37225d71e4b3d37aa03e44e2adfcc6",
+    "host/accessory/accessory.c": "7a1628b96de67d620dfcfa1eede8de1be03be3af7cb8763cd3e567667edcfacf",
+    "host/accessory/contract.c": "74d550ecec37985fba9a6f2df64a5408aff35d1bdf198f23abba189238bd813c"
+  },
+  "production_classes": {},
+  "native_objects": {
+    "/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-5f0a54e80be30bbc": "0b57c49b810fa5b57d3927f52747c665fe150875c049717235f9bdb9e1ab519f",
+    "/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/audio_native-4f33e4ff0a2b4361": "566a22cc0ba9eccd4cb7cf74e51ed6b7f03ec483b858cde3a893b7f9e85a1d8e"
+  }
+}

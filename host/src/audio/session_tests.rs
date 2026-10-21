@@ -201,6 +201,52 @@ async fn t999_audio_microphone_clock_pcm_original_loss_and_native_retirement() {
         assert!(bridge.retired());
     }
 }
+
+#[tokio::test]
+async fn t1243_truncated_microphone_frames_retire_only_the_original_native_helper() {
+    for clocked in [false, true] {
+        let final_byte = if clocked { 1011 } else { 987 };
+        for length in [0, 1, 7, 8, 15, 23, 24, 25, 26, 27, 28, 29, 500, final_byte] {
+            truncated_microphone(clocked, length).await;
+        }
+    }
+}
+
+async fn truncated_microphone(clocked: bool, length: usize) {
+    let rig = authenticated();
+    let fixture = Fixture::new_direction(MICROPHONE_PCM, Direction::Microphone).await;
+    let bridge = fixture.bridge(&rig);
+    let token = "ab".repeat(32);
+    let session = fixture.session(&bridge, &token);
+    let (_stop, mut stopped) = watch::channel(false);
+    let report = Report::new(watch::channel(Default::default()).0);
+    let peer = async {
+        registered(&rig).await;
+        let mut socket = fixture.peer(clocked).await;
+        let mut hello = [0; 156];
+        socket.read_exact(&mut hello).await.unwrap();
+        socket
+            .write_all(&microphone_packet(&hello, clocked, 0))
+            .await
+            .unwrap();
+        captured(fixture.root.path(), clocked).await;
+        let packet = microphone_packet(&hello, clocked, 1);
+        assert!(length < packet.len());
+        socket.write_all(&packet[..length]).await.unwrap();
+        socket.shutdown().await.unwrap();
+    };
+    let (result, ()) =
+        bounded(async { tokio::join!(session.serve(&report, &mut stopped), peer) }).await;
+    assert!(result.is_err(), "T1243 clocked={clocked} length={length}");
+    fixture.assert_helper_reaped();
+    assert!(report.native_retired());
+    assert_eq!(rig.calls.lock().unwrap().requests.len(), 1);
+    assert!(!bridge.retired(), "T1243 native exit replaced remote proof");
+    rig.complete();
+    bridge.close().await.unwrap();
+    assert!(bridge.retired());
+}
+
 async fn bounded<T>(work: impl std::future::Future<Output = T>) -> T {
     tokio::time::timeout(Duration::from_secs(5), work)
         .await
