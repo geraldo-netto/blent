@@ -3,6 +3,9 @@
 Open **Settings (⚙) → Saved computers**. Disconnect USB and wait for cleanup
 before reading or changing the list. **Refresh saved computers** reads saved
 trust without connecting a computer or enabling camera/microphone sharing.
+Refresh keeps this panel open: the saved list and its status update, while the
+Refresh and Close buttons stay available. They are actions, not another question.
+Choose **Close saved computers** when finished reading the list.
 
 Each entry shows its full computer fingerprint. Choose **Forget** for that
 fingerprint, check the confirmation, then choose **Confirm forget computer**.
