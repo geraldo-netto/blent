@@ -38,5 +38,6 @@ authenticated using that saved trust without another computer approval.
 the independent list read. This does not qualify every device's store/provider,
 the native Forget flow, or remaining pairing/joined acceptance under T855/T846.
 Camera acceptance T858 subsequently passes on this selected API36 device;
-API27/28 provider/accessory qualification remains separate. The remaining T855
-pairing checks retain their explicit pause.
+API27/28 provider/accessory qualification remains separate. The owner resumed
+T855 pairing acceptance on2026-10-21; its independent native Forget/denial/revoke
+checks remain in progress under T1252.

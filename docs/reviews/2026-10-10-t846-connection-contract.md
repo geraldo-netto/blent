@@ -14,7 +14,8 @@ now verifies separate original camera/audio worker retirement after debugging-of
 hot reconnect, before debugging restoration. Earlier uninstrumented Stop reports
 have no established cause. Selected-device camera T858, speaker T860 and
 microphone/duplex T859 acceptance now pass; pairing T855 and joined T846
-qualification remain unfinished. T855 retains its explicit physical-check pause.
+qualification remain unfinished. The owner resumed T855 on2026-10-21; T1251's
+offline prerequisite passes and T1252 retains the physical pairing checks.
 Direct USB display/touch qualification T857 and other devices/providers remain
 separate. Synthetic native results never establish physical or acoustic support.
 
