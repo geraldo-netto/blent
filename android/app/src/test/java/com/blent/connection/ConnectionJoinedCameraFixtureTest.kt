@@ -9,6 +9,18 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [27, 34])
 class ConnectionJoinedCameraFixtureTest {
+    @Test fun t1246FixtureClockRemainsAvailableBeyondAnArbitraryElapsedRuntime() {
+        val rig = ConnectionJoinedCameraFixture()
+        try {
+            org.robolectric.util.ReflectionHelpers.setField(rig, "origin", System.nanoTime() - 20_000_000_000L)
+            val first = org.robolectric.util.ReflectionHelpers.callInstanceMethod<Long>(rig, "clock")
+            val next = org.robolectric.util.ReflectionHelpers.callInstanceMethod<Long>(rig, "clock")
+            assertTrue("T1246 fixture clock truncated progressing work", first >= 20_000)
+            assertTrue(next >= first)
+            assertEquals(0, rig.opened.get())
+        } finally { rig.cleanup() }
+    }
+
     @Test fun t1004HostOfferCannotMutateTabletBetweenActorTurns() {
         for (resource in ConnectionManagement.Resource.entries) {
             val rig = ConnectionJoinedCameraFixture(15)

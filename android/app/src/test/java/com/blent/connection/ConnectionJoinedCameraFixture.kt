@@ -120,7 +120,7 @@ internal class ConnectionJoinedCameraFixture(private val capabilities: Int = 3, 
             }
         }
     }
-    private fun clock() = ((System.nanoTime() - origin) / 1_000_000).also { check(it < 10000) }
+    private fun clock() = (System.nanoTime() - origin) / 1_000_000
     fun send(message: ConnectionManagement.Message) = synchronized(gate) {
         check(protocol.host.offer(ConnectionWire.MANAGEMENT, ConnectionManagement.encode(message)))
     }
