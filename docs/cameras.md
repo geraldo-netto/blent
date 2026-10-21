@@ -52,9 +52,11 @@ session remains available. Background mode costs additional tablet power.
 
 Camera sharing carries video only. Optional [tablet microphone and speaker
 sessions](audio.md) are implemented separately on Linux/Android, with independent
-Start/Stop controls and permissions. Microphone physical acceptance and
-simultaneous duplex/AEC validation remain tracked in `TODO.md`; camera acceptance
-does not establish those results. NFC remains planned separately.
+Start/Stop controls and permissions. Separate selected-device microphone/duplex
+acceptance is recorded in [T859](reviews/artifacts/2026-10-20-media-acceptance/T859/README.md);
+camera acceptance does not establish it or acoustic AEC effectiveness. Sustained
+drift, acoustic quality and other providers remain unqualified. NFC remains
+planned separately.
 
 ## Prepare the devices
 

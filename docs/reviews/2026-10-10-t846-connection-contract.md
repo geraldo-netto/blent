@@ -12,8 +12,9 @@ also passed; [T1237](artifacts/2026-10-21-t1237/README.md) retains that scoped
 evidence. The [T1238 current-build comparison](artifacts/2026-10-21-media-acceptance/T1238/README.md)
 now verifies separate original camera/audio worker retirement after debugging-off
 hot reconnect, before debugging restoration. Earlier uninstrumented Stop reports
-have no established cause. Media acceptance closure is recorded separately under
-T858/T859/T860; pairing T855 and joined T846 qualification remain unfinished.
+have no established cause. Selected-device camera T858, speaker T860 and
+microphone/duplex T859 acceptance now pass; pairing T855 and joined T846
+qualification remain unfinished. T855 retains its explicit physical-check pause.
 Direct USB display/touch qualification T857 and other devices/providers remain
 separate. Synthetic native results never establish physical or acoustic support.
 

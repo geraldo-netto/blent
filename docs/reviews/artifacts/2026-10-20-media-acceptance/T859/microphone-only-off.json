@@ -1,0 +1,12 @@
+{
+  "node": "blent_microphone_45ce3571c21c",
+  "samples": 144000,
+  "rate": 48000,
+  "channels": 1,
+  "format": "s16",
+  "nonzero": 7209,
+  "peak": 16,
+  "rms": 1.0122856426040143,
+  "raw_audio_retained": false,
+  "recorder_exit": -13
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "id": 93,
+    "type": "PipeWire:Interface:Node",
+    "state": "running",
+    "props": {
+      "audio.channels": 1,
+      "audio.rate": 48000,
+      "client.id": 86,
+      "media.class": "Audio/Source",
+      "node.name": "blent_microphone_2106584c4940",
+      "object.serial": 4158
+    }
+  },
+  {
+    "id": 99,
+    "type": "PipeWire:Interface:Node",
+    "state": "running",
+    "props": {
+      "audio.channels": 2,
+      "audio.rate": 48000,
+      "client.id": 103,
+      "media.class": "Audio/Sink",
+      "node.name": "blent_speakers_58d26612d22a",
+      "object.serial": 4161
+    }
+  }
+]

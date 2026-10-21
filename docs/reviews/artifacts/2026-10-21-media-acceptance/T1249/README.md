@@ -34,6 +34,6 @@ All raw observations remain under
 
 The unchanged runner's permanent environment tests and native audio tests remain
 in the normal suite. No project behavior is modified by this invocation repair;
-no artificial failing source regression is claimed. T1238/T858/T859/T860 remain
-unfinished pending their debugging-off hot-reconnect acceptance, which is
-independent of this corrected Linux launch setup.
+no artificial failing source regression is claimed. At this setup checkpoint,
+T1238/T858/T859/T860 still awaited debugging-off hot-reconnect acceptance.
+The later [T1238 comparison](../T1238/README.md) supplies that independent evidence.

@@ -3,7 +3,8 @@
 T717 implements portable Rust audio policy in `blent_config::audio`. T718 adds
 Linux/Android microphone transport, native source and controls described below.
 T719 adds the selectable speaker sink and Android playback. T720 integrates native
-device-clock correction; physical duplex/acoustic acceptance requires a device window.
+device-clock correction. Bounded selected-device physical duplex acceptance is
+recorded below; sustained drift and acoustic effectiveness remain unqualified.
 Unimplemented backend capabilities remain unsupported. No system default device changes or automatic audio startup occur.
 The audio CLI requests stop and awaits its original pipeline after Ctrl-C or
 SIGTERM, including a failed Ctrl-C registration, before returning the result.
@@ -30,13 +31,14 @@ with `accessory-transport` implement both USB directions: speaker PCM under T992
 and microphone uplink under T999. Production selectors are implemented under
 T979/T999; Android playback and capture composition are T978/T998. These software
 adapters remain labelled experimental. [T860 selected-device speaker acceptance](reviews/artifacts/2026-10-20-media-acceptance/T860/README.md)
-passes on the API36 RugKing Pad 2 Pro; microphone/duplex acceptance is T859.
+passes on the API36 RugKing Pad 2 Pro, as does
+[T859 selected-device microphone/duplex acceptance](reviews/artifacts/2026-10-20-media-acceptance/T859/README.md).
 
 On the API36 RugKing Pad 2 Pro, production USB with debugging disabled has
 delivered real microphone PCM and owner-confirmed speaker tones, including
 fresh local consent and delivery after software-only reconnect. The
 [T1237 transport evidence](reviews/artifacts/2026-10-21-t1237/README.md) records
-the exact native setup and bounded results. This is one-device evidence;
+the exact native setup and bounded results. This is one-device evidence.
 The [current-build Stop comparison](reviews/artifacts/2026-10-21-media-acceptance/T1238/README.md)
 verifies separate original camera/audio worker retirement after debugging-off
 hot reconnect. Android exit records precede debugging restoration; this does not
@@ -52,7 +54,7 @@ Invitation success is transport acceptance only; cancellation, timeout or a
 failed close does not prove native/remote retirement. Adapters retain original
 ownership independently. [Offline contract and native fixtures](reviews/artifacts/2026-10-11-t977/README.md)
 qualify this boundary; separate selected-device physical speaker evidence is T860
-and microphone/duplex acceptance is T859.
+and selected-device microphone/duplex acceptance passes under T859.
 
 ## Shared Android consent policy (T982)
 
@@ -69,7 +71,7 @@ Camera and selected audio production callers use this shared policy. `AudioAcces
 microphone/speaker metadata without transport credentials or native handles;
 speaker offers cannot request microphone SDK permission. Independent audio
 properties qualify this policy for the leased USB adapters. Android advertises implemented speaker routing/playback under T978;
-Linux speaker PCM is implemented under T992; production host controls are implemented under T979. Android microphone composition is T998; Linux uplink is implemented under T999; physical acceptance remains T859. Legacy audio Activity/permission behavior
+Linux speaker PCM is implemented under T992; production host controls are implemented under T979. Android microphone composition is T998; Linux uplink is implemented under T999; selected-device physical microphone/duplex acceptance T859 passes. Legacy audio Activity/permission behavior
 remains as described below. Camera behavior and permanent regressions are
 preserved. [Policy and native counter evidence](reviews/artifacts/2026-10-11-t982/README.md).
 
@@ -108,7 +110,7 @@ bootstrap, clock negotiation and PCM bytes. Control forwarding remains prompt;
 a stopped connection still accepts its exact late consumer completion. Android
 production composes the speaker authority under T989/T985/T978; selected-device physical
 speaker acceptance T860 passes. Microphone uses the shared leased adapter under
-T996–T998; its physical acceptance remains T859.
+T996–T998; its selected-device physical acceptance T859 passes.
 [Private protocol/lifecycle and native counter evidence](reviews/artifacts/2026-10-11-t984/README.md).
 
 ## Private Android audio IPC contracts (T988)
@@ -144,7 +146,7 @@ microphone/speaker targets with original authority; its UI actions retain the
 exact current publication identity. Camera contracts and regressions remain.
 
 Android production composition advertises display, camera, microphone and
-speakers (mask 15) under T978/T998. Physical microphone/duplex acceptance remains
+speakers (mask 15) under T978/T998. Selected-device physical microphone/duplex acceptance passes under
 T859; selected-device speaker acceptance T860 passes. Local consent/Activity controls are implemented
 under T985.
 [Private worker/lifecycle regressions and native counters](reviews/artifacts/2026-10-11-t989/README.md).
@@ -169,7 +171,7 @@ attachment owns both policies; an older Activity cannot detach its replacement.
 Actual audio worker cleanup remains independent of logical Stop and UI lifecycle.
 
 The passive audio settings and legacy invitation/SDK behavior remain available
-when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979. Android microphone composition is T998; Linux uplink is implemented under T999; physical acceptance remains T859.
+when no USB offer is selected. Joined Android speaker composition uses these controls under T978; host PCM transport is implemented under T992; controls are implemented under T979. Android microphone composition is T998; Linux uplink is implemented under T999; selected-device physical microphone/duplex acceptance T859 passes.
 [Permanent UI/lifecycle/projection tests and native counters](reviews/artifacts/2026-10-11-t985/README.md)
 are synthetic evidence; separate selected-device physical speaker qualification
 passes under T860.
@@ -217,9 +219,10 @@ sampling, permission denial/loss, pending Stop/source loss, stale SDK callbacks,
 background choices, native failures, worker death and blocked actual reads.
 Display control continues while microphone cleanup is held; endpoint closure,
 execution Ended and deadlines cannot prove actual worker/consumer retirement.
-No acoustic, hardware/provider or actual process separation acceptance is claimed.
-Linux uplink is implemented under T999; automated duplex isolation T1000 and postponed physical
-acceptance T859/T846 remain explicit. [Offline native evidence](reviews/artifacts/2026-10-11-t998/README.md).
+These fixtures claim no acoustic, hardware/provider or actual process separation acceptance.
+Linux uplink is implemented under T999; automated duplex isolation T1000 and
+selected-device physical acceptance T859 pass separately. Broader joined T846
+qualification remains unfinished. [Offline native evidence](reviews/artifacts/2026-10-11-t998/README.md).
 
 ## Shared original USB media connection adapters (T991)
 
@@ -251,7 +254,7 @@ The Linux accessory build supports explicit speaker selection through
 The complete options/profile and original credential are validated before native
 registration. ADB remains the default and uses its existing owned reverse mapping;
 USB never falls back to ADB. Stopping before startup creates no helper or mapping.
-Linux USB microphone is implemented under T999 with Android consent/uplink T998. Physical qualification remains T859.
+Linux USB microphone is implemented under T999 with Android consent/uplink T998. Selected-device physical microphone/duplex qualification T859 passes.
 
 Both transports use the independent typed Connection/Invitation port. USB retains
 the original selected source and route through generic media ownership. Pending
@@ -296,9 +299,10 @@ verify exact mono samples/clock, pending Stop, original source loss, failed/stal
 helpers, held actual dependent native leases and delayed remote retirement.
 GUI tests cover microphone USB selection, editing, passive persistence and
 Start/Stop without changing display. Shared ADB regressions remain.
-This establishes implemented routing and automated ownership, not microphone
-hardware, acoustic quality or real duplex acceptance. Automated duplex isolation
-is T1000; postponed physical T859 and SDK-wide native validation T835 remain.
+These fixtures establish implemented routing and automated ownership. Separate
+selected-device physical microphone/duplex acceptance T859 passes; acoustic
+quality and other hardware/providers remain unqualified. Automated duplex
+isolation is T1000; SDK-wide native validation T835 remains separate.
 [Offline evidence and individual native counters](reviews/artifacts/2026-10-11-t999/README.md).
 
 ## Host audio transport controls (T979)
@@ -346,8 +350,8 @@ The Linux CLI/pipeline drops the original connection owner before waiting for it
 proof, avoiding a self-held barrier. Actual helper and route retirement retain
 their existing native owners independently of this observation. Private error,
 success, panic, held-lease and sibling-control regressions qualify the ordering;
-selected-device speaker acceptance T860 passes, microphone/duplex acceptance is
-T859, and SDK-wide qualification T835 remains separate.
+selected-device speaker T860 and microphone/duplex T859 acceptance pass separately,
+while SDK-wide qualification T835 remains separate.
 [Regression and individual native counters](reviews/artifacts/2026-10-11-t995/README.md).
 
 ## Native helper argument validation (T993)
@@ -373,8 +377,8 @@ The SDK adapter retains its actual outstanding request slot until result or
 Activity destruction. Foreground detach stops only foreground audio; explicitly
 permitted background runs keep their service and actual native retirement owner.
 These lifecycle fixes also govern the implemented USB speaker/microphone
-adapters. Selected-device physical speaker acceptance T860 passes; microphone/duplex acceptance
-remains T859.
+adapters. Selected-device physical speaker T860 and microphone/duplex T859
+acceptance pass separately; other devices/providers remain unqualified.
 
 The native implementation must intersect both endpoints' current capabilities before
 Start. A supported direction means its 48 kHz s16le channel layout is supported.
