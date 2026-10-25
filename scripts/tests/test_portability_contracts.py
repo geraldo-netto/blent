@@ -27,7 +27,7 @@ class PortabilityContractsTest(unittest.TestCase):
             (root/'libevdi.so.1.15.0').touch()
             with patch.object(portability, 'verify_abi') as abi:
                 with self.assertRaisesRegex(ValueError, 'SONAME link'): portability.verify_bundle(root)
-                self.assertEqual(abi.call_count, 5)
+                self.assertEqual(abi.call_count, 7)
                 (root/'libevdi.so.1').symlink_to('libevdi.so.1.15.0')
                 self.check_dynamic(root)
 
@@ -42,6 +42,38 @@ class PortabilityContractsTest(unittest.TestCase):
                 return 'GLIBC_2.40' if Path(command[-1]).name == 'blent-audio' else 'GLIBC_2.36'
             with patch.object(portability.subprocess, 'check_output', side_effect=output):
                 with self.assertRaisesRegex(ValueError, 'blent-audio.*exceeds 2.36'):
+                    portability.verify_bundle(root)
+
+    def test_t1261_every_shipped_binary_is_checked(self):
+        expected = {'blent', 'blent-gui', 'blent-audio', 'blent-usb-broker',
+                    'blent-usb-io', 'evdi_helper', 'libevdi.so.1.15.0'}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'libevdi.so.1.15.0').touch()
+            (root/'libevdi.so.1').symlink_to('libevdi.so.1.15.0')
+            with patch.object(portability, 'verify_abi') as abi:
+                with patch.object(portability.subprocess, 'check_output', return_value='(RUNPATH) [$ORIGIN]\n(NEEDED) [libevdi.so.1]'):
+                    portability.verify_bundle(root)
+            self.assertEqual(len(abi.call_args_list), 7)
+            self.assertEqual({call.args[0].name for call in abi.call_args_list}, expected)
+
+    def test_t1261_usb_binaries_reject_new_and_unknown_abis(self):
+        for binary in ('blent-usb-broker', 'blent-usb-io'):
+            for symbols in ('GLIBC_2.40', 'GLIBC_PRIVATE', ''):
+                with self.subTest(binary=binary, symbols=symbols):
+                    self.reject_usb_abi(binary, symbols)
+
+    def reject_usb_abi(self, binary, symbols):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'libevdi.so.1.15.0').touch()
+            (root/'libevdi.so.1').symlink_to('libevdi.so.1.15.0')
+            def output(command, **kwargs):
+                if command[0] == 'readelf':
+                    return '(RUNPATH) [$ORIGIN]\n(NEEDED) [libevdi.so.1]'
+                return symbols if Path(command[-1]).name == binary else 'GLIBC_2.36'
+            with patch.object(portability.subprocess, 'check_output', side_effect=output):
+                with self.assertRaisesRegex(ValueError, binary):
                     portability.verify_bundle(root)
 
     def check_dynamic(self, root):

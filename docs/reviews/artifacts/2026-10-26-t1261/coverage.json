@@ -1,0 +1,24 @@
+[
+  {
+    "file": "scripts/ci/verify-portability.py",
+    "name": "verify_abi",
+    "line": 9,
+    "language": "python",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "scripts/ci/verify-portability.py",
+    "name": "verify_bundle",
+    "line": 21,
+    "language": "python",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]
