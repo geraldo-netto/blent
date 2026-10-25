@@ -1,0 +1,81 @@
+{
+  "reviewed_head": "0cc6148a0381497b0314b7b91ae2afca24ba352f",
+  "date": "2026-10-26",
+  "production_changed": false,
+  "network_transfers": false,
+  "findings": [
+    "T1259",
+    "T1260",
+    "T1261",
+    "T1262",
+    "T1263",
+    "T1264",
+    "T1265"
+  ],
+  "tests": {
+    "common": {
+      "passed": 401,
+      "exit": 0
+    },
+    "gui": {
+      "unit_passed": 116,
+      "startup_passed": 1,
+      "exit": 0
+    },
+    "host_selected_all_features": {
+      "passed": 1470,
+      "failed": 4,
+      "ignored_existing_benchmarks": 5,
+      "exit": 101
+    },
+    "android_full": {
+      "passed": 2701,
+      "failed": 1,
+      "exit": 1
+    },
+    "android_focused": {
+      "passed": 5,
+      "exit": 0,
+      "note": "3 existing tests; 2 temporary probe SDK cases; nested prelude assertions retained"
+    },
+    "audio_temporary_corrected_fixtures": {
+      "passed_scripts": 2,
+      "exit": 0
+    }
+  },
+  "tools": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "cargo_llvm_cov": "0.8.7",
+    "llvm": "22.1.8-rust-1.98.1-stable",
+    "python": "3.12.3"
+  },
+  "complexity_parsers": {
+    "Rust": "syn 2.0.119; proc-macro2 1.0.107; Cargo.lock",
+    "C": "tree-sitter-c 0.24.2, compiled from local Cargo source",
+    "Shell": "cached tree-sitter-languages 1.10.2 ABI14",
+    "Python tree-sitter runtime": "0.25.2",
+    "Kotlin": "cached Kotlin PSI 1.9.20"
+  },
+  "source_sha256": {
+    "common/Cargo.toml": "fe6c4859c3c09b365791c2cff9c6582ecc8420c58cc87a8c962d9f8e8d6ce5b5",
+    "common/src/retirement_work.rs": "05779af529aa6288ce92e364362ee564a8b432e199d9f5f7b0cd5a1063369eeb",
+    "common/src/release.rs": "5188d295b9a6767a5c11d5c836835415053aaefc723ef64167405166744b82a5",
+    "scripts/ci/verify-portability.py": "1ab92a8ea97d06d51d16ed77a8cc64a904b9e5c8511275891796a004e8f3c400",
+    "scripts/stage-linux-bundle.sh": "3674a7efcbe77b8123025e946f53ca1d2ffa4ebefef3a273dc58d494341d4bc6",
+    "scripts/tests/test_portability_contracts.py": "2f2c03a51dd6511d2f0eb29acd50dd05e67d6f80a5aefbd69614d28dbfdb7fd6",
+    "android/app/src/main/java/com/blent/StreamFormat.kt": "b9ac7993e4ae3cfc663ae67721cf7e7fb7922223f0d0f4d480fb5b36b0ec61d3",
+    "android/app/src/main/java/com/blent/HttpReleaseChecks.kt": "bcc85c858e85db8b961d54d8d04c6acad2e808a958caa97341e430406b353ccd",
+    "android/app/src/test/java/com/blent/SavedUiOrderTest.kt": "94e19a06f4d8eda3bd3ec7e9db3a9da90b1f39e62219e2765c36f0d37d5bb90b",
+    "android/app/src/test/java/com/blent/DisplayActivityLifecycleTest.kt": "2f08bcfc5d52065b1d4010b1572797819c03355b223be9cca266358e686c324b",
+    "android/app/src/test/java/com/blent/StreamFormatTest.kt": "3e5cf2e57baf07264cef3be8b702d33892b12dfa0b5e0b8d38dd55578ea7ec67",
+    "android/app/src/test/java/com/blent/NumericFormatBoundsTest.kt": "dacc6967e20f08eabb8c69493e27a38e458a512ffea7eefaa05b734609889ef8",
+    "host/src/adb_mapping/mod.rs": "2acbc2734da114b00e635507a90a2f05f4c1a8c8a95ca2498bfeabb87876a6d7",
+    "host/src/adb_mapping/worker.rs": "32453707557613477df4636df205c37168af148783f5eff46f76051396c1af05",
+    "host/src/input/config.rs": "81853a189e99c8bb7c93aaf5169f2517fb67d1b1744de060ad8320fc6a41b758",
+    "host/tests/audio_transport.py": "6c8b9241bc212705a3a1c3a7589690d160f727ac316247045bbb7540552a5da8",
+    "host/tests/audio_speaker_transport.py": "f47da656be46002f3c68bce26ef06242c61cdc4c36423efb5bbd91740f3e8905",
+    "host/tests/audio_native.py": "706a43dcc2e85f6304914a64b0ec3be27789626c9710e468108d5b072080b70e",
+    "host/tests/audio_speakers.py": "a573d7dcc0cba43538dafd859e0b44e2758675f712c8d5fe6726c202ebdd6798",
+    "testdata/release-responses.tsv": "fc67eab754b8d4304d7857757e213b0e1f1eda2a05003db3fc016480040e979b"
+  }
+}

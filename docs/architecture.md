@@ -403,8 +403,8 @@ retain the existing Linux API, while `--no-default-features` builds policy and
 version comparison without filesystem/process adapters. CI checks that boundary
 on WebAssembly; this does not make the daemon or GUI Windows-compatible.
 
-The `platform` feature supplies shared service entry points; `platform-linux`
-is retained as a feature alias. Configuration location queries are fallible,
+The `platform` feature supplies shared service entry points.
+Configuration location queries are fallible,
 so missing/relative Linux bases cannot redirect writes into the current
 directory. Windows uses known folders and owned process jobs. Its private
 runtime ACL/lease validation still needs a native Windows runner, and its

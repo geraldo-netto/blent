@@ -9,8 +9,6 @@ native-entropy = ["dep:getrandom"]
 storage = ["dep:tempfile"]
 commands = ["dep:tempfile", "dep:tokio", "dep:libc"]
 platform = ["storage", "commands", "native-entropy", "dep:libc", "dep:clap"]
-# Preserve explicit feature selections made before the Windows extraction.
-platform-linux = ["platform"]
 
 [target.'cfg(unix)'.dependencies]
 libc = { version = "0.2", optional = true }

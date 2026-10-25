@@ -1,0 +1,2 @@
+{"unsupported_shipped_binary": "blent-usb-broker", "required_glibc": "2.40", "bundle_accepted": true, "inspected": ["blent", "blent-gui", "blent-audio", "evdi_helper", "libevdi.so.1.15.0"]}
+{"unsupported_shipped_binary": "blent-usb-io", "required_glibc": "2.40", "bundle_accepted": true, "inspected": ["blent", "blent-gui", "blent-audio", "evdi_helper", "libevdi.so.1.15.0"]}

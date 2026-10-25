@@ -1,0 +1,2 @@
+completion_while_original_native_tls_blocked=true
+capacity_reused_while_original_native_tls_blocked=true
