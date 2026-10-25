@@ -1,0 +1,30 @@
+{
+  "observation_archive": "docs/reviews/artifacts/2026-10-21-reinstall/T1254/observations.tar.gz",
+  "archive_sha256": "adbbaa74d9f0e59adcb96cb431104a7b6dd920e5bafa14af8f4d20c715c94a78",
+  "missing_evidence": "System logcat/ActivityManager trace for power PID20161 at 2026-10-21 13:39:13.043 CEST, including command and lifecycle timing",
+  "cause_established": false,
+  "production_changed": false,
+  "physical_actions": false,
+  "network_transfers": false,
+  "reviewed_source_sha256": {
+    "android/app/src/main/java/com/blent/PowerWorkerScope.kt": "feb4f83bd840c68cbed0a07638f59657fe0d5eb285e45d7268994d315c86d68c",
+    "android/app/src/main/java/com/blent/ScopedPowerRun.kt": "182080cfe7b95f044b2cac604e82c4b974429b0d579a21c7d3e7914c0acc5f4b",
+    "android/app/src/main/java/com/blent/ResourceLane.kt": "26eb590696e54d5fb40d9e059886610307ae8ab32c5d301a1a4afd897f2b0e35",
+    "android/app/src/main/java/com/blent/AndroidWorkerRun.kt": "3695a725d22af5db51f22b5a856d795fa1fcd816c5cd1c9af0dcff31455d4932",
+    "android/app/src/main/java/com/blent/MediaWorkerService.kt": "a9016085ad8d6c95513cf0f021d2ca9beae1f6a58fd99147b07eccce5e7d226a"
+  },
+  "member_sha256": {
+    "android-after.txt": "4e21e0cc9d6f42e3fec7d04f3d6fa8d13ea4d936400161e408ee2c0e9d223c2e",
+    "android-original-processes.txt": "b9a130de14df2f135437693ca74febc781f049f0d2c4780157f05460f3c2064f",
+    "android-process-events.txt": "a12658c94b93b5fd8777c7705e8db7ec4f849ddbbaa81e201f261a278d83a3fa",
+    "android-install.log": "b1c73c8d0e099668902ca9467b9da328848fbfceef88ca7283b136dc96856332",
+    "android-start.log": "f4700d36b0898956617514a41eba982e49fde3419249c298105ea753970e5699",
+    "android-foreground.txt": "297946076cf993fc5500f3f0af993430de38416b40fabfeace982e785c26d9c9",
+    "host-reload-timeline.log": "377161f401a21e68005fd4e41b7017675423fd6a02a843e297814cc90e2d6d94"
+  },
+  "disposition": {
+    "status": "removed",
+    "reason": "Owner considers item irrelevant; investigation ended",
+    "owner_decision_date": "2026-10-25"
+  }
+}
