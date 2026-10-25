@@ -17,6 +17,10 @@ verification, installer, EVDI setup, desktop/systemd launch writers and the CI
 artifact/Arch builders and package ABI validation. All tests already developed,
 including benchmark and development-tool tests outside this scope, remain in
 the normal automated suites.
+Rust source ownership, guards and include edges use the shared locked `syn`
+frontend and its [versioned source-record contract](../rust-source/README.md).
+It accepts async closures without rewriting source; inventory boundaries and
+platform filtering remain separate from native coverage attribution.
 The capture C gate currently covers every maintained function in `host/evdi/`;
 this is a scoped result, not a whole-project percentage.
 

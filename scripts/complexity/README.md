@@ -15,7 +15,13 @@ means a score exceeds 9; exit 2 means the audit could not complete. Parse errors
 are failures, never permission to skip a file. The manually dispatched CI workflow runs the boundary/rule tests
 and the whole-project gate. Pushes and pull requests do not trigger CI.
 
-Python parser dependencies are pinned in `requirements.txt`. Kotlin uses the
+Python parser dependencies are pinned in `requirements.txt`. Rust uses the
+locked `syn` 2.0.119 frontend in `../rust-source`; its first invocation builds
+with `cargo build --offline --locked` into `$XDG_CACHE_HOME/blent-rust-source`
+(default `~/.cache/blent-rust-source`). Populate the Cargo cache explicitly
+before an offline run if dependencies are absent; the checker never downloads
+them. Rust source, manifest and lock hashes key the executable cache. See the
+[source-record contract](../rust-source/README.md). Kotlin uses the
 1.9.20 compiler's PSI parser, with pinned SHA-256 checksums for its Maven jars
 in `kotlin.py`. The first run downloads those jars from Maven Central into
 `$XDG_CACHE_HOME/blent-complexity` (default `~/.cache/blent-complexity`).

@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'complexity'))
 from check import source_files, language
 from syntax import parse, walk, function_name, embedded_python
+from rust_source import records as rust_records
 from model import Function
 
 
@@ -39,31 +40,13 @@ def coverage_source(path):
     return path.suffix == '.kt' and path.as_posix().startswith('android/app/src/')
 
 
-def attributes(node):
-    sibling = node.prev_named_sibling
-    result = []
-    while sibling is not None and sibling.type in {'attribute_item', 'line_comment', 'block_comment'}:
-        result.append(sibling.text.decode())
-        sibling = sibling.prev_named_sibling
-    return '\n'.join(result)
-
-
-def test_only(node):
-    while node is not None:
-        if re.search(r'#\[(?:tokio::)?test\b|#\[cfg\(\s*(?:all\(\s*)?test\b', attributes(node)):
-            return True
-        node = node.parent
-    return False
-
-
-def module_path(root, path, node):
-    match = re.search(r'#\[path\s*=\s*"([^"]+)"\]', attributes(node))
-    if match is not None:
-        return (root / path.parent / match[1]).resolve()
-    if node.child_by_field_name('body') is not None:
+def module_path(root, path, record):
+    if record.detail['path'] is not None:
+        return (root / path.parent / record.detail['path']).resolve()
+    if record.detail['inline']:
         return None
     base = path.parent if path.stem in {'lib', 'main', 'mod', 'linux_main', 'windows_main'} else path.with_suffix('')
-    name = node.child_by_field_name('name').text.decode()
+    name = record.name
     for relative in [base / (name + '.rs'), base / name / 'mod.rs']:
         if (root / relative).is_file():
             return (root / relative).resolve()
@@ -73,12 +56,12 @@ def module_path(root, path, node):
 def rust_test_files(root, paths):
     references = {}
     for path in paths:
-        for node in walk(parse((root / path).read_text(), 'rust')):
-            if node.type != 'mod_item':
+        for record in rust_records((root / path).read_text()):
+            if record.kind != 'module':
                 continue
-            destination = module_path(root, path, node)
+            destination = module_path(root, path, record)
             if destination is not None:
-                references.setdefault(destination, []).append(((root / path).resolve(), test_only(node)))
+                references.setdefault(destination, []).append(((root / path).resolve(), record.test_only))
     return test_dependencies(root, paths, references)
 
 
@@ -93,16 +76,26 @@ def test_dependencies(root, paths, references):
 
 
 def syntax_functions(path, source, kind):
-    node_type = 'function_item' if kind == 'rust' else 'function_definition'
-    nodes = [node for node in walk(parse(source, kind)) if node.type == node_type]
+    if kind == 'rust':
+        yield from rust_functions(path, source)
+        return
+    nodes = [node for node in walk(parse(source, kind)) if node.type == 'function_definition']
     for node in nodes:
-        if kind == 'rust' and test_only(node):
-            continue
         nested = tuple((child.start_point.row + 1, child.end_point.row + 1)
                        for child in nodes if child != node
                        and node.start_byte < child.start_byte < node.end_byte)
         yield Function(str(path), function_name(node), node.start_point.row + 1,
                        node.end_point.row + 1, kind, nested)
+
+
+def rust_functions(path, source):
+    functions = [row for row in rust_records(source) if row.kind == 'function']
+    for row in functions:
+        if row.test_only:
+            continue
+        nested = tuple((child.first, child.last) for child in functions
+                       if row.start < child.start < row.end)
+        yield Function(str(path), row.name, row.first, row.last, 'rust', nested)
 
 
 def python_functions(path, source):

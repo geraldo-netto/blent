@@ -1,0 +1,43 @@
+{
+  "metric_tests": 36,
+  "coverage_tests": 106,
+  "mutation_scope_tests": 2,
+  "changed_scope_functions": 96,
+  "changed_scope_maximum": 9,
+  "whole_complexity_functions": 28041,
+  "whole_complexity_above_nine": 0,
+  "source_inventory": {
+    "sources": 1554,
+    "functions": 8240,
+    "native_coverage_claimed": false
+  },
+  "comparison": {
+    "compared": 832,
+    "old_parse_failures": [
+      "host/src/osk.rs"
+    ],
+    "differences": []
+  },
+  "versions": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+    "python": "Python 3.12.3",
+    "cc": "13.3.0"
+  },
+  "parsers": {
+    "Rust": "syn 2.0.119; proc-macro2 1.0.107; Cargo.lock",
+    "C": "tree-sitter-c 0.24.2, compiled from local Cargo source",
+    "Shell": "cached tree-sitter-languages 1.10.2 ABI14",
+    "Python tree-sitter runtime": "0.25.2",
+    "Kotlin": "cached Kotlin PSI 1.9.20"
+  },
+  "network_transfers": false,
+  "source_sha256": {
+    "scripts/rust-source/src/attributes.rs": "8a271c4f422a9e8dda66a16502e98361b827c9a860edfa37a3df770501b27dc0",
+    "scripts/rust-source/src/main.rs": "8847bb9bbfe0880556d0fa5785d18bcb892a5565abd7fab54f40cdd4146a8de4",
+    "scripts/rust-source/src/owners.rs": "4badccbab13e73ef74f19412fc1c0b52c73dca063f6695f2a27c86afae287255",
+    "scripts/rust-source/src/score.rs": "2ee9b6f48bba0545728ff7a5216c7f7a9b5f945fe7ff88c40f6852fdcee94f46",
+    "scripts/rust-source/Cargo.lock": "e88344f74e4cead97ed946e10d3981b318b8499900129c6c3375e9a8c1a9e67c",
+    "scripts/complexity/rust_source.py": "138002a8a8e0a98bfdaee4dab46e0a6cb3e3d71c94ef9a95177f4af41af913c7"
+  }
+}

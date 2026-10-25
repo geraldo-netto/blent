@@ -3,12 +3,12 @@ import ast
 from tree_sitter import Language, Parser
 import tree_sitter_bash
 import tree_sitter_c
-import tree_sitter_rust
 from c_headers import parser_source
 from c_annotations import parser_source as annotation_source
+from rust_source import records as rust_records
 
 PARSERS = {name: Parser(Language(module.language())) for name, module in
-           [('rust', tree_sitter_rust), ('c', tree_sitter_c), ('shell', tree_sitter_bash)]}
+           [('c', tree_sitter_c), ('shell', tree_sitter_bash)]}
 
 
 def walk(node):
@@ -29,22 +29,8 @@ def parse(source, language):
     return tree.root_node
 
 
-def nonempty(node, field):
-    value = node.child_by_field_name(field)
-    return value is not None and (value.type != 'block' or value.named_child_count > 0)
-
-
 def logical(node):
     return node.type == 'binary_expression' and any(c.type in {'&&', '||'} for c in node.children)
-
-
-def rust_increment(node):
-    simple = {'if_expression', 'loop_expression', 'while_expression',
-              'for_expression', 'closure_expression'}
-    fields = {'function_item': 'body', 'match_arm': 'value'}
-    if node.type in fields:
-        return int(nonempty(node, fields[node.type]))
-    return int(node.type in simple or logical(node))
 
 
 def c_increment(node):
@@ -70,12 +56,14 @@ def function_name(node):
 
 
 def syntax_scores(source, language):
-    kind = 'function_item' if language == 'rust' else 'function_definition'
-    increment = {'rust': rust_increment, 'c': c_increment, 'shell': shell_increment}[language]
-    base = 0 if language == 'rust' else 1
+    if language == 'rust':
+        yield from ((row.first, row.name, row.detail['score'])
+                    for row in rust_records(source) if row.kind == 'function')
+        return
+    increment = {'c': c_increment, 'shell': shell_increment}[language]
     for node in walk(parse(source, language)):
-        if node.type == kind:
-            yield node.start_point.row + 1, function_name(node), base + sum(map(increment, walk(node)))
+        if node.type == 'function_definition':
+            yield node.start_point.row + 1, function_name(node), 1 + sum(map(increment, walk(node)))
 
 
 class PythonScore(ast.NodeVisitor):

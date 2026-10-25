@@ -8,12 +8,11 @@ import argparse
 from collections import Counter, defaultdict
 import json
 from pathlib import Path
-import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts/coverage'))
-from inventory import module_path, parse, test_only, walk
+from inventory import module_path, rust_records
 from report import snapshot
 from rust_platform import guarded
 
@@ -21,24 +20,22 @@ ROOTS = ['common/src/lib.rs', 'host/src/lib.rs', 'host/src/main.rs', 'gui/src/ma
 
 
 def destination(root, path, node):
-    if node.type == 'mod_item':
+    if node.kind == 'module':
         return module_path(root, path, node)
-    if node.type == 'macro_invocation':
-        match = re.fullmatch(r'include!\s*\(\s*"([^"]+)"\s*\)', node.text.decode())
-        if match:
-            return (root / path.parent / match[1]).resolve()
+    if node.kind == 'include':
+        return (root / path.parent / node.name).resolve()
     return None
 
 
 def references(root, paths, platform):
     edges = defaultdict(list)
     for path in paths:
-        for node in walk(parse((root / path).read_text(), 'rust')):
-            if test_only(node) or guarded(node, platform):
+        for node in rust_records((root / path).read_text()):
+            if node.test_only or guarded(node, platform):
                 continue
             target = destination(root, path, node)
             if target is not None:
-                edges[str(path)].append((target.relative_to(root.resolve()).as_posix(), node.type))
+                edges[str(path)].append((target.relative_to(root.resolve()).as_posix(), node.kind))
     return edges
 
 
@@ -52,7 +49,7 @@ def reachable(edges, roots=ROOTS):
             continue
         visited.add((name, via_include))
         (included if via_include else direct).add(name)
-        pending.extend((target, via_include or kind == 'macro_invocation') for target, kind in edges[name])
+        pending.extend((target, via_include or kind == 'include') for target, kind in edges[name])
     return direct, included
 
 

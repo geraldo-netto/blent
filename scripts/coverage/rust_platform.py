@@ -3,19 +3,9 @@
 Unknown feature/target predicates remain in scope. None means either truth value
 is possible; retaining such code prevents missing counters from becoming a pass.
 """
-from functools import cache
+from functools import lru_cache
 
-from inventory import attributes, parse, walk
-
-
-def arguments(tree):
-    groups = [[]]
-    for child in tree.children[1:-1]:
-        if child.type == ',':
-            groups.append([])
-        else:
-            groups[-1].append(child)
-    return [group for group in groups if group]
+from inventory import rust_records
 
 
 def combine(operator, values):
@@ -27,34 +17,25 @@ def combine(operator, values):
     return None if None in values else not decisive
 
 
-def predicate(nodes, platform="linux"):
-    text = ''.join(node.text.decode() for node in nodes)
+def predicate(node, platform="linux"):
+    if node is None:
+        return None
+    name = node.get('name')
     known = {'windows': platform == 'windows', 'unix': platform != 'windows'}
-    if text in known:
-        return known[text]
-    if len(nodes) == 3 and nodes[0].text in {b'target_os', b'target_family'}:
+    if name in known:
+        return known[name]
+    if name in {'target_os', 'target_family'} and node.get('value') is not None:
         family = 'windows' if platform == 'windows' else 'unix'
-        expected = ('"' + (platform if nodes[0].text == b'target_os' else family) + '"').encode()
-        return nodes[2].text == expected
-    if len(nodes) == 2 and nodes[0].text in {b'all', b'any', b'not'}:
-        return combine(nodes[0].text.decode(), [predicate(group, platform) for group in arguments(nodes[1])])
+        return node['value'] == (platform if name == 'target_os' else family)
+    if name in {'all', 'any', 'not'} and node.get('args') is not None:
+        return combine(name, [predicate(group, platform) for group in node['args']])
     return None
 
 
-@cache
+@lru_cache(maxsize=256)
 def unavailable(text, platform="linux"):
-    for node in walk(parse(text, 'rust')):
-        if node.type != 'attribute' or node.named_children[0].text != b'cfg':
-            continue
-        tree = node.named_children[-1]
-        if predicate(tree.children[1:-1], platform) is False:
-            return True
-    return False
+    return guarded(rust_records(text + '\nmod __inventory {}')[0], platform)
 
 
-def guarded(node, platform="linux"):
-    while node is not None:
-        if unavailable(attributes(node), platform):
-            return True
-        node = node.parent
-    return False
+def guarded(record, platform="linux"):
+    return any(predicate(condition, platform) is False for condition in record.guards)

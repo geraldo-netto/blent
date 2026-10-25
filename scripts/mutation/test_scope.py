@@ -26,8 +26,8 @@ class ScopeTest(unittest.TestCase):
             self.assertNotIn('linux_only.rs', direct | included)
 
     def test_t652_cycles_and_dual_include_direct_references_are_bounded(self):
-        edges = defaultdict(list, main=[('same', 'mod_item'), ('same', 'macro_invocation')],
-                            same=[('main', 'mod_item')])
+        edges = defaultdict(list, main=[('same', 'module'), ('same', 'include')],
+                            same=[('main', 'module')])
         direct, included = scope.reachable(edges, ['main'])
         self.assertEqual(direct, {'main', 'same'})
         self.assertEqual(included, {'main', 'same'})

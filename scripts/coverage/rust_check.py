@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from inventory import module_path, parse, walk
+from inventory import module_path, rust_records
 from rust_platform import guarded
 from report import ROOT, collect, summary, validate_snapshot
 from readers import lcov
@@ -17,7 +17,7 @@ def platform_inventory(root, manifest, platform="linux"):
         path = Path(name)
         if path.suffix != '.rs':
             continue
-        for node in walk(parse((root/path).read_text(), 'rust')):
+        for node in rust_records((root/path).read_text()):
             record_node(root, path, node, references, functions, platform)
     foreign = set()
     while True:
@@ -29,9 +29,9 @@ def platform_inventory(root, manifest, platform="linux"):
 
 
 def record_node(root, path, node, references, functions, platform="linux"):
-    if node.type == 'function_item' and guarded(node, platform):
-        functions.add((str(path), node.start_point.row + 1))
-    if node.type == 'mod_item':
+    if node.kind == 'function' and guarded(node, platform):
+        functions.add((str(path), node.first))
+    if node.kind == 'module':
         destination = module_path(root, path, node)
         if destination is not None:
             references.setdefault(str(destination.relative_to(root.resolve())), []).append((str(path), guarded(node, platform)))

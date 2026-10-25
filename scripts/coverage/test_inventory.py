@@ -8,6 +8,15 @@ from model import result
 
 
 class InventoryTest(unittest.TestCase):
+    def test_t1221_async_closures_preserve_function_and_test_boundaries(self):
+        source = ('// café 🦀\n#[allow(dead_code)]\npub async fn outer() {\n'
+                  '    fn inner() { work(); }\n'
+                  '    let callback = async move || { work().await; };\n}\n'
+                  '#[cfg(test)] mod tests { async fn fixture() { let c = async || {}; } }\n')
+        functions = list(syntax_functions(Path('lib.rs'), source, 'rust'))
+        self.assertEqual([(fn.name, fn.first, fn.last, fn.nested) for fn in functions],
+                         [('outer', 3, 6, ((4, 4),)), ('inner', 4, 4, ())])
+
     def test_t831_exempt_artifacts_cannot_break_production_inventory(self):
         import subprocess
         from report import snapshot
