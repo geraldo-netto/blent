@@ -1,5 +1,9 @@
 # Tablet cameras in Blent host
 
+ADB sessions use [Blent-owned temporary connections](adb-media-mappings.md).
+Leave those mappings under Blent's control until cleanup finishes; unrelated
+ADB operations remain available.
+
 The host **Cameras** tab controls camera sharing: Front/Rear, resolution, frame
 rate, bitrate, clockwise rotation (0°, 90°, 180° or 270°), mirroring and whether sharing continues while the tablet app is
 hidden or its screen is locked. Lens and resolution stay visible; the remaining

@@ -127,10 +127,18 @@ async fn connection(
     _status: &Report,
 ) -> Result<Box<dyn Connection<CameraProfile>>> {
     match profile.target()? {
-        Target::Adb(serial) => Ok(Box::new(
-            bridge::Bridge::create(executable("adb")?, serial, listener.local_addr()?.port())
-                .await?,
-        )),
+        Target::Adb(serial) => {
+            let reservation = std::sync::Mutex::new(Some(
+                _status.reserve_native(control::NativeResource::Connection)?,
+            ));
+            let observe = |proof| {
+                reservation.lock().unwrap().take().unwrap().bind(proof);
+                Ok(())
+            };
+            Ok(Box::new(
+                bridge::Bridge::create(executable("adb")?, serial, listener, &observe).await?,
+            ))
+        }
         #[cfg(feature = "accessory-transport")]
         Target::Usb(_) => {
             use std::os::fd::AsFd;

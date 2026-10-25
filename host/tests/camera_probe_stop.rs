@@ -2,6 +2,8 @@
 #![cfg(target_os = "linux")]
 #[path = "../src/adb_command.rs"]
 mod adb_command;
+#[path = "../src/adb_mapping/mod.rs"]
+mod adb_mapping;
 #[path = "../src/camera/bridge.rs"]
 mod bridge;
 #[path = "../examples/camera-feedback-probe/stop.rs"]
@@ -14,7 +16,7 @@ async fn t1204_probe_stop_is_a_scoped_command_not_a_replacement_invitation() {
     let adb = root.path().join("adb");
     std::fs::write(&adb, "#!/usr/bin/python3\nimport pathlib,sys\npathlib.Path(__file__).with_suffix('.input').write_text(sys.stdin.read())\nprint('Broadcast completed: result=1')\n").unwrap();
     std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
-    let bridge = bridge::Bridge {
+    let bridge = bridge::Target {
         adb,
         serial: "original-tablet".into(),
         remote: "tcp:34567".into(),
@@ -34,7 +36,7 @@ async fn t1204_probe_stop_is_a_scoped_command_not_a_replacement_invitation() {
 
 #[test]
 fn t1204_original_adb_port_rejects_invalid_and_out_of_range_endpoints() {
-    let mut bridge = bridge::Bridge {
+    let mut bridge = bridge::Target {
         adb: "not-invoked".into(),
         serial: "original".into(),
         remote: String::new(),
@@ -63,7 +65,7 @@ fn t1204_original_adb_port_rejects_invalid_and_out_of_range_endpoints() {
 async fn t1204_native_stop_requires_exact_acknowledgement_and_command_success() {
     let root = tempfile::tempdir().unwrap();
     for (stdout, expected) in adb_command::broadcast_tests::cases() {
-        let bridge = bridge::Bridge {
+        let bridge = bridge::Target {
             adb: adb_command::broadcast_tests::fixture(root.path(), &stdout, true),
             serial: "original".into(),
             remote: "tcp:34567".into(),
@@ -74,7 +76,7 @@ async fn t1204_native_stop_requires_exact_acknowledgement_and_command_success() 
             expected
         );
     }
-    let bridge = bridge::Bridge {
+    let bridge = bridge::Target {
         adb: adb_command::broadcast_tests::fixture(
             root.path(),
             b"Broadcast completed: result=1\n",
@@ -90,7 +92,7 @@ async fn t1204_native_stop_requires_exact_acknowledgement_and_command_success() 
 #[tokio::test]
 async fn t1204_invalid_stop_credential_rejects_before_native_command_creation() {
     let root = tempfile::tempdir().unwrap();
-    let bridge = bridge::Bridge {
+    let bridge = bridge::Target {
         adb: root.path().join("absent-adb"),
         serial: "original".into(),
         remote: "tcp:34567".into(),

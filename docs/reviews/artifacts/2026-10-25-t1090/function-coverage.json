@@ -1,0 +1,396 @@
+{
+  "minimum_percent": 80,
+  "passes": true,
+  "functions": [
+    {
+      "file": "common/src/adb_reverse/temporary.rs",
+      "name": "route",
+      "line": 11,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/adb_reverse/temporary.rs",
+      "name": "port",
+      "line": 20,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/adb_reverse/temporary.rs",
+      "name": "cleanup",
+      "line": 45,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "port",
+      "line": 28,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "reserve",
+      "line": 91,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        98
+      ]
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "create",
+      "line": 106,
+      "language": "rust",
+      "covered": 38,
+      "total": 38,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "start",
+      "line": 146,
+      "language": "rust",
+      "covered": 38,
+      "total": 38,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "target",
+      "line": 185,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "shell",
+      "line": 189,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        202
+      ]
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "close",
+      "line": 212,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "drop",
+      "line": 233,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "poll_complete",
+      "line": 243,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "execute",
+      "line": 14,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "fence",
+      "line": 32,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "list",
+      "line": 45,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "shell",
+      "line": 61,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "run",
+      "line": 10,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "create",
+      "line": 30,
+      "language": "rust",
+      "covered": 26,
+      "total": 27,
+      "percent": 96.29629629629629,
+      "passes": true,
+      "missing": [
+        52
+      ]
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "serve",
+      "line": 62,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "cleanup",
+      "line": 80,
+      "language": "rust",
+      "covered": 14,
+      "total": 15,
+      "percent": 93.33333333333333,
+      "passes": true,
+      "missing": [
+        90
+      ]
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "cleanup_once",
+      "line": 101,
+      "language": "rust",
+      "covered": 23,
+      "total": 25,
+      "percent": 92.0,
+      "passes": true,
+      "missing": [
+        110,
+        120
+      ]
+    },
+    {
+      "file": "host/src/audio/adb.rs",
+      "name": "create",
+      "line": 11,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/adb.rs",
+      "name": "broadcast",
+      "line": 21,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio/adb.rs",
+      "name": "invitation",
+      "line": 29,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run",
+      "line": 34,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run_attempt",
+      "line": 40,
+      "language": "rust",
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "connection",
+      "line": 70,
+      "language": "rust",
+      "covered": 19,
+      "total": 22,
+      "percent": 86.36363636363636,
+      "passes": true,
+      "missing": [
+        87,
+        92,
+        93
+      ]
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "create",
+      "line": 16,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "target",
+      "line": 27,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "invite",
+      "line": 31,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "close",
+      "line": 38,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "invitation",
+      "line": 43,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "connection",
+      "line": 123,
+      "language": "rust",
+      "covered": 27,
+      "total": 28,
+      "percent": 96.42857142857143,
+      "passes": true,
+      "missing": [
+        155
+      ]
+    }
+  ],
+  "source_sha256": {
+    "common/src/adb_reverse/temporary.rs": "48fb19a5f96f79ecca65ade958ab8d9450642280acb2bf07f0fe62ca78f51f65",
+    "host/src/adb_mapping/mod.rs": "2acbc2734da114b00e635507a90a2f05f4c1a8c8a95ca2498bfeabb87876a6d7",
+    "host/src/adb_mapping/native.rs": "07c679344fb663a92c5132cfa9d9923df077eee086f475c916951b847f09ce60",
+    "host/src/adb_mapping/worker.rs": "32453707557613477df4636df205c37168af148783f5eff46f76051396c1af05",
+    "host/src/audio/adb.rs": "9d063e8f39706189b0a374c3e7cff6ea14f46aa05de1292d435a7b1234f829ff",
+    "host/src/audio.rs": "843b56334968100310688e4ec7e3a9f3abf520ba896a4f60630b8b54fefa6144",
+    "host/src/camera/bridge.rs": "defd4f045e0c3b31042f3d38a912b0511f369cc4e3f953a3896c4af11b9c9799",
+    "host/src/camera.rs": "aa4e20c1dcdf4c149df3dd6ac355c77f6306c9d24096d13fdca5212fbcb56d2c"
+  }
+}

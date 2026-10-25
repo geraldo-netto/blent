@@ -38,6 +38,21 @@ async fn t1189_no_start_proof_requires_the_unique_creator_to_close() {
 }
 
 #[tokio::test]
+async fn t1090_probe_mapping_creator_seals_without_claiming_native_retirement() {
+    use futures_util::FutureExt;
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let original = pool.reserve().unwrap();
+    let (creation, retirement) = ownership::channel();
+    creation.bind(original.completion());
+    let mut waiting = Box::pin(retirement.wait());
+    assert!(waiting.as_mut().now_or_never().is_none());
+    assert!(pool.reserve().is_err());
+    drop(original);
+    waiting.await;
+    assert_eq!(pool.active(), 0);
+}
+
+#[tokio::test]
 async fn t1189_invalid_profile_seals_without_running_a_native_factory() {
     use std::sync::{
         atomic::{AtomicUsize, Ordering},

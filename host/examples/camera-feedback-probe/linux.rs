@@ -28,7 +28,11 @@ use anyhow::{Context, Result};
 use blent::camera_control::{self as control, Report};
 use blent_config::camera::CameraProfile;
 use clap::Parser;
-use std::{path::Path, sync::Arc, time::Duration};
+use std::{
+    path::Path,
+    sync::{Arc, Mutex},
+    time::Duration,
+};
 use tokio::{net::TcpListener, sync::watch, time::Instant};
 
 #[tokio::main]
@@ -40,12 +44,26 @@ pub(super) async fn run() -> Result<()> {
     let target = listener.local_addr()?;
     let route = TcpListener::bind("127.0.0.1:0").await?;
     let token = blent_config::runtime::random_token()?;
-    let bridge = bridge::Bridge::create(
+    let (created_mapping, mapping_retirement) = ownership::channel();
+    let mapping_creation = Mutex::new(Some(created_mapping));
+    let created = bridge::Bridge::create(
         "/usr/bin/adb".into(),
         args.camera.serial.as_deref(),
-        route.local_addr()?.port(),
+        &route,
+        &|proof| {
+            mapping_creation.lock().unwrap().take().unwrap().bind(proof);
+            Ok(())
+        },
     )
-    .await?;
+    .await;
+    drop(mapping_creation);
+    let bridge = match created {
+        Ok(bridge) => bridge,
+        Err(error) => {
+            mapping_retirement.wait().await;
+            return Err(error);
+        }
+    };
     let (creation, retirement) = ownership::channel();
     let result = {
         tokio::select! {
@@ -53,9 +71,10 @@ pub(super) async fn run() -> Result<()> {
             result = proxy(&route, target, args.stall_feedback_ms) => result,
         }
     };
-    let stop = stop_capture(&bridge, &token).await;
+    let stop = stop_capture(bridge.target(), &token).await;
     retirement.wait().await;
     let cleanup = bridge.close().await;
+    mapping_retirement.wait().await;
     result?;
     stop?;
     cleanup

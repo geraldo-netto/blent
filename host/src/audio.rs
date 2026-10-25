@@ -31,7 +31,13 @@ pub const fn transport_capabilities(
     }
 }
 
-pub async fn run(
+pub async fn run(options: AudioOptions, stop: watch::Receiver<bool>, report: Report) -> Result<()> {
+    let result = run_attempt(options, stop, report.clone()).await;
+    report.wait_native().await;
+    result
+}
+
+async fn run_attempt(
     options: AudioOptions,
     mut stop: watch::Receiver<bool>,
     report: Report,
@@ -58,7 +64,6 @@ pub async fn run(
     let result = session.serve(&report, &mut stop).await;
     let cleanup = bridge.close().await;
     drop(bridge);
-    report.wait_native().await;
     result.and(cleanup)
 }
 
@@ -70,7 +75,10 @@ async fn connection(
 ) -> Result<Box<dyn Connection<blent_config::audio::AudioProfile>>> {
     match options.target()? {
         Target::Adb(serial) => Ok(Box::new(
-            adb::Bridge::create(executable("adb")?, serial, listener.local_addr()?.port()).await?,
+            adb::Bridge::create(executable("adb")?, serial, listener, &|proof| {
+                _report.retain(proof)
+            })
+            .await?,
         )),
         #[cfg(feature = "accessory-transport")]
         Target::Usb(_) => {

@@ -1,122 +1,117 @@
-//! A dedicated, temporary ADB reverse mapping and shell-protected invitation.
-use crate::adb_command::{broadcast_accepted, output};
+//! A retained temporary mapping and a narrow borrowed invitation target.
+use crate::adb_mapping;
+pub use crate::adb_mapping::Target;
 use anyhow::{ensure, Context, Result};
-use blent_config::{
-    camera::{
-        connection::{validate_credential, Invitation, InvitationResult},
-        CameraProfile,
-    },
-    commands::AsyncCommandExt,
+use blent_config::camera::{
+    connection::{validate_credential, Invitation, InvitationResult},
+    CameraProfile,
 };
-use std::{path::PathBuf, time::Duration};
-use tokio::process::Command;
+use std::path::PathBuf;
 
 pub struct Bridge {
-    pub adb: PathBuf,
-    pub serial: String,
-    pub remote: String,
-    pub local: String,
+    lease: adb_mapping::Lease,
 }
 
 impl Bridge {
-    pub async fn create(adb: PathBuf, serial: Option<&str>, port: u16) -> Result<Self> {
-        let serial = match serial {
-            Some(serial) => serial.to_owned(),
-            None => output(&adb, &["get-serialno"])
-                .await
-                .context("select one authorized tablet with --serial")?,
-        };
-        ensure!(!serial.is_empty(), "missing tablet serial");
-        let local = format!("tcp:{port}");
-        let allocated = output(&adb, &["-s", &serial, "reverse", "tcp:0", &local]).await?;
-        let port: u16 = allocated
-            .parse()
-            .context("ADB did not return the allocated camera port")?;
-        ensure!(port != 0, "ADB returned camera port zero");
+    pub async fn create(
+        adb: PathBuf,
+        serial: Option<&str>,
+        listener: &tokio::net::TcpListener,
+        observe: &(dyn Fn(blent_config::retirement::Completion) -> Result<()> + Send + Sync),
+    ) -> Result<Self> {
         Ok(Self {
-            adb,
-            serial,
-            remote: format!("tcp:{port}"),
-            local,
+            lease: adb_mapping::Lease::create(adb, serial, listener, observe).await?,
         })
     }
 
-    pub fn port(&self) -> Result<u16> {
-        let port: u16 = self
-            .remote
-            .strip_prefix("tcp:")
-            .context("invalid camera endpoint")?
-            .parse()?;
-        ensure!(port != 0, "invalid camera port");
-        Ok(port)
+    pub fn target(&self) -> &Target {
+        self.lease.target()
     }
 
     pub async fn invite(&self, token: &str, options: &CameraProfile) -> Result<()> {
-        // Only hex and typed numbers enter the remote shell command. The serial
-        // stays a distinct local argv element, including spaces/metacharacters.
-        validate_credential(token)?;
-        let capture = options.invitation_profile()?;
-        ensure!(
-            options.usb_peer.is_none(),
-            "ADB camera invitation cannot target USB"
-        );
-        let port = self.port()?;
-        let lens = capture.lens;
-        let command = format!(
-            "am broadcast -n io.github.geraldo_netto.blent/com.blent.CameraReceiver --es token {token} --ei port {port} --ei width {} --ei height {} --ei fps {} --ei lens {lens} --ez background {} --ei bitrate {} --ei freshness_ms {} --ez adaptive_bitrate {} --ei min_bitrate {}\n",
-            capture.width, capture.height, capture.fps, capture.background, capture.bitrate, capture.freshness_ms, capture.adaptive, capture.min_bitrate,
-        );
-        let result = Command::new(&self.adb)
-            .args(["-s", &self.serial, "shell"])
-            .output_input_timeout(Some(command.as_bytes()), Duration::from_secs(5))
-            .await?;
-        // ADB may echo the shell input in diagnostics; never surface it.
-        ensure!(result.status.success(), "ADB camera invitation failed");
-        ensure!(
-            broadcast_accepted(&result.stdout),
-            "tablet did not accept camera invitation; install updated Blent APK and open it"
-        );
-        Ok(())
+        self.lease
+            .shell(invitation(self.target(), token, options)?)
+            .await
+            .context("ADB camera invitation failed")
     }
 
     pub async fn close(&self) -> Result<()> {
-        let mappings = output(&self.adb, &["-s", &self.serial, "reverse", "--list"]).await?;
-        if owns_mapping(&mappings, &self.remote, &self.local) {
-            output(
-                &self.adb,
-                &["-s", &self.serial, "reverse", "--remove", &self.remote],
-            )
-            .await?;
-        }
-        Ok(())
+        self.lease.close().await
     }
 }
 
-fn owns_mapping(mappings: &str, remote: &str, local: &str) -> bool {
-    mappings.lines().any(|line| {
-        let fields: Vec<_> = line.split_whitespace().collect();
-        fields.len() == 3 && fields[1] == remote && fields[2] == local
-    })
+fn invitation(target: &Target, token: &str, options: &CameraProfile) -> Result<String> {
+    // Only hex and typed numbers enter the remote shell command. The serial
+    // stays a distinct local argv element, including spaces/metacharacters.
+    validate_credential(token)?;
+    let capture = options.invitation_profile()?;
+    ensure!(
+        options.usb_peer.is_none(),
+        "ADB camera invitation cannot target USB"
+    );
+    let port = target.port()?;
+    let lens = capture.lens;
+    Ok(format!(
+            "am broadcast -n io.github.geraldo_netto.blent/com.blent.CameraReceiver --es token {token} --ei port {port} --ei width {} --ei height {} --ei fps {} --ei lens {lens} --ez background {} --ei bitrate {} --ei freshness_ms {} --ez adaptive_bitrate {} --ei min_bitrate {}\n",
+            capture.width, capture.height, capture.fps, capture.background, capture.bitrate, capture.freshness_ms, capture.adaptive, capture.min_bitrate,
+        ))
+}
+
+impl Target {
+    #[cfg(test)]
+    pub async fn invite(&self, token: &str, options: &CameraProfile) -> Result<()> {
+        self.test_shell(
+            invitation(self, token, options)?,
+            "ADB camera invitation failed",
+        )
+        .await
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     #[test]
     fn t539_cleanup_preserves_other_reverse_mappings() {
-        assert!(owns_mapping(
-            "Usb tcp:9999 tcp:1234\nUsb tcp:8890 tcp:8890",
-            "tcp:9999",
-            "tcp:1234"
-        ));
-        assert!(!owns_mapping(
-            "Usb tcp:9999 tcp:1235",
-            "tcp:9999",
-            "tcp:1234"
-        ));
+        use blent_config::adb_reverse::temporary::{route, Route};
+        assert_eq!(
+            route(
+                "Usb tcp:9999 tcp:1234\nUsb tcp:8890 tcp:8890",
+                "tcp:9999",
+                "tcp:1234"
+            )
+            .unwrap(),
+            Route::Owned
+        );
+        assert_eq!(
+            route("Usb tcp:9999 tcp:1235", "tcp:9999", "tcp:1234").unwrap(),
+            Route::Foreign
+        );
         for line in ["", "tcp:9999 tcp:1234", "Usb tcp:9999 tcp:1234 extra"] {
-            assert!(!owns_mapping(line, "tcp:9999", "tcp:1234"));
+            assert_ne!(route(line, "tcp:9999", "tcp:1234").ok(), Some(Route::Owned));
         }
+    }
+}
+
+// Borrowed native-command fixtures exercise invitation encoding/ACK behavior.
+// They do not create a mapping; production Connections always own a Lease.
+#[cfg(test)]
+impl Invitation<CameraProfile> for Target {
+    fn invite<'a>(
+        &'a self,
+        credential: &'a str,
+        profile: &'a CameraProfile,
+    ) -> InvitationResult<'a> {
+        Box::pin(Target::invite(self, credential, profile))
+    }
+}
+
+#[cfg(test)]
+impl blent_config::camera::connection::Connection<CameraProfile> for Target {
+    fn monitor(&self) -> InvitationResult<'_> {
+        Box::pin(std::future::pending())
+    }
+    fn close(&self) -> InvitationResult<'_> {
+        Box::pin(std::future::ready(Ok(())))
     }
 }
 

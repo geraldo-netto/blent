@@ -217,6 +217,10 @@ pub trait AsyncCommandExt {
     /// Retain exact child and collector proofs, including startup failure and
     /// cancellation. Independent caller tasks must retain their own creator
     /// lifetime until they can no longer start commands or report late proofs.
+    /// On Linux, report one collector first and one direct child after successful
+    /// spawn, synchronously before yielding again. No second report on an ordinary
+    /// error means the command never spawned. A reported child/collector remains
+    /// independently owned until its original completion, including after errors.
     fn output_input_timeout_observed(
         &mut self,
         input: Option<&[u8]>,

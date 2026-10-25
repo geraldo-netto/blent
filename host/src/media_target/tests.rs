@@ -87,8 +87,8 @@ if args == ['get-serialno']:
 elif args[:2] != ['-s', config['serial']]:
     print('original tablet absent', file=sys.stderr)
     sys.exit(8)
-elif 'tcp:0' in args:
-    print('34567')
+elif '--no-rebind' in args:
+    pass
 "#,
         )
         .unwrap();
@@ -131,6 +131,7 @@ async fn original_and_replacement(
     proofs: &Proofs,
     record: &(dyn Fn(Completion) + Send + Sync),
 ) {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     fixture.config("tablet-A", "ok");
     let intent = OriginalTarget::new(Target::Adb(None)).unwrap();
     assert_eq!(
@@ -149,19 +150,23 @@ async fn original_and_replacement(
     let Target::Adb(serial) = bound.target() else {
         panic!("T1086 changed transport")
     };
-    assert!(
-        crate::camera::bridge::Bridge::create(fixture.adb.clone(), serial, 12345)
-            .await
-            .is_err()
-    );
+    assert!(crate::camera::bridge::Bridge::create(
+        fixture.adb.clone(),
+        serial,
+        &listener,
+        &|_| Ok(())
+    )
+    .await
+    .is_err());
     let fresh = OriginalTarget::new(Target::Adb(None)).unwrap();
     let Target::Adb(serial) = bind(&fresh, record).await.unwrap().target() else {
         panic!("T1086 changed transport")
     };
     assert_eq!(serial, Some("tablet-B"));
-    let bridge = crate::camera::bridge::Bridge::create(fixture.adb.clone(), serial, 12345)
-        .await
-        .unwrap();
+    let bridge =
+        crate::camera::bridge::Bridge::create(fixture.adb.clone(), serial, &listener, &|_| Ok(()))
+            .await
+            .unwrap();
     bridge.close().await.unwrap();
     proofs.settle().await;
     let calls = fixture.calls();
@@ -172,10 +177,7 @@ async fn original_and_replacement(
             .count(),
         2
     );
-    assert_eq!(
-        calls[1],
-        ["-s", "tablet-A", "reverse", "tcp:0", "tcp:12345"]
-    );
+    assert_eq!(calls[1], ["-s", "tablet-A", "reverse", "--list"]);
 }
 
 async fn invalid_lookup_results(

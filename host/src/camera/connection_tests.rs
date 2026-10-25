@@ -82,7 +82,7 @@ async fn t931_native_camera_selection_fails_before_output_device_ownership() {
 async fn t931_adb_adapter_rejects_native_target_without_a_command() {
     let root = tempfile::tempdir().unwrap();
     let marker = root.path().join("command-started");
-    let bridge = bridge::Bridge {
+    let bridge = bridge::Target {
         adb: tests::script(
             root.path(),
             "adb",
@@ -292,7 +292,11 @@ fn t933_connection_factory_uses_private_commands_and_explicit_transport() {
         return;
     }
     let root = tempfile::tempdir().unwrap();
-    tests::script(root.path(), "adb", "import sys\nif 'tcp:0' in sys.argv: print('34567')\nelif '--list' in sys.argv: print('Usb tcp:34567 tcp:1')\nelse: print('tablet')");
+    tests::script(
+        root.path(),
+        "adb",
+        include_str!("../../tests/fixtures/adb_mapping.py"),
+    );
     let result = std::process::Command::new(std::env::current_exe().unwrap())
         .args(["--exact", "camera::connection_tests::t933_connection_factory_uses_private_commands_and_explicit_transport", "--nocapture"])
         .env("BLENT_T933_FACTORY_CHILD", "1").env("PATH", root.path())

@@ -52,7 +52,7 @@ print('Broadcast completed: result=1')"#,
             root.path()
         ),
     );
-    let bridge = bridge::Bridge {
+    let bridge = bridge::Target {
         adb,
         serial: "tablet ' ; $()".into(),
         remote: "tcp:34567".into(),
@@ -75,7 +75,7 @@ async fn t1231_adb_invites_capture_size_without_changing_export_size() {
         "import sys,pathlib\npathlib.Path({:?}).write_text(sys.stdin.read())\nprint('Broadcast completed: result=1')",
         root.path().join("invitation")
     ));
-    let bridge = bridge::Bridge {
+    let bridge = bridge::Target {
         adb,
         serial: "tablet-1231".into(),
         remote: "tcp:34567".into(),
@@ -222,24 +222,31 @@ async fn t539_virtual_camera_writes_black_on_start_and_stop() {
 #[tokio::test]
 async fn t539_bridge_invitation_and_mapping_ownership() {
     let root = tempfile::tempdir().unwrap();
-    let adb = script(root.path(), "adb", "import sys\na=sys.argv\nif 'get-serialno' in a: print('tablet')\nelif '--list' in a: print('Usb tcp:34567 tcp:12345')\nelif 'tcp:0' in a: print('34567')\nelif 'shell' in a and 'broadcast' in sys.stdin.read(): print('Broadcast completed: result=1')");
-    let bridge = bridge::Bridge::create(adb.clone(), None, 12345)
+    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let adb = script(
+        root.path(),
+        "adb",
+        &include_str!("../../tests/fixtures/adb_mapping.py").replace("original-tablet", "tablet"),
+    );
+    let bridge = bridge::Bridge::create(adb.clone(), None, &listener, &|_| Ok(()))
         .await
         .unwrap();
-    assert_eq!(bridge.serial, "tablet");
+    assert_eq!(bridge.target().serial, "tablet");
     bridge.invite(&"b".repeat(64), &options()).await.unwrap();
     bridge.close().await.unwrap();
-    let explicit = bridge::Bridge::create(adb, Some("selected"), 12345)
+    let explicit = bridge::Bridge::create(adb, Some("selected"), &listener, &|_| Ok(()))
         .await
         .unwrap();
-    assert_eq!(explicit.serial, "selected");
+    assert_eq!(explicit.target().serial, "selected");
     explicit.close().await.unwrap();
     let bad = script(
         root.path(),
         "bad",
         "import sys\nprint('failed',file=sys.stderr)\nsys.exit(1)",
     );
-    assert!(bridge::Bridge::create(bad, None, 12345).await.is_err());
+    assert!(bridge::Bridge::create(bad, None, &listener, &|_| Ok(()))
+        .await
+        .is_err());
 }
 
 #[test]
@@ -428,7 +435,7 @@ async fn t539_producer_failure_retires_session_and_rejects_foreign_clients() {
     use std::os::fd::AsRawFd;
     assert_eq!(unsafe { libc::flock(gate.as_raw_fd(), libc::LOCK_EX) }, 0);
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let bridge = bridge::Bridge {
+    let bridge = bridge::Target {
         adb,
         serial: "tablet".into(),
         remote: "tcp:34567".into(),
@@ -702,7 +709,7 @@ async fn t543_real_output_and_preview_rotate_the_same_asymmetric_picture() {
 async fn t609_rejects_shell_input_and_redacts_adb_diagnostics() {
     let root = tempfile::tempdir().unwrap();
     let adb = script(root.path(), "adb", "import sys\ncommand=sys.stdin.read()\nprint(command, file=sys.stderr)\nprint('Broadcast completed: result=0')");
-    let mut bridge = bridge::Bridge {
+    let mut bridge = bridge::Target {
         adb,
         serial: "tablet".into(),
         remote: "tcp:1234".into(),
@@ -803,7 +810,7 @@ fn reject_after_gate(
 async fn t1205_camera_requires_exact_single_current_broadcast_acknowledgement() {
     let root = tempfile::tempdir().unwrap();
     for (stdout, expected) in crate::adb_command::broadcast_tests::cases() {
-        let bridge = bridge::Bridge {
+        let bridge = bridge::Target {
             adb: crate::adb_command::broadcast_tests::fixture(root.path(), &stdout, true),
             serial: "private-test".into(),
             remote: "tcp:34567".into(),

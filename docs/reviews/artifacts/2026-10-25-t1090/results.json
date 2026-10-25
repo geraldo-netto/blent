@@ -1,0 +1,144 @@
+{
+  "issue": "T1090",
+  "owner_decision": "2026-10-25",
+  "verified": "2026-10-26",
+  "tests": {
+    "host_accessory_transport": {
+      "passed": 1018,
+      "failed": 0,
+      "preexisting_ignored": 3
+    },
+    "common": {
+      "passed": 401,
+      "failed": 0
+    },
+    "host_default": {
+      "passed": 720,
+      "failed": 0,
+      "preexisting_ignored": 3
+    },
+    "native_integration": {
+      "adb_mapping_retirement": 23,
+      "camera_probe": 5,
+      "camera_probe_stop": 8,
+      "failed": 0
+    }
+  },
+  "ignored": [
+    "T407 opt-in synthetic read-boundary benchmark",
+    "T416 opt-in synthetic metadata/allocation measurement",
+    "T784 opt-in local TCP timing benchmark"
+  ],
+  "coverage": {
+    "changed_production_functions": 33,
+    "minimum_required_percent": 80,
+    "minimum_observed_percent": 86.36363636363636,
+    "all_pass": true,
+    "cohorts": [
+      "accessory-transport library",
+      "native integrations",
+      "default library"
+    ],
+    "unchanged_whole_project_coverage_claimed": false
+  },
+  "complexity": {
+    "tool": "scripts/complexity/check.py (local cyclomatic)",
+    "whole_functions": 28122,
+    "whole_above_nine": 0,
+    "scoped_functions": 252,
+    "scoped_maximum": 8,
+    "parsers": {
+      "Rust": "syn 2.0.119; proc-macro2 1.0.107; Cargo.lock",
+      "C": "tree-sitter-c 0.24.2, compiled from local Cargo source",
+      "Shell": "cached tree-sitter-languages 1.10.2 ABI14",
+      "Python tree-sitter runtime": "0.25.2",
+      "Kotlin": "cached Kotlin PSI 1.9.20"
+    }
+  },
+  "tools": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "cargo_llvm_cov": "0.8.7",
+    "llvm": "22.1.8-rust-1.98.1-stable",
+    "python": "3.12.3"
+  },
+  "checks": {
+    "host_clippy_no_deps": "passed -D warnings; accessory-transport library",
+    "portable_common_clippy_no_deps": "passed -D warnings; no-default-features library",
+    "unrestricted_clippy": "blocked by unchanged common/src/linux/capture_control.rs:143 needless_question_mark; no EVDI change or suppression",
+    "diff_check": "passed"
+  },
+  "lifetime_scope": {
+    "mapping_capacity": {
+      "default": 16,
+      "minimum": 1,
+      "maximum": 4096
+    },
+    "queued_invitations": 1,
+    "executing_invitations": 1,
+    "invitation_bytes": 4096,
+    "listing_bytes": 65536,
+    "policy_state_route_combinations": 12,
+    "native_fences": "original child and collector completion, both listener descriptors released before original admission, worker destruction and join",
+    "eventual_cleanup": "conditional on live host, completing native joins, valid listings and eventual observable delegated effects",
+    "unknown_effects": "original bounded admission and endpoints remain funded; no time-based reuse or uncertain mutation retries",
+    "whole_process_crash_recovery": false,
+    "real_adb_or_tablet_validation": false,
+    "missing_physical_evidence": "T1258"
+  },
+  "network_transfers": false,
+  "source_sha256": {
+    "common/src/adb_reverse.rs": "1caca6f784e6880b78588a458319358050a0d61b933f7892eddbc47b5070336a",
+    "common/src/adb_reverse/temporary.rs": "48fb19a5f96f79ecca65ade958ab8d9450642280acb2bf07f0fe62ca78f51f65",
+    "common/src/adb_reverse/temporary/tests.rs": "88c50397703f552ae07b30823c74c1699e6db044370166048f3d4227eca35e15",
+    "common/src/commands.rs": "f7902e40e341805aff4ef734f808aa1f437951cb819d3ae173c8f48effba906b",
+    "docs/adb-media-mappings.md": "ee6e3ed22292e27bd709725589774d36598b34cf6402cf6f46f4174589ceba22",
+    "docs/architecture.md": "1b99bfaa28296fddd0454259d6a7e01516c7d18ab49c2dda3a138a593c33eff8",
+    "docs/audio.md": "aaa36874710804f863ec1ff94addcf7b1ddc262b2661b2338114810ed9f19f0b",
+    "docs/cameras.md": "c2a0ec2f77dc546c4d9cac35699d03e557cb38660f3b25523f15d97af78650cf",
+    "host/examples/camera-feedback-probe.rs": "eedb9c7bc189d413665de8d7b20b17ac55d147cfdec2f13f1f4f2a71855a5a44",
+    "host/examples/camera-feedback-probe/linux.rs": "935695a2a462e54c511707b0710d58ef11eb387ceeff5a275dfbad9048dd5dbb",
+    "host/examples/camera-feedback-probe/ownership.rs": "a71afacc2e0a85c4ad1ac3673235d072fc6054fd29b2932ff7c0febac1d63de4",
+    "host/examples/camera-feedback-probe/stop.rs": "6a5825f9fdc7518895194b658c3eb79808e9d8fbd3e2b473e7ad4ca8dcf8c40d",
+    "host/src/adb_mapping/mod.rs": "2acbc2734da114b00e635507a90a2f05f4c1a8c8a95ca2498bfeabb87876a6d7",
+    "host/src/adb_mapping/native.rs": "07c679344fb663a92c5132cfa9d9923df077eee086f475c916951b847f09ce60",
+    "host/src/adb_mapping/tests.rs": "dc6094e5cc6d0d783d98df1d3bfc752514a5cea8dcdc80940bbd6268ce6d07e8",
+    "host/src/adb_mapping/worker.rs": "32453707557613477df4636df205c37168af148783f5eff46f76051396c1af05",
+    "host/src/audio.rs": "843b56334968100310688e4ec7e3a9f3abf520ba896a4f60630b8b54fefa6144",
+    "host/src/audio/adb.rs": "9d063e8f39706189b0a374c3e7cff6ea14f46aa05de1292d435a7b1234f829ff",
+    "host/src/audio/connection_tests.rs": "ed8e52f1ba77b317c92f3af21cdeead720a1dbe20707fc9b7dda687c88711da8",
+    "host/src/camera.rs": "aa4e20c1dcdf4c149df3dd6ac355c77f6306c9d24096d13fdca5212fbcb56d2c",
+    "host/src/camera/bridge.rs": "defd4f045e0c3b31042f3d38a912b0511f369cc4e3f953a3896c4af11b9c9799",
+    "host/src/camera/connection_tests.rs": "c59ed56ea40e87fbddde93c46f0ade4744b2d106d6fbd88559f92b8c4259441f",
+    "host/src/camera/native_tests.rs": "f8f323e3d8fc39eb41e73ef251f9230096dca535d299ec3889b33fd132d9c3c6",
+    "host/src/camera/tests.rs": "20cec77bb2ad2718acf4c21cc9d743b248db7e6b95ad280cac837109d59c5304",
+    "host/src/lib.rs": "62988febbf2b433b72d3939179f390ccfa5112581aea31b1c9a792d4c47371fe",
+    "host/src/media_target/tests.rs": "88276cca8c515bb3303ce6b3a8a5f376f012fe88ab466f3c31b5b6909727aa45",
+    "host/tests/adb_mapping_retirement.rs": "327e9722ed1f5f139318cfc219a7202d9f23785200d0660acbed4d7d824d43b5",
+    "host/tests/camera_probe.rs": "1448b4a027d66e0ac23218924e7bb87b7d044c4eacbed9ed7e30cb54b581b71f",
+    "host/tests/camera_probe_stop.rs": "6285450d44c6425d6b852b78d7c108a127ac514a85c715f7e929146acb74bcd4",
+    "host/tests/fixtures/adb_mapping.py": "63d06fff65cee5ae6944f7d68d626ab2f7182e35aa9d636544de807b83829470"
+  },
+  "artifact_sha256": {
+    "README.md": "9320941f29a3eeafe4bff18de6698424201481238fcf78a372d86cd4082a77f0",
+    "changed-functions.json": "be86e53c707aebcdd91e308d49c3447954bb4fb661ea57726eac47da54816cc3",
+    "clippy-domain.log.gz": "70602de10f85e71a775f91a160ddf3feb2db1441a1bf3ac1e37fcd9f8226d5f8",
+    "clippy-host.log.gz": "3c48bb846a5b45e8aba519252425fab5b1724b151b0fd9befa31de69822e1ea6",
+    "clippy.log.gz": "9914a65d21a3d5e9020ea88d2879f247faa8af82b1d1b46b4ba89889d21a9025",
+    "complexity.json": "6f00e5e6cd41a02c035fe1c159593e11b854d6112289f1403a4d202b5f739742",
+    "complexity.log.gz": "4c44493997608b83f8475d70ce70b499f80049c33991eabcb877cdd6f81bce91",
+    "coverage-default.log.gz": "5c8e75f4051f6b76b557cd81377cbabec3198214a9fbec59df94af9d44d3a7d5",
+    "coverage-feature.log.gz": "faa2e943bca265f59cf3e64601445629a41de129291e42bafe520a58c4c24497",
+    "coverage-native.log.gz": "c6f7aa1cc2ce96704a9f51ea32ae2c1d5d26f081e5007dc6a72c8fe2d599edcc",
+    "coverage-report.log.gz": "3e8d3b32d007174874b3e9086a4ff083220181e67cdde7f97767aaf9bfe500a9",
+    "coverage.lcov.gz": "09636ca041fb98f63ffdda5db440bce7e6136ee218a232bf92f3b75028cf64ed",
+    "function-coverage.json": "0b2f1894797cdcbddc317db8b615d158aea2426125c65f9be8aaef515d6e7d71",
+    "red-audio-owner.log.gz": "d4976f465227dcc1f1bdc23896affcc035ca9a13726fb2557e27c0f70432a29a",
+    "red-camera-helper.log.gz": "738308ce0f3d122c8908c0b554c6c84408d9b5d9bfd628b5a64379d0c72848d8",
+    "red-destination-fence.log.gz": "748e9c1b81a6bb8e253ab01e8dd5c0c78c8814d6923d81de141036374a2343aa",
+    "red-endpoint-fence.log.gz": "25f0853fbf55c75cb73595e7d44c3a7ff9da825a4592e052c4ad5716f957f5f8",
+    "red-remove-fence.log.gz": "b942d92ccd479df25eca4e79fc7dc3fa1fe838845c691cf0fe25e42927a551a1",
+    "red-runtime-admission.log.gz": "7dd3554097b51742821da13e482cb0bc4a63d1c61d634eecc51bff930729843e",
+    "red-unstarted-remove.log.gz": "aa682a14a46aed0a0b775ff1269de52c616cdde1f074444e292d0ffe6bfc41e8",
+    "red.log.gz": "6dd7213ac7469a1fa69b851b76cdf53e89726de32fdad5f31b02ed469054628f"
+  }
+}

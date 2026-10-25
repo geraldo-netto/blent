@@ -6,7 +6,7 @@ use blent_config::{camera::stop::Request, commands::AsyncCommandExt};
 use std::time::Duration;
 use tokio::process::Command;
 
-pub(super) async fn stop_capture(bridge: &bridge::Bridge, token: &str) -> Result<()> {
+pub(super) async fn stop_capture(bridge: &bridge::Target, token: &str) -> Result<()> {
     let request = Request::new(token, bridge.port()?)?;
     let command = format!("am broadcast -n io.github.geraldo_netto.blent/com.blent.CameraReceiver -a com.blent.CAMERA_STOP --es expected_token {} --ei expected_port {}\n", request.credential(), request.port());
     let result = Command::new(&bridge.adb)

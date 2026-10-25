@@ -124,6 +124,8 @@ pub mod auxiliary_source;
 #[cfg(target_os = "linux")]
 mod adb_command;
 #[cfg(target_os = "linux")]
+mod adb_mapping;
+#[cfg(target_os = "linux")]
 pub mod media_target;
 
 pub mod report_scope;

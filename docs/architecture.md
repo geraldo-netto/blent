@@ -151,6 +151,7 @@ systemd user-service environment override.
 | `BLENT_PROCESS_LIMIT` | 128 | 1..4096 | Owned command/media children, including unreaped children and dependent cleanup. |
 | `BLENT_SESSION_LIMIT` | 64 | 1..4096 | Session supervisors, including unfinished worker handles. |
 | `BLENT_TASK_LIMIT` | 64 | 1..4096 | Independently owned capture/media tasks, including started blocking work. |
+| `BLENT_ADB_MAPPING_LIMIT` | 16 | 1..4096 | Active and retiring temporary camera/audio mappings; each retains its cleanup worker and endpoint reservation. |
 | `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
 | `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after control returns. |

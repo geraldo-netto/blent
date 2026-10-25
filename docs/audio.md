@@ -1,5 +1,9 @@
 # Audio foundation
 
+ADB microphone/speaker sessions share the
+[temporary mapping ownership contract](adb-media-mappings.md), including retained
+cleanup after cancellation and the configurable mapping-capacity limit.
+
 T717 implements portable Rust audio policy in `blent_config::audio`. T718 adds
 Linux/Android microphone transport, native source and controls described below.
 T719 adds the selectable speaker sink and Android playback. T720 integrates native

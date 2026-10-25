@@ -49,10 +49,14 @@ fn fixture(root: &Path) {
 root=pathlib.Path(__file__).parent
 args=sys.argv[1:]
 if args==['get-serialno']: print('original-tablet')
-elif 'tcp:0' in args:
-    (root/'port').write_text(args[-1].split(':')[1]); print('34567')
-elif '--list' in args: print('original-tablet tcp:34567 tcp:'+(root/'port').read_text())
-elif '--remove' in args: (root/'removed').write_text(args[-1])
+elif '--no-rebind' in args:
+    (root/'port').write_text(args[-1].split(':')[1])
+    (root/'remote').write_text(args[-2])
+    (root/'mapping').write_text(args[-2] + ' ' + args[-1])
+elif '--list' in args:
+    if (root/'mapping').exists(): print('original-tablet '+(root/'mapping').read_text())
+elif '--remove' in args:
+    (root/'removed').write_text(args[-1]); (root/'mapping').unlink()
 elif 'shell' in args:
     words=shlex.split(sys.stdin.read())
     (root/'invitation.tmp').write_text(json.dumps(words)); (root/'invitation.tmp').replace(root/'invitation'); print('Broadcast completed: result=1')
@@ -73,6 +77,71 @@ else:
     while True:
         sys.stdout.buffer.write(b'\x00'+b'\xd2\x04\x1f\xef'*480);sys.stdout.buffer.flush();time.sleep(.01)
 "#,
+    );
+}
+
+#[test]
+fn t1090_audio_creation_error_waits_for_original_mapping_retirement() {
+    if let Some(root) = std::env::var_os("BLENT_T1090_AUDIO_FAILURE_CHILD") {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        runtime.block_on(partial_mapping_failure(&PathBuf::from(root)));
+        return;
+    }
+    let root = tempfile::tempdir().unwrap();
+    fixture(root.path());
+    script(
+        root.path(),
+        "adb",
+        include_str!("../../tests/fixtures/adb_mapping.py"),
+    );
+    std::fs::write(root.path().join("fail_create"), "").unwrap();
+    std::fs::write(root.path().join("invalid_after_create"), "").unwrap();
+    let result = std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", "audio::connection_tests::t1090_audio_creation_error_waits_for_original_mapping_retirement", "--nocapture"])
+        .env("BLENT_T1090_AUDIO_FAILURE_CHILD", root.path()).env("PATH", root.path())
+        .env("XDG_RUNTIME_DIR", root.path().join("runtime")).output().unwrap();
+    assert!(
+        result.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&result.stdout),
+        String::from_utf8_lossy(&result.stderr)
+    );
+}
+
+async fn partial_mapping_failure(root: &Path) {
+    let (state, _) = watch::channel(Default::default());
+    let report = Report::new(state);
+    let (_stop, stopped) = watch::channel(false);
+    let mut options = AudioOptions::new(Direction::Microphone);
+    options.serial = Some("original-tablet".into());
+    let mut work = Box::pin(run(options, stopped, report.clone()));
+    assert!(futures_util::poll!(&mut work).is_pending());
+    tokio::time::timeout(
+        Duration::from_secs(8),
+        wait_file(&root.join("list_rejected")),
+    )
+    .await
+    .unwrap();
+    assert!(!report.native_retired());
+    let observed = futures_util::poll!(&mut work);
+    let premature = observed.is_ready();
+    std::fs::remove_file(root.join("invalid_list")).unwrap();
+    let result = match observed {
+        std::task::Poll::Ready(result) => result,
+        std::task::Poll::Pending => work.await,
+    };
+    report.wait_native().await;
+    assert!(result.is_err());
+    assert!(
+        !premature,
+        "T1090 audio returned before its original partial mapping retired"
+    );
+    assert_eq!(
+        std::fs::read_to_string(root.join("routes.json")).unwrap(),
+        "{}"
     );
 }
 
@@ -166,7 +235,7 @@ async fn pipeline_once(root: &Path, direction: Direction, mode: u8) {
     result.unwrap();
     assert_eq!(
         std::fs::read_to_string(root.join("removed")).unwrap(),
-        "tcp:34567"
+        std::fs::read_to_string(root.join("remote")).unwrap()
     );
 }
 async fn wait_file(path: &Path) {

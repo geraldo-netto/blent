@@ -3,6 +3,8 @@
 use anyhow::{bail, ensure, Result};
 use std::collections::HashMap;
 
+pub mod temporary;
+
 fn parse(text: &str) -> Result<HashMap<&str, &str>> {
     ensure!(text.len() <= 65536, "ADB reverse listing exceeds 64 KiB");
     let mut mappings = HashMap::new();

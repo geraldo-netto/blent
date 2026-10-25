@@ -25,6 +25,11 @@ pub(super) fn channel() -> (Creation, Retirement) {
 }
 
 impl Creation {
+    /// Bind one already-admitted native owner and seal this unique creator.
+    pub(super) fn bind(self, original: Completion) {
+        self.0.send_replace(Some(original));
+    }
+
     pub(super) fn start<F, Fut>(self, profile: CameraProfile, session: F) -> Result<Owner>
     where
         F: FnOnce(CameraProfile, watch::Receiver<bool>, Report) -> Fut + Send + 'static,

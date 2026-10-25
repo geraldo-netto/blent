@@ -109,9 +109,10 @@ async fn lifecycle(root: &std::path::Path, front: PathBuf, rear: PathBuf) {
             r#"import sys, pathlib
 root=pathlib.Path({root:?})
 a=sys.argv
-if 'tcp:0' in a:
-    (root/'mapping').write_text(a[-1]); print('34567')
-elif '--list' in a: print('Usb tcp:34567 '+(root/'mapping').read_text())
+if '--no-rebind' in a:
+    (root/'mapping').write_text(a[-2]+' '+a[-1])
+elif '--list' in a:
+    if (root/'mapping').exists(): print('Usb '+(root/'mapping').read_text())
 elif '--remove' in a: (root/'mapping').unlink()
 elif 'shell' in a and 'broadcast' in sys.stdin.read(): print('Broadcast completed: result=1')
 else: print('fixture-tablet')"#
@@ -159,13 +160,18 @@ async fn cleanup_failure(root: &std::path::Path, front: PathBuf, rear: PathBuf) 
             r#"import pathlib, sys
 root = pathlib.Path({root:?})
 args = sys.argv[1:]
-if 'tcp:0' in args:
+if '--no-rebind' in args:
     import fcntl
-    (root/'mapping').write_text(args[-1])
+    (root/'mapping').write_text(args[-2] + ' ' + args[-1])
     with (root/'stop-gate').open() as gate: fcntl.flock(gate, fcntl.LOCK_SH)
-    print('34567')
 elif '--list' in args:
-    print('T1088 original cleanup unavailable', file=sys.stderr); sys.exit(7)
+    if (root/'mapping').exists():
+        if not (root/'recover').exists():
+            (root/'cleanup-failed').touch()
+            print('T1088 original cleanup unavailable', file=sys.stderr); sys.exit(7)
+        print('Usb ' + (root/'mapping').read_text())
+elif '--remove' in args:
+    (root/'mapping').unlink()
 else:
     print('fixture-tablet')
 "#
@@ -180,7 +186,12 @@ else:
     assert_eq!(unsafe { libc::flock(gate.as_raw_fd(), libc::LOCK_EX) }, 0);
     let (stop, stopped) = watch::channel(false);
     let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);
-    let mut running = std::pin::pin!(run_native(options.clone(), stopped, report));
+    let done = std::sync::atomic::AtomicBool::new(false);
+    let running = async {
+        let result = run_native(options.clone(), stopped, report.clone()).await;
+        done.store(true, std::sync::atomic::Ordering::Release);
+        result
+    };
     // T1147 rejects pre-stopped startup without creating anything. Preserve the
     // T1088 cleanup oracle after a connection was actually admitted instead.
     let stop_after_mapping = async {
@@ -189,18 +200,26 @@ else:
         }
         stop.send_replace(true);
         drop(gate);
+        while !root.join("cleanup-failed").exists() {
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+        assert!(
+            root.join("mapping").exists(),
+            "T1088 failed mapping was released early"
+        );
+        assert!(!done.load(std::sync::atomic::Ordering::Acquire));
+        assert!(report
+            .reserve_native(control::NativeResource::Connection)
+            .is_err());
+        std::fs::write(root.join("recover"), "").unwrap();
     };
-    let result = tokio::select! {
-        result = &mut running => result,
-        () = stop_after_mapping => running.await,
-    };
+    let (result, ()) = tokio::join!(running, stop_after_mapping);
     assert!(
-        root.join("mapping").exists(),
-        "T1088 fixture did not retain failed mapping"
+        !root.join("mapping").exists(),
+        "T1088 original mapping was not actually retired"
     );
-    // This is a private fake mapping file, never a real tablet mapping. Clean it
-    // and verify device leases before asserting even against the bad behavior.
-    std::fs::remove_file(root.join("mapping")).unwrap();
+    // The private fake mapping is gone only after the original retained worker
+    // actually cleans it. Verify device leases after that fence as well.
     drop(outputs::open_device(&options.front_device, "Blent Front").unwrap());
     drop(outputs::open_device(&options.rear_device, "Blent Rear").unwrap());
     let error = result.expect_err("T1088 camera reported success after original cleanup failed");

@@ -1,0 +1,344 @@
+{
+  "functions": [
+    {
+      "file": "common/src/adb_reverse/temporary.rs",
+      "name": "route",
+      "first": 11,
+      "last": 18,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/adb_reverse/temporary.rs",
+      "name": "port",
+      "first": 20,
+      "last": 24,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/adb_reverse/temporary.rs",
+      "name": "cleanup",
+      "first": 45,
+      "last": 54,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "port",
+      "first": 28,
+      "last": 30,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "reserve",
+      "first": 91,
+      "last": 103,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "create",
+      "first": 106,
+      "last": 144,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "start",
+      "first": 146,
+      "last": 183,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "target",
+      "first": 185,
+      "last": 187,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "shell",
+      "first": 189,
+      "last": 210,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "close",
+      "first": 212,
+      "last": 226,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "drop",
+      "first": 233,
+      "last": 235,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/mod.rs",
+      "name": "poll_complete",
+      "first": 243,
+      "last": 245,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "execute",
+      "first": 14,
+      "last": 30,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "fence",
+      "first": 32,
+      "last": 43,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "list",
+      "first": 45,
+      "last": 59,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/native.rs",
+      "name": "shell",
+      "first": 61,
+      "last": 75,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "run",
+      "first": 10,
+      "last": 28,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "create",
+      "first": 30,
+      "last": 60,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "serve",
+      "first": 62,
+      "last": 78,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "cleanup",
+      "first": 80,
+      "last": 99,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/adb_mapping/worker.rs",
+      "name": "cleanup_once",
+      "first": 101,
+      "last": 130,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/audio/adb.rs",
+      "name": "create",
+      "first": 11,
+      "last": 20,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/audio/adb.rs",
+      "name": "broadcast",
+      "first": 21,
+      "last": 26,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/audio/adb.rs",
+      "name": "invitation",
+      "first": 29,
+      "last": 41,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run",
+      "first": 34,
+      "last": 38,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "run_attempt",
+      "first": 40,
+      "last": 68,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/audio.rs",
+      "name": "connection",
+      "first": 70,
+      "last": 98,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "create",
+      "first": 16,
+      "last": 25,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "target",
+      "first": 27,
+      "last": 29,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "invite",
+      "first": 31,
+      "last": 36,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "close",
+      "first": 38,
+      "last": 40,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/camera/bridge.rs",
+      "name": "invitation",
+      "first": 43,
+      "last": 58,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/camera.rs",
+      "name": "connection",
+      "first": 123,
+      "last": 160,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ],
+  "sha256": {
+    "common/src/adb_reverse/temporary.rs": "48fb19a5f96f79ecca65ade958ab8d9450642280acb2bf07f0fe62ca78f51f65",
+    "host/src/adb_mapping/mod.rs": "2acbc2734da114b00e635507a90a2f05f4c1a8c8a95ca2498bfeabb87876a6d7",
+    "host/src/adb_mapping/native.rs": "07c679344fb663a92c5132cfa9d9923df077eee086f475c916951b847f09ce60",
+    "host/src/adb_mapping/worker.rs": "32453707557613477df4636df205c37168af148783f5eff46f76051396c1af05",
+    "host/src/audio/adb.rs": "9d063e8f39706189b0a374c3e7cff6ea14f46aa05de1292d435a7b1234f829ff",
+    "host/src/audio.rs": "843b56334968100310688e4ec7e3a9f3abf520ba896a4f60630b8b54fefa6144",
+    "host/src/camera/bridge.rs": "defd4f045e0c3b31042f3d38a912b0511f369cc4e3f953a3896c4af11b9c9799",
+    "host/src/camera.rs": "aa4e20c1dcdf4c149df3dd6ac355c77f6306c9d24096d13fdca5212fbcb56d2c"
+  }
+}
