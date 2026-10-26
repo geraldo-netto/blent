@@ -19,12 +19,20 @@ if args[-1:] == ['shell']:
  (root/'invitation').write_text(sys.stdin.read()); print('Broadcast completed: result=1')
 elif '--list' in args:
  if (root/'mapping').exists(): print((root/'mapping').read_text())
-elif '--remove' in args: (root/'mapping').unlink()
+elif '--remove' in args:
+ assert (root/'mapping').read_text().split()[1] == args[-1]
+ (root/'mapping').unlink()
 elif 'reverse' in args:
- port=args[-1].split(':')[1]
- (root/'mapping').write_text('Usb tcp:'+port+' tcp:'+port); print(port)
+ assert not (root/'mapping').exists()
+ (root/'mapping').write_text('Usb '+args[-2]+' '+args[-1]); print(args[-2].split(':')[1])
 else: print('fixture')
 '''
+
+
+def forwarded_port(root, remote):
+    route = (root/'mapping').read_text().split()
+    assert route[1] == 'tcp:' + remote, 'T1264 invitation has no matching reverse route'
+    return int(route[2].split(':')[1])
 
 
 def tablet(root, stop, errors, clocked=False):
@@ -35,7 +43,7 @@ def tablet(root, stop, errors, clocked=False):
             time.sleep(.01)
         words = (root/'invitation').read_text().split()
         token = words[words.index('token') + 1]
-        port = int(words[words.index('port') + 1])
+        port = forwarded_port(root, words[words.index('port') + 1])
         with socket.create_connection(('127.0.0.1', port), timeout=2) as peer:
             peer.sendall((b'BLAUREQ2' if clocked else b'BLAUREQ1') + token.encode() + bytes([7, 1, 1, 1]))
             grant = peer.makefile('rb').read(156)

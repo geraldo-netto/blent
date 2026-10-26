@@ -38,3 +38,20 @@ fn t719_native_sink_preserves_stereo_and_retires() {
         String::from_utf8_lossy(&output.stderr)
     );
 }
+
+#[cfg(all(target_os = "linux", feature = "native-audio"))]
+#[test]
+fn t1264_audio_fixture_preserves_distinct_mapping_endpoints() {
+    let output = std::process::Command::new("python3")
+        .arg(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/tests/test_audio_fixture.py"
+        ))
+        .output()
+        .expect("python3 is required");
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}

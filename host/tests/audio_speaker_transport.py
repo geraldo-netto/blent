@@ -8,7 +8,7 @@ import subprocess
 import threading
 import time
 import audio_speakers
-from audio_transport import ADB, nodes
+from audio_transport import ADB, nodes, forwarded_port
 
 
 def tablet(root, received, errors, clocked=False):
@@ -20,7 +20,7 @@ def tablet(root, received, errors, clocked=False):
         words = (root/'invitation').read_text().split()
         token = words[words.index('token') + 1]
         assert words[words.index('direction') + 1] == '2'
-        port = int(words[words.index('port') + 1])
+        port = forwarded_port(root, words[words.index('port') + 1])
         with socket.create_connection(('127.0.0.1', port), timeout=3) as peer:
             peer.sendall((b'BLAUREQ2' if clocked else b'BLAUREQ1') + token.encode() + bytes([7, 0, 2, 1]))
             stream = peer.makefile('rb')
