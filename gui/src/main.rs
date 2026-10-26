@@ -6,6 +6,7 @@ mod monitor_inventory;
 mod audio_settings;
 mod camera_preview;
 mod camera_settings;
+mod connection_guidance;
 mod connection_settings;
 mod conversion_settings;
 #[cfg(any(windows, test))]
@@ -458,18 +459,8 @@ impl App {
         ui.add_space(12.0);
     }
 
-    fn show_missing_packages(&mut self, ui: &mut egui::Ui, status: &Status) {
-        let mut pkgs = vec![];
-        if !status.ffmpeg_ok {
-            pkgs.push("ffmpeg");
-        }
-        if !status.adb_ok {
-            pkgs.push("android-tools (adb)");
-        }
-        ui.label(format!(
-            "Install with your package manager: {}",
-            pkgs.join(", ")
-        ));
+    fn show_missing_packages(&mut self, ui: &mut egui::Ui) {
+        ui.label("Display streaming needs ffmpeg. Install it with your package manager.");
     }
 
     fn show_system_setup(&mut self, ui: &mut egui::Ui, status: &Status) {
@@ -504,7 +495,7 @@ impl App {
             return;
         }
         let needs_setup = needs_system_setup(status, &self.cfg);
-        let missing_pkgs = !status.ffmpeg_ok || !status.adb_ok;
+        let missing_pkgs = !status.ffmpeg_ok;
         if needs_setup || missing_pkgs {
             egui::Frame::group(ui.style())
                 .fill(egui::Color32::from_rgb(50, 38, 22))
@@ -517,13 +508,16 @@ impl App {
                             .color(egui::Color32::from_rgb(255, 180, 80)),
                     );
                     if missing_pkgs {
-                        self.show_missing_packages(ui, status);
+                        self.show_missing_packages(ui);
                     }
                     if needs_setup {
                         self.show_system_setup(ui, status);
                     }
                 });
             ui.add_space(10.0);
+        }
+        if !status.adb_ok {
+            ui.small("ADB is optional for direct USB. Install android-tools (adb) for ADB connections, including camera or audio when ADB is selected.");
         }
     }
 
@@ -566,17 +560,7 @@ impl App {
                 );
                 if !status.tablet_connected {
                     ui.add_space(4.0);
-                    ui.label(
-                        egui::RichText::new(
-                            if status.daemon_running {
-                                "Connect by USB, enable USB debugging and allow this computer on your tablet."
-                            } else {
-                                "Start display & input, then open Blent on your tablet."
-                            },
-                        )
-                        .weak()
-                        .size(11.0),
-                    );
+                    connection_guidance::show(ui, cfg!(target_os = "linux"), status.adb_ok);
                 }
                 ui.add_space(8.0);
                 self.show_daemon_control(ui, status.daemon_running);
@@ -1163,6 +1147,7 @@ fn main() -> eframe::Result {
 
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
+    mod connection_guidance;
     mod coverage;
     use super::*;
     use blent_config::commands::daemon_command_timeout;

@@ -227,9 +227,13 @@ fn t497_setup_and_lifecycle_actions_use_private_stub_commands() {
         assert!(labels
             .iter()
             .any(|(label, _)| label.contains("Setup needed")));
+        assert!(labels.iter().any(|(label, _)| label.contains("ffmpeg")));
         assert!(labels
             .iter()
-            .any(|(label, _)| label.contains("ffmpeg, android-tools")));
+            .any(|(label, _)| label.contains("android-tools")));
+        assert!(labels
+            .iter()
+            .any(|(label, _)| label.contains("ADB is optional")));
     }
     click_settings_text(
         &mut app,

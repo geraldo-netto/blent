@@ -14,7 +14,7 @@ As of 2026-09-17 this fork has no published release. The source still reports
 version 1.2.3; identify fork builds by their commit as well as that version.
 The current development work is on `configurable-input-devices`.
 
-Blent uses a direct ADB-over-USB connection — no Wi-Fi, USB tethering,
+Blent provides paired direct USB on Linux and ADB-over-USB connections — no Wi-Fi, USB tethering,
 dummy HDMI plug or cloud account required. Screen and input data travel
 between your computer and tablet over USB, or over your local network when
 you enable the optional Wi-Fi fallback. They are not sent to a cloud service.
@@ -78,13 +78,24 @@ Cinnamon remains an unresolved crash risk (T222).
 
 **2. Tablet** — install the APK from the same checkout (for a debug build,
 `android/app/build/outputs/apk/debug/app-debug.apk`; release bundles use
-`blent.apk`). Enable USB debugging in Developer options.
+`blent.apk`). Open Blent on the tablet.
 
-**3. Plug in.** The daemon sets up forwarding and launches the app by default. Check
+For paired direct USB on Linux, use **USB connection** in the desktop GUI:
+**Find USB devices**, connect, compare the Computer/Tablet fingerprints and
+explicitly approve the matching peer. USB debugging is not required for this
+route. Discovery and pairing do not grant camera or audio consent.
+
+For the ADB route, install `adb`, enable USB debugging in Developer options and
+authorize this computer on the tablet.
+
+**3. Start sharing.** Start display & input on the computer. The ADB route sets up
+forwarding and launches the app by default; paired direct USB uses its selected
+authenticated connection. Check
 desktop display settings and input mapping; `blent doctor` helps diagnose
 setup problems. It cannot establish that every configuration is safe or supported.
 
-Update both halves together: since 1.1.0 they share a session token.
+Build both halves from the same checkout. ADB attachments use session tokens;
+paired direct USB uses authenticated peer credentials.
 
 If Blent replaced a second monitor for you, a star on the repo and a
 [compatibility report](https://github.com/geraldo-netto/blent/issues/new?template=compatibility.yml)
@@ -128,7 +139,7 @@ stylus-capability matrix; support depends on the host, client and versions.
 
 | Project | Linux host | Display setup | Android connection |
 | --- | --- | --- | --- |
-| Blent | yes | EVDI virtual output; see [known limitations](docs/compatibility.md#current-fork-limitations) | native app, adb over USB; optional ADB over Wi-Fi |
+| Blent | yes | EVDI virtual output; see [known limitations](docs/compatibility.md#current-fork-limitations) | native app, paired direct USB or ADB over USB; optional ADB over Wi-Fi |
 | [SuperDisplay](https://superdisplay.app/help/) | no; Windows host | virtual extended display | native app, USB or Wi-Fi |
 | [Weylus](https://github.com/H-M-H/Weylus#readme) | yes | capture a screen/window; configure a separate output for extension | browser over a network or `adb reverse` |
 | [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/latest/) + [Moonlight](https://github.com/moonlight-stream/moonlight-android) | yes | stream a host display; output provisioning depends on the host setup | native client over a network |
@@ -249,9 +260,9 @@ When `XDG_CONFIG_HOME` is an absolute path, host settings instead use
 
 ## FAQ
 
-**Does it need Wi-Fi or USB tethering?** No — a normal data-capable USB cable
-with USB debugging enabled on the tablet; USB tethering is not needed. Wi-Fi
-is an optional fallback.
+**Does it need Wi-Fi, tethering or USB debugging?** Use a normal data-capable
+USB cable. Linux paired direct USB does not require USB debugging; the ADB route
+does. USB tethering is not needed. Wi-Fi is an optional ADB connection route.
 
 **Is it a mirror or an extension?** An extension; a real monitor in your
 display settings. Graphics-tablet mode is a separate, non-display mode.
@@ -299,10 +310,11 @@ tap, right-click and drag controls. Physical tablet acceptance remains pending;
 display streaming and stylus remain unavailable. See the
 [input preview setup](docs/reviews/2026-09-28-windows-direct-input.md#using-the-input-preview).
 
-Other proposals inherited from upstream are AOA transport to reduce reliance
-on USB debugging, broader Wayland input mapping, and a PipeWire/dmabuf capture
-path. They have no committed fork schedule. Transport compatibility, compositor
-support and performance improvements need implementation and validation.
+Linux paired direct USB uses Android accessory transport without USB debugging.
+Windows ADB-free USB remains unsupported. Camera/audio transport capabilities
+and physical acceptance are documented separately in [camera](docs/cameras.md)
+and [audio](docs/audio.md) integration status. Broader Wayland input mapping and
+a PipeWire/dmabuf capture path remain proposals without a committed schedule.
 
 HDR is not implemented; the current capture path is 8-bit. An iPad client is
 also only a proposal and would need a supported transport, a native client,
