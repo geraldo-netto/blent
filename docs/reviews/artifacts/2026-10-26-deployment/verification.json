@@ -1,0 +1,27 @@
+{
+  "source_commit": "5c1986a94437f83791546848615d8507239366d6",
+  "profile": "release optimized",
+  "runtime_environment": {
+    "SPA_PLUGIN_DIR": "/home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files/lib/x86_64-linux-gnu/spa-0.2",
+    "PIPEWIRE_MODULE_DIR": "/home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files/lib/x86_64-linux-gnu/pipewire-0.3"
+  },
+  "scope": "Current local source release builds: Linux applications and C helpers; designated-key Android release. Existing external tools, libevdi and kernel configuration preserved.",
+  "application_code_commit": "65f636fc",
+  "sha256": {
+    "blent": "8ee34740ab5aec4e6b0b1f2557ea211396841ee175942e86823abac674ea3bb6",
+    "blent-audio": "23e6c96812a79b288a6fc4056bb96de863f64cf31052d3da58f35bbea77bcfa5",
+    "blent-gui": "4635ede60452341e20c1062ed2d30222986a34b8dd471ee357a4e92bf62f0b11",
+    "blent-usb-broker": "b17f821bf8328bd5acf193971b140c9c3234098fadeb3d0ba822b5b88d6a1fc9",
+    "blent-usb-io": "160c1695ec19b9488c054643cc29705d0bf2afede7592a26e7c8b1321487d286",
+    "evdi_helper": "6ad914cd455da34fe2b74cfc403ebc3ce1e2b6f931921b439f9afe9cc4d83c02"
+  },
+  "android_apk_sha256": "b78a6c2e65aa6e33e259eb73a7f4987a1d05477a2d2822db296f88af77ea87cc",
+  "verified_at": "2026-10-26T02:12:20.308151+01:00",
+  "verification": {
+    "linux_service": "active, 0 restarts",
+    "gui": "running, executable hash verified",
+    "android": "installed APK hash equals signed build; foreground activity; render callbacks observed",
+    "touch_pointer": "both mapped to DVI-I-2-1",
+    "cleanup": "obsolete standalone AppImage/launcher archived; temporary signing properties removed"
+  }
+}

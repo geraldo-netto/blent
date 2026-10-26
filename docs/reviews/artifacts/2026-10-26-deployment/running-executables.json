@@ -1,0 +1,27 @@
+[
+  {
+    "pid": 63572,
+    "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent",
+    "sha256": "8ee34740ab5aec4e6b0b1f2557ea211396841ee175942e86823abac674ea3bb6"
+  },
+  {
+    "pid": 63634,
+    "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent-usb-broker",
+    "sha256": "b17f821bf8328bd5acf193971b140c9c3234098fadeb3d0ba822b5b88d6a1fc9"
+  },
+  {
+    "pid": 63636,
+    "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent",
+    "sha256": "8ee34740ab5aec4e6b0b1f2557ea211396841ee175942e86823abac674ea3bb6"
+  },
+  {
+    "pid": 63725,
+    "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/evdi_helper",
+    "sha256": "6ad914cd455da34fe2b74cfc403ebc3ce1e2b6f931921b439f9afe9cc4d83c02"
+  },
+  {
+    "pid": 63968,
+    "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent-gui",
+    "sha256": "4635ede60452341e20c1062ed2d30222986a34b8dd471ee357a4e92bf62f0b11"
+  }
+]
