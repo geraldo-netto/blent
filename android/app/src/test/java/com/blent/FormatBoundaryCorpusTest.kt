@@ -20,18 +20,18 @@ class FormatBoundaryCorpusTest {
         }
     }
 
-    @Test fun t497_unknownCodecsAndInvalidLegacyDefaultsCannotProduceAFormat() {
-        assertNull(StreamFormat.read(JSONObject().put("codec", "unknown"), null, 1920, 1080, 60))
-        assertNull(StreamFormat.read(selection().put("codec", "hevc"), null, 1920, 1080, 60))
+    @Test fun t497_unknownCodecsAndInvalidFormatsCannotProduceAFormat() {
+        assertNull(StreamFormat.read(JSONObject().put("codec", "unknown"), null, 60))
+        assertNull(StreamFormat.read(selection().put("codec", "hevc"), null, 60))
         for (invalid in listOf(Int.MIN_VALUE, -1, 0, 1, 4097, Int.MAX_VALUE)) {
-            assertNull(StreamFormat.read(JSONObject(), null, 640, invalid, 60))
-            assertNull(StreamFormat.read(JSONObject(), DecoderFormat("video/avc", invalid, 480, 60), 0, 0, 60))
+            assertNull(StreamFormat.read(JSONObject().put("codec", "h264").put("video_width", 640).put("video_height", invalid), null, 60))
+            assertNull(StreamFormat.read(JSONObject(), DecoderFormat("video/avc", invalid, 480, 60), 60))
         }
         for (fps in listOf(Int.MIN_VALUE, -1, 0, 9, 91, Int.MAX_VALUE)) {
-            assertNull(StreamFormat.read(JSONObject(), null, 1920, 1080, fps))
+            assertNull(StreamFormat.read(JSONObject().put("codec", "h264").put("video_width", 640).put("video_height", 480), null, fps))
         }
         for (width in listOf(Int.MIN_VALUE, 0, 1, 4097, Int.MAX_VALUE)) {
-            assertEquals(1920, StreamFormat.read(JSONObject(), null, width, 0, 60)!!.width)
+            assertNull(StreamFormat.read(JSONObject().put("codec", "h264").put("video_width", width).put("video_height", 480), null, 60))
         }
     }
 

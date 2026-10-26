@@ -105,7 +105,7 @@ class StreamFormatTest {
         } finally { receiver.stop() }
     }
 
-    @Test fun t466_resizeAndReconnectRetireOldFormatWithLegacyFallback() {
+    @Test fun t466_resizeAndReconnectRejectMissingInitialDimensions() {
         Fixture().use { f ->
             f.greet()
             f.greet(1280, 800, 60)
@@ -113,10 +113,15 @@ class StreamFormatTest {
             assertEquals(800, f.receiver.formatHeight)
             val old = f.sockets.last()
             f.session.stop(); f.session.start()
+            val formats = mutableListOf<DecoderFormat?>()
+            val observer = f.capture.onStreamFormat!!
+            f.capture.onStreamFormat = { formats.add(it); observer(it) }
             f.sockets.last().greet("""{"codec":"h264","pen_only":true}""")
+            assertNull("T1262 incomplete greeting must not invent dimensions", formats.last())
+            f.greet(640, 400, 30)
             old.greet("""{"codec":"hevc","fps":90,"video_width":2000,"video_height":1000}""")
-            assertEquals("T466: legacy host uses native fallback, not previous connection format", 3840, f.receiver.formatWidth)
-            assertEquals(2160, f.receiver.formatHeight)
+            assertEquals("T466: stale greeting cannot replace current format", 640, f.receiver.formatWidth)
+            assertEquals(400, f.receiver.formatHeight)
             assertEquals("video/avc", f.receiver.mimeType)
         }
     }

@@ -37,7 +37,9 @@ cannot run. Encoder support must be checked on the actual machine.
 ## Negotiation
 
 Current display greetings include `video_width` and `video_height`: the requested
-encoded dimensions after stream scaling. A valid `decoder_protocol: 2` offer and
+encoded dimensions after stream scaling. Android requires these dimensions and
+codec in the initial greeting; only an established format can supply omitted
+fields in a later partial update. A valid `decoder_protocol: 2` offer and
 `decoder_scope`, together with `fps`, request an Android capability report:
 
 ```json

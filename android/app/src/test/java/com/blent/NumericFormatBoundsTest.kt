@@ -16,13 +16,24 @@ class NumericFormatBoundsTest {
 
     private fun selection(): JSONObject = JSONObject(javaClass.getResource("/decoder-selection.json")!!.readText())
 
+    @Test fun t1262InitialFormatRequiresCurrentCodecAndEncodedDimensions() {
+        val fields = listOf("codec", "video_width", "video_height")
+        for (mask in 0..6) {
+            val message = greeting()
+            fields.forEachIndexed { index, field -> if (mask and (1 shl index) == 0) message.remove(field) }
+            assertNull("T1262 missing initial fields mask=$mask", StreamFormat.read(message, null, 60))
+        }
+        val previous = DecoderFormat("video/hevc", 640, 480, 60)
+        assertEquals(previous.copy(fps = 30), StreamFormat.read(JSONObject().put("fps", 30), previous, 60))
+    }
+
     @Test fun t517_streamNumbersRejectLossyCoercionBeforeDecoderSetup() {
         for (field in listOf("video_width", "video_height", "fps")) {
             val normal = greeting().getInt(field)
             for (value in listOf<Any>(normal.toLong() + (1L shl 32), normal - (1L shl 32),
                 normal + 0.5, "$normal", JSONObject.NULL, Long.MIN_VALUE, Long.MAX_VALUE)) {
                 val message = greeting().put(field, value)
-                assertNull("T517 accepted $field=$value", StreamFormat.read(message, null, 1920, 1080, 60))
+                assertNull("T517 accepted $field=$value", StreamFormat.read(message, null, 60))
             }
         }
     }
@@ -46,17 +57,17 @@ class NumericFormatBoundsTest {
         }
     }
 
-    @Test fun t517_exactBoundariesAndLegacyDefaultsRemainUsable() {
+    @Test fun t517_exactBoundariesAndEstablishedPartialUpdatesRemainUsable() {
         for (dimension in listOf(2, 4096)) {
             val message = greeting().put("video_width", dimension.toDouble()).put("video_height", dimension)
-            assertEquals(dimension, StreamFormat.read(message, null, 0, 0, 60)!!.width)
+            assertEquals(dimension, StreamFormat.read(message, null, 60)!!.width)
         }
         for (fps in listOf(10, 90)) {
-            assertEquals(fps, StreamFormat.read(greeting().put("fps", fps), null, 0, 0, 60)!!.fps)
+            assertEquals(fps, StreamFormat.read(greeting().put("fps", fps), null, 60)!!.fps)
         }
         val previous = DecoderFormat("video/hevc", 1280, 800, 30)
-        assertEquals(previous, StreamFormat.read(JSONObject(), previous, 0, 0, 60))
-        assertEquals(DecoderFormat("video/avc", 1920, 1080, 60), StreamFormat.read(JSONObject(), null, 0, 0, 60))
+        assertEquals(previous, StreamFormat.read(JSONObject(), previous, 60))
+        assertNull(StreamFormat.read(JSONObject(), null, 60))
         for (rate in listOf(10, 180)) assertEquals(rate, DecoderSelectionJson.read(mutatedSelection("operating_rate", rate))!!.operatingRate)
         assertNull(DecoderSelectionJson.read(mutatedSelection("operating_rate", JSONObject.NULL))!!.operatingRate)
     }
@@ -67,7 +78,7 @@ class NumericFormatBoundsTest {
             val valid = random.nextInt(81) + 10
             val high = (random.nextInt(2047) + 1).toLong() shl 32
             for (number in listOf(high + valid, valid - high)) {
-                assertNull(StreamFormat.read(greeting().put("fps", number), null, 1920, 1080, 60))
+                assertNull(StreamFormat.read(greeting().put("fps", number), null, 60))
                 assertThrows(IllegalArgumentException::class.java) {
                     DecoderSelectionJson.read(mutatedSelection("operating_rate", number))
                 }

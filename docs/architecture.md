@@ -688,7 +688,7 @@ The first message is `{"type":"auth","token":"…"}` when authentication is
 required. A representative host greeting is valid JSON:
 
 ```json
-{"status":"connected","width":2960,"height":1848,"fps":60,"codec":"h264","pen_only":false,"touch":true,"pen":true}
+{"status":"connected","width":2960,"height":1848,"video_width":2960,"video_height":1848,"fps":60,"codec":"h264","pen_only":false,"touch":true,"pen":true}
 ```
 
 The server sends `status: "mode"` for subsequent mode/settings notifications.
@@ -698,10 +698,10 @@ Android validates codec, encoded dimensions and FPS as one control format for
 both capability queries and decoder setup. A format change retires the old
 receiver generation before publishing all fields and restarting. Native panel
 updates do not overwrite the negotiated size, and queued greetings from retired
-control connections cannot apply it. Older hosts that omit both encoded fields
-retain the native-panel hint (1920×1080 when unavailable); they receive no new
-capability query. Explicitly malformed formats stop video instead of configuring
-an unsupported size. VP9/AV1 also retain their framed configuration headers.
+control connections cannot apply it. Initial greetings must provide codec and
+both encoded dimensions; missing fields stop video instead of inventing a size.
+Partial updates may retain fields from an established valid format. Explicitly
+malformed formats stop video instead of configuring an unsupported size. VP9/AV1 also retain their framed configuration headers.
 
 `codec` is `h264`, `hevc`, `vp9` or `av1`; FPS is omitted if no shared settings source exists.
 `width` and `height` describe the requested virtual-display geometry before

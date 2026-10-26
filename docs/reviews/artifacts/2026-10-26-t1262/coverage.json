@@ -1,0 +1,236 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/StreamFormat.kt",
+    "name": "read",
+    "line": 7,
+    "language": "kotlin",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/StreamFormat.kt",
+        "owner": "com/blent/StreamFormat",
+        "name": "read",
+        "signature": "(Lorg/json/JSONObject;Lcom/blent/DecoderFormat;I)Lcom/blent/DecoderFormat;",
+        "line": 7,
+        "covered": 11,
+        "total": 11
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/StreamFormat.kt",
+    "name": "dimensions",
+    "line": 19,
+    "language": "kotlin",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/StreamFormat.kt",
+        "owner": "com/blent/StreamFormat",
+        "name": "dimensions",
+        "signature": "(Lorg/json/JSONObject;Lcom/blent/DecoderFormat;)Lkotlin/Pair;",
+        "line": 21,
+        "covered": 8,
+        "total": 8
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+    "name": "<init>",
+    "line": 31,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/RejectedStreamSettings",
+        "name": "<init>",
+        "signature": "(Ljava/lang/String;IILcom/blent/ControlNotice;)V",
+        "line": 31,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+    "name": "<init>",
+    "line": 33,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession$wsListener$1",
+        "name": "<init>",
+        "signature": "(Lcom/blent/ControlSession;)V",
+        "line": 144,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession",
+        "name": "<init>",
+        "signature": "(Ljava/lang/Object;Lcom/blent/ControlInputState;Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;)V",
+        "line": 34,
+        "covered": 22,
+        "total": 22
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession",
+        "name": "<init>",
+        "signature": "(Ljava/lang/Object;Lcom/blent/ControlInputState;Lokhttp3/WebSocket$Factory;JJLkotlin/jvm/functions/Function4;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+        "line": 34,
+        "covered": 5,
+        "total": 5
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession$CapabilityRequest",
+        "name": "<init>",
+        "signature": "(Lkotlin/Triple;Ljava/lang/String;)V",
+        "line": 77,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+    "name": "<init>",
+    "line": 77,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession$CapabilityRequest",
+        "name": "<init>",
+        "signature": "(Lkotlin/Triple;Ljava/lang/String;)V",
+        "line": 77,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+    "name": "<init>",
+    "line": 144,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession$wsListener$1",
+        "name": "<init>",
+        "signature": "(Lcom/blent/ControlSession;)V",
+        "line": 144,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+    "name": "receiveControl",
+    "line": 212,
+    "language": "kotlin",
+    "covered": 14,
+    "total": 14,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession",
+        "name": "receiveControl",
+        "signature": "(Lokhttp3/WebSocket;Lorg/json/JSONObject;)V",
+        "line": 214,
+        "covered": 14,
+        "total": 14
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+    "name": "resetGreeting",
+    "line": 274,
+    "language": "kotlin",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession",
+        "name": "resetGreeting",
+        "signature": "()V",
+        "line": 275,
+        "covered": 15,
+        "total": 15
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+    "name": "applyDecoderGreeting",
+    "line": 381,
+    "language": "kotlin",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/ControlSession.kt",
+        "owner": "com/blent/ControlSession",
+        "name": "applyDecoderGreeting",
+        "signature": "(Lorg/json/JSONObject;)V",
+        "line": 382,
+        "covered": 9,
+        "total": 9
+      }
+    ]
+  }
+]

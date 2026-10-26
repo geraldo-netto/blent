@@ -614,7 +614,7 @@ class RegressionTest {
         set(activity, "started", true)
         val listener = get(capture, "wsListener") as WebSocketListener
         try {
-            listener.onMessage(socket, """{"fps":30}""")
+            listener.onMessage(socket, """{"codec":"h264","video_width":640,"video_height":480,"fps":30}""")
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
             assertEquals(30, receiver.streamFps)
             listener.onMessage(socket, """{"fps":90}""")

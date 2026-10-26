@@ -79,7 +79,6 @@ internal class ControlSession(
     private var capabilityScope: String? = null
     private var streamFormat: DecoderFormat? = null
     private var formatReceived = false
-    private var encodedDimensionsKnown = false
 
     /** Set from the host's greeting: it is using us as a graphics tablet for
      *  its own screen, so no video will arrive and none should be waited for. */
@@ -222,7 +221,7 @@ internal class ControlSession(
         applyVideoGreeting(message)
         applyCapabilityGreeting(message)
         applyDecoderGreeting(message)
-        requestDecoderCapabilities(source, streamFormat.takeIf { encodedDimensionsKnown })
+        requestDecoderCapabilities(source, streamFormat)
         applyModeGreeting(message)
         acceptGreeting(message)
         // Fresh authentication can now admit otherwise eligible retained intent.
@@ -285,7 +284,6 @@ internal class ControlSession(
         capabilityScope = null
         streamFormat = null
         formatReceived = false
-        encodedDimensionsKnown = false
         connection.value = ControlConnection()
         authenticatedControl.value = false
     }
@@ -382,8 +380,7 @@ internal class ControlSession(
 
     private fun applyDecoderGreeting(o: JSONObject) {
         if (formatReceived && listOf("codec", "fps", "video_width", "video_height").none(o::has)) return
-        if (o.has("video_width") || o.has("video_height")) encodedDimensionsKnown = true
-        streamFormat = StreamFormat.read(o, streamFormat, nativeWidth, nativeHeight,
+        streamFormat = StreamFormat.read(o, streamFormat,
             pendingConfig?.optInt("fps") ?: Prefs.DEFAULT_FPS)
         formatReceived = true
         onStreamFormat?.invoke(streamFormat)

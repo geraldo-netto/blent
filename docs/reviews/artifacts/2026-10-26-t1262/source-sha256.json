@@ -1,0 +1,8 @@
+{
+  "android/app/src/main/java/com/blent/StreamFormat.kt": "d85dae79fdf623f0e8f75a33c5fe3f4cce53e40f50618fc70b8609a483d84b93",
+  "android/app/src/main/java/com/blent/ControlSession.kt": "5aec1bb94e5ef785f7903247fbb0aa95ea2bf1c2e72f6d6e4543fb8b3459c9be",
+  "android/app/src/test/java/com/blent/NumericFormatBoundsTest.kt": "f06804d271e35f51dc346bab352d579b2d047bfcb52411062af1bcb05f976f8a",
+  "android/app/src/test/java/com/blent/FormatBoundaryCorpusTest.kt": "ac97b476a609c394e337a9cafdc217912740b4480676961f6af76e920285146d",
+  "android/app/src/test/java/com/blent/StreamFormatTest.kt": "cfbcdc6a436e843cf409d4c47872c420b3728b7d5a0e6c796e66b66f6f868fa1",
+  "android/app/src/test/java/com/blent/RegressionTest.kt": "555f3bb6a74164afd9c5a300fa4fe33585b439ddac97322ec4d170ef13ca05c5"
+}
