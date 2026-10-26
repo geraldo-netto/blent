@@ -7,7 +7,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.json.JSONObject
+import android.util.JsonReader
+import android.util.JsonToken
+import java.io.StringReader
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -54,7 +56,7 @@ private class HttpReleaseCall(
     }
     private fun newer(response: Response): String? {
         if (!response.isSuccessful) return null
-        val tag = JSONObject(boundedBody(response) ?: return null).optString("tag_name")
+        val tag = releaseTag(boundedBody(response) ?: return null) ?: return null
         return if (UpdateCheck.isNewer(tag, current)) tag.trim().removePrefix("v") else null
     }
     // The response callback owns the original source until response.use closes
@@ -72,4 +74,23 @@ private class HttpReleaseCall(
         return source.buffer.readByteArray().toResponseBody(body.contentType()).string()
     }
 
+}
+
+/** Parse a complete strict JSON object; unknown fields do not change the tag. */
+private fun releaseTag(text: String): String? = JsonReader(StringReader(text)).use { reader ->
+    reader.beginObject()
+    var tag: String? = null
+    while (reader.hasNext()) {
+        if (reader.nextName() == "tag_name") tag = stringValue(reader)
+        else reader.skipValue()
+    }
+    reader.endObject()
+    require(reader.peek() == JsonToken.END_DOCUMENT) { "Trailing release metadata" }
+    tag
+}
+
+private fun stringValue(reader: JsonReader): String? {
+    if (reader.peek() == JsonToken.STRING) return reader.nextString()
+    reader.skipValue()
+    return null
 }

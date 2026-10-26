@@ -1,0 +1,71 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+    "name": "newer",
+    "line": 57,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+        "owner": "com/blent/HttpReleaseCall",
+        "name": "newer",
+        "signature": "(Lokhttp3/Response;)Ljava/lang/String;",
+        "line": 58,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+    "name": "releaseTag",
+    "line": 79,
+    "language": "kotlin",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+        "owner": "com/blent/HttpReleaseChecksKt",
+        "name": "releaseTag",
+        "signature": "(Ljava/lang/String;)Ljava/lang/String;",
+        "line": 80,
+        "covered": 10,
+        "total": 10
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+    "name": "stringValue",
+    "line": 92,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/HttpReleaseChecks.kt",
+        "owner": "com/blent/HttpReleaseChecksKt",
+        "name": "stringValue",
+        "signature": "(Landroid/util/JsonReader;)Ljava/lang/String;",
+        "line": 93,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  }
+]

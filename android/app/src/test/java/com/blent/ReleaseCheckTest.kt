@@ -198,9 +198,9 @@ class ReleaseCheckTest {
             okhttp3.Response.Builder().request(chain.request()).protocol(okhttp3.Protocol.HTTP_1_1)
                 .code(200).message("fixture").body(body).build()
         }.build()
-        fun result(limit: Int = 256 * 1024): String {
+        fun result(limit: Int = 256 * 1024, current: String = "1.0.0"): String {
             val result = java.util.concurrent.ArrayBlockingQueue<String>(2)
-            val call = HttpReleaseChecks("http://localhost/release", client, maxResponseBytes = limit).newCall("1.0.0")
+            val call = HttpReleaseChecks("http://localhost/release", client, maxResponseBytes = limit).newCall(current)
             try {
                 call.start { result.add(it ?: "none") }
                 return result.poll(2, TimeUnit.SECONDS) ?: error("T804: callback absent")
@@ -212,6 +212,28 @@ class ReleaseCheckTest {
             client.connectionPool.evictAll()
             assertTrue("T804: response body leaked", closed)
         }
+    }
+
+    @Test fun t1265SharedReleaseResponseCorpusRejectsMalformedDocuments() {
+        val lines = checkNotNull(javaClass.getResourceAsStream("/release-responses.tsv"))
+            .bufferedReader().use { it.readLines() }
+        for (line in lines) {
+            val fields = line.split('\t')
+            val expected = fields[2].takeUnless { it == "-" } ?: "none"
+            BodyFixture(fields[0].toByteArray(), -1).use {
+                assertEquals("T1265 $line", expected, it.result(current = "1.2.3"))
+            }
+        }
+    }
+
+    @Test fun t1265StrictDocumentBoundsAndUnknownFields() {
+        val invalid = listOf("{tag_name:'v9.0.0'}", "{\"tag_name\":\"v9.0.0\",}",
+            "{\"tag_name\":\"v9.0.0\"} null", "/*comment*/{\"tag_name\":\"v9.0.0\"}")
+        for (text in invalid) BodyFixture(text.toByteArray(), -1).use {
+            assertEquals("T1265 $text", "none", it.result())
+        }
+        val valid = """ {"unknown":[true,null,{"x":2}],"tag_name":"v9.0.0"} """
+        BodyFixture(valid.toByteArray(), -1).use { assertEquals("9.0.0", it.result()) }
     }
 
     @Test fun t804_oversizedKnownAndUnknownBodiesRejectBeforeJsonMaterialization() {
