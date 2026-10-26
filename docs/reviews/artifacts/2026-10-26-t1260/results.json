@@ -1,0 +1,41 @@
+{
+  "issue": "T1260",
+  "native_validation": {
+    "linux": true,
+    "windows": "cross-compilation only; native execution/counters blocked under T1266",
+    "other_platforms": "no native completion claim"
+  },
+  "tests": {
+    "common": {
+      "passed": 408,
+      "failed": 0
+    },
+    "gui": {
+      "passed": 117,
+      "failed": 0
+    },
+    "host_all_feature_selected": {
+      "passed": 1462,
+      "failed": 1,
+      "existing_ignored_benchmarks": 5,
+      "followup": "T1267"
+    },
+    "host_entire_blent_bin_retry": {
+      "passed": 392,
+      "failed": 0,
+      "existing_ignored_benchmarks": 2
+    }
+  },
+  "coverage": {
+    "linux_shared_functions": 11,
+    "minimum_percent": 88.88888888888889,
+    "windows": "unmeasured, T1266"
+  },
+  "tools": {
+    "rustc": "1.98.1",
+    "cargo-llvm-cov": "0.8.7",
+    "llvm": "22.1.8-rust-1.98.1-stable",
+    "complexity": "scripts/complexity/check.py; locked syn 2.0.119"
+  },
+  "network_transfers": false
+}

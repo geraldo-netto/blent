@@ -1,0 +1,7 @@
+{
+  "common/src/retirement_work/native/linux.rs": "c574f168f59752a632b1d45540abaf92a474ae48127327e4fe3c7007d5b053f1",
+  "common/src/retirement_work/native/windows.rs": "b60fba2b24fe50abfd0edf4b1649cd919f8c33495049647fd8a2e12bc63f3f67",
+  "common/src/retirement_work/native.rs": "f5bc4a5bd1bfc5567012a6f474b2088aeb44bb521ca427cc914079e7ee20a59e",
+  "common/src/retirement_work/tests.rs": "17f9564b67061a758211bbb9e273733cb6ea7b570ee6c1f65f29c698b67d0b85",
+  "common/src/retirement_work.rs": "32e455a74c0a295df21d24bf351f425227ef64ff25881afc8018270e251f7a73"
+}
