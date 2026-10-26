@@ -10,6 +10,9 @@ use std::sync::{
     Mutex,
 };
 
+mod listener_fixture;
+use listener_fixture::Reservation;
+
 fn peer(id: u64) -> PeerId {
     PeerId::parse(format!("{id:064x}")).unwrap()
 }
@@ -57,12 +60,15 @@ impl Fixture {
         state.config.extra.max_tablets = capacity;
         let (shutdown, receiver) = watch::channel(false);
         state.config.extra.shutdown_rx = receiver;
+        let reservation = Reservation::allocate(capacity);
+        let ports = reservation.ports;
+        let reserved_extra = reservation.release_primary();
         let prepared = session::Spec {
             capture: capture::CaptureConfig {
                 helper_path: "/missing-t908-helper".into(),
                 ..Default::default()
             },
-            ports: (0, 0),
+            ports,
             token: None,
             devices: (false, false, false),
         }
@@ -103,6 +109,7 @@ impl Fixture {
         )
         .unwrap();
         state.config.usb = Some(native);
+        drop(reserved_extra);
         Self {
             state,
             runtime,
@@ -156,6 +163,18 @@ impl Fixture {
             let result = tokio::time::timeout(Duration::from_secs(2), native.next())
                 .await
                 .unwrap();
+            if let Some(Ok((admission, Err(error)))) = &result {
+                eprintln!(
+                    "USB fixture startup instance {} on {:?}: {error:#}",
+                    admission.instance(),
+                    config::slot_ports(
+                        self.state.config.ports.0,
+                        self.state.config.ports.1,
+                        self.state.config.extra.max_tablets
+                    )
+                    .unwrap()
+                );
+            }
             self.state.usb_completed(result);
             break;
         }
