@@ -5,6 +5,7 @@
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
 | T1267 | open | medium | small | Diagnose intermittent native USB-startup test failure observed during T1260 verification. The final all-feature host run fails monitor::usb_display::tests::t908_stuck_startup_does_not_stall_another_peer_and_late_cancel_is_owned at tests.rs:459 because peer(2) has no slot after another startup completes; prior identical cohorts and an unchanged full 392-test binary rerun pass. Cause is not established. Preserve the original assertions and determine the failed startup result, including derived-port reservation and resource admission. Record a deterministic regression with any confirmed fix; resolve only after the original case and relevant cohort pass with the cause explained. Evidence: docs/reviews/artifacts/2026-10-26-t1260/host-first-final.log.gz. |
+| T1268 | open | medium | medium | Review the host UI and propose a revamp, requested by the owner on 2026-10-26. Inspect gui/ and the running application for clarity of connection/device status, navigation, controls, feedback, errors and visual consistency. Complete with an evidence-backed review and a concrete proposed design; give independently verifiable implementation outcomes their own dependent TODO IDs, identifying any owner decisions before implementation. Keep this review and proposal together as one cohesive design outcome; this tracking request does not approve a particular redesign. |
 
 
 ## Other items
