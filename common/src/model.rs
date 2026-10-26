@@ -143,8 +143,7 @@ pub struct FileConfig {
     /// sent any video or allowed to inject input. Protected ADB broadcasts
     /// deliver the token without launching the app. Without this, any local process —
     /// or any other app on the tablet — could connect to the loopback ports,
-    /// read the screen and drive the mouse. Off only if you need an app
-    /// older than 1.1.0 to keep working.
+    /// read the screen and drive the mouse. Keep authentication enabled.
     pub require_token: bool,
     /// Ask GitHub once a day whether a newer release exists, and say so in
     /// the tray and in `blent doctor`. Nothing is ever downloaded or

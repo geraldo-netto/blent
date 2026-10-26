@@ -732,8 +732,8 @@ impl App {
             ui.checkbox(&mut self.cfg.require_token, "Require the session token");
             ui.label(
                 egui::RichText::new(
-                    "Off only for an app older than 1.1.0. Without it any local process \
-                 can read the screen and inject input.",
+                    "Keep enabled. Disabling token authentication allows local processes \
+                 to read the screen and inject input.",
                 )
                 .small()
                 .weak(),
