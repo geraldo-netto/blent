@@ -6,23 +6,28 @@ import kotlinx.coroutines.*
  * Ownership completion and ordered data must use their own contracts. */
 internal class LatestDispatch(private val scope: CoroutineScope, private val reportFailure: (Exception) -> Unit) {
     private var owner: Any? = null
-    private var pending: (() -> Unit)? = null
+    private class Pending(val action: () -> Unit) { val identity = Any() }
+    private var pending: Pending? = null
     @Volatile var failure: Exception? = null
         private set
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun submit(action: () -> Unit) {
         val token = synchronized(this) {
-            pending = action
+            val next = Pending(action)
+            pending = next
             if (owner != null) return
-            Any().also { owner = it }
+            next.identity.also { owner = it }
         }
-        // ATOMIC guarantees finally clears admission even if cancellation wins
+        launchDrain(token)
+    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun launchDrain(token: Any) {
+        // ATOMIC guarantees finally settles admission even if cancellation wins
         // before the dispatcher starts this job. No native work happens here.
         scope.launch(start = CoroutineStart.ATOMIC) {
             try { drain(token) }
             catch (error: Exception) { if (error !is CancellationException) failed(error) }
-            finally { finish(token) }
+            finally { finish(token)?.let(::launchDrain) }
         }
     }
     /** Discard replaceable observations; keep the single scheduled admission. */
@@ -41,11 +46,17 @@ internal class LatestDispatch(private val scope: CoroutineScope, private val rep
         val next = pending
         pending = null
         if (next == null) owner = null
-        return next
+        return next?.action
     }
-    @Synchronized private fun finish(token: Any) {
-        if (owner !== token) return
-        owner = null; pending = null
+    @Synchronized private fun finish(token: Any): Any? {
+        if (owner !== token) return null
+        // A cancelled drain may discard its own observation, never a newer one.
+        // Transfer admission under the same lock so a concurrent submit cannot
+        // be overwritten by a delayed restart. Tokens retain no borrowed view.
+        val next = pending?.takeIf { it.identity !== token && scope.isActive }
+        pending = next
+        owner = next?.identity
+        return owner
     }
     private fun failed(error: Exception) {
         failure = error

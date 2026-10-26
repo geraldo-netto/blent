@@ -1,0 +1,277 @@
+[
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "<init>",
+    "line": 5,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "<init>",
+        "signature": "(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)V",
+        "line": 7,
+        "covered": 1,
+        "total": 1
+      },
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch$Pending",
+        "name": "<init>",
+        "signature": "(Lkotlin/jvm/functions/Function0;)V",
+        "line": 9,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "<init>",
+    "line": 9,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch$Pending",
+        "name": "<init>",
+        "signature": "(Lkotlin/jvm/functions/Function0;)V",
+        "line": 9,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "submit",
+    "line": 14,
+    "language": "kotlin",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "submit",
+        "signature": "(Lkotlin/jvm/functions/Function0;)V",
+        "line": 15,
+        "covered": 7,
+        "total": 7
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "<lambda>",
+    "line": 15,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "source lines with all instructions covered (conservative fallback)"
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "<lambda>",
+    "line": 19,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "source lines with all instructions covered (conservative fallback)"
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "launchDrain",
+    "line": 23,
+    "language": "kotlin",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "launchDrain",
+        "signature": "(Ljava/lang/Object;)V",
+        "line": 27,
+        "covered": 2,
+        "total": 2
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "<lambda>",
+    "line": 27,
+    "language": "kotlin",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch$launchDrain$1",
+        "name": "invokeSuspend",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 28,
+        "covered": 4,
+        "total": 4
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "clear",
+    "line": 33,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "clear",
+        "signature": "()V",
+        "line": 34,
+        "covered": 1,
+        "total": 1
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "drain",
+    "line": 36,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "drain",
+        "signature": "(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;",
+        "line": 37,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "take",
+    "line": 44,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "take",
+        "signature": "(Ljava/lang/Object;)Lkotlin/jvm/functions/Function0;",
+        "line": 45,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "finish",
+    "line": 51,
+    "language": "kotlin",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "finish",
+        "signature": "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "line": 52,
+        "covered": 5,
+        "total": 5
+      }
+    ]
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "<lambda>",
+    "line": 56,
+    "language": "kotlin",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "source lines with all instructions covered (conservative fallback)"
+  },
+  {
+    "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+    "name": "failed",
+    "line": 61,
+    "language": "kotlin",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "evidence": "JaCoCo method line counters; every mapped variant must pass",
+    "variants": [
+      {
+        "file": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+        "owner": "com/blent/LatestDispatch",
+        "name": "failed",
+        "signature": "(Ljava/lang/Exception;)V",
+        "line": 62,
+        "covered": 3,
+        "total": 3
+      }
+    ]
+  }
+]

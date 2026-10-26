@@ -8,9 +8,10 @@ import kotlin.coroutines.CoroutineContext
 
 class StatusDispatchTest {
     private class Queued : CoroutineDispatcher() {
-        val pending = ArrayDeque<Runnable>()
-        override fun dispatch(context: CoroutineContext, block: Runnable) { pending.add(block) }
-        fun drain() { var budget = 30000; while (pending.isNotEmpty()) { check(budget-- > 0); pending.removeFirst().run() } }
+        val pending = ArrayDeque<Pair<CoroutineContext, Runnable>>()
+        override fun dispatch(context: CoroutineContext, block: Runnable) { pending.add(context to block) }
+        fun cancelFirst() { pending.first().first[Job]!!.cancel() }
+        fun drain() { var budget = 30000; while (pending.isNotEmpty()) { check(budget-- > 0); pending.removeFirst().second.run() } }
     }
     @Test fun t830_audioStatusBurstRetainsOnePendingDispatchAndLatestGeneration() {
         val dispatcher = Queued()
@@ -71,6 +72,36 @@ class StatusDispatchTest {
         immediate.submit { error("same exception") }
         assertEquals(0, immediate.failure!!.suppressed.size)
         direct.cancel()
+    }
+
+    @Test fun t1263CancelledDrainCannotDiscardNewerObservation() {
+        for (count in listOf(1, 2, 1000)) {
+            val dispatcher = Queued()
+            val scope = CoroutineScope(SupervisorJob() + dispatcher)
+            val latest = LatestDispatch(scope) { throw it }
+            var observed = -1
+            try {
+                latest.submit { error("T1263 rejected original action ran") }
+                dispatcher.cancelFirst()
+                repeat(count) { value -> latest.submit { observed = value } }
+                assertEquals("T1263 more than one pending drain", 1, dispatcher.pending.size)
+                dispatcher.drain()
+                assertEquals("T1263 newer observation lost during cancelled drain cleanup", count - 1, observed)
+                assertTrue(dispatcher.pending.isEmpty())
+            } finally { scope.cancel(); dispatcher.drain() }
+        }
+    }
+
+    @Test fun t1263ClearAndScopeCancellationCutOffQueuedReplacement() {
+        val dispatcher = Queued()
+        val scope = CoroutineScope(SupervisorJob() + dispatcher)
+        val latest = LatestDispatch(scope) { throw it }
+        try {
+            latest.submit { error("T1263 cancelled original") }; dispatcher.cancelFirst()
+            latest.submit { error("T1263 cleared replacement") }; latest.clear(); dispatcher.drain()
+            latest.submit { error("T1263 stopped owner") }; scope.cancel(); dispatcher.drain()
+            assertTrue(dispatcher.pending.isEmpty())
+        } finally { scope.cancel(); dispatcher.drain() }
     }
 
     private fun injectFailure(binding: Any) {
