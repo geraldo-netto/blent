@@ -1,0 +1,12 @@
+2026-10-21T19:29:37.148595+00:00 connector {"status": "connected", "enabled": "enabled", "dpms": "On"}
+2026-10-21T19:29:37.150985+00:00 drm
+monitor will print the received events for:
+2026-10-21T19:29:37.151013+00:00 drm
+KERNEL - the kernel uevent
+
+2026-10-21T19:30:40.773761+00:00 randr
+
+RRNotify event, serial 18, synthetic NO, window 0x451,
+2026-10-21T19:30:40.795768+00:00 randr
+    subtype XRROutputPropertyChangeNotifyEvent
+    output HDMI-A-1, property max bpc, timestamp 1273453, state NewValue

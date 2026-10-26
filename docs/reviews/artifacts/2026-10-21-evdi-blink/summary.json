@@ -1,0 +1,92 @@
+{
+  "recorded_utc": "2026-10-21T19:24:12.168622+00:00",
+  "owner_symptom": "physical AOC PC monitor blinking; exact blink type/timing pending",
+  "current_host": {
+    "kernel": "7.0.0-38-generic",
+    "loaded_evdi_srcversion": "C477D84009DFBE1A8FCE08C",
+    "signer": "Canonical Ltd. Kernel Module Signing",
+    "secure_boot": "SecureBoot enabled",
+    "lockdown": "none [integrity] confidentiality",
+    "root_debugfs_obstacle": "sudo: a password is required",
+    "physical_output": "HDMI-A-1,AOC U27B3A,AMD Radeon610M,3840x2160@60",
+    "link_status": "Good",
+    "blent_service": "active"
+  },
+  "local_module": {
+    "path": "/backups/disk2/blent-work/2026-10-19-evdi-check/next-items/module/evdi.ko",
+    "sha256": "3fdbf95797bcddd3975ef35cadec98b671e2347dbb1c9e2163404af342238728",
+    "source": "/backups/disk2/blent-work/2026-10-19-evdi-check/next-items",
+    "commit": "a43bc15e0d3d11ffcba30990b50a63e3f6f0ee98",
+    "includes_preexisting_fixes": [
+      "c9af4f9 plane-allocation cleanup",
+      "a5d83dd retain ready request on allocation failure"
+    ],
+    "host_build": "pass; matching7.0.0-38 headers; no installation",
+    "runtime": "not loaded; unsigned; no already trusted signing route established"
+  },
+  "native_verification": {
+    "scope": "Linux6.15 isolated KVM guest; cached build source hashes/configuration match local fixed source",
+    "suites": [
+      {
+        "suite": "drm_evdi_hotplug_tests",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "total": 2
+      },
+      {
+        "suite": "drm_evdi_vblank_delivery",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "total": 1
+      },
+      {
+        "suite": "drm_evdi_disconnect_events",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "total": 1
+      },
+      {
+        "suite": "drm_evdi_plane_cleanup",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "total": 1
+      },
+      {
+        "suite": "drm_evdi_update_ready_retry",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0,
+        "total": 4
+      }
+    ],
+    "diagnostics": [],
+    "completion_markers": true,
+    "selected_fix_functions_coverage": "3/3 functions at100%; not whole-module coverage",
+    "complexity": "Lizard1.23.0 selected production/regression functions all<=4",
+    "raw_artifacts": "/backups/disk2/blent-work/2026-10-21-evdi-blink/native",
+    "progress": "five completed suites,9/9 cases; no elapsed execution cutoff"
+  },
+  "passive_observation": {
+    "duration_seconds": 45,
+    "randr_events": 0,
+    "drm_uevents": 0,
+    "visible_blink_timestamp": null,
+    "interpretation": "inconclusive without matched visible blink"
+  },
+  "limits": [
+    "No causal link established between EVDI warnings and AOC blinking.",
+    "One AMD CRTC timeout occurs at boot before Blent starts; does not establish ongoing blink cause.",
+    "Local source fixes address plane leaks and conditional update-event allocation loss; neither removes idle/watchdog warnings nor proves physical monitor fix.",
+    "Existing dirty ../evdi changes preserved; no new behavioral fix, host settings, module reload, enrollment or network transfer.",
+    "Native guest counters and historical sanitizers do not establish physical AOC acceptance or unrestricted native lifetime safety."
+  ],
+  "subsequent_evidence": {
+    "reported_blank": "reported-blank.json",
+    "temporary_depth_trial": "depth-trial.json",
+    "note": "Initial snapshot above predates owner report and reversible HDMI cap; see subsequent evidence for current trial state."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "tool": "gcov (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "scope": "three pre-existing local fixes; Linux6.15 guest counters, not full module coverage",
+  "functions": [
+    {
+      "function": "evdi_painter_send_update_ready",
+      "file": "../drivers/gpu/drm/evdi/evdi_painter.c",
+      "covered": 5,
+      "total": 5,
+      "missing": []
+    },
+    {
+      "function": "evdi_painter_send_update_ready_if_needed",
+      "file": "../drivers/gpu/drm/evdi/evdi_painter.c",
+      "covered": 10,
+      "total": 10,
+      "missing": []
+    },
+    {
+      "function": "evdi_plane_destroy",
+      "file": "../drivers/gpu/drm/evdi/evdi_modeset.c",
+      "covered": 4,
+      "total": 4,
+      "missing": []
+    }
+  ]
+}

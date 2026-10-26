@@ -1,0 +1,71 @@
+// T1255: read-only attribution; stop with Ctrl+C after a reported blank.
+// bpftrace owns all probe attachments; process exit detaches them. No pins,
+// retained pointer maps, display writes, signal injection or driver changes.
+// Kernel BTF and privileged tracing are required. Lockdown may reject tracing.
+// Raw X11 clients bypassing libXrandr are outside the userspace probe scope.
+
+BEGIN
+{
+    printf("READY: read-only probe trace. Stop with Ctrl+C after next blank.\n");
+}
+
+uprobe:/lib/x86_64-linux-gnu/libXrandr.so.2:XRRGetScreenResources
+{
+    time("%H:%M:%S ");
+    printf("RANDR_REFRESH pid=%d tid=%d comm=%s mono_ns=%llu\n",
+           pid, tid, comm, nsecs);
+}
+
+kprobe:drm_mode_getconnector
+{
+    $device = (struct drm_device *)arg0;
+    $query = (struct drm_mode_get_connector *)arg1;
+    time("%H:%M:%S ");
+    printf("GETCONNECTOR pid=%d tid=%d comm=%s card=%d driver=%s connector=%u mode_capacity=%u mono_ns=%llu\n",
+           pid, tid, comm, $device->primary->index,
+           str($device->driver->name), $query->connector_id,
+           $query->count_modes, nsecs);
+}
+
+kprobe:drm_helper_probe_detect
+{
+    $connector = (struct drm_connector *)arg0;
+    $device = $connector->dev;
+    time("%H:%M:%S ");
+    printf("DETECT pid=%d tid=%d comm=%s card=%d driver=%s connector=%u force=%d mono_ns=%llu\n",
+           pid, tid, comm, $device->primary->index,
+           str($device->driver->name), $connector->base.id, arg2, nsecs);
+}
+
+kprobe:drm_kms_helper_hotplug_event
+{
+    $device = (struct drm_device *)arg0;
+    time("%H:%M:%S ");
+    printf("HOTPLUG pid=%d tid=%d comm=%s card=%d driver=%s mono_ns=%llu\n",
+           pid, tid, comm, $device->primary->index,
+           str($device->driver->name), nsecs);
+}
+
+kprobe:drm_mode_setcrtc
+{
+    $device = (struct drm_device *)arg0;
+    time("%H:%M:%S ");
+    printf("SETCRTC pid=%d tid=%d comm=%s card=%d driver=%s mono_ns=%llu\n",
+           pid, tid, comm, $device->primary->index,
+           str($device->driver->name), nsecs);
+}
+
+kprobe:drm_connector_set_link_status_property
+{
+    $connector = (struct drm_connector *)arg0;
+    $device = $connector->dev;
+    time("%H:%M:%S ");
+    printf("LINK_STATUS pid=%d tid=%d comm=%s card=%d driver=%s connector=%u status=%d mono_ns=%llu\n",
+           pid, tid, comm, $device->primary->index,
+           str($device->driver->name), $connector->base.id, arg1, nsecs);
+}
+
+END
+{
+    printf("STOPPED: trace attachments released when bpftrace exits.\n");
+}

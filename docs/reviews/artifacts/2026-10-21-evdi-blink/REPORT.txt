@@ -1,0 +1,86 @@
+2026-10-21 local EVDI / physical AOC investigation (T1255; T748)
+
+Result: not fixed or attributed. No production behavior or desktop setting changed.
+The owner identified the physical AOC monitor; blackout versus image flicker,
+connection timing and a matched visible-blink timestamp remain unanswered.
+
+Prepared source: the existing fix/evdi-next worktree of ../evdi at a43bc15.
+This retains previously committed plane cleanup c9af4f9 and conditional ready-event
+allocation retry a5d83dd. No new source fix was invented from warning counts.
+The original ../evdi worktree and all six existing dirty paths remain untouched.
+The fresh unsigned module is recorded by absolute path and SHA-256 in summary.json.
+Build command: make -C /lib/modules/7.0.0-38-generic/build
+M=/backups/disk2/blent-work/2026-10-19-evdi-check/next-items/module -j8 modules
+
+The cached Linux 6.15 KUnit build matches the fixed worktree's recorded source
+hashes and build configuration. A fresh KVM guest ran five suites / nine cases;
+each case and each suite completed, no test skipped, no diagnostic reported.
+The guest had no outer elapsed-time cutoff or guest wall-clock watchdog.
+Selected production native gcov 13.3.0 counters: ready-event send 5/5,
+conditional send 10/10, plane destroy 4/4. Lizard 1.23.0 reports each selected
+production/test function at <=4. These are scoped results, not a whole-driver
+coverage/sanitizer pass or native 7.0/AOC acceptance. Existing historical native
+red/green and sanitizer evidence is retained in the October 19 worktree/artifacts.
+
+Lifetime scope: no new production allocation or state machine. Existing painter
+lock retains request ownership until event allocation/queue handoff or disconnect;
+existing plane destructor releases its allocated container after DRM cleanup.
+Tests keep original KUnit/file/framebuffer cleanup. The owned new QEMU guest
+powered off after all cases/counter export and was reaped. Passive xev/udevadm
+children were terminated/reaped after the finite 45-second observation. Raw
+counter/guest artifacts remain owned in the local blent-work directory.
+
+Loaded module identity remains C477D84009DFBE1A8FCE08C, Canonical-signed.
+Secure Boot/integrity lockdown and the existing no-enrollment decision still
+prevent loading the unsigned local module; no trusted signing route is known.
+Privileged debugfs inspection also returned 'sudo: a password is required'.
+No module reload, installation, enrollment, display setting change, service
+restart, package transfer, fetch, push or upload was performed.
+
+The AMD CRTC timeout is a boot observation preceding Blent, not proof of an
+ongoing flicker cause. No RandR/DRM events in the 45-second observation can be
+interpreted as absence of flicker because no visual blink timestamp was matched.
+T1255 names the missing evidence; T748 local recovery-contract research is open
+following the owner's scoped local-source resumption. Other excluded EVDI
+maintenance and declined platform/device work were not reopened.
+
+Follow-up after owner report at approximately21:27:45CEST:
+Owner confirms a full-black blink with the AOC power light on. The kernel's
+approximate21:25–21:28:30 window contains only EVDI handshake warnings; Xorg's
+log last changed at21:18. No active RandR/DRM listener covered that blink.
+These observations do not exclude an unlogged HDMI/compositor/monitor fault.
+
+At21:28:45CEST a reversible AOC-only max bpc cap16 to8 was applied successfully;
+4K60 mode, geometry and good link-status were retained. Actual previous wire
+depth is unavailable; this is a diagnostic experiment, not a software fix or
+proven remedy. It is not persistent. Restore command:
+xrandr --output HDMI-A-1 --set 'max bpc' 16
+The owner was asked to report any subsequent blank for correlation. T1255 is
+in progress again; prior unknown-blink-type blocker is removed. Trusted-module
+signing remains a separate deployment prerequisite.
+
+Trial cancelled by owner; max bpc16 restored at2026-10-21T19:31:08.490354+00:00.
+4K60/layout/link-status retained. Observer interrupted after at least600/1200
+samples; no completed-observation or efficacy claim. Do not reapply the
+8-bit cap without owner resumption. Continue source/log investigation.
+
+October21 root trace follow-up (checks22:13:17 and22:16:43CEST):
+Original script attached successfully under owner sudo. Snapshot
+probe-trace-221643.log records Xorg modesets and Cinnamon refreshes
+at22:10:22-29, with Blent DPMS/reconnect transitions in the journal.
+Those events precede the two latest owner now reports; no matching
+captured events at the report checks. Exact physical timestamps absent.
+The original trace misses connector-specific hotplug and direct I2C.
+Saved expanded script in ../troubleshooting/scripts/evdi-probe-trace.bt;
+all kernel symbols exist, but new privileged compilation is pending.
+PowerToys DDC discovery is an enabled source-level candidate only.
+See probe-analysis.json for identity mapping, scope and ownership.
+
+Diagnostic correction: owner root compile rejected str(adapter->name)
+because the field is already string[48]. Added permanent native dry
+compile regression in troubleshooting/tests before changing the script;
+same test failed with the reported error, then passed with direct field
+printing. All remaining str calls take drm_driver.name pointers.
+bpftrace0.20.2 -d emits LLVM IR in an unprivileged user namespace;
+namespace capability warnings mean host attachment remains unverified.
+Test Lizard1.23.0 CCN1. Raw red/green/compiler logs retained compressed.

@@ -1,0 +1,771 @@
+Attaching 15 probes...
+READY v2: read-only DRM/AMD/I2C trace. Stop with Ctrl+C after next blank.
+22:25:39 ALIVE mono_ns=4571833353213
+22:25:49 ALIVE mono_ns=4581833362464
+22:25:59 ALIVE mono_ns=4591833353296
+22:26:09 ALIVE mono_ns=4601833354061
+22:26:19 ALIVE mono_ns=4611833356020
+22:26:29 ALIVE mono_ns=4621833354413
+22:26:39 ALIVE mono_ns=4631833353798
+22:26:49 ALIVE mono_ns=4641833353204
+22:26:59 ALIVE mono_ns=4651833362308
+22:27:09 ALIVE mono_ns=4661833355985
+22:27:19 ALIVE mono_ns=4671833353814
+22:27:29 ALIVE mono_ns=4681833353372
+22:27:39 ALIVE mono_ns=4691833356467
+22:27:49 ALIVE mono_ns=4701833354823
+22:27:59 ALIVE mono_ns=4711833354558
+22:28:09 ALIVE mono_ns=4721833353281
+22:28:19 ALIVE mono_ns=4731833363551
+22:28:29 ALIVE mono_ns=4741833355255
+22:28:30 GETCONNECTOR pid=75683 tid=75683 comm=python3 card=2 driver=amdgpu connector=387 mode_capacity=1 mono_ns=4742881974436
+22:28:39 ALIVE mono_ns=4751833363278
+22:28:49 ALIVE mono_ns=4761833353428
+22:28:59 ALIVE mono_ns=4771833360860
+22:29:09 ALIVE mono_ns=4781833354653
+22:29:19 ALIVE mono_ns=4791833358139
+22:29:29 ALIVE mono_ns=4801833353340
+22:29:39 ALIVE mono_ns=4811833361357
+22:29:49 ALIVE mono_ns=4821833354262
+22:29:59 ALIVE mono_ns=4831833357817
+22:30:09 ALIVE mono_ns=4841833354066
+22:30:19 ALIVE mono_ns=4851833352699
+22:30:29 ALIVE mono_ns=4861833362742
+22:30:39 ALIVE mono_ns=4871833356984
+22:30:49 ALIVE mono_ns=4881833362779
+22:30:59 ALIVE mono_ns=4891833352977
+22:31:09 ALIVE mono_ns=4901833353860
+22:31:19 ALIVE mono_ns=4911833352876
+22:31:29 ALIVE mono_ns=4921833362844
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=4922698203791
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=378 force=1 mono_ns=4922698214041
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=4922698226235
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=4922698246123
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=387 force=1 mono_ns=4922698264429
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=4922701624296
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=4922701651008
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=395 force=1 mono_ns=4922701653402
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=4922701657991
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=4922701677900
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=378 force=1 mono_ns=4922701678992
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=4922701681798
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=4922701723519
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=387 force=1 mono_ns=4922701724862
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=4922704401707
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=4922704723154
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=395 force=1 mono_ns=4922704724607
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=4922704726801
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=4922704786146
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=4922704789904
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=4922704797529
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=4922704799152
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=4922704825203
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=4922704831665
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=4922704839190
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=4922704840883
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=4922705177579
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=435 force=1 mono_ns=4922705179272
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=4922705182579
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=4922705190324
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=444 force=1 mono_ns=4922705191957
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=4922705194001
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=4922705198510
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=450 force=1 mono_ns=4922705199883
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=4922705201877
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=4922705206656
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=456 force=1 mono_ns=4922705210894
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=4922706976424
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=4922706999559
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=435 force=1 mono_ns=4922707004589
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=4922707008076
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=4922707015490
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=444 force=1 mono_ns=4922707016332
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=4922707018276
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=4922707024808
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=450 force=1 mono_ns=4922707025540
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=4922707027384
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=4922707039397
+22:31:29 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=456 force=1 mono_ns=4922707040239
+22:31:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=4922708764548
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=2 mono_ns=4922735556302
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4922736033382
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4922736373063
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=364 fb=0 mode_valid=0 connectors=0 mono_ns=4922740179460
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=368 fb=0 mode_valid=0 connectors=0 mono_ns=4922740236802
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=372 fb=0 mode_valid=0 connectors=0 mono_ns=4922740247052
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=376 fb=0 mode_valid=0 connectors=0 mono_ns=4922740256490
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=0 driver=evdi crtc=38 fb=0 mode_valid=0 connectors=0 mono_ns=4922742327756
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=364 fb=416 mode_valid=1 connectors=1 mono_ns=4922770180107
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=364 fb=416 mode_valid=1 connectors=1 mono_ns=4922774807633
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=2 mono_ns=4922792390854
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4922792857103
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4922793194029
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=2 mono_ns=4922794598706
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=2 mono_ns=4922795061799
+22:31:30 DISPLAY_I2C pid=1966 tid=1966 comm=Xorg bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=2 mono_ns=4922795527195
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=368 fb=0 mode_valid=0 connectors=0 mono_ns=4922810139608
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=372 fb=0 mode_valid=0 connectors=0 mono_ns=4922810149958
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu crtc=376 fb=0 mode_valid=0 connectors=0 mono_ns=4922811714887
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu crtc=417 fb=486 mode_valid=1 connectors=1 mono_ns=4922815925441
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu crtc=421 fb=0 mode_valid=0 connectors=0 mono_ns=4922833657502
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu crtc=425 fb=0 mode_valid=0 connectors=0 mono_ns=4922833672261
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu crtc=429 fb=0 mode_valid=0 connectors=0 mono_ns=4922833684154
+22:31:30 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu crtc=433 fb=0 mode_valid=0 connectors=0 mono_ns=4922833696158
+22:31:30 RANDR_REFRESH pid=2747 tid=2747 comm=cinnamon mono_ns=4922918893876
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=4922918996115
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=378 force=1 mono_ns=4922919009761
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=4922919022687
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=4922919106189
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=387 force=1 mono_ns=4922919121088
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=4922922526855
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=4922922941603
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=395 force=1 mono_ns=4922922944899
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=4922922948135
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=4922923009164
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=378 force=1 mono_ns=4922923011098
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=4922923013763
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=4922923026418
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=387 force=1 mono_ns=4922923028462
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=4922925735717
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=4922926065780
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=2 connector=395 force=1 mono_ns=4922926068065
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=4922926070620
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=4922926105988
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=4922926110247
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=4922926119916
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=4922926123332
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=4922926131368
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=435 force=1 mono_ns=4922926133151
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=4922926136197
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=4922926145906
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=444 force=1 mono_ns=4922926146968
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=4922926149774
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=4922926157359
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=450 force=1 mono_ns=4922926158661
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=4922926160495
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=4922926174943
+22:31:30 AMD_DETECT pid=1966 tid=1966 comm=Xorg card=1 connector=456 force=1 mono_ns=4922926180323
+22:31:30 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=4922927835088
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4922938742581
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4922938771557
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4922938778160
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4922951208070
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4922951211507
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4922963612360
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4922963616838
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4922975804606
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4922975805789
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4922988096106
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4922988107358
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4922988109943
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923000529282
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923000533310
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923013013608
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923013016464
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923025554464
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923025557280
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923037667577
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923037679911
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923037680612
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923049794626
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923049795498
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923061872780
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923061874393
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923074029297
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923074029889
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923086119555
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923086133042
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923086133713
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923086702401
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923086703383
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923102336324
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923102339801
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923102828152
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923102828924
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923103051357
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103064222
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923103065124
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103143456
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923103144078
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103227570
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923103228161
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103308298
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923103308879
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923103404806
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103414755
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4923103415517
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103499420
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4923103500031
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103575308
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4923103575889
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103650204
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4923103650845
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923103738095
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103748054
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923103748776
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103824714
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923103825285
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103905010
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923103905591
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923103987391
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923103988002
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923104084831
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923104094399
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4923104095051
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923112435171
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4923112437907
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923120645519
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4923120646631
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923128856729
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4923128857941
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923136831858
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923136846968
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923136848050
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923137095241
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923137096885
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923152689287
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923152693054
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923152985774
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923152997928
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923152998629
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923161232563
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923161234176
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923169395368
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923169396420
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923177572311
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4923177572973
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923185914546
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923185927852
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923185929255
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923185990684
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923185991265
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923186063546
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923186064879
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923186117812
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4923186118463
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x705 mono_ns=4923186192528
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923186206054
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923186207807
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923186263526
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923186264107
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923186315688
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923186316299
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923186368691
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4923186369272
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923186520958
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923186521739
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923187043476
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923187044207
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923187497120
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923187497711
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923187955834
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923187956415
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923188424166
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923188425268
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923188923539
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923188924120
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923189382163
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923189382724
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923189840215
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923189840766
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923190303398
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923190304269
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923190758825
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4923190759607
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923191243840
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923191244612
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923241952456
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923241954770
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923293338021
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923293341297
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923344047759
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923344050895
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923395429036
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923395432663
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923446161758
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923446166457
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923497544407
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923497547363
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923548282531
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923548289464
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923599703875
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923599708845
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923650432230
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923650434444
+22:31:30 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923701802825
+22:31:30 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923701805731
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923752532402
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923752536901
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923803939820
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923803942045
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923854673696
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923854679307
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923906044673
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923906047969
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4923956763599
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4923956767156
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924008144736
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924008147772
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924058877168
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924058879794
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924110278444
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924110284176
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924161017209
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924161022109
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924212424327
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924212429146
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924263184524
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924263191838
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924314585138
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924314589346
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924365330205
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924365334584
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924416731682
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924416735319
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924467485356
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924467490636
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924518885189
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924518888505
+22:31:31 I2C_IOCTL pid=83344 tid=83344 comm=ddcutil command=0x707 mono_ns=4924569623693
+22:31:31 DISPLAY_I2C pid=83344 tid=83344 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924569627872
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924657520401
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924657546231
+22:31:31 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924657554858
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924669836910
+22:31:31 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924669838082
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924682120545
+22:31:31 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924682121677
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924694399120
+22:31:31 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924694400442
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924706717512
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924706730057
+22:31:31 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924706731149
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924719401417
+22:31:31 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924719405224
+22:31:31 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924731659532
+22:31:31 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924731662588
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924743891817
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924743894061
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924756154401
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924756181443
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924756186924
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924768267373
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924768270048
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924780357801
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924780360527
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924792300091
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924792301003
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924804372204
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924804386261
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924804387584
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924804945671
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924804946703
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924821678345
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924821681552
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822183940
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924822184572
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924822402456
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822415973
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924822417015
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822494746
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924822495317
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822573570
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924822574151
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822653095
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924822653696
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924822749693
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822760614
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4924822761295
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822841722
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4924822842313
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822916418
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4924822917069
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924822996253
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4924822996824
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924823098122
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924823106809
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924823107680
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924823187726
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924823188318
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924823266460
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924823267061
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924823341386
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924823341987
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924823428796
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924823439527
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924823440279
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924831493621
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924831495855
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924839536522
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924839537875
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924847582931
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4924847584664
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924855744153
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924855759413
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924855761768
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924856014921
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924856015903
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924871865987
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924871868071
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924872145462
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924872157575
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924872158317
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924880203543
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924880204244
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924888358072
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924888360346
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924896434138
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4924896436513
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924904547748
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904569581
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924904572967
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904640859
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924904641811
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904694133
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924904694744
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904745794
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4924904746365
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x705 mono_ns=4924904814237
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904824688
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924904825479
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904877110
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924904878282
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904932007
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924904932908
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924904984309
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4924904984880
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924905140964
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924905141846
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924905620228
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924905620869
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924906076116
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924906076717
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924906534519
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924906535130
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924906995878
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924906996459
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924907503076
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924907503688
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924907961249
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924907962121
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924908419442
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924908420013
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924908878527
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924908879158
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924909337731
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4924909338353
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924909818368
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924909819089
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4924960538437
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4924960542775
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925011976345
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925011982226
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925062715541
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925062718727
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925114117269
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925114121537
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925164855823
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925164859881
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925216254004
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925216259635
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925266986237
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925266991126
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925318381992
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925318387132
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925369128864
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925369135406
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925420551812
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925420556291
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925471283855
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925471287872
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925522754496
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925522764245
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925573510465
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925573514824
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925624991256
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925624995405
+22:31:32 I2C_IOCTL pid=83370 tid=83370 comm=ddcutil command=0x707 mono_ns=4925675738699
+22:31:32 DISPLAY_I2C pid=83370 tid=83370 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925675742887
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925755065148
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925755079115
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925755082913
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925767074389
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925767076573
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925779135690
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925779136582
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925791289633
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925791291877
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925803528040
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925803541907
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925803544331
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925815677944
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925815679507
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925827754455
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925827755728
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925839747284
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925839748196
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925851774509
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925851786462
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925851787304
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925863879656
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925863881169
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925876003841
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925876005293
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925888087787
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925888089159
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925900079683
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925900091546
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4925900092458
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925900660525
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4925900662258
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925916338233
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4925916340247
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925916829370
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4925916830312
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925917309656
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917321640
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925917322732
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917407477
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925917408048
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917488194
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925917488755
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917567138
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925917567699
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925917672473
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917681801
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4925917682663
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917771356
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4925917771957
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917859287
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4925917859858
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925917942239
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4925917942810
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925918049287
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925918057473
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4925918058195
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925918146587
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4925918147449
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925918233005
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4925918233587
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925918320426
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4925918320997
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925918416072
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925918425531
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925918426152
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925926471909
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925926472500
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925934575890
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925934577122
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925942594184
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4925942595206
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925950678226
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925950687624
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925950688496
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925950940367
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925950941809
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925966676208
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4925966680667
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925966966604
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925966978287
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925966979018
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925975052380
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925975052991
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925983167432
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925983169676
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925991359855
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4925991362109
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925999674106
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925999687051
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925999689115
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925999745976
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925999746577
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925999797887
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925999799370
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925999850559
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4925999851301
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x705 mono_ns=4925999927740
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925999937068
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4925999938341
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4925999985833
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4925999986985
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926000041181
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926000041802
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926000092942
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926000093563
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926000279175
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926000280527
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926000788227
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926000789148
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926000984168
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926000984960
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926001501937
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926001503180
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926001999266
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926002004236
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926002455645
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926002456227
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926002913498
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926002914069
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926003372572
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926003373153
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926003832148
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926003832699
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926004290361
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926004290922
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926004791277
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926004792018
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926055508941
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926055514172
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926106889127
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926106892454
+22:31:33 I2C_IOCTL pid=83388 tid=83388 comm=ddcutil command=0x707 mono_ns=4926157623605
+22:31:33 DISPLAY_I2C pid=83388 tid=83388 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926157628684
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926239631509
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926239643893
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926239647270
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926251621552
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926251622214
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926263768030
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926263768601
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926275784074
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=4 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926275784665
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926287824775
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926287834244
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926287834905
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926299739682
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926299740583
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926311776315
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926311776907
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926324032196
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=5 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926324032908
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926336089761
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926336100031
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926336100742
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926348050046
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926348050627
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926360160974
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926360161626
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926372326259
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=6 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926372327762
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926384221757
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926384234432
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926384235464
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926384806266
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926384807379
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926400174692
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926400177347
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926400676931
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926400677612
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926400894515
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926400908041
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926400909875
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926400989009
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926400989580
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401078052
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926401078674
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401165924
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=8 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926401166505
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926401267972
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401277862
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4926401278683
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401367065
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4926401367647
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401450538
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4926401451149
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401534432
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=9 adapter=AMDGPU DM aux hw bus 1 messages=1 mono_ns=4926401535013
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926401631130
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401640759
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926401641530
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401729482
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926401730634
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401809167
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926401809758
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401884283
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=10 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926401884854
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926401971614
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926401981272
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926401981934
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926410101866
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926410104190
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926418468568
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926418470943
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926426869147
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=11 adapter=AMDGPU DM i2c hw bus 0 messages=1 mono_ns=4926426873165
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926435494584
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926435507990
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926435510415
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926435766524
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926435768097
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926452601607
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926452608561
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926452905209
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926452919918
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926452920589
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926461173310
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926461174813
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926469417363
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926469418476
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926477647019
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=13 adapter=AMDGPU DM i2c hw bus 2 messages=1 mono_ns=4926477648131
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926485814353
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926485824854
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926485825906
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926485885793
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926485886464
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926485939848
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926485940459
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926485993312
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=14 adapter=AMDGPU DM aux hw bus 0 messages=1 mono_ns=4926485993923
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x705 mono_ns=4926486066565
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926486076624
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926486077366
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926486135239
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926486135890
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926486187541
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926486188302
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926486239442
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=15 adapter=AMDGPU DM aux hw bus 2 messages=1 mono_ns=4926486240103
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926486387230
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926486388362
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926486865441
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926486866043
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926487327161
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926487327822
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926487791787
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926487792398
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926488250450
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926488251031
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926488709405
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926488710026
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926489167517
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926489168128
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926489625139
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926489625730
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926490083612
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926490084223
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926490543929
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=7 adapter=AMDGPU DM i2c hw bus 3 messages=1 mono_ns=4926490544510
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926491025968
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926491026670
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926541740286
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926541742461
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926593151703
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926593157264
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926643882844
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926643884638
+22:31:33 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926695313087
+22:31:33 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926695314760
+22:31:34 I2C_IOCTL pid=83397 tid=83397 comm=ddcutil command=0x707 mono_ns=4926746016084
+22:31:34 DISPLAY_I2C pid=83397 tid=83397 comm=ddcutil bus=12 adapter=AMDGPU DM i2c hw bus 1 messages=1 mono_ns=4926746017506
+22:31:39 ALIVE mono_ns=4931833364485
+22:31:49 ALIVE mono_ns=4941833364209
+22:31:59 ALIVE mono_ns=4951833364394
+22:32:09 ALIVE mono_ns=4961833364914
+22:32:19 ALIVE mono_ns=4971833362443
+22:32:29 ALIVE mono_ns=4981833353634
+22:32:39 ALIVE mono_ns=4991833354471
+22:32:49 ALIVE mono_ns=5001833355750
+22:32:59 ALIVE mono_ns=5011833353488
+22:33:09 ALIVE mono_ns=5021833362814
+22:33:19 ALIVE mono_ns=5031833352570

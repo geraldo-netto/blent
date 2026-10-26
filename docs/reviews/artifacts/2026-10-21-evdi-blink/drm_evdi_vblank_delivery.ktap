@@ -1,0 +1,8 @@
+KTAP version 1
+1..1
+    KTAP version 1
+    # Subtest: drm_evdi_vblank_delivery
+    1..1
+    ok 1 test_vblank_delivery
+    # module: test_evdi_vblank_delivery
+ok 1 drm_evdi_vblank_delivery

@@ -1,0 +1,297 @@
+2026-10-21T21:25:58.986719+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:25:58.988595+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:25:58.988616+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:02.055742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:02.055849+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:02.055874+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:03.875715+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:03.875821+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:04.263707+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:04.263812+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:04.263837+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:05.185740+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:05.185835+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:05.185857+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:05.884740+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:05.884845+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:05.884864+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:06.198742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:06.198830+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:06.198881+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:09.065740+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:09.065843+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:09.065870+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:13.289718+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:13.289790+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:13.289807+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:17.682738+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:17.682806+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:17.682834+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:19.732730+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:19.732793+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:19.736721+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:20.905745+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:20.905855+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:20.905877+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:21.289736+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:21.289817+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:21.289843+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:27.163725+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:27.163816+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:27.163837+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:27.547703+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:27.547790+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:27.547805+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:28.291732+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:28.291824+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:28.291847+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:31.922744+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:31.922858+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:31.922880+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:34.051742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:34.051917+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:34.051932+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:35.072740+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:35.072845+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:35.073734+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:37.439707+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:37.439773+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:37.439789+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:39.197730+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:39.197834+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:39.197857+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:40.205722+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:40.205790+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:40.205807+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:40.596721+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:40.596787+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:40.596812+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:44.943765+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:44.943903+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:44.943926+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:45.713731+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:45.713846+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:45.713880+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:49.269723+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:49.269817+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:49.269844+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:49.778744+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:49.778859+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:49.778882+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:58.027707+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:58.027811+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:58.027834+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:58.826759+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:58.826890+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:58.826922+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:26:59.481709+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:26:59.481891+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:26:59.481927+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:00.343750+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:00.343909+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:00.349767+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:02.229762+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:02.229885+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:02.229909+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:03.157753+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:03.158004+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:03.158037+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:07.157711+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:07.157902+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:07.157925+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:08.130769+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:08.130900+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:08.130925+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:09.335712+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:09.335786+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:09.335798+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:10.657730+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:10.657889+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:10.662715+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:11.324721+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:11.324798+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:11.324836+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:12.396768+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:12.396880+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:12.396896+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:16.492728+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:16.492839+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:16.492868+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:17.874717+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:17.874788+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:17.874800+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:23.962756+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:23.962898+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:23.962925+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:26.876744+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:26.876836+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:26.876858+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:27.212428+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:27.212464+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:27.212482+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:27.852707+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:27.852802+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:27.852824+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:28.395733+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:28.395820+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:28.395867+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:28.979732+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:28.979866+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:28.979894+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:32.720705+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:32.720802+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:32.720830+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:33.526716+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:33.526865+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:33.526891+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:34.143724+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:34.143851+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:34.143877+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:34.976720+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:34.976837+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:34.983732+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:37.316723+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:37.316773+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:37.316790+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:40.981773+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:40.981991+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:40.982015+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:41.981735+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:41.981837+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:41.981863+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:42.980742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:42.980860+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:42.980884+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:43.997734+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:43.997840+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:43.997862+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:45.019729+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:45.019821+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:45.019845+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:45.431740+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:45.431847+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:45.431874+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:46.010741+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:46.010862+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:46.010886+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:46.577747+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:46.577863+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:46.577886+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:47.177749+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:47.177873+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:47.177898+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:47.980743+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:47.980851+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:47.980877+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:48.394800+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:48.394930+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:48.394954+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:49.205728+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:49.205828+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:49.205850+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:53.410714+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:53.410808+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:53.410828+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:55.277721+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:55.277795+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:55.277811+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:57.644744+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:57.644839+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:57.644862+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:59.644709+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:59.644797+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:27:59.644810+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:27:59.977742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:27:59.977944+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:00.311762+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:00.311905+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:00.311930+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:01.361742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:01.361852+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:01.361875+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:02.264724+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:02.264820+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:02.264878+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:04.480727+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:04.480800+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:04.480819+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:05.524712+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:05.524813+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:05.524832+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:06.322726+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:06.322837+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:06.322865+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:08.347719+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:08.347808+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:08.347834+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:08.978741+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:08.978805+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:08.978820+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:09.982742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:09.982863+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:09.982886+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:10.996747+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:10.996878+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:10.996902+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:11.982741+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:11.982842+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:11.982862+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:12.982039+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:12.982077+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:12.982096+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:14.430743+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:14.430848+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:14.430874+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:15.498722+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:15.498811+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:15.498834+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:16.096775+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:16.096992+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:16.097020+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:16.453772+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:16.453909+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:16.453934+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:17.051761+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:17.051894+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:17.051919+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:17.654766+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:17.654904+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:17.654926+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:18.254742+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:18.254851+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:18.254877+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:18.853727+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:18.853818+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:18.853843+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:19.451733+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:19.451848+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:19.451873+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:20.051778+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:20.051914+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:20.051939+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:20.756737+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:20.756834+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:20.756858+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:21.264724+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:21.264847+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:21.264873+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:21.896736+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:21.896835+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:21.896861+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:25.030750+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:25.030901+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:26.159744+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:26.159843+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:26.159858+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:27.749749+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:27.749842+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:27.749882+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:28.421903+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:28.422024+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:28.422050+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:28.948778+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:28.948909+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:28.948936+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring
+2026-10-21T21:28:29.580734+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1085 (card0) Update ready not sent,
+2026-10-21T21:28:29.580819+02:00 morpheus kernel: evdi: [W] evdi_painter_grabpix_ioctl:1087  but pixels are grabbed.
+2026-10-21T21:28:29.580851+02:00 morpheus kernel: evdi: [W] evdi_painter_request_update_ioctl:1203 (card0) Update was already requested - ignoring

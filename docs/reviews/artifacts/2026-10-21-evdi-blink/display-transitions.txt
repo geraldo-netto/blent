@@ -1,0 +1,5 @@
+[   16.012235] morpheus kernel: amdgpu 0000:08:00.0: [drm] REG_WAIT timeout 1us * 100000 tries - optc31_disable_crtc line:145
+[   35.567032] morpheus kernel: evdi: [I] (card0) Connected with Task 3180 (evdi_helper) of process 3180 (evdi_helper)
+[   35.632358] morpheus kernel: evdi: [I] (card0) Notifying display power state: on
+[   35.632364] morpheus kernel: evdi: [I] (card0) Notifying mode changed: 1280x800@60; bpp 32; pixel format XR24 little-endian (0x34325258)
+[   35.632369] morpheus kernel: evdi: [I] (card0) Notifying display power state: on

@@ -1,0 +1,336 @@
+Oct 21 21:25:00 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:00 morpheus env[3180]: [evdi-helper] 49.5 grabs/s (total 30760), mode:1 dpms:1 pending:0
+Oct 21 21:25:00 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 15.3ms (158 waited, 90 immediate), grab avg 2.0ms (251, 3 empty)
+Oct 21 21:25:00 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 1.2ms (248 frames)
+Oct 21 21:25:02 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:02 morpheus env[2844]: 2026-10-21T19:25:02.101607Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.4ms  p95 20.1ms  max 49.4ms  (272 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:02 morpheus env[2844]: 2026-10-21T19:25:02.101634Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.1ms  p95 14.1ms  (272 samples)
+Oct 21 21:25:02 morpheus env[2844]: 2026-10-21T19:25:02.101640Z  INFO blent::capture::cli_encoder: 302: Encoder: 272 access units in 5.0s, 0.0 MB/s (58 kbps)
+Oct 21 21:25:05 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:05 morpheus env[3180]: [evdi-helper] 59.5 grabs/s (total 31058), mode:1 dpms:1 pending:0
+Oct 21 21:25:05 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 3.7ms (49 waited, 245 immediate), grab avg 3.1ms (299, 1 empty)
+Oct 21 21:25:05 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 1.3ms (256 frames)
+Oct 21 21:25:07 morpheus env[3819]: [157B blob data]
+Oct 21 21:25:07 morpheus env[2844]: 2026-10-21T19:25:07.106192Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 21.1ms  max 47.6ms  (270 samples, 1 in flight, 0 aged out)
+Oct 21 21:25:07 morpheus env[2844]: 2026-10-21T19:25:07.106225Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.2ms  p95 14.7ms  (270 samples)
+Oct 21 21:25:07 morpheus env[2844]: 2026-10-21T19:25:07.106231Z  INFO blent::capture::cli_encoder: 302: Encoder: 269 access units in 5.0s, 0.0 MB/s (57 kbps)
+Oct 21 21:25:10 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:10 morpheus env[3180]: [evdi-helper] 31.2 grabs/s (total 31214), mode:1 dpms:1 pending:1
+Oct 21 21:25:10 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 31.8ms (137 waited, 19 immediate), grab avg 2.0ms (156, 0 empty)
+Oct 21 21:25:10 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (156 frames)
+Oct 21 21:25:12 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:12 morpheus env[2844]: 2026-10-21T19:25:12.119116Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.3ms  p95 21.0ms  max 31.6ms  (160 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:12 morpheus env[2844]: 2026-10-21T19:25:12.119147Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.4ms  p95 14.4ms  (160 samples)
+Oct 21 21:25:12 morpheus env[2844]: 2026-10-21T19:25:12.119155Z  INFO blent::capture::cli_encoder: 302: Encoder: 161 access units in 5.0s, 0.0 MB/s (44 kbps)
+Oct 21 21:25:15 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:15 morpheus env[3180]: [evdi-helper] 43.6 grabs/s (total 31432), mode:1 dpms:1 pending:0
+Oct 21 21:25:15 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 17.9ms (182 waited, 35 immediate), grab avg 1.8ms (221, 3 empty)
+Oct 21 21:25:15 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.1ms p95 6.3ms (218 frames)
+Oct 21 21:25:17 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:17 morpheus env[2844]: 2026-10-21T19:25:17.119588Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 20.6ms  max 39.3ms  (211 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:17 morpheus env[2844]: 2026-10-21T19:25:17.119618Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.2ms  p95 14.2ms  (211 samples)
+Oct 21 21:25:17 morpheus env[2844]: 2026-10-21T19:25:17.119625Z  INFO blent::capture::cli_encoder: 302: Encoder: 211 access units in 5.0s, 0.0 MB/s (50 kbps)
+Oct 21 21:25:20 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:20 morpheus env[3180]: [evdi-helper] 42.4 grabs/s (total 31645), mode:1 dpms:1 pending:1
+Oct 21 21:25:20 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 19.5ms (213 waited, 0 immediate), grab avg 1.5ms (213, 0 empty)
+Oct 21 21:25:20 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 1.8ms (213 frames)
+Oct 21 21:25:22 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:22 morpheus env[2844]: 2026-10-21T19:25:22.136504Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 20.8ms  max 47.3ms  (227 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:22 morpheus env[2844]: 2026-10-21T19:25:22.136533Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.3ms  p95 14.5ms  (227 samples)
+Oct 21 21:25:22 morpheus env[2844]: 2026-10-21T19:25:22.136543Z  INFO blent::capture::cli_encoder: 302: Encoder: 227 access units in 5.0s, 0.0 MB/s (52 kbps)
+Oct 21 21:25:25 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:25 morpheus env[3180]: [evdi-helper] 43.2 grabs/s (total 31861), mode:1 dpms:1 pending:1
+Oct 21 21:25:25 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 18.8ms (216 waited, 0 immediate), grab avg 1.5ms (216, 0 empty)
+Oct 21 21:25:25 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 5.3ms (216 frames)
+Oct 21 21:25:27 morpheus env[3819]: [157B blob data]
+Oct 21 21:25:27 morpheus env[2844]: 2026-10-21T19:25:27.151722Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.1ms  p95 21.2ms  max 46.9ms  (219 samples, 1 in flight, 0 aged out)
+Oct 21 21:25:27 morpheus env[2844]: 2026-10-21T19:25:27.151752Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.3ms  p95 14.8ms  (219 samples)
+Oct 21 21:25:27 morpheus env[2844]: 2026-10-21T19:25:27.151758Z  INFO blent::capture::cli_encoder: 302: Encoder: 218 access units in 5.0s, 0.0 MB/s (51 kbps)
+Oct 21 21:25:30 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:30 morpheus env[3180]: [evdi-helper] 43.0 grabs/s (total 32076), mode:1 dpms:1 pending:1
+Oct 21 21:25:30 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 18.7ms (215 waited, 0 immediate), grab avg 1.6ms (216, 1 empty)
+Oct 21 21:25:30 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 5.7ms (215 frames)
+Oct 21 21:25:32 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:32 morpheus env[2844]: 2026-10-21T19:25:32.151976Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.0ms  p95 22.1ms  max 44.2ms  (230 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:32 morpheus env[2844]: 2026-10-21T19:25:32.152006Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.3ms  p95 14.8ms  (230 samples)
+Oct 21 21:25:32 morpheus env[2844]: 2026-10-21T19:25:32.152014Z  INFO blent::capture::cli_encoder: 302: Encoder: 231 access units in 5.0s, 0.0 MB/s (53 kbps)
+Oct 21 21:25:35 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:35 morpheus env[3180]: [evdi-helper] 48.6 grabs/s (total 32319), mode:1 dpms:1 pending:1
+Oct 21 21:25:35 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 16.1ms (196 waited, 47 immediate), grab avg 1.8ms (245, 2 empty)
+Oct 21 21:25:35 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 5.2ms (244 frames)
+Oct 21 21:25:37 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:37 morpheus env[2844]: 2026-10-21T19:25:37.170731Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.6ms  p95 21.0ms  max 46.9ms  (225 samples, 1 in flight, 0 aged out)
+Oct 21 21:25:37 morpheus env[2844]: 2026-10-21T19:25:37.170767Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.1ms  p95 14.3ms  (225 samples)
+Oct 21 21:25:37 morpheus env[2844]: 2026-10-21T19:25:37.170774Z  INFO blent::capture::cli_encoder: 302: Encoder: 224 access units in 5.0s, 0.0 MB/s (52 kbps)
+Oct 21 21:25:40 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:40 morpheus env[3180]: [evdi-helper] 46.3 grabs/s (total 32551), mode:1 dpms:1 pending:1
+Oct 21 21:25:40 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 17.2ms (232 waited, 0 immediate), grab avg 1.5ms (232, 0 empty)
+Oct 21 21:25:40 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 5.0ms (231 frames)
+Oct 21 21:25:42 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:42 morpheus env[2844]: 2026-10-21T19:25:42.171826Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.8ms  p95 21.0ms  max 46.6ms  (232 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:42 morpheus env[2844]: 2026-10-21T19:25:42.171847Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.3ms  p95 14.8ms  (232 samples)
+Oct 21 21:25:42 morpheus env[2844]: 2026-10-21T19:25:42.171852Z  INFO blent::capture::cli_encoder: 302: Encoder: 233 access units in 5.0s, 0.0 MB/s (53 kbps)
+Oct 21 21:25:45 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:45 morpheus env[3180]: [evdi-helper] 43.9 grabs/s (total 32771), mode:1 dpms:1 pending:1
+Oct 21 21:25:45 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 18.7ms (204 waited, 16 immediate), grab avg 1.5ms (222, 2 empty)
+Oct 21 21:25:45 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 1.9ms (220 frames)
+Oct 21 21:25:47 morpheus env[3819]: [157B blob data]
+Oct 21 21:25:47 morpheus env[2844]: 2026-10-21T19:25:47.183296Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.5ms  p95 20.6ms  max 58.5ms  (211 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:47 morpheus env[2844]: 2026-10-21T19:25:47.183324Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.0ms  p95 14.2ms  (211 samples)
+Oct 21 21:25:47 morpheus env[2844]: 2026-10-21T19:25:47.183331Z  INFO blent::capture::cli_encoder: 302: Encoder: 211 access units in 5.0s, 0.0 MB/s (50 kbps)
+Oct 21 21:25:50 morpheus env[3819]: [643B blob data]
+Oct 21 21:25:50 morpheus env[3180]: [evdi-helper] 53.7 grabs/s (total 33040), mode:1 dpms:1 pending:0
+Oct 21 21:25:50 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 15.7ms (78 waited, 189 immediate), grab avg 2.7ms (271, 2 empty)
+Oct 21 21:25:50 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 1.7ms (256 frames)
+Oct 21 21:25:52 morpheus env[3819]: [157B blob data]
+Oct 21 21:25:52 morpheus env[2844]: 2026-10-21T19:25:52.191258Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.5ms  p95 20.6ms  max 45.6ms  (297 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:52 morpheus env[2844]: 2026-10-21T19:25:52.191287Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.1ms  p95 14.4ms  (297 samples)
+Oct 21 21:25:52 morpheus env[2844]: 2026-10-21T19:25:52.191294Z  INFO blent::capture::cli_encoder: 302: Encoder: 297 access units in 5.0s, 0.0 MB/s (61 kbps)
+Oct 21 21:25:55 morpheus env[3819]: [562B blob data]
+Oct 21 21:25:55 morpheus env[3180]: [evdi-helper] 59.6 grabs/s (total 33339), mode:1 dpms:1 pending:0
+Oct 21 21:25:55 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 3.2ms (14 waited, 280 immediate), grab avg 2.5ms (299, 0 empty)
+Oct 21 21:25:55 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (256 frames)
+Oct 21 21:25:57 morpheus env[3819]: [238B blob data]
+Oct 21 21:25:57 morpheus env[2844]: 2026-10-21T19:25:57.199901Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.2ms  p95 19.9ms  max 50.0ms  (280 samples, 2 in flight, 0 aged out)
+Oct 21 21:25:57 morpheus env[2844]: 2026-10-21T19:25:57.199919Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 14.1ms  (280 samples)
+Oct 21 21:25:57 morpheus env[2844]: 2026-10-21T19:25:57.199923Z  INFO blent::capture::cli_encoder: 302: Encoder: 280 access units in 5.0s, 0.0 MB/s (59 kbps)
+Oct 21 21:26:00 morpheus env[3819]: [562B blob data]
+Oct 21 21:26:00 morpheus env[3180]: [evdi-helper] 24.8 grabs/s (total 33463), mode:1 dpms:1 pending:0
+Oct 21 21:26:00 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 37.6ms (104 waited, 20 immediate), grab avg 1.8ms (126, 2 empty)
+Oct 21 21:26:00 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 5.6ms (124 frames)
+Oct 21 21:26:02 morpheus env[3819]: [157B blob data]
+Oct 21 21:26:02 morpheus env[2844]: 2026-10-21T19:26:02.260418Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.0ms  p95 21.3ms  max 23.0ms  (109 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:02 morpheus env[2844]: 2026-10-21T19:26:02.260446Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.4ms  p95 14.6ms  (109 samples)
+Oct 21 21:26:02 morpheus env[2844]: 2026-10-21T19:26:02.260453Z  INFO blent::capture::cli_encoder: 302: Encoder: 108 access units in 5.1s, 0.0 MB/s (37 kbps)
+Oct 21 21:26:05 morpheus env[3819]: [481B blob data]
+Oct 21 21:26:05 morpheus env[3180]: [evdi-helper] 21.0 grabs/s (total 33568), mode:1 dpms:1 pending:0
+Oct 21 21:26:05 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 29.2ms (103 waited, 2 immediate), grab avg 1.6ms (112, 7 empty)
+Oct 21 21:26:05 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 8.2ms (105 frames)
+Oct 21 21:26:07 morpheus env[3819]: [238B blob data]
+Oct 21 21:26:07 morpheus env[2844]: 2026-10-21T19:26:07.272966Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.1ms  p95 21.7ms  max 32.6ms  (112 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:07 morpheus env[2844]: 2026-10-21T19:26:07.272988Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.4ms  p95 14.7ms  (112 samples)
+Oct 21 21:26:07 morpheus env[2844]: 2026-10-21T19:26:07.272992Z  INFO blent::capture::cli_encoder: 302: Encoder: 112 access units in 5.0s, 0.0 MB/s (38 kbps)
+Oct 21 21:26:10 morpheus env[3819]: [562B blob data]
+Oct 21 21:26:10 morpheus env[3180]: [evdi-helper] 16.4 grabs/s (total 33650), mode:1 dpms:1 pending:0
+Oct 21 21:26:10 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 50.5ms (82 waited, 0 immediate), grab avg 1.4ms (84, 2 empty)
+Oct 21 21:26:10 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 7.9ms (82 frames)
+Oct 21 21:26:12 morpheus env[3819]: [157B blob data]
+Oct 21 21:26:12 morpheus env[2844]: 2026-10-21T19:26:12.284276Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.0ms  p95 22.9ms  max 51.7ms  (95 samples, 2 in flight, 0 aged out)
+Oct 21 21:26:12 morpheus env[2844]: 2026-10-21T19:26:12.284302Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.3ms  p95 14.5ms  (95 samples)
+Oct 21 21:26:12 morpheus env[2844]: 2026-10-21T19:26:12.284308Z  INFO blent::capture::cli_encoder: 302: Encoder: 96 access units in 5.0s, 0.0 MB/s (36 kbps)
+Oct 21 21:26:15 morpheus env[3819]: [562B blob data]
+Oct 21 21:26:15 morpheus env[3180]: [evdi-helper] 30.7 grabs/s (total 33804), mode:1 dpms:1 pending:0
+Oct 21 21:26:15 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 24.1ms (149 waited, 5 immediate), grab avg 1.3ms (157, 3 empty)
+Oct 21 21:26:15 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.8ms p95 7.5ms (154 frames)
+Oct 21 21:26:17 morpheus env[3819]: [238B blob data]
+Oct 21 21:26:17 morpheus env[2844]: 2026-10-21T19:26:17.435845Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 21.2ms  max 47.5ms  (196 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:17 morpheus env[2844]: 2026-10-21T19:26:17.435870Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.2ms  p95 14.5ms  (196 samples)
+Oct 21 21:26:17 morpheus env[2844]: 2026-10-21T19:26:17.435877Z  INFO blent::capture::cli_encoder: 302: Encoder: 195 access units in 5.2s, 0.0 MB/s (47 kbps)
+Oct 21 21:26:20 morpheus env[3819]: [481B blob data]
+Oct 21 21:26:20 morpheus env[3180]: [evdi-helper] 34.3 grabs/s (total 33978), mode:1 dpms:1 pending:1
+Oct 21 21:26:20 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 18.4ms (137 waited, 36 immediate), grab avg 1.7ms (177, 3 empty)
+Oct 21 21:26:20 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 8.2ms (174 frames)
+Oct 21 21:26:22 morpheus env[3819]: [238B blob data]
+Oct 21 21:26:22 morpheus env[2844]: 2026-10-21T19:26:22.590038Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.1ms  p95 21.4ms  max 27.9ms  (121 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:22 morpheus env[2844]: 2026-10-21T19:26:22.590065Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 15.1ms  (121 samples)
+Oct 21 21:26:22 morpheus env[2844]: 2026-10-21T19:26:22.590071Z  INFO blent::capture::cli_encoder: 302: Encoder: 121 access units in 5.2s, 0.0 MB/s (38 kbps)
+Oct 21 21:26:26 morpheus env[3819]: [562B blob data]
+Oct 21 21:26:26 morpheus env[3180]: [evdi-helper] 28.8 grabs/s (total 34128), mode:1 dpms:1 pending:1
+Oct 21 21:26:26 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 27.4ms (150 waited, 0 immediate), grab avg 1.5ms (152, 2 empty)
+Oct 21 21:26:26 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 9.1ms (150 frames)
+Oct 21 21:26:27 morpheus env[3819]: [157B blob data]
+Oct 21 21:26:27 morpheus env[2844]: 2026-10-21T19:26:27.615228Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.5ms  p95 21.4ms  max 30.7ms  (148 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:27 morpheus env[2844]: 2026-10-21T19:26:27.615244Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.1ms  p95 14.7ms  (148 samples)
+Oct 21 21:26:27 morpheus env[2844]: 2026-10-21T19:26:27.615247Z  INFO blent::capture::cli_encoder: 302: Encoder: 148 access units in 5.0s, 0.0 MB/s (42 kbps)
+Oct 21 21:26:31 morpheus env[3819]: [481B blob data]
+Oct 21 21:26:31 morpheus env[3180]: [evdi-helper] 5.7 grabs/s (total 34157), mode:1 dpms:1 pending:1
+Oct 21 21:26:31 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 146.7ms (29 waited, 0 immediate), grab avg 1.3ms (32, 3 empty)
+Oct 21 21:26:31 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.1ms p95 17.5ms (29 frames)
+Oct 21 21:26:32 morpheus env[3819]: [157B blob data]
+Oct 21 21:26:32 morpheus env[2844]: 2026-10-21T19:26:32.669605Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.6ms  p95 22.1ms  max 45.9ms  (45 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:32 morpheus env[2844]: 2026-10-21T19:26:32.669643Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 15.0ms  (45 samples)
+Oct 21 21:26:32 morpheus env[2844]: 2026-10-21T19:26:32.669650Z  INFO blent::capture::cli_encoder: 302: Encoder: 45 access units in 5.1s, 0.0 MB/s (30 kbps)
+Oct 21 21:26:36 morpheus env[3819]: [562B blob data]
+Oct 21 21:26:36 morpheus env[3180]: [evdi-helper] 11.0 grabs/s (total 34212), mode:1 dpms:1 pending:0
+Oct 21 21:26:36 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 74.3ms (55 waited, 0 immediate), grab avg 1.3ms (58, 3 empty)
+Oct 21 21:26:36 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 9.0ms (55 frames)
+Oct 21 21:26:37 morpheus env[3819]: [157B blob data]
+Oct 21 21:26:37 morpheus env[2844]: 2026-10-21T19:26:37.758101Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.3ms  p95 21.6ms  max 22.7ms  (76 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:37 morpheus env[2844]: 2026-10-21T19:26:37.758113Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.7ms  (76 samples)
+Oct 21 21:26:37 morpheus env[2844]: 2026-10-21T19:26:37.758117Z  INFO blent::capture::cli_encoder: 302: Encoder: 76 access units in 5.1s, 0.0 MB/s (28 kbps)
+Oct 21 21:26:41 morpheus env[3819]: [400B blob data]
+Oct 21 21:26:41 morpheus env[3180]: [evdi-helper] 8.1 grabs/s (total 34253), mode:1 dpms:1 pending:1
+Oct 21 21:26:41 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 96.9ms (41 waited, 0 immediate), grab avg 1.2ms (45, 4 empty)
+Oct 21 21:26:41 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.7ms p95 16.7ms (41 frames)
+Oct 21 21:26:42 morpheus env[3819]: [238B blob data]
+Oct 21 21:26:42 morpheus env[2844]: 2026-10-21T19:26:42.942822Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.1ms  p95 23.4ms  max 47.4ms  (44 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:42 morpheus env[2844]: 2026-10-21T19:26:42.942856Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.7ms  p95 15.4ms  (44 samples)
+Oct 21 21:26:42 morpheus env[2844]: 2026-10-21T19:26:42.942864Z  INFO blent::capture::cli_encoder: 302: Encoder: 44 access units in 5.2s, 0.0 MB/s (29 kbps)
+Oct 21 21:26:46 morpheus env[3819]: [481B blob data]
+Oct 21 21:26:46 morpheus env[3180]: [evdi-helper] 4.9 grabs/s (total 34278), mode:1 dpms:1 pending:1
+Oct 21 21:26:46 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 180.8ms (25 waited, 0 immediate), grab avg 1.5ms (27, 2 empty)
+Oct 21 21:26:46 morpheus env[3180]: [evdi-helper] capture→fifo p50 16.7ms p95 17.5ms (25 frames)
+Oct 21 21:26:47 morpheus env[3819]: [238B blob data]
+Oct 21 21:26:47 morpheus env[2844]: 2026-10-21T19:26:47.990596Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.9ms  p95 22.3ms  max 48.4ms  (43 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:47 morpheus env[2844]: 2026-10-21T19:26:47.990629Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.9ms  p95 15.0ms  (43 samples)
+Oct 21 21:26:47 morpheus env[2844]: 2026-10-21T19:26:47.990637Z  INFO blent::capture::cli_encoder: 302: Encoder: 43 access units in 5.0s, 0.0 MB/s (29 kbps)
+Oct 21 21:26:51 morpheus env[3819]: [481B blob data]
+Oct 21 21:26:51 morpheus env[3180]: [evdi-helper] 6.7 grabs/s (total 34312), mode:1 dpms:1 pending:1
+Oct 21 21:26:51 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 132.0ms (34 waited, 0 immediate), grab avg 1.6ms (36, 2 empty)
+Oct 21 21:26:51 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.1ms p95 17.3ms (34 frames)
+Oct 21 21:26:53 morpheus env[3819]: [238B blob data]
+Oct 21 21:26:53 morpheus env[2844]: 2026-10-21T19:26:53.017403Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.2ms  p95 21.9ms  max 49.4ms  (55 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:53 morpheus env[2844]: 2026-10-21T19:26:53.017426Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.3ms  p95 14.8ms  (55 samples)
+Oct 21 21:26:53 morpheus env[2844]: 2026-10-21T19:26:53.017436Z  INFO blent::capture::cli_encoder: 302: Encoder: 55 access units in 5.0s, 0.0 MB/s (31 kbps)
+Oct 21 21:26:56 morpheus env[3819]: [400B blob data]
+Oct 21 21:26:56 morpheus env[3180]: [evdi-helper] 5.3 grabs/s (total 34339), mode:1 dpms:1 pending:1
+Oct 21 21:26:56 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 185.9ms (27 waited, 0 immediate), grab avg 1.5ms (27, 0 empty)
+Oct 21 21:26:56 morpheus env[3180]: [evdi-helper] capture→fifo p50 16.9ms p95 17.7ms (27 frames)
+Oct 21 21:26:58 morpheus env[3819]: [238B blob data]
+Oct 21 21:26:58 morpheus env[2844]: 2026-10-21T19:26:58.122268Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.9ms  p95 21.5ms  max 46.9ms  (46 samples, 1 in flight, 0 aged out)
+Oct 21 21:26:58 morpheus env[2844]: 2026-10-21T19:26:58.122294Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 14.5ms  (46 samples)
+Oct 21 21:26:58 morpheus env[2844]: 2026-10-21T19:26:58.122301Z  INFO blent::capture::cli_encoder: 302: Encoder: 46 access units in 5.1s, 0.0 MB/s (29 kbps)
+Oct 21 21:27:01 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:01 morpheus env[3180]: [evdi-helper] 11.5 grabs/s (total 34399), mode:1 dpms:1 pending:1
+Oct 21 21:27:01 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 66.7ms (60 waited, 0 immediate), grab avg 1.6ms (65, 5 empty)
+Oct 21 21:27:01 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 8.3ms (60 frames)
+Oct 21 21:27:03 morpheus env[3819]: [238B blob data]
+Oct 21 21:27:03 morpheus env[2844]: 2026-10-21T19:27:03.175176Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.4ms  p95 21.6ms  max 45.5ms  (87 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:03 morpheus env[2844]: 2026-10-21T19:27:03.175212Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.7ms  (87 samples)
+Oct 21 21:27:03 morpheus env[2844]: 2026-10-21T19:27:03.175222Z  INFO blent::capture::cli_encoder: 302: Encoder: 87 access units in 5.1s, 0.0 MB/s (35 kbps)
+Oct 21 21:27:06 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:06 morpheus env[3180]: [evdi-helper] 9.3 grabs/s (total 34446), mode:1 dpms:1 pending:1
+Oct 21 21:27:06 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 91.9ms (47 waited, 0 immediate), grab avg 1.6ms (49, 2 empty)
+Oct 21 21:27:06 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.1ms p95 16.9ms (47 frames)
+Oct 21 21:27:08 morpheus env[3819]: [157B blob data]
+Oct 21 21:27:08 morpheus env[2844]: 2026-10-21T19:27:08.251343Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.8ms  p95 22.5ms  max 49.0ms  (51 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:08 morpheus env[2844]: 2026-10-21T19:27:08.251380Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.7ms  p95 15.5ms  (51 samples)
+Oct 21 21:27:08 morpheus env[2844]: 2026-10-21T19:27:08.251391Z  INFO blent::capture::cli_encoder: 302: Encoder: 51 access units in 5.1s, 0.0 MB/s (30 kbps)
+Oct 21 21:27:11 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:11 morpheus env[3180]: [evdi-helper] 11.9 grabs/s (total 34506), mode:1 dpms:1 pending:1
+Oct 21 21:27:11 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 59.9ms (60 waited, 0 immediate), grab avg 1.3ms (65, 5 empty)
+Oct 21 21:27:11 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 3.0ms (60 frames)
+Oct 21 21:27:13 morpheus env[3819]: [238B blob data]
+Oct 21 21:27:13 morpheus env[2844]: 2026-10-21T19:27:13.277965Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.8ms  p95 22.2ms  max 50.8ms  (64 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:13 morpheus env[2844]: 2026-10-21T19:27:13.277987Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 15.5ms  (64 samples)
+Oct 21 21:27:13 morpheus env[2844]: 2026-10-21T19:27:13.277994Z  INFO blent::capture::cli_encoder: 302: Encoder: 64 access units in 5.0s, 0.0 MB/s (32 kbps)
+Oct 21 21:27:16 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:16 morpheus env[3180]: [evdi-helper] 7.1 grabs/s (total 34542), mode:1 dpms:1 pending:1
+Oct 21 21:27:16 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 125.4ms (36 waited, 0 immediate), grab avg 1.3ms (38, 2 empty)
+Oct 21 21:27:16 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.8ms p95 16.9ms (36 frames)
+Oct 21 21:27:18 morpheus env[3819]: [238B blob data]
+Oct 21 21:27:18 morpheus env[2844]: 2026-10-21T19:27:18.344981Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.7ms  p95 21.3ms  max 22.9ms  (54 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:18 morpheus env[2844]: 2026-10-21T19:27:18.345018Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.8ms  p95 14.8ms  (54 samples)
+Oct 21 21:27:18 morpheus env[2844]: 2026-10-21T19:27:18.345025Z  INFO blent::capture::cli_encoder: 302: Encoder: 54 access units in 5.1s, 0.0 MB/s (31 kbps)
+Oct 21 21:27:21 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:21 morpheus env[3180]: [evdi-helper] 5.7 grabs/s (total 34571), mode:1 dpms:1 pending:1
+Oct 21 21:27:21 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 163.8ms (29 waited, 0 immediate), grab avg 1.5ms (30, 1 empty)
+Oct 21 21:27:21 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.2ms p95 17.1ms (29 frames)
+Oct 21 21:27:23 morpheus env[3819]: [238B blob data]
+Oct 21 21:27:23 morpheus env[2844]: 2026-10-21T19:27:23.411618Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.7ms  p95 21.5ms  max 23.6ms  (43 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:23 morpheus env[2844]: 2026-10-21T19:27:23.411649Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 15.1ms  (43 samples)
+Oct 21 21:27:23 morpheus env[2844]: 2026-10-21T19:27:23.411657Z  INFO blent::capture::cli_encoder: 302: Encoder: 43 access units in 5.1s, 0.0 MB/s (29 kbps)
+Oct 21 21:27:27 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:27 morpheus env[3180]: [evdi-helper] 9.2 grabs/s (total 34619), mode:1 dpms:1 pending:0
+Oct 21 21:27:27 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 88.5ms (48 waited, 0 immediate), grab avg 1.5ms (51, 3 empty)
+Oct 21 21:27:27 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.1ms p95 16.1ms (49 frames)
+Oct 21 21:27:28 morpheus env[3819]: [238B blob data]
+Oct 21 21:27:28 morpheus env[2844]: 2026-10-21T19:27:28.521631Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.4ms  p95 21.4ms  max 21.7ms  (65 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:28 morpheus env[2844]: 2026-10-21T19:27:28.521672Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.5ms  (65 samples)
+Oct 21 21:27:28 morpheus env[2844]: 2026-10-21T19:27:28.521681Z  INFO blent::capture::cli_encoder: 302: Encoder: 65 access units in 5.1s, 0.0 MB/s (27 kbps)
+Oct 21 21:27:32 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:32 morpheus env[3180]: [evdi-helper] 5.8 grabs/s (total 34648), mode:1 dpms:1 pending:1
+Oct 21 21:27:32 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 145.7ms (29 waited, 0 immediate), grab avg 1.4ms (32, 3 empty)
+Oct 21 21:27:32 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.1ms p95 17.3ms (28 frames)
+Oct 21 21:27:33 morpheus env[3819]: [157B blob data]
+Oct 21 21:27:33 morpheus env[2844]: 2026-10-21T19:27:33.546583Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.9ms  p95 22.8ms  max 23.8ms  (43 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:33 morpheus env[2844]: 2026-10-21T19:27:33.546607Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.7ms  p95 15.8ms  (43 samples)
+Oct 21 21:27:33 morpheus env[2844]: 2026-10-21T19:27:33.546614Z  INFO blent::capture::cli_encoder: 302: Encoder: 43 access units in 5.0s, 0.0 MB/s (29 kbps)
+Oct 21 21:27:37 morpheus env[3819]: [562B blob data]
+Oct 21 21:27:37 morpheus env[3180]: [evdi-helper] 8.3 grabs/s (total 34690), mode:1 dpms:1 pending:0
+Oct 21 21:27:37 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 87.1ms (42 waited, 0 immediate), grab avg 1.6ms (47, 5 empty)
+Oct 21 21:27:37 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.1ms p95 6.1ms (43 frames)
+Oct 21 21:27:38 morpheus env[3819]: [157B blob data]
+Oct 21 21:27:38 morpheus env[2844]: 2026-10-21T19:27:38.580659Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.6ms  p95 21.9ms  max 22.8ms  (50 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:38 morpheus env[2844]: 2026-10-21T19:27:38.580712Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.7ms  p95 14.9ms  (50 samples)
+Oct 21 21:27:38 morpheus env[2844]: 2026-10-21T19:27:38.580719Z  INFO blent::capture::cli_encoder: 302: Encoder: 50 access units in 5.0s, 0.0 MB/s (30 kbps)
+Oct 21 21:27:42 morpheus env[3819]: [562B blob data]
+Oct 21 21:27:42 morpheus env[3180]: [evdi-helper] 6.8 grabs/s (total 34725), mode:1 dpms:1 pending:1
+Oct 21 21:27:42 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 129.5ms (35 waited, 0 immediate), grab avg 1.5ms (37, 2 empty)
+Oct 21 21:27:42 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 17.3ms (34 frames)
+Oct 21 21:27:43 morpheus env[3819]: [157B blob data]
+Oct 21 21:27:43 morpheus env[2844]: 2026-10-21T19:27:43.644085Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.7ms  p95 21.9ms  max 22.5ms  (44 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:43 morpheus env[2844]: 2026-10-21T19:27:43.644104Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.7ms  p95 15.1ms  (44 samples)
+Oct 21 21:27:43 morpheus env[2844]: 2026-10-21T19:27:43.644111Z  INFO blent::capture::cli_encoder: 302: Encoder: 44 access units in 5.1s, 0.0 MB/s (29 kbps)
+Oct 21 21:27:47 morpheus env[3819]: [562B blob data]
+Oct 21 21:27:47 morpheus env[3180]: [evdi-helper] 5.5 grabs/s (total 34753), mode:1 dpms:1 pending:1
+Oct 21 21:27:47 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 116.9ms (28 waited, 0 immediate), grab avg 1.3ms (35, 7 empty)
+Oct 21 21:27:47 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 1.1ms (28 frames)
+Oct 21 21:27:48 morpheus env[3819]: [157B blob data]
+Oct 21 21:27:48 morpheus env[2844]: 2026-10-21T19:27:48.706947Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.5ms  p95 22.2ms  max 41.6ms  (39 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:48 morpheus env[2844]: 2026-10-21T19:27:48.706980Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 14.0ms  p95 14.9ms  (39 samples)
+Oct 21 21:27:48 morpheus env[2844]: 2026-10-21T19:27:48.706987Z  INFO blent::capture::cli_encoder: 302: Encoder: 39 access units in 5.1s, 0.0 MB/s (29 kbps)
+Oct 21 21:27:52 morpheus env[3819]: [481B blob data]
+Oct 21 21:27:52 morpheus env[3180]: [evdi-helper] 5.8 grabs/s (total 34783), mode:1 dpms:1 pending:1
+Oct 21 21:27:52 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 145.2ms (30 waited, 0 immediate), grab avg 1.3ms (33, 3 empty)
+Oct 21 21:27:52 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 4.0ms (30 frames)
+Oct 21 21:27:53 morpheus env[3819]: [157B blob data]
+Oct 21 21:27:53 morpheus env[2844]: 2026-10-21T19:27:53.733466Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.2ms  p95 22.3ms  max 53.8ms  (44 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:53 morpheus env[2844]: 2026-10-21T19:27:53.733497Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.7ms  p95 15.2ms  (44 samples)
+Oct 21 21:27:53 morpheus env[2844]: 2026-10-21T19:27:53.733503Z  INFO blent::capture::cli_encoder: 302: Encoder: 44 access units in 5.0s, 0.0 MB/s (25 kbps)
+Oct 21 21:27:57 morpheus env[3819]: [562B blob data]
+Oct 21 21:27:57 morpheus env[3180]: [evdi-helper] 6.7 grabs/s (total 34817), mode:1 dpms:1 pending:1
+Oct 21 21:27:57 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 125.3ms (34 waited, 0 immediate), grab avg 1.3ms (37, 3 empty)
+Oct 21 21:27:57 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 16.1ms (34 frames)
+Oct 21 21:27:58 morpheus env[3819]: [157B blob data]
+Oct 21 21:27:58 morpheus env[2844]: 2026-10-21T19:27:58.796652Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.8ms  p95 22.0ms  max 23.0ms  (43 samples, 1 in flight, 0 aged out)
+Oct 21 21:27:58 morpheus env[2844]: 2026-10-21T19:27:58.796668Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 14.7ms  (43 samples)
+Oct 21 21:27:58 morpheus env[2844]: 2026-10-21T19:27:58.796672Z  INFO blent::capture::cli_encoder: 302: Encoder: 43 access units in 5.1s, 0.0 MB/s (29 kbps)
+Oct 21 21:28:02 morpheus env[3819]: [481B blob data]
+Oct 21 21:28:02 morpheus env[3180]: [evdi-helper] 9.6 grabs/s (total 34865), mode:1 dpms:1 pending:1
+Oct 21 21:28:02 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 77.2ms (47 waited, 1 immediate), grab avg 1.2ms (54, 6 empty)
+Oct 21 21:28:02 morpheus env[3180]: [evdi-helper] capture→fifo p50 0.9ms p95 1.2ms (48 frames)
+Oct 21 21:28:03 morpheus env[3819]: [238B blob data]
+Oct 21 21:28:03 morpheus env[2844]: 2026-10-21T19:28:03.798314Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.6ms  p95 22.2ms  max 50.0ms  (59 samples, 2 in flight, 0 aged out)
+Oct 21 21:28:03 morpheus env[2844]: 2026-10-21T19:28:03.798334Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.5ms  p95 15.0ms  (59 samples)
+Oct 21 21:28:03 morpheus env[2844]: 2026-10-21T19:28:03.798341Z  INFO blent::capture::cli_encoder: 302: Encoder: 60 access units in 5.0s, 0.0 MB/s (32 kbps)
+Oct 21 21:28:07 morpheus env[3819]: [481B blob data]
+Oct 21 21:28:07 morpheus env[3180]: [evdi-helper] 11.6 grabs/s (total 34925), mode:1 dpms:1 pending:1
+Oct 21 21:28:07 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 71.1ms (60 waited, 0 immediate), grab avg 1.5ms (63, 3 empty)
+Oct 21 21:28:07 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 1.4ms (60 frames)
+Oct 21 21:28:08 morpheus env[3819]: [157B blob data]
+Oct 21 21:28:08 morpheus env[2844]: 2026-10-21T19:28:08.933049Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.5ms  p95 22.1ms  max 52.0ms  (77 samples, 1 in flight, 0 aged out)
+Oct 21 21:28:08 morpheus env[2844]: 2026-10-21T19:28:08.933089Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.9ms  (77 samples)
+Oct 21 21:28:08 morpheus env[2844]: 2026-10-21T19:28:08.933097Z  INFO blent::capture::cli_encoder: 302: Encoder: 76 access units in 5.1s, 0.0 MB/s (33 kbps)
+Oct 21 21:28:12 morpheus env[3819]: [481B blob data]
+Oct 21 21:28:12 morpheus env[3180]: [evdi-helper] 7.3 grabs/s (total 34962), mode:1 dpms:1 pending:0
+Oct 21 21:28:12 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 94.7ms (37 waited, 0 immediate), grab avg 1.3ms (43, 6 empty)
+Oct 21 21:28:12 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 17.2ms (38 frames)
+Oct 21 21:28:13 morpheus env[3819]: [157B blob data]
+Oct 21 21:28:13 morpheus env[2844]: 2026-10-21T19:28:13.949207Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.8ms  p95 22.2ms  max 29.1ms  (59 samples, 2 in flight, 0 aged out)
+Oct 21 21:28:13 morpheus env[2844]: 2026-10-21T19:28:13.949244Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.6ms  p95 14.8ms  (59 samples)
+Oct 21 21:28:13 morpheus env[2844]: 2026-10-21T19:28:13.949252Z  INFO blent::capture::cli_encoder: 302: Encoder: 60 access units in 5.0s, 0.0 MB/s (27 kbps)
+Oct 21 21:28:18 morpheus env[3819]: [562B blob data]
+Oct 21 21:28:18 morpheus env[3180]: [evdi-helper] 11.7 grabs/s (total 35021), mode:1 dpms:1 pending:1
+Oct 21 21:28:18 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 56.2ms (59 waited, 0 immediate), grab avg 1.4ms (65, 6 empty)
+Oct 21 21:28:18 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 1.5ms (58 frames)
+Oct 21 21:28:18 morpheus env[3819]: [157B blob data]
+Oct 21 21:28:18 morpheus env[2844]: 2026-10-21T19:28:18.983548Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.3ms  p95 23.0ms  max 26.0ms  (51 samples, 1 in flight, 0 aged out)
+Oct 21 21:28:18 morpheus env[2844]: 2026-10-21T19:28:18.983582Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.8ms  p95 15.6ms  (51 samples)
+Oct 21 21:28:18 morpheus env[2844]: 2026-10-21T19:28:18.983589Z  INFO blent::capture::cli_encoder: 302: Encoder: 50 access units in 5.0s, 0.0 MB/s (30 kbps)
+Oct 21 21:28:23 morpheus env[3819]: [562B blob data]
+Oct 21 21:28:23 morpheus env[3180]: [evdi-helper] 7.0 grabs/s (total 35056), mode:1 dpms:1 pending:1
+Oct 21 21:28:23 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 91.5ms (35 waited, 0 immediate), grab avg 1.4ms (42, 7 empty)
+Oct 21 21:28:23 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 8.7ms (35 frames)
+Oct 21 21:28:24 morpheus env[3819]: [157B blob data]
+Oct 21 21:28:24 morpheus env[2844]: 2026-10-21T19:28:24.006283Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.2ms  p95 21.7ms  max 22.3ms  (48 samples, 1 in flight, 0 aged out)
+Oct 21 21:28:24 morpheus env[2844]: 2026-10-21T19:28:24.006311Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.9ms  p95 15.0ms  (48 samples)
+Oct 21 21:28:24 morpheus env[2844]: 2026-10-21T19:28:24.006318Z  INFO blent::capture::cli_encoder: 302: Encoder: 48 access units in 5.0s, 0.0 MB/s (30 kbps)
+Oct 21 21:28:28 morpheus env[3819]: [481B blob data]
+Oct 21 21:28:28 morpheus env[3180]: [evdi-helper] 17.1 grabs/s (total 35142), mode:1 dpms:1 pending:1
+Oct 21 21:28:28 morpheus env[3180]: [evdi-helper] cycle: request→ready avg 46.6ms (83 waited, 2 immediate), grab avg 1.5ms (89, 3 empty)
+Oct 21 21:28:28 morpheus env[3180]: [evdi-helper] capture→fifo p50 1.0ms p95 1.5ms (86 frames)
+Oct 21 21:28:29 morpheus env[3819]: [157B blob data]
+Oct 21 21:28:29 morpheus env[2844]: 2026-10-21T19:28:29.088751Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.1ms  p95 22.2ms  max 31.9ms  (95 samples, 1 in flight, 0 aged out)
+Oct 21 21:28:29 morpheus env[2844]: 2026-10-21T19:28:29.088789Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.3ms  p95 14.6ms  (95 samples)
+Oct 21 21:28:29 morpheus env[2844]: 2026-10-21T19:28:29.088797Z  INFO blent::capture::cli_encoder: 302: Encoder: 95 access units in 5.1s, 0.0 MB/s (31 kbps)

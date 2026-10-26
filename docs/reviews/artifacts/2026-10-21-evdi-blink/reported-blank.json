@@ -1,0 +1,29 @@
+{
+  "report_received_utc": "2026-10-21T19:27:45Z",
+  "user_report": "just blank a few seconds ago; full blink, but power light is on",
+  "time_uncertainty": "owner-relative timing; no exact blank start/end timestamp",
+  "kernel_window_local": [
+    "2026-10-21 21:25:00+02:00",
+    "2026-10-21 21:28:30+02:00"
+  ],
+  "kernel_non_handshake_messages": 0,
+  "xorg_last_write_local": "2026-10-21T21:18:00.454347411+02:00",
+  "interpretation": "no logged GPU reset or EVDI reconnect/mode transition in approximate report window; no active RandR/DRM listener then, so no retrospective absence-of-events claim",
+  "second_report": {
+    "received_utc": "2026-10-21T19:32:17Z",
+    "owner_report": "jsut blank",
+    "cap": "restored to original16 before this report",
+    "kernel_last90seconds_non_handshake_messages": 0,
+    "xorg_last_write_local": "2026-10-21T21:30:40.794333352+02:00",
+    "note": "Xorg log write corresponds to cap restoration, predates reported recurrence"
+  },
+  "owner_steering": "Continuous blanks; prior HDMI variations did not solve it. Owner suspects device probing across iGPU and RX6650XT and EVDI. Do not continue HDMI variations; investigate EVDI/probe paths.",
+  "trace_readiness": {
+    "tool": "bpftrace0.20.2 installed",
+    "script": "probe-trace.bt",
+    "symbols": "six selected kernel symbols present in running kallsyms; libXrandr export present",
+    "validation": "Original revision compiled and attached successfully: Attaching8probes/READY in owner trace. Latest report checks have no matching captured events. Expanded revision2 awaits privileged compile/attachment.",
+    "prerequisite": "For expanded scope, owner stops original trace with Ctrl+C and runs troubleshooting/scripts/evdi-probe-trace.bt."
+  },
+  "followup_trace_analysis": "probe-analysis.json"
+}

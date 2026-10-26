@@ -1,0 +1,180 @@
+{
+  "tool": "Lizard1.23.0",
+  "scope": "selected production fixes plus both permanent regression units",
+  "functions": [
+    {
+      "file": "module/evdi_modeset.c",
+      "function": "evdi_plane_destroy",
+      "line": 419,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/evdi_painter.c",
+      "function": "evdi_painter_send_update_ready",
+      "line": 437,
+      "cyclomatic_complexity": 2
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "record_plane_free",
+      "line": 18,
+      "cyclomatic_complexity": 4
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "stop_plane_watch",
+      "line": 32,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "watch_plane",
+      "line": 38,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "start_plane_watch",
+      "line": 46,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "close_test_file",
+      "line": 61,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "expect_plane_query",
+      "line": 67,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "invalid_plane_id",
+      "line": 79,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "fuzz_invalid_plane_ids",
+      "line": 85,
+      "cyclomatic_complexity": 2
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "remove_test_device",
+      "line": 110,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_plane_cleanup.c",
+      "function": "test_plane_cleanup",
+      "line": 119,
+      "cyclomatic_complexity": 2
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "retry_device",
+      "line": 6,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "retry_scanout",
+      "line": 13,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "release_scanout",
+      "line": 23,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "read_ready",
+      "line": 29,
+      "cyclomatic_complexity": 3
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "expect_no_ready",
+      "line": 47,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "expect_ready",
+      "line": 54,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "request_ready",
+      "line": 63,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "mark_ready",
+      "line": 74,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "fail_ready_allocation",
+      "line": 81,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "test_allocation_retry",
+      "line": 91,
+      "cyclomatic_complexity": 2
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "set_event_space",
+      "line": 116,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "poll_ready",
+      "line": 130,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "expect_queued_ready",
+      "line": 136,
+      "cyclomatic_complexity": 3
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "test_queue_backpressure",
+      "line": 149,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "reconnect_client",
+      "line": 167,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "test_disconnect_failed_allocation",
+      "line": 175,
+      "cyclomatic_complexity": 1
+    },
+    {
+      "file": "module/tests/test_evdi_update_ready_retry.c",
+      "function": "test_disconnect_queued_event",
+      "line": 190,
+      "cyclomatic_complexity": 1
+    }
+  ]
+}

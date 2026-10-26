@@ -1,0 +1,178 @@
+Attaching 8 probes...
+READY: read-only probe trace. Stop with Ctrl+C after next blank.
+22:10:22 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3654881809292
+22:10:22 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3654881841855
+22:10:22 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3654881858217
+22:10:22 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3654881872956
+22:10:22 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3654881927673
+22:10:22 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3654980943830
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3661479179031
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3661479191946
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3661479207877
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=1 mono_ns=3661479229219
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3661479254939
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3661479260640
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3661479293204
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3661479297933
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3661479333392
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=1 mono_ns=3661479337931
+22:10:28 RANDR_REFRESH pid=2747 tid=2747 comm=cinnamon mono_ns=3661479556959
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3661479685160
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3661479691312
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=3661479975628
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=3661479983383
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=3661480012500
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=3661480017069
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=3661480072307
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=3661480152875
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=3661480167453
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=3661480223272
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=3661480338147
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=3661480347375
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=3661480362294
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=3661480368626
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=3661480379798
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=3661480389397
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=3661480404306
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3661484614558
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=3661484660097
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=3661484666179
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=3661484676940
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=3661484682170
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=3661484695116
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=3661484700166
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=3661484718672
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3661488125082
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3661497395127
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3661497402521
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3661497411579
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=1 mono_ns=3661497416118
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3661497423182
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3661497426979
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3661497437339
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3661497441297
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3661497446848
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=1 mono_ns=3661497450355
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3661497457890
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3661497462649
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=3661497472819
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=3661497477458
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=3661497485083
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=3661497561302
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=3661497612772
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=3661497618473
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=3661497627150
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=3661497632461
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=3661497640537
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=3661497645556
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=3661497656578
+22:10:28 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3661501240205
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=0 driver=evdi mono_ns=3661506206986
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3661506761540
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3661506799825
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3661506821678
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3661506841496
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3661512726132
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3661603990323
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3661617297792
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3661617319704
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3661617335565
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3661617350404
+22:10:28 SETCRTC pid=1966 tid=1966 comm=Xorg card=0 driver=evdi mono_ns=3661628296316
+22:10:29 RANDR_REFRESH pid=2747 tid=2747 comm=cinnamon mono_ns=3661866972728
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3661867209561
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3661867221254
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3661867238037
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=1 mono_ns=3661867242466
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3661867253578
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3661867258006
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3661867278446
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3661867283436
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3661867290941
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=1 mono_ns=3661867294598
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3661867300419
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3661867303876
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=3661867314657
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=3661867319967
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=3661867329015
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=3661867396547
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=3661867453839
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=3661867459630
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=3661867471153
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=3661867475181
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=3661867484860
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=3661867490831
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=3661867512854
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3661870878776
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3662100796713
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3662100806612
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3662100818746
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=3662109005954
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3662109050571
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3662109056453
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3662109080349
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3662109084487
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3662109095459
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=3662117097074
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3662117657069
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3662117662018
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=3662118063794
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=3662118072922
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=3662118089444
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=3662118093051
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=3662118140814
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=3662118199349
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=3662118211703
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=3662118252803
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=3662118334142
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=3662118339513
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=3662118349162
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=3662118353761
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=3662118362688
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=3662118366576
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=3662118376946
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3662121263209
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=3662121299230
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=3662121303759
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=3662121312696
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=3662121316433
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=3662121324279
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=3662121327756
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=3662121342244
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3662124202697
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3662148046476
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3662151532111
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3662189331166
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3662189348911
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3662189361626
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=0 driver=evdi mono_ns=3662203449350
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3662214345735
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3662217525632
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3662217543948
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3662217559499
+22:10:29 SETCRTC pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu mono_ns=3662217577253
+22:10:29 RANDR_REFRESH pid=2747 tid=2747 comm=cinnamon mono_ns=3662297378942
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3662297422848
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3662297434491
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3662297468998
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=3662299697486
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3662299981611
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3662299987352
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=0 mono_ns=3662300039675
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=378 mode_capacity=1 mono_ns=3662300048352
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=0 mono_ns=3662300062169
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=387 mode_capacity=41 mono_ns=3662302145793
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=0 mono_ns=3662302402014
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu connector=395 mode_capacity=1 mono_ns=3662302421131
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=0 mono_ns=3662302457612
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=3 driver=evdi connector=40 mode_capacity=1 mono_ns=3662302462021
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=0 mono_ns=3662302473854
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=0 driver=evdi connector=40 mode_capacity=1 mono_ns=3662302509303
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=0 mono_ns=3662302541657
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=435 mode_capacity=1 mono_ns=3662302545835
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=0 mono_ns=3662302555564
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=444 mode_capacity=1 mono_ns=3662302558329
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=0 mono_ns=3662302564411
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=450 mode_capacity=1 mono_ns=3662302568098
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=0 mono_ns=3662302583619
+22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3662304192504

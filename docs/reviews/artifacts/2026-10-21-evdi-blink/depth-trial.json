@@ -1,0 +1,31 @@
+{
+  "start_utc": "2026-10-21T19:28:45.178335+00:00",
+  "command": [
+    "xrandr",
+    "--output",
+    "HDMI-A-1",
+    "--set",
+    "max bpc",
+    "8"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "output": "HDMI-A-1;AOC U27B3A",
+  "original_max_bpc": 16,
+  "trial_max_bpc": 8,
+  "restore_command": [
+    "xrandr",
+    "--output",
+    "HDMI-A-1",
+    "--set",
+    "max bpc",
+    "16"
+  ],
+  "scope": "temporary reversible display-setting experiment; no software bug fix or persistence; actual previous link depth unavailable",
+  "expected": "one configuration-related blink possible; evaluate later spontaneous blanks separately",
+  "restored_utc": "2026-10-21T19:30:40.855961+00:00",
+  "restored_max_bpc": 16,
+  "disposition": "owner explicitly requested revert; original max bpc16 restored; trial not accepted as remedy; no persistence",
+  "observation_disposition": "Post-change observer interrupted after owner-requested restore; at least600/1200 samples completed; no completed-window/pass claim. Subsequent property-change events may be caused by restoration."
+}

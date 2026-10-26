@@ -1,0 +1,1 @@
+2026-10-21T19:18:52.162790+00:00 drm monitor will print the received events for:

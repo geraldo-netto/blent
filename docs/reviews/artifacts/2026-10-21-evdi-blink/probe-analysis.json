@@ -1,0 +1,134 @@
+{
+  "snapshot_checked_local": "2026-10-21T22:16:43+02:00",
+  "report_check_times_local": [
+    "2026-10-21T22:13:17+02:00",
+    "2026-10-21T22:16:43+02:00"
+  ],
+  "timestamp_limit": "Tool inspection times following owner now reports; exact physical blackout onset/end unavailable.",
+  "original_script_sha256": "00227b321c8e021b8b3782d01ba1f13a96bef1c8faf19f82a5a52c9135f01195",
+  "trace_sha256": "a26b8b446fde6f83e37a303cb71bb5ddaa86ad704ec278fe5c8be38bc4789cf8",
+  "trace_event_counts": {
+    "SETCRTC": 29,
+    "GETCONNECTOR": 144,
+    "RANDR_REFRESH": 3
+  },
+  "trace_first_event": "22:10:22 SETCRTC pid=1966 tid=1966 comm=Xorg card=2 driver=amdgpu mono_ns=3654881809292",
+  "trace_last_event": "22:10:29 GETCONNECTOR pid=1966 tid=1966 comm=Xorg card=1 driver=amdgpu connector=456 mode_capacity=24 mono_ns=3662304192504",
+  "interpretation": "Successful original attachment. Captured Xorg SETCRTC and Cinnamon RANDR_REFRESH around22:10:22-29; no recorded events near latest report checks. This does not rule out paths outside original trace or establish causation.",
+  "card_mapping": {
+    "card0": "EVDI active Blent connector40",
+    "card1": "AMD discrete 0000:03:00.0; connector456 PicoPix U4",
+    "card2": "AMD integrated 0000:08:00.0; connector387 AOC U27B3A",
+    "card3": "EVDI inactive connector40"
+  },
+  "v2_script": "/backups/disk2/projects/troubleshooting/scripts/evdi-probe-trace.bt",
+  "v2_sha256": "b1f92e401352d9499c576a66c6b079e98886555543c7fecb62f68fe2bf65f45d",
+  "v2_symbols_checked": [
+    "drm_mode_getconnector",
+    "drm_helper_probe_detect",
+    "drm_kms_helper_hotplug_event",
+    "drm_mode_setcrtc",
+    "drm_connector_set_link_status_property",
+    "drm_kms_helper_connector_hotplug_event",
+    "amdgpu_dm_connector_detect",
+    "handle_hpd_irq",
+    "handle_hpd_rx_irq",
+    "__i2c_transfer",
+    "i2cdev_ioctl"
+  ],
+  "v2_validation": "Owner attached15probes on kernel7.0.0-38. Positive control cached GETCONNECTOR at22:28:30 received with exact PID/card/connector/capacity. Heartbeats bracket reported blanks checked22:26:38/22:28:16/22:29:20, with no spontaneous trace events captured. Root attachment proven; cause still unknown.",
+  "v2_ownership": "bpftrace owns attachments/buffers until exit; no pinned objects or retained kernel-pointer maps. Kernel-owned arguments borrowed only during synchronous probe execution. Bounded string copies; no user/I2C payload copied. SIGINT initiates detach and process exit releases resources.",
+  "v2_complexity": "No functions declared. Probe blocks are straight-line except __i2c_transfer with one if and one || (manual decision count3); bpftrace complexity parser unavailable, no automated metric claimed.",
+  "i2c_buses": {
+    "i2c-3": {
+      "name": "AMDGPU SMU 1",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/i2c-3"
+    },
+    "i2c-10": {
+      "name": "AMDGPU DM aux hw bus 2",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/drm/card1/card1-DP-3/i2c-10"
+    },
+    "i2c-1": {
+      "name": "Synopsys DesignWare I2C adapter",
+      "path": "/sys/devices/platform/AMDI0010:01/i2c-1"
+    },
+    "i2c-19": {
+      "name": "DisplayLink I2C Adapter",
+      "path": "/sys/devices/platform/evdi.0/i2c-19"
+    },
+    "i2c-17": {
+      "name": "SMBus PIIX4 adapter port 2 at 0b00",
+      "path": "/sys/devices/pci0000:00/0000:00:14.0/i2c-17"
+    },
+    "i2c-8": {
+      "name": "AMDGPU DM aux hw bus 0",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/drm/card1/card1-DP-1/i2c-8"
+    },
+    "i2c-15": {
+      "name": "AMDGPU DM aux hw bus 2",
+      "path": "/sys/devices/pci0000:00/0000:00:08.1/0000:08:00.0/drm/card2/card2-DP-5/i2c-15"
+    },
+    "i2c-6": {
+      "name": "AMDGPU DM i2c hw bus 2",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/i2c-6"
+    },
+    "i2c-13": {
+      "name": "AMDGPU DM i2c hw bus 2",
+      "path": "/sys/devices/pci0000:00/0000:00:08.1/0000:08:00.0/i2c-13"
+    },
+    "i2c-4": {
+      "name": "AMDGPU DM i2c hw bus 0",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/i2c-4"
+    },
+    "i2c-11": {
+      "name": "AMDGPU DM i2c hw bus 0",
+      "path": "/sys/devices/pci0000:00/0000:00:08.1/0000:08:00.0/i2c-11"
+    },
+    "i2c-2": {
+      "name": "AMDGPU SMU 0",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/i2c-2"
+    },
+    "i2c-0": {
+      "name": "Synopsys DesignWare I2C adapter",
+      "path": "/sys/devices/platform/AMDI0010:00/i2c-0"
+    },
+    "i2c-18": {
+      "name": "SMBus PIIX4 adapter port 1 at 0b20",
+      "path": "/sys/devices/pci0000:00/0000:00:14.0/i2c-18"
+    },
+    "i2c-9": {
+      "name": "AMDGPU DM aux hw bus 1",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/drm/card1/card1-DP-2/i2c-9"
+    },
+    "i2c-16": {
+      "name": "SMBus PIIX4 adapter port 0 at 0b00",
+      "path": "/sys/devices/pci0000:00/0000:00:14.0/i2c-16"
+    },
+    "i2c-7": {
+      "name": "AMDGPU DM i2c hw bus 3",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/i2c-7"
+    },
+    "i2c-14": {
+      "name": "AMDGPU DM aux hw bus 0",
+      "path": "/sys/devices/pci0000:00/0000:00:08.1/0000:08:00.0/drm/card2/card2-DP-4/i2c-14"
+    },
+    "i2c-5": {
+      "name": "AMDGPU DM i2c hw bus 1",
+      "path": "/sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0/0000:02:00.0/0000:03:00.0/i2c-5"
+    },
+    "i2c-12": {
+      "name": "AMDGPU DM i2c hw bus 1",
+      "path": "/sys/devices/pci0000:00/0000:00:08.1/0000:08:00.0/i2c-12"
+    }
+  },
+  "additional_candidate": "Installed Cinnamon PowerToys monitor-brightness=true. lib/ddc.js launches ddcutil --brief detect; lib/monitor-watch.js requests probes on topology changes and while UI watch is active. Direct I2C was outside original trace. No report-time execution or causal link established.",
+  "v2_rejected_sha256": "c424ceb0c76bb155d19e5580aedd5bcb3280745538892431f79401f0aed301f2",
+  "compiler_regression": {
+    "path": "/backups/disk2/projects/troubleshooting/tests/test_evdi_probe_trace.py",
+    "sha256": "99c0e8a21090af7d93d9afa5d21dd4962863e21897d8bfdbf3c46dea1cc72392",
+    "complexity": 1,
+    "tool": "Lizard1.23.0",
+    "ownership": "TemporaryFile context owns diagnostic storage; subprocess.run waits/reaps compiler child; only diagnostic tail is included on failure. No host probes are attached by -d. No production allocation/lifetime changed."
+  },
+  "owner_service_stop": "Blent inactive/dead MainPID0 at22:31:37; EVDI module refcount2. Keep stopped at owner request."
+}

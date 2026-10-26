@@ -1,0 +1,11 @@
+KTAP version 1
+1..1
+    KTAP version 1
+    # Subtest: drm_evdi_hotplug_tests
+    1..2
+    ok 1 test_evdi_painter_replays_mode_on_reconnect_without_modeset
+    ok 2 test_evdi_painter_does_not_replay_mode_when_pipeline_was_torn_down
+    # module: test_evdi_hotplug
+# drm_evdi_hotplug_tests: pass:2 fail:0 skip:0 total:2
+# Totals: pass:2 fail:0 skip:0 total:2
+ok 1 drm_evdi_hotplug_tests

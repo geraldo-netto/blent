@@ -1,0 +1,14 @@
+{
+  "source": "/backups/disk2/blent-work/2026-10-19-evdi-check/next-items",
+  "commit": "a43bc15e0d3d11ffcba30990b50a63e3f6f0ee98",
+  "suites": [
+    "drm_evdi_hotplug_tests",
+    "drm_evdi_vblank_delivery",
+    "drm_evdi_disconnect_events",
+    "drm_evdi_plane_cleanup",
+    "drm_evdi_update_ready_retry"
+  ],
+  "kernel_sha256": "fd83c0130ca70efe764dcc5fdc679a93cd73a406f201c80610b3e082baa15bd8",
+  "init_sha256": "aadd70597971aa4ef263f94e8c94d225bea8b3bcb42979329539516dd7ee86ae",
+  "limits": "Linux6.15 KVM guest; no physical AOC acceptance; no elapsed execution cutoff"
+}

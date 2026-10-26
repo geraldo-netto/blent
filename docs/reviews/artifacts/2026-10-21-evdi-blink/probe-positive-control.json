@@ -1,0 +1,13 @@
+{
+  "kind": "agent-generated cached query positive control; not spontaneous activity",
+  "local_time": "2026-10-21T22:28:30.149547+02:00",
+  "mono_ns": 4742881873249,
+  "pid": 75683,
+  "card": "/dev/dri/card2",
+  "connector": 387,
+  "input_mode_capacity": 1,
+  "returned_mode_count": 41,
+  "connection": 1,
+  "lifetime": "one synchronous ioctl; mode buffer retained until return; fd closed in finally",
+  "forced_probe": false
+}

@@ -1,0 +1,8 @@
+KTAP version 1
+1..1
+    KTAP version 1
+    # Subtest: drm_evdi_disconnect_events
+    1..1
+    ok 1 test_disconnect_events
+    # module: test_evdi_disconnect_events
+ok 1 drm_evdi_disconnect_events

@@ -1,0 +1,13 @@
+KTAP version 1
+1..1
+    KTAP version 1
+    # Subtest: drm_evdi_update_ready_retry
+    1..4
+    ok 1 test_allocation_retry
+    ok 2 test_queue_backpressure
+    ok 3 test_disconnect_failed_allocation
+    ok 4 test_disconnect_queued_event
+    # module: test_evdi_update_ready_retry
+# drm_evdi_update_ready_retry: pass:4 fail:0 skip:0 total:4
+# Totals: pass:4 fail:0 skip:0 total:4
+ok 1 drm_evdi_update_ready_retry
