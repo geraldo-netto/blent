@@ -1,0 +1,70 @@
+{
+  "secure_boot": {
+    "exit_code": 0,
+    "stdout": "SecureBoot enabled",
+    "stderr": ""
+  },
+  "enrollment": {
+    "exit_code": 1,
+    "stdout": "/var/lib/shim-signed/mok/MOK.der is already enrolled",
+    "stderr": ""
+  },
+  "kernel": {
+    "exit_code": 0,
+    "stdout": "7.0.0-38-generic",
+    "stderr": ""
+  },
+  "candidate_srcversion": {
+    "exit_code": 0,
+    "stdout": "5ED3D50DB369CC57456F23D",
+    "stderr": ""
+  },
+  "candidate_signer": {
+    "exit_code": 0,
+    "stdout": "localhost.localdomain Secure Boot Module Signature key",
+    "stderr": ""
+  },
+  "candidate_vermagic": {
+    "exit_code": 0,
+    "stdout": "7.0.0-38-generic SMP preempt mod_unload modversions",
+    "stderr": ""
+  },
+  "sudo": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "sudo: a password is required"
+  },
+  "observed_at": "2026-10-22T18:47:55.045596+02:00",
+  "todo": "T1257",
+  "boot_id": "1ca831a3-be57-4c53-9134-9ffb412fb9ad",
+  "loaded_srcversion": "C477D84009DFBE1A8FCE08C",
+  "loaded_refcnt": 2,
+  "candidate_sha256": "e1b0225588993742c059f52584c04e610ed70b4e5ecb04c8bf0b299fadd1796f",
+  "kernel_evidence": [
+    "Oct 22 18:43:47 morpheus kernel: integrity: Loaded X.509 cert 'localhost.localdomain Secure Boot Module Signature key: cde5e8d58c3f99cd747fbca3415dbd916f72f006'",
+    "Oct 22 18:43:47 morpheus kernel: [drm] Initialized evdi 1.14.15 for evdi.0 on minor 0",
+    "Oct 22 18:43:47 morpheus kernel: [drm] Initialized evdi 1.14.15 for evdi.1 on minor 3",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Opened by Task 1965 (Xorg.wrap) of process 1965 (Xorg.wrap)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Closed by Task 1965 (Xorg.wrap) of process 1965 (Xorg.wrap)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Opened by Task 1965 (Xorg.wrap) of process 1965 (Xorg.wrap)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Closed by Task 1965 (Xorg.wrap) of process 1965 (Xorg.wrap)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Closed by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Closed by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Closed by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Closed by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Closed by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Closed by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Closed by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card0) Opened by Task 1965 (Xorg) of process 1965 (Xorg)",
+    "Oct 22 18:44:22 morpheus kernel: evdi: [I] (card3) Opened by Task 1965 (Xorg) of process 1965 (Xorg)"
+  ],
+  "actions": "Read-only checks; services and modules unchanged. No unload/load attempted because privilege requires owner password and Xorg owns live EVDI references.",
+  "remaining": "Saved-session console transition, normal unload, exact signed insertion and loaded identity/device verification; native AOC/tablet acceptance remains pending."
+}

@@ -1,0 +1,75 @@
+T1257: manual EVDI replacement after successful MOK enrollment
+Checked 2026-10-22, kernel 7.0.0-38-generic.
+
+The local certificate is enrolled and appears in this boot's kernel certificate
+log. The exact signed candidate is unchanged. Actual insertion is still untested.
+The stock driver has two references and Xorg opened both virtual cards.
+sudo requires the owner's password. No services/modules were changed by the check.
+
+1. Save all graphical work. Switch to a local text console with Ctrl+Alt+F3
+   and log in. Stopping display-manager below ends the graphical session.
+   Run these commands from that console, not a graphical terminal.
+
+2. Confirm the kernel and candidate before stopping anything:
+
+   uname -r
+   mokutil --ignore-keyring --test-key /var/lib/shim-signed/mok/MOK.der
+   sha256sum /var/lib/evdi-local/2507934/evdi.ko
+   modinfo -F vermagic /var/lib/evdi-local/2507934/evdi.ko
+
+   Required: kernel 7.0.0-38-generic, certificate "already enrolled", SHA256
+   e1b0225588993742c059f52584c04e610ed70b4e5ecb04c8bf0b299fadd1796f,
+   and matching vermagic. mokutil may return exit status 1 even when its output
+   says "already enrolled"; do not use that exit status alone as a trust gate.
+   If any identity differs, stop and report it before changing the session.
+
+3. Authenticate, then stop the users of EVDI. Run each command separately;
+   if one fails, stop and use the recovery instructions below.
+
+   sudo -v
+   systemctl --user stop blent.service
+   sudo systemctl stop display-manager
+   cat /sys/module/evdi/refcnt
+   sudo rmmod evdi
+
+   Normal rmmod must succeed before continuing. Never use force removal or
+   unbind an active device. A nonzero refcount means another owner remains;
+   investigate it rather than releasing its resources underneath it.
+
+4. Load the exact signed copy, then check the live module identity:
+
+   sudo insmod /var/lib/evdi-local/2507934/evdi.ko initial_device_count=2
+   cat /sys/module/evdi/srcversion
+   ls -l /sys/bus/platform/drivers/evdi/
+   sudo journalctl -k -b -n 80 --no-pager
+
+   Required live srcversion: 5ED3D50DB369CC57456F23D.
+   The kernel log should identify EVDI 1.15.1 and both evdi.0/evdi.1 devices.
+   modinfo evdi alone still describes the installed stock file; it does not
+   identify the module currently loaded from the explicit candidate path.
+   If insertion fails, use recovery below. If identity differs or the log has
+   new faults, leave Blent stopped and report the evidence.
+
+5. Restore graphical login:
+
+   sudo systemctl start display-manager
+
+   Log in normally. The enabled Blent user service may restart on login.
+   Ask for verification of live identity, display labels and AOC/tablet behavior.
+   Successful insertion alone does not establish physical acceptance or a blink fix.
+
+Recovery:
+   If rmmod failed, the original module remains loaded: do not run insmod.
+   Restore graphical login with sudo systemctl start display-manager.
+
+   If rmmod succeeded but candidate insertion failed, restore the installed driver:
+
+   sudo modprobe evdi
+   sudo systemctl start display-manager
+
+   If stock module restoration fails, remain on the console and retain the exact
+   error; do not force module operations. No installed driver, initramfs or boot
+   configuration was replaced, so the ordinary boot path remains available.
+
+This is a manual test load for the current boot. A later reboot still selects the
+installed stock module. Persistent deployment is a separate verified step.

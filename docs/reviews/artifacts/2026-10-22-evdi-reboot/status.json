@@ -1,0 +1,35 @@
+{
+  "observed_at": "2026-10-22T18:36:57+02:00",
+  "todo": "T1257",
+  "boot_id": "da028159-9b4b-478d-82f9-eb93f21111b1",
+  "kernel": "7.0.0-38-generic",
+  "secure_boot": "enabled",
+  "boot_current": "0002: Ubuntu, EFI/ubuntu/shimx64.efi",
+  "loaded_evdi": {
+    "version_from_boot_journal": "1.14.15",
+    "srcversion": "C477D84009DFBE1A8FCE08C",
+    "refcnt": 2,
+    "xorg_pid_from_boot_journal": 1999
+  },
+  "signed_candidate": {
+    "path": "/var/lib/evdi-local/2507934/evdi.ko",
+    "sha256": "e1b0225588993742c059f52584c04e610ed70b4e5ecb04c8bf0b299fadd1796f",
+    "matches_pre_reboot_signed_hash": true,
+    "srcversion": "5ED3D50DB369CC57456F23D",
+    "vermagic": "7.0.0-38-generic SMP preempt mod_unload modversions",
+    "signer": "localhost.localdomain Secure Boot Module Signature key"
+  },
+  "enrollment": {
+    "certificate_sha256": "75b7082e742236cee93bcaf4b4b001927dfa4bf760553ad828af73468f924562",
+    "mokutil_ignore_keyring_test_key": "/var/lib/shim-signed/mok/MOK.der is not enrolled",
+    "mokutil_list_new_stdout": "",
+    "efi_mok_request_variables": "MokNew and MokAuth absent; only MokListRT, MokListTrustedRT and MokListXRT present",
+    "kernel_boot_certificate_log": "Canonical and grub MOK certificates loaded; local signing certificate absent",
+    "cause": "Unknown: unattended boot may have missed prompt; no evidence establishes why enrollment request disappeared"
+  },
+  "privilege": "sudo -n true: sudo: a password is required",
+  "blent_user_service": "active; restarted after reboot",
+  "actions": "Read-only checks only; no service stop, module unload/load, enrollment or boot configuration change performed",
+  "next_step": "Owner reimports existing public certificate using sudo, extends MOK prompt timeout and attends reboot enrollment; verify trust before saved-session transition and normal unload/manual load",
+  "acceptance": "Patched module not loaded; native AOC/tablet acceptance remains pending"
+}
