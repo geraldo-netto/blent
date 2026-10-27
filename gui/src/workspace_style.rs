@@ -2,6 +2,8 @@
 //! native resources and retain no views beyond the context's own lifetime.
 use eframe::egui::{self, Color32, FontId, TextStyle};
 
+pub(super) const FORM_WIDTH: f32 = 960.0;
+
 pub(super) fn configure(context: &egui::Context) {
     let mut style = (*context.style()).clone();
     for (kind, size) in [

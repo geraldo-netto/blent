@@ -20,3 +20,20 @@ callbacks after the frame. Viewport width is supplied by egui; one/four columns
 bound the finite four-resource collection. Native Windows visual validation
 remains tracked in T1271. Artifacts: /backups/disk2/blent-work/2026-10-27-responsive
 (t1289-red.log, t1289-green.log, t1289-coverage.log, t1289-metrics.json).
+
+## T1290 — Readable forms and aligned actions
+
+The permanent resize regression failed on the Settings field at width 1040
+(left edge 8 rather than the centered content column). Settings, Connections
+and About now use a shared 960-point maximum; the settings footer uses the same
+bound. Footer positioning and content rendering have separate responsibilities.
+Navigation remains in its established location. Tests resize the same contexts
+between 380, 1040, 1920 and 3840 points, checking content/action alignment and
+clipping on all three pages.
+
+All 163 GUI unit tests and the native startup/accessibility test pass. Executable-line coverage is 100% for
+show_window/show_footer and 94.3% for footer_content; complexity
+remains <=9, including the new regression. The layout borrows remain scoped to
+each synchronous egui frame; no runtime owner, resource or callback lifecycle
+changed. Evidence: t1290-red.log, t1290-coverage.log and t1290-metrics.json in the
+same local artifact directory. Native Windows evidence remains T1271.

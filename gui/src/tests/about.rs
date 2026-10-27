@@ -94,3 +94,43 @@ fn t1277_about_exposes_version_credits_and_offline_notices() {
         .any(|(text, _)| text == "Licenses and notices"));
     assert!(labels.iter().any(|(text, _)| text.contains("MIT")));
 }
+
+// T1290: content and save actions share a readable column after live resizes.
+#[test]
+fn t1290_wide_pages_and_footer_share_bounded_content() {
+    for (tab, anchor) in [
+        (Tab::Settings, "CPU scheduling"),
+        (Tab::Connections, "USB connection"),
+        (Tab::About, "Credits"),
+    ] {
+        let (_root, mut app) = settings_test_app(tab);
+        let context = egui::Context::default();
+        for width in [1040.0, 3840.0, 380.0, 1920.0, 1040.0] {
+            let size = egui::vec2(width, 1100.0);
+            for _ in 0..3 {
+                sized_window_frame(&mut app, &context, vec![], size);
+            }
+            let labels = sized_window_frame(&mut app, &context, vec![], size);
+            let left = ((width - 960.0) / 2.0).max(0.0);
+            let rect = labels.iter().find(|(text, _)| text == anchor).unwrap().1;
+            assert!(
+                rect.left() >= left,
+                "T1290 {anchor} at width {width}: {rect:?}"
+            );
+            for (text, rect) in &labels {
+                assert!(rect.right() <= width, "T1290 clipped {text}: {rect:?}");
+            }
+            if tab == Tab::Settings {
+                let save = labels
+                    .iter()
+                    .find(|(text, _)| text.starts_with("Save"))
+                    .unwrap()
+                    .1;
+                assert!(
+                    save.left() >= left,
+                    "T1290 footer detached from form: {save:?}"
+                );
+            }
+        }
+    }
+}
