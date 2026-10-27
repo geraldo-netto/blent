@@ -1,0 +1,25 @@
+test_t1278_special_files_are_rejected_before_reading (test_local_notices.LocalNoticesTest.test_t1278_special_files_are_rejected_before_reading) ... FAIL
+
+======================================================================
+FAIL: test_t1278_special_files_are_rejected_before_reading (test_local_notices.LocalNoticesTest.test_t1278_special_files_are_rejected_before_reading)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_local_notices.py", line 104, in test_t1278_special_files_are_rejected_before_reading
+    checker.digest(fifo)
+  File "/backups/disk2/projects/blent/scripts/verify-local-notices.py", line 15, in digest
+    with path.open('rb') as stream:
+         ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: attempted special-file open
+
+----------------------------------------------------------------------
+Ran 1 test in 0.007s
+
+FAILED (failures=1)

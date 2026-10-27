@@ -4,7 +4,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1278 | open | medium | medium | Restore exact bundled-component notices/manifests for the local extracted installation. During T1277 inspection, ~/.local/share/blent/appimage/Blent.AppDir/usr/share/doc/blent/bundled was absent although THIRD_PARTY_LICENSES.md points there for packaged FFmpeg/dependency notices; root project notices are present. Reconstruct the actual installed external-binary/library inventory and matching notices from local provenance/cache, distinguish SDK/system dependencies from bundled files, and verify the resulting notice/source-manifest entries against those identities without claiming the embedded project inventory covers every installed component. Inventory, notice recovery and matching checks form one cohesive installed-attribution outcome. Record unavailable provenance or notice prerequisites explicitly; no downloads or runtime replacement are authorized by this attribution finding. |
+| T1279 | open | medium | small | Correct packaging/appimage/sources.py::copy_crate_notices, which scans only top-level LICENSE/LICENCE/COPYING/COPYRIGHT/NOTICE names. The cached epaint_default_fonts-0.32.3 crate contains fonts/OFL.txt, fonts/UFL.txt and fonts/emoji-icon-font-mit-license.txt, and ksni-0.3.6 carries UNLICENSE; these are omitted. Some crates ship no full license files, leaving empty notice directories without explicit rejection. Add permanent failing-before/passing-after tests for nested font notices, UNLICENSE, declared license_file paths and absent notice inputs; preserve paths/provenance and fail explicitly when required attribution inputs are unavailable. |
 
 
 

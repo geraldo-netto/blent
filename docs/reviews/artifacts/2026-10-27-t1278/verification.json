@@ -1,0 +1,400 @@
+{
+  "installed_manifest_sha256": "9521f7a921e67136927d2b642a90e6658475fcafdec8305e982b615216480abf",
+  "installed_source_commit": "cf521d4359e0dc7e6cc1122a11f1a96d41fba73a",
+  "installed_files": 56,
+  "notice_and_provenance_files": 1988,
+  "cargo_normal_and_build_crates": 337,
+  "external_runtime_files": 51,
+  "downloaded_license_payload_bytes": 58380,
+  "tests": "12 permanent unittest cases pass; installed checker failed before recovery and passes after; regular-file negative control failed before guard",
+  "coverage": {
+    "regular_file": {
+      "executed_lines": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        28
+      ],
+      "summary": {
+        "covered_lines": 9,
+        "num_statements": 9,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 18
+    },
+    "digest": {
+      "executed_lines": [
+        32,
+        33
+      ],
+      "summary": {
+        "covered_lines": 2,
+        "num_statements": 2,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 31
+    },
+    "contained": {
+      "executed_lines": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "summary": {
+        "covered_lines": 9,
+        "num_statements": 9,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 36
+    },
+    "checked_rows": {
+      "executed_lines": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59
+      ],
+      "summary": {
+        "covered_lines": 11,
+        "num_statements": 11,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 48
+    },
+    "executable_inventory": {
+      "executed_lines": [
+        63,
+        65,
+        66,
+        67
+      ],
+      "summary": {
+        "covered_lines": 4,
+        "num_statements": 4,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 62
+    },
+    "attribution_links": {
+      "executed_lines": [
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
+      ],
+      "summary": {
+        "covered_lines": 14,
+        "num_statements": 14,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 70
+    },
+    "verify": {
+      "executed_lines": [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101
+      ],
+      "summary": {
+        "covered_lines": 14,
+        "num_statements": 14,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 87
+    },
+    "main": {
+      "executed_lines": [
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112
+      ],
+      "summary": {
+        "covered_lines": 8,
+        "num_statements": 8,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": [],
+      "excluded_lines": [],
+      "start_line": 104
+    },
+    "": {
+      "executed_lines": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        13,
+        14,
+        17,
+        18,
+        31,
+        36,
+        48,
+        62,
+        70,
+        87,
+        104,
+        115
+      ],
+      "summary": {
+        "covered_lines": 21,
+        "num_statements": 22,
+        "percent_covered": 95.45454545454545,
+        "percent_covered_display": "95",
+        "missing_lines": 1,
+        "excluded_lines": 0,
+        "percent_statements_covered": 95.45454545454545,
+        "percent_statements_covered_display": "95"
+      },
+      "missing_lines": [
+        116
+      ],
+      "excluded_lines": [],
+      "start_line": 1
+    }
+  },
+  "coverage_tool": "Coverage.py 7.15.2, CPython 3.12.3",
+  "complexity": [
+    [
+      "scripts/verify-local-notices.py",
+      18,
+      "regular_file",
+      3
+    ],
+    [
+      "scripts/verify-local-notices.py",
+      31,
+      "digest",
+      1
+    ],
+    [
+      "scripts/verify-local-notices.py",
+      36,
+      "contained",
+      6
+    ],
+    [
+      "scripts/verify-local-notices.py",
+      48,
+      "checked_rows",
+      6
+    ],
+    [
+      "scripts/verify-local-notices.py",
+      62,
+      "executable_inventory",
+      3
+    ],
+    [
+      "scripts/verify-local-notices.py",
+      70,
+      "attribution_links",
+      9
+    ],
+    [
+      "scripts/verify-local-notices.py",
+      87,
+      "verify",
+      4
+    ],
+    [
+      "scripts/verify-local-notices.py",
+      104,
+      "main",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      23,
+      "setUp",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      39,
+      "publish",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      42,
+      "test_t1278_missing_manifest_fails_then_verified_recovery_passes",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      50,
+      "test_t1278_missing_changed_and_uninventoried_files_fail",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      63,
+      "test_t1278_invalid_duplicate_and_unresolved_inputs_fail",
+      2
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      79,
+      "test_t1278_paths_cannot_escape_notice_owner",
+      2
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      87,
+      "test_t1278_manifest_capacity_and_cli_fail_closed",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      97,
+      "test_t1278_project_dependency_attribution_cannot_disappear",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      103,
+      "test_t1278_special_files_are_rejected_before_reading",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      113,
+      "test_t1278_descriptor_cleanup_on_rejection_and_stream_failure",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      126,
+      "test_t1278_manifest_must_be_regular_and_stay_inside_appdir",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      137,
+      "test_t1278_cli_reports_success_and_missing_inputs",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      148,
+      "test_t1278_launcher_is_part_of_the_installed_identity",
+      1
+    ],
+    [
+      "scripts/tests/test_local_notices.py",
+      158,
+      "test_t1278_row_capacity_rejects_oversized_inventory",
+      1
+    ]
+  ],
+  "complexity_tool": "installed project AST cyclomatic checker, Python source scope",
+  "source_sha256": {
+    "scripts/verify-local-notices.py": "f63b18ec212b394962e080541e7e26cb634b931f86a1ff47c11aa2cd8b9cbf26",
+    "scripts/tests/test_local_notices.py": "d8b6d0b1962af8f4986102f6aa604dcdee4ed0eb9e54d081110459b4dd34c772"
+  },
+  "runtime": "original daemon PID 648049 remains active with zero restarts; runtime files unchanged"
+}
