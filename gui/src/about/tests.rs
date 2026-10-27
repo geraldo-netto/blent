@@ -397,9 +397,9 @@ fn t1294_mit_text_stays_left_and_reflows_without_losing_content() {
 
 #[test]
 fn t1294_other_notices_preserve_original_formatting() {
-    for index in 1..DOCUMENTS.len() {
+    for (index, document) in DOCUMENTS.iter().enumerate().skip(1) {
         let shown = notice_display_text(index);
         assert!(matches!(shown, std::borrow::Cow::Borrowed(_)));
-        assert_eq!(shown.as_ref(), DOCUMENTS[index].1);
+        assert_eq!(shown.as_ref(), document.1);
     }
 }

@@ -178,11 +178,13 @@ mod tests {
     #[test]
     fn t825_removed_monitor_selection_is_retained_and_visible() {
         let context = egui::Context::default();
-        let mut config = FileConfig::default();
-        config.direct_input = Some(Config {
-            monitor: "removed".into(),
-            mode: Mode::DirectMouse,
-        });
+        let mut config = FileConfig {
+            direct_input: Some(Config {
+                monitor: "removed".into(),
+                mode: Mode::DirectMouse,
+            }),
+            ..Default::default()
+        };
         let shapes = frame(&context, &mut config, &[], Vec::new());
         assert_eq!(config.direct_input.as_ref().unwrap().monitor, "removed");
         assert!(shapes.iter().any(|shape| position(
