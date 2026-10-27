@@ -1,8 +1,23 @@
-# AppImage distribution — T308
+# Install and use the AppImage
 
-AppImage replaces the Debian `.deb` release asset in the packaging and publishing
-code. Arch and the portable tarball remain available build formats. This
-change does not announce a published fork release.
+Use the AppImage to run Blent without installing its desktop libraries separately.
+You still need a compatible Linux desktop, EVDI driver and device permissions;
+follow [installation prerequisites](installation.md#linux-artifacts-and-prerequisites).
+
+This is a supported **build format**, not a release announcement. AppImage replaced
+the Debian release asset in T308; Arch and portable tarball builds remain available.
+
+```mermaid
+flowchart LR
+    A[AppImage file] --> B[Run directly]
+    A --> C[Register for this user]
+    C --> D[Installed copy and desktop launcher]
+    D --> E[GUI or background daemon]
+    H[Host driver and permissions] --> E
+```
+
+Run directly to try the package. Register it to keep a stable installed copy and
+launch it from your desktop menu. Neither route installs the kernel driver.
 
 ## Launch and install for your user
 
@@ -21,29 +36,40 @@ Stop any running Blent daemon before explicitly registering this distribution:
 ./blent-1.2.3-x86_64.AppImage --install-user
 ```
 
-Registration copies the image to `$XDG_DATA_HOME/blent/appimage/Blent.AppImage`
-(default `~/.local/share`), writes a user service and desktop launcher, and creates
-`~/.local/bin/blent`. The installed image wrapper enables extract-and-run,
-so it also works on hosts without FUSE. It preserves application preferences and existing
-autostart intent; enable or disable autostart in the GUI. Existing desktop
-autostart paths are redirected to the installed image. When the user service is
-already enabled, registration creates or repairs its desktop login entry, which
-starts that same service even on desktops without `graphical-session.target`.
-Registration does not start streaming,
-activate EVDI, enable autostart, uninstall packages or alter system configuration.
+Registration installs these files:
 
-Registration also routes `~/.local/bin/blent-gui` to the same distribution.
-An older GUI executable or link is retained under
-`$XDG_DATA_HOME/blent/appimage/gui-backup.*/blent-gui` for rollback; symlink
-targets are not changed. Repeated registration reuses the managed launcher.
-Both image and extracted-directory registration preserve literal arguments and
-paths containing spaces or shell metacharacters.
+| Component | Location or behavior |
+| --- | --- |
+| Image copy | `$XDG_DATA_HOME/blent/appimage/Blent.AppImage`; default data directory: `~/.local/share` |
+| Command launchers | `~/.local/bin/blent` and `~/.local/bin/blent-gui`, both using this distribution |
+| Desktop launcher and user service | Point to the installed copy |
+| Previous GUI executable/link | Saved under `$XDG_DATA_HOME/blent/appimage/gui-backup.*/blent-gui` for rollback; its symlink target is unchanged |
 
-Update by stopping Blent and registering the new image the same way. Close the
-old GUI and reopen the installed launcher. Keep the installed image in place:
-a running portable GUI reports a missing launcher if its outer image was moved.
-The GUI will use a systemd service only when its installation marker matches the
-current AppImage path; otherwise it starts its own foreground daemon process.
+The installed wrapper extracts the image when needed, so it works without FUSE
+(the filesystem facility normally used to mount an AppImage). Registration
+preserves preferences and autostart intent. Existing desktop login entries are
+redirected to this copy; an enabled service gets its entry repaired even when
+the desktop does not activate `graphical-session.target`.
+
+Registration does **not** start streaming, enable autostart, activate EVDI,
+uninstall packages or change system configuration. Use the GUI to change
+autostart. Repeated registration reuses the managed launcher; paths and arguments
+with spaces or shell metacharacters remain literal.
+
+### Update or switch from a Debian package
+
+1. Stop the daemon and close the old GUI.
+2. Register the new AppImage with `--install-user`.
+3. Open the installed desktop launcher.
+
+Preferences stay in the same user location. Removing the old Debian system
+package is optional: inspect that transaction yourself. Registration does not
+remove kernel packages, rules or preferences.
+
+Keep the installed image in place. A running portable GUI reports a missing
+launcher if its outer image moves. It uses systemd only when the service's
+installation marker matches this image path; otherwise it starts its own
+foreground daemon.
 
 ## Without FUSE; replacing libevdi
 
@@ -68,6 +94,11 @@ daemon's files. Manually extracted execution uses the persistent directory.
 with an ABI-compatible library and retain the applicable license notices.
 
 ## Bundled dependencies and host requirements
+
+The bundle supplies desktop programs and libraries. Your computer supplies the
+kernel, graphics drivers and device access. The details below help diagnose
+library or codec problems; ordinary installation does not require changing them.
+
 
 The bundle contains the GUI, daemon, helper, Bash, pinned upstream **FFmpeg
 6.1.6/ffprobe**, Debian ADB and discovered dependencies. FFmpeg is built from
@@ -102,12 +133,13 @@ permissions and any Xorg/compositor integration remain host setup. Follow
 `usr/share/blent/setup-evdi.sh` tool. Core host utilities and a Linux desktop
 session are required. No package smoke check deliberately attaches EVDI.
 
-When migrating from `.deb`, stop the existing daemon, close its GUI and register
-the AppImage. Configuration stays in the same user location. Removing the old
-system package is optional and explicit; inspect the package transaction. The
-installer does not remove existing kernel packages, rules or preferences.
-
 ## Build inputs, licenses and sources
+
+This section is for packagers and redistributors. Keep matching source archives
+and notices with the binary package. The checks below verify collected inputs;
+they do not establish legal completeness.
+
+### Reproducible inputs
 
 `packaging/appimage/build.py` consumes the portable Debian 12 Linux bundle.
 `packaging/ci/Dockerfile` supplies the dependencies and matching source indexes.
@@ -121,6 +153,8 @@ built prefix may be supplied with `--ffmpeg-prefix`, but its recipe, executable
 hashes, versions and encoder inventory must pass verification. Downloaded source
 archives are cached under `--ffmpeg-cache`; each build gets its own working tree.
 
+### What to distribute
+
 The required `blent-<version>-AppImage-sources.tar.gz` asset contains exact
 Debian corresponding-source archives and descriptors, Rust dependency sources,
 the pinned libevdi source, upstream FFmpeg/NV header archives with their build
@@ -129,6 +163,8 @@ are verified against their source descriptors. `usr/share/doc/blent/bundled`
 contains dependency copyright files and a version/license/source manifest.
 Project source is supplied by the matching release tag. Keep the source asset,
 notices and matching project source alongside any redistribution.
+
+### Rust notices and source selection
 
 Rust notices retain their crate-relative paths, including nested font licenses,
 `UNLICENSE`, notice directories and Cargo's declared `license_file`. The manifest
@@ -155,6 +191,8 @@ dev-feature unification while retaining build helpers and enabled native audio.
 The union is deduplicated by package ID, and each crate record identifies its
 selecting build manifests. Ambiguous identities, external path dependencies and
 missing roots fail explicitly. Cargo caches must already contain selected inputs.
+
+### Publication checks
 
 The publisher verifies the AppImage, source archive, Arch recipe, Linux tar,
 APK and `SHA256SUMS` as one complete asset set before publishing. Legacy Debian

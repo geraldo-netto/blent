@@ -218,7 +218,7 @@
       "owner": "T1322",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed full installation, AppImage and historical Debian guidance. Reordered setup by user task, added installation diagrams and clarified host/bundle boundaries. Checked EVDI provisioning against scripts/setup-evdi.sh, scripts/install.sh and Makefile; AppImage dispatch/registration against its launcher and existing tests. All 34 notice, AppImage and identity tests pass; no live display changes. Advanced requirements and historical evidence retained.",
       "words": 1193,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -226,7 +226,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "6f6daa3cd41437b317a8096b0446571d8753b328fedb0aff47d1041fcde2b6df",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/architecture.md",
@@ -1328,7 +1330,7 @@
       "owner": "T1322",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed full installation, AppImage and historical Debian guidance. Reordered setup by user task, added installation diagrams and clarified host/bundle boundaries. Checked EVDI provisioning against scripts/setup-evdi.sh, scripts/install.sh and Makefile; AppImage dispatch/registration against its launcher and existing tests. All 34 notice, AppImage and identity tests pass; no live display changes. Advanced requirements and historical evidence retained.",
       "words": 1935,
       "long_paragraphs": 5,
       "joined_word_number_tokens": 0,
@@ -1336,7 +1338,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "4ce054e4d554d3137f7d85e6ff785e201d9877676bb9b83b5380fa16b1965298",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/media-negotiation.md",
@@ -11678,7 +11682,7 @@
       "owner": "T1322",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed full installation, AppImage and historical Debian guidance. Reordered setup by user task, added installation diagrams and clarified host/bundle boundaries. Checked EVDI provisioning against scripts/setup-evdi.sh, scripts/install.sh and Makefile; AppImage dispatch/registration against its launcher and existing tests. All 34 notice, AppImage and identity tests pass; no live display changes. Advanced requirements and historical evidence retained.",
       "words": 46,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11686,7 +11690,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "5a23c06292f905e2571beed282878baee81c94c83eb3fefc2a92115492daa976",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/benchmarks/android-connection-idle/README.md",

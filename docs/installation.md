@@ -1,235 +1,246 @@
 # Installing Blent for Linux
 
-Build the Linux daemon/GUI/helper and Android app from the same checkout.
-As of 2026-09-17 this fork has no published releases; start with
-[building from source](development.md#building-from-source). Upstream releases
-do not contain the unreleased fork changes. The instructions below also cover
-artifacts produced locally or available in a future [fork release](https://github.com/geraldo-netto/blent/releases).
+Blent needs a Linux desktop program and an Android app built from the **same
+checkout**. The fork was unreleased as of 2026-09-17; upstream packages do not
+contain its changes. Start with [building from source](development.md#building-from-source)
+if you do not already have matching packages. The package instructions below
+also apply to locally built artifacts; they do not announce a published release.
 
-Before attaching a display, check [current limitations](compatibility.md#current-fork-limitations).
-A Cinnamon/Xorg session crash during EVDI attachment remains unresolved (T222).
-The full installer and native package hooks preserve loaded EVDI devices.
-They reuse sufficient capacity immediately. When Xorg is absent, they load the
-module if needed and add missing capacity up to two devices. Under Xorg, or when
-the process inventory fails, loading/growth is deferred to reboot (T751).
-Failed provisioning also reports that setup must be checked and deferred to reboot.
-Boot configuration changes take effect on the next module load.
+**Before connecting a display:** read the [current limitations](compatibility.md#current-fork-limitations).
+A Cinnamon/Xorg crash during virtual-display attachment remains unresolved (T222).
+Save your work before testing an affected desktop.
+
+```mermaid
+flowchart LR
+    A[Choose matching desktop and Android builds] --> B[Install desktop files]
+    B --> C[Check driver and input permissions]
+    C --> D[Reboot if setup requests it]
+    D --> E[Run blent doctor]
+    E --> F[Install Android app and connect]
+```
+
+## Choose an installation
+
+The portable packages target **Linux x86-64 with glibc 2.36 or newer**. This is a
+library compatibility baseline, not certification of every desktop or GPU.
+Local source builds may need a newer glibc.
+
+| Route | What to do |
+| --- | --- |
+| Source checkout | Follow [development](development.md#building-from-source). Build both applications from that checkout. |
+| `blent-<ver>-x86_64.AppImage` | Follow [AppImage setup](appimage-plan.md). It bundles desktop libraries but still needs host driver and permission setup. |
+| `blent-<ver>-PKGBUILD.tar.gz` | Install AUR `evdi-dkms`, extract the recipe, then run `makepkg -si`. |
+| `blent-<ver>-linux-x86_64.tar.gz` | Extract it, inspect `scripts/install.sh`, then run `./scripts/install.sh`. |
+
+The Arch recipe downloads its declared source tag. Use the source route for an
+unreleased checkout without that tag. `makepkg -s` installs repository packages;
+it does not build AUR dependencies. Install [evdi-dkms](https://aur.archlinux.org/packages/evdi-dkms)
+separately. Review each package transaction before accepting it.
+
+AppImage replaces the Debian release asset. For an artifact set with a checksum
+manifest, run `sha256sum -c SHA256SUMS` beside **all** files listed in it. Missing
+files fail verification. See [release integrity](../SECURITY.md#release-integrity)
+for signing limits.
+
+## Linux artifacts and prerequisites
+
+EVDI is the kernel driver that creates the extra display. Its userspace library,
+**libevdi**, lets Blent communicate with that driver. Installing one does not
+install or update the other.
+
+| Requirement | Purpose |
+| --- | --- |
+| EVDI module compatible with the running kernel | Creates the extra display |
+| FFmpeg with a usable encoder | Compresses the display stream |
+| ADB | Connects the development/debugging USB route |
+| libusb-1.0 shared runtime | Supports the native USB route |
+| libdrm, libevdi and GUI libraries | Connect the desktop components |
+| GPU drivers and access to `/dev/uinput` | Graphics support and touch/mouse input |
+
+Automatic dependency installation covers Debian/Ubuntu and Arch-family systems.
+Other distributions need manual setup with their own package manager. Detection
+matches whole `ID`/`ID_LIKE` words; unknown families receive guidance without
+repository changes or dependency installation.
+
+| Family | FFmpeg / ADB packages | EVDI package to check |
+| --- | --- | --- |
+| Debian/Ubuntu | `ffmpeg`, `adb` | `evdi-dkms` for your kernel |
+| Arch | `ffmpeg`, `android-tools` | AUR `evdi-dkms` |
+
+Check `modinfo evdi` and, for DKMS installations, `dkms status`. If a driver build
+fails, inspect its build log, kernel compatibility and installed kernel headers.
+Follow your distribution or [EVDI upstream](https://github.com/DisplayLink/evdi)
+instructions. No single version fixes every kernel combination.
+
+For fast-reconnect failures, use a compatible stock kernel module containing
+[upstream PR590](https://github.com/DisplayLink/evdi/pull/590).
+[v1.15.1](https://github.com/DisplayLink/evdi/releases/tag/v1.15.1) includes it and
+the import-page sizing fix from v1.14.16; check distribution backports separately.
+An [isolated comparison](reviews/artifacts/2026-10-09-evdi-stock/reproduction.json)
+reproduced a missing scanout after reconnect without a modeset on Ubuntu 1.14.15
+and restored the frame on stock 1.15.1. That result does not validate every desktop
+or import boundary. The historical T749 checks record those limits; this review
+did not install or reload the host module.
+
+### Which libevdi is used?
+
+Portable tarballs/native packages place libevdi v1.15.0 beside the helper and use
+an `$ORIGIN` library lookup. Source installations may use the system library;
+see [development](development.md). AppImage bundles its own userspace dependencies.
+
+On Debian-family systems, the installer checks for `libevdi.so.1` in a bundle or
+system location for prebuilt programs, and the system `libevdi.so` linker file
+for source builds. It checks standard locations plus `/usr/local/lib`,
+`/usr/local/lib64` and their architecture subdirectories. If needed, it requests
+`libevdi1` or `libevdi-dev`, respectively. FFmpeg, ADB and GUI dependencies are
+handled separately. The kernel module is still required.
+
+## EVDI setup and safe capacity changes
+
+The full installer and native package hooks preserve loaded EVDI devices:
+
+| Situation | Setup behavior |
+| --- | --- |
+| Enough devices already exist | Reuse them immediately. |
+| More are needed; Xorg is absent | Load the module if needed and add missing capacity, normally up to two devices. |
+| Xorg is running, or its process inventory cannot be checked | Defer loading/growth to reboot. |
+| Provisioning fails | Report failure and ask you to check setup and reboot. |
+
 Source/tarball reinstallation and `make setup-system` preserve an existing
-`blent-evdi.conf` verbatim, including capacity provisioned through GUI setup and other module options.
-Both create the two-device boot default only when that file is absent; existing
-empty, invalid or externally managed configurations require manual review.
-`make setup-system` and GUI setup use the same provisioning script. GUI setup
-persists its configured tablet count (one to four) for the next boot; it reports
-failure/reboot when live capacity cannot safely be increased, while still
-configuring input permissions. The capture helper reuses free pre-created devices
-under Xorg and refuses automatic hot-add when none are available. Review
-`initial_device_count` in `/etc/modprobe.d/blent-evdi.conf` and reboot to provision
-more devices before starting Xorg. Existing leases and displays are preserved.
-This avoids Blent-triggered hot-add under a detected Xorg session; it does not
-establish safety for an external display server starting concurrently or cure
-unrelated driver/compositor faults.
+`/etc/modprobe.d/blent-evdi.conf` exactly. They write the two-device boot default
+only when that file is absent. Review empty, invalid or externally managed files
+manually; do not overwrite them blindly.
+
+GUI setup and `make setup-system` share the provisioning script. The GUI saves
+its selected tablet capacity (one to four) for the next boot. If live growth is
+unsafe, it reports failure/reboot while still configuring input permissions.
+Under Xorg, the capture helper uses free, pre-created devices and refuses
+automatic hot-add when none are free. Review `initial_device_count` and reboot
+before starting Xorg to make more capacity available. Existing leases/displays
+are preserved.
+
+Boot options apply at the next module load. This guard avoids Blent-triggered
+hot-add under detected Xorg; it cannot prevent an external display server from
+starting concurrently or cure unrelated driver/compositor faults.
+
+## Start the host
+
+Run `blent doctor` to check setup, then start the host from the GUI. If the command
+is not on `PATH`, use `~/.local/bin/blent` or add `~/.local/bin` to your shell's
+path. `blent start` runs a foreground session in a terminal.
+
+To start at login, enable **Start Blent with the desktop** in the GUI. The setting
+also starts/stops the current daemon (the background desktop process).
+
+- With systemd, a desktop login entry starts `blent.service`. This also works on
+  desktops such as Cinnamon that do not activate `graphical-session.target`.
+  If that target already started the service, systemd keeps the same daemon.
+- Without systemd, the entry runs the daemon directly, without automatic service
+  restart supervision.
+- Disable autostart in the GUI to disable both the service and login entry.
+  `systemctl disable` alone leaves the desktop login entry in place.
+- If an enabled unit's user manager is unreachable, restore that manager before
+  changing the route or disabling the unit. Blent reports an error in this case.
+
+On desktops that activate `graphical-session.target`, this starts/enables the unit:
+
+```sh
+systemctl --user enable --now blent
+```
+
+The full source/tarball installer enables the service and creates its login entry
+when the user manager is reachable; otherwise it creates a direct-daemon entry.
+It reports the route and does not start the daemon during installation.
+`make install` preserves the autostart preference and repairs the entry for an
+already enabled service. Switching to systemd replaces a direct-daemon entry.
+
+### Installed paths
+
+| Files | Location |
+| --- | --- |
+| User programs | `~/.local/bin` |
+| Launchers and icons | `$XDG_DATA_HOME`, default `~/.local/share` |
+| User service | `$XDG_CONFIG_HOME/systemd/user`, default `~/.config/systemd/user` |
+| Desktop login entry | `$XDG_CONFIG_HOME/autostart/blent.desktop`, default `~/.config/autostart/blent.desktop` |
+
+Both user installers use these paths; empty/relative XDG values use the defaults.
+Native packages use system-wide paths. For a custom program directory, use
+`make install BIN_DIR=/absolute/path`; launchers, service, helper and stop commands
+refer to that directory.
+
+Autostart does not supply drivers or permissions. On another init system, arrange
+for `evdi` and `uinput` to load at boot. Do not assume it reads `/etc/modules-load.d`.
+For example, OpenRC uses the existing `modules` list in
+[`/etc/conf.d/modules`](https://github.com/OpenRC/openrc/blob/master/conf.d/modules).
+A device manager without udev-compatible rules also needs its own `/dev/uinput`
+permission setup. Check both with `blent doctor`.
+
+## Android and first connection
+
+1. Install the matching APK. A debug build produces
+   `android/app/build/outputs/apk/debug/app-debug.apk`. Android **8.1/API 27** is the
+   minimum; the tablet must also decode the chosen video format.
+2. For the ADB route, enable USB debugging in Android Developer options. On many
+   devices, tapping *Build number* seven times reveals that menu. Connect a
+   data-capable cable and accept the computer authorization prompt.
+3. Start the host. It sets up ADB forwarding and, by default, launches the app.
+   Enable/place the EVDI output in desktop Display settings if necessary. KDE
+   Wayland has the most automation; see [compatibility](compatibility.md).
+
+For the paired USB route and separate camera/audio permissions, see the
+[main guide](../README.md). ADB authorization and Blent pairing are distinct.
+
+The Android app defaults to 50% brightness and a 60 Hz display-mode preference
+while its window is in use. Change them in its gear menu. They do not change
+other apps' system settings; stream FPS is a separate control.
+
+New configurations use [automatic encoder selection](video-codecs.md#automatic-selection)
+with `libx264` fallback after tablet negotiation. Existing explicit choices stay
+unchanged; choose `auto` or a supported encoder in Linux settings.
+
+## Capture pipe capacity
+
+Linux **Video → Capture pipe buffer** offers 1, 2, 4 and 8 MiB; default: 1 MiB.
+Changing only this setting does not restart the display. The GUI shows actual
+capacity and copyable commands for raising the kernel limit. See
+[pipe configuration](pipe-buffer.md) for tradeoffs, commands and rollback.
 
 ## Initial window placement
 
-On X11, Blent centers its window on the current primary monitor when it opens.
-Placement uses live monitor coordinates, the desktop work area when available,
-and the actual window size (including decorations) and display scale.
-It waits for the window to be mapped before calculating its position. It has no monitor-count limit or
-fixed arrangement. An oversized window keeps its top-left controls on that monitor.
-Later user moves are preserved. If X11 supplies no primary monitor or its query
-fails, Blent leaves placement to the window manager and reports the limitation
-on standard error. On Wayland, the compositor controls window placement.
+On X11, Blent centers on the current primary monitor at launch, using live
+coordinates, the available desktop work area, actual decorated window size and
+scale. It waits until the window is mapped. Any monitor count/layout is allowed.
+An oversized window keeps its top-left controls on that monitor; later user moves
+are preserved. Missing primary-monitor data or a failed query leaves placement
+to the window manager, with a standard-error message. On Wayland, the compositor
+controls placement.
 
 ## GPU ordering before EVDI (T700)
 
-The full source/tarball installer, `make setup-system`, and Arch installation
-hooks run `scripts/gpu-boot-order.sh` before EVDI provisioning. It creates
-`/etc/modprobe.d/blent-gpu-order.conf` with a `softdep evdi pre: ...` rule for the
-currently bound, loadable DRM drivers. Multiple modules are deduplicated;
-NVIDIA's module is mapped to `nvidia_drm`, and `virtio_pci` to `virtio_gpu`.
-EVDI, simpledrm, built-in drivers and vanished devices contribute no dependency.
-The helper warns when no loadable physical GPU is found; it cannot discover an
-unbound GPU or make unavailable drivers ready.
-
-The rule is published atomically. Existing files and managed symlinks are
-preserved, including empty configurations. Review the file after a GPU or driver
-change. The helper does not reload modules or restart the desktop; its rule
-applies to the next EVDI load. If EVDI is loaded in the initramfs, follow your
-distribution's procedure to include the rule and GPU modules there and regenerate
-the image. A root-filesystem rule alone does not change an existing initramfs.
-
-To configure ordering separately from a checkout, with the intended GPU drivers
-already bound:
+The full installer, `make setup-system` and Arch hooks run
+`scripts/gpu-boot-order.sh` before provisioning EVDI. It writes
+`/etc/modprobe.d/blent-gpu-order.conf`, requesting that bound, loadable physical
+GPU drivers load before EVDI. To run it separately, with those drivers bound:
 
 ```sh
 sudo bash scripts/gpu-boot-order.sh
 ```
 
-The AppImage includes this helper under `usr/share/blent/` in its extracted
-AppDir. Its user installer does not run privileged system setup; an administrator
-can run that helper explicitly. A `softdep` requests module ordering; it does not
-guarantee GPU readiness before Xorg on every boot arrangement or when a driver
-fails to load. See the [reproduction, tests and remaining native acceptance](reviews/2026-09-28-gpu-boot-order.md).
+The helper deduplicates modules and maps NVIDIA to `nvidia_drm` and `virtio_pci`
+to `virtio_gpu`. EVDI, simpledrm, built-in drivers and vanished devices add no
+entry. It warns if no loadable physical GPU is found; it cannot discover an
+unbound GPU or make a missing driver available.
 
-## Linux artifacts and prerequisites
+Publication is atomic. Existing files and managed symlinks, including empty
+configurations, are preserved. Review the file after changing GPU/driver.
+The helper does not reload modules or restart the desktop. Its `softdep` rule
+applies at the next EVDI load and requests ordering, not guaranteed GPU readiness.
+If EVDI loads from the initramfs (the early boot image), follow your distribution's
+procedure to include the rule/modules and regenerate that image.
 
-The portable packaging workflow targets **Linux x86-64, glibc 2.36 or newer**.
-This is an ABI baseline, not a guarantee that every distribution, GPU or
-compositor works. Local builds can require a newer glibc. Runtime needs adb,
-FFmpeg with the chosen encoder, compatible EVDI kernel support, libdrm, GUI
-libraries and access to `/dev/uinput`. Container tests cannot validate kernel
-attachment or tablet operation.
+AppImage includes this helper under extracted `usr/share/blent/`; its user
+installer does not run privileged setup. An administrator can run it explicitly.
+See the [original tests and native-validation limits](reviews/2026-09-28-gpu-boot-order.md).
 
-| Artifact | Installation |
-| --- | --- |
-| `blent-<ver>-x86_64.AppImage` | Linux x86-64/glibc 2.36+: make executable and launch; see [AppImage setup, extraction and migration](appimage-plan.md) |
-| `blent-<ver>-PKGBUILD.tar.gz` | Arch family: install AUR `evdi-dkms` first, extract the recipe and run `makepkg -si` |
-| `blent-<ver>-linux-x86_64.tar.gz` | Other compatible Linux setups: extract and inspect/run `./scripts/install.sh`; unsupported package managers need manual dependency installation |
-
-Review the package transaction. AppImage replaces the Debian release asset and
-bundles userspace dependencies; it does not install EVDI/DKMS, GPU drivers or
-device permissions. A working EVDI kernel module is still required for an
-extended display. Install the appropriate module package for your kernel.
-
-For fast-reconnect failures, use a distribution-compatible **stock kernel module**
-containing [upstream PR590](https://github.com/DisplayLink/evdi/pull/590);
-[v1.15.1](https://github.com/DisplayLink/evdi/releases/tag/v1.15.1) includes it and
-the import-page sizing fix from v1.14.16. Updating bundled libevdi alone does not
-update the kernel driver. Distribution backports must be checked separately.
-The [isolated stock comparison](reviews/artifacts/2026-10-09-evdi-stock/reproduction.json)
-reproduced a missing scanout after reconnect without a modeset on Ubuntu's 1.14.15;
-the same operation restored the frame on unmodified 1.15.1. This is a driver-level
-result, not validation of every desktop or import boundary. T749 retains those
-checks; no host module was installed or reloaded during this review.
-
-`makepkg -s` installs repository dependencies through pacman; it does not build
-AUR packages. Install [evdi-dkms](https://aur.archlinux.org/packages/evdi-dkms)
-separately first; see [makepkg(8)](https://man.archlinux.org/man/makepkg.8.en).
-The recipe downloads its declared source tag, so it needs that tag to exist;
-use the source workflow for an unreleased checkout.
-
-The native USB transport requires the libusb-1.0 shared runtime in addition to
-FFmpeg, adb, libevdi and the GUI libraries.
-
-Module and package availability depend on the distribution release and kernel.
-Automatic dependency installation supports Debian/Ubuntu and Arch-family systems.
-Other families require manual installation with their own package manager.
-
-| Distribution family | FFmpeg/adb names used by the project | EVDI source to check |
-| --- | --- | --- |
-| Debian/Ubuntu | `ffmpeg`, `adb` | `evdi-dkms` for the running kernel |
-| Arch | `ffmpeg`, `android-tools` | AUR `evdi-dkms` |
-
-The installer matches complete supported `ID`/`ID_LIKE` words. Unknown families
-receive manual guidance for the runtime prerequisites listed above; the installer
-does not configure their repositories or install their dependencies.
-
-Use `modinfo evdi` and, for DKMS installations, `dkms status` to inspect the
-installed module. If a DKMS build fails, inspect its build log and check the
-module's compatibility with the running kernel and available headers. Follow
-your distribution or [EVDI upstream](https://github.com/DisplayLink/evdi)
-instructions for a compatible module; one pinned version is not a universal
-kernel fix. A packaged userspace library is not the kernel module.
-
-Portable tarballs/native packages bundle libevdi v1.15.0 next to the helper
-and use an `$ORIGIN` lookup. A normal source installation may instead use the
-system library installed during the build; see [development.md](development.md).
-The Debian-family installer installs FFmpeg/ADB and GUI libraries independently
-from libevdi and DKMS. It skips a libevdi package when the required library is
-already present: a bundle/system `libevdi.so.1` for prebuilt programs, or the
-system `libevdi.so` linker file for a source build. Standard system library
-locations and `/usr/local/lib`, `/usr/local/lib64` and their architecture
-subdirectories are checked. Otherwise it requests `libevdi1` for prebuilt
-programs or `libevdi-dev` for source builds. The kernel module remains a separate
-requirement even when the bundle supplies its userspace library.
-
-## Start the host
-
-Enable **Start Blent with the desktop** in the GUI for automatic login startup,
-including on Cinnamon. It enables/disables the available route and starts/stops
-the current daemon.
-
-On a systemd desktop that activates `graphical-session.target`, the unit alone
-can also be enabled and started from a terminal:
-
-```bash
-systemctl --user enable --now blent
-```
-
-The full tarball/source installer enables the user service and creates a desktop
-login entry when it can reach the user manager. Otherwise it creates an entry
-that starts the daemon directly. It
-reports the selected route and does not start the daemon during installation.
-`make install` installs user files while preserving the autostart preference;
-it also repairs the login entry for an already enabled service.
-
-Both routes use `XDG_CONFIG_HOME/autostart/blent.desktop` (default
-`~/.config/autostart/blent.desktop`) on desktops implementing the
-[XDG autostart specification](https://specifications.freedesktop.org/autostart/latest/).
-With systemd, that entry starts `blent.service`, even when the desktop does not
-activate `graphical-session.target`. If the target already started the service,
-systemd keeps the same daemon. Enabling the systemd route replaces any direct
-fallback entry with this service entry. Use the GUI setting to disable both the
-unit and its login entry; `systemctl disable` alone does not remove an XDG entry.
-Without systemd, the entry runs a direct daemon without service restart
-supervision. `blent start` also runs a foreground session from a terminal.
-If systemctl still reports an enabled unit while its manager is unreachable,
-autostart changes report an error; restore the user manager before switching
-routes or disabling that unit.
-
-Autostart does not provide kernel modules or input permissions. On another
-init system, configure `evdi` and `uinput` to load at boot; do not assume it
-reads `/etc/modules-load.d`. For example, OpenRC supplies a `modules` setting
-in [`/etc/conf.d/modules`](https://github.com/OpenRC/openrc/blob/master/conf.d/modules);
-add these modules to the existing list using your distribution's service setup.
-The installer writes modprobe options and a udev rule. A device manager without
-udev-compatible rules needs its own `/dev/uinput` access configuration; verify
-module availability and permissions with `blent doctor` before streaming.
-
-Both user installers share the same paths: launchers and icons go under
-`XDG_DATA_HOME` (default `~/.local/share`), and the user unit goes under
-`XDG_CONFIG_HOME/systemd/user` (default `~/.config/systemd/user`). Empty or
-relative XDG values use those defaults, matching Blent's configuration-path
-policy. Program binaries remain in `~/.local/bin`; these XDG overrides do not
-change that location. Native packages use their system-wide package paths.
-For a custom program directory, use `make install BIN_DIR=/absolute/path`.
-The generated launcher and user service both refer to that selected directory,
-including the service's helper and stop commands.
-
-If `~/.local/bin` is not on PATH yet, use `~/.local/bin/blent` or add the
-directory to your shell's PATH. Run `blent doctor` to inspect the setup.
-New configurations use [automatic encoder selection](video-codecs.md#automatic-selection)
-after tablet negotiation, with `libx264` fallback. Existing explicit preferences
-remain unchanged; choose a supported encoder or `auto` in Linux settings.
-
-For published artifacts, run `sha256sum -c SHA256SUMS` alongside all files
-listed in the manifest. An absent file is reported as a verification failure.
-See [release integrity](../SECURITY.md#release-integrity) for signing limitations.
-
-## Android and first connection
-
-1. Install the APK built from the same checkout (debug builds produce
-   `android/app/build/outputs/apk/debug/app-debug.apk`). Android **8.1/API 27**
-   is the minimum; decoding capabilities must also support the chosen stream.
-2. Enable USB debugging in Developer options. On many tablets, tap *Build
-   number* seven times under About to reveal that menu. Accept the computer's
-   authorization prompt when connecting a data-capable USB cable.
-3. With the host running, the daemon sets up adb forwarding and, by default,
-   launches the app. Check desktop Display settings to enable/place the EVDI
-   output if the desktop does not do so automatically. KDE Wayland has the
-   most automation; see [compatibility](compatibility.md) for mapping limits.
-
-Blent defaults to 50% brightness and a 60 Hz display-mode preference only
-while its window is in use. Change these in the app's gear menu; they do not
-change other apps' system display settings. Stream FPS is a separate control.
-
-System changes and removal instructions are in [SECURITY.md](../SECURITY.md).
-For failures, use [troubleshooting.md](troubleshooting.md) before repeating setup.
-
-## Capture pipe capacity
-
-Linux **Video → Capture pipe buffer** offers 1, 2, 4 and 8 MiB, with 1 MiB as
-the default. Pipe-only edits apply without restarting the display. The GUI shows
-the actual capacity and includes copyable instructions for raising the kernel's
-limit. See [capture pipe configuration](pipe-buffer.md) for temporary/persistent
-commands, rollback and the latency tradeoff.
+For system changes and removal, see [security and installation effects](../SECURITY.md).
+For failures, follow [troubleshooting](troubleshooting.md) before repeating setup.
