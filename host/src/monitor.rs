@@ -5,6 +5,7 @@ use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::task::JoinSet;
 mod admission;
+mod control;
 mod credentials;
 mod forwarding;
 mod launch_policy;
@@ -49,6 +50,7 @@ struct Inventory {
 }
 
 enum Event {
+    Control(Result<blent_config::linux::display_control::Call>),
     Stop,
     Tick,
     Probe(Option<(String, Option<String>)>),
@@ -77,6 +79,7 @@ enum Event {
 }
 
 struct Monitor {
+    control: Option<control::Control>,
     config: Config,
     current: Option<String>,
     ready: HashSet<String>,
@@ -107,6 +110,7 @@ impl Monitor {
     fn new(config: Config) -> Self {
         let now = Instant::now();
         Self {
+            control: None,
             slots: Slots::new(config.extra.max_tablets).expect("validated display capacity"),
             config,
             current: None,
@@ -153,6 +157,7 @@ impl Monitor {
             std::future::pending::<Event>()
         };
         tokio::select! {
+            call = control::event(&mut self.control) => Event::Control(call),
             _ = shutdown.changed() => Event::Stop,
             _ = interval.tick() => Event::Tick,
             event = usb_event => event,
@@ -407,14 +412,24 @@ impl Monitor {
         if self.discovery.initial_probes_finished() {
             self.launches.retain(self.discovery.inventory());
         }
-        let devices = select_device_transports(
-            &self.discovery.eligible(),
-            self.current.as_deref(),
-            &self.identities,
-        );
-        let preferred = current_transport(&devices, self.current.as_deref(), &self.identities);
+        let eligible: Vec<_> = self
+            .discovery
+            .eligible()
+            .into_iter()
+            .filter(|serial| self.slots.enabled(&DisplayOwner::Adb(serial.clone())))
+            .collect();
+        let devices =
+            select_device_transports(&eligible, self.current.as_deref(), &self.identities);
+        // A working extra keeps its original lease; stopping the primary must
+        // not promote/restart another tablet merely to fill slot zero.
+        let primary: Vec<_> = devices
+            .iter()
+            .filter(|serial| !self.extras.contains_key(*serial))
+            .cloned()
+            .collect();
+        let preferred = current_transport(&primary, self.current.as_deref(), &self.identities);
         let found =
-            select_tablet(&devices, preferred.as_deref()).filter(|_| self.slots.adb_allowed(0));
+            select_tablet(&primary, preferred.as_deref()).filter(|_| self.slots.adb_allowed(0));
         self.change_primary(&found);
         let others = extra_devices(&devices, found.as_deref());
         self.remove_gone(&others);
@@ -541,6 +556,12 @@ impl Monitor {
         let Some(ledger) = ledger else {
             return;
         };
+        if let Err(error) = ledger.update(self.sessions()) {
+            warn!("Could not update tablet sessions: {error}");
+        }
+    }
+
+    fn sessions(&self) -> Vec<runtime::TabletSession> {
         let mut sessions: Vec<_> = self
             .current
             .iter()
@@ -566,12 +587,13 @@ impl Monitor {
         if let Some(usb) = &self.config.usb {
             sessions.extend(usb.status());
         }
-        if let Err(error) = ledger.update(sessions) {
-            warn!("Could not update tablet sessions: {error}");
-        }
+        sessions
     }
 
     async fn stop(mut self) {
+        if let Some(control) = self.control.take() {
+            control.close().await;
+        }
         let _ = self.config.tablet.send(false);
         self.inventory.abort_all();
         while self.inventory.join_next().await.is_some() {}
@@ -623,6 +645,7 @@ impl Monitor {
 
 async fn apply_event(state: &mut Monitor, event: Event) {
     match event {
+        Event::Control(call) => control::handle(state, call),
         Event::Tick => state.tick(),
         Event::Probe(Some((serial, identity))) => state.probe_ready(serial, identity),
         Event::Mutation(serial, result) => state.mutation_ready(serial, result),
@@ -657,6 +680,10 @@ pub(crate) fn with_usb(
 pub(crate) async fn run(config: Config) {
     let mut shutdown = config.extra.shutdown_rx.clone();
     let mut state = Monitor::new(config);
+    match control::Control::bind() {
+        Ok(control) => state.control = Some(control),
+        Err(error) => warn!("Per-tablet display controls unavailable: {error:#}"),
+    }
     let mut ledger = session_ledger();
     let mut interval = tokio::time::interval(Duration::from_secs(2));
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);

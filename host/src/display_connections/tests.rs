@@ -13,6 +13,23 @@ use std::sync::{
 };
 use tokio::sync::watch;
 
+#[test]
+fn t1274_disabled_usb_target_does_not_block_or_stop_its_sibling() {
+    let mut f = Fixture::new(2);
+    f.links(&[(1, 2, 1), (2, 3, 1)]);
+    f.slots.set_enabled(Owner::Peer(peer(2)), false).unwrap();
+    let admission = f.start();
+    assert_eq!(f.slots.owner(admission.ticket), Some(&Owner::Peer(peer(3))));
+    let ticket = admission.ticket;
+    let _live = f.bind(admission);
+    assert_eq!(f.slots.closing(ticket), Some(false));
+    f.slots.set_enabled(Owner::Peer(peer(2)), true).unwrap();
+    let next = f.start();
+    assert_eq!(f.slots.owner(next.ticket), Some(&Owner::Peer(peer(2))));
+    assert_eq!(f.slots.closing(ticket), Some(false));
+    f.connections.failed(&mut f.slots, next, f.now);
+}
+
 struct Source(Arc<Mutex<ControlStatus>>, Arc<AtomicBool>);
 impl Client for Source {
     fn status(&self) -> ControlStatus {

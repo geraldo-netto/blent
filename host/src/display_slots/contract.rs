@@ -6,12 +6,33 @@ pub enum Owner {
     Adb(String),
     Peer(PeerId),
 }
+impl Owner {
+    pub fn target(&self) -> blent_config::display_control::Target {
+        use blent_config::display_control::Target;
+        match self {
+            Self::Adb(serial) => Target::Adb(serial.clone()),
+            Self::Peer(peer) => Target::Usb(peer.as_str().to_owned()),
+        }
+    }
+    pub fn from_target(target: &blent_config::display_control::Target) -> anyhow::Result<Self> {
+        Ok(match target.identity()? {
+            blent_config::tablets::Identity::Adb(serial) => Self::Adb(serial),
+            blent_config::tablets::Identity::UsbPeer(peer) => Self::Peer(peer),
+        })
+    }
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Ticket {
     pub(super) instance: u32,
     pub(super) revision: u64,
 }
 impl Ticket {
+    pub fn lease(self) -> blent_config::display_control::Lease {
+        blent_config::display_control::Lease {
+            slot: self.instance,
+            generation: self.revision,
+        }
+    }
     pub fn instance(self) -> u32 {
         self.instance
     }

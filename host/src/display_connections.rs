@@ -157,9 +157,10 @@ impl Connections {
         }
     }
     fn eligible(&self, slots: &Slots, candidate: &Candidate, now: Instant) -> bool {
-        slots
-            .ticket(&Owner::Peer(candidate.peer().clone()))
-            .is_none()
+        slots.enabled(&Owner::Peer(candidate.peer().clone()))
+            && slots
+                .ticket(&Owner::Peer(candidate.peer().clone()))
+                .is_none()
             && self
                 .retries
                 .get(candidate.peer().as_str())

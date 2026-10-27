@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="740" viewBox="0 0 1040 740" role="img" aria-labelledby="title desc">
+<title id="title">Blent display control comparison: This tablet</title>
+<desc id="desc">Concept with a selected tablet, separate display, camera, microphone and speaker controls. All states are simulated.</desc>
+<defs><g id="screen" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="1" y="1" width="25" height="17" rx="3" /><path d="M9 24h10M14 18v6" /></g>
+<g id="camera" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="1" y="5" width="25" height="18" rx="4" /><circle cx="13.5" cy="14" r="5" /><path d="M8 5l2-4h7l2 4" /></g>
+<g id="mic" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="1" width="10" height="16" rx="5" /><path d="M4 12v2a10 10 0 0 0 20 0v-2M14 24v4M9 28h10" /></g>
+<g id="speaker" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 10h6l9-7v24l-9-7H2zM22 9q7 6 0 12M26 4q12 11 0 22" /></g>
+</defs>
+<rect width="1040" height="740" fill="#12171f" />
+<path d="M0 0h202v740H0z" fill="#191f29" /><path d="M202 0v740" stroke="#303a48" />
+<text x="24" y="43" font-size="26" font-weight="600" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa">Blent</text>
+<text x="24" y="86" class="small muted" letter-spacing="1" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">TABLETS</text>
+<rect x="14" y="102" width="174" height="78" rx="10" fill="#26364f" />
+<text x="26" y="128" font-size="14" font-weight="600" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa">RugKing Pad 2 Pro</text>
+<circle cx="30" cy="153" r="3.5" fill="#7ad6b0" /><text x="41" y="157" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Connected</text>
+<rect x="18" y="288" width="166" height="35" rx="7" fill="none" stroke="#465368" />
+<path d="M40 210v12M34 216h12" stroke="#d6e0ef" stroke-width="1.5" transform="translate(0 90)" /><text x="57" y="311" class="button" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14" font-weight="500">Connect tablet</text>
+<path d="M20 630h162" stroke="#303a48" />
+<text x="28" y="664" class="body" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14">Settings</text><text x="28" y="698" class="body muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Help &amp; about</text>
+<text x="234" y="68" font-size="26" font-weight="600" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa">RugKing Pad 2 Pro</text>
+<text x="234" y="96" class="body muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">USB connection · Paired with this computer</text>
+<text x="234" y="129" class="link" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#8db7ff" font-size="14">Manage connection</text>
+<rect x="864" y="43" width="142" height="32" rx="16" fill="#193b30" />
+<circle cx="883" cy="59" r="4" fill="#7ad6b0" /><text x="898" y="64" font-size="14" fill="#a7efd1" font-family="DejaVu Sans,sans-serif" font-style="normal">Connected</text>
+<path d="M234 158h772" stroke="#303a48" />
+<text x="234" y="201" font-size="18" font-weight="600" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa">Tablet resources</text>
+<text x="750" y="201" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Use each resource independently</text>
+
+<rect x="234" y="225" width="376" height="185" rx="12" fill="#1d293c" stroke="#5b90e8" />
+<text x="295" y="267" class="title" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="18" font-weight="600">Display &amp; input</text>
+<rect x="490" y="248" width="100" height="24" rx="12" fill="#2d4566" /><text x="505" y="264" class="small" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#d6e6ff" font-size="14">This tablet</text>
+<text x="254" y="308" class="body" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14">Extended screen</text>
+<text x="254" y="332" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Controls only this tablet’s display and input</text>
+<text x="254" y="381" class="link" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#8db7ff" font-size="14">Configure</text>
+<rect x="430" y="355" width="160" height="35" rx="7" fill="#283548" stroke="#5b6e8b" /><text x="510" y="378" class="button" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14" font-weight="500" text-anchor="middle">Stop display</text>
+
+<rect x="630" y="225" width="376" height="185" rx="12" fill="#1b222d" stroke="#364255" />
+<text x="691" y="267" class="title" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="18" font-weight="600">Camera</text>
+<rect x="946" y="248" width="40" height="24" rx="12" fill="#2b3442" /><text x="957" y="264" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Off</text>
+<text x="650" y="308" class="body" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14">Use tablet camera in computer apps</text>
+<text x="650" y="332" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Rear camera</text>
+<text x="650" y="381" class="link" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#8db7ff" font-size="14">Configure</text>
+<rect x="826" y="355" width="160" height="35" rx="7" fill="#2b3544" stroke="#4b5b72" /><text x="906" y="378" class="button" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14" font-weight="500" text-anchor="middle">Start camera</text>
+
+<rect x="234" y="430" width="376" height="185" rx="12" fill="#1b222d" stroke="#364255" />
+<text x="295" y="472" class="title" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="18" font-weight="600">Microphone</text>
+<rect x="550" y="453" width="40" height="24" rx="12" fill="#2b3442" /><text x="561" y="469" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Off</text>
+<text x="254" y="513" class="body" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14">Use tablet microphone on computer</text>
+<text x="254" y="537" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Speech processing</text>
+<text x="254" y="586" class="link" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#8db7ff" font-size="14">Configure</text>
+<rect x="430" y="560" width="160" height="35" rx="7" fill="#2b3544" stroke="#4b5b72" /><text x="510" y="583" class="button" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14" font-weight="500" text-anchor="middle">Start microphone</text>
+
+<rect x="630" y="430" width="376" height="185" rx="12" fill="#1b222d" stroke="#364255" />
+<text x="691" y="472" class="title" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="18" font-weight="600">Speakers</text>
+<rect x="946" y="453" width="40" height="24" rx="12" fill="#2b3442" /><text x="957" y="469" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Off</text>
+<text x="650" y="513" class="body" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14">Play computer audio on tablet</text>
+<text x="650" y="537" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Stereo</text>
+<text x="650" y="586" class="link" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#8db7ff" font-size="14">Configure</text>
+<rect x="826" y="560" width="160" height="35" rx="7" fill="#2b3544" stroke="#4b5b72" /><text x="906" y="583" class="button" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14" font-weight="500" text-anchor="middle">Start speakers</text>
+<text x="234" y="657" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Camera and microphone require approval on your tablet.</text>
+<text x="234" y="680" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">You choose which resources to share.</text>
+<text x="234" y="721" font-size="10" fill="#95a4ba" font-family="DejaVu Sans,sans-serif" font-style="normal">OPTION B · PER-TABLET DISPLAY CONTROLS · BACKEND CHANGE REQUIRED</text>
+<g fill="none" stroke="#a4c6ff" stroke-width="1.7" transform="translate(254 247)"><rect x="1" y="1" width="25" height="17" rx="3" /><path d="M9 24h10M14 18v6" /></g>
+<g fill="none" stroke="#becbde" stroke-width="1.7" transform="translate(650 246)"><rect x="1" y="5" width="25" height="18" rx="4" /><circle cx="13.5" cy="14" r="5" /><path d="M8 5l2-4h7l2 4" /></g>
+<g fill="none" stroke="#becbde" stroke-width="1.7" transform="translate(254 451)"><rect x="9" y="1" width="10" height="16" rx="5" /><path d="M4 12v2a10 10 0 0 0 20 0v-2M14 24v4M9 28h10" /></g>
+<g fill="none" stroke="#becbde" stroke-width="1.7" transform="translate(650 450)"><path d="M2 10h6l9-7v24l-9-7H2zM22 9q7 6 0 12M26 4q12 11 0 22" /></g>
+<g><rect x="14" y="190" width="174" height="78" rx="10" fill="#1e2734" /><text x="26" y="216" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#edf2fa" font-weight="600">Tablet 2</text><circle cx="30" cy="241" r="3.5" fill="#7ad6b0" /><text x="41" y="245" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#aab8cc">Connected</text></g></svg>

@@ -19,6 +19,7 @@ pub struct Slots {
     entries: Vec<Option<Entry>>,
     revision: u64,
     selected: Option<PeerId>,
+    disabled: Vec<Owner>,
 }
 impl Slots {
     pub fn new(capacity: u32) -> Result<Self> {
@@ -27,12 +28,48 @@ impl Slots {
             entries: (0..capacity).map(|_| None).collect(),
             revision: 0,
             selected: None,
+            disabled: vec![],
         })
     }
     /// The connection adapter supplies an explicitly selected peer. Clearing or
     /// changing intent never releases an existing native resource's ticket.
     pub fn select(&mut self, peer: Option<PeerId>) {
         self.selected = peer;
+    }
+
+    pub fn enabled(&self, owner: &Owner) -> bool {
+        !self.disabled.contains(owner)
+    }
+
+    pub fn set_enabled(&mut self, owner: Owner, enabled: bool) -> Result<()> {
+        owner.target().identity()?;
+        if enabled {
+            self.disabled.retain(|other| other != &owner);
+        } else if !self.disabled.contains(&owner) {
+            ensure!(
+                self.disabled.len() < 1024,
+                "display intent capacity exceeded"
+            );
+            self.disabled.push(owner);
+        }
+        Ok(())
+    }
+
+    pub fn assignments(&self) -> Vec<blent_config::display_control::Assignment> {
+        use blent_config::display_control::{Assignment, Phase};
+        self.entries
+            .iter()
+            .flatten()
+            .map(|entry| Assignment {
+                target: entry.owner.target(),
+                lease: entry.ticket.lease(),
+                phase: if entry.closing {
+                    Phase::Stopping
+                } else {
+                    Phase::Starting
+                },
+            })
+            .collect()
     }
     pub fn owner(&self, ticket: Ticket) -> Option<&Owner> {
         self.entry(ticket).map(|entry| &entry.owner)
@@ -128,6 +165,9 @@ impl Slots {
         (1..self.entries.len() as u32).find(|slot| self.adb_available(*slot))
     }
     fn allowed(&self, owner: &Owner, instance: u32) -> bool {
+        if !self.enabled(owner) {
+            return false;
+        }
         match owner {
             Owner::Adb(serial) => {
                 !serial.is_empty()
@@ -185,5 +225,7 @@ impl Reservations for Slots {
     }
 }
 
+#[cfg(test)]
+mod control_tests;
 #[cfg(test)]
 mod tests;
