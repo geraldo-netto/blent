@@ -1,5 +1,14 @@
 # T492 — live sparse H.264 checks
 
+One-update-per-second Baseline remained responsive, but keyframe gaps reached two seconds; High added substantial delay. Cadence changes need coordinated recovery checks.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **Keep the production 200 ms idle interval until cadence and recovery are
 coordinated.** One-update/s Constrained Baseline remains responsive on this
 tablet, but its encoded keyframe gaps reach two seconds. H.264 High additionally
@@ -165,3 +174,5 @@ The temporary candidate APK was removed, the tablet returned to production
 UScreen, and only the normal 8890/8891 ADB reverse routes remain. The host
 daemon, capture helper, FFmpeg, Xorg and Cinnamon remained running. Production
 settings and the 200 ms idle interval are unchanged.
+
+</details>

@@ -1,5 +1,14 @@
 # T419 — lossless RGB frame compression screening
 
+Lossless rectangle compression warranted a prototype, but synthetic scenes understated photographic bandwidth. Host decompression and short native checks did not establish battery or display gains.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **Changed RGB rectangles with Zstandard level 1 are worth a presentation
 prototype; keep the existing H.264 path while that is measured.** This research
 does not establish an Android battery or capture-to-display improvement.
@@ -153,3 +162,5 @@ the commands and dependency versions needed to repeat the experiments.
 Primary interfaces: [LZ4 bounded decompression](https://github.com/lz4/lz4/blob/v1.9.4/lib/lz4.h),
 [Zstandard APIs](https://github.com/facebook/zstd/blob/v1.5.5/lib/zstd.h), and
 [QOI](https://qoiformat.org/) for the unmeasured alternative image control.
+
+</details>

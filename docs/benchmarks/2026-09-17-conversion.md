@@ -1,5 +1,14 @@
 # C conversion and worker budgets — 2026-09-17
 
+Scaled conversion and sparse-work scheduling improved some measured costs. A later stride defect limits the historical padded-layout timings; native conversion did not show a universal gain.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 Historical replay caveat (T764, corrected 2026-10-09): the replay allocated
 64 bytes of padding per source row but submitted a packed stride to conversion.
 The recorded timings/checksums therefore describe that mismatched layout, not
@@ -230,3 +239,5 @@ passes with both CLI and in-process encoder builds; host Clippy passes with
 warnings denied. The helper also builds and links against
 stock libevdi with -O3 -Wall -Wextra -Werror. It was not attached to the running
 desktop for this refactor.
+
+</details>

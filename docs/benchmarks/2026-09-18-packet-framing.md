@@ -1,5 +1,14 @@
 # H.264/HEVC packet framing (T448)
 
+Stock FFmpeg packet boundaries removed a successor-picture wait in the host path. These measurements exclude capture, Android and physical presentation.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 Stock FFmpeg packet framing removes one source-frame interval from the host's
 input-to-packet-ready path in this experiment. At 640×400/60 FPS, median time
 falls from 17–19 ms to 0.75–2.62 ms across the tested encoders and one/two/four
@@ -183,3 +192,5 @@ Repeat without a display or tablet:
 cargo test --locked -p uscreen --release --bin uscreen \
   t416_packet_batch_profile -- --ignored --nocapture
 ```
+
+</details>

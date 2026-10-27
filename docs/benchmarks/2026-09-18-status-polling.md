@@ -1,5 +1,14 @@
 # Desktop status polling — 2026-09-18
 
+Cached status probes and window-owned workers reduced repeated work. Probe counts and lifecycle tests do not establish faster video or lower tablet power.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T409 reduces repeated status discovery and ties the background worker to its
 window's lifetime. These are deterministic source/probe-count measurements, not
 claims of faster video, lower tablet power or end-to-end frame latency. Full
@@ -100,3 +109,5 @@ pre-existing ignored test), 35 common tests and 32 GUI tests. Command-lifetime
 integration (six tests) and GUI startup (one test) also passed. After the final
 cancellation-state refinement, all six GUI T409 tests passed again. Clippy passed
 with warnings denied; no reviewed function exceeded cyclomatic complexity nine.
+
+</details>

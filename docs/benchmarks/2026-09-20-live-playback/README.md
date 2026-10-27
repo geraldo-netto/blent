@@ -1,5 +1,14 @@
 # T560: passive current-playback profile
 
+Passive playback profiling found no dominant CPU starvation in that sample. Six queued-but-unlatched buffers and intermittent audio gaps still lacked cause attribution.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 One 60-second Android Perfetto trace plus concurrent Linux process/audio
 observations, 2026-09-20 21:00:22–21:01:27 UTC. The existing app, EVDI helper,
 encoder and ADB server remained running. No package replacement, foreground
@@ -78,3 +87,5 @@ from the newer forwarding-repair package installed for the next normal start.
 T560's narrow profiling assessment is complete. The evidence favors coordinated
 idle work reduction (T492) over adding Android workers to current playback;
 T561 and T414 preserve the unresolved presentation/audio findings.
+
+</details>

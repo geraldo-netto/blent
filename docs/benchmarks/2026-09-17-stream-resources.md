@@ -1,5 +1,14 @@
 # Encoded-storage and slow-viewer limits (T391)
 
+Encoded storage and slow-viewer retention became bounded. The budget excludes raw frames, parser staging, socket buffers and total process memory.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The server now bounds admitted encoded backing storage at 32 MiB per session,
 closes video viewers whose framed write or retained batch exceeds one second,
 and reuses an eight-packet batch deque. Four sessions retain the existing
@@ -130,3 +139,5 @@ T407 explicitly includes bounds for unfinished NALs/access units/CSD. Larger
 physical comparisons were proposed separately under T382, now closed as
 `wont_fix` for the current scope; T388 still tracks sustained power validation.
 These results do not justify raising the four-tablet limit.
+
+</details>

@@ -1,5 +1,14 @@
 # Changed-region conversion — 2026-09-20
 
+Changed-region conversion saved work on narrow damage while full-frame results varied. The measured optimization does not send raw tiles to Android or establish battery gains.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 Current status (2026-09-26): horizontal-span conversion is implemented and active
 in the deployed Blent helper. See [shared capture activation](../2026-09-21-shared-capture/README.md)
 and [current deployment](../../reviews/2026-09-26-blent-deployment.md).
@@ -143,3 +152,5 @@ both hashes and paths. Readback confirms that the live daemon, helper and
 encoder still use the same executable hashes as before installation. The conversion was not active in the September 20 display session. No service
 restart or Android installation was made during that experiment; subsequent
 activation and deployment are linked above.
+
+</details>

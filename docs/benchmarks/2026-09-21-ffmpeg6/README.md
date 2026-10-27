@@ -1,5 +1,14 @@
 # T563: pinned FFmpeg 6.1.6 in the Linux AppImage
 
+The AppImage pinned and validated stock FFmpeg 6.1.6. Packaging and later live activation established no matched performance gain.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The AppImage builds and uses its own FFmpeg/ffprobe 6.1.6. The original packaging
 validation below left the extracted 5.1.9 desktop session running. Subsequent
 authorized T418 deployment reloaded both applications and verified live 6.1.6
@@ -105,3 +114,5 @@ complexity, clean-container validation and the installation record. Raw local
 build caches and binaries are not committed. The package was assembled before
 this final validation report was written; the report's artifact hashes identify
 the tested image exactly.
+
+</details>

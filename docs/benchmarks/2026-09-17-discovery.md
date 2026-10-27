@@ -1,5 +1,14 @@
 # Independent tablet discovery (T390)
 
+A stalled synthetic device no longer blocked ready devices. The fixtures establish discovery isolation, not physical multi-tablet throughput.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 A stalled device no longer holds up every ready tablet's discovery or recovery.
 The monitor publishes each bounded device job as it completes, while preserving
 per-device forwarding order, retry backoff, USB preference, attachment epochs and
@@ -73,3 +82,5 @@ already accepted remotely. T413 separately tracks a possible reconnect admission
 race after a transient package-query failure; the current boolean package probe
 still treats command failure as ineligible. T391 measures media resource limits
 separately before any increase to the four-tablet cap.
+
+</details>

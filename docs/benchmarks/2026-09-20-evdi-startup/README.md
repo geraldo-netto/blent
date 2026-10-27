@@ -1,5 +1,14 @@
 # T558: EVDI startup delay investigation
 
+A read-only stock-libevdi probe reproduced costly process scans before capture. It explains a plausible startup delay, without a historical stack trace or an ownership-safe bypass.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The bundled libevdi 1.15.0 master-detection loop reproduces the observed delay:
 **11.741 seconds elapsed, 6.736 seconds CPU**, ending with `Wait for master timed out`.
 The probe only reads process metadata. It opens no DRM device, submits no ioctl,
@@ -77,3 +86,5 @@ separate T222 Xorg reattachment failure. This batch adds documentation only,
 so it requires no artificial behavioral regression. The retained source probe
 and native timing remain the evidence; no additional device open/attach was
 performed for this follow-up.
+
+</details>

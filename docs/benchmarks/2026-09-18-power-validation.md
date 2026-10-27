@@ -1,5 +1,14 @@
 # T388 — partial sustained battery-profile validation
 
+Three guarded phases completed; focus loss invalidated the fourth. Missing matched trials and coarse charge readings prevent a battery gain or regression claim.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **No battery-saving improvement is established.** Three five-minute measured
 phases completed with verified workload visibility. The fourth phase lost
 keyboard focus and was rejected automatically; the remaining paired trials and
@@ -136,3 +145,5 @@ repeating. `analyze.py.txt` aggregates only complete visibility-verified phases.
 Metadata records the checkout at collection time; documentation/tool commits
 changed during collection, while the explicitly recorded installed runtime stayed
 constant. Do not treat those checkout IDs as the installed binary version.
+
+</details>

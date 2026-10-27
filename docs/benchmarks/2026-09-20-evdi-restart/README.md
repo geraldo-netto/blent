@@ -1,5 +1,14 @@
 # T556: EVDI restart and live playback observations
 
+A requested restart activated the helper; a diagnostic collector then accidentally ended its shared ADB server. Route restoration recovered video; this was not a paired optimization benchmark.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The maintainer requested one normal UScreen service restart and retained data,
 including a successful run. The T554 horizontal-span conversion helper became
 active. Xorg survived and Android stayed awake. Playback initially resumed,
@@ -108,3 +117,5 @@ T222 or prove reliability across other machines.
 The prior AppImage remains installed alongside the new one as
 `UScreen-before-T554-57b42929cf2a.AppImage` for rollback. No Android update was
 needed for T554 or the display forwarding repair.
+
+</details>

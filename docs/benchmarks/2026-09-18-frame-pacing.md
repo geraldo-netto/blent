@@ -1,5 +1,14 @@
 # Frame admission and decoder output pacing — 2026-09-18
 
+Lower input cadence increased the tested decoder's delay. Decode-all/render-latest found no ready-output backlog to shorten, so output skipping stayed disabled.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T399 keeps the existing capture cadence and synchronous output policy. Lower
 input rates made the tablet's isolated decoder delay markedly worse. A bounded
 decode-all/render-latest prototype remains disabled by default: it has not
@@ -202,3 +211,5 @@ corpus directory, copy `corpus-metadata.json` there as `metadata.json`, then run
 `frame-admission.py --corpus DIRECTORY --output NEW_DIRECTORY`. It requires stock
 FFmpeg/ffprobe and NumPy. The corpus generator additionally uses Pillow and the
 recorded font. Compare the preserved input hashes before interpreting reruns.
+
+</details>

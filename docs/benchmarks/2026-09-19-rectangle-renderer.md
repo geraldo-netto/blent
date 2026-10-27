@@ -1,5 +1,14 @@
 # T419 — Android rectangle rendering and resource comparison
 
+RGB rectangles reduced CPU for some UI scenes but increased memory and photographic bandwidth. Presentation results did not establish a latency winner.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **Lossless RGB rectangles reduce tablet CPU use for some UI workloads, but
 consume more app memory and can overwhelm USB 2 on photographic content.**
 The matched presentation measurements do not establish a latency winner.
@@ -254,3 +263,5 @@ remove decompression, RGB writes or texture upload. Full-frame RGB888 writes
 alone are 184.32 MB/s at 1280×800×60, before subsequent reads/copies; smaller
 damage reduces this workload. No DMA-buffer import or zero-copy GPU claim was
 tested here, and no FFmpeg patch is involved.
+
+</details>

@@ -1,5 +1,14 @@
 # Fake-tablet receiver replay (T408)
 
+Reusable receive storage greatly reduced the fake client's copying cost. The client acknowledges receipt without decoding or rendering.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The fake receiver's payload copying was a material bottleneck under controlled
 fragmentation. Reusable `recv_into` storage plus bounded payload draining reduced
 receiver-thread CPU by 89.4–97.6% across these cases. Traced peak allocations fell
@@ -81,3 +90,5 @@ renders. Its console output and replay metadata now say so explicitly. Use this
 client for T390/T391 resource/fairness experiments, keeping synthetic observations
 separate from the original USB tablet baseline. The broader T382 campaign is
 closed as `wont_fix` for now; synthetic ACKs remain evidence of receipt only.
+
+</details>

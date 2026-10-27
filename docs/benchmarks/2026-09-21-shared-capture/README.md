@@ -1,5 +1,14 @@
 # T418: leased shared raw input
 
+Matched shared-input replays supported the optional libx264 adapter, with a small measured latency benefit. CLI/VAAPI remained on FIFO; live activation was a separate check.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The optional in-process libx264 encoder now defaults to shared NV12 slots.
 Five matched USB replay pairs lowered conversion-start-to-render-ACK median and
 p95 in every pair. This authorizes that adapter/codec default, not a switch from
@@ -195,3 +204,5 @@ No Android lock or power action was used, and the desktop session stayed up.
 | `UScreen.AppImage` | `a1770c20984d48625785bbb3aaa47db1835083e83070d479d16e540be313e226` |
 | `uscreen-1.2.3-AppImage-sources.tar.gz` | `8ccd3665860ab5f71d83944f8444f4eb7362f8ac708ae0d57586a43528666cbe` |
 | `uscreen.apk` | `21ecabb00ec1553e5cde8fcab2f18416bfe82a22b06f0e684b86e60dd0a004c9` |
+
+</details>

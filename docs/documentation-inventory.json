@@ -348,7 +348,7 @@
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Packet assembly used less CPU and copied fewer bytes in isolated host replays. This excludes encoding, transport, Android and battery use. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1635,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -356,14 +356,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "17dd6e7c3cf9b797fbb234474342fa59b792cd690b7d615562f4083b4c66356c",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-cli-assembly/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Artifact key for the packet-assembly comparison. Only the final series supports numeric comparisons; the cached-binary comparison is explicitly invalid. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 182,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -371,14 +373,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "c25c9cbe911f05f59f12b7afc8a625a92e6f8820d64986ad83cf6e8705afe3a4",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-17-conversion.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Scaled conversion and sparse-work scheduling improved some measured costs. A later stride defect limits the historical padded-layout timings; native conversion did not show a universal gain. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2080,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -386,14 +390,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "382bfaed7677baade58a2b3d5051a5b964b65a1ff10124a0eb3ade7622060d5d",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-device-baseline.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "One tablet sustained the tested motion stream but lost battery charge while USB-powered. This baseline is not a before/after optimization comparison. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1724,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -401,14 +407,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2ba353b2654830d47e34d847a41bf576553d59a6148f783f531a523501e8aeb3",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-discovery.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "A stalled synthetic device no longer blocked ready devices. The fixtures establish discovery isolation, not physical multi-tablet throughput. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 594,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -416,14 +424,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "08b7679c74e973feddb0a6b6e58d289d62017c31aa73b26523051b9acd4d7522",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-fake-tablet.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Reusable receive storage greatly reduced the fake client's copying cost. The client acknowledges receipt without decoding or rendering. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 727,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -431,14 +441,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "84777b221de141345796fadef8b77bb9bcc7a120e68ec54bf744487ce5eb88a8",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-input-batching.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Batching preserved every input event and synchronization boundary while reducing counted writes. No physical input-latency improvement was measured. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 706,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -446,14 +458,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "050f70b1e5888ed49a9842b35bbc8c13ccc9d94afcc61d3b462335c591836b9f",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-io-uring.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "The tested io_uring alternative showed mixed paced results. Readiness-based production I/O was retained; no new production dependency was justified. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 936,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -461,14 +475,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "dbec4c5d17788604c578ece39c70a3cc74b60a39c539b6c657390c7837affb81",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-packet-storage.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Large known packet allocations avoided a publication copy. The measured savings concern packet ownership, not total encoding or display latency. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1213,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -476,14 +492,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "063a7405fe19026cfa0eb1cbf6db23a08ba323f385b647c0fdfe6068eb87b1a4",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-pipe-capacity.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Larger pipes sometimes reduced transfer CPU but held older frames behind a slow reader. The experiment did not justify an unconditional larger default. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2082,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -491,14 +509,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "7d260c50b91080bcf12f3833023ce848519744b2e3548065dd39dc582b20fdbd",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-readiness.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Immediate readiness shortened raw-transfer tails, with higher CPU in some large concurrent cases. Notification and cancellation correctness were tested separately. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1558,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -506,14 +526,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "9922a2eccf2e062988c411acc10ba712492b8b67768be383462683cc06bb05d1",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-stream-resources.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Encoded storage and slow-viewer retention became bounded. The budget excludes raw frames, parser staging, socket buffers and total process memory. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1146,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -521,14 +543,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "01448caa4be949fc2280eee350ca55986d5ca039b267c8c099e85fd750b8436a",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-17-timing.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Timing bookkeeping gained correct thread/generation ownership and faster common lookups. Some lookup patterns cost more; these are not display-latency results. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1432,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -536,14 +560,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "fe331c57c0fcb3c2c2026c36777c3e1b61cc4462a91f9a3f0d85271fc136ee68",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-codecs.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Constrained Baseline reduced the tested tablet's H.264 delay, with a bandwidth tradeoff. Advertised HEVC support failed native trials; codec labels alone did not predict performance. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2708,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -551,14 +577,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "26b1b5495caf4cf84707ec49c73663891e843e0fd7ec2f14a1c8a7f52eeb7092",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-decoder-input.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Direct reads into codec buffers did not show a useful tablet latency benefit. The staged heap path remained the default, with both paths retaining cancellation tests. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1445,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -566,14 +594,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "b64af7bc9f70c262041d7f0c673d02e61b4e48dde7fd38e8dc6a6662a0018352",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-decoder-input/initial-table.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "rewrite",
-      "review_note": "Add a clear title and reading context; separate summary from detailed evidence.",
+      "review_note": "Initial decoder-input cohort table. Keep separate from the reviewed cohort; medians summarize that cohort's three trials. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 177,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -581,14 +611,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "7ba7db146230e606c4447b81bc894ef610c9bc7af064cc457f344a04c35a7f1e",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-18-decoder-input/reviewed-table.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "rewrite",
-      "review_note": "Add a clear title and reading context; separate summary from detailed evidence.",
+      "review_note": "Reviewed decoder-input cohort table after cancellation fixes. It does not establish a useful direct-input advantage. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 177,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -596,14 +628,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "c6b8abdf7df3770d4157898a49045adcbe20de1fb4fdb837cecce3cc4687b67b",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-18-decoder-profiles.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Callback decoding reduced sparse polling but did not improve latency and increased allocations. Lifetime fixes were retained independently of performance selection. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2535,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -611,14 +645,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "34e8793a666172c1ec7ee184c4f9625bbebbe6bb3091c0e5d924745793db81e2",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-decoder-profiles/profiles-table.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "rewrite",
-      "review_note": "Add a clear title and reading context; separate summary from detailed evidence.",
+      "review_note": "Seven-profile decoder cohort table. CPU uses one core as 100%; callback timing is not optical presentation. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 517,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -626,14 +662,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "9695e8f15d2db5fd205ad0a2c521623cff443809f3f6464d17e2f97cd3541786",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-18-decoder-profiles/traces-table.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "rewrite",
-      "review_note": "Add a clear title and reading context; separate summary from detailed evidence.",
+      "review_note": "Separate correlated decoder-trace cohort. Its shorter trials and final lifetime fix must not be pooled with the earlier profile series. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 245,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -641,14 +679,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "f3e8d1bb454367964d85ebdfd7977a0b1fab67ebc73eb2166c64c1c2dc045339",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-18-frame-compression-resources.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "The tablet's decoder and display services contribute costs outside the app process. This research defines a bounded renderer comparison; short observations establish no energy result. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1493,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -656,14 +696,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "865061a6d35500921d486f87df13a6ce4883d58de257bfa069712b64772889ea",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-frame-compression.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Lossless rectangle compression warranted a prototype, but synthetic scenes understated photographic bandwidth. Host decompression and short native checks did not establish battery or display gains. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1308,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -671,14 +713,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "ca548f535f8dc7ae299f3dbfacf534516ce2c7f1d7d79eec6bf65c2c03ffa9e4",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-frame-pacing.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Lower input cadence increased the tested decoder's delay. Decode-all/render-latest found no ready-output backlog to shorten, so output skipping stayed disabled. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1843,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -686,14 +730,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "b52ce67054dcae0b7208ec4df838c49d24a15541f4386223a34a9e213836e76e",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-hevc-interop.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Tested AMD VAAPI HEVC streams failed on the tablet while x265 controls worked. The observations narrow interoperability, without proving a particular vendor cause or fix. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 992,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -701,14 +747,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "7c3ffbfe994fa5cac392249c981ad44a7c1498d6d68a47d1d66e575c861507f5",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-packet-framing.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Stock FFmpeg packet boundaries removed a successor-picture wait in the host path. These measurements exclude capture, Android and physical presentation. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1534,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -716,14 +764,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "1773f11a562979746e131ddcf93d786d73dcfeff96482bc0944bba7e6934264d",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-power-policy.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Battery saver changed wake-lock ownership without an established battery-saving percentage. The original implementation and incomplete physical comparison are preserved. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1155,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -731,14 +781,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "660a44d394b9f40101add397e038b48a68fa1de4b3b7391fb7a8cf218d01b1b1",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-power-validation.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Three guarded phases completed; focus loss invalidated the fourth. Missing matched trials and coarse charge readings prevent a battery gain or regression claim. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1169,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -746,14 +798,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "189331d069a715132adc1a1656992c49105d85d0eed1548ddbdcdf3d8bf3cb00",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-profile-selection.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Constrained Baseline gave the best tested latency/fidelity tradeoff on one host/tablet. The comparison includes a USB replay, but excludes compositor capture and optical presentation. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2052,
       "long_paragraphs": 4,
       "joined_word_number_tokens": 0,
@@ -761,14 +815,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "1e032f8079c43fead152e22f55be985f57ab1489a45d6d477b2108664879477c",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-raw-input.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Direct raw input and a shared-memory prototype improved isolated transport costs. Later production shared capture has separate evidence; these figures are not display FPS. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2490,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -776,14 +832,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "6597775d62af7496bb93798b479d0e9a147cabff5b1b37f5828ac5ae8c463475",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-raw-input/tables.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "rewrite",
-      "review_note": "Add a clear title and reading context; separate summary from detailed evidence.",
+      "review_note": "Raw-input throughput and timing tables. Values describe saturated isolated inputs, not encoded or displayed frame rates. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 565,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -791,14 +849,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "e430d84bc23f34a7f5a7e83d95781296009c720fb50c16a99e862b111b8745a5",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-18-status-polling.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Cached status probes and window-owned workers reduced repeated work. Probe counts and lifecycle tests do not establish faster video or lower tablet power. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 905,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -806,14 +866,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "e2166ef6b30ad32d7ad46791e4d825e0ffca5c66cf753b1d43f9e7c9a3cf25b5",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-usb-power-comparison.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Only one sustained normal/static phase completed before the paired saver run lost focus. No battery-saving comparison was established. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 754,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -821,14 +883,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "e341387d4bc6f38466b864e62f9e20b09f34a493a9e8d7349ee3f0c3f895b5b4",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-18-usb2-compatibility.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "The tested tablet carried the selected stream over real USB 2.0 and acknowledged all replay pictures. This does not qualify all USB 2 devices or prove adequate charging. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 816,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -836,14 +900,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "e47c4eaf823c09453986af22cb7f0cd89a59aa1e622b4adcf0a9f2136206f69b",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-19-idle-cadence.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "One-update-per-second Baseline remained responsive, but keyframe gaps reached two seconds; High added substantial delay. Cadence changes need coordinated recovery checks. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1440,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -851,14 +917,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2e08b11b92e50535807da36066b62bda9d2dcc1449e27c05ceeeb5ef413af0fa",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-19-idle-cadence/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Evidence guide for eight sparse-cadence trials and sixteen phases. Missing acknowledgements remain missing; keyframe checks are not a production reconnect test. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 332,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -866,14 +934,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "813534d92331c1208ba8ae4911bc5a818e0a60a08807b43533df41c0dc16828a",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-19-presentation-power.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "RGB reduced app CPU but did not show repeatable battery benefit. Surface traces also showed that decoder callbacks can occur for buffers never presented. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2159,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -881,14 +951,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "7a46857295978786977f5d24c7978bb80e52df9811195fbfd2dcbf8e0ddae23b",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-19-presentation-power/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Evidence guide for presentation diagnosis and the ten-phase battery matrix. It preserves rejected interpretations, signed-current meaning and separate sampling boundaries. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 342,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -896,14 +968,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "19c4d69a6f437bcf68a36980343c3c1a9c4136571b1267989165598a907da59e",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-19-rectangle-renderer.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "RGB rectangles reduced CPU for some UI scenes but increased memory and photographic bandwidth. Presentation results did not establish a latency winner. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2212,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -911,14 +985,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "fe95b9a04726ab44941d9352235786f55e33c003012bbc601680ceb76ebef352",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-19-rectangle-renderer/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Evidence guide for renderer cohorts, exact source snapshots, input identities and sampled-memory limits. It preserves separate cohort meanings and historical source provenance. Retained checksum-covered evidence bytes; readable meaning and cohort limits supplied in the family index.",
       "words": 373,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -926,14 +1002,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2866be2e474e82545ae104c9a2bfedfcac544533612a1391132fb2078c4893af",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-20-damage-regions/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Changed-region conversion saved work on narrow damage while full-frame results varied. The measured optimization does not send raw tiles to Android or establish battery gains. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1345,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -941,14 +1019,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "a88973ffc3bd76cb07dac0679df457dd746be9da2a02bef9c1f7d6c6af220b2c",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-20-evdi-restart/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "A requested restart activated the helper; a diagnostic collector then accidentally ended its shared ADB server. Route restoration recovered video; this was not a paired optimization benchmark. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 941,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -956,14 +1036,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "f4e48b680d0b034c66069ffe386e01e11a7132d3e11b6a4eff09d4dc4ad3492c",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-20-evdi-startup/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "A read-only stock-libevdi probe reproduced costly process scans before capture. It explains a plausible startup delay, without a historical stack trace or an ownership-safe bypass. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 689,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -971,14 +1053,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2e32d7b3ab52cea6b62a2a4fc6974e58eae4390aa943e3e61bcc241907f7951e",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-20-forwarding-recovery/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Missing display reverse routes gained guarded repair and permanent regressions. Manual device recovery and later fixture validation are separate evidence. Retained concise evidence note; family index supplies plain-language meaning and historical status.",
       "words": 379,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -986,14 +1070,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "046fa9bceec81e5bebcead6ca74458a2c60fb69221573df079e238ef313d5d30",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-20-idle-writer/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "A two-FPS writer experiment reduced idle writes while preserving tested fresh-frame wakeups. Host feasibility did not establish live tablet latency or battery savings. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 865,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1001,14 +1087,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "cd5a6b46c6222323697a162a8a37cb1b58715b38e7eaa24d116464ab33196977",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-20-live-playback/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Passive playback profiling found no dominant CPU starvation in that sample. Six queued-but-unlatched buffers and intermittent audio gaps still lacked cause attribution. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 727,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1016,14 +1104,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "c9a1bea92ec37f546332edb28da082e32d043c1dc35060ca97199520009f3959",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-20-usb-hub-power/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Short charging-port observations were uncontrolled and near full charge. They do not identify a better supply or establish sustained charging power. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 568,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1031,14 +1121,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "0421396fc62772d6d89d7beada441bcbabd3daf16d5264ecb3e6c227486bfc3f",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-20-youtube-audio/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Playback was smooth during a short passive sample, so intermittent Bluetooth audio gaps were not reproduced. Blent display traffic and the independent audio route were distinguished. Retained concise evidence note; family index supplies plain-language meaning and historical status.",
       "words": 333,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1046,14 +1138,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "852a3d02af93d0e79b271ea549d84c458932315f47395fe58f0405557d2ef045",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-21-android-lock/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Read-only power fields did not identify the reported lock's trigger. No speculative wake-policy change was justified by those retained observations. Retained concise evidence note; family index supplies plain-language meaning and historical status.",
       "words": 281,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1061,14 +1155,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "6a33dcd446b11879fa21b49de44af8b4a104b1862d62ea70afc011651ae671b9",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/2026-09-21-ffmpeg6/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "The AppImage pinned and validated stock FFmpeg 6.1.6. Packaging and later live activation established no matched performance gain. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 866,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1076,14 +1172,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "a7506af22a42900cd2085ae9c35fb436bfe80662fd0ea57e01d43dd36204a456",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-fifo-demand/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Skipping unused FIFO conversion reduced the retained helper's CPU during optional GPU capture. EVDI readback continued; total-system energy and latency were not measured. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 758,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1091,14 +1189,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "102d97ef54d6a47fde7df1a864ed1af1ba6cad133b46dbee884e3536e33c6cb9",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-fork-performance.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "A dated inventory of separate performance experiments. Percentages have different baselines and boundaries and cannot be combined into an overall fork speedup. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 2696,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1106,14 +1206,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "6ab8cc55692038fa88c0e2745f5a88115df1b52b4647a5b89c4b59b3c5638897",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-frame-omissions/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Six omitted compositor buffers each had a newer queued successor. Temporal correlation did not identify where the burst began or prove compressed-packet loss. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 742,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1121,14 +1223,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "b45c72db54cb41b90f97ae129b62d0f180537245ff68bacead81b2e3aa6de76c",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-gpu-adapter/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Patterned physical trials exposed cross-device corruption and worse GPU-capture latency despite lower measured CPU. The prototype remained optional and FIFO stayed the default. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1273,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1136,14 +1240,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "904078fbe37e8fa398e765e9fb163c1a2d80f3b10138ae32defae5b85971c4e2",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-gpu-capture.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Early uniform-color GPU import probes established feasibility only. Later patterned trials superseded their optimistic interpretation and rejected cross-device imports. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 983,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1151,14 +1257,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "57dbe17c5895afe2d72edb3938ae28d024519d300757f692d241e20641b61088",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-scheduling/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Higher scheduling weight changed CPU allocation under controlled contention. Passive playback did not show lower latency or establish an audio-gap fix. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 845,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1166,14 +1274,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "a34c28458a0c261a9a139dd8d88cbcb439d7cc8c15fa239cb36ce69f0bf52c40",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-shared-capture/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Matched shared-input replays supported the optional libx264 adapter, with a small measured latency benefit. CLI/VAAPI remained on FIFO; live activation was a separate check. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 1595,
       "long_paragraphs": 4,
       "joined_word_number_tokens": 0,
@@ -1181,14 +1291,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "5d696d5677c540d85df67e482a2b10b724369bb61400b611c96bbaf4b7202a41",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/2026-09-21-shared-damage/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Per-slot damage histories reduced idle and sparse shared-buffer work while retaining leased pixels. Full-frame results varied; no battery or end-to-end gain was measured. Retained concise evidence note; family index supplies plain-language meaning and historical status.",
       "words": 495,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1196,14 +1308,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "191ffe33e272d7a927c727b030a6cb0bee6af107f49544c2a430936a6006c8fd",
+      "outcome": "retained"
     },
     {
       "path": "docs/benchmarks/README.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Family index and maintained baseline collection instructions. Historical reports retain their identities and measurements; live instructions use the current Android package. Added complete file map and measurement diagram; retained exact collection and interpretation rules in a focused reference.",
       "words": 2071,
       "long_paragraphs": 6,
       "joined_word_number_tokens": 0,
@@ -1211,14 +1325,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "826d2fb153c009fd6fafb9253db18a92b5cd136a4ceffdebcbb414cf2c34ec39",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/network-power-protocol.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Proposed matched USB-versus-network power protocol, not a result or an active test authorization. Transport and power wiring must be identified and held comparable. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 641,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1226,14 +1342,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "e2c45e84ace03f9368f1511a8fd756b2fa31d5743d3fb25bed95bb0347c1f121",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/benchmarks/power-supply-protocol.md",
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "Proposed comparison of identified USB power arrangements. Short near-full-battery spot checks cannot establish charging adequacy; the plan preserves matched trials and restoration. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
       "words": 584,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1241,7 +1359,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "1be95d700326c9a69215790e75e92ad93e83555247d714e6e82d04c592ee86cc",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/camera-reference.md",

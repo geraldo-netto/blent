@@ -1,5 +1,14 @@
 # T491 — USB 2.0 compatibility on the current tablet
 
+The tested tablet carried the selected stream over real USB 2.0 and acknowledged all replay pictures. This does not qualify all USB 2 devices or prove adequate charging.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **The current tablet already uses a real USB 2.0 connection, and the tested
 1280×800/60 FPS H.264 configuration works over it.** No forced downgrade,
 USB-controller change, cable swap or simulated bandwidth limit was needed.
@@ -101,3 +110,5 @@ topology and health, checksummed payload results, the trial plan, exact replay
 provenance, raw timing/Android results, all encoded streams, software decode
 validation and checksums. T491 is resolved for this requested current-tablet
 USB 2.0 check; no general multi-tablet campaign was performed or required.
+
+</details>

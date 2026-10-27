@@ -1,5 +1,14 @@
 # T492: isolated writer and keyframe cadence
 
+A two-FPS writer experiment reduced idle writes while preserving tested fresh-frame wakeups. Host feasibility did not establish live tablet latency or battery savings.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 Current status (2026-09-26): an opt-in adaptive-idle policy is implemented in
 [`common/src/idle.rs`](../../../common/src/idle.rs) and the
 [Linux adapter](../../../host/src/capture/idle.rs). It uses current decoder timing
@@ -99,3 +108,5 @@ regressions passed: nine host idle tests, ten framing tests (one pre-existing
 opt-in benchmark ignored), and three C T405 tests. All 110 Python benchmark
 tests passed. Those historical counts are not current whole-project coverage or physical
 acceptance of the subsequently implemented lower-cadence policy.
+
+</details>

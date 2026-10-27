@@ -1,5 +1,14 @@
 # T538: USB charging-port spot check, 2026-09-20
 
+Short charging-port observations were uncontrolled and near full charge. They do not identify a better supply or establish sustained charging power.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The tablet remained connected to ADB at USB path `1-1.4` and UScreen continued
 receiving render acknowledgements at about 30 FPS. The maintainer clarified that
 only the charging cable was moved; the hub model and charging-port wiring remain
@@ -67,3 +76,5 @@ A later post-trace read reported 9,990,000 µAh while remaining at 100%.
 `usb-c-plug-1755/battery-postcheck.json` retains a timestamped follow-up snapshot.
 This read is outside the integrated trace interval; do not equate its gauge step
 with the preceding sample's signed current or infer a charging rate from it.
+
+</details>

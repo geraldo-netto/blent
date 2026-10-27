@@ -1,5 +1,14 @@
 # CLI input and access-unit assembly — 2026-09-17
 
+Packet assembly used less CPU and copied fewer bytes in isolated host replays. This excludes encoding, transport, Android and battery use.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T407 reduces copying in the default stock-FFmpeg CLI path and rejects oversized
 unfinished NALs, access units and codec configuration before publication. It
 preserves Annex B bytes, codec-header revisions, sequence identity and encoder
@@ -176,3 +185,5 @@ compressed Annex B/profile/read-adapter snapshots, and build each in an isolated
 output directory or clean `uscreen` and `uscreen-config` first. The archived
 build/controller scripts record the exact calls and alternation. Preserve the
 reported toolchain, verify hashes and compare variants within the same series.
+
+</details>

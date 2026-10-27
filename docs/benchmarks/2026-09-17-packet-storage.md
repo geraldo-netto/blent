@@ -1,5 +1,14 @@
 # Encoded packet storage — 2026-09-17
 
+Large known packet allocations avoided a publication copy. The measured savings concern packet ownership, not total encoding or display latency.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T402 removes the drain-time payload copy for known large packet allocations in
 the optional in-process encoder. The default FFmpeg CLI path is unaffected.
 Stock FFmpeg is used without patches. Unknown backing storage and small buffer
@@ -144,3 +153,5 @@ marker may share a line with the test harness label. The
 source hashes, preliminary snapshots, validation logs and SHA256SUMS. The
 broader physical comparison was proposed under T382, now closed as `wont_fix`
 for the current scope. These retained measurements do not establish that comparison.
+
+</details>

@@ -1,5 +1,14 @@
 # Reader-driven EVDI conversion — T580, 2026-09-21
 
+Skipping unused FIFO conversion reduced the retained helper's CPU during optional GPU capture. EVDI readback continued; total-system energy and latency were not measured.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **The retained EVDI helper used 35.6% less CPU at the median during optional
 GPU capture.** All three pairs improved, by 30.1–36.5%. This is a reduction in
 one helper's CPU use, not a video-latency, whole-system or battery measurement.
@@ -91,3 +100,5 @@ arguments. It does not operate on Android. Build arguments, binary/source hashes
 raw per-trial observations, native logs, regression logs and coverage results are
 retained in [evidence.tar.gz](evidence.tar.gz); see [metadata.json](metadata.json)
 and [results.json](results.json).
+
+</details>

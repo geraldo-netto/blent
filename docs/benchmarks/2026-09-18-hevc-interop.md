@@ -1,5 +1,14 @@
 # T422 — AMD VAAPI HEVC / Unisoc interoperability
 
+Tested AMD VAAPI HEVC streams failed on the tablet while x265 controls worked. The observations narrow interoperability, without proving a particular vendor cause or fix.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 The affected tablet still rejects the tested AMD VAAPI HEVC streams with native
 MediaCodec error 14. No working stock encoder option or Android configuration
 was found. T422 remains blocked on a compatible stock configuration or a
@@ -120,3 +129,5 @@ provide `csd-format` and `inband-only` controls.
 A future compatibility fix must retain a permanent failing regression for the
 identified cause and verify the same native fixture on this tablet. A fake
 MediaCodec test cannot establish that vendor-native error 14 is corrected.
+
+</details>

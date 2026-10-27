@@ -1,5 +1,14 @@
 # T419 — presentation omissions and sustained battery flow
 
+RGB reduced app CPU but did not show repeatable battery benefit. Surface traces also showed that decoder callbacks can occur for buffers never presented.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **Keep hardware H.264 for the battery-focused setup.** RGB reduced pen replay
 app CPU by about 33%, but did not demonstrate a repeatable battery advantage.
 At one static update/s, H.264 had more positive net charging current than RGB
@@ -246,3 +255,5 @@ and the host [`StreamServer`](../../host/src/stream.rs). Pure framing, recovery
 and retirement tests should precede device tests. The trusted local `TR41`
 fixture format lacks these network/lifecycle guarantees and must not simply
 be exposed as a production wire format.
+
+</details>

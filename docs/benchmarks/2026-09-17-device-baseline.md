@@ -1,5 +1,14 @@
 # One-tablet baseline before the next optimization series
 
+One tablet sustained the tested motion stream but lost battery charge while USB-powered. This baseline is not a before/after optimization comparison.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 This baseline measures the current fork at `4490763`, including the incremental
 Annex-B scanner in `1e7b045`. It does not compare against the old scanner or claim
 optimization gains. Linux and Android were rebuilt and installed before the run;
@@ -187,3 +196,5 @@ multi-tablet testing and large/NUMA-host measurements are outside the current
 scope. This preserves the measurement limits identified above. T386/T388/T399
 record the separate decoder, power and frame-admission work. Implementations need their permanent regressions
 and a repeat of this baseline before any gain is claimed.
+
+</details>

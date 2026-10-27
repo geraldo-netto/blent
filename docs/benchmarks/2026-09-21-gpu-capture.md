@@ -1,5 +1,14 @@
 # T575: initial GPU capture and VAAPI import feasibility
 
+Early uniform-color GPU import probes established feasibility only. Later patterned trials superseded their optimistic interpretation and rejected cross-device imports.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 Historical preliminary probes, superseded by the
 [implemented prototype and patterned physical USB measurements](2026-09-21-gpu-adapter/README.md).
 Those later checks found cross-device corruption missed by the uniform-color
@@ -101,3 +110,5 @@ API references: [FFmpeg KMS capture](https://ffmpeg.org/ffmpeg-devices.html#kmsg
 [XCB DRI3 API](https://xcb.freedesktop.org/manual/group__XCB__DRI3__API.html),
 [libva external DMA-BUF descriptor contract](https://github.com/intel/libva/blob/2.20.0/va/va_drmcommon.h),
 and [PipeWire modifier/lifetime negotiation](https://docs.pipewire.org/devel/page_dma_buf.html).
+
+</details>

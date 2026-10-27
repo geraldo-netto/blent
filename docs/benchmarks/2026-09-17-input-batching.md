@@ -1,5 +1,14 @@
 # Native input batching — 2026-09-17
 
+Batching preserved every input event and synchronization boundary while reducing counted writes. No physical input-latency improvement was measured.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T406 preserves every native input event and each existing `SYN_REPORT` boundary,
 while collecting the events of one synchronization frame into a bounded write.
 It does not wait for another pen/touch sample. Proximity, button and tip changes
@@ -85,3 +94,5 @@ the extracted writer interface. Input tests pass (44); full default host tests
 pass (244 plus one manual benchmark ignored). The optional encoder suite passes (223 plus two manual benchmarks ignored),
 and both feature configurations pass strict Clippy. The complexity gate reports
 2,437 functions with none above nine. Logs are retained with the artifacts.
+
+</details>

@@ -1,5 +1,14 @@
 # Raw-pipe capacity ramp — 2026-09-17
 
+Larger pipes sometimes reduced transfer CPU but held older frames behind a slow reader. The experiment did not justify an unconditional larger default.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T405/T389 experiment: compare requests of **1, 2, 4, 8, 12, 16, 24 and
 32 MiB**. A MiB is 1,048,576 bytes. The production helper's best-effort
 1 MiB request remains unchanged. Larger pipes reduced transfer CPU in some
@@ -237,3 +246,5 @@ sampling switch; its default preserves the original instrumented workload.
 All sequence and byte-integrity assertions remain enabled in optimized builds.
 ASan/UBSan smoke coverage checks the harness; no production code changes in
 this experiment.
+
+</details>

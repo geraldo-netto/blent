@@ -1,5 +1,14 @@
 # Alternative USB power supply comparison protocol
 
+Proposed comparison of identified USB power arrangements. Short near-full-battery spot checks cannot establish charging adequacy; the plan preserves matched trials and restoration.
+
+Historical proposed protocol. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T683 prepares a comparison of two identified power arrangements while Blent keeps
 the same USB display transport. Preparation is complete; T739 retains execution.
 The [T538 spot checks](2026-09-20-usb-hub-power/README.md) observed uncontrolled
@@ -71,3 +80,5 @@ paired uncertainty and any thermal effects. Retain unsuitable arrangements and
 rejected trials explicitly. This protocol does not reopen the declined broad
 hardware campaign; a software fault discovered during execution needs its own
 permanent failing automated regression before a fix.
+
+</details>

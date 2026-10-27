@@ -1,5 +1,14 @@
 # T419 — tablet CPU, memory and presentation research
 
+The tablet's decoder and display services contribute costs outside the app process. This research defines a bounded renderer comparison; short observations establish no energy result.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **Compare changed-rectangle LZ4 and Zstandard against the existing hardware
 H.264 path, with tablet CPU, memory traffic and battery cost as selection
 criteria.** The earlier byte savings justify investigation, not a new default.
@@ -183,3 +192,5 @@ To repeat the read-only observation, run `observe-resources.py.txt` with
 The collector targets this tablet's service names and rejects missing processes
 or a foreground change; it is evidence tooling, not a portable production
 resource monitor. An incomplete observation must not be summarized as complete.
+
+</details>

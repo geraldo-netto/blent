@@ -1,5 +1,14 @@
 # Opt-in Android power policy — implementation and lifecycle checks
 
+Battery saver changed wake-lock ownership without an established battery-saving percentage. The original implementation and incomplete physical comparison are preserved.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T388's candidate is implemented, tested and installed, but sustained power
 validation is **incomplete**. The first preparation attempt captured a locked
 Linux desktop and was rejected. A [later guarded run](2026-09-18-power-validation.md)
@@ -136,3 +145,5 @@ over 35.5 minutes despite USB power. Its gauge moves in 9.99 mAh steps, making
 short comparisons weak evidence. New power savings remain unestablished; component
 latency improvements from the [codec experiments](2026-09-18-codecs.md) cannot be
 added to claim a total capture-to-display or battery improvement.
+
+</details>

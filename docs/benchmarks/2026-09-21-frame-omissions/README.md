@@ -1,5 +1,14 @@
 # T561: six queued buffers without a latch
 
+Six omitted compositor buffers each had a newer queued successor. Temporal correlation did not identify where the burst began or prove compressed-packet loss.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 All six unlatched interior buffers in the retained 1280×800/30 FPS trace have
 a newer buffer queued before the next observed latch. The successor is latched
 and has a present fence. The pattern is consistent with compositor supersession
@@ -87,3 +96,5 @@ successor latch/present values can also be recomputed from T560's committed
 `frame_events.csv.gz`, without access to a live tablet. T560's retained quality
 query reports no nonzero trace errors/data-loss counters; missing counters
 cannot independently guarantee a complete trace.
+
+</details>

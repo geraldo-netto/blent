@@ -1,5 +1,14 @@
 # Measured profile selection (T479)
 
+Constrained Baseline gave the best tested latency/fidelity tradeoff on one host/tablet. The comparison includes a USB replay, but excludes compositor capture and optical presentation.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T479 replaces the first renderable rich candidate with a bounded comparison of
 compatible encoder/decoder requests. T477 documented the evidence contract,
 T478 supplied the profile/level/depth/hint intersection, and T484 tied render
@@ -231,3 +240,5 @@ adds better failure-observation retention. The full-path evidence still missing
 is compositor/EVDI-to-physical-pixel timing, sustained balanced energy/thermal
 validation and reproduction of the original reconnect symptom. None is claimed
 as solved by this latency/fidelity selection policy.
+
+</details>

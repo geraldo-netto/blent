@@ -1,5 +1,14 @@
 # Physical network power comparison protocol
 
+Proposed matched USB-versus-network power protocol, not a result or an active test authorization. Transport and power wiring must be identified and held comparable.
+
+Historical proposed protocol. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T487 prepares a comparison of USB and physical-network display transport on the
 existing Linux host and tablet. This is a measurement plan, not a power-saving
 result. Complete the matched USB Battery saver comparison and streaming-off
@@ -75,3 +84,5 @@ Publish the exact arrangement, accepted/rejected windows, raw data, paired
 differences and limitations. Do not claim a gain from an unpaired run or expand
 this into the declined multi-tablet/large-machine campaign. The earlier
 [partial USB comparison](2026-09-18-usb-power-comparison.md) remains historical.
+
+</details>

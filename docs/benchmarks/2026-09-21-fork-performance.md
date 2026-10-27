@@ -1,5 +1,14 @@
 # Performance work since the fork
 
+A dated inventory of separate performance experiments. Percentages have different baselines and boundaries and cannot be combined into an overall fork speedup.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 Harness safety update (T774, 2026-10-09): maintained C executables under
 `scripts/benchmarks/` reject incomplete/overflowing numeric strings and reject
 `NDEBUG` builds because assertions execute required checks and system calls.
@@ -131,3 +140,5 @@ latency, HEVC interoperability failures and compression/quality tradeoffs.
 - Some dated reports still describe their original implementation/deployment
   state as current. T574 tracks that wording drift. This inventory uses current
   implementation/activation status while preserving historical measurements.
+
+</details>

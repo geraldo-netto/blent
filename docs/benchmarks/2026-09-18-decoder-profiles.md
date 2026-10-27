@@ -1,5 +1,14 @@
 # Android decoder scheduling and lifetime — 2026-09-18
 
+Callback decoding reduced sparse polling but did not improve latency and increased allocations. Lifetime fixes were retained independently of performance selection.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T386 keeps the synchronous compatibility profile as the default. The experimental
 callback owner reduces sparse-stream polling work on the measured tablet, but
 has not demonstrated a latency improvement. Available host CPU and memory do not
@@ -286,3 +295,5 @@ with synchronous legacy operation still the default. The broader T382 hardware
 validation campaign is closed as `wont_fix` for now. Longer power controls,
 transport-copy experiments and presentation-timestamp work are tracked by T388,
 T403 and T414 respectively. T417 tracks a future Android profile/capability UI.
+
+</details>

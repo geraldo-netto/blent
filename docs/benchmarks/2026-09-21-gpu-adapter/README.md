@@ -1,5 +1,14 @@
 # T575: implemented X11 GPU capture prototype
 
+Patterned physical trials exposed cross-device corruption and worse GPU-capture latency despite lower measured CPU. The prototype remained optional and FIFO stayed the default.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 Current follow-up: [T579 damage-cadence measurements](../../reviews/2026-09-26-next-batch.md#t579--damage-triggered-gpu-capture)
 add an opt-in event mode. The measurements below remain the historical periodic
 prototype results; they are not measurements of that later mode.
@@ -155,3 +164,5 @@ records existing input mapping's incorrect sysfs/RandR name assumption.
 Full-pipeline zero-copy remains unproven. The current prototype avoids desktop
 CPU readback/upload in its own GPU encoding path, but retained EVDI work, Xorg
 copies, GPU conversion, cursor pixels and USB/Android buffers remain.
+
+</details>

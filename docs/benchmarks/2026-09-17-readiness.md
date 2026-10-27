@@ -1,5 +1,14 @@
 # Host readiness and cancellation — 2026-09-17
 
+Immediate readiness shortened raw-transfer tails, with higher CPU in some large concurrent cases. Notification and cancellation correctness were tested separately.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T405 adopts immediate FIFO readiness, latched cancellation, notification-based
 codec headers, exact capture/keepalive deadlines and optimistic native writes.
 The selection prioritizes host latency and sustained throughput over CPU or RAM
@@ -177,3 +186,5 @@ capacity and records it in the results.
 retain the evidence. These stage results do not establish physical-screen
 latency, Android power savings, or 128-core/NUMA scaling; those need the planned
 integrated device rebenchmark.
+
+</details>

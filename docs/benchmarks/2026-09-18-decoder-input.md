@@ -1,5 +1,14 @@
 # Android compressed-input transport — 2026-09-18
 
+Direct reads into codec buffers did not show a useful tablet latency benefit. The staged heap path remained the default, with both paths retaining cancellation tests.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 T403 retains the reusable heap/InputStream path as the production default.
 Reading compressed packets directly into codec-owned buffers did not demonstrate
 a useful latency advantage in the isolated tablet replay. The experimental path,
@@ -166,3 +175,5 @@ Backgrounding interrupts the benchmark and aborts further launches. Keep the
 main UScreen package and host daemon unchanged when comparing these isolated
 transport variants. Whole-project rollout and sustained power comparisons follow
 the selected optimization batch.
+
+</details>

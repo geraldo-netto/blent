@@ -1,5 +1,14 @@
 # T388 — partial USB comparison with low-latency H.264
 
+Only one sustained normal/static phase completed before the paired saver run lost focus. No battery-saving comparison was established.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **No battery-saving gain is established.** On 2026-09-18, one five-minute
 normal/static measurement completed. The subsequent saver/static measurement
 lost Linux keyboard focus after about 148 seconds and was rejected. The remaining
@@ -89,3 +98,5 @@ static/motion, with 30-second warm-ups and five-minute measurements, followed by
 a ten-minute streaming-off control. The coarse 9.99 mAh charge gauge may still
 make small differences inconclusive. Network, pen and alternative power-source
 experiments are deferred separately as T487.
+
+</details>

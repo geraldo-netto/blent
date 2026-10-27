@@ -1,5 +1,14 @@
 # Scheduling preference — T582, 2026-09-21
 
+Higher scheduling weight changed CPU allocation under controlled contention. Passive playback did not show lower latency or establish an audio-gap fix.
+
+Historical experiment. Dates, source versions, measurements and tracking states below
+belong to the recorded work. See the [archive map](../README.md) for context
+and current-work boundaries.
+
+<details>
+<summary>Original scope, method, results and requirements</summary>
+
 **High priority changes CPU allocation under contention, but this live sample
 does not demonstrate lower video latency or a fix for YouTube audio gaps.**
 High remains the default requested by the maintainer, with a Normal override.
@@ -98,3 +107,5 @@ a build containing T582. No performance benefit is inferred from the new default
 `evidence.tar.gz` retains original journals, PipeWire samples, scheduling
 snapshots, synthetic worker results and the exact one-off collectors. Collector
 PIDs are historical identifiers, not commands to rerun against future processes.
+
+</details>
