@@ -1180,7 +1180,7 @@
       "owner": "T1324",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Read all four support guides. Replaced stale T269/T267/T234/T299/T334 guidance using current EVDI setup, stream authentication, KScreen mapping, doctor and OSK source; retained unresolved Cinnamon and native acceptance limits. Clarified USB routes and physical stylus status. Reorganized benchmark navigation and added timing diagram while preserving historical values and detailed experiments. Local file links resolve; existing targeted authentication/mapping/keyboard/doctor tests pass.",
       "words": 2736,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1188,7 +1188,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "4c733abf80e24c53e47e044198f304b521bb90b21f65788d2e17f39362215eb3",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/cameras.md",
@@ -1210,7 +1212,7 @@
       "owner": "T1324",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Read all four support guides. Replaced stale T269/T267/T234/T299/T334 guidance using current EVDI setup, stream authentication, KScreen mapping, doctor and OSK source; retained unresolved Cinnamon and native acceptance limits. Clarified USB routes and physical stylus status. Reorganized benchmark navigation and added timing diagram while preserving historical values and detailed experiments. Local file links resolve; existing targeted authentication/mapping/keyboard/doctor tests pass.",
       "words": 1319,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -1218,7 +1220,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "a8b10dc2da0cda3d12ec519a52e47d02809f0c0c9ada7033ab30da9537a94f5e",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/decisions/2026-09-17-session-media-ownership.md",
@@ -1300,7 +1304,7 @@
       "owner": "T1324",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Read all four support guides. Replaced stale T269/T267/T234/T299/T334 guidance using current EVDI setup, stream authentication, KScreen mapping, doctor and OSK source; retained unresolved Cinnamon and native acceptance limits. Clarified USB routes and physical stylus status. Reorganized benchmark navigation and added timing diagram while preserving historical values and detailed experiments. Local file links resolve; existing targeted authentication/mapping/keyboard/doctor tests pass.",
       "words": 952,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1308,7 +1312,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "5280b4f822c144d4dfc0279cc285ab1132d136ac86d764ed975ccc4c763a0b1e",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/gpu-capture.md",
@@ -11607,7 +11613,7 @@
       "owner": "T1324",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Read all four support guides. Replaced stale T269/T267/T234/T299/T334 guidance using current EVDI setup, stream authentication, KScreen mapping, doctor and OSK source; retained unresolved Cinnamon and native acceptance limits. Clarified USB routes and physical stylus status. Reorganized benchmark navigation and added timing diagram while preserving historical values and detailed experiments. Local file links resolve; existing targeted authentication/mapping/keyboard/doctor tests pass.",
       "words": 960,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11615,7 +11621,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2b985c30124b8b877dd19e59313a65c7f96b36d28b859bb84af53aae49656c1a",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/video-codecs.md",

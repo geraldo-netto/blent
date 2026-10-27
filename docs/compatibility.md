@@ -1,5 +1,16 @@
 # Compatibility
 
+Start with your desktop and connection route. Linux is the implemented host;
+Windows is an incomplete [preview](windows-port.md), and macOS is unsupported.
+Android 8.1 or newer is required, but decoder and desktop support still matter.
+
+| Check | Read next |
+| --- | --- |
+| Desktop tools, driver and graphics limits | [Desktop requirements](#desktop-and-encoder-requirements) |
+| Android rotation and window behavior | [Orientation](#android-orientation) |
+| Known fork limits | [Current limitations](#current-fork-limitations) |
+| Past hardware reports | [Host](#host) and [tablet](#tablet) tables below |
+
 The tables preserve **upstream** hardware reports, not a certification of
 the current fork. “Maintainer” in those rows means the upstream maintainer.
 Report your fork commit, installation method and hardware through the
@@ -36,6 +47,10 @@ by that selected run or the historical reports above.
 
 ## Desktop and encoder requirements
 
+EVDI creates the extra display. An encoder compresses its pictures; the Android
+decoder turns them back into pictures. Input mapping directs touch/mouse events
+to the intended screen. Working video alone does not validate input mapping.
+
 - **KDE Plasma on Wayland:** output placement uses `kscreen-doctor`, input
   mapping and keyboard suppression use KWin D-Bus. These tools/interfaces
   must be available; the historical matrix above is not a guarantee for all versions.
@@ -47,30 +62,35 @@ by that selected run or the historical reports above.
   manual configuration may be required or unavailable. Doctor reports manual
   mapping guidance instead of requiring KWin; display-only configurations skip
   input-mapping dependency checks.
-  **Mutter 51's default zero-copy EVDI output is affected by
-  [issue597](https://github.com/DisplayLink/evdi/issues/597).** Stock EVDI accepts
-  unsupported 10-bit framebuffer creation, then atomic presentation fails.
-  Selecting an 8-bit encoder does not change this compositor negotiation.
 
-  A tested, opt-in workaround for Mutter 51 is to set
-  `MUTTER_DEBUG_MULTI_GPU_FORCE_COPY_MODE=primary-gpu-cpu` **in the environment
-  that starts GNOME Shell/Mutter**, then start a fresh graphical session.
-  Setting it only on Blent or its service has no effect. Use your distribution's
-  session environment configuration; remove the variable and restart that
-  session to revert. This is a Mutter debug option, so revalidate it when
-  changing compositor versions. It affects all secondary GPUs in that session
-  and trades zero-copy rendering for CPU copying; it may increase CPU use and
-  reduce throughput. Blent does not change the desktop environment automatically.
+### GNOME/Mutter 51 workaround
 
-  The helper now supports XR24/AR24 and explicitly converts XB24/AB24 to its
-  internal BGRA format before cursor composition or NV12 conversion (T752).
-  The latter layouts need one extra `stride × height` capture allocation and a
-  channel conversion for each dirty rectangle. Overlapping rectangles copy from
-  independent native storage; they cannot swap channels twice. Packed 10-bit and
-  non-32-bit formats remain rejected. The workaround requires a helper build
-  containing T752. [Regression and native evidence](reviews/artifacts/2026-10-09-t752/summary.json)
-  covers a bounded Mutter 51/stock-EVDI guest fixture, not general GNOME input
-  mapping or physical-tablet certification.
+**Mutter 51's default zero-copy EVDI output is affected by
+[issue597](https://github.com/DisplayLink/evdi/issues/597).** Stock EVDI accepts
+unsupported 10-bit framebuffer creation, then atomic presentation fails.
+Selecting an 8-bit encoder does not change this compositor negotiation.
+
+A tested, opt-in workaround for Mutter 51 is to set
+`MUTTER_DEBUG_MULTI_GPU_FORCE_COPY_MODE=primary-gpu-cpu` **in the environment
+that starts GNOME Shell/Mutter**, then start a fresh graphical session.
+Setting it only on Blent or its service has no effect. Use your distribution's
+session environment configuration; remove the variable and restart that
+session to revert. This is a Mutter debug option, so revalidate it when
+changing compositor versions. It affects all secondary GPUs in that session
+and trades zero-copy rendering for CPU copying; it may increase CPU use and
+reduce throughput. Blent does not change the desktop environment automatically.
+
+The helper now supports XR24/AR24 and explicitly converts XB24/AB24 to its
+internal BGRA format before cursor composition or NV12 conversion (T752).
+The latter layouts need one extra `stride × height` capture allocation and a
+channel conversion for each dirty rectangle. Overlapping rectangles copy from
+independent native storage; they cannot swap channels twice. Packed 10-bit and
+non-32-bit formats remain rejected. The workaround requires a helper build
+containing T752. [Regression and native evidence](reviews/artifacts/2026-10-09-t752/summary.json)
+covers a bounded Mutter 51/stock-EVDI guest fixture, not general GNOME input
+mapping or physical-tablet certification.
+### Encoding, cursor and kernel
+
 - **Encoding:** new configurations use `auto`, which probes compatible stock
   FFmpeg encoders and checks render acknowledgements with H.264 fallback.
   Existing explicit choices remain unchanged. NVENC/VAAPI still require actual
@@ -126,11 +146,13 @@ one physical tablet plus a simulated client. Automated tests cover busy-card
 fallback, independent slot ownership and one/two/four simulated tablets; these
 do not establish compatibility with four physical displays. Stylus tilt units
 and hover/button transitions have permanent regression coverage, while
-physical stylus behavior still depends on the device and desktop mapping.
+physical stylus behavior is not certified by those tests. Further pen work and
+physical acceptance remain declined (T526/T592/T682); retained code is not a
+promise of compatibility with every pen or desktop.
 
 ## Not supported
 
-- Windows or macOS hosts. [SuperDisplay](https://superdisplay.app/help/) is a
+- Full Windows host support (the port is a preview) or macOS hosts. [SuperDisplay](https://superdisplay.app/help/) is a
   Windows-host alternative, not a macOS-host alternative.
 - iPads.
 - Android below 8.1.

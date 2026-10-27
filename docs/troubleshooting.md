@@ -1,8 +1,9 @@
 # Troubleshooting
 
 Start with `blent doctor`. It checks configuration, tools, devices, adb and
-selected desktop/decoder state; its suggestions are diagnostics, not proof
-that every desktop or encoding combination is supported. Include the exact
+selected desktop/decoder state. ADB is Android's debugging connection tool;
+EVDI creates the extra Linux display. Doctor offers diagnostic suggestions;
+it does not certify every desktop or encoding combination. Include the exact
 fork commit as well as host/app version numbers in a report.
 
 ## "Failed to start helper" / "evdi-helper exited prematurely"
@@ -13,18 +14,15 @@ missing helper executable. Check `modinfo evdi`, `cat /sys/devices/evdi/count`
 and `ldd` on the installed `evdi_helper`. A missing sysfs path differs from
 a loaded module reporting zero devices.
 
-If the module is loaded and the count is zero, these commands request one
-device now and configure two at the next module load:
+If the module is loaded but has too few devices, use GUI system setup and
+follow its reboot guidance. Setup reuses existing devices and refuses live growth
+under Xorg (or when it cannot determine whether Xorg is running). Review
+`initial_device_count` in `/etc/modprobe.d/blent-evdi.conf` before rebooting;
+preserve other options and administrator-managed settings.
 
-```bash
-echo 1 | sudo tee /sys/devices/evdi/add
-echo 'options evdi initial_device_count=2' | sudo tee /etc/modprobe.d/blent-evdi.conf
-```
-
-Use GUI system setup to add missing capacity for a larger tablet count.
-Reboot if a changed boot setting needs to take effect. **Do not unload EVDI
-from a running display session**: it can disrupt the display server. Installer
-reload behavior remains tracked as T269 in [TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md).
+**Do not unload EVDI or write directly to `/sys/devices/evdi/add` in a running
+Xorg session.** Driver changes can disrupt the desktop. The installer preserves
+existing devices and boot configuration; see [safe capacity changes](installation.md#evdi-setup-and-safe-capacity-changes).
 
 ## "Failed to open /dev/uinput"
 
@@ -43,18 +41,21 @@ permission workaround.
 
 ## The app keeps opening and closing / "did not authenticate"
 
-Check that the app and host came from the same checkout and that adb still
-shows the tablet as authorized. A stale token, failed token delivery or
+Check that the app and host came from the same checkout. For the ADB route,
+check that ADB still shows the tablet as authorized. A stale token, failed token delivery or
 mismatched builds can cause this; an older app is not the only explanation.
-Keep `require_token = true` (the disabled setting has a known client mismatch,
-T267). Delivery retries back off, potentially to ten minutes; reconnecting the
+Keep `require_token = true` for authentication. The former optional-token client
+mismatch (T267) has regression coverage; disabling authentication is not a
+repair step. Delivery retries back off, potentially to ten minutes; reconnecting the
 cable triggers a fresh attempt. Do not include session tokens in public logs.
 
 ## Black screen on the tablet
 
-1. Check `blent status` and `adb devices`.
-2. Check `adb -s TABLET_ID reverse --list` for that tablet's assigned ports
-   (8890/8891 by default for the first slot).
+1. Check `blent status` and the connection route shown in the GUI.
+2. For ADB only, check `adb devices` and `adb -s TABLET_ID reverse --list`
+   for the assigned ports (8890/8891 by default for the first slot). For paired
+   direct USB, check the desktop connection/trust status instead; ADB listings
+   do not diagnose that route.
 3. For a service launch, inspect `journalctl --user -u blent -n 200`.
    Direct GUI launches log to `~/.local/share/blent/daemon.log`.
 4. Check the selected encoder and desktop Display settings. The virtual
@@ -70,10 +71,11 @@ repeat a session-crashing attachment on your working desktop; see below.
 
 KDE Wayland mapping uses KWin D-Bus. X11 mapping uses `xinput` and `xrandr`;
 install both. Mapping runs on attachment and mode changes, and graphics-tablet
-mode targets a physical screen. On modern KDE it can ignore the primary
-output priority (T299). Check the resulting mapping after mode changes. Other Wayland desktops need
-manual mapping where the compositor supports it. `doctor` can misdiagnose a
-non-KDE Wayland session as missing KWin (T234).
+mode targets a physical screen. KDE selection honors the enabled physical
+output's primary flag or priority; the former priority bug (T299) has regression
+coverage. Check mapping after mode changes. Other Wayland desktops need manual
+mapping where supported. `blent doctor` gives manual-mapping guidance there;
+the former unconditional KWin check (T234) is fixed.
 
 For an X11 session, inspect `xrandr --listproviders` and `xrandr --query`.
 If the EVDI provider is not linked, the general command is
@@ -97,11 +99,14 @@ reproduction needs an isolated session.
 
 ## The on-screen keyboard pops up or remains disabled
 
-Blent suppresses KDE's virtual keyboard while its touch devices exist and
-attempts to restore the saved setting afterward. An invalid/missing recovery
-value can prevent restoration (T334). If it remains disabled, restore the
-desired setting in System Settings → Virtual Keyboard; simply restarting the
-daemon is not a guaranteed recovery.
+Blent saves KDE's keyboard setting before suppressing it while touch devices
+exist, then attempts restoration. Invalid/unreadable saved state prevents a new
+suppression; failed persistence also leaves the keyboard unchanged (T334).
+Restoration failures are logged and the saved state is retained for retry.
+
+If the keyboard remains disabled, inspect the log and restore your desired mode
+in **System Settings → Virtual Keyboard**. Repair a damaged saved state before
+retrying; simply restarting the daemon is not a guaranteed recovery.
 
 ## Wi-Fi is stuttery
 
@@ -123,8 +128,10 @@ Do not replace the system glibc to satisfy an application binary.
 Automatic sessions lease free cards rather than assigning them by enumeration
 order. Restarting capture prefers its previous card if still free, otherwise
 it searches the current card set. Explicit helper `--card` pins remain strict.
-If every card is connected or leased, the helper tries to add a device; check
-the resulting error and EVDI permissions if capture keeps retrying. Include
+If every card is connected or leased, automatic growth is refused under Xorg.
+Use [system setup and reboot guidance](installation.md#evdi-setup-and-safe-capacity-changes)
+instead of repeatedly starting capture. Outside Xorg the helper may request more
+capacity; check its error and EVDI permissions if that fails. Include
 card/connector state in reports without removing another application's display.
 
 ## Getting more help

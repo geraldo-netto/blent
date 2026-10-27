@@ -1,100 +1,42 @@
 # Benchmarks
 
-The [performance gains since the fork](benchmarks/2026-09-21-fork-performance.md)
-collect matched before/after measurements, resource-count reductions and rejected
-experiments, with their scope and current implementation status. There is no
-single matched upstream-versus-current total speedup measurement.
+Blent has dated measurements, not a universal speed or battery-life guarantee.
+Results depend on hardware, settings and workload. There is **no matched total
+speedup measurement** comparing upstream with the current fork.
 
-The [scheduling comparison](benchmarks/2026-09-21-scheduling/README.md) verifies
-High's greater CPU share under contention, but finds no consistent live video
-latency improvement. [High is the requested default](scheduling.md), with a
-Normal override and explicit OS/permission limitations.
+For tuning, start with [video settings](video-codecs.md), [pipe capacity](pipe-buffer.md)
+and [scheduling](scheduling.md). For evidence, choose a report below. A *replay*
+feeds recorded or synthetic data into one component; it does not measure the
+whole tablet experience.
 
-The [GPU capture prototype](benchmarks/2026-09-21-gpu-adapter/README.md) follows
-the [initial feasibility check](benchmarks/2026-09-21-gpu-capture.md). Matched
-physical USB trials lower the measured processes' CPU use by 32.7% but increase
-source-update-to-render-ACK p50 from 28.72 to 37.43 ms. FIFO remains the default;
-cross-device imports that corrupt patterned frames are rejected.
+## Fork measurement guide
 
-The current fork's first physical-device run is the
-[2026-09-17 single-tablet baseline](benchmarks/2026-09-17-device-baseline.md),
-with [repeatable collection instructions](benchmarks/README.md) and raw samples.
-It covers AMD VAAPI, a Ulefone tablet and sustained USB battery observations;
-it is a separate hardware/workload series from the inherited results below.
+| Report | What it establishes, and what it does not |
+| --- | --- |
+| [Fork performance](benchmarks/2026-09-21-fork-performance.md) | Matched changes, resource counts and rejected experiments, with implementation status; no total speedup claim. |
+| [First physical baseline](benchmarks/2026-09-17-device-baseline.md) | AMD VAAPI, Ulefone tablet and sustained USB battery observations. Different hardware from the upstream series below. [Collection instructions](benchmarks/README.md). |
+| [Scheduling](benchmarks/2026-09-21-scheduling/README.md) | High gets more CPU under contention; no consistent live video-latency gain. High is requested by default; Normal remains available. |
+| [GPU prototype](benchmarks/2026-09-21-gpu-adapter/README.md) | Matched USB trials: measured process CPU down 32.7%, source-update-to-render-ACK median up from 28.72 to 37.43 ms. FIFO remains default; corrupt imports are rejected. [Initial feasibility](benchmarks/2026-09-21-gpu-capture.md). |
+| [Conversion and workers](benchmarks/2026-09-17-conversion.md) | T383 dirty-work scheduling, scaled kernels, scalar/vector comparisons and 128 participants. Isolated CPU results, not display or battery gains. |
+| [Packet storage](benchmarks/2026-09-17-packet-storage.md) | Owned libavcodec buffers, allocation/pool reuse and slow-consumer retention; only this stage is measured. |
+| [CLI assembly](benchmarks/2026-09-17-cli-assembly.md) | T407 owned reads and bounded assembly against T384, with 1/2/4 sessions; preserves push and actual read-boundary measurements. |
+| [Timing bookkeeping](benchmarks/2026-09-17-timing.md) | T404 Android lookup cache and Rust acknowledgement/sample reuse: lookup times and allocation calls, not display latency or power. |
+| [Decoder profiles](benchmarks/2026-09-18-decoder-profiles.md) | T386 lifetime/recreation checks, 84 profile and 36 correlated trace trials. Keeps synchronous defaults and distinguishes output from render notifications. |
+| [Frame pacing](benchmarks/2026-09-18-frame-pacing.md) | T399: 96 valid trials and whole-picture admission. Sparse input increased delay; render-latest found no ready backlog. Defaults retained. |
+| [Codecs](benchmarks/2026-09-18-codecs.md) | Matched quality, VAAPI depth/concurrency and physical decoding. T400 gates depth one and low-latency H.264; failed VAAPI HEVC and slow software AV1 remain documented. |
+| [Power policy](benchmarks/2026-09-18-power-policy.md) | T388 opt-in setting, tests and USB lock lifecycle. That report does not establish sustained battery-life improvement; its desktop/power follow-ups are historical status. |
+| [Decoder input](benchmarks/2026-09-18-decoder-input.md) | T403 staging versus direct codec-buffer reads. Staging stays default; no kernel zero-copy or battery claim. |
+| [Input batching](benchmarks/2026-09-17-input-batching.md) | Native bytes and synchronization checked; writes fell from 256 to 38 for the recorded sequence. Counting writers, not live input latency. |
+| [Readiness](benchmarks/2026-09-17-readiness.md) | T405 native writer/optional Rust reader versus the preceding revision: cancellation, 1/2/4-session CPU, reads and frame age. |
+| [Pipe capacity](benchmarks/2026-09-17-pipe-capacity.md) / [io_uring](benchmarks/2026-09-17-io-uring.md) | Isolated host transports: 1–32 MiB requests/slow-reader age and readiness versus ordinary ring I/O. Experiments do not alter installed applications. |
+| [Lossless RGB](benchmarks/2026-09-18-frame-compression.md) | T419 host frame/rectangle/tile/XOR and native decompression. No production mode; reconstruction, presentation and battery gains were not established. |
+| [USB 2.0](benchmarks/2026-09-18-usb2-compatibility.md) | The selected tablet negotiated 480 Mb/s; ADB throughput and 2,960 replay pictures checked. Charging/battery results are separate. |
 
-For the current fork's proposed measurement matrix and optimization work, see
-the [performance and scalability research](reviews/2026-09-17-performance-scalability.md).
-That report separates code-derived hypotheses from measurements still needed.
+[Performance research](reviews/2026-09-17-performance-scalability.md) separates
+hypotheses from measurements. The broader T382 multi-tablet campaign remains
+declined; an old report's proposed follow-up does not reopen it.
 
-The [C conversion and worker-budget replay](benchmarks/2026-09-17-conversion.md)
-records T383's dirty-work scheduling, scaled kernels, scalar/vector comparisons
-and support for 128 participants. Its isolated CPU measurements do not establish
-an end-to-end display or Android battery gain.
-
-The [encoded packet-storage replay](benchmarks/2026-09-17-packet-storage.md)
-compares copying with owned stock-libavcodec buffers in the optional encoder.
-It includes native allocation/pool reuse and slow-consumer retention; its
-stage-level savings are not total encoding or battery gains.
-
-The [CLI assembly replay](benchmarks/2026-09-17-cli-assembly.md) records T407's
-owned reads, bounded assembly and 1/2/4-session comparison with committed T384.
-It retains both the original push replay and the actual read-boundary measurements.
-
-The [timing bookkeeping replay](benchmarks/2026-09-17-timing.md) compares T404's
-guarded Android lookup cache and Rust ACK lookup/sample-buffer reuse. It records
-nanosecond-scale lookup tradeoffs and allocator calls, with no device display
-latency or power claim.
-
-The [Android decoder replay](benchmarks/2026-09-18-decoder-profiles.md) records
-T386's bounded codec lifetime, Activity-recreation regression and 84 profile
-trials plus 36 correlated trace trials on the connected tablet. It preserves
-synchronous defaults and distinguishes native output from render notifications.
-
-The [frame-pacing experiments](benchmarks/2026-09-18-frame-pacing.md) retain
-T399's 96 valid cadence/steady/burst decoder trials and whole-raw-picture admission
-comparison. Sparse input increases decoder delay; render-latest found no ready
-output backlog. Existing keepalive and output defaults remain selected.
-
-The [codec comparison](benchmarks/2026-09-18-codecs.md) records matched-quality
-H.264/HEVC/VP9/AV1 samples, paced VAAPI depth and concurrency trials, and repeated
-physical decoding. T400 adds capability-gated VAAPI depth one and an explicit
-low-latency H.264 profile while preserving saved selections; the report also
-records the failed VAAPI HEVC sample and software AV1 motion delay.
-
-The [Android power-policy checks](benchmarks/2026-09-18-power-policy.md) record
-T388's opt-in setting, regression coverage, deployment and physical USB lock
-lifecycle. Sustained power and updated desktop comparisons await an unlocked
-Linux session; no battery-life gain is claimed yet.
-
-The [Android socket-input replay](benchmarks/2026-09-18-decoder-input.md) compares
-reusable heap staging with direct reads into codec-owned input buffers. T403 keeps
-staging as the default and adds tested payload/cancellation contracts; it makes
-no kernel zero-copy or battery-saving claim.
-
-The [input batching replay](benchmarks/2026-09-17-input-batching.md) verifies
-native bytes and synchronization boundaries while reducing complete writes
-from 256 to 38 per recorded pen/touch/pointer sequence. It uses counting writers,
-not live desktop input, and makes no physical input-latency claim.
-
-The [readiness replay](benchmarks/2026-09-17-readiness.md) compares T405's
-actual native writer and optional Rust reader with their preceding revision,
-including idle cancellation and paced 1/2/4-session CPU, reads and frame age.
-
-The [raw-pipe capacity ramp](benchmarks/2026-09-17-pipe-capacity.md) compares
-1–32 MiB requests, including slow-reader queue age. The separate
-[io_uring replay](benchmarks/2026-09-17-io-uring.md) compares readiness and
-ordinary ring I/O. Both use isolated host transports and preserve their
-measurement limits; neither changes the installed applications.
-
-The [lossless RGB compression screen](benchmarks/2026-09-18-frame-compression.md)
-records T419's host frame/rectangle/tile/XOR comparisons and native tablet
-decompression. Android reconstruction, upload, presentation and battery
-comparisons remain open; no new production compression mode is enabled.
-
-The [USB 2.0 compatibility check](benchmarks/2026-09-18-usb2-compatibility.md)
-confirms the current tablet already negotiates 480 Mb/s, measures ADB payload
-throughput and verifies all 2,960 replay pictures. Charging and sustained battery
-results remain separate from data-link compatibility.
+## Historical upstream series
 
 Historical results inherited from the upstream project (historical upstream),
 retained with their original numbers. They describe one host and one tablet,
@@ -117,6 +59,23 @@ from this document alone.
 | Desktop content | a mostly static desktop with occasional window movement; bitrate on a static desktop settles around 0.5–4 Mbps |
 
 ## How latency is measured
+
+An acknowledgement (ACK) is the tablet's message that its render callback ran.
+It does not prove the physical moment a pixel became visible. In the tables,
+**p50** is the median and **p95** is the value at or below which 95% of samples fall.
+
+```mermaid
+flowchart LR
+    A[Capture and encode] --> B[Complete encoded packet ready]
+    B --> C[Queue and send]
+    C --> D[Tablet decodes and renders]
+    D --> E[Render callback sends ACK]
+    E --> F[Host receives ACK]
+    B -. Host timer starts .-> F
+```
+
+The host timer runs from the complete packet being ready until the host receives
+the ACK. It excludes capture, encoding and earlier packet assembly. The precise timer definitions follow.
 
 The daemon starts a host-clock timer when a complete encoded access unit is
 ready for broadcast, after encoding and CLI packetizer buffering. The app
@@ -226,7 +185,8 @@ need implementation and measurement.
 - The legacy wire estimate is an invalid decomposition: subtracting independent
   percentiles cannot isolate transport, host queueing or any other stage.
 - "Windows with p95 < 60 ms" is a coarse stutter indicator, not a standard.
-- No measurement yet of AMD/Intel VAAPI encoders or of libx264.
+- This inherited upstream series contains no AMD/Intel VAAPI or libx264 measurement.
+  Fork reports above are separate experiments, including AMD VAAPI.
 
 Reports with other hardware are welcome as
 [compatibility issues](https://github.com/geraldo-netto/blent/issues/new?template=compatibility.yml);
@@ -236,6 +196,13 @@ reproducible benchmark.
 
 
 ## Android control replay
+
+This developer test checks how input messages queue and recover under load.
+It uses fake sockets; its numbers are not physical tablet latency.
+
+<details>
+<summary>Commands, recorded counts and measurement limits</summary>
+
 
 T387 adds `ControlLoadTest`, a normal automated test with a repeatable synthetic
 input workload. Run it with:
@@ -276,7 +243,16 @@ Measure ART allocation/GC with Perfetto or the Android profiler alongside these
 counters when collecting a device baseline. Queue size cannot show delivery or
 remote application of a message; use the host response for authoritative mode.
 
+</details>
+
 ## Annex B packetizer replay
+
+The packetizer groups encoded video data into complete pictures for transmission.
+This replay measures that work in isolation, using synthetic data.
+
+<details>
+<summary>Commands, before/after table and exact measurement method</summary>
+
 
 T384 profiles the default Rust packetizer independently of FFmpeg, EVDI,
 networking and Android. The [raw results](benchmarks/2026-09-17-packetizer.json)
@@ -351,3 +327,5 @@ Use the recorded toolchain and compare source hashes before comparing results.
 `T384_PROFILE` lines contain the raw JSON. Three samples on a shared workstation
 support this local comparison; broader hardware, power and multi-tablet claims
 are not established. The broader T382 campaign is closed as `wont_fix` for now.
+
+</details>

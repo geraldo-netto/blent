@@ -1,8 +1,8 @@
 # FAQ
 
 **Is Blent an open-source SuperDisplay alternative for Linux?**
-Yes. It provides a real extended display on an Android
-tablet over a USB cable, with S Pen pressure and tilt, on a Linux host.
+Yes. It creates an extra Linux display on an Android tablet over USB.
+See [compatibility limits](compatibility.md) before choosing hardware.
 SuperDisplay supports Windows hosts and Android clients; its
 [official FAQ](https://superdisplay.app/help/) says no Linux or macOS port is planned
 (checked 2026-09-17).
@@ -25,8 +25,8 @@ of the computer on the tablet. Neither route needs USB tethering.
 
 **Does Blent require USB tethering or Wi-Fi?**
 No. Neither USB route requires tethering or Wi-Fi. USB debugging is required
-only for the ADB route. ADB over Wi-Fi is an optional fallback, with longer
-tail delays in the historical test — see the benchmarks.
+only for the ADB route. ADB over Wi-Fi is an optional fallback, with more long
+delays in the historical test; see [benchmarks](benchmarks.md).
 
 **Can I adjust the tablet's brightness and refresh rate?**
 Open Blent's gear menu. Brightness starts at 50% and the display refresh-rate preference at
@@ -50,11 +50,11 @@ see [SECURITY.md](../SECURITY.md#connections-and-trust-boundaries) for returning
 adbd to USB mode.
 
 **Does Blent support Samsung S Pen pressure and tilt?**
-Yes: pressure, tilt, the eraser end and the stylus button are all forwarded
-to Linux as a real graphics-tablet device, so Krita, GIMP, Blender and the
-rest see it as a tablet. Angular tilt units and hover/button state across tip
-lift have automated regression coverage; physical-device reports remain
-important. Consult the [compatibility guide](compatibility.md).
+The Linux implementation forwards pressure, tilt, eraser and button events.
+Automated tests cover tilt units and hover/button transitions. Historical upstream
+reports describe drawing with S Pen, but they do not certify this fork on your
+hardware. Further physical stylus work is declined; existing code and tests remain.
+See [compatibility](compatibility.md#current-fork-limitations).
 
 **Does Blent extend the desktop or only mirror the screen?**
 It extends. There is also a "graphics tablet" mode in which nothing is
@@ -77,8 +77,8 @@ frame rate must be supported by the device decoder; the Android version
 alone does not guarantee compatibility.
 
 **Is screen or input data sent to the cloud?**
-No. Screen and input data never leave the cable (or your own network if you
-chose Wi-Fi). The only automatic internet request is an optional check of the latest
+Blent does not upload screen or input data to a cloud service. It sends them
+to the connected peer over your selected USB or ADB network route. The only automatic internet request is an optional check of the latest
 release tag on GitHub, off with `check_updates = false` on the desktop and a
 switch in the app's settings sheet. See
 [SECURITY.md](../SECURITY.md).
