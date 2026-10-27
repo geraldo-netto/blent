@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-27",
+  "revision": "d819372d7818d88d2c129f367da66b687eecc86d",
+  "review_only": true,
+  "findings": [
+    "T1295",
+    "T1296",
+    "T1297",
+    "T1298",
+    "T1299",
+    "T1300",
+    "T1301",
+    "T1302"
+  ],
+  "ledger": "TODO.md",
+  "existing_item_refined": "T1258",
+  "scope": "Manual boundary/contract review of GUI workspace and media admission, inventory polling, audio framing, ADB mapping ownership, Android media/display lifetimes, configuration, platform claims and documentation, install/package fixtures; broad existing automated suites. Not an exhaustive proof of all repository behavior.",
+  "network_transfers": false,
+  "production_changes": false,
+  "permanent_tests_added": false,
+  "rust_workspace": {
+    "command": "/backups/disk2/blent-work/2026-10-27-responsive/cargo test --workspace --all-features --no-fail-fast",
+    "wrapper": "#!/bin/sh\nexec python3 scripts/ci/test-host-offline.py --sdk /home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/active/files --codecs /home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra/active/files --target-dir /backups/disk2/blent-work/2026-10-20-all-open/T835/target --libclang /usr/lib/llvm-18/lib -- \"$@\"\n",
+    "exit_code": 101,
+    "passed": 2368,
+    "failed": 2,
+    "ignored": "Five preexisting opt-in benchmarks; no newly skipped cases.",
+    "counting": "Sum final unfiltered Cargo target summaries; exclude reexecuted child summaries with filtered cases. Python/C subcases inside Rust harnesses are not extra Rust test counts.",
+    "failures": [
+      "t102_local_distribution_requires_apk_and_bundled_library",
+      "t302_distribution_regressions_survive_release_version_bumps"
+    ],
+    "cause": "T1301 stale distribution fixture, reproduced independently; no production packaging failure inferred.",
+    "adb_mapping_retirement": {
+      "passed": 23,
+      "failed": 0
+    },
+    "gui_unit": {
+      "passed": 167,
+      "failed": 0
+    },
+    "evdi_helper": {
+      "passed": 70,
+      "failed": 0
+    },
+    "limits": "Linux execution. Conditional native-device probes and zero-test Windows targets are not platform/device acceptance. Rust/C per-function coverage not freshly collected in this review."
+  },
+  "android": {
+    "command": "./android/gradlew -p android --offline --no-daemon --console=plain -I /backups/disk2/projects/blent/scripts/coverage/android.init.gradle -I /tmp/blent-review-20261027/offline-funded.gradle profileCoverage",
+    "temporary_init": "allprojects {\n    tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {\n        maxHeapSize = '2g'\n        forkEvery = 40\n        systemProperty 'robolectric.offline', 'true'\n        systemProperty 'robolectric.dependency.dir', '/tmp/blent-review-20261027/robolectric'\n        testLogging { events 'passed', 'failed', 'skipped' }\n    }\n}\n",
+    "robolectric": "Cached local Maven jars exposed through temporary symlinks; offline=true. No dependency transfer.",
+    "ordinary_debug_suites": 364,
+    "passed": 2710,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "default_worker": "512 MiB heap exhausted; exact heap observation and failure log retained. Terminated owned exhausted worker, then reran full suite with 2 GiB / forkEvery 40. Defaults remain unchanged (T1302).",
+    "coverage_command": "/backups/disk2/blent-work/2026-10-25-t1221/environment/run scripts/coverage/report.py check --manifest /tmp/blent-review-20261027/coverage-manifest.json --jacoco android/app/build/reports/jacoco/profileCoverage/profileCoverage.xml --scope android/app/src/main/ --output /tmp/blent-review-20261027/android-function-coverage.json",
+    "coverage": {
+      "kotlin": {
+        "functions": 3334,
+        "passing": 3334,
+        "below_80": 0,
+        "unmeasured": 0
+      }
+    },
+    "minimum_percent": 80,
+    "coverage_exit_code": 0,
+    "manifest": "Captured during the unchanged-source run; validator passed. HEAD production/test sources were never edited during review.",
+    "limits": "Ordinary hosted debug task, including Robolectric; separate native TLS interop task and physical Android/device acceptance not run."
+  },
+  "complexity": {
+    "command": "/backups/disk2/blent-work/2026-10-25-t1221/environment/run scripts/complexity/check.py --verbose",
+    "functions": 28579,
+    "above_9": 0,
+    "exit_code": 0,
+    "tools": {
+      "Python": "3.12.3",
+      "tree-sitter": "0.25.2",
+      "Kotlin PSI": "1.9.20",
+      "Rust syn": "2.0.119",
+      "rustc": "1.98.1"
+    },
+    "grammar_provenance": "Existing cached tree-sitter C/Bash environment; installed distribution metadata unavailable. Project requirement pins C 0.24.2 / Bash 0.25.1. No native SonarQube result claimed.",
+    "scope_and_limits": "Project checker source inventory, including tests/tools; excludes generated/dependency/build files. See scripts/complexity/README.md for macro/conditional-compilation and top-level-script limitations; per-function rows and source hashes retained."
+  },
+  "additional_checks": {
+    "common_library": {
+      "passed": 419,
+      "failed": 0
+    },
+    "architecture": {
+      "passed": 5,
+      "failed": 0
+    },
+    "selected_packaging_python": {
+      "passed": 25,
+      "failed": 1,
+      "cause": "T1301"
+    }
+  },
+  "T1258": "Recommended next physical correctness acceptance. Updated cohesive checklist; remains blocked on selected tablet and owner authorization. Host fixtures do not establish delegated native ADB effects.",
+  "evidence_sha256": {
+    "android-default-heap.log.gz": "9186627c32ce9155207e77ecf2ae7ad6a3a7d6dda5fea519c4923e30ac446ded",
+    "android-function-coverage.json.gz": "e8c3ff1b52784ef2012ad99ba94055f708b0d1500bc124c0ce0382bdc47a58d9",
+    "android-function-coverage.log.gz": "4f2334824965217fad18970a41a09c74f37c58fb2aad7f45102670a78b3a7881",
+    "android-funded.log.gz": "7c9f28d761f14b68c9a9878f1ab739d1c1e165d29bca550f35c2b439c45fbe66",
+    "android-heap.txt.gz": "d4477bafcf44e84d45ac03f4691c9970d31a5f39e45a4431ad7f84fee03970a0",
+    "android-jacoco.xml.gz": "5b64d9059924e307ff3055022eb57b14221eb654674a8ed8acee99db36fbf814",
+    "architecture-tests.log.gz": "67ee5a5247abd24fa61f1aa3388b1bc832448cd63e71155993914419f342d494",
+    "complexity-sources.json.gz": "515f87504822a1919b54f598f76291f6eccea6e86c6cbb86dac938b55d42e30c",
+    "complexity.log.gz": "fe72ac2b6f57c156996ff3f8c03f1e0df8de174ccc99e6b24e87d0cab87ab173",
+    "coverage-manifest.json.gz": "5259b64b84c6dea7ee7d6f19774a0fcbea860d792b417fe1c7eb7ebaa20dd9ce",
+    "distribution-after-c-stubs.log.gz": "aa4e2662478a71f8eb0f1326cd5600602fcd69cd6a11d6d5908ce373a19e2394",
+    "distribution-repro.log.gz": "fdc23ac8f43c5eab76dc09ebe2d7973ad6c01b0431c506041235b86ccf02efba",
+    "packaging-tests.log.gz": "d02c84013e1e4ef024957ee98f7189e3e8741df0a006c01d0ad74c92de62e290",
+    "probes.json": "7ca2d6c19b3b9b43b945a2c71e8780493a7c2e924d1e3d0a05b4fb81c8f636b0",
+    "workspace-tests.log.gz": "babe80350d776363db4f0f22bbbd394fd7bf07ccc1979ea0d7ca0cb93a44e3cf"
+  }
+}

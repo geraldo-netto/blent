@@ -1,0 +1,101 @@
+{
+  "purpose": "Review evidence only. No production fix or permanent regression added.",
+  "source_revision": "d819372d7818d88d2c129f367da66b687eecc86d",
+  "gui_probe": {
+    "derivation": "collect_workspace_devices, add_display_devices and merge_inventory copied unchanged from current GUI sources; real media_owner imported; minimal App/Status/Connection fields replace unrelated GUI/backend effects. The inventory probe performs the exact following assignment for successful discovery. No actual GUI click, native ADB or media operation performed.",
+    "build": "cargo build --offline --locked -p blent-config; rustc --edition=2021 gui-probe.rs --extern blent_config=target/debug/libblent_config.rlib -L dependency=target/debug/deps -o gui-probe",
+    "source": "\nuse blent_config::{camera::CameraProfile, tablets::Identity, workspace::{Catalog, Device, Presence}};\n#[path = \"/backups/disk2/projects/blent/gui/src/media_owner.rs\"] mod media_owner;\n#[derive(Default)]\nstruct Status { tablets: Vec<Device>, display: Option<blent_config::display_control::Snapshot>, inventory_error: Option<String> }\nstruct Connection;\nimpl Connection { fn tablets(&self) -> Vec<Device> { vec![] } }\nstruct App { camera: media_owner::Owner, microphone: media_owner::Owner, speakers: media_owner::Owner, selected: Option<Identity>, connection: Connection }\nimpl App {\n    fn collect_workspace_devices(&mut self, status: &Status) -> Result<Catalog, String> {\n        let mut catalog = Catalog::new(1024).unwrap();\n        for device in status\n            .tablets\n            .iter()\n            .cloned()\n            .chain(self.connection.tablets())\n        {\n            catalog.insert(device).map_err(|error| error.to_string())?;\n        }\n        if let Some(display) = &status.display {\n            add_display_devices(&mut catalog, display)?;\n        }\n        for target in [\n            self.camera.target(),\n            self.microphone.target(),\n            self.speakers.target(),\n            self.selected.as_ref(),\n        ]\n        .into_iter()\n        .flatten()\n        {\n            if !catalog\n                .devices()\n                .iter()\n                .any(|device| device.identity() == target)\n            {\n                let device =\n                    Device::new(target.clone(), target.label(), Presence::Unknown, false).unwrap();\n                catalog.insert(device).map_err(|error| error.to_string())?;\n            }\n        }\n        Ok(catalog)\n    }\n\n\n}\nfn add_display_devices(\n    catalog: &mut Catalog,\n    snapshot: &blent_config::display_control::Snapshot,\n) -> Result<(), String> {\n    snapshot.validate().map_err(|error| error.to_string())?;\n    for assignment in &snapshot.assignments {\n        let identity = assignment\n            .target\n            .identity()\n            .map_err(|error| error.to_string())?;\n        let device = Device::new(\n            identity.clone(),\n            identity.label(),\n            Presence::Unknown,\n            assignment.phase == blent_config::display_control::Phase::Assigned,\n        )\n        .map_err(|error| error.to_string())?;\n        catalog.insert(device).map_err(|error| error.to_string())?;\n    }\n    Ok(())\n}\n\n\nfn merge_inventory(status: &mut Status, inventory: &[blent_config::workspace::Device]) {\n    let mut catalog = blent_config::workspace::Catalog::new(1024).unwrap();\n    for device in status.tablets.drain(..).chain(inventory.iter().cloned()) {\n        if let Err(error) = catalog.insert(device) {\n            status.inventory_error = Some(error.to_string());\n            break;\n        }\n    }\n    status.tablets = catalog.into_devices();\n}\n\n\nfn serial(serial: &str) {\n    let profile = CameraProfile { serial: Some(serial.into()), ..Default::default() };\n    let mut camera = media_owner::Owner::default();\n    camera.admit(media_owner::identity(profile.target().unwrap()));\n    let mut app = App { camera, microphone: Default::default(), speakers: Default::default(), selected: None, connection: Connection };\n    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| app.collect_workspace_devices(&Status::default())));\n    println!(\"T1295 serial_bytes={} profile_valid={} catalog_panicked={}\", serial.len(), profile.validate().is_ok(), result.is_err());\n}\nfn inventory() {\n    let assigned = Device::new(Identity::Adb(\"assigned-only\".into()), \"Assigned\".into(), Presence::Connected, true).unwrap();\n    let discovered = (0..1024).map(|index| Device::new(Identity::Adb(format!(\"tablet-{index}\")), \"Tablet\".into(), Presence::Unknown, false).unwrap()).collect::<Vec<_>>();\n    let mut status = Status { tablets: vec![assigned], ..Default::default() };\n    merge_inventory(&mut status, &discovered);\n    let merge_error = status.inventory_error.clone();\n    // Exact next assignment in Platform::dynamic after successful discovery.\n    status.inventory_error = None;\n    println!(\"T1299 union=1025 retained={} merge_error={merge_error:?} published_error={:?}\", status.tablets.len(), status.inventory_error);\n}\nfn main() {\n    serial(&\"a\".repeat(1024));\n    serial(&\"a\".repeat(1025));\n    serial(\"bad\\nserial\");\n    serial(\"\");\n    inventory();\n}\n",
+    "output": "T1295 serial_bytes=1024 profile_valid=true catalog_panicked=false\n\nthread 'main' (3265598) panicked at /tmp/blent-review-20261027/gui-probe.rs:38:91:\ncalled `Result::unwrap()` on an `Err` value: invalid tablet identity\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nT1295 serial_bytes=1025 profile_valid=true catalog_panicked=true\n\nthread 'main' (3265598) panicked at /tmp/blent-review-20261027/gui-probe.rs:38:91:\ncalled `Result::unwrap()` on an `Err` value: invalid tablet identity\nT1295 serial_bytes=10 profile_valid=true catalog_panicked=true\n\nthread 'main' (3265598) panicked at /tmp/blent-review-20261027/gui-probe.rs:38:91:\ncalled `Result::unwrap()` on an `Err` value: invalid tablet identity\nT1295 serial_bytes=0 profile_valid=true catalog_panicked=true\nT1299 union=1025 retained=1024 merge_error=Some(\"workspace capacity exhausted\") published_error=None\n",
+    "source_hashes": {
+      "gui/src/resource_workspace.rs": "7e5b11fdda6ab0737e36e78e5bb85e2b978fa5ad7a2daa3816ff64b0e227fdfe",
+      "gui/src/status_poll/linux.rs": "49d9edbb1808f4d9a60dbd0d3cb64e94f877b2895645ce8bb512b74cdf8f79ca",
+      "gui/src/media_owner.rs": "6a120006a05b6cacfdd8659883a7c15a4b16bf8969d1c8ec3c673ca3f567af35",
+      "common/src/connection/media.rs": "58d65bfeae877f166200829654d6af2d904e94a4b4301475b54fb6ecd7c72334",
+      "common/src/workspace.rs": "e84ff9f0b506ac91de0ff2fd50462e3ecdf33e8fa2e05331b77543f2d1fec3ff"
+    },
+    "limits": "Supports T1295 and T1299 code-path counterexamples; permanent editor/admission and Platform::dynamic regressions remain required with fixes."
+  },
+  "serial_contract_probe": {
+    "source": "use blent_config::{camera::CameraProfile, workspace::{Device, Presence}};\n#[path = \"/backups/disk2/projects/blent/gui/src/media_owner.rs\"]\nmod media_owner;\n\nfn main() {\n    for serial in [\"\".to_owned(), \"bad\\nserial\".to_owned(), \"a\".repeat(1024), \"a\".repeat(1025)] {\n        let options = CameraProfile { serial: Some(serial.clone()), ..CameraProfile::default() };\n        let target = media_owner::identity(options.target().unwrap()).unwrap();\n        let mut owner = media_owner::Owner::default();\n        owner.prepare(&Some(target.clone())).unwrap();\n        owner.admit(Some(target));\n        let admitted = owner.target().unwrap().clone();\n        let result = Device::new(admitted.clone(), admitted.label(), Presence::Unknown, false);\n        println!(\"serial_bytes={} control={} profile_valid={} admitted=true workspace_valid={}\", serial.len(), serial.chars().any(char::is_control), options.validate().is_ok(), result.is_ok());\n    }\n}\n",
+    "output": "serial_bytes=0 control=false profile_valid=true admitted=true workspace_valid=false\nserial_bytes=10 control=true profile_valid=true admitted=true workspace_valid=false\nserial_bytes=1024 control=false profile_valid=true admitted=true workspace_valid=true\nserial_bytes=1025 control=false profile_valid=true admitted=true workspace_valid=false\n"
+  },
+  "distribution_followup": {
+    "source": "\"\"\"T102: local distributions need an APK and a loadable bundled helper.\"\"\"\nfrom pathlib import Path\nimport os\nimport shutil\nimport shlex\nimport subprocess\nimport tempfile\nimport unittest\n\nimport test_notices\nimport release_signing_fixture\n\n\ndef tree_contents(root):\n    entries = {}\n    for path in root.rglob('*'):\n        mode = path.lstat().st_mode\n        if path.is_symlink():\n            content = ('link', os.readlink(path))\n        elif path.is_file():\n            content = ('file', path.read_bytes())\n        else:\n            content = ('directory', None)\n        entries[str(path.relative_to(root))] = (mode, content)\n    return entries\n\n\nclass DistributionTest(unittest.TestCase):\n    def compare_shared_bundle(self, root, local, library):\n        staged = root / 'shared bundle'\n        subprocess.run(['bash', 'scripts/stage-linux-bundle.sh', 'target/release',\n                        'host/evdi/evdi_helper', str(library), str(staged)], cwd=root, check=True)\n        expected = tree_contents(local)\n        # APK production belongs to the caller; CI Linux package fixtures omit it.\n        expected.pop('blent.apk')\n        self.assertEqual(tree_contents(staged), expected, 'T379: bundle layouts diverged')\n        self.assertEqual(os.readlink(staged / 'bin/libevdi.so.1'), 'libevdi.so.1.15.0')\n        self.assertFalse((staged / 'bin/libevdi.so.1.15.0').is_symlink())\n        test_notices.NoticeTest().verify_docs(staged)\n\n    def test_t102_apk_failure_and_bundled_helper_loading(self):\n        for mode in ['failed-apk', 'missing-apk', 'success']:\n            with self.subTest(mode=mode), tempfile.TemporaryDirectory(prefix='blent-dist-') as tmp:\n                root = Path(tmp)\n                version = test_notices.NoticeTest().copy_sources(root)\n                def write(name, body, executable=False):\n                    path = root / name\n                    path.parent.mkdir(parents=True, exist_ok=True)\n                    path.write_text(body)\n                    if executable:\n                        path.chmod(0o755)\n                    return path\n                write('target/release/blent', '#!/bin/sh\\nexit 0\\n', True)\n                write('target/release/blent-gui', '#!/bin/sh\\nexit 0\\n', True)\n                write('target/release/blent-audio', '#!/bin/sh\\nexit 0\\n', True)\n                write('library.c', 'int blent_distribution_probe(void) { return 0; }\\n')\n                write('host/evdi/evdi_helper.c', 'extern int blent_distribution_probe(void); int main(void) { return blent_distribution_probe(); }\\n')\n                # T380: stub the other C units too; this fixture checks loader\n                # paths and packaging. evdi_modules tests the real module link.\n                # T832: retain cursor_overlay too; Makefile links it into the helper.\n                for module in ['conversion', 'frame_exchange', 'fifo_writer', 'capture', 'capture_activity', 'capture_control', 'idle_control', 'cursor_overlay', 'raw_ring', 'writer']:\n                    write(f'host/evdi/{module}.c', '/* distribution fixture */\\n')\n                # T642: model an installed compiler library that precedes LIBRARY_PATH.\n                competing = root / 'compiler libraries'\n                competing.mkdir()\n                write('competing.c', 'int unrelated_evdi(void) { return 0; }\\n')\n                subprocess.run(['cc', '-shared', '-fPIC', 'competing.c', '-o', str(competing / 'libevdi.so')], cwd=root, check=True)\n                compiler = ['gcc', '-B', str(competing) + '/']\n                library = root / \"library's space/libevdi.so.1.15.0\"\n                library.parent.mkdir()\n                compiler.extend(['-L', str(library.parent)])\n                subprocess.run(['cc', '-shared', '-fPIC', '-Wl,-soname,libevdi.so.1', 'library.c', '-o', str(library)], cwd=root, check=True)\n                (library.parent / 'libevdi.so').symlink_to(library.name)\n                (library.parent / 'libevdi.so.1').symlink_to(library.name)\n                if mode == 'success':\n                    write('android/app/build/outputs/apk/release/app-release.apk', 'apk')\n                    library.rename(library.parent / 'actual.so')\n                    library.symlink_to('actual.so')\n                write('android/gradlew', '#!/bin/sh\\nexit ' + ('42' if mode == 'failed-apk' else '0') + '\\n', True)\n                # T505: retain the real release gate with offline SDK reports.\n                release_signing_fixture.install_tools(root / \"bin\")\n                env = dict(os.environ, LIBRARY_PATH=str(library.parent),\n                           PATH=f'{root}/bin:{os.environ[\"PATH\"]}')\n                result = subprocess.run(['make', 'dist-local', 'CARGO=true', f'LIBEVDI={library}', 'CC=' + shlex.join(compiler)], cwd=root, env=env, capture_output=True, text=True)\n                if mode != 'success':\n                    self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)\n                else:\n                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\n                    # Extract and remove build-time library search paths entirely.\n                    artifact = root / 'extracted'\n                    artifact.mkdir()\n                    subprocess.run(['tar', '-xf', f'dist/blent-{version}-linux-x86_64.tar.gz', '-C', str(artifact)], cwd=root, check=True)\n                    self.compare_shared_bundle(root, artifact / f'blent-{version}', library)\n                    shutil.rmtree(library.parent)\n                    env.pop('LIBRARY_PATH')\n                    env.pop('LD_LIBRARY_PATH', None)\n                    helper = artifact / f'blent-{version}/bin/evdi_helper'\n                    loaded = subprocess.run([str(helper)], env=env, capture_output=True, text=True)\n                    self.assertEqual(loaded.returncode, 0, loaded.stderr)\n                    self.assertTrue((artifact / f'blent-{version}/blent.apk').is_file())\n                    # T129: the local tarball carries the same notices and working links.\n                    test_notices.NoticeTest().verify_docs(artifact / f'blent-{version}')\n\n    def test_t379_missing_bundle_inputs_cannot_produce_an_archive(self):\n        inputs = ['target/release/blent', 'target/release/blent-gui',\n                  'host/evdi/evdi_helper', 'library/libevdi.so.1.15.0']\n        for missing in inputs:\n            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as tmp:\n                root = Path(tmp)\n                version = test_notices.NoticeTest().copy_sources(root)\n                for name in inputs:\n                    path = root / name\n                    path.parent.mkdir(parents=True, exist_ok=True)\n                    path.write_text('fixture')\n                    path.chmod(0o751)\n                (root / missing).unlink()\n                commands = [\n                    ['bash', 'scripts/stage-linux-bundle.sh', 'target/release',\n                     'host/evdi/evdi_helper', 'library/libevdi.so.1.15.0', 'staged'],\n                    ['make', 'dist-local', 'CC=true', 'CARGO=true',\n                     'LIBEVDI=library/libevdi.so.1.15.0'],\n                ]\n                for command in commands:\n                    result = subprocess.run(command, cwd=root, capture_output=True, text=True)\n                    self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)\n                self.assertFalse((root / f'dist/blent-{version}-linux-x86_64.tar.gz').exists())\n\n\nif __name__ == '__main__':\n    unittest.main()\n",
+    "output": "F\n======================================================================\nFAIL: test_t102_apk_failure_and_bundled_helper_loading (__main__.DistributionTest.test_t102_apk_failure_and_bundled_helper_loading) (mode='success')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/blent-review-20261027/distribution_after_c_stubs.py\", line 88, in test_t102_apk_failure_and_bundled_helper_loading\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 2 != 0 : gcc -B '/tmp/blent-dist-rbo5iwqp/compiler libraries/' -L '/tmp/blent-dist-rbo5iwqp/library'\"'\"'s space' -O3 -o host/evdi/evdi_helper host/evdi/evdi_helper.c host/evdi/conversion.c host/evdi/frame_exchange.c host/evdi/fifo_writer.c host/evdi/capture.c host/evdi/capture_activity.c host/evdi/capture_control.c host/evdi/cursor_overlay.c host/evdi/raw_ring.c host/evdi/writer.c host/evdi/idle_control.c -levdi -lpthread -Ihost/evdi -Wl,-rpath,'$ORIGIN'\n\u2713 EVDI helper: host/evdi/evdi_helper\nmake --always-make -C host/accessory CC='gcc -B '\"'\"'/tmp/blent-dist-rbo5iwqp/compiler libraries/'\"'\"' -L '\"'\"'/tmp/blent-dist-rbo5iwqp/library'\"'\"'\"'\"'\"'\"'\"'\"'s space'\"'\"'' OUTPUT=../../target/release/blent-usb-io\nmake[1]: *** host/accessory: No such file or directory.  Stop.\nmake: *** [Makefile:45: build-usb-helper] Error 2\n\n\n----------------------------------------------------------------------\nRan 1 test in 3.362s\n\nFAILED (failures=1)\n",
+    "limits": "External copy adds three missing C stubs only. Still fails at absent accessory build directory; production files unchanged."
+  },
+  "complexity": {
+    "/tmp/blent-review-20261027/gui-probe.rs": [
+      [
+        7,
+        "tablets",
+        1
+      ],
+      [
+        10,
+        "collect_workspace_devices",
+        8
+      ],
+      [
+        47,
+        "add_display_devices",
+        6
+      ],
+      [
+        70,
+        "merge_inventory",
+        3
+      ],
+      [
+        82,
+        "serial",
+        2
+      ],
+      [
+        90,
+        "inventory",
+        2
+      ],
+      [
+        100,
+        "main",
+        1
+      ]
+    ],
+    "/tmp/blent-review-20261027/serial-probe.rs": [
+      [
+        5,
+        "main",
+        2
+      ]
+    ],
+    "/tmp/blent-review-20261027/distribution_after_c_stubs.py": [
+      [
+        14,
+        "tree_contents",
+        3
+      ],
+      [
+        29,
+        "compare_shared_bundle",
+        1
+      ],
+      [
+        41,
+        "test_t102_apk_failure_and_bundled_helper_loading",
+        6
+      ],
+      [
+        104,
+        "test_t379_missing_bundle_inputs_cannot_produce_an_archive",
+        4
+      ],
+      [
+        46,
+        "write",
+        2
+      ]
+    ]
+  },
+  "ownership": "Probes own bounded local Rust values and Python temporary directories; synchronous borrows do not escape. Mocked GUI connection admits no native work. No pending retirement fences or device mappings created by probes. Owned test processes settled; the exhausted default Android worker was terminated after measured heap exhaustion. Original heap/log evidence preserved; full funded rerun completed."
+}
