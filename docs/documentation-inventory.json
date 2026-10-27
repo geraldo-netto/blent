@@ -11946,8 +11946,8 @@
       "path": "docs/reviews/artifacts/2026-10-21-reinstall/T1254/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed discontinued investigation prose under T1333. Raw observations and tests unchanged; Git retains history.",
       "words": 516,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11955,7 +11955,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-21-t1237/README.md",
@@ -12006,8 +12008,8 @@
       "path": "docs/reviews/artifacts/2026-10-25-t1254/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed discontinued investigation prose under T1333. Raw observations and tests unchanged; Git retains history.",
       "words": 506,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -12015,7 +12017,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-26-project-review/README.md",
