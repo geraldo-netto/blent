@@ -92,6 +92,7 @@ Desktop settings live at `~/.config/blent/config.toml` unless an absolute
 | Forget a trusted computer | [Saved computers](docs/saved-computers.md) |
 | Tune display quality or resource use | [Settings](docs/settings.md), [video](docs/video-codecs.md), [pipe buffer](docs/pipe-buffer.md), [CPU scheduling](docs/scheduling.md) |
 | Understand measurements | [Benchmarks and measurement limits](docs/benchmarks.md) |
+| Read past investigations and evidence | [Archive guide](docs/history.md) |
 | Build or change the project | [Contributing](CONTRIBUTING.md), [development](docs/development.md), [architecture](docs/architecture.md) |
 | Understand trust, permissions or licenses | [Security](SECURITY.md), [third-party terms](THIRD_PARTY_LICENSES.md) |
 

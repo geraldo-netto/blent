@@ -7,6 +7,9 @@ For performance comparisons, use the [benchmark archive](../../benchmarks/README
 For current instructions, start with the [user guide](../../../README.md).
 [TODO](../../../TODO.md) is the current work list.
 
+The [archive guide](../../history.md) explains how reviews, benchmarks and
+evidence fit together.
+
 ## What a result means
 
 Read the result and its limits first. Expand **Recorded evidence and technical

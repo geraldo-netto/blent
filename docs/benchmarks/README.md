@@ -16,6 +16,10 @@ flowchart LR
     Evidence --> Compare[Compare only matching conditions]
 ```
 
+For shared terms and historical scope, see the [archive guide](../history.md).
+Related investigations are in the [review archive](../reviews/README.md); the
+[artifact guide](../reviews/artifacts/README.md) explains test evidence.
+
 ## Report and evidence map
 
 Small evidence indexes and checksum-covered tables stay unchanged. Their rows

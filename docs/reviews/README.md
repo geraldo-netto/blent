@@ -13,6 +13,10 @@ reference, separate from this historical collection. [TODO](../../TODO.md)
 records outstanding work. Removing an old task from tracking does not itself
 prove that its acceptance passed.
 
+For shared terms and a route through all three archives, see the
+[archive guide](../history.md). The [artifact guide](artifacts/README.md) maps the
+evidence files behind these reports.
+
 ## Read the evidence in its scope
 
 A proposal defines intended work. An implemented fix needs its own verification.

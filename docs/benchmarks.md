@@ -13,8 +13,8 @@ whole tablet experience.
 
 | Report | What it establishes, and what it does not |
 | --- | --- |
-| [Fork performance](benchmarks/2026-09-21-fork-performance.md) | Matched changes, resource counts and rejected experiments, with implementation status; no total speedup claim. |
-| [First physical baseline](benchmarks/2026-09-17-device-baseline.md) | AMD VAAPI, Ulefone tablet and sustained USB battery observations. Different hardware from the upstream series below. [Collection instructions](benchmarks/README.md). |
+| [Fork performance](benchmarks/2026-09-21-fork-performance.md) | Matched changes and resource counts, with implementation status; no total speedup claim. |
+| [First physical baseline](benchmarks/2026-09-17-device-baseline.md) | AMD VAAPI, Ulefone tablet and sustained USB battery observations. Different hardware from the upstream series below. [Benchmark archive](benchmarks/README.md). |
 | [Scheduling](benchmarks/2026-09-21-scheduling/README.md) | High gets more CPU under contention; no consistent live video-latency gain. High is requested by default; Normal remains available. |
 | [GPU prototype](benchmarks/2026-09-21-gpu-adapter/README.md) | Matched USB trials: measured process CPU down 32.7%, source-update-to-render-ACK median up from 28.72 to 37.43 ms. FIFO remains default; corrupt imports are rejected. [Initial feasibility](benchmarks/2026-09-21-gpu-capture.md). |
 | [Conversion and workers](benchmarks/2026-09-17-conversion.md) | T383 dirty-work scheduling, scaled kernels, scalar/vector comparisons and 128 participants. Isolated CPU results, not display or battery gains. |

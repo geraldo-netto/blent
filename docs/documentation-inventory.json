@@ -136,7 +136,7 @@
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
-      "reviewed_sha256": "4456f43d55f6982fc94366b702486471399979591976e822204b3cc31f097661",
+      "reviewed_sha256": "535a11f98ef48dfde27e9bbb26777203d7dd0c6d07b17da4cdf462642b8b8a69",
       "outcome": "rewritten"
     },
     {
@@ -340,7 +340,7 @@
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
-      "reviewed_sha256": "67b9399f9eba8cb9f8094f7b52b7e65a478f21ca15f933371dc8bb90f663a3ed",
+      "reviewed_sha256": "c8f48befcae559c574b654c547e8ab2fb4fdf1ed3ea751756de3503cf464f282",
       "outcome": "rewritten"
     },
     {
@@ -1326,7 +1326,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "29900d11528dac0e4f53cc07e038555d688787f757cdcdb83a91aa4b785c0ed1",
+      "reviewed_sha256": "8018a536ef4e069bb5857721aac758d352e07cbd798e3b2472b069477ad45476",
       "outcome": "rewritten"
     },
     {
@@ -5151,7 +5151,7 @@
       "audience": "readers seeking historical findings and scoped evidence",
       "authority": "navigation; original reports retain their recorded requirements and evidence",
       "review_stage": "reviewed",
-      "reviewed_sha256": "12258e521e5a4ce1207e31d3f2ff440d2b67da055563db41cda3be5957a203c2",
+      "reviewed_sha256": "2d019c51ee29adae1a2544e53fc0e73b70c4a4b0e1ab43e8bb14cac8e594d8ab",
       "outcome": "rewritten"
     },
     {
@@ -13498,7 +13498,24 @@
       "audience": "readers and evidence reviewers",
       "authority": "navigation; not certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "95ab8f5d913b501d17e30224b93ea10503400c5a064d1ac1164cf7f38b9aa577",
+      "reviewed_sha256": "ee9a8c5b213e42688b19985282b4ff598b7c14b07bad6b4843d649ad2a30cd9f",
+      "outcome": "created"
+    },
+    {
+      "path": "docs/history.md",
+      "owner": "T1319",
+      "role": "archive navigation",
+      "action": "create_guide",
+      "review_note": "Cross-archive reading route and plain-language measurement/status terminology; distinguishes historical evidence from current instructions.",
+      "words": 348,
+      "long_paragraphs": 0,
+      "joined_word_number_tokens": 0,
+      "baseline_sha256": null,
+      "local_only": false,
+      "audience": "all readers",
+      "authority": "navigation; not certification",
+      "review_stage": "reviewed",
+      "reviewed_sha256": "b4741bd9701d56e8bb809e339973f79bbeec2b5733c0230b9eaf9f788e630abe",
       "outcome": "created"
     }
   ],
