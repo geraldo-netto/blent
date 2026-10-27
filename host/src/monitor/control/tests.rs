@@ -1,6 +1,40 @@
 use super::*;
 
 #[tokio::test]
+async fn t1275_manual_usb_control_preserves_full_primary_assignment() {
+    let mut state = crate::monitor::tests::fixture();
+    state.slots = Slots::new(1).unwrap();
+    state.current = Some("sibling".into());
+    state.ready.insert("sibling".into());
+    let ticket = state
+        .slots
+        .reserve(DisplayOwner::Adb("sibling".into()), 0)
+        .unwrap();
+    let peer = blent_config::connection::pairing::PeerId::parse("e".repeat(64)).unwrap();
+    let target = DisplayOwner::Peer(peer.clone());
+    state.slots.set_enabled(target, false).unwrap();
+    state.slots.select(Some(peer));
+    let owner = "f".repeat(64);
+    apply(
+        &mut state,
+        &owner,
+        &Command::Set {
+            owner: owner.clone(),
+            target: blent_config::display_control::Target::Usb("e".repeat(64)),
+            enabled: true,
+            expected: None,
+        },
+    )
+    .unwrap();
+    state.preempt_for_usb();
+    assert_eq!(state.current.as_deref(), Some("sibling"));
+    assert_eq!(state.slots.closing(ticket), Some(false));
+    assert!(state.slots.adb_allowed(0));
+    assert!(state.retiring.is_empty());
+    state.stop().await;
+}
+
+#[tokio::test]
 async fn t1274_configured_ipc_capacity_rejects_invalid_native_input() {
     if let Some(value) = std::env::var_os("BLENT_T1274_CAPACITY") {
         let result = Control::bind();

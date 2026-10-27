@@ -5,6 +5,7 @@ use anyhow::{ensure, Result};
 use blent_config::connection::pairing::PeerId;
 
 mod contract;
+mod intent;
 pub use contract::{Owner, Plan, Reservations, Ticket};
 
 struct Entry {
@@ -19,7 +20,7 @@ pub struct Slots {
     entries: Vec<Option<Entry>>,
     revision: u64,
     selected: Option<PeerId>,
-    disabled: Vec<Owner>,
+    intents: intent::Intents,
 }
 impl Slots {
     pub fn new(capacity: u32) -> Result<Self> {
@@ -28,7 +29,7 @@ impl Slots {
             entries: (0..capacity).map(|_| None).collect(),
             revision: 0,
             selected: None,
-            disabled: vec![],
+            intents: Default::default(),
         })
     }
     /// The connection adapter supplies an explicitly selected peer. Clearing or
@@ -38,21 +39,11 @@ impl Slots {
     }
 
     pub fn enabled(&self, owner: &Owner) -> bool {
-        !self.disabled.contains(owner)
+        self.intents.enabled(owner)
     }
 
     pub fn set_enabled(&mut self, owner: Owner, enabled: bool) -> Result<()> {
-        owner.target().identity()?;
-        if enabled {
-            self.disabled.retain(|other| other != &owner);
-        } else if !self.disabled.contains(&owner) {
-            ensure!(
-                self.disabled.len() < 1024,
-                "display intent capacity exceeded"
-            );
-            self.disabled.push(owner);
-        }
-        Ok(())
+        self.intents.set_enabled(owner, enabled)
     }
 
     pub fn assignments(&self) -> Vec<blent_config::display_control::Assignment> {
@@ -120,6 +111,9 @@ impl Slots {
         let Some(peer) = &self.selected else {
             return Plan::None;
         };
+        if !self.enabled(&Owner::Peer(peer.clone())) {
+            return Plan::None;
+        }
         if let Some(ticket) = self.ticket(&Owner::Peer(peer.clone())) {
             return if self.entry(ticket).expect("owned ticket").closing {
                 Plan::Wait
@@ -132,12 +126,17 @@ impl Slots {
             .map(|slot| (slot, &self.entries[slot as usize]))
         {
             Some((slot, None)) => Plan::Ready(slot),
-            Some((_, Some(entry))) if !entry.closing => Plan::Replace(entry.ticket),
+            Some((_, Some(entry)))
+                if !entry.closing && self.intents.preempts(&Owner::Peer(peer.clone())) =>
+            {
+                Plan::Replace(entry.ticket)
+            }
             _ => Plan::Wait,
         }
     }
-    /// Whether legacy discovery may choose this slot, including an existing
-    /// legacy assignment. A selected native target takes priority immediately.
+    /// Whether ADB discovery may choose this slot, including an existing ADB
+    /// assignment. Only an actionable native plan reserves priority; manual USB
+    /// Start waits for free capacity and disabled selection reserves none.
     pub fn adb_allowed(&self, instance: u32) -> bool {
         let Some(entry) = self.entries.get(instance as usize) else {
             return false;
@@ -148,11 +147,11 @@ impl Slots {
         {
             return false;
         }
-        let target = self.selected.as_ref().and_then(|peer| {
-            self.ticket(&Owner::Peer(peer.clone()))
-                .map(|ticket| ticket.instance)
-                .or_else(|| self.target())
-        });
+        let target = match self.plan() {
+            Plan::Ready(instance) => Some(instance),
+            Plan::Current(ticket) | Plan::Replace(ticket) => Some(ticket.instance),
+            _ => None,
+        };
         target != Some(instance)
     }
     pub fn adb_available(&self, instance: u32) -> bool {

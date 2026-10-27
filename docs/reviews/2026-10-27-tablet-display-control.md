@@ -32,7 +32,7 @@ I/O deadline. An unconfirmed client outcome requires inspection, not blind retry
 `BLENT_DISPLAY_CONTROL_CLIENTS` selects 1..64 concurrent IPC jobs (default 8).
 Higher capacity tolerates more concurrent status clients, using more descriptors
 and bounded frame buffers. Admission closes while this pool is full. The daemon
-owns at most four display slots and 1,024 suppressed identities. Exhaustion rejects
+owns at most four display slots and 1,024 explicit tablet policy exceptions. Exhaustion rejects
 without releasing or overwriting an existing owner.
 
 Monitor owns all native effects after admission, including caller disconnect.
@@ -42,7 +42,9 @@ owns a current-thread runtime and socket until reply/error; cancellation cannot
 retire admitted daemon work. Reuse requires the original native completion proof.
 Existing native retirement/funding contracts are preserved.
 
-Offline Linux evidence:
+The later [T1275 scope correction](2026-10-27-display-start-scope.md) makes manual USB Start cooperative at capacity and derives ADB eligibility from the same plan.
+
+Offline Linux evidence for the original T1274 commit:
 
 - Two scope/capacity regressions failed against the initial no-op policy, then
   passed unchanged. Permanent tests also cover stale daemon/lease identity,
