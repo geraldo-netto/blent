@@ -161,7 +161,13 @@ VAStatus __wrap_vaRenderPicture(VADisplay d, VAContextID context, VABufferID *bu
 }
 VAStatus __wrap_vaEndPicture(VADisplay d, VAContextID context) { (void)d; assert(context==1); return 0; }
 VAStatus __wrap_vaSyncSurface(VADisplay d, VASurfaceID surface) { (void)d; assert(surface==2); synchronized=1; return 0; }
-VAStatus __wrap_vaDestroyBuffer(VADisplay d, VABufferID buffer) { (void)d; assert(buffer==1); return 0; }
+VAStatus __wrap_vaDestroyBuffer(VADisplay d, VABufferID buffer)
+{
+    (void)d;
+    assert(buffer == 1);
+    /* T1283: failed destruction leaves the native buffer owned by the process. */
+    return fault == 11 ? VA_STATUS_ERROR_OPERATION_FAILED : VA_STATUS_SUCCESS;
+}
 VAStatus __wrap_vaDestroyContext(VADisplay d, VAContextID context) { (void)d; assert(context==1); return 0; }
 VAStatus __wrap_vaDestroyConfig(VADisplay d, VAConfigID config) { (void)d; assert(config==1); return 0; }
 VAStatus __wrap_vaDestroySurfaces(VADisplay d, VASurfaceID *surfaces, int count) { (void)d; assert(count==1 && surfaces[0]==1); return 0; }
@@ -238,10 +244,12 @@ static void t773_transitions(void) {
     for (int i=0;i<3;i++) stream_case("desktop",0);
 }
 
-int main(void) {
+int main(void)
+{
     identity_case();
     t773_transitions();
     stream_case("pattern",0); stream_case("desktop",0); stream_case("desktop",1);
+    rejected_export(11); /* T1283: retirement failure must terminate admission. */
     rejected_export(1); rejected_export(2);
     for (int error=4; error<=10; error++) rejected_export(error);
     return 0;

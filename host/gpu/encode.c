@@ -83,7 +83,8 @@ void gpu_encoder_open(gpu_encoder *e, const gpu_capture *c, const gpu_options *o
     e->packet = av_packet_alloc(); gpu_require(e->packet != NULL, "packet allocation");
 }
 
-static void convert(gpu_encoder *e, AVFrame *frame) {
+static void convert(gpu_encoder *e, AVFrame *frame)
+{
     VAProcPipelineParameterBuffer parameters = {.surface=e->rgb,
         .surface_color_standard=VAProcColorStandardBT709, .output_color_standard=VAProcColorStandardBT709};
     /* Match the CPU path's numerical RGB-to-limited-BT709 contract. SRGB as
@@ -98,7 +99,10 @@ static void convert(gpu_encoder *e, AVFrame *frame) {
     gpu_require(vaRenderPicture(e->va, e->context, &buffer, 1) == 0, "submit conversion");
     gpu_require(vaEndPicture(e->va, e->context) == 0, "end conversion");
     gpu_require(vaSyncSurface(e->va, nv12) == 0, "final RGB consumer completion");
-    vaDestroyBuffer(e->va, buffer);
+    /* Unconfirmed destruction ends this owning process before another frame
+     * can allocate. Process teardown sponsors remaining native resources. */
+    gpu_require(vaDestroyBuffer(e->va, buffer) == VA_STATUS_SUCCESS,
+        "retire conversion parameters");
 }
 
 static void drain(gpu_encoder *e) {
