@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1320 | open | medium | small | Validate the complete Markdown rewrite across reader guides, references and history. Check terminology, links/anchors, examples, cross-file contradictions, diagram labels and rendered readability; verify that explanations are lean and unambiguous while necessary detail remains available. Completion: T1316 inventory is reconciled with every actual edit/disposition, no Markdown file is silently missed, all discovered discrepancies are fixed or individually tracked, and the normal documentation/link checks pass. Dependencies: T1317, T1318, T1319. |
 
 
 ## Other items
