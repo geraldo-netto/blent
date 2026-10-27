@@ -153,6 +153,9 @@ jobs:
             --jacoco '${{ runner.temp }}/blent-android-coverage/jacoco.xml' \
             --scope android/app/src/main/ --output '${{ runner.temp }}/blent-android-coverage/report.json'
 
+      - name: Check Android test resource policy (T1302)
+        run: python3 -m unittest discover -s scripts/tests -p test_android_test_resources.py
+
       - name: Preserve Android coverage evidence
         if: always()
         uses: actions/upload-artifact@v4

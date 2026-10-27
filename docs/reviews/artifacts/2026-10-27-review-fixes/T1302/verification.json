@@ -1,0 +1,349 @@
+{
+  "issue": "T1302",
+  "defaults": {
+    "test_heap_mib": 2048,
+    "fork_every_classes": 40
+  },
+  "bounds": {
+    "test_heap_mib": [
+      128,
+      16384
+    ],
+    "fork_every_classes": [
+      1,
+      1000
+    ]
+  },
+  "red": "HostedTestResourcesTest failed at the actual 512 MiB worker heap; configuration regression observed null maxHeapSize, forkEvery=0, no declared budget before production changes. Original complete-suite OOM evidence remains in 2026-10-27-project-review.",
+  "green": {
+    "ordinary_hosted_tests": {
+      "tests": 2711,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "configuration_tests": 3,
+    "configuration_cases": "defaults, both valid endpoint pairs, eight invalid property values; all real Gradle Test tasks inspected",
+    "coverage": {
+      "kotlin": {
+        "functions": 3334,
+        "passing": 3334,
+        "below_80": 0,
+        "unmeasured": 0
+      }
+    }
+  },
+  "command": "./android/gradlew -p android --offline --no-daemon --console=plain -I scripts/coverage/android.init.gradle -I /tmp/blent-review-20261027/offline.gradle profileCoverage",
+  "offline_init": "Robolectric uses cached local SDK jars and verbose result logging only; no heap or fork override.",
+  "retention_investigation": {
+    "library": "Robolectric 4.17 cached local jars inspected with javap -private/-c",
+    "observed": "SandboxManager retains AndroidSandbox values in a LinkedHashMap bounded to three times supported SDK count; eviction calls sandbox.shutdown. SandboxTestRunner also retains helper runners and linkage-error metadata. Original worker heap exhausted at 512 MiB while metaspace was about 1.4 GiB.",
+    "conclusion": "Funding and worker-lifetime accumulation are concrete constraints. A heap-root dump was not taken; no specific application leak or unrestricted leak-freedom claim.",
+    "ownership": "Gradle owns each Test worker and its sandboxes/classloaders. forkEvery=40 requests worker retirement after a bounded class batch; JVM process exit reclaims that worker memory before replacement. Application/native ownership contracts and retirement assertions remain unchanged."
+  },
+  "complexity": {
+    "kotlin": [
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        4,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        10,
+        "testResourceProperty",
+        2
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        13,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        22,
+        "<lambda>",
+        2
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        24,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        37,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        37,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        45,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        48,
+        "<lambda>",
+        3
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        52,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        61,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        62,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        71,
+        "<lambda>",
+        2
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        72,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        77,
+        "<lambda>",
+        2
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        88,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        101,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        118,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        123,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        127,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        131,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        135,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        140,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        147,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        156,
+        "<lambda>",
+        2
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        158,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        159,
+        "<lambda>",
+        2
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        165,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        168,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        169,
+        "<lambda>",
+        2
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        170,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        179,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        180,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        182,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        186,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        193,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        193,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/build.gradle.kts",
+        196,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/android/app/src/test/java/com/blent/HostedTestResourcesTest.kt",
+        7,
+        "t1302WorkerReceivesItsDeclaredHeapBudget",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/scripts/tests/fixtures/android-test-resources/probe.init.gradle.kts",
+        3,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/scripts/tests/fixtures/android-test-resources/probe.init.gradle.kts",
+        4,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/scripts/tests/fixtures/android-test-resources/probe.init.gradle.kts",
+        5,
+        "<lambda>",
+        1
+      ],
+      [
+        "/backups/disk2/projects/blent/scripts/tests/fixtures/android-test-resources/probe.init.gradle.kts",
+        6,
+        "<lambda>",
+        1
+      ]
+    ],
+    "python": [
+      [
+        11,
+        "probe",
+        2
+      ],
+      [
+        22,
+        "check_budget",
+        2
+      ],
+      [
+        31,
+        "test_t1302_defaults_fund_every_test_task",
+        1
+      ],
+      [
+        34,
+        "test_t1302_explicit_budget_boundaries",
+        2
+      ],
+      [
+        39,
+        "test_t1302_invalid_budgets_fail_before_workers",
+        3
+      ]
+    ],
+    "tools": "Kotlin PSI 1.9.20 / Python 3.12.3 repository metric",
+    "source_sha256": {
+      "android/app/build.gradle.kts": "282ad045302d37d6bb382e78a4f1bc60d6a80174473d942dfc8722b58d8f7968",
+      "android/app/src/test/java/com/blent/HostedTestResourcesTest.kt": "42e3f01d3cb23578fab6fe80e018dc0b409ae6538d71473bd0c79e235fdca5af",
+      "scripts/tests/fixtures/android-test-resources/probe.init.gradle.kts": "db677e020a8b95cbbd5def423465b1082a9ded200d8c95095b9ba8949bf6d680"
+    }
+  },
+  "java": "openjdk 21.0.12.1 2026-08-18",
+  "coverage_scope": "Android application methods; existing inventory excludes Kotlin DSL build configuration. Executable Gradle configuration tests cover defaults, overrides and rejection; ordinary JVM test verifies actual heap.",
+  "sources": {
+    "android/app/build.gradle.kts": "282ad045302d37d6bb382e78a4f1bc60d6a80174473d942dfc8722b58d8f7968",
+    "android/app/src/test/java/com/blent/HostedTestResourcesTest.kt": "42e3f01d3cb23578fab6fe80e018dc0b409ae6538d71473bd0c79e235fdca5af",
+    "scripts/tests/test_android_test_resources.py": "65a5b705276d5a2336cf56fadc98aa99170f32f1345af04f3d1db729cdc0bb4f",
+    "scripts/tests/fixtures/android-test-resources/probe.init.gradle.kts": "db677e020a8b95cbbd5def423465b1082a9ded200d8c95095b9ba8949bf6d680",
+    ".github/workflows/build.yml": "91d06b1ae3904b7e5f84df1f9d284c888616e2d02f1145ae9259581846a31ad2",
+    "docs/development.md": "1ac15e7ba23ed59883495b4c7d40dbb4f4c26c8ebc48171eca1bcab79c34fda6"
+  }
+}

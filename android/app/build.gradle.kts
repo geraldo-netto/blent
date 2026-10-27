@@ -6,6 +6,17 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+// T1302: worker budgets belong to Test processes, independently of the daemon.
+fun testResourceProperty(name: String, fallback: Int, range: IntRange): Int {
+    val raw = providers.gradleProperty(name).orElse(fallback.toString()).get()
+    val value = raw.toIntOrNull()
+    require(value != null && value in range) { "$name must be within ${range.first}..${range.last}" }
+    return value
+}
+
+val testHeapMiB = testResourceProperty("blentTestHeapMiB", 2048, 128..16384)
+val testForkEvery = testResourceProperty("blentTestForkEvery", 40, 1..1000)
+
 // Local signing properties stay outside Git. Official release tooling verifies
 // the APK against the designated public certificate (docs/release-signing.md).
 val keystoreProps = Properties().apply {
@@ -135,6 +146,9 @@ android {
 // field. This opens only the test JVM; Android application permissions are unchanged.
 tasks.withType<Test>().configureEach {
     jvmArgs("--add-opens=java.base/java.io=ALL-UNNAMED")
+    maxHeapSize = "${testHeapMiB}m"
+    forkEvery = testForkEvery.toLong()
+    systemProperty("blent.test.heapMiB", testHeapMiB.toString())
 }
 
 // T846: explicit native/JVM integration suite. Ordinary JVM tests need no Rust

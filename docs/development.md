@@ -115,7 +115,20 @@ rustup target add wasm32-unknown-unknown # T736 portable-policy compile regressi
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 ./android/gradlew -p android testDebugUnitTest assembleDebug lintDebug
+python3 -m unittest discover -s scripts/tests -p test_android_test_resources.py
 ```
+
+Android hosted tests default to a 2048 MiB maximum heap per test JVM and a fresh
+worker after 40 test classes. These limits also apply to coverage and TLS
+interop tasks; `org.gradle.jvmargs` funds the separate Gradle daemon. Configure
+`-PblentTestHeapMiB=128..16384` and `-PblentTestForkEvery=1..1000` with integer
+values. Smaller batches release worker-owned Robolectric sandboxes/classloaders
+more often, at the cost of JVM startup and instrumentation work. Smaller heaps
+may need smaller batches; larger heaps/batches retain more memory. The complete
+ordinary suite and coverage passed with the defaults; a smaller selected test
+run does not establish a full-suite budget. Invalid budgets reject before
+worker launch. Run the offline configuration regression after dependencies have
+been cached by the normal Android build.
 
 The normal host suite includes permanent C sanitizer, FFmpeg, GUI startup,
 installer, AppImage assembly and current artifact tests. `.cargo/config.toml` serializes
