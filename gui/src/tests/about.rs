@@ -111,11 +111,11 @@ fn t1290_wide_pages_and_footer_share_bounded_content() {
                 sized_window_frame(&mut app, &context, vec![], size);
             }
             let labels = sized_window_frame(&mut app, &context, vec![], size);
-            let left = ((width - 960.0) / 2.0).max(0.0);
+            let left = 8.0; // T1292: owner replaced centering with a stable left edge.
             let rect = labels.iter().find(|(text, _)| text == anchor).unwrap().1;
             assert!(
-                rect.left() >= left,
-                "T1290 {anchor} at width {width}: {rect:?}"
+                (rect.left() - left).abs() < 1.0,
+                "T1292 {anchor} at width {width}: {rect:?}"
             );
             for (text, rect) in &labels {
                 assert!(rect.right() <= width, "T1290 clipped {text}: {rect:?}");
@@ -127,8 +127,8 @@ fn t1290_wide_pages_and_footer_share_bounded_content() {
                     .unwrap()
                     .1;
                 assert!(
-                    save.left() >= left,
-                    "T1290 footer detached from form: {save:?}"
+                    (left..=left + 12.0).contains(&save.left()),
+                    "T1292 footer detached from form: {save:?}"
                 );
             }
         }

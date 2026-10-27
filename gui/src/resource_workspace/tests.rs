@@ -462,12 +462,12 @@ fn t1289_resource_grid_reflows_without_unbounded_card_widths() {
                 "T1289 oversized cards: {cards:?}"
             );
         }
-        if width == 3840.0 {
-            assert!(
-                cards[0].left() > 900.0,
-                "T1289 center bounded workspace: {cards:?}"
-            );
-        }
+        // T1292: keep the first card anchored within the current navigation mode.
+        let left = if width >= 860.0 { 245.0 } else { 25.0 };
+        assert!(
+            (cards[0].left() - left).abs() < 1.0,
+            "T1292 shifted cards: {cards:?}"
+        );
         assert!(labels.iter().all(|(_, rect)| rect.right() <= width));
     }
 }
