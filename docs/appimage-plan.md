@@ -137,10 +137,16 @@ crate source archive. Missing declared files, absent or empty notices, symlinks
 and nonregular notice files fail packaging. Existing output paths are not replaced.
 Notice discovery is filename-based; it does not establish legal completeness.
 
-Some published crates omit their workspace license texts. Supply verified upstream
-texts before packaging; the collector does not download or infer them. The local
-T1278 installed-notice restoration does not populate Cargo's source cache or future
-build inputs. Supplying pinned supplemental inputs to fresh builds remains T1280.
+Some published crates omit their workspace license texts. The repository's
+`packaging/appimage/supplemental-notices/manifest.json` pins recovered texts for
+18 exact crate versions. The collector verifies crate metadata, manifest bytes,
+upstream revision and notice hashes, then adds them under `.blent-upstream-notices/`
+in an owned temporary source copy. Notice outputs and source archives preserve
+that namespace; the output manifest records supplemental provenance. Cargo's
+cache remains unchanged. Unknown/mismatched versions and missing required inputs
+fail; no license text is inferred or downloaded. T1281 tracks aligning the broader
+production dependency selection with the actual release build; that current
+selection still encounters additional missing notices outside the audited graph.
 
 The publisher verifies the AppImage, source archive, Arch recipe, Linux tar,
 APK and `SHA256SUMS` as one complete asset set before publishing. Legacy Debian

@@ -9,6 +9,7 @@ import urllib.request
 
 from tools import digest
 from crate_notices import copy_crate_notices, verify_archive_notices
+from crate_supplements import prepared_source
 from elf import run
 
 
@@ -85,7 +86,11 @@ def rust_sources(repo, destination, notices):
 
 
 def copy_crate(package, destination, notices):
-    source = Path(package['manifest_path']).parent
+    with prepared_source(package) as (source, provenance):
+        return archive_crate(package, source, destination, notices, provenance)
+
+
+def archive_crate(package, source, destination, notices, provenance):
     name = f"{package['name']}-{package['version']}"
     if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.+-]*', name):
         raise ValueError('invalid crate output name')
@@ -93,6 +98,9 @@ def copy_crate(package, destination, notices):
     if target.exists() or target.is_symlink():
         raise FileExistsError(target)
     records = copy_crate_notices(source, notices / name, package['license_file'])
+    for record in records:
+        if record['path'] in provenance:
+            record['provenance'] = provenance[record['path']]
     with tarfile.open(target, 'x:gz') as archive:
         archive.add(source, arcname=target.name.removesuffix('.tar.gz'))
     verify_archive_notices(target, name, records)
