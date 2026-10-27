@@ -29,3 +29,18 @@ pub(super) fn configure(context: &egui::Context) {
     style.visuals.selection.stroke.color = Color32::WHITE;
     context.set_style(style);
 }
+
+/// Center a bounded page using a frame-local borrowed UI. No retained state or
+/// native resources; egui supplies finite viewport width and owns all shapes.
+pub(super) fn content<R>(
+    ui: &mut egui::Ui,
+    maximum: f32,
+    show: impl FnOnce(&mut egui::Ui) -> R,
+) -> R {
+    let width = ui.available_width().min(maximum).max(0.0);
+    let mut rect = ui.available_rect_before_wrap();
+    rect.min.x += (rect.width() - width).max(0.0) / 2.0;
+    rect.max.x = rect.min.x + width;
+    ui.scope_builder(egui::UiBuilder::new().max_rect(rect), show)
+        .inner
+}

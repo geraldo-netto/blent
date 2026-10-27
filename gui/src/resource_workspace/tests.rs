@@ -428,3 +428,46 @@ fn t1273_connect_and_refresh_are_explicit_passive_workspace_actions() {
         .recv_timeout(std::time::Duration::from_secs(1))
         .is_err());
 }
+
+// T1289: resize the same context in both directions, including maximized 4K.
+#[test]
+fn t1289_resource_grid_reflows_without_unbounded_card_widths() {
+    let (_root, mut app) = settings_test_app(Tab::Overview);
+    app.status.lock().unwrap().tablets = devices();
+    let context = egui::Context::default();
+    for (width, columns) in [
+        (1040.0, 2),
+        (3840.0, 4),
+        (1920.0, 4),
+        (380.0, 1),
+        (1040.0, 2),
+    ] {
+        let size = egui::vec2(width, 1100.0);
+        for _ in 0..3 {
+            sized_window_frame(&mut app, &context, vec![], size);
+        }
+        let labels = sized_window_frame(&mut app, &context, vec![], size);
+        let cards: Vec<_> = ["Display & input", "Camera", "Microphone", "Speakers"]
+            .iter()
+            .map(|name| labels.iter().find(|(text, _)| text == name).unwrap().1)
+            .collect();
+        let first_row = cards
+            .iter()
+            .filter(|rect| (rect.top() - cards[0].top()).abs() < 1.0)
+            .count();
+        assert_eq!(first_row, columns, "T1289 width {width}: {cards:?}");
+        for pair in cards[..columns].windows(2) {
+            assert!(
+                pair[1].left() - pair[0].left() <= 500.0,
+                "T1289 oversized cards: {cards:?}"
+            );
+        }
+        if width == 3840.0 {
+            assert!(
+                cards[0].left() > 900.0,
+                "T1289 center bounded workspace: {cards:?}"
+            );
+        }
+        assert!(labels.iter().all(|(_, rect)| rect.right() <= width));
+    }
+}

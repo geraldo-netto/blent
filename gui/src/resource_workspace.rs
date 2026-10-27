@@ -8,6 +8,17 @@ use blent_config::{
 };
 use eframe::egui;
 
+// Four resources stay in complete rows; widths are egui logical points.
+fn resource_columns(width: f32) -> usize {
+    if width >= 1280.0 {
+        4
+    } else if width >= 620.0 {
+        2
+    } else {
+        1
+    }
+}
+
 impl App {
     pub(super) fn workspace_devices(&mut self, status: &Status) -> Vec<Device> {
         let result = self.collect_workspace_devices(status);
@@ -142,20 +153,14 @@ impl App {
             Resource::Microphone,
             Resource::Speakers,
         ];
-        if ui.available_width() >= 620.0 {
-            for row in resources.chunks(2) {
-                ui.columns(2, |columns| {
-                    for (column, resource) in columns.iter_mut().zip(row) {
-                        self.resource_card(column, status, &selected, *resource);
-                    }
-                });
-                ui.add_space(12.0);
-            }
-        } else {
-            for resource in resources {
-                self.resource_card(ui, status, &selected, resource);
-                ui.add_space(10.0);
-            }
+        let columns = resource_columns(ui.available_width());
+        for row in resources.chunks(columns) {
+            ui.columns(columns, |columns| {
+                for (column, resource) in columns.iter_mut().zip(row) {
+                    self.resource_card(column, status, &selected, *resource);
+                }
+            });
+            ui.add_space(12.0);
         }
         ui.small("Saving preferences never starts camera or audio. External media activity may be unconfirmed.");
     }

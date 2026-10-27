@@ -397,7 +397,12 @@ impl App {
                 .id_salt(("page", self.tab))
                 .auto_shrink([false; 2])
                 .show(ui, |ui| {
-                    self.show_page(ui, &status);
+                    let maximum = if self.tab == Tab::Overview {
+                        1960.0
+                    } else {
+                        ui.available_width()
+                    };
+                    workspace_style::content(ui, maximum, |ui| self.show_page(ui, &status));
                 });
         });
         // Include work started by a button during this frame.
