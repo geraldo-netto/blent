@@ -83,8 +83,13 @@ static void mixed_damage(frame_exchange_t *frames, long long start, int fps)
 int main(int argc, char **argv)
 {
     assert(argc == 3);
-    int fps = atoi(argv[1]), mixed = atoi(argv[2]);
-    assert((fps == 30 || fps == 60) && (mixed == 0 || mixed == 1));
+    int fps = benchmark_number(argv[1], 30, 60);
+    int mixed = benchmark_number(argv[2], 0, 1);
+    if (fps != 30 && fps != 60)
+    {
+        fprintf(stderr, "Benchmark fps must be 30 or 60\n");
+        return 2;
+    }
     frame_exchange_t frames = FRAME_EXCHANGE_INITIALIZER;
     frame_exchange_init(&frames);
     frame_exchange_resize(&frames, 1280, 800);

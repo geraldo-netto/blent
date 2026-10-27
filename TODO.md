@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1286 | open | low | small | Replace unchecked atoi option parsing in scripts/benchmarks/frame-retirement.c, shared-damage.c and idle_writer.c with complete bounded parsing. Offline sanitized frame-retirement probe accepts `1junk`, exits 0 and reports hold_ms=1; analogous scale/mode/fps fields accept trailing garbage, while out-of-int-range atoi input has no defined portable result. Add permanent malformed/overflow/boundary cases before the fix, retaining valid workload checks, and require rejection before allocation/thread/output work. |
 
 
 

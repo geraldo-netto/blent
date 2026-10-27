@@ -94,11 +94,11 @@ static void measure(replay_t *r) {
            cpu / (1000.0 * SAMPLES), r->hash);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     assert(argc == 3);
-    replay_t r = {.scale=atoi(argv[1]), .mode=atoi(argv[2])};
-    assert(r.scale >= 1 && r.scale <= 4);
-    assert(r.mode >= 0 && r.mode <= 2);
+    replay_t r = {.scale = benchmark_number(argv[1], 1, 4),
+                  .mode = benchmark_number(argv[2], 0, 2)};
     initialize(&r); measure(&r);
     raw_ring_close(&r.ring); close(r.peer);
     conv_pool_destroy(&r.pool); free(r.capture.framebuffer);

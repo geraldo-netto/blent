@@ -40,12 +40,12 @@ static void *retire(void *pointer) {
     trial->elapsed = trial->finished - start;
     return NULL;
 }
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     assert(argc == 2);
     (void)counted_usleep; (void)counted_wait;
+    int milliseconds = benchmark_number(argv[1], 1, 1999);
     alarm(5);
-    int milliseconds = atoi(argv[1]);
-    assert(milliseconds > 0 && milliseconds < 2000);
     trial_t trial = {.frame = FRAME_EXCHANGE_INITIALIZER};
     frame_exchange_init(&trial.frame);
     trial.frame.writer_busy = 1;
