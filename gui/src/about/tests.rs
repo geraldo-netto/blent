@@ -270,28 +270,81 @@ fn t1291_notice_reader_adapts_to_tall_and_compact_windows() {
             clip.bottom() <= height,
             "T1291 reader exceeds viewport: {clip:?}"
         );
-        if height >= 1100.0 {
-            assert!(
-                clip.height() > 300.0,
-                "T1291 tall reader still cramped: {clip:?}"
-            );
-        } else {
-            assert!(
-                clip.height() <= 260.0,
-                "T1291 compact reader monopolizes page: {clip:?}"
-            );
-        }
-        if height >= 1100.0 {
+        // T1293 supersedes the separate reader height with one page viewport.
+        assert!(
+            clip.top() < 150.0,
+            "T1293 notice still owns an inner viewport: {clip:?}"
+        );
+        assert!(
+            clip.height() > height / 2.0,
+            "T1293 notice clipped within page: {clip:?}"
+        );
+        if height >= 2088.0 {
             let labels = crate::tests::sized_window_frame(&mut app, &context, vec![], size);
+            let notice = labels
+                .iter()
+                .find(|(text, _)| text == DOCUMENTS[0].1)
+                .unwrap()
+                .1;
+            assert!(
+                clip.contains_rect(notice),
+                "T1293 full MIT notice should fit: {notice:?}"
+            );
             let bundle = labels
                 .iter()
                 .find(|(text, _)| text == "Open installed bundle notices")
-                .expect("T1291 bundle action missing")
+                .unwrap()
                 .1;
             assert!(
                 bundle.bottom() < height,
-                "T1291 bundle control pushed below viewport: {bundle:?}"
+                "T1293 bundle action exceeds tall page: {bundle:?}"
             );
         }
+    }
+}
+
+fn t1293_about_output(
+    app: &mut crate::App,
+    ctx: &egui::Context,
+    size: egui::Vec2,
+) -> egui::FullOutput {
+    crate::workspace_style::configure(ctx);
+    ctx.run(
+        egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(egui::Pos2::ZERO, size)),
+            ..Default::default()
+        },
+        |ctx| app.show_window(ctx),
+    )
+}
+
+#[test]
+fn t1293_about_selector_uses_available_page_width_after_resizes() {
+    let (_root, mut app) = crate::tests::settings_test_app(crate::Tab::About);
+    let ctx = egui::Context::default();
+    ctx.enable_accesskit();
+    for width in [1040.0, 3840.0, 380.0, 1920.0, 1040.0] {
+        let size = egui::vec2(width, 2088.0);
+        for _ in 0..3 {
+            t1293_about_output(&mut app, &ctx, size);
+        }
+        let output = t1293_about_output(&mut app, &ctx, size);
+        let tree = output.platform_output.accesskit_update.unwrap();
+        let picker = tree
+            .nodes
+            .iter()
+            .map(|(_, node)| node)
+            .find(|node| node.role() == egui::accesskit::Role::ComboBox)
+            .unwrap()
+            .bounds()
+            .unwrap();
+        assert!(
+            picker.width() >= f64::from(width - 32.0),
+            "T1293 selector remains capped: {picker:?}"
+        );
+        assert!(
+            picker.x0 >= 8.0 && picker.x1 <= f64::from(width),
+            "T1293 selector exceeds page: {picker:?}"
+        );
     }
 }

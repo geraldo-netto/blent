@@ -20,3 +20,32 @@ Only a frame-local rectangle calculation changed. The synchronous UI borrow,
 finite viewport bounds, static data and native resource owners are unchanged.
 No retained allocations, callbacks or threads were added. Native Windows
 visual verification remains tracked under T1271.
+
+## T1293 — Expanding About content with one page scroll owner
+
+Owner superseded the bounded About column and nested notice viewport. About
+now takes the available page width; its selector follows that width. The full
+notice is a left-aligned, selectable, wrapping label in normal page flow.
+Only the outer page scrolls when the selected content exceeds the viewport;
+long legal texts are neither truncated nor promised to fit every screen.
+The selector popup retains its own scrolling for the document list.
+
+Both permanent regressions failed before the change: selector bounds remained
+520 points wide and the notice clip began inside the page. The accessibility
+geometry test checks selector bounds through 380/1040/1920/3840-point resizes;
+the existing reader regression now enforces the new single-viewport contract
+and full visible MIT notice when space permits. Existing selection/copy,
+keyboard and compact wrapping tests remain intact.
+
+All 165 GUI tests and native startup/accessibility pass. maximum_width,
+show_window, document_viewer and notice_text each measure 100% executable-line
+coverage. All changed functions/tests measure complexity <=9 using the same
+tools as T1292. Evidence: t1293-red.log, t1293-coverage.log,
+t1293-metrics.json and t1293-complexity.json in the local artifact directory.
+
+Static notice text remains borrowed for the current egui frame; copying still
+creates only the explicit clipboard result. The page owns scroll state; the
+removed nested viewport retains no separate state owner. No native allocation,
+worker, device handle or callback ownership changed. Native Windows visual
+acceptance remains T1271. Earlier responsive review results are historical;
+this section records the current owner-approved layout contract.

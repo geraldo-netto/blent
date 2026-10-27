@@ -42,7 +42,7 @@ fn document_viewer(ui: &mut egui::Ui) {
     let id = ui.make_persistent_id("about-document");
     let mut index = ui.data(|data| data.get_temp::<usize>(id)).unwrap_or(0);
     index = index.min(DOCUMENTS.len() - 1);
-    let width = ui.available_width().min(520.0);
+    let width = ui.available_width();
     egui::ComboBox::from_id_salt("license-selector")
         .selected_text(DOCUMENTS[index].0)
         .wrap()
@@ -59,21 +59,19 @@ fn document_viewer(ui: &mut egui::Ui) {
 }
 
 fn notice_text(ui: &mut egui::Ui, index: usize) {
-    let (name, text) = DOCUMENTS[index];
+    let text = DOCUMENTS[index].1;
     if ui.button("Copy full notice").clicked() {
         ui.ctx().copy_text(text.to_owned());
     }
-    // The outer page may scroll, so use its visible clip rather than its
-    // unbounded content height. Reserve space for the bundle explanation/action;
-    // short windows retain outer scrolling and a usable inner reader.
-    let height = (ui.clip_rect().bottom() - ui.cursor().top() - 112.0).clamp(120.0, 960.0);
-    egui::ScrollArea::vertical()
-        .id_salt(("license-text", name))
-        .max_height(height)
-        .auto_shrink([false, true])
-        .show(ui, |ui| {
-            ui.add(egui::Label::new(text).selectable(true).wrap());
-        });
+    // The notice belongs to the page's single scroll owner. Keep the complete
+    // text in normal flow, with wrapping and selection at the available width.
+    ui.add_sized(
+        egui::vec2(ui.available_width(), 0.0),
+        egui::Label::new(text)
+            .selectable(true)
+            .wrap()
+            .halign(egui::Align::Min),
+    );
 }
 
 fn bundle_link(ui: &mut egui::Ui, locate: impl FnOnce() -> Result<String, String>) {

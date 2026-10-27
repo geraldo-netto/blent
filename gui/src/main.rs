@@ -139,6 +139,14 @@ impl Tab {
         Self::Settings,
     ];
 
+    fn maximum_width(self, available: f32) -> f32 {
+        match self {
+            Self::Overview => 1960.0,
+            Self::About => available,
+            _ => workspace_style::FORM_WIDTH,
+        }
+    }
+
     fn title(self) -> &'static str {
         match self {
             Self::Overview => "Tablet resources",
@@ -397,11 +405,7 @@ impl App {
                 .id_salt(("page", self.tab))
                 .auto_shrink([false; 2])
                 .show(ui, |ui| {
-                    let maximum = if self.tab == Tab::Overview {
-                        1960.0
-                    } else {
-                        workspace_style::FORM_WIDTH
-                    };
+                    let maximum = self.tab.maximum_width(ui.available_width());
                     workspace_style::content(ui, maximum, |ui| self.show_page(ui, &status));
                 });
         });
