@@ -1,0 +1,8 @@
+{
+  "all_four_stop_test_bodies_byte_identical": true,
+  "old_binary": "camera_probe_stop",
+  "new_binary": "adb_mapping_retirement",
+  "new_module": "camera_stop",
+  "production_visibility_changed": false,
+  "warning_suppressions_added": false
+}

@@ -6,6 +6,8 @@ mod adb_command;
 mod adb_mapping;
 #[path = "../src/camera/bridge.rs"]
 mod bridge;
+#[path = "adb_mapping/stop.rs"]
+mod camera_stop;
 
 use blent_config::retirement::Completion;
 use std::{
