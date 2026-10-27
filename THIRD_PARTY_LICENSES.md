@@ -1,4 +1,9 @@
 # Third-party components
+
+This index identifies bundled or linked components and where to find their
+notices and matching source. Original license texts and copyright notices remain
+unchanged. Packaging a component does not establish device support.
+
 - The optional experimental host `accessory-transport` feature uses stock Rustls,
   tokio-rustls, rcgen and their crypto/parsing dependencies. New locked dependency
   notices, exact crate checksums and license declarations are retained in
@@ -9,7 +14,7 @@
   dependency closure, notices and corresponding source through the existing
   distribution collector. Linux bundles carry both `blent-usb-broker` and
   `blent-usb-io` as executable siblings. Runtime/device acceptance remains T846;
-  packaging does not qualify physical pairing/media or API27/28 providers.
+  packaging does not qualify physical pairing/media or API 27/28 providers.
 - Android APKs carry project notices, the Apache-2.0 runtime dependency license,
   the MPL-2.0 public-suffix data license and its upstream source notice in
   `assets/licenses/`. The reviewed dependency coordinates and artifact hashes

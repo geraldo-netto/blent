@@ -1,10 +1,38 @@
 # Security
 
+Blent sends display, input and optional media between your computer and tablet.
+It has no account, application telemetry or cloud relay. Keep authentication on,
+use ADB networking only on a trusted network, and approve direct USB peers only
+after comparing their fingerprints.
+
+| Question | Read |
+| --- | --- |
+| Who can connect or control media? | [Connections and trust](#connections-and-trust-boundaries) |
+| Where are secrets stored? | [Local state](#local-state-and-updates) |
+| What changes on my computer? | [Installation changes](#what-installation-changes) |
+| How do I remove Blent? | [Uninstall](#how-to-uninstall-completely) |
+| What do release signatures prove? | [Release integrity](#release-integrity) |
+
+```mermaid
+flowchart LR
+    ADB[Authorized ADB route] --> Token[Attachment token check]
+    USB[Selected direct USB peer] --> Pair[Approval and mutual TLS]
+    Token --> Session[Current session authority]
+    Pair --> Session
+    Session --> Consent[Independent media consent and permission]
+    Consent --> Media[Admitted media work]
+```
+
+Neither route protects against software already controlling your desktop user
+account or privileged Android debugging access.
+
 ## Connections and trust boundaries
 
+### ADB connections
+
 The host video and input servers bind to **127.0.0.1**, on ports 8890/8891
-by default, plus two ports per additional tablet slot. The tablet reaches
-these ports through `adb reverse`.
+by default, plus two ports per additional tablet slot. On the ADB route, the
+tablet reaches these ports through `adb reverse`.
 
 With the default `require_token = true`, each logical tablet attachment gets a
 random 256-bit token, encoded as 64 hex characters, shared by its video and input
@@ -24,8 +52,8 @@ connections. Keep authentication enabled; **tokenless mode cannot provide this
 attachment isolation**, even though existing accepted leases are still retired.
 Video and input must authenticate before receiving video or injecting input. In disabled
 mode, video accepts tokenless clients or consumes one optional saved 64-byte
-hex token without checking its value. This compatibility path is never used
-when token authentication is enabled. Incomplete optional prefixes expire
+hex token without checking its value. This explicit disabled-authentication
+mode is never used when token authentication is enabled. Incomplete optional prefixes expire
 three seconds after their first byte; malformed or extra input closes the viewer.
 
 Processes running as the same Linux user can read the token. Authorized adb
@@ -33,6 +61,8 @@ hosts and privileged Android apps are also inside the trust boundary: the
 Android token-update activity requires the system DUMP permission, available
 to adb shell and privileged apps. The ordinary launcher ignores token extras.
 This is not isolation from compromised software running as your own user.
+
+### Wi-Fi debugging
 
 `blent wifi` runs `adb tcpip 5555`: it **opens the tablet's adb listener on
 the network**, then stores its address for reconnection. The host video/input
@@ -43,12 +73,32 @@ use `adb -s TABLET_SERIAL_OR_IP:5555 usb` with the identifier shown by
 `adb devices`, or reboot the tablet and verify its debugging settings.
 See [Android's adb instructions](https://developer.android.com/tools/adb#wireless).
 
-Screen and input data are sent between the computer and tablet, over USB or
-the selected ADB network connection. Blent has no account, application
-telemetry or cloud relay. This describes the application; the static website
+These application privacy statements do not describe the static website, which
 loads fonts from Google and a social preview from GitHub.
 
+### Direct USB connections
+
+The Linux broker and Android connection worker authenticate each other with stock
+TLS and the exact approved certificate fingerprints. USB device metadata alone
+is untrusted. Saved approval requires fresh TLS proof on reconnect; it never
+automatically grants camera or microphone permission. Media still needs its own
+current local Start, permission and resource lease. Revocation stops new work
+immediately, while original native workers retain cleanup responsibility.
+
+The local Linux broker uses private same-user IPC and transfers actual loopback
+listener capabilities. A remote peer cannot choose arbitrary host ports or paths.
+Credentials still protect local media endpoints. Direct USB needs no ADB reverse
+mapping. See the [connection contract](docs/reviews/2026-10-10-t846-connection-contract.md)
+for exact identity, byte limits and retirement requirements, and its scoped
+physical-acceptance limits. Windows direct USB remains unsupported.
+
 ## Local state and updates
+
+### Linux runtime files
+
+<details>
+<summary>Exact directory validation, token paths and permissions</summary>
+
 
 The runtime base is an existing `$XDG_RUNTIME_DIR`, otherwise an existing
 `/run/user/<uid>`, otherwise `$HOME/.cache` (`/tmp/.cache` if HOME is absent).
@@ -67,6 +117,16 @@ Creation/open/validation errors propagate to startup and capture; doctor reports
 them, and cleanup skips paths it cannot validate. Token and FIFO creation request
 mode 0600 and use only accepted runtime paths. These checks do not protect
 against the same user or root replacing their own directories after validation.
+
+</details>
+
+Direct USB has separate Linux paths: `$XDG_RUNTIME_DIR/blent-usb` for live broker
+state, and `$XDG_STATE_HOME/blent/connection` for identity and saved trust (default
+`~/.local/state/blent/connection` when XDG_STATE_HOME is unset). The launch adapter
+requires absolute configured paths. Do not delete these while the broker runs;
+removing persistent identity changes future pairing.
+
+### Android state and update checks
 
 Android disables application backup and explicitly excludes the token-bearing
 `blent.xml` preferences from legacy backup, cloud backup and device transfer.
@@ -92,7 +152,7 @@ for normal streaming.
 
 | Installed or changed state | Purpose |
 | --- | --- |
-| User-local `blent`, `blent-gui`, `blent-audio` and `evdi_helper` binaries, menu entry, icons, user service and optional `XDG_CONFIG_HOME/autostart/blent.desktop`, or their package-managed counterparts | Application launch, optional audio sessions and optional desktop-session autostart |
+| User-local `blent`, `blent-gui`, `blent-audio`, `blent-usb-broker`, `blent-usb-io` and `evdi_helper` binaries, menu entry, icons, user service and optional `XDG_CONFIG_HOME/autostart/blent.desktop`, or their package-managed counterparts | Application launch, optional audio sessions and optional desktop-session autostart |
 | `/etc/modprobe.d/blent-evdi.conf` (script) or `/usr/lib/modprobe.d/blent-evdi.conf` (package) | Default `options evdi initial_device_count=2` at module load |
 | `/etc/modprobe.d/blent-gpu-order.conf`, generated by setup or native package hooks when physical GPU modules are found | Requests physical GPU modules before EVDI on the next load; an existing file or symlink is preserved |
 | `/etc/modules-load.d/blent.conf` (script) or `/usr/lib/modules-load.d/blent.conf` (package) | Boot-module list for init systems that read `modules-load.d`; other init systems need their own configuration |
@@ -108,11 +168,15 @@ automatically undone by removing application files.
 
 ## How to uninstall completely
 
-Stop both microphone and speaker sessions in the GUI's **Audio** tab, or press
-Ctrl+C in each terminal running `blent audio` and wait for it to exit. These
-sessions own their audio helpers independently of the display daemon; `blent stop`
-does not stop them. Then stop the daemon before removing its files. For a systemd
-installation:
+1. Stop camera sessions in **Cameras**, and microphone/speaker sessions in
+   **Audio**. For terminal sessions, press Ctrl+C in each `blent camera` or
+   `blent audio` terminal and wait for exit. These owners are independent;
+   `blent stop` does not stop them.
+2. Disconnect direct USB in the connection controls and close the GUI. If
+   `blent-usb-broker` remains running, use the desktop process monitor's normal
+   **End/Terminate** action for that exact executable and wait for exit. Do not
+   delete its runtime or trust files while it or its helper still runs.
+3. Stop the display daemon before removing files. For systemd:
 
 ```bash
 systemctl --user disable --now blent
@@ -121,6 +185,14 @@ systemctl --user disable --now blent
 For a terminal or direct GUI launch, use `blent stop`. Then remove **the
 installation method you used**:
 
+For a portable AppImage, delete the downloaded image after all its processes
+have exited. If you used `--install-user`, also remove its
+[registered image, wrappers and launchers](docs/appimage-plan.md#launch-and-install-for-your-user).
+Inspect the saved `gui-backup.*` copy before deleting it; it may belong to your
+previous installation. User service/autostart cleanup below applies as well.
+
+For packages or source/tarball installs:
+
 - Native package: `sudo pacman -R blent`; retained Debian fixture installations
   use `sudo apt remove blent`.
   Inspect the proposed transaction. Dependencies and repository settings may remain.
@@ -128,6 +200,7 @@ installation method you used**:
 
 ```bash
 rm -f ~/.local/bin/blent ~/.local/bin/blent-gui ~/.local/bin/blent-audio ~/.local/bin/evdi_helper
+rm -f ~/.local/bin/blent-usb-broker ~/.local/bin/blent-usb-io
 rm -f ~/.local/bin/libevdi.so.1 ~/.local/bin/libevdi.so.1.15.0
 rm -f ~/.config/systemd/user/blent.service
 rm -f ~/.config/autostart/blent.desktop
@@ -171,7 +244,10 @@ Settings are in `$XDG_CONFIG_HOME/blent` when XDG_CONFIG_HOME is absolute,
 otherwise `~/.config/blent`. Logs/PID state from direct GUI launches are in
 `~/.local/share/blent`; service logs are in the user journal. After stopping,
 remove unwanted settings/state and the selected runtime `blent` directory
-listed above. Check it for a pending `osk-restore` backup before removal: on
+listed above. After the direct USB broker and helper have exited, you may also
+remove their runtime directory and unwanted saved identity/trust at the separate
+paths above. This forgets local pairing state. Check the display state directory
+for a pending `osk-restore` backup before removal: on
 KDE, restore the desired virtual-keyboard setting first. Journal records,
 external dependencies, kernel modules and repository configuration require
 separate management; deleting these directories does not remove them.

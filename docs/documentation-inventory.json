@@ -8,7 +8,7 @@
       "owner": "T1318",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed root contribution, security, conduct, PR and provenance guidance. Clarified accepted compatibility/design and review requirements; corrected Windows status and source-verified USB trust, shutdown and uninstall paths. Added workflow/trust diagrams. Retained concise conduct, PR template and exact provenance/license inventories without legal-text edits. Verified 21 local links/anchors and six distribution-notice/identity tests.",
       "words": 147,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -16,7 +16,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "0ed6b6243a16417df4bcc08d894d3e6e9160ee419512f07b1e142ebb500823c0",
+      "outcome": "retained"
     },
     {
       "path": "AGENTS.md",
@@ -74,7 +76,7 @@
       "owner": "T1318",
       "role": "protected notice, fixture or historical record",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Reviewed root contribution, security, conduct, PR and provenance guidance. Clarified accepted compatibility/design and review requirements; corrected Windows status and source-verified USB trust, shutdown and uninstall paths. Added workflow/trust diagrams. Retained concise conduct, PR template and exact provenance/license inventories without legal-text edits. Verified 21 local links/anchors and six distribution-notice/identity tests.",
       "words": 69,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -82,14 +84,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "12bcb960090e28f0d0f99bac60c93fd7b475c42e99048b65e4275eb2d8ef6c27",
+      "outcome": "retained"
     },
     {
       "path": "CONTRIBUTING.md",
       "owner": "T1318",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed root contribution, security, conduct, PR and provenance guidance. Clarified accepted compatibility/design and review requirements; corrected Windows status and source-verified USB trust, shutdown and uninstall paths. Added workflow/trust diagrams. Retained concise conduct, PR template and exact provenance/license inventories without legal-text edits. Verified 21 local links/anchors and six distribution-notice/identity tests.",
       "words": 817,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -97,14 +101,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2551b0758f2e093a833e352d9e495438905c60c1a5b4036f9bc8cc90b2c1622f",
+      "outcome": "rewritten"
     },
     {
       "path": "COPYRIGHT.md",
       "owner": "T1318",
       "role": "protected notice, fixture or historical record",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Reviewed root contribution, security, conduct, PR and provenance guidance. Clarified accepted compatibility/design and review requirements; corrected Windows status and source-verified USB trust, shutdown and uninstall paths. Added workflow/trust diagrams. Retained concise conduct, PR template and exact provenance/license inventories without legal-text edits. Verified 21 local links/anchors and six distribution-notice/identity tests.",
       "words": 152,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -112,7 +118,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "87fd87dea0d2d75be20946acaca203c37845fb0305382cf403eb08dbe9710ade",
+      "outcome": "retained"
     },
     {
       "path": "README.md",
@@ -136,7 +144,7 @@
       "owner": "T1318",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed root contribution, security, conduct, PR and provenance guidance. Clarified accepted compatibility/design and review requirements; corrected Windows status and source-verified USB trust, shutdown and uninstall paths. Added workflow/trust diagrams. Retained concise conduct, PR template and exact provenance/license inventories without legal-text edits. Verified 21 local links/anchors and six distribution-notice/identity tests.",
       "words": 1676,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -144,14 +152,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "3215950383b778f6bd4f79544711967174c82563c2bd3f6953c021afe098f07d",
+      "outcome": "rewritten"
     },
     {
       "path": "THIRD_PARTY_LICENSES.md",
       "owner": "T1318",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed root contribution, security, conduct, PR and provenance guidance. Clarified accepted compatibility/design and review requirements; corrected Windows status and source-verified USB trust, shutdown and uninstall paths. Added workflow/trust diagrams. Retained concise conduct, PR template and exact provenance/license inventories without legal-text edits. Verified 21 local links/anchors and six distribution-notice/identity tests.",
       "words": 341,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -159,7 +169,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "9d547ac289e5926ab5f3daf325776a18e350373c1680a148ada5daff3d7163ce",
+      "outcome": "rewritten"
     },
     {
       "path": "TODO.md",
@@ -11767,7 +11779,7 @@
       "owner": "T1318",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed root contribution, security, conduct, PR and provenance guidance. Clarified accepted compatibility/design and review requirements; corrected Windows status and source-verified USB trust, shutdown and uninstall paths. Added workflow/trust diagrams. Retained concise conduct, PR template and exact provenance/license inventories without legal-text edits. Verified 21 local links/anchors and six distribution-notice/identity tests.",
       "words": 137,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11775,7 +11787,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "57630e8aff444a8e49e6e237954838df120a3615b427b490a103503dda132e05",
+      "outcome": "retained"
     },
     {
       "path": "packaging/appimage/supplemental-notices/README.md",
