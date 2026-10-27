@@ -14,7 +14,9 @@ fn valid() -> Header {
 }
 fn bytes(hex: &str) -> Vec<u8> {
     hex.as_bytes()
-        .chunks_exact(2)
+        .as_chunks::<2>()
+        .0
+        .iter()
         .map(|pair| u8::from_str_radix(std::str::from_utf8(pair).unwrap(), 16).unwrap())
         .collect()
 }
@@ -295,7 +297,7 @@ fn t846_seeded_queue_preserves_order_with_cancel_and_backpressure() {
                 .copied()
                 .eq(slice.bytes.iter().copied()));
             let count = slice.bytes.len();
-            let sent = seed % 3 != 0;
+            let sent = !seed.is_multiple_of(3);
             if sent {
                 expected[index].drain(..count);
             }

@@ -443,8 +443,8 @@ async fn t913_stuck_native_retirement_cannot_block_independent_resource_gates() 
 #[test]
 fn t1008_bounded_observations_preserve_transitions_and_fail_closed_on_overflow() {
     let mut observations = Observations::new(7, capabilities(), 2).unwrap();
-    assert_eq!(observations.publish(running()).unwrap(), true);
-    assert_eq!(observations.publish(running()).unwrap(), false);
+    assert!(observations.publish(running()).unwrap());
+    assert!(!observations.publish(running()).unwrap());
     let suspended = HostState {
         power: Some(Power::Suspending),
         ..running()

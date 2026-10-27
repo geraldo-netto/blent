@@ -72,8 +72,10 @@ fn t1055_absent_source_and_unavailable_publications_have_explicit_policy() {
 }
 #[test]
 fn t1055_exhaustion_is_terminal_and_never_wraps_or_reinitializes_original_owner() {
-    let mut owner = Projection::default();
-    owner.last = Some(Signal::new(MAX_REVISION - 1, 0, false).unwrap());
+    let mut owner = Projection {
+        last: Some(Signal::new(MAX_REVISION - 1, 0, false).unwrap()),
+        ..Default::default()
+    };
     assert_eq!(
         owner.observe(None, false).unwrap().unwrap().revision(),
         MAX_REVISION

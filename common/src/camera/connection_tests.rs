@@ -97,13 +97,15 @@ fn t931_target_selection_and_saved_legacy_defaults_are_explicit() {
 #[test]
 fn t931_wire_projection_preserves_camera_controls_and_host_transforms() {
     use crate::connection::management::{Credential, Key, Message, Profile, Resource, MAX_RECORD};
-    let mut profile = CameraProfile::default();
-    profile.usb_peer = Some("a".repeat(64));
-    profile.rotation = 270;
-    profile.mirror = true;
-    profile.background = true;
-    profile.adaptive_bitrate = false;
-    profile.min_bitrate = 20000;
+    let mut profile = CameraProfile {
+        usb_peer: Some("a".repeat(64)),
+        rotation: 270,
+        mirror: true,
+        background: true,
+        adaptive_bitrate: false,
+        min_bitrate: 20000,
+        ..Default::default()
+    };
     for lens in [Lens::Front, Lens::Rear] {
         profile.lens = lens;
         let projected = profile.invitation_profile().unwrap();

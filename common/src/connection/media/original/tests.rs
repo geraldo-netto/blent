@@ -68,7 +68,7 @@ fn t1086_rejected_or_cancelled_lookup_publishes_no_original() {
     let intent = OriginalTarget::new(Target::Adb(None)).unwrap();
     assert!(ready(intent.bind(|| async { anyhow::bail!("missing original") })).is_err());
     assert!(ready(intent.bind(|| async { Ok(String::new()) })).is_err());
-    let pending = intent.bind(|| std::future::pending::<Result<String>>());
+    let pending = intent.bind(std::future::pending::<Result<String>>);
     let mut pending = Box::pin(pending);
     assert!(poll(pending.as_mut()).is_pending());
     drop(pending);
