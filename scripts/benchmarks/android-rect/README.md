@@ -1,4 +1,4 @@
-# T419 rectangle rendering research
+# Research: render changed rectangles on Android
 
 This is a separate, shell-only `com.blent.rectbench` APK. It combines the
 existing production-decoder replay with an experimental RGB888 rectangle
@@ -6,6 +6,19 @@ renderer. It neither replaces Blent nor negotiates a new production codec.
 The local-fixture comparison excludes host capture, live compression and USB
 video delivery. See the [benchmark report](../../../docs/benchmarks/2026-09-19-rectangle-renderer.md)
 for measured boundaries and results.
+
+Instead of sending a whole picture, the experiment sends changed rectangles and
+reconstructs the picture on Android. This is a local research fixture, not a
+production video mode.
+
+```mermaid
+flowchart LR
+    A[Validated fixture] --> B[Read and decompress rectangles]
+    B --> C[Update retained texture]
+    C --> D[Draw whole texture]
+    D --> E[Record presentation timing]
+    D --> F[Separate verification: read back every pixel]
+```
 
 The renderer retains one RGB texture, one full-frame direct decode buffer and
 one Zstandard context. Its default reader reuses a direct compressed buffer
@@ -101,6 +114,8 @@ for controls: `--presentation` for presentation polling, `--mapped` for mmap,
 and `--keep-process` to exercise repeated Activity teardown without force-stop.
 Results preserve APK identity, raw samples and collection boundaries.
 
+## Sustained power experiment
+
 For an explicitly available sustained-test window, `rect-power.py` runs five
 cases in forward and reverse order: static H.264 at five and one updates/s,
 static Zstd rectangles, and pen H.264/Zstd. Its default is eight minutes per
@@ -133,6 +148,8 @@ showing both repeats and the raw battery timeline. See the
 [presentation and battery follow-up](../../../docs/benchmarks/2026-09-19-presentation-power.md)
 for the measured result and its limits.
 
+## Presentation diagnostics and completed results
+
 For presentation diagnosis, capture `android.surfaceflinger.frame` alongside
 the existing `--presentation` run. Start tracing before replay and retain its
 config, full trace and processor version. `rect-trace-report.py` restricts the
@@ -154,4 +171,5 @@ presentation times against EGL. Graphics memory, sampled peaks and app CPU
 must not be confused with bounded total device memory or energy consumption.
 
 Negotiated base/generation identity, untrusted packet integrity, live USB
-delivery, video fallback and production lifecycle admission remain T419 work.
+delivery, video fallback and production lifecycle admission were outside the recorded T419 experiment. This recipe does not claim their
+implementation or authorize resuming declined performance campaigns.

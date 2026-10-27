@@ -1,4 +1,10 @@
-# Blent Android release identity
+# Sign and verify an Android release
+
+An Android update must have the expected app identity and signing key. Use the
+existing designated key for official Blent releases; verify the resulting APK
+before distribution. Only the public certificate belongs in Git.
+
+## Designated identity
 
 Blent uses a fresh application identity selected on 2026-09-26 and the
 permanent signing key provisioned on 2026-09-18. No settings migration or
@@ -21,7 +27,7 @@ bundling and publication verify the APK against the designated certificate.
 The application ID uses an underscore because Android allows letters, digits
 and underscores in its dot-separated segments, but not hyphens. It identifies
 a separate app from the former UScreen packages; see [Android's application-ID rules](https://developer.android.com/build/configure-app-module).
-The selected migration allows both apps to be installed. It must not uninstall
+The separate identities allow both apps to be installed. It must not uninstall
 the existing app or promise automatic transfer of its private settings.
 Android's [signing documentation](https://developer.android.com/studio/publish/app-signing)
 describes update identity and key custody. Keep the same fork application ID
@@ -43,6 +49,9 @@ backup private key signed a temporary JAR, which passed strict verification
 against the primary keystore. This checks key usability and backup recovery;
 it does not establish the signing identity of any existing or published APK.
 
+<details>
+<summary>Recorded custody verification and identity history</summary>
+
 The local custody README and `identity.json` describe the active Blent identity.
 T536 corrected the earlier fork-migration notes on 2026-09-19. T628 updated both
 copies on 2026-09-26 to `io.github.geraldo_netto.blent`, matching the fresh package
@@ -52,6 +61,8 @@ filesystem, owner-only permissions remain intact, and key, password and public
 certificate bytes are unchanged. The public certificate's decoded DER and SHA-256
 also match this repository (PEM formatting differs). Keep these notes synchronized when the implemented identity changes;
 the historical key alias and custody directory names do not change the package.
+
+</details>
 
 Inspect the tracked public certificate without accessing private material:
 
@@ -108,6 +119,6 @@ adb shell am start -n io.github.geraldo_netto.blent/com.blent.MainActivity
 
 Debug builds use the same fork application ID with a different signing key.
 They cannot replace an official release in place. Preserve app data and check
-which APK is installed before choosing a migration; do not automatically
+which APK is installed before changing installations; do not automatically
 uninstall an app to bypass a signature mismatch. Future official releases use
 the same designated package and signing identity.

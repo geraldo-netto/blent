@@ -1,10 +1,22 @@
-# Per-function coverage (T497)
+# Check coverage for each function
+
+Coverage answers which executable lines the tests ran. Each maintained function
+must pass separately; a high project average cannot hide an untested function.
+Collect counters from unchanged sources, then run the report gate.
+
+```mermaid
+flowchart LR
+    A[Snapshot sources] --> B[Run native instrumented tests]
+    B --> C[Keep counters and source fingerprints]
+    C --> D[Combine matching platform evidence]
+    D --> E[Check every maintained function at 80 percent]
+```
 
 The accepted gate combines native Linux and Windows Rust, Android, capture C
 and essential-script counters. Require **80% executable lines for every maintained
 function/method**, plus permanent bounded invalid-value and out-of-bounds tests.
 Missing counters, changed source bytes and empty platform scopes fail. See the
-[current evidence](../../docs/reviews/2026-09-26-function-coverage.md); the
+[dated evidence](../../docs/reviews/2026-09-26-function-coverage.md); the
 [2026-09-19 report](../../docs/reviews/2026-09-19-function-coverage.md) is historical.
 
 The requirement covers Rust applications, the Android app, the C EVDI helper,
@@ -64,6 +76,18 @@ counters fail. The mock tests validate Blent's boundary calls and ownership;
 they do not establish physical GPU driver compatibility or remove the prototype
 label. CI includes these counters in the combined gate with a second `--gcov`
 input. No real display or render device is used.
+
+## USB helper C gate (T1313)
+
+```sh
+/tmp/blent-coverage-venv/bin/python scripts/coverage/capture_check.py /tmp/blent-usb-coverage --scope host/accessory/
+```
+
+Use a new output directory. This selects the normal `scripts/tests/test_aoa*.py` and
+`test_accessory*.py` suites for every maintained function in `host/accessory/`. Native fixtures use fake device boundaries; they do not claim
+physical USB acceptance. Sources, GCC counters, logs and `report.json` are retained.
+Missing counters or changed sources fail. CI combines this evidence with capture
+and GPU counters; one C scope cannot stand in for another.
 
 ## Owned C boundary testing (T767)
 
@@ -199,6 +223,8 @@ inventory excludes generated files, dependencies, caches/build outputs and test
 fixtures, including Rust test-only modules. An absent measurement fails; there
 is no aggregate-percentage substitute or silent platform exclusion.
 
+### Kotlin method attribution
+
 Kotlin uses authored PSI functions, accessors, constructors and callbacks compiled
 as separate methods. T848 inventories primary construction, instance property/init
 bodies, anonymous-object initialization, named-object/companion and top-level static
@@ -231,6 +257,8 @@ unchanged in diagnostic variants. This conservative check does not reconstruct
 filtered instructions or certify unrestricted bytecode/SMAP mappings; unsupported
 counter attribution needs measurable owned code or native evidence. See the
 [change history](https://www.jacoco.org/jacoco/trunk/doc/changes.html).
+
+### Platform isolation and native evidence
 
 The Linux daemon lifecycle regression requires a private PID namespace. It uses
 `unshare` by default. The portability CI container supplies its own namespace and
@@ -272,6 +300,8 @@ To combine downloaded artifacts in the same layout as CI:
   --native-sources evidence/windows/windows-sources.json \
   --jacoco evidence/android/jacoco.xml \
   --gcov evidence/host/blent-capture-coverage/native \
+  --gcov evidence/host/blent-gpu-coverage/native \
+  --gcov evidence/host/blent-usb-coverage/native \
   --python-json evidence/host/blent-script-coverage/python.json \
   --python-calls evidence/host/blent-script-coverage/calls \
   --shell evidence/host/blent-script-coverage/shell \
@@ -334,6 +364,8 @@ Keep the directory for review, then delete only your own evidence when no longer
 needed; fresh compilation trades extra local disk/build time for unambiguous
 mapping ownership. Missing cached dependencies fail offline; this tool does not
 authorize downloads.
+
+### Collector source ownership
 
 T965 shares authored PSI ownership with the complexity inventory through
 `scripts/kotlin/AuthoredKotlin.kt`. Native method attribution, generated-code

@@ -1,4 +1,25 @@
-# Development
+# Build and develop Blent
+
+Build matching desktop and Android programs, run the checks for your change,
+then package only when needed. Building does not install the programs; installation
+and live display tests change the machine.
+
+| Task | Start here |
+| --- | --- |
+| Build Linux and Android | [Source build](#building-from-source) |
+| Run automated checks | [Running and testing](#running-and-testing) |
+| Understand settings/encoder internals | [Defaults](#settings-defaults-and-scope), [encoder tuning](#encoder-tuning) |
+| Make a signed Android package | [Release APK](#release-apk) |
+| Prepare a release | [Maintainer workflow](#releasing-maintainers) |
+| Check package portability | [Container checks](#portable-build-and-package-checks) |
+
+```mermaid
+flowchart LR
+    A[Matching source checkout] --> B[Build desktop and Android]
+    B --> C[Automated tests and per-function checks]
+    C --> D[Package and verify]
+    D --> E[Explicit installation or release]
+```
 
 ## Compatibility policy
 
@@ -12,8 +33,8 @@ Track discoveries in `TODO.md`, with one verified commit per removal.
 
 ## Building from source
 
-These instructions target the Linux host. The [Windows plan](windows-port.md)
-is proposed work, not a supported build procedure. Use the fork checkout and
+These instructions target the Linux host. The [Windows preview](windows-port.md) has its own build instructions and
+explicitly incomplete runtime support. Use the fork checkout and
 record `git rev-parse HEAD` when sharing results; version 1.2.3 alone does not
 identify its unreleased changes. Builds may set `BLENT_BUILD_REVISION` to their
 verified source revision (including a dirty-worktree qualifier when applicable).
@@ -58,7 +79,7 @@ or a supported `qdbus` variant. X11 mapping needs
 `xinput` and `xrandr`. See [installation.md](installation.md).
 
 ```bash
-make build            # EVDI helper + Rust daemon, GUI and audio helper
+make build            # EVDI helper + workspace binaries
 make install          # copies to ~/.local/bin, installs/reloads the user unit
 make setup-system     # modprobe.d / modules-load.d / udev rule (sudo)
 ```
@@ -138,7 +159,7 @@ clients/tasks. On Debian/Ubuntu, add:
 
 ```bash
 sudo apt-get install -y python3 python3-xlib python3-tk python3-numpy python3-pil ffmpeg fakeroot dpkg-dev \
-  xvfb xauth x11-utils dbus-x11 at-spi2-core libglib2.0-bin libxkbcommon-x11-0 libegl1
+  xvfb xauth x11-utils metacity wmctrl dbus-x11 at-spi2-core libglib2.0-bin libxkbcommon-x11-0 libegl1
 ```
 
 GCC's ASan/UBSan/TSan runtimes must be installed with the compiler. The GUI
@@ -181,6 +202,9 @@ records one/two/four-client copying and allocation measurements.
 
 ## Project layout
 
+<details>
+<summary>Source map for contributors</summary>
+
 ```
 host/              Rust daemon
   src/main.rs        CLI, orchestration, adb monitor, per-tablet sessions
@@ -218,9 +242,10 @@ scripts/           install.sh, release build, fake tablet
 docs/              documentation and proposed static-site source
 ```
 
-The proposed [Windows integration plan](windows-port.md) covers pending
-decisions, platform changes, milestones and validation. Windows host support
-is not implemented yet.
+The [Windows preview](windows-port.md) distinguishes implemented lifecycle/UI/input
+adapters from unavailable streaming and pending native acceptance.
+
+</details>
 
 ## Command line
 
@@ -235,6 +260,7 @@ COMMANDS
   wifi            enable ADB TCP; --off forgets/disconnects the saved address
   doctor          diagnose the setup and print fixes
   cameras         expose tablet front/rear Linux webcams (foreground command)
+  audio           share tablet microphone or speakers (foreground command)
 
 OPTIONS (override ~/.config/blent/config.toml for this run only)
   --encoder <NAME>      auto or a registered NVENC/VAAPI/software codec profile
@@ -249,7 +275,7 @@ OPTIONS (override ~/.config/blent/config.toml for this run only)
   -h, --help; -V, --version
 ```
 
-No subcommand defaults to `start`. `--width`/`--height` do not turn off
+With no subcommand, Blent runs `start`. `--width`/`--height` do not turn off
 auto-resolution: set `auto_resolution = false` in config for a manual mode.
 With auto-resolution disabled, Blent validates the configured capture geometry
 independently of the tablet's native size. The native report must still have
@@ -260,14 +286,17 @@ it is not a universal compositor enumeration API.
 
 ## Settings defaults and scope
 
+<details>
+<summary>Exact defaults, bounds and configuration semantics</summary>
+
 These defaults come from `common/src/model.rs`, unless a saved config overrides
-them. See the README for config paths and the app gear-menu controls.
+them. See the [settings guide](settings.md) for paths and user controls.
 
 | Host setting | Default | Scope or limit |
 | --- | --- | --- |
 | `encoder` | `auto` | Bounded compatible-encoder probes with H.264 fallback; saved explicit choices remain |
 | `encoding_gpu` | empty (Automatic) | Opaque stable identity selected in Video → Encoding GPU; `software` restricts trials to CPU. Linux VAAPI selector; missing/inaccessible selections fall back to software. Restart required. |
-| `vaapi_device` | `/dev/dri/renderD128` | Legacy VAAPI path retained when `encoding_gpu` is empty |
+| `vaapi_device` | `/dev/dri/renderD128` | Explicit VAAPI path used when `encoding_gpu` is empty |
 | `fps` / `bitrate` / `quality` | 60 / 20000 kbps / 18 | Accepted ranges 10–90 / 1000–60000 / 12–32; encoder-specific rate control |
 | `width` / `height` | 2960 / 1848 | Fallback dimensions; `auto_resolution = true` follows tablet geometry |
 | `stream_scale` | 1 | Integer 1–4; divides stream dimensions, not capture dimensions |
@@ -281,6 +310,7 @@ them. See the README for config paths and the app gear-menu controls.
 | `input_touch` / `input_pen` / `input_pointer` | true / true / true | Pointer creation also requires pen |
 | `video_port` / `input_port` | 8890 / 8891 | Incremented by two per additional slot |
 | `require_token` / `check_updates` / `auto_launch_app` | true / true / true | Keep authentication enabled; update checks are optional |
+| `wifi_address` | empty | Set by `blent wifi`; reread for reconnect attempts |
 
 On Linux, **Video → Conversion capacity** offers Auto or a manual 1–128 value.
 Use **Apply & restart** after changing it. Auto uses startup CPU affinity minus
@@ -296,7 +326,6 @@ capacity, which may be lower if worker creation fails. The setting applies to
 every helper: four active tablets can request four separate pools. Higher values
 consume more threads and may increase scheduling overhead; no throughput or
 latency gain on larger machines has been established. Tune for the workload.
-| `wifi_address` | empty | Set by `blent wifi`; reread for reconnect attempts |
 
 Graphics-tablet mode requires `input_pen = true`. The GUI prevents incompatible
 toggle combinations; saving or starting with an incompatible file or `--pen-only`
@@ -335,16 +364,21 @@ requires a nonempty, non-`unknown` `ro.serialno`; service-name prefixes are neve
 used to merge tablets. This follows AOSP's [mDNS connection naming](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/client/transport_mdns.cpp)
 and [instance-name parsing](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/client/mdns_utils.cpp).
 
+</details>
+
 ## Encoder tuning
 
+<details>
+<summary>Per-encoder options and rate-control policy</summary>
+
 - NVIDIA: `h264_nvenc` or `hevc_nvenc` — see the codec section of
-  the README for when HEVC and `ten_bit` are worth it.
+  the [video settings guide](settings.md#video) for HEVC and `ten_bit` limits.
 - AMD/Intel: `h264_vaapi`, optional `h264_vaapi_baseline`, or `hevc_vaapi`, constant-quality via `quality`.
   The explicit baseline profile maps to stock H.264 VAAPI with Constrained Baseline/CAVLC;
   it reduced decoder delay on the tested tablet at higher bandwidth. Existing selections
   stay unchanged. See [codec measurements](benchmarks/2026-09-18-codecs.md).
   Choose **Video → Encoding GPU** to persist a stable adapter identity. Automatic
-  preserves the legacy `vaapi_device` path (default `/dev/dri/renderD128`); changing
+  uses the explicit `vaapi_device` path (default `/dev/dri/renderD128`); changing
   the new selector does not erase that path. HEVC supports `ten_bit = true`.
   Pinned selections restrict automatic trials to that VAAPI device and software
   encoders. Explicit incompatible codecs, missing devices and denied access use
@@ -377,7 +411,12 @@ throughput. Static scenes may use much less bandwidth.
 Automatic selection and its measurement limits are described in
 [video codecs](video-codecs.md#automatic-selection).
 
+</details>
+
 ## Optional native encoder worker
+
+<details>
+<summary>Build, raw transport and ownership contracts</summary>
 
 ```bash
 cargo build --release --manifest-path host/Cargo.toml --features inproc-encoder
@@ -467,13 +506,15 @@ software encode/decode regressions verify color and rate behavior.
 
 ### Packetizer ownership and profiling
 
-`host/src/annex_b.rs` owns access-unit assembly; `encoder_io.rs` supplies the
-shared start-code scanner. The packetizer's scan cursor and retained buffer are
+`host/src/annex_b.rs` owns access-unit assembly; `annex_scan.rs` supplies the
+shared start-code scanner, also used by `encoder_io.rs`. The packetizer's scan cursor and retained buffer are
 separate from pending picture data. Do not discard the last possible prefix
 bytes or mutate codec headers already held by a queued packet. Both three- and
 four-byte prefixes, fragmented headers and multi-slice pictures are covered by
 normal tests. Test-only allocation/copy/scan probes and the reproducible baseline
 are documented in [the packetizer replay](benchmarks.md#annex-b-packetizer-replay).
+
+</details>
 
 ## Release APK
 
@@ -676,8 +717,10 @@ successful group signal does not prove every member was terminated. See the
 Timeout errors explicitly report this limit. The GUI's two-minute privileged
 setup deadline says setup may still be running and asks the user to check its
 status before retrying. It does not claim to undo configuration changes or kill
-root-owned work. Non-Linux adapters currently terminate only the direct child;
-the Windows plan must supply its own job/process-tree boundary.
+root-owned work. The Windows adapter starts children suspended, binds them to an owned job, then
+resumes their original thread. Closing its kill-on-close job supplies the native
+process-tree boundary (`common/src/commands/windows.rs`). This does not settle
+effects delegated to an unrelated service. Other backend support remains explicit.
 
 Permanent T328 tests use disposable process trees and an isolated Linux
 subreaper, cover sync/async timeout, task cancellation, detached work and normal
@@ -699,6 +742,9 @@ Daemon restart begins a new observation lifetime. Unknown tablet identities are
 not merged, and bounded launch-history exhaustion falls back to manual opening.
 
 ## Camera feedback probe timestamp capacity
+
+This diagnostic measures camera feedback timing; it is not a virtual webcam
+setup guide. Use [camera sharing](cameras.md) for ordinary operation.
 
 The camera feedback probe uses the portable camera profile and measurement options;
 its CLI does not expose virtual-camera output paths. The native decoder receives
@@ -727,6 +773,8 @@ the host process remaining alive and native outcomes eventually becoming
 observable. T1258 tracks selected-tablet acceptance of installed ADB/Android
 behavior; it still needs a selected tablet and authorization for that physical
 correctness trial. Host fixtures do not substitute for that acceptance.
+
+## Offline host tests with a cached SDK
 
 For an offline host test run using an already installed x86-64 Freedesktop SDK,
 keep the SDK and host fixture-tool ABIs explicit:

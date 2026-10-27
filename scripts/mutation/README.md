@@ -1,4 +1,10 @@
-# Mutation testing (T652)
+# Check whether tests catch deliberate faults
+
+Mutation testing makes a deliberate code change in a private copy, then checks
+whether a normal regression catches it. A failed build or timeout is not a caught
+bug. Keep the original checkout unchanged and review the failing assertion.
+
+## Scope and results
 
 T652's accepted scope is **complete tooling and bounded campaigns** across maintained
 Rust, Kotlin, C and essential Python/Shell. Exhaustive execution of every generated
@@ -54,6 +60,8 @@ collection also runs a separate-process-group descendant deadline regression; it
 negative control removes `/T`, fails, and is restored before the passing suite.
 It never changes Explorer or another application's tray resources. The Linux
 namespace and Windows ordinary-session mechanisms are explicit platform boundaries.
+
+### Capacity and execution outcomes
 
 Defaults are four compiler jobs, 600 seconds per build, 180 seconds per test phase
 and a 3,600-second execution deadline. Adjust `--build-jobs`, `--build-timeout`,

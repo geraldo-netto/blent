@@ -1,4 +1,9 @@
-# Android connection idle measurements (T918)
+# Measure idle connection work on a hosted JVM
+
+This tool measures how much work the connection actors do while idle, using a
+hosted Java runtime and synthetic owners. It does not measure Android battery use.
+
+## Run
 
 Run from the repository root with the installed Android SDK, cached Gradle
 dependencies and a JDK exposing thread CPU and optional allocation counters:
@@ -14,6 +19,8 @@ script adds benchmark sources to the hosted unit-test compilation only for this
 invocation; ordinary application and test builds retain their existing inputs.
 The permanent Python tool regressions exercise task registration and compilation.
 
+## What the experiment owns
+
 The actor experiment runs the production worker and admission actors with
 synthetic idle setup/permission owners. Each owns one original executor thread,
 scope, actor, conflated wake channel and at most one outstanding cue/receipt.
@@ -23,6 +30,8 @@ No timeout or elapsed process budget substitutes for those joins. Counter
 reflection uses the installed JVM's public management interfaces; these borrowed
 beans remain owned by the JVM. Missing CPU counters fail the experiment; missing
 allocation counters remain absent rather than becoming zero.
+
+## Measurement domains
 
 Seven trials compare known-deadline fallbacks in order 10/100/1000/1000/100/10 ms,
 then an unknown-capability 1000 ms control. Every trial has a one-second warmup
@@ -41,6 +50,8 @@ every exit. The checksum and snapshot assertions preserve the stated work.
 This exposes JVM scalar replacement and an escaping control; it does not assert
 that Android ART makes the same optimization or attribute all actor allocation
 to deadline snapshots.
+
+## Read the evidence
 
 Each output directory retains raw JSON, source hashes, the parent Git revision
 and the Gradle log. Inputs must match before and after a run. Whole-process CPU

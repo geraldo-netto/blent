@@ -32,5 +32,6 @@ Missing inputs, changed pins and a pre-existing reserved namespace fail the buil
 The local Cargo source tree and repository catalog are trusted build inputs;
 these checks are not a sandbox against hostile concurrent filesystem mutation.
 The catalog is an explicit reviewed inventory, not a general license inference
-engine or a claim of legal completeness. New crates/versions need review. Current
-AppImage graph-selection work remains tracked separately as T1281.
+engine or a claim of legal completeness. New crates/versions need review. The implemented AppImage graph selection is documented in
+[build inputs and sources](../../../docs/appimage-plan.md#build-inputs-licenses-and-sources);
+it does not change these pinned notice bytes.

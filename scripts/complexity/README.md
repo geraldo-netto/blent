@@ -1,4 +1,10 @@
-# Cyclomatic complexity gate (T381)
+# Check function complexity
+
+Cyclomatic complexity counts a function's decision paths. Blent allows at most
+**9 per function**, including tests. A passing number does not prove clear design;
+review responsibility, ownership and behavior too.
+
+## Run the check
 
 From the repository root, using Python 3.12 and JDK 17 (Python 3.12/JDK 21
 also work locally):
@@ -28,7 +34,7 @@ in `kotlin.py`. The first run downloads those jars from Maven Central into
 Subsequent runs reuse verified jars and a checker jar keyed by source hash.
 No Sonar implementation is vendored or required at runtime.
 
-Owner clarification2026-10-21 accepts local cyclomatic tools as sufficient gate
+Owner clarification 2026-10-21 accepts local cyclomatic tools as sufficient gate
 evidence; a SonarQube installation or vendor certification is not required.
 This checker remains a source analysis with the rules and limitations below.
 Keep per-function results, tool versions, source hashes and supported scope;
@@ -69,6 +75,8 @@ and source exclusion. Rust macro opacity has an explicit fixture so it cannot
 be mistaken for expansion-aware coverage. Architecture and responsibility
 reviews remain necessary even when every function passes.
 
+### C parser adaptations
+
 T843: before C syntax analysis, literal `__has_include` operands inside `#if`
 and `#elif` directives become same-length numeric placeholders. No guard is
 evaluated and both branches remain in the inventory. Source byte offsets and
@@ -85,6 +93,8 @@ offsets. Executable compound statements remain untouched. Conflicting definition
 function-like macros and explicit undef prevent adaptation; unknown tokens and
 malformed bodies still fail. This does not evaluate conditional compilation or
 establish C compiler semantics. Archived owned source remains in the audit.
+
+### Kotlin ownership and callbacks
 
 T965 extends Kotlin ownership beyond named functions. Coverage and complexity
 share `scripts/kotlin/AuthoredKotlin.kt` for authored source boundaries, while

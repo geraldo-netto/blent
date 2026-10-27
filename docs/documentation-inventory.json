@@ -23,7 +23,7 @@
       "owner": "T1325",
       "role": "local governing policy",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Retain exact local governing policy; no policy change requested. Requirements remain authoritative and are explained through contributor guides.",
       "words": 1456,
       "long_paragraphs": 6,
       "joined_word_number_tokens": 0,
@@ -31,14 +31,16 @@
       "local_only": true,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "657a780365fa54da9aca6c85aea43b4dfc0f824e43f7c6da48ddc8a9fd1048da",
+      "outcome": "retained"
     },
     {
       "path": "CHANGELOG.md",
       "owner": "T1325",
       "role": "protected notice, fixture or historical record",
-      "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "action": "rewrite",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 1622,
       "long_paragraphs": 7,
       "joined_word_number_tokens": 0,
@@ -46,14 +48,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "712f8e2aea1b4d6f764a2df89ad55118eb80d838155910cd6501edbc4ecfee6d",
+      "outcome": "rewritten"
     },
     {
       "path": "CLAUDE.md",
       "owner": "T1325",
       "role": "local governing policy",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Retain the one-line AGENTS.md reference; no redundant policy copy.",
       "words": 1,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -61,7 +65,9 @@
       "local_only": true,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "918b1c90559355ef78f33fdf3562f2b021ef8bdfd8a5c8415e5decd44934de55",
+      "outcome": "retained"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -159,8 +165,8 @@
       "path": "TODO.md",
       "owner": "T1325",
       "role": "live work ledger",
-      "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "action": "rewrite",
+      "review_note": "Retain the authoritative live ledger format; remove resolved rows in their individual commits. This is work state, not a narrative guide.",
       "words": 1683,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -168,14 +174,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "e7f8c93708bdf09d6912596b2b2ffb765b3ddb08457c13384c66c4326ac06047",
+      "outcome": "rewritten"
     },
     {
       "path": "android/app/src/main/assets/licenses/COPYRIGHT.md",
       "owner": "T1325",
       "role": "protected notice, fixture or historical record",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Retain exact shipped attribution and component notices. Read for scope; local package-relative links resolve. License/provenance meaning is not shortened.",
       "words": 152,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -183,14 +191,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "87fd87dea0d2d75be20946acaca203c37845fb0305382cf403eb08dbe9710ade",
+      "outcome": "retained"
     },
     {
       "path": "android/app/src/main/assets/licenses/THIRD_PARTY_LICENSES.md",
       "owner": "T1325",
       "role": "protected notice, fixture or historical record",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Retain exact shipped attribution and component notices. Read for scope; local package-relative links resolve. License/provenance meaning is not shortened.",
       "words": 93,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -198,7 +208,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "86d94e09ba60ede267df93d61a1dbedd6a3ee823a2de4c1e339d9546c6973c3c",
+      "outcome": "retained"
     },
     {
       "path": "docs/adb-media-mappings.md",
@@ -1286,7 +1298,7 @@
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 5924,
       "long_paragraphs": 13,
       "joined_word_number_tokens": 0,
@@ -1294,7 +1306,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "0399fcdb895356e5fc70110b8894b924880433ac489ec619185cd5e08c50a600",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/display-activity-signal.md",
@@ -1441,8 +1455,8 @@
       "path": "docs/profiling-android.md",
       "owner": "T1325",
       "role": "current guide or reference",
-      "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "action": "retain",
+      "review_note": "Retain: concise task-ordered profiling guide with exact package identities, commands, cleanup ownership and explicit interruption recovery.",
       "words": 317,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1450,14 +1464,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "ad1d627800ae054e5fdcbee0890fbc46b4d1931f4d71058735276391057dcc61",
+      "outcome": "retained"
     },
     {
       "path": "docs/release-signing.md",
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 822,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1465,7 +1481,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "1b8eb84134c2108b77789ec0e92ccaade65ef0c033c6960821fa860bc3f9648e",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/reviews/2026-09-17-architecture.md",
@@ -11741,8 +11759,8 @@
       "path": "packaging/appimage/supplemental-notices/README.md",
       "owner": "T1325",
       "role": "protected notice, fixture or historical record",
-      "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "action": "rewrite",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 303,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11750,7 +11768,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "af0a32e445a0d02c68db5e9b7251c7561425809033d0dc6e390e456385ec2fe7",
+      "outcome": "rewritten"
     },
     {
       "path": "packaging/deb/README.md",
@@ -11774,7 +11794,7 @@
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 420,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11782,14 +11802,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "ab64748f9c0ce7f3c3a2c12e9beedfbe82fb70440094e9b4b5e1166f3b5b1f19",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/benchmarks/android-rect/README.md",
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 1019,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -11797,14 +11819,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "ea3d00efa0780109caa21db489fe7aed630772acc4cdb58bd4277edd8efb4c8d",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/benchmarks/evdi_snapshot/README.md",
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 506,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -11812,14 +11836,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "ccb0ab708a4f83c3727799f6394c1d671ee3e9d1c899c6c613b7566e15122e61",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/complexity/README.md",
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 1060,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -11827,14 +11853,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "8fd6c35d8d0ebea4bcf20978c8dd1eeccb755ea97dbc30cd8b18b3035bbfd80a",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/coverage/README.md",
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 2620,
       "long_paragraphs": 4,
       "joined_word_number_tokens": 0,
@@ -11842,14 +11870,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "9cff2e0bdac061679448c01ba8144363c4713447cc935793172922a3b16627a0",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/dev/windows-vm/README.md",
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 514,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -11857,14 +11887,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "3b0712558a5ff5003443b853b6981393bade4b413ba09979d1411fae5e68089c",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/mutation/README.md",
       "owner": "T1325",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed build, release, profiling, measurement-tool and protected-record Markdown. Added task navigation and plain explanations while retaining commands, schemas, native ownership and evidence limits. Corrected Windows preview/job cleanup, source-map, CLI defaults, GUI prerequisites, settings table and completed notice-graph status against local code. Coverage guide now matches CI capture/GPU/USB collection. All 57 local links/anchors resolve; three collector regressions pass; public certificate fingerprint/dates match. No device, install or publication action performed.",
       "words": 1087,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11872,14 +11904,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "6cae5df044578612424179a945602d60108f8bc880f524fa9552eb4f240c0bfe",
+      "outcome": "rewritten"
     },
     {
       "path": "scripts/rust-source/README.md",
       "owner": "T1325",
       "role": "current guide or reference",
-      "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "action": "retain",
+      "review_note": "Retain: focused parser contract with exact schema, source ownership, bounded cache, errors and runnable tests. Technical detail is necessary for its developer audience.",
       "words": 497,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -11887,14 +11921,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2fa608c53a5dbdfa99098c2dca14dbec44c36fa2569438395eebdbb63539cf92",
+      "outcome": "retained"
     },
     {
       "path": "scripts/tests/fixtures/crate-notices/README.md",
       "owner": "T1325",
       "role": "protected notice, fixture or historical record",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Retain exact fixture provenance, archive digest and source/license references; concise evidence record.",
       "words": 79,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11902,14 +11938,16 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "0f685651fb11189bd7a2292789d5e6b4eaaf31171096511a26fbdeec27ff239a",
+      "outcome": "retained"
     },
     {
       "path": "testdata/t461-corrupt-hevc.md",
       "owner": "T1325",
       "role": "protected notice, fixture or historical record",
       "action": "retain",
-      "review_note": "Already concise, or exact policy/notice/data meaning must remain intact; explain through its parent guide.",
+      "review_note": "Retain exact codec-error reproduction, positive control and fixture SHA-256; rewriting measured text would weaken provenance.",
       "words": 107,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -11917,7 +11955,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "c24125cf99a9f3f391c1d5f07ce4bb30616692fa5424cdce17585c9d24ba0694",
+      "outcome": "retained"
     }
   ],
   "scope_count": {

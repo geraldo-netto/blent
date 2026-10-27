@@ -12,6 +12,8 @@ Verify native state after execution. Preparation or a registry write alone does
 not establish that a policy took effect. VM disk, TPM, firmware, credentials and
 installation media stay outside Git and must be retained.
 
+## Test helpers without changing machine policy
+
 Run the permanent native regressions in Windows PowerShell without applying
 machine policies or removing apps:
 
@@ -35,6 +37,8 @@ The process wrapper also verifies that an expected native failure inside the
 test does not leak a failing exit status after all assertions pass (T646).
 AppLocker types are initialized through a read-only native cmdlet on Server 2022.
 
+## Read guest status without retained handles
+
 `guest_status.py` supplies `read_file(request, path)` to the private QEMU guest
 control adapter. Pass its serialized QGA request function. A bounded PowerShell
 process owns and closes each status read, with write/delete sharing enabled.
@@ -49,6 +53,8 @@ python3 -m unittest discover -s scripts/tests -p test_windows_vm_status.py
 
 These helpers are nonessential development tooling under the maintainer's
 existing coverage exemption; they are not Blent installers or runtime backends.
+
+## Validate the configured VM
 
 Final VM acceptance is a separate native suite because it requires the actual
 VM configuration, elevation, and a logged-in `blentdev` profile. Run

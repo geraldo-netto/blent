@@ -1,9 +1,11 @@
-# T750 isolated snapshot fixture
+# Test EVDI frame consistency in a disposable VM
 
 Development-only native acceptance fixture. No EVDI changes. Programs refuse
 execution unless `/proc/cmdline` contains `blent-evdi-review=1`; use a disposable
 VM, never add that marker to a live host. No downloads or package installation
 are part of these programs. Do not build with `NDEBUG`.
+
+## Producers and observer
 
 `produce.c` uses stock libdrm with an already-connected EVDI output. It makes
 240 immutable 640×480 XRGB framebuffers, each changing a 16-row frame-ID strip
@@ -24,6 +26,8 @@ and grab calls. Original functions remain unchanged and are called through
 `RTLD_NEXT`. Every nonempty capture is checked before Blent conversion. One
 bounded sample prints blue-byte values at fixed coordinates for diagnosis.
 Compile with `cc -O2 -shared -fPIC observe.c -ldl -o observe.so`.
+
+## Check complete frames
 
 `consume.c` reads Blent's packed NV12 FIFO at `/tmp/video` for 16 seconds. It
 checks every complete frame, forward frame-ID order and final convergence to
@@ -47,6 +51,8 @@ It does not require a guest, libdrm, libevdi or Wayland.
 
 Native run configurations, observed results and limitations:
 [2026-10-09 evidence](../../../docs/reviews/artifacts/2026-10-09-t750-snapshot/README.md).
+
+## Active readback diagnostic
 
 `gbm_readback.c` is a separate **active** T749 diagnostic for a disposable GL
 compositor guest. Build with `cc -O2 -shared -fPIC gbm_readback.c -lgbm -ldl -o

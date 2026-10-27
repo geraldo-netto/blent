@@ -12,8 +12,9 @@ the [fork releases page](https://github.com/geraldo-netto/blent/releases).
   retain original copyright/license notices. No old-version migration or API
   compatibility is provided.
 
-Selected fork changes (the commit history contains the individual fixes;
-[TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md) retains unresolved issues):
+Selected early fork changes (historical snapshot; current capabilities are in
+[compatibility](docs/compatibility.md)). The commit history contains individual fixes;
+[TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md) retains unresolved issues:
 
 - Android brightness defaults to 50% and the display-mode preference to 60 Hz.
   Both are adjustable, persistent and scoped to Blent's window; switching
@@ -32,7 +33,8 @@ Selected fork changes (the commit history contains the individual fixes;
   They do not validate real EVDI/compositor attachment.
 - Fork URLs and update checks target geraldo-netto/blent. A Windows
   integration plan is saved in [docs/windows-port.md](docs/windows-port.md);
-  Windows host support is not implemented.
+  Windows host support was not implemented at that snapshot; the current
+  incomplete preview is described in the linked guide.
 
 - The virtual input devices (touchscreen, pen tablet, parking pointer) now
   exist only while a tablet is attached. They used to be created for the
