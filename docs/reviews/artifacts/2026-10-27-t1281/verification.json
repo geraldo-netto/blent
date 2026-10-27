@@ -1,0 +1,168 @@
+{
+  "python": "3.12.3",
+  "coverage": "7.15.2",
+  "cargo": "1.98.1 (797e8a9bc 2026-08-05)",
+  "complexity_tool": "scripts/complexity/check.py",
+  "functions": [
+    {
+      "file": "packaging/appimage/rust_build.py",
+      "function": "build_options",
+      "summary": {
+        "covered_lines": 5,
+        "num_statements": 5,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_build.py",
+      "function": "build_release",
+      "summary": {
+        "covered_lines": 2,
+        "num_statements": 2,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_graph.py",
+      "function": "query",
+      "summary": {
+        "covered_lines": 4,
+        "num_statements": 4,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_graph.py",
+      "function": "package_index",
+      "summary": {
+        "covered_lines": 9,
+        "num_statements": 9,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_graph.py",
+      "function": "tree_package",
+      "summary": {
+        "covered_lines": 7,
+        "num_statements": 7,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_graph.py",
+      "function": "root_package",
+      "summary": {
+        "covered_lines": 5,
+        "num_statements": 5,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_graph.py",
+      "function": "select_tree",
+      "summary": {
+        "covered_lines": 11,
+        "num_statements": 11,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_graph.py",
+      "function": "merge_packages",
+      "summary": {
+        "covered_lines": 5,
+        "num_statements": 5,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/rust_graph.py",
+      "function": "release_packages",
+      "summary": {
+        "covered_lines": 6,
+        "num_statements": 6,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/sources.py",
+      "function": "rust_sources",
+      "summary": {
+        "covered_lines": 6,
+        "num_statements": 6,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    }
+  ],
+  "source_sha256": {
+    "packaging/appimage/sources.py": "3e5af142c57cf7bdcd5b33e8c4d32d955f4bfcfa9eb9b537847c0d3b5f4c1636",
+    "packaging/appimage/rust_build.py": "cce3f0abf193ee8626c300b5a47df3c2580688b43658919218ee1df603c1a431",
+    "packaging/appimage/rust_graph.py": "c27db0a7096e0839732737d23cb76361222ca645386eef84be1b79e8b26c4730",
+    "scripts/tests/test_rust_source_graph.py": "2404a42bed90669a335d02cdae7b50b38847289e9c64e362aa0dfffa21c37ac8",
+    "scripts/tests/test_appimage.py": "2c1fa3d1948a0eeff3d2fe3f73bf9e3a9ac95097448fd7a895fbd23fcec2acb1",
+    "scripts/build-release.sh": "a8a497ebfe4e4dfb521ec557382b03abba2dc42ef657e38e7bb1efba8332d766",
+    "scripts/complexity/check.py": "99095e6ca5dfb364b150e617320a7b16046feb0b0f63e36f1078c8da1c4e06b5",
+    "scripts/complexity/syntax.py": "9f15d202be76de2fff44b16d75d2efc4353d53d65b10502a8c746799994c142f"
+  }
+}

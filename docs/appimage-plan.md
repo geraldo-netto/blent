@@ -144,9 +144,17 @@ upstream revision and notice hashes, then adds them under `.blent-upstream-notic
 in an owned temporary source copy. Notice outputs and source archives preserve
 that namespace; the output manifest records supplemental provenance. Cargo's
 cache remains unchanged. Unknown/mismatched versions and missing required inputs
-fail; no license text is inferred or downloaded. T1281 tracks aligning the broader
-production dependency selection with the actual release build; that current
-selection still encounters additional missing notices outside the audited graph.
+fail; no license text is inferred or downloaded.
+
+The release script and collector share the host/GUI build options in
+`packaging/appimage/rust_build.py`. Source selection queries each build separately
+for Linux x86-64 using locked, offline Cargo metadata and `cargo tree --edges
+normal,build`. Tree membership selects dependencies; metadata supplies exact
+package identities and source paths. This excludes dev-only dependencies and
+dev-feature unification while retaining build helpers and enabled native audio.
+The union is deduplicated by package ID, and each crate record identifies its
+selecting build manifests. Ambiguous identities, external path dependencies and
+missing roots fail explicitly. Cargo caches must already contain selected inputs.
 
 The publisher verifies the AppImage, source archive, Arch recipe, Linux tar,
 APK and `SHA256SUMS` as one complete asset set before publishing. Legacy Debian

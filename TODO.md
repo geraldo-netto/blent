@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1281 | open | medium | small | Align AppImage Rust source/notice dependency selection with the actual release build. packaging/appimage/sources.py::rust_sources uses default-feature Cargo metadata and every resolve node, whereas the T1278 installed release graph has 337 normal/build dependencies with native-audio/accessory-transport. Offline current production selection yields 361 crates, adds 49 outside that graph and omits 25 from it; ten added crates still lack notices (asn1-rs-impl, egui-wgpu, gpu-alloc/types, gpu-descriptor/types, hexf-parse, naga, spirv, wgpu-core-deps-windows-linux-android). Verify authoritative build packages/features/target, collect exactly their normal/build closure, retain explicit per-crate source provenance and fail-closed missing-notice handling, and add failing-before/passing-after graph regressions plus an offline production collector check. Supply pinned notices for any genuinely selected unresolved crates; no new downloads are authorized. |
 
 
 

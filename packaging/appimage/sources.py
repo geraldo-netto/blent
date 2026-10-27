@@ -10,6 +10,7 @@ import urllib.request
 from tools import digest
 from crate_notices import copy_crate_notices, verify_archive_notices
 from crate_supplements import prepared_source
+from rust_graph import release_packages
 from elf import run
 
 
@@ -75,13 +76,11 @@ def source_checksums(text):
 
 
 def rust_sources(repo, destination, notices):
-    metadata = json.loads(run(['cargo', 'metadata', '--locked', '--format-version=1',
-                              '--filter-platform=x86_64-unknown-linux-gnu'], cwd=repo))
-    dependencies = {node['id'] for node in metadata['resolve']['nodes']}
     entries = []
-    for package in metadata['packages']:
-        if package['id'] in dependencies and package['source']:
-            entries.append(copy_crate(package, destination, notices))
+    for selection in release_packages(repo, run):
+        entry = copy_crate(selection['package'], destination, notices)
+        entry['build_manifests'] = selection['build_manifests']
+        entries.append(entry)
     return entries
 
 

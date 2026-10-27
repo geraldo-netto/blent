@@ -22,8 +22,7 @@ distrobox enter "$CONTAINER" -- bash -lc '
   export PATH="$HOME/.cargo/bin:$PATH"
   cd "$1"
   export CARGO_TARGET_DIR="$PWD/target-deb12"
-  cargo build --release --locked --manifest-path host/Cargo.toml --features native-audio,accessory-transport
-  cargo build --release --locked --manifest-path gui/Cargo.toml
+  python3 packaging/appimage/rust_build.py
   make --always-make -C host/accessory OUTPUT=../../target-deb12/release/blent-usb-io
 
   # Keep LGPL libevdi replaceable beside the helper, located via $ORIGIN.

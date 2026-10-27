@@ -357,8 +357,8 @@ root.with_suffix('.gui').write_text(os.environ['APPDIR'])
         notices = self.root / 'notices'
         notices.mkdir()
         package = dict(id='fixture-id', source='registry', name='fixture', version='1.0', license='MIT', license_file=None, manifest_path=str(source/'Cargo.toml'))
-        metadata = dict(resolve=dict(nodes=[dict(id='fixture-id')]), packages=[package])
-        with patch.object(sources, 'run', return_value=json.dumps(metadata)):
+        selection = [dict(package=package, build_manifests=['host/Cargo.toml'])]
+        with patch.object(sources, 'release_packages', return_value=selection):
             records = sources.rust_sources(REPO, destination, notices)
         self.assertEqual(records[0]['name'], 'fixture')
         self.assertEqual((notices / 'fixture-1.0/LICENSE').read_text(), 'copyright fixture')
