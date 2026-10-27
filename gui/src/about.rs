@@ -63,10 +63,14 @@ fn notice_text(ui: &mut egui::Ui, index: usize) {
     if ui.button("Copy full notice").clicked() {
         ui.ctx().copy_text(text.to_owned());
     }
+    // The outer page may scroll, so use its visible clip rather than its
+    // unbounded content height. Reserve space for the bundle explanation/action;
+    // short windows retain outer scrolling and a usable inner reader.
+    let height = (ui.clip_rect().bottom() - ui.cursor().top() - 112.0).clamp(120.0, 960.0);
     egui::ScrollArea::vertical()
         .id_salt(("license-text", name))
-        .max_height(260.0)
-        .auto_shrink([false; 2])
+        .max_height(height)
+        .auto_shrink([false, true])
         .show(ui, |ui| {
             ui.add(egui::Label::new(text).selectable(true).wrap());
         });

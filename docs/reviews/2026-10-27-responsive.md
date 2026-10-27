@@ -37,3 +37,22 @@ remains <=9, including the new regression. The layout borrows remain scoped to
 each synchronous egui frame; no runtime owner, resource or callback lifecycle
 changed. Evidence: t1290-red.log, t1290-coverage.log and t1290-metrics.json in the
 same local artifact directory. Native Windows evidence remains T1271.
+
+## T1291 — Height-aware notice reader
+
+The permanent same-context geometry regression measures the actual notice clip
+at 740, 900, 1100 and 2088-point window heights. It fails against the original
+production code with a 266-point tall-window clip (260-point reader plus clip
+margin). The reader now uses visible viewport space, reserves 112 points for
+following bundle information/actions, and bounds its requested height to
+120–960 points. Short notices shrink naturally; short windows retain page
+scrolling. Tall-window tests also verify that the bundle action stays visible.
+
+All 164 GUI unit tests and the native startup/accessibility test pass offline.
+notice_text has 100% executable-line coverage; changed code and tests measure
+complexity <=9. Existing notice selection/copy and keyboard-action regressions
+remain passing. Height calculation reads only the current frame's clip/cursor;
+static notice storage and egui-owned scroll identity have unchanged lifetimes.
+No native resources or retained callbacks were introduced. Evidence:
+t1291-red.log, t1291-green.log, t1291-coverage.log and t1291-metrics.json.
+Native Windows visual acceptance remains explicitly tracked in T1271.

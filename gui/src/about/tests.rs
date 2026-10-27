@@ -236,3 +236,62 @@ fn t1277_notice_copy_is_keyboard_accessible() {
     }
     panic!("T1277 Copy full notice is not keyboard reachable");
 }
+
+fn t1291_notice_clip(app: &mut crate::App, ctx: &egui::Context, size: egui::Vec2) -> egui::Rect {
+    crate::workspace_style::configure(ctx);
+    let output = ctx.run(
+        egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(egui::Pos2::ZERO, size)),
+            ..Default::default()
+        },
+        |ctx| app.show_window(ctx),
+    );
+    for shape in output.shapes {
+        let mut texts = Vec::new();
+        collect_text_rects(&shape.shape, &mut texts);
+        if texts.iter().any(|(text, _)| text == DOCUMENTS[0].1) {
+            return shape.clip_rect;
+        }
+    }
+    panic!("T1291 notice text missing");
+}
+
+#[test]
+fn t1291_notice_reader_adapts_to_tall_and_compact_windows() {
+    let (_root, mut app) = crate::tests::settings_test_app(crate::Tab::About);
+    let context = egui::Context::default();
+    for height in [2088.0, 900.0, 740.0, 1100.0, 2088.0] {
+        let size = egui::vec2(1040.0, height);
+        for _ in 0..3 {
+            t1291_notice_clip(&mut app, &context, size);
+        }
+        let clip = t1291_notice_clip(&mut app, &context, size);
+        assert!(
+            clip.bottom() <= height,
+            "T1291 reader exceeds viewport: {clip:?}"
+        );
+        if height >= 1100.0 {
+            assert!(
+                clip.height() > 300.0,
+                "T1291 tall reader still cramped: {clip:?}"
+            );
+        } else {
+            assert!(
+                clip.height() <= 260.0,
+                "T1291 compact reader monopolizes page: {clip:?}"
+            );
+        }
+        if height >= 1100.0 {
+            let labels = crate::tests::sized_window_frame(&mut app, &context, vec![], size);
+            let bundle = labels
+                .iter()
+                .find(|(text, _)| text == "Open installed bundle notices")
+                .expect("T1291 bundle action missing")
+                .1;
+            assert!(
+                bundle.bottom() < height,
+                "T1291 bundle control pushed below viewport: {bundle:?}"
+            );
+        }
+    }
+}
