@@ -10,6 +10,16 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def fixture_headers(sources):
+    """Use private fixture layouts from each exact source revision, if split."""
+    flags = ['-D_GNU_SOURCE=']
+    for name in ('frame_exchange_private.h', 'conversion_private.h'):
+        header = sources / name
+        if header.exists():
+            flags.extend(['-include', str(header)])
+    return flags
+
+
 def build(directory, baseline):
     old = directory / 'baseline'
     old.mkdir()
@@ -24,6 +34,7 @@ def build(directory, baseline):
         cursor_sources = [str(cursor)] if cursor.exists() else []
         subprocess.run(['cc', '-std=c11', '-O3', '-pthread', '-Wall', '-Wextra', '-Werror',
                         '-ffunction-sections', '-fdata-sections', '-Wl,--gc-sections',
+                        *fixture_headers(sources),
                         '-I', str(sources), str(ROOT / 'scripts/benchmarks/shared-damage.c'),
                         *[str(sources / name) for name in ['conversion.c', 'frame_exchange.c', 'raw_ring.c']], *cursor_sources,
                         '-o', str(directory / variant)], check=True)
