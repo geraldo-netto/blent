@@ -57,7 +57,12 @@ impl<'a> Target<'a> {
     /// serial, active display peer, or recently observed connection as fallback.
     pub fn parse(serial: Option<&'a str>, usb_peer: Option<&str>) -> Result<Self> {
         match (serial, usb_peer) {
-            (serial, None) => Ok(Self::Adb(serial)),
+            (serial, None) => {
+                if let Some(serial) = serial {
+                    crate::tablets::validate_adb_serial(serial)?;
+                }
+                Ok(Self::Adb(serial))
+            }
             (None, Some(peer)) => Ok(Self::Usb(PeerId::parse(peer.to_owned())?)),
             _ => anyhow::bail!("serial and USB peer are mutually exclusive"),
         }

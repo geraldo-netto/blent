@@ -10,6 +10,16 @@ pub(crate) mod batch;
 /// Maximum number of simultaneous display assignments (slots 0 through 3).
 pub const MAX_SESSIONS: usize = 4;
 
+/// Explicit ADB identities contain 1..=1024 UTF-8 bytes and no control characters.
+/// Borrowed validation admits no native work and retains no input storage.
+pub(crate) fn validate_adb_serial(serial: &str) -> Result<()> {
+    ensure!(
+        !serial.is_empty() && serial.len() <= 1024 && !serial.chars().any(char::is_control),
+        "invalid ADB identity"
+    );
+    Ok(())
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Identity {
     Adb(String),
@@ -34,12 +44,9 @@ impl Identity {
             Self::UsbPeer(peer) => format!("USB tablet ({})", &peer.as_str()[..12]),
         }
     }
-    fn validate(&self) -> Result<()> {
+    pub(crate) fn validate(&self) -> Result<()> {
         if let Self::Adb(serial) = self {
-            ensure!(
-                !serial.is_empty() && serial.len() <= 1024 && !serial.chars().any(char::is_control),
-                "invalid ADB identity"
-            );
+            validate_adb_serial(serial)?;
         }
         Ok(())
     }

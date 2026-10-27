@@ -472,4 +472,37 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn t1295_invalid_serials_never_reach_audio_backend() {
+        for direction in [Direction::Microphone, Direction::Speakers] {
+            let starts = Rc::new(RefCell::new(Vec::new()));
+            let mut panel = Panel {
+                backend: Some(Box::new(Backend(starts.clone()))),
+                transports: |_| blent_config::connection::media::Transports {
+                    adb: true,
+                    usb: true,
+                },
+                ..Default::default()
+            };
+            for serial in [
+                String::new(),
+                "bad\0serial".into(),
+                "a".repeat(1025),
+                "é".repeat(513),
+            ] {
+                let mut options = AudioOptions::new(direction);
+                options.serial = Some(serial);
+                assert!(panel.start(options).is_err());
+                assert!(panel.target().is_none());
+            }
+            assert!(starts.borrow().is_empty());
+            let mut options = AudioOptions::new(direction);
+            options.serial = Some("é".repeat(512));
+            panel.start(options).unwrap();
+            assert_eq!(starts.borrow().len(), 1);
+            panel.stop();
+            assert!(panel.target().is_none());
+        }
+    }
 }

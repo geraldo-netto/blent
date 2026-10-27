@@ -25,7 +25,7 @@ impl Device {
         presence: Presence,
         display_assigned: bool,
     ) -> Result<Self> {
-        validate_identity(&identity)?;
+        identity.validate()?;
         ensure!(
             name.len() <= 1024 && !name.chars().any(char::is_control),
             "invalid tablet name"
@@ -65,16 +65,6 @@ impl Device {
         }
         self.presence = self.presence.max(other.presence);
     }
-}
-
-pub(crate) fn validate_identity(identity: &Identity) -> Result<()> {
-    if let Identity::Adb(serial) = identity {
-        ensure!(
-            !serial.is_empty() && serial.len() <= 1024 && !serial.chars().any(char::is_control),
-            "invalid tablet identity"
-        );
-    }
-    Ok(())
 }
 
 /// One bounded projection assembled from current source views. This is not a

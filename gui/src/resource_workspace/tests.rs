@@ -471,3 +471,25 @@ fn t1289_resource_grid_reflows_without_unbounded_card_widths() {
         assert!(labels.iter().all(|(_, rect)| rect.right() <= width));
     }
 }
+
+#[test]
+fn t1295_invalid_projection_keeps_existing_owner_stoppable() {
+    let (_root, mut app) = settings_test_app(Tab::Overview);
+    let camera = Arc::new(Mutex::new(Vec::new()));
+    app.camera.backend = Some(Box::new(Camera(camera.clone())));
+    let original = Identity::Adb("original".into());
+    app.camera.start_for(&original, &CameraProfile::default());
+    let status = Status {
+        tablets: devices(),
+        ..Default::default()
+    };
+    for serial in [String::new(), "bad\nserial".into(), "a".repeat(1025)] {
+        app.selected = Some(Identity::Adb(serial));
+        assert_eq!(app.workspace_devices(&status), status.tablets);
+        assert!(app.message.contains("invalid"));
+        assert_eq!(app.camera.target(), Some(&original));
+    }
+    assert_eq!(camera.lock().unwrap().len(), 1);
+    app.camera.stop();
+    assert!(app.camera.target().is_none());
+}

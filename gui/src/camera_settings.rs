@@ -583,4 +583,44 @@ mod tests {
         );
         drop(create_backend().unwrap()); // Creating the adapter starts no native camera work.
     }
+
+    #[test]
+    fn t1295_invalid_serials_never_reach_camera_backend() {
+        let profiles = Rc::new(RefCell::new(Vec::new()));
+        let mut panel = Panel {
+            backend: Some(Box::new(Fixture {
+                state: Rc::new(RefCell::new(CameraState::Stopped)),
+                profiles: profiles.clone(),
+            })),
+            transports: blent_config::camera::connection::Transports {
+                adb: true,
+                usb: true,
+            },
+            ..Default::default()
+        };
+        for serial in [
+            String::new(),
+            "bad\nserial".into(),
+            "a".repeat(1025),
+            "é".repeat(513),
+        ] {
+            assert!(panel
+                .start(CameraProfile {
+                    serial: Some(serial),
+                    ..Default::default()
+                })
+                .is_err());
+            assert!(panel.target().is_none());
+        }
+        assert!(profiles.borrow().is_empty());
+        panel
+            .start(CameraProfile {
+                serial: Some("a".repeat(1024)),
+                ..Default::default()
+            })
+            .unwrap();
+        assert_eq!(profiles.borrow().len(), 1);
+        panel.stop();
+        assert!(panel.target().is_none());
+    }
 }

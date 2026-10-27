@@ -59,8 +59,8 @@ impl App {
                 .iter()
                 .any(|device| device.identity() == target)
             {
-                let device =
-                    Device::new(target.clone(), target.label(), Presence::Unknown, false).unwrap();
+                let device = Device::new(target.clone(), target.label(), Presence::Unknown, false)
+                    .map_err(|error| error.to_string())?;
                 catalog.insert(device).map_err(|error| error.to_string())?;
             }
         }

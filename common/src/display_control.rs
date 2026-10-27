@@ -26,7 +26,7 @@ impl Target {
             Self::Adb(serial) => Identity::Adb(serial.clone()),
             Self::Usb(peer) => Identity::UsbPeer(PeerId::parse(peer.clone())?),
         };
-        crate::workspace::validate_identity(&identity)?;
+        identity.validate()?;
         Ok(identity)
     }
 }
