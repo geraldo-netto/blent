@@ -31,3 +31,22 @@ class HostArtifactTest(unittest.TestCase):
     def test_t1312_install_usb_build_headers(self):
         dependencies = step('Install system dependencies')
         self.assertRegex(dependencies, r'\blibusb-1\.0-0-dev\b')
+
+
+class HostCoverageTest(unittest.TestCase):
+    def test_t1313_collect_usb_helper_counters(self):
+        collect = step('Enforce USB helper C function coverage (T1313)')
+        self.assertIn("scripts/coverage/capture_check.py", collect)
+        self.assertIn("'${{ runner.temp }}/blent-usb-coverage'", collect)
+        self.assertIn('--scope host/accessory/', collect)
+        self.assertNotIn('continue-on-error', collect)
+
+    def test_t1313_preserve_usb_helper_counters(self):
+        upload = step('Preserve host coverage evidence')
+        self.assertIn('if: always()', upload)
+        self.assertIn('${{ runner.temp }}/blent-usb-coverage', upload)
+
+    def test_t1313_merge_usb_helper_counters(self):
+        merge = step('Enforce the combined native gate (T497)')
+        self.assertIn('--gcov evidence/host/blent-usb-coverage/native', merge)
+        self.assertNotIn('--report-only', merge)

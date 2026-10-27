@@ -45,7 +45,9 @@ def environment(directory):
 
 def suite(scope):
     if scope == 'host/accessory/':
-        return [sys.executable, '-m', 'unittest', 'discover', '-s', 'scripts/tests', '-p', 'test_aoa*.py']
+        directory = ROOT/'scripts/tests'
+        tests = sorted(directory.glob('test_aoa*.py')) + sorted(directory.glob('test_accessory*.py'))
+        return [sys.executable, '-m', 'unittest', *(str(path.relative_to(ROOT)) for path in tests)]
     command = ['cargo', 'test', '--locked', '-p', 'blent']
     for target in ['evdi_helper', 'conversion', 'evdi_modules', 'frame_retirement']:
         command.extend(['--test', target])

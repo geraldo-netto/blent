@@ -1,0 +1,23 @@
+F..
+======================================================================
+FAIL: test_t1313_usb_suite_includes_discovery_and_selection (test_capture_check.CaptureGateTest.test_t1313_usb_suite_includes_discovery_and_selection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/coverage/test_capture_check.py", line 22, in test_t1313_usb_suite_includes_discovery_and_selection
+    self.assertEqual(set(command[3:]), {
+AssertionError: Items in the first set but not the second:
+'discover'
+'-p'
+'test_aoa*.py'
+'-s'
+'scripts/tests'
+Items in the second set but not the first:
+'scripts/tests/test_aoa_reconnect.py'
+'scripts/tests/test_aoa_probe.py'
+'scripts/tests/test_accessory_discovery.py'
+'scripts/tests/test_accessory_selection.py'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.088s
+
+FAILED (failures=1)

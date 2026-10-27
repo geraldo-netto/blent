@@ -1,0 +1,433 @@
+{
+  "passes": true,
+  "summary": {
+    "c": {
+      "functions": 38,
+      "passing": 38,
+      "below_80": 0,
+      "unmeasured": 0
+    }
+  },
+  "functions": [
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "matches",
+      "line": 10,
+      "language": "c",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "find_device",
+      "line": 16,
+      "language": "c",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "is_accessory",
+      "line": 28,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_reopen",
+      "line": 33,
+      "language": "c",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "start_accessory",
+      "line": 46,
+      "language": "c",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "wait_accessory",
+      "line": 61,
+      "language": "c",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        71
+      ]
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "wait_fresh_device",
+      "line": 77,
+      "language": "c",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "reset_accessory",
+      "line": 103,
+      "language": "c",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_interface",
+      "line": 123,
+      "language": "c",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "endpoints",
+      "line": 127,
+      "language": "c",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "claim_accessory",
+      "line": 141,
+      "language": "c",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_selection",
+      "line": 153,
+      "language": "c",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "open_target",
+      "line": 162,
+      "language": "c",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_open",
+      "line": 191,
+      "language": "c",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_open_selected",
+      "line": 192,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_transfer",
+      "line": 196,
+      "language": "c",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "transfer_timeout",
+      "line": 202,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_progress",
+      "line": 207,
+      "language": "c",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_transfer",
+      "line": 211,
+      "language": "c",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_close",
+      "line": 224,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_require",
+      "line": 13,
+      "language": "c",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_clock",
+      "line": 16,
+      "language": "c",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "number",
+      "line": 21,
+      "language": "c",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_parse_target",
+      "line": 27,
+      "language": "c",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "selected_number",
+      "line": 38,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_parse_selection",
+      "line": 45,
+      "language": "c",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_lock",
+      "line": 54,
+      "language": "c",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "inventory_limit",
+      "line": 15,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "put16",
+      "line": 22,
+      "language": "c",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "inventory_record",
+      "line": 25,
+      "language": "c",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "inventory_records",
+      "line": 42,
+      "language": "c",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "accessory_list",
+      "line": 56,
+      "language": "c",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "output_all",
+      "line": 13,
+      "language": "c",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "read_usb",
+      "line": 22,
+      "language": "c",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "receive_bytes",
+      "line": 31,
+      "language": "c",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "send_usb",
+      "line": 40,
+      "language": "c",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "send_bytes",
+      "line": 50,
+      "language": "c",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "main",
+      "line": 60,
+      "language": "c",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

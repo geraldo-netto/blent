@@ -1,0 +1,33 @@
+...EFF
+======================================================================
+ERROR: test_t1313_collect_usb_helper_counters (test_ci_host.HostCoverageTest.test_t1313_collect_usb_helper_counters)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_ci_host.py", line 38, in test_t1313_collect_usb_helper_counters
+    collect = step('Enforce USB helper C function coverage (T1313)')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backups/disk2/projects/blent/scripts/tests/test_ci_host.py", line 12, in step
+    return next(value for value in steps if value.startswith('name: ' + name + '\n'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+
+======================================================================
+FAIL: test_t1313_merge_usb_helper_counters (test_ci_host.HostCoverageTest.test_t1313_merge_usb_helper_counters)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_ci_host.py", line 51, in test_t1313_merge_usb_helper_counters
+    self.assertIn('--gcov evidence/host/blent-usb-coverage/native', merge)
+AssertionError: '--gcov evidence/host/blent-usb-coverage/native' not found in "name: Enforce the combined native gate (T497)\n        run: |\n          '${{ runner.temp }}/coverage-tools/bin/python' scripts/coverage/report.py check \\\n            --manifest evidence/host/blent-rust-coverage/manifest.json \\\n            --lcov evidence/host/blent-rust-coverage/default.lcov \\\n            --lcov evidence/host/blent-rust-coverage/all-features.lcov \\\n            --lcov evidence/windows/windows-common.lcov \\\n            --native-sources evidence/windows/windows-sources.json \\\n            --jacoco evidence/android/jacoco.xml \\\n            --gcov evidence/host/blent-capture-coverage/native \\\n            --gcov evidence/host/blent-gpu-coverage/native \\\n            --python-json evidence/host/blent-script-coverage/python.json \\\n            --python-calls evidence/host/blent-script-coverage/calls \\\n            --shell evidence/host/blent-script-coverage/shell \\\n            --rust-platform linux --rust-platform windows \\\n            --output evidence/combined.json\n"
+
+======================================================================
+FAIL: test_t1313_preserve_usb_helper_counters (test_ci_host.HostCoverageTest.test_t1313_preserve_usb_helper_counters)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_ci_host.py", line 47, in test_t1313_preserve_usb_helper_counters
+    self.assertIn('${{ runner.temp }}/blent-usb-coverage', upload)
+AssertionError: '${{ runner.temp }}/blent-usb-coverage' not found in 'name: Preserve host coverage evidence\n        if: always()\n        uses: actions/upload-artifact@v4\n        with:\n          name: host-coverage\n          path: |\n            ${{ runner.temp }}/blent-capture-coverage\n            ${{ runner.temp }}/blent-gpu-coverage\n            ${{ runner.temp }}/blent-rust-coverage\n            ${{ runner.temp }}/blent-script-coverage\n\n'
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+FAILED (failures=2, errors=1)

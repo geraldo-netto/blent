@@ -99,6 +99,9 @@ jobs:
       - name: Enforce optional GPU C function coverage (T766)
         run: "'${{ runner.temp }}/blent-coverage-venv/bin/python' scripts/coverage/gpu_check.py '${{ runner.temp }}/blent-gpu-coverage'"
 
+      - name: Enforce USB helper C function coverage (T1313)
+        run: "'${{ runner.temp }}/blent-coverage-venv/bin/python' scripts/coverage/capture_check.py '${{ runner.temp }}/blent-usb-coverage' --scope host/accessory/"
+
       - name: Enforce essential installation and packaging function coverage (T497)
         run: "'${{ runner.temp }}/blent-coverage-venv/bin/python' scripts/coverage/script_check.py '${{ runner.temp }}/blent-script-coverage'"
 
@@ -110,6 +113,7 @@ jobs:
           path: |
             ${{ runner.temp }}/blent-capture-coverage
             ${{ runner.temp }}/blent-gpu-coverage
+            ${{ runner.temp }}/blent-usb-coverage
             ${{ runner.temp }}/blent-rust-coverage
             ${{ runner.temp }}/blent-script-coverage
 
@@ -222,6 +226,7 @@ jobs:
             --jacoco evidence/android/jacoco.xml \
             --gcov evidence/host/blent-capture-coverage/native \
             --gcov evidence/host/blent-gpu-coverage/native \
+            --gcov evidence/host/blent-usb-coverage/native \
             --python-json evidence/host/blent-script-coverage/python.json \
             --python-calls evidence/host/blent-script-coverage/calls \
             --shell evidence/host/blent-script-coverage/shell \
