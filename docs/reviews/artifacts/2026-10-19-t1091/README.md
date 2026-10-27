@@ -1,5 +1,13 @@
 # T1091: wake the original Android local resource actor
 
+Actual Android local-I/O completion now wakes the owning connection actor through a bounded notification channel. Loopback and full hosted tests passed; this wiring alone established no CPU or battery improvement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The production AndroidConnectionWorker supplies its original conflated wake
 channel through tabletConnectionRun into local endpoint construction. Both the
 retained bind/accept/close workers and StreamConnectionIo read/write/flush workers
@@ -46,3 +54,5 @@ across changed production/tests, maximum source estimate 6. These are repository
 Sonar-style estimates; native SonarQube remains unavailable under T1019.
 
 No network transfer, download, installation, host restart, tablet action or push.
+
+</details>

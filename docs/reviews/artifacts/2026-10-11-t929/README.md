@@ -1,5 +1,8 @@
 # T929 optional ADB diagnostic
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Native USB builds describe missing ADB as unavailable optional automatic discovery,
 and explicitly state that direct USB does not require ADB. Default builds retain
 the required-ADB install/restart diagnostic. Inventory behavior and retry cadence

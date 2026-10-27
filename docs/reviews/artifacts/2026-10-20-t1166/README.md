@@ -1,5 +1,13 @@
 # T1166 — themed launcher layer
 
+A monochrome adaptive-icon layer reuses the existing geometry. Packaged resource checks passed; physical themed-launcher appearance remained unvalidated.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Add a monochrome layer to the existing adaptive icon and a vector reusing its
 108dp canvas and all original path contours. The tablet screen becomes an even-odd
 alpha cutout; existing window-bar alpha and stylus geometry remain. No raster,
@@ -20,3 +28,5 @@ Static resources add no app-owned handle, callback or mutable identity: the reso
 loader owns bounded drawable inflation and the existing icon lifetime. Physical
 themed-launcher appearance is unvalidated; hosted resource checks do not establish
 OEM rendering. No device, network transfer, installation or push occurred.
+
+</details>

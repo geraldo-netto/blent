@@ -1,5 +1,13 @@
 # T935 consent-gated camera local endpoint
 
+Camera endpoints now require an explicit permit before opening. Provider and unopened-state regressions preserve independent display traffic and retain failed cleanup ownership.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The existing local-resource group supports the camera's single uplink channel
 without assuming display's two ports. Typed private metadata preserves the exact
 lease, credential and camera profile. Opening and admission depend on an independent
@@ -37,3 +45,5 @@ composes Activity/isolated hardware capture, including its separate actual-worke
 retirement proof, and enables capabilities. Production remains display-only until
 that integration. Joined physical camera acceptance remains T858. No download,
 installation, reload or tablet trial occurred.
+
+</details>

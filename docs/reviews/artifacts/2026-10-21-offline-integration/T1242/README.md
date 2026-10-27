@@ -1,5 +1,13 @@
 # T1242 rendered media controls, reconnect and original cleanup
 
+Rendered controls preserve independent camera/audio consent and cleanup across reconnect. Joined hosted tests passed, but synthetic workers and transport do not establish physical media retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Three permanent normal-suite tests compose the production camera/audio controls,
 connection binding, consent observations, media selection, consumer wrappers and
 resource lanes. The transport and native workers are explicit synthetic fixtures;
@@ -75,3 +83,5 @@ Compressed final records and source/class hashes accompany this document.
 No download, upload, APK install, USB/ADB operation, installed-service change or
 physical acceptance was performed. T855/T858/T859/T860/T1238 remain unfinished;
 live checks stay paused.
+
+</details>

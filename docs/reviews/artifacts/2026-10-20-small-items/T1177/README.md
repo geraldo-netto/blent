@@ -1,5 +1,13 @@
 # T1177: reject exhausted viewer admission
 
+Viewer exhaustion rejects subscription before registry or encoder work. Focused tests passed; a separate example compile failure prevented a broad-build pass.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 VideoSender subscriptions now return Option<VideoReceiver>. A checked atomic
 reservation precedes subscription, registry membership and capability retention.
 Exhaustion returns None; the production stream workflow returns an explicit error
@@ -38,3 +46,5 @@ revokes original receivers or substitutes for their actual retirement. Eventual
 cleanup assumes original owners release their handles; these hosted bounded
 tests do not prove every native interleaving or unrestricted leak freedom.
 No physical device, running service, Windows/EVDI backend or network was changed.
+
+</details>

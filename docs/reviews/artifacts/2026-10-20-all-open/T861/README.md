@@ -1,5 +1,13 @@
 # T861: native USB distribution boundary
 
+Linux distribution layouts require both USB helper executables and their runtime dependencies. Packaging checks and offline builds passed; missing pinned libevdi prevented complete portable-release staging.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Linux release/source builds enable accessory-transport and build the unchanged
 stock-libusb C helper. Tar/AppImage staging requires both native USB executable
 siblings; user installation requires the pair before publishing its staging
@@ -39,3 +47,5 @@ and stock dependency closure; user-selected build/cache paths retain artifacts
 until explicit cleanup. No new native lifetime/retirement mechanism. Original
 USB/runtime worker owners and device acceptance stay unchanged. No service,
 physical tablet/display, EVDI rebuild/replacement, transfer or upload.
+
+</details>

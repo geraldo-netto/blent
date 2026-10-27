@@ -1,5 +1,8 @@
 # T1215: historical prerequisite audit
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 Historical audit covered80 Other rows before the owner's subsequent backlog
 pruning and reopening. It corrected completed packaging and native-audio software
 prerequisites while preserving the physical evidence requirements at that time.

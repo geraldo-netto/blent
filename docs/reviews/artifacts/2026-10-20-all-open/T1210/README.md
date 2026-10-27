@@ -1,5 +1,8 @@
 # T1210: current USB source-output fixtures
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 A new permanent normal-suite control first fails because the Cargo fixture does
 not generate the current broker. The fixture now emits current Rust executables
 while explicitly leaving native USB I/O to its C build owner. Disposable source

@@ -1,5 +1,13 @@
 # T848: authored Kotlin initialization coverage
 
+Kotlin coverage inventory now includes authored initialization and requires every native constructor variant. Source-matched counters validate the gate; a separate remote-status fixture failure remained visible.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Permanent PSI regressions fail before authored primary/object/companion inventory;
 the attribution regression fails before missing native initialization counters are
 rejected. Both pass with the normal tool changes. Multiple property/init bodies
@@ -23,3 +31,5 @@ The additional complete Android suite runs 1,761 tests with two API-27/34 failur
 in RemoteAdaptersTest's existing remote-status fixture. T962 tracks that failure;
 no whole-suite pass is claimed here. No skipped/removed assertions, lowered
 coverage thresholds, platform claims, downloads, install or device action.
+
+</details>

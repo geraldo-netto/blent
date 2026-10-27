@@ -1,5 +1,13 @@
 # T650 inventory validation
 
+Rejecting embedded NUL characters preserves an existing authenticated attachment when inventory is malformed. Native Linux and Windows regressions passed with matching source fingerprints.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Before the fix, `adb_inventory::parse` accepted an embedded NUL as a ready
 serial. Native process arguments reject NUL; a malformed observation therefore
 retired the existing USB attachment and its authentication lease.
@@ -20,3 +28,5 @@ the T525 collection. The baseline LCOV files here remove every record for those
 three changed files; fresh Linux/Windows counters replace them. The combined
 application gate passes 1,425/1,425 functions with current native fingerprints.
 No stale counters for the changed parser contribute to the result.
+
+</details>

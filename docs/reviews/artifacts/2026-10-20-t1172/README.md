@@ -1,5 +1,13 @@
 # T1172 — return retired display-fixture history capacity
 
+A display fixture returns codec-history capacity only after actual original cleanup. Repeated SDK 27/34 executions passed with unchanged original assertions and deadlines; production streaming was unchanged.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A second execution of the original joined display fixture timed out waiting for
 its new socket's authentication. Its first execution passed. Two released codec
 shadows remained in the SDK's class-level history after fixture close; their old
@@ -33,3 +41,5 @@ verified nested original oracles. Cached Kotlin 1.9.20 PSI measures 40 entries,
 maximum 3; native SonarQube remains T1019. No production function changes, so no
 artificial production coverage test or exclusion is introduced. Raw evidence:
 `/backups/disk2/blent-work/2026-10-20-open-items/t1172`.
+
+</details>

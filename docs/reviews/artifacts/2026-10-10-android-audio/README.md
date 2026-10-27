@@ -1,5 +1,13 @@
 # T795 native ART queue replay
 
+An isolated Android queue replay reduced CPU time and allocation while preserving PCM checksums. Synthetic transfer ratios do not establish physical audio latency or source/sink behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 RugKing Pad 2 Pro, SDK36, exact fingerprint in JSON. Baseline `da4938f`; candidate
 source/APK hashes in provenance JSON. Isolated debuggable benchmark APKs only,
 installed over USB. No microphone, speaker, network transfer or native playback
@@ -33,3 +41,5 @@ while warming native windows, then retains interpolation. These synthetic ratios
 are not the unknown frequency in a physical source/sink session. T718/T720 native
 acoustic/clock acceptance remains separate. No SIMD/ring benefit is established
 for the remaining interpolation path by this experiment.
+
+</details>

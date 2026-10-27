@@ -1,5 +1,13 @@
 # T1197: native readmission fixture observes actual exit
 
+A native readmission fixture now observes actual child exit before asserting an Exited phase. The held-child regression validates that ordering without changing production deadlines or diagnosing missing historical timing.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The original instrumented failure is retained with T1194: second-child retirement
 returned Incomplete where the test required Exited within a one-second grace.
 Neither that log nor the old test recorded enough timing to identify which
@@ -47,3 +55,5 @@ Cleanup assumes child/scheduler/reaper progress after EOF; the held state cannot
 settle early from timeout or successful signal alone. This bounded Linux fixture
 is not unrestricted process safety or unavailable platform acceptance evidence.
 No device/service, Windows/EVDI code or network transfer changed.
+
+</details>

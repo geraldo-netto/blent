@@ -1,5 +1,13 @@
 # T1179: terminal control connection and settings admission
 
+Control connections and queued settings deny new admission at terminal counters while preserving exact callback identities. Hosted boundary tests passed; revoking a notice does not release native sockets or decoders.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Finite checked grants now precede native socket creation and configuration
 queueing. Exhaustion permanently denies new grants and clears denied pending
 settings. Distinct opaque notices fence queued UI delivery even at the terminal
@@ -27,3 +35,5 @@ input lock and epoch monitors serialize handoff. Old UI cutoff never releases
 native sockets, codecs or workers. Eventual cleanup still requires original
 native completion and scheduler progress; bounded hosted tests do not establish
 unrestricted native safety. No service/tablet/network/Windows/EVDI action.
+
+</details>

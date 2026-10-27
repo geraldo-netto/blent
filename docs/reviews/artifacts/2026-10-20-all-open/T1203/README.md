@@ -1,5 +1,13 @@
 # T1203: remove obsolete V4L2 probe CLI and narrow decoder requests
 
+Obsolete V4L2 probe flags were removed, and decoder helpers now borrow only the portable camera profile. Current caller and native ownership tests passed; full probe integration remained separately tracked.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The actual Options parser was extracted unchanged before behavior repair. The
 permanent old-flag rejection test fails first: --front-device is accepted despite
 the probe opening no V4L2 outputs. CameraProfile now defines the input contract;
@@ -40,3 +48,5 @@ oracles pass. Numeric/logical completion is not substituted for native evidence.
 Conditional cleanup still requires original native exit and reaper/scheduler
 progress; hosted cases do not prove unrestricted safety. No live device/service,
 Windows/EVDI backend or network transfer was changed.
+
+</details>

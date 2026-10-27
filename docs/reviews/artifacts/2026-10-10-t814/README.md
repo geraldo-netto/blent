@@ -1,5 +1,13 @@
 # T814 retirement evidence
 
+Retirement regressions keep native work, dependent cleanup and capacity owned after control returns. Scoped tests passed, but they do not promise cancellation of started native calls or recovery from kernel stalls.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 All runs offline. No production services reloaded, physical devices opened, or
 dependency sources modified. Tests use owned children, temporary FIFOs, held
 in-process adapters, and private PipeWire servers with synthetic PCM.
@@ -47,3 +55,5 @@ host-boundary guards and 128 no-default common unit tests also pass.
 This validates control return and ownership, not a throughput improvement,
 real-time scheduling, cancellation of started native work, or final daemon exit
 under an indefinitely stuck in-process codec (T819).
+
+</details>

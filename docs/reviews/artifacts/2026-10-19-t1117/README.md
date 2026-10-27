@@ -1,5 +1,8 @@
 # T1117: retain original request identities through failed cleanup
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 See ../../2026-10-19-idle-retirement.md for native ownership, positive namespace
 settlement, numeric-cookie compatibility and conditional cleanup assumptions.
 Both permanent regressions fail before fixes, then pass. The unchanged native C

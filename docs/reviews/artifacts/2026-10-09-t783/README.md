@@ -1,5 +1,13 @@
 # T783 native channel-order evidence
 
+Native channel-order conversion removed a redundant full-frame allocation/copy for tested RGBA input while preserving pixel and ownership checks. BGRA showed no corresponding copy benefit; timings exclude real readback.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The normal-suite single-source-buffer regression failed on T782's implementation
 before production changes (red.log). It now passes with mode/format changes,
 resizing, cursor blend/restore/clipping, shared-slot retention and invalid format
@@ -47,3 +55,5 @@ five paired trials, 60 processes. BGRA dense medians remain close: scale1/1worke
 130.528 → 133.715 (+2.4%). BGRA gets no removed-copy benefit; small layout/noise
 differences are not claimed as improvements. This is one CPU, not universal
 hardware acceptance.
+
+</details>

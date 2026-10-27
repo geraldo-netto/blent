@@ -1,5 +1,13 @@
 # T1074: authored inline counter gaps
 
+Coverage reports now expose missing authored inline-body counters instead of accepting factory-only coverage. Retained false-pass evidence fails the stricter checker; ambiguous compiler mappings still require independent evidence.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Filtered native inline classes are associated with their original compiled
 method owner. If an authored lambda lacks separate counters and that owner has
 a filtered inline class, the authored body and enclosing method stay visibly
@@ -28,3 +36,5 @@ resource, callback or asynchronous cleanup owner. Python 3.12.3 source AST audit
 covers 40 functions, maximum estimate 9; native SonarQube remains T1019. Existing
 nonessential development-tool coverage exemption remains; tests verify the gate's
 behavior rather than introducing exclusions. No download or network occurred.
+
+</details>

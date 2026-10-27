@@ -1,5 +1,13 @@
 # T999: Linux direct-USB microphone PCM and controls
 
+Linux direct-USB audio now supports both directions with explicit targets and no silent ADB fallback. Private protocol and GUI tests pass; physical audio qualification remains separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The typed original USB audio adapter now supports microphone and speakers.
 Direction projects to the independently defined resource/profile contract; native
 FD registration, invitation, helper ownership and actual cleanup stay shared.
@@ -39,3 +47,5 @@ inventories/object attestations, red/green logs and source fingerprints retained
 
 All collections include the pre-existing uncommitted TLS fixture; this commit
 leaves those unrelated edits unstaged and does not modify them.
+
+</details>

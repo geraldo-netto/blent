@@ -1,5 +1,8 @@
 # T958: worker factory and operation ownership
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Factory selects bounded mode and delegates actual metadata to production adapter.
 A separate AcceptanceRun owns unchanged execution/cancel/retirement behavior:
 blocked execute, clean early return, delayed process death, heartbeat and blocked

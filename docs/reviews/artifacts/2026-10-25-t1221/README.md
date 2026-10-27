@@ -1,5 +1,13 @@
 # T1221 Rust source frontend replacement
 
+The locked syn frontend replaced the obsolete Rust parser across source inventories. Normal parser/metric suites and the whole-project complexity gate passed; macro expansion and native application coverage remain separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The complexity, application coverage, platform and mutation inventories now use
 the locked `syn` 2.0.119 frontend through a versioned source-record contract.
 The obsolete Rust grammar dependency and all its callers are removed together.
@@ -41,3 +49,5 @@ change. The containing lifetime and source-size bounds are documented in the
 [frontend contract](../../../../scripts/rust-source/README.md). This nonessential
 development tool is exempt from application per-function coverage, with its
 permanent regressions retained in the normal suites.
+
+</details>

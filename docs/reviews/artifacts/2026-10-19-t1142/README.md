@@ -1,5 +1,13 @@
 # T1142 isolate collector response measurement
 
+Collector responsiveness is measured after unrelated process setup finishes. A delayed-preparation regression passed while preserving the original response and cleanup assertions; production timeouts did not change.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The fixture now prepares/reaps its unrelated `--list` process before admitting
 or starting the held collector. The measured control path retains the original
 100 ms collection budget, 25 ms result timeout and 200 ms response bound.
@@ -24,3 +32,5 @@ No Windows/EVDI edit, live-device action, installation or network transfer.
 
 Full normal common library:384 passed. Source audit:14 test/helper functions,
 maximum6. Cargo workspace formatting passes.
+
+</details>

@@ -1,5 +1,13 @@
 # T839 — encoder profile numeric contract
 
+Encoder profiles reject invalid numeric bounds before arithmetic. Permanent tests span registered encoders and preserve explicitly allowed low-level replay bitrates.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `Profile::new` rejects zero and excessive FPS/bitrate and quality outside the
 shared supported range before arithmetic. Low-level FPS and bitrate accept
 1 through their configuration ceilings (90 FPS, 60,000 kbit/s); quality remains
@@ -26,3 +34,5 @@ CARGO_NET_OFFLINE=true cargo test --offline --locked -p blent-config --lib
 CARGO_LLVM_COV_TARGET_DIR=/tmp/blent-t839-cov cargo llvm-cov --offline --locked \
   -p blent-config --lib --lcov --output-path /tmp/blent-t839.lcov -- encoding::
 ```
+
+</details>

@@ -1,5 +1,8 @@
 # T779 evidence
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The permanent counted-copy regression fails before the fix and passes with
 ASan/UBSan afterward. The full capture gate measures every production function.
 

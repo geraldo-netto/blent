@@ -1,5 +1,13 @@
 # T1085: truthful retained-intent status and report cutoff
 
+Camera/audio status distinguishes paused intent, active startup and pending cleanup, while old report permits cannot publish after replacement. Hosted tests and 4,096 bounded histories passed; a status change is not proof of native retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The independent portable auxiliary_activity::Phase schema distinguishes retained
 Paused intent, admitted Starting attempts, Retiring work and Finished intent.
 Retiring never certifies resource cleanup. CameraState/AudioState add Paused and
@@ -81,3 +89,5 @@ T1087. No network transfers, installations or physical actions occurred.
 Final native collection: 1898 cases passed, 7 existing opt-in benchmarks
 ignored. All 36 selected production functions pass individually;
 minimum 87.5%. Final source audit: 405 functions, maximum estimate 9.
+
+</details>

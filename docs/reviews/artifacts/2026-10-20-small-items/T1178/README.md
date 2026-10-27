@@ -1,5 +1,13 @@
 # T1178: checked process-wide worker revisions
 
+Media and connection adapters share a checked worker-generation contract with distinct process-wide domains. Hosted boundary and concurrency tests passed; generated identities do not prove physical process retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 WorkerGenerations is a focused implementation-independent positive-Long
 allocator, extracted from the already checked connection adapter. Both adapters
 use that contract through separate process-wide instances for their distinct IPC
@@ -56,3 +64,5 @@ remain in the passing scope. Robolectric Binder transactions and joined hosted
 jobs do not prove physical cross-process/device behavior; existing native
 acceptance limits remain in the ledger. No APK, live service, physical device,
 Windows/EVDI backend or network transfer was changed.
+
+</details>

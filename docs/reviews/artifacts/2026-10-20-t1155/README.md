@@ -1,5 +1,13 @@
 # T1155 — admit canonical peer length before reading
 
+Private IPC validates the exact 64-byte peer field before reading or allocating its payload. Prefix-only and malformed-byte regressions passed without changing valid wire bytes.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The private IPC peer decoder used `readUTF`, which accepted a declared field up
 to 65535 bytes before fingerprint validation. The received packet was already
 bounded; this was an avoidable bounded allocation/read. It now admits the exact
@@ -25,3 +33,5 @@ maximum 4; native SonarQube remains unavailable under T1019. The source snapshot
 also contains unfinished T1151 work, which this scope does not qualify. No device,
 installation, network transfer or push occurred. Raw local evidence:
 `/backups/disk2/blent-work/2026-10-20-open-items/t1155`.
+
+</details>

@@ -1,5 +1,13 @@
 # T1245 rendered audio controls through private Binder and real sockets
 
+Rendered audio controls exercise private Binder and real loopback sockets with synthetic native devices. Held microphone cleanup preserves speaker progress; hosted results do not establish acoustic or physical process behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Three permanent normal-suite scenarios run on Robolectric API27 and34. They join
 the production audio controls, original consent policies, connection/media Binder
 protocols, actor/multiplexer, real local endpoints, audio bootstrap and speaker PCM
@@ -55,3 +63,5 @@ native-analyzer prerequisite.
 All execution uses cached tools in user/network namespaces with loopback only.
 No physical check, service installation, upload, download or push occurs; live
 acceptance and T1238 remain unfinished and paused.
+
+</details>

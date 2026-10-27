@@ -1,5 +1,13 @@
 # T1227: accept native asynchronous Binder transport flags
 
+Binder validation accepts the asynchronous flag together with other native transport flags. The repaired production worker completed USB/Binder/TLS pairing on the selected tablet with debugging enabled; debugging-off media acceptance remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Actual API36 production pairing killed the private connection worker before
 Hello. A diagnostic release captured code1, flags17 and IllegalArgumentException.
 The local Linux Binder UAPI defines TF_ONE_WAY=1 and TF_ACCEPT_FDS=16;
@@ -35,3 +43,5 @@ No allocation owner, release/reuse boundary or cleanup sponsor changes. Existing
 fault, stale-generation, Stop, death and actual original-worker retirement tests
 remain. Native flags establish the bug and fix; hosted counters do not establish
 unrestricted native lifetime safety or physical media delivery.
+
+</details>

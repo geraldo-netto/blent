@@ -1,5 +1,8 @@
 # T1188: private attachment helper
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 Removed unnecessary pub(super) exposure of advance_generation. Registered child
 modules retain their ordinary access to the parent private method. The private
 State contract no longer leaks into a wider interface. No runtime behavior,

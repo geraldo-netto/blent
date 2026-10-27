@@ -1,5 +1,8 @@
 # T866 worker fault fixture complexity
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Extracted fault injection from the worker ownership regression; all four failure
 phases and every ownership, surface and retirement assertion are retained.
 The original test measured cyclomatic complexity 10 before extraction and 3 after;

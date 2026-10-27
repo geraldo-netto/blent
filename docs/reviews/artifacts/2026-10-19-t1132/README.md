@@ -1,5 +1,13 @@
 # T1132 negotiated audio transfer contract
 
+Audio transfer receives one composed negotiated result while borrowing its existing native owners. The behavior-preserving signature change passed audio fixtures and individual coverage checks.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `NegotiatedStream` composes the original portable grant, authenticated processing
 description and clock choice. Session::transfer consumes this immutable result
 while borrowing its original socket, native child, audio session and report.
@@ -25,3 +33,5 @@ Fresh source/compiled-object-attested LLVM audio collection passes46 tests.
 All13 production functions in audio.rs pass individually >=80% executable lines
 (minimum83.33%, transfer96.67%); none unmeasured and no new exclusion.
 Raw evidence: `/backups/disk2/blent-work/2026-10-19-open-items/t1132/native`.
+
+</details>

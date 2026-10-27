@@ -1,5 +1,13 @@
 # T1137 — original camera output ownership
 
+Camera output writes stay on the originally locked files and retain them through actual native worker return. Private process-loss tests and an isolated v4l2loopback guest passed; physical tablet/browser acceptance remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The camera application now starts the T1143–T1145 owned native writers on the
 original validated/locked files. Output paths are never reopened. The redundant
 raw-output FFmpeg children/feeders are removed; the selected camera still uses
@@ -67,3 +75,5 @@ module change, live tablet/camera action, network transfer or push occurred.
 Raw manifests, attestations and profiles remain locally under
 `/backups/disk2/blent-work/2026-10-19-open-items/t1137`; `export.json.gz` binds the
 accepted native objects, source snapshot, guest evidence and counters.
+
+</details>

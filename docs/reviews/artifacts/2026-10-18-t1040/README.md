@@ -1,5 +1,13 @@
 # T1040: reject video headers before payload admission
 
+Video readers now reject invalid type/length/permission headers before growing payload storage. Permanent tests bound consumed bytes and retain valid framing behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The connection-owned reader validates the generic length before reading a type,
 then validates that type's length and negotiated permission before growing its
 reusable backing or reading payload bytes. Unknown types, short frames, malformed
@@ -48,3 +56,5 @@ android/gradlew -p android --offline --no-daemon --console=plain \
 and every scoped method's counters. `progress.init.gradle` only records completed
 test identities; it changes no suite selection, assertions or time limits.
 No download, installation, upload, push or physical device change occurred.
+
+</details>

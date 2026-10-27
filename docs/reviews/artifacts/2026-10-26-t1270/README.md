@@ -1,5 +1,13 @@
 # T1270: route-specific connection guidance
 
+Connection guidance separates direct USB from optional ADB media routes. Rendered-widget and capability tests passed while genuine display prerequisites and Windows preview limits remain visible.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A missing ADB installation no longer marks the Linux direct USB display path
 as needing setup. Display dependency/device checks still apply. The optional
 ADB notice explicitly covers ADB-selected camera/audio operations. Disconnected
@@ -31,3 +39,5 @@ owns rendered output for the frame; no native handle, callback, queue or worker
 is created. Existing setup commands and client cleanup remain with their current
 owners. Native Windows execution is not inferred from the injected unavailable
 capability cases; no native adapter changed in this item.
+
+</details>

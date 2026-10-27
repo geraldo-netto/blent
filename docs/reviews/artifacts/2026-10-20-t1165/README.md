@@ -1,5 +1,13 @@
 # T1165 — primitive state with preserved equality
 
+Integer FPS state uses primitive Compose storage while float state preserves its existing equality semantics. Settings tests and counters passed; no performance or battery improvement was measured.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Use installed Compose1.6.3 mutableIntStateOf for the FPS choice. Primitive integer
 comparison matches boxed Int structural equality for the full Int domain, so
 existing selection, keyed remember replacement and Apply semantics are preserved.
@@ -26,3 +34,5 @@ The draft remains composition-owned, keyed by the authoritative settings FPS and
 collected with the composition; event handoff remains immutable SettingsEvent.
 No native resources, external callbacks or retirement obligations are added.
 No measured CPU/battery improvement, device validation, download or push is claimed.
+
+</details>

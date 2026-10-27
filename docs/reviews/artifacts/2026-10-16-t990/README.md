@@ -1,5 +1,13 @@
 # T990: immutable endpoint projection per publication
 
+Endpoint metadata now reuses one immutable projection per exact publication. Replacement identity still forces a fresh projection; local JVM measurements do not establish Android battery or end-to-end gains.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `ConnectionMediaAccess` retains one immutable publication containing the exact
 choice reference, original offer and typed endpoint metadata. Unchanged sibling
 or target wakes reuse that metadata; a new choice or peer reprojects it even
@@ -49,3 +57,5 @@ python3 /tmp/blent-t990-evidence/check_kotlin.py
 python3 -m unittest scripts.tests.test_android_contract_boundaries \
   scripts.tests.test_android_lifecycle_boundaries
 ```
+
+</details>

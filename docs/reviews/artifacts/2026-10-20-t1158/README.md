@@ -1,5 +1,13 @@
 # T1158 — explicit USB callback registration
 
+USB callback registration explicitly applies NOT_EXPORTED policy through the installed AndroidX adapter. Lint errors and hosted ownership tests passed; no callback exposure bug or physical-provider qualification was claimed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The normal offline `lintDebug` task failed on the pre-33 permission receiver
 registration. That branch already supplied the application's signature-level
 callback permission. Registration now uses the installed AndroidX Core 1.12.0
@@ -37,3 +45,5 @@ native SonarQube remains unavailable (T1019). Hosted Android checks do not quali
 physical USB/provider behavior. No live app/device, installation, download,
 network transfer or push occurred. Raw local evidence:
 `/backups/disk2/blent-work/2026-10-20-open-items/t1158`.
+
+</details>

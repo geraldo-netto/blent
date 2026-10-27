@@ -1,5 +1,13 @@
 # T1171 — fixture-owned Compose platform sandboxes
 
+Compose fixtures use separate platform sandboxes to prevent cross-fixture initial-idle failures. Ordered tests passed; incomplete old JVM runs remain failures and the precise private framework cause was not established.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Broad offline Gradle runs reproduced existing pairing/preference/saved-browser
 cases failing in Compose's initial runUntilIdle before their bodies. Repeated JVM
 stacks and bounded read-only queue probes found empty current main queues. The
@@ -50,3 +58,5 @@ Cached Kotlin 1.9.20 PSI measures the new runner/order helpers with maximum 5;
 native SonarQube remains T1019. No production function changed, no coverage
 exclusion was added, and no network/device/install/push occurred. Raw evidence:
 `/backups/disk2/blent-work/2026-10-20-open-items/t1171`.
+
+</details>

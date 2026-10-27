@@ -1,5 +1,13 @@
 # T750 asynchronous request pacing
 
+Asynchronous capture callbacks now preserve the configured request-rate deadline. Native traces verify pacing and acknowledgements, but do not establish snapshot atomicity or exclude driver races.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Partial mitigation; T750's broader stock painter-state acceptance remains open.
 The new permanent `T750-async` regression failed before the change (red.log) and
 passes after it (green.log). It exhaustively covers FPS 1–240 with zero/one-ms,
@@ -60,3 +68,5 @@ and presentation-feedback fixture, or stock upstream evidence excluding the
 path, remains necessary. No driver patch is authorized. T750 stays open with
 those exact requirements instead of treating a rate limit as a driver-race fix.
 Existing T748 watchdog warnings after inactivity remain visible and separate.
+
+</details>

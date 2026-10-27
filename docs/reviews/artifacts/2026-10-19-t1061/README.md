@@ -1,5 +1,13 @@
 # T1061: current display demand and Activity Window
 
+Current display authority now gates native wake and Window demand, including queued work and background transitions. All 2,224 hosted tests passed; physical window, kernel and power behavior were not measured.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Original control observations now drive native wake and actual Window demand.
 Pause/source loss deny wake before queued UI delivery; authentication and current
 metadata gate activation. Supported-source history survives coalescing. Fresh
@@ -37,3 +45,5 @@ portability checks pass. Existing compiler warnings remain T1072.
 Joined acceptance remains T1058/T1011. No physical Window/kernel/process or power
 measurement is claimed; T914 retains that owner-approved native window. No network,
 installation, push, live lock/suspend or tablet interruption occurred.
+
+</details>

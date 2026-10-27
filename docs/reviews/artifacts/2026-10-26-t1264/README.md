@@ -1,5 +1,8 @@
 # T1264: preserve exact ADB endpoints in native audio fixtures
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Two new permanent Python regressions fail before the fixture correction: reverse
 serialization changes the requested device port, and both tablets connect to
 that device port instead of its host destination. The normal audio_native Cargo

@@ -1,5 +1,13 @@
 # T1020: retain original helper startup cleanup
 
+Helper startup now records original child completion immediately after spawn. Canceled or malformed handshakes cannot admit a replacement while dependent cleanup remains held.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Helper startup records the exact child completion immediately after spawn,
 before stdout extraction or the asynchronous card handshake can fail or be
 canceled. The certificate remains in `pending` until native cleanup completes;
@@ -51,3 +59,5 @@ The configuration-only checks intentionally report their individual missing
 counters; `merge.py` enforces the combined per-function threshold without new
 exclusions. Retained monitor pause is still T1021 and activity composition T1015.
 No live display, tablet, suspend, service or boot configuration changed.
+
+</details>

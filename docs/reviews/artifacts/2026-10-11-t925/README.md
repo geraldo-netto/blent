@@ -1,5 +1,13 @@
 # T925 joined display ownership
 
+Joined display ownership retains registration, native work and listener capabilities until each original cleanup completes. Canceled startup cannot acquire replacement authority; production daemon and physical acceptance remain separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `registered_session` joins independent registration and native-work contracts.
 Capacity values and read-only reservation validation live in a separate contract;
 neither interface exposes concrete capture, UI, storage or OS types. Preflight
@@ -43,3 +51,5 @@ CARGO_NET_OFFLINE=true cargo check --offline --locked --target x86_64-pc-windows
 ```
 
 No downloads, installation, live broker/device changes or physical acceptance.
+
+</details>

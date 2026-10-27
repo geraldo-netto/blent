@@ -1,5 +1,13 @@
 # T1184: previous-boot desktop hang
 
+Historical logs showed a display-path stall, and an isolated stock-EVDI guest later reproduced paused flips waiting for resume. The matching mechanism was repaired and physically checked; it does not reconstruct every cause of the original incident.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The reproduced pause/flip failure is repaired under T1185; see the
 [implementation and permanent red/green evidence](../2026-10-20-t1185-fix/README.md).
 This report retains the incident and pre-fix diagnostic observations.
@@ -335,3 +343,5 @@ repository syntax checker could not run because its `tree_sitter` dependency is
 not installed in either checked Python environment. No tool was installed or
 downloaded. Production and permanent test sources remain unchanged; no new
 production coverage or native sanitizer pass is claimed.
+
+</details>

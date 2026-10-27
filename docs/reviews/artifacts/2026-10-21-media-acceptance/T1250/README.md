@@ -1,5 +1,8 @@
 # T1250 broker help follows implemented media integration
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 Native `blent-usb-broker --help` still described production media integration as
 pending. T932/T933/T978/T998/T999 implement those adapters; T1238 now supplies
 the selected API36 tablet's current-build native Stop/retirement evidence.

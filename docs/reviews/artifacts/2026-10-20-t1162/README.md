@@ -1,5 +1,13 @@
 # T1162 — landscape request and orientation evidence
 
+Automatic orientation remains landscape-only, with saved pins and platform override limits. Documentation was corrected; hosted rotation tests do not qualify foldables, OEMs or multi-window behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 sensorLandscape is an ongoing landscape policy, also the manifest default.
 ActivityWindowPolicy applies the saved pin or automatic landscape request at
 creation, on start and on setting change; automatic observation explicitly pins
@@ -19,3 +27,5 @@ angles and manual pins. The immutable T1161 JUnit archive contains the nested
 settled results and original assertions. Source hashes here identify that oracle.
 Hosted tests do not qualify OEM, foldable or multi-window behavior. Physical
 prerequisites remain T855/T857/T846; no device actions occurred.
+
+</details>

@@ -1,5 +1,8 @@
 # T1314: distinct native discovery coverage identities
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 The permanent `test_t1314_fixture_and_native_counters_remain_distinct` regression
 failed before the fixture rename: GCC emitted two note files for three C sources.
 After the rename, it passes and exports reports for all three exact source paths.

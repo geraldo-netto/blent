@@ -1,5 +1,13 @@
 # T1152 — joined offline saved-computer software acceptance
 
+Joined saved-computer tests cover bounded lists, full-identity confirmation, durable forgetting and connection exclusion. Hosted software acceptance passed; actual tablet/provider deployment remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T1167 supplies original shared connection/store admission, T1168 the bounded
 application-owned coordinator and T1169 the Android adapter/settings composition.
 The current frozen T1169 collection passes their combined 203 production
@@ -23,3 +31,5 @@ T1167/T1168 records. This is joined software/hosted contract acceptance. It does
 not certify an actual tablet/provider/private-process deployment: T863 and
 postponed T855/T858/T846 acceptance remain unresolved, and T1019 retains native
 Sonar measurement. No live device, installation, network or push occurred.
+
+</details>

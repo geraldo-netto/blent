@@ -1,5 +1,13 @@
 # T1030: task results do not release dependent cleanup
 
+Task results now remain separate from dependent resource retirement. Isolated cleanup prevents a held destructor from blocking siblings, while helper and X11 replacements retain the original completion proof.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Owned task join results remain observable independently of resource retirement.
 When dependent leases remain, the original admission transfers to the existing
 isolated cleanup worker and stays incomplete until destruction actually finishes.
@@ -63,3 +71,5 @@ python3 /tmp/blent-t1030-evidence/merge.py
 Linux core registration remains T1028, auxiliary registration T1029, and activity
 propagation/integration T1027/T1015. These resource ownership results do not claim
 physical power/display qualification.
+
+</details>

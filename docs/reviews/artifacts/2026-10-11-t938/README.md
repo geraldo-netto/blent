@@ -1,5 +1,8 @@
 # T938: bounded camera frame sizes
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Original boundary regression fails in debug (overflow panic) and release (wrapped
 size). Invalid black-frame dimensions also panic before the fix. The permanent
 regressions now reject invalid dimensions without allocation. The 225 bounded

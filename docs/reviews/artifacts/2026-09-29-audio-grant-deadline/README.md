@@ -1,5 +1,13 @@
 # T724: one five-second audio grant deadline
 
+Audio negotiation now uses one five-second deadline for the complete invitation and grant. Slow partial reads cannot renew it; hosted regressions cover both early rejection and budget overrun.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `AudioCapture` previously gave each socket read two seconds, conflicting with
 the host adapter's accepted five-second native startup budget. Permanent tests
 in `AudioCaptureTest` demonstrate both defects on API 27/34 before the fix:
@@ -26,3 +34,5 @@ python scripts/coverage/report.py check --manifest EVIDENCE/manifest.json --jaco
 
 The retained source manifest includes concurrent Rust speaker work; this report
 claims only the two named Kotlin files. No physical capture was used.
+
+</details>

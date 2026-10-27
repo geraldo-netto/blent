@@ -1,5 +1,13 @@
 # T750 snapshot and damage-order research — 2026-10-09
 
+CPU-backed snapshot and damage-order trials passed independent frame checks. The GL path failed before conversion and remained unqualified; no new Blent corruption or general driver mitigation was established.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 No new Blent snapshot corruption reproduced. CPU-backed paths pass bounded
 native acceptance. GL/import acceptance fails before conversion and remains
 tracked under T749; T750 now names that concrete prerequisite instead of a
@@ -119,3 +127,5 @@ then repetition of the frame-identity test on that path. Current evidence suppor
 the tested CPU-backed paths; it does not justify a blanket release-failure claim
 based only on an unconfirmed upstream race. No heuristics or external patches
 were introduced to make a failing acceptance run appear successful.
+
+</details>

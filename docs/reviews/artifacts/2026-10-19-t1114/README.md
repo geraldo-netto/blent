@@ -1,5 +1,8 @@
 # T1114: coordinate the original idle namespace
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 See ../../2026-10-19-idle-namespace.md for the exact two reproduced bugs,
 original directory/source/token ownership, synchronous callback bounds and private
 namespace assumptions. This T1114 evidence predates the separate failed-removal

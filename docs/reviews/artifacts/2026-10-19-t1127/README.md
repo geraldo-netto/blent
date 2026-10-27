@@ -1,5 +1,8 @@
 # T1127 Rust formatting
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The authoritative wrapper failed its first stage, Cargo workspace formatting,
 on six existing Rust files (eight diff locations). Formatting those files fixes
 that stage; `cargo fmt --all -- --check` now passes. Changes are module ordering,

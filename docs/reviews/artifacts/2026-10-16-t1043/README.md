@@ -1,5 +1,13 @@
 # T1043: shared activity work observation and original watch view
 
+One read-only activity interpretation preserves original stop fences and separates display from auxiliary demand. Unknown supported state denies work; explicit unsupported composition keeps its stated behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The independent `WorkObservation` value contract binds one resource target to its
 original activity stamp. Pending/failed/stopped publications, invalid snapshots,
 supported-source loss/closure and subsequent stop fences deny or retire desired
@@ -37,3 +45,5 @@ SonarQube remains unavailable (T1019), and source scores are not certification.
 No download, install, push, physical power transition or native media acquisition
 occurred. Selector, capture and auxiliary policy consumption remain T1037, T1015
 and T1010; observation readiness is not their runtime acceptance.
+
+</details>

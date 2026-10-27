@@ -1,5 +1,13 @@
 # T876 read-only supervised USB inventory
 
+USB inventory runs in a supervised helper that reads descriptors without opening or switching devices. Candidate metadata is not identity or approval; cancellation retains native completion ownership.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The isolated helper accepts --list LIMIT (default selected by host:64, maximum512)
 and emits a 16-byte BLUI v1 header plus fixed 16-byte candidate records. Enumeration
 uses stock libusb inventory/descriptors only; it never opens devices, queries
@@ -26,3 +34,5 @@ The real helper also builds against cached installed libusb headers and the
 stock runtime library. It was not executed on live USB devices. No downloads,
 application installations or USB mode changes; production discovery integration
 remains T853 and production media acceptance remains T855/T857 onward.
+
+</details>

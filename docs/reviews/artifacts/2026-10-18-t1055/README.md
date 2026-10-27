@@ -1,5 +1,13 @@
 # T1055: independent display activity signal contract
 
+Independent display-activity hints retain nonwrapping revisions and stop fences without granting media or cleanup authority. Shared vectors and bounded traces validate the values before integration.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The [independent contract](../../../display-activity-signal.md) defines versioned
 value hints scoped to the original authenticated control connection. Signed-range
 nonwrapping revisions and remembered stop counters preserve coalesced activity;
@@ -36,3 +44,5 @@ tree-sitter-rust 0.24.2/tree-sitter 0.25.2 and pinned Kotlin PSI 1.9.20, hash ve
 before invocation. These are source estimates; native SonarQube remains T1019.
 Twelve architecture/contract/portability checks pass. No network transfer, install,
 upload, push, live lock/suspend/display change or tablet interruption occurred.
+
+</details>

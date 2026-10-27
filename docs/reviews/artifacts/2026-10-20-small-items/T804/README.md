@@ -1,5 +1,13 @@
 # T804: bounded update metadata
 
+Update metadata is byte-bounded before text/JSON decoding, with exact declared-length checks. Hosted HTTP tests passed without external requests; the bound includes documented buffering and decoding overhead.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Release metadata is admitted before String/JSON materialization. The injectable
 `HttpReleaseChecks.maxResponseBytes` defaults to256KiB and accepts1 byte through
 1MiB. Oversized or invalid declared lengths reject without reading; unknown
@@ -34,3 +42,5 @@ model measures70 functions including tests, maximum6; actual native SonarQube
 measurement remains unavailable under T1019. Source hashes, original red/final
 green logs, test results and method counters are retained beside this report.
 No package download, physical tablet action, service restart or push occurred.
+
+</details>

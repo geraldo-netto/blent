@@ -1,5 +1,13 @@
 # T1028: original Linux capture proofs survive session stop
 
+Linux capture records helper, encoder and reader proofs before fallible handoffs. Whole-session Stop cannot lose original native cleanup; scoped joined counters do not certify broad SDK or physical behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The Linux session binds its independent recorder before exposing a fresh capture
 manager. Helper, stdout, CLI/GPU encoder child and encoder reader completions
 register immediately after native creation, before another fallible step or
@@ -52,3 +60,5 @@ Native objects remain in the corresponding `/tmp/blent-t1028-evidence` target
 trees. SDK networking was disabled. No installed application, live display,
 lock/suspend state or device was changed; no upload or repository push occurred.
 Auxiliary retirement remains T1029; activity source/composition T1027/T1015.
+
+</details>

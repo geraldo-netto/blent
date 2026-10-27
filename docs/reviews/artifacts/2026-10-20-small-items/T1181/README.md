@@ -1,5 +1,13 @@
 # T1181: checked receiver start, arithmetic-free stop
 
+VideoReceiver checks start capacity before allocating work and stops without incrementing its identity. Hosted socket/codec and wider-integer tests passed; a held native creator still blocks retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 VideoReceiver retains its existing authoritative counter and running flag.
 Start checks the nonnegative positive-Long admission range under the existing
 receiver monitor before changing state or allocating jobs, statistics, sockets
@@ -65,3 +73,5 @@ bounded hosted fixtures do not prove unrestricted safety or physical Android
 behavior. No APK, running service, physical device, Windows/EVDI backend or
 network transfer was changed. Separate NativeDeadline wrap is recorded as
 T1190; this receiver change does not claim to fix that notification owner.
+
+</details>

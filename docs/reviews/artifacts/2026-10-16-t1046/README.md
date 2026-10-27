@@ -1,5 +1,13 @@
 # T1046: retained-monitor native display quiescence
 
+Retained-monitor quiescence joins the original encoder cleanup with its helper pause acknowledgement before rotating FIFO and headers. Cancellation or grace expiry retains progress and cannot fabricate completion.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `CaptureManager::quiesce_display` stops the original encoder child and reader,
 coordinates their retirement with the original helper pause acknowledgement, and
 waits for the exact original encoder generation's native creators/proofs. Only
@@ -50,3 +58,5 @@ Final normal CLI daemon suite: 516 passed, four existing ignores. Installed SDK:
 81 capture plus nine encoder-worker tests passed, with no ignores. All five scoped
 production functions measure 100% native executable-line coverage individually
 in each configuration. T1048 independently passes nine native encoder regressions.
+
+</details>

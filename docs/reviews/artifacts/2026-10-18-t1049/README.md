@@ -1,5 +1,13 @@
 # T1049: reversible renewable display registration suspension
 
+Display registration suspension revokes the old route but retains intent and ownership. Resume waits for exact original cleanup and creates fresh credentials; bounded model traces are not physical acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Pause synchronously revokes the original route/socket generation and requests
 client close. It retains selected attachment intent, configuration and the original
 client, and continues polling that client's native/remote retirement while paused.
@@ -52,3 +60,5 @@ installation, upload, push, live device, lock or suspend operation occurred.
 grammar extracted and compiled under `/tmp/blent-t1049-evidence/parsers`. Its
 `native-final` argument runs the full library suite into a new exclusively owned
 target. Source snapshots deliberately reject any source change during collection.
+
+</details>

@@ -1,5 +1,8 @@
 # T966: no executable null-only initialization
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Permanent source/native compiler regressions fail before the inventory correction.
 Actual pinned compiler bytes prove default-null properties emit no PUTSTATIC
 assignment; only generated singleton allocation remains. Current application

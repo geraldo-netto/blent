@@ -1,5 +1,13 @@
 # T1027: one daemon-owned activity source
 
+One daemon-owned activity source supplies read-only views to all sessions and retains native ownership through shutdown. Propagation tests do not establish physical power-transition acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The Linux daemon owns one existing activity follower/native factory configured
 with saved preferences. Primary and extra ADB/USB builders share clones of its
 original read-only publication. Portable prepared sessions forward the same view
@@ -42,3 +50,5 @@ Collector scripts are retained here. Their native objects remain in fresh
 /tmp/blent-t1027-evidence targets; reruns need new output directories. No download,
 installation, upload, push, physical power transition or live display change was
 performed. Physical qualification remains T914; Windows validation remains open.
+
+</details>

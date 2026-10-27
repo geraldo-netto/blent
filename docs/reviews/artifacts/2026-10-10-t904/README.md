@@ -1,5 +1,8 @@
 # T904 — retire cleared Android session credentials
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 SessionCoordinator.applyToken previously returned immediately when the saved
 ADB token became null, leaving old control credentials and active video retry
 jobs intact. Four permanent API27/API34 regression cases failed before the fix.

@@ -1,5 +1,13 @@
 # T1001: explicitly owned coverage cache marker
 
+The coverage collector marks only its exclusively created target as owned before Cargo cleanup. A real offline regression preserves unrelated cached binaries and rejects preexisting caller output.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The Rust collector writes Cargo's cache-directory signature only after creating
 its exclusive new evidence/target tree, before any Cargo operation. It refuses
 preexisting caller output before marking or cleaning anything. Guarded Cargo
@@ -21,3 +29,5 @@ clean warning. Its matching inventory, native report, logs and collector/source
 fingerprints are retained. No downloads, installations, live devices/services,
 caller targets or project dependencies were touched. The attested tree includes
 the unrelated pre-existing uncommitted host TLS fixture, which is not changed.
+
+</details>

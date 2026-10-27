@@ -1,5 +1,13 @@
 # T1263: preserve newer observations during cancelled-drain cleanup
 
+Cancelled UI drains preserve newer pending observations under the same owner lock. Deterministic lost-update regressions and the full hosted suite passed; the result does not attribute every historical timeout.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A deterministic normal-suite regression now forces the lost-update boundary:
 queue the original drain, cancel its job, submit a newer observation, then execute
 the cancelled continuation. The old finish(token) erased the replacement and
@@ -30,3 +38,5 @@ JaCoCo 0.8.15 method-line coverage. Kotlin PSI 1.9.20/local cyclomatic measureme
 are <=4 across the changed production/test files. The raw shared full-suite report
 is ../2026-10-26-t1262/jacoco.xml.gz. Source hashes and both failure/pass logs are
 retained. Physical Android evidence remains outside this hosted JVM verification.
+
+</details>

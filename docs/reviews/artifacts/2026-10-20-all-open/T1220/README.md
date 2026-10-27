@@ -1,5 +1,13 @@
 # T1220: native retirement-counter fixture module layout
 
+The native retirement-counter fixture compiles byte-identical production sources in their real module layout. The original LLVM assertion passes after repair, with source hashes checked before interpreting counters.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The existing permanent T841 normal-suite test fails before repair: rustc E0583
 cannot locate the current observations child module through its external root
 path attribute. Current test now passes with the exact same actual LLVM counter
@@ -23,3 +31,5 @@ scores both functions1 and5; native Sonar remains unavailable. Test fixture cove
 exemption applies; the strict native counter test is not removed or weakened.
 Rustc1.98.1, native LLVM tools from the same installed toolchain. No device,
 service, package installation or transfer.
+
+</details>

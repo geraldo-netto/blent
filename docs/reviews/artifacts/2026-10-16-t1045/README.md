@@ -1,5 +1,13 @@
 # T1045: shared per-session viewer demand
 
+Per-session viewer continuity now detects a coalesced empty-and-rejoin transition without restarting for continuous membership. Shared selection/capture views preserve saved preferences and original machine fences.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The daemon's global source deliberately publishes `Feed::snapshot(true, false)`:
 it cannot own each session's receiver membership. The independent capture context
 now carries immutable saved activity preferences from primary/extra ADB/USB
@@ -41,3 +49,5 @@ source hashes, original native object attestations and per-function evidence are
 retained. The continuity class-change rejection line remains unhit; it is not
 excluded from the count. No native SonarQube certification or physical acceptance
 is claimed.
+
+</details>

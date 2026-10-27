@@ -1,5 +1,13 @@
 # T1219: current distribution documentation and references
 
+Distribution documentation and references were reconciled with current package formats. The tooling target still had two native-fixture failures; removing obsolete records did not convert those failures into passes.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Current user/developer documentation, release tables, website asset metadata,
 security guidance, metric documentation and historical prose describe the
 supported AppImage/source archive, Arch recipe and portable tar distribution
@@ -34,3 +42,5 @@ file deletion is confined to owned repository supporting records after synchrono
 inspection; normal tests, original native ownership proofs and binary fixture data
 retain their own lifetime. No live device/service, installation, tool download,
 network transfer, native capture or Windows implementation action.
+
+</details>

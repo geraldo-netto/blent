@@ -1,5 +1,8 @@
 # T875 authenticated receive-window agreement
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Portable BLCP v1 contract defines a fixed 12-byte host proposal and tablet
 selection, bounded to 4096..1048576 bytes. Both directions use the smaller
 configured capacity; host rejects expansion, wrong roles, versions, lengths and

@@ -1,5 +1,13 @@
 # T1113: isolated writer uses the current frame contract
 
+The isolated writer replay now uses the current frame-generation and publication contracts. Compile, byte-oracle and sanitizer fixtures passed; this was benchmark repair, not physical display acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The permanent normal-suite compile test first fails for both 200/500 ms candidate
 builds: publication omits the required original generation and the positional
 writer initializer omits idle_control. The fixed benchmark uses the public
@@ -36,3 +44,5 @@ normal actual thread exit; it is not unrestricted hardware or leak-freedom proof
 Eventual cleanup assumes scheduling and completion of these bounded trusted
 children, sponsored through original command joins by T1108's existing helper.
 No physical EVDI, tablet, battery, suspend, network or installed-app action ran.
+
+</details>

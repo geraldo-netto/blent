@@ -1,5 +1,13 @@
 # T1195: terminal recalibration requests
 
+Recalibration requests stop at the maximum counter instead of wrapping to an old cache identity. GUI persistence, durable-cache and wider-integer tests passed; valid manual profiles remain usable.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The actual GUI regression first fails: after the final valid request the next
 click wraps4294967295 to0 and can select an old environment cache identity.
 Shared FileConfig request policy now admits only checked u32 increments. At MAX
@@ -32,3 +40,5 @@ cleanup sponsors remain responsible for their resources. Test temporary files,
 owned strings and completed GUI tasks retire in their original scopes; no new
 retaining cycle, alias, buffer, callback or native reuse path is introduced.
 No service/device interruption, Windows or EVDI changes.
+
+</details>

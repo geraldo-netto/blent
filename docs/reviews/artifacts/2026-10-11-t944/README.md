@@ -1,5 +1,13 @@
 # T944: application camera consent observation
 
+Application-owned camera consent now samples permission on foreground/background transitions. Revoked permission closes the original capture rather than relabeling a new prompt.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 USB camera offers project through an independent consent contract. Stable opaque
 ownership spans permission/admission publications of the original authenticated
 peer and lease; equal counters in replacement workers cannot inherit intent.
@@ -22,3 +30,5 @@ simulated, not physical permission-provider acceptance. Actual camera/endpoint
 composition remains T932, hardware acceptance T858/T863. Capabilities remain
 explicitly display-only until composition. No downloads, installs, reloads or
 live host/tablet tests; EVDI unchanged.
+
+</details>

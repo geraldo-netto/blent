@@ -1,5 +1,13 @@
 # T920 registered display renewal lifecycle
 
+Registered display renewal uses conditional generation changes so late close, retry or replacement cannot overwrite a newer owner. Portable lifecycle tests do not certify physical rendering.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A portable per-display owner now retains registration and generation-scoped cleanup
 through channel loss, backoff and cancellation. Native descriptors and capture
 sessions remain outside the contract. T908 owns production daemon composition;
@@ -34,3 +42,5 @@ CARGO_NET_OFFLINE=true cargo llvm-cov --offline --locked --no-clean -p blent --l
 llvm-cov export --format=lcov --instr-profile=target/llvm-cov-target/blent.profdata --object target/llvm-cov-target/debug/deps/blent-276264e4cf99d16f > /tmp/blent-t920-current.lcov
 PYTHONPATH=/tmp/blent-python-offline:scripts/coverage python3 scripts/coverage/report.py check --manifest /tmp/blent-t920-manifest.json --lcov /tmp/blent-t920-current.lcov --scope host/src/registered_display.rs --scope host/src/attachment/registered.rs --output /tmp/blent-t920-report.json
 ```
+
+</details>

@@ -1,5 +1,13 @@
 # T745: isolate GUI persistence fixtures
 
+GUI persistence tests now use owned temporary configuration stores. A permanent child-process regression proved and fixed writes to developer settings without changing production behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The September 30 reinstall check found `encoding_gpu="stable-one"` and width2962
 in the real user configuration, last written at 14:56:38. Those are T727 fixture
 values. `settings_test_app` returned an App using `ConfigStore::default()`; unlike
@@ -33,3 +41,5 @@ Both host and Android were rebuilt from 741a802, installed and reloaded. Install
 host executable and APK hashes match their release builds; stock libevdi and
 autostart remain unchanged. This subsequent test-only correction does not change
 those deployed production bytes or claim physical audio/pen acceptance.
+
+</details>

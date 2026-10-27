@@ -1,5 +1,13 @@
 # T1218: metrics for current source formats
 
+Metrics cover current source formats and retain strict parser failures. Complexity tests passed, but three coverage fixtures lacked a usable Rust grammar; that collection was not a complete pass.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Complexity and essential-script coverage now select the current language and
 package-hook formats only. The removed backend has no parser, source inventory,
 section adapter or compatibility entry point. The independent package-hook
@@ -27,3 +35,5 @@ metric tests<=4), using unchanged Python3.12 source rules; native Sonar remains
 unavailable. These nonessential verification scripts/test fixtures retain their
 existing production line-coverage exemption. No tool download or native device,
 service, EVDI/Windows implementation action.
+
+</details>

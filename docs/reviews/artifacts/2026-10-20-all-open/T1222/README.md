@@ -1,5 +1,13 @@
 # T1222: current fixture callers
 
+Current fixture constructors and supported-platform expectations replace removed calls. Focused checks passed, while the preserved native distribution child still failed on its separate missing inputs.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Permanent current-method construction control fails before repair with the stale
 notice method. Existing installer fault and USB dependency cases also fail on
 removed calls/expectations. The same discovery control,9 installer-contract and
@@ -20,3 +28,5 @@ and child cleanup. No current factory executes a native action during discovery.
 No production function changed. Local Python3.12 source scores <=9 (checked all
 three fixture modules); native Sonar remains unavailable. Test fixture line-
 coverage exemption applies. No device/service/installation/transfer action.
+
+</details>

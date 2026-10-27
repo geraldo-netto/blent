@@ -1,5 +1,13 @@
 # T1221 actionable offline parser replacement
 
+Cached Rust parser dependencies made an offline source-inventory replacement actionable. Dependency availability alone was not a working parser or metric pass; the later replacement has separate evidence.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The owner requested moving implementable blocked work to Open on2026-10-21.
 T1221 moves because the earlier T1244 clarification accepts local cyclomatic
 tools: repairing this source-inventory/parser gap does not require the exact
@@ -40,3 +48,5 @@ still needs a native conditional-removal contract or an explicit external
 ownership/exclusivity decision. Current camera/audio callers still use that ADB
 adapter; the no-compatibility policy alone does not authorize deleting an active
 transport. Declined macOS/stylus dispositions remain unchanged.
+
+</details>

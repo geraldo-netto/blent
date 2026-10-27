@@ -1,5 +1,8 @@
 # T895 — remembered peer presentation
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Restored Android trust now publishes a bounded `Peer` control event containing
 Computer ticket/fingerprint, Tablet fingerprint and remembered status. It is
 metadata, not TLS proof or a pairing prompt. Unknown peers retain the existing

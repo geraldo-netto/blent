@@ -1,5 +1,13 @@
 # T940 retained camera runtime and actor dispatch
 
+The camera actor now accepts exact retained consumer completion after cancellation while refusing new consent. Joined loopback tests validate cleanup dispatch, not physical camera retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Focused projection/control interfaces connect the portable local camera owner to
 the retained run/runtime and serialized actor. Permission results resolve through
 the original owner's opaque pending prompt. Current pairing and exact original
@@ -38,3 +46,5 @@ through private service/client IPC and main-process admission/presentation; thei
 existing stop paths close control queues. T936 joins these layers, and T932 must
 compose actual isolated hardware capture/proof before enablement. Host adaptation
 remains T933 and physical acceptance T858. No downloads or device changes occurred.
+
+</details>

@@ -1,5 +1,8 @@
 # T874 private broker ownership and asynchronous IPC
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Linux owner election holds a stable 0600 lock under an owned 0700 directory,
 pins the directory descriptor through bind/cleanup, rejects unexpected stale
 paths and removes only its own socket inode on drop. Async packet I/O has one

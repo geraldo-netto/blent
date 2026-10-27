@@ -1,5 +1,13 @@
 # T854 production USB composition
 
+Android production USB composition joins permission, isolated setup and session ownership without sending media through Binder. Component tests passed with media capability still disabled pending endpoint integration.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The main-process entry now links supervised USB permission admission to the private
 connection process. The service factory lazily composes USB opening, retained
 socket bridge, Android identity/trust, authenticated setup and the session runner.
@@ -56,3 +64,5 @@ on the tablet. T857–T860 retain real media routing/acceptance; T862/T846 retai
 physical combined lifecycle acceptance. No ADB-free production-media support is
 claimed by these component/interoperability tests. No downloads, installations,
 live USB switches or network changes occurred.
+
+</details>

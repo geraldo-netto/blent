@@ -1,5 +1,13 @@
 # T1021: retain native monitor while capture is paused
 
+The first retained-monitor pause implementation waits for original writer release before acknowledging pause. Its no-grab-while-paused rule was later corrected by T1185 to keep EVDI flips progressing; these counters describe the earlier revision.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 An optional private sequenced-packet endpoint starts the native capture helper
 paused. Its independent C wire contract matches T1023's fixed nine-byte records.
 Only consecutive nonzero sequences and strict booleans are accepted. Invalid,
@@ -66,3 +74,5 @@ first-tick fallback grab found during review; this component does not claim that
 later active-loop pacing is optimized. T1022/T1024 retain stdout framing and
 publication prerequisites. No desktop setting, monitor connection, tablet or
 installed app was changed.
+
+</details>

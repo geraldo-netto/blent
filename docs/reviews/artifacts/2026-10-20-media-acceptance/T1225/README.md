@@ -1,5 +1,13 @@
 # T1225: tolerate transient AOA reopen I/O
 
+After an observed USB mode-switch failure, the helper tolerates transient post-switch I/O errors within its existing retry bound. Tests passed and the existing target reopened; a fresh full switch/pairing/media cycle was not established.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Authorized T858/T860/T859 setup used the production host GUI and current signed
 release APK on RugKing Pad 2 Pro (Android API36), physical port 3-2.4.4. USB
 debugging was disabled before connection. Native output reported:
@@ -48,3 +56,5 @@ release/reuse still requires actual supervised process retirement. No new
 cleanup path, retry after initial validation failure, or logical completion
 substitute was introduced. Sanitizers and bounded fixtures do not prove
 unrestricted native USB/kernel safety.
+
+</details>

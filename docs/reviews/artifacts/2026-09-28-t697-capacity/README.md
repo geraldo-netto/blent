@@ -1,5 +1,8 @@
 # T697 capacity evidence
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Fresh Linux and ordinary-user native Windows counters pass each maintained
 function at >=80%: six shared policy functions on Linux; eleven shared/native
 functions on Windows. All 152 Linux and 153 Windows common tests pass. No skips.

@@ -1,5 +1,13 @@
 # T722: complete Xvfb display publication
 
+Xvfb startup now waits for the complete newline-terminated display number. Split-write regressions and isolated repeated trials confirm the fixture fix, without explaining a separate physical mouse failure.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `start_private_server` previously read the display pipe once, accepted any
 numeric prefix, and closed the pipe. Xorg's `NotifyParentProcess` writes the
 number and newline separately (`os/connection.c` in the locally retained
@@ -47,3 +55,5 @@ same isolation, replacing the Python command with
 validation. No display manager, native input, EVDI module or desktop preference
 was changed. This establishes T722's fixture fault; it does not establish the
 cause of T721's physical mouse failure.
+
+</details>

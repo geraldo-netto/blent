@@ -1,5 +1,13 @@
 # T851 resource lease and settlement policy
 
+Portable resource state machines preserve sibling traffic and wait for actual retirement before reusing a slot. Production adapters must still honor complete-record publication and cleanup barriers.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The portable Rust/Kotlin state machines own four bounded resource slots and no
 native handles. Tests cover consent/deadline checks, wrong order and duplicate
 messages, stale connection/registration callbacks, independent cancellation,
@@ -27,3 +35,5 @@ events, and report actual native/consumer/writer retirement. A timeout or kill
 request cannot release a slot. The tablet's Result(Revoked) is exclusively a final
 settlement acknowledgement and is sent only after its local retirement. These
 adapter obligations remain in T853/T854; production integration is not claimed.
+
+</details>

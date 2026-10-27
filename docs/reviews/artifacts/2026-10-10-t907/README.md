@@ -1,5 +1,13 @@
 # T907 Android display route and Activity composition
 
+Android display routes now require authenticated matching peer authority and preserve camera/audio independence. Hosted Activity tests and mask-1 negotiation establish composition, not physical rendered frames or touch.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 865 selected connection, ADB, UI/settings and lifecycle tests pass offline.
 All 124 scoped functions and all 204 executable JVM methods (including authored
 constructors/getters/callbacks) meet individual 80% executable-line coverage.
@@ -44,3 +52,5 @@ These are JVM/Robolectric and native bytecode counters. Physical USB/rendered-fr
 and touch/mouse acceptance remains T857; host session registration remains T908.
 T855 physical pairing is owner-deferred. No installation, reload, external download
 or USB mode change occurred. Existing installed software was not modified.
+
+</details>

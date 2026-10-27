@@ -1,5 +1,13 @@
 # T995: admission follows actual original native retirement
 
+Audio controller admission now stays occupied until both original USB and helper cleanup proofs complete. Errors, panics and bounded Stop return cannot make a replacement safe early.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The UI-facing AudioController contract remains independent of native adapters.
 Report observes portable Completion proofs through a fixed pair of slots per
 direction: original USB owner plus isolated helper. Linux records proof directly
@@ -33,3 +41,5 @@ No downloads, installs or live host/tablet tests. Physical audio acceptance rema
 T860/T859; SDK-wide native-audio qualification T835 and Windows validation T902.
 Attestation includes the pre-existing uncommitted TLS fixture; unrelated edits
 remain unstaged and are not part of this commit.
+
+</details>

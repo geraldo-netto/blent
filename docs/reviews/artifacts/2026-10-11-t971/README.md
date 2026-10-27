@@ -1,1 +1,13 @@
+# 2026-10-11-t971 — README
+
+Camera Stop and producer failure now interrupt a pending invitation. Focused counters cover the changed functions while leaving untouched native-entry gaps explicit.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T971 permanent Stop regression fails against the prior invitation-first behavior, then passes unchanged after cancellation/producer failure are raced during invitation. Output retirement remains independent. Existing independent-invitation test now requests Stop only after observing its invitation, preserving all assertions while avoiding an intentional-cancellation race. Five normal connection tests pass; both affected production functions have 100% native line coverage. Full file scope is retained and explicitly does not pass: untouched native entry/device/session functions are not fully exercised by this focused collection. Wider native camera/namespace qualification remains T835 and integration T933; no new exclusion or full-file pass is claimed. Raw source/object attestation, native counters and red proof retained. No download or live device operation.
+
+</details>

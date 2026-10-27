@@ -1,5 +1,8 @@
 # T1109: bounded portable unchanged-frame policy
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The implementation and independent contract, ownership boundaries, model bounds
 and qualification limits are described in ../../2026-10-19-unchanged-policy.md.
 Ten normal policy tests and all 380 common-library tests pass. Fresh native

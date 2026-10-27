@@ -1,5 +1,13 @@
 # T797 PCM staging and typed-write measurements
 
+Bulk PCM staging and typed speaker writes preserved data and reduced selected replay costs. Silent native output does not establish acoustic latency or zero-copy delivery.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 RugKing Pad 2 Pro SDK36, exact fingerprint and APK/source hashes in results and
 provenance. Baseline `b21fe37` already includes T795/T796. Candidate preserves bulk
 little-endian conversion with per-reader scratch, uses typed nonblocking speaker
@@ -35,3 +43,5 @@ at completion; remaining queued silence is discarded during normal test cleanup.
 Median process allocation is 262144 bytes for both. No end-to-end zero-copy claim:
 owned PCM and Android/server copies remain. This experiment does not satisfy the
 separate T718/T720 physical/acoustic acceptance work.
+
+</details>

@@ -1,5 +1,13 @@
 # T941 original camera publication and terminal IPC relay
 
+The original camera cleanup relay remains usable after Stop and cannot bind a replacement. Exact publication identity prevents stale completion or permission actions from changing a newer owner.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Private service controls remain owned during actual worker retirement. Only
 capture-consumer completion may pass the stopped gate; new consent is rejected.
 Main-process client retains a separate bounded cleanup relay to the original
@@ -43,3 +51,5 @@ remain display-only; T932 must compose Activity/isolated hardware capture and it
 actual completion proof before enabling camera. Host adaptation stays T933 and
 physical acceptance T858. These are local transport/lifecycle fixtures, not hardware
 camera, real codec or physical native USB acceptance. No downloads/device changes.
+
+</details>

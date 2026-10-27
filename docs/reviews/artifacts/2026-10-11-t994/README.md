@@ -1,5 +1,8 @@
 # T994: obsolete local resource cancellation is harmless
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 See [the diagnosis and contract](../../2026-10-11-local-resource-cancellation.md).
 Two deterministic permanent regressions failed before the fix; all three pass
 after it. Strict Session::cancel and native callbacks remain unchanged. Tests

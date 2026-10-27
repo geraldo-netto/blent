@@ -1,5 +1,8 @@
 # T1269: current authentication guidance
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Removed the pre-1.1.0 app compatibility rationale from the desktop security
 control and the independent FileConfig schema documentation. Both now describe
 current token-authentication behavior and recommend keeping authentication on.

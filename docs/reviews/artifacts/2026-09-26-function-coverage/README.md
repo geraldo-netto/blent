@@ -1,5 +1,13 @@
 # T497 evidence
 
+The source-matched coverage snapshot passed each of 2,230 maintained functions; a macOS-only function remains unmeasured. Later source changes require fresh counters.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `combined.json.gz` records all 2,230 maintained functions/methods passing the
 individual 80% executable-line threshold. One declined macOS function remains
 explicitly unmeasured. `manifest.json.gz` is the complete source inventory.
@@ -49,3 +57,5 @@ Install `scripts/coverage/requirements.txt` in an isolated environment first.
 The explicit prefix translates the original Linux collection root when replayed
 from another checkout. Source hashes must match; a later source revision requires
 new measurements. `SHA256SUMS` protects the archived evidence from accidental edits.
+
+</details>

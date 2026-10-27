@@ -1,5 +1,8 @@
 # T1044: production capture import regression
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 T1041 accidentally guarded the production `tokio::sync::watch` import with
 `cfg(test)`. The test binary compiled, but the normal daemon failed with 17 E0433
 errors in capture state and signatures. The normal Linux CI now permanently

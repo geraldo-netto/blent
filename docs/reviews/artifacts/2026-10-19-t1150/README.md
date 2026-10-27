@@ -1,5 +1,13 @@
 # T1150 — saved-computer trust contract
 
+Saved-computer views bind selections to exact identity and revision without exposing mutable trust storage. Contract tests passed; private-process maintenance and UI integration were separate steps.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The production display/webcam software adapters are integrated; their remaining
 physical acceptance is separately deferred under T855/T858. T897 now proceeds as
 an independent follow-up, decomposed into this domain contract, T1151 private
@@ -46,3 +54,5 @@ Android contract/lifecycle architecture checks pass. All dependencies and hosted
 API27/34 jars were already cached and checked locally; Gradle and Robolectric
 were forced offline. No install, live device/service action, transfer or push.
 Raw evidence: `/backups/disk2/blent-work/2026-10-19-open-items/t1150`.
+
+</details>

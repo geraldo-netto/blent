@@ -1,5 +1,8 @@
 # T910 portable registration lifecycle
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Nine permanent tests pass, including all 25 bounded status pairs, malformed and
 extreme request/route counters, cancellation before/after exposure, failed
 admission, stale/foreign replies and exact remote retirement. All 14 maintained

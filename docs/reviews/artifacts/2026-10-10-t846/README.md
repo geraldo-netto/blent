@@ -1,5 +1,13 @@
 # T846 offline prototype evidence
 
+This first USB prototype snapshot records offline build and fake-device checks. Later synthetic native attempts are separate; neither snapshot establishes production media readiness.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The original offline snapshot involved no USB mode switch, application installation,
 debugging-setting change or host service restart. Production still requires ADB;
 T846 remains open. Later native attempts are retained under `live/` and described in the owning
@@ -21,3 +29,5 @@ fix; production and full lifecycle acceptance remain open.
 The owning review document describes architecture, exact commands, physical
 interaction, recovery requirements and remaining production work. These synthetic
 fixtures establish no USB/LAN performance comparison or production readiness.
+
+</details>

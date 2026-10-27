@@ -1,5 +1,13 @@
 # T858 physical acceptance checkpoint — 2026-10-20
 
+The October 21 follow-up completed selected-tablet camera retirement after debugging-off software reconnect. Earlier profile and revocation observations remain scoped; the uninstrumented prior Stop report has no established cause.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 This October20 checkpoint was incomplete. The October21 completion below supplies
 the missing current-build original-retirement evidence; T858 is complete for this
 selected device and retains the explicit limits described here.
@@ -74,3 +82,5 @@ per-function counters remain permanent. Older providers/devices and other OS
 backends remain unqualified or unsupported as explicitly documented. No raw
 camera images are retained, and no cause is inferred for the earlier
 uninstrumented Stop episode.
+
+</details>

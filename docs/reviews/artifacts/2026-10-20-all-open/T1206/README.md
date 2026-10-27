@@ -1,5 +1,13 @@
 # T1206: remove the obsolete HEVC-only shell inventory
 
+Shell inventory requires current version 2 throughout the receiver, worker, formatter and doctor. Old-version and boundary tests passed while unavailable current evidence remains explicitly unknown.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The current doctor requests shell inventory version2. Android no longer emits
 HEVC-only V1, coerces invalid versions to1, or admits shell tag1 at the worker
 JSON boundary. The receiver rejects missing/obsolete/invalid versions before
@@ -50,3 +58,5 @@ actual worker/process exit and scheduler progress; hosted cases do not establish
 physical device acceptance or unrestricted native safety. T1199 separately owns
 scoped display decoder negotiation; T1192's remaining compatibility audit stays
 open. Windows/EVDI, services, APK installation and network transfers are untouched.
+
+</details>

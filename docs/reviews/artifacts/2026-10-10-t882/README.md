@@ -1,5 +1,13 @@
 # T882 Android tablet resource session
 
+The tablet resource session keeps bounded loans and sibling progress through revoke and generation replacement. Ring aliasing, publication and cleanup-event regressions passed; native service/media acceptance was separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Independent ticket/approval/resource-lease contracts and the portable tablet
 session now compose the existing management, resource policy and multiplexer.
 Five bounded receive rings expose exact consumer loans; outbound admission
@@ -39,3 +47,5 @@ Android native service/listeners remain T854; production media adoption and
 physical debugging-off acceptance remain T855/T857–T860. JVM fixtures do not
 establish physical provider behavior or native syscall/process retirement.
 No downloads, live-device operations or external dependency edits occurred.
+
+</details>

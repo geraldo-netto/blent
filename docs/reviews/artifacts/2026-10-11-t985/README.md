@@ -1,5 +1,13 @@
 # T985: original audio consent and Activity controls
 
+Android audio controls and observations bind each direction to its original offer and Activity attachment. Saved preferences cannot consent to a new offer, and synthetic tests do not establish physical process separation.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Camera and audio share exact original publication projection, consumer selection
 and observation. Typed adapters retain direction/profile metadata and resource
 commands. Audio has independent per-direction consent and consumer observations,
@@ -30,3 +38,5 @@ All 2,710 maintained methods meet individual 80% executable-line coverage; no
 unmeasured methods. Changed authored Kotlin complexity: 574 methods, maximum 8.
 Inventory/counters and native XML/exec are retained compressed, with source
 attestations and authored-constructor counters.
+
+</details>

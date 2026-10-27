@@ -1,5 +1,13 @@
 # T947 native ownership through fatal failures
 
+Fatal cleanup failures retain the original native owner and block replacement while propagating the error. Synthetic Error tests verify ownership paths, not real heap exhaustion or hardware faults.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ResourceLane always attempts actual native retirement in finally, even when an
 execution-ended observer throws Error. Successful native retirement may then
 publish proof and admit the successor; the original observer Error still escapes
@@ -32,3 +40,5 @@ Production camera remains disabled pending portable capture binding T943, origin
 connection-attempt adapter T948, Activity/permission integration T944 and joined
 composition T932. Physical camera acceptance remains T858. No downloads, installation
 or live host/tablet changes.
+
+</details>

@@ -1,5 +1,8 @@
 # T644 diagnostic readiness
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The historical Ubuntu-runner Xvfb timeout has no retained child/syscall state.
 Both fresh Linux coverage configurations, the full script suite and the focused
 17-test visibility suite pass locally; this does not identify the old cause.

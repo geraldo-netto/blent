@@ -1,5 +1,13 @@
 # T1161 — composable naming
 
+The input-controls composable follows the required naming convention without changing behavior. Existing UI/lifecycle tests, full-file counters and lint passed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Rename SessionCoordinator.inputControls to InputControls and update its single
 production caller in MainActivity. This is the Unit-returning Compose naming
 convention; the input control implementation, consent and retirement are unchanged.
@@ -21,3 +29,5 @@ InputControls borrows its TouchCapture during composition, and the existing
 control/resource owners retain their cutoff, native retirement and cleanup duties.
 The rename introduces no allocation, queue, identity or reuse boundary. No live
 device, download or push occurred.
+
+</details>

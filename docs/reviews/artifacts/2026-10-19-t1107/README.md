@@ -1,5 +1,8 @@
 # T1107: sparse CPU codec delivery qualification
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 See ../../2026-10-19-sparse-delivery.md for the scope, commands, measured
 observations, Android audit and limits. This artifact retains exact production
 FFmpeg argument lists, matched source hashes, native original-retirement results,

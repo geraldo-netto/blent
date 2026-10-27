@@ -1,5 +1,13 @@
 # T927 portable USB connection coordination
 
+Portable USB coordination reserves capacity before startup and destroys retained listeners before reuse. Discovery failure still advances cleanup, while stale or ambiguous intent cannot preempt working owners.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `display_connections::Connections` joins the existing discovery, capacity and
 registered-session owners without native handles, capture implementations or UI.
 Complete authenticated snapshots provide admission intent. Ambiguous new peers
@@ -39,3 +47,5 @@ CARGO_NET_OFFLINE=true cargo check --offline --locked --target x86_64-pc-windows
 ```
 
 No downloads, installation, live broker/device changes or physical acceptance.
+
+</details>

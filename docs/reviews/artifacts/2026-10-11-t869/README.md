@@ -1,5 +1,8 @@
 # T869: bounded identity crash fixtures
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Permanent stalled-checkpoint regression fails with the original unbounded output
 wait. A separate five-second production timed owner bounds that red reproduction,
 so the regression cannot hang the suite itself. The corrected fixture uses the

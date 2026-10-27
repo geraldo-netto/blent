@@ -1,5 +1,13 @@
 # T1026: session retirement includes original native evidence
 
+Session retirement now observes original creators and every registered native completion separately from parent-task results. Pending cleanup retains admission even after the supervisor exits.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The independent capture contract accepts a native completion recorder. Clones
 also retain original creation lifetime. Each native creator task/thread and
 dependent resource must register its own actual completion before exposure or
@@ -50,3 +58,5 @@ resource registration remains T1028, auxiliary/probe registration T1029, and
 shared activity propagation T1027. No native feature qualification is inferred
 from interface readiness. Display policy integration remains T1015; no installed
 app, live device/desktop or network setting changed.
+
+</details>

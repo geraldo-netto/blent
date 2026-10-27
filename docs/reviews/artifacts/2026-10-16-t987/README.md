@@ -1,5 +1,13 @@
 # T987: completed local producer scratch reuse
 
+Completed partial-read scratch now reuses one array only after exact completion and transport acceptance. Full transferred blocks remain independently owned; local JVM allocation savings do not establish Android power gains.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `LocalChannelProducer` retains at most one completed scratch array for partial
 or empty reads. A new native request may borrow it only after the exact original
 read completes and any copied pending payload is accepted by the transport.
@@ -66,3 +74,5 @@ python3 -m unittest scripts.tests.test_android_contract_boundaries \
 ```
 
 The reused offline initialization script is retained in T990's evidence directory.
+
+</details>

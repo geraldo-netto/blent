@@ -1,5 +1,8 @@
 # T864 control credential snapshot regression
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 `SessionCoordinator.applyToken` publishes the new control token before calling
 disconnect. An old pending socket can open in that interval, pass the existing
 current-socket check and read the newly published credential. `ControlSession`

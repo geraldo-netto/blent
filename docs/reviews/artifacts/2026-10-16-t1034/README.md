@@ -1,5 +1,13 @@
 # T1034: isolate native idle file effects
 
+Idle file effects now run on an admitted native thread so held file locks cannot block control progress. Cancellation retains the same worker, lease and cleanup capacity.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Idle lease creation and file effects now run on one admitted native thread.
 The existing portable policy remains authoritative; Linux file access remains in
 its adapter. Revocation sets one atomic stop and coalesced wake without touching
@@ -51,3 +59,5 @@ Native objects remain in the corresponding `/tmp/blent-t1034-evidence` target
 trees. No download, installation, upload, push or live device/display change
 occurred. These native ownership tests do not qualify physical power/display
 behavior; activity source/composition remains T1027/T1015 and physical T914.
+
+</details>

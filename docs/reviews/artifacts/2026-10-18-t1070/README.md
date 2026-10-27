@@ -1,5 +1,8 @@
 # T1070: intentional platform permission callbacks
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Two SDK 27/34 Activity regressions intentionally invoke the framework permission
 callback for camera grant and microphone denial. Narrow DEPRECATION annotations
 and comments document those calls; all existing assertions and cleanup remain.

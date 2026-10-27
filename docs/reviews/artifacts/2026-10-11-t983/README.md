@@ -1,5 +1,17 @@
+# 2026-10-11-t983 — README
+
+Shared media consumer claims retain exact targets through queued replacement and worker failure. Invalid initial audio options reject before ownership, without treating Stop as actual cleanup.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T983 adds independent AudioConsumerTarget/Publication and shared MediaConsumerClaim/Authority/Run contracts. Camera callers use the same lazy guard. Selected audio targets cannot invoke legacy SDK consent or be replaced/revived by ADB invitations. Exact claims survive queued replacement, logical closure and worker failure until actual retirement/no-start proof. Invalid initial audio direction/preferences reject before ownership.
 
 Permanent constructor regression first failed against pre-fix AudioBinding (retained red log); the identical regression passes. Permanent external-target cases exercise both directions, invalid port/profile bounds, equal metadata with different authorities, stale SDK/status/ADB data, queued claims, before/after-factory permission and authority loss, foreground/background and exact service ownership, control exceptions, isolated death, failed admission and delayed/failed cleanup. Existing camera regressions remain unchanged in intent; only shared contract names migrated. Legacy queued permission admission remains separately tracked as T986. USB audio production composition/capability remains T978/T979/T859; these synthetic lifecycle fixtures do not establish physical playback/capture acceptance.
 
 Fresh offline full Android suite: 1,827 tests, zero failures/errors/skips. Native JaCoCo gate passes all 2,532 maintained methods individually; no missing counters, threshold weakening or new exemptions. Matching pre-build inventory, native XML/exec, full per-function data, source hashes and authored constructor counters retained. Changed Kotlin complexity: 408 functions, maximum 8. No downloads, installs, service disruption or live tablet trials.
+
+</details>

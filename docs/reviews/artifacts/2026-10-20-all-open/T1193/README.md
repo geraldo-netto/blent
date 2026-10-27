@@ -1,5 +1,13 @@
 # T1193: remove obsolete encoder alias
 
+The obsolete vaapih264enc alias was removed while current encoder profiles remain selectable. Schema and bounded-name regressions passed; optional native encoder qualification remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Blent accepts current registry profiles directly. The GStreamer name
 `vaapih264enc` no longer resolves to an FFmpeg profile. The compatibility-only
 `canonical_name` function is removed; current `h264_vaapi` and
@@ -32,3 +40,5 @@ current generic configuration ownership is unchanged. Test strings/configuration
 are locally owned and released at scope exit. No Windows/EVDI backend or physical
 device/service was changed. T1195 separately tracks an unrelated recalibration
 counter wrap discovered while reviewing the next configuration cleanup.
+
+</details>

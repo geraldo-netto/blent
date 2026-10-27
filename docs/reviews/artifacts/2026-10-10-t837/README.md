@@ -1,5 +1,13 @@
 # T837 deterministic overflow fixture retirement
 
+Overflow fixtures now stay alive until owned retirement, avoiding a race with exit-time coverage flushing. The unchanged assertions pass with strict profile merging; production code did not change.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Denied-output producers now remain alive after their writes until the command
 owner retires them, with a ten-second self-expiry. They cannot reach normal
 exit-time LLVM flushing while the parent intentionally kills them for overflow.
@@ -25,3 +33,5 @@ CARGO_NET_OFFLINE=true CARGO_TARGET_DIR=/tmp/blent-t836-target cargo llvm-cov \
 Retained logs include the failing pre-fix regression, full strict green run,
 LCOV counters, scoped method report and source hashes. No downloads or live
 service changes. Native Windows execution remains tracked under T737.
+
+</details>

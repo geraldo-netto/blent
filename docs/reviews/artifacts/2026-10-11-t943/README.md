@@ -1,5 +1,13 @@
 # T943 portable capture target and native ownership
 
+Portable capture claims remain owned through lens replacement and actual native retirement. Permission is checked around lazy construction; equal metadata cannot identify a replacement target.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Independent CameraCaptureTarget/Authority/Claim contracts carry validated local
 metadata and original lifetime controls without wire, Binder, UI or OS types.
 Each possible native request retains its own claim before lane admission. Actual
@@ -44,3 +52,5 @@ actual original-connection adapter/profile projection is T948, Activity/permissi
 handling T944 and joined capability enablement T932. Production USB capabilities
 remain display-only; camera hardware/native USB acceptance stays T858. No downloads,
 installation, live host/tablet changes or external dependency modifications.
+
+</details>

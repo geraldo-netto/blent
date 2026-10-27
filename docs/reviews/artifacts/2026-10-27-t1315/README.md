@@ -1,5 +1,13 @@
 # T1315: center the window on the primary monitor
 
+Initial X11 placement uses the current primary monitor and runtime geometry without a monitor-count cap. Native and pure-geometry tests passed; Wayland placement remains compositor-controlled and finite samples are not universal certification.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Blent now calculates its initial X11 window position from the current primary
 monitor. Nothing assumes a particular monitor count, order, position or scale.
 The calculation includes the usable desktop area and window decorations.
@@ -63,3 +71,5 @@ proof of external compositor behavior.
 The complete LCOV and raw build artifacts remain in the owned local workspace
 (`/tmp/blent-t1315/verified.lcov` and the T835 Cargo coverage target). The committed
 report preserves the per-function results, source identities and command logs.
+
+</details>

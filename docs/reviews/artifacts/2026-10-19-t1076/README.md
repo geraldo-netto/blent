@@ -1,5 +1,13 @@
 # T1076: Activity teardown and pairing UI sandbox isolation
 
+Ordered tests reproduced pairing UI failures after Activity teardown in a shared Compose sandbox. Separating fixture sandboxes restored all 118 focused cases without weakening assertions; production behavior did not change.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The focused normal runner reproduced eight pairing UI idle failures on SDK27/34
 before their test bodies; 108 other cases passed. The unchanged complete T1061
 instrumented suite had passed them. Orientation's real MainActivity teardown and
@@ -29,3 +37,5 @@ callback, altered no queue and ended with that test JVM; probe sources are retai
 Test workers/Activities remain owned by their original fixture and Robolectric
 lifecycle. Ordered and final results preserve normal cleanup. No hardware, native
 process-fence, physical power, network or unrestricted safety claim is made.
+
+</details>

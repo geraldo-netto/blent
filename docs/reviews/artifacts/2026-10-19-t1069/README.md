@@ -1,5 +1,13 @@
 # T1069: current-demand permits through native admission
 
+Native admission rechecks the exact display-source view, even after delayed creation or reentrant callbacks. The final clean collection passed after separately recorded stale-compiler and inline-counter gaps were addressed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Independent immutable demands/requests carry a read-only original-view permit.
 Fixed policies retain a fixed permit plus original foreground identity. Logical
 channel relevance stays exact latest-request identity; actual receiver and lazy
@@ -46,3 +54,5 @@ Normal policy-observer failure containment remains T1073. Current Activity produ
 still requests Waiting/fixed permits until T1061 source/window integration; joined
 acceptance remains T1058/T1011 and physical host/tablet evidence T914. No network,
 installation, push or live device interruption occurred.
+
+</details>

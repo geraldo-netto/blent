@@ -1,5 +1,13 @@
 # T868 persisted authenticated peer trust
 
+Persisted peer trust remains bound to local identity and fresh authentication. Fault tests and one Android filesystem smoke check validate bounded storage behavior, not power-loss durability or full pairing/media integration.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Portable Rust/Android policies store only current authenticated remembered approval.
 Stored pins suppress a prompt but never replace fresh TLS possession proof. The
 versioned canonical record binds trust to the local certificate, positive nonwrapping
@@ -41,3 +49,5 @@ The native smoke probe does not prove power-loss durability, TLS pairing composi
 or media integration. T852 retains persisted stock-TLS composition; T853–T857 retain
 production broker/service/UI/display. Older Android qualification remains T863 and
 Windows has no native store adapter claim. No downloads occurred.
+
+</details>

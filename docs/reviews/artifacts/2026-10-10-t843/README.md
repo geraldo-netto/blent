@@ -1,5 +1,8 @@
 # T843 — literal preprocessor header probes
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Permanent regression failed before the parser adaptation and passes afterward.
 Five focused tests cover the real generated-replay producer, both branches,
 quoted/angle header sizes 1..4096, byte/line provenance, UTF-8, continuation lines,

@@ -1,5 +1,13 @@
 # T1229: expose lower camera output profiles
 
+The camera GUI exposes 180p and 360p profiles without starting capture on selection or Save. Native metadata supports 360p on the selected tablet; 180p export requires the separate capture projection.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The existing profile schema accepts320×180 and640×360, but the GUI omitted them.
 Both sizes are now selectable. Defaults, permission, native ownership and manual
 Start stay unchanged. The permanent rendered-UI regression first failed because
@@ -23,3 +31,5 @@ Actual camera metadata confirms native640×360 on the current tablet but exclude
 320×180. T1231 separately implements explicit180p export from360p capture, with
 native bounds preserved. T858 retains physical media qualification. This commit
 establishes profile selection and persistence, not unsupported native capture.
+
+</details>

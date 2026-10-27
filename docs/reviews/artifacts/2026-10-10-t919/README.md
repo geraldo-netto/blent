@@ -1,5 +1,8 @@
 # T919 actual session retirement before slot reuse
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Permanent isolated-process regression failed before the fix: the monitor returned
 its retired slot after the supervisor's bounded logical stop, while a native
 capture worker still ran. The same fixture now holds the slot, lets a sibling

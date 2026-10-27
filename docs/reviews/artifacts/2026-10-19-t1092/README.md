@@ -1,5 +1,13 @@
 # T1092: bounded absolute-deadline actor waits
 
+Connection actors wait for notifications or the nearest known deadline, with bounded fallback for unknown providers. Deterministic deadline tests and all 2,291 hosted cases passed; expiry never substitutes for native cleanup evidence.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Both connection actors now sample their original owners' independent deadline
 capabilities and wait for a retained wake or the nearest absolute deadline, capped
 by the configured fallback. Unknown providers retain the legacy 10 ms cap without
@@ -61,3 +69,5 @@ are retained. All 12 architecture checks pass. Cached pinned Kotlin PSI 1.9.20 a
 Sonar-style estimate 8. Native SonarQube remains unavailable under T1019.
 
 No network transfer, download, installation, restart, physical handling or push.
+
+</details>

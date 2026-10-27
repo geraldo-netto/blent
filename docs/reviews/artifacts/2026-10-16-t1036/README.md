@@ -1,5 +1,13 @@
 # T1036: original encoder generation retirement
 
+Each encoder generation now owns a reporting group before preflight and native creation. Replacement and FIFO rotation wait for original creators, readers and cleanup, independently of the retained monitor.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Each encoder acquisition reserves a reporting group before exposing its creator,
 capability query or optional GPU child. The same original observation remains with
 the encoder owner across cancellation, startup failure, task result delivery and
@@ -42,3 +50,5 @@ live display change or physical power transition occurred. T1015 still owns poli
 integration and retained-monitor waiting; T1037 activity-aware selection and T1038
 independent transport liveness are prerequisites. Native Windows acceptance remains
 unavailable; this change does not claim Windows runtime qualification.
+
+</details>

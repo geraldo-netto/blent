@@ -1,5 +1,8 @@
 # T1170 — definite assignment in retained native oracles
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Replace only four redundant mutable initializers with definitely assigned vals:
 SavedTrustProcessTest.detected and TrustKernelLockTest.before/after/rejected.
 Forward application of these four declaration substitutions reproduces the new

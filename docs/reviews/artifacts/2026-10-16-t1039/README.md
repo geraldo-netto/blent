@@ -1,5 +1,13 @@
 # T1039: original-connection liveness negotiation and reception
 
+Video liveness negotiation and reception bind to the original authenticated socket. Heartbeats create no decoder input, render acknowledgement or first-frame event; physical acceptance remains separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Accepted session/media policy requires explicit acknowledgement before new packet
 types. This prerequisite supplies a strict optional `!BLENT1\n` acknowledgement on
 the original video TCP socket after authentication/legacy token prelude. The first
@@ -47,3 +55,5 @@ Native Android physical/device qualification remains separate from Robolectric/J
 coverage. No download, installation, upload, push or live device/display change
 occurred. T1038 emission, T1041 capture capability projection, T1037 selection and
 T1015 activity integration remain open; early invalid-payload efficiency is T1040.
+
+</details>

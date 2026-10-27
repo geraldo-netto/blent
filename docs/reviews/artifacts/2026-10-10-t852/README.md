@@ -1,5 +1,13 @@
 # T852 persisted pairing composition
 
+Saved trust now composes with fresh mutual TLS, restart and revoke on both sides. Remembered approval never replaces possession proof; hosted interoperability is not physical provider acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Trust now composes initial pairing and post-TLS admission on both sides. Saved
 approval selects Approved instead of Pending, but a fresh exact stock TLS proof is
 still required. Matching authentication failures and failed remembered persistence
@@ -28,3 +36,5 @@ T853/T854 still own broker and Android worker integration, T855 the production U
 T857 display/touch and T858 webcam. Native Android16 filesystem evidence remains
 under T868; current tests do not newly qualify AndroidKeyStore/TLS on older hardware
 (T863). No downloads, installs, restarts or live key/trust changes occurred.
+
+</details>

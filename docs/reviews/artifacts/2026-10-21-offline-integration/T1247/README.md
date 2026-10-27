@@ -1,5 +1,13 @@
 # T1247 rendered media actions retain their original owner
 
+Compose media controls use reference-identity keys so captured old actions cannot target a replacement offer. Rendered-control regressions and hosted counters passed; this was not established as the cause of the earlier physical Stop report.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The camera/audio consent domain rejects callbacks carrying an old offer, but
 Compose reused the button/switch nodes across different original owners. A
 previously captured semantics action could therefore invoke the node's updated
@@ -73,3 +81,5 @@ No physical test, APK install, installed-service change, transfer or push occurs
 T1238's earlier physical Stop episode remains uninstrumented and unresolved;
 this confirmed software bug is not established as its cause. Live checks remain
 paused, and native Android/other-device/Windows qualification is not claimed.
+
+</details>

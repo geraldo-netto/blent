@@ -1,5 +1,13 @@
 # T1237 USB reconnect transport fence
 
+USB reconnect claims and resets the old interface, then requires a genuinely fresh native device object before admission. Fixtures and selected-tablet debugging-off reconnect passed; universal Android reset behavior was not established.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T1237 reconnect acceptance passed on the API36 RugKing Pad 2 Pro.
 The later [T1238 comparison](../2026-10-21-media-acceptance/T1238/README.md)
 verifies original camera/audio Stop retirement on the current selected-device build.
@@ -62,3 +70,5 @@ reconnect and local Stop, before debugging restoration. The earlier uninstrument
 report has no established cause; it does not invalidate the observed transport
 fence or fresh authenticated media delivery. No images, raw recordings or private
 pairing keys are retained.
+
+</details>

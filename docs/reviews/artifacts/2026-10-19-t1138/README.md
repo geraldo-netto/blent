@@ -1,5 +1,8 @@
 # T1138 variable scope cleanup
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Rename the observer slot candidate/nested proof bindings, producer-owned options
 and USB listener creator. Test factories now use descriptive names so local
 reports/options retain unambiguous identities. These are mechanical binding

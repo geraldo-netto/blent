@@ -1,5 +1,13 @@
 # T1031: original command and collector observations
 
+Command adapters now expose original child and collector completion before returning or failing. Cancellation and output delivery do not establish retirement; Windows assignment-failure evidence remained unavailable.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Shared sync/async command adapters now accept independent completion observers.
 Existing entry points delegate to that same execution path. Immediately after
 collector creation they report its original thread-join proof; after successful
@@ -51,3 +59,5 @@ Native objects remain in the exclusively created evidence target trees. All
 work used installed tools/caches, with no downloads, installs, transfers, pushes,
 live display changes or application updates. Capture propagation remains T1032;
 idle integration and joined auxiliary acceptance remain T1029.
+
+</details>

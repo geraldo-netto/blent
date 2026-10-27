@@ -1,5 +1,8 @@
 # T912 retained session listeners
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The permanent ephemeral-port regression failed first because Runtime reported
 configured video port 0. It now verifies distinct nonzero, actually owned ports.
 Session failure/lifecycle tests (16) and capture-contract tests pass offline.

@@ -1,5 +1,13 @@
 # T1054: native fixture trace publication
 
+The native fixture records the original request before sending an acknowledgement. Deterministic trace tests fix the diagnostic race without changing production behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T1009's installed SDK capture run exposed the existing bad-resume fixture racing
 its diagnostic trace: the helper sent an ACK before appending its request record.
 The host could reject the forged ACK and kill the original helper before logging,
@@ -30,3 +38,5 @@ tree-sitter 0.25.2; native SonarQube remains T1019. These test-only functions ne
 no production line-coverage counters. No downloads, installation, upload, push,
 physical display, lock/suspend or tablet work occurred. T1009's final collection
 will use a fresh source/object inventory after this fixture correction.
+
+</details>

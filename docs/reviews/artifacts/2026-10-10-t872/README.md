@@ -1,5 +1,13 @@
 # T872 authenticated host resource runtime
 
+The host resource runtime orders complete management publications, bounded channel loans and exact retirement callbacks. Tests cover draft race fixes and sibling progress, without claiming a complete production broker or tablet display.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Implemented the host Session owner over the T873 frame driver, management decoder
 and T851 Resources state machine. Register/Prepared/Commit/Admitted/Revoke handling
 is serialized with whole-record publication completions. Media CREDIT validation
@@ -52,3 +60,5 @@ authenticated window agreement and persistent pairing orchestration. T854 suppli
 the Android connection service; T855 pairing UI and T857 rendered display/touch
 acceptance remain. Webcam follows that first user-visible milestone. No downloads,
 application installs, live service restarts or USB-mode changes were performed.
+
+</details>

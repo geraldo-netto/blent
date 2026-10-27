@@ -1,5 +1,13 @@
 # T1260: retain cleanup admission through native worker exit
 
+Cleanup retains admission until the original worker actually exits, including TLS destructors. Linux tests and counters passed; Windows cross-compilation does not satisfy the native validation still tracked by T1266.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The permanent blocked-TLS regression fails against the original implementation:
 completion and capacity reuse occur while the original cleanup worker is still
 inside its TLS destructor. The corrected implementation preserves the original
@@ -69,3 +77,5 @@ Commands and SDK paths are retained in the logs. Everything ran offline/locked;
 no real ADB/tablet, downloads, uploads or pushes were used. Production source hashes
 bind the measurements. The existing original red log and the additional faulty
 control are both retained; the final native implementation contains neither bug.
+
+</details>

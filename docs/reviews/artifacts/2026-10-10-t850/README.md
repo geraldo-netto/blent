@@ -1,5 +1,8 @@
 # T850 management record contract
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Five Rust and five Android tests pass offline, using the same independent
 20 valid and 38 invalid binary fixtures. Permanent tests cover every record split,
 coalesced records, truncated input, poisoned/ended decoder reuse, invalid scalar

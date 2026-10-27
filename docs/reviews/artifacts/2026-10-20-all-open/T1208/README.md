@@ -1,5 +1,8 @@
 # T1208: current TLS fixture setup budgets
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 The real all-features example test build fails E0061 before repair. The retained
 normal-suite fixture test compiles and validates the committed public identities
 after the setup caller supplies independent three-second approval/TLS budgets.

@@ -1,5 +1,13 @@
 # T1038: negotiated frame-independent video liveness
 
+Negotiated heartbeats keep an original video socket alive without inventing frames or authority. Only acknowledged connections receive them; fresh configuration and keyframes remain required after retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The original authenticated video socket must acknowledge protocol 1 before the
 host emits a six-byte type-2/version-1 record. The protected media greeting now
 offers `video_liveness: 1`; input-only compositions omit it. No capability travels
@@ -37,3 +45,5 @@ tree-sitter 0.25.2. Native SonarQube is unavailable (T1019); this is no substitu
 No physical device, lock, suspend, installation, download or push occurred.
 T1041 capture capability projection and T1015/T1016/T1011 runtime activity policy
 remain separate work.
+
+</details>

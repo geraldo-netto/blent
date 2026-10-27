@@ -1,5 +1,13 @@
 # T1194: remove obsolete persisted cache preference
 
+The unused persisted profile_cache preference was removed from current serialization and GUI naming. Targeted tests passed; an unrelated instrumented retirement failure remained separately tracked.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `FileConfig.profile_cache` and its default are removed. Automatic tuning already
 uses durable environment-keyed records; the old boolean had no active production
 reader. Current parsing ignores unknown keys generically; current serialization
@@ -37,3 +45,5 @@ borrows App/UI for a frame; no new job, native resource, callback, queue or reus
 boundary is added. Actual tuning leases and manual-profile precedence remain
 unchanged. Hosted tests do not establish native device acceptance or unrestricted
 leak freedom. No physical device/service, Windows or EVDI backend was changed.
+
+</details>

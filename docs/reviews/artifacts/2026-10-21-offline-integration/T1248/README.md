@@ -1,5 +1,13 @@
 # T1248 joined admission waits for its exact prepared generation
 
+The audio fixture waits for Prepared and route records matching its exact new lease. Repeated-generation regressions passed; production transport was unchanged.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `ConnectionJoinedAudioFixture.admitPrepared` waited for any historical Prepared
 record with the requested resource. After an old speaker had retired, that old
 record satisfied the next generation's wait. The fixture could send Commit
@@ -32,3 +40,5 @@ T1244 verifies these measurements and closes the former native analyzer prerequi
 unchanged by this test-only fix. All commands run offline with cached tools in
 isolated network namespaces. No physical checks, installation, transfer, push or
 EVDI work occur; the owner's live-check pause remains intact.
+
+</details>

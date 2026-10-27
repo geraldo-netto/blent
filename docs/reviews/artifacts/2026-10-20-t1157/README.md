@@ -1,5 +1,13 @@
 # T1157 — preserve original identity-file ownership
 
+Identity loading prevents duplicate and hardlinked lock opens from releasing another call's POSIX lock. Native lock and partial-failure tests passed under a private stable-namespace assumption; physical Android providers remain separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A rejected second same-JVM identity load closed another descriptor for the
 original inode and released its POSIX process lock while the first provider call
 was still blocked. The independent-process regression records the original
@@ -60,3 +68,5 @@ Linux filesystem/JVM and hosted Android results do not qualify physical Android
 providers or unrestricted native safety (T863). No live app/device, installation,
 network transfer or push occurred. Raw local evidence:
 `/backups/disk2/blent-work/2026-10-20-open-items/t1157`.
+
+</details>

@@ -1,5 +1,13 @@
 # T1022: bound helper announcements and observe failed transport
 
+Helper announcements now have bounded framing and persistent failure observation. Closed stdout wakes cleanup but does not prove the original child or its resources retired.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The helper's private framing adapter limits each wire record to 1024 bytes,
 including LF/CRLF when present. Both read buffering and accumulated bytes are
 bounded. It preserves partial data across canceled reads and poisons itself on
@@ -50,3 +58,5 @@ PATH=/tmp/blent-t1022-evidence/sdk-tools:$PATH \
   python3 /tmp/blent-t1022-evidence/scoped_sdk.py coverage-sdk
 python3 /tmp/blent-t1022-evidence/merge.py
 ```
+
+</details>

@@ -1,5 +1,13 @@
 # T1084: auxiliary machine-power observations
 
+A focused logind source reports machine power without invoking compositor or display helpers. Private-bus tests passed and missing capabilities remain explicit; no host power state was changed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 PowerFactory implements the independent source factory contract using the existing
 logind backend and source lifetime. Auxiliary work needs machine availability,
 without compositor discovery or private DPMS helpers. This matters when composing
@@ -39,3 +47,5 @@ bus and factory borrows; original source lifetime owns admitted backend resource
 Eventual cleanup still assumes original task/backend evidence and fair retained
 cleanup polling. These results do not establish unrestricted native safety or
 physical suspend/resume support. Shared auxiliary composition remains T1081.
+
+</details>

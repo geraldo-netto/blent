@@ -1,5 +1,13 @@
 # T718 microphone integration evidence
 
+Microphone integration passed automated suites and a selected-tablet level/cleanup check. Numeric sample activity establishes delivery, not speech intelligibility, acoustic delay or effective echo cancellation.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Permanent normal-suite regressions cover host/Android admission, consent,
 authentication, malformed frames, complete-frame deadlines, native readiness,
 queue bounds/discontinuities, permissions, foreground-service ownership,
@@ -75,3 +83,5 @@ the real private PipeWire suite passed against the extracted implementation.
 Speech confirmation, physical route/USB changes, duplex drift, acoustic AEC and
 end-to-end delay remain explicitly unvalidated. The packet/retirement regressions
 cover those transport/lifecycle mechanisms independently of physical acceptance.
+
+</details>

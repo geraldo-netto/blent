@@ -1,5 +1,13 @@
 # T867 durable host identity
 
+Linux host identity storage preserves keys across restart and rejects malformed or interrupted initialization without silently replacing identity. Fault/process tests do not prove power-cut durability.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Independent storage contract separates load/create and strict bounded record parsing
 from stock TLS validation and Linux filesystem operations. The Linux adapter pins
 an existing private directory, holds a stable exclusive lock and uses fixed names
@@ -24,3 +32,5 @@ T868 still supplies peer trust and T852 composes persisted identity with authent
 pairing. Production broker selection/retirement and directory creation remain T853;
 no live private identity was created. No runtime install, restart or download occurred.
 This adapter is Linux-only; no Windows native persistence support is claimed.
+
+</details>

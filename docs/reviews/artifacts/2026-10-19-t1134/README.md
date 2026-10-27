@@ -1,5 +1,13 @@
 # T1134 bounded link admission payload
 
+A boxed link-admission command preserves the exact original connection on full or closed queues. Real private-TLS ownership tests passed; no runtime speedup was claimed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Only Command::Admit owns a boxed Connection. The link receiver consumes that
 container back into its original local Connection before running media; no new
 native owner, resource clone or replacement authority is created. The existing
@@ -31,3 +39,5 @@ All18 production functions in link.rs and server/events.rs meet >=80% executable
 lines individually, none unmeasured, no exclusions. Pinned source audit checks36
 production/test functions, maximum8; Cargo formatting passes. Raw evidence:
 `/backups/disk2/blent-work/2026-10-19-open-items/t1134/native`.
+
+</details>

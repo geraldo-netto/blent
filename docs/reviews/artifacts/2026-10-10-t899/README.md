@@ -1,5 +1,8 @@
 # T899 — retain the concurrent authentication regression
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The T282 fixture manually installed a WebSocket without the immutable connection
 route captured by T856. Authentication correctly required that route, so both
 API 27/34 cases failed before reaching the existing auth-entered latch.

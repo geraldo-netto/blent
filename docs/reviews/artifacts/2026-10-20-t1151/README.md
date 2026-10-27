@@ -1,5 +1,13 @@
 # T1151 — private-process saved-trust maintenance
 
+Saved-trust maintenance runs in the private connection process with bounded requests/pages and read-only identity browsing. Hosted ownership tests passed; Android provider isolation and a separate lint failure remained unqualified.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 This implements the internal adapter for T897. Offline UI and main-process
 connection/maintenance arbitration remain T1152; no new UI support or physical
 acceptance is claimed here. The existing nonexported `:connection` service admits
@@ -62,3 +70,5 @@ T1158; all other fresh advisories are recorded under T1159–T1166. The raw lint
 report is retained, and no full lint pass is claimed. No live app/device, installation, network
 transfer or push occurred. Raw local evidence:
 `/backups/disk2/blent-work/2026-10-19-open-items/t1151`.
+
+</details>

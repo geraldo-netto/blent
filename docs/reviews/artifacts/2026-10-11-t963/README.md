@@ -1,5 +1,8 @@
 # T963: thread-safe Binder fixture ownership
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Permanent bounded eight-actor registration/removal regression fails with the
 original ArrayList on both SDK configurations: 512 accepted registrations retain
 only 434/429 recipients. Every recipient is a unique original identity; every

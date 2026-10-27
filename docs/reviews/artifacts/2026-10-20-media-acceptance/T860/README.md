@@ -1,5 +1,13 @@
 # T860 native speaker acceptance checkpoint
 
+Selected-tablet speaker checks verified audible playback and original endpoint/worker retirement while siblings continued. These observations qualify the stated device and scenarios, not acoustic quality, sustained drift or other providers.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T860 was in progress at this checkpoint pending T1238's final Stop comparison.
 The October21 completion below supplies that missing evidence. Tests here used
 the API36 RugKing Pad 2 Pro, signed T1235 Android release,
@@ -65,3 +73,5 @@ one selected API36 device does not qualify sustained drift, acoustic quality, AE
 other native providers or excluded/unsupported backends. Earlier uninstrumented
 Stop reports have no established cause; the corrected early confirmation in the
 latest trial is not a Stop failure.
+
+</details>

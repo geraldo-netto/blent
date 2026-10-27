@@ -1,5 +1,13 @@
 # T1252 selected-device physical pairing acceptance
 
+Selected-tablet pairing, remembered trust, denial, Forget and debugging-off revocation passed with original process identities retained. This bounded physical run did not exercise host GUI clicks, media consent or other devices.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Selected acceptance passes on the API36 RugKing Pad 2 Pro, serial
 `8002RH1010011900`, physical USB path `3-2.4.4`, on2026-10-21. This qualifies
 this device and bounded run. Other devices/providers, direct USB display/touch
@@ -130,3 +138,5 @@ payloads, screenshots or private keys are retained. Python3.12.3 with the
 unchanged repository AST counter measures all9 diagnostic functions at1–5;
 `diagnostic-complexity.json` retains per-function scores and analyzer hash.
 These nonessential diagnostic helpers are outside the production coverage scope.
+
+</details>

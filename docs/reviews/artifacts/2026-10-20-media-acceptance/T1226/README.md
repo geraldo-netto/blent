@@ -1,5 +1,13 @@
 # T1226: preserve audio retirement across private IPC Stop
 
+Audio cleanup messages remain deliverable after private IPC Stop, with exact generation and queue bounds preserved. Hosted tests passed; signed-APK construction alone did not complete physical audio acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The shared actor and audio contracts permit exact original consumer retirement
 while stopping. Two native IPC boundaries still implemented the older camera-only
 rule: AndroidConnectionWorkerRun.command sent audio proof through the ordinary
@@ -44,3 +52,5 @@ Death alone does not release a blocked original IPC call. Tests retain its call
 until explicit release and final retire/unbind; conditional cleanup assumes
 native return and scheduler progress. Hosted counters and bounded lifecycle
 fixtures do not prove unrestricted native safety or physical acoustic behavior.
+
+</details>

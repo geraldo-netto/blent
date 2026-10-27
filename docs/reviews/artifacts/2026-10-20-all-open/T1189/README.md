@@ -1,5 +1,13 @@
 # T1189: current probe decoder and original retirement ownership
 
+The camera probe now uses current production decoder/controller retirement APIs. Offline compile and late-creator tests passed; this does not qualify physical camera use or unscoped remote cleanup.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The permanent normal-suite test first failed the actual offline example check:
 its root lacked camera_control and its caller omitted the current Report argument.
 The same test now passes. The current production decoder is included directly;
@@ -41,3 +49,5 @@ No physical ADB/camera, Windows/EVDI or service actions occurred. This restores
 software probe integration; it is not physical acceptance. Existing unscoped
 remote stop is separately open as T1204; conditional ADB mapping removal remains
 blocked as T1090. No new signal-triggered remote cleanup path is introduced.
+
+</details>

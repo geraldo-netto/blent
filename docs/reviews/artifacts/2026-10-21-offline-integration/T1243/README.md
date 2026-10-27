@@ -1,5 +1,13 @@
 # T1243 joined truncation and isolated native media acceptance
 
+Truncated microphone packets retire the original native helper while remote route proof remains independently required. Private PipeWire and fake-libusb tests passed without physical audio, camera or USB acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The normal host suite now includes
 `audio::session_tests::t1243_truncated_microphone_frames_retire_only_the_original_native_helper`.
 It tests28 cases: fourteen selected header/payload/last-byte truncation offsets
@@ -68,3 +76,5 @@ No device, EVDI attachment, installed service, package transfer, repository push
 or physical acceptance was performed. T835/T1211 exclusions and unavailable
 platform/device validation remain explicit. T1238's physical Stop discrepancy
 remains unresolved and live checks stay paused.
+
+</details>

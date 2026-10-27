@@ -1,5 +1,13 @@
 # T1090: retained temporary ADB media mappings
 
+One retained owner manages Blent's temporary ADB mappings under the explicit exclusive-endpoint policy. Private CLI/server regressions passed; selected-tablet acceptance remains T1258 and whole-process crash recovery is outside this claim.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Owner decision 2026-10-25 permits exclusive management of Blent-created temporary
 endpoints through actual cleanup. Unrelated ADB activity remains allowed. This
 resolves the ownership decision missing from the historical
@@ -86,3 +94,5 @@ The local environment uses cached parsers recorded by the prior T1221 evidence;
 no tools were downloaded. Physical ADB/Android acceptance remains explicit under
 T1258, requiring a selected tablet and authorization for that separate trial.
 Interface readiness and private fixtures do not establish that native evidence.
+
+</details>

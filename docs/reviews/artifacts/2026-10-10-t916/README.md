@@ -1,5 +1,13 @@
 # T916 registered attachment renewal
 
+Attachment renewal now binds credentials and generation transitions atomically. Stale, absent or exhausted transitions cannot restore authority or cross another handoff.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 All 28 scoped maintained functions meet individual 80% executable-line coverage.
 Eleven final attachment tests pass. Broader unchanged production code passed the
 host library suite (344 passed, three existing ignored tests), capture contracts
@@ -25,3 +33,5 @@ PYTHONPATH=/tmp/blent-python-offline:scripts/coverage python3 scripts/coverage/r
 Current-object export avoids known T880 stale mapping aggregation. Ordinary legacy
 counter exhaustion remains separately tracked under T865; new native transitions
 fail closed. No USB/physical support claim, downloads, install or live restart.
+
+</details>

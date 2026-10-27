@@ -1,5 +1,8 @@
 # T1118: retain exact staging ownership through cleanup and owner loss
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 See ../../2026-10-19-idle-staging.md for directory-borrow binding, native file
 identity/cleanup, reserved namespace admission and conditional recovery limits.
 Destructor-only cleanup first fails both permanent unlink-failure and foreign

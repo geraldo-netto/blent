@@ -1,5 +1,13 @@
 # T825 asynchronous monitor inventory
 
+Windows monitor inventory moves off redraw into a bounded worker with immutable snapshots and visible staleness. Portable tests passed; native enumeration timing and wiring counters were still unavailable.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Windows settings redraw consumes an immutable published snapshot. Native monitor
 queries run in a separate admitted worker, independently of the existing service
 status worker. Polls occur every two seconds; snapshots older than six seconds
@@ -23,3 +31,5 @@ no native Windows speedup or complete platform coverage is claimed.
 
 No downloads, live display changes or dependency changes. InventoryResult simply
 names the existing independent monitor contract result type.
+
+</details>

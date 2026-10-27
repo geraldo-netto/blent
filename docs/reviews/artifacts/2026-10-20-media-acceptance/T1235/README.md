@@ -1,5 +1,13 @@
 # T1235: foreground media screen demand
 
+Foreground camera/audio demand shares the existing Window owner to keep the screen awake. Hosted tests and a selected-tablet camera idle/Stop observation passed without changing global screen-timeout settings.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A camera-only session previously supplied no screen demand when the display
 source was unavailable. The actual tablet's15s screen timeout ended foreground
 capture. Permanent actual-Activity regressions reproduce the missing Android
@@ -51,3 +59,5 @@ unknown OS obligation with its original framework Window/lifecycle owner. The
 bounded truth table, hosted native counters and physical camera observation
 complement one another; they do not prove all Android devices or unrestricted
 native leak freedom. Home/manual lock preserve foreground/background consent.
+
+</details>

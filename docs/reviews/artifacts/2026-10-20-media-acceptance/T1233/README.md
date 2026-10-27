@@ -1,5 +1,13 @@
 # T1233: distinguish USB media from desktop discovery
 
+Android distinguishes authenticated USB media from desktop discovery and opens media controls directly. Hosted Activity tests and selected-tablet UI checks passed without granting media consent automatically.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 An authenticated USB media connection used the desktop-only waiting screen,
 including USB-debugging instructions. Actual owner confusion reproduced this
 while the tablet used accessory18d1:2d00 without an ADB interface.
@@ -36,3 +44,5 @@ existing application owners retain media consent, leases, cutoff and actual
 retirement. Authentication is a presentation input, never release/admission
 proof. Stop, loss, replacement and Activity teardown preserve original owners;
 the tests settle their scoped workers before restoring process-owner fixtures.
+
+</details>

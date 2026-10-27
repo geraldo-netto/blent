@@ -1,5 +1,13 @@
 # T878 bounded local endpoint pump
 
+The endpoint pump preserves exact leases, partial offsets and credit until full local write/flush. Regressions bound allocations to negotiated capacity; resource-wide teardown remains its owner's job.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Portable Endpoint contract exposes exact lease/channel identity, active authority,
 allocation capacity, bounded producer offers and exact consumer completions.
 Session adapts to this contract without exposing native sockets. Pump owns one
@@ -25,3 +33,5 @@ loopback TCP duplex/drop test. All32 scoped production functions pass per-functi
 hashes and red/green logs are retained. T853 still owns task scheduling, registered
 endpoint connection, resource-wide teardown and actual native retirement checks.
 No downloads, live services or USB devices were changed.
+
+</details>

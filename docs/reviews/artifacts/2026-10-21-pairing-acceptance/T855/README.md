@@ -1,5 +1,13 @@
 # T855 selected-device production pairing acceptance
 
+Pairing acceptance combines automated prerequisites with the selected API 36 tablet's physical trust and revocation checks. Broader display/touch, provider and media qualification remains separately scoped.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T855 completes on2026-10-21 for the selected API36 RugKing Pad 2 Pro. The owner
 resumed this item explicitly; its two independently verifiable prerequisites
 are complete. This does not establish broader joined T846 acceptance, direct USB
@@ -45,3 +53,5 @@ the accepted local complexity measurements remain scoped to their recorded
 functions; this acceptance adds no whole-project coverage or unrestricted
 native safety claim. Excluded EVDI work and declined platform/stylus work are not
 resumed. All work and commits stay local, without tool downloads or transfers.
+
+</details>

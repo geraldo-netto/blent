@@ -1,5 +1,13 @@
 # T924 bounded selected-USB discovery
 
+Selected-USB discovery retains one client through retirement and rejects ambiguous new peers before preemption. Failed polls cannot slide retry deadlines or revive old snapshots.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The portable source owns one nonblocking control client and retains it through
 actual native retirement. Absolute positive retry deadlines are capped at 60 s;
 failed polls do not slide them, and exhausted clocks cannot spin replacement work.
@@ -43,3 +51,5 @@ CARGO_NET_OFFLINE=true cargo check --offline --locked --target x86_64-pc-windows
 
 No downloads, installs, reloads, live broker/device changes or physical acceptance.
 The separate pending T855 TLS fixture remains uncommitted.
+
+</details>

@@ -1,3 +1,13 @@
+# T711: preserve Make setup capacity
+
+Make setup now preserves existing EVDI capacity files and symlinks, creating defaults only when absent. Sandboxed regressions exercised the recipe without changing live modules.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 <!-- Copyright (c) 2026 Geraldo Netto -->
 
 # T711: preserve Make setup capacity
@@ -27,3 +37,5 @@ python3 -m unittest discover -s scripts/tests -p 'test_installer*.py'
 regressions also pass. The complexity gate and formatting check passed. Original
 logs are retained under `/backups/disk2/blent-work/t711/`; trailing whitespace
 was removed from these copies.
+
+</details>

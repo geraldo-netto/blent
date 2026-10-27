@@ -1,5 +1,13 @@
 # T911 Linux media-registration client
 
+The Linux registration client now sends Unregister after idle close and preserves local versus remote retirement evidence. Isolated socket/TLS tests do not establish tablet acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Fourteen permanent T911 tests and the 90-test Linux broker suite pass offline.
 All 33 scoped production functions in registration_client and endpoints meet
 individual 80% executable-line coverage. Source-matched current executable export
@@ -25,3 +33,5 @@ its physical acceptance remains deferred, and that test is outside this commit.
 Fixtures use isolated sockets and synthetic USB streams, not the tablet.
 No download, install, mode change or live restart. T912/T908 still own session
 listener publication and production host integration.
+
+</details>

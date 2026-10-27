@@ -1,5 +1,13 @@
 # T1228: preserve original registration cleanup after admission failure
 
+Failed resource admission now requests cleanup on the original socket before exiting. Native-socket regressions and a physical pending-offer expiry passed without requiring broker restart; broader media acceptance remained incomplete.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The physical camera offer was left pending beyond the local30s admission
 deadline while inspecting pairing. The registration thread returned TimedOut,
 closing its IPC before requesting Unregister or receiving original Retired.
@@ -35,3 +43,5 @@ cleanup timeout, broker loss and stalled native execution retain existing bounde
 capacity and cleanup sponsors. Conditional eventual release still requires exact
 remote proof or original broker death and actual local native return; no claim of
 unrestricted native leak freedom follows from these bounded fixtures.
+
+</details>

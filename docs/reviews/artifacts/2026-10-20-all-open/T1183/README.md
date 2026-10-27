@@ -1,5 +1,13 @@
 # T1183: terminal independent audio generations
 
+Microphone and speaker use independent nonwrapping callback grants. Boundary and held-cleanup tests preserve direction isolation; exhausting one direction cannot revive or release another's work.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Each microphone/speaker AudioBinding now owns its own GenerationFence. Stop,
 configure and execution-end revoke original callback authority without numeric
 increments. Terminal invitations are rejected before permission prompts or pending
@@ -64,3 +72,5 @@ shut down, cancel and join original scopes. No new retaining cycle, queue,
 allocator or native reuse mechanism is introduced. Bounded JVM evidence does not
 certify unrestricted interleavings or physical acoustic behavior. Existing
 platform/device blocks remain; Windows and EVDI backends were not changed.
+
+</details>

@@ -1,5 +1,13 @@
 # T789: bounded cursor ownership adoption
 
+Bounded adoption of small native cursor allocations reduced shape-update copies while preserving replacement ownership. Large images retain normalization; unchanged cursor frames do not gain from this optimization.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Packed native BGRA/alpha cursor images up to 64 KiB now retain the allocation
 transferred by stock libevdi. Blent allocates only the saved-background area.
 Padded, excess-length, nonnative and larger images retain normalization into
@@ -37,3 +45,5 @@ C functions stay within complexity 9; Rust formatting passes.
 `host/evdi` from baseline `8aaeec0`; build again with `-DTAKE` against this
 commit. Run each executable with widths 16, 32, 64, 128, 256 and 1024, alternating
 order across five trials. No live capture or downloads are required.
+
+</details>

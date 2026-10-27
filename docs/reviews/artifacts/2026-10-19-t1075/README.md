@@ -1,5 +1,8 @@
 # T1075: report collection without unrelated parsers
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Pure report imports/collection now require only their own dependencies. Source
 discovery, snapshot and build-source validation still load the real inventory
 and its parsers when used; missing dependencies remain errors. No source checks

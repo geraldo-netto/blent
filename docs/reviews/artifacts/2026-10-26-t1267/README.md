@@ -1,5 +1,13 @@
 # T1267: reserve complete native USB test fixtures
 
+Native USB test fixtures reserve all derived endpoints before admitting a candidate. Allocation and full host cohorts passed; releasing guards before real bind still cannot exclude unrelated processes during that handoff gap.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The fixture bound two independent ephemeral primary endpoints, then derived
 extra video/input endpoints at +2 without checking or reserving those sockets.
 A busy extra endpoint makes native startup fail and correctly retire peer 2's
@@ -44,3 +52,5 @@ The historical T1260 failure log contains no native startup error, so its exact
 past OS error cannot be recovered. The reproduced fixture defect explains the
 same observed missing-peer failure; this evidence does not establish a T1260
 production retirement regression. Original historical failed evidence remains.
+
+</details>

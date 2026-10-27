@@ -1,5 +1,13 @@
 # T934 exact camera consent ownership
 
+Camera consent requires the original prompt, current local intent, fresh OS permission and actual protocol admission. Closing a prompt revokes intent without proving native retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A portable policy owns one offered camera lease and issues one retained prompt.
 Preparation requires current local intent, current OS permission and the exact
 original runtime's offer authority. Capture additionally requires actual protocol
@@ -31,3 +39,5 @@ the authored primary body and are not authored methods. All 34 reviewed methods
 have cyclomatic complexity at most nine. XML/execution counters, source inventory
 and hashes are retained. These are JVM/Robolectric results; physical trials remain
 owner-postponed. No downloads, installs, reloads or USB mode changes occurred.
+
+</details>

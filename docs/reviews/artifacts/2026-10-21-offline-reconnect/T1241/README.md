@@ -1,5 +1,13 @@
 # T1241 original control failure cannot stop a replacement
 
+A delayed control-send failure can stop only its original attempt, including reentrant replacement. All 24 regression cases passed; actual native retirement remains separate from command failure.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A camera/audio action captured its original attempt, but `send` handled a later
 rejection/exception with an unconditional `lane.stop()`. If reconnect had selected
 a newer attempt, this stopped its active worker or discarded its queued request.
@@ -49,3 +57,5 @@ and fair execution of retained cleanup/relay jobs. No tablet action, app install
 service restart, package transfer or repository push occurred. T1238's earlier
 physical Stop report remains uninstrumented and paused; this race is a confirmed
 software defect, not a claimed hardware root cause.
+
+</details>

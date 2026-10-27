@@ -1,5 +1,13 @@
 # T948 original USB camera capture authority
 
+Original USB camera authority retains every capture claim and sends cleanup to the original worker after UI replacement. A bounded retry relay cannot manufacture completion from socket EOF or a deadline.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The boundary projects validated private camera profiles and credentials into
 portable capture targets without UI, OS or wire types in the capture contract.
 Each original connection attempt owns one camera session, exact route target and
@@ -48,3 +56,5 @@ accessory authority in the integration fixture are synthetic; camera hardware,
 real API 27/28 TLS/Keystore and debugging-off acceptance remain T858/T863. No
 resource downloads, install/reload, live host/tablet changes or external driver
 modifications.
+
+</details>

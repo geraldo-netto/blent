@@ -1,5 +1,13 @@
 # T1230: offer explicit lower desktop stream presets
 
+Desktop presets export 180p or 360p from a 720p captured desktop and require an explicit restart. GUI tests and selected-tablet render acknowledgements passed; no universal latency claim follows.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The existing native stream-scale contract supports divisors1–4, but the GUI
 offered only Full/Half. New180p and360p buttons select a1280×720 manual desktop
 and divisor4 or2. Output geometry is320×180 or640×360. Capture keeps720p geometry;
@@ -30,3 +38,5 @@ journal records are retained. The independent180p camera continues producing
 frames and the original speaker helper stays alive through display restarts.
 Exact original user configuration is restored and normal display sharing
 restarted afterward. No display backend or timing-limit implementation changed.
+
+</details>

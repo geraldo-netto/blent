@@ -1,5 +1,13 @@
 # T1041: original negotiated viewer capability at capture boundary
 
+Capture now observes actual viewer membership and each original liveness grant. Retained notices cannot prolong membership or grant a replacement, and all viewers must acknowledge readiness.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `LivenessCapability` and `ViewerActivity` define independent read-only observation
 contracts. Each original video-queue receiver owns its membership; owner drop
 removes both actual subscription and membership under the registry lock. Weak
@@ -41,3 +49,5 @@ repository Sonar-rule counting, cached tree-sitter-rust 0.24.2/tree-sitter 0.25.
 Native SonarQube remains unavailable (T1019); source scores are not certification.
 No downloads, installation, push, physical monitor or power transitions occurred.
 Capture pause/resume policy remains T1015; this commit supplies its viewer input.
+
+</details>

@@ -1,5 +1,13 @@
 # T796 ART drift-cache replay
 
+Caching unchanged drift-window calculations reduced measured allocation and thread CPU while retaining age checks. This isolated Android replay is not live acoustic or end-to-end evidence.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 RugKing Pad 2 Pro SDK36. Baseline `ae0dd48`; exact APK/source hashes and fingerprint
 in provenance/results. Use the offline `scripts/benchmarks/audio-project.py`
 builder and shell-only `AudioQueueReceiver`, passing `--es probe drift` and a
@@ -22,3 +30,5 @@ Every pass returns checksum 2,500,000. Process-wide ART allocation counters incl
 amortized setup; CPU counters measure the probe thread. At 100 calls/s, this replay
 avoids approximately 61.6 kB/s of allocations and 0.32 ms/s of thread CPU. This is
 not a live source/sink drift, release-build, acoustic or end-to-end latency claim.
+
+</details>

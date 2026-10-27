@@ -1,5 +1,13 @@
 # T992: Linux leased speaker PCM composition
 
+Linux leased speaker PCM joins exact USB registration with the existing audio protocol and never silently falls back to ADB. Private fixtures preserve cleanup ownership but do not qualify acoustic output.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Linux uses an independent typed Connection/Invitation port with focused ADB and
 USB boundary adapters. USB speaker selection is explicit, preserves the original
 full peer/profile/credential and never falls back to ADB. USB microphone remains
@@ -34,3 +42,5 @@ No downloads, installation or live host/tablet trials.
 
 The attested working tree includes the pre-existing uncommitted TLS fixture.
 Those unrelated edits remain unstaged and are not included in this commit.
+
+</details>

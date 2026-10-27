@@ -1,5 +1,13 @@
 # T1175: terminal attachment epochs
 
+Attachment epochs stop permanently at exhaustion instead of reviving stale leases. Boundary and wider-integer tests passed; terminal authority does not certify native resource retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Legacy and registered attachments now share one checked generation transition
 inside the original state mutex. Overflow permanently closes authority, clears
 credential/geometry availability and notifies original retirement watchers without
@@ -34,3 +42,5 @@ was changed, and no Windows/EVDI backend was edited.
 Review also found separate decoder_epoch wrapping in unchanged
 EncoderSettings::clear_decoders. T1187 records that distinct settings/selection
 owner; it is not silently included in this attachment repair or declared fixed.
+
+</details>

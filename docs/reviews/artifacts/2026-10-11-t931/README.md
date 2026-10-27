@@ -1,5 +1,13 @@
 # T931 portable camera invitation and target contract
 
+Camera invitation contracts separate transport acceptance from capture permission and validate explicit USB targets. At this stage native sharing remains disabled pending composition.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Camera sessions depend on the independent `camera::connection::Invitation` port.
 The existing ADB adapter accepts the portable profile rather than Linux output
 device options; native device/capture/process ownership remains outside the port.
@@ -30,3 +38,5 @@ minimal no-platform common build and Windows production/test cross-check pass.
 This is contract readiness; Android camera permission/lease composition and native
 USB camera acceptance remain T934/T932/T933/T858. No download, installation, reload
 or physical tablet trial occurred.
+
+</details>

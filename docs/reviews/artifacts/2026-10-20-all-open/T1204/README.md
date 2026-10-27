@@ -1,5 +1,13 @@
 # T1204: scoped camera cutoff without replacement invitations
 
+Camera Stop names the original credential and port instead of sending a replacement invitation. Rust, Android and bounded key-model tests prevent stale Stop from withdrawing another request; acknowledgement is not native retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The original probe stop operation was extracted unchanged before repair. Its
 permanent real-command regression fails on the actual lensless invitation with
 fresh token and port1. Five Android receiver/held-native/permission regressions
@@ -50,3 +58,5 @@ an unrestricted concurrent/native proof. Cleanup assumes original exit/reaper/
 scheduler progress. No physical ADB/tablet/service, Windows/EVDI or network action
 occurred. Native mapping-removal safety remains blocked under T1090; this endpoint
 cutoff does not resolve that separate ownership contract or physical acceptance.
+
+</details>

@@ -1,5 +1,13 @@
 # T997: original microphone permission routing
 
+Microphone permission replies now traverse exact original worker, prompt and lease identities. Fresh OS permission remains required; speaker playback cannot request microphone consent.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The shared original media consent policy now has a typed audio/native owner.
 Playback retains its permission-free speaker boundary and all existing regressions.
 Microphone composition requires an explicit independent authority; production
@@ -33,3 +41,5 @@ Final full suite: 1922 tests, 0 failures, 0 errors,
 0 skips. All 2,741 maintained methods pass individual native 80%
 line coverage with no missing counters. Changed authored complexity: 421 functions,
 maximum 9. Constructor counters, inventory, fingerprints and native evidence retained.
+
+</details>

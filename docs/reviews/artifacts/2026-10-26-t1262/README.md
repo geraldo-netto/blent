@@ -1,5 +1,13 @@
 # T1262: require the current initial stream format
 
+Initial Android stream greetings require codec and both encoded dimensions. Partial updates remain valid after initialization; hosted full-suite tests passed without inventing panel-based formats.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Android requires codec and both encoded dimensions in the initial greeting.
 Native panel hints and invented 1920x1080 dimensions no longer authorize a decoder
 format. Established formats still supply omitted codec/dimension/FPS fields for
@@ -28,3 +36,5 @@ previous validated immutable format for a synchronous call, then returns a new
 immutable format or rejection. No native allocations, retained callbacks or
 ownership transfers were introduced; connection reset still clears the one
 current-format owner before a replacement greeting.
+
+</details>

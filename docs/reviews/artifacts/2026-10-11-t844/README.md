@@ -1,5 +1,8 @@
 # T844: declaration annotation macros
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Permanent object-annotation and real archived-candidate fixtures fail with the
 original pinned grammar, then pass with the declaration adapter. All 19 normal
 complexity tests pass. Bounded long annotation strings, conditional definitions,

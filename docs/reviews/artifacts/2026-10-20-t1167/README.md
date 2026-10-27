@@ -1,5 +1,13 @@
 # T1167 — shared private-connection access
 
+Connection and saved-trust maintenance share one process-owned admission slot. Hosted cancellation and Binder tests retain that slot until actual delegate retirement; mode labels and logical completion cannot release it.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 One application-process ConnectionAccess now gates connection execution and the
 saved-trust operation composed under T1168. A fresh reference-bound permit owns
 one slot; mode observations carry no release authority. ConnectionBinding guards
@@ -42,3 +50,5 @@ not native SonarQube evidence (T1019). Binder/Robolectric and domain traces do
 not qualify physical devices/providers (T863). No live app/device, installation,
 network transfer or push occurred. Raw evidence remains at
 `/backups/disk2/blent-work/2026-10-20-open-items/t1167`.
+
+</details>

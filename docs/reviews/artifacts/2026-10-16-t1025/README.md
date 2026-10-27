@@ -1,5 +1,13 @@
 # T1025: resume snapshots satisfy fallback pacing
 
+Resume snapshots now advance the existing fallback deadline, avoiding one redundant grab while retaining lost-update recovery. No physical power or CPU gain is claimed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The capture context owns the fallback deadline alongside request pacing. A
 successful resume snapshot advances that original deadline. The first resumed
 tick therefore waits for the configured request instead of immediately grabbing
@@ -35,3 +43,5 @@ python3 /tmp/blent-t1025-evidence/coverage.py coverage
 The coverage script uses the unchanged setup preserved with T1021 under
 `/tmp/blent-t1021-evidence/c_setup.py`. This fixes one redundant native grab per
 qualifying resume; it does not establish a physical battery or CPU improvement.
+
+</details>

@@ -1,5 +1,13 @@
 # T1125 camera controller retirement fence
 
+Camera controllers wait for all original completion proofs before replacement or terminal status. Controller regressions passed; native creator wiring and process-death safety were separate later steps.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Four permanent regressions fail before the controller fix: premature replacement,
 worker exit with an outstanding native proof, stale admission, and nested-scope
 bypass of original cutoff. They pass after it; their original bodies remain
@@ -37,3 +45,5 @@ At the T1125 revision, native adapter wiring remained separate.
 bridge/producer/decoder creators. Neither prerequisite closes T1089 or
 establishes crash-surviving native ownership (T1137). T1090 ADB ownership remains explicitly blocked
 by owner choice; no Windows/EVDI integration or live device action occurred.
+
+</details>

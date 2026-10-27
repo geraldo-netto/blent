@@ -1,5 +1,13 @@
 # T1072: warning-free Android unit fixtures
 
+Android test fixtures compiled without warnings while retaining native signatures and assertions. The focused pass followed a separate pairing-fixture repair; this was not a new full-suite result.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Removed an unnecessary lateinit and unused local. Required native shadow
 signatures retain narrowly documented unused arguments. Intentional legacy
 AudioRecord, Wi-Fi and Back test entry points retain scoped deprecation
@@ -22,3 +30,5 @@ No assertion was weakened and no new exclusion, resource owner, queue, callback
 lifetime, native allocation or platform capability was introduced. Existing
 fixture cleanup and normal regression ownership remain unchanged. No download,
 network transfer or device interruption occurred.
+
+</details>

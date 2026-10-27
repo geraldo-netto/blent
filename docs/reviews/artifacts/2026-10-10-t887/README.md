@@ -1,5 +1,13 @@
 # T887 Android USB selection, permission and opening
 
+Android accessory selection excludes permission-gated serial metadata and rejects ambiguity. Permission and late-open regressions retain exact owners; hosted fixtures do not qualify a physical permission dialog or Binder termination.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Portable policy keeps bounded metadata snapshots, canonical nonwrapping selection
 epochs, exact unique resolution and stale-result handling independent of Android.
 Native adapters recheck actual attachment and permission, own immutable permission
@@ -41,3 +49,5 @@ T855 supplies pairing presentation and physical acceptance; production media
 remains T857–T860. Robolectric API27/34 and native descriptor/loopback fixtures do
 not establish physical USB/permission-dialog/Binder-kill acceptance. No downloads,
 installations, live USB changes or network changes occurred.
+
+</details>

@@ -1,5 +1,13 @@
 # T1088: successful camera work cannot hide cleanup failure
 
+A successful camera session now reports a failure in its subsequent mapping cleanup. The private-device regression passed after the fix; broader mapping retirement remained separate work.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 run_native preserves the original connection cleanup Result. A successful serve
 now returns cleanup failure; an already failed serve remains the primary error.
 The existing cleanup diagnostic remains, including when both operations fail.
@@ -25,3 +33,5 @@ All 12 architecture checks pass. Source estimates: 20 functions, maximum 5,
 repository counter and pinned cached tree-sitter-rust 0.24.2/tree-sitter 0.25.2;
 native SonarQube remains unavailable under T1019. No physical acceptance or full
 camera cleanup fix is claimed. No network transfer or installation occurred.
+
+</details>

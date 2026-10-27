@@ -1,5 +1,13 @@
 # T1239 offline reconnect, Stop and cleanup audit
 
+The offline reconnect audit verified independent media Stop/receipt ordering and found the separately fixed stale-control cutoff race. Bounded models and native fixtures do not attribute the earlier uninstrumented physical episode.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Scope: original Android consent/access, binding attempts, consumer sessions and
 completion relays; Linux media invitation/registration and retained native IPC
 cleanup. `sources.json` pins the examined sources. The audit found T1241's
@@ -92,3 +100,5 @@ limits (including T835/T1221 and excluded EVDI/Windows work) remain separate.
 T1238 and T858/T859/T860 physical acceptance remain unfinished and live checks
 stay paused. T1241 is a confirmed software race, not a verified cause of the
 previous uninstrumented tablet Stop episode.
+
+</details>

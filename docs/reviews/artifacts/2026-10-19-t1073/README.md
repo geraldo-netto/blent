@@ -1,5 +1,13 @@
 # T1073: original policy observer failure boundary
 
+Policy-observer failures withdraw only their original foreground claim and cannot stop a replacement. Application-owned native cleanup remains independent of observer completion; hosted fault tests passed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Ordinary policy-flow/publish failures settle only their original foreground
 producer. Canceled inputs withdraw their exact claim before cancellation propagates;
 completed flows retain ownership until explicit stop. Late old failure never stops
@@ -26,3 +34,5 @@ no new exclusions. Source audit covers 73 production/test functions, maximum est
 6; native SonarQube remains T1019. Twelve architecture/contract/portability checks
 pass. Existing compiler warnings remain T1072. No network, installation, push or
 live device interruption occurred. Activity/window source integration remains T1061.
+
+</details>

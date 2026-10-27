@@ -1,5 +1,13 @@
 # T893 — production Android pairing controls
 
+Android pairing controls survive Activity recreation, distinguish both fingerprints and keep consent explicit. Hosted UI tests passed; physical pairing and media acceptance were separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 MainActivity uses a process-owned lazy connection controller, a dedicated USB
 settings section and an approval dialog independent of settings visibility.
 Only application context is retained; Activity recreation/background does not
@@ -29,3 +37,5 @@ T282 fixture, fixed independently in T899 without weakening assertions.
 No installation, live USB mode change, download or physical pairing test occurred.
 Host controls and joined acceptance remain T900/T901/T894/T855; production media
 routing remains T857–T860. This is not a claim of working ADB-free media.
+
+</details>

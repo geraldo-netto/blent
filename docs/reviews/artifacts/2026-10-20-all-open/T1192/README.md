@@ -1,5 +1,13 @@
 # T1192: bounded current-caller compatibility audit
 
+This bounded caller audit removed obsolete formats while retaining paths then believed necessary for current callers. Its KScreen boolean assessment was later corrected under T1330; dated conclusions are not current compatibility policy.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The October20 removal campaign is complete for the named host/shared/Android
 configuration, decoder, metadata and probe paths. Independent removal commits
 retain permanent regressions and their own native counters:
@@ -28,3 +36,5 @@ shims. This is a bounded caller/contract audit, not a claim that every source li
 contains no future finding. Windows/EVDI implementations, blocked ADB ownership
 T1090 and physical device acceptance remain outside this work. No new allocator,
 resource lifetime, synchronization, admission bound or native cleanup path.
+
+</details>

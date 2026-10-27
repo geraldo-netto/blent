@@ -1,5 +1,13 @@
 # T1201: bounded camera-probe timestamp admission
 
+The camera probe admits a fixed sample capacity before native setup and fails visibly on exhaustion. Boundary tests preserve the exact recorded prefix; incomplete history cannot count as a complete measurement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The existing unbounded timestamp collection was first extracted into Samples,
 and the actual probe caller changed to use that single implementation before any
 behavior fix. Two permanent normal-suite regressions then fail: reservation does
@@ -39,3 +47,5 @@ native pointer is retained. Scope/future destruction releases the vector after
 its observer borrow ends; partial allocation failure owns no external resource.
 No allocator or native lifecycle is invented for this pure local data owner.
 No physical camera/ADB/device work, EVDI/Windows change or network transfer.
+
+</details>

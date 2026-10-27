@@ -1,3 +1,15 @@
+# 2026-10-11-t974 — README
+
+Host camera controls select exact USB or ADB targets independently of display. Editing stays passive and unsupported saved choices remain visible; fixtures do not qualify physical USB camera use.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T974: production host camera controls select ADB or an explicit full tablet certificate fingerprint, independently of display. Selecting USB clears ADB serial; selecting ADB clears USB identity. Preference editing and Apply never start the camera. An independent portable Transports contract reports implemented adapter availability; the native boundary supplies feature/platform facts. Invalid, ambiguous and unsupported targets fail before native factory creation. Unavailable saved targets stay visible without silent rewriting. USB is visibly experimental pending physical acceptance.
 
 The permanent headless selection/save regression fails on the absent Direct USB control before the fix, then passes unchanged. Bounded malformed fingerprint/profile cases, all capability combinations, unsupported render/start and exact-profile backend delivery remain permanent normal tests. Fresh offline GUI collection executes 104 unit tests plus private Xvfb/fake-program startup; fresh default camera/common collection executes 47 host and 17 common cases. Source manifests match; individual counters for all 34 production functions in the touched GUI camera, common connection and host camera scopes pass the 80% gate across these fresh configurations. Raw source/native object/report hashes and counters retained; changed complexity has 213 functions, maximum 9. No downloads, tablet tests or host service changes. Joined physical acceptance remains deferred T858; this result does not establish physical USB camera support.
+
+</details>

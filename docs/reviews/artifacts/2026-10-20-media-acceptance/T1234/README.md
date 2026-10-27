@@ -1,5 +1,13 @@
 # T1234: bounded media approval budget
 
+Media approval defaults to the shared 120-second admission contract, with startup and cleanup budgets kept separate. Boundary tests and a physical approval after 35 seconds passed; full media acceptance remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Actual requests disappeared after30s while the independent broker/resource
 contract defaults to120s. The native registration client now derives its default
 from AdmissionTimeout and validates its1–600000ms whole-millisecond domain.
@@ -36,3 +44,5 @@ thread exit remain necessary. Missing/late proof stays owned and funded.
 Conditional eventual cleanup requires original proof or original broker exit
 and actual native return. These bounded fixtures are not unrestricted leak or
 platform qualification proofs.
+
+</details>

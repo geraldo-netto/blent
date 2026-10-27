@@ -1,5 +1,13 @@
 # T1047: retry encoder retirement after cancellation
 
+Encoder retirement now consumes a reader result once and can retry waiting for original idle cleanup after cancellation. The permanent regression reproduces the earlier consumed-task panic.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `EncoderTask::retire` consumes the reader task result before waiting for its
 original idle controller cleanup. Canceling during the second wait leaves the
 reader joined; retrying `finish(false)` previously polled the consumed task and
@@ -23,3 +31,5 @@ or physical capture/power transitions occurred.
 Final native normal capture suite passes 160 tests with two existing ignores.
 Both maintained production functions measure 100% executable-line coverage
 individually. Raw LCOV, source hashes and native-object attestations are retained.
+
+</details>

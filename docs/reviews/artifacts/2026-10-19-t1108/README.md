@@ -1,5 +1,13 @@
 # T1108: original benchmark command ownership
 
+Benchmark commands retain their children through actual completion and repeated cancellation. Offline command checks passed; a separate C replay API drift prevented measurement, and arbitrary daemonizing children remain outside the ownership claim.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Offline compiler and codec analysis use one logged/captured command sponsor.
 Compilation/analysis has no elapsed kill cap. Live replay and transfer deadlines
 remain explicit finite experiment contracts. Cargo policy export is offline and
@@ -34,3 +42,5 @@ references and log inodes until those trusted finite tools exit or observe
 EOF/SIGPIPE. Eventual cleanup assumes eventual scheduling/tool termination;
 no parent retirement or unrestricted process-tree fence is claimed in that case.
 No physical EVDI, tablet, battery, suspend or network activity was performed.
+
+</details>

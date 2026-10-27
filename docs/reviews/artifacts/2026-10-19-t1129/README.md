@@ -1,5 +1,13 @@
 # T1129 camera/audio CLI signal cleanup
 
+Camera/audio CLI signal failures request stop and await the original work before returning. Shared signal regressions and per-function checks passed; external process loss still depends on underlying native owners.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Both CLI entry points use the shared portable `control_outcome::with_signals`
 workflow. A failed Ctrl-C registration requests stop and awaits the same original
 work before returning its signal diagnostic. Normal Ctrl-C/SIGTERM preserves the
@@ -37,3 +45,5 @@ signal functions and the changed CLI entry points have measured native counters.
 Final raw manifest/counters/objects:
 `/backups/disk2/blent-work/2026-10-19-open-items/t1129/native-shared`.
 Cargo workspace formatting passes; excluded Linux include drift remains T1128.
+
+</details>

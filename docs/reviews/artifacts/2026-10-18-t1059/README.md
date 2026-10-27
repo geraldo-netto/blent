@@ -1,5 +1,13 @@
 # T1059: independent display wake values
 
+Pure wake policy distinguishes display activity, energy mode and transport without owning native locks. Complete bounded policy tests pass; Activity/service integration and physical power evidence are separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The [independent policy](../../../display-wake-policy.md) defines desired CPU,
 Wi-Fi and window wake behavior for Waiting, Unsupported, Active, Paused,
 Unavailable and Background states. Normal/battery and conservative unknown-route
@@ -32,3 +40,5 @@ Cached source audit covers 26 production/test functions, maximum 6; this is an
 estimate, not native SonarQube certification (T1019). Twelve architecture/contract/
 portability checks pass. No network transfer, installation, push or live host/tablet
 interruption occurred.
+
+</details>

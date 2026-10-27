@@ -1,5 +1,8 @@
 # T849 explicit channel activation
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Fresh mux owners enable Management only. Resource channels require an explicit
 current-generation activation after the authenticated management commit barrier.
 Replacement grants no credit until activation; terminal drain and actual native

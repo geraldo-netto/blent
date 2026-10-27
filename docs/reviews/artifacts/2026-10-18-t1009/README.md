@@ -1,5 +1,13 @@
 # T1009: joined host display activity acceptance
 
+Joined host activity fixtures hold original acknowledgements and cleanup before fresh registration or capture. Failure paths now await owned cleanup too; synthetic native tests do not establish physical rendering.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The production host lifecycle is unchanged; permanent joined qualification now
 covers synthetic display-off, suspending and unavailable observations through
 actual capture/helper/encoder retirement. A private helper closes its original
@@ -49,3 +57,5 @@ No network transfer, installation, upload, push, real lock/suspend/display chang
 or tablet interruption occurred. Android decoder/wake integration remains T1011,
 auxiliary activity T1010 and physical host/tablet acceptance T914. Native private
 helpers and hosted models do not establish physical rendering or battery results.
+
+</details>

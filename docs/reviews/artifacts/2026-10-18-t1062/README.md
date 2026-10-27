@@ -1,5 +1,13 @@
 # T1062: bounded original power request admission
 
+Power requests coalesce into one pending notice without allowing old owners to acknowledge newer work. All 4,096 bounded model histories passed; logical receipt alone grants no native permission.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Independent producer/receiver contracts carry opaque original owners, immutable
 desired policy/withdrawal views and original notice receipts. The implementation
 retains one latest request, one dirty bit and one admitted notice across closure
@@ -38,3 +46,5 @@ Cached source audit covers 36 production/test functions, maximum 9; this is an
 estimate, not SonarQube certification (T1019). Twelve architecture/contract/
 portability checks pass. No network transfer, installation, push or live host/tablet
 interruption occurred.
+
+</details>

@@ -1,5 +1,13 @@
 # T1202: probe transport and limit admission precedes native effects
 
+Camera-probe preflight rejects unsupported USB targets and invalid delays before listeners or ADB effects. Portable boundary tests passed; this ADB-only tool gained no USB implementation.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The actual entry-point camera/duration preflight was extracted to a narrow
 CameraProfile policy before changing behavior. Two permanent tests first fail:
 a valid explicit USB target is admitted to the ADB-only probe, and an invalid
@@ -32,3 +40,5 @@ configuration remains intact on rejection, and a denied target cannot reach the
 native constructor. Current borrowed target views stay within the profile's
 borrow; shared parsers retain their existing bounded selector contracts. No
 physical camera/tablet, Windows/EVDI change or network transfer.
+
+</details>

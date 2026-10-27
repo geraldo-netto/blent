@@ -1,5 +1,13 @@
 # T889 supervised USB admission
 
+USB admission separates native-operation deadlines from human consent time. Late grants and canceled startup cannot admit replacement workers before actual cleanup.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 One portable admission owner retains a native permission worker and independent
 closer. Android handles accessory inventory, permission callbacks and detach
 registration behind an explicit boundary. Constructor/control methods perform no
@@ -34,3 +42,5 @@ Reproduce using cached dependencies only:
 T854 connects this admission to the private connection process; T855 supplies UI
 and physical debugging-off pairing acceptance. These tests do not establish actual
 USB/Android framework retirement on the tablet. No device or network changes.
+
+</details>

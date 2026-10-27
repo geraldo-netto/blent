@@ -1,5 +1,13 @@
 # T1126 original camera creator fences
 
+Camera child, feeder, decoder and USB creators reserve observations before native effects and bind their exact completions. Default and accessory suites passed; process-death and ADB endpoint ownership were still separate at this revision.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Camera producers reserve child and feeder observations before native creation,
 then bind their exact original completions before handoff/yield. Failed feeder
 admission still retains an already created child through actual reap/dependent
@@ -53,3 +61,5 @@ scope remains deferred under T1128. The CLI Ctrl-C registration-error gap presen
 collection is resolved separately under [T1129](../2026-10-19-t1129/README.md). T1090 ADB ownership remains blocked by owner
 choice. Parent T1089 and machine-availability integration remain unresolved.
 No Windows/EVDI changes, live camera/tablet actions, installation or upload.
+
+</details>

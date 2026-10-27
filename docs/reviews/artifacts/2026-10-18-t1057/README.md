@@ -1,5 +1,13 @@
 # T1057: original Android display eligibility
 
+Android display eligibility now withdraws decoder demand on pause or lost authority while retaining configuration. Exact original cleanup fences replacement; hosted tests do not qualify physical decoding.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The original control inbox validates supported/unsupported/unavailable observation
 states, nonregressing counters, exact duplicates and remembered stop fences.
 Current malformed observations close that original control owner. Immutable views
@@ -47,3 +55,5 @@ inventory are retained. A cached source complexity audit covers 507 production/t
 functions, maximum 8; this is an estimate, not SonarQube certification (T1019).
 Twelve architecture/contract/portability checks pass. No network transfer, package
 installation, push, live suspend/lock or tablet interruption occurred.
+
+</details>

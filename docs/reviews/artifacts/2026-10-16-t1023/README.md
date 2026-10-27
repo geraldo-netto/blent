@@ -1,5 +1,13 @@
 # T1023: acknowledged capture activity contract
 
+Capture activity uses exact sequenced requests and acknowledgements across canceled waits. An acknowledgement certifies that transition only, not encoder or process retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The independent portable record contains a nonzero, monotonically increasing
 big-endian u64 sequence and one strict boolean byte. Requests and acknowledgments
 are exactly nine bytes. Sequence exhaustion fails without wrapping. The native
@@ -38,3 +46,5 @@ python3 /tmp/blent-t1023-evidence/scoped_rust.py coverage-final
 This prerequisite adds the contract and transport. Native capture integration
 remains T1021, and application activity ownership remains T1015. No live display,
 tablet or system configuration changed; no network transfer occurred.
+
+</details>

@@ -1,5 +1,8 @@
 # T1261: enforce ABI checks for every shipped binary
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The independent seven-binary inventory and six USB invalid-ABI cases failed
 against the original gate. All five test methods pass after including both USB
 executables and updating the existing invocation-count assertion. The ordinary

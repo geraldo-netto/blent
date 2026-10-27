@@ -1,5 +1,13 @@
 # T801: native audio scheduling
 
+Low-latency Android audio mode reduced a timestamp-based queue estimate on one tablet, without a measured CPU or acoustic-latency claim. Speaker opt-in and focus-event suspension retain existing bounds.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Offline builds, cached dependencies, USB transfer to RugKing Pad 2 Pro SDK36.
 Isolated benchmark packages; production app untouched. Audio output muted.
 
@@ -27,3 +35,5 @@ socket Stop, reader completion, cancellation, terminal focus loss and late gain
 remain covered. Normal 250 ms write budgets and route checks remain unchanged.
 No AAudio/JNI backend or new native dependency was justified by these measurements.
 Physical duplex/route/acoustic acceptance remains tracked separately by T718/T720.
+
+</details>

@@ -1,5 +1,13 @@
 # T998: joined Android leased microphone uplink
 
+Android microphone composition enables all four resource capabilities with independent original cleanup proofs. Joined synthetic capture tests do not establish physical microphone, acoustic or process-separation acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Production tablet composition now explicitly owns microphone resources and
 advertises display/camera/microphone/speakers (15). T996/T997 original consent,
 opaque permission replies, native endpoint exposure and consumer proof select the
@@ -41,3 +49,5 @@ Final full suite: 1939 tests, 0 failures, 0 errors,
 0 skips. All 2,741 maintained methods pass individual native 80%
 line coverage. Changed authored complexity: 387 functions, maximum 5. Matching
 inventory, native counters, source fingerprints, constructors and logs retained.
+
+</details>

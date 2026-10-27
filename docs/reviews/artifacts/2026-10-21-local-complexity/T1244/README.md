@@ -1,5 +1,13 @@
 # T1244 accepted local cyclomatic verification
 
+The owner accepted suitable local cyclomatic tools while keeping the per-function maximum of 9. Rechecked Kotlin rows matched; separate parser limitations and native coverage obligations remained explicit.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Owner clarification2026-10-21 accepts any suitable local cyclomatic checker;
 SonarQube itself is not required. The maximum remains9 for every function.
 The existing source checker implements the documented language counts, not
@@ -29,3 +37,5 @@ are preserved, and their prose now records the changed acceptance requirement.
 No production behavior, test exclusion, metric suppression, resource lifetime,
 coverage requirement or unsupported-source disposition changes. No downloads,
 uploads, physical actions or repository pushes occur in this verification.
+
+</details>

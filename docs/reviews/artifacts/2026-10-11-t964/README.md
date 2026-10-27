@@ -1,5 +1,13 @@
 # T964: native audio read failure survives renderer completion
 
+Audio orchestration now joins its original reader after normal renderer completion so delayed native failures remain visible. Full tests passed, while newly exposed coverage gaps stayed separately recorded.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Controlled permanent regression fails on both simulated APIs before the fix:
 renderer completion cancels the original reader while native failure delivery
 is still blocked. Actual coordinator dispatch completion synchronizes the assertion;
@@ -23,3 +31,5 @@ three null-only singleton initialization rows with no executable native method;
 T967/T968 track two uncovered authored default-constructor variants. These are
 retained gaps, not exclusions or a claimed whole-project coverage pass. No device
 acceptance, download, install/reload or EVDI changes.
+
+</details>

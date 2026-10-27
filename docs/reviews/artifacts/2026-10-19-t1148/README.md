@@ -1,5 +1,13 @@
 # T1148 — output operation progress
 
+Output progress reports a logical timeout for a stuck configuration or frame write. Tests confirm the original native task, file and frame remain owned until actual return; timeout is not retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 An owned native configuration or whole-frame write now publishes one bounded
 progress observation. Its controller rejects an operation still pending after
 2s measured from actual operation start. Idle time has no deadline. A completed
@@ -35,3 +43,5 @@ change occurred. Raw manifests, counters and attestations remain locally under
 cargo test --offline --locked -p blent --lib camera::output_worker
 cargo clippy --offline --locked -p blent --lib --features accessory-transport --no-deps -- -D warnings
 ```
+
+</details>

@@ -1,5 +1,8 @@
 # T957: isolation probe control/operation separation
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Keep UID/interface/size checks, death/unblock commands and one-operation admission
 on the Binder boundary. Move unchanged stall/surface/response work to the existing
 worker thread's operation method. Preserve busy publication, response order,

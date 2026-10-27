@@ -1,5 +1,13 @@
 # T1056: original control-scoped activity publication
 
+Original authenticated control sessions now publish bounded activity hints and preserve coalesced Stop. Private-socket tests do not establish physical rendering or Android wake behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The [independent signal contract](../../../display-activity-signal.md) is now
 published by original host input/control sessions. Portable session startup binds
 its existing source before listeners/work exposure. No source factory is added.
@@ -43,3 +51,5 @@ Android decoder/wake consumption remains T1057/T1058 and acceptance T1011/T914.
 No network transfer, installation, upload, push, live lock/suspend/display change
 or tablet work occurred. Hosted private sockets establish this bounded transport
 composition, not unrestricted kernel/device safety or physical rendering.
+
+</details>

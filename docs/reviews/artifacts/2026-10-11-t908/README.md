@@ -1,5 +1,13 @@
 # T908 Linux production USB display composition
 
+Linux production USB display composition joins discovery, capacity and actual session ownership. Real protocol fixtures carry synthetic frames and input; they do not establish Android decoding or physical display/touch acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The Linux daemon now exports its actual primary listeners and composes T924/T925/
 T927 discovery, capacity and joined ownership when built with `accessory-transport`.
 The default build retains ADB behavior. Native launch/path/IPC and TCP capabilities
@@ -66,3 +74,5 @@ CARGO_NET_OFFLINE=true cargo check --offline --locked --target x86_64-pc-windows
 
 No downloads, installation, reloads, live broker/device changes or physical trial.
 The separate postponed T855 TLS fixture remains uncommitted.
+
+</details>

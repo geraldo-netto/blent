@@ -1,5 +1,13 @@
 # T1238 current-build hot-reconnect Stop acceptance
 
+Current-build debugging-off software reconnect and separate media Stops passed on the selected API 36 tablet. Original Android exits, host reaping and endpoint identities provide retirement evidence; earlier uninstrumented reports still have no established cause.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Selected device: RugKing Pad 2 Pro, API36, serial8002RH1010011900, physical USB
 3-2.4.4. The designated release certificate signs the current T1247-fixed APK;
 the repository verifier passes before local installation. `binaries.sha256.gz`
@@ -103,3 +111,5 @@ other-device support, Windows/macOS acceptance, EVDI qualification, default audi
 device change, package download, repository fetch/push or artifact upload occurs.
 Earlier profile/background/denial/revocation evidence remains historical and
 separate; this run does not claim to repeat every earlier condition.
+
+</details>

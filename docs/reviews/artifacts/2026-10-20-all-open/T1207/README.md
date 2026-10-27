@@ -1,5 +1,13 @@
 # T1207: empty candidates need no capture readiness
 
+An empty encoder shortlist returns immediately without waiting for capture readiness. Nonempty trials retain their original deadline and native qualification requirements.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The permanent one-poll regression first fails: benchmark(empty) is Pending
 because it waits for capture_ready. It now returns the original empty vector
 before metadata cloning, readiness subscriptions or native work. The nonempty
@@ -24,3 +32,5 @@ No returned result grants permission or certifies a native resource as dead.
 Existing held/cancellation/resource measurements remain in the normal suite.
 This guard is not a physical rendering or unrestricted lifetime-safety claim.
 No device/service, Windows/EVDI implementation or network action occurred.
+
+</details>

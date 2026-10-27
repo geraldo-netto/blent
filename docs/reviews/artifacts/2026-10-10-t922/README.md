@@ -1,5 +1,13 @@
 # T922 typed display status
 
+Typed display status represents native USB peers without requiring ADB serials. Linux regressions retain native-only status during ADB failure; Windows runtime evidence remains unavailable.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Native USB records no longer require an ADB serial. Existing ADB JSON shape remains
 unchanged. Permanent regressions fail before the schema/GUI/diagnostic fixes and
 pass afterward. Invalid-input tests cover ambiguous/missing identities, malformed
@@ -32,3 +40,5 @@ CARGO_NET_OFFLINE=true cargo check --offline --locked --target x86_64-pc-windows
 ```
 
 No downloads, installs, reloads, device-mode changes or physical tablet acceptance.
+
+</details>

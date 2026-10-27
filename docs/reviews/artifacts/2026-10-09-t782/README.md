@@ -1,5 +1,8 @@
 # T782 evidence
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Permanent independent-oracle tests were added before the optimization, passed
 on the portable implementation, and pass on the new auto/forced AVX2 paths and
 BLENT_NO_AVX2 fallback. This is an optimization, not a newly found pixel bug.

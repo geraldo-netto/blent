@@ -1,5 +1,13 @@
 # T1180: terminal display callback authority
 
+Display callback authority uses checked grants and arithmetic-free revocation. Boundary, concurrency and bounded-history tests passed while original native workers remain owned until their own retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 RemoteDisplay now owns one GenerationFence. A replacement first revokes old
 callback authority, stops the original lane and disconnects observations. Only
 a usable wanted display acquires a fresh positive-Long grant. Exhaustion denies
@@ -61,3 +69,5 @@ retirement evidence and scheduled cleanup executes. Bounded hosted checks do
 not prove unrestricted native safety or physical device behavior.
 No APK, running service, physical device, Windows/EVDI backend or network
 transfer was changed.
+
+</details>

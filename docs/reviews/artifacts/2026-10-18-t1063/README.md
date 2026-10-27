@@ -1,5 +1,13 @@
 # T1063: original wake-handle ownership
 
+A wake lease installs cleanup ownership before acquisition and retains uncertain handles until actual retirement. Fault tests and 1,296 model histories passed; native fence evidence remains a separate backend obligation.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 WakeHandle defines fresh unadmitted allocation, acquisition uncertainty and actual
 original retirement independently of OS/framework implementations. WakeLease
 installs the cleanup owner before acquisition, retains that exact handle/failure
@@ -36,3 +44,5 @@ and individual reports are saved. Cached source audit covers 68 production/test
 functions, maximum 8; this is an estimate, not native SonarQube certification
 (T1019). Twelve architecture/contract/portability checks pass. No network transfer,
 installation, push or live host/tablet interruption occurred.
+
+</details>

@@ -1,5 +1,13 @@
 # T691 Wi-Fi evidence
 
+Wi-Fi regressions fixed false reconnect success and route-cleanup ownership errors on Linux and Windows. Fixtures do not establish physical network/tablet acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Fresh Linux and ordinary-user native Windows collections pass every scoped
 function at >=80% executable lines: Linux 85, Windows 93. Full host library,
 Linux CLI/unit + Wi-Fi integration, and Windows host unit/integration suites pass.
@@ -24,3 +32,5 @@ Use the matching --rust-platform. SHA256SUMS hashes the compressed artifacts.
 Native fixtures own their ADB executable, stores, sockets and routes. This is
 not physical tablet/network acceptance; T522 remains blocked on that hardware.
 See ../../2026-09-28-windows-wifi.md for implemented behavior and limits.
+
+</details>

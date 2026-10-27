@@ -1,5 +1,13 @@
 # T1313: collect, retain and merge native USB coverage
 
+CI collects and merges native USB coverage from all required suites. All 38 helper functions passed the measured USB slice; no remote CI or physical USB acceptance was claimed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Three permanent CI workflow regressions failed before wiring the collector,
 upload and combined-gate input. The collector suite regression separately failed
 before including the existing discovery and selection suites. All six workflow
@@ -22,3 +30,5 @@ fixture resources and output cleanup remain with the existing test owners.
 Coverage artifacts intentionally remain in the selected evidence directory.
 No production C code or native lifecycle changed. T1314 separately fixes the
 fixture filename collision exposed by including the discovery suite.
+
+</details>

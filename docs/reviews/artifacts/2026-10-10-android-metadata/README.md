@@ -1,5 +1,13 @@
 # T802 metadata query measurement
 
+Request-scoped metadata reporting became cheaper in matched fresh-process trials with identical payloads. Cold-start improvement was not established.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 USB RugKing Pad 2 Pro, Android SDK 36; fingerprint recorded in each JSON.
 Baseline: immutable commit `847b925`. Candidate: production source hashes and APK
 hash in `candidate-provenance.json`. No dependency downloads or production app
@@ -30,3 +38,5 @@ These timings measure metadata reporting, not video FPS or application startup.
 
 The production candidate uses bounded loops and tiny MIME arrays. The table
 uses only the matched fresh-process runs listed above.
+
+</details>

@@ -1,5 +1,13 @@
 # T1035: retain original helper activity control
 
+Helper activity control retains its original socket with the child through failed startup and cleanup. Canceled requests resume their exact acknowledgement state; physical monitor acceptance is separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Optional Linux helper control attaches its reserved inherited endpoint before
 spawn, then retains the original controller socket lease with that same child
 before further fallible startup work. Canceled/failed handshakes, bounded process
@@ -41,3 +49,5 @@ No downloads, installations, uploads, pushes, live monitor changes or physical
 power transitions occurred. These process/socket fixtures do not establish native
 EVDI monitor/power acceptance. Policy integration remains T1015, encoder generation
 retirement T1036, and activity-aware selection T1037.
+
+</details>

@@ -1,5 +1,13 @@
 # T1169 — Android saved-computer settings
 
+Android settings exposes saved computers with explicit refresh and full-fingerprint confirmation. Joined UI/store/Binder tests passed after stale-view cutoff fixes; hosted acceptance does not qualify actual tablet providers.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ConnectionOwner now composes one cached SavedTrustBinding with its existing
 ConnectionAccess and a native-inert AndroidSavedTrustRun. Only application context
 is captured; metadata travels through the existing typed START_TRUST operation.
@@ -74,3 +82,5 @@ warnings) and APK assembly pass. Physical provider/device acceptance remains
 T863/T855/T858/T846. No network transfer, installation, live device or push.
 Raw evidence: `/backups/disk2/blent-work/2026-10-20-open-items/t1169`; APK:
 `/backups/disk2/blent-work/2026-10-20-open-items/t1171/scoped-build/app/outputs/apk/debug/app-debug.apk`.
+
+</details>

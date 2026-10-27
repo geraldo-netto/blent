@@ -1,5 +1,13 @@
 # T1298: one current audio wire contract
 
+Host and Android use one current audio format with a required counter prefix, including zero counters when native timing is unavailable. Regression and native/hosted evidence preserve framing, independent duplex ownership and cleanup limits.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The host and Android accept only `BLAUREQ2` / `BLAUD002`. Every PCM frame
 contains the 24-byte native-counter prefix, including all-zero counters when
 native time is unavailable. Removing format-selection flags does not require
@@ -73,3 +81,5 @@ unit binaries plus audio, mapping and changed common integration targets rerun.
 `verification.json` distinguishes that run, the earlier broad green run and the
 full-workspace staging assertion that was corrected. Native-helper Clippy
 follow-ups T1308/T1309 are tracked independently.
+
+</details>

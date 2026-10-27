@@ -1,5 +1,8 @@
 # T1133 fixed USB inventory records
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Use fixed-size array chunks after the existing exact extent validation. Decode
 still rejects invalid headers/counts/reserved bytes/records and duplicate physical
 targets before returning any inventory. The 16-byte header, 16-byte records and

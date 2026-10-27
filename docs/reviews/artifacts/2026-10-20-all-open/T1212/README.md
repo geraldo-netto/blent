@@ -1,5 +1,13 @@
 # T1212: offline native host test environment
 
+The offline native runner uses explicitly selected cached SDK and installed tools. Focused native suites passed, but the unfiltered historical baseline still had three failures; no complete-suite or physical-media pass was claimed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The existing host has real D-Bus, private Xvfb, PipeWire and namespace tools, plus
 cached SDK25.08 headers/libraries and its matching codecs-extra extension. The
 new optional development runner selects those original inputs explicitly. It
@@ -58,3 +66,5 @@ summary remains. Subsequent packaging maintenance has a separate current tooling
 result under T833; neither record claims a complete-suite pass. Raw native LLVM
 counter/refresh/replay evidence remains; obsolete supporting records were removed
 intact during the owner-directed reference cleanup.
+
+</details>

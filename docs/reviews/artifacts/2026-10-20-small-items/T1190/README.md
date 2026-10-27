@@ -1,5 +1,13 @@
 # T1190: terminal native-deadline notifications
 
+Native-deadline notifications reject exhausted grants and cannot revive stale timer status. Timer tests passed; notification exhaustion or expiry is never proof of native cleanup.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 NativeDeadline now uses the independent GenerationFence. Begin reserves a
 positive callback identity before creating a timer; exhaustion reports a visible
 pending-cleanup status without allocating another job. Finish revokes without
@@ -36,3 +44,5 @@ dispatcher executes cancellation; no timer completion or status is native
 retirement evidence. Original decoder/camera owners remain separately funded
 until their own finish/proofs. No native ownership, device, service, APK,
 Windows/EVDI backend or network transfer was changed.
+
+</details>

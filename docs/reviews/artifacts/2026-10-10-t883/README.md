@@ -1,5 +1,13 @@
 # T883 bounded Android native session runner
 
+Fixed native read, write and close workers keep blocking calls off the serialized Android session owner. Interoperability tests observe worker exit; a cleanup deadline alone never authorizes replacement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Independent endpoint, native I/O and run contracts connect the tablet session to
 stock streams without placing native calls on the serialized protocol owner.
 Three fixed workers own read, write/flush and close. Exact completion slots stay
@@ -37,3 +45,5 @@ retains accessory permission/setup; T857 retains local endpoint pumps and actual
 production display acceptance. Cleanup timeout requests process termination and
 never authorizes replacement. No downloads, device installs, USB-mode changes or
 network-configuration changes occurred.
+
+</details>

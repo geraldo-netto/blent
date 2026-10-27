@@ -1,5 +1,13 @@
 # T853 Linux broker composition
 
+The Linux broker composes private ownership, selected-device setup, trust and bounded media bridges. Isolated executable/TLS tests passed, while tablet display integration remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The optional `blent-usb-broker` executable and on-demand client compose one
 private per-user owner, read-only inventory, explicit selected-device startup,
 persisted identity/trust, stock mutual TLS, authenticated receive windows and
@@ -39,3 +47,5 @@ target included stale generic source mappings and incorrectly counted comment
 lines as uncovered. Both exports are retained: `common-current.lcov.gz` is used
 by the passing gate; `common.lcov.gz` is diagnostic only. T880 tracks permanent
 collection hardening. No threshold or source exclusion was changed to pass.
+
+</details>

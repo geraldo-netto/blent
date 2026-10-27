@@ -1,5 +1,13 @@
 # T1068: narrow original-source relevance
 
+A small read-only display view checks both source identity and snapshot revision without retaining Activity or socket objects. All 13 measured methods reached exactly 100% line coverage; the view is not an asynchronous resource lease.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 DisplayActivityView defines read-only current-snapshot relevance independently of
 control, UI and native implementations. One pure source owner composes the existing
 inbox, carries original history and replaces its original identity. ControlSession
@@ -25,3 +33,5 @@ new exclusions. Source audit covers 113 production/test functions, maximum estim
 8; native SonarQube remains T1019. Twelve architecture/contract/portability checks
 pass. Two unchanged intentional deprecated permission calls are recorded as T1070.
 No network, installation, push or live device operation occurred.
+
+</details>

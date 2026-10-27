@@ -1,5 +1,13 @@
 # T884 private Android connection process and IPC
 
+The private Android connection process accepts bounded typed control IPC and retains canceled native calls. Hosted Binder lifecycle tests require death plus outstanding-call return, without claiming physical termination acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A dedicated nonexported `:connection` process provides the ownership boundary
 for future USB/TLS/native setup and retirement. Its independent typed contract carries
 only bounded control metadata. Encoded records are at most 4 KiB, Parcels at most
@@ -44,3 +52,5 @@ pairing presentation. T857 supplies local media endpoints and actual production
 display/touch acceptance. Robolectric API27/34 tests model Binder lifecycle; they
 do not establish physical-device USB or kernel Binder termination behavior.
 No downloads, installations, USB-mode changes or network changes occurred.
+
+</details>

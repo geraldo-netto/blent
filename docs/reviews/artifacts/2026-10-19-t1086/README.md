@@ -1,5 +1,13 @@
 # T1086: bind the original auxiliary transport target
 
+Each manual media intent retains its first successfully resolved tablet target. Fake-ADB and concurrent tests prevent silent reselection; target identity alone grants no media permission or physical support.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The portable OriginalTarget contract owns one manual intent's immutable requested
 selector and first successful effective selector. Native lookup and media grants
 are outside it. No clone/reset/reselection API exists. Explicit serials and typed
@@ -62,3 +70,5 @@ maximum 6, repository counter with pinned cached tree-sitter-rust 0.24.2 and
 tree-sitter 0.25.2. Native SonarQube remains unavailable under T1019. Shared
 no-default-features compilation is recorded separately. This does not establish
 physical ADB/USB/media support or unrestricted native memory safety.
+
+</details>

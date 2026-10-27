@@ -1,5 +1,13 @@
 # T1032: probe and selection work retain original session evidence
 
+Probe, selection and cache work now forward original creator and native proofs to the session. Late children remain covered after creator completion; calibration permit retention was fixed separately.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 An immutable scope adapts the independent retirement contract to native child,
 bounded command and blocking-work adapters. It owns no media acquisition policy
 or duplicate mutable state. The Linux session passes its original scope through
@@ -53,3 +61,5 @@ native proofs settle. That independent permit-retention change is next, followed
 by idle-worker ownership T1029 and activity source/policy composition T1027/T1015.
 No tools were downloaded or installed, no applications/devices were updated, no
 live lock/display/suspend state changed, and no network transfer or push occurred.
+
+</details>

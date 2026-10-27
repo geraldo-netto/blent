@@ -1,5 +1,17 @@
+# 2026-10-11-t977 — README
+
+Shared media contracts validate complete audio targets before controller or native admission. USB audio remained explicitly unavailable until its adapter integration; private fixtures preserve existing ADB behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T977 defines shared independent generic Invitation<P>/Connection<P>, explicit transport targets and implementation availability. Camera adapters now use the same contract. AudioOptions persists an optional full USB fingerprint with legacy ADB defaults unchanged, rejects ambiguous/invalid targets, and projects direction/preferences into the existing management audio schema. Clock negotiation remains the authenticated PCM protocol. Contract readiness does not claim USB audio support: the native audio adapter explicitly reports USB unavailable until T979, and rejects selected USB before ADB/helper/device work.
 
 Two permanent regressions first failed: ambiguous selectors entered controller admission; the newly exposed USB selector reached ADB lookup. Unchanged regressions pass after full-options validation and native transport gating. Private subprocess fixtures use only explicit fake ADB/native helper programs and loopback sockets, preserving both legacy directions' PCM/profile/credential startup, pending cancellation, Ctrl-C/SIGTERM and exact original reverse-map removal. No real ADB, PipeWire, tablet or service is touched. Independent generic-port fixtures retain cancellation/cleanup proof separately and demonstrate direction isolation.
 
 Fresh default audio collection passes 18 host + 49 shared cases. Fresh accessory-transport camera collection passes 52 host + 17 shared cases, including retained private TLS/protocol/retirement fixtures. Combined native counters pass all 69/69 production functions in the recorded scopes individually; no missing counter or threshold exclusion. Portable no-default-feature shared audio suite passes 48 cases. Complexity: 130 authored functions, maximum 8. LCOV, matching pre-build source snapshots, all authored Rust input fingerprints, native-object/report attestations and logs retained in gzip form. USB speaker/microphone implementation and physical acceptance remain T978/T979/T860/T859. No downloads or live tests.
+
+</details>

@@ -1,5 +1,13 @@
 # T726: Bluetooth distortion evidence
 
+Journal excerpts show Bluetooth transport errors, but their relationship to audible distortion or Blent was not established. Read-only investigation changed no settings or routes.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Read-only review of the local PipeWire and WirePlumber user journals on September
 30, 2026. The retained [bounded excerpt](bluetooth-errors.txt) replaces the host
 name and headset address with stable labels. No audio content was collected.
@@ -20,3 +28,5 @@ that changing profiles, volume or services fixes an unconfirmed cause.
 No system defaults, application routes, volume, codec or service state changed.
 No behavioral fix is proposed, so there is no fabricated regression test. A
 confirmed Blent defect must first be reproduced by a permanent failing test.
+
+</details>

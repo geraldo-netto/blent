@@ -1,5 +1,13 @@
 # T787 — shared CPU input for stock baseline VAAPI
 
+Shared CPU input reduced measured conversion/transport/upload cost on the tested VAAPI setup. Upload remains, selection stayed explicit, and native acceptance on two AMD nodes is not all-GPU or end-to-end qualification.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Implemented a Linux hardware-frame adapter in Blent's optional in-process
 encoder. `h264_vaapi_baseline` now resolves to stock `h264_vaapi`, retaining
 Constrained Baseline/CAVLC, CQP, zero B-frames, async depth one, BT.709 and
@@ -108,3 +116,5 @@ Coverage was collected offline with `CARGO_LLVM_COV_TARGET_DIR=/tmp/blent-t787-c
 for `-p blent --features inproc-encoder --lib --bin blent` and `-p blent-config --lib`,
 exporting LCOV. Native D128 acceptance is retained separately. SDK library/include
 paths are environment-specific and must match the stock runtime libraries.
+
+</details>

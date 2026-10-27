@@ -1,5 +1,13 @@
 # T1139 successful startup versus timeout observations
 
+Success-path test fixtures allow realistic executable startup while explicit timeout controls keep their short budgets. A controlled 350 ms startup regression passed; it does not diagnose every earlier timing failure.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The native input-success fixtures now admit a two-second startup/completion
 allowance. The intentional wait/missing-command cases keep100 ms; the existing
 cancellation observer still uses its original100 ms outer/10 s inner budgets.
@@ -26,3 +34,5 @@ No Windows/EVDI edit, live-device action, installation or network transfer.
 All7 observation tests and all385 normal common-library tests pass.
 Pinned source audit checks33 test/helper functions, maximum6. Cargo formatting
 passes. No permanent regression is skipped or removed.
+
+</details>

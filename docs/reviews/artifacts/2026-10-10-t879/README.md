@@ -1,5 +1,13 @@
 # T879 selected USB metadata gate
 
+Selected USB setup now rechecks descriptor metadata before any mode-switch command. The replacement regression rejects with no control transfer; metadata still is not authenticated identity.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The production-selection entrypoint accepts `--selected BUS PORT.PATH ADDRESS
 VENDOR PRODUCT`. Rust passes bounded decimal arguments without a shell. The
 helper opens the physical target and compares its observed address, VID and PID
@@ -28,3 +36,5 @@ Counters, source hashes, red/green logs and coverage manifest are retained here.
 The coverage snapshot includes concurrent uncommitted T853 integration work;
 only the four source scopes named in coverage.json are claimed by this item.
 Production application composition and device acceptance remain T853 onward.
+
+</details>

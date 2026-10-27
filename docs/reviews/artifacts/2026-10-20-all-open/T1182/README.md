@@ -1,5 +1,13 @@
 # T1182: terminal camera callback authority
 
+Camera callback grants cannot wrap or revive stopped work, including reentrant service callbacks. Bounded wider-integer models and hosted retirement tests passed; native cleanup remains independently required.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 CameraBinding now composes the existing instance-local GenerationFence rather
 than incrementing a signed counter on stop. Terminal capacity is checked before
 permission prompts, service startup, target claims and native construction.
@@ -63,3 +71,5 @@ cancel and join their containing scope. No new queue, allocator or native reuse
 path is introduced. Bounded JVM models/counters do not certify unrestricted
 interleavings or physical camera safety. No device, live service, Windows or EVDI
 backend was changed; unavailable device acceptance remains separately recorded.
+
+</details>

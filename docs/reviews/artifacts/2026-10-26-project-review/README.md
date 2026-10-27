@@ -1,5 +1,13 @@
 # Project review — 2026-10-26
 
+The October 26 review recorded seven findings with reproductions and explicit suite failures. Later individual fixes carry their own evidence; this review was not exhaustive platform or lifetime certification.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Reviewed commit `0cc6148a`. Seven findings are recorded in `TODO.md`; production
 code and permanent tests are unchanged. Existing owner-directed EVDI ledger
 removals and unrelated untracked evidence were preserved. No downloads, uploads,
@@ -118,3 +126,5 @@ source hashes and suite outcomes. No parser failures or absent native evidence
 are treated as passing results. The existing whole-project complexity evidence
 at this reviewed commit is in `../2026-10-25-t1090/complexity.log.gz`; it was not
 rerun merely to duplicate the unchanged-source measurement.
+
+</details>

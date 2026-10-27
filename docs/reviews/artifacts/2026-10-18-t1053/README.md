@@ -1,5 +1,8 @@
 # T1053: feature boundaries without dead-code diagnostics
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 `media_connection` has production consumers only in Linux accessory-enabled
 camera/audio adapters. `media_request::validate_original` serves that same native
 boundary. Both remain compiled for all tests, retaining their permanent portable

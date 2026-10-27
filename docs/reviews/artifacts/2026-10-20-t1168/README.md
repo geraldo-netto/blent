@@ -1,5 +1,13 @@
 # T1168 — bounded saved-computer coordination
 
+Saved-computer coordination publishes only complete results after original maintenance retirement. Bounded page, stale-view, cancellation and store-failure tests passed; view closure cannot undo an already committed forget.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 SavedTrustBinding coordinates one application-owned maintenance request through
 ResourceLane and the same ConnectionAccess contract as connection execution.
 T1169 supplies Android application composition and the settings UI; this commit
@@ -55,3 +63,5 @@ nine existing warnings) and APK assembly pass. Cached Kotlin 1.9.20 PSI measures
 138 production/test entries, maximum 6; native SonarQube remains unavailable
 (T1019). No live app/device, installation, network transfer or push occurred.
 Raw evidence: `/backups/disk2/blent-work/2026-10-20-open-items/t1168`.
+
+</details>

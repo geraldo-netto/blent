@@ -1,5 +1,8 @@
 # T1066: concurrent audio fixture command observations
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The full offline Android suite completed 2,103 cases with one failure: an audio
 retirement callback appended to an ArrayList while the test iterated it. The new
 permanent deterministic test holds an original iterator while the callback appends;

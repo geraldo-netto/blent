@@ -1,5 +1,13 @@
 # T1185: keep retained EVDI output progressing during media pause
 
+Paused capture now services retained EVDI flip completion at up to 10 Hz while media conversion and encoding stay paused. Permanent tests, a stock-driver guest and later physical off/wake acceptance passed; native readback cost and incident-attribution limits remain explicit.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ## Change and contract
 
 The original helper stopped every pixel grab while retaining a connected EVDI
@@ -200,3 +208,5 @@ historical attribution limits. The later [physical acceptance](../2026-10-20-t11
 passes on the original Cinnamon/AMDGPU/-38 target with owner confirmation.
 T1184 is resolved; the historical attribution limit remains recorded. T914's
 broader joined-media/lock/suspend acceptance window remains unapproved.
+
+</details>

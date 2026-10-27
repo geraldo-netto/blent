@@ -1,5 +1,13 @@
 # T1064: original observer fixture handoff
 
+An Activity test fixture now retires its original observer before replacing the power binding. The failure and repair were reproduced on SDK 27/34; production behavior did not change.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T807's Activity fixture overwrote an active power binding. Activity stop then only
 retired the replacement, leaving the original foreground observer reachable.
 The permanent T1064 assertion fails on SDK 27 and 34 before cleanup. The fixture
@@ -21,3 +29,5 @@ maximum 3. This is an estimate, not native SonarQube evidence (T1019). Source ha
 faulty handoff, red and green logs are retained. No network transfer, installation,
 push or live device interruption occurred. T1060 remains in progress; T1065 records
 the separate shared worker fixture quiescence gap discovered during integration.
+
+</details>

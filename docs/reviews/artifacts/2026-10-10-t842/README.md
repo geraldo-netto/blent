@@ -1,5 +1,13 @@
 # T842 — strict current-toolchain Clippy
 
+Strict Clippy checks now pass without suppressions or behavioral policy changes. Scoped native counters and existing media/lifecycle regressions support the refactoring.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Replace constant-size chunk iterators with array-chunk views, preserving the
 existing remainder behavior; move audio wire tests after production items;
 remove needless lifetime/borrow/clone expressions and doc-comment blank lines.
@@ -25,3 +33,5 @@ Raw strict-lint failure/success, test output, native counters and per-function
 results are retained alongside this file. These collections include the separate
 T841 observer fix, which prevents its live-receive counter underflow; no counters
 were dropped, clamped or otherwise repaired.
+
+</details>

@@ -1,5 +1,13 @@
 # T611 audit and prototype, before production UI changes
 
+This UI audit and interactive prototype proposed clearer controls and consent flows. Prototype checks were developer walkthroughs, not a shipped interface or a usability study.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Current code: `gui/src/main.rs`, `gui/src/camera_settings.rs`, Android
 `BlentUi.kt`, `SettingsSheet.kt`, `CameraControls.kt`, `CameraBinding.kt`.
 
@@ -44,3 +52,5 @@ permanent tests for accessible settings size/name, progressive disclosure,
 camera-off when browsing/applying, local stop preserving display, and narrow /
 large-font reachability. The pre-existing backend permission/lifecycle and
 unsupported-platform contracts remain authoritative.
+
+</details>

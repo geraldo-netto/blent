@@ -1,5 +1,13 @@
 # T1079: progressing integration commands retain ownership
 
+The integration harness now retains progressing child commands instead of killing builds at a fixed elapsed limit. Cancellation still signals and joins the owned child; offline Rust/Android interoperability passed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The normal offline Rust/Android interoperability harness imposed a 300-second
 build/test kill cap and a second five-second cleanup cap. These were elapsed
 limits, without evidence that compilation had stopped progressing. The command
@@ -36,3 +44,5 @@ installation or physical device operation.
 The actual offline Rust/Android TLS interoperability and unanswered-approval
 fixtures also pass: six total Python cases including the four command regressions.
 The native interop JUnit results are retained alongside the command log.
+
+</details>

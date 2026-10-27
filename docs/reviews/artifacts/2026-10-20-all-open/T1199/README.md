@@ -1,5 +1,13 @@
 # T1199: scoped protocol2 without V1 downgrades or qualification bypasses
 
+Decoder reporting and qualification require current protocol 2 scope, removing V1 downgrade paths. Rust and hosted Android tests passed while retaining current manual choices, native ownership and output qualification.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Permanent regressions first fail in shared validation, host candidate admission
 and Android inventory admission/publication. The current schema requires version2
 and the exact active scope. Android does not query without a typed current offer,
@@ -46,3 +54,5 @@ scheduler/reaper progress. No device/service, network, or Windows/EVDI backend
 implementation action occurred. Current defensive validation in other platform
 boundaries is retained; a version number alone does not identify a deprecated
 format. T1192 retains the remaining bounded compatibility audit.
+
+</details>

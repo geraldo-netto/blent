@@ -1,5 +1,13 @@
 # T937 camera local ownership and independent cleanup
 
+Camera ownership tracks route exposure separately from actual endpoint and capture-consumer cleanup. Either cleanup order is supported; socket EOF or Stop cannot release the original claim.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Focused lifecycle, projection, control and original-resource authority contracts
 separate the camera owner from display and hardware capture. Permission-pending
 offers contain no credential or endpoint and open no native factory. Choices and
@@ -34,3 +42,5 @@ original worker lifetime; T932 must obtain actual isolated hardware-worker retir
 proof and wire Activity capture before enabling capabilities. Joined physical
 acceptance remains T858 and the host adapter T933. No downloads, installation,
 reloads or tablet trial occurred.
+
+</details>

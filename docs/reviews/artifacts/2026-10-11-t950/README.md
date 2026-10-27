@@ -1,5 +1,8 @@
 # T950: original legacy camera permission identity
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Three permanent regressions failed before the identity guard, then passed in
 the complete camera/connection/lifecycle fixture suite. A stale, forged, duplicate
 or stopped SDK result cannot consume the newer request. Repeating the same

@@ -1,5 +1,13 @@
 # T809: on-demand native worker isolation
 
+On-demand Android workers isolate independent media owners and wait for confirmed worker death before replacement. Native IPC trials and hosted tests validate supervision, with extra process-memory cost and no shared-driver fault-containment guarantee.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Maintainer selected separate workers on 2026-10-10, prioritizing isolation.
 Five private, nonexported processes own display, camera, microphone, speakers
 and metadata independently. Main-process owners retain consent, foreground
@@ -63,3 +71,5 @@ native dependencies in portable contracts and main media owners.
 Full offline suite: 902 tests, zero failures. All 1,081 measured production
 methods meet individual 80% executable-line coverage; no method exceeds
 cyclomatic complexity 9. Full counters and red/green logs are retained here.
+
+</details>

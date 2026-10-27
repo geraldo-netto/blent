@@ -1,5 +1,13 @@
 # T1037: original activity and native selector retirement
 
+Selection now checks original activity and profile authority around work and completed results. Coalesced Stop or replacement invalidates trials; native preflight cleanup still blocks reuse.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Automatic selection observes the original machine publication through T1043's
 shared read-only adapter. Current attachment leases are captured per trial;
 original generation notices arm before inspection, including same-identity route
@@ -38,3 +46,5 @@ under T1019; these source scores are not native certification. Seven architectur
 checks pass. T1044 separately restores the normal production import and retains
 its production compile regression. No downloads, installs, push or live device
 or power transitions occurred.
+
+</details>

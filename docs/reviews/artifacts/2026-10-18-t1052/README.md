@@ -1,5 +1,13 @@
 # T1052: explicit idle retention and test-only thread observation
 
+Idle retention fields and test-only observation are now explicit without changing runtime cleanup. Existing held-owner regressions and fresh scoped counters remain.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The production compilation retained under T1049 reports two warnings: the idle
 Handle's deliberately retained `lease` field is never read in production, and
 Worker's `is_finished` is called only by tests. The field is now `_lease`, with
@@ -37,3 +45,5 @@ These source scores are not native SonarQube certification; T1019 remains open.
 under `/tmp/blent-t1052-evidence`. No downloads, installation, uploads, pushes,
 live display activity or physical device tests occurred. The scoped hosted
 checks do not establish unrestricted native safety or new platform support.
+
+</details>

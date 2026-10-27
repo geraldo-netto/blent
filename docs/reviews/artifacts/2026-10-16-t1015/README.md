@@ -1,5 +1,13 @@
 # T1015: guarded source-to-display runtime
 
+Guarded display runtime waits for original cleanup before resume and retains a healthy virtual monitor during pause. Scoped CLI/native-worker tests passed; physical power acceptance and broader SDK prerequisites remain separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The Linux session adapter binds the original machine/viewer display-work view
 and original attachment source to each primary/extra capture manager. Managed
 helpers start inactive. The workflow validates original activity/profile and
@@ -60,3 +68,5 @@ Final native results: CLI 808 library and 530 daemon tests pass, with three/four
 existing ignores. SDK 95 capture and nine encoder-worker tests pass, no ignores.
 All 32 CLI and 30 SDK scoped production functions individually measure >=80%
 executable-line coverage; the minimum is exactly 80% in each configuration.
+
+</details>

@@ -1,5 +1,13 @@
 # T939 bounded private camera schema
 
+Bounded private camera schemas validate consent, profile and cleanup metadata without granting permission. Hosted Binder tests preserve display bytes; media remains outside Binder.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Typed camera consent, permission-result and actual consumer-retirement commands
 share the existing bounded private control transport. Offers contain only validated
 lease/profile/pending metadata; admitted routes additionally carry one locally
@@ -31,3 +39,5 @@ T940 implements retained worker/runtime dispatch, T941 main-process presentation
 and T936 joined private integration. Hardware capture/proof and capability
 composition remain T932; host adaptation T933 and physical acceptance T858.
 No downloads, installation, reloads or device changes occurred.
+
+</details>

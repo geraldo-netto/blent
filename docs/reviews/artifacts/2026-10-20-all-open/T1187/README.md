@@ -1,5 +1,13 @@
 # T1187: terminal decoder metadata/selection epochs
 
+Terminal decoder epochs deny metadata, selection and calibration without wrapping. Wider-integer and held-native-creator tests passed; metadata invalidation alone cannot release original work.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The settings contract reserves u64::MAX as terminal; admitted epochs satisfy
 0 <= epoch < MAX. Clearing always discards decoder/selection metadata and
 advances toward MAX without wrapping. New decoder_scope/admission queries own
@@ -63,3 +71,5 @@ native return and scheduler/reaper progress; held controls do not assume those
 conditions until explicitly released. Bounded counters/models do not establish
 unrestricted leak freedom or physical platform safety. No device/service,
 Windows or EVDI backend was changed.
+
+</details>

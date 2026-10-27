@@ -1,5 +1,8 @@
 # T954: audio benchmark source generation responsibilities
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Separate direct packet variant and pipeline track generation from project
 orchestration/build/provenance. Preserve every historical/current source branch,
 checksum expression, preference fallback and paired originals/source writes.

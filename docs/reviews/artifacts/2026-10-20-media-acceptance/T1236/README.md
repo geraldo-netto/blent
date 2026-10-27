@@ -1,5 +1,13 @@
 # T1236 — bounded native USB failure diagnostics
 
+USB failure logs expose bounded phase, identity and error-kind fields without sensitive payloads. Broker tests passed; improved diagnostics alone did not fix software reconnect.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The native server discarded link and link-event errors, leaving failed physical
 pairing/reconnect with no diagnostic. Its standalone binary also installed no
 tracing subscriber. Two permanent normal-suite regressions fail independently
@@ -41,3 +49,5 @@ leak freedom. Unknown obligations remain funded.
 T1237 separately tracks the real Android invalid approval-ready marker observed
 after software reconnect. A physical USB cycle permits fresh authentication and
 camera/audio delivery; that does not establish the software reconnect fix.
+
+</details>

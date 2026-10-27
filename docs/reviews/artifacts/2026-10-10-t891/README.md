@@ -1,5 +1,8 @@
 # T891 USB fault-fixture isolation
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The T887 native request-failure test left its injected exception in shared shadow
 state. Later production-entry tests failed with that old exception on both Android
 API models. A permanent regression directly invokes the native failure case and

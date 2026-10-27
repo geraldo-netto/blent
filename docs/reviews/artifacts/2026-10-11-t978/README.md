@@ -1,5 +1,13 @@
 # T978: joined Android leased USB speaker playback
 
+Android leased speaker playback joins private services, consent and original cleanup ownership, enabling the speaker capability. Synthetic device and Binder fixtures do not establish physical sound or real process separation.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Production tablet composition enables the explicit original audio authority and
 advertises display/camera/speakers (11); microphone remains unavailable. Existing
 T985 consent and consumer observations select exact speaker targets through
@@ -44,3 +52,5 @@ production methods meet individual native executable-line thresholds, with no
 unmeasured methods. Changed authored Kotlin complexity: 345 functions, maximum 5.
 Matching pre-build inventory, full native XML/exec, per-method and constructor
 counters, source fingerprints and logs retained.
+
+</details>

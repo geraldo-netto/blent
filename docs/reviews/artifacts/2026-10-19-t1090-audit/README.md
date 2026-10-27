@@ -1,5 +1,13 @@
 # T1090: legacy ADB mapping retirement prerequisite
 
+A fake-ADB audit showed that listing then removing a mapping cannot prevent another client's intervening replacement. This was prerequisite evidence, not a production fix; the later exclusive-endpoint ownership decision and T1090 implementation supersede its blocked status.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 No production fix or native device validation is claimed. The current
 `host/src/camera/bridge.rs::Bridge::close` reads `reverse --list`, checks the
 remote/local pair, then executes a separate `reverse --remove REMOTE`. Audio
@@ -32,3 +40,5 @@ The fake has one mapping, one removal receipt and two synchronously waited child
 commands. Temporary executable/state ownership ends after both children exit;
 there are no retained callbacks or native handles. Script functions are absent;
 no per-function coverage or native SonarQube evidence is claimed for this probe.
+
+</details>

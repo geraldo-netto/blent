@@ -1,5 +1,8 @@
 # T695 cadence evidence
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Fresh Linux counters pass all 37 functions in common/src/idle and
 host/src/capture/idle individually at >=80%. Sixteen shared policy/control and
 nine Linux adapter tests pass. Ordinary-user native Windows passes all 149

@@ -1,5 +1,13 @@
 # T1078: SDK-correct null-binding fixture
 
+A worker fixture called an API 28 callback on API 27, causing a delayed NoSuchMethodError. SDK-appropriate callbacks fixed the hosted failure; the complete 2,234-test collection then passed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The clean T1011 full suite passed 2,231 cases but its next pairing UI case reported
 an uncaught coroutine exception. The retained suppressed stack identifies the
 original producer: ConnectionWorkerContext invoked ServiceConnection.onNullBinding
@@ -21,3 +29,5 @@ native SonarQube remains T1019. No production function changed and no cleanup,
 timeout, assertion or exception filter was weakened. Fake callback state is
 bounded to the invocation; original native worker fences remain exercised by the
 unchanged suite. Physical API27/28 qualification remains T863.
+
+</details>

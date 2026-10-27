@@ -1,5 +1,13 @@
 # T1033: calibration permits follow original native retirement
 
+The single calibration permit now stays owned until every original creator and native cleanup completes. Parent cancellation cannot admit another probe early, and cached profiles still bypass measurement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The global single-calibration permit now belongs to a retained calibration
 owner. Each owner uses a local original creator/native observation group while
 forwarding every same completion to the enclosing session. Scope clones retain
@@ -54,3 +62,5 @@ No download, install, transfer, push or live device/display change occurred.
 Native Windows assignment-failure reporting/qualification remains T737; this
 Linux calibration result does not qualify that path. Idle-worker retirement is
 next under T1029, followed by activity source and policy composition T1027/T1015.
+
+</details>

@@ -1,5 +1,8 @@
 # T896 — authenticated presentation follows completed setup
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The Android setup owner now publishes AUTHENTICATED exactly once, after TLS peer
 proof, durable trust publication, window validation and retained I/O installation.
 Native deadlines remain bounded during proof, storage and negotiation. A failed

@@ -1,5 +1,13 @@
 # T1184: physical off/wake acceptance
 
+One approved physical off/wake cycle passed on the original Cinnamon/AMDGPU target after the pause-completion fix. Desktop responsiveness and tablet updates recovered; the original incident's initiating request and binary identity remain unknown.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 **Resolved on 2026-10-20.** The independently reproduced pause/flip completion
 failure was repaired under T1185. The repaired helper with T1186 diagnostics now
 passes an owner-approved display-off/wake check on the original physical
@@ -100,3 +108,5 @@ explicit negative findings, observed native child retirement and owner response.
 `service.log.gz`, `kernel.log.gz`, `user-session.log.gz` and the compressed power,
 X11/compositor query outputs retain the underlying bounded evidence. No executable
 live-power test runner is installed or presented as a qualified reusable tool.
+
+</details>

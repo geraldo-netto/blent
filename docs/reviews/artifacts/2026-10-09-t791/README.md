@@ -1,5 +1,13 @@
 # T791: coherent cursor-image cache
 
+A coherent cursor-image cache avoids repeated image payloads while preserving ordered invalidation. Stable shapes improved locally, but churn costs rose and X round trips remain.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The optional GPU helper now fetches cursor pixels on invalidation instead of
 every frame. Both cadence modes subscribe to shape notifications. Known changes
 refresh directly; otherwise a synchronous pointer reply orders earlier events
@@ -39,3 +47,5 @@ commit. Include `scripts/benchmarks` and cached SDK headers; link `cursor.c`,
 `events.c`, `cadence.c`, `options.c`, X11, Xfixes, Xrender and Xdamage. Run
 `BLENT_C_REVIEW_ISOLATED=1 xvfb-run -a -s '-screen 0 256x256x24' bench SIZE CHURN`
 for sizes 16/32/64/128 and churn 0/1. No live desktop or downloads are used.
+
+</details>

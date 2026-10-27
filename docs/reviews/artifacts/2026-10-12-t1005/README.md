@@ -1,5 +1,13 @@
 # T1005: joined fixture recipient snapshot race
 
+The Binder fixture now iterates a coherent recipient snapshot instead of racing separate size/get calls. Exact original callbacks and unlink semantics remain tested.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The native joined fixture uses CopyOnWriteArrayList for concurrent Binder recipient
 link/unlink. Kotlin toList optimizes a one-element list using separate size/get
 calls; unlink between those calls throws ArrayIndexOutOfBoundsException. T1004
@@ -24,3 +32,5 @@ stress/diagnostic edits and the pre-existing unrelated TLS fixture unstaged.
 
 No downloads, installations, live USB/ADB, services or tablet changes. Tests use
 cached Robolectric with controlled native devices and simulated Binder death.
+
+</details>

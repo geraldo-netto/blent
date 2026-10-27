@@ -1,5 +1,13 @@
 # T784 — configuration write coalescing
 
+Configuration packets reuse vectored header/payload writes with byte-exact partial-write tests. Fewer writes improved the local configuration-packet trial, not every video frame.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Configuration packets now reuse the frame writer's vectored header/payload loop.
 No allocation, payload copy, new queue, batching delay or wire change. Frame
 packets retain their existing header and sequence representation. Zero writes
@@ -37,3 +45,5 @@ cargo test --offline -p blent --lib stream::
 cargo test --offline -p blent --release --lib t784_tcp -- --ignored --nocapture
 CARGO_LLVM_COV_TARGET_DIR=/fresh/target cargo llvm-cov --offline -p blent --lib --lcov --output-path coverage.lcov -- stream::
 ```
+
+</details>

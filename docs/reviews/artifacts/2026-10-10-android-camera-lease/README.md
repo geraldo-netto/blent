@@ -1,5 +1,13 @@
 # T805: release encoded storage before decoder-input ACK
 
+The camera sender releases encoded storage after transport flush, before waiting for the acknowledgement. Delayed-ACK regressions verify shorter lease holding without adding packet overlap or changing ACK-limited throughput.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Same permanent delayed-ACK fixture, Robolectric adapters, real production
 CameraCapture/CameraLink/CameraWire. Baseline source from b1009d0; candidate releases
 a single-owner buffer lease immediately after full transport flush. Source ranges
@@ -28,3 +36,5 @@ Missing-ACK timeout and socket Stop retire the connection after release. Existin
 freshness/keyframe, bitrate, startup and cancellation tests remain. Callback runs
 after flush even when the subsequent ACK fails; finally handles earlier failures
 and empty/dropped packets. This preserves one packet in flight and bounded staging.
+
+</details>

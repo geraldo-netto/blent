@@ -1,5 +1,8 @@
 # T897 — saved-computer management milestone
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Android now lists saved computers and conditionally forgets an explicitly
 confirmed fingerprint while disconnected. Complete list/empty/corrupt states,
 canonical peer/snapshot admission, original store ownership and private-process

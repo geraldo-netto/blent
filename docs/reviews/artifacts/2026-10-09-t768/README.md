@@ -1,5 +1,8 @@
 # T768 implementation evidence
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The permanent regression checks that distant rectangles do not overwrite the
 unchanged gap, while fragmented updates use a conservative contiguous span.
 `t768-red.log.gz` records the original failure; `t768-fast-green.log.gz` records

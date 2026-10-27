@@ -1,5 +1,13 @@
 # T1145 — owned output worker
 
+One admitted worker owns camera output configuration and writes until actual return and join. Cancellation and runtime-loss fixtures retain blocked files and frames; this adapter checkpoint preceded full pipeline integration.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `camera::output_worker::start` admits two original observations, then starts one
 owned blocking worker and one async cancellation/join controller. Only that worker
 clones the original lease, configures the same file and writes full frames through
@@ -58,3 +66,5 @@ live-device/service change or push occurred.
 cargo test --offline --locked -p blent --lib camera::output
 cargo clippy --offline --locked -p blent --lib --features accessory-transport --no-deps -- -D warnings
 ```
+
+</details>

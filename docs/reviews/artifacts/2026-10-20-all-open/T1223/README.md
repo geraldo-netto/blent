@@ -1,5 +1,8 @@
 # T1223: complete manual USB runtime guidance
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 The permanent unknown-family control fails before repair because manual guidance
 omits libusb-1.0. The same test now passes, along with all10 current USB packaging
 cases. Manual guidance names the native runtime without making package changes.

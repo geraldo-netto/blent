@@ -1,5 +1,13 @@
 # T942 separate resource retirement proof
 
+Resource lanes publish execution end separately from successful retirement or proof that work never started. Observer exceptions cannot skip cleanup; fatal Error handling was addressed separately.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ResourceLane preserves its existing execution-ended callback and separately
 publishes actual successful retirement after the run and job body finish. An
 unopened request publishes NOT_STARTED when superseded, stopped, rejected by an
@@ -34,3 +42,5 @@ Native counters, hashes, inventory and red/green evidence are retained. Scope is
 ResourceLane, not whole-project coverage. No native hardware or USB acceptance,
 downloads, installation or device changes. Camera capabilities remain disabled;
 T947/T943/T944/T932 supply remaining composition and T858 physical acceptance.
+
+</details>

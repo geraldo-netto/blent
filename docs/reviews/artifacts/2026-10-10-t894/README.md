@@ -1,5 +1,13 @@
 # T894 — production host USB pairing controls
 
+Host pairing controls show exact command outcomes, current fingerprints and pending native cleanup. Closing discovery leaves independent connections running; Linux UI tests do not qualify Windows or physical media.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The USB connection tab lazily composes the portable Client port with the Linux
 presentation Factory. Widgets render complete snapshots, matching Computer and
 Tablet fingerprints, explicit device Connect, approve/deny/remember, Disconnect,
@@ -39,3 +47,5 @@ No threshold or test was weakened. Native Windows validation remains unavailable
 This implements pairing controls, not USB display/audio/camera. Joined production
 Android/host physical acceptance remains T855; media integration T857–T860. No live
 USB mode change, installation or download occurred during this item.
+
+</details>

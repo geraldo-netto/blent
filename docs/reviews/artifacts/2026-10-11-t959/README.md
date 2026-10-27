@@ -1,5 +1,8 @@
 # T959: permanent worker probe contract compilation
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The exact retained worker fixture is now part of normal Android test compilation,
 never production APK sources. Original caller fails that permanent compile gate:
 String is not DisplayRoutes. Use the explicit ADB route adapter, retaining fixture

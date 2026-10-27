@@ -1,5 +1,13 @@
 # T1051: renewable USB activity composition
 
+USB activity composition retains selected capacity and geometry during pause, renewing only after original broker and native settlement. Coalesced observations cannot reopen stale work.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The original selected USB assignment now joins a read-only machine observation,
 renewable display registration and the exact original runtime quiescence owner.
 Its initial handoff closes native admission. Pending/failed/stopped/lost sources,
@@ -47,3 +55,5 @@ No download, installation, upload, push, live lock/suspend or tablet interruptio
 occurred. Joined USB/host acceptance remains T1016/T1009, auxiliary lifecycle T1010,
 Android lifecycle T1011 and physical acceptance T914. Existing native-audio/SDK
 prerequisites and feature-specific warnings remain separately tracked.
+
+</details>

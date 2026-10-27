@@ -1,5 +1,8 @@
 # T1163 — API eligibility is not provider qualification
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Retain supported() as the explicit adapter boundary: SDK>=27 is eligible;
 SDK<27 is rejected. The application minSDK27 makes rejection unreachable through
 normal installation, which explains ObsoleteSdkInt. The check also guards direct

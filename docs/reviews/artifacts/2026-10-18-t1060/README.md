@@ -1,5 +1,13 @@
 # T1060: original Android foreground/native power ownership
 
+Android's Application owns power work until the original native handles retire, even after Activity loss or uncertain IPC. Hosted SDK 27/34 tests passed; physical wake behavior and system-server cleanup timing were not established.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The manifest Application strongly owns one power runtime for its process lifetime.
 An Activity owns its opaque producer and policy observer; producer loss withdraws
 that original claim without dropping an outstanding native handoff or quarantined
@@ -62,3 +70,5 @@ unknown obligations keep their original Application/process sponsor. Physical
 host/tablet evidence remains T914. Current Activity still publishes Waiting until
 T1067/T1061 source/window integration; joined acceptance remains T1058/T1011.
 No network transfer, installation, push or live device interruption occurred.
+
+</details>

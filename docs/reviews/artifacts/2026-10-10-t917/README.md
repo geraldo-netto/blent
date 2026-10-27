@@ -1,5 +1,13 @@
 # T917 shared display capacity
 
+Shared display capacity prefers free slots and retains retiring work until exact cleanup. The recorded automatic USB-preemption policy is distinct from the later cooperative manual Start behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Owner chose automatic replacement of an ADB display by explicitly selected USB.
 The portable capacity owner reserves free slots first, otherwise selects one ADB
 victim, preferring an extra. It never equates an ADB serial with a certificate.
@@ -39,3 +47,5 @@ PYTHONPATH=/tmp/blent-python-offline:scripts/coverage python3 scripts/coverage/r
 ```
 
 No downloads, installs, device mode changes, reloads or dependency patches.
+
+</details>

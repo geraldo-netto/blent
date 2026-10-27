@@ -1,5 +1,13 @@
 # T961: original camera Activity/SDK ownership
 
+Original Activity and SDK request identities prevent an old stop or result from replacing current camera ownership. Hosted regressions do not establish physical permission-provider acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Permanent native Activity regression reproduces an older stop shutting down the
 replacement's process camera binding. Portable regressions reproduce replacing
 an outstanding SDK request and consuming a newly launched request during attach.
@@ -21,3 +29,5 @@ SDK/provider or camera acceptance is claimed; device testing remains postponed.
 USB offer/process observation remains T944, actual camera composition T932 and
 physical camera acceptance T858. The implemented capability mask remains display
 only. No downloads, install/reload, EVDI modifications or live device disruption.
+
+</details>

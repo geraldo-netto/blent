@@ -1,5 +1,13 @@
 # T979: host audio transport controls and full boundary validation
 
+Host audio controls validate complete options and transport availability before native creation. Saving remains passive; the recorded speaker-only USB capability preceded microphone integration.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The portable Audio panel depends on AudioController and independent media target
 contracts. Native factory and direction capabilities are explicit boundary inputs.
 Linux exposes ADB for microphone/speakers and direct USB for speakers; USB microphone
@@ -31,3 +39,5 @@ owner's postponed live-test policy; microphone composition/acceptance remains
 T859 and SDK-wide native-audio qualification T835. Interface/fixture readiness is
 not acoustic or device support qualification. Attestation includes the pre-existing
 uncommitted TLS fixture; unrelated edits remain unstaged and are not in this commit.
+
+</details>

@@ -1,5 +1,13 @@
 # T890 configured connection shutdown budgets
 
+Android shutdown budgets now account for configured native retirement before requesting process exit. Ended can accelerate EXIT but cannot substitute for Binder death or outstanding-call completion.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The main-process client previously sent EXIT after a fixed 500 ms, even when the
 worker had a longer configured native retirement budget. Its fixed 5000 ms outer
 wait could also expire before a configured native deadline. A live-Binder regression
@@ -30,3 +38,5 @@ Reproduce offline with cached dependencies:
 
 These are framework-model tests, not physical process-kill acceptance. T855/T846
 retain native validation. No installation, USB mode or network changes occurred.
+
+</details>

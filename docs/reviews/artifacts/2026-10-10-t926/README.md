@@ -1,5 +1,8 @@
 # T926 Windows GUI fixture compilation
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The normal Windows test target failed to compile because its existing App fixture
 omitted the T894 connection panel. Initialize that panel using its established
 Default implementation. The existing t495 preview rendering regressions remain

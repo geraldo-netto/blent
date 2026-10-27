@@ -1,5 +1,13 @@
 # T923: bounded Linux display status
 
+Linux display status now bounds bytes and unique assignment records before decoding or publication. Invalid replacements and publication failures preserve prior ownership; status grants no authority.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Linux snapshot reads, including destructor ownership checks, consume at most
 65,537 bytes and reject anything exceeding 65,536 before JSON decoding. The
 portable assignment-batch boundary accepts at most four individually valid
@@ -49,3 +57,5 @@ cargo fmt --all -- --check
 ```
 
 No live monitor, tablet, suspend, service or boot configuration was changed.
+
+</details>

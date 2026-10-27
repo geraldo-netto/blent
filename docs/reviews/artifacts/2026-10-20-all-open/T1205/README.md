@@ -1,5 +1,13 @@
 # T1205: exact current Android broadcast acknowledgement
 
+Camera/audio invitations require exactly one valid Android completion summary with result 1. Native-adapter and malformed-response tests reject result 10, duplicates and invalid UTF-8.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Both permanent native invitation regressions fail before repair: camera and audio
 accept Broadcast completed: result=10. The same tests pass after replacing both
 substring searches with one focused ADB response parser. It requires valid UTF-8,
@@ -39,3 +47,5 @@ commands consume the complete bounded stdin and exit before their scoped tempora
 files are reused; native owners retain completion/reaping. Rejection grants no
 new authority, callback, native handle or reuse permission. Hosted tests do not
 establish native tablet acceptance or unrestricted lifecycle safety.
+
+</details>

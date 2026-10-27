@@ -1,5 +1,13 @@
 # T1087: compose private batch code only with its native caller
 
+Portable builds exclude private batch code whose only caller is the Linux runtime. Offline compiler checks passed; public contracts and function bodies stayed unchanged.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The private tablets::batch module is used only by the Linux platform runtime.
 Its module inclusion now matches that caller's target/feature condition. Portable
 no-default-features builds keep their current public contracts without compiling
@@ -21,3 +29,5 @@ or artificial runtime test was added for the module declaration. The three test
 methods have source estimates 1 each (repository Python AST; version recorded).
 Native SonarQube remains unavailable under T1019; no downloads were attempted.
 This Linux evidence does not establish native Windows validation.
+
+</details>

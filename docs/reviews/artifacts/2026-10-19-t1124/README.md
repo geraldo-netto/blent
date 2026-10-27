@@ -1,5 +1,13 @@
 # T1124 original retirement observations
 
+A bounded observation table reserves metadata before native creation and retains exact completion proofs. Tests and 32,768 histories passed; observing completion neither creates it nor owns the native resource.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `blent_config::retirement::observations` is an independent bounded observation
 contract. Reserve before native effects, then synchronously bind the resource's
 exact original Completion before returning/yielding. Failed creation drops an
@@ -31,3 +39,5 @@ The pinned repository tree-sitter audit (0.25.2 / Rust grammar 0.24.2) measures
 all 16 new production/test functions at <=6. This is not native SonarQube evidence
 (T1019). No Windows/EVDI/ADB integration or physical-device validation is claimed;
 T1125/T1126 and parent T1089 remain separate work.
+
+</details>

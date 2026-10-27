@@ -1,5 +1,13 @@
 # T720 validation
 
+Private PipeWire and hosted Android tests validated clocked audio delivery, drift handling and cleanup. Physical speech, duplex, route and acoustic acceptance remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The permanent tests belong to the normal Rust and Android suites. Native
 integration uses a private PipeWire server, fake authenticated peers and
 synthetic constant PCM; it does not touch desktop defaults or physical audio.
@@ -47,3 +55,5 @@ After merging the separately committed GPU selector, `cargo check --locked
 --workspace --all-features` passes. All scoped audio source and test bytes match
 the tested worktree. The merged complexity scan and integration build logs are
 also retained; only the TODO movement required merge conflict resolution.
+
+</details>

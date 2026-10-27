@@ -1,5 +1,13 @@
 # T1029: idle-controller retirement survives reader completion
 
+Idle-controller completion now survives reader-result consumption and canceled waits. Replacement requires exact task and dependent cleanup; synchronous file responsiveness remained separate work.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Idle controllers now use original owned-task admission. Their same completion
 registers with the enclosing scope before handle exposure, and the task retains
 its dependent lease until actual join and isolated cleanup complete. Existing
@@ -55,3 +63,5 @@ trees. Idle file effects remain synchronous under T1034: a held `LEASE_FILES`
 mutex can still occupy a control worker. That independent responsiveness fix is
 next; activity propagation/composition remain T1027/T1015. No download, install,
 transfer, push, live device/display change or application update occurred.
+
+</details>

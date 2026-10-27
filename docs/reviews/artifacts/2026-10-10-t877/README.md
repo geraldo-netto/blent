@@ -1,5 +1,8 @@
 # T877 local broker control contract
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Add typed control/report operations to authenticated local packet IPC. Device
 selection names an inventory revision and opaque target; approval names an exact
 connection and pairing ticket. No native path, PID, USB handle or arbitrary remote

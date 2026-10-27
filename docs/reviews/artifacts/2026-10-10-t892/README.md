@@ -1,5 +1,13 @@
 # T892 — portable pairing presentation and lifecycle
 
+Pairing presentation binds actions to exact attempt and peer objects. Failed retirement keeps the old owner and a visible diagnostic rather than marking a queued replacement active.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `ConnectionPresentation` owns immutable observable UI state without native, UI,
 storage or media dependencies. Each attempt uses a new object token; each
 presented peer is an exact-reference choice. Equal tickets from a replacement
@@ -27,3 +35,5 @@ functions and 48 raw executable JVM methods in these two production files meet
 80% individual line coverage; all 23 production complexity entries are at most 9.
 Production and permanent test source complexity was also checked. Native/paired
 acceptance remains T855; disconnected saved-computer maintenance remains T897.
+
+</details>

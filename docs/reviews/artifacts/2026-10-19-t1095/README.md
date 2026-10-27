@@ -1,5 +1,13 @@
 # T1095: local and runtime deadline aggregation
 
+Local endpoints, media groups and runtimes expose existing deadlines while preserving unknown providers and outstanding consumer cleanup. All 130 focused cases passed; these metadata getters alone changed neither timers nor resource authority.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The optional independent deadline capability now reaches local endpoint owners,
 producer/consumer frame clocks and pumps, native resource groups, shared consent-
 controlled media ownership, typed camera/audio/speaker facades, fixed local slots,
@@ -64,3 +72,5 @@ callbacks across changed production/tests, maximum repository Sonar-style estima
 Native SonarQube remains unavailable under T1019. No broader suite repeat is claimed.
 
 No network transfer, download, installation, restart, physical handling or push.
+
+</details>

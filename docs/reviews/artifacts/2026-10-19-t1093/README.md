@@ -1,5 +1,13 @@
 # T1093: original transport budgets as immutable snapshots
 
+Immutable deadline snapshots preserve both tighter known budgets and explicitly unknown providers. Focused transport tests passed; these initial projections did not yet change actor scheduling.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ConnectionDeadline and ConnectionDeadlineSource define an independent portable
 metadata contract. A snapshot reports the earliest known absolute elapsed-realtime
 budget and whether every contributing provider exposes its budgets. Missing
@@ -56,3 +64,5 @@ maximum repository Sonar-style source estimate 8. Native SonarQube remains
 unavailable under T1019; these estimates are not native SonarQube evidence.
 
 No network transfer, download, installation, restart, physical handling or push.
+
+</details>

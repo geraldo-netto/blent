@@ -1,5 +1,13 @@
 # T921 reject ambiguous certificate-to-link registration
 
+Registration now rejects ambiguous live links sharing one certificate before consuming endpoints. An unrelated certificate and the remaining original link still work after ambiguity clears.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Permanent regression establishes two native TLS links at distinct synthetic USB
 locations using the same certificate/private key. Before the fix, register returned
 success and sent its offer to the first link. It now rejects before consuming any
@@ -25,3 +33,5 @@ PYTHONPATH=/tmp/blent-python-offline:scripts/coverage python3 scripts/coverage/r
 ```
 
 No downloads, installs, device mode changes, reloads or physical tablet acceptance.
+
+</details>

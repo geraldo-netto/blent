@@ -1,5 +1,13 @@
 # T905 — bounded Android local-channel byte pump
 
+The Android local pump keeps exact channel loans through full write/flush and checks both active deadlines before transfer. Sibling failure isolation and loopback tests do not establish physical USB support.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ConnectionLocalPump binds exactly one resource lease and one of its media
 channels to the existing prompt ConnectionIo boundary. The serialized owner
 performs no socket operation or wait. One pending producer block and one exact
@@ -36,3 +44,5 @@ meet 80% individual line coverage. All 45 production/test functions have
 complexity at most 9. Native counters, hashes, red/green logs and test results
 are retained. The loopback test ran on the host JVM; Android device validation
 remains explicit in T906/T857. No downloads or live USB changes occurred.
+
+</details>

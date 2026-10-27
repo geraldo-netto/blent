@@ -1,5 +1,13 @@
 # T644: current diagnostics pass; historical cause evidence is missing
 
+Current private-Xvfb diagnostics passed, but they did not recover the missing cause of the historical runner failure. The old blocked status is historical; a successful rerun is not causal evidence.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The original ledger at61c7d497 and diagnostic README explicitly require the
 original runner's live-child evidence or an equivalent causal reproduction.
 The later c615d103 reopening identified installed local tools, which permits
@@ -26,3 +34,5 @@ It is not removed or presented as implemented. No network request, runner
 workflow, live desktop, EVDI or service action occurred. The tests use only
 owned private Xvfb children; existing cleanup terminates and waits on those
 original process objects before their descriptors/tempfiles are released.
+
+</details>

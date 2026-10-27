@@ -1,5 +1,13 @@
 # T856 portable peer and local route contracts
 
+Portable peer identities and local route contracts distinguish native connections from ADB adapters. Collision and stale-route tests passed; contracts alone do not establish working direct-USB media.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Host attachment ownership consumes explicit peer/profile metadata and portable
 link classification. ADB prefix parsing remains in its adapter and preserves old
 profile keys; authenticated native peers use distinct certificate identities.
@@ -35,3 +43,5 @@ and build/test logs are retained here; no full-project coverage claim is made.
 Production broker listeners and exclusive native/ADB route selection remain
 T853/T854/T857. Interface readiness does not establish ADB-free display or native
 Windows/older-Android support. No runtime install, restart or download occurred.
+
+</details>

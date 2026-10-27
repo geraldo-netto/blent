@@ -1,5 +1,13 @@
 # T885 actual media-worker retirement
 
+Media-worker retirement now requires original Binder death and completion of outstanding local calls. Framework binding loss or Ended alone cannot release ownership; hosted tests do not prove physical process death.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Framework binding invalidation stops execution but cannot prove process death.
 The original Binder must report death or become non-alive. Failed retirement
 retains its binding and native START/STOP/EXIT jobs; blocked IPC cannot outlive
@@ -26,3 +34,5 @@ Robolectric uses synthetic Binder liveness/death and blocked native calls. This
 establishes adapter ownership, not real camera/codec or physical USB acceptance.
 Production camera remains disabled pending T942/T943/T944/T932; joined hardware
 acceptance stays T858. No downloads, installation or live device changes.
+
+</details>

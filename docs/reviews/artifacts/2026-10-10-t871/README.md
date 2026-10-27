@@ -1,5 +1,13 @@
 # T871 local registration and endpoint ownership
 
+Local registration transfers exact listener capabilities and retains them until explicit retirement. Native descriptor regressions reject duplicate ownership and unsafe listeners; reservation alone grants no remote media access.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Implemented portable bounded BLRG registration/replies and the Linux same-user
 SOCK_SEQPACKET adapter. Native listener capabilities travel through SCM_RIGHTS;
 ports come from exclusive IPv4 localhost TCP listeners. RouteClaims retain the
@@ -34,3 +42,5 @@ Native SDK tests used the installed Freedesktop SDK with network unshared and
 local Cargo caches. No downloads, installations, service restarts or live USB mode
 changes occurred. Display/touch remains the next user-visible milestone, followed
 by webcam; this commit does not establish production ADB-free media support.
+
+</details>

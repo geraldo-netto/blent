@@ -1,5 +1,13 @@
 # T1144 — whole-frame output capability
 
+The output writer sends one complete frame per native write and becomes unusable after uncertain native failure. Byte-boundary, ownership and isolated-driver tests passed; full camera integration was still separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `camera::output_writer::Writer` consumes one T1143 `ConfiguredOutput`. It validates
 exact YUV420 frame length, attempts one synchronous native write and rejects all
 later writes after any native error, short/zero write or unwinding native port.
@@ -60,3 +68,5 @@ Use T1143's documented offline guest runner with suite
 `camera::output_device::tests::virtual_driver::t1144_virtual_frame_transfer_fixture`
 for the frame test and its default suite for independent metadata. Wait for the
 foreground VM's actual exit before running `check`; a QEMU exit alone is not a pass.
+
+</details>

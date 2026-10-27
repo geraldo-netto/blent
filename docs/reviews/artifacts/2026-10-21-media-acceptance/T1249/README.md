@@ -1,5 +1,13 @@
 # T1249 cached-SDK physical audio launch environment
 
+Physical audio setup initially used incompatible plugin paths; the corrected cached-SDK environment produced READY and working media. This repaired the invocation, not production behavior; failed runs remain distinct from later acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The initial physical acceptance invocation omitted `SPA_PLUGIN_DIR` and
 `PIPEWIRE_MODULE_DIR`. The existing offline SDK runner sets both explicitly in
 `scripts/ci/test-host-offline.py`; the source-built audio executable already has
@@ -37,3 +45,5 @@ in the normal suite. No project behavior is modified by this invocation repair;
 no artificial failing source regression is claimed. At this setup checkpoint,
 T1238/T858/T859/T860 still awaited debugging-off hot-reconnect acceptance.
 The later [T1238 comparison](../T1238/README.md) supplies that independent evidence.
+
+</details>

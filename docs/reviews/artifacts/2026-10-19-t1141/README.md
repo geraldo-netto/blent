@@ -1,5 +1,13 @@
 # T1141 original authority-job rejection
 
+A full or closed authority queue returns the exact original job in an owned box. Existing lifecycle tests and scoped Clippy passed; native thread retirement remains independently required.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Worker::submit returns Box<AuthorityJob> on a full or closed queue. Successful
 jobs still enter the same one-job channel without an extra allocation. Each
 rejection moves the exact original Pairing capability into one caller-owned
@@ -27,3 +35,5 @@ counters or new exclusions. Source audit maximum7; Cargo formatting passes.
 accessory-transport -- -D warnings` passes. The broader dependency check still
 stops at excluded EVDI T1131; no whole-workspace lint pass is claimed.
 Raw evidence: `/backups/disk2/blent-work/2026-10-19-open-items/t1141/native`.
+
+</details>

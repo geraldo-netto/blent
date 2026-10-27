@@ -1,5 +1,13 @@
 # T949 portable camera consent and SDK prompt lifetimes
 
+Portable camera consent and SDK prompt lifetimes reject stale, forged and overlapping results. Fresh permission and original foreground/background intent govern effects; native Activity integration remains separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Independent contracts represent explicit local camera enable, foreground presence,
 fresh OS permission and separate background consent. CameraAccessOffer has no
 credential, transport DTO or OS type; its opaque original-owner identity retains
@@ -51,3 +59,5 @@ and enables the USB camera capability; T858/T863 retain actual hardware/accessor
 and native API 27/28 acceptance. USB capability mask remains display-only. No
 resource downloads, installation/reload, live host/tablet changes or external
 dependency changes.
+
+</details>

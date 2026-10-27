@@ -1,3 +1,13 @@
+# T700 retained evidence and boot recipe
+
+Guest boot trials reproduced an Xorg failure and verified GPU-before-EVDI ordering. The recipe belongs in a disposable guest; it is not a host installer.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 <!-- Copyright (c) 2026 Geraldo Netto -->
 
 # T700 retained evidence and boot recipe
@@ -77,3 +87,5 @@ private-key assertion and Xorg exit; green must show glamor at initial startup,
 survive, answer the second query and report `softdep evdi pre: virtio_gpu`.
 The early old-package green init checked survival but did not yet include the
 second query or real-sysfs helper check; the final current-package run has both.
+
+</details>

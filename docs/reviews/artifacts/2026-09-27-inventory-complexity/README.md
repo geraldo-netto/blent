@@ -1,5 +1,13 @@
 # T651 inventory validation complexity
 
+Splitting inventory record validation restored the complexity limit without changing accepted inputs. Fresh Linux and Windows counters replaced only the changed-source records.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The T650 NUL guard raised `adb_inventory::parse` to cyclomatic complexity 10,
 above the repository maximum 9. The whole-project gate reproduced the violation
 before this refactor (`complexity-red.log`). Record validation now has a separate
@@ -25,3 +33,5 @@ manifest and native fingerprints reproduce `combined-rust.json.gz` through
 `scripts/coverage/report.py check`, with `common/src/`, `host/src/` and `gui/src/`
 scopes and explicit Linux/Windows platforms. The baselines derive from the
 [retained T650 evidence](../2026-09-27-inventory-validation/).
+
+</details>

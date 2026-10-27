@@ -1,5 +1,13 @@
 # T1140 broker registration boundary
 
+Broker registration composes the existing portable request while keeping Linux descriptors at the adapter boundary. Native server tests passed without changing admission or rollback behavior.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Reuse the existing portable registration_client::Request for the owned peer,
 resource, credential and profile. Client/request correlation and owned Linux
 descriptors remain explicit separate inputs. No public contract depends on the
@@ -25,3 +33,5 @@ Every production function in routes.rs and commands.rs passes individually:
 16/16 >=80% executable lines, no missing counters or new exclusions.
 Raw evidence: `/backups/disk2/blent-work/2026-10-19-open-items/t1140/native`.
 Pinned source audit checks20 production/test functions, maximum6.
+
+</details>

@@ -1,5 +1,13 @@
 # T719 speaker evidence
 
+Speaker integration passed automated tests and selected-tablet native playback/cleanup observations. Playback counters do not establish audible quality or acoustic delay; unrelated camera/headset findings remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ## Automated acceptance
 
 - Full Rust workspace libraries/binaries passed: 948 tests, five pre-existing
@@ -69,3 +77,5 @@ or Blent audio node, zero errors in the short graph sample and no recent user
 audio-service journal entries. Cause and any Blent relationship remain unproven.
 No headset setting was changed. Both findings remain in TODO.md; work stopped
 after the speaker implementation as requested.
+
+</details>

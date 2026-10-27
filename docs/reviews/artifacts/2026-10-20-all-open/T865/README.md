@@ -1,5 +1,13 @@
 # T865: joined software exhaustion acceptance
 
+Joined exhaustion tests cover independent Rust and Android ownership domains without counter wrap. Current software counters passed; numeric cutoff never substitutes for native cleanup or physical acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 All implementation children T1175–T1183, T1187 and T1190 are committed. Current
 original suites run together, preserving each independent ownership domain:
 
@@ -34,3 +42,5 @@ actual native completion and scheduler/reaper progress. Bounded finite oracles
 and hosted interleaving controls do not prove unrestricted native safety. No
 physical display/tablet/service, EVDI/Windows implementation, transfer or upload.
 T855/T857/T858 and other explicitly deferred native acceptance remain separate.
+
+</details>

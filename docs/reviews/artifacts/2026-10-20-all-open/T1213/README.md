@@ -1,5 +1,8 @@
 # T1213: explicit native USB build compiler and freshness
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 Permanent isolated controls fail against the original Makefile for an absent
 helper with the root-selected gcc, and for newer stale outputs with default and
 explicit compilers. Recursive Make now receives the selected compiler explicitly;

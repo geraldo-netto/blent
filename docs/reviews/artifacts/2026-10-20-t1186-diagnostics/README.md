@@ -1,5 +1,13 @@
 # T1186: trace retained-display pause boundaries
 
+Diagnostics record original pause requests, acknowledgements and sampled native grab boundaries. Native and physical checks passed; the logs aid future attribution without recovering missing history or proving kernel retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T1184 incident logs show DPMS changes and stalled display commits, but omit the
 original capture-control state and native grab progress. This change supplies
 future evidence; it does not reconstruct missing historical facts or assert a
@@ -114,3 +122,5 @@ responsiveness and continuing tablet render ACK checks; the owner confirms
 “Both working normally”. [Retained evidence](../2026-10-20-t1184-acceptance/README.md)
 closes T1184's native acceptance, while preserving historical attribution limits
 and the separate T914/T748/T749/T750 scopes.
+
+</details>

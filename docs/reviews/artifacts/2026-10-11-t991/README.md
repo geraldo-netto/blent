@@ -1,5 +1,13 @@
 # T991: shared original USB media registration and connection adapters
 
+Shared Linux media adapters validate exact bootstrap credentials before registration. Camera behavior and retirement remain covered; audio PCM integration is a separate step.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Portable `media_connection::Bridge<P>` shares exact invitation, original monitor,
 bounded close and retained Drop cleanup for typed camera/audio profiles. Native
 Linux discovery/process/descriptor setup is isolated in its boundary adapter;
@@ -37,3 +45,5 @@ whole-project or foreign-platform pass is claimed. No downloads or live trials.
 Build-input attestation describes the tested working tree, including the
 pre-existing uncommitted TLS fixture. Those unrelated edits remain unstaged;
 this commit neither changes nor includes them.
+
+</details>

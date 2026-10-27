@@ -1,5 +1,13 @@
 # T1214: settle the original FIFO fixture on native startup failure
 
+A FIFO fixture now retains and joins its original reader even when encoder startup fails. The unavailable-encoder regression passed; production encoder behavior and deadlines stayed unchanged.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The SDK base codec lacked libx264. Its actual reader exited before opening the
 FIFO, leaving the test writer permanently blocked in open(wait_for_partner).
 The retained diagnosis pins original process/thread/FIFO identities. Containment
@@ -29,3 +37,5 @@ Sonar-rule source model (cached tree-sitter0.25.2/ABI14 Rust grammar) measures a
 changed/new functions1–7; native Sonar measurement remains T1019. Test fixtures
 are exempt from production line-coverage thresholds; no test was removed or
 weakened. No live device/service work, downloads or uploads.
+
+</details>

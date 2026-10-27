@@ -1,5 +1,8 @@
 # T769 implementation evidence
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 `t769-red.log.gz` records the permanent regression failing on the original
 row-count scheduling. `t769-final.log.gz` records the same test passing after
 weighted scheduling. `coverage.json` covers every production capture function.

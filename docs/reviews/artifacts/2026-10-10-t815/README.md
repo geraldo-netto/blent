@@ -1,5 +1,13 @@
 # T815 bounded command output
 
+Command output now has bounded storage and collection work, including overflow during blocked input. Native Windows runtime evidence remained unavailable; scoped Linux tests do not imply whole-platform acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 No downloads, production reloads, physical-device operations or dependency-source
 changes. Five retained red logs cover unlimited output, overflow hidden behind
 blocked stdin, signalling after direct-child reap, synchronous held collection,
@@ -26,3 +34,5 @@ The cumulative report was generated with `cargo llvm-cov report --offline --lock
 -p blent-config -p blent --lcov`. Source hashes and function details are retained
 beside the compressed LCOV and logs. No throughput or end-to-end latency gain is
 claimed; the tested improvement is bounded output storage and control work.
+
+</details>

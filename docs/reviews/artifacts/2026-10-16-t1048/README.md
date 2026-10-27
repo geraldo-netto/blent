@@ -1,5 +1,13 @@
 # T1048: optional encoder fixture uses the owned receiver contract
 
+The optional encoder fixture now uses the owned asynchronous receiver contract. Native tests pass without restoring a removed production alias or weakening frame assertions.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T1041 migrated video receivers to an owner that couples actual subscription and
 read-only viewer membership. Its default CLI tests passed, but the optional native
 encoder fixture still called the removed `blocking_recv` method. The installed
@@ -21,3 +29,5 @@ and tree-sitter 0.25.2. Native SonarQube remains T1019; no new maintained produc
 function requires line counters. The T1046 transaction working tree is present
 for SDK build verification and is committed separately with its own evidence.
 No downloads, install, push or physical media/power transition occurred.
+
+</details>

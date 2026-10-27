@@ -1,5 +1,13 @@
 # T1094: original setup and accessory-admission budgets
 
+Setup and accessory admission expose their existing absolute budgets without advancing state. Focused fault and maximum-time boundary tests passed; expired budgets still do not release blocked native resources.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 ConnectionSetupOwner and AccessoryAdmissionOwner implement the independent
 ConnectionDeadlineSource capability. Each projection reads original budget/state
 under its existing owner lock, without advancing the clock or changing a budget.
@@ -54,3 +62,5 @@ repository Sonar-style estimate 7; native SonarQube remains unavailable under T1
 No broader suite repeat or physical acceptance is claimed.
 
 No network transfer, download, installation, restart, physical handling or push.
+
+</details>

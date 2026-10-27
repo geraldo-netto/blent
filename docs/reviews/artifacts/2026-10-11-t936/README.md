@@ -1,5 +1,13 @@
 # T936 joined private camera composition
 
+Joined private camera fixtures carry consent and exact completion through real hosted Binder and local TCP. Synthetic permission and capture consumers do not qualify hardware camera or debugging-off USB.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T937/T939/T940/T941 compose the portable camera owner, bounded schemas, actor,
 private IPC, main admission and presentation. The permanent joined fixture runs
 those production components through the actual Robolectric Android service/Binder
@@ -38,3 +46,5 @@ Production capabilities remain display-only. T932 must connect Activity/isolated
 camera capture, recheck actual permission/lifecycle and provide actual hardware
 worker completion before enablement; host adaptation is T933 and joined physical
 acceptance T858. No download, installation, reload or tablet trial occurred.
+
+</details>

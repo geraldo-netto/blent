@@ -1,5 +1,13 @@
 # T886 authenticated Android setup ownership
 
+Android authenticated setup separates authority work from its cleanup owner and observes stage deadlines independently of native progress. Canceled durable writes report facts without granting a live transport; physical provider acceptance is separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The portable setup contract isolates pairing/trust policy from the blocking
 socket/USB/storage boundary. One native authority worker performs discovery,
 readiness, stock mutual TLS, durable remember/revoke and authenticated receive
@@ -57,3 +65,5 @@ endpoint dispatch. Pairing presentation/physical acceptance remains T855;
 production media remains T857–T860. Loopback/Robolectric do not establish physical
 USB, native AndroidKeyStore or kernel Binder-kill acceptance. No downloads,
 installations, USB-mode changes or network changes occurred.
+
+</details>

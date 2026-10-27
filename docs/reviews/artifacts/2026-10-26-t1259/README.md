@@ -1,5 +1,8 @@
 # T1259: remove obsolete platform-linux feature
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Removed the compatibility-only Cargo feature and its current architecture prose.
 No current caller selects it. Both offline locked checks passed:
 

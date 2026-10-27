@@ -1,5 +1,13 @@
 # T1217: current package outputs and dependency setup
 
+Packaging and dependency setup use the current supported output formats and distro routes. Isolated package/install/release fixtures passed; no real package installation or publication occurred.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The package program builds AppImage, its corresponding source archive and the
 current Arch recipe archive. Release upload/checksum and version-metadata callers
 require that current set. Supported automatic dependency routes are Debian/Ubuntu
@@ -36,3 +44,5 @@ rejects every current upload failure. No new daemon, callback, background cleanu
 allocation protocol or compatibility path. No installation, live device/service,
 Windows/native capture backend change, container download or network transfer.
 Documentation/reference and metric retirement remain separate T1219/T1218 work.
+
+</details>

@@ -1,5 +1,13 @@
 # T1231: explicit180p export from native360p capture
 
+The 180p webcam profile captures supported 360p input and exports bounded 180p frames. Real FFmpeg tests and selected-tablet frame samples passed; consent, debugging-off and full lifecycle acceptance remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Actual tablet Camera2 metadata advertises640×360 but no320×180 PRIVATE surface.
 The existing native-size rejection was correct. The180p webcam profile now has an
 explicit360p capture projection and180p host export. USB uses that projection;
@@ -39,3 +47,5 @@ authority. Native errors, partial startup, cancellation, resource exhaustion and
 unknown exit retain existing cleanup sponsors and funded capacity. Native/model
 fixtures complement the physical sample; they do not prove unrestricted driver
 lifetime safety, all devices, frame continuity or internet bandwidth savings.
+
+</details>

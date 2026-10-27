@@ -1,5 +1,13 @@
 # T903 — exact host command outcomes
 
+Host commands now retain exact admitted IDs and outcomes across polling. Missing, canceled or failed replies remain unconfirmed instead of appearing successful.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Submission returns a lifetime-local, ordered ID only after bounded queue admission.
 A short submission mutex serializes concurrent producers; IDs stop at MAX_COUNTER
 and are not consumed by full/closed queue rejection. No wrap or replay occurs.
@@ -18,3 +26,5 @@ functions meet 80% individual executable-line coverage. All 56 scoped production
 and test functions have cyclomatic complexity at most 9. Native counters, source
 hashes, red/green logs and gate output are retained here. No live device test,
 installation or download occurred; GUI controls remain T894.
+
+</details>

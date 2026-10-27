@@ -1,5 +1,13 @@
 # T846 connection foundation evidence
 
+Encrypted accessory-only echo trials passed on the selected Android 16 device, with original native bridge retirement observed. Production trust, broker/media integration and other native Android versions were outside this foundation result.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Offline local validation, October 10, 2026. Source hashes identify the unfinished
 integration under review. This is not installed production USB support.
 
@@ -66,3 +74,5 @@ Rust/Android JVM TLS interoperability includes API 27 and 34 branches. Native
 Android TLS is qualified separately on Android 16 by attempts 6 and 7. API 27/28
 native qualification, production trust/UI, broker
 wiring and physical media acceptance remain open. No whole-project pass is implied.
+
+</details>

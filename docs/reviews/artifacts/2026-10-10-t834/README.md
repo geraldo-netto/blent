@@ -1,5 +1,13 @@
 # T834 cancellation-owned Wi-Fi attempts
 
+Canceled Wi-Fi attempts retain route and worker ownership through actual cleanup, preserving existing routes and newer configuration writes. Blent leases coordinate its own callers, not arbitrary external ADB clients.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A bounded native owner completes an acknowledged ADB connect and either commits
 its route or disconnects a newly created route when its caller disappears.
 Already-connected routes are preserved. The caller still owns its asynchronous
@@ -27,3 +35,5 @@ cross-compilation passes; native Windows execution/counters remain T737.
 
 `BLENT_WIFI_ATTEMPTS` defaults to 8, accepts 1..64, and counts active plus retiring
 owners. No downloads, physical ADB operations, dependency changes or reloads.
+
+</details>

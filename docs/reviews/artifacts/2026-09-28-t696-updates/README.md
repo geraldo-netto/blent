@@ -1,5 +1,13 @@
 # T696 release notification evidence
 
+Release notification tests preserve an existing notification on invalid metadata and keep tray actions usable after launch failures. Native timer-fixture races were corrected without weakening production delays.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Fresh Linux counters pass all 31 scoped production functions at >=80% individually.
 The final host/common library suites pass 271/152 tests. Windows full host/common
 unit and integration suites pass (159/153 library tests plus native integrations).
@@ -34,3 +42,5 @@ common/src/windows/paths.rs; supply both native LCOV files, sources.json and
 prefix C:\src\blent. full-sources.json preserves the first native attestation.
 SHA256SUMS hashes compressed artifacts. Contract:
 ../../2026-09-28-windows-tray-updates.md.
+
+</details>

@@ -1,5 +1,13 @@
 # T909 private display lease publication
 
+Private display-route publication carries exact lease metadata without media bytes in Binder. Cancellation revokes the route before cleanup; stale closures cannot clear a replacement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 617 offline connection tests pass. All 157 scoped inventory functions and 231
 executable raw JVM methods meet individual 80% line coverage. All 261 reviewed
 production/test functions meet cyclomatic complexity <=9. Source/test hashes,
@@ -41,3 +49,5 @@ T907 owns foreground/background, Activity recreation and SessionCoordinator
 composition. T908 owns host registration; T857 owns joined rendering/input
 acceptance. T855 physical pairing remains owner-deferred. No installation or
 USB mode change occurred.
+
+</details>

@@ -1,5 +1,13 @@
 # T901 — bounded Linux broker presentation client
 
+The Linux presentation client keeps bounded transactions and native worker ownership outside redraw. Stale commands cannot starve refresh, and closing the client does not stop independent broker/media owners.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The independent `control_client::Client` port exposes immutable status, bounded
 submission, logical close and actual retirement without OS or GUI types. Queuing
 an action grants nothing: the Linux worker revalidates its T900 broker lifetime,
@@ -43,3 +51,5 @@ GUI widgets remain T894, physical pairing T855 and media integration T857–T860
 Windows native broker/accessory parity is unimplemented and tracked under T902;
 portable interfaces are not support. No live USB access, installation or download
 occurred. Packaging remains deferred under T861.
+
+</details>

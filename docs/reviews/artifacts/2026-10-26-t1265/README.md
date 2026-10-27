@@ -1,5 +1,8 @@
 # T1265: reject malformed Android release responses
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The new shared-corpus and strict-syntax regressions fail before the production
 change on API 27 and 34. All ReleaseCheckTest cases pass afterwards, including
 byte bounds, cancellation and original response/dispatcher retirement. The

@@ -1,5 +1,13 @@
 # T1080: independent auxiliary activity workflow
 
+Auxiliary media waits for its original native work to settle before resuming after machine-power changes. Bounded models and actual worker-cancellation tests passed; individual backend integration remained separate.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The new portable workflow uses the independent WorkObservation/Auxiliary policy
 and read-only publications. Each invocation retains its own manual intent and
 original run. Lock, display-off and explicit unsupported/absent power observation
@@ -54,3 +62,5 @@ source/tool evidence are retained. Kotlin/Rust aggregate coverage is not substit
 for this gate. The source audit covers 40 production/test functions, maximum source
 estimate 9, with cached tree-sitter-rust 0.24.2/tree-sitter 0.25.2. Native SonarQube
 remains T1019. All 12 architecture checks pass. No physical operation or transfer.
+
+</details>

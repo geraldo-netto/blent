@@ -1,5 +1,13 @@
 # T906 Android local endpoint/resource ownership
 
+Android endpoint ownership retains late bind, uncertain construction and failed close until actual retirement. Hosted loopback tests pass while production media advertisement remains a separate integration step.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 600 offline connection tests pass. All 80 scoped inventory functions and all 100
 executable raw JVM methods (including constructors/getters/callbacks) meet the
 individual 80% executable-line threshold. Production and permanent test functions
@@ -40,3 +48,5 @@ JVM/native-loopback ownership and protocol behavior, not physical USB, Android
 Binder/Activity binding or rendered frames/touch acceptance. T855 tablet trial is
 owner-deferred; T857 retains production display/input acceptance. No app was
 installed, USB mode changed, or runtime token read for this implementation.
+
+</details>

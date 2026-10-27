@@ -1,5 +1,13 @@
 # T1251 offline pairing acceptance prerequisite
 
+Existing host and Android pairing suites passed as prerequisites for physical acceptance. Real TLS and storage checks complement hosted UI/Binder tests but do not establish actual tablet trust persistence.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The existing normal suites pass236 host broker cases and129 Android cases in27
 suites, with zero failures, errors or skips. All execution uses cached tools in
 private user/network namespaces with loopback only, Cargo offline/locked and
@@ -29,3 +37,5 @@ ownership checks govern their release; logical completion alone supplies no new
 authority. These tests complement the T1252 physical evidence. Synthetic USB
 inventory/media and hosted Android execution cannot establish physical tablet
 trust persistence, approval, process death or unsupported provider behavior.
+
+</details>

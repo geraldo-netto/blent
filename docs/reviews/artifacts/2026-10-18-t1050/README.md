@@ -1,5 +1,13 @@
 # T1050: original native display quiescence
 
+Native display quiescence requires matching original capture and selector receipts after actual cleanup. Faulty early receipts fail permanent tests; the finite model does not prove unrestricted device safety.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The independent controller/source/permit/receipt/fence contract binds one or two
 participants before native startup. Private immutable identities invalidate old
 work even through coalesced pause/resume. Every original producer must remain live
@@ -54,3 +62,5 @@ No downloads, installation, uploads, pushes, live lock/suspend or tablet work
 occurred. Production registration activity remains T1051; joined host acceptance
 remains T1016/T1009 and physical acceptance T914. No completion is inferred from
 this decomposition.
+
+</details>

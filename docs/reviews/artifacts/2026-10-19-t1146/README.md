@@ -1,5 +1,13 @@
 # T1146 — reject endpoints without taking a terminal
 
+Opening an invalid camera endpoint can no longer acquire a controlling terminal. The private-session PTY regression failed before O_NOCTTY and passed afterward without touching a live terminal.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `outputs::open_device` adds `O_NOCTTY` to its existing `O_NOFOLLOW` open flags.
 A session leader can otherwise acquire a controlling terminal before a configured
 PTY fails webcam-label validation. Closing that failed File does not remove the
@@ -24,3 +32,5 @@ borrow or callback; the existing File remains stack-owned until rejection or
 successful handoff, and input/path/label handling is unchanged. Raw source
 manifests, profiles and attestations remain locally under
 `/backups/disk2/blent-work/2026-10-19-open-items/t1146`.
+
+</details>

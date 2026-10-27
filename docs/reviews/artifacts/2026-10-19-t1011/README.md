@@ -1,5 +1,13 @@
 # T1011: joined Android display activity acceptance
 
+Joined Android tests exercised pause, resume, stale routes and held decoder retirement through the real application components. The codec and sockets were simulated: all 2,234 tests passed, but physical rendering and suspend/resume remained unvalidated.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Permanent SDK27/34 acceptance joins the actual SessionCoordinator/control source,
 RemoteDisplay, DisplayWorkerRun, VideoReceiver/DecoderSession, streaming power
 binding and window binding. Its native boundaries are a memory-only socket,
@@ -40,3 +48,5 @@ test-only item introduces no new production function. Raw native XML/exec and
 class hashes are retained. Kotlin PSI 1.9.20 audits 117 test functions/callbacks,
 maximum estimate 6; native SonarQube remains T1019. No network transfer, installation,
 physical handling or battery-saving claim.
+
+</details>

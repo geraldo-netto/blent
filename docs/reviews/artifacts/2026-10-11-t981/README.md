@@ -1,3 +1,15 @@
+# 2026-10-11-t981 — README
+
+Permanent byte-tag and audio-profile properties close the three management coverage gaps. Fresh source-matched counters pass without altering production behavior or historical results.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T981: permanent shared-suite properties exercise every one of 256 resource/outcome/reason byte tags, assert the fixed known mapping and exact round-trip, and reject all unknown values. Bounded audio profile properties cover all processing bytes, invalid buffer boundaries, every supported 20–200 ms buffer value, both background choices and incompatible resource kinds. Production behavior is unchanged; this resolves missing test/native-counter evidence rather than a behavioral bug, so no artificial failing unit test was introduced.
 
 Before native proof is retained from T976: three unchanged enum conversions measured 62.5/45.45/44.44 percent; audio validator had only host fixture counters. Fresh exclusively owned offline common collection now passes 286 tests and all 10/10 management production functions pass individually; the three conversions are each 100 percent. No source/function exclusion or threshold weakening. Raw profiles' native-object attestations, source snapshot/report hashes and LCOV retained. Changed complexity has 14 functions, maximum 9. This closes the explicitly retained T976 management coverage gaps without altering that historical evidence. No downloads or live device/service operations.
+
+</details>

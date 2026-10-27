@@ -1,5 +1,13 @@
 # T862 — retained acceptance evidence audit
 
+A generic historical USB-open failure lacks enough evidence to identify its cause. Existing fake-libusb tests passed, but later successful lifetimes cannot retrospectively supply that missing native status.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The complete retained attempt3 log is one line: “USB probe failed: cannot open
 re-enumerating target”. It contains no native open status, event timestamp or
 contemporaneous node-permission timeline. Later recovery and successful attempt5
@@ -25,3 +33,5 @@ T1174 still needs postponed T855/T858–T860 production-device qualification and
 owner-approved physical window, plus the existing automated fault/isolation gates.
 T862 remains blocked until its acceptance conditions are met. No tablet, USB,
 service, suspend, lock, install, network transfer or push action occurred.
+
+</details>

@@ -1,5 +1,13 @@
 # T888 authenticated runtime supervision
 
+Authenticated runtime supervision gates new work on current approval while still accepting exact cleanup evidence after Stop. Draft terminal-event races are fixed; hosted interoperability does not establish physical USB retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The portable runtime retains authenticated setup and one native-session runner,
 with a stable facade separating new endpoint admission from exact post-stop
 cleanup. Current approval and retained connection tickets gate new work. Consumed
@@ -40,3 +48,5 @@ T854 still supplies production service/native construction and configuration;
 T855 supplies presentation and physical pairing acceptance; T857–T860 supply real
 media integration. No downloads, installations, live USB changes or network changes
 occurred during this item.
+
+</details>

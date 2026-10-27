@@ -1,5 +1,13 @@
 # T1024: revoke original helper publication before cancellation
 
+Original helper publication is revoked before cancellation, and replacement waits for child plus stdout cleanup. Late reports cannot mutate the next generation or reuse its FIFO.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Each stdout drain receives one original publication authority. Its owner revokes
 before aborting work. Publication checks that authority inside the watch write
 transaction, and revocation takes empty transactions on every affected channel
@@ -53,3 +61,5 @@ T1026 will carry dependent native proofs through whole session replacement;
 T1027 supplies shared activity observations; T1015/T1016/T1009 compose runtime
 display policy. These component results do not claim physical host/tablet
 qualification, which remains T914.
+
+</details>

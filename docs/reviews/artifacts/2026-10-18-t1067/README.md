@@ -1,5 +1,13 @@
 # T1067: retained original observation-support history
 
+Display-source history survives closure, malformed announcements and control replacement. Hosted tests passed; remembered support does not authenticate a source or prove retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Unavailable snapshots now retain announced/inherited support knowledge through
 closure and fresh control replacement. A malformed announcement also preserves
 that requirement; it cannot become initial-waiting fallback. Only a fresh source's
@@ -24,3 +32,5 @@ execution/XML counters and pinned Kotlin PSI 1.9.20 inventories are retained; no
 new exclusions. Source audit covers 123 production/test functions, maximum estimate
 8; native SonarQube remains unavailable under T1019. Twelve architecture/contract/
 portability checks pass. No network, installation, push or live device operation.
+
+</details>

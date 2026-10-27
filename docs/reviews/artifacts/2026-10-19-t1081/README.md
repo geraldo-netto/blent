@@ -1,5 +1,13 @@
 # T1081: shared auxiliary activity source
 
+Camera and audio can share one independently owned Linux activity source. Last-client release requests stop, while thread join and native source retirement separately gate reuse; private-bus tests do not prove physical suspend support.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 One per-process Linux Registry composes the original activity_follow::Following
 and logind-only PowerFactory. Camera and both audio workflows may share one
 read-only ObservationLease contract. Native integration remains T1082/T1083;
@@ -67,3 +75,5 @@ functions measure 100% executable-line coverage individually. Source audit: 52
 functions including tests/fixtures, maximum estimate 6. The earlier 71.43%
 settle_source result is retained as missing-coverage evidence before adding the
 permanent independent-native-retirement test; no exclusions or weaker thresholds.
+
+</details>

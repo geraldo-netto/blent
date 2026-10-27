@@ -1,5 +1,13 @@
 # T881 Android framing and window agreement
 
+Android framing and window negotiation passed shared vectors and real Rust/JVM TLS exchanges. Exact array loans remain owned through native completion; hosted tests do not prove physical syscall or process termination.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Portable incremental BLCP negotiation now matches the host contract. Separate
 framed reader/writer owners retain exact native array loans, partial offsets and
 absolute active-I/O deadlines. No OS, service, TLS authority or media-consent
@@ -36,3 +44,5 @@ JVM TLS interoperability does not establish physical Android provider support,
 debugging-off production media, blocked-syscall termination or worker exit.
 The native supervisor must observe deadlines while calls block and retain
 quarantined ownership until actual retirement.
+
+</details>

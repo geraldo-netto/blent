@@ -1,5 +1,13 @@
 # T900 — portable host pairing presentation model
 
+The host presentation model accepts only complete bounded snapshots and invalidates stale actions across broker replacement. Snapshot completion grants no remote authority.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `control_view` assembles only complete, matching-revision broker snapshots.
 Device/link/saved-peer maps are ordered and bounded at configurable limits up to
 512/64/1024, matching broker capacities. Partial, duplicate, invalid-counter,
@@ -24,3 +32,5 @@ production/test functions have cyclomatic complexity at most 9.
 This is the independently testable presentation layer. Linux transport remains
 T901, host GUI widgets T894 and joined native pairing acceptance T855. No native
 USB access, installation, download or production support claim accompanies it.
+
+</details>

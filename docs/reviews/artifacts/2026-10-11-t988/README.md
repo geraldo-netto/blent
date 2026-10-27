@@ -1,5 +1,17 @@
+# 2026-10-11-t988 — README
+
+Private audio schemas carry bounded consent and exact completion metadata, never PCM or native handles. Contract tests do not enable media or replace current authority checks.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T988 defines strict flat private audio choice/consumer-completion commands and offered/admitted/closed events. Exact original lease, direction/resource, local consent, port, credential and canonical processing/buffer/background profile remain metadata; PCM and native handles never travel over Binder. Shared ConnectionAudioLease validates audio shapes. Existing display/camera tags remain unchanged; new command tags 6/7 and event tags 11/12/13 are disjoint. Runtime explicitly rejects audio commands until original-worker composition T989; no new media or capability is enabled here.
 
 Seven permanent contract cases qualify both directions, every local-consent flag combination, every truncation, trailing/version/oversize data, all 256 resource/boolean/processing bytes, bounded buffer/port/lease extremes, minimum/maximum profiles and signed-counter maximum plus all nonpositive decoded fields. Seeded 1,024 command/event mutations either reject or re-encode the identical canonical metadata. Runtime rejection leaves unrelated resources live; metadata cannot substitute for current TLS/worker/consumer authority. Existing camera codec/properties remain unchanged. This is new schema implementation, not a behavioral bug fix; no artificial red regression was added.
 
 Fresh offline full Android suite: 1,848 tests, zero failures/errors/skips. All 2,601 maintained production methods pass individual native JaCoCo thresholds. Matching pre-build inventory, full native XML/exec, per-function counters, authored constructor records, source hashes and logs retained. Changed Kotlin complexity: 179 functions, maximum 9. Original-worker publication and retry remain T989; UI/Activity controls T985; joined playback/capability T978 and physical T860. No downloads, installs or live trials.
+
+</details>

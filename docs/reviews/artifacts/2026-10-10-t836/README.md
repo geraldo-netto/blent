@@ -1,5 +1,13 @@
 # T836 checked retirement grace
 
+Unrepresentable retirement grace now returns an explicit error without abandoning process cleanup. A separate LLVM profile-flush race was retained rather than hidden as a clean strict merge.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The permanent extreme-grace regression first panicked at unchecked Instant
 addition. It now checks explicit InvalidGrace, bounded return, actual process
 reaping and final dependent-lease release. Valid zero/nanosecond/millisecond/large
@@ -30,3 +38,5 @@ before the final run. Report: `cargo llvm-cov report --offline --locked
 No downloads, production reloads or dependency changes. Native Windows runtime
 and counters remain T737. Invalid grace requests do not claim native completion:
 Drop signals and transfers ownership to the existing bounded retirement pool.
+
+</details>

@@ -1,5 +1,13 @@
 # T859 native microphone/duplex acceptance checkpoint
 
+Selected-tablet microphone/duplex checks verified real PCM, independent Stop and later original Android worker exit. Bounded sample statistics do not establish intelligibility, acoustic echo cancellation or sustained clock stability.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 T859 was in progress at this checkpoint pending T1238's final Stop comparison.
 The October21 completion below supplies that missing evidence. Tests here used
 production source Linux adapters and signed T1235 Android
@@ -70,3 +78,5 @@ API36 device do not establish sustained drift, intelligibility, acoustic AEC,
 other providers/devices or excluded/unsupported backend qualification. Native
 recorder exit-13 and host session exit1 are recorded rather than claimed as clean
 success. Earlier uninstrumented Stop reports have no established cause.
+
+</details>

@@ -1,5 +1,13 @@
 # T833: current distribution acceptance
 
+Distribution acceptance combines verified current-format changes while retaining native-fixture and grammar failures. It is neither complete release qualification nor physical media acceptance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Build/release, dependency setup, metric-format collection, current fixture callers,
 manual USB guidance, documentation/reference cleanup and local candidate metadata
 are implemented in separate verified commits, indexed in acceptance.json. Current
@@ -32,3 +40,5 @@ explicit approved-window requirements. No window, transfer, deployment or tool
 installation is inferred. Existing source/native owners retain their original
 stop/join/reap/fence and temporary-output cleanup boundaries. No live device or
 service actions occurred; all repository commits remain local.
+
+</details>

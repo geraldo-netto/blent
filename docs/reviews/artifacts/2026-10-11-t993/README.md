@@ -1,5 +1,8 @@
 # T993: validate native audio helper arguments
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The helper boundary validates AudioProfile and the independent strict 64-byte
 lowercase-hex media credential before label slicing or native child creation.
 Permanent regressions first failed with an out-of-bounds slice panic and invalid

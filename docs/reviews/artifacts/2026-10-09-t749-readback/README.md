@@ -1,5 +1,13 @@
 # T749 — isolate the virtual GL readback failure
 
+Virtual GPU controls isolated missing CPU-visible rows before Blent conversion. Full readback is an active diagnostic workaround, not qualification of the original GL path or proof of an upstream root cause.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 **Partial progress; T749 remains unresolved.** The cached Weston13/virgl guest
 renders the expected pattern correctly. Making selected GBM rows CPU-readable
 before scanout makes exactly those rows available to EVDI. The failure is in
@@ -101,3 +109,5 @@ configuration and udev ownership, none in the probe. No suppression, external
 patch or external audit was added; this is a limitation of a process-wide
 sanitizer measurement, not a claim of clean third-party code. The full log and
 separate result are retained in `t749-sanitized.log.gz` and `summary.json`.
+
+</details>

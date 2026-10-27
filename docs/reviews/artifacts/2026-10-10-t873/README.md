@@ -1,5 +1,13 @@
 # T873 asynchronous frame driver
 
+The asynchronous frame driver preserves partial progress and deadlines across canceled waits. Completed-body authority is rechecked; dropping the transport still does not prove external helper retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The driver owns partial header/body offsets and absolute active-I/O deadlines,
 so cancellation of an awaiting future does not restart or corrupt a frame. Reads
 and writes progress independently; completed events alternate fairly. One fixed
@@ -32,3 +40,5 @@ management, bounded consumer isolation, complete management-record publication
 barriers (including inbound events during TLS flush), and actual helper retirement
 remain T872. Broker composition remains T853. This driver does not establish
 working production display or ADB-free support. No downloads or live restarts.
+
+</details>

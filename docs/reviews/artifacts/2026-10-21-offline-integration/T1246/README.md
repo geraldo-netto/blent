@@ -1,5 +1,13 @@
 # T1246 joined fixture clock has no elapsed-work cutoff
 
+A joined fixture clock no longer fails merely because progressing work lasts ten seconds. The regression passed while actual consent, I/O and cleanup deadlines stayed unchanged.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 `ConnectionJoinedCameraFixture.clock` unconditionally threw once its monotonic
 elapsed time reached10000ms. A progressing joined actor could therefore fail
 solely because its fixture lived longer than ten seconds, conflicting with the
@@ -30,3 +38,5 @@ All Gradle checks use cached providers, `--offline --no-daemon`, explicit existi
 Gradle cache and a user/network namespace with loopback only. No physical check,
 installed-service change, download, upload or push occurs. Original physical
 acceptance and the paused T1238 investigation remain unfinished.
+
+</details>

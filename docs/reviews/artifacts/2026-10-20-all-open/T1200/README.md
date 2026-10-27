@@ -1,5 +1,13 @@
 # T1200: test fixture cutoff precedes native release
 
+Camera test cleanup cuts off pending admission before releasing held native gates. The deterministic concurrent-modification regression passed; production behavior did not change.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The new camera generation fixture released original held retirement gates before
 shutting down. A queued replacement could then execute synchronously, append to
 the workers list during iteration and throw ConcurrentModificationException,
@@ -24,3 +32,5 @@ one queued replacement. No native replacement may start during cutoff. Original
 cleanup is joined before the test releases its scope. Eventual cleanup assumes
 its controlled release gates and coroutine scheduler settle, which this test
 explicitly supplies. Rejected/failing controls retain their emergency sponsor.
+
+</details>

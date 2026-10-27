@@ -1,5 +1,13 @@
 # T1156 — preserve the original kernel trust lock
 
+A rejected second trust-store open can no longer drop the original process-wide POSIX lock. Independent-process probes verify lock retention until actual close; failed close keeps admission reserved.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A rejected second JVM open closed another descriptor for the same `trust.lock`
 inode. POSIX process locks disappeared even though the original Java FileLock
 still appeared valid. The permanent regression uses an independent Python
@@ -41,3 +49,5 @@ maximum 4; it is not native SonarQube evidence (T1019). The source snapshot incl
 pending T1151 work, which is not qualified by this scope. No app/device action,
 installation, network transfer or push occurred. Raw local evidence:
 `/backups/disk2/blent-work/2026-10-20-open-items/t1156`.
+
+</details>

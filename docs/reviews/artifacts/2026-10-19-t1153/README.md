@@ -1,5 +1,13 @@
 # T1153 — admit saved-computer lists before copying
 
+Saved-computer lists are size-checked before copying, preventing oversized caller data from being materialized. Boundary and mid-copy failure tests passed without publishing partial views.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The saved-computer constructor copied a caller List before checking its 1024-peer
 limit. The permanent normal-suite regression supplies a 1025-entry probe that
 records element access: rejection must occur before any element is read or copied.
@@ -28,3 +36,5 @@ Raw shared XML/exec/source manifest are retained in the T1153 artifact; compiled
 class hashes, per-method results and the original failing oracle remain here.
 No device, installation, network transfer or push occurred. Local raw evidence:
 `/backups/disk2/blent-work/2026-10-19-open-items/t1153`.
+
+</details>

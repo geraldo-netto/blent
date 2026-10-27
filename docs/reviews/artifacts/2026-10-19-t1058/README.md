@@ -1,5 +1,13 @@
 # T1058: joined display wake acceptance
 
+Joined wake tests kept camera, microphone and speaker runs independent while display wake paused and resumed. The focused 114-test collection passed; it measured neither physical media delivery nor battery savings.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 New normal-suite SDK27/34 acceptance composes SessionCoordinator's actual original
 control source, StreamingPowerBinding/runtime and WindowPowerBinding with three
 independent actual camera/microphone/speaker bindings. Eight display pause/resume
@@ -35,3 +43,5 @@ SonarQube remains T1019. The two acceptance fixtures retain bounded original
 resources through cleanup and join before their scope lifetime ends. No network,
 installation, hardware interruption or battery-saving claim. Final display
 acceptance remains T1011; physical host/tablet wake acceptance remains T914.
+
+</details>

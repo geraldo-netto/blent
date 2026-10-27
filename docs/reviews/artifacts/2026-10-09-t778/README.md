@@ -1,5 +1,13 @@
 # T778 runtime dispatch evidence
 
+Runtime SIMD dispatch passed scalar-oracle and unsupported-build controls. Local conversion measurements do not establish native execution on other architectures or physical tablet performance.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The full normal capture suite passes its 80% per-function gate for 192/192
 production functions. Forced auto/portable/AVX2 tests compare an independent
 scalar oracle, odd/cropped dimensions, padded and unaligned sources, tiny spans,
@@ -27,3 +35,5 @@ Assembly checks confirm YMM instructions in both AVX2 kernels and none in the
 portable kernel bodies. Portable release flags are unchanged. The auto threshold
 avoids narrow work; the advanced environment policy permits local overrides.
 The results concern conversion cost, not physical-tablet FPS or all hardware.
+
+</details>

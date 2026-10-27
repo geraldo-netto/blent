@@ -1,5 +1,13 @@
 # T1130 portable connection lint maintenance
 
+Portable connection lint changes preserve borrowed frame lifetime and input bounds. Focused tests passed; a serial retry did not fix the separately recorded timing failures.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Rename the lending Multiplexer method to `next_frame`, updating current native,
 probe and test callers. Frame bytes remain borrowed from the same original
 writer reservation until finish; no Iterator semantics or new copy is introduced.
@@ -30,3 +38,5 @@ four changed common files and host writer file, >=80%, none unmeasured or newly
 excluded. The pinned source audit checks139 production/test/example functions,
 maximum9; it is not actual SonarQube evidence (T1019). Cargo formatting passes.
 No Windows/EVDI edit, install, physical-device action or network transfer.
+
+</details>

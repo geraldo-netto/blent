@@ -1,5 +1,13 @@
 # T996: shared original media consent
 
+One portable consent state machine now serves camera, microphone and speakers. Closing consent cannot prove native retirement, and this extraction alone does not enable microphone support.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 A portable media state machine owns original lease consent, opaque permission
 prompt identity, preparation/admission gates and logical cancellation. Camera
 retains its independent typed profile/action boundary; native ownership,
@@ -24,3 +32,5 @@ Native per-method counters and authored constructor checks, complexity, source
 fingerprints and full-suite results are retained with the matching inventory.
 
 Final full suite: 1907 tests, 0 failures, 0 errors, 0 skips. All 2,724 maintained methods pass individual native 80% line coverage. Changed authored complexity: 82 functions, maximum 8.
+
+</details>

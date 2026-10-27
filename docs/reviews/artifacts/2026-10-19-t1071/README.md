@@ -1,5 +1,13 @@
 # T1071: fresh coverage test compilation
 
+Coverage builds force fresh unit-test compilation so obsolete compiled callers cannot pass as current evidence. The offline faulty-control fixture reproduced the stale-class failure; the original incremental compiler defect was not diagnosed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The historical T1069 collection ran an unchanged caller against an obsolete
 one-argument StreamingPowerRuntime.open signature after production exposed the
 two-argument method with a default permit. Twelve cases failed. Its retained
@@ -32,3 +40,5 @@ closures have manual estimates at most2; these are not native Sonar measurements
 and T1019 retains the native Groovy measurement gap. No new maintained production
 function or coverage exclusion. The prior clean2,234-test Android collection is
 historical evidence, not a newly rerun full suite under this guard.
+
+</details>

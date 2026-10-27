@@ -1,5 +1,13 @@
 # T1143 owned Linux output configuration
 
+Linux output configuration uses the originally admitted file and verifies format, stride, size and frame rate. Hosted ABI checks and an isolated v4l2loopback guest passed; these results qualify Linux x86_64 primitives, not physical camera use.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Spec copies a validated portable camera profile into an immutable bounded image/
 rate contract. Configuration owns one already admitted original File, applies
 single-planar progressive YUV420 and verifies dimensions, exact stride/frame size
@@ -73,3 +81,5 @@ python3 host/src/camera/output_device/tests/loopback_guest.py check /path/to/new
 Run `check` after the foreground VM exits; a QEMU exit alone is not a test pass.
 No elapsed execution cap is used. Preparation owns only finite local file/tool
 operations; after exec the VM itself owns its2GiB context until actual exit.
+
+</details>

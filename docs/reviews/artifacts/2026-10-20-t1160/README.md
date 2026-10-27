@@ -1,5 +1,8 @@
 # T1160 — explicit backup exclusions
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 Retain dataExtractionRules. The minSDK27 UnusedAttribute advisory describes an
 attribute consumed on API31+, where the packaged data-extraction-rules contains
 both cloud-backup and device-transfer exclusions for the actual blent.xml

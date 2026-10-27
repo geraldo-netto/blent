@@ -1,5 +1,8 @@
 # T723: camera fixture observes native retirement
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The API 34 T611 UI case failed with `expected: 2 but was: 1` at its
 immediate replacement-open assertion. `CameraBinding.launch` correctly joins
 retirement on an IO worker; Compose main-thread idleness is not IO completion.

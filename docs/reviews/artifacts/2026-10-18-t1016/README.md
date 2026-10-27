@@ -1,5 +1,13 @@
 # T1016: joined renewable USB display acceptance
 
+Joined renewable-display tests cover every original broker/capture/selector retirement order and preserve independent media. Fresh packet generations and retained helper identity are verified without a physical compositor or tablet.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 The permanent portable acceptance exhausts all six orders of original broker,
 capture and selector retirement over 16 consecutive pause/resume cycles each.
 No proper prefix may renew registration; every completed handoff retains the
@@ -49,3 +57,5 @@ coverage in both configurations. Source audit covers 77 production/test function
 maximum cyclomatic score 5, using cached tree-sitter-rust 0.24.2/tree-sitter 0.25.2.
 Native SonarQube measurement remains T1019. Twelve architecture/contract/portability
 checks pass. No network transfer, installation, push or live device work occurred.
+
+</details>

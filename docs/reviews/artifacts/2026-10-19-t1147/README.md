@@ -1,5 +1,13 @@
 # T1147 — cancellable output admission
 
+Camera endpoint admission moves blocking native work off the coordinator so Stop stays responsive. Original files remain owned through delayed return and cleanup; private fixtures and isolated-driver integration passed.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Camera device open/label validation now runs in an admitted owned blocking
 constructor. Stop and abandoned reply ownership are checked before each endpoint
 and before handing off the pair. The coordinator can process Stop while an
@@ -63,3 +71,5 @@ change occurred. T1090 and parent T1089 remain unresolved. Raw source manifests,
 attestations and counters remain under
 `/backups/disk2/blent-work/2026-10-19-open-items/t1147`; `export.json.gz` binds
 accepted sources, native objects, guest and profile hashes.
+
+</details>

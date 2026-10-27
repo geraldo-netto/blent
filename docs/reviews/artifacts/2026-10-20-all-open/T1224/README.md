@@ -1,5 +1,8 @@
 # T1224: canonical local candidate metadata
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
 The existing read-only generator check exposed noncanonical candidate prose/links
 at the recorded prior page date. Prepare current local source version1.2.3 with
 the authoritative generator and actual2026-10-20 metadata preparation date. The

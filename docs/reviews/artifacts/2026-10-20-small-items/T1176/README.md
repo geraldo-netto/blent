@@ -1,5 +1,13 @@
 # T1176: checked controller admission
 
+Input-controller claims reserve a checked epoch before initialization or device effects. Concurrent final-admission tests preserve the last valid owner and reject stale releases.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Controller claims reserve the next representable epoch under the original watch
 channel's write lock before initialization or device effects. Exhaustion returns
 None through the current control workflow, leaves the last owner unchanged and
@@ -26,3 +34,5 @@ strong-count assertions verify no retained test lease. Eventual native cleanup
 still depends on original users dropping their leases and the unchanged sink's
 release contract; numeric denial is not proof of native device retirement.
 No physical device/service or Windows/EVDI backend was changed.
+
+</details>

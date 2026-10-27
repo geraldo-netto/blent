@@ -1,5 +1,13 @@
 # T1096: original actor notifications before longer waits
 
+Native admission and trust writes notify their original actor before tighter budgets can block. Fault tests and a bounded virtual-timer model passed; notifications do not prove resource retirement.
+
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
+<details>
+<summary>Recorded evidence and technical details</summary>
+
 Accessory native-call admission now notifies its original actor after tightening
 the absolute budget and before entering blocking work. It rechecks live admission
 after notification, so a failing/stopping reporter cannot start the native action.
@@ -60,3 +68,5 @@ repository Sonar-style source estimate 9 (finite cancellation-history test).
 Native SonarQube remains unavailable under T1019. No broader suite repeat is claimed.
 
 No network transfer, download, installation, restart, physical handling or push.
+
+</details>

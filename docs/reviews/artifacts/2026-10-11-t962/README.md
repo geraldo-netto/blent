@@ -1,5 +1,8 @@
 # T962: paused Looper retirement fixture
 
+Historical evidence. Results apply to the recorded source and conditions. See the
+[artifact guide](../README.md) for scope and terminology.
+
 The old waiter ran only currently due Handler tasks. Native retirement's fallback
 poll was scheduled five milliseconds later, leaving the request Cancelling even
 after actual EXIT/death and all control jobs completed. Both API 27/34 reproduce
