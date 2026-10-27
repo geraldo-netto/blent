@@ -1,0 +1,326 @@
+docs/benchmarks/2026-09-17-io-uring/default-pipe-harness.c:200:11: warning: uninitvar: Uninitialized variable: durations
+docs/benchmarks/2026-09-17-io-uring/default-pipe-harness.c:181:18: warning: uninitvar: Uninitialized variables: channels.reader, channels.writer, channels.tcp, channels.frames, channels.size, channels.offset, channels.payload, channels.thread, channels.reads, channels.writes
+docs/reviews/artifacts/2026-10-09-evdi-stock/kms-probe.c:27:62: style: constParameterPointer: Parameter 'pixels' can be declared as pointer to const
+/backups/disk2/projects/blent/host/evdi/evdi_helper.c:99:20: style: constVariablePointer: Variable 'drm_entry' can be declared as pointer to const
+/backups/disk2/projects/blent/host/evdi/evdi_helper.c:113:20: style: constVariablePointer: Variable 'entry' can be declared as pointer to const
+/backups/disk2/projects/blent/host/evdi/evdi_helper.c:148:20: style: constVariablePointer: Variable 'connector' can be declared as pointer to const
+/backups/disk2/projects/blent/host/evdi/evdi_helper.c:161:20: style: constVariablePointer: Variable 'device' can be declared as pointer to const
+host/evdi/pixel_damage.h:53:54: style: constParameterPointer: Parameter 'mask' can be declared as pointer to const
+host/evdi/pixel_damage.h:26:48: style: truncLongCastAssignment: int result is assigned to long variable. If the variable is long to avoid loss of information, then you have loss of information.
+docs/reviews/artifacts/2026-10-09-t768/t768-before.c:119:22: style: unreadVariable: Variable 'spans[cy]' is assigned a value that is never used.
+docs/reviews/artifacts/2026-10-09-t769/before.c:119:22: style: unreadVariable: Variable 'spans[cy]' is assigned a value that is never used.
+docs/reviews/artifacts/2026-10-09-t778/before.c:119:22: style: unreadVariable: Variable 'spans[cy]' is assigned a value that is never used.
+docs/reviews/artifacts/2026-10-09-t782/before.c:119:22: style: unreadVariable: Variable 'spans[cy]' is assigned a value that is never used.
+host/gpu/encode.c:70:36: style: funcArgNamesDifferent: Function 'gpu_encoder_open' argument 1 names different: declaration 'encoder' definition 'e'.
+host/gpu/encode.c:70:58: style: funcArgNamesDifferent: Function 'gpu_encoder_open' argument 2 names different: declaration 'capture' definition 'c'.
+host/gpu/encode.c:112:30: style: funcArgNamesDifferent: Function 'gpu_encode' argument 1 names different: declaration 'encoder' definition 'e'.
+host/gpu/encode.c:128:37: style: funcArgNamesDifferent: Function 'gpu_encoder_close' argument 1 names different: declaration 'encoder' definition 'e'.
+docs/reviews/artifacts/2026-10-09-t787/boundary-resources.c:16:22: style: funcArgNamesDifferent: Function 'gpu_require' argument 1 names different: declaration 'condition' definition 'valid'.
+docs/reviews/artifacts/2026-10-09-t787/boundary-resources.c:16:40: style: funcArgNamesDifferent: Function 'gpu_require' argument 2 names different: declaration 'operation' definition 'message'.
+docs/reviews/artifacts/2026-10-09-t787/boundary.c:14:22: style: funcArgNamesDifferent: Function 'gpu_require' argument 1 names different: declaration 'condition' definition 'valid'.
+docs/reviews/artifacts/2026-10-09-t787/boundary.c:14:40: style: funcArgNamesDifferent: Function 'gpu_require' argument 2 names different: declaration 'operation' definition 'message'.
+docs/reviews/artifacts/2026-10-09-t789/bench.c:15:9: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'cursor_overlay_set'.
+docs/reviews/artifacts/2026-10-09-t789/bench.c:13:9: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'cursor_overlay_take'.
+docs/reviews/artifacts/2026-10-09-t789/bench.c:18:1: error: memleak: Memory leak: pixels
+docs/reviews/artifacts/2026-10-09-t790/candidate.c:39:140: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'cursor_overlay_set'.
+docs/reviews/artifacts/2026-10-09-t792/packet.c:12:22: style: funcArgNamesDifferent: Function 'gpu_require' argument 1 names different: declaration 'condition' definition 'c'.
+docs/reviews/artifacts/2026-10-10-t794/mapped.c:15:22: style: funcArgNamesDifferent: Function 'gpu_require' argument 1 names different: declaration 'condition' definition 'valid'.
+docs/reviews/artifacts/2026-10-10-t794/mapped.c:15:41: style: funcArgNamesDifferent: Function 'gpu_require' argument 2 names different: declaration 'operation' definition 'message'.
+docs/reviews/artifacts/2026-10-10-t794/isolated.c:20:89: style: shadowFunction: Local variable 'retired' shadows outer function
+docs/reviews/artifacts/2026-10-10-t794/isolated.c:59:16: style: shadowFunction: Local variable 'child' shadows outer function
+docs/reviews/artifacts/2026-10-10-t794/mapped.c:38:73: style: constParameterPointer: Parameter 'destination' can be declared as pointer to const
+docs/reviews/artifacts/2026-10-10-t794/share.c:56:66: style: constParameterPointer: Parameter 'shared' can be declared as pointer to const
+docs/reviews/artifacts/2026-10-10-t794/share.c:88:34: style: constParameterPointer: Parameter 'mapped' can be declared as pointer to const
+docs/reviews/artifacts/2026-10-10-t794/share.c:88:60: style: constParameterPointer: Parameter 'expected' can be declared as pointer to const
+host/accessory/accessory.c:78:46: style: constParameterPointer: Parameter 'original' can be declared as pointer to const
+host/accessory/discovery.c:56:32: style: funcArgNamesDifferent: Function 'accessory_list' argument 1 names different: declaration 'limit' definition 'text'.
+host/evdi/capture.c:250:54: style: constParameterPointer: Parameter 'capture' can be declared as pointer to const
+host/evdi/capture.c:470:52: style: constParameterPointer: Parameter 'capture' can be declared as pointer to const
+host/evdi/capture.c:642:28: style: constVariablePointer: Variable 'control' can be declared as pointer to const
+host/evdi/capture.c:652:52: style: constParameterPointer: Parameter 'fds' can be declared as pointer to const
+host/evdi/evdi_helper.c:99:20: style: constVariablePointer: Variable 'drm_entry' can be declared as pointer to const
+host/evdi/evdi_helper.c:113:20: style: constVariablePointer: Variable 'entry' can be declared as pointer to const
+host/evdi/evdi_helper.c:148:20: style: constVariablePointer: Variable 'connector' can be declared as pointer to const
+host/evdi/evdi_helper.c:161:20: style: constVariablePointer: Variable 'device' can be declared as pointer to const
+host/evdi/fifo_writer.c:181:68: style: funcArgNamesDifferent: Function 'fifo_writer_write' argument 2 names different: declaration 'data' definition 'ptr'.
+host/evdi/fifo_writer.c:181:80: style: funcArgNamesDifferent: Function 'fifo_writer_write' argument 3 names different: declaration 'size' definition 'remaining'.
+host/evdi/raw_ring.c:156:9: style: knownConditionTrueFalse: Condition '!next.generation' is always false
+host/evdi/writer.c:160:24: style: funcArgNamesDifferent: Function 'writer_run' argument 1 names different: declaration 'context' definition 'arg'.
+host/evdi/writer.c:29:45: style: constParameterPointer: Parameter 'writer' can be declared as pointer to const
+host/gpu/capture.c:81:36: style: funcArgNamesDifferent: Function 'gpu_capture_open' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/capture.c:108:36: style: funcArgNamesDifferent: Function 'gpu_capture_take' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/capture.c:126:39: style: funcArgNamesDifferent: Function 'gpu_capture_release' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/capture.c:132:37: style: funcArgNamesDifferent: Function 'gpu_capture_close' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/cursor.c:56:36: style: funcArgNamesDifferent: Function 'gpu_cursor_close' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/cursor.c:103:30: style: funcArgNamesDifferent: Function 'gpu_cursor' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/events.c:8:35: style: funcArgNamesDifferent: Function 'gpu_events_open' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/events.c:41:35: style: funcArgNamesDifferent: Function 'gpu_events_drain' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/events.c:70:35: style: funcArgNamesDifferent: Function 'gpu_events_wait' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/events.c:87:36: style: funcArgNamesDifferent: Function 'gpu_events_close' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/identity.c:11:37: style: funcArgNamesDifferent: Function 'gpu_render_device' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/identity.c:27:37: style: funcArgNamesDifferent: Function 'gpu_identity_load' argument 1 names different: declaration 'capture' definition 'c'.
+host/gpu/identity.c:41:37: style: funcArgNamesDifferent: Function 'gpu_output_matches' argument 1 names different: declaration 'capture' definition 'c'.
+scripts/benchmarks/conversion.c:227:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'arguments'.
+scripts/benchmarks/conversion.c:238:50: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'run_lane'.
+scripts/benchmarks/conversion.c:52:18: style: constVariablePointer: Variable 'lane' can be declared as pointer to const
+scripts/benchmarks/conversion.c:85:23: style: constVariablePointer: Variable 'f' can be declared as pointer to const
+host/tests/evdi_helper_test.c:361:42: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_run'.
+host/tests/evdi_helper_test.c:1266:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'fifo_writer_open'.
+host/tests/evdi_helper_test.c:1277:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'fifo_writer_open'.
+host/tests/coverage_capture.c:54:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/coverage_capture.c:57:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/coverage_capture.c:81:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'read_edid_file'.
+host/tests/coverage_capture.c:84:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'evdi_helper_main'.
+host/tests/damage_regions.c:35:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/idle_capture.c:68:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_capture.c:70:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_capture.c:72:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_capture.c:75:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_capture.c:95:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/idle_capture.c:101:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_capture.c:103:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_capture.c:110:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_recheck.c:27:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/idle_recheck.c:38:17: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_recheck.c:40:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_recheck.c:41:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_recheck.c:68:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/idle_recheck.c:82:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'writer_frame_due'.
+host/tests/idle_admission.c:123:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/idle_admission.c:129:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/idle_admission.c:162:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/idle_admission.c:190:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/idle_admission.c:193:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'idle_control_begin'.
+host/tests/shared_capture.c:25:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/shared_capture.c:27:33: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/shared_capture.c:29:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/shared_capture.c:30:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/shared_capture.c:32:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_acquire'.
+host/tests/shared_capture.c:38:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_acquire'.
+host/tests/shared_capture.c:42:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_acquire'.
+host/tests/shared_capture.c:47:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_acquire'.
+host/tests/shared_capture.c:49:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_acquire'.
+host/tests/shared_capture.c:54:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/shared_capture.c:57:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/shared_capture.c:72:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/shared_capture.c:80:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/shared_capture.c:131:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_raw_socket'.
+host/tests/shared_capture.c:133:79: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_raw_socket'.
+host/tests/shared_capture.c:136:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_raw_socket'.
+host/tests/shared_capture.c:152:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/frame_format.c:105:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/native_format.c:56:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_capture_format'.
+host/tests/native_format.c:57:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_capture_format'.
+host/tests/native_format.c:58:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_capture_format'.
+host/tests/native_format.c:63:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'evdi_helper_main'.
+host/tests/snapshot_order.c:26:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'check_image'.
+host/tests/snapshot_order.c:40:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'check_image'.
+host/tests/snapshot_order.c:44:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'check_image'.
+host/tests/snapshot_order.c:63:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/helper_simd.c:12:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'evdi_helper_main'.
+host/tests/shared_damage.c:18:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/shared_damage.c:18:48: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/shared_damage.c:101:17: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/shared_damage.c:106:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/fifo_demand.c:143:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_enable_demand'.
+host/tests/fifo_demand.c:144:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_enable_demand'.
+host/tests/fifo_demand.c:150:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_begin'.
+host/tests/fifo_demand.c:153:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_begin'.
+host/tests/fifo_demand.c:158:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_begin'.
+host/tests/fifo_demand.c:165:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/fifo_demand.c:170:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/fifo_demand.c:172:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_retire'.
+host/tests/fifo_demand.c:176:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_begin'.
+host/tests/fifo_demand.c:179:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/fifo_demand.c:225:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/fifo_demand.c:236:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_retire'.
+host/tests/fifo_demand.c:241:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_begin'.
+host/tests/fifo_demand.c:247:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_begin'.
+host/tests/fifo_demand.c:255:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_enable_demand'.
+host/tests/c_boundary_fuzz.c:121:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_resize'.
+host/tests/helper_arguments.c:18:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'evdi_helper_main'.
+host/tests/helper_arguments.c:19:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'evdi_helper_main'.
+host/tests/capture_pause.c:8:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_activity_decode'.
+host/tests/capture_pause.c:13:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_activity_decode'.
+host/tests/capture_pause.c:16:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_activity_decode'.
+host/tests/capture_pause.c:22:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_activity_decode'.
+host/tests/capture_pause.c:25:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_activity_decode'.
+host/tests/capture_pause.c:32:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_init'.
+host/tests/capture_pause.c:48:26: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_activity_decode'.
+host/tests/capture_pause.c:55:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_init'.
+host/tests/capture_pause.c:57:33: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_init'.
+host/tests/capture_pause.c:60:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:62:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:64:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:65:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_ack'.
+host/tests/capture_pause.c:68:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:71:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:127:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/capture_pause.c:157:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'raw_ring_init'.
+host/tests/capture_pause.c:193:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:204:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:209:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_ack'.
+host/tests/capture_pause.c:213:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_ack'.
+host/tests/capture_pause.c:215:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_ack'.
+host/tests/capture_pause.c:217:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/capture_pause.c:219:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_ack'.
+host/tests/capture_pause.c:221:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_ack'.
+host/tests/capture_pause.c:229:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_capture_control'.
+host/tests/capture_pause.c:234:17: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_capture_control'.
+host/tests/capture_pause.c:236:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'evdi_helper_main'.
+host/tests/capture_pause.c:242:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'configure_capture_control'.
+host/tests/capture_pause.c:302:16: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_control_poll'.
+host/tests/display_progress.c:50:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/tests/capture_diagnostics.c:31:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_claim'.
+host/evdi/raw_ring.c:118:44: error: arrayIndexOutOfBounds: Array 'ring->dirty[8]' accessed at index 4294967295, which is out of bounds.
+host/evdi/raw_ring.c:119:23: error: arrayIndexOutOfBounds: Array 'ring->dirty[8]' accessed at index 4294967295, which is out of bounds.
+host/tests/evdi_helper_test.c:1421:1: error: resourceLeak: Resource leak: file
+host/tests/evdi_helper_test.c:222:27: style: funcArgNamesDifferent: Function 'evdi_open' argument 1 names different: declaration 'device' definition 'card'.
+host/tests/evdi_helper_test.c:238:79: style: funcArgNamesDifferent: Function 'evdi_connect' argument 3 names different: declaration 'edid_length' definition 'length'.
+host/tests/evdi_helper_test.c:238:96: style: funcArgNamesDifferent: Function 'evdi_connect' argument 4 names different: declaration 'sku_area_limit' definition 'limit'.
+host/tests/evdi_helper_test.c:246:72: style: funcArgNamesDifferent: Function 'evdi_handle_events' argument 2 names different: declaration 'evtctx' definition 'context'.
+host/tests/evdi_helper_test.c:251:50: style: funcArgNamesDifferent: Function 'evdi_request_update' argument 2 names different: declaration 'bufferId' definition 'buffer'.
+host/tests/evdi_helper_test.c:261:73: style: funcArgNamesDifferent: Function 'evdi_grab_pixels' argument 3 names different: declaration 'num_rects' definition 'count'.
+host/tests/evdi_helper_test.c:317:53: style: funcArgNamesDifferent: Function 'evdi_unregister_buffer' argument 2 names different: declaration 'bufferId' definition 'id'.
+host/evdi/raw_ring.c:180:16: style: shadowFunction: Local variable 'expected' shadows outer function
+host/evdi/raw_ring.c:224:18: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/evdi_helper_test.c:678:15: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/evdi_helper_test.c:985:18: style: shadowFunction: Local variable 'luma' shadows outer function
+host/tests/evdi_helper_test.c:1000:18: style: shadowFunction: Local variable 'gray' shadows outer function
+host/tests/evdi_helper_test.c:1194:19: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/evdi_helper_test.c:1435:15: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/coverage_capture.c:161:13: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/idle_admission.c:85:13: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/shared_damage.c:40:19: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/fifo_demand.c:80:19: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/c_boundary_fuzz.c:84:9: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/capture_pause.c:251:17: style: shadowFunction: Local variable 'expected' shadows outer function
+host/tests/display_progress.c:113:27: style: shadowFunction: Local variable 'expected' shadows outer function
+host/evdi/fifo_writer.c:127:64: style: constParameterPointer: Parameter 'fifo' can be declared as pointer to const
+host/tests/evdi_helper_test.c:884:19: style: constVariable: Variable 'source' can be declared as const array
+host/tests/evdi_helper_test.c:1226:24: style: constVariablePointer: Variable 'edid' can be declared as pointer to const
+host/tests/shared_capture.c:2:38: style: constParameterPointer: Parameter 'ring' can be declared as pointer to const
+host/tests/shared_capture.c:104:20: style: constVariablePointer: Variable 'pixels' can be declared as pointer to const
+host/tests/frame_format.c:91:20: style: constVariablePointer: Variable 'registered' can be declared as pointer to const
+host/tests/frame_format.c:117:20: style: constVariablePointer: Variable 'fresh' can be declared as pointer to const
+host/tests/native_format.c:26:20: style: constVariablePointer: Variable 'registered' can be declared as pointer to const
+host/tests/snapshot_order.c:16:22: style: constVariable: Variable 'rects' can be declared as const array
+host/tests/shared_damage.c:61:22: style: constVariable: Variable 'rectangles' can be declared as const array
+host/tests/failed_mode.c:17:20: style: constVariablePointer: Variable 'original' can be declared as pointer to const
+host/tests/capture_pause.c:75:43: style: constParameterPointer: Parameter 'control' can be declared as pointer to const
+host/tests/capture_pause.c:118:20: style: constVariablePointer: Variable 'original' can be declared as pointer to const
+host/tests/capture_pause.c:256:20: style: constVariablePointer: Variable 'entry' can be declared as pointer to const
+host/tests/fifo_demand.c:92:19: warning: uninitvar: Uninitialized variable: actual
+host/tests/capture_pause_worker.c:19:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'capture_activity_decode'.
+host/tests/capture_pause.c:191:19: style: constVariable: Variable 'bytes' can be declared as const array
+host/tests/regions_test.c:116:13: style: constVariable: Variable 'r' can be declared as const array
+host/tests/regions_test.c:119:13: style: constVariable: Variable 'far' can be declared as const array
+host/tests/regions_test.c:96:28: warning: uninitvar: Uninitialized variable: expected
+host/tests/conversion_test.c:171:14: style: unreadVariable: Variable 'dirty[0]' is assigned a value that is never used.
+host/tests/conversion_test.c:204:56: style: unreadVariable: Variable 'dirty[row/8]' is assigned a value that is never used.
+host/tests/regions_test.c:159:54: style: unreadVariable: Variable 'spans[cy]' is assigned a value that is never used.
+host/tests/cursor_overlay.c:11:24: style: constVariablePointer: Variable 'previous' can be declared as pointer to const
+host/tests/cursor_overlay.c:24:20: style: constVariablePointer: Variable 'retained' can be declared as pointer to const
+host/tests/cursor_overlay.c:75:20: style: constVariablePointer: Variable 'owned' can be declared as pointer to const
+host/tests/damage_benchmark_arguments.c:24:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'benchmark_main'.
+scripts/benchmarks/damage_regions.c:40:23: style: constVariablePointer: Variable 'f' can be declared as pointer to const
+scripts/benchmarks/damage_regions.c:66:35: style: constParameterPointer: Parameter 'r' can be declared as pointer to const
+host/tests/evdi_modules_test.c:132:53: style: funcArgNamesDifferent: Function 'evdi_unregister_buffer' argument 2 names different: declaration 'bufferId' definition 'id'.
+host/tests/evdi_modules_test.c:133:50: style: funcArgNamesDifferent: Function 'evdi_request_update' argument 2 names different: declaration 'bufferId' definition 'id'.
+host/tests/evdi_modules_test.c:134:73: style: funcArgNamesDifferent: Function 'evdi_grab_pixels' argument 3 names different: declaration 'num_rects' definition 'count'.
+host/tests/evdi_modules_test.c:137:72: style: funcArgNamesDifferent: Function 'evdi_handle_events' argument 2 names different: declaration 'evtctx' definition 'events'.
+host/tests/evdi_modules_test.c:75:20: style: constVariablePointer: Variable 'published' can be declared as pointer to const
+host/tests/evdi_modules_test.c:75:46: style: constVariablePointer: Variable 'history' can be declared as pointer to const
+host/tests/frame_retirement_test.c:31:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_retire'.
+host/tests/frame_retirement_test.c:75:13: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_retire'.
+host/tests/frame_retirement_test.c:81:12: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'frame_exchange_retire'.
+host/tests/gpu_lifecycle.c:113:24: style: constVariablePointer: Variable 'frames' can be declared as pointer to const
+host/tests/gpu_lifecycle.c:159:79: style: constParameterPointer: Parameter 'buffers' can be declared as pointer to const
+host/tests/gpu_lifecycle.c:167:61: style: constParameterPointer: Parameter 'surfaces' can be declared as pointer to const
+docs/reviews/artifacts/2026-10-09-evdi-stock/kms-probe.c:45:17: style: knownConditionTrueFalse: Condition 'drmIoctl(fd,DRM_IOCTL_MODE_CREATE_DUMB,buffer)' is always false
+docs/reviews/artifacts/2026-10-09-evdi-stock/kms-probe.c:47:17: style: knownConditionTrueFalse: Condition 'drmIoctl(fd,DRM_IOCTL_MODE_MAP_DUMB,&map)' is always false
+docs/reviews/artifacts/2026-10-09-evdi-stock/kms-probe.c:91:9: style: knownConditionTrueFalse: Condition '!c->handle' is always false
+docs/reviews/artifacts/2026-10-09-evdi-stock/kms-probe.c:105:23: style: knownConditionTrueFalse: Condition 'drmModeSetCrtc(c->fd,c->resources->crtcs[0],c->fb,0,0,&c->connector->connector_id,1,&c->connector->modes[0])' is always false
+docs/reviews/artifacts/2026-10-09-evdi-stock/kms-probe.c:127:24: style: knownConditionTrueFalse: Condition 'drmSetClientCap(fd,DRM_CLIENT_CAP_UNIVERSAL_PLANES,1)' is always false
+host/tests/kms_probe.c:92:27: style: funcArgNamesDifferent: Function 'evdi_open' argument 1 names different: declaration 'device' definition 'card'.
+host/tests/kms_probe.c:93:31: style: funcArgNamesDifferent: Function 'evdi_connect' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:93:74: style: funcArgNamesDifferent: Function 'evdi_connect' argument 3 names different: declaration 'edid_length' definition 'length'.
+host/tests/kms_probe.c:93:91: style: funcArgNamesDifferent: Function 'evdi_connect' argument 4 names different: declaration 'sku_area_limit' definition 'area'.
+host/tests/kms_probe.c:94:34: style: funcArgNamesDifferent: Function 'evdi_disconnect' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:95:29: style: funcArgNamesDifferent: Function 'evdi_close' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:96:39: style: funcArgNamesDifferent: Function 'evdi_register_buffer' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:97:41: style: funcArgNamesDifferent: Function 'evdi_unregister_buffer' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:97:48: style: funcArgNamesDifferent: Function 'evdi_unregister_buffer' argument 2 names different: declaration 'bufferId' definition 'id'.
+host/tests/kms_probe.c:98:38: style: funcArgNamesDifferent: Function 'evdi_request_update' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:98:45: style: funcArgNamesDifferent: Function 'evdi_request_update' argument 2 names different: declaration 'bufferId' definition 'id'.
+host/tests/kms_probe.c:99:38: style: funcArgNamesDifferent: Function 'evdi_get_event_ready' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:100:37: style: funcArgNamesDifferent: Function 'evdi_handle_events' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:100:67: style: funcArgNamesDifferent: Function 'evdi_handle_events' argument 2 names different: declaration 'evtctx' definition 'context'.
+host/tests/kms_probe.c:101:35: style: funcArgNamesDifferent: Function 'evdi_grab_pixels' argument 1 names different: declaration 'handle' definition 'h'.
+host/tests/kms_probe.c:101:56: style: funcArgNamesDifferent: Function 'evdi_grab_pixels' argument 2 names different: declaration 'rects' definition 'rectangles'.
+host/tests/kms_probe.c:101:73: style: funcArgNamesDifferent: Function 'evdi_grab_pixels' argument 3 names different: declaration 'num_rects' definition 'count'.
+host/tests/kms_probe.c:23:19: style: constVariable: Variable 'bytes' can be declared as const array
+docs/reviews/artifacts/2026-10-09-evdi-stock/kms-probe.c:54:43: style: constParameterPointer: Parameter 'c' can be declared as pointer to const
+scripts/benchmarks/android-rect/native/rect_decode.c:33:11: style: shadowFunction: Local variable 'capacity' shadows outer function
+scripts/benchmarks/android-rect/native/rect_decode.c:60:49: style: shadowFunction: Local variable 'supported' shadows outer function
+host/tests/regions_test.c:88:71: style: constParameterPointer: Parameter 'f' can be declared as pointer to const
+scripts/benchmarks/evdi_snapshot/observe.c:19:71: style: funcArgNamesDifferent: Function 'evdi_grab_pixels' argument 3 names different: declaration 'num_rects' definition 'count'.
+scripts/benchmarks/evdi_snapshot/produce.c:12:76: style: constParameterPointer: Parameter 'data' can be declared as pointer to const
+scripts/benchmarks/evdi_snapshot/wayland.c:49:29: style: constParameterCallback: Parameter 'data' can be declared as pointer to const. However it seems that 'presented' is a callback function, if 'data' is declared with const you might also need to cast function pointer(s).
+scripts/benchmarks/evdi_snapshot/wayland.c:54:29: style: constParameterPointer: Parameter 'data' can be declared as pointer to const
+scripts/benchmarks/frame-retirement.c:52:42: warning: assertWithSideEffect: Assert statement calls a function which may have desired side effects: 'retire'.
+scripts/benchmarks/gpu-scene.c:24:60: style: clarifyCalculation: Clarify calculation precedence for '&' and '?'.
+scripts/benchmarks/io-uring.c:202:11: warning: uninitvar: Uninitialized variable: durations
+scripts/benchmarks/io-uring.c:183:18: warning: uninitvar: Uninitialized variables: channels.reader, channels.writer, channels.tcp, channels.frames, channels.size, channels.offset, channels.payload, channels.thread, channels.reads, channels.writes
+scripts/benchmarks/normalization.c:42:67: style: constParameterPointer: Parameter 'rects' can be declared as pointer to const
+scripts/benchmarks/raw-ring.c:57:41: style: constParameterPointer: Parameter 'store' can be declared as pointer to const
+scripts/benchmarks/raw-ring.c:223:144: style: constParameterPointer: Parameter 'memory' can be declared as pointer to const
+scripts/benchmarks/shared-damage.c:59:20: style: constVariablePointer: Variable 'pixels' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:95:12: warning: assignmentInAssert: Assert statement modifies 'sleeps'.
+scripts/tests/fixtures/aoa/bulk.c:16:48: warning: assignmentInAssert: Assert statement modifies 'calls'.
+scripts/tests/fixtures/aoa/enumeration.c:23:34: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:24:46: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:25:50: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:26:44: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:29:48: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:36:32: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:41:41: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:42:56: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:62:49: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:73:51: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:82:56: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:85:69: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:86:50: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/enumeration.c:87:52: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/discovery.c:15:34: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/discovery.c:16:48: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/discovery.c:24:46: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/discovery.c:25:50: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/discovery.c:30:44: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/discovery.c:41:49: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/discovery.c:9:29: style: unusedStructMember: struct member 'libusb_context::unused' is never used.
+scripts/tests/fixtures/aoa/enumeration.c:10:28: style: unusedStructMember: struct member 'libusb_device::unused' is never used.
+scripts/tests/fixtures/aoa/enumeration.c:11:29: style: unusedStructMember: struct member 'libusb_context::unused' is never used.
+scripts/tests/fixtures/aoa/enumeration.c:12:35: style: unusedStructMember: struct member 'libusb_device_handle::unused' is never used.
+scripts/tests/fixtures/aoa/reconnect.c:228:12: warning: assignmentInAssert: Assert statement modifies 'sleeps'.
+scripts/tests/fixtures/aoa/reconnect.c:30:34: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:35:46: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:41:50: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:46:44: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:53:48: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:94:41: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:105:56: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:118:41: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:124:47: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:149:49: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:164:51: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:190:69: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:195:50: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:206:52: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:213:48: style: constParameterPointer: Parameter 'value' can be declared as pointer to const
+scripts/tests/fixtures/aoa/reconnect.c:11:37: style: unusedStructMember: struct member 'libusb_device::epoch' is never used.
+scripts/tests/fixtures/aoa/reconnect.c:12:29: style: unusedStructMember: struct member 'libusb_context::unused' is never used.
+scripts/tests/fixtures/aoa/stream_fixture.c:30:71: style: funcArgNamesDifferent: Function 'accessory_transfer' argument 3 names different: declaration 'data' definition 'bytes'.
+scripts/tests/fixtures/aoa/stream_fixture.c:30:71: style: constParameterPointer: Parameter 'bytes' can be declared as pointer to const
+scripts/tests/idle_writer_native.c:61:27: style: knownConditionTrueFalse: The comparison 'target.data[0] == before' is always true because 'target.data[0]' and 'before' represent the same value.
+host/evdi/frame_exchange.c:282:32: error: ctunullpointer: Null pointer dereference: damage

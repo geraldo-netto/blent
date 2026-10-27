@@ -1,0 +1,25 @@
+{
+  "historical_c_text": [
+    {
+      "file": "docs/benchmarks/2026-09-17-readiness/readiness.c.txt",
+      "sha256": "3be8b7c598e927850ff22ba82d6beb18902def69f078a6c433fd3d97e8f730d2"
+    },
+    {
+      "file": "docs/benchmarks/2026-09-20-evdi-startup/master_probe.c.txt",
+      "sha256": "78bfce309a570141a391648c5b61f784604c2ba254946a1fe00e90c27d7130fb"
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-10-09-t749-readback/initial-probe.c.txt",
+      "sha256": "19d337f75fa878c7dc8c6c4508666eaa67f976585d43a04285a43e1b613a4a16"
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-10-09-t783/replay.c.txt",
+      "sha256": "b831073122e3d23cfb0bf4ce97a6d9826779870c32769d459aeed823da053cdb"
+    }
+  ],
+  "embedded_c_hosts": [
+    "host/src/capture/orphan_tests.rs",
+    "host/src/input/batching_tests.rs",
+    "scripts/tests/test_aoa_probe.py"
+  ]
+}

@@ -1,0 +1,1 @@
+/home/netto/Desktop/projects/blent/scripts/benchmarks/evdi_snapshot/produce.c:30:35: runtime error: load of null pointer of type 'uint32_t'

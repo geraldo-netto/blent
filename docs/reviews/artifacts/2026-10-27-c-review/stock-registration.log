@@ -1,0 +1,10 @@
+
+=================================================================
+==1782147==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 56 byte(s) in 1 object(s) allocated from:
+    #0 0x7698b3afd340 in calloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:77
+    #1 0x40192e in addFrameBuffer /backups/disk2/blent-work/2026-10-27-c-review/stock-evdi.c:140
+    #2 0x40192e in evdi_register_buffer /backups/disk2/blent-work/2026-10-27-c-review/stock-evdi.c:783
+
+SUMMARY: AddressSanitizer: 56 byte(s) leaked in 1 allocation(s).

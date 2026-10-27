@@ -1,0 +1,578 @@
+[
+  {
+    "suite": "evdi-tests",
+    "case": "T1186-trace",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1186-admission",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1185-progress",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1185-resume",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1021-wire",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1021-control",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1021-pause",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1021-raw",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1021-boundaries",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1021-rights",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1025",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T580",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T580-reconnect",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T580-tsan",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T580-generation",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T580-unavailable",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T580-early",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T580-transitions",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T418-ring",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T570",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T570-history",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T418-capture",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T418-startup",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T492",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1119-value",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1119-wait",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1119-second",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1121",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1120-stale",
+    "exit": -6,
+    "configured_exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1120-current",
+    "exit": -6,
+    "configured_exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1120-lifetime",
+    "exit": -6,
+    "configured_exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1120-boundaries",
+    "exit": -6,
+    "configured_exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1120-exhaustion",
+    "exit": -6,
+    "configured_exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T1120-unsafe",
+    "exit": -6,
+    "configured_exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T554",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T497-callbacks",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T497-main",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T497-bounds",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T474",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T415-open",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T415-live",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T415-rounding",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T405-fifo",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T405-capture",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T405-writer",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T343",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T341",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T340-missing",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T340-directory",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T340-empty",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T340-oversized",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T340-readable",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T324",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T294",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T623",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T750-period",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T750-async",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T750-snapshot",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T767",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T760",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T762",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T751",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T752",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T780",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T779",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T778",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T783",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T783-cursor",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T783-shared",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T783-options",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T752-bounds",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T752-allocation",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T752-cursor",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T752-shared",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T753",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T789",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T753-bounds",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T753-shared",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T293",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T290",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T279",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T274",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T272",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T315-channel",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T315-mode",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T315-signal",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T254",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T170",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T108",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T082",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T113",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T226",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T083",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T081",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T012",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T013",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T047",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T383-affinity",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T048",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T049",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T050",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T051",
+    "exit": 0
+  },
+  {
+    "suite": "evdi-tests",
+    "case": "T052",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "damage-extreme",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "damage-empty",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "density",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "dispatch",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "large",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "equivalence",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "regions",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "weighted",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "adaptive",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "simd",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-tests",
+    "case": "scaled-simd",
+    "exit": 0
+  }
+]

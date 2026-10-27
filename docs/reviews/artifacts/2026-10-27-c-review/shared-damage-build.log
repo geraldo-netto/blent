@@ -1,0 +1,23 @@
+scripts/benchmarks/shared-damage.c:11:22: error: field ‘frames’ has incomplete type
+   11 |     frame_exchange_t frames;
+      |                      ^~~~~~
+scripts/benchmarks/shared-damage.c:12:17: error: field ‘pool’ has incomplete type
+   12 |     conv_pool_t pool;
+      |                 ^~~~
+scripts/benchmarks/shared-damage.c: In function ‘initialize’:
+scripts/benchmarks/shared-damage.c:31:35: error: ‘FRAME_EXCHANGE_INITIALIZER’ undeclared (first use in this function); did you mean ‘RAW_RING_INITIALIZER’?
+   31 |     r->frames = (frame_exchange_t)FRAME_EXCHANGE_INITIALIZER;
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                   RAW_RING_INITIALIZER
+scripts/benchmarks/shared-damage.c:31:35: note: each undeclared identifier is reported only once for each function it appears in
+scripts/benchmarks/shared-damage.c:34:28: error: ‘CONV_POOL_INITIALIZER’ undeclared (first use in this function)
+   34 |     r->pool = (conv_pool_t)CONV_POOL_INITIALIZER;
+      |                            ^~~~~~~~~~~~~~~~~~~~~
+scripts/benchmarks/shared-damage.c: In function ‘main’:
+scripts/benchmarks/shared-damage.c:103:5: error: implicit declaration of function ‘pthread_cond_destroy’ [-Werror=implicit-function-declaration]
+  103 |     pthread_cond_destroy(&r.frames.ready); pthread_mutex_destroy(&r.frames.mutex);
+      |     ^~~~~~~~~~~~~~~~~~~~
+scripts/benchmarks/shared-damage.c:103:44: error: implicit declaration of function ‘pthread_mutex_destroy’ [-Werror=implicit-function-declaration]
+  103 |     pthread_cond_destroy(&r.frames.ready); pthread_mutex_destroy(&r.frames.mutex);
+      |                                            ^~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors

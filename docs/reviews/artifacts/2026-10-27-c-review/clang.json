@@ -1,0 +1,62 @@
+[
+  {
+    "path": "host/evdi/fifo_writer.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/capture_activity.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/cursor_overlay.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/conversion.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/capture_control.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/evdi_helper.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/writer.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/frame_exchange.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/idle_control.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/raw_ring.c",
+    "exit": 0
+  },
+  {
+    "path": "host/evdi/capture.c",
+    "exit": 0
+  },
+  {
+    "path": "host/accessory/discovery.c",
+    "exit": 0
+  },
+  {
+    "path": "host/accessory/accessory.c",
+    "exit": 0
+  },
+  {
+    "path": "host/accessory/stream.c",
+    "exit": 0
+  },
+  {
+    "path": "host/accessory/contract.c",
+    "exit": 0
+  }
+]

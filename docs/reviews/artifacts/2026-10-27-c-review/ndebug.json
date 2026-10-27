@@ -1,0 +1,17 @@
+[
+  {
+    "file": "frame-retirement",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "file": "shared-damage",
+    "exit": 1,
+    "stderr": "scripts/benchmarks/shared-damage.c:11:22: error: field \u2018frames\u2019 has incomplete type\n   11 |     frame_exchange_t frames;\n      |                      ^~~~~~\nscripts/benchmarks/shared-damage.c:12:17: error: field \u2018pool\u2019 has incomplete type\n   12 |     conv_pool_t pool;\n      |                 ^~~~\nscripts/benchmarks/shared-damage.c: In function \u2018initialize\u2019:\nscripts/benchmarks/shared-damage.c:31:35: error: \u2018FRAME_EXCHANGE_INITIALIZER\u2019 undeclared (first use in this function); did you mean \u2018RAW_RING_INITIALIZER\u2019?\n   31 |     r->frames = (frame_exchange_t)FRAME_EXCHANGE_INITIALIZER;\n      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~\n      |                                   RAW_RING_INITIALIZER\nscripts/benchmarks/shared-damage.c:31:35: note: each undeclared identifier is reported only once for each function it appears in\nscripts/benchmarks/shared-damage.c:34:28: error: \u2018CONV_POOL_INITIALIZER\u2019 undeclared (first use in this function)\n   34 |     r->pool = (conv_pool_t)CONV_POOL_INITIALIZER;\n      |                            ^~~~~~~~~~~~~~~~~~~~~\nscripts/benchmarks/shared-damage.c: In function \u2018main\u2019:\nscripts/benchmarks/shared-damage.c:103:5: warning: implicit declaration of function \u2018pthread_cond_destroy\u2019 [-Wimplicit-function-declaration]\n  103 |     pthread_cond_destroy(&r.frames.ready); pthread_mutex_destroy(&r.frames.mutex);\n      |     ^~~~~~~~~~~~~~~~~~~~\nscripts/benchmarks/shared-damage.c:103:44: warning: implicit declaration of function \u2018pthread_mutex_destroy\u2019 [-Wimplicit-function-declaration]\n  103 |     pthread_cond_destroy(&r.frames.ready); pthread_mutex_destroy(&r.frames.mutex);\n      |                                            ^~~~~~~~~~~~~~~~~~~~~\n"
+  },
+  {
+    "file": "idle_writer",
+    "exit": 0,
+    "stderr": ""
+  }
+]
