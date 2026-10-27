@@ -24,13 +24,8 @@ impl Output {
                 .get("enabled")
                 .and_then(Value::as_bool)
                 .unwrap_or(false),
-            // Plasma 6 serializes priority (1 is primary); retain the legacy
-            // boolean schema for older inventories.
-            primary: value.get("priority").and_then(Value::as_u64) == Some(1)
-                || value
-                    .get("primary")
-                    .and_then(Value::as_bool)
-                    .unwrap_or(false),
+            // Current KScreen inventories designate priority 1 as primary.
+            primary: value.get("priority").and_then(Value::as_u64) == Some(1),
             position: (integer(value, "/pos/x"), integer(value, "/pos/y")),
             pixel_size: (
                 integer(value, "/size/width"),
@@ -275,6 +270,37 @@ mod tests {
     use super::*;
     use crate::config::Position;
     use serde_json::json;
+
+    #[test]
+    fn t1330_primary_selection_uses_only_current_priority() {
+        for source in [
+            json!({"primary": true}),
+            json!({"priority": 2, "primary": true}),
+            json!({"priority": 0, "primary": true}),
+        ] {
+            let outputs = inventory(&[source]);
+            assert!(!outputs[0].primary, "T1330: obsolete flag granted priority");
+        }
+        let outputs = inventory(&[json!({"priority": 1, "primary": false})]);
+        assert!(outputs[0].primary, "T1330: current priority was overridden");
+    }
+
+    #[test]
+    fn t1330_invalid_priority_never_selects_a_primary() {
+        for priority in [
+            Value::Null,
+            json!(true),
+            json!("1"),
+            json!(1.0),
+            json!(-1),
+            json!(u64::MAX),
+            json!([]),
+            json!({}),
+        ] {
+            let outputs = inventory(&[json!({"priority": priority, "primary": true})]);
+            assert!(!outputs[0].primary, "T1330: invalid priority was accepted");
+        }
+    }
 
     #[test]
     fn t372_shared_inventory_preserves_placement_and_connector_identity() {

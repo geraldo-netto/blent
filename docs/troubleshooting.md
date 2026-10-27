@@ -72,7 +72,7 @@ repeat a session-crashing attachment on your working desktop; see below.
 KDE Wayland mapping uses KWin D-Bus. X11 mapping uses `xinput` and `xrandr`;
 install both. Mapping runs on attachment and mode changes, and graphics-tablet
 mode targets a physical screen. KDE selection honors the enabled physical
-output's primary flag or priority; the former priority bug (T299) has regression
+output's current KScreen priority; the former priority bug (T299) has regression
 coverage. Check mapping after mode changes. Other Wayland desktops need manual
 mapping where supported. `blent doctor` gives manual-mapping guidance there;
 the former unconditional KWin check (T234) is fixed.

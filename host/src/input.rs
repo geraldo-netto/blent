@@ -844,7 +844,7 @@ esac
     }
 
     #[test]
-    fn t299_primary_selection_accepts_current_and_legacy_schemas() {
+    fn t299_primary_selection_uses_current_priority_and_safe_defaults() {
         use serde_json::json;
         let secondary = json!({"name":"eDP-1","enabled":true,"priority":2});
         let primary = json!({"name":"HDMI-A-1","enabled":true,"priority":1});
@@ -853,7 +853,7 @@ esac
             (
                 vec![
                     secondary.clone(),
-                    json!({"name":"DP-1","enabled":true,"primary":true}),
+                    json!({"name":"DP-1","enabled":true,"priority":1}),
                 ],
                 "DP-1",
             ),

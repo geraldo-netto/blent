@@ -1,0 +1,111 @@
+SDK: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files
+Codecs: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra/7ccd63f7532e93ce345b67dedc492748bba449917e81a031502715bc38e3f438/files
+Target/cache owner: /backups/disk2/blent-work/2026-10-20-all-open/T835/target
+Command: cargo test --offline --locked -p blent --lib input::
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.16s
+     Running unittests src/lib.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-92eb1ca3f370624d)
+
+running 99 tests
+test input::activity::socket_tests::t1056_authentication_and_original_attachment_cutoff_fence_every_hint ... ok
+test input::activity::socket_tests::t1056_portable_session_binds_original_source_before_initial_authenticated_greeting ... ok
+test input::activity::socket_tests::t1056_replaced_controller_cannot_publish_after_current_owner_claims_socket ... ok
+test input::activity::socket_tests::t1056_unsupported_source_omits_hint_and_wrong_auth_never_receives_one ... ok
+test input::activity::tests::t1056_absent_and_closed_sources_cannot_spin_or_announce_unsupported_work ... ok
+test input::activity::tests::t1056_original_notice_captures_publication_before_first_poll_and_coalesced_stops ... ok
+test input::batching_tests::t406_dropping_device_does_not_publish_an_unfinished_frame ... ok
+test input::batching_tests::t406_event_bound_never_splits_or_leaks_an_unsynchronized_frame ... ok
+test input::batching_tests::t406_failed_batch_never_replays_a_delivered_prefix ... ok
+test input::batching_tests::t406_native_bytes_match_linux_input_header_layout ... ok
+test input::batching_tests::t406_pen_down_preserves_proximity_button_tip_boundaries ... ok
+test input::batching_tests::t406_pending_events_wait_for_the_current_syn_boundary ... ok
+test input::batching_tests::t406_recorded_replay_preserves_every_native_byte ... ok
+test input::batching_tests::t406_replay_writes_once_per_existing_sync_frame ... ok
+test input::batching_tests::t406_short_and_interrupted_writes_preserve_every_byte ... ok
+test input::batching_tests::t406_zero_write_and_flush_errors_retire_the_batch ... ok
+test input::contracts::t1176_bounded_wide_oracle_preserves_lease_and_effect_counts ... ok
+test input::contracts::t1176_concurrent_last_claim_has_one_winner_and_original_drop ... ok
+test input::contracts::t1176_denied_claim_has_no_initialization_or_device_effects ... ok
+test input::contracts::t1176_exhausted_claim_keeps_original_authority_and_cleanup ... ok
+test input::contracts::t281_retired_socket_cannot_claim_or_dispatch_into_current_controller ... ok
+test input::contracts::t281_socket_accepted_before_replacement_cannot_authenticate_after_it ... ok
+test input::contracts::t370_dispatch_preserves_order_and_controller_ownership_with_adapters ... ok
+test input::contracts::t370_server_cancels_injected_backend_when_owner_ends ... ok
+test input::contracts::t484_old_decoder_receipt_cannot_acknowledge_new_encoder_packets ... ok
+test input::contracts::t673_legacy_backend_declines_direct_events_explicitly ... ok
+test input::contracts::t673_versioned_direct_input_wire_is_independent_of_pen ... ok
+test input::direct::tests::t673_authenticated_owner_replacement_and_disconnect_retire_buttons ... ok
+test input::direct::tests::t673_disabled_modes_and_seeded_wire_values_never_reach_devices ... ok
+test input::direct::tests::t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input ... ok
+test input::direct::tests::t673_tablet_and_mode_changes_retire_negotiation_before_reuse ... ok
+test input::direct::tests::t673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_input ... ok
+test input::linux::coverage_tests::t497_uinput_construction_errors_and_owned_retirement ... ok
+test input::linux::cursor::tests::t604_policy_is_scoped_to_enabled_cinnamon_x11_touch ... ok
+test input::linux::cursor::tests::t604_private_bus_acceptance_failure_and_bounded_preparation ... ok
+test input::mapping::coverage_tests::t497_mapping_retries_verify_device_ownership_and_readback ... ok
+test input::mapping::x11_cache::tests::t625_changed_failed_and_missing_property_reads_remap_without_trusting_old_state ... ok
+test input::mapping::x11_cache::tests::t625_readback_requires_bounded_node_and_finite_nine_value_matrix ... ok
+test input::mapping::x11_cache::tests::t625_topology_missing_device_and_reused_identity_invalidate_readback ... ok
+test input::mapping::x11_tests::t577_edid_parser_rejects_bounded_invalid_lengths_and_checksums ... ok
+test input::mapping::x11_tests::t577_missing_invalid_and_ambiguous_identity_never_falls_back_to_names ... ok
+test input::mapping::x11_tests::t577_physical_mode_excludes_renamed_virtual_outputs_and_unknown_owners ... ok
+test input::mapping::x11_tests::t577_provider_renaming_cannot_assign_another_tablets_output ... ok
+test input::mapping::x11_tests::t622_late_input_does_not_force_stable_output_probes ... ok
+test input::mapping::x11_tests::t622_stale_topology_refreshes_until_owned_edid_appears ... ok
+test input::mapping::x11_tests::t625_late_pen_does_not_remap_verified_touch_and_pointer ... ok
+test input::mapping::x11_tests::t730_missing_kwin_does_not_override_x11_mapping_results ... ok
+test input::mapping::x11_tests::t730_unavailable_x11_mapper_reports_its_own_failure ... ok
+test input::settings::coverage_tests::t497_mode_adapter_preserves_dependencies_and_avoids_duplicate_wakeups ... ok
+test input::settings::coverage_tests::t497_resolution_adapter_reports_rejection_and_clears_it_after_valid_input ... ok
+test input::settings::persistence_contract_tests::t824_native_resolution_preference_reads_current_store ... ok
+test input::tests::t029_x11_maps_only_this_tablets_devices_and_card ... ok
+test input::tests::t062_greeting_advertises_disabled_input_devices ... ok
+test input::tests::t063_codec_changes_are_pushed_to_connected_clients ... ok
+test input::tests::t063_greeting_reports_live_encoder_codec ... ok
+test input::tests::t063_unknown_encoder_from_tablet_is_rejected ... ok
+test input::tests::t084_stopping_server_closes_clients_and_watcher ... ok
+test input::tests::t085_reconnect_preserves_current_controller_contacts ... ok
+test input::tests::t086_touch_stays_down_until_last_contact_lifts ... ok
+test input::tests::t092_idle_and_partial_upgrades_expire ... ok
+test input::tests::t092_pending_connections_are_bounded ... ok
+test input::tests::t1038_liveness_offer_requires_media_settings_and_explicit_socket_ack ... ok
+test input::tests::t109_state_changes_cancel_pending_mapping ... ok
+test input::tests::t1176_denied_workflow_preserves_decoder_settings ... ok
+test input::tests::t1187_terminal_reports_cannot_restore_metadata_or_advertise_a_scope ... ok
+test input::tests::t120_greeting_and_apply_report_effective_frame_rate ... ok
+test input::tests::t145_fallback_preserves_card_ownership ... ok
+test input::tests::t146_normalized_input_stays_in_axes_and_releases ... ok
+test input::tests::t223_fixed_resolution_keeps_pixels_but_negotiates_physical_size ... ok
+test input::tests::t247_connected_fixture_matches_production_response ... ok
+test input::tests::t275_manual_geometry_is_independent_of_native_edid_limits ... ok
+test input::tests::t275_selected_manual_and_automatic_modes_keep_edid_bounds ... ok
+test input::tests::t276_replies_follow_geometry_and_scale_across_reconnect ... ok
+test input::tests::t276_scaled_greeting_matches_android_fixture ... ok
+test input::tests::t286_hover_exit_parks_pointer_at_final_release_position ... ok
+test input::tests::t286_release_updates_pen_axes_before_leaving_proximity ... ok
+test input::tests::t287_wire_tilt_reconstructs_physical_degrees_from_declared_axes ... ok
+test input::tests::t299_primary_selection_reaches_kwin_mapping_arguments ... ok
+test input::tests::t299_primary_selection_uses_current_priority_and_safe_defaults ... ok
+test input::tests::t317_proximity_exit_releases_stylus_button_for_next_press ... ok
+test input::tests::t318_pen_lifecycle_matches_android_samples ... ok
+test input::tests::t321_negotiated_small_panel_uses_supported_refresh ... ok
+test input::tests::t323_replacement_cancels_a_backpressured_control_writer ... ok
+test input::tests::t332_invalid_fps_or_geometry_never_retires_working_settings ... ok
+test input::tests::t332_manual_geometry_validates_selected_dimensions_at_current_fps ... ok
+test input::tests::t332_rejected_command_returns_current_settings_without_restart ... ok
+test input::tests::t346_greeting_uses_one_encoder_settings_snapshot ... ok
+test input::tests::t372_mapping_selects_from_the_shared_inventory ... ok
+test input::tests::t375_android_motion_fixture_matches_host_fields ... ok
+test input::tests::t388_greeting_reports_accepted_route_and_omits_unknown ... ok
+test input::tests::t432_new_controller_cannot_reuse_old_apk_capabilities ... ok
+test input::tests::t432_vp9_requires_current_peer_format_support ... ok
+test input::tests::t433_av1_requires_current_peer_format_support ... ok
+test input::tests::t434_disconnect_retires_capability_epoch_without_persisting_fallback ... ok
+test input::tests::t472_clamped_config_preserves_concurrent_selection_without_restart ... ok
+test input::tests::t472_repeated_geometry_and_config_retain_unrelated_state ... ok
+test input::tests::t478_malformed_stale_and_away_back_reports_cannot_replace_current_scope ... ok
+test input::tests::t497_external_mode_updates_reach_the_current_controller ... ok
+test input::wake_tests::t405_idle_input_listener_has_no_periodic_wakeups ... ok
+
+test result: ok. 99 passed; 0 failed; 0 ignored; 0 measured; 636 filtered out; finished in 21.31s
+

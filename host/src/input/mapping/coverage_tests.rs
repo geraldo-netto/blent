@@ -56,7 +56,7 @@ fn outputs(root: &Path, inventory: &str) {
 fn physical(root: &Path) {
     outputs(
         root,
-        r#"{"outputs":[{"id":1,"name":"fixture-physical","enabled":true,"primary":true}]}"#,
+        r#"{"outputs":[{"id":1,"name":"fixture-physical","enabled":true,"priority":1}]}"#,
     );
 }
 

@@ -1,0 +1,33 @@
+SDK: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files
+Codecs: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra/7ccd63f7532e93ce345b67dedc492748bba449917e81a031502715bc38e3f438/files
+Target/cache owner: /backups/disk2/blent-work/2026-10-20-all-open/T835/target
+Command: cargo test --offline --locked -p blent --lib t1330_
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.02s
+     Running unittests src/lib.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-92eb1ca3f370624d)
+
+running 2 tests
+test kscreen::tests::t1330_invalid_priority_never_selects_a_primary ... FAILED
+test kscreen::tests::t1330_primary_selection_uses_only_current_priority ... FAILED
+
+failures:
+
+---- kscreen::tests::t1330_invalid_priority_never_selects_a_primary stdout ----
+
+thread 'kscreen::tests::t1330_invalid_priority_never_selects_a_primary' (4114261) panicked at host/src/kscreen.rs:306:13:
+T1330: invalid priority was accepted
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- kscreen::tests::t1330_primary_selection_uses_only_current_priority stdout ----
+
+thread 'kscreen::tests::t1330_primary_selection_uses_only_current_priority' (4114262) panicked at host/src/kscreen.rs:287:13:
+T1330: obsolete flag granted priority
+
+
+failures:
+    kscreen::tests::t1330_invalid_priority_never_selects_a_primary
+    kscreen::tests::t1330_primary_selection_uses_only_current_priority
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 733 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

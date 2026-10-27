@@ -1,0 +1,63 @@
+{
+  "tools": "cargo-llvm-cov 0.8.7, LLVM 22.1.8; project syn 2.0.119 complexity metric",
+  "coverage": [
+    {
+      "file": "host/src/kscreen.rs",
+      "name": "from_json",
+      "line": 19,
+      "language": "rust",
+      "covered": 22,
+      "total": 23,
+      "percent": 95.65217391304348,
+      "passes": true,
+      "missing": [
+        38
+      ]
+    }
+  ],
+  "complexity": [
+    {
+      "file": "host/src/kscreen.rs",
+      "line": 19,
+      "function": "from_json",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kscreen.rs",
+      "line": 275,
+      "function": "t1330_primary_selection_uses_only_current_priority",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/kscreen.rs",
+      "line": 289,
+      "function": "t1330_invalid_priority_never_selects_a_primary",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 847,
+      "function": "t299_primary_selection_uses_current_priority_and_safe_defaults",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/mapping/coverage_tests.rs",
+      "line": 56,
+      "function": "physical",
+      "complexity": 1
+    }
+  ],
+  "scope": "Changed Output::from_json production method; pure JSON adapter, borrows input during conversion and returns owned Output. Existing inventory/command byte bounds unchanged; no native handles, callbacks or retained borrow.",
+  "sources": {
+    "host/src/input/mapping/coverage_tests.rs": "c95f0f388c6c4753d7e4c192b2e8a7db6ce063502da97663bd02443e057ec85f",
+    "host/src/kscreen.rs": "d3bed20a62fa712cbb2ffb450c4902eed6244877506e3cb653291271433cf567",
+    "host/src/input.rs": "7f4f862f90a30fe4ee7d5c19758cf1759a5f912e4ab9ad48d987ed33bad14df4",
+    "testdata/kscreen-inventory.json": "6fa81d60a74363e30aa2fc72556027ce550c94629327d233a93bce13aa2a9f93"
+  },
+  "verification": {
+    "red": "Both new T1330 tests failed against the obsolete fallback",
+    "green": "2 new regression tests, 8 KScreen coverage tests and 99 input tests pass",
+    "format": "project format-rust.py --check passes",
+    "native_scope": "Pure inventory conversion; no live desktop changes or hardware acceptance claimed"
+  }
+}

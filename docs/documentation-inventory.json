@@ -11622,7 +11622,7 @@
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
-      "reviewed_sha256": "2b985c30124b8b877dd19e59313a65c7f96b36d28b859bb84af53aae49656c1a",
+      "reviewed_sha256": "fcadf7dd84fb839ca285dcc435f6e35ca13e0e1ca0a6db8f94942d41747f898e",
       "outcome": "rewritten"
     },
     {
