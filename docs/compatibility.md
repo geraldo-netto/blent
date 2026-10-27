@@ -114,8 +114,12 @@ capabilities, but only a real stream validates the selected configuration.
   use the default FFmpeg child path for those profiles. Adapter availability and
   automated device-opening tests do not establish compatibility with every GPU
   or driver; native acceptance remains specific to the tested hardware.
-- **T332:** accepted dimensions/FPS can exceed the EDID pixel-clock limit;
-  3840×2160 at 90 fps is one example. Lowering FPS can produce a valid mode.
+- Mode validation requires active dimensions within 1–4095 pixels, refresh
+  within 10–90 Hz, and a rounded fixed-porch EDID pixel clock within
+  10–655.35 MHz. These bounds apply together: 3840×2160 at 90 Hz is rejected
+  before saving or restarting; 60 Hz fits the timing bounds. T332's former
+  missing validation is resolved. Passing validation does not establish
+  compositor or physical-display compatibility.
 
 Up to four slots can be configured. Historical multi-tablet validation used
 one physical tablet plus a simulated client. Automated tests cover busy-card
