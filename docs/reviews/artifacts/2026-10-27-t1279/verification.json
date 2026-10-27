@@ -1,0 +1,165 @@
+{
+  "python": "3.12.3",
+  "coverage": "7.15.2",
+  "complexity_tool": "scripts/complexity/check.py; Python AST implementation in syntax.py",
+  "functions": [
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "notice_name",
+      "summary": {
+        "covered_lines": 2,
+        "num_statements": 2,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "regular_relative",
+      "summary": {
+        "covered_lines": 9,
+        "num_statements": 9,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "declared_notice",
+      "summary": {
+        "covered_lines": 8,
+        "num_statements": 8,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "candidate",
+      "summary": {
+        "covered_lines": 8,
+        "num_statements": 8,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "notice_paths",
+      "summary": {
+        "covered_lines": 13,
+        "num_statements": 13,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "regular_reader",
+      "summary": {
+        "covered_lines": 9,
+        "num_statements": 9,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "copy_notice",
+      "summary": {
+        "covered_lines": 11,
+        "num_statements": 11,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "copy_crate_notices",
+      "summary": {
+        "covered_lines": 7,
+        "num_statements": 7,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/crate_notices.py",
+      "function": "verify_archive_notices",
+      "summary": {
+        "covered_lines": 9,
+        "num_statements": 9,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    },
+    {
+      "file": "packaging/appimage/sources.py",
+      "function": "copy_crate",
+      "summary": {
+        "covered_lines": 12,
+        "num_statements": 12,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100"
+      },
+      "missing_lines": []
+    }
+  ],
+  "source_sha256": {
+    "packaging/appimage/sources.py": "09e1c056379bf9b25396035c2e06efcc08633765e174a804afb73b9ac0b61aea",
+    "packaging/appimage/crate_notices.py": "15ad2bfb245bce54acab6cd2c0769ab747d75f6be405b04c7a60ed0f1c6eca6a",
+    "scripts/tests/test_appimage.py": "cb3384e4828af519fa93cbc3575885b3087d653bbe6e0694f4eb7ee22b93ca7b",
+    "scripts/tests/test_crate_notices.py": "ee0b404a1db5302a3c495897e09cd79f3133fc3ad27ccaeac851f41f395474a4",
+    "scripts/complexity/check.py": "99095e6ca5dfb364b150e617320a7b16046feb0b0f63e36f1078c8da1c4e06b5",
+    "scripts/complexity/syntax.py": "9f15d202be76de2fff44b16d75d2efc4353d53d65b10502a8c746799994c142f"
+  }
+}

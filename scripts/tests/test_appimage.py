@@ -356,7 +356,7 @@ root.with_suffix('.gui').write_text(os.environ['APPDIR'])
         destination.mkdir()
         notices = self.root / 'notices'
         notices.mkdir()
-        package = dict(id='fixture-id', source='registry', name='fixture', version='1.0', license='MIT', manifest_path=str(source/'Cargo.toml'))
+        package = dict(id='fixture-id', source='registry', name='fixture', version='1.0', license='MIT', license_file=None, manifest_path=str(source/'Cargo.toml'))
         metadata = dict(resolve=dict(nodes=[dict(id='fixture-id')]), packages=[package])
         with patch.object(sources, 'run', return_value=json.dumps(metadata)):
             records = sources.rust_sources(REPO, destination, notices)

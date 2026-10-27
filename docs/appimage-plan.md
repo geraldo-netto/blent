@@ -130,6 +130,18 @@ contains dependency copyright files and a version/license/source manifest.
 Project source is supplied by the matching release tag. Keep the source asset,
 notices and matching project source alongside any redistribution.
 
+Rust notices retain their crate-relative paths, including nested font licenses,
+`UNLICENSE`, notice directories and Cargo's declared `license_file`. The manifest
+records each notice's SHA-256 and verifies its bytes against the corresponding
+crate source archive. Missing declared files, absent or empty notices, symlinks
+and nonregular notice files fail packaging. Existing output paths are not replaced.
+Notice discovery is filename-based; it does not establish legal completeness.
+
+Some published crates omit their workspace license texts. Supply verified upstream
+texts before packaging; the collector does not download or infer them. The local
+T1278 installed-notice restoration does not populate Cargo's source cache or future
+build inputs. Supplying pinned supplemental inputs to fresh builds remains T1280.
+
 The publisher verifies the AppImage, source archive, Arch recipe, Linux tar,
 APK and `SHA256SUMS` as one complete asset set before publishing. Legacy Debian
 metadata remains only for historical regression coverage and is not a release

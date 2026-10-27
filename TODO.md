@@ -4,7 +4,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1279 | open | medium | small | Correct packaging/appimage/sources.py::copy_crate_notices, which scans only top-level LICENSE/LICENCE/COPYING/COPYRIGHT/NOTICE names. The cached epaint_default_fonts-0.32.3 crate contains fonts/OFL.txt, fonts/UFL.txt and fonts/emoji-icon-font-mit-license.txt, and ksni-0.3.6 carries UNLICENSE; these are omitted. Some crates ship no full license files, leaving empty notice directories without explicit rejection. Add permanent failing-before/passing-after tests for nested font notices, UNLICENSE, declared license_file paths and absent notice inputs; preserve paths/provenance and fail explicitly when required attribution inputs are unavailable. |
+| T1280 | open | medium | small | Supply verified pinned supplemental crate notices to future AppImage builds without mutating the Cargo registry cache. The T1279 offline audit of 337 cached crates rejects 17 missing workspace-license inputs (AccessKit, egui, atspi-proxies, cookie-factory, gl_generator, khronos_api and profiling); T1278 restored installed notices only. Reuse locally recovered pinned texts/provenance where valid, bind each supplement to exact crate/version/upstream revision, retain fail-closed rejection of missing or mismatched inputs, and add permanent regressions plus an offline fresh-source collection check. Complete when packaging consumes those inputs with explicit source provenance and no empty notice groups; no new downloads are authorized. |
 
 
 

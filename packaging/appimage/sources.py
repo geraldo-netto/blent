@@ -1,5 +1,6 @@
 """Collect exact corresponding sources and notices for bundled binaries (T308)."""
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -7,6 +8,7 @@ import tarfile
 import urllib.request
 
 from tools import digest
+from crate_notices import copy_crate_notices, verify_archive_notices
 from elf import run
 
 
@@ -85,22 +87,18 @@ def rust_sources(repo, destination, notices):
 def copy_crate(package, destination, notices):
     source = Path(package['manifest_path']).parent
     name = f"{package['name']}-{package['version']}"
+    if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.+-]*', name):
+        raise ValueError('invalid crate output name')
     target = destination / (name + '.tar.gz')
-    copy_crate_notices(source, notices / name)
-    with tarfile.open(target, 'w:gz') as archive:
+    if target.exists() or target.is_symlink():
+        raise FileExistsError(target)
+    records = copy_crate_notices(source, notices / name, package['license_file'])
+    with tarfile.open(target, 'x:gz') as archive:
         archive.add(source, arcname=target.name.removesuffix('.tar.gz'))
+    verify_archive_notices(target, name, records)
     return dict(name=package['name'], version=package['version'], license=package['license'],
+                license_file=package['license_file'], notices=records,
                 source=package['source'], sha256=digest(target))
-
-
-def copy_crate_notices(source, destination):
-    destination.mkdir()
-    for path in source.iterdir():
-        if path.name.lower().startswith(('license', 'licence', 'copying', 'copyright', 'notice')):
-            if path.is_dir():
-                shutil.copytree(path, destination / path.name)
-            else:
-                shutil.copyfile(path, destination / path.name)
 
 
 def runtime_sources(destination, notices):
