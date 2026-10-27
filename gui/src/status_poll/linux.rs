@@ -81,8 +81,8 @@ impl Source for Platform {
         status.active_gpus =
             blent_config::linux::gpu::active(status.daemon_pid, &fifos, &self.gpus);
         query_tablets(&mut status, sessions, capabilities.adb, adb_devices);
-        merge_inventory(&mut status, &self.inventory);
         status.inventory_error = self.inventory_error.clone();
+        merge_inventory(&mut status, &self.inventory);
         if status.daemon_running {
             self.query_display(&mut status);
         }
@@ -153,7 +153,10 @@ fn merge_inventory(status: &mut Status, inventory: &[blent_config::workspace::De
     let mut catalog = blent_config::workspace::Catalog::new(1024).unwrap();
     for device in status.tablets.drain(..).chain(inventory.iter().cloned()) {
         if let Err(error) = catalog.insert(device) {
-            status.inventory_error = Some(error.to_string());
+            status.inventory_error = Some(match status.inventory_error.take() {
+                Some(discovery) => format!("{discovery}; {error}"),
+                None => error.to_string(),
+            });
             break;
         }
     }

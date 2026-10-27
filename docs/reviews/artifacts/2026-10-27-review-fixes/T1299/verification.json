@@ -1,0 +1,115 @@
+{
+  "issue": "t1299",
+  "coverage": [
+    {
+      "file": "gui/src/status_poll/linux.rs",
+      "name": "dynamic",
+      "line": 42,
+      "language": "rust",
+      "covered": 48,
+      "total": 48,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/status_poll/linux.rs",
+      "name": "merge_inventory",
+      "line": 152,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "gui/src/status_poll/linux.rs": [
+      [
+        16,
+        "refresh_devices",
+        5
+      ],
+      [
+        31,
+        "capabilities",
+        1
+      ],
+      [
+        42,
+        "dynamic",
+        7
+      ],
+      [
+        94,
+        "query_display",
+        3
+      ],
+      [
+        107,
+        "display_query",
+        4
+      ],
+      [
+        122,
+        "inventory",
+        6
+      ],
+      [
+        152,
+        "merge_inventory",
+        5
+      ],
+      [
+        169,
+        "adb_devices",
+        2
+      ],
+      [
+        179,
+        "query_tablets",
+        4
+      ]
+    ],
+    "gui/src/status_poll/linux/tests.rs": [
+      [
+        9,
+        "t1299_isolated_dynamic",
+        1
+      ],
+      [
+        38,
+        "t1299_dynamic_preserves_union_errors_and_recovers",
+        4
+      ],
+      [
+        93,
+        "t1273_inventory_keeps_exact_identity_and_rejects_invalid_or_exhausted_inputs",
+        3
+      ],
+      [
+        130,
+        "t1273_display_adapter_and_actions_use_exact_live_owner_and_target",
+        5
+      ],
+      [
+        182,
+        "exercise_display_actions",
+        3
+      ]
+    ]
+  },
+  "tools": {
+    "cargo-llvm-cov": "0.8.7",
+    "LLVM": "22.1.8",
+    "Rust frontend": "syn 2.0.119",
+    "Python": "3.12.3"
+  },
+  "sources": {
+    "gui/src/status_poll/linux.rs": "9e5cb6749ee3f86aa22e9635125a53689a8eadc7194840e239689f783a396f35",
+    "gui/src/status_poll/linux/tests.rs": "328250c97685778b7342ec9f36abd9e25f5cc2841c16577b87c708b37a46e143"
+  },
+  "fresh_target": "/backups/disk2/blent-work/2026-10-27-review-fixes/t1299-native",
+  "ownership": "Validation/projection borrows live metadata, retains no new native obligation, and does not settle or replace existing resource owners; tests keep mocks and temporary stores owned until cleanup. No physical device operations."
+}

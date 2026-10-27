@@ -6,6 +6,89 @@ use blent_config::{
     workspace::{Device, Presence},
 };
 
+fn t1299_isolated_dynamic() {
+    use std::os::unix::fs::PermissionsExt;
+    let directory = tempfile::Builder::new()
+        .permissions(std::fs::Permissions::from_mode(0o700))
+        .tempdir()
+        .unwrap();
+    std::fs::create_dir(directory.path().join("bin")).unwrap();
+    let executable = directory.path().join("bin/blent");
+    std::fs::copy(std::env::current_exe().unwrap(), &executable).unwrap();
+    let output = Command::new(executable)
+        .args([
+            "--exact",
+            "status_poll::linux::tests::t1299_dynamic_preserves_union_errors_and_recovers",
+            "--nocapture",
+        ])
+        .env("BLENT_T1299", "1")
+        .env("XDG_CONFIG_HOME", directory.path())
+        .env("XDG_RUNTIME_DIR", directory.path())
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
+
+#[test]
+fn t1299_dynamic_preserves_union_errors_and_recovers() {
+    if std::env::var_os("BLENT_T1299").is_none() {
+        t1299_isolated_dynamic();
+        return;
+    }
+    let identity = Identity::UsbPeer(
+        blent_config::connection::pairing::PeerId::parse("ab".repeat(32)).unwrap(),
+    );
+    let mut ledger =
+        runtime::SessionLedger::new(runtime::runtime_dir().unwrap().join("sessions.json")).unwrap();
+    ledger
+        .update(vec![runtime::TabletSession {
+            identity: identity.clone(),
+            instance: 0,
+            video_port: 19000,
+            input_port: 20000,
+        }])
+        .unwrap();
+    let capabilities = Capabilities {
+        adb: false,
+        daemon_binary: false,
+        ffmpeg: false,
+        autostart: false,
+        diagnostics: None,
+    };
+    let mut source = Platform::default();
+    for count in [1022, 1023, 1024] {
+        source.inventory = inventory(
+            &(0..count)
+                .map(|n| format!("tablet-{n} device\n"))
+                .collect::<String>(),
+        )
+        .unwrap();
+        let status = source.dynamic(&capabilities);
+        assert_eq!(status.tablets.len(), (count + 1).min(1024));
+        assert_eq!(status.inventory_error.is_some(), count == 1024);
+    }
+    source.inventory_error = Some("discovery failed".into());
+    let status = source.dynamic(&capabilities);
+    assert_eq!(
+        status.inventory_error.as_deref(),
+        Some("discovery failed; workspace capacity exhausted")
+    );
+    source.inventory.pop();
+    source
+        .inventory
+        .push(Device::new(identity.clone(), identity.label(), Presence::Unknown, false).unwrap());
+    source.inventory_error = None;
+    let recovered = source.dynamic(&capabilities);
+    assert_eq!(recovered.tablets.len(), 1024);
+    assert!(recovered.inventory_error.is_none());
+    assert!(recovered.tablets[0].display_assigned());
+}
+
 #[test]
 fn t1273_inventory_keeps_exact_identity_and_rejects_invalid_or_exhausted_inputs() {
     let text = "List of devices attached\nfirst device model:Same_Name\nsecond device model:Same_Name\noffline offline\nunauthorized unauthorized\n\n";
