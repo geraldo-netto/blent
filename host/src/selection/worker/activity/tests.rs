@@ -249,9 +249,11 @@ async fn t1037_controller_observes_pending_resume_coalesced_fences_and_completed
         stop,
         Default::default(),
         Arc::new(attachment),
-        Default::default(),
-        Arc::new(blent::display_work::View::new(Some(source), None, true)),
-        None,
+        WorkContext {
+            scope: Default::default(),
+            activity: Arc::new(blent::display_work::View::new(Some(source), None, true)),
+            quiescence: None,
+        },
     ));
     assert!(timeout(Duration::from_millis(20), updates.changed())
         .await
@@ -356,9 +358,11 @@ async fn t1037_controller_cannot_overlap_original_cache_preparation_or_lose_late
         stop,
         Default::default(),
         Arc::new(preparation.attachment.clone()),
-        scope,
-        Arc::new(blent::display_work::View::new(Some(source), None, true)),
-        None,
+        WorkContext {
+            scope,
+            activity: Arc::new(blent::display_work::View::new(Some(source), None, true)),
+            quiescence: None,
+        },
     ));
     let original = first_proof(&report).await;
     preparation.hold().await; // Actual preflight reader now blocks on the original FIFO.
@@ -499,9 +503,11 @@ async fn t1045_selector_uses_original_viewer_demand_and_saved_preference() {
             stop,
             Default::default(),
             Arc::new(attachment),
-            Default::default(),
-            work,
-            None,
+            WorkContext {
+                scope: Default::default(),
+                activity: work,
+                quiescence: None,
+            },
         ));
         if pause {
             assert!(
@@ -619,9 +625,11 @@ async fn t1050_selector_receipt_waits_for_original_late_native_preparation() {
         stop,
         Default::default(),
         Arc::new(preparation.attachment.clone()),
-        scope,
-        work,
-        Some(participant),
+        WorkContext {
+            scope,
+            activity: work,
+            quiescence: Some(participant),
+        },
     ));
     let original = first_proof(&report).await;
     preparation.hold().await;
@@ -659,13 +667,16 @@ async fn t1187_terminal_reset_cancels_trial_without_releasing_original_native_cr
     use futures_util::FutureExt;
     struct Release(std::sync::mpsc::Sender<()>);
     impl Drop for Release {
-        fn drop(&mut self) { let _ = self.0.send(()); }
+        fn drop(&mut self) {
+            let _ = self.0.send(());
+        }
     }
     let mut initial = super::super::tests::settings();
     initial.decoder_epoch = 0;
-    let mut caps: crate::media::DecoderCapabilities = serde_json::from_str(
-        include_str!("../../../../../testdata/decoder-capabilities-v2.json"),
-    ).unwrap();
+    let mut caps: crate::media::DecoderCapabilities = serde_json::from_str(include_str!(
+        "../../../../../testdata/decoder-capabilities-v2.json"
+    ))
+    .unwrap();
     (caps.width, caps.height) = initial.video_dimensions();
     caps.scope = Some("0".into());
     initial.decoders = Some(caps);
@@ -686,7 +697,14 @@ async fn t1187_terminal_reset_cancels_trial_without_releasing_original_native_cr
             let _ = started.send(());
             held.recv().unwrap();
         });
-        let guarded = until_changed(&key, &mut updates, &mut display, &mut stop, &authority, work);
+        let guarded = until_changed(
+            &key,
+            &mut updates,
+            &mut display,
+            &mut stop,
+            &authority,
+            work,
+        );
         tokio::pin!(guarded);
         tokio::select! {
             _ = &mut guarded => panic!("T1187 trial ended before native admission"),
@@ -703,8 +721,18 @@ async fn t1187_terminal_reset_cancels_trial_without_releasing_original_native_cr
     let retained = !proof.is_complete();
     drop(release);
     timeout(Duration::from_secs(5), async {
-        while !proof.is_complete() { tokio::time::sleep(Duration::from_millis(1)).await; }
-    }).await.unwrap();
-    assert!(cancelled, "T1187 old zero key kept trial authority after exhaustion");
-    assert!(retained, "T1187 numeric cancellation released the held native creator");
+        while !proof.is_complete() {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(
+        cancelled,
+        "T1187 old zero key kept trial authority after exhaustion"
+    );
+    assert!(
+        retained,
+        "T1187 numeric cancellation released the held native creator"
+    );
 }

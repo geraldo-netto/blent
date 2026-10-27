@@ -110,9 +110,11 @@ impl CaptureBackend for LinuxCapture {
             context.stop.clone(),
             manager.latency_tracker(),
             context.identity,
-            blent::native_scope::Scope::new(Some(context.retirement)),
-            work,
-            participants.pop(),
+            crate::selection::WorkContext {
+                scope: blent::native_scope::Scope::new(Some(context.retirement)),
+                activity: work,
+                quiescence: participants.pop(),
+            },
         );
         let capture = Box::pin(async move {
             manager

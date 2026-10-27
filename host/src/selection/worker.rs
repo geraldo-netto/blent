@@ -18,6 +18,13 @@ mod activity;
 mod admission;
 use activity::TrialAuthority;
 
+/// Original display-work admission and native retirement authority, moved once.
+pub(crate) struct WorkContext {
+    pub scope: blent::native_scope::Scope,
+    pub activity: Arc<blent::display_work::View>,
+    pub quiescence: Option<blent::display_quiescence::Participant>,
+}
+
 pub(crate) async fn run(
     config: CaptureConfig,
     settings: watch::Sender<EncoderSettings>,
@@ -25,10 +32,13 @@ pub(crate) async fn run(
     mut stop: watch::Receiver<bool>,
     latency: LatencyTracker,
     attachment: Arc<dyn blent::capture_contract::ProfileSource>,
-    scope: blent::native_scope::Scope,
-    activity: Arc<blent::display_work::View>,
-    quiescence: Option<blent::display_quiescence::Participant>,
+    work: WorkContext,
 ) {
+    let WorkContext {
+        scope,
+        activity,
+        quiescence,
+    } = work;
     let mut updates = settings.subscribe();
     let mut completed: Option<Completed<'_>> = None;
     loop {
@@ -583,8 +593,10 @@ fn spawn(
         stop,
         latency,
         Arc::new(attachment),
-        Default::default(),
-        Arc::new(blent::display_work::View::new(None, None, true)),
-        None,
+        WorkContext {
+            scope: Default::default(),
+            activity: Arc::new(blent::display_work::View::new(None, None, true)),
+            quiescence: None,
+        },
     ))
 }
