@@ -89,7 +89,10 @@ fn links_frame(
             ..Default::default()
         },
         |ctx| {
-            egui::CentralPanel::default().show(ctx, |ui| app.show_header(ui, &Status::default()));
+            egui::CentralPanel::default().show(ctx, |ui| {
+                app.show_header(ui);
+                app.show_project_links(ui, &Status::default());
+            });
         },
     );
     for command in output.platform_output.commands {

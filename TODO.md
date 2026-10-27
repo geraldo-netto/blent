@@ -4,6 +4,7 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
+| T1277 | open | low | medium | Make host project attribution and license notices readable from About; depends on T1276. gui/src/main.rs has no About/license viewer; authoritative inputs are LICENSE, COPYRIGHT.md, THIRD_PARTY_LICENSES.md, licenses/ and package-specific bundled notices. Show version/build identity, original UScreen credit to majmichu1 and Blent contributions by Geraldo Netto; provide a concise project MIT explanation plus full notices available offline, with third-party terms and installed-bundle applicability distinguished. Reuse authoritative notice sources rather than duplicate mutable prose; verify packaged notice availability, missing-file handling, keyboard/narrow-window reading and content consistency. Keep viewer, source integration and packaging checks together as one independently verifiable attribution-access outcome. |
 
 
 

@@ -156,6 +156,12 @@ fallback. Libx264 defaults to one encoding worker, based on the measured
 Consult each alternative's own documentation for its current
 encoder, pen and licensing details.
 
+## About
+
+**About** contains **Report compatibility** and **Star on GitHub**. Project links
+have a fixed destination; switching pages keeps the main navigation in place.
+Compatibility reports open a prefilled issue for review; submission remains explicit.
+
 ## Settings
 
 Host settings live in `~/.config/blent/config.toml`; edit them with

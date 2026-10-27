@@ -105,7 +105,7 @@ fn t1268_display_operation_feedback_is_visible_by_its_control() {
     assert!(!app.busy());
 }
 
-fn key(key: egui::Key) -> Vec<egui::Event> {
+pub(super) fn key(key: egui::Key) -> Vec<egui::Event> {
     [true, false]
         .into_iter()
         .map(|pressed| egui::Event::Key {

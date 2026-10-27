@@ -123,12 +123,14 @@ enum Tab {
     Camera,
     Audio,
     Connections,
+    About,
 }
 
 impl Tab {
-    const ALL: [Self; 7] = [
+    const ALL: [Self; 8] = [
         Self::Overview,
         Self::Connections,
+        Self::About,
         Self::Video,
         Self::Display,
         Self::Camera,
@@ -140,6 +142,7 @@ impl Tab {
         match self {
             Self::Overview => "Tablet resources",
             Self::Connections => "Connections",
+            Self::About => "About",
             Self::Video => "Video",
             Self::Display => "Display & input",
             Self::Camera => "Cameras",
@@ -381,12 +384,12 @@ impl App {
     fn show_window(&mut self, ctx: &egui::Context) {
         self.poll_action();
         let status = self.status.lock().map(|s| s.clone()).unwrap_or_default();
-        if !matches!(self.tab, Tab::Overview | Tab::Connections) {
+        if !matches!(self.tab, Tab::Overview | Tab::Connections | Tab::About) {
             self.show_footer(ctx, &status);
         }
         let devices = self.workspace_devices(&status);
         self.reconcile_selection(&devices);
-        self.show_workspace_navigation(ctx, &status, &devices);
+        self.show_workspace_navigation(ctx, &devices);
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
             egui::ScrollArea::vertical()
@@ -405,16 +408,16 @@ impl App {
     fn show_workspace_navigation(
         &mut self,
         ctx: &egui::Context,
-        status: &Status,
         devices: &[blent_config::workspace::Device],
     ) {
         egui::TopBottomPanel::top("navigation").show(ctx, |ui| {
             ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
-            self.show_header(ui, status);
+            self.show_header(ui);
             ui.horizontal_wrapped(|ui| {
                 ui.selectable_value(&mut self.tab, Tab::Overview, "Tablets");
                 ui.selectable_value(&mut self.tab, Tab::Connections, "Connections");
                 ui.selectable_value(&mut self.tab, Tab::Settings, "Settings");
+                ui.selectable_value(&mut self.tab, Tab::About, "About");
             });
             if matches!(self.tab, Tab::Overview) && ctx.screen_rect().width() < 860.0 {
                 self.tablet_selector(ui, devices);
@@ -528,27 +531,24 @@ impl App {
             });
     }
 
-    fn show_header(&mut self, ui: &mut egui::Ui, status: &Status) {
+    fn show_header(&mut self, ui: &mut egui::Ui) {
         ui.add_space(6.0);
         ui.heading(egui::RichText::new("Blent").size(26.0));
         ui.label(egui::RichText::new("Your tablet’s display, camera and audio").weak());
-        if self.tab == Tab::Settings {
-            self.show_project_links(ui, status);
-        }
         self.show_update_notice(ui);
         ui.add_space(6.0);
     }
 
     fn show_project_links(&self, ui: &mut egui::Ui, status: &Status) {
-        ui.horizontal(|ui| {
-            if ui.small_button("Report compatibility").on_hover_text(
+        ui.horizontal_wrapped(|ui| {
+            if ui.button("Report compatibility").on_hover_text(
                 "Opens a GitHub issue pre-filled with your setup. Nothing is sent until you submit it.").clicked()
             {
                 let url = compatibility_url(&os_release_name(), &self.cfg.encoder,
                     &status.tablets.iter().map(|device| device.name()).collect::<Vec<_>>().join(", "), env!("CARGO_PKG_VERSION"));
                 ui.ctx().open_url(egui::OpenUrl::new_tab(url));
             }
-            if ui.small_button("Star on GitHub").clicked() {
+            if ui.button("Star on GitHub").clicked() {
                 ui.ctx().open_url(egui::OpenUrl::new_tab("https://github.com/geraldo-netto/blent"));
             }
         });
@@ -1162,14 +1162,19 @@ impl App {
 
     fn show_page(&mut self, ui: &mut egui::Ui, status: &Status) {
         ui.heading(self.tab.title());
-        if !matches!(self.tab, Tab::Overview | Tab::Connections) {
+        if !matches!(self.tab, Tab::Overview | Tab::Connections | Tab::About) {
             self.show_navigation(ui);
         }
         ui.add_space(8.0);
+        self.show_page_content(ui, status);
+    }
+
+    fn show_page_content(&mut self, ui: &mut egui::Ui, status: &Status) {
         match self.tab {
             Tab::Overview => self.show_overview(ui, status),
             Tab::Video => self.show_video_settings(ui),
             Tab::Connections => self.connection.show(ui),
+            Tab::About => self.show_project_links(ui, status),
             Tab::Audio => self.show_audio_settings(ui),
             Tab::Camera => self.camera.show(ui, &mut self.cfg.camera.options),
             Tab::Display => self.show_display_settings(ui),
@@ -1181,7 +1186,7 @@ impl App {
         ui.horizontal_wrapped(|ui| {
             for tab in Tab::ALL
                 .into_iter()
-                .filter(|tab| !matches!(tab, Tab::Overview | Tab::Connections))
+                .filter(|tab| !matches!(tab, Tab::Overview | Tab::Connections | Tab::About))
             {
                 ui.selectable_value(&mut self.tab, tab, tab.title());
             }
@@ -1239,6 +1244,7 @@ fn main() -> eframe::Result {
 
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
+    mod about;
     mod connection_guidance;
     mod coverage;
     mod overview;
