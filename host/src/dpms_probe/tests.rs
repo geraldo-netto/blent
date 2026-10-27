@@ -3,7 +3,7 @@ use std::ffi::OsString;
 fn arguments(values: &[&str]) -> impl Iterator<Item = OsString> {
     values
         .iter()
-        .map(|v| OsString::from(v))
+        .map(OsString::from)
         .collect::<Vec<_>>()
         .into_iter()
 }

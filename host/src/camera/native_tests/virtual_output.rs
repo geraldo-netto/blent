@@ -24,7 +24,6 @@ async fn t1137_virtual_pair_uses_original_outputs_and_retires_before_reuse() {
         },
         front_device: front.into(),
         rear_device: rear.into(),
-        ..Default::default()
     };
     let (stop, mut stopped) = watch::channel(false);
     let report = tests::new_report();

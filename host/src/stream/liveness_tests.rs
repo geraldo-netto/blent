@@ -135,7 +135,6 @@ async fn t1038_only_authenticated_current_client_gets_liveness_and_stop_releases
         StreamConfig {
             video_port: 0,
             token: Some("a".repeat(64)),
-            ..Default::default()
         },
         CodecConfig::new(Some(Bytes::from_static(b"csd"))),
         idr.clone(),

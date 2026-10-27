@@ -92,8 +92,10 @@ async fn t931_adb_adapter_rejects_native_target_without_a_command() {
         remote: "tcp:1234".into(),
         local: "tcp:5678".into(),
     };
-    let mut profile = CameraProfile::default();
-    profile.usb_peer = Some("a".repeat(64));
+    let profile = CameraProfile {
+        usb_peer: Some("a".repeat(64)),
+        ..Default::default()
+    };
     let port: &dyn Invitation<CameraProfile> = &bridge;
     let error = port.invite(&"a".repeat(64), &profile).await.unwrap_err();
     assert_eq!(error.to_string(), "ADB camera invitation cannot target USB");

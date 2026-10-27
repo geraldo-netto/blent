@@ -59,8 +59,10 @@ async fn t1147_invalid_path_corpus_retires_constructor_and_close_credit() {
         paths.push(root.path().join("X".repeat(count)));
     }
     for path in paths {
-        let mut options = CameraOptions::default();
-        options.front_device = path;
+        let options = CameraOptions {
+            front_device: path,
+            ..Default::default()
+        };
         let (_sender, mut stop) = watch::channel(false);
         let report = report();
         let result = admit(&options, &mut stop, &report).await;

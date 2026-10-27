@@ -130,8 +130,13 @@ async fn t1129_completed_work_does_not_request_an_unrelated_stop() {
 
 #[tokio::test]
 async fn t1129_media_cli_entrypoints_validate_without_native_devices() {
-    let mut camera = blent_config::camera::CameraOptions::default();
-    camera.width = 0;
+    let camera = blent_config::camera::CameraOptions {
+        profile: blent_config::camera::CameraProfile {
+            width: 0,
+            ..Default::default()
+        },
+        ..Default::default()
+    };
     assert!(crate::camera::run(&camera).await.is_err());
     let mut audio =
         blent_config::audio::AudioOptions::new(blent_config::audio::Direction::Speakers);

@@ -147,7 +147,10 @@ mod tests {
             video_port: 8890,
             input_port: 8891,
         };
-        assert_eq!(State::connections(&[native.clone()]), State::Prepared(1));
+        assert_eq!(
+            State::connections(std::slice::from_ref(&native)),
+            State::Prepared(1)
+        );
         let mut adb = native.clone();
         adb.identity = Identity::Adb("192.0.2.1:5555".into());
         assert_eq!(

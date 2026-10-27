@@ -68,30 +68,6 @@ impl Target {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn t539_cleanup_preserves_other_reverse_mappings() {
-        use blent_config::adb_reverse::temporary::{route, Route};
-        assert_eq!(
-            route(
-                "Usb tcp:9999 tcp:1234\nUsb tcp:8890 tcp:8890",
-                "tcp:9999",
-                "tcp:1234"
-            )
-            .unwrap(),
-            Route::Owned
-        );
-        assert_eq!(
-            route("Usb tcp:9999 tcp:1235", "tcp:9999", "tcp:1234").unwrap(),
-            Route::Foreign
-        );
-        for line in ["", "tcp:9999 tcp:1234", "Usb tcp:9999 tcp:1234 extra"] {
-            assert_ne!(route(line, "tcp:9999", "tcp:1234").ok(), Some(Route::Owned));
-        }
-    }
-}
-
 // Borrowed native-command fixtures exercise invitation encoding/ACK behavior.
 // They do not create a mapping; production Connections always own a Lease.
 #[cfg(test)]
@@ -131,5 +107,29 @@ impl blent_config::camera::connection::Connection<CameraProfile> for Bridge {
     }
     fn close(&self) -> InvitationResult<'_> {
         Box::pin(Bridge::close(self))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn t539_cleanup_preserves_other_reverse_mappings() {
+        use blent_config::adb_reverse::temporary::{route, Route};
+        assert_eq!(
+            route(
+                "Usb tcp:9999 tcp:1234\nUsb tcp:8890 tcp:8890",
+                "tcp:9999",
+                "tcp:1234"
+            )
+            .unwrap(),
+            Route::Owned
+        );
+        assert_eq!(
+            route("Usb tcp:9999 tcp:1235", "tcp:9999", "tcp:1234").unwrap(),
+            Route::Foreign
+        );
+        for line in ["", "tcp:9999 tcp:1234", "Usb tcp:9999 tcp:1234 extra"] {
+            assert_ne!(route(line, "tcp:9999", "tcp:1234").ok(), Some(Route::Owned));
+        }
     }
 }
