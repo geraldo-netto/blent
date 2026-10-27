@@ -245,7 +245,7 @@ fn consume(data: &mut spa::buffer::Data, capture: &mut Capture) {
 }
 
 fn consume_bytes(bytes: &[u8], offset: u32, size: u32, stride: i32, capture: &mut Capture) {
-    if bytes.is_empty() || bytes.len() % 4 != 0 {
+    if bytes.is_empty() || !bytes.len().is_multiple_of(4) {
         capture.discard();
         return;
     }

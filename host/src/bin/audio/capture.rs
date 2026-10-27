@@ -39,7 +39,11 @@ impl Capture {
         let range = (offset as usize)
             .checked_add(size as usize)
             .and_then(|end| data.get(offset as usize..end));
-        if !matches!(stride, 0 | 4) || size % 4 != 0 || size > 38400 || offset % 4 != 0 {
+        if !matches!(stride, 0 | 4)
+            || !size.is_multiple_of(4)
+            || size > 38400
+            || !offset.is_multiple_of(4)
+        {
             self.discard();
             return;
         }
@@ -54,7 +58,7 @@ impl Capture {
         self.discontinuity = true;
     }
     pub(super) fn silence(&mut self, size: u32) {
-        if size > 38400 || size % 4 != 0 {
+        if size > 38400 || !size.is_multiple_of(4) {
             self.discard();
             return;
         }
@@ -141,7 +145,7 @@ fn output(
             for (sample, bytes) in block
                 .samples()
                 .iter()
-                .zip(packet[pcm..].chunks_exact_mut(2))
+                .zip(packet[pcm..].as_chunks_mut::<2>().0.iter_mut())
             {
                 bytes.copy_from_slice(&sample.to_le_bytes());
             }

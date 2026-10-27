@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1308 | open | low | small | Normalize native-audio fixed-width buffer operations for Clippy 0.1.98. The all-features production check rejects constant `chunks_exact_mut(2)` loops in `host/src/bin/audio/ring.rs:38` and `capture.rs:144`, and modulo alignment checks in `capture.rs:42,57` and `native.rs:248`. Use equivalent typed chunk and divisibility operations; preserve malformed-buffer rejection, tails, PCM endian/channel order and callback allocation bounds. Completion: native-audio unit/private PipeWire tests pass, changed functions meet coverage/complexity policy, and these diagnostics disappear without suppressions. The separate enum-storage diagnostic remains T1309. |
 | T1309 | open | low | small | Give native audio device variants explicit bounded owned storage. `host/src/bin/audio/native.rs:23` has inline `Render`/`Capture` variants (Clippy reports at least 1032/2008 bytes), failing the all-features production warning gate. Store each concrete device in one startup-owned box, keeping allocation outside callbacks and original stream/listener retirement authoritative; update direct fixture constructors. Completion: unit and private native source/sink shutdown/server-loss tests pass, startup/callback functions meet coverage and complexity requirements, no callback allocation is introduced, and the all-features production Clippy gate passes after T1308. This is a representation/ownership refactor, not a measured performance claim. |
 
 

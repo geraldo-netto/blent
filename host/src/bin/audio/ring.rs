@@ -35,7 +35,7 @@ impl Render {
         if now.saturating_sub(self.at) > 200 {
             self.cursor = BLOCK_FRAMES;
         }
-        for bytes in output.chunks_exact_mut(2) {
+        for bytes in output.as_chunks_mut::<2>().0 {
             if self.cursor == BLOCK_FRAMES {
                 self.next(now);
             }

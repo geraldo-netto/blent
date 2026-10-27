@@ -1,0 +1,287 @@
+{
+  "issue": "T1308",
+  "coverage": [
+    {
+      "file": "host/src/bin/audio/capture.rs",
+      "name": "chunk",
+      "line": 38,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/bin/audio/capture.rs",
+      "name": "silence",
+      "line": 60,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/bin/audio/capture.rs",
+      "name": "output",
+      "line": 128,
+      "language": "rust",
+      "covered": 30,
+      "total": 30,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/bin/audio/native.rs",
+      "name": "consume_bytes",
+      "line": 247,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/bin/audio/ring.rs",
+      "name": "fill",
+      "line": 32,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/bin/audio/ring.rs",
+      16,
+      "new",
+      1
+    ],
+    [
+      "host/src/bin/audio/ring.rs",
+      26,
+      "position",
+      1
+    ],
+    [
+      "host/src/bin/audio/ring.rs",
+      29,
+      "quantum",
+      1
+    ],
+    [
+      "host/src/bin/audio/ring.rs",
+      32,
+      "fill",
+      4
+    ],
+    [
+      "host/src/bin/audio/ring.rs",
+      46,
+      "next",
+      2
+    ],
+    [
+      "host/src/bin/audio/ring.rs",
+      63,
+      "t718_render_bounds_underflow_lock_contention_and_clock",
+      3
+    ],
+    [
+      "host/src/bin/audio/ring.rs",
+      110,
+      "t718_callback_clock_is_sampled_after_acquiring_queue",
+      2
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      24,
+      "new",
+      1
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      35,
+      "position",
+      1
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      38,
+      "chunk",
+      6
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      56,
+      "discard",
+      1
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      60,
+      "silence",
+      4
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      72,
+      "feed",
+      6
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      91,
+      "publish",
+      3
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      107,
+      "workers",
+      5
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      128,
+      "output",
+      5
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      167,
+      "t719_partial_native_frames_expire_across_capture_stalls",
+      1
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      189,
+      "t719_capture_handles_partial_chunks_bounds_contention_and_retirement",
+      3
+    ],
+    [
+      "host/src/bin/audio/capture.rs",
+      254,
+      "t720_capture_attaches_native_graph_clock_and_clocked_ipc_preserves_it",
+      1
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      28,
+      "run",
+      6
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      69,
+      "input_worker",
+      2
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      77,
+      "input",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      94,
+      "device",
+      6
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      141,
+      "create_stream",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      162,
+      "stream_listener",
+      8
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      190,
+      "format",
+      2
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      213,
+      "process",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      226,
+      "consume",
+      7
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      247,
+      "consume_bytes",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      258,
+      "produce",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      277,
+      "t719_native_callback_without_a_buffer_returns_without_capturing",
+      1
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      292,
+      "consume_fixture",
+      1
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      320,
+      "t719_native_chunk_flags_and_wrapping_preserve_valid_stereo_only",
+      2
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      374,
+      "t718_native_input_validates_flags_and_flushes_discontinuity",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      398,
+      "t720_clocked_microphone_ipc_validates_counters_before_native_delivery",
+      1
+    ]
+  ],
+  "sources": {
+    "host/src/bin/audio/ring.rs": "4e204a4db875baf0c0a8b8c6e780d2758e3ce7d6123c4ee7ca6c3d1e97059b65",
+    "host/src/bin/audio/capture.rs": "08c7c752c6eba6d5580452b256c1b5332363d68ae238948084d2e7a17821e9db",
+    "host/src/bin/audio/native.rs": "e1541ed851123c81139994dca39584bfe7c7c23eaddb6db6e5d743d064d0b95e"
+  },
+  "tools": {
+    "rustc": "1.98.1",
+    "Clippy": "0.1.98",
+    "cargo-llvm-cov": "0.8.7",
+    "LLVM": "22.1.8",
+    "Rust frontend": "syn 2.0.119"
+  },
+  "collection": "Counters cleared in isolated native target; actual native-audio unit binary and private PipeWire integration fixture, offline.",
+  "verification": "Native audio unit and all three private PipeWire integration tests pass. Six fixed-width/alignment diagnostics are gone; the remaining large enum diagnostic is independently T1309. Existing invalid-range, stride, tail, signed PCM, channel-order, underflow and server-loss assertions are unchanged.",
+  "ownership": "No allocation, handoff, borrow lifetime or cleanup change. Typed chunks visit the same complete sample pairs; the pre-zeroed odd tail stays zero. Divisibility predicates use fixed nonzero divisors and reject exactly the original ranges. Callback and borrowed buffer bounds remain unchanged."
+}
