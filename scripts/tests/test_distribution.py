@@ -26,6 +26,19 @@ def tree_contents(root):
 
 
 class DistributionTest(unittest.TestCase):
+    def assert_apk_gate(self, root, result, mode, version):
+        # T1301: an earlier native-build failure cannot pass an APK rejection case.
+        self.assertTrue((root / 'apk-gate-reached').is_file(), result.stdout + result.stderr)
+        if mode == 'success':
+            return
+        self.assertFalse((root / f'dist/blent-{version}-linux-x86_64.tar.gz').exists())
+        if mode == 'failed-apk':
+            self.assertIn('Error 42', result.stderr)
+        else:
+            # SDK reports are fixtures; the real bundle copy rejects absence.
+            self.assertIn('cp: cannot stat', result.stderr)
+            self.assertIn('app-release.apk', result.stderr)
+
     def compare_shared_bundle(self, root, local, library):
         staged = root / 'shared bundle'
         subprocess.run(['bash', 'scripts/stage-linux-bundle.sh', 'target/release',
@@ -53,12 +66,18 @@ class DistributionTest(unittest.TestCase):
                 write('target/release/blent', '#!/bin/sh\nexit 0\n', True)
                 write('target/release/blent-gui', '#!/bin/sh\nexit 0\n', True)
                 write('target/release/blent-audio', '#!/bin/sh\nexit 0\n', True)
+                write('target/release/blent-usb-broker', '#!/bin/sh\nexit 0\n', True)
+                # T1301: independent USB build fixture honors the real output contract.
+                write('host/accessory/Makefile', '$(OUTPUT): helper.c\n\t$(CC) helper.c -o "$(OUTPUT)"\n')
+                write('host/accessory/helper.c', 'int main(void)\n{\n    return 0;\n}\n')
                 write('library.c', 'int blent_distribution_probe(void) { return 0; }\n')
                 write('host/evdi/evdi_helper.c', 'extern int blent_distribution_probe(void); int main(void) { return blent_distribution_probe(); }\n')
                 # T380: stub the other C units too; this fixture checks loader
                 # paths and packaging. evdi_modules tests the real module link.
                 # T832: retain cursor_overlay too; Makefile links it into the helper.
-                for module in ['conversion', 'frame_exchange', 'fifo_writer', 'capture', 'cursor_overlay', 'raw_ring', 'writer']:
+                for module in ['conversion', 'frame_exchange', 'fifo_writer', 'capture',
+                               'capture_activity', 'capture_control', 'cursor_overlay',
+                               'raw_ring', 'writer', 'idle_control']:
                     write(f'host/evdi/{module}.c', '/* distribution fixture */\n')
                 # T642: model an installed compiler library that precedes LIBRARY_PATH.
                 competing = root / 'compiler libraries'
@@ -76,12 +95,13 @@ class DistributionTest(unittest.TestCase):
                     write('android/app/build/outputs/apk/release/app-release.apk', 'apk')
                     library.rename(library.parent / 'actual.so')
                     library.symlink_to('actual.so')
-                write('android/gradlew', '#!/bin/sh\nexit ' + ('42' if mode == 'failed-apk' else '0') + '\n', True)
+                write('android/gradlew', '#!/bin/sh\ntouch apk-gate-reached\nexit ' + ('42' if mode == 'failed-apk' else '0') + '\n', True)
                 # T505: retain the real release gate with offline SDK reports.
                 release_signing_fixture.install_tools(root / "bin")
                 env = dict(os.environ, LIBRARY_PATH=str(library.parent),
                            PATH=f'{root}/bin:{os.environ["PATH"]}')
                 result = subprocess.run(['make', 'dist-local', 'CARGO=true', f'LIBEVDI={library}', 'CC=' + shlex.join(compiler)], cwd=root, env=env, capture_output=True, text=True)
+                self.assert_apk_gate(root, result, mode, version)
                 if mode != 'success':
                     self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
                 else:
@@ -103,6 +123,8 @@ class DistributionTest(unittest.TestCase):
 
     def test_t379_missing_bundle_inputs_cannot_produce_an_archive(self):
         inputs = ['target/release/blent', 'target/release/blent-gui',
+                  'target/release/blent-audio', 'target/release/blent-usb-broker',
+                  'target/release/blent-usb-io',
                   'host/evdi/evdi_helper', 'library/libevdi.so.1.15.0']
         for missing in inputs:
             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as tmp:
@@ -113,16 +135,23 @@ class DistributionTest(unittest.TestCase):
                     path.parent.mkdir(parents=True, exist_ok=True)
                     path.write_text('fixture')
                     path.chmod(0o751)
-                (root / missing).unlink()
+                accessory = root / 'host/accessory'
+                accessory.mkdir()
+                (accessory / 'Makefile').write_text('.PHONY: all\nall:\n\ttrue\n')
                 commands = [
                     ['bash', 'scripts/stage-linux-bundle.sh', 'target/release',
                      'host/evdi/evdi_helper', 'library/libevdi.so.1.15.0', 'staged'],
                     ['make', 'dist-local', 'CC=true', 'CARGO=true',
                      'LIBEVDI=library/libevdi.so.1.15.0'],
                 ]
+                # T1301: prove staging succeeds before removing exactly one input.
+                baseline = subprocess.run(commands[0], cwd=root, capture_output=True, text=True)
+                self.assertEqual(baseline.returncode, 0, baseline.stdout + baseline.stderr)
+                (root / missing).unlink()
                 for command in commands:
                     result = subprocess.run(command, cwd=root, capture_output=True, text=True)
                     self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertIn(missing, result.stderr)
                 self.assertFalse((root / f'dist/blent-{version}-linux-x86_64.tar.gz').exists())
 
 

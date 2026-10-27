@@ -1,0 +1,50 @@
+{
+  "issue": "T1301",
+  "tests": "python3 -m unittest -v test_distribution test_version_fixtures; 4 passed, no skips",
+  "regression": "Existing T102 failed before repair; added permanent T1301 APK-gate assertion failed in all three modes before fixture repair. Missing-input cases now require a successful complete-input baseline and identify the one removed input.",
+  "complexity": {
+    "scripts/tests/test_distribution.py": [
+      [
+        14,
+        "tree_contents",
+        3
+      ],
+      [
+        29,
+        "assert_apk_gate",
+        3
+      ],
+      [
+        42,
+        "compare_shared_bundle",
+        1
+      ],
+      [
+        54,
+        "test_t102_apk_failure_and_bundled_helper_loading",
+        6
+      ],
+      [
+        124,
+        "test_t379_missing_bundle_inputs_cannot_produce_an_archive",
+        4
+      ],
+      [
+        59,
+        "write",
+        2
+      ]
+    ],
+    "generated USB helper.c": [
+      [
+        1,
+        "main",
+        1
+      ]
+    ]
+  },
+  "tool": "repository check.py (Python 3.12.3 AST / cached C tree-sitter)",
+  "source_sha256": "46c983d02d90b4dcffb2e09325b011620df4b84f7aa2d6a24bfc65c50e996844",
+  "coverage_scope": "Test-only fixture changes; no production function modified.",
+  "ownership": "Each test owns one TemporaryDirectory, child build/loader processes finish through subprocess.run before removal; generated USB helper has no allocation or external effects. Bundled loader retains real SONAME and relocated library checks."
+}
