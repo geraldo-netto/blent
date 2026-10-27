@@ -25,7 +25,9 @@ visual verification remains tracked under T1271.
 
 Owner superseded the bounded About column and nested notice viewport. About
 now takes the available page width; its selector follows that width. The full
-notice is a left-aligned, selectable, wrapping label in normal page flow.
+notice became a selectable, wrapping label in page flow. Native acceptance
+subsequently exposed centered placement of its text block; T1294 below corrects
+that regression.
 Only the outer page scrolls when the selected content exceeds the viewport;
 long legal texts are neither truncated nor promised to fit every screen.
 The selector popup retains its own scrolling for the document list.
@@ -49,3 +51,26 @@ removed nested viewport retains no separate state owner. No native allocation,
 worker, device handle or callback ownership changed. Native Windows visual
 acceptance remains T1271. Earlier responsive review results are historical;
 this section records the current owner-approved layout contract.
+
+## T1294 — Native MIT placement and paragraph reflow
+
+Native acceptance and the owner identified two visible problems after T1293:
+egui::Ui::add_sized centers the text block through its child layout even with
+Label::halign(Min), and LICENSE hard-wraps prose around 75 characters. A new
+permanent geometry regression failed with the notice at x=1611.3 in a 3840-point
+window. It now checks left alignment, viewport bounds, wide prose use, paragraph
+count and exact token preservation at four widths from 380 to 3840 points.
+
+The label uses normal left-aligned flow. Only the known top-level MIT notice
+has its prose lines joined inside paragraphs for display. The copy action still
+uses original bytes; all other documents retain their original formatting and
+borrowed storage, checked exhaustively over the embedded document table.
+
+All 167 GUI tests and native startup/accessibility pass. notice_text and
+notice_display_text have 100% individual executable-line coverage. Changed code
+and tests measure complexity <=9. Artifacts: t1294-red.log,
+t1294-coverage.log, t1294-metrics.json and t1294-complexity.json. The display-only
+MIT string is bounded by the embedded source and owned for the synchronous
+frame; egui owns resulting text layout. Other strings retain static lifetime.
+No native resources, asynchronous borrows or retained cleanup obligations were
+introduced. T1271 retains unavailable native Windows acceptance.

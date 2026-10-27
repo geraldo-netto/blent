@@ -65,13 +65,26 @@ fn notice_text(ui: &mut egui::Ui, index: usize) {
     }
     // The notice belongs to the page's single scroll owner. Keep the complete
     // text in normal flow, with wrapping and selection at the available width.
-    ui.add_sized(
-        egui::vec2(ui.available_width(), 0.0),
-        egui::Label::new(text)
+    ui.add(
+        egui::Label::new(notice_display_text(index))
             .selectable(true)
-            .wrap()
-            .halign(egui::Align::Min),
+            .wrap(),
     );
+}
+
+fn notice_display_text(index: usize) -> std::borrow::Cow<'static, str> {
+    let text = DOCUMENTS[index].1;
+    if index != 0 {
+        return std::borrow::Cow::Borrowed(text);
+    }
+    // Only the known MIT prose is reflowed. Preserve paragraph boundaries;
+    // other notices may contain tables/code, and Copy always uses source bytes.
+    std::borrow::Cow::Owned(
+        text.split("\n\n")
+            .map(|paragraph| paragraph.lines().collect::<Vec<_>>().join(" "))
+            .collect::<Vec<_>>()
+            .join("\n\n"),
+    )
 }
 
 fn bundle_link(ui: &mut egui::Ui, locate: impl FnOnce() -> Result<String, String>) {

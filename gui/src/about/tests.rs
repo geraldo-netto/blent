@@ -249,7 +249,10 @@ fn t1291_notice_clip(app: &mut crate::App, ctx: &egui::Context, size: egui::Vec2
     for shape in output.shapes {
         let mut texts = Vec::new();
         collect_text_rects(&shape.shape, &mut texts);
-        if texts.iter().any(|(text, _)| text == DOCUMENTS[0].1) {
+        if texts.iter().any(|(text, _)| {
+            text.split_whitespace()
+                .eq(DOCUMENTS[0].1.split_whitespace())
+        }) {
             return shape.clip_rect;
         }
     }
@@ -283,7 +286,10 @@ fn t1291_notice_reader_adapts_to_tall_and_compact_windows() {
             let labels = crate::tests::sized_window_frame(&mut app, &context, vec![], size);
             let notice = labels
                 .iter()
-                .find(|(text, _)| text == DOCUMENTS[0].1)
+                .find(|(text, _)| {
+                    text.split_whitespace()
+                        .eq(DOCUMENTS[0].1.split_whitespace())
+                })
                 .unwrap()
                 .1;
             assert!(
@@ -346,5 +352,54 @@ fn t1293_about_selector_uses_available_page_width_after_resizes() {
             picker.x0 >= 8.0 && picker.x1 <= f64::from(width),
             "T1293 selector exceeds page: {picker:?}"
         );
+    }
+}
+
+#[test]
+fn t1294_mit_text_stays_left_and_reflows_without_losing_content() {
+    let (_root, mut app) = crate::tests::settings_test_app(crate::Tab::About);
+    let ctx = egui::Context::default();
+    for width in [3840.0, 1040.0, 380.0, 1920.0] {
+        let size = egui::vec2(width, 2088.0);
+        for _ in 0..3 {
+            t1293_about_output(&mut app, &ctx, size);
+        }
+        let labels = crate::tests::sized_window_frame(&mut app, &ctx, vec![], size);
+        let (text, rect) = labels
+            .iter()
+            .find(|(text, _)| text.starts_with("MIT License\n"))
+            .unwrap();
+        assert!(
+            (rect.left() - 8.0).abs() < 1.0,
+            "T1294 notice centered: {rect:?}"
+        );
+        assert!(
+            rect.right() <= width,
+            "T1294 notice exceeds viewport: {rect:?}"
+        );
+        assert!(
+            text.split_whitespace()
+                .eq(DOCUMENTS[0].1.split_whitespace()),
+            "T1294 license content changed"
+        );
+        assert_eq!(
+            text.split("\n\n").count(),
+            DOCUMENTS[0].1.split("\n\n").count()
+        );
+        if width == 3840.0 {
+            assert!(
+                rect.width() > 1000.0,
+                "T1294 MIT prose remains hard-wrapped: {rect:?}"
+            );
+        }
+    }
+}
+
+#[test]
+fn t1294_other_notices_preserve_original_formatting() {
+    for index in 1..DOCUMENTS.len() {
+        let shown = notice_display_text(index);
+        assert!(matches!(shown, std::borrow::Cow::Borrowed(_)));
+        assert_eq!(shown.as_ref(), DOCUMENTS[index].1);
     }
 }
