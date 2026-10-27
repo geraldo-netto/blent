@@ -164,6 +164,10 @@ mod tests {
     use std::{cell::RefCell, rc::Rc};
     struct Backend(Rc<RefCell<Vec<AudioOptions>>>);
     impl AudioController for Backend {
+        fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+            self.stop();
+            blent_config::retirement::Fence::Complete
+        }
         fn start(&self, options: AudioOptions) -> blent_config::camera::BackendResult {
             self.0.borrow_mut().push(options);
             Ok(())

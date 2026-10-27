@@ -91,6 +91,7 @@ impl CameraState {
 pub type BackendResult = Result<()>;
 
 pub trait CameraBackend {
+    fn close(self: Box<Self>) -> crate::retirement::Fence;
     fn start(&self, options: CameraProfile) -> Result<()>;
     fn stop(&self);
     fn state(&self) -> CameraState;

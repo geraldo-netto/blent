@@ -152,6 +152,9 @@ impl Controller {
     }
 }
 impl AudioController for Controller {
+    fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+        blent_config::retirement::Fence::Pending((*self).shutdown())
+    }
     fn start(&self, options: AudioOptions) -> Result<()> {
         options.validate()?;
         let mut admitted = self.admitted.lock().unwrap();
@@ -415,5 +418,26 @@ mod tests {
         }
         assert_eq!(retired.load(Ordering::SeqCst), 2);
         drop(Controller::new(|_, _, _| async { Ok(()) }).unwrap());
+    }
+}
+
+#[cfg(test)]
+mod workspace_close_tests {
+    use super::*;
+
+    #[test]
+    fn t1272_audio_close_returns_the_original_worker_fence() {
+        let pool = crate::control_workers::WorkerPool::new(1).unwrap();
+        let controller = Controller::with_pool(pool.clone(), |_, _, _| async { Ok(()) }).unwrap();
+        let fence = Box::new(controller).close();
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        while !fence.is_complete() {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "T1272 audio worker did not retire"
+            );
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert_eq!(pool.active(), 0);
     }
 }

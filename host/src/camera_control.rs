@@ -182,6 +182,9 @@ impl Controller {
 }
 
 impl CameraBackend for Controller {
+    fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+        blent_config::retirement::Fence::Pending((*self).shutdown())
+    }
     fn start(&self, options: CameraProfile) -> Result<()> {
         options.validate()?;
         self.command.as_ref().unwrap().send(Some(options))?;
@@ -436,5 +439,26 @@ mod tests {
         }
         assert!(matches!(owner.state(), State::Failed(_)));
         owner.stop();
+    }
+}
+
+#[cfg(test)]
+mod workspace_close_tests {
+    use super::*;
+
+    #[test]
+    fn t1272_camera_close_returns_the_original_worker_fence() {
+        let pool = crate::control_workers::WorkerPool::new(1).unwrap();
+        let controller = Controller::with_pool(pool.clone(), |_, _, _| async { Ok(()) }).unwrap();
+        let fence = Box::new(controller).close();
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        while !fence.is_complete() {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "T1272 camera worker did not retire"
+            );
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert_eq!(pool.active(), 0);
     }
 }

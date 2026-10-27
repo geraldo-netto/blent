@@ -9,6 +9,7 @@ pub mod capture_activity;
 pub mod capture_capacity;
 pub mod direct_input;
 pub mod display;
+pub mod display_control;
 pub mod display_activity;
 pub mod encoder_workers;
 pub mod encoding;
@@ -28,6 +29,7 @@ pub mod scheduling;
 pub mod tablets;
 pub mod version;
 pub mod video;
+pub mod workspace;
 pub use model::*;
 
 pub mod connection;

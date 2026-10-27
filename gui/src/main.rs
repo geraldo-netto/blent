@@ -2289,6 +2289,10 @@ mod tests {
         use std::{cell::RefCell, rc::Rc};
         struct Backend(Rc<RefCell<(CameraState, Vec<CameraProfile>)>>);
         impl CameraBackend for Backend {
+            fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+                self.stop();
+                blent_config::retirement::Fence::Complete
+            }
             fn start(&self, options: CameraProfile) -> blent_config::camera::BackendResult {
                 let mut state = self.0.borrow_mut();
                 state.0 = CameraState::Streaming;
@@ -3285,6 +3289,10 @@ printf '%s' "$((existing + delta))" > "$count""#,
         use std::{cell::RefCell, rc::Rc};
         struct Backend(Rc<RefCell<(AudioState, Vec<AudioOptions>)>>);
         impl AudioController for Backend {
+            fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+                self.stop();
+                blent_config::retirement::Fence::Complete
+            }
             fn start(&self, options: AudioOptions) -> blent_config::camera::BackendResult {
                 let mut calls = self.0.borrow_mut();
                 calls.0 = AudioState::Streaming;
@@ -3373,6 +3381,10 @@ printf '%s' "$((existing + delta))" > "$count""#,
         use std::{cell::RefCell, rc::Rc};
         struct Backend(Rc<RefCell<CameraState>>);
         impl CameraBackend for Backend {
+            fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+                self.stop();
+                blent_config::retirement::Fence::Complete
+            }
             fn start(&self, _: CameraProfile) -> blent_config::camera::BackendResult {
                 *self.0.borrow_mut() = CameraState::Starting;
                 Ok(())
@@ -3418,6 +3430,10 @@ printf '%s' "$((existing + delta))" > "$count""#,
         use std::{cell::RefCell, rc::Rc};
         struct Backend(Rc<RefCell<AudioState>>);
         impl AudioController for Backend {
+            fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+                self.stop();
+                blent_config::retirement::Fence::Complete
+            }
             fn start(&self, _: AudioOptions) -> blent_config::camera::BackendResult {
                 *self.0.borrow_mut() = AudioState::Starting;
                 Ok(())

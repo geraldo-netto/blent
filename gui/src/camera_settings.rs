@@ -240,6 +240,10 @@ mod tests {
         profiles: Rc<RefCell<Vec<CameraProfile>>>,
     }
     impl CameraBackend for Fixture {
+        fn close(self: Box<Self>) -> blent_config::retirement::Fence {
+            self.stop();
+            blent_config::retirement::Fence::Complete
+        }
         fn start(&self, options: CameraProfile) -> blent_config::camera::BackendResult {
             self.profiles.borrow_mut().push(options);
             *self.state.borrow_mut() = CameraState::Streaming;

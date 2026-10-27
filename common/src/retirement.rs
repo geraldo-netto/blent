@@ -24,6 +24,40 @@ impl Completion {
         self.0.load(Ordering::Acquire)
     }
 }
+
+/// Returned by consuming a resource controller. Complete is for an owner that
+/// has synchronously settled all work; Pending retains the original admission's
+/// exact native exit/join evidence. Neither logical Stop nor a deadline suffices.
+pub enum Fence {
+    Complete,
+    Pending(Completion),
+}
+impl Fence {
+    pub fn is_complete(&self) -> bool {
+        match self {
+            Self::Complete => true,
+            Self::Pending(completion) => completion.is_complete(),
+        }
+    }
+}
+
+#[cfg(test)]
+mod fence_tests {
+    use super::*;
+
+    #[test]
+    fn t1272_consumed_owner_fence_preserves_original_admission() {
+        assert!(Fence::Complete.is_complete());
+        let pool = Pool::new(1).unwrap();
+        let admission = pool.reserve().unwrap();
+        let fence = Fence::Pending(admission.completion());
+        assert!(!fence.is_complete());
+        assert!(pool.reserve().is_err());
+        drop(admission);
+        assert!(fence.is_complete());
+        assert_eq!(pool.active(), 0);
+    }
+}
 #[derive(Debug)]
 struct State {
     capacity: usize,
