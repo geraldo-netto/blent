@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1309 | open | low | small | Give native audio device variants explicit bounded owned storage. `host/src/bin/audio/native.rs:23` has inline `Render`/`Capture` variants (Clippy reports at least 1032/2008 bytes), failing the all-features production warning gate. Store each concrete device in one startup-owned box, keeping allocation outside callbacks and original stream/listener retirement authoritative; update direct fixture constructors. Completion: unit and private native source/sink shutdown/server-loss tests pass, startup/callback functions meet coverage and complexity requirements, no callback allocation is introduced, and the all-features production Clippy gate passes after T1308. This is a representation/ownership refactor, not a measured performance claim. |
 
 
 

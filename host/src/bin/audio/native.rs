@@ -20,9 +20,10 @@ use ring::Render;
 mod capture;
 use capture::Capture;
 
+// One startup allocation; the listener owns it through native callback retirement.
 enum DeviceIo {
-    Microphone(Render),
-    Speakers(Capture),
+    Microphone(Box<Render>),
+    Speakers(Box<Capture>),
 }
 
 pub fn run() -> Result<()> {
@@ -52,11 +53,11 @@ pub fn run() -> Result<()> {
     let io = match direction {
         Direction::Microphone => {
             input_worker(queue.clone(), epoch, running.clone());
-            DeviceIo::Microphone(Render::new(queue.clone(), epoch))
+            DeviceIo::Microphone(Box::new(Render::new(queue.clone(), epoch)))
         }
         Direction::Speakers => {
             capture::workers(queue.clone(), epoch, running.clone(), ready.clone());
-            DeviceIo::Speakers(Capture::new(queue.clone(), epoch))
+            DeviceIo::Speakers(Box::new(Capture::new(queue.clone(), epoch)))
         }
     };
     let monitor = clock::monitor(queue, running.clone(), direction == Direction::Microphone);
@@ -285,7 +286,7 @@ mod tests {
         let queue = Arc::new(Mutex::new(
             PcmQueue::new(AudioProfile::new(Direction::Speakers)).unwrap(),
         ));
-        let mut io = DeviceIo::Speakers(Capture::new(queue.clone(), Instant::now()));
+        let mut io = DeviceIo::Speakers(Box::new(Capture::new(queue.clone(), Instant::now())));
         process(&stream, &mut io);
         assert_eq!(queue.lock().unwrap().queued_frames(), 0);
     }

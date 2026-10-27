@@ -1,0 +1,173 @@
+{
+  "issue": "T1309",
+  "coverage": [
+    {
+      "file": "host/src/bin/audio/native.rs",
+      "name": "run",
+      "line": 29,
+      "language": "rust",
+      "covered": 30,
+      "total": 30,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/bin/audio/native.rs",
+      "name": "device",
+      "line": 95,
+      "language": "rust",
+      "covered": 42,
+      "total": 43,
+      "percent": 97.67441860465117,
+      "passes": true,
+      "missing": [
+        125
+      ]
+    },
+    {
+      "file": "host/src/bin/audio/native.rs",
+      "name": "stream_listener",
+      "line": 163,
+      "language": "rust",
+      "covered": 26,
+      "total": 27,
+      "percent": 96.29629629629629,
+      "passes": true,
+      "missing": [
+        175
+      ]
+    },
+    {
+      "file": "host/src/bin/audio/native.rs",
+      "name": "process",
+      "line": 214,
+      "language": "rust",
+      "covered": 8,
+      "total": 9,
+      "percent": 88.88888888888889,
+      "passes": true,
+      "missing": [
+        219
+      ]
+    }
+  ],
+  "complexity": [
+    [
+      "host/src/bin/audio/native.rs",
+      29,
+      "run",
+      6
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      70,
+      "input_worker",
+      2
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      78,
+      "input",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      95,
+      "device",
+      6
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      142,
+      "create_stream",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      163,
+      "stream_listener",
+      8
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      191,
+      "format",
+      2
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      214,
+      "process",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      227,
+      "consume",
+      7
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      248,
+      "consume_bytes",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      259,
+      "produce",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      278,
+      "t719_native_callback_without_a_buffer_returns_without_capturing",
+      1
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      293,
+      "consume_fixture",
+      1
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      321,
+      "t719_native_chunk_flags_and_wrapping_preserve_valid_stereo_only",
+      2
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      375,
+      "t718_native_input_validates_flags_and_flushes_discontinuity",
+      3
+    ],
+    [
+      "host/src/bin/audio/native.rs",
+      399,
+      "t720_clocked_microphone_ipc_validates_counters_before_native_delivery",
+      1
+    ]
+  ],
+  "sources": {
+    "host/src/bin/audio/native.rs": "079597de10798bb3979e176a09a131ea2be512f6b5b4d94b31d95aa26f5b6bec"
+  },
+  "tools": {
+    "rustc": "1.98.1",
+    "Clippy": "0.1.98",
+    "cargo-llvm-cov": "0.8.7",
+    "LLVM": "22.1.8",
+    "Rust frontend": "syn 2.0.119"
+  },
+  "collection": "Counters cleared in isolated native target; actual native-audio unit binary and private PipeWire integration fixture, offline.",
+  "verification": "All native-audio unit and three private PipeWire integration tests pass, including both directions, native counters, underflow, owned node disappearance, stdin close and server loss. The all-features production Clippy gate is warning-free. Existing default-feature CI Clippy and broad regression evidence remain in earlier item artifacts; no unrelated suite was skipped or weakened.",
+  "ownership": {
+    "owner": "Exactly one inner Box<Render> or Box<Capture> per admitted native helper; allocated in run before listener installation. No allocation was added to process, io_changed, fill or consume callbacks.",
+    "handoff": "run moves DeviceIo into device, then into the PipeWire local listener userdata. No cloning, raw Box pointer extraction, manual free or callback retention was added. The device variant remains fixed.",
+    "failure": "An error before listener registration drops the still-owned value; after registration the existing listener/scope destruction owns cleanup. The Rust Box owns its entire concrete device and drops its queue Arc. Queue state has no reverse reference to DeviceIo, so this allocation adds no retaining cycle.",
+    "cutoff_and_quiescence": "Original mainloop/stream/listener cleanup and parent OwnedChild retirement remain authoritative. Box drops do not grant native retirement or reuse by themselves; the parent retains the helper/dependent proof through cancellation, errors and actual process death. Existing clock-pointer invalidation at io_changed remains unchanged.",
+    "conservation": "One concrete device allocation is moved once into its listener owner and released through that owner; callbacks borrow it while registered. Startup failure has a live cleanup sponsor. No borrowed view escapes or additional data queue/capacity is introduced.",
+    "limits": "Conditional cleanup still relies on existing PipeWire listener-removal semantics and eventual process/dependent completion. Private native observations complement language ownership and bounded regressions; they do not prove unrestricted native safety or physical hardware support. Rust allocation exhaustion uses the existing process-abort/OS-reclamation model, with parent retirement proof still required. This trades one startup allocation for bounded enum storage; no speed claim."
+  }
+}
