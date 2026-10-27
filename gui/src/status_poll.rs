@@ -19,6 +19,7 @@ struct Capabilities {
 }
 
 trait Source {
+    fn refresh_devices(&mut self);
     fn capabilities(&mut self) -> Capabilities;
     fn dynamic(&mut self, capabilities: &Capabilities) -> Status;
 }
@@ -39,6 +40,9 @@ struct Sampler<S> {
 
 impl<S: Source> Sampler<S> {
     fn poll(&mut self, now: Instant, force: bool) -> Status {
+        if force {
+            self.source.refresh_devices();
+        }
         let stale = self
             .cached
             .as_ref()
@@ -75,6 +79,7 @@ mod tests {
         installed: bool,
     }
     impl Source for Fake {
+        fn refresh_devices(&mut self) {}
         fn capabilities(&mut self) -> Capabilities {
             self.static_calls += 1;
             Capabilities {
@@ -139,7 +144,7 @@ mod tests {
         for _ in 0..30 {
             let mut status = Status::default();
             query_tablets(&mut status, vec![], true, devices);
-            assert!(!status.tablet_connected);
+            assert!(status.tablets.is_empty());
         }
         assert_eq!(calls.get(), 0);
         let session = runtime::TabletSession {
@@ -152,13 +157,21 @@ mod tests {
         query_tablets(&mut status, vec![session.clone()], false, devices);
         assert_eq!(calls.get(), 0);
         query_tablets(&mut status, vec![session.clone()], true, devices);
-        assert!(status.tablet_connected);
-        assert_eq!(status.tablet_model, "Test Tablet");
+        assert!(!status.tablets.is_empty());
+        assert_eq!(
+            status
+                .tablets
+                .iter()
+                .map(|device| device.name())
+                .collect::<Vec<_>>()
+                .join(", "),
+            "Test Tablet"
+        );
         assert_eq!(calls.get(), 1);
         let mut failed = Status::default();
         query_tablets(&mut failed, vec![session], true, || {
             Err(std::io::ErrorKind::TimedOut.into())
         });
-        assert!(!failed.tablet_connected);
+        assert!(failed.tablets.is_empty());
     }
 }

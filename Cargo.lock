@@ -665,6 +665,7 @@ dependencies = [
  "eframe",
  "serde",
  "tempfile",
+ "tokio",
  "toml",
  "windows-sys 0.61.2",
 ]

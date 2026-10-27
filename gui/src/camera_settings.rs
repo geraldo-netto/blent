@@ -4,6 +4,7 @@ use eframe::egui;
 mod connection;
 
 pub(super) struct Panel {
+    owner: crate::media_owner::Owner,
     pub(super) backend: Option<Box<dyn CameraBackend>>,
     error: Option<String>,
     preview: crate::camera_preview::Preview,
@@ -14,6 +15,7 @@ pub(super) struct Panel {
 impl Default for Panel {
     fn default() -> Self {
         Self {
+            owner: Default::default(),
             backend: None,
             error: None,
             preview: Default::default(),
@@ -48,18 +50,27 @@ impl Panel {
         let state = self.state();
         ui.label(state_label(&state));
         if let Some(error) = &self.error {
-            ui.colored_label(egui::Color32::RED, error);
+            ui.colored_label(ui.visuals().error_fg_color, error);
         }
         self.buttons(ui, options, &state);
-        ui.label(egui::RichText::new("Start/Restart camera applies these settings. Apply only saves preferences. Camera changes never restart display sharing.").weak().size(11.0));
+        ui.label(egui::RichText::new("Start/Restart camera applies these settings. Save only saves preferences. Camera changes never restart display sharing.").weak().size(11.0));
         ui.label(egui::RichText::new("Keep this window open while sharing. Select Blent Front or Blent Rear in your video call; only the selected lens is live.").weak().size(11.0));
         ui.add_space(10.0);
     }
 
-    fn state(&self) -> CameraState {
+    fn native_state(&self) -> CameraState {
         self.backend
             .as_ref()
             .map_or(CameraState::Stopped, |backend| backend.state())
+    }
+
+    fn state(&mut self) -> CameraState {
+        let state = self.native_state();
+        match self.owner.activity(activity(&state)) {
+            blent_config::workspace::Activity::Starting => CameraState::Starting,
+            blent_config::workspace::Activity::Stopping => CameraState::Stopping,
+            _ => state,
+        }
     }
 
     fn buttons(&mut self, ui: &mut egui::Ui, options: &CameraProfile, state: &CameraState) {
@@ -82,9 +93,7 @@ impl Panel {
                 .add_enabled(active, egui::Button::new("Stop camera"))
                 .clicked()
             {
-                if let Some(backend) = &self.backend {
-                    backend.stop();
-                }
+                self.stop();
             }
         });
         if active {
@@ -98,12 +107,18 @@ impl Panel {
 
     fn start(&mut self, options: CameraProfile) -> Result<(), String> {
         options.validate().map_err(|e| e.to_string())?;
+        let target = crate::media_owner::identity(options.target().map_err(|e| e.to_string())?);
         if !self
             .transports
             .supports(&options.target().map_err(|e| e.to_string())?)
         {
             return Err("Selected camera transport is unavailable on this backend.".into());
         }
+        let observed = activity(&self.native_state());
+        if self.owner.needs_release(&target, observed) {
+            self.stop();
+        }
+        self.owner.prepare(&target)?;
         if self.backend.is_none() {
             self.backend = Some((self.create)()?);
         }
@@ -111,7 +126,64 @@ impl Panel {
             .as_ref()
             .unwrap()
             .start(options)
-            .map_err(|e| format!("{e:#}"))
+            .map_err(|e| format!("{e:#}"))?;
+        self.owner.admit(target);
+        Ok(())
+    }
+
+    pub(super) fn stop(&mut self) {
+        if let Some(backend) = self.backend.take() {
+            self.owner.release(backend.close());
+        }
+    }
+
+    pub(super) fn start_for(
+        &mut self,
+        selected: &blent_config::tablets::Identity,
+        options: &CameraProfile,
+    ) {
+        let mut options = options.clone();
+        crate::resource_workspace::set_target(selected, &mut options.serial, &mut options.usb_peer);
+        self.error = self.start(options).err();
+    }
+
+    pub(super) fn view(
+        &mut self,
+        selected: &blent_config::tablets::Identity,
+    ) -> blent_config::workspace::ResourceView {
+        use blent_config::workspace::{project, Activity, Observation};
+        let observed = activity(&self.native_state());
+        let activity = self.owner.activity(observed);
+        let owner =
+            (self.backend.is_some() || activity == Activity::Stopping).then_some(Observation {
+                target: self.owner.target(),
+                activity,
+            });
+        project(
+            selected,
+            crate::resource_workspace::supports(self.transports, selected),
+            owner,
+        )
+    }
+
+    pub(super) fn error(&self) -> Option<&str> {
+        self.error.as_deref()
+    }
+    pub(super) fn target(&self) -> Option<&blent_config::tablets::Identity> {
+        self.owner.target()
+    }
+}
+
+fn activity(state: &CameraState) -> blent_config::workspace::Activity {
+    use blent_config::workspace::Activity;
+    match state {
+        CameraState::Stopped => Activity::Off,
+        CameraState::Starting => Activity::Starting,
+        CameraState::Paused => Activity::Paused,
+        CameraState::Waiting => Activity::Waiting,
+        CameraState::Streaming => Activity::InUse,
+        CameraState::Stopping => Activity::Stopping,
+        CameraState::Failed(_) => Activity::Failed,
     }
 }
 
@@ -233,6 +305,76 @@ fn resolution(ui: &mut egui::Ui, options: &mut CameraProfile) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t1273_camera_states_preserve_pending_and_retiring_ownership() {
+        use blent_config::workspace::Activity;
+        let state = std::rc::Rc::new(std::cell::RefCell::new(CameraState::Stopped));
+        let mut panel = Panel {
+            backend: Some(Box::new(Fixture {
+                state: state.clone(),
+                profiles: Default::default(),
+            })),
+            ..Default::default()
+        };
+        for (native, expected) in [
+            (CameraState::Stopped, Activity::Off),
+            (CameraState::Starting, Activity::Starting),
+            (CameraState::Paused, Activity::Paused),
+            (CameraState::Waiting, Activity::Waiting),
+            (CameraState::Streaming, Activity::InUse),
+            (CameraState::Stopping, Activity::Stopping),
+            (CameraState::Failed("fixture".into()), Activity::Failed),
+        ] {
+            *state.borrow_mut() = native.clone();
+            assert_eq!(activity(&native), expected);
+            assert_eq!(panel.state(), native);
+        }
+        *state.borrow_mut() = CameraState::Stopped;
+        panel
+            .owner
+            .admit(Some(blent_config::tablets::Identity::Adb("first".into())));
+        assert_eq!(panel.state(), CameraState::Starting);
+        let pool = blent_config::retirement::Pool::new(1).unwrap();
+        let admission = pool.reserve().unwrap();
+        panel
+            .owner
+            .release(blent_config::retirement::Fence::Pending(
+                admission.completion(),
+            ));
+        assert_eq!(panel.state(), CameraState::Stopping);
+        drop(admission);
+        assert_eq!(panel.state(), CameraState::Stopped);
+    }
+
+    #[test]
+    fn t1273_queued_camera_start_cannot_be_retargeted() {
+        let profiles = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
+        let mut panel = Panel {
+            backend: Some(Box::new(Fixture {
+                state: std::rc::Rc::new(std::cell::RefCell::new(CameraState::Stopped)),
+                profiles: profiles.clone(),
+            })),
+            transports: blent_config::camera::connection::Transports {
+                adb: true,
+                usb: true,
+            },
+            ..Default::default()
+        };
+        panel
+            .start(CameraProfile {
+                serial: Some("first".into()),
+                ..Default::default()
+            })
+            .unwrap();
+        assert!(panel
+            .start(CameraProfile {
+                serial: Some("second".into()),
+                ..Default::default()
+            })
+            .is_err());
+        assert_eq!(profiles.borrow().len(), 1);
+    }
     use std::{cell::RefCell, rc::Rc};
 
     struct Fixture {

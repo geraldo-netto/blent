@@ -11,9 +11,9 @@ pub fn apply_label(running: bool, edited: &FileConfig, previous: &FileConfig) ->
     if !running {
         "Save"
     } else if edited.requires_restart_from(previous) {
-        "Apply & restart"
+        "Save & restart all displays"
     } else {
-        "Apply"
+        "Save"
     }
 }
 
@@ -181,7 +181,10 @@ mod tests {
             conversion_threads: 128,
             ..baseline.clone()
         };
-        assert_eq!(apply_label(true, &edited, &baseline), "Apply & restart");
+        assert_eq!(
+            apply_label(true, &edited, &baseline),
+            "Save & restart all displays"
+        );
         let readback = store.clone();
         let calls = std::sync::Arc::new(std::sync::atomic::AtomicUsize::new(0));
         let restarted = calls.clone();
@@ -234,7 +237,7 @@ mod tests {
             };
             assert_eq!(
                 apply_label(true, &edited, &baseline),
-                "Apply & restart",
+                "Save & restart all displays",
                 "T429"
             );
             let expected = edited.clone();
@@ -367,7 +370,7 @@ mod tests {
                 ..baseline.clone()
             };
             assert!(!edited.requires_restart_from(&baseline));
-            assert_eq!(apply_label(true, &edited, &baseline), "Apply");
+            assert_eq!(apply_label(true, &edited, &baseline), "Save");
             let reader = store.clone();
             let path = dir.path().join("request");
             let request = path.clone();
@@ -394,7 +397,10 @@ mod tests {
             ..baseline.clone()
         };
         assert!(mixed.requires_restart_from(&baseline));
-        assert_eq!(apply_label(true, &mixed, &baseline), "Apply & restart");
+        assert_eq!(
+            apply_label(true, &mixed, &baseline),
+            "Save & restart all displays"
+        );
     }
 
     #[test]

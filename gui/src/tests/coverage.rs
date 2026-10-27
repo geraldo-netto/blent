@@ -59,6 +59,7 @@ fn setup_frame(
     ctx: &egui::Context,
     events: Vec<egui::Event>,
 ) -> Vec<(String, egui::Rect)> {
+    app.tab = Tab::Settings;
     window_test_frame(app, ctx, events)
 }
 
@@ -105,7 +106,7 @@ fn links_frame(
 
 #[test]
 fn t497_header_links_only_request_the_expected_fork_pages() {
-    let (_settings_directory, mut app) = settings_test_app(Tab::General);
+    let (_settings_directory, mut app) = settings_test_app(Tab::Settings);
     *app.update.lock().unwrap() = Some("999.0.0".into());
     let ctx = egui::Context::default();
     for (label, expected) in [
@@ -178,12 +179,14 @@ fn t497_action_retirement_reports_failure_and_refreshes_status() {
     let (_settings_directory, mut app) = settings_test_app(Tab::Video);
     let (tx, rx) = std::sync::mpsc::channel();
     app.action = Some(rx);
-    app.run_action(|| panic!("T497 busy action must not dispatch"));
+    app.run_action(FeedbackArea::Settings, || {
+        panic!("T497 busy action must not dispatch")
+    });
     drop(tx);
     app.poll_action();
     assert_eq!(app.message, "Action failed");
     assert!(!app.busy());
-    app.run_action(|| "Completed fixture action".into());
+    app.run_action(FeedbackArea::Settings, || "Completed fixture action".into());
     wait_for_work(&mut app);
     assert_eq!(app.message, "Completed fixture action");
 }
@@ -216,7 +219,7 @@ fn t497_setup_and_lifecycle_actions_use_private_stub_commands() {
         isolated_actions();
         return;
     }
-    let (_settings_directory, mut app) = settings_test_app(Tab::General);
+    let (_settings_directory, mut app) = settings_test_app(Tab::Settings);
     let ctx = egui::Context::default();
     for count in [-1, 0, 4] {
         *app.status.lock().unwrap() = Status {
@@ -252,9 +255,9 @@ fn t497_setup_and_lifecycle_actions_use_private_stub_commands() {
             &mut app,
             &ctx,
             if running {
-                "Stop display & input"
+                "Stop display service (all tablets)"
             } else {
-                "Start display & input"
+                "Start display service (all tablets)"
             },
             setup_frame,
         );

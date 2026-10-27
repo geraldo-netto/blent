@@ -1,0 +1,1212 @@
+{
+  "scope": "changed Linux GUI production functions; Windows native execution unavailable under T1271",
+  "tools": {
+    "rustc": "1.98.1",
+    "cargo-llvm-cov": "0.8.7",
+    "LLVM": "22.1.8",
+    "Rust complexity frontend": "locked syn 2.0.119"
+  },
+  "coverage": {
+    "functions": [
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "default",
+        "line": 15,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "show",
+        "line": 26,
+        "language": "rust",
+        "covered": 26,
+        "total": 26,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "status",
+        "line": 58,
+        "language": "rust",
+        "covered": 17,
+        "total": 17,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "buttons",
+        "line": 76,
+        "language": "rust",
+        "covered": 29,
+        "total": 29,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "start",
+        "line": 108,
+        "language": "rust",
+        "covered": 25,
+        "total": 26,
+        "percent": 96.15384615384616,
+        "passes": true,
+        "missing": [
+          121
+        ]
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "stop",
+        "line": 136,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "start_for",
+        "line": 142,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "view",
+        "line": 152,
+        "language": "rust",
+        "covered": 20,
+        "total": 20,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "error",
+        "line": 175,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "target",
+        "line": 178,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "activity",
+        "line": 183,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/audio_settings.rs",
+        "name": "connection",
+        "line": 203,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "default",
+        "line": 16,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "summary",
+        "line": 48,
+        "language": "rust",
+        "covered": 11,
+        "total": 12,
+        "percent": 91.66666666666667,
+        "passes": true,
+        "missing": [
+          53
+        ]
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "native_state",
+        "line": 61,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "state",
+        "line": 67,
+        "language": "rust",
+        "covered": 7,
+        "total": 7,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "buttons",
+        "line": 76,
+        "language": "rust",
+        "covered": 29,
+        "total": 29,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "start",
+        "line": 108,
+        "language": "rust",
+        "covered": 23,
+        "total": 24,
+        "percent": 95.83333333333333,
+        "passes": true,
+        "missing": [
+          119
+        ]
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "stop",
+        "line": 134,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "start_for",
+        "line": 140,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "view",
+        "line": 150,
+        "language": "rust",
+        "covered": 16,
+        "total": 16,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "error",
+        "line": 169,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "target",
+        "line": 172,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings.rs",
+        "name": "activity",
+        "line": 177,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/camera_settings/connection.rs",
+        "name": "show",
+        "line": 6,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/connection_guidance.rs",
+        "name": "show",
+        "line": 4,
+        "language": "rust",
+        "covered": 11,
+        "total": 11,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/connection_settings.rs",
+        "name": "tablets",
+        "line": 38,
+        "language": "rust",
+        "covered": 23,
+        "total": 23,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "title",
+        "line": 139,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "new",
+        "line": 221,
+        "language": "rust",
+        "covered": 52,
+        "total": 55,
+        "percent": 94.54545454545455,
+        "passes": true,
+        "missing": [
+          236,
+          238,
+          252
+        ]
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "run_action",
+        "line": 290,
+        "language": "rust",
+        "covered": 7,
+        "total": 7,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "apply",
+        "line": 298,
+        "language": "rust",
+        "covered": 15,
+        "total": 15,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "status_dot",
+        "line": 361,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_window",
+        "line": 381,
+        "language": "rust",
+        "covered": 22,
+        "total": 22,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_workspace_navigation",
+        "line": 405,
+        "language": "rust",
+        "covered": 31,
+        "total": 31,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_footer",
+        "line": 470,
+        "language": "rust",
+        "covered": 36,
+        "total": 38,
+        "percent": 94.73684210526316,
+        "passes": true,
+        "missing": [
+          483,
+          484
+        ]
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_feedback",
+        "line": 513,
+        "language": "rust",
+        "covered": 17,
+        "total": 17,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_header",
+        "line": 531,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_project_links",
+        "line": 542,
+        "language": "rust",
+        "covered": 13,
+        "total": 13,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_update_notice",
+        "line": 557,
+        "language": "rust",
+        "covered": 11,
+        "total": 11,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_system_setup",
+        "line": 573,
+        "language": "rust",
+        "covered": 18,
+        "total": 18,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_overview",
+        "line": 632,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_status",
+        "line": 636,
+        "language": "rust",
+        "covered": 23,
+        "total": 25,
+        "percent": 92.0,
+        "passes": true,
+        "missing": [
+          639,
+          659
+        ]
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_daemon_control",
+        "line": 663,
+        "language": "rust",
+        "covered": 19,
+        "total": 23,
+        "percent": 82.6086956521739,
+        "passes": true,
+        "missing": [
+          665,
+          666,
+          673,
+          674
+        ]
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "request_daemon_state",
+        "line": 688,
+        "language": "rust",
+        "covered": 19,
+        "total": 21,
+        "percent": 90.47619047619048,
+        "passes": true,
+        "missing": [
+          696,
+          707
+        ]
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "setting_plug_and_play",
+        "line": 1038,
+        "language": "rust",
+        "covered": 25,
+        "total": 25,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "setting_calibration",
+        "line": 1069,
+        "language": "rust",
+        "covered": 13,
+        "total": 13,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "setting_adaptive_idle",
+        "line": 1083,
+        "language": "rust",
+        "covered": 6,
+        "total": 6,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_display_settings",
+        "line": 1126,
+        "language": "rust",
+        "covered": 8,
+        "total": 8,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_general_settings",
+        "line": 1135,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_page",
+        "line": 1163,
+        "language": "rust",
+        "covered": 15,
+        "total": 15,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "show_navigation",
+        "line": 1180,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "settings_grid",
+        "line": 1199,
+        "language": "rust",
+        "covered": 12,
+        "total": 12,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/main.rs",
+        "name": "main",
+        "line": 1212,
+        "language": "rust",
+        "covered": 26,
+        "total": 26,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "identity",
+        "line": 15,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "needs_release",
+        "line": 23,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "target",
+        "line": 26,
+        "language": "rust",
+        "covered": 3,
+        "total": 3,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "prepare",
+        "line": 30,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "admit",
+        "line": 41,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "release",
+        "line": 47,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "settle",
+        "line": 53,
+        "language": "rust",
+        "covered": 7,
+        "total": 7,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_owner.rs",
+        "name": "activity",
+        "line": 61,
+        "language": "rust",
+        "covered": 12,
+        "total": 12,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_target_settings.rs",
+        "name": "usb",
+        "line": 54,
+        "language": "rust",
+        "covered": 17,
+        "total": 17,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/media_target_settings.rs",
+        "name": "adb",
+        "line": 72,
+        "language": "rust",
+        "covered": 9,
+        "total": 10,
+        "percent": 90.0,
+        "passes": true,
+        "missing": [
+          77
+        ]
+      },
+      {
+        "file": "gui/src/media_target_settings.rs",
+        "name": "identifier",
+        "line": 85,
+        "language": "rust",
+        "covered": 10,
+        "total": 10,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/overview.rs",
+        "name": "service_label",
+        "line": 4,
+        "language": "rust",
+        "covered": 7,
+        "total": 7,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/overview.rs",
+        "name": "assignments",
+        "line": 13,
+        "language": "rust",
+        "covered": 14,
+        "total": 14,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/platform/linux.rs",
+        "name": "apply_tablet_sessions",
+        "line": 58,
+        "language": "rust",
+        "covered": 18,
+        "total": 18,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/platform/linux.rs",
+        "name": "display_command",
+        "line": 278,
+        "language": "rust",
+        "covered": 13,
+        "total": 13,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "workspace_devices",
+        "line": 12,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "collect_workspace_devices",
+        "line": 24,
+        "language": "rust",
+        "covered": 29,
+        "total": 29,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "reconcile_selection",
+        "line": 59,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "tablet_selector",
+        "line": 65,
+        "language": "rust",
+        "covered": 22,
+        "total": 22,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "tablet_tools",
+        "line": 88,
+        "language": "rust",
+        "covered": 12,
+        "total": 12,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "tablet_choices",
+        "line": 101,
+        "language": "rust",
+        "covered": 15,
+        "total": 16,
+        "percent": 93.75,
+        "passes": true,
+        "missing": [
+          114
+        ]
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "show_resources",
+        "line": 120,
+        "language": "rust",
+        "covered": 34,
+        "total": 38,
+        "percent": 89.47368421052632,
+        "passes": true,
+        "missing": [
+          122,
+          123,
+          124,
+          125
+        ]
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "resource_card",
+        "line": 163,
+        "language": "rust",
+        "covered": 23,
+        "total": 24,
+        "percent": 95.83333333333333,
+        "passes": true,
+        "missing": [
+          172
+        ]
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "resource_view",
+        "line": 189,
+        "language": "rust",
+        "covered": 21,
+        "total": 21,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "resource_action",
+        "line": 213,
+        "language": "rust",
+        "covered": 12,
+        "total": 12,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "start_resource",
+        "line": 227,
+        "language": "rust",
+        "covered": 8,
+        "total": 9,
+        "percent": 88.88888888888889,
+        "passes": true,
+        "missing": [
+          229
+        ]
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "stop_resource",
+        "line": 238,
+        "language": "rust",
+        "covered": 6,
+        "total": 7,
+        "percent": 85.71428571428571,
+        "passes": true,
+        "missing": [
+          240
+        ]
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "display_action",
+        "line": 247,
+        "language": "rust",
+        "covered": 19,
+        "total": 19,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "identity_key",
+        "line": 270,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "presence",
+        "line": 277,
+        "language": "rust",
+        "covered": 6,
+        "total": 6,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "add_display_devices",
+        "line": 285,
+        "language": "rust",
+        "covered": 19,
+        "total": 19,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "resource_tab",
+        "line": 307,
+        "language": "rust",
+        "covered": 6,
+        "total": 6,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "display_view",
+        "line": 315,
+        "language": "rust",
+        "covered": 17,
+        "total": 17,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "set_target",
+        "line": 338,
+        "language": "rust",
+        "covered": 15,
+        "total": 15,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "supports",
+        "line": 355,
+        "language": "rust",
+        "covered": 5,
+        "total": 5,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "title",
+        "line": 362,
+        "language": "rust",
+        "covered": 7,
+        "total": 7,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "activity",
+        "line": 371,
+        "language": "rust",
+        "covered": 11,
+        "total": 11,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "label",
+        "line": 384,
+        "language": "rust",
+        "covered": 8,
+        "total": 8,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "card",
+        "line": 402,
+        "language": "rust",
+        "covered": 26,
+        "total": 27,
+        "percent": 96.29629629629629,
+        "passes": true,
+        "missing": [
+          416
+        ]
+      },
+      {
+        "file": "gui/src/resource_workspace.rs",
+        "name": "buttons",
+        "line": 430,
+        "language": "rust",
+        "covered": 30,
+        "total": 32,
+        "percent": 93.75,
+        "passes": true,
+        "missing": [
+          463,
+          464
+        ]
+      },
+      {
+        "file": "gui/src/settings.rs",
+        "name": "apply_label",
+        "line": 10,
+        "language": "rust",
+        "covered": 7,
+        "total": 7,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/status_poll.rs",
+        "name": "poll",
+        "line": 42,
+        "language": "rust",
+        "covered": 13,
+        "total": 13,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/status_poll/linux.rs",
+        "name": "refresh_devices",
+        "line": 16,
+        "language": "rust",
+        "covered": 13,
+        "total": 13,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/status_poll/linux.rs",
+        "name": "dynamic",
+        "line": 42,
+        "language": "rust",
+        "covered": 48,
+        "total": 48,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/status_poll/linux.rs",
+        "name": "query_display",
+        "line": 94,
+        "language": "rust",
+        "covered": 12,
+        "total": 12,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/status_poll/linux.rs",
+        "name": "display_query",
+        "line": 107,
+        "language": "rust",
+        "covered": 12,
+        "total": 12,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/status_poll/linux.rs",
+        "name": "inventory",
+        "line": 122,
+        "language": "rust",
+        "covered": 21,
+        "total": 21,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/status_poll/linux.rs",
+        "name": "merge_inventory",
+        "line": 152,
+        "language": "rust",
+        "covered": 9,
+        "total": 9,
+        "percent": 100.0,
+        "passes": true,
+        "missing": []
+      },
+      {
+        "file": "gui/src/workspace_style.rs",
+        "name": "configure",
+        "line": 5,
+        "language": "rust",
+        "covered": 21,
+        "total": 23,
+        "percent": 91.30434782608695,
+        "passes": true,
+        "missing": [
+          21,
+          26
+        ]
+      }
+    ],
+    "source_sha256": {
+      "gui/src/audio_settings.rs": "067f0af9f66191d5f6078a32393d008c4aab7e330726c458ba1fd7cc23048141",
+      "gui/src/camera_settings.rs": "d275c5f8ff1e86228e6e9a02063d8df2d28090206fbda1c8f2c6509a9e5a8bfc",
+      "gui/src/camera_settings/connection.rs": "645e1f9bcf48fcc128ee5ca4c4f9b4f3db78f1b27065c5ae4e9cfc54bb7d4bf3",
+      "gui/src/connection_guidance.rs": "96135336f804bf878e5f7268133ad28d27266fbbaf4bad3a64317db55ef305bb",
+      "gui/src/connection_settings.rs": "c5a28c2c8010d5601d6fcbc8dd95c69b7edb35abccb7cda4c241b334e8a777fb",
+      "gui/src/main.rs": "5e8649754ab8f74d1b55c2cee5db2b92a5b4a71ef60c6cca84adfa8098f0d9d7",
+      "gui/src/media_owner.rs": "6a120006a05b6cacfdd8659883a7c15a4b16bf8969d1c8ec3c673ca3f567af35",
+      "gui/src/media_target_settings.rs": "908d33147d936ad9ddd87b85ff0243ac681eeb7137ada0dbc2beea2fea6e60a7",
+      "gui/src/overview.rs": "21030977a43f7629e438724cf942ae92dd3c00a595942d0d4dfd406a948775a4",
+      "gui/src/platform/linux.rs": "f839d86da1c566dba18321efd7fb9092f221c02fbbc2793e25ef3b7fc5751e11",
+      "gui/src/resource_workspace.rs": "81e393b8bfe73f04729e508e56745e8e4ed25bac535699901472a892b699ea56",
+      "gui/src/settings.rs": "a8c1ba94bdbe05557a6a4678cba9c0df7d453ccb7509c406e52ee02c02a701df",
+      "gui/src/status_poll.rs": "0aa14e9c7faa6fdab65e1a7547ef1a0d2ef60f28a7772708529d8f96d5d3b7f6",
+      "gui/src/status_poll/linux.rs": "49d9edbb1808f4d9a60dbd0d3cb64e94f877b2895645ce8bb512b74cdf8f79ca",
+      "gui/src/workspace_style.rs": "c5b3ee47845eb3b048cb58295fb40b0a628174cd535a3923f535ab04705ef2cc"
+    },
+    "passes": true
+  },
+  "gui_tests_passed": 148,
+  "native_startup_passed": 1,
+  "windows_cross_compile": "passed; not runtime evidence",
+  "whole_project_complexity": {
+    "functions": 28394,
+    "over_9": 0
+  },
+  "screenshots": {
+    "workspace-compact.png": "ee042c1217fe933c669ab9398adaf7c37d9937c5494f4a092f35f5cd4cdfcbdd",
+    "workspace-desktop.png": "64d32837881cf1a5c6d25c9edd0567956def4bf25bfbb8470b3dcd987319baa9"
+  },
+  "preview_scope": "Real GUI in private Xvfb/dbus; two simulated ADB inventory records; read-only old service lacks new IPC endpoint; no resource Start/Stop, capture, service change or install."
+}

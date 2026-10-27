@@ -80,7 +80,7 @@ Cinnamon remains an unresolved crash risk (T222).
 `android/app/build/outputs/apk/debug/app-debug.apk`; release bundles use
 `blent.apk`). Open Blent on the tablet.
 
-For paired direct USB on Linux, use **USB connection** in the desktop GUI:
+For paired direct USB on Linux, open **Connections → USB connection** in the desktop GUI:
 **Find USB devices**, connect, compare the Computer/Tablet fingerprints and
 explicitly approve the matching peer. USB debugging is not required for this
 route. Discovery and pairing do not grant camera or audio consent.
@@ -88,7 +88,12 @@ route. Discovery and pairing do not grant camera or audio consent.
 For the ADB route, install `adb`, enable USB debugging in Developer options and
 authorize this computer on the tablet.
 
-**3. Start sharing.** Start display & input on the computer. The ADB route sets up
+**3. Start sharing.** Select your tablet on the desktop **Tablets** workspace.
+Start/Stop controls affect only that tablet's display/input, camera, microphone
+or speakers. Camera and audio require separate tablet consent; keep the desktop
+window open for those resources. If the display service is stopped, start it in
+**Settings** first: that global service discovers all eligible display tablets.
+The ADB route sets up
 forwarding and launches the app by default; paired direct USB uses its selected
 authenticated connection. Check
 desktop display settings and input mapping; `blent doctor` helps diagnose
@@ -157,10 +162,14 @@ Host settings live in `~/.config/blent/config.toml`; edit them with
 `blent-gui` or override supported settings with CLI flags. The tablet’s ⚙
 sheet stores app preferences locally; **Apply** sends its shared streaming
 settings to the host. Brightness/refresh preferences take effect immediately.
-The desktop **Video** tab keeps encoder, frame rate and resolution visible;
+The desktop workspace adapts between a tablet sidebar and a compact selector.
+Connection status stays explicit: a remembered or last-seen tablet is not proof
+of a current connection, and a display assignment is not proof of video delivery.
+**Configure** opens the relevant resource preferences; **Settings → Video**
+keeps encoder, frame rate and resolution visible;
 **Video → Encoding GPU** selects a stable Linux VAAPI adapter or CPU encoders.
 Automatic preserves existing device choices; requested and active devices appear
-separately. Apply & restart is required. Missing devices and unsupported codecs
+separately. **Save & restart all displays** is required. Missing devices and unsupported codecs
 use software fallback; this does not move desktop composition.
 
 **Advanced video settings** contains quality, bitrate, calibration and worker/pipe
@@ -169,7 +178,12 @@ bitrate is under **Advanced video settings**, and update/statistics switches are
 under **App & diagnostics**. The decoder panel shows the active codec, advertised
 capabilities, requested performance hints and watchdog fallback; effective hints
 remain unknown. Camera Start/Stop is explicit and independent of
-display sharing; opening settings or pressing Apply does not start capture.
+display sharing; opening desktop settings or pressing Save does not start capture.
+Save/Discard controls appear in preference editors. Workspace resource Start uses
+the exact selected tablet without rewriting saved target preferences. Explicit
+Start in a camera/audio editor uses its target fields. Stop preserves the original
+resource owner until native cleanup completes; selection changes cannot retarget
+queued or retiring work. Global display-service controls remain in **Settings**.
 When USB media is authenticated without a streaming desktop, the tablet shows
 **USB media connected** and **Open camera and audio controls**. That button opens
 the existing local controls directly; it grants no media consent. Pairing alone

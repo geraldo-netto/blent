@@ -61,12 +61,19 @@ pub(crate) fn apply_tablet_sessions(
     mut sessions: Vec<blent_config::runtime::TabletSession>,
 ) {
     sessions.sort_by_key(|session| session.instance);
-    let models: Vec<_> = sessions
+    s.tablets = sessions
         .iter()
-        .filter_map(|session| tablet_label(&session.identity, text))
+        .filter_map(|session| {
+            let name = tablet_label(&session.identity, text)?;
+            blent_config::workspace::Device::new(
+                session.identity.clone(),
+                name,
+                blent_config::workspace::Presence::Connected,
+                true,
+            )
+            .ok()
+        })
         .collect();
-    s.tablet_connected = !models.is_empty();
-    s.tablet_model = models.join(", ");
 }
 
 fn tablet_label(identity: &blent_config::tablets::Identity, text: &str) -> Option<String> {
@@ -265,4 +272,19 @@ pub(crate) fn os_release_name() -> String {
         + " ("
         + &std::env::var("XDG_SESSION_TYPE").unwrap_or_default()
         + ")"
+}
+
+/// Native display IPC stays behind the desktop platform adapter.
+pub(crate) fn display_command(
+    pid: u32,
+    command: &blent_config::display_control::Command,
+) -> String {
+    blent_config::linux::display_control::Client::new()
+        .and_then(|client| client.request(pid, command))
+        .map(|reply| {
+            reply
+                .error
+                .unwrap_or_else(|| "Display request accepted; waiting for tablet state.".into())
+        })
+        .unwrap_or_else(|error| format!("Display request unconfirmed: {error:#}"))
 }

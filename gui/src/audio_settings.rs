@@ -5,6 +5,7 @@ use blent_config::audio::{
 use eframe::egui;
 
 pub(super) struct Panel {
+    owner: crate::media_owner::Owner,
     pub(super) backend: Option<Box<dyn AudioController>>,
     error: Option<String>,
     create: fn() -> Result<Box<dyn AudioController>, String>,
@@ -13,6 +14,7 @@ pub(super) struct Panel {
 impl Default for Panel {
     fn default() -> Self {
         Self {
+            owner: Default::default(),
             backend: None,
             error: None,
             create: factory,
@@ -30,13 +32,10 @@ impl Panel {
         };
         ui.heading(format!("{label} sharing"));
         ui.label(format!("Select Blent {label} in your computer’s {selector} selector. Existing defaults stay unchanged."));
-        let status = self
-            .backend
-            .as_ref()
-            .map_or_else(AudioStatus::default, |b| b.status());
+        let status = self.status();
         ui.label(&status.detail);
         if let Some(error) = &self.error {
-            ui.colored_label(egui::Color32::RED, error);
+            ui.colored_label(ui.visuals().error_fg_color, error);
         }
         self.buttons(ui, options, status.state);
         super::settings_grid(
@@ -51,9 +50,28 @@ impl Panel {
                 connection(ui, options, (self.transports)(options.profile.direction));
             },
         );
-        ui.label("Start applies these settings. Apply saves preferences; it never starts audio or restarts display sharing.");
+        ui.label("Start applies these settings. Save saves preferences; it never starts audio or restarts display sharing.");
         ui.label(if microphone { "Open Blent on the tablet for microphone permission and background consent. Raw mode may include acoustic echo." }
             else { "Open Blent on the tablet for speaker controls and background consent. Other apps may pause playback through audio focus." });
+    }
+
+    fn status(&mut self) -> AudioStatus {
+        let mut status = self
+            .backend
+            .as_ref()
+            .map_or_else(AudioStatus::default, |backend| backend.status());
+        match self.owner.activity(activity(status.state)) {
+            blent_config::workspace::Activity::Starting => {
+                status.state = AudioState::Starting;
+                status.detail = "Starting audio…".into();
+            }
+            blent_config::workspace::Activity::Stopping => {
+                status.state = AudioState::Stopping;
+                status.detail = "Stopping · waiting for native cleanup".into();
+            }
+            _ => {}
+        }
+        status
     }
     fn buttons(&mut self, ui: &mut egui::Ui, options: &AudioOptions, state: AudioState) {
         let active = state.is_active();
@@ -76,9 +94,7 @@ impl Panel {
                 .add_enabled(active, egui::Button::new(format!("Stop {label}")))
                 .clicked()
             {
-                if let Some(backend) = &self.backend {
-                    backend.stop();
-                }
+                self.stop();
             }
         });
         if active {
@@ -91,11 +107,20 @@ impl Panel {
     }
     fn start(&mut self, options: AudioOptions) -> Result<(), String> {
         options.validate().map_err(|e| e.to_string())?;
+        let target = crate::media_owner::identity(options.target().map_err(|e| e.to_string())?);
         if !(self.transports)(options.profile.direction)
             .supports(&options.target().map_err(|e| e.to_string())?)
         {
             return Err("Selected audio transport is unavailable on this backend.".into());
         }
+        let observed = self
+            .backend
+            .as_ref()
+            .map_or(AudioState::Stopped, |backend| backend.status().state);
+        if self.owner.needs_release(&target, activity(observed)) {
+            self.stop();
+        }
+        self.owner.prepare(&target)?;
         if self.backend.is_none() {
             self.backend = Some((self.create)()?);
         }
@@ -103,7 +128,67 @@ impl Panel {
             .as_ref()
             .unwrap()
             .start(options)
-            .map_err(|e| format!("{e:#}"))
+            .map_err(|e| format!("{e:#}"))?;
+        self.owner.admit(target);
+        Ok(())
+    }
+
+    pub(super) fn stop(&mut self) {
+        if let Some(backend) = self.backend.take() {
+            self.owner.release(backend.close());
+        }
+    }
+
+    pub(super) fn start_for(
+        &mut self,
+        selected: &blent_config::tablets::Identity,
+        options: &AudioOptions,
+    ) {
+        let mut options = options.clone();
+        crate::resource_workspace::set_target(selected, &mut options.serial, &mut options.usb_peer);
+        self.error = self.start(options).err();
+    }
+
+    pub(super) fn view(
+        &mut self,
+        selected: &blent_config::tablets::Identity,
+        direction: Direction,
+    ) -> blent_config::workspace::ResourceView {
+        use blent_config::workspace::{project, Activity, Observation};
+        let observed = self
+            .backend
+            .as_ref()
+            .map_or(AudioState::Stopped, |backend| backend.status().state);
+        let activity = self.owner.activity(activity(observed));
+        let owner =
+            (self.backend.is_some() || activity == Activity::Stopping).then_some(Observation {
+                target: self.owner.target(),
+                activity,
+            });
+        project(
+            selected,
+            crate::resource_workspace::supports((self.transports)(direction), selected),
+            owner,
+        )
+    }
+
+    pub(super) fn error(&self) -> Option<&str> {
+        self.error.as_deref()
+    }
+    pub(super) fn target(&self) -> Option<&blent_config::tablets::Identity> {
+        self.owner.target()
+    }
+}
+
+fn activity(state: AudioState) -> blent_config::workspace::Activity {
+    use blent_config::workspace::Activity;
+    match state {
+        AudioState::Stopped => Activity::Off,
+        AudioState::Starting => Activity::Starting,
+        AudioState::Paused => Activity::Paused,
+        AudioState::Streaming => Activity::InUse,
+        AudioState::Stopping => Activity::Stopping,
+        AudioState::Failed => Activity::Failed,
     }
 }
 fn transport_capabilities(direction: Direction) -> blent_config::connection::media::Transports {
@@ -123,7 +208,7 @@ fn connection(
     use crate::media_target_settings::{self, Description, Selection};
     media_target_settings::show(ui, Selection {serial: &mut options.serial, usb_peer: &mut options.usb_peer}, transports,
         Description {label:"USB audio status", unavailable:"Direct USB audio is unavailable on this backend.", qualification:"Experimental: physical debugging-off audio acceptance is pending.",
-            consent:"Pair and select this tablet in USB connection controls. Start this audio direction locally on the tablet; pairing grants no audio access."});
+            consent:"Pair and select this tablet in Connections. Start this audio direction locally on the tablet; pairing grants no audio access."});
 }
 
 fn factory() -> Result<Box<dyn AudioController>, String> {
@@ -160,6 +245,36 @@ fn preferences(ui: &mut egui::Ui, options: &mut AudioOptions) {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t1273_audio_states_preserve_pending_and_retiring_ownership() {
+        use blent_config::workspace::Activity;
+        for (native, expected) in [
+            (AudioState::Stopped, Activity::Off),
+            (AudioState::Starting, Activity::Starting),
+            (AudioState::Paused, Activity::Paused),
+            (AudioState::Streaming, Activity::InUse),
+            (AudioState::Stopping, Activity::Stopping),
+            (AudioState::Failed, Activity::Failed),
+        ] {
+            assert_eq!(activity(native), expected);
+        }
+        let mut panel = Panel::default();
+        panel
+            .owner
+            .admit(Some(blent_config::tablets::Identity::Adb("first".into())));
+        assert_eq!(panel.status().state, AudioState::Starting);
+        let pool = blent_config::retirement::Pool::new(1).unwrap();
+        let admission = pool.reserve().unwrap();
+        panel
+            .owner
+            .release(blent_config::retirement::Fence::Pending(
+                admission.completion(),
+            ));
+        assert_eq!(panel.status().state, AudioState::Stopping);
+        drop(admission);
+        assert_eq!(panel.status().state, AudioState::Stopped);
+    }
     use blent_config::audio::Direction;
     use std::{cell::RefCell, rc::Rc};
     struct Backend(Rc<RefCell<Vec<AudioOptions>>>);
@@ -280,13 +395,23 @@ mod tests {
         panel.start(speaker.clone()).unwrap();
         let mut microphone = AudioOptions::new(Direction::Microphone);
         microphone.serial = Some("exact adb serial".into());
-        panel.start(microphone.clone()).unwrap();
+        assert!(panel.start(microphone.clone()).is_err());
+        let mut microphone_panel = Panel {
+            backend: Some(Box::new(Backend(starts.clone()))),
+            ..Default::default()
+        };
+        microphone_panel.start(microphone.clone()).unwrap();
         let mut usb_microphone = AudioOptions::new(Direction::Microphone);
         usb_microphone.usb_peer = Some("cd".repeat(32));
         usb_microphone.profile.buffer_ms = 80;
         usb_microphone.profile.background = true;
         usb_microphone.profile.processing = Processing::Raw;
-        panel.start(usb_microphone.clone()).unwrap();
+        assert!(microphone_panel.start(usb_microphone.clone()).is_err());
+        let mut usb_panel = Panel {
+            backend: Some(Box::new(Backend(starts.clone()))),
+            ..Default::default()
+        };
+        usb_panel.start(usb_microphone.clone()).unwrap();
         assert_eq!(*starts.borrow(), vec![speaker, microphone, usb_microphone]);
     }
     #[test]

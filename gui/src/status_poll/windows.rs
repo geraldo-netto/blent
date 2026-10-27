@@ -4,6 +4,7 @@ use crate::Status;
 #[derive(Default)]
 pub(super) struct Platform {}
 impl Source for Platform {
+    fn refresh_devices(&mut self) {}
     fn capabilities(&mut self) -> Capabilities {
         let diagnostics = std::sync::Arc::new(blent_config::diagnostics::collect());
         Capabilities {
@@ -27,12 +28,19 @@ fn dynamic_at(path: Option<&std::path::Path>, capabilities: &Capabilities) -> St
         .and_then(|path| blent_config::windows::lifecycle::status(path).ok())
         .flatten();
     Status {
-        tablet_connected: owner.is_some() && !sessions.is_empty(),
-        tablet_model: sessions
+        tablets: sessions
             .iter()
-            .map(|session| session.identity.label())
-            .collect::<Vec<_>>()
-            .join(", "),
+            .filter(|_| owner.is_some())
+            .filter_map(|session| {
+                blent_config::workspace::Device::new(
+                    session.identity.clone(),
+                    session.identity.label(),
+                    blent_config::workspace::Presence::Connected,
+                    true,
+                )
+                .ok()
+            })
+            .collect(),
         daemon_running: owner.is_some(),
         daemon_pid: owner.map(|identity| identity.pid).unwrap_or_default(),
         daemon_binary: capabilities.daemon_binary,
@@ -59,7 +67,7 @@ mod tests {
         let root = tempfile::tempdir().unwrap();
         let path = root.path().join("runtime");
         assert!(!dynamic_at(None, &caps).daemon_running);
-        assert!(!dynamic_at(Some(&path), &caps).tablet_connected);
+        assert!(dynamic_at(Some(&path), &caps).tablets.is_empty());
         let session = blent_config::windows::lifecycle::Session::start(&path).unwrap();
         session
             .publish_sessions(&[blent_config::tablets::TabletSession {
@@ -70,14 +78,22 @@ mod tests {
             }])
             .unwrap();
         let status = dynamic_at(Some(&path), &caps);
-        assert!(status.tablet_connected);
+        assert!(!status.tablets.is_empty());
         assert!(status.daemon_running);
-        assert_eq!(status.tablet_model, "USB café");
+        assert_eq!(
+            status
+                .tablets
+                .iter()
+                .map(|device| device.name())
+                .collect::<Vec<_>>()
+                .join(", "),
+            "USB café"
+        );
         assert!(status.adb_ok);
         assert!(!status.ffmpeg_ok);
         assert!(!status.autostart);
         session.shutdown().unwrap();
-        assert!(!dynamic_at(Some(&path), &caps).tablet_connected);
+        assert!(dynamic_at(Some(&path), &caps).tablets.is_empty());
         // Real default runtime is observed only; never written by this test.
         let _ = Platform::default().dynamic(&caps);
     }

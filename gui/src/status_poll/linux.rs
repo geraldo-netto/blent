@@ -7,9 +7,27 @@ use std::process::Command;
 pub(super) struct Platform {
     daemon: daemon::StatusProbe,
     gpus: Vec<blent_config::linux::gpu::Device>,
+    inventory: Vec<blent_config::workspace::Device>,
+    inventory_error: Option<String>,
+    display: Option<blent_config::linux::display_control::Client>,
 }
 
 impl Source for Platform {
+    fn refresh_devices(&mut self) {
+        match adb_devices()
+            .map_err(|error| error.to_string())
+            .and_then(|text| inventory(&text))
+        {
+            Ok(devices) => {
+                self.inventory = devices;
+                self.inventory_error = None;
+            }
+            Err(error) => {
+                self.inventory.clear();
+                self.inventory_error = Some(error);
+            }
+        }
+    }
     fn capabilities(&mut self) -> Capabilities {
         self.gpus = blent_config::linux::gpu::discover();
         Capabilities {
@@ -63,9 +81,87 @@ impl Source for Platform {
         status.active_gpus =
             blent_config::linux::gpu::active(status.daemon_pid, &fifos, &self.gpus);
         query_tablets(&mut status, sessions, capabilities.adb, adb_devices);
+        merge_inventory(&mut status, &self.inventory);
+        status.inventory_error = self.inventory_error.clone();
+        if status.daemon_running {
+            self.query_display(&mut status);
+        }
         status
     }
 }
+
+impl Platform {
+    fn query_display(&mut self, status: &mut Status) {
+        let result = self.display_query(status.daemon_pid);
+        match result {
+            Ok(reply) => {
+                status.display = Some(reply.snapshot);
+                status.display_error = reply.error;
+            }
+            Err(error) => {
+                status.display = None;
+                status.display_error = Some(error);
+            }
+        }
+    }
+    fn display_query(&mut self, pid: u32) -> Result<blent_config::display_control::Reply, String> {
+        if self.display.is_none() {
+            self.display = Some(
+                blent_config::linux::display_control::Client::new()
+                    .map_err(|error| error.to_string())?,
+            );
+        }
+        self.display
+            .as_ref()
+            .unwrap()
+            .request(pid, &blent_config::display_control::Command::Inspect {})
+            .map_err(|error| format!("Display controls unavailable. In Settings, restart the display service after updating Blent. Details: {error:#}"))
+    }
+}
+
+fn inventory(text: &str) -> Result<Vec<blent_config::workspace::Device>, String> {
+    use blent_config::{
+        tablets::Identity,
+        workspace::{Catalog, Device, Presence},
+    };
+    let mut catalog = Catalog::new(1024).unwrap();
+    for line in text.lines() {
+        let mut fields = line.split_whitespace();
+        let Some(serial) = fields.next() else {
+            continue;
+        };
+        if fields.next() != Some("device") {
+            continue;
+        }
+        let name = fields
+            .find_map(|field| field.strip_prefix("model:"))
+            .unwrap_or(serial)
+            .replace('_', " ");
+        let device = Device::new(
+            Identity::Adb(serial.to_owned()),
+            name,
+            Presence::Unknown,
+            false,
+        )
+        .map_err(|error| error.to_string())?;
+        catalog.insert(device).map_err(|error| error.to_string())?;
+    }
+    Ok(catalog.into_devices())
+}
+
+fn merge_inventory(status: &mut Status, inventory: &[blent_config::workspace::Device]) {
+    let mut catalog = blent_config::workspace::Catalog::new(1024).unwrap();
+    for device in status.tablets.drain(..).chain(inventory.iter().cloned()) {
+        if let Err(error) = catalog.insert(device) {
+            status.inventory_error = Some(error.to_string());
+            break;
+        }
+    }
+    status.tablets = catalog.into_devices();
+}
+
+#[cfg(test)]
+mod tests;
 
 fn adb_devices() -> std::io::Result<String> {
     let out = Command::new("adb")

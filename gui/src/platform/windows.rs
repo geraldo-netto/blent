@@ -156,3 +156,11 @@ mod tests {
         );
     }
 }
+
+/// Display/input are unsupported on this backend.
+pub(crate) fn display_command(
+    _pid: u32,
+    _command: &blent_config::display_control::Command,
+) -> String {
+    "Per-tablet display controls unavailable on this backend.".into()
+}

@@ -7,6 +7,27 @@ use blent_config::connection::{
 };
 use std::sync::{Arc, Mutex};
 
+#[test]
+fn t1273_only_current_authenticated_links_supply_workspace_tablets() {
+    let (mut panel, handle) = fixture();
+    assert!(Panel::default().tablets().is_empty());
+    assert!(panel.tablets().is_empty());
+    {
+        let mut fake = handle.0.lock().unwrap();
+        fake.status.view = Some(publish(&mut fake.model, 2, 1, State::Authenticated));
+    }
+    assert_eq!(
+        panel.tablets()[0].identity(),
+        &blent_config::tablets::Identity::UsbPeer(peer(2))
+    );
+    handle.0.lock().unwrap().status.phase = Phase::Closed;
+    assert!(panel.tablets().is_empty());
+    handle.0.lock().unwrap().status.phase = Phase::Busy;
+    assert_eq!(panel.tablets().len(), 1);
+    handle.0.lock().unwrap().status.view = None;
+    assert!(panel.tablets().is_empty());
+}
+
 struct Fake {
     status: Status,
     model: Model,

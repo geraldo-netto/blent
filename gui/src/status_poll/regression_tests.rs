@@ -67,13 +67,20 @@ fn t516_dynamic_inventory_requires_success_and_recovers() {
     let mut source = linux::Platform::default();
     for (code, connected) in [(17, false), (0, true), (1, false), (0, true)] {
         std::fs::write(root.join("status"), format!("{code}\n")).unwrap();
+        source.refresh_devices();
         let status = source.dynamic(&capabilities);
         assert_eq!(
-            status.tablet_connected, connected,
+            !status.tablets.is_empty(),
+            connected,
             "T516 failed inventory must not supply live device evidence"
         );
         assert_eq!(
-            status.tablet_model,
+            status
+                .tablets
+                .iter()
+                .map(|device| device.name())
+                .collect::<Vec<_>>()
+                .join(", "),
             if connected { "Fixture Tablet" } else { "" }
         );
         assert_eq!(std::fs::read(&path).unwrap(), saved);

@@ -35,6 +35,33 @@ impl Default for Panel {
     }
 }
 impl Panel {
+    pub(super) fn tablets(&mut self) -> Vec<blent_config::workspace::Device> {
+        let Some(status) = self.refresh() else {
+            return vec![];
+        };
+        if !matches!(status.phase, Phase::Ready | Phase::Busy) {
+            return vec![];
+        }
+        let Some(view) = status.view else {
+            return vec![];
+        };
+        view.snapshot()
+            .links()
+            .values()
+            .filter(|link| link.state == State::Authenticated)
+            .filter_map(|link| link.ticket.as_ref())
+            .filter_map(|ticket| {
+                let identity = blent_config::tablets::Identity::UsbPeer(ticket.peer.clone());
+                blent_config::workspace::Device::new(
+                    identity.clone(),
+                    identity.label(),
+                    blent_config::workspace::Presence::Connected,
+                    false,
+                )
+                .ok()
+            })
+            .collect()
+    }
     pub(super) fn show(&mut self, ui: &mut egui::Ui) {
         let status = self.refresh();
         ui.heading("USB connection");

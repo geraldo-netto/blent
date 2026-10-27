@@ -2,6 +2,7 @@
 
 #[cfg(any(windows, test))]
 mod monitor_inventory;
+mod overview;
 
 mod audio_settings;
 mod camera_preview;
@@ -12,12 +13,15 @@ mod conversion_settings;
 #[cfg(any(windows, test))]
 mod direct_input_settings;
 mod gpu_settings;
+mod media_owner;
 mod media_target_settings;
 mod pipe_settings;
 mod platform;
 mod platform_diagnostics;
+mod resource_workspace;
 mod settings;
 mod stream_settings;
+mod workspace_style;
 use platform::*;
 mod status_poll;
 mod status_worker;
@@ -43,8 +47,11 @@ struct Status {
     daemon_running: bool,
     daemon_binary: bool,
     daemon_pid: u32,
-    tablet_connected: bool,
-    tablet_model: String,
+    /// One authoritative collection of observed display-assignment names.
+    tablets: Vec<blent_config::workspace::Device>,
+    display: Option<blent_config::display_control::Snapshot>,
+    display_error: Option<String>,
+    inventory_error: Option<String>,
     /// -1 = evdi module not loaded, otherwise the device count
     evdi_count: i32,
     ffmpeg_ok: bool,
@@ -78,6 +85,7 @@ fn dispatch_action(
 }
 
 struct App {
+    selected: Option<blent_config::tablets::Identity>,
     scheduling_status: String,
     camera: camera_settings::Panel,
     connection: connection_settings::Panel,
@@ -94,6 +102,7 @@ struct App {
     saved_cfg: FileConfig,
     status: Arc<Mutex<Status>>,
     message: String,
+    feedback_area: FeedbackArea,
     /// Newer release, if the check made when the window opened found one.
     update: Arc<Mutex<Option<String>>>,
     tab: Tab,
@@ -101,17 +110,51 @@ struct App {
 }
 
 /// The settings are more than fit in one column, so they are grouped.
-#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Default, PartialEq, Eq, Hash)]
 enum Tab {
+    #[default]
+    Overview,
     /// Encoder, quality, bitrate, frame rate, colour depth, resolution, scale.
     Video,
     /// Where the screen goes, which mode, how many tablets, input devices.
     Display,
     /// Security, updates, plug & play.
-    General,
+    Settings,
     Camera,
     Audio,
-    Usb,
+    Connections,
+}
+
+impl Tab {
+    const ALL: [Self; 7] = [
+        Self::Overview,
+        Self::Connections,
+        Self::Video,
+        Self::Display,
+        Self::Camera,
+        Self::Audio,
+        Self::Settings,
+    ];
+
+    fn title(self) -> &'static str {
+        match self {
+            Self::Overview => "Tablet resources",
+            Self::Connections => "Connections",
+            Self::Video => "Video",
+            Self::Display => "Display & input",
+            Self::Camera => "Cameras",
+            Self::Audio => "Audio",
+            Self::Settings => "Settings",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Default, PartialEq, Eq, Hash)]
+enum FeedbackArea {
+    Display,
+    Setup,
+    #[default]
+    Settings,
 }
 
 use blent_config::release::{API as RELEASES_API, PAGE as RELEASES_PAGE};
@@ -176,6 +219,7 @@ fn check_for_update() -> Option<String> {
 
 impl App {
     fn new(cc: &eframe::CreationContext<'_>, scheduling_status: String) -> Self {
+        workspace_style::configure(&cc.egui_ctx);
         let cfg = blent_config::storage::ConfigStore::default().load();
         let status = Arc::new(Mutex::new(Status::default()));
 
@@ -219,6 +263,7 @@ impl App {
             )
         };
         Self {
+            selected: None,
             #[cfg(windows)]
             monitors,
             #[cfg(windows)]
@@ -235,14 +280,16 @@ impl App {
             cfg,
             status,
             message: String::new(),
+            feedback_area: FeedbackArea::default(),
             update,
-            tab: Tab::Video,
+            tab: Tab::default(),
             action: None,
         }
     }
 
-    fn run_action(&mut self, action: impl FnOnce() -> String + Send + 'static) {
+    fn run_action(&mut self, area: FeedbackArea, action: impl FnOnce() -> String + Send + 'static) {
         if !self.busy() {
+            self.feedback_area = area;
             self.message = "Working…".into();
             self.action = Some(dispatch_action(action));
         }
@@ -260,6 +307,7 @@ impl App {
             self.saved_cfg.clone(),
             restart,
         ));
+        self.feedback_area = FeedbackArea::Settings;
         self.message = "Saving…".into();
     }
 
@@ -310,7 +358,7 @@ fn scale_label(n: u32) -> &'static str {
     }
 }
 
-fn status_dot(ui: &mut egui::Ui, on: bool, label: &str, detail: &str) {
+fn status_dot(ui: &mut egui::Ui, on: bool, label: &str) {
     ui.horizontal(|ui| {
         let color = if on {
             egui::Color32::from_rgb(76, 175, 80)
@@ -320,9 +368,6 @@ fn status_dot(ui: &mut egui::Ui, on: bool, label: &str, detail: &str) {
         let (rect, _) = ui.allocate_exact_size(egui::vec2(10.0, 10.0), egui::Sense::hover());
         ui.painter().circle_filled(rect.center(), 5.0, color);
         ui.label(egui::RichText::new(label).strong());
-        if !detail.is_empty() {
-            ui.label(egui::RichText::new(detail).weak());
-        }
     });
 }
 
@@ -336,23 +381,56 @@ impl App {
     fn show_window(&mut self, ctx: &egui::Context) {
         self.poll_action();
         let status = self.status.lock().map(|s| s.clone()).unwrap_or_default();
-        self.show_footer(ctx, &status);
+        if !matches!(self.tab, Tab::Overview | Tab::Connections) {
+            self.show_footer(ctx, &status);
+        }
+        let devices = self.workspace_devices(&status);
+        self.reconcile_selection(&devices);
+        self.show_workspace_navigation(ctx, &status, &devices);
         egui::CentralPanel::default().show(ctx, |ui| {
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
             egui::ScrollArea::vertical()
+                .id_salt(("page", self.tab))
                 .auto_shrink([false; 2])
                 .show(ui, |ui| {
-                    self.show_header(ui, &status);
-                    self.show_setup(ui, &status);
-                    self.show_status(ui, &status);
-                    ui.add_space(14.0);
-                    ui.separator();
-                    ui.add_space(8.0);
-                    self.show_settings(ui, &status);
+                    self.show_page(ui, &status);
                 });
         });
         // Include work started by a button during this frame.
         if self.busy() {
             ctx.request_repaint_after(Duration::from_millis(100));
+        }
+    }
+
+    fn show_workspace_navigation(
+        &mut self,
+        ctx: &egui::Context,
+        status: &Status,
+        devices: &[blent_config::workspace::Device],
+    ) {
+        egui::TopBottomPanel::top("navigation").show(ctx, |ui| {
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
+            self.show_header(ui, status);
+            ui.horizontal_wrapped(|ui| {
+                ui.selectable_value(&mut self.tab, Tab::Overview, "Tablets");
+                ui.selectable_value(&mut self.tab, Tab::Connections, "Connections");
+                ui.selectable_value(&mut self.tab, Tab::Settings, "Settings");
+            });
+            if matches!(self.tab, Tab::Overview) && ctx.screen_rect().width() < 860.0 {
+                self.tablet_selector(ui, devices);
+            }
+            ui.add_space(4.0);
+        });
+        if self.tab == Tab::Overview && ctx.screen_rect().width() >= 860.0 {
+            egui::SidePanel::left("tablets")
+                .exact_width(220.0)
+                .resizable(false)
+                .show(ctx, |ui| {
+                    ui.heading("Tablets");
+                    egui::ScrollArea::vertical().show(ui, |ui| {
+                        self.tablet_selector(ui, devices);
+                    });
+                });
         }
     }
 
@@ -392,6 +470,7 @@ impl App {
     fn show_footer(&mut self, ctx: &egui::Context, status: &Status) {
         // Keep one shared action row below every tab, visible while settings scroll.
         egui::TopBottomPanel::bottom("footer").show(ctx, |ui| {
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
             ui.add_space(8.0);
             let dirty = self.cfg != self.saved_cfg;
             let valid = self.show_validation_error(ui);
@@ -414,7 +493,7 @@ impl App {
             });
             if !self.message.is_empty() {
                 ui.add_space(8.0);
-                ui.label(egui::RichText::new(&self.message).weak());
+                self.show_feedback(ui, self.feedback_area);
             }
             ui.add_space(8.0);
             ui.label(
@@ -431,22 +510,51 @@ impl App {
         });
     }
 
+    fn show_feedback(&self, ui: &mut egui::Ui, area: FeedbackArea) {
+        if self.feedback_area != area || self.message.is_empty() {
+            return;
+        }
+        egui::ScrollArea::vertical()
+            .id_salt(("feedback", area))
+            .max_height(72.0)
+            .auto_shrink([false, true])
+            .show(ui, |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    if self.busy() {
+                        ui.spinner();
+                    }
+                    ui.label(&self.message);
+                });
+            });
+    }
+
     fn show_header(&mut self, ui: &mut egui::Ui, status: &Status) {
         ui.add_space(6.0);
         ui.heading(egui::RichText::new("Blent").size(26.0));
-        ui.label(egui::RichText::new("Display, input and camera sharing").weak());
+        ui.label(egui::RichText::new("Your tablet’s display, camera and audio").weak());
+        if self.tab == Tab::Settings {
+            self.show_project_links(ui, status);
+        }
+        self.show_update_notice(ui);
+        ui.add_space(6.0);
+    }
+
+    fn show_project_links(&self, ui: &mut egui::Ui, status: &Status) {
         ui.horizontal(|ui| {
             if ui.small_button("Report compatibility").on_hover_text(
                 "Opens a GitHub issue pre-filled with your setup. Nothing is sent until you submit it.").clicked()
             {
                 let url = compatibility_url(&os_release_name(), &self.cfg.encoder,
-                    &status.tablet_model, env!("CARGO_PKG_VERSION"));
+                    &status.tablets.iter().map(|device| device.name()).collect::<Vec<_>>().join(", "), env!("CARGO_PKG_VERSION"));
                 ui.ctx().open_url(egui::OpenUrl::new_tab(url));
             }
             if ui.small_button("Star on GitHub").clicked() {
                 ui.ctx().open_url(egui::OpenUrl::new_tab("https://github.com/geraldo-netto/blent"));
             }
         });
+    }
+
+    fn show_update_notice(&self, ui: &mut egui::Ui) {
         if let Some(v) = self.update.lock().ok().and_then(|g| g.clone()) {
             ui.add_space(6.0);
             ui.horizontal(|ui| {
@@ -456,7 +564,6 @@ impl App {
                 }
             });
         }
-        ui.add_space(12.0);
     }
 
     fn show_missing_packages(&mut self, ui: &mut egui::Ui) {
@@ -476,12 +583,13 @@ impl App {
             .clicked()
         {
             let max_tablets = self.cfg.max_tablets;
-            self.run_action(move || {
+            self.run_action(FeedbackArea::Setup, move || {
                 run_system_setup(max_tablets)
                     .map(|_| "System setup complete".into())
                     .unwrap_or_else(|e| e)
             });
         }
+        self.show_feedback(ui, FeedbackArea::Setup);
     }
 
     fn show_setup(&mut self, ui: &mut egui::Ui, status: &Status) {
@@ -521,18 +629,15 @@ impl App {
         }
     }
 
+    fn show_overview(&mut self, ui: &mut egui::Ui, status: &Status) {
+        self.show_resources(ui, status);
+    }
+
     fn show_status(&mut self, ui: &mut egui::Ui, status: &Status) {
-        if !capabilities().display {
-            platform_diagnostics::show(ui, status.diagnostics.as_deref(), capabilities());
-            ui.label(if status.daemon_running {
-                "Blent daemon running"
-            } else {
-                "Blent daemon stopped"
-            });
-            self.show_daemon_control(ui, status.daemon_running);
-            return;
+        let caps = capabilities();
+        if !caps.display {
+            platform_diagnostics::show(ui, status.diagnostics.as_deref(), caps);
         }
-        // ----- Status -----
         egui::Frame::group(ui.style())
             .inner_margin(12.0)
             .show(ui, |ui| {
@@ -540,32 +645,18 @@ impl App {
                 status_dot(
                     ui,
                     status.daemon_running,
-                    if status.daemon_running {
-                        "Display service running"
-                    } else {
-                        "Display service stopped"
-                    },
-                    "",
+                    overview::service_label(caps.display, status.daemon_running),
                 );
-                ui.add_space(4.0);
-                status_dot(
-                    ui,
-                    status.tablet_connected,
-                    if status.tablet_connected {
-                        "Tablet connected"
-                    } else {
-                        "Tablet not connected"
-                    },
-                    &status.tablet_model,
-                );
-                if !status.tablet_connected {
-                    ui.add_space(4.0);
-                    connection_guidance::show(ui, cfg!(target_os = "linux"), status.adb_ok);
-                }
                 ui.add_space(8.0);
                 self.show_daemon_control(ui, status.daemon_running);
+                self.show_feedback(ui, FeedbackArea::Display);
             });
-
+        if caps.display {
+            overview::assignments(ui, &status.tablets);
+            if status.tablets.is_empty() {
+                connection_guidance::show(ui, cfg!(target_os = "linux"), status.adb_ok);
+            }
+        }
         ui.add_space(10.0);
     }
 
@@ -577,8 +668,8 @@ impl App {
         ui.horizontal(|ui| {
             let big = egui::vec2(ui.available_width(), 34.0);
             let label = match (capabilities().display, running) {
-                (true, true) => "Stop display & input",
-                (true, false) => "Start display & input",
+                (true, true) => "Stop display service (all tablets)",
+                (true, false) => "Start display service (all tablets)",
                 (false, true) => "Stop daemon",
                 (false, false) => "Start daemon",
             };
@@ -595,7 +686,7 @@ impl App {
     }
 
     fn request_daemon_state(&mut self, running: bool) {
-        self.run_action(move || {
+        self.run_action(FeedbackArea::Display, move || {
             if running {
                 stop_daemon()
                     .map(|_| {
@@ -959,7 +1050,7 @@ impl App {
                 )
                 .changed()
             {
-                self.run_action(move || {
+                self.run_action(FeedbackArea::Settings, move || {
                     set_autostart(auto)
                         .map(|_| {
                             if auto {
@@ -979,7 +1070,7 @@ impl App {
         ui.label("Automatic profiles");
         let available = self.cfg.calibration_generation < u32::MAX;
         if ui.add_enabled(available, egui::Button::new("Recalibrate display"))
-            .on_hover_text("Tune automatic profiles again on next Apply & restart. Saved profiles otherwise survive reconnects and reboots. Manual encoder choices take precedence.")
+            .on_hover_text("Tune automatic profiles again on next Save & restart all displays. Saved profiles otherwise survive reconnects and reboots. Manual encoder choices take precedence.")
             .clicked() {
             self.cfg.request_recalibration();
         }
@@ -992,7 +1083,7 @@ impl App {
     fn setting_adaptive_idle(&mut self, ui: &mut egui::Ui) {
         ui.label("Idle capture");
         ui.checkbox(&mut self.cfg.adaptive_idle, "Reduce idle updates when measured safe")
-            .on_hover_text("Experimental Linux CLI capture option. Automatic profiles only. Tests 2 idle updates/s for the current measured encoder and named Android decoder, with automatic fallback to 5. Motion keeps your selected FPS. Apply & restart to change.");
+            .on_hover_text("Experimental Linux CLI capture option. Automatic profiles only. Tests 2 idle updates/s for the current measured encoder and named Android decoder, with automatic fallback to 5. Motion keeps your selected FPS. Save & restart all displays to change.");
         ui.end_row();
     }
 
@@ -1033,17 +1124,23 @@ impl App {
     }
 
     fn show_display_settings(&mut self, ui: &mut egui::Ui) {
-        self.setting_tablets(ui);
-        self.setting_position(ui);
-        self.setting_mode(ui);
-        self.setting_input_devices(ui);
+        settings_grid(ui, ("settings", Tab::Display), |ui| {
+            self.setting_tablets(ui);
+            self.setting_position(ui);
+            self.setting_mode(ui);
+            self.setting_input_devices(ui);
+        });
     }
 
     fn show_general_settings(&mut self, ui: &mut egui::Ui, status: &Status) {
-        self.setting_scheduling(ui);
-        self.setting_security(ui);
-        self.setting_updates(ui);
-        self.setting_plug_and_play(ui, status);
+        self.show_setup(ui, status);
+        self.show_status(ui, status);
+        settings_grid(ui, ("settings", Tab::Settings), |ui| {
+            self.setting_scheduling(ui);
+            self.setting_security(ui);
+            self.setting_updates(ui);
+            self.setting_plug_and_play(ui, status);
+        });
     }
 
     fn setting_scheduling(&mut self, ui: &mut egui::Ui) {
@@ -1063,36 +1160,30 @@ impl App {
         ui.end_row();
     }
 
-    fn show_settings(&mut self, ui: &mut egui::Ui, status: &Status) {
-        ui.label(egui::RichText::new("Settings").strong().size(15.0));
-        ui.add_space(6.0);
-        self.show_settings_tabs(ui);
+    fn show_page(&mut self, ui: &mut egui::Ui, status: &Status) {
+        ui.heading(self.tab.title());
+        if !matches!(self.tab, Tab::Overview | Tab::Connections) {
+            self.show_navigation(ui);
+        }
         ui.add_space(8.0);
         match self.tab {
+            Tab::Overview => self.show_overview(ui, status),
             Tab::Video => self.show_video_settings(ui),
-            Tab::Usb => self.connection.show(ui),
+            Tab::Connections => self.connection.show(ui),
             Tab::Audio => self.show_audio_settings(ui),
             Tab::Camera => self.camera.show(ui, &mut self.cfg.camera.options),
-            Tab::Display => settings_grid(ui, ("settings", self.tab), |ui| {
-                self.show_display_settings(ui)
-            }),
-            Tab::General => settings_grid(ui, ("settings", self.tab), |ui| {
-                self.show_general_settings(ui, status)
-            }),
+            Tab::Display => self.show_display_settings(ui),
+            Tab::Settings => self.show_general_settings(ui, status),
         }
     }
 
-    fn show_settings_tabs(&mut self, ui: &mut egui::Ui) {
+    fn show_navigation(&mut self, ui: &mut egui::Ui) {
         ui.horizontal_wrapped(|ui| {
-            for (tab, name) in [
-                (Tab::Video, "Video"),
-                (Tab::Display, "Display & input"),
-                (Tab::General, "General"),
-                (Tab::Camera, "Cameras"),
-                (Tab::Audio, "Audio"),
-                (Tab::Usb, "USB connection"),
-            ] {
-                ui.selectable_value(&mut self.tab, tab, name);
+            for tab in Tab::ALL
+                .into_iter()
+                .filter(|tab| !matches!(tab, Tab::Overview | Tab::Connections))
+            {
+                ui.selectable_value(&mut self.tab, tab, tab.title());
             }
         });
     }
@@ -1113,6 +1204,7 @@ fn settings_grid(ui: &mut egui::Ui, id: impl std::hash::Hash, render: impl FnOnc
         .max_col_width(width)
         .show(ui, |ui| {
             ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
+            ui.spacing_mut().slider_width = (width - 100.0).clamp(40.0, 100.0);
             render(ui);
         });
 }
@@ -1123,8 +1215,8 @@ fn main() -> eframe::Result {
         viewport: egui::ViewportBuilder::default()
             // Tall enough for the longest settings tab; anything shorter
             // scrolls rather than hiding rows off the bottom.
-            .with_inner_size([440.0, 760.0])
-            .with_min_inner_size([380.0, 560.0])
+            .with_inner_size([1040.0, 740.0])
+            .with_min_inner_size([380.0, 360.0])
             .with_app_id("blent")
             // Window icon from the same picture as the launcher and tray, so
             // the task bar shows it even where the theme icon is not installed.
@@ -1149,6 +1241,7 @@ fn main() -> eframe::Result {
 mod tests {
     mod connection_guidance;
     mod coverage;
+    mod overview;
     use super::*;
     use blent_config::commands::daemon_command_timeout;
     use std::os::unix::fs::PermissionsExt;
@@ -1377,7 +1470,7 @@ mod tests {
 
     #[test]
     fn t611_narrow_settings_keep_labels_inside_window() {
-        for tab in [Tab::Video, Tab::Display, Tab::General, Tab::Camera] {
+        for tab in [Tab::Video, Tab::Display, Tab::Settings, Tab::Camera] {
             let (_settings_directory, mut app) = settings_test_app(tab);
             let ctx = egui::Context::default();
             ctx.style_mut(|style| style.animation_time = 0.0);
@@ -1414,7 +1507,7 @@ mod tests {
 
     #[test]
     fn t894_usb_tab_is_lazy_and_keeps_existing_settings_independent() {
-        let (_directory, mut app) = settings_test_app(Tab::Usb);
+        let (_directory, mut app) = settings_test_app(Tab::Connections);
         let original = app.cfg.clone();
         let ctx = egui::Context::default();
         let labels = window_test_frame(&mut app, &ctx, vec![]);
@@ -1423,7 +1516,7 @@ mod tests {
         for tab in [
             Tab::Video,
             Tab::Display,
-            Tab::General,
+            Tab::Settings,
             Tab::Camera,
             Tab::Audio,
         ] {
@@ -1433,7 +1526,7 @@ mod tests {
         assert_eq!(app.cfg, original);
     }
 
-    fn settings_test_app(tab: Tab) -> (tempfile::TempDir, App) {
+    pub(super) fn settings_test_app(tab: Tab) -> (tempfile::TempDir, App) {
         let directory = tempfile::tempdir().unwrap();
         let store = ConfigStore::new(directory.path().join("config.toml"));
         let saved_cfg = FileConfig::default();
@@ -1444,6 +1537,7 @@ mod tests {
         (
             directory,
             App {
+                selected: None,
                 scheduling_status: "This process: High priority active".into(),
                 camera: camera_settings::Panel::default(),
                 connection: connection_settings::Panel::default(),
@@ -1460,6 +1554,7 @@ mod tests {
                 saved_cfg,
                 tab,
                 message: String::new(),
+                feedback_area: FeedbackArea::default(),
                 action: None,
                 status: Arc::new(Mutex::new(Status {
                     daemon_running: true,
@@ -1590,7 +1685,7 @@ mod tests {
         assert_eq!(app.saved_cfg, app.cfg);
     }
 
-    fn settings_test_frame(
+    pub(super) fn settings_test_frame(
         app: &mut App,
         ctx: &egui::Context,
         events: Vec<egui::Event>,
@@ -1600,7 +1695,7 @@ mod tests {
             egui::RawInput {
                 screen_rect: Some(egui::Rect::from_min_size(
                     egui::Pos2::ZERO,
-                    egui::vec2(700.0, 700.0),
+                    egui::vec2(700.0, 2000.0),
                 )),
                 events,
                 ..Default::default()
@@ -1634,7 +1729,7 @@ mod tests {
         settings_test_frame(app, ctx, events, render)
     }
 
-    fn window_test_frame(
+    pub(super) fn window_test_frame(
         app: &mut App,
         ctx: &egui::Context,
         events: Vec<egui::Event>,
@@ -1642,12 +1737,13 @@ mod tests {
         sized_window_frame(app, ctx, events, egui::vec2(700.0, 900.0))
     }
 
-    fn sized_window_frame(
+    pub(super) fn sized_window_frame(
         app: &mut App,
         ctx: &egui::Context,
         events: Vec<egui::Event>,
         size: egui::Vec2,
     ) -> Vec<(String, egui::Rect)> {
+        workspace_style::configure(ctx);
         let output = ctx.run(
             egui::RawInput {
                 screen_rect: Some(egui::Rect::from_min_size(egui::Pos2::ZERO, size)),
@@ -1967,7 +2063,7 @@ mod tests {
     #[test]
     fn t582_general_settings_allow_normal_and_high_priority() {
         use blent_config::scheduling::Priority;
-        let (_settings_directory, mut app) = settings_test_app(Tab::General);
+        let (_settings_directory, mut app) = settings_test_app(Tab::Settings);
         let ctx = egui::Context::default();
         assert_eq!(app.cfg.scheduling_priority, Priority::High);
         let labels = scheduling_test_frame(&mut app, &ctx, vec![]);
@@ -2089,7 +2185,12 @@ mod tests {
     type SettingsFrame =
         fn(&mut App, &egui::Context, Vec<egui::Event>) -> Vec<(String, egui::Rect)>;
 
-    fn click_settings_text(app: &mut App, ctx: &egui::Context, label: &str, frame: SettingsFrame) {
+    pub(super) fn click_settings_text(
+        app: &mut App,
+        ctx: &egui::Context,
+        label: &str,
+        frame: SettingsFrame,
+    ) {
         let text = frame(app, ctx, Vec::new());
         let pos = text
             .iter()
@@ -2335,12 +2436,7 @@ mod tests {
         click_settings_text(&mut app, &ctx, "Flip video horizontally", camera_test_frame);
         click_settings_text(&mut app, &ctx, "1280 × 720", camera_test_frame);
         click_settings_text(&mut app, &ctx, "640 × 480", camera_test_frame);
-        click_settings_text(
-            &mut app,
-            &ctx,
-            "Automatic (one connected tablet)",
-            camera_test_frame,
-        );
+        click_settings_text(&mut app, &ctx, "Auto (one tablet)", camera_test_frame);
         camera_test_frame(
             &mut app,
             &ctx,
@@ -2390,12 +2486,7 @@ mod tests {
         assert_eq!(app.cfg.camera.options.usb_peer.as_deref(), Some(""));
         assert!(app.camera.backend.is_none());
         assert!(app.cfg.camera.options.validate().is_err());
-        click_settings_text(
-            &mut app,
-            &ctx,
-            "Full Tablet fingerprint from USB connection",
-            camera_test_frame,
-        );
+        click_settings_text(&mut app, &ctx, "Paste fingerprint", camera_test_frame);
         let peer = "ab".repeat(32);
         camera_test_frame(&mut app, &ctx, vec![egui::Event::Text(peer.clone())]);
         assert_eq!(
@@ -2419,7 +2510,7 @@ mod tests {
         for (tab, marker) in [
             (Tab::Video, "Encoder"),
             (Tab::Display, "Input devices"),
-            (Tab::General, "Security"),
+            (Tab::Settings, "Security"),
             (Tab::Camera, "Camera sharing"),
             (Tab::Audio, "Microphone sharing"),
         ] {
@@ -2443,7 +2534,7 @@ mod tests {
                 let text = text.into_iter().map(|(value, _)| value).collect::<Vec<_>>();
                 assert_eq!(
                     text.iter()
-                        .filter(|line| line.as_str() == "Apply & restart")
+                        .filter(|line| line.as_str() == "Save & restart all displays")
                         .count(),
                     1
                 );
@@ -2783,12 +2874,20 @@ esac"#
         // Reap before assertions so a failing regression leaves no test process.
         daemon.kill().unwrap();
         daemon.wait().unwrap();
-        assert!(status.tablet_connected);
-        assert_eq!(status.tablet_model, "WiFi Tablet, Second Tablet");
+        assert!(!status.tablets.is_empty());
+        assert_eq!(
+            status
+                .tablets
+                .iter()
+                .map(|device| device.name())
+                .collect::<Vec<_>>()
+                .join(", "),
+            "WiFi Tablet, Second Tablet"
+        );
         let mut stale = Status::default();
         apply_tablet_status(&mut stale, devices, Some(&sessions));
         assert!(
-            !stale.tablet_connected,
+            stale.tablets.is_empty(),
             "dead daemon ledger cannot claim active tablets"
         );
     }
@@ -2802,8 +2901,7 @@ esac"#
             "List of devices attached\nPHONE device model:Phone\n",
             Some(&sandbox.0.join("missing.json")),
         );
-        assert!(!status.tablet_connected);
-        assert!(status.tablet_model.is_empty());
+        assert!(status.tablets.is_empty());
     }
 
     #[test]
@@ -3340,12 +3438,7 @@ printf '%s' "$((existing + delta))" > "$count""#,
                 Some("")
             );
             assert!(audio_test_options(&mut app, direction).validate().is_err());
-            click_settings_text(
-                &mut app,
-                &context,
-                "Full Tablet fingerprint from USB connection",
-                frame,
-            );
+            click_settings_text(&mut app, &context, "Paste fingerprint", frame);
             let peer = "ab".repeat(32);
             frame(&mut app, &context, vec![egui::Event::Text(peer.clone())]);
             assert_eq!(

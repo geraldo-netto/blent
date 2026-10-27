@@ -54,12 +54,7 @@ pub(super) fn show(
 fn usb(ui: &mut egui::Ui, options: &mut Selection<'_>, available: bool, description: Description) {
     ui.label("Tablet fingerprint");
     let mut peer = options.usb_peer.clone().unwrap_or_default();
-    if identifier(
-        ui,
-        &mut peer,
-        "Full Tablet fingerprint from USB connection",
-        available,
-    ) {
+    if identifier(ui, &mut peer, "Paste fingerprint", available) {
         *options.usb_peer = Some(peer.trim().into());
     }
     ui.end_row();
@@ -77,12 +72,7 @@ fn usb(ui: &mut egui::Ui, options: &mut Selection<'_>, available: bool, descript
 fn adb(ui: &mut egui::Ui, options: &mut Selection<'_>, available: bool) {
     ui.label("Tablet serial");
     let mut serial = options.serial.clone().unwrap_or_default();
-    if identifier(
-        ui,
-        &mut serial,
-        "Automatic (one connected tablet)",
-        available,
-    ) {
+    if identifier(ui, &mut serial, "Auto (one tablet)", available) {
         *options.serial = if serial.trim().is_empty() {
             None
         } else {
@@ -99,5 +89,6 @@ fn identifier(ui: &mut egui::Ui, value: &mut String, hint: &str, available: bool
             .hint_text(hint)
             .desired_width(190.0_f32.min(ui.available_width())),
     )
+    .on_hover_text("Use the full tablet fingerprint from Connections for direct USB. Leave the ADB serial empty to select one connected tablet automatically.")
     .changed()
 }

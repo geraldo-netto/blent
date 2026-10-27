@@ -4,6 +4,7 @@ use super::*;
 fn app(store: ConfigStore) -> App {
     let cfg = store.load();
     App {
+        selected: None,
         connection: connection_settings::Panel::default(),
         scheduling_status: "This process: High priority unavailable; using OS settings".into(),
         camera: camera_settings::Panel::default(),
@@ -18,6 +19,7 @@ fn app(store: ConfigStore) -> App {
         saved_cfg: cfg,
         status: Arc::new(Mutex::new(Status::default())),
         message: String::new(),
+        feedback_area: FeedbackArea::default(),
         update: Arc::new(Mutex::new(None)),
         tab: Tab::Video,
         action: None,
@@ -38,7 +40,7 @@ fn t495_preview_hides_linux_setup_and_capacity_controls() {
     let mut app = app(ConfigStore::new(root.path().join("config.toml")));
     let ctx = egui::Context::default();
     let mut labels = Vec::new();
-    for tab in [Tab::Video, Tab::Display, Tab::General] {
+    for tab in [Tab::Video, Tab::Display, Tab::Settings] {
         app.tab = tab;
         let output = ctx.run(egui::RawInput::default(), |ctx| app.show_window(ctx));
         for shape in output.shapes {
@@ -106,7 +108,7 @@ fn t495_daemon_discovery_uses_windows_executable_suffix() {
 fn t533_dependency_versions_never_imply_a_running_or_connected_backend() {
     let status = status_poll::StatusPoller::default().poll(true);
     assert!(!status.daemon_running);
-    assert!(!status.tablet_connected);
+    assert!(status.tablets.is_empty());
     let report = status.diagnostics.unwrap();
     assert_eq!(report.tools.len(), 2);
     assert!(report
