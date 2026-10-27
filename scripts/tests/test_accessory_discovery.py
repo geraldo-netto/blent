@@ -1,5 +1,8 @@
 """T876: read-only native inventory, strict bounds, and no USB mutations."""
 from pathlib import Path
+import gzip
+import json
+import os
 import random
 import struct
 import subprocess
@@ -9,18 +12,45 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def compile_arguments(binary):
+    fixture = ROOT / 'scripts/tests/fixtures/aoa'
+    native = ROOT / 'host/accessory'
+    return ['-std=c11', '-Wall', '-Wextra', '-Werror',
+            '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(native),
+            str(fixture / 'discovery_fixture.c'), str(native / 'discovery.c'),
+            str(native / 'contract.c'), '-o', str(binary)]
+
+
+def reported_sources(directory):
+    sources = set()
+    for path in directory.glob('*.gcov.json.gz'):
+        with gzip.open(path, 'rt') as stream:
+            sources.update(entry['file'] for entry in json.load(stream)['files'])
+    return sources
+
+
 class AccessoryDiscoveryTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.directory = tempfile.TemporaryDirectory(prefix='blent-t876-discovery-')
         cls.addClassCleanup(cls.directory.cleanup)
         cls.binary = Path(cls.directory.name) / 'discovery'
-        fixture = ROOT / 'scripts/tests/fixtures/aoa'
-        native = ROOT / 'host/accessory'
-        subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
-                        '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(native),
-                        str(fixture / 'discovery.c'), str(native / 'discovery.c'),
-                        str(native / 'contract.c'), '-o', str(cls.binary)], check=True, timeout=30)
+        subprocess.run(['cc', *compile_arguments(cls.binary)], check=True, timeout=30)
+
+    def test_t1314_fixture_and_native_counters_remain_distinct(self):
+        with tempfile.TemporaryDirectory(prefix='blent-t1314-counters-') as temp:
+            directory = Path(temp)
+            binary = directory / 'discovery'
+            arguments = compile_arguments(binary)
+            compiler = os.environ.get('BLENT_REAL_CC', 'cc')
+            subprocess.run([compiler, *arguments, '--coverage'], check=True)
+            subprocess.run([binary, '0', '64'], check=True, capture_output=True)
+            notes = sorted(directory.glob('*.gcno'))
+            self.assertEqual(len(notes), 3, 'T1314: source coverage notes collided')
+            subprocess.run(['gcov', '--json-format', *map(str, notes)],
+                           cwd=directory, check=True, capture_output=True)
+            expected = {argument for argument in arguments if argument.endswith('.c')}
+            self.assertEqual(reported_sources(directory), expected)
 
     def run_inventory(self, mode, capacity='64'):
         return subprocess.run([self.binary, str(mode), capacity], capture_output=True, timeout=3)

@@ -1,0 +1,13 @@
+F....
+======================================================================
+FAIL: test_t1314_fixture_and_native_counters_remain_distinct (test_accessory_discovery.AccessoryDiscoveryTest.test_t1314_fixture_and_native_counters_remain_distinct)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_accessory_discovery.py", line 49, in test_t1314_fixture_and_native_counters_remain_distinct
+    self.assertEqual(len(notes), 3, 'T1314: source coverage notes collided')
+AssertionError: 2 != 3 : T1314: source coverage notes collided
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.736s
+
+FAILED (failures=1)
