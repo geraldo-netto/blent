@@ -112,3 +112,20 @@ Reports with multiple physical tablets are welcome.
 Instructions for package and source installs, custom paths and residual
 system state are in
 [SECURITY.md](../SECURITY.md#how-to-uninstall-completely).
+
+## Compared with the alternatives
+
+The table compares documented setup choices, checked against the linked
+primary sources on 2026-09-17. It is not a performance ranking or a complete
+stylus-capability matrix; support depends on the host, client and versions.
+
+| Project | Linux host | Display setup | Android connection |
+| --- | --- | --- | --- |
+| Blent | yes | EVDI virtual output; see [known limitations](compatibility.md#current-fork-limitations) | native app, paired direct USB or ADB over USB; optional ADB over Wi-Fi |
+| [SuperDisplay](https://superdisplay.app/help/) | no; Windows host | virtual extended display | native app, USB or Wi-Fi |
+| [Weylus](https://github.com/H-M-H/Weylus#readme) | yes | capture a screen/window; configure a separate output for extension | browser over a network or `adb reverse` |
+| [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/latest/) + [Moonlight](https://github.com/moonlight-stream/moonlight-android) | yes | stream a host display; output provisioning depends on the host setup | native client over a network |
+| [spacedesk](https://manual.spacedesk.net/AndroidUSBCableConnection.html) | no; Windows primary machine | virtual extended display | native app; direct Android USB is supported |
+
+Consult each alternative's documentation for current encoder, pen and licensing
+details. The dated table above is a setup comparison, not a performance ranking.

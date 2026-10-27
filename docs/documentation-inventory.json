@@ -113,7 +113,7 @@
       "owner": "T1317",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Read the full README and asset guidance. Rebuilt README around setup, explicit route/consent limits and goal-based navigation; moved detailed settings into a focused guide and retained dated alternatives comparison in FAQ. Removed repeated benchmark/hardware tables in favor of their authoritative guides. Preserved attribution, release status, exact control scope and declined/unvalidated features. Added a media-direction diagram; 59 local links/anchors and six normal identity/notice tests pass.",
       "words": 3082,
       "long_paragraphs": 5,
       "joined_word_number_tokens": 0,
@@ -121,7 +121,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "4456f43d55f6982fc94366b702486471399979591976e822204b3cc31f097661",
+      "outcome": "rewritten"
     },
     {
       "path": "SECURITY.md",
@@ -250,7 +252,7 @@
       "owner": "T1317",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Read the full README and asset guidance. Rebuilt README around setup, explicit route/consent limits and goal-based navigation; moved detailed settings into a focused guide and retained dated alternatives comparison in FAQ. Removed repeated benchmark/hardware tables in favor of their authoritative guides. Preserved attribution, release status, exact control scope and declined/unvalidated features. Added a media-direction diagram; 59 local links/anchors and six normal identity/notice tests pass.",
       "words": 200,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -258,7 +260,9 @@
       "local_only": false,
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "9b54ff2e1243b81b91d73849cff9a8be00fc04f260a82a955265b78a1b4c46a3",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/audio-reference.md",
@@ -1351,7 +1355,7 @@
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
-      "reviewed_sha256": "5280b4f822c144d4dfc0279cc285ab1132d136ac86d764ed975ccc4c763a0b1e",
+      "reviewed_sha256": "d71f79aa8e6688f59f498149a1d438001679c0c6309855c07ebf6544ab9453d0",
       "outcome": "rewritten"
     },
     {
@@ -11650,6 +11654,23 @@
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
       "reviewed_sha256": "9dbe74cf903cb8326b4e5ce0e0cdf9496da9d4e35fffe867f6542882e529f64b",
+      "outcome": "rewritten"
+    },
+    {
+      "path": "docs/settings.md",
+      "owner": "T1317",
+      "role": "current guide or reference",
+      "action": "rewrite",
+      "review_note": "Read the full README and asset guidance. Rebuilt README around setup, explicit route/consent limits and goal-based navigation; moved detailed settings into a focused guide and retained dated alternatives comparison in FAQ. Removed repeated benchmark/hardware tables in favor of their authoritative guides. Preserved attribution, release status, exact control scope and declined/unvalidated features. Added a media-direction diagram; 59 local links/anchors and six normal identity/notice tests pass.",
+      "words": 1275,
+      "long_paragraphs": 0,
+      "joined_word_number_tokens": 0,
+      "baseline_sha256": null,
+      "local_only": false,
+      "audience": "users",
+      "authority": "implemented settings follow code; historical performance remains dated",
+      "review_stage": "reviewed",
+      "reviewed_sha256": "74dbc4871a2b2a4601c3134a73fa5e2b3644588f8d79e7b207d9b20b7112bb07",
       "outcome": "rewritten"
     },
     {

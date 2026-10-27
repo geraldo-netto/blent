@@ -1,362 +1,154 @@
 # Blent for Linux — Android Tablet as a USB Second Monitor
 
-**Blent is an open-source SuperDisplay alternative for Linux.** It turns an
-Android 8.1+ tablet into a real extended USB display and a pressure-sensitive
-graphics tablet, with touch, S Pen pressure, tilt, eraser and stylus-button
-support.
+Blent turns an Android tablet into an extra Linux display over a USB cable.
+Move windows onto it and use touch/mouse input. You can also share the tablet's
+camera, microphone and speakers through separate controls and consent.
 
-Blent is maintained at [geraldo-netto/blent](https://github.com/geraldo-netto/blent),
-Original UScreen copyright (c) 2026 majmichu1; retained under the MIT license.
-Original Blent contributions copyright (c) 2026 Geraldo Netto; see
-[COPYRIGHT.md](COPYRIGHT.md) for attribution and provenance.
-Historical benchmarks and compatibility reports describe upstream releases.
-As of 2026-09-17 this fork has no published release. The source still reports
-version 1.2.3; identify fork builds by their commit as well as that version.
-The current development work is on `configurable-input-devices`.
+**Start here:** [Installation](docs/installation.md) · [Compatibility](docs/compatibility.md)
+· [Troubleshooting](docs/troubleshooting.md) · [FAQ](docs/faq.md)
 
-Blent provides paired direct USB on Linux and ADB-over-USB connections — no Wi-Fi, USB tethering,
-dummy HDMI plug or cloud account required. Screen and input data travel
-between your computer and tablet over USB, or over your local network when
-you enable the optional Wi-Fi fallback. They are not sent to a cloud service.
+Use matching desktop and Android builds. Android **8.1/API 27** is the minimum;
+its decoder must support your selected video format. The fork was unreleased as
+of 2026-09-17 and source version remains **1.2.3**. Identify builds by commit as
+well as version; development is on `configurable-input-devices`.
 
-Upstream tests used Bazzite (KDE Plasma, Wayland, NVIDIA) with a Samsung
-Galaxy Tab S9 Ultra. The fork has known limitations, including an unresolved
-Cinnamon/Xorg restart during attachment; read [current limitations](docs/compatibility.md#current-fork-limitations)
-before setup. Packaging recipes target several Linux distribution families.
+**Known desktop risk:** Cinnamon/Xorg has an unresolved restart during virtual-display
+attachment (T222). Read [current limitations](docs/compatibility.md#current-fork-limitations)
+before setup. Windows is an incomplete preview; macOS and iPad clients are unsupported.
 
-[**Build from source**](docs/development.md#building-from-source)
-· [Install](#quick-install)
-· [Compatibility](docs/compatibility.md)
-· [Benchmarks](docs/benchmarks.md)
-· [FAQ](#faq)
-· [Website source](docs/index.html)
+```mermaid
+flowchart LR
+    H[Linux desktop] -->|Display video| T[Android tablet]
+    T -->|Touch and mouse| H
+    T -->|Camera or microphone: separate consent| H
+    H -->|Speaker audio: separate consent| T
+```
 
-## Why Blent?
-
-- **A real second monitor, not a mirror.** A virtual display is created
-  through the EVDI kernel module; the tablet appears in your display settings
-  and you move windows onto it.
-- **Pen that works like a tablet.** Pressure, tilt, eraser and button arrive
-  in Linux as a graphics-tablet device — Krita, GIMP and Blender see a tablet.
-  Graphics-tablet mode uses the pen on a host screen without a streamed-video
-  path. Input latency still depends on the device and desktop.
-- **Historical upstream measurements.** About 22 ms median from encoded packet
-  readiness to render acknowledgement over USB with
-  H.264, 15–18 ms with HEVC, on the reference hardware — the
-  [numbers and the method](docs/benchmarks.md) are published.
-- **Connection automation.** With a configured user service and supported
-  desktop, the daemon finds the tablet over adb, launches the app by default
-  and negotiates geometry.
-- **Local transport.** Loopback-only host ports, session authentication on by
-  default, no application telemetry or account. See the trust boundaries and
-  known limitations in [SECURITY.md](SECURITY.md).
-- **Desktop-specific integration.** KDE Wayland has the most automation;
-  X11 input mapping uses `xinput` and `xrandr`. Other Wayland desktops depend
-  on compositor support. [Compatibility](docs/compatibility.md) lists known limits.
+The EVDI kernel driver creates a real extra display, visible in Linux display
+settings. No dummy HDMI plug, cloud account or USB tethering is needed. Blent
+sends media/input to the connected peer, not a cloud service. Optional release
+checks contact GitHub; see [security and privacy](SECURITY.md).
 
 ## Quick install
 
-**1. Linux side** — for the current fork, follow the
-[source-build instructions](docs/development.md#building-from-source). The
-packaging tools can produce the files below; use them only when present on
-the [fork releases page](https://github.com/geraldo-netto/blent/releases)
-or produced from the checkout you intend to install:
+1. **Install matching programs.** Follow [source builds](docs/development.md#building-from-source)
+   or [package installation](docs/installation.md). Build formats include AppImage,
+   Arch and portable tarball. Recipe availability does not announce a published
+   release. The Android debug APK is
+   `android/app/build/outputs/apk/debug/app-debug.apk`; release bundles use `blent.apk`.
+2. **Prepare Linux.** Check the EVDI driver and input permissions with
+   `blent doctor`. Follow setup's reboot guidance. Do not force live EVDI growth
+   under Xorg. Open the matching Android app.
+3. **Choose a USB route.** Use the table below. A data-capable cable is required.
+4. **Start sharing.** Select the tablet in the desktop **Tablets** workspace.
+   Resource Start/Stop affects that tablet. If the global display service is
+   stopped, start it in **Settings**. Camera/audio also need local tablet consent;
+   keep the desktop window open while using them.
+5. **Check the desktop output.** Place/enable it in Display settings if needed.
+   KDE Wayland has the most automation; X11 input mapping needs `xinput` and
+   `xrandr`. Other Wayland desktops depend on compositor support.
 
-| file | distribution |
-| --- | --- |
-| `blent-<ver>-x86_64.AppImage` | Linux x86-64/glibc 2.36+: `chmod +x blent-*.AppImage`; see [launch and user installation](docs/appimage-plan.md) |
-| `blent-<ver>-PKGBUILD.tar.gz` | Arch and derivatives — install AUR `evdi-dkms` first; extract, `makepkg -si` |
-| `blent-<ver>-linux-x86_64.tar.gz` | compatible Linux x86-64/glibc systems — extract, inspect `./scripts/install.sh` |
-
-Enable **Start Blent with the desktop** in the GUI for automatic login startup,
-including on Cinnamon. The full installer enables autostart
-through a user service or an XDG desktop entry; `make install` preserves that
-preference. The GUI can toggle either route. Read
-[installation details](docs/installation.md) first: full installer/native
-package setup preserves loaded EVDI devices. Attaching a virtual display under
-Cinnamon remains an unresolved crash risk (T222).
-
-**2. Tablet** — install the APK from the same checkout (for a debug build,
-`android/app/build/outputs/apk/debug/app-debug.apk`; release bundles use
-`blent.apk`). Open Blent on the tablet.
-
-For paired direct USB on Linux, open **Connections → USB connection** in the desktop GUI:
-**Find USB devices**, connect, compare the Computer/Tablet fingerprints and
-explicitly approve the matching peer. USB debugging is not required for this
-route. Discovery and pairing do not grant camera or audio consent.
-
-For the ADB route, install `adb`, enable USB debugging in Developer options and
-authorize this computer on the tablet.
-
-**3. Start sharing.** Select your tablet on the desktop **Tablets** workspace.
-Start/Stop controls affect only that tablet's display/input, camera, microphone
-or speakers. Camera and audio require separate tablet consent; keep the desktop
-window open for those resources. If the display service is stopped, start it in
-**Settings** first: that global service discovers all eligible display tablets.
-The ADB route sets up
-forwarding and launches the app by default; paired direct USB uses its selected
-authenticated connection. Check
-desktop display settings and input mapping; `blent doctor` helps diagnose
-setup problems. It cannot establish that every configuration is safe or supported.
-
-Build both halves from the same checkout. ADB attachments use session tokens;
-paired direct USB uses authenticated peer credentials.
-
-If Blent replaced a second monitor for you, a star on the repo and a
-[compatibility report](https://github.com/geraldo-netto/blent/issues/new?template=compatibility.yml)
-help the next Linux user find it.
-
-## Historical upstream compatibility
-
-| host | tablet | result |
+| Route | Setup | Limits |
 | --- | --- | --- |
-| Bazzite, KDE Plasma 6 Wayland, NVIDIA RTX 5060 | Galaxy Tab S9 Ultra, Android 14 | works — reference setup, all benchmarks |
-| Arch Linux, KDE Plasma Wayland | — | works — externally verified on a real system twice: the v1.0.2 installer (report (historical upstream)) and the v1.1.0 PKGBUILD via `makepkg -si`, with menu entry, tray and settings working out of the box (report (historical upstream)) |
-| Fedora 44, KDE Plasma | Galaxy Tab S9 FE | works — "near perfectly", external report (discussion #7 (historical upstream)) |
-| Debian 12 | — | packages install and run (container-tested, no tablet) |
+| Paired direct USB, Linux | **Connections → USB connection → Find USB devices**; connect, compare Computer/Tablet fingerprints, explicitly approve the matching peer. | No USB debugging required. Preview/native acceptance limits remain visible. Pairing grants no camera/audio consent. |
+| ADB over USB | Install `adb`, enable Android USB debugging and authorize the computer. | Host sets up forwarding and normally launches the app. ADB is Android's debugging connection tool; this route uses session tokens. |
 
-Android 8.1+ is the minimum; codec, profile, resolution and frame-rate support
-also matter. These reports describe upstream builds, not current fork validation. More in
-[docs/compatibility.md](docs/compatibility.md); reports are welcome.
+Direct USB uses authenticated peer credentials. Its discovery or pairing success
+alone does not establish successful display/media delivery. `blent doctor` helps
+with diagnosis; it does not certify every desktop combination.
 
-## Performance
-
-Historical upstream measurements on the reference hardware over USB
-(2960×1848, 90 fps target, constant-quality encoding). Times run from encoded packet readiness to receipt
-of the tablet's render acknowledgement; capture and encoding are excluded:
-
-| | median | p95 |
-| --- | --- | --- |
-| H.264, NVENC | 18–22 ms | 23–31 ms |
-| HEVC, NVENC | 15–18 ms | 20–23 ms |
-| Wi-Fi fallback (H.264) | 22.8 ms | 78.6 ms, worst frames in seconds |
-
-The tablet separately reported ~15 ms from frame arrival to render callback.
-Subtracting independent medians does not measure transport or queueing time.
-Method, CPU figures and measurement limits in
-[docs/benchmarks.md](docs/benchmarks.md).
-
-## Compared with the alternatives
-
-The table compares documented setup choices, checked against the linked
-primary sources on 2026-09-17. It is not a performance ranking or a complete
-stylus-capability matrix; support depends on the host, client and versions.
-
-| Project | Linux host | Display setup | Android connection |
-| --- | --- | --- | --- |
-| Blent | yes | EVDI virtual output; see [known limitations](docs/compatibility.md#current-fork-limitations) | native app, paired direct USB or ADB over USB; optional ADB over Wi-Fi |
-| [SuperDisplay](https://superdisplay.app/help/) | no; Windows host | virtual extended display | native app, USB or Wi-Fi |
-| [Weylus](https://github.com/H-M-H/Weylus#readme) | yes | capture a screen/window; configure a separate output for extension | browser over a network or `adb reverse` |
-| [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/latest/) + [Moonlight](https://github.com/moonlight-stream/moonlight-android) | yes | stream a host display; output provisioning depends on the host setup | native client over a network |
-| [spacedesk](https://manual.spacedesk.net/AndroidUSBCableConnection.html) | no; Windows primary machine | virtual extended display | native app; direct Android USB is supported |
-
-Blent supports NVENC and VAAPI hardware encoding and a **software** libx264
-fallback. Libx264 defaults to one encoding worker, based on the measured
-1280×800 CPU/latency improvement; automatic codec selection remains available.
-Consult each alternative's own documentation for its current
-encoder, pen and licensing details.
-
-## About
-
-**About** contains **Report compatibility** and **Star on GitHub**. Project links
-have a fixed destination; switching pages keeps the main navigation in place.
-Compatibility reports open a prefilled issue for review; submission remains explicit.
-About also shows copyable version/build details, original UScreen and Blent credits,
-a summary of the project's MIT terms, and full offline license/attribution texts.
-The notice selector includes the tracked component and Android APK notices;
-third-party terms remain separate from Blent's own license. **Open installed bundle
-notices** opens the package-specific local directory when its manifest is present.
-Missing bundle notices are reported explicitly; embedded project notices are not
-an inventory of every library on the computer.
+To start at login, enable **Start Blent with the desktop** in the GUI. The full
+installer enables a user service or desktop login entry; `make install` preserves
+the existing preference. See [autostart and installed paths](docs/installation.md#start-the-host).
 
 ## Settings
 
-Host settings live in `~/.config/blent/config.toml`; edit them with
-`blent-gui` or override supported settings with CLI flags. The tablet’s ⚙
-sheet stores app preferences locally; **Apply** sends its shared streaming
-settings to the host. Brightness/refresh preferences take effect immediately.
-The desktop workspace adapts between a tablet sidebar and a compact selector.
-Connection status stays explicit: a remembered or last-seen tablet is not proof
-of a current connection, and a display assignment is not proof of video delivery.
-**Configure** opens the relevant resource preferences; **Settings → Video**
-keeps encoder, frame rate and resolution visible;
-**Video → Encoding GPU** selects a stable Linux VAAPI adapter or CPU encoders.
-Automatic preserves existing device choices; requested and active devices appear
-separately. **Save & restart all displays** is required. Missing devices and unsupported codecs
-use software fallback; this does not move desktop composition.
+[Settings guide](docs/settings.md) explains defaults, scope and each control.
+Desktop settings live at `~/.config/blent/config.toml` unless an absolute
+`XDG_CONFIG_HOME` overrides the location. Android preferences are in its gear menu.
 
-**Advanced video settings** contains quality, bitrate, calibration and worker/pipe
-capacity controls. The tablet groups display/input, video, camera and app controls;
-bitrate is under **Advanced video settings**, and update/statistics switches are
-under **App & diagnostics**. The decoder panel shows the active codec, advertised
-capabilities, requested performance hints and watchdog fallback; effective hints
-remain unknown. Camera Start/Stop is explicit and independent of
-display sharing; opening desktop settings or pressing Save does not start capture.
-Save/Discard controls appear in preference editors. Workspace resource Start uses
-the exact selected tablet without rewriting saved target preferences. Explicit
-Start in a camera/audio editor uses its target fields. Stop preserves the original
-resource owner until native cleanup completes; selection changes cannot retarget
-queued or retiring work. Global display-service controls remain in **Settings**.
-When USB media is authenticated without a streaming desktop, the tablet shows
-**USB media connected** and **Open camera and audio controls**. That button opens
-the existing local controls directly; it grants no media consent. Pairing alone
-does not enable Start; media needs a current host request and local approval. The existing ADB desktop
-connection still requires USB debugging, independently of USB media pairing.
-While Blent is visible, active camera, microphone and speaker sharing keep the
-screen awake through the same window policy as display sharing. Stopping a
-resource removes its hold; another active resource may still need the screen.
-Home and manual screen lock retain the existing foreground/background consent
-rules. Blent does not change Android's system screen timeout or charging settings.
-The tray controls the running daemon.
-When `XDG_CONFIG_HOME` is an absolute path, host settings instead use
-`$XDG_CONFIG_HOME/blent/config.toml`. Empty or relative values use the default.
-
-- **Graphics tablet mode** — flip *Graphics tablet* on the tablet: nothing is
-  streamed and the pen drives your own screen. Input latency remains. Switch back
-  the same way. The connection overlay clears after the authenticated control
-  greeting; it returns when the control connection is lost.
-- **Tablet display** — brightness defaults to 50%, and the app requests 60 Hz.
-  Adjust either in the gear menu; preferences persist and affect Blent only.
-  Other apps retain normal system settings. Refresh selection uses the closest
-  supported rate at the current display resolution; **System default** clears
-  the request, and Android may override it. Stream FPS is separate.
-- **Position** — `right` (default), `left`, `above`, `below` your real screens.
-- **Orientation** — in the tablet's ⚙ sheet: rotate automatically with the
-  tilt sensor, or pin *camera up* / *camera down*.
-- **Codec** — new configurations default to `auto`: check tablet compatibility,
-  measure available host encoders and, with current peers, compare bounded live
-  render-ACK timing with a quality guard before accepting a selection. Saved
-  explicit choices remain unchanged. Choose NVENC,
-  VAAPI or a software encoder to override automatic selection. Automatic mode
-  [saves tuning per environment](docs/video-codecs.md#durable-environment-tuning)
-  and reuses it across reconnects and reboots after a fresh render check. First-run
-  tuning keeps one progress screen; **Recalibrate display** requests new tuning. VP9 and AV1
-  (software or supported VAAPI/NVENC encoders) use tablet
-  capability negotiation; see [codec compatibility](docs/video-codecs.md). HEVC is optional and needs a compatible tablet decoder.
-  `h264_vaapi_baseline` is an explicit low-latency VAAPI H.264 profile; it trades
-  higher bandwidth for lower decoder delay on the measured tablet. Existing
-  selections stay unchanged; see [codec measurements](docs/benchmarks/2026-09-18-codecs.md).
-  `ten_bit` requests HEVC Main10 on the FFmpeg path; capture is still 8-bit,
-  and this does not enable HDR or guarantee less banding on every scene.
-- **Bitrate and quality** — VAAPI uses uncapped constant quality (CQP). Its
-  bitrate control is disabled on Linux; adjust **Quality** instead. The saved
-  bitrate remains available for other encoders. **Auto** may select VAAPI and
-  therefore may not enforce the configured bitrate. Android explains this
-  limitation in its settings too; the value is not measured throughput.
-- **Stream scale** — `stream_scale = 2` sends a quarter of the pixels for a
-  historical ~6 ms lower packet-to-ack median on the reference tablet, at the
-  cost of softer text; other devices differ.
-  The desktop GUI also offers **180p (320×180)** and **360p (640×360)** stream
-  presets. These select a 1280×720 desktop and scale its stream by 4 or 2; restart
-  display sharing to apply. FPS, bitrate and quality stay under your control.
-  Lower detail is useful for constrained links, but configured bitrate is not
-  measured traffic and a calling application's upload settings remain separate.
-- **Several tablets** — `max_tablets` supports 1–4 slots. Historical testing
-  used one physical tablet plus a simulated client. Automated tests cover
-  independent slots and busy-card fallback. Multiple physical tablets have not
-  been validated; maintainer testing of that setup is outside the current scope (T382).
-- **Input devices** — `input_touch`, `input_pen`, `input_pointer`: which
-  virtual devices the desktop sees while a tablet is attached. All on by
-  default; turn off what you do not use. On Cinnamon/X11, Blent keeps the
-  mouse visible while its touchscreen exists, including during touch input.
-  Other desktops retain their own cursor policy; an unavailable Cinnamon
-  policy produces a daemon warning. The virtual pointer requires Pen;
-  disabling Pen preserves the pointer preference for when Pen is enabled again.
-- **Wi-Fi** — `blent wifi` once, with the cable in: it switches the tablet
-  over, remembers the address and reconnects to it by itself whenever the
-  cable is out. `blent wifi --off` forgets the address and disconnects; it
-  does not disable the tablet's network adb listener. See [SECURITY.md](SECURITY.md).
-  USB preference also recognizes network ADB endpoints and mDNS wireless
-  identifiers. See [benchmarks](docs/benchmarks.md)
-  for historical Wi-Fi results.
-- **Battery saver** — an opt-in Android setting that preserves brightness,
-  refresh rate and stream settings. It releases unnecessary CPU/Wi-Fi locks on
-  USB or while waiting, while retaining the network lock for active network
-  sessions. It applies immediately; turning it off restores the normal policy.
-- **Control queue limit** — Android Settings, App & diagnostics: 64 KiB by
-  default, with 8 KiB, 256 KiB and 1 MiB options. Smaller limits reconnect
-  congested sessions sooner; larger limits tolerate bursts but retain more
-  input/ACK backlog. The limit applies to new sends, including authentication,
-  settings and decoder reports. An overflowing message retires the entire
-  control connection so the host releases uncertain gestures; events are not
-  replayed on its replacement. This is a byte budget, not a wall-clock latency
-  guarantee. Very small limits may reject large decoder reports.
-- **Updates** — the app, the GUI and the tray tell you when a newer release
-  exists; nothing installs itself. `check_updates = false` disables host checks;
-  the tablet app has its own update-check switch.
-
-## FAQ
-
-**Does it need Wi-Fi, tethering or USB debugging?** Use a normal data-capable
-USB cable. Linux paired direct USB does not require USB debugging; the ADB route
-does. USB tethering is not needed. Wi-Fi is an optional ADB connection route.
-
-**Is it a mirror or an extension?** An extension; a real monitor in your
-display settings. Graphics-tablet mode is a separate, non-display mode.
-
-**Does S Pen pressure and tilt work?** Yes, plus eraser and button, as a
-proper tablet device. Automated coverage checks angular tilt units and
-hover/button state across tip lift. Physical behavior depends on the tablet,
-application and desktop mapping; see [compatibility](docs/compatibility.md).
-
-**Does it work on Bazzite / KDE Wayland?** That is the historical upstream reference setup.
-X11 desktops get automatic input mapping with `xinput` and `xrandr`; place
-outputs through desktop display settings. Other Wayland desktops depend on
-compositor support and manual mapping; see [compatibility](docs/compatibility.md).
-
-**Does it need a dummy HDMI plug?** No.
-
-**Which Android versions?** 8.1 and newer.
-
-**Is screen or input data sent to the cloud?** No. It travels over the USB
-cable, or your local network when Wi-Fi fallback is enabled. The only automatic
-internet request is an optional version check against GitHub
-(`check_updates = false` turns it off; the app has a switch of its own).
-
-**How do I uninstall it completely?** [SECURITY.md](SECURITY.md#how-to-uninstall-completely)
-describes application files, custom paths and remaining system state.
-
-More in [docs/faq.md](docs/faq.md).
+- **Video:** Automatic checks compatible encoders and saves measured tuning.
+  Existing explicit choices stay unchanged. [Video guide](docs/video-codecs.md).
+- **Tablet screen:** brightness defaults to 50%, display preference to 60 Hz.
+  These affect Blent only; stream FPS is separate. Android may override the mode.
+- **Resources:** Apply saves preferences; Start requests sharing. Stop retains
+  original ownership until cleanup finishes. Selecting another tablet cannot
+  retarget work already starting or stopping.
+- **Input:** retained Linux pen code forwards pressure, tilt, eraser and button.
+  Automated tests are not physical stylus certification; further pen work is
+  declined. Graphics-tablet mode controls a host screen without streaming video.
+- **Capacity:** one to four display slots are configurable. Historical testing
+  used one physical tablet plus simulation; multiple physical tablets are not
+  validated and the broader campaign remains declined (T382).
 
 ## Documentation
 
-- [Installation](docs/installation.md) · [Troubleshooting](docs/troubleshooting.md)
-- [Architecture and protocol](docs/architecture.md) · [Development, building, releasing](docs/development.md)
-- [Benchmarks](docs/benchmarks.md) · [Compatibility](docs/compatibility.md) · [FAQ](docs/faq.md)
-- [Tablet webcams on Linux](docs/cameras.md) — front/rear OS cameras, one active lens at a time.
-- [Security](SECURITY.md) · [Changelog](CHANGELOG.md)
+| I want to… | Guide |
+| --- | --- |
+| Install, start at login or remove Blent | [Installation](docs/installation.md), [uninstall](SECURITY.md#how-to-uninstall-completely) |
+| Fix a connection or display problem | [Troubleshooting](docs/troubleshooting.md), [compatibility](docs/compatibility.md) |
+| Use a tablet webcam | [Cameras](docs/cameras.md) |
+| Use tablet microphone/speakers | [Audio](docs/audio.md) |
+| Forget a trusted computer | [Saved computers](docs/saved-computers.md) |
+| Tune display quality or resource use | [Settings](docs/settings.md), [video](docs/video-codecs.md), [pipe buffer](docs/pipe-buffer.md), [CPU scheduling](docs/scheduling.md) |
+| Understand measurements | [Benchmarks and measurement limits](docs/benchmarks.md) |
+| Build or change the project | [Contributing](CONTRIBUTING.md), [development](docs/development.md), [architecture](docs/architecture.md) |
+| Understand trust, permissions or licenses | [Security](SECURITY.md), [third-party terms](THIRD_PARTY_LICENSES.md) |
+
+## Performance
+
+Published historical numbers describe their recorded hardware and workload.
+They are not current fork certification or total screen latency. The common
+packet-to-render-acknowledgement timer excludes capture and encoding; independent
+medians cannot be subtracted to measure network delay. See the
+[results and methods](docs/benchmarks.md). No total upstream-to-fork speedup is claimed.
+
+## FAQ
+
+USB debugging is needed for ADB, not paired direct USB. Wi-Fi is an optional ADB
+route; `blent wifi --off` does not close Android's network ADB listener. See
+[connection security](SECURITY.md#connections-and-trust-boundaries).
+
+For hardware, pen, wireless use and dated comparisons with alternatives, read the
+[full FAQ](docs/faq.md).
+
+## About
+
+The GUI's **About** page has version/build details, credits, offline project and
+Android notices, **Report compatibility** and **Star on GitHub**. Reports open a
+prefilled issue for your review; submission is explicit. Navigation stays visible.
+**Open installed bundle notices** opens package-specific notices when their
+manifest exists and reports when they are missing. Embedded notices do not list
+every library installed on the computer.
 
 ## Plans and proposals
 
-The [Windows integration plan](docs/windows-port.md) separates compilation,
-touch/mouse operation, extended-display support and packaging. Windows stylus
-work is declined; existing Linux/Android pen code and tests remain. The plan
-records pending OS/driver/testing decisions. The Windows preview provides lifecycle, USB preparation,
-Settings, a tray, and an opt-in selected-monitor touch/mouse preview with Android
-tap, right-click and drag controls. Physical tablet acceptance remains pending;
-display streaming and stylus remain unavailable. See the
-[input preview setup](docs/reviews/2026-09-28-windows-direct-input.md#using-the-input-preview).
+The [Windows preview](docs/windows-port.md) includes lifecycle, USB preparation,
+Settings, tray and opt-in selected-monitor touch/mouse controls. Physical tablet
+acceptance is pending; display streaming, stylus and ADB-free USB are unavailable.
+See [input preview setup](docs/reviews/2026-09-28-windows-direct-input.md#using-the-input-preview).
 
-Linux paired direct USB uses Android accessory transport without USB debugging.
-Windows ADB-free USB remains unsupported. Camera/audio transport capabilities
-and physical acceptance are documented separately in [camera](docs/cameras.md)
-and [audio](docs/audio.md) integration status. Broader Wayland input mapping and
-a PipeWire/dmabuf capture path remain proposals without a committed schedule.
+Broader Wayland input mapping and PipeWire/dmabuf capture remain proposals without
+a committed schedule. HDR is unimplemented: capture is 8-bit. An iPad client would
+need transport, native client, build/signing resources and distribution decisions;
+no Apple platform or regional route has been selected or verified.
 
-HDR is not implemented; the current capture path is 8-bit. An iPad client is
-also only a proposal and would need a supported transport, a native client,
-build/signing resources and a distribution plan. No particular Apple
-platform or regional distribution route has been selected or verified.
-
-Current defects and blocked decisions remain in [TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md).
+[TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md)
+tracks actionable defects and blocked decisions. Historical reports do not reopen
+declined work or establish current support.
 
 ## Contributing
 
-Compatibility reports are the most useful thing right now; see
-[CONTRIBUTING.md](CONTRIBUTING.md). Questions and reports go to
-[Issues](https://github.com/geraldo-netto/blent/issues).
+Send questions and reports to [fork issues](https://github.com/geraldo-netto/blent/issues).
+Include your commit, hardware and relevant settings; see [CONTRIBUTING.md](CONTRIBUTING.md).
+The [website source](docs/index.html) is maintained in this repository.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The bundled libevdi client library is LGPL-2.1
-from DisplayLink, unmodified — see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+Blent is maintained at [geraldo-netto/blent](https://github.com/geraldo-netto/blent).
+Original UScreen copyright (c) 2026 majmichu1 is retained under MIT. Original Blent
+contributions copyright (c) 2026 Geraldo Netto. See [COPYRIGHT.md](COPYRIGHT.md)
+for attribution/provenance and [LICENSE](LICENSE) for terms.
+
+The unmodified DisplayLink libevdi client library is LGPL-2.1; third-party terms
+remain separate. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).

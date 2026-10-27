@@ -1,9 +1,9 @@
 # Site and README images
 
-This directory currently contains no photographs. `docs/index.html` already
+This directory has no photographs. `docs/index.html` already
 has an inline SVG topology diagram and references GitHub's generated social
 preview at `opengraph.githubassets.com`. Those are illustrations/metadata, not
-screenshots or evidence of a running setup. The README currently uses no image.
+screenshots or evidence of a running setup. The README uses a Mermaid flow diagram, not a photograph.
 
 If a real photo of a tablet running Blent is provided, possible assets are:
 
