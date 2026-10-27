@@ -350,6 +350,7 @@ async fn private_tls_audio(direction: Direction) {
     let tablet = tokio::spawn(peer.run(peer_done));
     let helper_root = tempfile::tempdir().unwrap();
     let helper = helper_root.path().join("audio-helper");
+    std::fs::write(helper_root.path().join("clock"), "").unwrap();
     std::fs::write(
         &helper,
         format!(

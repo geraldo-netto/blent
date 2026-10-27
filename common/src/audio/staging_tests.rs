@@ -1,20 +1,18 @@
 use super::*;
-fn grant(clocked: bool) -> AudioGrant {
-    let mut grant = AudioGrant::new(
+fn grant() -> AudioGrant {
+    AudioGrant::new(
         AudioProfile::new(Direction::Speakers),
         1,
         crate::credentials::tests::entropy,
     )
-    .unwrap();
-    grant.clocked = clocked;
-    grant
+    .unwrap()
 }
 #[test]
 fn t818_views_validate_before_commit_and_preserve_endian_and_clock() {
-    for clocked in [false, true] {
-        let grant = grant(clocked);
+    for with_clock in [false, true] {
+        let grant = grant();
         let samples = [i16::MIN; MAX_SAMPLES];
-        let clock = Some(ClockSample {
+        let clock = with_clock.then_some(ClockSample {
             epoch: 1,
             frames: 480,
             nanos: 1,
@@ -32,12 +30,9 @@ fn t818_views_validate_before_commit_and_preserve_endian_and_clock() {
                 .is_err());
         }
         let view = reader.validate_parts(&packet[..28], &packet[28..]).unwrap();
-        assert_eq!(
-            view.pcm.as_ptr(),
-            packet[28 + if clocked { CLOCK_BYTES } else { 0 }..].as_ptr()
-        );
+        assert_eq!(view.pcm.as_ptr(), packet[28 + CLOCK_BYTES..].as_ptr());
         assert_eq!(&view.pcm[..2], &i16::MIN.to_le_bytes());
-        assert_eq!(view.clock, if clocked { clock } else { None });
+        assert_eq!(view.clock, clock);
         assert!(!view.discontinuity);
         assert!(reader.validate_parts(&packet[..28], &packet[28..]).is_err());
         let gap = grant.encode_with_clock(2, 2, &samples, clock).unwrap();
@@ -51,7 +46,7 @@ fn t818_views_validate_before_commit_and_preserve_endian_and_clock() {
 }
 #[test]
 fn t818_reusable_writer_is_atomic_on_invalid_input() {
-    let grant = grant(true);
+    let grant = grant();
     let mut writer = FrameWriter::new(grant.clone());
     let mut bytes = vec![255; 28 + CLOCK_BYTES + MAX_SAMPLES * 2];
     let pointer = bytes.as_ptr();

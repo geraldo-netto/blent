@@ -15,6 +15,7 @@ pub use buffer::{PcmQueue, RenderResult};
 pub use session::{AudioSession, AudioState};
 pub use wire::{
     AudioGrant, FrameReader, FrameWriter, PcmBlock, PcmView, FRAME_HEADER_BYTES, HELLO_BYTES,
+    REQUEST_MAGIC,
 };
 
 pub const SAMPLE_RATE: u32 = 48_000;

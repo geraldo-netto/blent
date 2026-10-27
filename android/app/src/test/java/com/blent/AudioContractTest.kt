@@ -17,7 +17,7 @@ class AudioContractTest {
     private fun endpoint() = AudioEndpoint("a".repeat(64), 12345, 1, 1, 40, false)
     private fun hello(endpoint: AudioEndpoint = endpoint()): ByteArray {
         val bytes = ByteBuffer.allocate(92).order(ByteOrder.BIG_ENDIAN)
-        bytes.put("BLAUD001".toByteArray()).put("b".repeat(64).toByteArray()).putLong(1)
+        bytes.put("BLAUD002".toByteArray()).put("b".repeat(64).toByteArray()).putLong(1)
         bytes.put(endpoint.direction.toByte()).put(endpoint.direction.toByte()).putInt(48000).putShort(480)
         bytes.put(endpoint.processing.toByte()).put(if (endpoint.background) 1.toByte() else 0.toByte()).putShort(endpoint.bufferMs.toShort())
         return bytes.array()
@@ -64,13 +64,14 @@ class AudioContractTest {
         val endpoint = endpoint()
         val wire = AudioWire(endpoint)
         val request = Buffer(); wire.request(request, 7, true)
-        assertEquals("BLAUREQ1", request.readUtf8(8)); assertEquals(endpoint.token, request.readUtf8(64))
+        assertEquals("BLAUREQ2", request.readUtf8(8)); assertEquals(endpoint.token, request.readUtf8(64))
         assertArrayEquals(byteArrayOf(7, 1, 1, 1), request.readByteArray())
         wire.negotiate(Buffer().writeUtf8(endpoint.token).write(hello()))
         val packet = Buffer(); val samples = ShortArray(480) { if (it % 2 == 0) Short.MIN_VALUE else Short.MAX_VALUE }
         wire.send(packet, samples, 123, 200)
         assertEquals(1L, packet.readLong()); assertEquals(0L, packet.readLong()); assertEquals(123L, packet.readLong())
-        assertEquals(960, packet.readShort().toInt()); assertEquals(1, packet.readByte().toInt()); assertEquals(0, packet.readByte().toInt())
+        assertEquals(984, packet.readShort().toInt()); assertEquals(1, packet.readByte().toInt()); assertEquals(0, packet.readByte().toInt())
+        assertArrayEquals(ByteArray(24), packet.readByteArray(24))
         assertEquals(Short.MIN_VALUE, packet.readShortLe()); assertEquals(Short.MAX_VALUE, packet.readShortLe())
         rejected { wire.send(Buffer(), samples, 123, 100) }
         rejected { wire.send(Buffer(), ShortArray(479), 124, 100) }

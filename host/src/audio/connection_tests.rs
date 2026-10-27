@@ -70,12 +70,12 @@ else: raise RuntimeError(args)
 root=pathlib.Path(__file__).parent
 sys.stdout.buffer.write(b'READY\n');sys.stdout.buffer.flush()
 if sys.argv[3]=='microphone':
-    data=sys.stdin.buffer.read(961)
+    data=sys.stdin.buffer.read(985)
     (root/'delivered.tmp').write_bytes(data); (root/'delivered.tmp').replace(root/'delivered')
     sys.stdin.buffer.read()
 else:
     while True:
-        sys.stdout.buffer.write(b'\x00'+b'\xd2\x04\x1f\xef'*480);sys.stdout.buffer.flush();time.sleep(.01)
+        sys.stdout.buffer.write(b'\x00'+bytes(24)+b'\xd2\x04\x1f\xef'*480);sys.stdout.buffer.flush();time.sleep(.01)
 "#,
     );
 }
@@ -254,7 +254,7 @@ async fn transfer(root: &Path, direction: Direction) -> TcpStream {
     socket
         .write_all(
             &[
-                b"BLAUREQ1".as_slice(),
+                b"BLAUREQ2".as_slice(),
                 token.as_bytes(),
                 &[7, 1, direction as u8, 1],
             ]
@@ -265,28 +265,28 @@ async fn transfer(root: &Path, direction: Direction) -> TcpStream {
     let mut bytes = [0; 64 + blent_config::audio::HELLO_BYTES];
     socket.read_exact(&mut bytes).await.unwrap();
     assert_eq!(&bytes[..64], token.as_bytes());
-    assert_eq!(&bytes[64..72], b"BLAUD001");
+    assert_eq!(&bytes[64..72], b"BLAUD002");
     assert_eq!(bytes[144], direction as u8);
     assert_eq!(u16::from_be_bytes(bytes[154..156].try_into().unwrap()), 40);
     match direction {
         Direction::Microphone => microphone_packet(root, &mut socket, &bytes[136..144]).await,
         Direction::Speakers => {
-            let mut packet = vec![0; 1948];
+            let mut packet = vec![0; 1972];
             socket.read_exact(&mut packet).await.unwrap();
             assert_eq!(&packet[..8], &bytes[136..144]);
-            assert_eq!(&packet[28..], b"\xd2\x04\x1f\xef".repeat(480));
+            assert_eq!(&packet[52..], b"\xd2\x04\x1f\xef".repeat(480));
         }
     }
     // Original cleanup is driven by explicit Stop; retain transport until then.
     socket
 }
 async fn microphone_packet(root: &Path, socket: &mut TcpStream, generation: &[u8]) {
-    let mut packet = vec![0; 28 + 960];
+    let mut packet = vec![0; 52 + 960];
     packet[..8].copy_from_slice(generation);
     packet[16..24].copy_from_slice(&1u64.to_be_bytes());
-    packet[24..26].copy_from_slice(&960u16.to_be_bytes());
+    packet[24..26].copy_from_slice(&984u16.to_be_bytes());
     packet[26] = Direction::Microphone as u8;
-    packet[28..].fill(123);
+    packet[52..].fill(123);
     socket.write_all(&packet).await.unwrap();
     wait_file(&root.join("delivered")).await;
     let native = std::fs::read(root.join("delivered")).unwrap();

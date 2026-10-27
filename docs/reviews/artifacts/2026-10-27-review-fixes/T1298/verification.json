@@ -1,0 +1,24 @@
+{
+  "issue": "T1298",
+  "android": {
+    "tests": 2714,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "maintained_functions": 3334,
+    "passing_functions": 3334
+  },
+  "rust_changed_production_functions": 22,
+  "minimum_changed_native_line_coverage": 93.75,
+  "changed_file_functions_measured": 951,
+  "maximum_changed_function_complexity": 9,
+  "whole_repository_functions": 28607,
+  "whole_repository_over_complexity_9": 0,
+  "clippy_ci": "PASS",
+  "workspace": "Initial full workspace run had one stale staging assertion failure; all other targets passed. Corrected staging passed both normal and instrumented reruns. Subsequent broad host/common all-features run and final focused default/native-audio run passed. Five existing ignored benchmark cases retained.",
+  "manifest_provenance": "Android evidence uses its archived original/refresh manifests, with unchanged Kotlin sources throughout. Final native manifest follows test-module relocation and separately tracked lint fixes; final metrics bind exact source hashes.",
+  "remaining_native_lint_findings": [
+    "T1308",
+    "T1309"
+  ]
+}

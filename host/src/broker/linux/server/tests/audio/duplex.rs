@@ -61,6 +61,7 @@ impl NativeAudio {
         let bridge = usb::native(&options, &token, native, launch.clone(), &report).unwrap();
         let root = tempfile::tempdir().unwrap();
         let helper = root.path().join("audio-helper");
+        std::fs::write(root.path().join("clock"), "").unwrap();
         let body = match direction {
             Direction::Microphone => audio::session_tests::MICROPHONE_PCM,
             Direction::Speakers => audio::session_tests::PCM,

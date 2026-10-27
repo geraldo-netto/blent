@@ -16,11 +16,11 @@ import org.robolectric.annotation.Config
 class AudioPlaybackTest {
     private fun endpoint(port: Int) = AudioEndpoint("a".repeat(64), port, 2, 1, 40, false)
     private fun grant(endpoint: AudioEndpoint): ByteArray = endpoint.token.toByteArray() +
-        ByteBuffer.allocate(92).put("BLAUD001".toByteArray()).put("b".repeat(64).toByteArray())
+        ByteBuffer.allocate(92).put("BLAUD002".toByteArray()).put("b".repeat(64).toByteArray())
             .putLong(1).put(2).put(2).putInt(48000).putShort(480).put(1).put(0).putShort(40).array()
     private fun packet(sequence: Long): ByteArray {
-        val bytes = ByteBuffer.allocate(1948).putLong(1).putLong(sequence).putLong(sequence * 10)
-            .putShort(1920).put(2).put(0).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+        val bytes = ByteBuffer.allocate(1972).putLong(1).putLong(sequence).putLong(sequence * 10)
+            .putShort(1944).put(2).put(0).put(ByteArray(24)).order(java.nio.ByteOrder.LITTLE_ENDIAN)
         repeat(480) { bytes.putShort(1234).putShort(-4321) }
         return bytes.array()
     }

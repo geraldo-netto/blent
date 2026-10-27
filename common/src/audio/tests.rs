@@ -19,6 +19,28 @@ fn grant(direction: Direction) -> AudioGrant {
     .unwrap()
 }
 
+#[test]
+fn t1298_current_grants_reject_old_version_and_keep_absent_clock_prefix() {
+    for direction in [Direction::Microphone, Direction::Speakers] {
+        let grant = grant(direction);
+        assert_eq!(&grant.hello()[..8], b"BLAUD002");
+        let mut obsolete = grant.hello();
+        obsolete[..8].copy_from_slice(b"BLAUD001");
+        assert!(grant.authenticate(&obsolete).is_err());
+        let packet = grant.encode(0, 1, block(direction, 7).samples()).unwrap();
+        assert_eq!(packet.len(), 52 + 960 * direction.channels());
+        assert_eq!(&packet[28..52], &[0; 24]);
+        let mut reader = grant.authenticate(&grant.hello()).unwrap();
+        let mut old = packet[..28].to_vec();
+        old[24..26].copy_from_slice(&(960u16 * direction.channels() as u16).to_be_bytes());
+        old.extend_from_slice(&packet[52..]);
+        assert!(reader.decode(&old).is_err());
+        let decoded = reader.decode(&packet).unwrap();
+        assert_eq!(decoded.clock, None);
+        assert_eq!(decoded.samples(), block(direction, 7).samples());
+    }
+}
+
 fn block(direction: Direction, value: i16) -> PcmBlock {
     PcmBlock {
         clock: None,
@@ -154,7 +176,7 @@ fn t717_pcm_roundtrip_preserves_signed_extremes_and_stereo_order() {
         let mut reader = grant.authenticate(&grant.hello()).unwrap();
         assert_eq!(
             reader.payload_bytes(&packet[..FRAME_HEADER_BYTES]).unwrap(),
-            samples.len() * 2
+            samples.len() * 2 + CLOCK_BYTES
         );
         let block = reader.decode(&packet).unwrap();
         assert_eq!(block.samples(), samples);
@@ -545,7 +567,7 @@ fn t717_buffer_preferences_control_prefill_and_wire_golden_fields() {
         )
         .unwrap();
         let hello = grant.hello();
-        assert_eq!(&hello[..8], b"BLAUD001");
+        assert_eq!(&hello[..8], b"BLAUD002");
         assert_eq!(
             &hello[72..90],
             &[1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 0, 0, 187, 128, 1, 224, 2, 1]
@@ -564,9 +586,11 @@ fn t717_buffer_preferences_control_prefill_and_wire_golden_fields() {
             .encode(0, 0x1112131415161718, &[i16::MIN; MAX_SAMPLES])
             .unwrap();
         assert_eq!(
-            &frame[16..30],
-            &[17, 18, 19, 20, 21, 22, 23, 24, 7, 128, 2, 0, 0, 128]
+            &frame[16..28],
+            &[17, 18, 19, 20, 21, 22, 23, 24, 7, 152, 2, 0]
         );
+        assert_eq!(&frame[28..52], &[0; 24]);
+        assert_eq!(&frame[52..54], &[0, 128]);
     }
 }
 

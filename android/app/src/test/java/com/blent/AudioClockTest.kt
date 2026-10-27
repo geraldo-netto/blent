@@ -107,14 +107,14 @@ class AudioClockTest {
     @Test fun t720_wireNegotiatesClockMetadataAndRejectsInvalidPacketsAtomically() {
         for (direction in 1..2) {
             val endpoint = AudioEndpoint("a".repeat(64), 12345, direction, 1, 40, false)
-            val wire = AudioWire(endpoint, true); val request = Buffer()
+            val wire = AudioWire(endpoint); val request = Buffer()
             wire.request(request, 7, true); assertEquals("BLAUREQ2", request.readUtf8(8))
             wire.negotiate(Buffer().writeUtf8(endpoint.token).write(grant(endpoint, "BLAUD002")))
             val packet = Buffer(); val clock = stamp(96000, 2_000_000_001)
             reject { wire.send(packet, ShortArray(480 * direction), 1, 100, stamp(epoch = 0)) }; assertEquals(0, packet.size)
             wire.send(packet, ShortArray(480 * direction) { 123 }, 1, 100, clock)
             val bytes = packet.readByteArray(); assertEquals(28 + 24 + 960 * direction, bytes.size)
-            val receiver = AudioPackets(1, direction, true)
+            val receiver = AudioPackets(1, direction)
             for (size in bytes.indices) {
                 assertThrows(java.io.EOFException::class.java) { receiver.read(Buffer().write(bytes.copyOf(size))) }
             }
@@ -125,11 +125,8 @@ class AudioClockTest {
             reject { receiver.read(Buffer().write(bytes)) }
             wire.send(packet, ShortArray(480 * direction), 2, 100)
             assertNull(wire.receive(Buffer().write(bytes)).let { wire.receive(packet).clock })
-            // A legacy grant remains usable; counters are deliberately unavailable.
-            val legacy = AudioWire(endpoint, true)
-            legacy.negotiate(Buffer().writeUtf8(endpoint.token).write(grant(endpoint, "BLAUD001")))
-            legacy.send(packet, ShortArray(480 * direction), 1, 100, clock)
-            assertEquals(28L + 960 * direction, packet.size)
+            // T1298: the removed wire version cannot downgrade native-counter framing.
+            reject { AudioWire(endpoint).negotiate(Buffer().writeUtf8(endpoint.token).write(grant(endpoint, "BLAUD001"))) }
         }
     }
 }

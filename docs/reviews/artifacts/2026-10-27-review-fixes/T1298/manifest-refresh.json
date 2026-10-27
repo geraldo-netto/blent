@@ -1,0 +1,13 @@
+{
+  "changed_sources": {
+    "sources": [
+      "host/tests/audio_staging.rs"
+    ],
+    "build_sources": [
+      "host/tests/audio_staging.rs"
+    ]
+  },
+  "production_sources_identical": true,
+  "android_sources_and_functions_identical": true,
+  "reason": "Update only the staging fixture length/offset oracle for mandatory counter prefix. All other hashes and complete function inventory match the original pre-run manifest; no Android input changed."
+}

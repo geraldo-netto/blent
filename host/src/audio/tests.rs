@@ -60,7 +60,7 @@ async fn t718_bootstrap_rejects_bad_peers_and_authenticates_grant() {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();
     let token = "a".repeat(64);
-    let request = [b"BLAUREQ1".as_slice(), token.as_bytes(), &[7, 1, 1, 1]].concat();
+    let request = [b"BLAUREQ2".as_slice(), token.as_bytes(), &[7, 1, 1, 1]].concat();
     let sender = tokio::spawn(async move {
         for index in [0, 8, 72, 73, 74, 75] {
             let mut bad = request.clone();
@@ -74,11 +74,10 @@ async fn t718_bootstrap_rejects_bad_peers_and_authenticates_grant() {
         socket.read_exact(&mut grant).await.unwrap();
         grant
     });
-    let (mut socket, caps, mode, detail, clocked) =
+    let (mut socket, caps, mode, detail) =
         protocol::accept(&listener, &token, Direction::Microphone)
             .await
             .unwrap();
-    assert!(!clocked);
     assert!(caps.microphone && caps.raw && caps.background);
     assert_eq!(mode, blent_config::audio::Processing::Speech);
     assert!(detail.contains("enabled"));
@@ -117,13 +116,11 @@ async fn t718_raw_request_reports_effective_capabilities() {
         let mut peer = TcpStream::connect(listener.local_addr().unwrap())
             .await
             .unwrap();
-        let bytes = [b"BLAUREQ1".as_slice(), token.as_bytes(), &[bits, 0, 1, 2]].concat();
+        let bytes = [b"BLAUREQ2".as_slice(), token.as_bytes(), &[bits, 0, 1, 2]].concat();
         peer.write_all(&bytes).await.unwrap();
-        let (_, caps, mode, detail, clocked) =
-            protocol::accept(&listener, &token, Direction::Microphone)
-                .await
-                .unwrap();
-        assert!(!clocked);
+        let (_, caps, mode, detail) = protocol::accept(&listener, &token, Direction::Microphone)
+            .await
+            .unwrap();
         assert!(caps.microphone && caps.raw && !caps.speakers);
         assert_eq!(caps.speech, bits & 1 != 0);
         assert_eq!(caps.background, bits & 4 != 0);
@@ -198,7 +195,7 @@ async fn t718_sequence_gap_reaches_native_queue() {
         .await
         .unwrap();
     assert_eq!(native[0], 1, "T718 sequence gap must flush native queue");
-    assert_eq!(native.len(), 961);
+    assert_eq!(native.len(), 985);
 }
 
 #[tokio::test]
@@ -228,6 +225,7 @@ async fn t719_speaker_transport_preserves_stereo_and_native_gaps() {
     let mut input = child.stdin.take().unwrap();
     for flag in [0, 1] {
         let mut bytes = vec![flag];
+        bytes.extend_from_slice(&[0; 24]);
         for _ in 0..480 {
             bytes.extend_from_slice(&[0xd2, 0x04, 0x1f, 0xef]);
         }
@@ -237,7 +235,7 @@ async fn t719_speaker_transport_preserves_stereo_and_native_gaps() {
     let send = speakers(&mut server, &mut child, grant);
     let receive = async {
         for discontinuity in [false, true] {
-            let mut bytes = [0; 1948];
+            let mut bytes = [0; 1972];
             client.read_exact(&mut bytes).await.unwrap();
             let frame = reader.decode(&bytes).unwrap();
             assert_eq!(frame.discontinuity, discontinuity);
@@ -264,7 +262,7 @@ fn t719_native_speaker_packets_reject_bounded_invalid_flags_and_sizes() {
         assert!(protocol::captured(&vec![0; size]).is_err());
     }
     for flag in 0..=255 {
-        let mut bytes = [0; 1921];
+        let mut bytes = [0; 1945];
         bytes[0] = flag;
         assert_eq!(protocol::captured(&bytes).is_ok(), flag <= 1);
     }
@@ -281,18 +279,11 @@ async fn t720_native_clock_request_and_packet_transfer_are_explicit_and_atomic()
     peer.write_all(&[b"BLAUREQ2".as_slice(), token.as_bytes(), &[7, 1, 1, 1]].concat())
         .await
         .unwrap();
-    let (_, caps, _, _, clocked) = protocol::accept(&listener, &token, Direction::Microphone)
+    let (_, caps, _, _) = protocol::accept(&listener, &token, Direction::Microphone)
         .await
         .unwrap();
-    assert!(clocked);
     let grant = AudioSession::new(Direction::Microphone)
-        .start_with_clock(
-            AudioProfile::new(Direction::Microphone),
-            caps,
-            true,
-            0,
-            clocked,
-        )
+        .start(AudioProfile::new(Direction::Microphone), caps, true, 0)
         .unwrap();
     let clock = ClockSample {
         epoch: 3,
@@ -338,7 +329,7 @@ async fn t720_clocked_speaker_transport_preserves_native_counter_and_stereo() {
     use tokio::io::AsyncReadExt;
     let (mut client, mut server) = sockets().await;
     let grant = AudioSession::new(Direction::Speakers)
-        .start_with_clock(
+        .start(
             AudioProfile::new(Direction::Speakers),
             AudioCapabilities {
                 speakers: true,
@@ -347,7 +338,6 @@ async fn t720_clocked_speaker_transport_preserves_native_counter_and_stereo() {
             },
             true,
             0,
-            true,
         )
         .unwrap();
     let mut reader = grant.authenticate(&grant.hello()).unwrap();
@@ -376,7 +366,7 @@ async fn t720_clocked_speaker_transport_preserves_native_counter_and_stereo() {
         .await
         .unwrap();
     drop(input);
-    let send = speakers_with_clock(&mut server, &mut child, grant, true);
+    let send = speakers(&mut server, &mut child, grant);
     let receive = async {
         let mut bytes = [0; 1972];
         client.read_exact(&mut bytes).await.unwrap();

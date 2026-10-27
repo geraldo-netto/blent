@@ -8,7 +8,7 @@ with tempfile.TemporaryDirectory(prefix='blent-pw-') as d:
   for _ in range(50):
    if os.path.exists(d+'/pipewire-0'):break
    time.sleep(.02)
-  source=subprocess.Popen([sys.argv[1],'40','blent_microphone_t718_private'],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE);clients.append(source)
+  source=subprocess.Popen([sys.argv[1],'40','blent_microphone_t718_private','microphone'],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE);clients.append(source)
   assert select.select([source.stdout],[],[],5)[0], 'ready timeout'
   assert source.stdout.readline()==b'READY\n'
   consumer=subprocess.Popen(['pw-cat','--record','--target','0','--rate','48000','--channels','1','--format','s16','-'],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE);clients.append(consumer)
@@ -25,7 +25,7 @@ with tempfile.TemporaryDirectory(prefix='blent-pw-') as d:
   subprocess.run(['pw-link','blent_microphone_t718_private:capture_MONO','pw-cat:input_MONO'],env=env,check=True)
   def feed():
    for _ in range(100):
-    source.stdin.write(b'\0'+struct.pack('<480h',*([1234]*480)));source.stdin.flush();time.sleep(.01)
+    source.stdin.write(b'\0'+bytes(24)+struct.pack('<480h',*([1234]*480)));source.stdin.flush();time.sleep(.01)
   t=threading.Thread(target=feed);t.start()
   data=bytearray();deadline=time.monotonic()+1.3
   while time.monotonic()<deadline:
@@ -40,10 +40,10 @@ with tempfile.TemporaryDirectory(prefix='blent-pw-') as d:
   consumer.terminate();consumer.wait(timeout=2)
   import audio_transport
   audio_transport.check(sys.argv[2], env, d)
-  audio_transport.check(sys.argv[2], env, d, clocked=True)
-  for args in [[], ['0','bad'], ['201','bad'], ['40','bad/name'], ['40','valid','speakers','invalid'], ['40','valid','invalid']]:
+  audio_transport.check(sys.argv[2], env, d, with_clock=True)
+  for args in [[], ['0','bad','microphone'], ['201','bad','microphone'], ['40','bad/name','microphone'], ['40','valid'], ['40','valid','microphone','clocked'], ['40','valid','speakers','invalid'], ['40','valid','invalid']]:
    assert subprocess.run([sys.argv[1], *args], env=env, capture_output=True, timeout=2).returncode != 0
-  failed=subprocess.Popen([sys.argv[1],'40','blent_microphone_failure'],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE);clients.append(failed)
+  failed=subprocess.Popen([sys.argv[1],'40','blent_microphone_failure','microphone'],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE);clients.append(failed)
   assert select.select([failed.stdout],[],[],5)[0], 'failure fixture readiness timeout'
   assert failed.stdout.readline()==b'READY\n'
   server.terminate();server.wait(timeout=2)

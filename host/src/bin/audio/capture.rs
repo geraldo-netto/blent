@@ -105,7 +105,6 @@ pub(super) fn workers(
     epoch: Instant,
     running: Arc<AtomicBool>,
     ready: Arc<AtomicBool>,
-    clocked: bool,
 ) {
     let lifetime = running.clone();
     std::thread::spawn(move || {
@@ -117,45 +116,20 @@ pub(super) fn workers(
             std::thread::sleep(Duration::from_millis(2));
         }
         // READY is written before this worker may lock stdout.
-        let _ = output_with_clock(
-            &mut std::io::stdout().lock(),
-            &queue,
-            epoch,
-            &running,
-            clocked,
-        );
+        let _ = output(&mut std::io::stdout().lock(), &queue, epoch, &running);
         running.store(false, Ordering::Release);
     });
 }
 
-#[cfg(test)]
 fn output(
     writer: &mut impl Write,
     queue: &Mutex<PcmQueue>,
     epoch: Instant,
     running: &AtomicBool,
 ) -> Result<()> {
-    output_with_clock(writer, queue, epoch, running, false)
-}
-
-fn output_with_clock(
-    writer: &mut impl Write,
-    queue: &Mutex<PcmQueue>,
-    epoch: Instant,
-    running: &AtomicBool,
-    clocked: bool,
-) -> Result<()> {
     let mut due = Instant::now();
     while running.load(Ordering::Acquire) {
-        let mut packet = vec![
-            0;
-            1 + BYTES
-                + if clocked {
-                    blent_config::audio::CLOCK_BYTES
-                } else {
-                    0
-                }
-        ];
+        let mut packet = vec![0; 1 + BYTES + blent_config::audio::CLOCK_BYTES];
         let pcm = packet.len() - BYTES;
         if let Some(block) = queue
             .lock()
@@ -163,10 +137,7 @@ fn output_with_clock(
             .pop(epoch.elapsed().as_millis() as u64)?
         {
             packet[0] = u8::from(block.discontinuity);
-            if clocked {
-                packet[1..pcm]
-                    .copy_from_slice(&blent_config::audio::ClockSample::encode(block.clock)?);
-            }
+            packet[1..pcm].copy_from_slice(&blent_config::audio::ClockSample::encode(block.clock)?);
             for (sample, bytes) in block
                 .samples()
                 .iter()
@@ -306,26 +277,12 @@ mod clock_tests {
             .push(block, epoch.elapsed().as_millis() as u64)
             .unwrap();
         let mut buffer = [0; 1945];
-        assert!(output_with_clock(
-            &mut &mut buffer[..],
-            &queue,
-            epoch,
-            &AtomicBool::new(true),
-            true
-        )
-        .is_err());
+        assert!(output(&mut &mut buffer[..], &queue, epoch, &AtomicBool::new(true)).is_err());
         let stamp = blent_config::audio::ClockSample::decode(&buffer[1..25])
             .unwrap()
             .unwrap();
         assert_eq!(stamp.frames, 96000);
         assert_eq!(&buffer[25..], &[1; BYTES]);
-        assert!(output_with_clock(
-            &mut std::io::sink(),
-            &queue,
-            epoch,
-            &AtomicBool::new(false),
-            true
-        )
-        .is_ok());
+        assert!(output(&mut std::io::sink(), &queue, epoch, &AtomicBool::new(false)).is_ok());
     }
 }

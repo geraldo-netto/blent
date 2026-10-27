@@ -37,9 +37,9 @@ def feed(producer, errors):
         errors.append(error)
 
 
-def check(helper, env, clients, clocked=False):
+def check(helper, env, clients, require_clock=False):
     name = 'blent_speakers_t719_private'
-    sink = subprocess.Popen([helper, '40', name, 'speakers'] + (['clocked'] if clocked else []), env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    sink = subprocess.Popen([helper, '40', name, 'speakers'], env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     clients.append(sink)
     assert select.select([sink.stdout], [], [], 5)[0], 'sink readiness timeout'
     assert sink.stdout.readline() == b'READY\n', 'T719 helper did not publish a speaker sink'
@@ -57,20 +57,20 @@ def check(helper, env, clients, clocked=False):
             data.extend(os.read(sink.stdout.fileno(), 8192))
     worker.join(timeout=2)
     assert not worker.is_alive() and not errors, errors
-    check_blocks(data, clocked)
+    check_blocks(data, require_clock)
     sink.stdin.close(); sink.wait(timeout=2)
     retire(producer)
     assert not any(n.get('info', {}).get('props', {}).get('node.name') == name for n in nodes(env))
 
 
-def check_blocks(data, clocked):
-    size = 1945 if clocked else 1921
+def check_blocks(data, require_clock):
+    size = 1945
     blocks = [data[i:i+size] for i in range(0, len(data)-size+1, size)]
-    if clocked:
+    if require_clock:
         counters = [struct.unpack('>QQQ', block[1:25]) for block in blocks]
         valid = [counter for counter in counters if counter[0] > 0 and counter[2] > 0]
         assert len(valid) > 20 and valid[-1][1] > valid[0][1], 'T720 native graph clock unavailable/stalled'
-        blocks = [block[:1] + block[25:] for block in blocks]
+    blocks = [block[:1] + block[25:] for block in blocks]
     assert len(blocks) > 80
     assert all(b[0] in (0, 1) for b in blocks)
     assert any(struct.pack('<hh', 1234, -4321) in b[1:] for b in blocks), 'stereo/channel order lost'
@@ -100,12 +100,12 @@ def main(helper, host):
                     break
                 time.sleep(.02)
             check(helper, env, clients)
-            check(helper, env, clients, clocked=True)
+            check(helper, env, clients, require_clock=True)
             for client in clients:
                 retire(client)
             import audio_speaker_transport
             audio_speaker_transport.check(host, env, directory)
-            audio_speaker_transport.check(host, env, directory, clocked=True)
+            audio_speaker_transport.check(host, env, directory, require_clock=True)
             failed = subprocess.Popen([helper, '40', 'blent_speakers_server_loss', 'speakers'], env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             clients.append(failed)
             assert select.select([failed.stdout], [], [], 5)[0], 'server-loss readiness timeout'

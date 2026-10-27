@@ -13,7 +13,7 @@ async fn t993_audio_short_and_utf8_tokens_return_errors_before_any_native_spawn(
     ];
     for token in tokens {
         let outcome = catch_unwind(AssertUnwindSafe(|| {
-            spawn_with_clock(Path::new("/bin/false"), profile, &token, true)
+            spawn(Path::new("/bin/false"), profile, &token)
         }));
         assert!(
             outcome.is_ok(),
@@ -32,8 +32,7 @@ async fn t993_audio_invalid_profiles_reject_before_any_native_spawn() {
             let mut profile = AudioProfile::new(direction);
             profile.buffer_ms = buffer_ms;
             assert!(
-                spawn_with_clock(Path::new("/bin/false"), profile, &"ab".repeat(32), false)
-                    .is_err(),
+                spawn(Path::new("/bin/false"), profile, &"ab".repeat(32)).is_err(),
                 "T993 invalid audio profile reached native spawn"
             );
         }
@@ -47,9 +46,7 @@ async fn t993_audio_bounded_invalid_credential_bytes_and_lengths_never_reach_hel
         if length == 64 {
             continue;
         }
-        assert!(
-            spawn_with_clock(Path::new("/bin/false"), profile, &"a".repeat(length), false).is_err()
-        );
+        assert!(spawn(Path::new("/bin/false"), profile, &"a".repeat(length)).is_err());
     }
     for byte in 0..=255u8 {
         if byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte) {
@@ -58,6 +55,6 @@ async fn t993_audio_bounded_invalid_credential_bytes_and_lengths_never_reach_hel
         let mut bytes = vec![b'a'; 64];
         bytes[11] = byte;
         let token = String::from_utf8_lossy(&bytes);
-        assert!(spawn_with_clock(Path::new("/bin/false"), profile, &token, true).is_err());
+        assert!(spawn(Path::new("/bin/false"), profile, &token).is_err());
     }
 }

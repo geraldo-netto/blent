@@ -6,7 +6,7 @@ use tokio::{
     net::{TcpListener, TcpStream},
 };
 
-pub(super) type Accepted = (TcpStream, AudioCapabilities, Processing, String, bool);
+pub(super) type Accepted = (TcpStream, AudioCapabilities, Processing, String);
 
 pub(super) async fn accept(
     listener: &TcpListener,
@@ -20,8 +20,8 @@ pub(super) async fn accept(
         let request_deadline = (tokio::time::Instant::now() + Duration::from_secs(2)).min(deadline);
         let result =
             tokio::time::timeout_at(request_deadline, request(&mut socket, token, direction)).await;
-        if let Ok(Ok((caps, mode, detail, clocked))) = result {
-            return Ok((socket, caps, mode, detail, clocked));
+        if let Ok(Ok((caps, mode, detail))) = result {
+            return Ok((socket, caps, mode, detail));
         }
         ensure!(
             tokio::time::Instant::now() < deadline,
@@ -33,14 +33,13 @@ async fn request(
     socket: &mut TcpStream,
     token: &str,
     direction: Direction,
-) -> Result<(AudioCapabilities, Processing, String, bool)> {
+) -> Result<(AudioCapabilities, Processing, String)> {
     let mut bytes = [0; 76];
     socket.read_exact(&mut bytes).await?;
     ensure!(
-        matches!(&bytes[..8], b"BLAUREQ1" | b"BLAUREQ2"),
+        &bytes[..8] == blent_config::audio::REQUEST_MAGIC,
         "Unknown audio request"
     );
-    let clocked = &bytes[..8] == b"BLAUREQ2";
     ensure!(
         blent_config::credentials::token_matches(token, std::str::from_utf8(&bytes[8..72])?),
         "Audio request authentication failed"
@@ -75,23 +74,17 @@ async fn request(
         capabilities,
         processing,
         format!("Effective {processing:?}. {detail}"),
-        clocked,
     ))
 }
 
 pub(super) fn captured(bytes: &[u8]) -> Result<blent_config::audio::PcmBlock> {
-    ensure!(
-        matches!(bytes.len(), 1921 | 1945),
-        "invalid native speaker packet length"
-    );
+    ensure!(bytes.len() == 1945, "invalid native speaker packet length");
     ensure!(bytes[0] <= 1, "invalid native speaker discontinuity");
     let pcm = bytes.len() - 1920;
     let mut block =
         blent_config::audio::PcmBlock::from_le_bytes(Direction::Speakers, &bytes[pcm..])?;
     block.discontinuity = bytes[0] != 0;
-    if pcm > 1 {
-        block.clock = blent_config::audio::ClockSample::decode(&bytes[1..pcm])?;
-    }
+    block.clock = blent_config::audio::ClockSample::decode(&bytes[1..pcm])?;
     Ok(block)
 }
 pub(super) async fn grant(socket: &mut TcpStream, ticket: &str, grant: &AudioGrant) -> Result<()> {
@@ -133,4 +126,36 @@ pub(super) async fn packet(
     frames: &mut blent_config::audio::FrameReader,
 ) -> Result<Vec<u8>> {
     Ok(Staging::new().packet(reader, frames).await?.to_vec())
+}
+
+#[cfg(test)]
+mod version_tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn t1298_old_request_rejects_before_audio_admission() {
+        let token = "a".repeat(64);
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        for magic in [b"BLAUREQ1", b"BLAUREQ2"] {
+            let mut peer = TcpStream::connect(listener.local_addr().unwrap())
+                .await
+                .unwrap();
+            let (mut socket, _) = listener.accept().await.unwrap();
+            peer.write_all(&[magic.as_slice(), token.as_bytes(), &[7, 1, 1, 1]].concat())
+                .await
+                .unwrap();
+            assert_eq!(
+                request(&mut socket, &token, Direction::Microphone)
+                    .await
+                    .is_ok(),
+                magic == b"BLAUREQ2"
+            );
+        }
+    }
+
+    #[test]
+    fn t1298_native_speaker_frame_has_one_fixed_layout() {
+        assert!(captured(&[0; 1921]).is_err());
+        assert_eq!(captured(&[0; 1945]).unwrap().clock, None);
+    }
 }

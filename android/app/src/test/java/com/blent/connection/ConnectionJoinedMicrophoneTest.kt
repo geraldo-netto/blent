@@ -14,8 +14,8 @@ import org.robolectric.annotation.Config
 @Config(sdk = [27, 34])
 class ConnectionJoinedMicrophoneTest {
     private fun fixture() = ConnectionJoinedAudioFixture(ConnectionManagement.Resource.MICROPHONE)
-    private fun grant(endpoint: AudioEndpoint, clocked: Boolean = true) = endpoint.token.toByteArray() + ByteBuffer.allocate(92)
-        .put((if (clocked) "BLAUD002" else "BLAUD001").toByteArray()).put("ab".repeat(32).toByteArray()).putLong(1)
+    private fun grant(endpoint: AudioEndpoint) = endpoint.token.toByteArray() + ByteBuffer.allocate(92)
+        .put("BLAUD002".toByteArray()).put("ab".repeat(32).toByteArray()).putLong(1)
         .put(1).put(1).putInt(48000).putShort(480).put(endpoint.processing.toByte())
         .put(if (endpoint.background) 1.toByte() else 0.toByte()).putShort(endpoint.bufferMs.toShort()).array()
     private suspend fun permitted(rig: ConnectionJoinedAudioFixture): LocalAudioRoute {
@@ -41,7 +41,7 @@ class ConnectionJoinedMicrophoneTest {
             assertTrue(rig.link.feedback(grant(endpoint), ConnectionWire.MICROPHONE))
             rig.until { rig.link.payload(ConnectionWire.MICROPHONE).size >= 76 + 2024 }
             val pcm = Buffer().write(rig.link.payload(ConnectionWire.MICROPHONE).copyOfRange(76, 76 + 2024))
-            val packets = AudioPackets(1, 1, true)
+            val packets = AudioPackets(1, 1)
             val first = packets.read(pcm); val second = packets.read(pcm)
             assertEquals(480, first.samples.size); assertTrue(first.samples.all { it == 925.toShort() })
             assertEquals(7L, checkNotNull(first.clock).epoch)
@@ -133,11 +133,12 @@ class ConnectionJoinedMicrophoneTest {
         val rig = fixture()
         try {
             rig.native.acceptExit = false
+            rig.native.clockAvailable = false
             rig.connect(); val display = rig.display(); val route = permitted(rig)
             rig.until { rig.link.payload(ConnectionWire.MICROPHONE).size == 76 }
-            assertTrue(rig.link.feedback(grant(rig.native.tasks.single().endpoint, false), ConnectionWire.MICROPHONE))
-            rig.until { rig.link.payload(ConnectionWire.MICROPHONE).size >= 76 + 988 }
-            val block = AudioPackets(1, 1).read(Buffer().write(rig.link.payload(ConnectionWire.MICROPHONE).copyOfRange(76, 76 + 988)))
+            assertTrue(rig.link.feedback(grant(rig.native.tasks.single().endpoint), ConnectionWire.MICROPHONE))
+            rig.until { rig.link.payload(ConnectionWire.MICROPHONE).size >= 76 + 1012 }
+            val block = AudioPackets(1, 1).read(Buffer().write(rig.link.payload(ConnectionWire.MICROPHONE).copyOfRange(76, 76 + 1012)))
             assertNull(block.clock); assertEquals(480, block.samples.size)
             withContext(rig.dispatcher) { rig.permitted = false; rig.policy.permissionChanged() }
             rig.until { rig.connection.microphoneTarget.value == null && rig.native.exitRequested }

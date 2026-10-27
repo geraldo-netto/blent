@@ -4,20 +4,9 @@ use blent_config::commands::OwnedChild as Child;
 use std::{path::Path, process::Stdio, time::Duration};
 use tokio::process::Command;
 
-pub(super) type Start<'a> =
-    dyn Fn(&Path, AudioProfile, &str, bool) -> Result<Child> + Send + Sync + 'a;
+pub(super) type Start<'a> = dyn Fn(&Path, AudioProfile, &str) -> Result<Child> + Send + Sync + 'a;
 
-#[cfg(test)]
 pub(super) fn spawn(helper: &Path, profile: AudioProfile, token: &str) -> Result<Child> {
-    spawn_with_clock(helper, profile, token, false)
-}
-
-pub(super) fn spawn_with_clock(
-    helper: &Path,
-    profile: AudioProfile,
-    token: &str,
-    clocked: bool,
-) -> Result<Child> {
     profile.validate()?;
     anyhow::ensure!(
         blent_config::connection::media::valid_credential(token),
@@ -33,9 +22,6 @@ pub(super) fn spawn_with_clock(
         format!("blent_{direction}_{}", &token[..12]),
         direction.to_owned(),
     ]);
-    if clocked {
-        command.arg("clocked");
-    }
     let child = Child::spawn(
         command
             .stdin(Stdio::piped())

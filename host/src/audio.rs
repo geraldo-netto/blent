@@ -128,7 +128,6 @@ pub(crate) struct Session<'a> {
 struct NegotiatedStream {
     grant: blent_config::audio::AudioGrant,
     processing: String,
-    clocked: bool,
 }
 impl Session<'_> {
     pub(crate) async fn serve(
@@ -136,8 +135,7 @@ impl Session<'_> {
         report: &Report,
         stop: &mut watch::Receiver<bool>,
     ) -> Result<()> {
-        self.serve_with(report, stop, &process::spawn_with_clock)
-            .await
+        self.serve_with(report, stop, &process::spawn).await
     }
     // Internal Linux process boundary seam: tests can attach a real dependent
     // lease to OwnedChild without replacing retirement or connection semantics.
@@ -176,22 +174,18 @@ impl Session<'_> {
         stop: &mut watch::Receiver<bool>,
         spawn: &process::Start<'_>,
     ) -> Result<()> {
-        let (mut socket, capabilities, mode, processing, clocked) = accepted;
+        let (mut socket, capabilities, mode, processing) = accepted;
         let mut session = AudioSession::new(self.options.profile.direction);
         let mut profile = self.options.profile;
         profile.processing = mode;
-        let grant = session.start_with_clock(profile, capabilities, true, 0, clocked)?;
-        let mut child = spawn(self.helper, self.options.profile, self.token, clocked)?;
+        let grant = session.start(profile, capabilities, true, 0)?;
+        let mut child = spawn(self.helper, self.options.profile, self.token)?;
         report.retain(child.completion())?;
         let stream = self.transfer(
             &mut socket,
             &mut child,
             &mut session,
-            NegotiatedStream {
-                grant,
-                processing,
-                clocked,
-            },
+            NegotiatedStream { grant, processing },
             report,
         );
         let result = tokio::select! {
@@ -215,11 +209,7 @@ impl Session<'_> {
         negotiated: NegotiatedStream,
         report: &Report,
     ) -> Result<()> {
-        let NegotiatedStream {
-            grant,
-            processing,
-            clocked,
-        } = negotiated;
+        let NegotiatedStream { grant, processing } = negotiated;
         let started = std::time::Instant::now();
         process::ready(child)
             .await
@@ -242,7 +232,7 @@ impl Session<'_> {
                 let mut reader = grant.authenticate(&grant.hello())?;
                 microphone(socket, child, &mut reader).await
             }
-            Direction::Speakers => speakers_with_clock(socket, child, grant, clocked).await,
+            Direction::Speakers => speakers(socket, child, grant).await,
         }
     }
 }
@@ -266,20 +256,10 @@ async fn microphone(
     }
 }
 
-#[cfg(test)]
 async fn speakers(
     socket: &mut TcpStream,
     child: &mut tokio::process::Child,
     grant: blent_config::audio::AudioGrant,
-) -> Result<()> {
-    speakers_with_clock(socket, child, grant, false).await
-}
-
-async fn speakers_with_clock(
-    socket: &mut TcpStream,
-    child: &mut tokio::process::Child,
-    grant: blent_config::audio::AudioGrant,
-    clocked: bool,
 ) -> Result<()> {
     use tokio::io::AsyncReadExt;
     let output = child
@@ -288,7 +268,7 @@ async fn speakers_with_clock(
         .context("missing audio helper output")?;
     let mut writer = blent_config::audio::FrameWriter::new(grant);
     let epoch = std::time::Instant::now();
-    let mut bytes = vec![0; if clocked { 1945 } else { 1921 }];
+    let mut bytes = vec![0; 1945];
     let mut packet = Vec::with_capacity(blent_config::audio::FRAME_HEADER_BYTES + 1944);
     loop {
         tokio::time::timeout(Duration::from_millis(250), output.read_exact(&mut bytes)).await??;

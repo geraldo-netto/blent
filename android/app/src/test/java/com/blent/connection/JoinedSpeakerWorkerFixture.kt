@@ -27,6 +27,7 @@ internal class JoinedAudioWorkerFixture(
     val readRelease = CompletableDeferred<Unit>()
     val started = AtomicInteger()
     @Volatile var holdRead = false
+    @Volatile var clockAvailable = true
     val writeRelease = CompletableDeferred<Unit>()
     @Volatile var holdWrite = false
     val release = CompletableDeferred<Unit>()
@@ -63,7 +64,7 @@ internal class JoinedAudioWorkerFixture(
         override val aecEnabled = false
         private var reads = 0L
         override fun start() { started.incrementAndGet() }
-        override fun clockSample() = AudioClockSample(7, reads * 480, 1000000000 + reads * 10000000)
+        override fun clockSample() = if (clockAvailable) AudioClockSample(7, reads * 480, 1000000000 + reads * 10000000) else null
         override suspend fun read(output: ShortArray) {
             check(started.get() == 1)
             captured.complete(Unit)

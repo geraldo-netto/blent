@@ -69,17 +69,6 @@ impl AudioSession {
         authenticated: bool,
         now_ms: u64,
     ) -> Result<AudioGrant> {
-        self.start_with_clock(profile, capabilities, authenticated, now_ms, false)
-    }
-
-    pub fn start_with_clock(
-        &mut self,
-        profile: AudioProfile,
-        capabilities: AudioCapabilities,
-        authenticated: bool,
-        now_ms: u64,
-        clocked: bool,
-    ) -> Result<AudioGrant> {
         ensure!(self.active.is_none(), "audio retirement still pending");
         ensure!(authenticated, "authenticated tablet required");
         ensure!(
@@ -94,8 +83,7 @@ impl AudioSession {
         let deadline = now_ms
             .checked_add(5_000)
             .ok_or_else(|| anyhow::anyhow!("invalid audio clock"))?;
-        let mut grant = AudioGrant::new(profile, generation, self.entropy)?;
-        grant.clocked = clocked;
+        let grant = AudioGrant::new(profile, generation, self.entropy)?;
         self.active = Some(Active {
             grant: grant.clone(),
             reader: None,

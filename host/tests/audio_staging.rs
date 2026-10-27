@@ -122,9 +122,10 @@ fn send(direction: Direction, count: usize, reused: bool) {
         }
         assert_eq!(
             bytes.len(),
-            FRAME_HEADER_BYTES + BLOCK_FRAMES * direction.channels() * 2
+            FRAME_HEADER_BYTES + CLOCK_BYTES + BLOCK_FRAMES * direction.channels() * 2
         );
-        assert_eq!(bytes[28], 91);
+        assert_eq!(&bytes[28..52], &[0; 24]);
+        assert_eq!(bytes[52], 91);
         std::hint::black_box(&bytes);
         times.push(time.elapsed().as_nanos());
     }

@@ -24,7 +24,7 @@ internal class AudioPlayback(private val context: Context,
                 socket.tcpNoDelay = true
                 val source = socket.source().buffer(); val sink = socket.sink().buffer()
                 sink.timeout().timeout(250, TimeUnit.MILLISECONDS)
-                val wire = AudioWire(endpoint, true)
+                val wire = AudioWire(endpoint)
                 val player = try { open(endpoint, preferences) } catch (error: Exception) { wire.request(sink, 0, false); throw error }
                 player.use {
                     wire.request(sink, 7, false); wire.negotiate(source)

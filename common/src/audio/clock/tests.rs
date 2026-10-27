@@ -14,7 +14,7 @@ fn block(clock: Option<ClockSample>) -> PcmBlock {
     block.clock = clock;
     block
 }
-fn grant(clocked: bool) -> crate::audio::AudioGrant {
+fn grant() -> crate::audio::AudioGrant {
     let mut session =
         AudioSession::with_entropy(Direction::Microphone, crate::credentials::tests::entropy);
     let caps = AudioCapabilities {
@@ -23,13 +23,7 @@ fn grant(clocked: bool) -> crate::audio::AudioGrant {
         ..Default::default()
     };
     let grant = session
-        .start_with_clock(
-            AudioProfile::new(Direction::Microphone),
-            caps,
-            true,
-            0,
-            clocked,
-        )
+        .start(AudioProfile::new(Direction::Microphone), caps, true, 0)
         .unwrap();
     session
         .connected(grant.generation(), &grant.hello(), 0)
@@ -75,7 +69,7 @@ fn t720_clock_encoding_has_fixed_bounds_and_explicit_unavailability() {
 #[test]
 fn t720_clocked_wire_is_negotiated_and_invalid_counters_do_not_advance_sequence() {
     let clock = sample(9, 1234, 99999);
-    let grant = grant(true);
+    let grant = grant();
     assert_eq!(&grant.hello()[..8], b"BLAUD002");
     let mut reader = grant.authenticate(&grant.hello()).unwrap();
     let mut writer = FrameWriter::new(grant.clone());
@@ -99,15 +93,9 @@ fn t720_clocked_wire_is_negotiated_and_invalid_counters_do_not_advance_sequence(
             .clock,
         None
     );
-    let old = self::grant(false);
-    assert_eq!(&old.hello()[..8], b"BLAUD001");
-    assert!(old.authenticate(&grant.hello()).is_err());
-    assert!(grant.authenticate(&old.hello()).is_err());
-    assert!(old
-        .authenticate(&old.hello())
-        .unwrap()
-        .decode(&packet)
-        .is_err());
+    let mut old = grant.hello();
+    old[..8].copy_from_slice(b"BLAUD001");
+    assert!(grant.authenticate(&old).is_err());
 }
 #[test]
 fn t720_counter_windows_reject_resets_stalls_outliers_and_stale_measurements() {

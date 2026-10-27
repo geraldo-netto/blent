@@ -1,12 +1,12 @@
-//! Bounded v1/v2 PCM framing on a session-authenticated connection, not encryption.
+//! Current bounded PCM framing on a session-authenticated connection, not encryption.
 use super::{AudioProfile, Direction, BLOCK_FRAMES, MAX_SAMPLES, SAMPLE_RATE};
 use crate::credentials::{random_token_using, token_matches, Entropy};
 use anyhow::{ensure, Result};
 
 pub const HELLO_BYTES: usize = 92;
 pub const FRAME_HEADER_BYTES: usize = 28;
-const MAGIC: &[u8; 8] = b"BLAUD001";
-const CLOCK_MAGIC: &[u8; 8] = b"BLAUD002";
+pub const REQUEST_MAGIC: &[u8; 8] = b"BLAUREQ2";
+const MAGIC: &[u8; 8] = b"BLAUD002";
 
 /// Secret-bearing grant. Never log, serialize into configuration or reuse it.
 #[derive(Clone)]
@@ -14,7 +14,6 @@ pub struct AudioGrant {
     pub(super) profile: AudioProfile,
     pub(super) generation: u64,
     token: String,
-    pub(super) clocked: bool,
 }
 
 impl AudioGrant {
@@ -23,7 +22,6 @@ impl AudioGrant {
             profile,
             generation,
             token: random_token_using(entropy)?,
-            clocked: false,
         })
     }
 
@@ -37,7 +35,7 @@ impl AudioGrant {
     /// Deliver only through the already-authenticated control connection.
     pub fn hello(&self) -> [u8; HELLO_BYTES] {
         let mut bytes = [0; HELLO_BYTES];
-        bytes[..8].copy_from_slice(if self.clocked { CLOCK_MAGIC } else { MAGIC });
+        bytes[..8].copy_from_slice(MAGIC);
         bytes[8..72].copy_from_slice(self.token.as_bytes());
         bytes[72..80].copy_from_slice(&self.generation.to_be_bytes());
         bytes[80] = self.profile.direction as u8;
@@ -67,7 +65,6 @@ impl AudioGrant {
             generation: self.generation,
             direction: self.profile.direction,
             previous: None,
-            clocked: self.clocked,
         })
     }
 
@@ -101,27 +98,22 @@ impl AudioGrant {
             samples.len() == BLOCK_FRAMES * self.profile.direction.channels(),
             "invalid PCM block size"
         );
-        let clock_bytes = if self.clocked { super::CLOCK_BYTES } else { 0 };
-        let size = samples.len() * 2 + clock_bytes;
-        let encoded_clock = if self.clocked {
-            Some(super::ClockSample::encode(clock)?)
-        } else {
-            None
-        };
+        let size = samples.len() * 2 + super::CLOCK_BYTES;
+        let encoded_clock = super::ClockSample::encode(clock)?;
         bytes.resize(FRAME_HEADER_BYTES + size, 0);
         bytes[27] = 0;
-        if let Some(clock) = encoded_clock {
-            bytes[28..52].copy_from_slice(&clock);
-        }
+        bytes[28..52].copy_from_slice(&encoded_clock);
         bytes[..8].copy_from_slice(&self.generation.to_be_bytes());
         bytes[8..16].copy_from_slice(&sequence.to_be_bytes());
         bytes[16..24].copy_from_slice(&timestamp_us.to_be_bytes());
         bytes[24..26].copy_from_slice(&(size as u16).to_be_bytes());
         bytes[26] = self.profile.direction as u8;
-        for (sample, output) in samples
-            .iter()
-            .zip(bytes[28 + clock_bytes..].as_chunks_mut::<2>().0.iter_mut())
-        {
+        for (sample, output) in samples.iter().zip(
+            bytes[28 + super::CLOCK_BYTES..]
+                .as_chunks_mut::<2>()
+                .0
+                .iter_mut(),
+        ) {
             output.copy_from_slice(&sample.to_le_bytes());
         }
         Ok(())
@@ -175,7 +167,6 @@ pub struct FrameReader {
     generation: u64,
     direction: Direction,
     previous: Option<(u64, u64)>,
-    clocked: bool,
 }
 
 /// Sender sequence ownership, including capture discontinuities and exhaustion.
@@ -240,8 +231,7 @@ impl FrameReader {
         );
         let size = u16::from_be_bytes(header[24..26].try_into()?) as usize;
         ensure!(
-            size == BLOCK_FRAMES * self.direction.channels() * 2
-                + if self.clocked { super::CLOCK_BYTES } else { 0 },
+            size == BLOCK_FRAMES * self.direction.channels() * 2 + super::CLOCK_BYTES,
             "invalid audio payload size"
         );
         self.sequence(header)?;
@@ -275,15 +265,10 @@ impl FrameReader {
             "truncated or oversized audio payload"
         );
         let (sequence, timestamp, discontinuity) = self.sequence(header)?;
-        let clock_bytes = if self.clocked { super::CLOCK_BYTES } else { 0 };
-        let clock = if self.clocked {
-            super::ClockSample::decode(&payload[..clock_bytes])?
-        } else {
-            None
-        };
+        let clock = super::ClockSample::decode(&payload[..super::CLOCK_BYTES])?;
         self.previous = Some((sequence, timestamp));
         Ok(PcmView {
-            pcm: &payload[clock_bytes..],
+            pcm: &payload[super::CLOCK_BYTES..],
             clock,
             discontinuity,
         })

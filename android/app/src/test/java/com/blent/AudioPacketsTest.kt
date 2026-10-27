@@ -7,7 +7,7 @@ import okio.Buffer
 class AudioPacketsTest {
     private fun packet(sequence: Long, time: Long, direction: Int = 2): ByteArray {
         val buffer = Buffer().writeLong(7).writeLong(sequence).writeLong(time)
-            .writeShort(960 * direction).writeByte(direction).writeByte(0)
+            .writeShort(960 * direction + 24).writeByte(direction).writeByte(0).write(ByteArray(24))
         repeat(480 * direction) { buffer.writeShortLe(if (it % 2 == 0) 1234 else -4321) }
         return buffer.readByteArray()
     }

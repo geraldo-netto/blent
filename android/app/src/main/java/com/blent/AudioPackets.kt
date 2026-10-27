@@ -8,7 +8,7 @@ import okio.BufferedSource
 internal data class AudioBlock(val samples: ShortArray, val discontinuity: Boolean = false, val clock: AudioClockSample? = null)
 
 /** Atomic, bounded receive state for one authenticated connection. */
-internal class AudioPackets(private val generation: Long, private val direction: Int, private val clocked: Boolean = false) {
+internal class AudioPackets(private val generation: Long, private val direction: Int) {
     private var previous: Pair<Long, Long>? = null
     init { require(generation != 0L && direction in 1..2) }
     private val payload = ByteArray(960 * direction)
@@ -17,7 +17,7 @@ internal class AudioPackets(private val generation: Long, private val direction:
         source.timeout().timeout(250, TimeUnit.MILLISECONDS).deadline(250, TimeUnit.MILLISECONDS)
         try {
             val fields = header(source.readByteArray(28))
-            val clock = if (clocked) AudioClockSample.fromCounters(source.readLong(), source.readLong(), source.readLong()) else null
+            val clock = AudioClockSample.fromCounters(source.readLong(), source.readLong(), source.readLong())
             val samples = readSamples(source)
             previous = fields.first to fields.second
             return AudioBlock(samples, fields.third, clock)
@@ -36,7 +36,7 @@ internal class AudioPackets(private val generation: Long, private val direction:
         require(header.long == generation) { "Stale audio session." }
         val sequence = header.long; val timestamp = header.long
         require(sequence != -1L) { "Audio sequence exhausted." }
-        require(header.short.toInt() == 960 * direction + (if (clocked) 24 else 0) && header.get().toInt() == direction && header.get().toInt() == 0) { "Invalid audio frame format." }
+        require(header.short.toInt() == 960 * direction + 24 && header.get().toInt() == direction && header.get().toInt() == 0) { "Invalid audio frame format." }
         val last = previous
         if (last == null) { require(sequence == 0L); return Triple(sequence, timestamp, false) }
         require(java.lang.Long.compareUnsigned(sequence, last.first) > 0 &&

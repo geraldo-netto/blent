@@ -218,7 +218,7 @@ Requested background capture needs both host request and explicit local consent.
 
 Permanent joined tests on Android API 27/34 use real private services/Binder,
 management/mux and loopback TCP with synthetic microphone hardware and controlled
-process-death notifications. They verify clocked and unclocked PCM, grant before
+process-death notifications. They verify PCM with native counters present or explicitly unavailable, grant before
 sampling, permission denial/loss, pending Stop/source loss, stale SDK callbacks,
 background choices, native failures, worker death and blocked actual reads.
 Display control continues while microphone cleanup is held; endpoint closure,
@@ -427,15 +427,16 @@ T718/T719 retain tests for partial reads/writes, cancellation and native retirem
 
 ## Versioned wire format
 
-The grant selects `BLAUD001` (legacy PCM) or `BLAUD002` (PCM plus native counters).
-PCM encoding and 10 ms block duration are fixed in both versions.
+The current grant is `BLAUD002` (PCM plus a native-counter prefix).
+PCM encoding and 10 ms block duration are fixed. Obsolete `BLAUD001` grants
+and frames without the counter prefix are rejected.
 Integer metadata is big endian; PCM samples are signed **little-endian** 16-bit.
 Microphone uses direction 1/mono; speakers use direction 2/stereo, both 48,000 Hz.
 The 92-byte handshake must exactly match the authorized session:
 
 | Byte offset | Length | Value |
 | --- | ---: | --- |
-| 0 | 8 | `BLAUD001` or `BLAUD002`, matching the selected session |
+| 0 | 8 | `BLAUD002` |
 | 8 | 64 | Fresh credential, lowercase hexadecimal ASCII |
 | 72 | 8 | Nonzero session generation |
 | 80 | 1 | Direction: 1 microphone, 2 speakers |
@@ -453,13 +454,13 @@ Each packet starts with a 28-byte header:
 | 0 | 8 | Authorized generation |
 | 8 | 8 | Sequence: starts at zero, strictly increases, `u64::MAX` rejected |
 | 16 | 8 | Sender monotonic timestamp in microseconds |
-| 24 | 2 | Payload bytes: 960/1920 for v1, 984/1944 for v2 |
+| 24 | 2 | Payload bytes: 984 microphone, 1944 speakers |
 | 26 | 1 | Authorized direction |
 | 27 | 1 | Reserved, must be zero |
-| 28 | 0/24 | Native clock prefix, present only in v2 |
-| 28/52 | 960/1920 | Exactly one interleaved PCM block |
+| 28 | 24 | Native clock prefix, always present |
+| 52 | 960/1920 | Exactly one interleaved PCM block |
 
-The v2 prefix contains three big-endian unsigned 64-bit values: native epoch,
+The prefix contains three big-endian unsigned 64-bit values: native epoch,
 frame position normalized to 48 kHz, and native monotonic nanoseconds. All-zero
 bytes explicitly mean unavailable. Otherwise epoch/time must be positive and all
 three fields must fit a signed 64-bit value for the Android contract. Invalid
@@ -470,7 +471,7 @@ tablet absolute clocks is used. Replayed/reordered frames, changed direction or
 generation, unknown protocol, wrong format, malformed lengths, truncation and
 trailing data are rejected. A sequence gap is accepted with a discontinuity and
 flushes queued audio. Parsing uses fixed bounded storage; maximum packet size is
-1972 bytes (1948 for v1). Authentication is a connection credential check, not encryption or a
+1972 bytes (1012 for microphone). Authentication is a connection credential check, not encryption or a
 per-packet MAC. The wire is intended for the already-authorized ADB connection;
 other transport security requires an explicit adapter contract.
 
@@ -557,8 +558,8 @@ without preventing display sharing. PulseAudio-only, Windows and macOS audio
 backends remain unsupported.
 
 The DUMP-protected Android receiver admits an invitation over the authorized ADB
-connection. An authenticated 76-byte `BLAUREQ2` bootstrap requests the clocked
-protocol; the host still accepts legacy `BLAUREQ1`. The bootstrap carries the invitation
+connection. The authenticated 76-byte bootstrap is `BLAUREQ2`; obsolete
+`BLAUREQ1` requests are rejected before audio admission. It carries the invitation
 credential (64 hex bytes), capability bits (speech/raw/background), AEC-enabled
 flag, direction and effective processing. Human consent has a separate 90-second
 budget; it does not consume native startup's five seconds. The host echoes the
@@ -569,10 +570,16 @@ Native microphone input preserves sequence-gap discontinuities; the callback use
 only its bounded queue, expires old data and emits silence on underflow. It never
 waits on the transport.
 
-Native device-counter integration is implemented for the clocked protocol. Legacy
-peers carry no native counters and remain unmeasured. Deploy matching host/Android
-builds for v2; an older host does not recognize the new request. Physical duplex
-drift/latency and route acceptance remain T720.
+Native device-counter integration uses the mandatory prefix. Unavailable counters
+use its all-zero encoding; this keeps audio available without claiming measured
+drift. Deploy matching host/Android builds; there is no protocol downgrade.
+Physical duplex drift/latency and route acceptance remain T720.
+
+The private Linux helper accepts exactly three arguments: queue target, owned node
+name and direction (`microphone` or `speakers`). Its fixed IPC blocks contain a
+one-byte discontinuity flag, the 24-byte clock prefix and PCM: 985 bytes for
+microphone, 1945 for speakers. The obsolete optional `clocked` argument and
+implicit microphone direction are rejected.
 
 ## Linux/Android speaker integration (T719)
 

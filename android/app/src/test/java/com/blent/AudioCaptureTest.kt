@@ -27,7 +27,7 @@ class AudioCaptureTest {
             } }
             val peer = async(Dispatchers.IO) { server.accept().use { socket ->
                 socket.getInputStream().readNBytes(76)
-                val hello = ByteBuffer.allocate(92).put("BLAUD001".toByteArray()).put("b".repeat(64).toByteArray())
+                val hello = ByteBuffer.allocate(92).put("BLAUD002".toByteArray()).put("b".repeat(64).toByteArray())
                     .putLong(1).put(1).put(1).putInt(48000).putShort(480).put(1).put(0).putShort(40).array()
                 for (part in (endpoint.token.toByteArray() + hello).toList().chunked(32)) {
                     Thread.sleep(1100)
@@ -54,7 +54,7 @@ class AudioCaptureTest {
             val peer = async(Dispatchers.IO) { server.accept().use { socket ->
                 assertEquals(76, socket.getInputStream().readNBytes(76).size)
                 Thread.sleep(2200)
-                val hello = ByteBuffer.allocate(92).put("BLAUD001".toByteArray()).put("b".repeat(64).toByteArray())
+                val hello = ByteBuffer.allocate(92).put("BLAUD002".toByteArray()).put("b".repeat(64).toByteArray())
                     .putLong(1).put(1).put(1).putInt(48000).putShort(480).put(1).put(0).putShort(40).array()
                 socket.getOutputStream().write(endpoint.token.toByteArray() + hello)
             } }
@@ -85,11 +85,11 @@ class AudioCaptureTest {
                 server.accept().use { socket ->
                     val input = socket.getInputStream(); assertEquals(76, input.readNBytes(76).size)
                     assertFalse("T718 microphone started before authenticated grant", started.get())
-                    val hello = ByteBuffer.allocate(92).put("BLAUD001".toByteArray()).put("b".repeat(64).toByteArray())
+                    val hello = ByteBuffer.allocate(92).put("BLAUD002".toByteArray()).put("b".repeat(64).toByteArray())
                         .putLong(1).put(1).put(1).putInt(48000).putShort(480).put(1).put(0).putShort(40).array()
                     socket.getOutputStream().write(endpoint.token.toByteArray() + hello)
-                    val packet = input.readNBytes(988)
-                    assertEquals(988, packet.size); assertEquals(123.toByte(), packet[28])
+                    val packet = input.readNBytes(1012)
+                    assertEquals(1012, packet.size); assertEquals(123.toByte(), packet[52])
                 }
             }
             try { capture.run(endpoint, AudioPreferences(), { attached = it }, { detail = it }); fail("expected EOF") }
@@ -121,7 +121,7 @@ class AudioCaptureTest {
             } }
             val peer = async(Dispatchers.IO) { server.accept().use { socket ->
                 socket.getInputStream().readNBytes(76)
-                val hello = ByteBuffer.allocate(92).put("BLAUD001".toByteArray()).put("b".repeat(64).toByteArray())
+                val hello = ByteBuffer.allocate(92).put("BLAUD002".toByteArray()).put("b".repeat(64).toByteArray())
                     .putLong(1).put(1).put(1).putInt(48000).putShort(480).put(1).put(0).putShort(40).array()
                 socket.getOutputStream().write(endpoint.token.toByteArray() + hello)
                 assertEquals(-1, socket.getInputStream().read())

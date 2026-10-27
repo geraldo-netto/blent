@@ -28,12 +28,10 @@ enum DeviceIo {
 pub fn run() -> Result<()> {
     let args: Vec<_> = std::env::args().skip(1).collect();
     ensure!(
-        (2..=4).contains(&args.len()),
-        "Expected queue milliseconds, unique node name and optional direction"
+        args.len() == 3,
+        "Expected queue milliseconds, unique node name and direction"
     );
-    let clocked = args.get(3).map(String::as_str) == Some("clocked");
-    ensure!(args.len() < 4 || clocked, "Invalid native audio protocol");
-    let direction = match args.get(2).map(String::as_str).unwrap_or("microphone") {
+    let direction = match args[2].as_str() {
         "microphone" => Direction::Microphone,
         "speakers" => Direction::Speakers,
         _ => anyhow::bail!("Invalid audio direction"),
@@ -53,64 +51,31 @@ pub fn run() -> Result<()> {
     let epoch = Instant::now();
     let io = match direction {
         Direction::Microphone => {
-            input_worker(queue.clone(), epoch, running.clone(), clocked);
+            input_worker(queue.clone(), epoch, running.clone());
             DeviceIo::Microphone(Render::new(queue.clone(), epoch))
         }
         Direction::Speakers => {
-            capture::workers(
-                queue.clone(),
-                epoch,
-                running.clone(),
-                ready.clone(),
-                clocked,
-            );
+            capture::workers(queue.clone(), epoch, running.clone(), ready.clone());
             DeviceIo::Speakers(Capture::new(queue.clone(), epoch))
         }
     };
-    let monitor = clock::monitor(
-        queue,
-        running.clone(),
-        clocked && direction == Direction::Microphone,
-    );
+    let monitor = clock::monitor(queue, running.clone(), direction == Direction::Microphone);
     let result = device(&args[1], direction, io, running.clone(), ready);
     running.store(false, Ordering::Release);
     clock::retire_monitor(monitor);
     result
 }
 
-fn input_worker(
-    queue: Arc<Mutex<PcmQueue>>,
-    epoch: Instant,
-    running: Arc<AtomicBool>,
-    clocked: bool,
-) {
+fn input_worker(queue: Arc<Mutex<PcmQueue>>, epoch: Instant, running: Arc<AtomicBool>) {
     let input_queue = queue.clone();
     std::thread::spawn(move || {
-        let _ = input_with_clock(&mut std::io::stdin().lock(), &input_queue, epoch, clocked);
+        let _ = input(&mut std::io::stdin().lock(), &input_queue, epoch);
         running.store(false, Ordering::Release);
     });
 }
 
-#[cfg(test)]
 fn input(reader: &mut impl Read, queue: &Mutex<PcmQueue>, epoch: Instant) -> Result<()> {
-    input_with_clock(reader, queue, epoch, false)
-}
-
-fn input_with_clock(
-    reader: &mut impl Read,
-    queue: &Mutex<PcmQueue>,
-    epoch: Instant,
-    clocked: bool,
-) -> Result<()> {
-    let mut bytes = vec![
-        0;
-        1 + BLOCK_FRAMES * 2
-            + if clocked {
-                blent_config::audio::CLOCK_BYTES
-            } else {
-                0
-            }
-    ];
+    let mut bytes = vec![0; 1 + BLOCK_FRAMES * 2 + blent_config::audio::CLOCK_BYTES];
     let pcm = bytes.len() - BLOCK_FRAMES * 2;
     loop {
         reader.read_exact(&mut bytes)?;
@@ -118,9 +83,7 @@ fn input_with_clock(
         let mut block =
             blent_config::audio::PcmBlock::from_le_bytes(Direction::Microphone, &bytes[pcm..])?;
         block.discontinuity = bytes[0] != 0;
-        if clocked {
-            block.clock = blent_config::audio::ClockSample::decode(&bytes[1..pcm])?;
-        }
+        block.clock = blent_config::audio::ClockSample::decode(&bytes[1..pcm])?;
         queue
             .lock()
             .map_err(|_| anyhow::anyhow!("audio queue poisoned"))?
@@ -414,12 +377,13 @@ mod tests {
         let mut bytes = Vec::new();
         for flag in [0, 0, 1] {
             bytes.push(flag);
+            bytes.extend_from_slice(&[0; 24]);
             bytes.extend_from_slice(&[1; BLOCK_FRAMES * 2]);
         }
         assert!(input(&mut bytes.as_slice(), &queue, epoch).is_err()); // EOF ends the worker.
         assert_eq!(queue.lock().unwrap().queued_frames(), BLOCK_FRAMES);
         for flag in 2..=255 {
-            let mut bad = [0; 961];
+            let mut bad = [0; 985];
             bad[0] = flag;
             assert!(input(&mut bad.as_slice(), &queue, epoch).is_err());
         }
@@ -445,7 +409,7 @@ mod clock_tests {
             &[1; 960],
         ]
         .concat();
-        assert!(input_with_clock(&mut bytes.as_slice(), &queue, epoch, true).is_err()); // EOF after one whole block.
+        assert!(input(&mut bytes.as_slice(), &queue, epoch).is_err()); // EOF after one whole block.
         assert_eq!(
             queue
                 .lock()
@@ -458,7 +422,7 @@ mod clock_tests {
         );
         let mut invalid = bytes.clone();
         invalid[1..9].fill(0);
-        assert!(input_with_clock(&mut invalid.as_slice(), &queue, epoch, true).is_err());
+        assert!(input(&mut invalid.as_slice(), &queue, epoch).is_err());
         assert_eq!(queue.lock().unwrap().queued_frames(), 0);
     }
 }
