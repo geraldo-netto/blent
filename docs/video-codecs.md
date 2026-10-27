@@ -1,4 +1,42 @@
-# Video codecs and compatibility
+# Choose video quality and performance
+
+A codec is a video compression format; an encoder creates it on Linux and a
+decoder displays it on Android. Start with **Automatic** in Linux video settings.
+Blent checks both devices, measures compatible choices and saves successful tuning.
+A newer codec or hardware label does not automatically mean a faster display.
+
+| Goal | Setting or action |
+| --- | --- |
+| Choose a working starting point | `encoder = "auto"` (default for new configurations). Existing explicit choices stay unchanged. |
+| Tune again after a meaningful setup change | **Video → Advanced video settings → Recalibrate display**, then **Apply & restart**. |
+| Limit software H.264 workers | **Software encoder workers**: Auto compares 1, 2 and 4; manual values accept 1–128. |
+| Check what is running | `blent doctor` reports the requested encoder and, when identifiable, the running FFmpeg encoder. That is not proof of successful display. |
+
+Automatic mode can show **Optimizing display…** while testing. It preserves the
+capture display, but changing encoders can briefly interrupt video. Saved tuning
+is checked again on later connections; historical measurements are not a claim
+that the choice is fastest under today's load.
+
+```mermaid
+flowchart LR
+    A[Tablet reports current decoder support] --> B[Host probes compatible encoders]
+    B --> C[Bounded live render comparisons]
+    C --> D[Verify selected output]
+    D --> E[Save tuning for this environment]
+    E --> F[Recheck on next connection]
+    B --> G[H.264 fallback when evidence is missing]
+    D --> G
+```
+
+The following sections keep the exact selection rules and wire formats for
+contributors and advanced troubleshooting. Ordinary use does not require editing
+them.
+
+## Supported codecs
+
+<details>
+<summary>FFmpeg implementations, profiles and startup checks</summary>
+
 
 The default CLI adapter supports VP9 (`libvpx-vp9`, `vp9_vaapi`) and AV1
 (`libaom-av1`, `av1_nvenc`, `av1_vaapi`) through stock FFmpeg. Select the encoder in Linux settings or `config.toml`. VAAPI requires
@@ -34,7 +72,17 @@ CRF combines with the configured bitrate target/maxrate. NVENC uses its existing
 ultralow-latency policy. An FFmpeg build may list a hardware wrapper that the GPU
 cannot run. Encoder support must be checked on the actual machine.
 
+</details>
+
 ## Negotiation
+
+Both endpoints must agree on codec, dimensions and frame rate. Blent accepts only
+current, scoped protocol-2 capability reports; stale or malformed reports cannot
+qualify a new stream. A reported capability still needs a successful decode trial.
+
+<details>
+<summary>Capability schema, bounds and decoder selection</summary>
+
 
 Current display greetings include `video_width` and `video_height`: the requested
 encoded dimensions after stream scaling. Android requires these dimensions and
@@ -106,12 +154,17 @@ The [negotiation research](media-negotiation.md) records evidence boundaries;
 implemented ranking and its limits. The schema lives in the shared Rust
 crate without Linux dependencies; Windows still needs its planned host adapter.
 
+</details>
+
 ## Automatic selection
 
 New configurations use `encoder = "auto"`; saved explicit choices are preserved.
 Linux settings also expose Automatic. The control reply contains
 `requested_encoder`, `effective_encoder` and `selection_reason`; the configured
 preference remains `auto` when the effective encoder changes.
+
+<details>
+<summary>Probe budgets, live comparison thresholds and recovery</summary>
 
 Until the current peer advertises support for the requested encoded geometry
 and FPS, automatic mode uses `libx264`. Every controller claim and retirement
@@ -144,9 +197,9 @@ profiles first. Probes/live comparisons are serialized across tablet sessions;
 they create no EVDI display or capture FIFO. The current stream continues during
 these offline probes, although resource contention can affect performance.
 
-Version 1 peers retain the host-capacity heuristic: requested FPS first, then
-advertised hardware decoder, packet-interval p95 and first output. Version 2
-adds bounded live comparisons when this environment has no compatible saved tuning:
+Current protocol-2 reports enable bounded live comparisons when this environment
+has no compatible saved tuning. Protocol-1 reports are rejected; absent current
+evidence retains H.264 fallback.
 
 - Admit only candidates meeting target host-probe FPS and a first-frame PSNR
   no more than 0.5 dB below the measured libx264 reference. Unknown fidelity or
@@ -191,8 +244,8 @@ ACKs carry a `decoder` receipt from the published Android codec configuration:
 disabled/absent hints). The receipt identifies supplied configuration keys;
 it does not prove Android honored them. Watchdog-disabled hints produce a
 different receipt. Missing or mismatched receipts cannot certify a rich trial,
-and retired codec callbacks cannot acknowledge its replacement. Legacy choices
-retain ACKs without this field. Failed trials advance through the ranked list once, then restore
+and retired codec callbacks cannot acknowledge its replacement. Choices without a named decoder request
+can use ACKs without this field; those ACKs cannot certify a rich trial. Failed trials advance through the ranked list once, then restore
 the prior verified selection or H.264 fallback. Encoder changes can briefly
 interrupt video while preserving the capture display.
 
@@ -221,6 +274,8 @@ Explicit encoder preferences are never migrated. The GPU path and depth
 are fixed for a daemon session. The optional in-process encoder build maps
 `auto` to `libx264`; these CLI measurements do not rank that adapter.
 
+</details>
+
 ### Software encoder worker capacity
 
 `encoder_workers = 0` (Auto), or `blent --encoder-workers auto start`, compares
@@ -229,7 +284,10 @@ is **Software encoder workers**, under **Video > Advanced video settings**. Manu
 budget; changing the saved value requires Apply & restart. CLI overrides do not
 persist. Explicit libx264 and the optional in-process build use one worker for
 Auto; the latter accepts manual counts but does not run CLI calibration. Hardware
-encoders keep their existing options. Legacy peers keep the one-worker fallback.
+encoders keep their existing options. Without current decoder evidence, Auto keeps the one-worker fallback.
+
+<details>
+<summary>Worker measurements and resource acceptance limits</summary>
 
 Requested and effective counts are distinct: effective x264 workers are parsed
 from the first-frame user-data SEI when available and otherwise remain unknown.
@@ -253,6 +311,8 @@ The cache schema retains the chosen worker budget and historical resource
 observations; its context includes the requested budget. Old records are ignored.
 Current decoder compatibility and matching render receipts remain mandatory for reuse;
 historical CPU/RSS observations do not establish current resource performance.
+
+</details>
 
 <a id="optional-historical-profile-cache"></a>
 
@@ -287,6 +347,9 @@ preferences take precedence. `profile_cache` is absent from the current schema;
 unknown configuration keys follow generic parsing policy and are not persisted
 by a current settings save. Automatic tuning remains durable.
 
+<details>
+<summary>Saved profile identity, storage and invalidation</summary>
+
 Profiles are written atomically, mode 0600, under `tuned-profiles/<digest>.json`
 beside the host configuration. Separate compatible environments retain separate
 profiles. The context includes proven tablet identity, USB/network route,
@@ -313,7 +376,16 @@ does not refresh historical measurements. The normal FFmpeg CLI adapter owns
 this policy; the optional in-process build and unsupported platform video
 backends do not claim automatic tuning support.
 
+</details>
+
 ## Framing
+
+Framing tells the receiver where each complete encoded picture begins and ends.
+Malformed or incomplete records must not be passed off as complete pictures.
+
+<details>
+<summary>FFmpeg packet boundaries and exact VP9/AV1 format</summary>
+
 
 For H.264/HEVC, stock FFmpeg's `tee` muxer writes a `framecrc` metadata line and
 then the unchanged encoded `data` packet to the same stdout pipe, synchronously
@@ -372,6 +444,8 @@ framing and random-access prefixes; the decoder validates the remaining syntax.
 These constraints match the supported low-latency profiles, not arbitrary AV1
 files with reordering, scalability or multiple hidden frames per temporal unit.
 
+</details>
+
 ## Validation and measurement limits
 
 T432's normal automated tests cover fragmented input, truncation, oversized
@@ -402,6 +476,13 @@ latency, battery or quality improvement without matched live measurements.
 
 ## Doctor inventory
 
+The diagnostic inventory lists available codecs; it is not an exact-resolution
+playback test. `unknown` is missing evidence, not support.
+
+<details>
+<summary>Diagnostic observations and Android inventory format</summary>
+
+
 `blent doctor` treats `auto` as a selection policy and checks the required
 `libx264` fallback separately from encoder wrappers. It reports the configured
 preference alongside an encoder observed on the selected session's owned FIFO,
@@ -426,3 +507,5 @@ mode; missing required H.264 support does. Missing, obsolete or invalid version
 extras are rejected before inventory queries or native worker admission. Only the
 current V2 inventory is emitted and accepted; HEVC-only V1 reports provide no
 decoder evidence.
+
+</details>

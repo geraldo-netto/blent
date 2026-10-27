@@ -18,6 +18,27 @@ shrink can remain pending while queued bytes occupy more space than the requeste
 capacity. It never truncates queued frames to force a resize. If other settings
 in the same edit require a restart, the button still says **Apply & restart**.
 
+## Choosing a size
+
+Larger is not inherently faster to display. In the isolated
+[capacity ramp](benchmarks/2026-09-17-pipe-capacity.md), 2 MiB reduced transfer
+work for 1280×800 NV12 frames, while 8 MiB helped the larger 2960×1848 frames.
+Extra capacity also allowed more old video to accumulate under a slow reader.
+Those tests measured pipe transfer, not whole-application display latency.
+Keep 1 MiB unless a controlled comparison demonstrates a useful improvement for
+your workload; available RAM alone is not evidence for choosing 8 MiB.
+
+Four 8 MiB pipes can hold 32 MiB of kernel payload capacity in total, separate
+from capture buffers and encoded-video queues. The GUI reports capacity rather
+than how many bytes are currently occupied.
+
+```mermaid
+flowchart LR
+    A[Capture helper] --> B[Raw-video pipe: requested versus granted capacity]
+    B --> C[FFmpeg encoder]
+    C --> D[Encoded video sent to tablet]
+```
+
 ## Allow requests up to 8 MiB
 
 First read and record the existing ceiling:
@@ -66,9 +87,9 @@ getconf PAGESIZE
 ```
 
 Those two limits are in pages, not bytes. Zero denotes no corresponding limit.
-Other applications consume the same user's allowance. A new pipe first attempts the existing 1 MiB baseline, then the selected size.
-Blent keeps streaming with the capacity already granted; its helper log records requested/effective
-bytes and a resize error number when the result changes. It does not obtain
+Other applications consume the same user's allowance. A new pipe first requests
+1 MiB, then the selected size. Blent keeps streaming with the capacity granted;
+its helper log records requested/effective bytes and a resize error number when the result changes. It does not obtain
 extra capabilities or change these system limits automatically.
 
 The [Linux pipe-size API](https://man7.org/linux/man-pages/man2/F_GETPIPE_SZ.2const.html)
@@ -97,21 +118,10 @@ sudo sysctl -w fs.pipe-max-size=1048576
 Restoring the ceiling does not shrink existing pipes in other applications.
 Do not replace an administrator's larger original ceiling with this example.
 
-## Choosing a size
-
-Larger is not inherently faster to display. In the isolated
-[capacity ramp](benchmarks/2026-09-17-pipe-capacity.md), 2 MiB reduced transfer
-work for 1280×800 NV12 frames, while 8 MiB helped the larger 2960×1848 frames.
-Extra capacity also allowed more old video to accumulate under a slow reader.
-Those tests measured pipe transfer, not whole-application display latency.
-Keep 1 MiB unless a controlled comparison demonstrates a useful improvement for
-your workload; available RAM alone is not evidence for choosing 8 MiB.
-
-Four 8 MiB pipes can hold 32 MiB of kernel payload capacity in total, separate
-from capture buffers and encoded-video queues. The GUI reports capacity rather
-than how many bytes are currently occupied.
-
 ## Configuration and implementation
+
+<details>
+<summary>Configuration field, live update ownership and regression coverage</summary>
 
 The persisted Linux setting is `pipe_capacity_mib = 1` in `config.toml`, with
 allowed values 1, 2, 4 and 8. Unsupported integers fall back to 1. Manual TOML
@@ -133,3 +143,5 @@ encoder waits for its writer. Busy-shrink tests scale only the
 resize syscall's byte argument to exercise real Linux pipes below an
 unprivileged CI ceiling. The existing T226 partial-frame recovery tests remain
 in the normal suite. No privileged system changes are required by these tests.
+
+</details>

@@ -14,6 +14,21 @@ are reported in the daemon journal or GUI stderr, and startup continues with
 the OS's effective settings. A configured preference is not proof of elevation.
 The General tab also shows whether this GUI process's startup request succeeded.
 
+High requests a greater CPU share when programs compete for processor time.
+It does not reserve a core, guarantee deadlines or multiply video speed. The
+[local comparison](benchmarks/2026-09-21-scheduling/README.md) found greater CPU
+share under synthetic contention, but no consistent live video-latency gain and
+no reproduction of the reported audio stutter.
+
+Linux uses systemd CPU groups. The normal daemon, capture/encoding children and
+audio/camera helpers share its group; GUI and already-running ADB can have separate
+scopes. A scope is a group of processes managed together. Custom ADB endpoints are
+not adopted. Windows has a separate priority adapter but remains a connection
+preview; macOS application support is declined.
+
+<details>
+<summary>Exact platform requests, process scope and limitations</summary>
+
 | Backend | High request | Effective scope and limitations |
 | --- | --- | --- |
 | Linux | cgroup v2 `CPUWeight=1000`, versus Normal `100` | The daemon, EVDI userspace helper, FFmpeg, camera helper, all their threads and new children share the daemon's group. Manually launched daemon/GUI processes get private user scopes. Requires a working systemd user manager, CPU controller, `systemctl` and `busctl`; ordinary user permissions suffice on the tested host. |
@@ -44,6 +59,8 @@ See the [local comparison](benchmarks/2026-09-21-scheduling/README.md). It verif
 greater CPU share under synthetic contention, but shows no consistent live
 video-latency improvement and does not reproduce the reported audio stutter.
 
+</details>
+
 ## Live Linux adjustment and rollback
 
 For an already-running service, this takes effect without restarting EVDI or
@@ -62,7 +79,7 @@ scopes are named `blent-priority-<PID>.scope`; lower their CPUWeight to 100 to
 roll back a live experiment. Do not stop these scopes merely to reset priority:
 stopping a scope can terminate its processes.
 
-The live experiment applied only scheduler settings to the installed binaries;
+The recorded live experiment applied only scheduler settings to the installed binaries;
 it did not reinstall the application or restart the display. The new default,
 automatic GUI/ADB scope setup and UI control are available in builds containing
 T582. An old binary cannot apply the new TOML setting.
