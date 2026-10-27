@@ -9,6 +9,11 @@ use std::{path::PathBuf, process::Command};
 struct Harness(tempfile::TempDir);
 
 #[test]
+fn t1284_shutdown_retires_registered_storage() {
+    Harness::build("T1284").run("T1284");
+}
+
+#[test]
 fn t1186_trace_preserves_request_ack_and_native_progress_order() {
     let harness = Harness::build("T1021");
     let output = Command::new(harness.0.path().join("helper-test"))

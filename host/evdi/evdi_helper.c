@@ -442,6 +442,11 @@ static void shutdown_capture(evdi_handle handle, pthread_t writer)
         g_capture.control = NULL;
     }
     cursor_overlay_destroy(&g_capture.cursor);
+    if (g_capture.buffer_registered)
+    {
+        evdi_unregister_buffer(handle, 0);
+        g_capture.buffer_registered = 0;
+    }
     free(g_capture.native_framebuffer);
     free(g_capture.framebuffer);
     frame_exchange_free(&g_frames);

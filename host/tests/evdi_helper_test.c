@@ -219,6 +219,8 @@ static DIR *mock_opendir(const char *path) {
 }
 struct evdi_device_context { int fd; };
 static int mock_open_calls;
+static int t1284_tracking;
+static struct evdi_buffer *t1284_registration;
 evdi_handle evdi_open(int card) {
     mock_open_calls++;
     char path[4096];
@@ -230,7 +232,13 @@ evdi_handle evdi_open(int card) {
     handle->fd = fd;
     return handle;
 }
-void evdi_close(evdi_handle handle) { close(handle->fd); free(handle); }
+void evdi_close(evdi_handle handle)
+{
+    if (t1284_tracking)
+        assert(!t1284_registration && "T1284: closing with a live registration");
+    close(handle->fd);
+    free(handle);
+}
 static int mock_disconnect_calls;
 static int t497_capture_events, t497_event_count, t497_immediate, t497_rectangles;
 static void t497_dispatch(struct evdi_event_context *context);
@@ -307,16 +315,34 @@ static void *sample_latency(void *arg) {
     return NULL;
 }
 
-void evdi_register_buffer(evdi_handle handle, struct evdi_buffer buffer) {
+void evdi_register_buffer(evdi_handle handle, struct evdi_buffer buffer)
+{
     (void)handle;
     t752_registered = buffer;
+    if (t1284_tracking)
+    {
+        assert(!t1284_registration);
+        t1284_registration = calloc(1, sizeof(*t1284_registration));
+        assert(t1284_registration);
+        *t1284_registration = buffer;
+    }
     assert(buffer.buffer != NULL);
     assert(buffer.stride >= buffer.width * 4);
 }
 
-void evdi_unregister_buffer(evdi_handle handle, int id) {
+void evdi_unregister_buffer(evdi_handle handle, int id)
+{
     (void)handle;
     assert(id == 0);
+    if (t1284_tracking)
+    {
+        assert(t1284_registration && "T1284: duplicate or unowned unregister");
+        /* ASan rejects unregistration after its borrowed storage was freed. */
+        volatile unsigned char live = *(unsigned char *)t1284_registration->buffer;
+        (void)live;
+        free(t1284_registration);
+        t1284_registration = NULL;
+    }
 }
 
 /* TODO T012: odd source dimensions must be cropped to the packed NV12 size.
@@ -1517,6 +1543,7 @@ static void test_t415_rounding(void) {
 #include "fifo_demand.c"
 
 #include "c_boundary_fuzz.c"
+#include "shutdown_registration.c"
 #include "failed_mode.c"
 #include "helper_arguments.c"
 #include "capture_pause.c"
@@ -1536,6 +1563,7 @@ int main(int argc, char **argv)
     assert(argc == 2);
     canonical_format_fixture(argv[1]);
     static const struct { const char *id; void (*run)(void); } cases[] = {
+        {"T1284", test_t1284_shutdown_registration},
         {"T1186-trace", test_t1186_trace},
         {"T1186-admission", test_t1186_admission},
         {"T1185-progress", test_t1185_progress},
