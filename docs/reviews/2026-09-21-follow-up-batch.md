@@ -1,5 +1,13 @@
 # Requested follow-up implementation
 
+This batch fixed premature configuration-success logs and stale render-acknowledgement accounting, then shared session and diagnostic contracts across platforms. Linux reload evidence showed progress, not a controlled speedup; native Windows and sustained-power limits remained explicit at the time.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 T418 shared input and its matched latency measurements are recorded in the
 [dedicated report](../benchmarks/2026-09-21-shared-capture/README.md). Both
 applications were subsequently reinstalled/reloaded and live FFmpeg 6.1.6
@@ -166,3 +174,5 @@ T492 remains unresolved pending the requested fixed-workload tablet window or
 an explicit decision about deferring its sustained battery comparison. The
 separate [T575 GPU feasibility check](../benchmarks/2026-09-21-gpu-capture.md)
 does not enable a GPU capture backend or establish a latency gain.
+
+</details>

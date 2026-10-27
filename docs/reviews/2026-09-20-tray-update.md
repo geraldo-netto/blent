@@ -1,5 +1,8 @@
 # Tray GUI after an AppImage update — T550
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The updated image contained the Cameras tab, but the preserved display daemon's
 tray still launched `uscreen-gui` beside its own executable in the old extraction.
 The reported GUI's parent was that daemon, and its executable hash differed

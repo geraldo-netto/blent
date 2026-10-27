@@ -1,5 +1,8 @@
 # T708: discovery fixture port collisions
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The scaling fixture derived its eight-port range from its PID without checking
 or reserving the ports. The first simulated tablet does not bind its own primary
 listeners in this fixture; the second does. Occupying the second slot therefore

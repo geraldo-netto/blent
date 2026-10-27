@@ -1,5 +1,8 @@
 # T695 portable cadence control
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `common::idle::control` supplies an owned cadence interface and a bounded
 controller for future capture adapters. `Control` binds evidence to nonzero
 encoder, named decoder and viewer epochs. It keeps at most 256 encoded timings,

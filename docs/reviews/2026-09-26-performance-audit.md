@@ -1,5 +1,13 @@
 # Performance audit: host and Android
 
+The audit separated sampled CPU, sleeping-thread time, allocation counts and native delivery. Camera staging improved a bounded synthetic workload; GPU layout and cadence experiments did not justify new defaults. Missing stacks and unmeasured processes prevent whole-system or battery claims.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The implemented win is [T594 bounded camera packet staging](2026-09-26-camera-staging.md):
 about 99.94% less process allocation and 35% less elapsed time in the bounded
 synthetic camera-write workload. The signed Android release was rebuilt,
@@ -245,3 +253,5 @@ separate from algorithmic complexity. SVG XML, JSON and checksums were checked.
 Linux host production code did not change in this audit; no Linux application
 redeployment was needed. Main Android Blent is restored, temporary test output is
 off, ADB reverse mappings and host configuration are preserved, camera is off.
+
+</details>

@@ -1,5 +1,13 @@
 # Four-item implementation batch
 
+This batch covered GUI registration, configuration diagnostics, experimental idle capture and frame observability. Native sparse-capture acceptance and several incident causes remained unproven. Historical compatibility repairs, command-line lint exceptions and old deferred states do not override current policy.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The maintainer requested one commit per numbered item, grouping T551/T559 in
 item 1 and T558/T549 in item 3. Other findings are recorded separately in
 `TODO.md`, without expanding this batch to fix them.
@@ -138,3 +146,5 @@ T561 remains unresolved on a correlated native capture/encode/transport trace
 from a safe future normal startup; the historical host aggregates cannot be
 turned into missing per-frame evidence. This commit fixes observability and
 records the investigation, not an unproven frame-delivery defect.
+
+</details>

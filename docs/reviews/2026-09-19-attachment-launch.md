@@ -1,5 +1,8 @@
 # T445: attachment-only Activity launch
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Periodic Android process recovery no longer issues Activity launches. A bounded
 launch registry belongs to the monitor's observed attachments, independently of
 forwarding readiness and connection epochs. Identity-confirmed aliases share a

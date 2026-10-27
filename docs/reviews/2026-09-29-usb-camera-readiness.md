@@ -1,5 +1,8 @@
 # T540: physical USB camera acceptance
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Status: **passed** on September 29, 2026. The operator physically unplugged and
 reconnected the tablet during active front-camera sharing, then confirmed desktop
 recovery: “it takes a while but it recovers”. T540 is complete; T621 and T540 no

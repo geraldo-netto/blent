@@ -1,5 +1,13 @@
 # T623 — recovery warnings and duplicate grabs
 
+A regression removed duplicate watchdog/fallback grabs while preserving recovery after lost readiness. Native observations did not reproduce the warning classes; later stock-driver probes established a bounded warning mechanism without proving every historical warning harmless.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Keep the 250 ms watchdog and one-second fallback. Coalesce them when both expire
 on the same loop iteration: the watchdog grab now satisfies the fallback timer.
 Previously this sequence immediately grabbed twice without processing a new
@@ -60,3 +68,5 @@ lost-event recovery contract. T748 therefore remains blocked on a compatible sto
 API/recovery contract, with no logging suppression or cadence change. These native
 probes supplement the permanent T623/T294 regressions; they are not new behavioral
 fixes or substitutes for normal-suite coverage.
+
+</details>

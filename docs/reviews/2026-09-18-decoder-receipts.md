@@ -1,5 +1,8 @@
 # Decoder transition evidence (T484)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 T478's richer decoder requests exposed two transition gaps. The active capture
 loop compared the encoder and video format but omitted the decoder request;
 changing only the decoder or hints could retain the previous encoder generation.

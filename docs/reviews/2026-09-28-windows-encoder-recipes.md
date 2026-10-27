@@ -1,5 +1,8 @@
 # T685 Windows encoder probe recipes
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `common::encoding::windows` defines a bounded probe catalog for H.264/HEVC
 NVENC, AMF and QSV, plus libx264. It validates shared FPS, bitrate, quality,
 worker and raw geometry limits before producing stock-FFmpeg arguments.

@@ -1,5 +1,8 @@
 # Private namespace prerequisite in CI (T640)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 [Run 36273559974](https://github.com/geraldo-netto/blent/actions/runs/36273559974)
 failed the retained `camera::native_tests::t572_isolated_native_devices_and_session_cleanup`
 regression before coverage reporting:

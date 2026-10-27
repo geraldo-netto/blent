@@ -1,5 +1,8 @@
 # Runtime directory pinning (T634)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The existing T493 rename regression exposed a Windows pinning failure. Two new
 permanent regressions were added before the fix: removal must wait until the
 last owner drops, and an existing delete-access handle must prevent acquiring

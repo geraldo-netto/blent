@@ -1,5 +1,13 @@
 # USB capacity/deadline controls (T1098/T1099/T898)
 
+USB settings apply to the next connection and never grant consent or restart active media. The report explains Android persistence, host startup options, shared limits and platform-specific deadline meanings. Hosted storage and joined software tests preserve ownership through cancellation; actual device restarts and physical media acceptance are separate evidence.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The portable Android preference contract, storage/controls and Linux broker
 capacity/deadline controls have joined software acceptance. Hosted tests do not
 establish new physical device acceptance; application acceptance remains
@@ -155,3 +163,5 @@ in both languages. These are software acceptance results, with production-method
 counters in the corresponding implementation artifacts. Physical media, saved
 settings across actual app restarts and unsupported platform qualification remain
 T846/T863 and their dependencies; no battery/performance gain is claimed here.
+
+</details>

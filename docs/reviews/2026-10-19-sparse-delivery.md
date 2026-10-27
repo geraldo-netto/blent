@@ -1,5 +1,13 @@
 # T1107: sparse delivery qualification
 
+The tested software H.264, VP9 and AV1 recipes delivered isolated pictures across static gaps and supported fresh decoding of later keyframes. Hosted Android tests distinguished quiet input from genuinely stalled admitted work. Tiny synthetic inputs and hosted codecs do not qualify other recipes, physical decoders, display latency or battery savings.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The installed CPU H.264, VP9 and AV1 recipes deliver their first picture while
 stdin remains open, preserve a static gap longer than one second, deliver resumed
 motion and cursor-like updates without another input picture, and independently
@@ -107,3 +115,5 @@ android/gradlew -p android --offline --no-daemon --max-workers=2 \
   --tests com.blent.CallbackDecoderTest --tests com.blent.DecoderWatchdogTest \
   --tests com.blent.VideoLivenessTest
 ```
+
+</details>

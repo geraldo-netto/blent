@@ -1,5 +1,13 @@
 # Per-function coverage and retained tests — 2026-09-19
 
+This coverage snapshot measured each production function separately and retained unavailable native Windows evidence as a failure to qualify. Passing threshold counts do not mean 100% line coverage. Temporary local artifact paths and the later linked report are dated evidence, not current certification.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Historical snapshot; current validation is recorded in
 [the 2026-09-26 report](2026-09-26-function-coverage.md).
 
@@ -99,3 +107,5 @@ rewrite of one test assertion was checked again with its targeted regression.
 These checks do not measure tablet performance, battery savings, real display
 presentation, native Windows security, or the unresolved Xorg crash in T222.
 No APK or host binary was installed for coverage collection.
+
+</details>

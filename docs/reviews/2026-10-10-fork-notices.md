@@ -1,5 +1,8 @@
 # Fork name and attribution: local review
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Reviewed 2026-10-10 at `e5a1d81`. The maintainer requested local files only and
 clarified the question: whether renaming the fork and separating original and
 new contribution notices is permissible. No online legal, trademark, patent or

@@ -1,5 +1,13 @@
 # T544: tablet microphone and shared audio contract
 
+This accepted microphone contract required an explicit selectable source, independent controls, bounded audio and visible consent. It separated native processing capability from effective echo cancellation. Later implementation and physical acceptance must be read independently of the research-time absence of audio.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Status: requirements research completed. This document records the research
 snapshot and accepted contract; [current implementation](../audio.md) now includes
 T718 microphone integration.
@@ -127,3 +135,5 @@ Each maintained function needs its own >=80% executable-line coverage, retained
 bounded invalid-input tests and native adapter acceptance. Initial timing controls
 are design proposals, not measured latency guarantees. The scope excludes an
 unsolicited broad multi-tablet performance campaign.
+
+</details>

@@ -1,5 +1,8 @@
 # Workspace contracts (T1272)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Implemented independent device catalog, resource projection and display-control
 request/snapshot contracts. Native adapters and workspace UI remain T1274/T1273.
 

@@ -1,5 +1,13 @@
 # Native tablet webcams — T539
 
+The first camera implementation exposed two Linux webcam entries with one active tablet lens. Real Chrome capture and automated lifecycle tests passed within the recorded scope. Host-owned controls later replaced the original tablet-side selection workflow.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Historical implementation record. T543 subsequently moved camera configuration
 and session ownership into the host GUI; see the
 [host integration validation](2026-09-20-camera-host.md) for current behavior.
@@ -82,3 +90,5 @@ the physical USB check because removing the connected tablet would also detach
 the existing EVDI display through unresolved T222. Windows camera output remains
 unimplemented; 58 Windows-only functions remain unmeasured under T493/T497 and
 are preserved in the all-platform report. No Windows coverage pass is claimed.
+
+</details>

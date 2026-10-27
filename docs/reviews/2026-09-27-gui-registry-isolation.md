@@ -1,5 +1,8 @@
 # Windows GUI mutation isolation (T660)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The previous GUI test selected its private key through `autostart_key`, which
 was also a mutation target. A mutation of that helper could bypass the fixture.
 The normal child-process fixture now overrides HKCU before calling the GUI

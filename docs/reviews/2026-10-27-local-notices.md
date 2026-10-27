@@ -1,5 +1,13 @@
 # Installed component attribution recovery (T1278)
 
+The installed Linux bundle recovered component notices and a manifest tied to its exact executables and dependencies. Verification checks hashes, provenance and safe regular-file reads; replacement binaries invalidate that snapshot. This repairs one installation, not the production collector or a portable-release/legal-compliance attestation.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Restored `~/.local/share/blent/appimage/Blent.AppDir/usr/share/doc/blent/bundled`
 without replacing executables, libraries, settings, drivers or the running service.
 `index.html` provides offline component credits and links to full notices;
@@ -77,3 +85,5 @@ retain the evidence. Detailed work remains in the owned external directory
 T1279 separately tracks the production AppImage collector's top-level-only notice
 scan and silent empty notice directories. Recovery corrects this installed state;
 it does not claim that packaging follow-up is already implemented.
+
+</details>

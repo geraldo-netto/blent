@@ -1,5 +1,8 @@
 # Blent contribution notices (T662)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `COPYRIGHT.md` adds Copyright (c) 2026 Geraldo Netto for original Blent
 contributions: new work and changes to inherited files. It records the inherited
 upstream revision, keeps attribution for moved/split code and leaves third-party

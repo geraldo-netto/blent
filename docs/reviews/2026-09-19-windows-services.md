@@ -1,5 +1,13 @@
 # T493: Windows shared-service foundation
 
+The Windows foundation introduced private state, exact process identity and owned process jobs. Wine could not validate the protected-directory contract; later native acceptance is linked separately. Historical compatibility aliases and capability flags are not current requirements.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Historical implementation review from 2026-09-19. Native acceptance subsequently
 passed on 2026-09-26; see [T493 completion](2026-09-26-windows-foundation.md).
 The Wine-only limitations below describe the earlier evidence.
@@ -83,3 +91,5 @@ enable an unvalidated Windows daemon, display or input backend. T496 supplies
 Windows-native fixtures and CI; the native private-state checks remain required.
 The [Windows plan](../windows-port.md) still separates compilation from a
 working lifecycle, pen input, extended display and packaging.
+
+</details>

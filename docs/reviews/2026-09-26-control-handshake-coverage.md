@@ -1,5 +1,8 @@
 # T629: physical panel metadata on the real control-open path
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 A permanent normal-suite regression opens and reconnects the control socket,
 asserts authentication precedes resolution, and checks native pixel dimensions
 plus physical millimetres. Unknown physical width or height omits both optional

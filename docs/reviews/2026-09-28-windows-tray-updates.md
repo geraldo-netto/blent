@@ -1,5 +1,8 @@
 # T696 Windows daemon release notifications
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The Windows daemon now honors the saved `check_updates` preference independently
 of the GUI. Its owned subscription waits 30 seconds after startup, then checks
 once per 24 hours. A disabled preference creates no polling task. Ordinary

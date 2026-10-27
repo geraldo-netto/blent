@@ -1,5 +1,8 @@
 # Decoder negotiation assertion gaps (T668)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Permanent shared-policy tests now independently validate report dimensions and
 frame-rate bounds, codec-family limits and hardware subsets, both forbidden
 legacy extensions, invalid reports/streams, hardware ordering, and supported

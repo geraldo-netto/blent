@@ -1,5 +1,8 @@
 # T496: Windows-native fixtures and CI
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Shared command tests re-execute their own native test binary instead of calling
 `sh` or `sleep`. PID readiness uses atomic publication and a bounded wait that
 also observes early fixture failure. Windows verifies process exit through a

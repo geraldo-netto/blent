@@ -1,5 +1,8 @@
 # Native Windows foundation acceptance (T493)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 [Run 36264925943](https://github.com/geraldo-netto/blent/actions/runs/36264925943)
 at `44b939ee919df859e0afe1eb7441d416d12b99f9` passes the full native workspace
 suite, the all-features MSVC build and GNU executable linking. All **46 production

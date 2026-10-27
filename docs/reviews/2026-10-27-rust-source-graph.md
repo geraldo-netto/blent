@@ -1,5 +1,13 @@
 # Release Rust source selection (T1281)
 
+Release source collection now follows each actual release build's normal/build dependency tree, avoiding development-only feature leakage. The offline collector produced 337 nonempty source/notice groups with verified supplements. Tests cover graph ambiguity and build failures; this validates collection and command selection, not a full rebuild or deployment.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The collector now uses the normal/build dependency tree for each release build,
 with exact package metadata supplying archive identities and source paths.
 `rust_build.py` owns the two existing release invocations: host with native-audio
@@ -66,3 +74,5 @@ build process and stops on failure, preserving the shell's completion marker rul
 Tests/mock children and the local Cargo fixture settle before temporary directories
 are reclaimed. Archive/staging ownership remains as documented in T1279/T1280;
 this change adds no native allocations, device handles or asynchronous lifetimes.
+
+</details>

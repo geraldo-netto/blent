@@ -1,5 +1,13 @@
 # T652: tooling and bounded mutation campaigns
 
+The owner accepted tooling and bounded mutation samples across maintained languages instead of every generated mutation. Baselines, infrastructure failures, equivalent survivors and unselected scope remain explicit. This completion did not establish a whole-project mutation score or replace line coverage.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The maintainer selected **“Complete tooling and bounded campaigns”** instead of
 executing every generated mutation. That scope is complete: the existing generated
 Rust engine remains available, and a reviewed fault runner supports maintained
@@ -127,3 +135,5 @@ C and essential-script production behavior is unchanged by this commit. Their
 independent native line gate remains required; the preceding T531 commit separately
 passed all 59 changed-scope production functions at 80% or above. No newly collected
 whole-project line or mutation result is claimed.
+
+</details>

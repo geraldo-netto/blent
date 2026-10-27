@@ -1,5 +1,8 @@
 # T625: retain unchanged XInput mappings during retries
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 T622 removed unnecessary explicit XRandR refreshes once output ownership was
 known, but each `xinput map-to-output` still queried RandR resources. Upstream
 xinput 1.6.4 calls `XRRGetScreenResources` in both `map_output_xrandr` and

@@ -1,5 +1,13 @@
 # T846: USB-first ADB-free transport feasibility
 
+The selected tablet completed one synthetic accessory-only USB echo run with debugging disabled, after failed attempts exposed a zero-length-packet handling bug. The trial established bounded patterned transport on that setup, not production authentication, media integration or broad lifecycle acceptance. Later connection documentation describes the implemented direct-USB route; the prototype-era ADB-only status is historical.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The original trial used native sources under `scripts/benchmarks/aoa/` at
 commit `ff7978a0`. Current shared native ownership/USB code is extracted into
 `host/accessory/`; historical trial hashes below identify the original sources.
@@ -192,3 +200,5 @@ Integrate discovered accessory connections with current host session ownership a
 Android media workers, then validate ordinary rendering, recovery, memory, CPU and
 charging. Preserve explicit ADB fallback and visibly unsupported native backends;
 Windows USB qualification remains distinct and macOS remains out of scope.
+
+</details>

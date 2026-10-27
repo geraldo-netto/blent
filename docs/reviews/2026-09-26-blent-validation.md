@@ -1,5 +1,13 @@
 # Blent follow-up validation
 
+This follow-up corrected a lossy-video test assumption, closed scoped coverage gaps and fixed X11 touch mapping through validated display identity. Native touch evidence did not validate stylus input, and the remaining camera coverage failures stayed explicit.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 ## T588: deterministic VP9 timing markers
 
 Pre-rename revision `90b80ee98a6f474b824c4f27ffa4c6ac92a6d3c9` reproduces
@@ -110,3 +118,5 @@ pressure/tilt success is inferred from the working touch path.
 
 Red/green logs, exact snapshot and clean counters are retained as `t577-*` in
 [validation artifacts](artifacts/2026-09-26-blent-validation/).
+
+</details>

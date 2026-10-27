@@ -1,5 +1,8 @@
 # T697 capture capacity preparation
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `common::capture_capacity` separates requested settings, a bounded resource plan,
 and effective capacity reported after allocation/worker startup. It reuses the
 configuration's 1/2/4/8 MiB choices (default 1) and Auto/1..128 conversion limit.

@@ -1,5 +1,8 @@
 # GitHub repository rename (T661)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The hosted fork is now `geraldo-netto/blent`. GitHub repository ID 1373334703 and
 node ID `R_kgDOUdtsrw` match the pre-rename repository, its upstream parent remains
 `majmichu1/UScreen`, and its default branch remains `main`. Local origin uses the

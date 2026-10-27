@@ -1,5 +1,8 @@
 # Registry values shrinking between reads (T663)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The surviving `Key::read` mutation changes `value.truncate(size / 2)` to
 `value.truncate(size * 2)`. It is not an allocation-only equivalent: if a value
 shrinks between the size query and data read, the vector must shrink to the

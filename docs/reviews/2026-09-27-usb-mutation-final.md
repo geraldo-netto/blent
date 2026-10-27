@@ -1,5 +1,8 @@
 # USB campaign verification and equivalent mutation (T664)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The final native Linux and Windows campaigns each execute all 125 selected
 candidates after a passing unmodified baseline: 112 caught, 12 compilation-invalid
 and one survivor, with no timeouts. Their production USB sources and permanent

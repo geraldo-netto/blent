@@ -1,5 +1,8 @@
 # Native USB listener fixture allocation (T655)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The Windows USB baseline failed before mutation testing: independent ephemeral
 allocations could consume the video port's required `+2` sibling, and concurrent
 fixtures repeatedly exhausted all 64 attempts. The permanent

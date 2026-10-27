@@ -1,5 +1,13 @@
 # Tablet cameras as desktop cameras
 
+Camera metadata supported a Linux prototype with two named endpoints and one active lens. This assessment did not open a camera or prove sustained capture. Its proposed consent, ownership and validation requirements remain distinct from the later implementation evidence.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Assessment: 2026-09-20. Follow-up: T539. This is a feasibility assessment and
 proposed design at the time of inspection. The subsequent experimental
 [camera implementation](../cameras.md) and T539 track current behavior and
@@ -134,3 +142,5 @@ settings and packaging, not a configuration-only change. Before enabling it:
 
 T539 keeps this prototype and integration evidence open. No behavioral bug was
 fixed during the assessment; no production code or automated tests changed.
+
+</details>

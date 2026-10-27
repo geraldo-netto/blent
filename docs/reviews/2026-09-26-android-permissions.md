@@ -1,5 +1,8 @@
 # T619 — runtime permissions during ADB installation
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `make android-install` now executes `adb install -r -g`; the doctor hint and
 current installation guides use the same flags. Android grants the runtime
 permissions declared by this APK (currently Camera). Normal permissions are

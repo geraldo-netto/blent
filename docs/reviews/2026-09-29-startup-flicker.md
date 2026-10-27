@@ -1,5 +1,13 @@
 # T714: first-connect desktop/connection-screen flicker
 
+Live calibration repeatedly replaced video sessions, causing connection-screen flicker. The accepted fix introduced durable environment tuning and stable progress presentation, with invalidation and fresh-render checks. Later installed acceptance fixed two additional startup transitions.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The September 29 host journal identifies repeated **automatic live profile
 trials** as the source of video reconnections at startup. The maintainer confirms
 the tablet returns to its own Blent connection screen between desktop images.
@@ -163,3 +171,5 @@ physical display acceptance is tracked separately as T715.
 fixes the premature pre-encoder verification deadline and the Android overlay exit
 frame, and records current validation. The unchanged-installation statements above
 describe the original T714 investigation and implementation session.
+
+</details>

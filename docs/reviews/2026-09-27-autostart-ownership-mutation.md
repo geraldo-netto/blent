@@ -1,5 +1,8 @@
 # Windows autostart assertion sensitivity (T658)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Four meaningful native Windows mutants survived the original normal suite:
 refusing to create an absent registration key, accepting commands beyond 260
 UTF-16 units, rejecting the exact limit, and accepting either an absolute path

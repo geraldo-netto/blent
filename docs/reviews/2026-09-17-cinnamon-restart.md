@@ -1,5 +1,13 @@
 # Cinnamon session restart during UScreen connection
 
+An Xorg crash followed display attachment before the corrective resolution change. Logs establish the order, but not the crash’s root cause or the responsible function. The incident record and later investigation limits remain historical evidence.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Reviewed commit: `6d73993`. Incident: 2026-09-17, Europe/Rome (CEST).
 
 Xorg crashed while processing a RandR gamma request shortly after UScreen
@@ -134,3 +142,5 @@ They do not exercise settings changes during setup or real Xorg stability.
 No live display configuration, daemon state, driver, or desktop setting was
 changed, and the crash was not deliberately reproduced. This review adds
 findings and evidence only; regression tests belong with the fixes.
+
+</details>

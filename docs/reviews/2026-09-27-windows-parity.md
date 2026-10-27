@@ -1,5 +1,13 @@
 # Windows feature-parity audit — T690
 
+The parity audit distinguished implemented Windows foundations from missing user-visible backends and physical acceptance. It split independent work without importing Linux APIs into shared contracts. Stylus and macOS exclusions remained explicit; the historical task list is not the current ledger.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The maintainer requires new operating systems to provide the existing supported
 feature set through shared domain logic and explicit native adapters. The rule
 is persisted in repository `AGENTS.md` and the maintainer's global
@@ -47,3 +55,5 @@ Evidence inspected: `common/src/platform.rs`, `common/src/cli.rs`,
 Documentation-only validation checks the ledger schema, unique IDs, relative
 links and rule persistence. No tests or coverage thresholds were removed or
 weakened, and no runtime-support claim was added.
+
+</details>

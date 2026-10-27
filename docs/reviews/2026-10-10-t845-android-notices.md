@@ -1,5 +1,8 @@
 # T845: notices travel with the standalone APK
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Every Android variant packages eight readable notice assets under
 `assets/licenses/`. The project MIT notice and contribution attribution are exact
 copies of repository LICENSE and COPYRIGHT.md. A normal Python regression detects

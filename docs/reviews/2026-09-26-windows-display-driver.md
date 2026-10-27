@@ -1,5 +1,13 @@
 # T521: Windows virtual-display driver decision brief
 
+The driver review found a lab candidate whose global monitor-count interface could not provide per-application output ownership. It recorded the alternative of an owned driver and its signing/maintenance obligations. No production driver or physical display support was accepted.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Research checked 2026-09-26. No Windows driver was installed, selected for
 production or declared supported. T527 remains the decision/validation gate.
 
@@ -90,3 +98,5 @@ foreign outputs. T524 lifecycle and T522 native acceptance remain prerequisites;
 T528 must validate capture compatibility separately. Source inspection and Linux
 cross-compilation cannot replace these native tests. No artificial automated test
 was added for this research-only item.
+
+</details>

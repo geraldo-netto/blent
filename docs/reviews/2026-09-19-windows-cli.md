@@ -1,5 +1,8 @@
 # T494: Windows command-line compilation boundary
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `host/src/main.rs` chooses the existing Linux supervisor in `linux_main.rs`
 or the Windows diagnostics entry point. Linux EVDI, FIFO, uinput, D-Bus and
 optional libavcodec dependencies stay behind target boundaries. The CLI grammar

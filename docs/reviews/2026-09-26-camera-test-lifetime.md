@@ -1,5 +1,8 @@
 # T620 — bounded camera producer-failure fixture
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The producer-failure test no longer relies on a one-second process alarm.
 Its fake producers read stdin until the authenticated client completes its
 handshake and writes a retirement marker. Foreign-client rejection and the

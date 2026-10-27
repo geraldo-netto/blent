@@ -1,5 +1,8 @@
 # T823: private native owners, portable C contracts
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `conversion.h` exposes pixel jobs and an opaque pool; `frame_exchange.h` exposes
 opaque ownership, borrowed capture targets and immutable writer leases. Pthread
 layout, worker dispatch, buffer histories and mutexes live in private headers.

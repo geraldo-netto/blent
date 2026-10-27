@@ -1,5 +1,8 @@
 # T705: Linux ADB route ownership
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Linux attachment now uses the same `Routes` ownership implementation as the
 portable USB connection. Preparation checks the complete route snapshot before
 creating missing mappings with `--no-rebind`. Existing matching mappings remain

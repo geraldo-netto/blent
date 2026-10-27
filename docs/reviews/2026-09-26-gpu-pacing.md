@@ -1,5 +1,8 @@
 # T593: pacing, drift and source phase
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 No production cadence change is promoted. FIFO remains default; damage capture
 remains opt-in. Native tests show that removing timer rounding alone is
 insufficient, and preserving the target cadence does not remove dependence on

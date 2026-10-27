@@ -1,5 +1,8 @@
 # Idle-policy assertion boundaries (T667)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Permanent normal-suite tests now check every baseline/trial admission step,
 the inclusive 100 ms ACK bound, the exact one-second transition grace,
 the 1.5-second sparse timeout, and both sides of the 20 ms cost margin.

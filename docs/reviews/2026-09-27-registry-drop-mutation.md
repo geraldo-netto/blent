@@ -1,5 +1,8 @@
 # Registry handle-release assertion (T659)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Replacing `common/src/windows/registry.rs::Key::drop` with a no-op survived the
 original Windows tests. The permanent normal-suite regression
 `t659_registry_drop_closes_owned_handle` runs a dedicated child process, creates

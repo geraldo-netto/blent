@@ -1,5 +1,13 @@
 # T587: allocation sizing and bounded Android growth
 
+Android packet growth was capped at the largest legal packet without adding growth allocations for any legal sequence. Regressions verified reuse and bounds. Requested array bytes, process memory snapshots and later native allocation trials measure different things; no whole-pipeline latency or power gain follows.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The Android display reader now caps growth at its maximum legal packet size,
 8 MiB plus one byte. It retains the 512 KiB initial buffer and 50% growth below
 that cap. For a maximum-sized first packet, requested array capacity falls
@@ -109,3 +117,5 @@ consumers and camera packet writes. See [measured results and limitations](2026-
 These supplement the historical PSS snapshots above; they do not establish
 whole-pipeline latency or battery gains. T594 tracks a measured comparison of
 bounded camera scratch reuse; no extra production trimming/pooling is enabled.
+
+</details>

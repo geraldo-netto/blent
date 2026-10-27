@@ -1,5 +1,8 @@
 # T250 — fork Android identity and signed release gate
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The app now builds as `io.github.geraldo_netto.uscreen`. Host discovery,
 Activity launch, background credential delivery and doctor capability queries
 use that package with the retained `com.uscreen` class namespace. Active

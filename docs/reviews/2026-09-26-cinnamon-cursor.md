@@ -1,5 +1,13 @@
 # T604: retain the mouse while touch is enabled
 
+A Cinnamon-specific cursor policy restored visibility when an owned virtual touchscreen triggered hiding. A later regression fixed delayed removal of the previous device during reconnect. Native hide notifications were tested; they did not establish physical finger-input coverage.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Blent now arms a Cinnamon/X11 cursor policy before creating its virtual
  touchscreen. Touch stays enabled; mouse visibility is restored synchronously
 when Cinnamon tries to hide it. The exact touchscreen object owns the policy;
@@ -70,3 +78,5 @@ adopted the new touchscreen and immediately repaired hide attempts. Configuratio
 bytes remain unchanged. [T610 evidence](artifacts/2026-09-26-followup/t610/)
 retains red/green output, coverage, native results and build identity; complete
 build/source/package evidence is in the matching private profile directory.
+
+</details>

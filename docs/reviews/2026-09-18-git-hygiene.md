@@ -1,5 +1,13 @@
 # Git ignore and history audit — T489
 
+An audit found no confirmed credentials in the scanned checkout and Git objects. It added narrower ignore rules and a permanent regression; scanner limits remain explicit. This is a dated audit, not a guarantee that the present repository contains no secrets.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Reviewed on 2026-09-18 from local HEAD `491ac6e`, including the existing dirty
 working tree. **No confirmed credentials were found, and no history rewrite or
 remote mutation was warranted.** This is a credential/file-hygiene audit, not a
@@ -70,3 +78,5 @@ found later, follow [GitHub's sensitive-data removal procedure](https://docs.git
 invalidate exposed credentials, verify a scoped rewrite, and account for copies
 or cached references beyond the rewritten branches. The scanner's capabilities
 and limits are documented in [Gitleaks](https://github.com/gitleaks/gitleaks).
+
+</details>

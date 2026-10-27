@@ -1,5 +1,13 @@
 # T817: camera hardware/fusion evaluation
 
+Camera hardware decode/readback and a fused-output prototype were rejected for the tested workloads. Hardware added memory and startup costs; the fused output blocked preview behind an unread sink. This did not prove all hardware acceleration slower.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Decision: retain stock software camera decoding and separate output owners.
 VAAPI decode/readback and the tested fused split are not accepted for production.
 This is a measured rejection, not a claim that all hardware acceleration is slower.
@@ -55,3 +63,5 @@ the already tested isolated software pipeline remains the only production path.
 [Full commands, hashes, runtime versions and evidence](artifacts/2026-10-10-t817/).
 Reproduce with `python3 scripts/benchmarks/camera-decode.py /tmp/new-camera-run`
 and `python3 scripts/benchmarks/camera-fusion.py`. Inputs are generated locally.
+
+</details>

@@ -1,5 +1,8 @@
 # T624 — one ordinary Blent launcher
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The profile manifest removes the inherited launcher filter. Both disposable
 variants use that manifest: debuggable `profile` and release-optimized
 `optimized`. The production ID and signing configuration are unchanged.

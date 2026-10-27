@@ -1,5 +1,13 @@
 # Original advice cannot qualify a replacement native reader
 
+A replacement native reader pins and rejects advice that existed before its first source access. Each read and the original pin have explicit descriptor ownership, preventing stale advice from qualifying a reused source. Tests cover invalid input, exhaustion and descriptor reuse within a finite fixture scope; they do not establish unrestricted native safety.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 T1120 adds a small Linux reader owner in `idle_control.h`. The FIFO writer begins
 it before opening/accessing its first source, retaining an O_PATH/CLOEXEC pin
 on the private regular advice object already present. Each bounded read opens
@@ -57,3 +65,5 @@ retained boundary/interleaving/exhaustion/reuse cases, three faulty controls,
 single-reader fixture domains and current code refinement, not an unrestricted
 native-safety theorem or device acceptance. T1115 still owns joined portable
 viewer/liveness/recipe/decoder/ACK qualification; T1116 owns shared/native capture.
+
+</details>

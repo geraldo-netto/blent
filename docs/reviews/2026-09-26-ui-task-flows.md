@@ -1,5 +1,13 @@
 # T611: desktop and Android task flows
 
+The UI grouped status with actions, made advanced controls expandable and added accessible Android settings and camera Stop actions. Automated layout/lifecycle checks and developer walkthroughs passed. These were not a human usability study, screen-reader certification or new camera-consumer acceptance.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The desktop now groups connection status with its display/input Start/Stop
 button. Basic video settings remain visible; advanced video and camera controls
 use native disclosures. Android has grouped settings, a named 48 dp settings
@@ -106,3 +114,5 @@ current signed release after capture, with app data preserved and camera off.
 | Desktop, 440×760 | [Screenshot](artifacts/2026-09-26-task-batch/t611/before-after/desktop-before.png) | [Screenshot](artifacts/2026-09-26-task-batch/t611/before-after/desktop-after.png) |
 | Android settings, 1280×800 | [Screenshot](artifacts/2026-09-26-task-batch/t611/before-after/android-before-settings.png) | [Screenshot](artifacts/2026-09-26-task-batch/t611/before-after/android-after-settings.png) |
 | Android connection, 1280×800 | [Screenshot](artifacts/2026-09-26-task-batch/t611/before-after/android-before-waiting.png) | [Screenshot](artifacts/2026-09-26-task-batch/t611/before-after/android-after-waiting.png) |
+
+</details>

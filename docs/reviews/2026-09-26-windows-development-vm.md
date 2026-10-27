@@ -1,5 +1,13 @@
 # Windows 11 development VM (T633)
 
+A retained Windows 11 development VM passed the recorded native setup and application tests. The report preserves machine-specific ownership and one-time installation safeguards. VM acceptance did not establish physical GPU, USB or tablet support.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The retained VM passed final acceptance on 2026-09-27 Europe/Rome. It lives
 outside Git at `~/.local/share/blent-dev/windows-vm/`. Open **Blent Windows 11 Dev**
 from the Linux application menu, or run its `open.sh`. Preserve the disk,
@@ -116,3 +124,5 @@ nor enable unfinished capture, input, camera or autostart backends.
 The historical remote Linux failure was repaired with T645's isolated sysfs
 coverage fixture; a new remote run is pending. T644's earlier Xvfb startup stall
 remains unexplained. See the [coverage report](2026-09-26-function-coverage.md).
+
+</details>

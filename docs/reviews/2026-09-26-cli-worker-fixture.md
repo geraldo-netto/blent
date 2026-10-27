@@ -1,5 +1,8 @@
 # T626: CLI worker fixture drift
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 T613 had already set the shared libx264 default to one worker. The retained T373
 CLI boundary test still expected automatic threading (no `-threads` option),
 contradicting `common/src/encoding.rs`. The full suite exposed the mismatch.

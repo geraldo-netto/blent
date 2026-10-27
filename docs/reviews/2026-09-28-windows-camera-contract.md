@@ -1,5 +1,13 @@
 # T692 Windows virtual-camera adapter contract
 
+This proposed Windows camera contract separates persistent endpoint registration from explicit capture sessions and requires black output after loss or Stop. Native COM, service isolation and distribution decisions remained prerequisites. Interface research did not establish an implemented camera backend.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 This is an implementation proposal for T693, not an implemented or validated
 Windows camera backend. The current Linux pipeline is in `host/src/camera.rs`,
 `host/src/camera/outputs.rs` and `host/src/camera_control.rs`; the portable
@@ -113,3 +121,5 @@ Finally validate real enumeration and output in Windows camera consumers,
 concurrent preview, black retirement and current-user isolation, plus the existing
 Android permission/background lifecycle on a separately authorized camera window.
 Neither the development VM nor interface tests establish physical camera parity.
+
+</details>

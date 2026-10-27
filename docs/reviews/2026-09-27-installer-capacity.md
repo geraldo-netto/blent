@@ -1,5 +1,8 @@
 # T709: retain provisioned EVDI boot configuration
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Source/tarball reinstallation preserves an existing `blent-evdi.conf` instead
 of overwriting it with `initial_device_count=2`. This retains the one-to-four
 device count previously provisioned through GUI setup, administrator options,

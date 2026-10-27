@@ -1,5 +1,13 @@
 # Left-aligned GUI refinements — 2026-10-27
 
+The owner replaced centered page content with stable left alignment and made About use one page scroll area. Follow-up geometry tests fixed centered notice text and reflowed only the displayed MIT prose while preserving copied bytes. Linux checks passed; these decisions supersede the earlier responsive-layout report, with Windows validation still separate.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 ## T1292 — Stable left edge
 
 Owner explicitly superseded T1289/T1290 centering. The page wrapper now keeps
@@ -74,3 +82,5 @@ MIT string is bounded by the embedded source and owned for the synchronous
 frame; egui owns resulting text layout. Other strings retain static lifetime.
 No native resources, asynchronous borrows or retained cleanup obligations were
 introduced. T1271 retains unavailable native Windows acceptance.
+
+</details>

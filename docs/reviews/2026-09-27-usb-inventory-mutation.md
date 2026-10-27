@@ -1,5 +1,8 @@
 # USB inventory response bounds (T654)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The original tests coupled failed command status to empty output and supplied
 only whitespace for oversized output. Parsing rejected those fixtures even when
 status or size validation was removed.

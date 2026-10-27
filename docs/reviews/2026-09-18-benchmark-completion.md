@@ -1,5 +1,8 @@
 # Benchmark completion and foreground ownership (T485)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The decoder matrix, explicit decoder-plan runner and combined USB runner each
 relaunched `com.uscreen/.MainActivity` after receiving a successful benchmark
 result. That could replace an app the user selected immediately after the trial

@@ -1,5 +1,13 @@
 # Mutation testing checkpoint — T652
 
+This initial pause checkpoint recorded one parser campaign and missing broader tooling. It is superseded by later progress and bounded completion. Its resume instructions and unanswered scope question are historical, not new requests to the reader.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Historical initial checkpoint. See the [post-reboot progress](2026-09-27-mutation-progress.md)
 for completed campaigns, fixes and current remaining work. Statements below describe
 the state at the original pause.
@@ -109,3 +117,5 @@ Only cargo-mutants has been run. No PIT, Mull or mutmut integration was validate
 
 Do not push the checkpoint or future mutation changes without a new push request.
 The earlier push authorization was exercised for the completed implementation batch.
+
+</details>

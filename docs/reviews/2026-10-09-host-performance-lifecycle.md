@@ -1,5 +1,13 @@
 # Host performance and resource lifecycle review
 
+Host probes reproduced blocking controller destruction, stale status after worker panic and uncapped command output. Source review identified separate supervision and allocation work. Temporary probes established findings, not permanent regressions or physical-platform acceptance.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Review of owned code at `bb1648e80e51fcc4eb030336cae35b88473d7fa3`, 2026-10-09.
 Production code unchanged. Offline fault injection uses disposable processes,
 cached dependencies and fake sessions; no installed service, sensor, driver or
@@ -137,3 +145,5 @@ Implementation order: independent contracts where required; bounded owner
 retirement and terminal outcomes; output/I/O budgets; then allocation and hardware
 experiments. Each behavioral fix needs its permanent failing regression before
 the implementation, passing regression afterward and individual coverage.
+
+</details>

@@ -1,5 +1,8 @@
 # T703: preserve independent camera preference edits
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Configuration saves now compare nested table leaves against the editor's original
 snapshot and apply only those edits to the latest locked configuration. Changing
 camera FPS no longer restores an older mirror, rotation or serial setting. The

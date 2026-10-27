@@ -1,5 +1,13 @@
 # T598: optimized client and thread attribution
 
+Optimized-client profiling found codec work and wakeup volume, not a demonstrated application-lock bottleneck. Missing callchains and unmeasured vendor processes remain explicit. Archived launch recipes were separately corrected to keep authentication tokens out of process arguments.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Research complete. No application-lock bottleneck demonstrated; no lock API or
 scheduler defaults changed. Encoder worker count remains the useful T600
 experiment. Camera stayed off. Workload: the attached 1280×800 tablet, existing
@@ -126,3 +134,5 @@ against fake subprocess/path adapters. Both original recipes fail its
 no-token-in-argv assertion; corrected recipes pass and still transport the
 complete token through stdin. This permanent test runs in normal Python test
 discovery. Red/green evidence is retained alongside the curated recipes.
+
+</details>

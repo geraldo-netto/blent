@@ -1,5 +1,13 @@
 # Native encoder pipes (T529)
 
+A shared stock-FFmpeg pipe adapter owned its input and child process through partial writes and shutdown. Native Windows tests caught a pending-write error hidden by a zero exit and verified its fix. Encoder-pipe acceptance did not establish a complete Windows display backend.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 `host/src/pipe_encoder.rs` implements the libx264 software fallback using stock
 FFmpeg stdin/stdout. The frame writer accepts packed NV12 with fixed geometry;
 resize starts a fresh encoder session. The command recipe is shared with the
@@ -58,3 +66,5 @@ configuration. Windows application display/input/lifecycle capabilities remain
 unsupported. The retained Windows 11 VM repeats native acceptance under T633.
 
 CI installs the SHA-256-pinned [Gyan stock FFmpeg 8.1.2 essentials build](https://www.gyan.dev/ffmpeg/builds/) for the mandatory native encode/decode test. The guest development seed contains only its verified CLI executable; packaging/distribution policy remains T534.
+
+</details>

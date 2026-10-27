@@ -1,5 +1,8 @@
 # T707: camera retirement off the Activity thread
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Stop closes resource admission, interrupts transport and cancels capture without
 performing native destruction on the Activity caller. Capture's non-cancellable
 IO cleanup owns destruction after its borrowed native operations return. A

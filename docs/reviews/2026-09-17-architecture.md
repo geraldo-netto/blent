@@ -1,5 +1,13 @@
 # Architecture and responsibility review — 2026-09-17
 
+A source review identified repeated session setup and mixed responsibilities across host, Android and packaging code. Complexity scores were within the then-measured limit; this did not prove sound architecture. The proposed changes and old TODO references describe that review date.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Reviewed source snapshot:
 [`6a49e9761c541fdcb224bdd6c9216f53581a1c6c`](https://github.com/geraldo-netto/blent/tree/6a49e9761c541fdcb224bdd6c9216f53581a1c6c).
 This is a review, not a refactor. Findings are recorded in the repository's
@@ -172,3 +180,5 @@ not fix or remove the underlying finding.
 - [Owned C helper](https://github.com/geraldo-netto/blent/blob/6a49e9761c541fdcb224bdd6c9216f53581a1c6c/host/evdi/evdi_helper.c)
 - [Android production sources](https://github.com/geraldo-netto/blent/tree/6a49e9761c541fdcb224bdd6c9216f53581a1c6c/android/app/src/main/java/com/uscreen)
 - [Bundle staging](https://github.com/geraldo-netto/blent/blob/6a49e9761c541fdcb224bdd6c9216f53581a1c6c/scripts/stage-linux-bundle.sh) and [Makefile](https://github.com/geraldo-netto/blent/blob/6a49e9761c541fdcb224bdd6c9216f53581a1c6c/Makefile)
+
+</details>

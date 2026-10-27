@@ -1,5 +1,8 @@
 # Responsive GUI fixes — 2026-10-27
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 ## T1289 — Resource workspace
 
 The native 3840x2088 capture showed two 1800px columns. The permanent

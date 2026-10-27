@@ -1,5 +1,13 @@
 # T602: simpler installation and optional ADB
 
+This dated research separated APK installation from runtime transport and proposed guided bundled-ADB setup followed by an accessory prototype. A read-only accessory-version query established advertisement only. Later connection contracts and installation guides govern the implemented routes; dated distribution-policy facts need rechecking before publication.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Research complete. Recommend guided setup using the **already bundled ADB** as
 the first implementation, then a separate USB accessory transport prototype.
 Installing outside Google Play does not inherently require ADB. Blent currently
@@ -102,3 +110,5 @@ wrong signer/version, unplug/replug, mode-switch failure, stale tokens, partial
 I/O, malformed lengths, cancellation, route ownership and camera-off defaults.
 Research closes T602; these proposed flows and transport backends are not
 implemented by this documentation commit.
+
+</details>

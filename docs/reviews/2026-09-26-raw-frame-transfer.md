@@ -1,5 +1,8 @@
 # Portable raw-frame writes (T635, prerequisite for T529)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `host/src/raw_transfer.rs` supplies the framing/backpressure policy for native
 encoder-input adapters. It accepts canonical packed NV12 geometry from the
 existing shared layout contract and writes exactly one frame at a time through

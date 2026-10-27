@@ -1,5 +1,8 @@
 # T321: conservative minimum display timing
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 UScreen now accepts generated DTD clocks from **10 MHz through 655.35 MHz**,
 using the encoded 10 kHz units and the existing nearest-unit rounding. This is
 a conservative supported-timing boundary. It does not establish a kernel failure

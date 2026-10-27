@@ -1,5 +1,8 @@
 # Importing native Windows coverage (T636)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The first native LCOV report used relative Windows separators, which the Linux
 reporter treated as literal filename characters. New failing regressions cover
 mixed separators, mapped drive/UNC roots, unmapped or drive-relative paths,

@@ -1,5 +1,13 @@
 # Android review implementation
 
+This implementation record separates portable Android contracts, bounded requests and native retirement from UI control. It records process isolation and measured allocation/startup changes with permanent regressions. Synthetic timing and isolated worker tests do not establish physical media latency or system-wide crash recovery.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 ## T829: decoder replay generator prerequisite
 
 The current-source offline decoder benchmark failed to compile because its
@@ -371,3 +379,5 @@ record the accepted memory/startup tradeoff and test limits. Full offline suite:
 902 tests; 1,081/1,081 methods meet 80% coverage; complexity <=9. T830 bounds UI
 status dispatch downstream of the bounded IPC mailboxes. No production reinstall
 or download; physical audio/camera acceptance remains under T718/T720.
+
+</details>

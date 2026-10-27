@@ -1,5 +1,8 @@
 # Include codec diagnostic consumers (T670)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Three apparent shared-video survivors came from incomplete test selection:
 constant codec labels and removal of the VP9 encoder arm. Existing
 `doctor::tests::t438_codec_report_follows_requested_family_and_legacy_scope`

@@ -1,5 +1,13 @@
 # Syscall and thread follow-up
 
+Syscall traces motivated attribution and worker-budget experiments, not replacing APIs based on sleeping time. Thread counts did not identify active workers or battery cost. Later reports completed or rejected the proposed investigations.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The T596 traces support investigating readback/copies and thread wakeups, not
 replacing APIs based on summed blocking time. No runtime settings or production
 code changed in this follow-up. Camera capture remains outside the workload.
@@ -99,3 +107,5 @@ could delay ACKs or create blocking dependencies and is not justified here.
 - T600 measures thread budgets; it makes no promise of speedup or default change.
 
 Documentation and evidence only; no production tests were rerun for this review.
+
+</details>

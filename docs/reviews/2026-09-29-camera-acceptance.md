@@ -1,5 +1,8 @@
 # T621: native webcam consumer acceptance
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The authorized September 29 session passes Linux V4L2 and real Chrome consumer
 acceptance on the connected RugKing Pad 2 Pro (Android API 36). Both applications
 use the matching installation recorded under [T715](2026-09-29-display-acceptance.md).

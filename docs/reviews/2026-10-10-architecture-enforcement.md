@@ -1,5 +1,8 @@
 # T827: enforce scoped contract boundaries
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The normal host tooling suite runs retained T820/T821/T824 guards plus T827
 forbidden-edge fixtures. Rules cover media/selection return edges, concrete capture
 and persistence owners, source inclusion, and public C owner layout. Private C

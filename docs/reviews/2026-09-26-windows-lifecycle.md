@@ -1,5 +1,13 @@
 # Windows interactive daemon lifecycle — T524
 
+Windows gained an interactive daemon lifecycle with exact process identity and independent GUI lifetime. Native regressions also fixed cleanup failures that could retain a token or report false success. Display capture and physical USB/GPU acceptance were separate milestones.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The daemon and GUI now share the Windows lifecycle adapter in
 `common/src/windows/lifecycle.rs`. Shared bounded-wait and restart policy lives
 in `common/src/lifecycle.rs`; Linux restart uses the same stop-before-start rule.
@@ -60,3 +68,5 @@ also pass both normal workspace configurations.
 Native CI uses Windows Server 2022. The retained Windows 11 development VM runs
 its own workspace acceptance under T633; physical USB/GPU/display acceptance
 remains separate under T522. These isolated tests do not claim working streaming.
+
+</details>

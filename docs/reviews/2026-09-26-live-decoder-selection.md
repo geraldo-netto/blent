@@ -1,5 +1,13 @@
 # T627: live decoder selection and capture readiness
 
+The live Android surface-codec path omitted the negotiated decoder selection, so valid render output lacked the required receipt. Regressions fixed that path and delayed host trials until matching capture was ready. Native trials then accepted receipts but did not establish a faster multi-worker winner.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The AVC surface-start path constructed `DecoderFormat` without its negotiated
 selection. Android decoded and rendered, but its receipt remained absent; the
 host correctly rejected ACKs for a named-decoder trial. The internal setup helper
@@ -64,3 +72,5 @@ the existing rejection behavior and production logging unchanged. Its exact
 patch is retained so the extra native trace is reproducible. Selection logging
 now includes requested workers and decoder choice. The prior T612 report records
 the historical failure; this report resolves its T627 follow-up.
+
+</details>

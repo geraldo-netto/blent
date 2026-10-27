@@ -1,5 +1,8 @@
 # T507 — portable package fixture signing tools
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The T235 path-quoting and T428 source-cache success cases failed with `Android
 SDK missing` after T250 introduced the required release certificate gate.
 Their shared fixture now supplies the same offline signer/aapt responses as the

@@ -1,5 +1,13 @@
 # T818: reusable audio staging and identity-rate bulk copy
 
+Audio staging reused connection-owned buffers and bulk-copied the exact identity-rate case while preserving interpolation and atomic validation. Benchmarks measured small stage costs, not acoustic latency. Scoped counters were kept separate from an unrelated invalid full export.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Microphone input now reads into one fixed, connection-owned native packet buffer.
 A portable `PcmView` validates generation, direction, length, sequence, timestamp and
 optional clock before advancing state. Native little-endian PCM bytes remain in
@@ -75,3 +83,5 @@ Reproduce stage replays with `BLENT_T818_MEASURE=1 cargo test --offline --locked
 -p blent --release --test audio_staging -- --nocapture` and the corresponding
 `-p blent-config --test audio_render_bench`. Historical before/after executables
 were alternated on the same machine; current render tests retain exact samples.
+
+</details>

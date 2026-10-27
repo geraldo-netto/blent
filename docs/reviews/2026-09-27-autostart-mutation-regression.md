@@ -1,5 +1,8 @@
 # Autostart probe assertion sensitivity (T653)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The Linux autostart campaign found two meaningful survivors: replacing `&&`
 with `||` in `systemd_available` and `systemd_enabled`. Existing fixtures coupled
 successful exit status to expected output, allowing either half of each

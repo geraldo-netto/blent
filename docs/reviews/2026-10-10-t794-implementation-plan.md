@@ -1,5 +1,13 @@
 # T794: mapped VAAPI producer implementation plan
 
+The mapped-surface encoder candidate was rejected after repeatable CPU regressions. This document preserves the earlier proposal, independent ownership contracts and qualification criteria, including requirements to keep existing supported encoder choices. Its planning-stage open status and proposed thresholds are historical; it is neither a shipped path nor a renewed implementation commitment.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Disposition (2026-10-10): the tested candidate was rejected after repeatable CPU
 regressions; see [native evidence](artifacts/2026-10-10-t794/README.md). The plan
 below records the earlier proposal and qualification criteria, not an open
@@ -251,3 +259,5 @@ and tie it to configured capacity; don't claim fewer pools implies lower memory.
 Reject a noisy/no-gain result or a workload regression; leave upload as default.
 A workload/device-specific admission rule needs its own measured evidence and
 bounded policy rather than a blanket enablement based on these two AMD nodes.
+
+</details>

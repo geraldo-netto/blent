@@ -1,5 +1,8 @@
 # T816: bounded camera frame reuse
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The decoder reuses three immutable frame slots by default, plus one fixed discard
 frame. `Arc::get_mut` requires exclusive ownership: outstanding output/preview
 readers and weak references prevent reuse. Full pools drain one frame without

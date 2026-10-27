@@ -1,5 +1,8 @@
 # Encoder marker validation (T665)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The x264 marker comparison mutation (`==` to `!=`) survived the original
 encoder-worker tests. Existing invalid packets also lacked the exact worker
 field, so they did not independently establish the marker requirement.

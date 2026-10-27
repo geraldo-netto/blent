@@ -1,5 +1,13 @@
 # T715: installed durable tuning and native startup fixes
 
+Installed startup validation found saved-profile verification beginning before the encoder existed and a brief misleading connection overlay. Permanent regressions verified both fixes. Native reconnect did not substitute for the separately required ordinary-reboot observation.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Matching release-signed Android and Linux host/GUI/helper builds were installed
 on the affected RugKing Pad 2 Pro and Linux host. The user installation now uses
 an AppDir with the existing bundled dependencies and newly built binaries; the
@@ -63,3 +71,5 @@ was injected. Host restart and app reconnect do not establish reboot acceptance.
 T715 remains in the ledger for observing profile reuse after the next ordinary
 reboot, as explicitly required by its original acceptance condition. No forced
 reboot or power-management change was made.
+
+</details>

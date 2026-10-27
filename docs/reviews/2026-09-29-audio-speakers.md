@@ -1,5 +1,8 @@
 # T719: Linux/Android speaker integration
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The host publishes a selectable **Blent Speakers** PipeWire sink, independently
 of **Blent Microphone**. Android receives authenticated 48 kHz stereo PCM and
 plays it through its own AudioTrack/focus owner. CLI and GUI Start/Stop, passive

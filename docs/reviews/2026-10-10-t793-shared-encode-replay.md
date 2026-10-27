@@ -1,5 +1,13 @@
 # T793: current-source shared-encode replay repair
 
+The repaired replay builds against the current contracts at the recorded revision and produces matching FIFO/shared-memory encoded and decoded output. It also fixes a benchmark producer shutdown race. This is a small conversion, transport and codec correctness test; it does not replace historical performance measurements or validate production process orchestration.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The standalone replay now builds offline against the current encoder and raw
 transport adapters. Its generated crate copies the nine private native modules
 (including `encoder_hardware.rs`) and imports shared media/configuration/latency
@@ -83,3 +91,5 @@ production per-function coverage requirement; all existing tests are retained.
 
 [Raw red/green logs, sanitizer results, source hashes, and function-body metrics](artifacts/2026-10-10-t793/)
 are retained with this review.
+
+</details>

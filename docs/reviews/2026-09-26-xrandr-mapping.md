@@ -1,5 +1,8 @@
 # T622 — cached X11 mapping queries
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Input mapping reads `xrandr --current --prop` on every retry. If no output has a
 valid, unambiguous EDID belonging to this tablet, it explicitly refreshes with
 `--prop` on attempts 0, 4, 8, … (at most ten forced queries in forty retries).

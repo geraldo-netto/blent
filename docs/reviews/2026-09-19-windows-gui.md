@@ -1,5 +1,8 @@
 # T495: GUI platform boundary
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 GUI lifecycle, autostart, privileged setup, executable discovery and platform
 identification are routed through `gui/src/platform`. The bounded status sampler
 and worker remain shared; Linux and Windows status sources are separate.

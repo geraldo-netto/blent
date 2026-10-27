@@ -1,5 +1,8 @@
 # T613: temporary single-worker libx264 default
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 At the maintainer's request, the shared encoding profile now supplies
 `threads=1` for libx264. Both stock FFmpeg CLI output encoding and the optional
 in-process libavcodec adapter consume this policy. Other codecs, automatic

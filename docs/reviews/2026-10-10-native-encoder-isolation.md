@@ -1,5 +1,8 @@
 # T819: optional native encoder isolation
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Native libavcodec now runs in one supervised Blent child per session. The existing
 raw memfd slot/final-reference protocol crosses exec without another raw-frame copy.
 An independent bounded job/packet contract is separate from the Linux adapter.

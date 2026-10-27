@@ -1,5 +1,13 @@
 # Live profile change and saved tablet setup — T429
 
+A live encoder change resumed playback after a missing FIFO caused roughly 21 seconds of recovery. Later tests fixed an ownership bug, but this trace alone cannot identify the deleting process. The saved settings were personal choices, not project defaults or a proven battery improvement.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 On 2026-09-18 at 20:58:37 CEST, an authenticated control request changed the
 installed host from `h264_vaapi` to `h264_vaapi_baseline`. The daemon saved the
 choice and playback resumed using Constrained Baseline/CAVLC. The transition
@@ -100,3 +108,5 @@ Cinnamon session as a regression test.
 The subsequent [ownership investigation](2026-09-18-fifo-ownership.md) establishes
 the tested cause and verification scope. It supersedes the initial hypothesis
 that partial-write retirement itself removed the path.
+
+</details>

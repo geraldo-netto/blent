@@ -1,5 +1,8 @@
 # T585: Blent application identities
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Blent replaces current UScreen branding throughout Rust, Android, Linux
 packaging, launchers, services, configuration/runtime paths, environment
 variables and active build/benchmark tooling. Android uses application ID

@@ -1,5 +1,13 @@
 # T600: full-daemon thread-budget validation
 
+Matched full-daemon trials found encoder workers, rather than runtime-worker count, drove the useful CPU reduction in this workload. Capture and acknowledgement timing excluded optical display latency. Combined settings did not prove that every component helped or that the result was universal.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The measured opportunity is reducing libx264 encoding workers. At the tablet's
 1280×800 resolution, one requested encoder thread reduced total measured host
 CPU by about 29% in the repeated 30-Hz scene, reduced live FFmpeg RSS and improved
@@ -185,3 +193,5 @@ Subsequent maintainer decision: T613 applies one libx264 encoding worker as
 the temporary shared-policy default. This is a later change based on these
 measurements; the original comparison and its unchanged-default statement above
 remain historical. T612 auto-tuning and the rest of the queue are paused.
+
+</details>

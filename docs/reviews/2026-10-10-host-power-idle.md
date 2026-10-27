@@ -1,5 +1,13 @@
 # Host power following and unchanged frames
 
+Display pause keeps the virtual monitor and leaves camera and audio independent; suspend stops all resources. This implementation history explains how fresh authority and actual cleanup govern resume, including the later fix that keeps EVDI display flips progressing while paused. Automated fixtures and hosted CPU observations do not establish physical lock, suspend or battery acceptance; later reports supersede intermediate pending-task lists.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Owner decision (2026-10-10): host lock or display-off pauses display sharing only;
 active webcam/audio continue. Host suspend/shutdown necessarily interrupts all
 resources. Resume should restore enabled resources without restoring stale
@@ -917,3 +925,5 @@ race exposed by the first SDK run; fresh final collections pass without weakened
 assertions. Android decoder/wake integration remains T1011, auxiliary integration
 T1010 and physical host/tablet acceptance T914. No battery or physical presentation
 result follows from these synthetic machine observations.
+
+</details>

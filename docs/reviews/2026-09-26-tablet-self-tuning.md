@@ -1,5 +1,13 @@
 # T603: tablet-guided self-tuning proposal
 
+This proposal extended the existing selector with explicit objectives and bounded trials while preserving manual choices. Its thresholds and interactive budget were proposed tradeoffs, not measured universal optima or implemented behavior. Current selector documentation and later acceptance remain separate.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Research complete. Extend the existing selector and its cache. Do not build a
 second optimizer or enable the persistent cache implicitly. The following is a
 proposed implementation contract, not shipping behavior.
@@ -138,3 +146,5 @@ wakeup/futex volume at 1280×800; runtime-worker reduction alone showed no
 consistent benefit. T612 tracks incorporating this evidence into the existing
 selector. Keep calibration unprivileged; these diagnostic traces are research
 evidence, not a runtime requirement.
+
+</details>

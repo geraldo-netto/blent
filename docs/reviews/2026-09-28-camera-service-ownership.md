@@ -1,5 +1,8 @@
 # T706: camera service ownership
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Each background-service lifetime has a fresh UUID, carried by its start Intent.
 The service remembers the current accepted run, and teardown can retire only
 that run. Stop/restart and process-owner reset cannot reuse its identity.

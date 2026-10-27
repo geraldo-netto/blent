@@ -1,5 +1,13 @@
 # T1114: original idle namespace coordination
 
+Pinning the original directory and coordinating publication and cleanup prevents idle-request clobbering and pathname retargeting. Native fixtures cover replacement, lock waits and failed persistence. This private cooperating namespace is not protection against arbitrary same-user mutation; later reports separately settle final-request and temporary-file cleanup.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Idle request publication and cleanup now use a pinned original directory and a
 native directory `flock`, alongside the existing process mutex. The permanent
 regressions first demonstrate old cleanup deleting a foreign publication between
@@ -70,3 +78,5 @@ destructor or expired logical owner does not prove that boundary. Existing origi
 coverage remains; this change does not claim unrestricted leak freedom, native
 device support, or safety against uncoordinated external namespace writers.
 No installed application, display, suspend, tablet, network or battery action ran.
+
+</details>

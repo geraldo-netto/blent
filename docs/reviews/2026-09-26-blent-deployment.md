@@ -1,5 +1,13 @@
 # T586: Blent Linux and Android deployment
 
+The renamed Linux and Android builds passed specific display, touch and logical reconnect checks. Initial and final artifact identities are kept separate. Stylus, cable removal and broad performance acceptance were not inferred; initial coverage failures and later attribution corrections remain visible.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Both applications are installed and running under the new Blent identity. The
 tablet appeared in ADB after the cable check. USB display, touch, app reconnect
 and Linux daemon restart are verified; no old settings were migrated.
@@ -142,3 +150,5 @@ ownership regressions remain. All 58 coverage-tool tests pass; complexity audit
 measures 5,615 functions with none above nine. No application behavior changed.
 
 Current follow-up results, including T588/T590/T577, are in [validation](2026-09-26-blent-validation.md).
+
+</details>

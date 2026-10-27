@@ -1,5 +1,8 @@
 # Raw slot offset assertions (T669)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The existing shared-layout test only checked that the final slot stayed within
 the allocation. Replacing offset multiplication with addition or division still
 satisfied that bound while producing overlapping or incorrect slot positions.

@@ -1,5 +1,8 @@
 # Windows camera-probe build boundary (T631)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The normal native MSVC and GNU cross-build commands failed at `3bcb11f` in
 [run 36259429008](https://github.com/geraldo-netto/blent/actions/runs/36259429008):
 the camera timing example imported Linux camera modules on Windows.

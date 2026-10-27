@@ -1,5 +1,8 @@
 # T578: explicit GPU layout prerequisite
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The native DRI3 query requested version 1.2 and negotiated **1.0** on this X11
 session. The experimental explicit-layout path therefore stopped before import
 or encoded output. [Probe output and identity](artifacts/2026-09-26-performance/t578/)

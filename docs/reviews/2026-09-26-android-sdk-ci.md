@@ -1,5 +1,8 @@
 # Retired Android SDK package in CI (T639)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Build run [36273300317](https://github.com/geraldo-netto/blent/actions/runs/36273300317)
 failed in Android SDK setup before any application build or coverage collection:
 

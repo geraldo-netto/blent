@@ -1,5 +1,13 @@
 # T1117: original request retirement waits for filesystem evidence
 
+Idle-request cleanup retains its original identities and retries until the filesystem confirms removal or replacement. Numeric cookie comparison also matches the C reader's accepted padded values. Bounded models and native fixtures verify no early release under the tested failures; eventual cleanup still depends on scheduling, cooperating locks and storage availability.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Idle request cleanup now retains its original directory, FIFO and token identity
 pins until coordinated namespace cleanup settles. An I/O error no longer permits
 the destructor to release those identities. This changes cleanup of the existing
@@ -90,3 +98,5 @@ Subsequent [T1118](2026-10-19-idle-staging.md) resolves temporary publication
 cleanup with a borrowed staging owner and guarded recovery. This T1117 evidence
 covers the separate final-request fence. No physical
 display, tablet, suspend, application installation, network or battery action ran.
+
+</details>

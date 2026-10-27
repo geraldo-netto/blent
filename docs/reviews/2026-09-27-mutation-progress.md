@@ -1,5 +1,13 @@
 # Mutation testing progress after reboot recovery
 
+This recovery checkpoint records completed scoped campaigns and corrected classifications, then lists work remaining at that date. Later bounded-campaign completion supersedes that work list. Overlapping counts must not be added into a project score.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Historical checkpoint; superseded by [T652 bounded completion](2026-09-27-bounded-mutations.md).
 
 This supersedes the initial [pause checkpoint](2026-09-27-mutation-testing-handoff.md)
@@ -67,3 +75,4 @@ their Windows campaigns remain unmeasured. Extend Windows descendant-process
 cleanup validation beyond the completed single-process timeout test. Preserve
 existing platform, benchmark/development-tool and declined-performance dispositions.
 No physical tablet/display/camera acceptance is implied or newly authorized.
+</details>

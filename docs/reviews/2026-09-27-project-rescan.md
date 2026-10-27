@@ -1,5 +1,13 @@
 # Project rescan — 2026-09-27
 
+This review-only snapshot recorded nine findings with different evidence strengths and preserved interrupted or incomplete test results. Observation probes were not substitutes for permanent fix regressions. The listed open statuses belong to that date; current TODO is authoritative.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Reviewed source revision: `a8c2bf395bedbcfbdd636371cc8cb66d56dfc1ea`.
 Review only: no production fixes, permanent regression additions or completed
 TODO removals. Findings remain open in [TODO.md](../../TODO.md).
@@ -91,3 +99,5 @@ Retained logs (trailing whitespace normalized):
 script run.
 Missing local package tooling is a validation limitation, not evidence of a package
 implementation defect. No thresholds, exclusions or tests were weakened.
+
+</details>

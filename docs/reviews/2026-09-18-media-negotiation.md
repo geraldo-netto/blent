@@ -1,5 +1,8 @@
 # T478: bounded decoder/profile negotiation
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The version-two control extension is implemented alongside version-one fallback.
 It carries per-decoder profile/level/depth and nullable standard feature support,
 scoped to the current controller and encoded format revision. Host selection

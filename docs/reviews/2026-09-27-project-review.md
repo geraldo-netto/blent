@@ -1,5 +1,13 @@
 # Project implementation and review — 2026-09-27
 
+This implementation checkpoint combined isolated Linux, native Windows, Android and script evidence with per-function source-matched counters. Its final review found no additional issues within that scope, not proof of a defect-free project or physical-device acceptance.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Implemented T645, T532 and T525 in separate commits, then repeated repository
 review and regression validation. The final pass found no additional actionable
 findings. This is the result of the checks and boundary review below, not a claim
@@ -85,3 +93,5 @@ Physical tablet/GPU/display/input acceptance remains unavailable under T522;
 native capture/input are still unsupported. Actual Explorer logoff/reboot
 activation was not exercised. The VM password and automatic-login preference
 remain as requested. No commits were pushed.
+
+</details>

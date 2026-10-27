@@ -1,5 +1,8 @@
 # Private Xvfb startup diagnostics (T643)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 [Run 36274495310](https://github.com/geraldo-netto/blent/actions/runs/36274495310)
 reported a private-Xvfb startup timeout. The fixture discarded stderr and kept
 its own copy of the display-number pipe's writer open, so an early server exit

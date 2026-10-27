@@ -1,5 +1,13 @@
 # T429 — preserve the live FIFO during encoder changes
 
+FIFO cleanup was tied to the exact pipe its owner created, preventing an unused capture manager from deleting a live session’s path. Automated regressions reproduced the deletion and verified the fix; attribution of the earlier live interruption remains an inference.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 An unstarted `CaptureManager` used to delete the configured slot's FIFO when
 dropped or shut down. `capture::tests::t432_capability_metadata_restarts_only_when_effective_stream_changes`
 constructed such a manager with default slot 0, so running that metadata test
@@ -78,3 +86,5 @@ Recorded results in the [artifact directory](2026-09-18-fifo-ownership/)
 - [Optional in-process capture suite](2026-09-18-fifo-ownership/inproc-capture-green.txt): 19 passed, including all five T429 tests.
 - [Default Clippy](2026-09-18-fifo-ownership/clippy.txt) and [in-process Clippy](2026-09-18-fifo-ownership/inproc-clippy.txt): warnings denied, passed.
 - [Complexity](2026-09-18-fifo-ownership/complexity.txt): 3,791 functions, none above nine.
+
+</details>

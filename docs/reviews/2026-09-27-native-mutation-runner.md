@@ -1,5 +1,8 @@
 # Native Windows mutation runner (T652, T666)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The Python runner executed under the ordinary, unelevated `blentdev` account.
 Ten portable/native runner tests passed; the Linux-only process-group regression
 was explicitly skipped. The Windows timeout test exercised native process

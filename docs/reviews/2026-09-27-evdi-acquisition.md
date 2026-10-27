@@ -1,5 +1,8 @@
 # T558: renewed stock-library review
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Upstream had released
 [v1.15.1 on September 15, 2026](https://github.com/DisplayLink/evdi/releases/tag/v1.15.1).
 The September 27 review and its retained source fingerprint incorrectly named

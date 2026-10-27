@@ -1,5 +1,13 @@
 # Native tablet-resource workspace (T1273)
 
+The native workspace implements independent display/input, camera, microphone and speaker controls bound to exact tablet identities. Tests preserve queued starts, cleanup ownership, drafts and sibling resources across navigation. Linux startup and per-function checks passed; screenshots use simulated inventory, later reports refine navigation/layout, and native Windows acceptance remains unavailable.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Implemented the accepted T1268 resource workspace and owner-selected per-tablet
 display controls, using T1272 contracts and the T1274/T1275 native backend.
 
@@ -81,3 +89,5 @@ resource Start/Stop, capture, installed-service change, installation or external
 transfer occurred. Owned GUI windows/processes exited normally and temporary
 fixture directories were removed. Logs and LCOV remain in owned work directory
 `2026-10-26-t1267-t1270`.
+
+</details>

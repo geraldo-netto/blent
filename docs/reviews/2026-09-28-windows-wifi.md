@@ -1,5 +1,8 @@
 # T691 shared Wi-Fi setup and reconnection
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Windows preview now admits `blent wifi` and `blent wifi --off`. Both platforms
 share setup, saved-address handling and reconnect success parsing through injected
 ADB/configuration adapters. Setup requires an authorized USB device with the Blent

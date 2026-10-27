@@ -1,5 +1,8 @@
 # Linux and Android local update — 2026-10-26
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Updated the installed Linux applications and RugKing Pad 2 Pro Android application
 from the latest local application code, `65f636fc`, with tracking-only HEAD
 `5c1986a9`. Both retain version 1.2.3 (Android version code 12). No upstream

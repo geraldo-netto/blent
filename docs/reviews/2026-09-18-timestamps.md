@@ -1,5 +1,8 @@
 # Stock FFmpeg timestamp correction (T421)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The installed baseline journal contains H.264 muxer warnings for equal DTS
 values. FFmpeg 6.1's
 [wall-clock input implementation](https://github.com/FFmpeg/FFmpeg/blob/n6.1/libavformat/demux.c#L589)

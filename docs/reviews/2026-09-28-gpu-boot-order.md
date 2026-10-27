@@ -2,6 +2,14 @@
 
 # T700: GPU preloading before EVDI
 
+GPU module preloading mitigated a reproduced Xorg startup-order failure in isolated boot tests. It was not a general fix for late GPU initialization or the separate gamma crash. The affected physical host had not yet accepted the configured mitigation at this checkpoint.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Blent's Linux setup now requests the currently bound display drivers before
 EVDI through a separate modprobe soft dependency. This mitigates the reproduced
 startup ordering failure; it does not repair Xorg's general late-glamor handling.
@@ -90,3 +98,5 @@ and individual write, metadata, topology and publication failure runs.
 
 The unrelated Make target's unconditional EVDI-capacity overwrite was recorded
 as T711 for its own regression and fix commit. It is not resolved here.
+
+</details>

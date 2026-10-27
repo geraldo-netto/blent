@@ -1,5 +1,13 @@
 # T395 — Android foreground-service startup investigation
 
+Thirty controlled starts did not reproduce the Android foreground-service timeout. They neither established its cause nor proved it fixed. The missing evidence was a reproducible sequence or timestamped failure trace; the old blocked status is historical, not a current ledger entry.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The original `ForegroundServiceDidNotStartInTimeException` remains unresolved.
 Thirty controlled starts on the affected RugKing Pad 2 Pro / Android 16 did not
 reproduce it. These observations do not establish the original cause or justify
@@ -65,3 +73,5 @@ lifecycle, main-thread scheduling, token-delivery order, process identity and
 `ApplicationExitInfo` before retrying. Add a deterministic failing regression for
 the demonstrated cause before changing behavior. Repeated successful starts do
 not prove an intermittent failure has been fixed.
+
+</details>

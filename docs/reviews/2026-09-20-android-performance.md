@@ -1,5 +1,13 @@
 # Android performance assessment — T560
 
+The Android assessment found no measured reason to add a worker pool around one decoder. Earlier experiments traded CPU, allocation and latency differently; the later passive profile was limited to 30 FPS and did not measure hardware decoder utilization or battery savings.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 UScreen already overlaps network receipt, decoding/output and control work.
 Further parallelism may help a measured bottleneck, but existing device
 experiments do not justify increasing worker counts for normal video playback.
@@ -98,3 +106,5 @@ buffer pool is a candidate if callback mode is selected later, not evidence that
 the production synchronous reader currently allocates each frame. Any change
 must preserve access-unit order, codec ownership, cancellation and user capacity
 choices, with permanent regressions and matched before/after measurements.
+
+</details>

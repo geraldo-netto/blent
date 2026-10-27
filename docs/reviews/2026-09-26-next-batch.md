@@ -1,5 +1,13 @@
 # Blent follow-up implementation and validation
 
+This batch repaired replay completion and source copying, closed isolated camera coverage gaps and added native allocation and capture observations. Each experiment keeps its own limits: synthetic packet allocation, capture cadence and end-to-end rendering are not interchangeable evidence.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 ## T571 — replay completion
 
 ACK obligations are enqueued before publishing render counts. Completion requires
@@ -204,3 +212,5 @@ remain, and no macOS application support is claimed.
 Local Markdown targets exist, original license/header identity tests pass, and
 the final [complexity gate](artifacts/2026-09-26-next-batch/complexity.log.gz) reports
 no function above nine. Documentation-only corrections require no artificial tests.
+
+</details>

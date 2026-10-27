@@ -1,5 +1,8 @@
 # T530 isolated Windows encoder tooling
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `host::encoder_probe` enumerates stock FFmpeg video encoders, builds the T685
 recipes and probes generated frames without capture or display creation. Native
 program paths are injected. Shared command owners provide Linux process groups

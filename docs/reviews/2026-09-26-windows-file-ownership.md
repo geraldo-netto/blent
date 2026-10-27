@@ -1,5 +1,8 @@
 # Explicit Windows runtime-file ownership (T637)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The permanent native token and lease tests failed in
 [run 36264487601](https://github.com/geraldo-netto/blent/actions/runs/36264487601)
 at `374bdba`: `user.matches(owner)` was false for newly published runtime files.

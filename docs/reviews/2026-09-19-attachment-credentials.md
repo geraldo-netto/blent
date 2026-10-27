@@ -1,5 +1,13 @@
 # T444: credentials belong to logical tablet attachments
 
+Attachment-specific credentials prevented retired tablet sessions from authenticating against reused slots. Automated tests covered replacement, migration, cancellation and private token files. These historical cleanup steps do not replace the stronger current connection and temporary-ADB ownership contracts.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Video and input now authenticate against the credential captured with their
 accepted attachment lease. A replacement, detach, reused slot or changed physical
 identity under the same ADB serial retires the old credential. A proven same-tablet
@@ -71,3 +79,5 @@ Rust, C, Android and script coverage/fuzz requirement remains tracked in T497.
 [Compressed evidence](2026-09-19-attachment-credentials/) includes red/green test
 logs, coverage data and the scoped function inventory. These are local correctness
 checks, not tablet battery, latency or throughput measurements.
+
+</details>

@@ -1,5 +1,13 @@
 # T607 — camera write-chunk sweep
 
+A chunk-size sweep retained the existing 8 KiB camera writer. Larger chunks improved synthetic sink overhead but did not show a useful USB/ADB throughput gain. Sink calls are not USB packets, and these replays did not measure live camera latency or battery use.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Keep the production 8 KiB chunk. Smaller writes cost more CPU locally. Larger
 writes reduce synthetic sink-call overhead, but did not produce a useful ADB
 throughput improvement on the attached tablet. No production packet, flush,
@@ -103,3 +111,5 @@ reproduced their SHA-256 byte-for-byte with the recorded FFmpeg build.
 Historical T594 whole-payload-array results used a different measurement setup;
 its absolute timings are not a baseline for this warmed chunk sweep. T607 is
 resolved by measurement and a retained benchmark, not a speculative default change.
+
+</details>

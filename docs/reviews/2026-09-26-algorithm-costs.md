@@ -1,5 +1,8 @@
 # T597: algorithmic complexity versus measured cost
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Not every operation uses its smallest theoretical asymptotic bound. A concrete
 example is latency reporting: `host/src/latency.rs::Report` sorts up to 1,024
 samples, O(n log n), then reads p50, p95 and maximum. Order-statistic selection

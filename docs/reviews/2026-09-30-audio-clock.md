@@ -1,5 +1,8 @@
 # T720: native audio clock integration
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The clocked audio protocol carries the sender's native frame position, epoch and
 monotonic timestamp. Shared Rust policy and equivalent Android policy compare
 independent native rate windows, then apply bounded linear resampling at the

@@ -1,5 +1,13 @@
 # T1118: staging ownership stays inside the original directory guard
 
+One temporary-file owner now keeps publication and cleanup inside the original directory guard. Failed writes cannot release an unresolved pathname or delete a replacement, and a later guarded admission recovers abandoned reserved files after owner loss. Native regressions and bounded ownership checks passed; cleanup still requires filesystem progress.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Idle publication now owns its temporary file through a `Staging` value borrowing
 the original native directory guard. Its narrow mutable Write view borrows that
 owner; persistence consumes it. An owned temporary pathname cannot escape through
@@ -88,3 +96,5 @@ owner-loss validation and the faulty control.
 T1115/T1116 still own cadence integration, replacement-source stale-advice
 admission and shared capture; this does not enable longer cadence. No installed
 application, physical display/tablet, suspend, network or battery action occurred.
+
+</details>

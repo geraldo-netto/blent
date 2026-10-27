@@ -1,5 +1,8 @@
 # T599: display ownership is not independent of grabbing
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Investigation complete. Do not suppress EVDI grabbing while the same-GPU consumer
 runs. There is no supported ownership-only operation in the reviewed EVDI ABI.
 This closes the proposed userspace shortcut without changing capture behavior.

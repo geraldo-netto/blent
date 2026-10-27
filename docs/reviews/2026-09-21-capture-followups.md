@@ -1,5 +1,8 @@
 # Capture follow-ups, 2026-09-21
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 ## T569 — reproducible Android replay build
 
 `decoder-project.py` now copies production `JsonNumbers.kt` alongside

@@ -1,5 +1,8 @@
 # T537: Linux tray shutdown ownership
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `tray::run` now explicitly owns the independently spawned ksni service. Normal
 channel closure awaits native shutdown; task cancellation requests shutdown from
 the ownership guard's destructor. Dropping ksni's bare handle does neither.

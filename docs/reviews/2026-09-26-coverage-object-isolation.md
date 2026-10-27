@@ -1,5 +1,8 @@
 # Isolate LLVM coverage objects (T638)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The first T529 Linux collection reused `target/llvm-cov-target`. Its LCOV listed
 the same `common/src/commands.rs` functions at both old and current locations:
 `output_bounded` at lines 42/44 and `CapturedOutput::new` at lines 54/56. Old

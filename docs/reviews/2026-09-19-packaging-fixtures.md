@@ -1,5 +1,8 @@
 # T505 — offline SDK fixtures for bundle regressions
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 T250's required APK verifier exposed stale distribution fixtures: their mock
 Gradle writes placeholder APK bytes, but they supplied no matching SDK reports.
 The existing T102 success case failed with “Android SDK missing” before reaching

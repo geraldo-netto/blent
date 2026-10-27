@@ -1,5 +1,8 @@
 # T701: shared Android test-worker lifecycle
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Robolectric reset the main looper while Compose's cached AndroidUiDispatcher
 still considered a callback scheduled. A model-only test could enqueue snapshot
 work between UI tests; resetting its queue left later UI work waiting for an

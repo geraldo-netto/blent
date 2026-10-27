@@ -1,5 +1,13 @@
 # Low-latency profile transition investigation — T429
 
+The inspected GUI saved encoder settings before requesting a full daemon restart. Isolated tests verified that route, not the cause or duration of the user’s original interruption. An encoder-only update and a full restart have different lifetimes.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The Linux encoder selector currently requests a full daemon restart. A reconnect
 is therefore expected when switching between `h264_vaapi` and
 `h264_vaapi_baseline`. This investigation does **not** establish the cause or
@@ -77,3 +85,5 @@ EVDI/Cinnamon attachment failure. Preserve the working settings and establish a
 permanent failing regression for any demonstrated cause before a behavioral fix.
 The earlier [codec benchmark](../benchmarks/2026-09-18-codecs.md) measures decoder
 delay for supplied streams; it does not validate this live transition.
+
+</details>

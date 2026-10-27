@@ -1,5 +1,13 @@
 # Offline crate notice supplements (T1280)
 
+Pinned notice supplements fill missing files in selected crate archives through temporary source copies, leaving registry caches unchanged. Tests validate provenance, identity and cleanup; all 337 audited inputs collected successfully. A separately discovered release-graph mismatch was subsequently handled by T1281; this mechanism alone is not a complete AppImage build.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Added a repository-owned catalog and eleven unchanged notice texts recovered
 locally from T1278 evidence. Eighteen exact crate versions receive supplements:
 the seventeen previously rejected crates plus epaint_default_fonts, which retains
@@ -79,3 +87,5 @@ can leave a temporary tree requiring owner cleanup. Local Cargo sources and the
 repository catalog are trusted build inputs, not a hostile mutation boundary.
 Tests establish these bounded failure cases, not unrestricted native safety or
 mathematical leak freedom.
+
+</details>

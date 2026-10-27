@@ -1,5 +1,8 @@
 # T597: exact bounded latency summaries
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Latency reporting uses an in-place hybrid: sort windows of at most 64 samples,
 retain already sorted windows, reverse descending windows, and select p95 then
 p50 within its lower partition for other windows. Maximum scans only the upper

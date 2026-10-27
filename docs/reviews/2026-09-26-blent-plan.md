@@ -1,5 +1,13 @@
 # Blent rename, application updates and allocation review
 
+This plan records the accepted fresh-identity rename and separate deployment and allocation-review outcomes. It required preserving attribution and comparing memory policies independently of branding. Later implementation reports supply results; the plan itself does not prove acceptance.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Planning snapshot, 2026-09-26. Tracked by T585–T587 in [TODO.md](../../TODO.md).
 The rename, application updates and memory changes are proposed work; this
 review changes no runtime behavior and provides no new performance measurements.
@@ -128,3 +136,5 @@ p50/p95/p99 latency; record instrumentation overhead. Preserve packet bytes,
 ordering, bounds, cancellation and final-consumer ownership. Keep capacity
 choices configurable where they affect user tradeoffs, with documented defaults.
 Do not reopen T382's declined multi-tablet/large-machine campaign.
+
+</details>

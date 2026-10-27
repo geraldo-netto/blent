@@ -1,5 +1,13 @@
 # T417: read-only decoder diagnostics
 
+Read-only Android diagnostics separate advertised decoder capability, requested hints and unknown effective settings. The owner accepted that scope. Initial combined-worker failures remained visible until a later lifecycle fix; isolated passes were not reported as a full-suite pass.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Android's **App & diagnostics** section now shows the owning active decoder's
 name, stream dimensions/FPS, hardware status, advertised standard low-latency
 support and advertised twice-frame-rate headroom. It separately lists the
@@ -63,3 +71,5 @@ nine. Rust formatting and repository whitespace checks pass.
 raw JaCoCo execution/XML data, per-function report, test/collection logs, temporary
 isolation configuration, failed combined-run logs and sampled thread stacks.
 No application was installed or live sharing session restarted for this work.
+
+</details>

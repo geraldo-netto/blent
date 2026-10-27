@@ -1,5 +1,8 @@
 # T594: bounded camera packet staging
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 `CameraWire.packet` writes directly from a duplicate `ByteBuffer` view into
 8 KiB Okio segments, emitting completed segments before copying more payload.
 The caller's position, limit and mark remain unchanged. The 2 MiB packet cap,

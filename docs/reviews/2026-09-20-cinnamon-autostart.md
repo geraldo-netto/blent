@@ -1,5 +1,13 @@
 # T536 — desktop login without the graphical session target
 
+An enabled service could miss Cinnamon login because the graphical session target never activated. A shared desktop entry restored service dispatch while preserving disabled preferences. Isolated tests and package checks passed; a real logout or reboot was not tested.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The Cinnamon/X11 session on 2026-09-20 had a loaded, enabled but inactive
 `uscreen.service`; `graphical-session.target` was inactive. The GUI selected
 systemd from the unit's `LoadState`, and the source installer selected it from
@@ -66,3 +74,5 @@ built artifact and shared template. No daemon was started during registration.
 This validates login dispatch and persistence with isolated service state. It
 does not claim a real logout/reboot trial, EVDI attachment validation, or a fix
 for the separate T222 Xorg crash.
+
+</details>

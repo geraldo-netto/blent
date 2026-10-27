@@ -1,5 +1,13 @@
 # T480 — optional measured profile persistence
 
+An optional cache reused a measured profile only after fresh compatibility and rendering checks. Scoped regressions covered identity, expiry, corruption and failed progress. Reuse did not establish a new latency or battery benefit.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Linux Video settings now expose **Reuse a recent measured profile**, off by
 default. The normal FFmpeg CLI selector can reuse one recent historical winner
 after fresh host probes, peer compatibility and matching render receipts. It
@@ -61,3 +69,5 @@ and GUI tests; merge line hits across those reports. Android coverage uses
 JaCoCo 0.8.12 and the normal `testDebugUnitTest` suite through the archived init
 script's `profileCoverage` task. No tablet, active desktop capture, deployment,
 release publication or remote push was involved.
+
+</details>

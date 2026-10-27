@@ -1,5 +1,8 @@
 # USB credential redelivery deadlines (T657)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The original tests accepted eventual redelivery even when the initial five-second
 deadline was moved into the past. Permanent normal-suite
 `t657_redelivery_waits_for_each_complete_interval` now checks zero elapsed time,

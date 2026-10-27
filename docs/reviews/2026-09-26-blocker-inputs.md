@@ -1,5 +1,13 @@
 # Inputs needed for the reviewed TODO items
 
+This dated dependency map records decisions and evidence needed by the former ledger, including declined stylus work. It is not today’s work list or permission to resume physical trials. Resolved tracking, native acceptance and missing hardware evidence must remain distinct.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Implementation/dependency map refreshed 2026-09-27 after T525, T531, T652 and
 the maintainer’s decision to retain touch/mouse while declining stylus work.
 Physical observations below retain their original dates; devices were not
@@ -126,3 +134,5 @@ References: [Windows evaluation](https://www.microsoft.com/en-us/evalcenter/eval
 [Windows Search policy](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-search#disablesearch),
 [Copilot removal and prevention](https://learn.microsoft.com/en-us/windows/client-management/manage-windows-copilot),
 [T521 driver decision brief](2026-09-26-windows-display-driver.md).
+
+</details>

@@ -1,5 +1,13 @@
 # Project coupling, SOLID and API boundary review
 
+The boundary review identified concrete contract dependencies, a type cycle and blocking native work inside policy/UI paths. It proposed focused interfaces and independent tests, avoiding a universal manager. Later implementation links supersede the original baseline without weakening the accepted ownership requirements.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 2026-10-09, source baseline `bb1648e80e51fcc4eb030336cae35b88473d7fa3`.
 Review-only; no production refactor, download or native deployment. Findings are
 tracked in [TODO.md](../../TODO.md), alongside the [Android](2026-10-09-resource-lifecycle.md)
@@ -174,3 +182,5 @@ an interface or coroutine automatically provides.
 Implement minimal contract extractions with their consumers, then lifecycle
 fixes and enforcement. Keep one commit per resolved TODO finding, permanent
 red/green regressions for behavior changes and existing native acceptance limits.
+
+</details>

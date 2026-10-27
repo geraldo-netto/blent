@@ -1,5 +1,8 @@
 # Match mutation and baseline test scope (T671)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Cargo-mutants 27.1.0 applies `--test-package` to mutant runs but derives baseline
 packages from the mutated sources. A shared-video experiment therefore tested
 only `blent-config` before running mutations through both common and host tests.

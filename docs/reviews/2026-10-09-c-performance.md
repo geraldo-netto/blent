@@ -1,5 +1,13 @@
 # Owned C performance checks: T768, T769, T773, T778
 
+C conversion experiments supported weighted work, bounded damage spans and runtime SIMD, with independent pixel oracles. Blanket tiles and unsafe GPU metadata caching were rejected. Later implementations keep per-workload tradeoffs and unresolved native snapshot limits distinct from the original proposals.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 This document records the initial research snapshot at `a3c053e`; its prototype
 and open-item descriptions are historical unless an implementation follow-up is
 explicitly identified below.
@@ -404,3 +412,5 @@ already cost zero requests after warmup. Retaining both full checks satisfies th
 existing correctness contract; current event handling cannot safely invalidate
 a metadata cache. Earlier open-research notes above are historical. No runtime
 metadata speedup or physical-driver acceptance is claimed.
+
+</details>

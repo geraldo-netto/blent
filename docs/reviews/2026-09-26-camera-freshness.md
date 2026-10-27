@@ -1,5 +1,13 @@
 # Camera freshness — T614, T616, T617, T618
 
+Camera upload gained bounded acknowledgement, stale-frame recovery, whole-packet deadlines and rate adaptation. Physical trials observed decoder recovery after an injected stall. Acknowledged bytes did not certify a decoded or displayed picture; webcam-consumer acceptance remained separate.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 T614 implements BLCAM002, one packet in flight and a connection-local u64
 acceptance counter. Feedback is sent only after the host writes the complete
 packet to decoder stdin. It bounds transport admission; it does not certify
@@ -111,3 +119,5 @@ Android APK is deployed. The user service is active, the Linux pointer remains
 visible, and the 1280×800 display still uses one x264 worker. Configuration gained
 only the three new camera defaults: removing their serialized lines reproduces
 the exact pre-install SHA-256. Full Android unit suite and release lint pass.
+
+</details>

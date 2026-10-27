@@ -1,5 +1,13 @@
 # T593: controlled phase rejects the cadence candidate
 
+A controlled phase sweep rejected a capture-cadence candidate: it showed no consistent latency benefit and violated minimum capture spacing. Render acknowledgements were not optical presentation measurements. Production pacing stayed unchanged.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Research complete: reject the phase-preserving candidate. Keep production
 pacing, FIFO default and damage capture opt-in. No implementation promoted.
 The [previous quiet-window experiment](2026-09-26-gpu-pacing.md) mixed source
@@ -62,3 +70,5 @@ per-frame identities, timestamps, damage logs, summaries and probe sources.
 Raw streams, binaries and build recipes are retained under
 `~/.local/share/blent/profiles/2026-09-26-followup/t593/`, with SHA-256 checksums.
 The temporary EVDI output was retired and the normal Android activity restored.
+
+</details>

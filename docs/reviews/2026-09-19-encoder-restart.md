@@ -1,5 +1,8 @@
 # T498: raw-frame alignment after encoder restart
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The workspace run reproduced 524,288 incorrect luma samples in the existing
 T429 real-FFmpeg restart regression. An isolated repeat passed, so the failure
 was timing dependent. Encoder-only changes signalled the previous encoder

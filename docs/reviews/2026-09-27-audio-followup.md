@@ -1,5 +1,8 @@
 # T414: audio-gap follow-up
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Read-only journal inspection found Bluetooth transport errors on September 27,
 not a verified Blent audio defect. At 01:20:39 CEST PipeWire and WirePlumber report
 a running Bluetooth output entering error and a transport failure. At 16:35:08

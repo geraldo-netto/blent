@@ -1,5 +1,8 @@
 # Blent performance graphs
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The first chart shows improvements already implemented. The remaining charts
 show the new T607/T608 measurements, including cases where a proposed change
 would not improve the real route. Units and workload boundaries are explicit;

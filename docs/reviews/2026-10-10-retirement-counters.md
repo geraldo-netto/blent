@@ -1,5 +1,8 @@
 # T841: retirement observer coverage snapshots
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The strict reader correctly rejected the original LLVM export. This was a
 coverage-expression problem while an observer remained blocked inside `recv`,
 not evidence of a use-after-free or an actual timeout count of `u64::MAX`.

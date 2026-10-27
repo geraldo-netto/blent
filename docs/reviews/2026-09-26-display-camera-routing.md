@@ -1,5 +1,13 @@
 # T553: simultaneous display and camera route assessment
 
+A short simultaneous display/camera sample showed no sustained local socket backlog or reason to add automatic route balancing. Different desktop content prevented an A/B comparison; decoder timing did not establish webcam presentation or general route capacity.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Keep current route selection. This narrow sample showed no sustained local TCP
 backlog or measured benefit that warrants automatic balancing. It does not prove
 capacity for every workload. No alternative paired network route was available.
@@ -75,3 +83,5 @@ stopped normally. No production behavior changed; no artificial test was added.
 use the [T612 host trace](artifacts/2026-09-26-task-batch/t612/native-auto.log.gz).
 The existing `host/examples/camera-feedback-probe.rs` requires capture
 authorization. Passive observation scripts here are research artifacts.
+
+</details>

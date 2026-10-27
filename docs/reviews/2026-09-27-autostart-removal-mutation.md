@@ -1,5 +1,8 @@
 # Autostart removal error regression (T656)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The normal Linux autostart/AppImage suite missed a mutation that accepted every
 filesystem removal failure as if the desktop entry were already absent.
 `t656_disable_reports_nonmissing_filesystem_errors` now creates a directory at

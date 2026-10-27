@@ -1,5 +1,13 @@
 # T717: shared audio foundation
 
+The audio foundation supplied independent session ownership, authenticated PCM framing, bounded queues and clock correction policy. Automated tests fixed stale-owner and clock-boundary defects. Native devices, acoustic latency and effective echo cancellation were not established by this shared layer.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Completed the portable shared layer for the accepted selectable-device contract.
 `common/src/audio.rs` and its modules provide profiles, truthful capability gates,
 backend interfaces, per-direction session ownership, credential-bound framing,
@@ -69,3 +77,5 @@ node, acoustic AEC, microphone permission or end-to-end latency acceptance is cl
 At this foundation checkpoint T718/T719 were the next integrations. Their
 implementations and T720 native clock integration are described in the
 [current contract](../audio.md); physical duplex acceptance remains T720.
+
+</details>

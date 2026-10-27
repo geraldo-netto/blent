@@ -1,5 +1,13 @@
 # T1109: portable unchanged-frame policy
 
+The portable policy measures a session before trying one-second unchanged-frame refreshes and permanently rejects that instance when its original conditions fail. Fresh damage and cursor changes remain immediate. Bounded state tests and complete new-function coverage validate the policy, not native integration, user enablement or physical-device performance.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The common library now implements a one-second refresh policy. Native adapters
 and user configuration remain T1110/T1111; production capture still uses its
 existing cadence. Joined comparisons remain T1112 and parent T915 stays open.
@@ -82,3 +90,5 @@ The tested CPU sparse-delivery scope is documented under
 encoder recipes/sizes and the in-process path do not follow from this portable
 policy. Unqualified combinations must remain visibly compatible. No physical
 display, suspend, tablet, installed app, network or battery action was performed.
+
+</details>

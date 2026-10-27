@@ -1,5 +1,8 @@
 # T222 follow-up: distinguish Xorg failure signatures
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Historical evidence below was collected on September 27. The
 [September 28 T700 follow-up](2026-09-28-xorg-hotplug.md) now analyzes the
 maintainer-exported PID1918 core with matching symbols: late AMD hotplug after

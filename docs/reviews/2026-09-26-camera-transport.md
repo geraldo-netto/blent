@@ -1,5 +1,13 @@
 # T608 — selective camera transport research completed
 
+Isolated impaired-network replays supported retaining TCP/ADB for the camera route. Lower source bitrate restored freshness under bandwidth pressure; a research datagram probe lost usable frames and was not WebRTC. The result did not justify shipping that probe or claiming universal transport superiority.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Keep TCP/ADB and the existing latest-decoded-frame publication. T607 found no
 useful USB gain from larger chunks; T608 found no reason to add a datagram or
 WebRTC dependency for that route. The implemented improvement for an overloaded
@@ -185,3 +193,5 @@ are also retained under `~/.local/share/blent/profiles/2026-09-26-camera/t608/`.
 [SVG/PNG graphs](artifacts/2026-09-26-camera/graphs/) regenerate with
 `scripts/benchmarks/camera-transport-graphs.py`. Sensors stayed off for all
 research; the profile app and allocated ADB replay mapping were retired.
+
+</details>

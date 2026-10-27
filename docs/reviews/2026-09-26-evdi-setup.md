@@ -1,5 +1,13 @@
 # T615 — EVDI setup investigation
 
+Stock EVDI logs showed connector queries and explicit unsupported mappings, not repeated helper attachment. A small read-only comparison found fewer logs with cached RandR queries, leading to separate follow-up work. The responsible historical callers were not traced.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The supplied messages do not establish a broken or repeated Blent setup.
 Keep the stock driver and existing idempotent setup. A separate, measurable
 opportunity is reducing forced connector queries during input mapping (T622);
@@ -76,3 +84,5 @@ investigation remain unchanged.
 Full journal and pinned-source copies are archived locally at
 `~/.local/share/blent/profiles/2026-09-26-evdi/`; the repository retains the narrow
 supporting excerpts, measurements, provenance and setup-test result.
+
+</details>

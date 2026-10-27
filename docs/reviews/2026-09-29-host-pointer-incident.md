@@ -1,5 +1,13 @@
 # T721: host mouse failure after concurrent validation
 
+The host mouse failure remained unattributed after reboot recovery. Concurrent validation and later Xorg startup failure were observations, not established causes. The report preserves bounded recurrence diagnostics and the missing causal regression without authorizing disruptive live probing.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The maintainer reports that the physical host mouse stopped moving and clicking,
 while keyboard shortcuts still worked. An ordinary reboot restored normal mouse
 operation. The cause is unconfirmed; this is incident evidence, not a fix or a
@@ -137,3 +145,5 @@ transition is identified, add a permanent T721 regression to the normal suite,
 prove it fails before changing behavior, then verify the same test passes and
 that pointer operation recovers. Keep T721 unresolved until then. The T700
 startup recurrence requires its existing mitigation acceptance separately.
+
+</details>

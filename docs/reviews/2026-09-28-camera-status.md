@@ -1,5 +1,8 @@
 # T704: expire stalled camera status
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The host frame monitor now expires Streaming after two seconds without another
 selected decoded frame. It then reports Waiting and clears the preview. The
 output writer and status monitor share the same two-second freshness constant;

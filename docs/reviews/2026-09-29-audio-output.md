@@ -1,5 +1,13 @@
 # T545: computer output on tablet speakers
 
+This speaker contract required a selectable output without changing system defaults, plus independent focus, routing and cleanup. Duplex use needed its own acoustic acceptance. Proposed native APIs and buffer budgets did not prove audible quality or physical latency.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Status: requirements research completed; T719 now implements Linux/Android
 playback and independent controls. [Current behavior](../audio.md) distinguishes
 implemented behavior from the remaining physical and duplex acceptance below. The
@@ -106,3 +114,5 @@ capacity campaign is required.
 
 No system audio settings were modified during this research. Windows and macOS
 backends remain outside this Linux/Android implementation plan.
+
+</details>

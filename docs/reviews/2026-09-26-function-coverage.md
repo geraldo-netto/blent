@@ -1,5 +1,13 @@
 # Per-function coverage and bounded fuzzing — 2026-09-26
 
+The source-matched local coverage gate passed all listed functions, while a later remote Linux gate exposed missing empty-sysfs coverage. A subsequent isolated fixture closed those gaps using unchanged-source counters. Historical passes do not certify current code or physical platforms.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 This report covers maintained production functions in the accepted Linux/Windows
 Rust applications, Android main app, C EVDI helper and essential installation,
 EVDI setup and packaging scripts. Each function/method must independently reach
@@ -116,3 +124,5 @@ report. This resolves the coverage portability defect; no new remote run was
 started because this batch must remain unpushed. T644's historical Xvfb stall
 remains unresolved, blocked on a recurrence with the [new owned-child
 diagnostics](artifacts/2026-09-27-xvfb-diagnostics/README.md).
+
+</details>

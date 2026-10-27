@@ -1,5 +1,13 @@
 # Windows USB connection preview (T525)
 
+The Windows USB preview integrated authenticated ADB routes and attachment state with native fixtures. Prepared listeners were not evidence of capture or input delivery. Its dated cleanup limits and capability list are superseded where later connection contracts and adapters changed.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Windows daemon startup discovers authorized USB devices through a native ADB
 executable from PATH. Shared USB policy selects eligible Android installations,
 creates missing reverse routes without rebinding existing destinations, rotates
@@ -73,3 +81,5 @@ manifests retain the exact test-file changes, and Windows source fingerprints
 match every current production source. No native counters come from Wine or
 cross-compilation. See [counts and provenance](artifacts/2026-09-27-windows-usb/summary.json)
 and [retained raw evidence](artifacts/2026-09-27-windows-usb/).
+
+</details>

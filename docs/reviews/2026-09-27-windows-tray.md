@@ -1,5 +1,8 @@
 # T531: Windows notification-area tray
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The Windows daemon now presents its producer-owned USB preparation state in a
 native notification-area icon. The existing monitor publishes each assignment
 snapshot to the CLI/GUI state file and to a watch channel; the tray consumes the

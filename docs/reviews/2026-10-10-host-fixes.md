@@ -1,5 +1,13 @@
 # Host review fixes (2026-10-10)
 
+Host fixes separate public contracts from adapters, supervise worker failures, and bound command output while retaining ownership until native cleanup finishes. The report records individual regressions and coverage scopes, including later corrections found during verification. These results do not certify every platform or a general performance gain.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 ## T831: apply coverage scope before parsing
 
 Full inventory previously parsed the archived T790 C candidate and failed before
@@ -310,3 +318,5 @@ producer fixtures (T837); the scoped report uses complete profiles through LLVM'
 supported merge mode, retaining the invalid records and every production method.
 T837 separately restores clean strict collection; no coverage exclusion is added.
 [Evidence and source hashes](artifacts/2026-10-10-t836/).
+
+</details>

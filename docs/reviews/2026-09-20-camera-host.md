@@ -1,5 +1,13 @@
 # Host camera integration — T543
 
+Host camera controls gained explicit Start/Stop, saved settings and a bounded preview. A physical tablet and browser verified selected-lens output and specific background cases; final rotation and permission changes had different validation scopes. This did not establish every lock state, device or meeting application.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The desktop Cameras tab owns manual Start/Stop, lens selection, resolution,
 frame rate, bitrate, mirroring, additional clockwise rotation and background
 capture. Settings persist without restoring capture at launch. Camera-only
@@ -90,3 +98,5 @@ actual Meet calls, sustained power/thermal behavior and latency were not measure
 
 GitHub workflows remain present and accept only manual `workflow_dispatch`.
 Future microphone, audio-output and NFC work remains deferred in T544–T546.
+
+</details>

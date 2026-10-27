@@ -1,5 +1,8 @@
 # Native Windows scheduling acceptance (T583)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The existing isolated High-priority regression exercises both owned synchronous
 and asynchronous children. New permanent tests verify that changing back to
 Normal reaches both child paths and that a handle lacking priority-set rights

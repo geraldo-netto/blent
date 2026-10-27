@@ -1,5 +1,8 @@
 # Preserve targeted display Start scope (T1275)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 T1274 exposed an existing automatic USB priority rule through manual Start. At
 full capacity, reenabling a USB peer could select another tablet's ADB ticket
 for replacement. A separate eligibility calculation could also displace an ADB

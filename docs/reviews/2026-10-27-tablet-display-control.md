@@ -1,5 +1,13 @@
 # Per-tablet display controls (T1274)
 
+Per-tablet display Start/Stop binds commands to the original daemon and tablet identity while leaving camera, audio and the connection independent. Accepted Stop means intent changed; capacity remains occupied until actual cleanup. Linux contract and IPC tests passed, and the later Start-scope fix preserves siblings at capacity; Windows display control remains unsupported.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Implemented owner-selected variant B. Linux daemon accepts Inspect and targeted
 Start/Stop using T1272 contracts. Workspace wiring is T1273. No application was
 installed or running tablet disturbed during validation.
@@ -63,3 +71,5 @@ Source-hash manifests, failing/passing logs and LCOV remain in the owned externa
 work directory `2026-10-26-t1267-t1270`. These finite fixtures establish the named
 boundaries, not unrestricted native safety. Existing physical mapping acceptance
 and native Windows blockers remain visible in TODO.md.
+
+</details>

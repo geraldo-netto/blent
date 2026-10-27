@@ -1,5 +1,13 @@
 # Implementation update (2026-10-10)
 
+Lifecycle probes showed unbounded pending jobs and hidden cleanup failures despite safe native admission. The proposal required bounded ownership and visible uncertainty; later private workers supplied isolation. Cancellation or a deadline alone never established that native resources were safe to release.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 T809 is implemented with separate on-demand Android native workers. See the
 [current architecture and validation](artifacts/2026-10-10-android-process-isolation/README.md).
 The proposal below records the earlier review and alternatives.
@@ -165,3 +173,5 @@ service notifications; camera and microphone capture use independent transport;
 video socket retirement names its own socket; release checks use generations;
 native borrow/retirement gates prevent unsafe replacement. The changes should
 preserve these contracts while reducing how far a failure propagates.
+
+</details>

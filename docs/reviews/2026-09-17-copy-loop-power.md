@@ -1,5 +1,13 @@
 # Copy, mapping, loop and power review — 2026-09-17
 
+This source review separated avoidable copies and wakeups from changes that need stronger ownership contracts. Fewer copies or lower CPU use do not establish lower latency or battery use. The broader multi-tablet campaign remains outside the approved scope.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Reviewed source: [`1e7b045`](https://github.com/geraldo-netto/blent/tree/1e7b045).
 The repository inventory covered 215 owned files across Rust/C, Android, GUI,
 common code, scripts, packaging, tests and documentation. Generated code,
@@ -187,3 +195,5 @@ permanent regression demonstrated failing before the fix and passing afterward;
 performance experiments need reproducible raw A/B results in addition. Missing
 device runs remain untested, and completed synthetic NAL measurements do not
 establish battery savings.
+
+</details>

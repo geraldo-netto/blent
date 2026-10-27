@@ -1,5 +1,13 @@
 # TODO dependency and scope review — T684
 
+This planning review split broad deliverables and reconciled dependencies without claiming their completion. Its pen-related scope predates the owner’s later decline. Current TODO and platform guidance govern active work; original requirements and evidence limits remain recorded.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Historical planning snapshot before the maintainer’s subsequent 2026-09-27 pen
 scope decision. See [TODO.md](../../TODO.md) and the [Windows plan](../windows-port.md)
 for current dispositions and prerequisites.
@@ -96,3 +104,5 @@ Relative links, dependency ordering and requirement transfer were reviewed.
 Review also found a stale T561 logging recipe, recorded separately as T687
 for its own documentation fix. Documentation-only changes need no artificial
 production regression tests.
+
+</details>

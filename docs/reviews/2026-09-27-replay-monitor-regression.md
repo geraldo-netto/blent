@@ -1,5 +1,8 @@
 # Replay regression monitor identity (T641)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 [Run 36274495310](https://github.com/geraldo-netto/blent/actions/runs/36274495310)
 failed the retained T571 ACK-order assertion after the test observed a callback
 in `BLOCKED` state. That state alone does not establish that it has reached the

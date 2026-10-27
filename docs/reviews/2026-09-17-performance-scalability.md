@@ -1,5 +1,13 @@
 # Performance and scalability research — 2026-09-17
 
+This report proposed measurements and optimization experiments; it did not run a hardware performance campaign. Storage arithmetic is not measured bandwidth. T382’s broader multi-tablet campaign was declined; the later execution list does not reopen it.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Scope: Android client and Rust/C Linux host at
 [`6a49e9761c541fdcb224bdd6c9216f53581a1c6c`](https://github.com/geraldo-netto/blent/tree/6a49e9761c541fdcb224bdd6c9216f53581a1c6c).
 Read alongside the [architecture review](2026-09-17-architecture.md),
@@ -270,3 +278,5 @@ before the fix, then passing afterward. Microbenchmarks and hardware traces
 support that coverage; they do not replace it. Record actual missing evidence
 or decisions in the ledger and retain the item until its acceptance conditions
 are met.
+
+</details>

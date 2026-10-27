@@ -2,6 +2,14 @@
 
 # T700: late AMD GPU initialization after simpledrm
 
+A matched core identified late AMD initialization after a software primary screen as the cause of one glamor-registration crash. Component probes reproduced the registration-order assertion. Later boot tests evaluated mitigation; the original gamma crash remained a separate incident.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 This is the diagnosis-stage record. The subsequent [boot reproduction and Blent
 mitigation](2026-09-28-gpu-boot-order.md) supersede the remaining-work list below;
 the captured core evidence remains unchanged.
@@ -134,3 +142,5 @@ T700 remains open for this dependency-ordered work:
 No boot configuration, installed Xorg package, kernel module, display service or
 live desktop was changed. T222's original gamma-fault core remains a separate
 evidence requirement.
+
+</details>

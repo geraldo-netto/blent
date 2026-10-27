@@ -1,5 +1,8 @@
 # T508 — build-output fixture signing prerequisites
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 T336's `make dist-local` cases selected the intended artifacts but failed at
 T250's signing verification because their isolated PATH lacked the offline
 signing tools. The shared fixture now supplies the designated certificate and

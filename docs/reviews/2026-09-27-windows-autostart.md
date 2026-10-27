@@ -1,5 +1,8 @@
 # Per-user Windows autostart (T532)
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Native acceptance passed in the retained Windows 11 VM under ordinary,
 unelevated `blentdev`: 227 workspace tests pass. The scoped native coverage gate
 passes 85/85 functions, with all five autostart-policy functions at 100%.

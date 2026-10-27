@@ -1,5 +1,13 @@
 # Windows cross-compilation check
 
+This initial cross-compilation check built shared policy but found Linux dependencies blocking the full host and GUI. Linking, checking and running are reported separately. Later Windows milestones supersede these build failures; this report is not a current support matrix.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Date: 2026-09-19. Source: `63b332e34cad62287fd2691972b8e3bab7f86685`.
 Linux can produce Windows x64 binaries from the shared library today, but
 the full UScreen daemon and GUI do not compile for Windows. No application
@@ -142,3 +150,5 @@ cargo check --locked --keep-going -p uscreen -p uscreen-gui --bins \
 Use a Windows runner for actual execution. The linked `encoder-options.exe`
 only exports encoder argument policy; it does not discover Windows encoders
 or demonstrate that any listed encoder can run on that system.
+
+</details>

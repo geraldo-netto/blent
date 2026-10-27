@@ -1,5 +1,13 @@
 # Android performance review, 2026-10-09
 
+This static Android review used focused host-JVM probes to identify UI blocking, unbounded response memory and allocation opportunities. Proposed savings were stage measurements, not ART, battery or whole-application gains. Later implementation reports supply the fix and native evidence.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 Review of owned Android code at `bb1648e`, including video, camera, audio,
 input/control, lifecycle, UI, allocation bounds and startup metadata. The source
 inventory contains 75 production Kotlin files. This is a static pipeline review
@@ -126,3 +134,5 @@ Retain historical decisions unless new workload evidence justifies revisiting:
 No new thermal, battery, hardware-codec utilization, concurrent camera/audio/video
 capacity, ART GC or physical presentation measurements were collected. Existing
 native acceptance blockers and explicitly declined scopes remain unchanged.
+
+</details>

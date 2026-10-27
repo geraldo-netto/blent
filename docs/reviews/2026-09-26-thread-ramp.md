@@ -1,5 +1,13 @@
 # Thread ramp at tablet geometry
 
+The thread ramp compared requested and effective encoder, conversion and runtime budgets at fixed geometry. Fewer encoder workers were promising; isolated runtime results did not justify a daemon default change. Confidence, quality and whole-session limits remain explicit.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 T600 measured requested budgets **1, 2, 4, 8, 12, 16, 24, 32** independently,
 with three deterministically shuffled passes per pool. The attached tablet's
 1280×800 geometry guides the conversion and encoder conclusions. The original
@@ -170,3 +178,5 @@ installed benchmark APK and an unlocked foreground Blent. Each script exposes
 its required paths with `--help`; summarize with `summarize-thread-ramp.py` and
 plot with `plot-thread-ramp.py`. Keep benchmark families serial and do not
 compile/test concurrently with timed trials.
+
+</details>

@@ -1,5 +1,13 @@
 # T1115: original FIFO unchanged-frame trials
 
+The FIFO idle worker gained an internally selected unchanged-frame trial with original-session, viewer, decoder and timing checks. Advice publication rechecks authority after filesystem waits, and cleanup keeps native owners funded until settlement. This intermediate result did not enable the user setting or qualify physical rendering or battery savings.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The Linux FIFO idle worker can run the portable unchanged-frame history as an
 internal original-session choice. Production configuration still selects the
 existing opt-in adaptive mode; user enablement remains T1111 after shared-capture
@@ -104,3 +112,5 @@ configuration/UI T1111 and software measurements T1112. Physical functional T492
 and battery T679 acceptance remain unresolved. No physical rendering, battery
 saving, unrestricted native safety or broad all-features qualification follows
 from this software-only result.
+
+</details>

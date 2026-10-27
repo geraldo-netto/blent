@@ -1,5 +1,8 @@
 # Shared native idle advice and bounded FIFO checks
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 T1119 extracts Linux advice validation into `host/evdi/idle_control.{h,c}`.
 The independent header defines the five-field, original-source, short-lived
 500/1000 ms contract and 0 result for missing/invalid advice. The writer retains

@@ -1,5 +1,13 @@
 # T689/T673 non-stylus input contract and preview
 
+The opt-in Windows input preview maps touch or explicit finger-mouse events to a selected monitor under authenticated ownership. Native fixture tests cover retirement and invalid input, while physical tablet acceptance remains separate. Current Windows guidance governs setup and supported scope.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The maintainer selected direct mouse mode on 2026-09-28: finger position maps
 absolutely to the selected monitor; a tap clicks; explicit right-click and drag
 controls are separate from native touch mode. Existing Linux pen-derived pointer
@@ -91,3 +99,5 @@ Android input acceptance, elevated-application support or Windows display suppor
 
 T673's [native/session regressions and measured coverage](artifacts/2026-09-29-t673-input/README.md)
 retain the integration results and the two Android failing-then-passing regressions.
+
+</details>

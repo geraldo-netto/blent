@@ -1,5 +1,13 @@
 # Crate notice collection (T1279)
 
+Crate notice collection now preserves nested notices and rejects missing, unsafe or empty inputs. The offline cache audit explicitly rejected crates whose published archives lacked required notices. Permanent tests and per-function measurements validate collection boundaries; the later supplement work supplies pinned missing texts, without claiming legal completeness.
+
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
+<details>
+<summary>Original findings, requirements and verification</summary>
+
 The AppImage collector now recursively preserves notice paths, including
 `UNLICENSE`, nested `LICENSES` directories and epaint's OFL, UFL, Hack and emoji
 font notices. Cargo's `license_file` is mandatory when declared, even when another
@@ -65,3 +73,5 @@ Archive checks detect changed selected bytes or nonregular archive members.
 Cleanup assumes filesystem removal remains available; abrupt process/OS loss can
 leave workspace files for the build owner to reclaim. No unrestricted filesystem
 race safety or mathematical leak-freedom proof is claimed.
+
+</details>

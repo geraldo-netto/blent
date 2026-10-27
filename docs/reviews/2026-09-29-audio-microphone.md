@@ -1,5 +1,8 @@
 # T718: Linux/Android microphone integration
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 Microphone capture, authenticated ADB transport, a selectable PipeWire **Blent
 Microphone** source, explicit CLI/GUI Start/Stop, Android consent/settings and
 background-service ownership are implemented. [Current behavior](../audio.md)

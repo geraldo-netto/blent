@@ -1,5 +1,8 @@
 # T994: delayed local Stop preserves the shared connection
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 A local speaker EOF initiated retirement while the independent control route was
 also stopping. Remote confirmation and actual local pump retirement could finish
 before a queued Cancel reached the link reactor. Strict Session::cancel then

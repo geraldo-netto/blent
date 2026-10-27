@@ -1,5 +1,8 @@
 # T612: bounded encoder worker selection
 
+Historical record. Names, commands, support claims and TODO states below describe
+the recorded revision. Use the [review map](README.md) for current guidance.
+
 The existing CLI auto selector compares software H.264 worker budgets 1, 2 and 4
 before other encoders. One worker remains the fallback. `encoder_workers=0`
 means Auto; saved/manual and CLI values 1–128 override that dimension. The
