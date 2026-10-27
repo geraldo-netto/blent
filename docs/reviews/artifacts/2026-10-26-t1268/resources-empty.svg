@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="740" viewBox="0 0 1040 740" role="img" aria-labelledby="title desc">
+<title id="title">Blent tablet resource workspace concept</title>
+<desc id="desc">Concept with a selected tablet, separate display, camera, microphone and speaker controls. All states are simulated.</desc>
+<defs><g id="screen" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="1" y="1" width="25" height="17" rx="3" /><path d="M9 24h10M14 18v6" /></g>
+<g id="camera" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="1" y="5" width="25" height="18" rx="4" /><circle cx="13.5" cy="14" r="5" /><path d="M8 5l2-4h7l2 4" /></g>
+<g id="mic" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="1" width="10" height="16" rx="5" /><path d="M4 12v2a10 10 0 0 0 20 0v-2M14 24v4M9 28h10" /></g>
+<g id="speaker" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 10h6l9-7v24l-9-7H2zM22 9q7 6 0 12M26 4q12 11 0 22" /></g>
+</defs>
+<rect width="1040" height="740" fill="#12171f" />
+<path d="M0 0h202v740H0z" fill="#191f29" /><path d="M202 0v740" stroke="#303a48" />
+<text x="24" y="43" font-size="26" font-weight="600" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa">Blent</text>
+<text x="24" y="86" class="small muted" letter-spacing="1" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">TABLETS</text>
+<text x="24" y="128" class="small muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">No tablets connected</text>
+<path d="M20 630h162" stroke="#303a48" />
+<text x="28" y="664" class="body" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa" font-size="14">Settings</text><text x="28" y="698" class="body muted" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Help &amp; about</text>
+<g fill="none" stroke="#6a86b3" stroke-width="2"><rect x="527" y="154" width="130" height="83" rx="8" /><path d="M569 253h48M593 237v16" /><rect x="627" y="188" width="52" height="77" rx="7" fill="#12171f" /></g>
+<text x="621" y="317" font-size="26" font-weight="600" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa">Put your tablet to work</text>
+<text x="621" y="351" class="body muted" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Use its display, cameras, microphone or speakers.</text>
+<text x="621" y="376" class="body muted" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Connect once, then choose what to share.</text>
+<rect x="525" y="407" width="192" height="42" rx="8" fill="#2d63d4" /><text x="621" y="434" font-size="14" font-weight="600" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#edf2fa">Connect a tablet</text>
+<text x="621" y="482" class="link" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#8db7ff" font-size="14">Other connection options</text>
+<text x="621" y="570" class="small muted" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Direct USB pairing does not require USB debugging.</text>
+<text x="621" y="596" class="small muted" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-style="normal" fill="#aab8cc" font-size="14">Nothing starts sharing until you choose a resource.</text>
+<text x="234" y="721" font-size="10" fill="#95a4ba" font-family="DejaVu Sans,sans-serif" font-style="normal">FIRST CONNECTION CONCEPT · SIMULATED STATE · NOT IMPLEMENTED</text></svg>

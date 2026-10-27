@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-27",
+  "scope": "Static SVG parsing, self-containment and selected declared text/background palette pairs only",
+  "svg": [
+    {
+      "file": "resources-approval.svg",
+      "sha256": "8290cff7d88460bea79ecf558ce8ed98fc75aabf4fcdf718fb9f651bbe65054e",
+      "xml_valid": true,
+      "external_references": 0,
+      "scripts": 0
+    },
+    {
+      "file": "resources-compact.svg",
+      "sha256": "f3c1ad58b52fbbc60b564d0acbe5d0888a4f7fae750fda9ec0a6daa3cf196a8d",
+      "xml_valid": true,
+      "external_references": 0,
+      "scripts": 0
+    },
+    {
+      "file": "resources-desktop.svg",
+      "sha256": "3808808b614a8b06d9575b607dd29838e5df124867e0b1e0f3178ebd472fee2c",
+      "xml_valid": true,
+      "external_references": 0,
+      "scripts": 0
+    },
+    {
+      "file": "resources-empty.svg",
+      "sha256": "90bc6e1c319af670ef61dafc72cfbfbdca6e13ee3cfb6fbf76134f9a885c49e7",
+      "xml_valid": true,
+      "external_references": 0,
+      "scripts": 0
+    }
+  ],
+  "contrast": [
+    {
+      "foreground": "#edf2fa",
+      "background": "#1b222d",
+      "ratio": 14.23
+    },
+    {
+      "foreground": "#aab8cc",
+      "background": "#1b222d",
+      "ratio": 7.95
+    },
+    {
+      "foreground": "#8db7ff",
+      "background": "#1b222d",
+      "ratio": 7.88
+    },
+    {
+      "foreground": "#a7efd1",
+      "background": "#193b30",
+      "ratio": 9.31
+    },
+    {
+      "foreground": "#edf2fa",
+      "background": "#2d63d4",
+      "ratio": 4.86
+    }
+  ],
+  "not_validated": [
+    "interactive behavior",
+    "complete accessibility conformance",
+    "native support",
+    "resource state authority",
+    "human task success"
+  ],
+  "design_approval": "pending owner review"
+}
