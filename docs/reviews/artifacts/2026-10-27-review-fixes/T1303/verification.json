@@ -1,0 +1,93 @@
+{
+  "issue": "T1303",
+  "coverage": [
+    {
+      "file": "common/src/linux/capture_control.rs",
+      "name": "receive",
+      "line": 138,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      "common/src/linux/capture_control.rs",
+      27,
+      "attach",
+      2
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      38,
+      "inherit",
+      2
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      46,
+      "pair",
+      2
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      74,
+      "lease",
+      1
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      81,
+      "set_active",
+      2
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      90,
+      "transition",
+      3
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      105,
+      "finish",
+      2
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      123,
+      "send",
+      6
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      138,
+      "receive",
+      4
+    ],
+    [
+      "common/src/linux/capture_control.rs",
+      149,
+      "receive_record",
+      4
+    ]
+  ],
+  "sources": {
+    "common/src/linux/capture_control.rs": "8e1d3c0987f0f80a2f348aa0d104489c95486cdd9a5388c5c5922c0f8d9659d3"
+  },
+  "removed_files": [],
+  "tools": {
+    "rustc": "1.98.1",
+    "clippy": "0.1.98",
+    "cargo-llvm-cov": "0.8.7",
+    "LLVM": "22.1.8",
+    "Rust frontend": "syn 2.0.119"
+  },
+  "verification": "Red: Clippy 0.1.98 rejected redundant Ok/?. The single expression now propagates the identical Request::decode result. receive borrows its original AsyncFd through readiness/try_io and preserves pending request/acknowledgement ownership on cancellation, malformed/foreign records and peer loss. Existing seven T1023 tests remain in the normal suite; no new behavioral contract or artificial regression was introduced.",
+  "ci_clippy": "cargo clippy --offline --locked -p blent -p blent-config --lib --tests -- -D warnings: PASS",
+  "native_command": "cargo llvm-cov test -p blent -p blent-config --features blent/native-audio --lib --bins --test audio_native --test audio_staging --test adb_mapping_retirement --test connection --test connection_window --test connection_management",
+  "scope": "Linux SDK/offline caches, private fixtures; no physical device or network operations."
+}

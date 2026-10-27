@@ -140,7 +140,7 @@ impl Control {
             let mut ready = self.socket.readable().await?;
             let result = ready.try_io(|socket| receive_record(socket.get_ref()));
             if let Ok(result) = result {
-                return Ok(Request::decode(&result?)?);
+                return Request::decode(&result?);
             }
         }
     }
