@@ -257,7 +257,9 @@ fn isolated_daemon() -> bool {
     }
     use std::os::unix::fs::PermissionsExt;
     let root = tempfile::Builder::new()
-        .permissions(std::fs::Permissions::from_mode(0o700)).tempdir().unwrap();
+        .permissions(std::fs::Permissions::from_mode(0o700))
+        .tempdir()
+        .unwrap();
     let adb = root.path().join("adb");
     std::fs::write(&adb, "#!/bin/sh\nprintf 'List of devices attached\\n'\n").unwrap();
     std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
@@ -374,7 +376,10 @@ async fn t1027_isolated_daemon_joins_original_source_and_handles_shutdown_reques
 fn t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences() {
     let (_, mut template, _stop) = crate::discovery_tests::monitor_inputs(3, (20000, 20001));
     for pause_without_viewer in [false, true] {
-        template.activity_preferences = Settings { pause_without_viewer, ..Default::default() };
+        template.activity_preferences = Settings {
+            pause_without_viewer,
+            ..Default::default()
+        };
         for instance in 0..3 {
             let extra = crate::prepare_extra_session(&template, instance).unwrap();
             assert_eq!(extra.activity_preferences, template.activity_preferences);

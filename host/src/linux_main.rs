@@ -1599,7 +1599,12 @@ printf '%s\n' "$2" >> "$0.log"
 }
 
 async fn run_daemon(cli: Cli) -> Result<()> {
-    run_daemon_with(cli, std::sync::Arc::new(blent::activity::Factory), wait_daemon_shutdown).await
+    run_daemon_with(
+        cli,
+        std::sync::Arc::new(blent::activity::Factory),
+        wait_daemon_shutdown,
+    )
+    .await
 }
 
 async fn run_daemon_with<S, F>(

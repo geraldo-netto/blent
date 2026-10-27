@@ -276,7 +276,10 @@ async fn t444_auth_retry_uses_current_key_with_bounded_background_delivery() {
 async fn t444_failed_owned_job_retires_pending_route_and_rejects_late_completion() {
     let root = tempfile::tempdir().unwrap();
     let mut state = fixture(root.path());
-    state.slots.reserve(DisplayOwner::Adb("USB".into()), 0).unwrap();
+    state
+        .slots
+        .reserve(DisplayOwner::Adb("USB".into()), 0)
+        .unwrap();
     state.pending.insert(
         "USB".into(),
         Pending {

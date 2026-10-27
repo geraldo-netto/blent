@@ -390,19 +390,26 @@ async fn t116_idle_stream_provides_regular_decodable_join_points() {
         let scope = manager.encoder.begin_generation().unwrap();
         manager
             .encoder
-            .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
-                let mut args: Vec<_> = command.as_std().get_args().map(|a| a.to_owned()).collect();
-                let input = args.iter().position(|a| a == "-i").unwrap() + 1;
-                args[input] = "pipe:0".into();
-                Child::spawn(
-                    Command::new("ffmpeg")
-                        .args(args)
-                        .stdin(Stdio::piped())
-                        .stdout(Stdio::piped())
-                        .stderr(Stdio::null())
-                        .kill_on_drop(true),
-                )
-            })
+            .start_with(
+                &manager.config,
+                manager.active_mode(),
+                true,
+                scope,
+                |command| {
+                    let mut args: Vec<_> =
+                        command.as_std().get_args().map(|a| a.to_owned()).collect();
+                    let input = args.iter().position(|a| a == "-i").unwrap() + 1;
+                    args[input] = "pipe:0".into();
+                    Child::spawn(
+                        Command::new("ffmpeg")
+                            .args(args)
+                            .stdin(Stdio::piped())
+                            .stdout(Stdio::piped())
+                            .stderr(Stdio::null())
+                            .kill_on_drop(true),
+                    )
+                },
+            )
             .unwrap();
         let child = manager.encoder.child.as_mut().unwrap();
         let mut input = child.stdin.take().unwrap();
@@ -613,13 +620,19 @@ async fn t020_encoder_records_the_dimensions_passed_to_its_process() {
     let scope = manager.encoder.begin_generation().unwrap();
     let used = manager
         .encoder
-        .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
-            let args: Vec<_> = command.as_std().get_args().collect();
-            assert!(args.windows(2).any(|pair| pair == ["-s", "1280x720"]));
-            // A helper announcement races with spawning the encoder.
-            stream_tx.send(Some((1920, 1080))).unwrap();
-            Ok(fake_encoder("5"))
-        })
+        .start_with(
+            &manager.config,
+            manager.active_mode(),
+            true,
+            scope,
+            |command| {
+                let args: Vec<_> = command.as_std().get_args().collect();
+                assert!(args.windows(2).any(|pair| pair == ["-s", "1280x720"]));
+                // A helper announcement races with spawning the encoder.
+                stream_tx.send(Some((1920, 1080))).unwrap();
+                Ok(fake_encoder("5"))
+            },
+        )
         .unwrap();
     manager.shutdown().await;
     assert_eq!(used, (1280, 720));
@@ -633,14 +646,20 @@ async fn t054_vaapi_uses_the_configured_render_node() {
     let scope = manager.encoder.begin_generation().unwrap();
     manager
         .encoder
-        .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
-            args = command
-                .as_std()
-                .get_args()
-                .map(|a| a.to_string_lossy().into_owned())
-                .collect();
-            Ok(fake_encoder("5"))
-        })
+        .start_with(
+            &manager.config,
+            manager.active_mode(),
+            true,
+            scope,
+            |command| {
+                args = command
+                    .as_std()
+                    .get_args()
+                    .map(|a| a.to_string_lossy().into_owned())
+                    .collect();
+                Ok(fake_encoder("5"))
+            },
+        )
         .unwrap();
     manager.shutdown().await;
     assert!(args
@@ -655,17 +674,20 @@ async fn t055_hevc_vaapi_supports_eight_and_ten_bit_output() {
         manager.config.ten_bit = ten_bit;
         let mut args = Vec::new();
         let scope = manager.encoder.begin_generation().unwrap();
-        let result =
-            manager
-                .encoder
-                .start_with(&manager.config, manager.active_mode(), true, scope, |command| {
-                    args = command
-                        .as_std()
-                        .get_args()
-                        .map(|a| a.to_string_lossy().into_owned())
-                        .collect();
-                    Ok(fake_encoder("5"))
-                });
+        let result = manager.encoder.start_with(
+            &manager.config,
+            manager.active_mode(),
+            true,
+            scope,
+            |command| {
+                args = command
+                    .as_std()
+                    .get_args()
+                    .map(|a| a.to_string_lossy().into_owned())
+                    .collect();
+                Ok(fake_encoder("5"))
+            },
+        );
         manager.shutdown().await;
         result.unwrap();
         assert!(args.windows(2).any(|p| p == ["-c:v", "hevc_vaapi"]));
@@ -814,7 +836,10 @@ fn t1027_capture_manager_retains_only_the_original_read_only_activity_view() {
     manager.bind_activity(Some(view.clone()));
     assert!(manager.activity.as_ref().unwrap().same_channel(&view));
     published.send_replace(blent_config::host_activity::Publication::Failed);
-    assert_eq!(*manager.activity.as_ref().unwrap().borrow(), blent_config::host_activity::Publication::Failed);
+    assert_eq!(
+        *manager.activity.as_ref().unwrap().borrow(),
+        blent_config::host_activity::Publication::Failed
+    );
     manager.bind_activity(None);
     assert!(manager.activity.is_none());
 }

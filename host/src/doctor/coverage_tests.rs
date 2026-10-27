@@ -368,8 +368,16 @@ fn t757_evdi_hints_preserve_live_displays() {
     let directory = tempfile::tempdir().unwrap();
     let count = directory.path().join("sys/devices/evdi/count");
     std::fs::create_dir_all(count.parent().unwrap()).unwrap();
-    for value in [None, Some("0"), Some("invalid"), Some("-1"), Some("2147483648")] {
-        if let Some(value) = value { std::fs::write(&count, value).unwrap(); }
+    for value in [
+        None,
+        Some("0"),
+        Some("invalid"),
+        Some("-1"),
+        Some("2147483648"),
+    ] {
+        if let Some(value) = value {
+            std::fs::write(&count, value).unwrap();
+        }
         let mut report = Report::new();
         check_modules_at(&mut report, &FileConfig::default(), directory.path());
         assert_safe_evdi_hint(&report);
@@ -377,7 +385,9 @@ fn t757_evdi_hints_preserve_live_displays() {
     for wanted in [1, 2, 4, 0, 5, u32::MAX] {
         let mut report = Report::new();
         report_tablet_capacity(&mut report, wanted, 0);
-        if wanted > 0 { assert_safe_evdi_hint(&report); }
+        if wanted > 0 {
+            assert_safe_evdi_hint(&report);
+        }
     }
 }
 
@@ -385,7 +395,12 @@ fn assert_safe_evdi_hint(report: &Report) {
     let text = report.messages.borrow().join("\n");
     assert!(!text.contains("tee /sys/devices/evdi/add"), "T757: {text}");
     assert!(!text.contains("sudo modprobe evdi"), "T757: {text}");
-    for required in ["initial_device_count=", "reboot", "Xorg", "keep the live module loaded"] {
+    for required in [
+        "initial_device_count=",
+        "reboot",
+        "Xorg",
+        "keep the live module loaded",
+    ] {
         assert!(text.contains(required), "T757 missing {required}: {text}");
     }
 }

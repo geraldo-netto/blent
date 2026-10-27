@@ -559,8 +559,14 @@ fn t1195_terminal_recalibration_never_reuses_initial_durable_record() {
     for _ in 0..3 {
         assert!(!config.request_recalibration());
         base.calibration_generation = config.calibration_generation;
-        assert_eq!(context::fingerprint(&identity, "host", &snapshot, &base).unwrap(), terminal);
-        assert!(current.load(100, &snapshot).is_none(), "T1195 stale record reused");
+        assert_eq!(
+            context::fingerprint(&identity, "host", &snapshot, &base).unwrap(),
+            terminal
+        );
+        assert!(
+            current.load(100, &snapshot).is_none(),
+            "T1195 stale record reused"
+        );
     }
     current.save(100, &row).unwrap();
     assert!(current.load(100, &snapshot).is_some());

@@ -4,11 +4,9 @@ mod cli_encoder;
 mod config;
 mod device_selection;
 pub(crate) use device_selection::{initial_encoder, select_gpu};
-mod encoding;
-mod display_pause;
 mod activity;
-mod supervision;
-mod quiescence;
+mod display_pause;
+mod encoding;
 mod fifo;
 #[cfg(not(feature = "inproc-encoder"))]
 mod gpu;
@@ -18,6 +16,8 @@ mod idle;
 mod placement;
 #[cfg(not(feature = "inproc-encoder"))]
 pub(crate) mod probe;
+mod quiescence;
+mod supervision;
 #[cfg(not(feature = "inproc-encoder"))]
 use blent::probe_format;
 #[cfg(not(feature = "inproc-encoder"))]
@@ -78,7 +78,10 @@ impl CaptureManager {
     pub(crate) fn bind_display_work(&mut self, work: Arc<blent::display_work::View>) {
         self.display_work = Some(work);
     }
-    pub(crate) fn bind_profile(&mut self, profile: Arc<dyn blent::capture_contract::ProfileSource>) {
+    pub(crate) fn bind_profile(
+        &mut self,
+        profile: Arc<dyn blent::capture_contract::ProfileSource>,
+    ) {
         self.profile = Some(profile);
     }
     pub(crate) fn bind_quiescence(&mut self, participant: blent::display_quiescence::Participant) {

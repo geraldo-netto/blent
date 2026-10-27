@@ -162,7 +162,8 @@ async fn t1115_coalesced_viewer_replacement_cannot_reuse_current_qualification()
     let (_grant, capability) = watch::channel(true);
     let _replacement = trial
         .video
-        .subscribe_negotiated(Arc::new(Grant(capability))).unwrap();
+        .subscribe_negotiated(Arc::new(Grant(capability)))
+        .unwrap();
     trial.cleared().await;
     tokio::time::advance(Duration::from_secs(3)).await;
     assert!(!trial.handle()._lease.path.exists());
