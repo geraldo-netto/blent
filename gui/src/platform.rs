@@ -3,6 +3,8 @@ pub(crate) use blent_config::platform::capabilities;
 #[cfg(target_os = "linux")]
 pub(crate) use blent_config::platform::programs::command_exists;
 use std::path::PathBuf;
+mod notices;
+pub(crate) use notices::bundled_notices_url;
 #[cfg(target_os = "linux")]
 mod linux;
 #[cfg(target_os = "linux")]

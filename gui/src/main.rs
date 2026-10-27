@@ -4,6 +4,7 @@
 mod monitor_inventory;
 mod overview;
 
+mod about;
 mod audio_settings;
 mod camera_preview;
 mod camera_settings;
@@ -537,6 +538,12 @@ impl App {
         ui.label(egui::RichText::new("Your tablet’s display, camera and audio").weak());
         self.show_update_notice(ui);
         ui.add_space(6.0);
+    }
+
+    fn show_about(&self, ui: &mut egui::Ui, status: &Status) {
+        about::identity(ui);
+        self.show_project_links(ui, status);
+        about::notices(ui);
     }
 
     fn show_project_links(&self, ui: &mut egui::Ui, status: &Status) {
@@ -1174,7 +1181,7 @@ impl App {
             Tab::Overview => self.show_overview(ui, status),
             Tab::Video => self.show_video_settings(ui),
             Tab::Connections => self.connection.show(ui),
-            Tab::About => self.show_project_links(ui, status),
+            Tab::About => self.show_about(ui, status),
             Tab::Audio => self.show_audio_settings(ui),
             Tab::Camera => self.camera.show(ui, &mut self.cfg.camera.options),
             Tab::Display => self.show_display_settings(ui),

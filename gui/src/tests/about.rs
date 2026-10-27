@@ -75,3 +75,22 @@ fn t1276_about_navigation_supports_keyboard_activation() {
     }
     panic!("T1276 About has no reachable keyboard target");
 }
+
+#[test]
+fn t1277_about_exposes_version_credits_and_offline_notices() {
+    let (_root, mut app) = settings_test_app(Tab::About);
+    let context = egui::Context::default();
+    window_test_frame(&mut app, &context, vec![]);
+    let labels = window_test_frame(&mut app, &context, vec![]);
+    assert!(labels
+        .iter()
+        .any(|(text, _)| text.contains(env!("CARGO_PKG_VERSION"))));
+    assert!(labels.iter().any(|(text, _)| text.contains("majmichu1")));
+    assert!(labels
+        .iter()
+        .any(|(text, _)| text.contains("Geraldo Netto")));
+    assert!(labels
+        .iter()
+        .any(|(text, _)| text == "Licenses and notices"));
+    assert!(labels.iter().any(|(text, _)| text.contains("MIT")));
+}

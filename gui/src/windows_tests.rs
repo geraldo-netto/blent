@@ -125,3 +125,10 @@ fn t497_windows_pipe_capacity_is_explicitly_unsupported_for_all_bounds() {
             .contains("not implemented on Windows"));
     }
 }
+
+#[test]
+fn t1277_bundle_notice_lookup_reports_windows_preview_limit() {
+    let error = platform::bundled_notices_url().unwrap_err();
+    assert!(error.contains("Windows preview"));
+    assert!(error.contains("Embedded project notices remain available"));
+}

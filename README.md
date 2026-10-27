@@ -161,6 +161,13 @@ encoder, pen and licensing details.
 **About** contains **Report compatibility** and **Star on GitHub**. Project links
 have a fixed destination; switching pages keeps the main navigation in place.
 Compatibility reports open a prefilled issue for review; submission remains explicit.
+About also shows copyable version/build details, original UScreen and Blent credits,
+a summary of the project's MIT terms, and full offline license/attribution texts.
+The notice selector includes the tracked component and Android APK notices;
+third-party terms remain separate from Blent's own license. **Open installed bundle
+notices** opens the package-specific local directory when its manifest is present.
+Missing bundle notices are reported explicitly; embedded project notices are not
+an inventory of every library on the computer.
 
 ## Settings
 

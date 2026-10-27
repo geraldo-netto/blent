@@ -15,7 +15,11 @@ Track discoveries in `TODO.md`, with one verified commit per removal.
 These instructions target the Linux host. The [Windows plan](windows-port.md)
 is proposed work, not a supported build procedure. Use the fork checkout and
 record `git rev-parse HEAD` when sharing results; version 1.2.3 alone does not
-identify its unreleased changes.
+identify its unreleased changes. Builds may set `BLENT_BUILD_REVISION` to their
+verified source revision (including a dirty-worktree qualifier when applicable).
+The GUI embeds this value in About's copyable version details; if omitted, it
+explicitly reports that the build revision was not recorded. This value is
+build metadata, not an independently verified signature or source attestation.
 
 Host build needs stable Rust/Cargo, a C/C++ compiler, make, pkg-config,
 libdrm headers, the **libevdi userspace development library** (including the
