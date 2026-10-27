@@ -704,8 +704,16 @@ at most `21 * samples + 2` bytes including brackets. No camera frame is stored i
 this history. Duration still has its independent 1–30 second limit. Current probe
 decoder integration and original native retirement have permanent automated
 [verification](reviews/artifacts/2026-10-20-all-open/T1189/README.md).
-Physical camera acceptance remains separate; identity-safe ADB mapping removal
-still requires T1090's missing native contract or ownership decision.
+Physical camera acceptance remains separate. The implemented T1090
+[temporary ADB mapping owner](adb-media-mappings.md) follows the 2026-10-25
+exclusive-endpoint decision: cancellation retains the original mapping,
+listener reservations and cleanup admission until native settlement and worker
+retirement. Unknown delegated outcomes remain owned; an empty listing or elapsed
+deadline alone cannot release an unconfirmed creator. Cleanup is conditional on
+the host process remaining alive and native outcomes eventually becoming
+observable. T1258 tracks selected-tablet acceptance of installed ADB/Android
+behavior; it still needs a selected tablet and authorization for that physical
+correctness trial. Host fixtures do not substitute for that acceptance.
 
 For an offline host test run using an already installed x86-64 Freedesktop SDK,
 keep the SDK and host fixture-tool ABIs explicit:
