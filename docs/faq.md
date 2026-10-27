@@ -15,12 +15,18 @@ mirror.
 
 **Does Blent work over a normal USB cable?**
 Yes, over a normal data-capable USB cable (charge-only cables carry no data).
-It uses the adb connection that USB debugging provides; no special cable and
-no USB tethering.
+On Linux, paired direct USB does not require USB debugging: open
+**Connections → USB connection** on the desktop, find and connect the tablet,
+then compare and approve the matching fingerprints. This route remains a preview;
+discovery and pairing do not establish native acceptance or grant camera/audio
+consent. See the [setup instructions](../README.md#quick-install).
+The separate ADB-over-USB route requires `adb`, USB debugging and authorization
+of the computer on the tablet. Neither route needs USB tethering.
 
 **Does Blent require USB tethering or Wi-Fi?**
-No. USB tethering is not needed; USB debugging is. Wi-Fi works as a fallback,
-with longer tail delays in the historical test — see the benchmarks.
+No. Neither USB route requires tethering or Wi-Fi. USB debugging is required
+only for the ADB route. ADB over Wi-Fi is an optional fallback, with longer
+tail delays in the historical test — see the benchmarks.
 
 **Can I adjust the tablet's brightness and refresh rate?**
 Open Blent's gear menu. Brightness starts at 50% and the display refresh-rate preference at
@@ -32,7 +38,8 @@ let Android select the refresh rate. Android may override a requested mode.
 These controls are separate from the stream's frame rate and bitrate.
 
 **Can I use it without the cable?**
-Yes, as a fallback. Run `blent wifi` once with the cable plugged in: it puts
+Yes, through the ADB route. Install `adb`, enable USB debugging and authorize
+the computer first. Run `blent wifi` once with the cable plugged in: it puts
 the tablet's adb on the network, remembers the address, and from then on the
 daemon reconnects on its own whenever the cable is out. The tablet goes back
 to USB-only when it reboots, so that one command has to be repeated after a
@@ -86,8 +93,8 @@ an EVDI output and uses a native Android app. Both offer Linux pen input.
 [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/latest/) streams a host
 display to a Moonlight client over a network. How an extra output is provided
 depends on the host setup. Blent provisions its output through EVDI and
-uses adb to carry video and input over USB. This comparison does not imply
-that Sunshine/Moonlight lacks stylus support.
+offers paired direct USB or ADB over USB for video and input. This comparison
+does not imply that Sunshine/Moonlight lacks stylus support.
 
 **What latency should I expect?**
 Historical upstream results on the reference hardware: 18–22 ms median with H.264, 15–18 ms with
