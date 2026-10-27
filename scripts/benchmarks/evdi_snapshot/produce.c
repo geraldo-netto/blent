@@ -21,15 +21,60 @@ static int property(int fd,uint32_t object,uint32_t type,const char *name,uint64
     }
     drmModeFreeObjectProperties(props);return id;
 }
-static int connected_card(void) {
-    for (int card=0;card<8;card++) {
-        char path[64];snprintf(path,sizeof(path),"/dev/dri/card%d",card);int fd=open(path,O_RDWR);if(fd<0)continue;
-        drmVersionPtr v=drmGetVersion(fd);int evdi=v && !strcmp(v->name,"evdi");drmFreeVersion(v);
-        if (evdi) {
-            drmModeResPtr res=drmModeGetResources(fd);assert(res);
-            drmModeConnectorPtr c=drmModeGetConnector(fd,res->connectors[0]);int yes=c && c->count_modes;
-            drmModeFreeConnector(c);drmModeFreeResources(res);if (yes) return fd;
-        }
+typedef struct
+{
+    uint32_t connector, crtc;
+    drmModeModeInfo mode;
+} snapshot_output;
+
+static int resource_extent(const drmModeRes *resources)
+{
+    return resources && resources->count_connectors > 0 && resources->connectors &&
+        resources->count_crtcs > 0 && resources->crtcs;
+}
+
+static int connector_extent(const drmModeConnector *connector)
+{
+    return connector && connector->connection == DRM_MODE_CONNECTED &&
+        connector->count_modes > 0 && connector->modes;
+}
+
+/* Borrow each inventory only for this observation; copy the admitted values.
+ * Discovery cannot authorize indexing a later topology snapshot. */
+static int read_output(int fd, snapshot_output *output)
+{
+    drmModeResPtr resources = drmModeGetResources(fd);
+    drmModeConnectorPtr connector = NULL;
+    if (resource_extent(resources))
+        connector = drmModeGetConnector(fd, resources->connectors[0]);
+    int valid = connector_extent(connector);
+    if (valid)
+        *output = (snapshot_output){connector->connector_id, resources->crtcs[0], connector->modes[0]};
+    drmModeFreeConnector(connector);
+    drmModeFreeResources(resources);
+    return valid;
+}
+
+static int evdi_card(int fd)
+{
+    drmVersionPtr version = drmGetVersion(fd);
+    int evdi = version && !strcmp(version->name, "evdi");
+    drmFreeVersion(version);
+    return evdi;
+}
+
+static int connected_card(void)
+{
+    for (int card = 0; card < 8; card++)
+    {
+        char path[64];
+        snprintf(path, sizeof(path), "/dev/dri/card%d", card);
+        int fd = open(path, O_RDWR);
+        if (fd < 0)
+            continue;
+        snapshot_output output;
+        if (evdi_card(fd) && read_output(fd, &output))
+            return fd;
         close(fd);
     }
     return -1;
@@ -78,18 +123,29 @@ static void submit(int fd,uint32_t plane,uint32_t fb,unsigned frame) {
     printf("SNAP_COMMIT %lld frame=%u\n",stamp_us(),frame);
     drmModeAtomicFree(request);assert(!drmModeDestroyPropertyBlob(fd,blob));
 }
-int main(void) {
-    guest_only();setbuf(stdout,NULL);int fd=connected_card();assert(fd>=0);
+int main(void)
+{
+    guest_only();
+    setbuf(stdout, NULL);
+    int fd = connected_card();
+    if (fd < 0)
+        return 2;
+    snapshot_output output;
+    if (!read_output(fd, &output))
+    {
+        close(fd);
+        return 2;
+    }
     assert(!drmSetClientCap(fd,DRM_CLIENT_CAP_ATOMIC,1));uint32_t plane=primary(fd);
-    drmModeResPtr res=drmModeGetResources(fd);assert(res);drmModeConnectorPtr c=drmModeGetConnector(fd,res->connectors[0]);assert(c);
-    uint32_t initial=framebuffer(fd,0);assert(!drmModeSetCrtc(fd,res->crtcs[0],initial,0,0,&c->connector_id,1,&c->modes[0]));
+    uint32_t initial=framebuffer(fd,0);assert(!drmModeSetCrtc(fd,output.crtc,initial,0,0,&output.connector,1,&output.mode));
     usleep(100000);
-    for(unsigned frame=1;frame<=SN;frame++) {
+    for(unsigned frame=1;frame<=SN;frame++)
+    {
         uint32_t fb=framebuffer(fd,frame);submit(fd,plane,fb,frame);
         if(frame<=SN/2)drain(fd,100);else drain(fd,0);
     }
     long long end=stamp_us()+3000000;while(stamp_us()<end)drain(fd,50);
     printf("SNAP_PRODUCER frames=%d flips=%u\n",SN,flips);
     /* Keep immutable scanout alive through final consumer observation. */
-    sleep(10);drmModeFreeConnector(c);drmModeFreeResources(res);close(fd);return flips!=SN/2;
+    sleep(10);close(fd);return flips!=SN/2;
 }
