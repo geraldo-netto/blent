@@ -1,5 +1,6 @@
 /* T389: compare the actual exchange implementation's wait path. */
 #define _GNU_SOURCE
+#include "checked_arguments.h"
 #include <assert.h>
 #include <pthread.h>
 #include <stdatomic.h>

@@ -5,7 +5,6 @@
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
 | T1286 | open | low | small | Replace unchecked atoi option parsing in scripts/benchmarks/frame-retirement.c, shared-damage.c and idle_writer.c with complete bounded parsing. Offline sanitized frame-retirement probe accepts `1junk`, exits 0 and reports hold_ms=1; analogous scale/mode/fps fields accept trailing garbage, while out-of-int-range atoi input has no defined portable result. Add permanent malformed/overflow/boundary cases before the fix, retaining valid workload checks, and require rejection before allocation/thread/output work. |
-| T1287 | open | low | small | Prevent NDEBUG from disabling essential calls and guards in scripts/benchmarks/frame-retirement.c, shared-damage.c and idle_writer.c. Unlike checked_arguments.h users, these harnesses permit assertions to disappear although they contain pthread_create, clock_gettime, socketpair, raw-ring initialization and other required effects. Add permanent compiler-rejection checks before a shared guard fix (or preserve required effects independently of assertions); normal builds must retain existing workload behavior. |
 
 
 

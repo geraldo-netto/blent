@@ -1,5 +1,7 @@
 /* T570: exact capture publication code, isolated from EVDI and encoding.
  * Link with --gc-sections; unused device callbacks are never called. */
+#define _GNU_SOURCE
+#include "checked_arguments.h"
 #include "capture.c"
 #include <assert.h>
 #include <sys/socket.h>
