@@ -39,7 +39,7 @@ jobs:
             libclang-dev libavcodec-dev libavformat-dev libavutil-dev \
             libavfilter-dev libavdevice-dev libswresample-dev libswscale-dev \
             libva-dev libx11-xcb-dev libxcb-dri3-dev libxrandr-dev libxfixes-dev libxdamage-dev libxrender-dev libxext-dev \
-            libdrm-dev fakeroot bubblewrap ffmpeg nodejs xvfb xauth x11-utils dbus-x11 at-spi2-core libglib2.0-bin python3-xlib python3-tk python3-numpy python3-pil python3-venv
+            libdrm-dev fakeroot bubblewrap ffmpeg nodejs xvfb xauth x11-utils dbus-x11 at-spi2-core libglib2.0-bin python3-xlib python3-tk python3-numpy python3-pil python3-venv metacity wmctrl
           sudo apt-get install -y libevdi-dev libpipewire-0.3-dev libclang-dev pipewire-bin libusb-1.0-0-dev
 
       - name: Check Cinnamon cursor lifecycle (T604)

@@ -8,6 +8,8 @@ pub(crate) use notices::bundled_notices_url;
 #[cfg(target_os = "linux")]
 mod linux;
 #[cfg(target_os = "linux")]
+pub(crate) mod placement;
+#[cfg(target_os = "linux")]
 pub(crate) use linux::*;
 #[cfg(windows)]
 mod windows;

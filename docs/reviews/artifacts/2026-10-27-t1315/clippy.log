@@ -1,0 +1,167 @@
+    Checking linux-raw-sys v0.12.1
+    Checking smallvec v1.15.1
+   Compiling memchr v2.8.1
+    Checking scoped-tls v1.0.1
+    Checking libloading v0.8.9
+    Checking downcast-rs v1.2.1
+    Checking percent-encoding v2.3.2
+    Checking ttf-parser v0.25.1
+    Checking xcursor v0.3.10
+    Checking cursor-icon v1.2.0
+    Checking ab_glyph_rasterizer v0.1.10
+    Checking linux-raw-sys v0.4.15
+   Compiling bytemuck_derive v1.10.2
+    Checking xkeysym v0.2.1
+    Checking memmap2 v0.9.10
+    Checking arrayref v0.3.9
+    Checking accesskit v0.19.0
+    Checking quick-xml v0.39.4
+    Checking ahash v0.8.12
+    Checking strict-num v0.1.1
+    Checking x11-dl v2.21.0
+   Compiling ring v0.17.14
+    Checking adler2 v2.0.1
+    Checking dlib v0.5.3
+    Checking parking_lot_core v0.9.12
+    Checking form_urlencoded v1.2.2
+    Checking as-raw-xcb-connection v1.0.1
+    Checking foldhash v0.1.5
+    Checking x11rb-protocol v0.13.2
+    Checking arrayvec v0.7.6
+    Checking crc32fast v1.5.0
+    Checking raw-window-handle v0.6.2
+    Checking num-traits v0.2.19
+    Checking icu_normalizer v2.2.0
+    Checking fdeflate v0.3.7
+   Compiling thiserror-impl v2.0.18
+    Checking epaint_default_fonts v0.32.3
+    Checking nohash-hasher v0.2.0
+    Checking smol_str v0.2.2
+    Checking profiling v1.0.18
+    Checking dpi v0.1.2
+    Checking miniz_oxide v0.8.9
+    Checking pxfm v0.1.29
+    Checking byteorder-lite v0.1.0
+    Checking wayland-sys v0.31.11
+    Checking parking_lot v0.12.5
+    Checking hashbrown v0.15.5
+    Checking rustix v0.38.44
+    Checking glutin_egl_sys v0.7.1
+    Checking web-time v1.1.0
+    Checking glow v0.16.0
+    Checking tracing-subscriber v0.3.23
+    Checking tokio v1.52.3
+    Checking xkbcommon-dl v0.4.2
+    Checking flate2 v1.1.9
+    Checking idna_adapter v1.2.2
+    Checking accesskit_consumer v0.28.0
+    Checking idna v1.1.0
+    Checking bytemuck v1.25.0
+    Checking png v0.18.1
+    Checking url v2.5.8
+    Checking thiserror v2.0.18
+    Checking tiny-skia-path v0.11.4
+    Checking emath v0.32.3
+    Checking zbus_xml v5.1.1
+    Checking rustix v1.1.4
+    Checking ecolor v0.32.3
+    Checking tungstenite v0.21.0
+    Checking webbrowser v1.2.1
+    Checking tiny-skia v0.11.4
+    Checking zbus-lockstep v0.5.2
+    Checking owned_ttf_parser v0.25.1
+    Checking ab_glyph v0.2.32
+   Compiling wayland-scanner v0.31.10
+    Checking epaint v0.32.3
+   Compiling zbus-lockstep-macros v0.5.2
+   Compiling rustls v0.23.45
+    Checking moxcms v0.8.1
+    Checking egui v0.32.3
+    Checking glutin_glx_sys v0.6.1
+    Checking glutin v0.32.3
+    Checking rustls-webpki v0.103.15
+    Checking rcgen v0.14.10
+    Checking tokio-util v0.7.18
+    Checking tokio-tungstenite v0.21.0
+    Checking polling v3.11.0
+    Checking wayland-backend v0.3.15
+    Checking gethostname v1.1.0
+    Checking tempfile v3.27.0
+    Checking async-io v2.6.0
+    Checking calloop v0.13.0
+    Checking calloop v0.14.4
+    Checking blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Checking image v0.25.10
+    Checking async-signal v0.2.14
+    Checking zbus v4.4.0
+    Checking async-process v2.5.0
+    Checking wayland-client v0.31.14
+    Checking wayland-csd-frame v0.3.0
+    Checking zbus v5.16.0
+    Checking egui_glow v0.32.3
+    Checking tokio-rustls v0.26.5
+    Checking wayland-protocols v0.32.12
+    Checking wayland-cursor v0.31.14
+    Checking calloop-wayland-source v0.3.0
+    Checking calloop-wayland-source v0.4.1
+    Checking x11rb v0.13.2
+    Checking atspi-common v0.9.0
+    Checking ksni v0.3.6
+    Checking arboard v3.6.1
+    Checking wayland-protocols-wlr v0.3.12
+    Checking wayland-protocols-plasma v0.3.12
+    Checking wayland-protocols-experimental v20250721.0.1
+    Checking wayland-protocols-misc v0.3.12
+    Checking smithay-client-toolkit v0.19.2
+    Checking smithay-client-toolkit v0.20.0
+    Checking blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Checking sctk-adwaita v0.10.1
+    Checking smithay-clipboard v0.7.3
+    Checking winit v0.30.13
+    Checking atspi-proxies v0.9.0
+    Checking accesskit_atspi_common v0.12.0
+    Checking atspi-connection v0.9.0
+    Checking atspi v0.25.0
+    Checking accesskit_unix v0.15.0
+    Checking glutin-winit v0.5.0
+    Checking accesskit_winit v0.27.0
+    Checking egui-winit v0.32.3
+    Checking eframe v0.32.3
+    Checking blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+error: the loop variable `index` is used to index `DOCUMENTS`
+   --> gui/src/about/tests.rs:400:18
+    |
+400 |     for index in 1..DOCUMENTS.len() {
+    |                  ^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#needless_range_loop
+    = note: `-D clippy::needless-range-loop` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_range_loop)]`
+help: consider using an iterator and enumerate()
+    |
+400 -     for index in 1..DOCUMENTS.len() {
+400 +     for (index, <item>) in DOCUMENTS.iter().enumerate().skip(1) {
+    |
+
+error: field assignment outside of initializer for an instance created with Default::default()
+   --> gui/src/direct_input_settings.rs:182:9
+    |
+182 | /         config.direct_input = Some(Config {
+183 | |             monitor: "removed".into(),
+184 | |             mode: Mode::DirectMouse,
+185 | |         });
+    | |___________^
+    |
+note: consider initializing the variable with `blent_config::FileConfig { direct_input: Some(Config {
+                  monitor: "removed".into(),
+                  mode: Mode::DirectMouse,
+              }), ..Default::default() }` and removing relevant reassignments
+   --> gui/src/direct_input_settings.rs:181:9
+    |
+181 |         let mut config = FileConfig::default();
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#field_reassign_with_default
+    = note: `-D clippy::field-reassign-with-default` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::field_reassign_with_default)]`
+
+error: could not compile `blent-gui` (bin "blent-gui" test) due to 2 previous errors

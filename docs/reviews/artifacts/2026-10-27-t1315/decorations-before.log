@@ -1,0 +1,41 @@
+SDK: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files
+Codecs: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra/7ccd63f7532e93ce345b67dedc492748bba449917e81a031502715bc38e3f438/files
+Target/cache owner: /backups/disk2/blent-work/2026-10-20-all-open/T835/target
+Command: cargo test --offline --locked -p blent-gui t1315_native_primary_monitor_offset -- --nocapture
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.81s
+     Running unittests src/main.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent_gui-70672c50d3c9b23e)
+
+running 1 test
+test placement_tests::t1315_native_primary_monitor_offset ... 
+thread 'placement_tests::t1315_native_primary_monitor_offset' (4066510) panicked at gui/src/placement_tests.rs:132:13:
+
+running 1 test
+test placement_tests::t1315_native_primary_monitor_offset ... dbus-daemon[4066636]: [session uid=1000 pid=4066636] Activating service name='org.a11y.Bus' requested by ':1.0' (uid=1000 pid=4066651 comm="/backups/disk2/blent-work/2026-10-20-all-open/T835" label="vscode (unconfined)")
+dbus-daemon[4066636]: [session uid=1000 pid=4066636] Successfully activated service 'org.a11y.Bus'
+
+thread 'placement_tests::t1315_native_primary_monitor_offset' (4066652) panicked at gui/src/placement_tests.rs:98:5:
+T1315 vertical center: [[1480.0 830.0] - [2520.0 1607.0]]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    placement_tests::t1315_native_primary_monitor_offset
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 177 filtered out; finished in 0.54s
+
+
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    placement_tests::t1315_native_primary_monitor_offset
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 177 filtered out; finished in 1.26s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

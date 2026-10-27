@@ -663,11 +663,14 @@ dependencies = [
  "blent",
  "blent-config",
  "eframe",
+ "raw-window-handle",
  "serde",
  "tempfile",
  "tokio",
  "toml",
  "windows-sys 0.61.2",
+ "winit",
+ "x11rb",
 ]
 
 [[package]]

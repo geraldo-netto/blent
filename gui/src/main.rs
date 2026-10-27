@@ -17,11 +17,15 @@ mod gpu_settings;
 mod media_owner;
 mod media_target_settings;
 mod pipe_settings;
+#[cfg(all(test, target_os = "linux"))]
+mod placement_tests;
 mod platform;
 mod platform_diagnostics;
 mod resource_workspace;
 mod settings;
 mod stream_settings;
+#[cfg(target_os = "linux")]
+mod window_placement;
 mod workspace_style;
 use platform::*;
 mod status_poll;
@@ -86,6 +90,8 @@ fn dispatch_action(
 }
 
 struct App {
+    #[cfg(target_os = "linux")]
+    placement: platform::placement::Initial,
     selected: Option<blent_config::tablets::Identity>,
     scheduling_status: String,
     camera: camera_settings::Panel,
@@ -275,6 +281,8 @@ impl App {
             )
         };
         Self {
+            #[cfg(target_os = "linux")]
+            placement: platform::placement::Initial::new(cc),
             selected: None,
             #[cfg(windows)]
             monitors,
@@ -391,6 +399,8 @@ impl eframe::App for App {
 
 impl App {
     fn show_window(&mut self, ctx: &egui::Context) {
+        #[cfg(target_os = "linux")]
+        self.placement.apply(ctx);
         self.poll_action();
         let status = self.status.lock().map(|s| s.clone()).unwrap_or_default();
         if !matches!(self.tab, Tab::Overview | Tab::Connections | Tab::About) {
@@ -1237,7 +1247,16 @@ fn settings_grid(ui: &mut egui::Ui, id: impl std::hash::Hash, render: impl FnOnc
 
 fn main() -> eframe::Result {
     let scheduling_status = blent_config::scheduling::apply_configured();
-    let options = eframe::NativeOptions {
+    let options = native_options();
+    eframe::run_native(
+        "Blent",
+        options,
+        Box::new(move |cc| Ok(Box::new(App::new(cc, scheduling_status)))),
+    )
+}
+
+fn native_options() -> eframe::NativeOptions {
+    eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             // Tall enough for the longest settings tab; anything shorter
             // scrolls rather than hiding rows off the bottom.
@@ -1251,16 +1270,11 @@ fn main() -> eframe::Result {
                 width: 64,
                 height: 64,
             }),
-        // Open in the middle of the screen rather than wherever the window
-        // manager drops it (Wayland compositors cannot honour this; X11 can).
-        centered: true,
+        // Linux uses current primary-monitor bounds, including their origin.
+        // Wayland leaves placement to the compositor.
+        centered: !cfg!(target_os = "linux"),
         ..Default::default()
-    };
-    eframe::run_native(
-        "Blent",
-        options,
-        Box::new(move |cc| Ok(Box::new(App::new(cc, scheduling_status)))),
-    )
+    }
 }
 
 #[cfg(all(test, target_os = "linux"))]
@@ -1564,6 +1578,7 @@ mod tests {
         (
             directory,
             App {
+                placement: Default::default(),
                 selected: None,
                 scheduling_status: "This process: High priority active".into(),
                 camera: camera_settings::Panel::default(),

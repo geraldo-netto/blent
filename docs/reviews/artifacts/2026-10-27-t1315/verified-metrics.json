@@ -1,0 +1,409 @@
+{
+  "tools": "cargo-llvm-cov 0.8.7, LLVM 22.1.8; project syn 2.0.119 metric; Python 3.12.3 AST",
+  "coverage": [
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "new",
+      "line": 28,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "apply",
+      "line": 34,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "target",
+      "line": 50,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "window_id",
+      "line": 56,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "screen",
+      "line": 64,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "position",
+      "line": 75,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "outer_size",
+      "line": 94,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "area_on",
+      "line": 106,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        118
+      ]
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "property",
+      "line": 124,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/platform/placement.rs",
+      "name": "work_area",
+      "line": 144,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/window_placement.rs",
+      "name": "valid",
+      "line": 8,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/window_placement.rs",
+      "name": "intersect",
+      "line": 16,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/window_placement.rs",
+      "name": "center",
+      "line": 32,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/window_placement.rs",
+      "name": "scaled_window",
+      "line": 46,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "new",
+      "line": 239,
+      "language": "rust",
+      "covered": 54,
+      "total": 57,
+      "percent": 94.73684210526316,
+      "passes": true,
+      "missing": [
+        254,
+        256,
+        270
+      ]
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "show_window",
+      "line": 401,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "main",
+      "line": 1248,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "native_options",
+      "line": 1258,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": {
+    "gui/src/platform/placement.rs": [
+      [
+        28,
+        "new",
+        1
+      ],
+      [
+        34,
+        "apply",
+        4
+      ],
+      [
+        50,
+        "target",
+        1
+      ],
+      [
+        56,
+        "window_id",
+        5
+      ],
+      [
+        64,
+        "screen",
+        4
+      ],
+      [
+        75,
+        "position",
+        4
+      ],
+      [
+        94,
+        "outer_size",
+        1
+      ],
+      [
+        106,
+        "area_on",
+        4
+      ],
+      [
+        124,
+        "property",
+        3
+      ],
+      [
+        144,
+        "work_area",
+        1
+      ]
+    ],
+    "gui/src/window_placement.rs": [
+      [
+        8,
+        "valid",
+        5
+      ],
+      [
+        16,
+        "intersect",
+        5
+      ],
+      [
+        32,
+        "center",
+        4
+      ],
+      [
+        46,
+        "scaled_window",
+        6
+      ]
+    ],
+    "gui/src/main.rs": [
+      [
+        239,
+        "new",
+        9
+      ],
+      [
+        401,
+        "show_window",
+        7
+      ],
+      [
+        1248,
+        "main",
+        2
+      ],
+      [
+        1258,
+        "native_options",
+        1
+      ]
+    ],
+    "gui/src/placement_tests.rs": [
+      [
+        11,
+        "primary_monitor",
+        1
+      ],
+      [
+        55,
+        "update",
+        3
+      ],
+      [
+        66,
+        "native_probe",
+        3
+      ],
+      [
+        106,
+        "t1315_native_primary_monitor_offset",
+        4
+      ]
+    ],
+    "gui/src/platform/placement/tests.rs": [
+      [
+        4,
+        "t1315_backend_selection_never_treats_wayland_as_x11",
+        1
+      ],
+      [
+        25,
+        "t1315_default_placement_submits_no_commands",
+        2
+      ],
+      [
+        36,
+        "t1315_window_ids_reject_foreign_and_invalid_handles",
+        1
+      ],
+      [
+        60,
+        "cardinal",
+        1
+      ],
+      [
+        82,
+        "native_contracts",
+        1
+      ],
+      [
+        126,
+        "native_layouts",
+        5
+      ],
+      [
+        207,
+        "t1315_unavailable_screen_is_not_retried_or_positioned",
+        2
+      ],
+      [
+        231,
+        "native_mapping_lifetime",
+        4
+      ]
+    ],
+    "gui/src/window_placement/tests.rs": [
+      [
+        4,
+        "t1315_dynamic_origins_sizes_and_scales",
+        5
+      ],
+      [
+        25,
+        "t1315_invalid_geometry_rejects_without_position",
+        2
+      ],
+      [
+        65,
+        "t1315_oversized_windows_and_usable_intersections",
+        1
+      ]
+    ],
+    "gui/tests/placement_manager.py": [
+      [
+        8,
+        "wait_ready",
+        3
+      ],
+      [
+        15,
+        "main",
+        2
+      ]
+    ]
+  },
+  "sources": {
+    "gui/src/platform/placement.rs": "61f4c230f72bb7da17748a52734c805de669f26f7a0f019f5c57d4dd62372c91",
+    "gui/src/window_placement.rs": "39f500398965a14d9256310ec406304ebda4d4514605f4728e3c210b4711d7dc",
+    "gui/src/main.rs": "efa43dd06a764cb99e3390cf0d1c53477fc4ad1a941d80e5fb852e1ff3b006c9",
+    "gui/src/placement_tests.rs": "16929e30236242087b5aad1553b2f36c97d8bb534c3be024efb7d057a2b4d083",
+    "gui/src/platform/placement/tests.rs": "6c8366a9e5801cc4049e7563577ad093d2aa73398c7c5e56ad47304c577c9362",
+    "gui/src/window_placement/tests.rs": "70a38c8a39ac3c27ef5f558bbb2f8ee2eb29490c3b5250fe442f7355c2594690",
+    "gui/tests/placement_manager.py": "9575965093e53b8a1e691891d40198fbe41bb0a169a99b6a54f90f8f98ca426b"
+  }
+}

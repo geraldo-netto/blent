@@ -29,6 +29,17 @@ This avoids Blent-triggered hot-add under a detected Xorg session; it does not
 establish safety for an external display server starting concurrently or cure
 unrelated driver/compositor faults.
 
+## Initial window placement
+
+On X11, Blent centers its window on the current primary monitor when it opens.
+Placement uses live monitor coordinates, the desktop work area when available,
+and the actual window size (including decorations) and display scale.
+It waits for the window to be mapped before calculating its position. It has no monitor-count limit or
+fixed arrangement. An oversized window keeps its top-left controls on that monitor.
+Later user moves are preserved. If X11 supplies no primary monitor or its query
+fails, Blent leaves placement to the window manager and reports the limitation
+on standard error. On Wayland, the compositor controls window placement.
+
 ## GPU ordering before EVDI (T700)
 
 The full source/tarball installer, `make setup-system`, and Arch installation
