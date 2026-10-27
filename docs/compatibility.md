@@ -107,8 +107,13 @@ capabilities, but only a real stream validates the selected configuration.
 
 - **T222:** Cinnamon/Xorg crashed during virtual-display attachment; cause and
   mitigation remain unverified. See the [incident report](reviews/2026-09-17-cinnamon-restart.md).
-- The optional in-process build supports libx264/NVENC and explicitly rejects
-  VAAPI configurations. Use the default FFmpeg subprocess build for VAAPI.
+- The optional `inproc-encoder` build runs native libavcodec in a private worker.
+  It supports libx264/NVENC and `h264_vaapi_baseline`, whose VAAPI adapter uploads
+  NV12 into owned hardware surfaces on the configured render node. Other VAAPI
+  profiles, VP9, AV1 and ten-bit encoding remain unavailable in this build;
+  use the default FFmpeg child path for those profiles. Adapter availability and
+  automated device-opening tests do not establish compatibility with every GPU
+  or driver; native acceptance remains specific to the tested hardware.
 - **T332:** accepted dimensions/FPS can exceed the EDID pixel-clock limit;
   3840×2160 at 90 fps is one example. Lowering FPS can produce a valid mode.
 
