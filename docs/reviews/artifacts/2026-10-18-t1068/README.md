@@ -19,8 +19,7 @@ regressions remain. The contract documents containing lifetimes and state bounds
 this patch adds no native allocation, queue, timer or asynchronous cleanup owner.
 
 Final offline ordinary suite: **2,159 tests, zero failures/errors/skips**. All **13**
-maintained authored production functions independently measure **100% or
-higher** native JaCoCo 0.8.15 line coverage. Frozen source/vector and compiled class
+maintained authored production functions independently measure **100%** native JaCoCo 0.8.15 line coverage. Frozen source/vector and compiled class
 hashes, raw counters and pinned Kotlin PSI 1.9.20 inventories are retained, with no
 new exclusions. Source audit covers 113 production/test functions, maximum estimate
 8; native SonarQube remains T1019. Twelve architecture/contract/portability checks
