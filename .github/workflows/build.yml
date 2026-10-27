@@ -40,7 +40,7 @@ jobs:
             libavfilter-dev libavdevice-dev libswresample-dev libswscale-dev \
             libva-dev libx11-xcb-dev libxcb-dri3-dev libxrandr-dev libxfixes-dev libxdamage-dev libxrender-dev libxext-dev \
             libdrm-dev fakeroot bubblewrap ffmpeg nodejs xvfb xauth x11-utils dbus-x11 at-spi2-core libglib2.0-bin python3-xlib python3-tk python3-numpy python3-pil python3-venv
-          sudo apt-get install -y libevdi-dev libpipewire-0.3-dev libclang-dev pipewire-bin
+          sudo apt-get install -y libevdi-dev libpipewire-0.3-dev libclang-dev pipewire-bin libusb-1.0-0-dev
 
       - name: Check Cinnamon cursor lifecycle (T604)
         run: python3 -m unittest discover -s scripts/tests -p test_cinnamon_cursor.py
@@ -62,6 +62,9 @@ jobs:
 
       - name: Build daemon and GUI
         run: cargo build --release --features blent/native-audio
+
+      - name: Build USB helper (T1312)
+        run: make build-usb-helper
 
       - name: Install coverage reporting tools (T497)
         run: |
@@ -118,6 +121,8 @@ jobs:
             target/release/blent
             target/release/blent-gui
             target/release/blent-audio
+            target/release/blent-usb-broker
+            target/release/blent-usb-io
             host/evdi/evdi_helper
 
   build-android:
