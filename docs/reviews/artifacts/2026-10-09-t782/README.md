@@ -14,9 +14,5 @@ The exact replay sources retain historical absolute include paths; redirect them
 to matching baseline/current checkouts and compile with `cc -O3 -pthread
 -I<host/evdi> replay.c -o replay`. Arguments: SCALE KIND WORKERS 0. No devices.
 
-The separate tile sweep builds the same code with TILE = 128/256/512/1024/2048
-output pixels (two BGRA rows: 1/2/4/8/16 KB), five alternating-order trials,
-scales 2/4, workers 1/4, distant/dense/narrow cases. No syscalls occur per tile.
-Dense median gains with larger tiles are small and trial ranges overlap; sparse
-cases lack a consistent gain. Keep the smaller 1 KB worker-local scratch.
+Worker-local scratch is 1 KB. No syscalls occur per tile.
 No full-frame temporary, heap allocation, global ISA flags or downloads.

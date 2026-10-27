@@ -18,8 +18,7 @@ here and remains a separate objective.
 
 The best-effort **1 MiB pipe request remains unchanged**. Bigger queues can hold
 older video even when memory is plentiful. The [capacity ramp](2026-09-17-pipe-capacity.md)
-and [io_uring evaluation](2026-09-17-io-uring.md) retain their separate measurements;
-neither justifies a larger default or a production io_uring dependency.
+records the queue-age tradeoff; it does not justify a larger default.
 
 ## Paced transfer results
 

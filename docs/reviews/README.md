@@ -106,7 +106,6 @@ the linked reports and their artifacts. Checksum-protected evidence stays unchan
 | [T604: retain the mouse while touch is enabled](2026-09-26-cinnamon-cursor.md) | A Cinnamon-specific cursor policy restored visibility when an owned virtual touchscreen triggered hiding. |
 | [T626: CLI worker fixture drift](2026-09-26-cli-worker-fixture.md) | A CLI test still expected automatic encoder threading after the shared default changed to one worker. |
 | [T629: physical panel metadata on the real control-open path](2026-09-26-control-handshake-coverage.md) | A real control-socket fixture covered authentication before native display dimensions, including absent physical-size fields. |
-| [T593: controlled phase rejects the cadence candidate](2026-09-26-controlled-gpu-phase.md) | A controlled phase sweep rejected a capture-cadence candidate: it showed no consistent latency benefit and violated minimum capture spacing. |
 | [Isolate LLVM coverage objects (T638)](2026-09-26-coverage-object-isolation.md) | Stale instrumented executables contaminated a coverage report even though current source hashes matched. |
 | [T553: simultaneous display and camera route assessment](2026-09-26-display-camera-routing.md) | A short simultaneous display/camera sample showed no sustained local socket backlog or reason to add automatic route balancing. |
 | [T612: bounded encoder worker selection](2026-09-26-encoder-workers.md) | Automatic encoder selection compared bounded worker counts with quality, progress, CPU and memory guards. |
@@ -116,7 +115,6 @@ the linked reports and their artifacts. Checksum-protected evidence stays unchan
 | [T600: full-daemon thread-budget validation](2026-09-26-full-daemon-thread-budgets.md) | Matched full-daemon trials found encoder workers, rather than runtime-worker count, drove the useful CPU reduction in this workload. |
 | [Per-function coverage and bounded fuzzing — 2026-09-26](2026-09-26-function-coverage.md) | The source-matched local coverage gate passed all listed functions, while a later remote Linux gate exposed missing empty-sysfs coverage. |
 | [T578: explicit GPU layout prerequisite](2026-09-26-gpu-layout.md) | The X11 stack negotiated an older DRI3 version and could not supply the proposed explicit-layout export. |
-| [T593: pacing, drift and source phase](2026-09-26-gpu-pacing.md) | Quiet-window pacing trials showed strong dependence on source/capture phase and no consistent improvement at matched frame rates. |
 | [T602: simpler installation and optional ADB](2026-09-26-installation-research.md) | This dated research separated APK installation from runtime transport and proposed guided bundled-ADB setup followed by an accessory prototype. |
 | [T627: live decoder selection and capture readiness](2026-09-26-live-decoder-selection.md) | The live Android surface-codec path omitted the negotiated decoder selection, so valid render output lacked the required receipt. |
 | [Blent follow-up implementation and validation](2026-09-26-next-batch.md) | This batch repaired replay completion and source copying, closed isolated camera coverage gaps and added native allocation and capture observations. |
@@ -217,14 +215,13 @@ the linked reports and their artifacts. Checksum-protected evidence stays unchan
 | --- | --- |
 | [Android review implementation](2026-10-09-android-fixes.md) | This implementation record separates portable Android contracts, bounded requests and native retirement from UI control. |
 | [Android performance review, 2026-10-09](2026-10-09-android-performance.md) | This static Android review used focused host-JVM probes to identify UI blocking, unbounded response memory and allocation opportunities. |
-| [Owned C performance checks: T768, T769, T773, T778](2026-10-09-c-performance.md) | C conversion experiments supported weighted work, bounded damage spans and runtime SIMD, with independent pixel oracles. |
+| [Owned C performance checks: T768, T769, T778](2026-10-09-c-performance.md) | C conversion experiments supported weighted work, bounded damage spans and runtime SIMD, with independent pixel oracles. |
 | [Host performance and resource lifecycle review](2026-10-09-host-performance-lifecycle.md) | Host probes reproduced blocking controller destruction, stale status after worker panic and uncapped command output. |
 | [Project coupling, SOLID and API boundary review](2026-10-09-project-boundaries.md) | The boundary review identified concrete contract dependencies, a type cycle and blocking native work inside policy/UI paths. |
 | [Implementation update (2026-10-10)](2026-10-09-resource-lifecycle.md) | Lifecycle probes showed unbounded pending jobs and hidden cleanup failures despite safe native admission. |
 | [T827: enforce scoped contract boundaries](2026-10-10-architecture-enforcement.md) | Scoped architecture guards and independent contract builds reject forbidden implementation dependencies. |
 | [T818: reusable audio staging and identity-rate bulk copy](2026-10-10-audio-staging.md) | Audio staging reused connection-owned buffers and bulk-copied the exact identity-rate case while preserving interpolation and atomic validation. |
 | [T823: private native owners, portable C contracts](2026-10-10-c-owner-contracts.md) | C public contracts hid thread and buffer-owner layouts while preserving explicit borrowed targets and immutable leases. |
-| [T817: camera hardware/fusion evaluation](2026-10-10-camera-acceleration.md) | Camera hardware decode/readback and a fused-output prototype were rejected for the tested workloads. |
 | [T816: bounded camera frame reuse](2026-10-10-camera-frame-reuse.md) | Camera decoding gained a bounded pool whose outstanding readers prevent reuse. |
 | [Fork name and attribution: local review](2026-10-10-fork-notices.md) | A local notice review distinguished the inherited license from new contribution attribution and found missing notices in a cached APK. |
 | [Host review fixes (2026-10-10)](2026-10-10-host-fixes.md) | Host fixes separate public contracts from adapters, supervise worker failures, and bound command output while retaining ownership until native cleanup finishes. |
@@ -232,7 +229,6 @@ the linked reports and their artifacts. Checksum-protected evidence stays unchan
 | [T819: optional native encoder isolation](2026-10-10-native-encoder-isolation.md) | Running the optional native encoder in a supervised child contains process failures. |
 | [T841: retirement observer coverage snapshots](2026-10-10-retirement-counters.md) | A blocked retirement observer made LLVM infer an invalid coverage counter. |
 | [T793: current-source shared-encode replay repair](2026-10-10-t793-shared-encode-replay.md) | The repaired replay builds against the current contracts at the recorded revision and produces matching FIFO/shared-memory encoded and decoded output. |
-| [T794: mapped VAAPI producer implementation plan](2026-10-10-t794-implementation-plan.md) | The mapped-surface encoder candidate was rejected after repeatable CPU regressions. |
 | [T845: notices travel with the standalone APK](2026-10-10-t845-android-notices.md) | The standalone Android APK includes project and dependency notices as readable assets. |
 | [T846: USB-first ADB-free transport feasibility](2026-10-10-t846-usb-prototype.md) | The selected tablet completed one synthetic accessory-only USB echo run with debugging disabled, after failed attempts exposed a zero-length-packet handling bug. |
 | [T994: delayed local Stop preserves the shared connection](2026-10-11-local-resource-cancellation.md) | A delayed local Stop could fail the shared connection after its resource had already retired. |

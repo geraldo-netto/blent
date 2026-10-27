@@ -28,8 +28,5 @@ speedup. Later formats' `cold_us` means first query for that format, not a fresh
 process. Native metadata results remain request-scoped; no persistent cache.
 These timings measure metadata reporting, not video FPS or application startup.
 
-`sequence-trial/` preserves rejected first candidate source and provenance.
-Baseline runs 1–3 and sequence candidate 1–3 reused processes and looked faster;
-fresh-process runs 4–5 exposed a small-format regression. Final candidate uses
-bounded loops and tiny MIME arrays instead of sequence pipelines and MIME sets.
-All baseline runs remain for audit; final table uses only specified matched runs.
+The production candidate uses bounded loops and tiny MIME arrays. The table
+uses only the matched fresh-process runs listed above.

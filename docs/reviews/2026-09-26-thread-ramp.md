@@ -162,8 +162,8 @@ changed. Benchmark-only work is exempt from new coverage-only tests.
 
 Follow-up [T600 full-daemon validation](2026-09-26-full-daemon-thread-budgets.md)
 now records independent budgets, 30/60-Hz repeats, native RSS, syscall/scheduler
-attribution and bounded status/reconnect/resize checks. T598 profiling, T593
-phase sensitivity, T599 EVDI ownership and T603 tuning research are complete.
+attribution and bounded status/reconnect/resize checks. T598 profiling,
+T599 EVDI ownership and T603 tuning research are complete.
 T612 queues encoder-first tuning; no production thread default or self-tuning
 policy changed in these investigations.
 

@@ -23,10 +23,6 @@ counters are process-wide and quantized. Medians of 24 passes:
 | Packet decode | 168.112 µs | 139.464 µs | 4358.144 B | 2195.456 B |
 | Portable output policy, accepting fake track | 63.639 µs | 54.585 µs | 65.536 B | 65.536 B |
 
-Direct per-sample readShortLe trial is rejected: 201.316 µs using the candidate
-validation path versus 139.464 µs for bulk scratch conversion (~44% slower), with
-the same measured allocation. Its generated source hash is retained in provenance.
-The baseline-derived direct trial also regressed (214.575 versus 168.112 µs).
 Packet checksums match; permanent tests validate complete PCM, endian handling,
 partial/zero/dead writes, truncation atomicity, cancellation and array ownership.
 

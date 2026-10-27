@@ -54,7 +54,7 @@ slots contain 6.144 MB of pixels plus page padding. Users control slot count.
 CPU-to-GPU upload and stock EVDI readback remain. Direct mapped GPU surfaces need
 a different producer stride/history/lifetime contract; this change does not
 claim CPU-to-GPU zero-copy or implement cross-device imports. `mapping.json`
-records mapping availability only; producer integration research remains T794. No live desktop,
+records mapping availability only. No live desktop,
 installed daemon, Android application or dependency was modified for testing.
 
 ## Permanent validation

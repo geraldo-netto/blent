@@ -28,7 +28,7 @@ whole tablet experience.
 | [Decoder input](benchmarks/2026-09-18-decoder-input.md) | T403 staging versus direct codec-buffer reads. Staging stays default; no kernel zero-copy or battery claim. |
 | [Input batching](benchmarks/2026-09-17-input-batching.md) | Native bytes and synchronization checked; writes fell from 256 to 38 for the recorded sequence. Counting writers, not live input latency. |
 | [Readiness](benchmarks/2026-09-17-readiness.md) | T405 native writer/optional Rust reader versus the preceding revision: cancellation, 1/2/4-session CPU, reads and frame age. |
-| [Pipe capacity](benchmarks/2026-09-17-pipe-capacity.md) / [io_uring](benchmarks/2026-09-17-io-uring.md) | Isolated host transports: 1–32 MiB requests/slow-reader age and readiness versus ordinary ring I/O. Experiments do not alter installed applications. |
+| [Pipe capacity](benchmarks/2026-09-17-pipe-capacity.md) | Isolated host transport: 1–32 MiB requests and slow-reader frame age. The experiment does not alter installed applications. |
 | [Lossless RGB](benchmarks/2026-09-18-frame-compression.md) | T419 host frame/rectangle/tile/XOR and native decompression. No production mode; reconstruction, presentation and battery gains were not established. |
 | [USB 2.0](benchmarks/2026-09-18-usb2-compatibility.md) | The selected tablet negotiated 480 Mb/s; ADB throughput and 2,960 replay pictures checked. Charging/battery results are separate. |
 

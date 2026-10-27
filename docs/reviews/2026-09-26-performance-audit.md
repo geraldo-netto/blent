@@ -1,6 +1,6 @@
 # Performance audit: host and Android
 
-The audit separated sampled CPU, sleeping-thread time, allocation counts and native delivery. Camera staging improved a bounded synthetic workload; GPU layout and cadence experiments did not justify new defaults. Missing stacks and unmeasured processes prevent whole-system or battery claims.
+The audit separated sampled CPU, sleeping-thread time, allocation counts and native delivery. Camera staging improved a bounded synthetic workload; GPU layout prerequisites remained unresolved. Missing stacks and unmeasured processes prevent whole-system or battery claims.
 
 Historical record. Names, commands, support claims and TODO states below describe
 the recorded revision. Use the [review map](README.md) for current guidance.
@@ -13,11 +13,8 @@ about 99.94% less process allocation and 35% less elapsed time in the bounded
 synthetic camera-write workload. The signed Android release was rebuilt,
 certificate/package verified, installed and reopened. Camera capture stayed off.
 
-[T578](2026-09-26-gpu-layout.md) found an actual DRI3 prerequisite; it remains
-blocked. [T593](2026-09-26-gpu-pacing.md) narrowed tail latency to source/capture
-phase and retained unsuccessful candidates; it remains open. Neither GPU
-experiment changes the production default. [T597](2026-09-26-algorithm-costs.md)
-records a theoretical algorithm improvement whose tiny practical benefit does
+[T578](2026-09-26-gpu-layout.md) found an actual DRI3 prerequisite.
+[T597](2026-09-26-algorithm-costs.md) records a theoretical algorithm improvement whose tiny practical benefit does
 not justify a production change.
 
 ## Reusable profiles
@@ -220,12 +217,9 @@ precludes silently enabling a camera workload for it.
 ## What to do next
 
 1. Keep the measured T594 improvement; preserve camera consent and lifecycle.
-2. Finish T593's controlled phase/event investigation before promoting GPU cadence.
-3. T598: obtain an optimized shell-profileable full-client baseline and improve
+2. T598: obtain an optimized shell-profileable full-client baseline and improve
    native symbol coverage before assigning fine-grained release CPU/lock costs.
-4. T599: evaluate suppressing redundant EVDI readback only under an admitted GPU
-   consumer, with ownership-safe fallback and complete render validation.
-5. Leave T597's microsecond reporting change deferred; preserve T578's real
+3. Leave T597's microsecond reporting change deferred; preserve T578's real
    prerequisite and T553's explicit routing scope.
 
 ## Preservation and validation

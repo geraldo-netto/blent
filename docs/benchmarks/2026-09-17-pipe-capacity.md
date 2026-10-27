@@ -216,8 +216,6 @@ T414 records the user's older-build YouTube report and Bluetooth-headset/tablet
 setup. These synthetic results demonstrate a possible queueing mechanism,
 not the cause of that report. Confirm player location, audio route, fixed
 offset versus drift, and physical presentation timing before selecting a fix.
-The separate [io_uring replay](2026-09-17-io-uring.md) evaluates submission APIs;
-ordinary io_uring I/O does not by itself address stale raw frames.
 
 ## Reproduce and audit
 

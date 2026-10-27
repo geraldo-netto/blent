@@ -118,8 +118,7 @@ and continues CPU readback; Xorg/EVDI and GPU conversion
 still copy pixels, and USB/Android have their own buffers. T579 added the
 opt-in damage mode and [matched native measurements](reviews/2026-09-26-next-batch.md#t579--damage-triggered-gpu-capture).
 It improves the measured 29 Hz case but worsens p95 against periodic capture at
-30 Hz. The historical T593/T578 follow-ups concern tail latency and cross-device layout
-negotiation; neither is a completed capability or an active commitment here. [T580 measurements](benchmarks/2026-09-21-fifo-demand/README.md)
+30 Hz. Cross-device layout negotiation remains unavailable. [T580 measurements](benchmarks/2026-09-21-fifo-demand/README.md)
 cover the redundant conversion removed from the retained EVDI owner.
 
 ## Repeatable validation

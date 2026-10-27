@@ -1,6 +1,6 @@
 # Syscall and thread follow-up
 
-Syscall traces motivated attribution and worker-budget experiments, not replacing APIs based on sleeping time. Thread counts did not identify active workers or battery cost. Later reports completed or rejected the proposed investigations.
+Syscall traces motivated attribution and worker-budget experiments, not replacing APIs based on sleeping time. Thread counts did not identify active workers or battery cost.
 
 Historical record. Names, commands, support claims and TODO states below describe
 the recorded revision. Use the [review map](README.md) for current guidance.
@@ -40,8 +40,7 @@ Our native capture wait monitors one or two descriptors
 (`host/evdi/capture.c:poll_capture_events`); the GPU event loop monitors one
 (`host/gpu/events.c:gpu_events_wait`). There is no demonstrated descriptor-scan
 bottleneck to justify adding epoll registration/lifecycle here. Keep existing
-epoll users and these small poll sets. T593's deadline/phase investigation is
-distinct from replacing the event notification API.
+epoll users and these small poll sets.
 
 ## ioctl and newer I/O APIs
 
@@ -52,19 +51,6 @@ describes that device-specific interface; `IORING_OP_URING_CMD` offers private
 asynchronous operations for supporting files/drivers, not a universal translation
 of existing ioctl requests. See [io_uring_enter(2)](https://man7.org/linux/man-pages/man2/io_uring_enter.2.html).
 No compatible alternative EVDI readback command has been established here.
-
-The host CPU profile actually samples EVDI readback, `_copy_to_user`, DRM cache
-flushing and conversion. T599 therefore investigates avoiding redundant readback
-under an admitted same-GPU consumer, preserving display ownership and fallback.
-This can remove work rather than merely change its submission mechanism; benefit
-remains unmeasured. It depends on T593, and cross-GPU admission remains T578.
-
-The [T405 io_uring experiment](../benchmarks/2026-09-17-io-uring.md) already compared
-ordinary WRITE/SEND against a small readiness loop. At 60 FPS it found no
-consistent CPU or tail win. One pipe changed from 76.31 to 81.40 ms process CPU
-and 0.525 to 0.715 ms write p99; other cases improved. These measurements do not
-evaluate all ring features or reproduce Tokio, and do not establish a production
-reason to migrate. Ordinary ring I/O does not automatically remove payload copies.
 
 ## Thread budgets: T600
 
@@ -101,9 +87,6 @@ could delay ACKs or create blocking dependencies and is not justified here.
 
 - T598 supplies better attribution: optimized shell-profileable full Android
   client, better host stacks, then scoped syscall/wakeup evidence for T600.
-- T593 resolves GPU source/capture phase behavior before T599 changes capture
-  readback ownership. T599 remains a stronger copy-reduction candidate than a
-  wholesale ioctl replacement.
 - T600 measures thread budgets; it makes no promise of speedup or default change.
 
 Documentation and evidence only; no production tests were rerun for this review.

@@ -22,12 +22,9 @@ flag is set. Normal dirty-update delivery clears the flag. Blent's watchdog
 clears its local pending state to attempt recovery, so a grab followed by retry
 can produce both warnings when the kernel still owns the original request.
 
-An initially considered change to retain local pending state indefinitely was
-rejected: if the kernel sent readiness but its event was lost, no future request
-would be made and normal capture could remain stalled. The API does not expose
-whether an earlier request is still pending. Retain the bounded, idempotent
-retry; warning counts alone do not justify removing this recovery path. The
-coalescing fix removes the demonstrably duplicate grab without that regression.
+The API does not expose whether an earlier request is still pending. The bounded,
+idempotent retry restores progress after lost readiness. Warning counts alone do
+not diagnose a broken recovery path; the fix coalesces duplicate grabs.
 
 The permanent `t623_watchdog_coalesces_grabs_and_recovers_lost_events` regression
 failed on the old double-grab sequence, then passed. It also checks retry after

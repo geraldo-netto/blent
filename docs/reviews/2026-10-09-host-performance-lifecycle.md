@@ -101,7 +101,6 @@ this does not establish a naturally occurring panic in a native session.
 | Finding | Current source work | Candidate and required evidence |
 | --- | --- | --- |
 | T816 | `camera/decoder.rs::transfer` allocates and zeroes a whole YUV420 frame on every decode, then publishes `Arc<Vec<u8>>` through a latest-value watch | Small bounded reusable frame leases. Validate slow consumers, partial reads, EOF, cancellation, generation changes and immutable outstanding previews before measuring allocation and latency. |
-| T817 | Camera uses a single-thread stock FFmpeg H.264 decoder and CPU transpose/mirror/scale/pad/format, then rawvideo through Rust into another output child | Compare compatible hardware decode/filter paths or a fused isolated media worker. Include CPU readback needed by V4L2/preview; hardware acceleration is not automatically cheaper. Preserve fallback and user capacity limits. |
 | T818 | Audio packet input constructs a combined packet, decodes into fixed PCM storage, then allocates/copies native output. Speaker capture/serialization adds staging; identity-rate render still interpolates samples | Reusable per-owner byte buffers, validated payload views and exact identity-rate bulk copy. Measure incremental benefit; preserve atomic sequence validation, clock/discontinuity, phase, endian and stereo semantics. |
 
 At 1280×720 YUV420, one camera frame is 1,382,400 bytes; 30 FPS allocates
@@ -110,12 +109,6 @@ source-derived allocation-volume estimates, **not measured RSS, bandwidth or
 time savings**. The watch channel is already bounded; this is allocation churn,
 not evidence of an unbounded frame queue. A pool must include leases held by
 both output and preview, reject/coalesce when full, and never overwrite readers.
-
-The camera path crosses decoder stdout, Rust storage, and output-child stdin.
-Eliminating a process boundary only to remove copies would conflict with fault
-isolation; shared leases or a separately supervised fused worker are candidates.
-Hardware work must include transfer/format costs and compare p95 delivery age,
-CPU, memory and startup at the same frame settings.
 
 Native audio already uses fixed-size PCM blocks and bounded queues; its callback
 uses `try_lock` with silence on contention. Do not replace this with blocking
@@ -132,7 +125,7 @@ case here justifies a tree, extra index or lock-free rewrite. Existing C dirty
 bitmaps/two-span histories, weighted worker partitioning and AVX2/portable kernels
 remain preferable to blanket per-frame dynamic structures. Their historical
 measurements are in the [C review](2026-10-09-c-performance.md); they were not rerun
-or presented as new measurements in this review. T794 tracks mapped VAAPI work.
+or presented as new measurements in this review.
 
 Review covered host session/control ownership, transport, camera decode/output,
 audio framing/native queues, capture subprocess/in-process ownership, command

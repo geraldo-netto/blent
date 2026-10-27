@@ -331,7 +331,7 @@
       "owner": "T1324",
       "role": "current guide or reference",
       "action": "rewrite",
-      "review_note": "Read all four support guides. Replaced stale T269/T267/T234/T299/T334 guidance using current EVDI setup, stream authentication, KScreen mapping, doctor and OSK source; retained unresolved Cinnamon and native acceptance limits. Clarified USB routes and physical stylus status. Reorganized benchmark navigation and added timing diagram while preserving historical values and detailed experiments. Local file links resolve; existing targeted authentication/mapping/keyboard/doctor tests pass.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 2736,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -340,7 +340,7 @@
       "audience": "users and contributors",
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
-      "reviewed_sha256": "4c733abf80e24c53e47e044198f304b521bb90b21f65788d2e17f39362215eb3",
+      "reviewed_sha256": "67b9399f9eba8cb9f8094f7b52b7e65a478f21ca15f933371dc8bb90f663a3ed",
       "outcome": "rewritten"
     },
     {
@@ -466,8 +466,8 @@
       "path": "docs/benchmarks/2026-09-17-io-uring.md",
       "owner": "T1327",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "The tested io_uring alternative showed mixed paced results. Readiness-based production I/O was retained; no new production dependency was justified. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 936,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -476,8 +476,8 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "dbec4c5d17788604c578ece39c70a3cc74b60a39c539b6c657390c7837affb81",
-      "outcome": "rewritten"
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/benchmarks/2026-09-17-packet-storage.md",
@@ -501,7 +501,7 @@
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Larger pipes sometimes reduced transfer CPU but held older frames behind a slow reader. The experiment did not justify an unconditional larger default. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 2082,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -510,7 +510,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "7d260c50b91080bcf12f3833023ce848519744b2e3548065dd39dc582b20fdbd",
+      "reviewed_sha256": "42ac7abf4d7b4cbf1b0c74af84d00ea18e393e459daeed18ce80829216faf2c5",
       "outcome": "rewritten"
     },
     {
@@ -518,7 +518,7 @@
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Immediate readiness shortened raw-transfer tails, with higher CPU in some large concurrent cases. Notification and cancellation correctness were tested separately. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 1558,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -527,7 +527,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "9922a2eccf2e062988c411acc10ba712492b8b67768be383462683cc06bb05d1",
+      "reviewed_sha256": "d9e7937dccf12b8bf6307adac173cb7b917b166259d5bbedfc39c0298cd96600",
       "outcome": "rewritten"
     },
     {
@@ -1198,7 +1198,7 @@
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "A dated inventory of separate performance experiments. Percentages have different baselines and boundaries and cannot be combined into an overall fork speedup. Added plain-language result and scope; preserved the full original detailed record in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 2696,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1207,7 +1207,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "6ab8cc55692038fa88c0e2745f5a88115df1b52b4647a5b89c4b59b3c5638897",
+      "reviewed_sha256": "cd3091004276e118b46d80122c22b3653600060c2a97d2316f2dfb4760359401",
       "outcome": "rewritten"
     },
     {
@@ -1317,7 +1317,7 @@
       "owner": "T1327",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Family index and maintained baseline collection instructions. Historical reports retain their identities and measurements; live instructions use the current Android package. Added complete file map and measurement diagram; retained exact collection and interpretation rules in a focused reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 2071,
       "long_paragraphs": 6,
       "joined_word_number_tokens": 0,
@@ -1326,7 +1326,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "826d2fb153c009fd6fafb9253db18a92b5cd136a4ceffdebcbb414cf2c34ec39",
+      "reviewed_sha256": "29900d11528dac0e4f53cc07e038555d688787f757cdcdb83a91aa4b785c0ed1",
       "outcome": "rewritten"
     },
     {
@@ -1521,7 +1521,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 1092,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1530,7 +1530,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
       "review_stage": "reviewed",
-      "reviewed_sha256": "0ac1e47a532e3790b8593225e55791e35c3c5f0e35f17fad500a2b90b317bcdf",
+      "reviewed_sha256": "ad74f7b35a48087835fd946acc00e6e91e52569987db8674291365fc9729e076",
       "outcome": "rewritten"
     },
     {
@@ -1657,7 +1657,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "An Xorg crash followed display attachment before the corrective resolution change. Logs establish the order, but not the crash\u2019s root cause or the responsible function. The incident record and later investigation limits remain historical evidence. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "An Xorg crash followed display attachment before the corrective resolution change. Logs establish the order, but not the crash’s root cause or the responsible function. The incident record and later investigation limits remain historical evidence. Added a plain-language result and limits; retained original evidence in an expandable reference.",
       "words": 1006,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1691,7 +1691,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This report proposed measurements and optimization experiments; it did not run a hardware performance campaign. Storage arithmetic is not measured bandwidth. T382\u2019s broader multi-tablet campaign was declined; the later execution list does not reopen it. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "This report proposed measurements and optimization experiments; it did not run a hardware performance campaign. Storage arithmetic is not measured bandwidth. T382’s broader multi-tablet campaign was declined; the later execution list does not reopen it. Added a plain-language result and limits; retained original evidence in an expandable reference.",
       "words": 2419,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1742,7 +1742,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "FIFO cleanup was tied to the exact pipe its owner created, preventing an unused capture manager from deleting a live session\u2019s path. Automated regressions reproduced the deletion and verified the fix; attribution of the earlier live interruption remains an inference. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "FIFO cleanup was tied to the exact pipe its owner created, preventing an unused capture manager from deleting a live session’s path. Automated regressions reproduced the deletion and verified the fix; attribution of the earlier live interruption remains an inference. Added a plain-language result and limits; retained original evidence in an expandable reference.",
       "words": 647,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1810,7 +1810,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "The inspected GUI saved encoder settings before requesting a full daemon restart. Isolated tests verified that route, not the cause or duration of the user\u2019s original interruption. An encoder-only update and a full restart have different lifetimes. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "The inspected GUI saved encoder settings before requesting a full daemon restart. Isolated tests verified that route, not the cause or duration of the user’s original interruption. An encoder-only update and a full restart have different lifetimes. Added a plain-language result and limits; retained original evidence in an expandable reference.",
       "words": 704,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1946,7 +1946,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This dated release introduced the fork\u2019s former Android package identity and a signature/manifest publication gate. The actual release APK passed and the debug APK was rejected. The package names and migration instructions here are historical; current signing documentation governs releases. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "This dated release introduced the fork’s former Android package identity and a signature/manifest publication gate. The actual release APK passed and the debug APK was rejected. The package names and migration instructions here are historical; current signing documentation governs releases. Retained concise original prose with explicit historical context; review map explains the result.",
       "words": 362,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -2422,7 +2422,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This dated dependency map records decisions and evidence needed by the former ledger, including declined stylus work. It is not today\u2019s work list or permission to resume physical trials. Resolved tracking, native acceptance and missing hardware evidence must remain distinct. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "This dated dependency map records decisions and evidence needed by the former ledger, including declined stylus work. It is not today’s work list or permission to resume physical trials. Resolved tracking, native acceptance and missing hardware evidence must remain distinct. Added a plain-language result and limits; retained original evidence in an expandable reference.",
       "words": 1986,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -2591,8 +2591,8 @@
       "path": "docs/reviews/2026-09-26-controlled-gpu-phase.md",
       "owner": "T1328",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "A controlled phase sweep rejected a capture-cadence candidate: it showed no consistent latency benefit and violated minimum capture spacing. Render acknowledgements were not optical presentation measurements. Production pacing stayed unchanged. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 532,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -2601,8 +2601,8 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "e1acc308c004cf32cf8b97aedf223ccd0c5100ccd7b9e571f35f9bbbb09763b1",
-      "outcome": "rewritten"
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/2026-09-26-coverage-object-isolation.md",
@@ -2660,7 +2660,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "The reviewed EVDI interface coupled pixel grabbing with display-flip completion. Skipping grabs was therefore rejected as an unsupported shortcut. Same-GPU import did not make the complete pipeline copy-free or authorize a new kernel interface. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 383,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -2669,7 +2669,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "087f1d9462617c3ea283cd0b4d51812edfa02f73bffd9b8397f46c517176c07f",
+      "reviewed_sha256": "8e81705148383475073395e58491afe108cc03e29fccaf91da38b24484d2ad0a",
       "outcome": "rewritten"
     },
     {
@@ -2677,7 +2677,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "A regression removed duplicate watchdog/fallback grabs while preserving recovery after lost readiness. Native observations did not reproduce the warning classes; later stock-driver probes established a bounded warning mechanism without proving every historical warning harmless. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 533,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -2686,7 +2686,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "66e53049bac6ccb5898c0d1f4dcac3fabde964b5fadae00f749432c6cc613a8d",
+      "reviewed_sha256": "01c70a6c3a277d992929643c8bc26b3e3cd6dd9add0e74e1c4de72082f8e13e8",
       "outcome": "rewritten"
     },
     {
@@ -2761,8 +2761,8 @@
       "path": "docs/reviews/2026-09-26-gpu-pacing.md",
       "owner": "T1328",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Quiet-window pacing trials showed strong dependence on source/capture phase and no consistent improvement at matched frame rates. A later controlled sweep resolved the hypothesis. Mean frame rate alone did not justify a production change. Retained concise original prose with explicit historical context; review map explains the result.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 473,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -2771,8 +2771,8 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "5e68d039e09aac7352620a54c2a7d42dfe4705a651e8bd1fb8c95e5623399e0e",
-      "outcome": "rewritten"
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/2026-09-26-installation-research.md",
@@ -2813,7 +2813,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This batch repaired replay completion and source copying, closed isolated camera coverage gaps and added native allocation and capture observations. Each experiment keeps its own limits: synthetic packet allocation, capture cadence and end-to-end rendering are not interchangeable evidence. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 1551,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -2822,7 +2822,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "a3f9a60e9dbf45e8ae164d5c459995b6e00d72cd52bff537d4f6af9508d93d2b",
+      "reviewed_sha256": "41a620fbe60e1b79315467b851eeb5822fb8e32df7870329a370b4014327bf0f",
       "outcome": "rewritten"
     },
     {
@@ -2847,7 +2847,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "The audit separated sampled CPU, sleeping-thread time, allocation counts and native delivery. Camera staging improved a bounded synthetic workload; GPU layout and cadence experiments did not justify new defaults. Missing stacks and unmeasured processes prevent whole-system or battery claims. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 2135,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -2856,7 +2856,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "602232544ac457556e547160270dd88dd3ae3329edd7f8e784c57634a4ae6a88",
+      "reviewed_sha256": "b857880bd8cf1e7e1da80b3237e947c0e97812a54ca63f9bf7c5354a1d476dd3",
       "outcome": "rewritten"
     },
     {
@@ -2949,7 +2949,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Syscall traces motivated attribution and worker-budget experiments, not replacing APIs based on sleeping time. Thread counts did not identify active workers or battery cost. Later reports completed or rejected the proposed investigations. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 798,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -2958,7 +2958,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "94b8d9b9ecf3981f18a7fb0f6c18121f8a397aa0a793559632f0a379189e2567",
+      "reviewed_sha256": "d344de4f86d789a3dd6063c46ac119ea8b0d029bc26adbc0f0e7c377ca1221f9",
       "outcome": "rewritten"
     },
     {
@@ -2966,7 +2966,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This proposal extended the existing selector with explicit objectives and bounded trials while preserving manual choices. Its thresholds and interactive budget were proposed tradeoffs, not measured universal optima or implemented behavior. Current selector documentation and later acceptance remain separate. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 1150,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -2975,7 +2975,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "cdfe01459a39b5b03faace4b0ae246e9440bb5471096f362aa9d837f78857f28",
+      "reviewed_sha256": "892e88266f60558cc2729737aece52c7850fe146ccc307a303817d83844477dd",
       "outcome": "rewritten"
     },
     {
@@ -2983,7 +2983,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "The thread ramp compared requested and effective encoder, conversion and runtime budgets at fixed geometry. Fewer encoder workers were promising; isolated runtime results did not justify a daemon default change. Confidence, quality and whole-session limits remain explicit. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 1461,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -2992,7 +2992,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "fed49a59cf44737650234415d40390439f327d4169f2e172102cd1d0653852be",
+      "reviewed_sha256": "f2428e539cef8b260a40ff920c170481747490faca9e4d2289caa241cb2b3a67",
       "outcome": "rewritten"
     },
     {
@@ -3408,7 +3408,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "The stock-library review found no ownership-preserving bounded acquisition API. A later correction fixed the claimed latest version without rewriting archived observations. The owner retained stock libevdi; no local patch was authorized by this research. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 375,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -3417,7 +3417,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "1465b03f209ef2fbfa444d8c23901c2dde729c1724fdc4dc004e573d6f25104e",
+      "reviewed_sha256": "85612ba30f11d9a1439b3a292ade8b3aca701486bcd3377e86bc56eeb9709452",
       "outcome": "rewritten"
     },
     {
@@ -3493,7 +3493,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Linux route setup adopted shared ownership checks to preserve foreign mappings and partial-startup cleanup. This dated implementation still disclosed offline cleanup and non-atomic snapshot limits. Current connection and temporary-media contracts govern today\u2019s stronger cleanup obligations. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "Linux route setup adopted shared ownership checks to preserve foreign mappings and partial-startup cleanup. This dated implementation still disclosed offline cleanup and non-atomic snapshot limits. Current connection and temporary-media contracts govern today’s stronger cleanup obligations. Retained concise original prose with explicit historical context; review map explains the result.",
       "words": 413,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -3714,7 +3714,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This planning review split broad deliverables and reconciled dependencies without claiming their completion. Its pen-related scope predates the owner\u2019s later decline. Current TODO and platform guidance govern active work; original requirements and evidence limits remain recorded. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "This planning review split broad deliverables and reconciled dependencies without claiming their completion. Its pen-related scope predates the owner’s later decline. Current TODO and platform guidance govern active work; original requirements and evidence limits remain recorded. Added a plain-language result and limits; retained original evidence in an expandable reference.",
       "words": 1287,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -3731,7 +3731,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Linux tray shutdown gained explicit ownership of its independent D-Bus service. Private-bus regressions reproduced retained registration and the panic, then passed after cleanup was requested and awaited. This matched a historical error without reconstructing that incident\u2019s exact trace. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "Linux tray shutdown gained explicit ownership of its independent D-Bus service. Private-bus regressions reproduced retained registration and the panic, then passed after cleanup was requested and awaited. This matched a historical error without reconstructing that incident’s exact trace. Retained concise original prose with explicit historical context; review map explains the result.",
       "words": 294,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -3969,7 +3969,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "A shared Robolectric worker reset its looper before Compose\u2019s queued work drained. A permanent ordered regression verified draining during test-Application teardown. The original UI assertions and deadlines stayed intact; production lifecycle did not change. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "A shared Robolectric worker reset its looper before Compose’s queued work drained. A permanent ordered regression verified draining during test-Application teardown. The original UI assertions and deadlines stayed intact; production lifecycle did not change. Retained concise original prose with explicit historical context; review map explains the result.",
       "words": 280,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -4122,7 +4122,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Wi-Fi setup and reconnect policy became shared across Linux and Windows adapters. Native fixtures covered authentication, identity migration and cleanup, but not physical Windows/tablet networking. Disabling the saved route did not globally disable the tablet\u2019s ADB listener. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "Wi-Fi setup and reconnect policy became shared across Linux and Windows adapters. Native fixtures covered authentication, identity migration and cleanup, but not physical Windows/tablet networking. Disabling the saved route did not globally disable the tablet’s ADB listener. Retained concise original prose with explicit historical context; review map explains the result.",
       "words": 326,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -4292,7 +4292,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "The owner\u2019s explicit RX 6600 encoding selection was verified by stable device identity and advancing hardware counters. Uncontrolled before/after acknowledgement samples did not prove better latency or desktop responsiveness. Desktop composition and input acceptance stayed separate. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "The owner’s explicit RX 6600 encoding selection was verified by stable device identity and advancing hardware counters. Uncontrolled before/after acknowledgement samples did not prove better latency or desktop responsiveness. Desktop composition and input acceptance stayed separate. Added a plain-language result and limits; retained original evidence in an expandable reference.",
       "words": 555,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -4326,7 +4326,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Operator-assisted cable removal verified black camera output, release after reconnect and fresh explicit Start before capture resumed. Display recovery was observed separately. This dated trial is not acceptance of today\u2019s temporary-mapping contract or a reboot/performance test. Retained concise original prose with explicit historical context; review map explains the result.",
+      "review_note": "Operator-assisted cable removal verified black camera output, release after reconnect and fresh explicit Start before capture resumed. Display recovery was observed separately. This dated trial is not acceptance of today’s temporary-mapping contract or a reboot/performance test. Retained concise original prose with explicit historical context; review map explains the result.",
       "words": 471,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -4360,7 +4360,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This implementation record separates portable Android contracts, bounded requests and native retirement from UI control. It records process isolation and measured allocation/startup changes with permanent regressions. Synthetic timing and isolated worker tests do not establish physical media latency or system-wide crash recovery. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 2941,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -4369,7 +4369,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "7f9fac5c3f75868007ba377827614dcf6b15f2c075fdbf56719cd78fc6ae4eb8",
+      "reviewed_sha256": "5064c51cdde5fe0d23cdbd5c9f1583ada1ad509501b71abe5a0ce026aead2e21",
       "outcome": "rewritten"
     },
     {
@@ -4377,7 +4377,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "This static Android review used focused host-JVM probes to identify UI blocking, unbounded response memory and allocation opportunities. Proposed savings were stage measurements, not ART, battery or whole-application gains. Later implementation reports supply the fix and native evidence. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 2159,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -4386,7 +4386,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "6b3ba180d15579cb220b983d234351741f2531b4cce281597877f0b9899e5147",
+      "reviewed_sha256": "cfeaa212cda846442ce7226ab60ff5f52ff885e4bfdc7528eaf47bb7d612fb57",
       "outcome": "rewritten"
     },
     {
@@ -4394,7 +4394,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "C conversion experiments supported weighted work, bounded damage spans and runtime SIMD, with independent pixel oracles. Blanket tiles and unsafe GPU metadata caching were rejected. Later implementations keep per-workload tradeoffs and unresolved native snapshot limits distinct from the original proposals. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 3498,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -4403,7 +4403,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "352cd34e3378a1f1025d950bb866baf3b42c606bb0cc57e173226042abb281a0",
+      "reviewed_sha256": "8218c5b011c466e4b9cd7c58a3dab42181dcbdf2883f1c2d4f07f87fa8fecc37",
       "outcome": "rewritten"
     },
     {
@@ -4411,7 +4411,7 @@
       "owner": "T1328",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Host probes reproduced blocking controller destruction, stale status after worker panic and uncapped command output. Source review identified separate supervision and allocation work. Temporary probes established findings, not permanent regressions or physical-platform acceptance. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 1389,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -4420,7 +4420,7 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "d56e8de3aa45b8ee31469c56cf430b504179aa4308c15c94e009debceb2141f0",
+      "reviewed_sha256": "9be989ddcb4b29b8a1f25e0a27deaef2c9831be38d0134d1c902e67fff66ad7a",
       "outcome": "rewritten"
     },
     {
@@ -4512,8 +4512,8 @@
       "path": "docs/reviews/2026-10-10-camera-acceleration.md",
       "owner": "T1328",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Camera hardware decode/readback and a fused-output prototype were rejected for the tested workloads. Hardware added memory and startup costs; the fused output blocked preview behind an unread sink. This did not prove all hardware acceleration slower. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 578,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -4522,8 +4522,8 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "24bf65194fccb5926fa3fba98f968fc1b5845ee7f76d3957061c656d4fe2eb10",
-      "outcome": "rewritten"
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/2026-10-10-camera-frame-reuse.md",
@@ -4648,8 +4648,8 @@
       "path": "docs/reviews/2026-10-10-t794-implementation-plan.md",
       "owner": "T1328",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "The mapped-surface encoder candidate was rejected after repeatable CPU regressions. This document preserves the earlier proposal, independent ownership contracts and qualification criteria, including requirements to keep existing supported encoder choices. Its planning-stage open status and proposed thresholds are historical; it is neither a shipped path nor a renewed implementation commitment. Added a plain-language result and limits; retained original evidence in an expandable reference.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 2332,
       "long_paragraphs": 5,
       "joined_word_number_tokens": 0,
@@ -4658,8 +4658,8 @@
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
       "review_stage": "reviewed",
-      "reviewed_sha256": "ffa409edb0875fe0339cb643b216179d23a650a9393b0a3edcaf85a301d04353",
-      "outcome": "rewritten"
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/2026-10-10-t845-android-notices.md",
@@ -5142,7 +5142,7 @@
       "owner": "T1328",
       "role": "archive navigation",
       "action": "create",
-      "review_note": "Plain orientation, evidence-stage diagram and complete 205-report map. Original reports reviewed individually; exact historical evidence preserved.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 5151,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -5151,8 +5151,8 @@
       "audience": "readers seeking historical findings and scoped evidence",
       "authority": "navigation; original reports retain their recorded requirements and evidence",
       "review_stage": "reviewed",
-      "reviewed_sha256": "b212e54d419adee356ff47bdac023782987f42b81b01916ecc5760c9df94bd33",
-      "outcome": "created"
+      "reviewed_sha256": "12258e521e5a4ce1207e31d3f2ff440d2b67da055563db41cda3be5957a203c2",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/reviews/artifacts/2026-09-26-function-coverage/README.md",
@@ -5803,8 +5803,8 @@
       "path": "docs/reviews/artifacts/2026-10-09-t773/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 443,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -5812,7 +5812,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-09-t777/README.md",
@@ -5864,7 +5866,7 @@
       "owner": "T1329",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 203,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -5872,7 +5874,8 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "classified; substantive review assigned to owner",
+      "reviewed_sha256": "2b05214b64028e1e89d62e3facc3d6ce94551beac5a70ec6031122f31aa1b20b"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-09-t783/README.md",
@@ -5908,8 +5911,8 @@
       "path": "docs/reviews/artifacts/2026-10-09-t785/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 536,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -5917,14 +5920,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-09-t787/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 909,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -5932,14 +5937,15 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "classified; substantive review assigned to owner",
+      "reviewed_sha256": "9c9a973e447e58f20be69779882aabeba705d2a8cc48237738564e04d2384510"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-09-t788/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 317,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -5947,14 +5953,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-09-t789/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 325,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -5962,14 +5970,15 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "classified; substantive review assigned to owner",
+      "reviewed_sha256": "08867437f7af81c636a2e4af0038c24ba6ffbd9995e9a634a73a9133d0ae634d"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-09-t790/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 345,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -5977,7 +5986,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-09-t791/README.md",
@@ -5998,8 +6009,8 @@
       "path": "docs/reviews/artifacts/2026-10-09-t792/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 312,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -6007,7 +6018,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-10-android-audio-scheduling/README.md",
@@ -6058,8 +6071,8 @@
       "path": "docs/reviews/artifacts/2026-10-10-android-camera-selection/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 287,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -6067,7 +6080,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-10-android-drift/README.md",
@@ -6089,7 +6104,7 @@
       "owner": "T1329",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 277,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -6097,14 +6112,15 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "classified; substantive review assigned to owner",
+      "reviewed_sha256": "4eafeb2116e40a677c7c3ce061c630416bd280528c3b1084de3d4398553dab8b"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-10-android-pcm/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
       "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "review_note": "T1331: removed refused-proposal narratives and references; retained implemented behavior, accepted requirements and evidence limits. Local links verified; tests and raw evidence unchanged.",
       "words": 361,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -6112,7 +6128,8 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "classified; substantive review assigned to owner",
+      "reviewed_sha256": "5909223f58a93ce10836eb9d95185d62fef1df164ee2fdaef84ddb52329a52f9"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-10-android-process-isolation/README.md",
@@ -6133,8 +6150,8 @@
       "path": "docs/reviews/artifacts/2026-10-10-t794/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 1199,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -6142,7 +6159,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-10-t814/README.md",
@@ -7603,8 +7622,8 @@
       "path": "docs/reviews/artifacts/2026-10-11-t952/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 104,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -7612,7 +7631,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-11-t953/README.md",
@@ -7663,8 +7684,8 @@
       "path": "docs/reviews/artifacts/2026-10-11-t956/README.md",
       "owner": "T1329",
       "role": "historical technical evidence",
-      "action": "review_archive",
-      "review_note": "Make purpose, dated scope and evidence limits clear; retain exact measurements and commands.",
+      "action": "remove",
+      "review_note": "Removed from documentation under T1331; Git retains file history. Raw evidence and tests unchanged.",
       "words": 65,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -7672,7 +7693,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "dated evidence; not current certification",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": null,
+      "outcome": "removed"
     },
     {
       "path": "docs/reviews/artifacts/2026-10-11-t957/README.md",

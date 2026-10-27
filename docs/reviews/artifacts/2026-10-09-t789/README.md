@@ -20,9 +20,7 @@ allocation/fill and final release. Median run means in microseconds:
 | 1024×1024 | 959.196 | 970.389 |
 
 Large-image differences use the same allocation/copy algorithm and are not
-claimed gains. An unbounded adoption pilot regressed at 1024×1024 (approximately
-0.953 to 1.116 ms), motivating the 64 KiB bound; splitting large allocations
-changes allocator/page-fault costs. Shape-update savings do not improve every
+claimed gains. Shape-update savings do not improve every
 frame: unchanged shapes already retain their image.
 
 The permanent normal-suite T789 ownership regression failed on the baseline
@@ -33,8 +31,7 @@ regressions remain. GCC ASan/UBSan suite and Clang ASan/UBSan T789 pass; all
 210 maintained capture functions meet the individual 80% coverage gate. Changed
 C functions stay within complexity 9; Rust formatting passes.
 
-`raw.json` retains the final measurements; `unbounded-pilot.json` retains the
-rejected allocation design. `red.log`, `clang.log`, `suite.log.gz` and
+`raw.json` retains the final measurements. `red.log`, `clang.log`, `suite.log.gz` and
 `coverage.json.gz` retain validation. To reproduce the benchmark offline, build
 `bench.c` with `cc -O3`, including `scripts/benchmarks` and a private copy of
 `host/evdi` from baseline `8aaeec0`; build again with `-DTAKE` against this

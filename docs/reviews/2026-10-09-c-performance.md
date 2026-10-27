@@ -1,6 +1,6 @@
-# Owned C performance checks: T768, T769, T773, T778
+# Owned C performance checks: T768, T769, T778
 
-C conversion experiments supported weighted work, bounded damage spans and runtime SIMD, with independent pixel oracles. Blanket tiles and unsafe GPU metadata caching were rejected. Later implementations keep per-workload tradeoffs and unresolved native snapshot limits distinct from the original proposals.
+C conversion experiments supported weighted work, bounded damage spans and runtime SIMD, with independent pixel oracles. Later implementations keep per-workload tradeoffs and unresolved native snapshot limits distinct from the original proposals.
 
 Historical record. Names, commands, support claims and TODO states below describe
 the recorded revision. Use the [review map](README.md) for current guidance.
@@ -13,8 +13,8 @@ and open-item descriptions are historical unless an implementation follow-up is
 explicitly identified below.
 
 The measurements support improving conversion scheduling and evaluating portable
-SIMD dispatch. They do **not** support replacing all spans with tiles or removing
-GPU metadata checks. Production sources and release compiler flags are unchanged.
+SIMD dispatch. Production sources and release compiler flags were unchanged
+during the initial research; implementation results follow below.
 
 Evidence: [raw trials](artifacts/2026-10-09-c-performance/raw.json),
 [summary](artifacts/2026-10-09-c-performance/summary.json),
@@ -33,45 +33,14 @@ many separated 2-pixel strips. It does not replay triple-buffer history rotation
 capture/encoder contention or a physical tablet. An independent scalar oracle
 checks the complete output for every benchmark process, including unchanged
 pixels. [36 ASan/UBSan cases](artifacts/2026-10-09-c-performance/sanitizers.log)
-cover all workloads/scales/prototypes. The GPU metadata probe also
-[passes ASan/UBSan](artifacts/2026-10-09-c-performance/gpu-sanitizers.log).
+cover the recorded workloads and scales.
 
-## T768: sparse damage amplification is real; blanket tiles regress
+## T768: bounded spans reduce sparse damage work
 
 `pixel_damage_merge` retains one bounding interval per chroma row. Two distant
 16-pixel rectangles therefore make the current code convert the entire width
 between them. At scale 1 this fixture needs 2,048 source pixels but converts
 122,880: **60× amplification**. This is conservative extra work, not lost damage.
-
-The experimental alternative uses one 64-bit mask of 32-pixel tiles per chroma
-row, combines adjacent tiles into runs, and reuses the production conversion
-kernel for each run. It is deliberately confined to the tested widths; it is
-not a complete replacement for the frame owner's histories or shared slots.
-
-| Scale 1, one worker | Current span | Tile prototype | Result |
-|---|---:|---:|---|
-| Two distant rectangles | 37.633 | 5.421 | 6.94× faster; 4,096 pixels converted |
-| Full frame | 627.963 | 634.917 | No demonstrated improvement |
-| Narrow vertical strip | 24.688 | 42.081 | 70% slower; tile rounding doubles pixels |
-| Many separated strips | 34.787 | 73.051 | 2.10× slower despite fewer pixels |
-
-At scale 2, distant rectangles improve from 161.613 to 10.741 µs; the narrow
-strip regresses from 24.117 to 46.580 µs. Short repeated kernel calls and loss of
-long vector loops matter as well as pixel count. Metadata marking is sub-microsecond
-in these fixtures and does not explain the large conversion differences.
-
-For 540 active chroma rows, the current spans plus row mask use 4,388 bytes per
-history; the prototype tile mask uses 4,320 bytes. At width 4096 the analogous
-tile mask would need two words per row: 32,768 bytes for 2048 rows versus 16,640
-for spans plus a row mask. Those are representation sizes, not measured process
-RSS or a demonstrated production allocation saving.
-
-Next: compare a small bounded set of exact spans with an adaptive fallback to
-one interval. Account for marking, merging and all per-buffer histories. Before
-production changes, retain regressions for distant/overlapping rectangles,
-fragmentation fallback, scales 1–4, clipping/extreme coordinates, history
-rotation and leased-slot immutability; require the same full-frame pixel oracle.
-T768 remains open for implementation/evaluation of that tradeoff.
 
 Implementation follow-up: T768 now keeps one enclosing interval and its largest
 retained unchanged gap per row. It converts two exact spans only when the gap
@@ -132,39 +101,6 @@ Scale 1 process CPU rises about 7%; scale 2 CPU is nearly unchanged. Dense work
 has no demonstrated general gain. The T769 TODO row is resolved. The original
 research runner now restores its pinned `a3c053e` sources from local Git so
 private helper changes cannot silently alter the historical comparison.
-
-## T773: ten requests per frame, but checks enforce real contracts
-
-The probe executes the actual `check_geometry` twice on a private Xvfb output,
-without opening DRI3, VAAPI or any physical display/render node. It tests both
-name matching and a synthetic EDID property. It includes actual RandR transform
-queries; native GPU adapter mocks are not used for these timings.
-
-| Identity mode | X requests for both checks | Wall time |
-|---|---:|---:|
-| Explicit output name | 8 | 86.738 µs |
-| EDID, as in supervised use | 10 | 105.504 µs |
-
-Each check queries resources, output information, transform and CRTC geometry;
-EDID adds a property query. Xlib already caches the interned atom after setup.
-At 60 FPS the measured EDID pair is about 0.63% of a frame interval. This is
-isolated client wall time, **not** process CPU or physical-driver latency. An
-earlier exploratory run was slower, further reason not to generalize Xvfb timing.
-
-`gpu_events_open` currently subscribes only to damage/cursor events in damage
-mode and returns immediately in periodic mode. `events` consumes at most 256
-events and does not handle RandR invalidation. Consequently, simply retaining
-metadata until an existing event arrives would miss identity, CRTC, geometry or
-transform changes. The post-fence check specifically rejects a transition while
-the copy was queued; ordinary damage notification is not an equivalent contract.
-
-Recommendation: keep the checks while evaluating any cache. A candidate needs
-explicit complete invalidation for both cadence modes, queue-overflow handling,
-and an ordering proof around copy completion. Required regressions include EDID
-replacement with unchanged dimensions, output/CRTC replacement, rotation,
-transform/position changes during copy, stale/queued events and reconnects.
-No safe cache implementation or physical-driver speedup was established. T773
-remains open as focused design/validation work, below measured conversion wins.
 
 ## T778: existing SIMD pays off; wider SIMD has workload limits
 
@@ -259,13 +195,6 @@ restoration precedes normalization. T779 regressions count actual copied pixels
 and compare full channel order and padding under 256 bounded randomized rectangle
 sets, including extreme and reversed endpoints.
 
-T773 was rechecked against `host/gpu/events.c` and `capture.c`: periodic mode
-still skips event initialization, and damage mode still lacks RandR invalidation.
-The measured request cost is real, but a cache satisfying the required copy-order
-and identity contracts has not been established. The owner's conditional approval
-(less time without correctness drawbacks) is therefore not met. Existing checks
-remain; T773 retains the exact research and acceptance prerequisites in TODO.md.
-
 T779's [five paired trials](artifacts/2026-10-09-t779/README.md) at 1920×1080
 reduce 63 full-overlap rectangles from 18,019.955 to 279.655 µs median wall time
 (about 64×). Sparse 64×64 changes take 0.751 versus 0.771 µs; full frames take
@@ -307,7 +236,7 @@ NDEBUG builds. Permanent malformed/range/build-contract regressions and a valid
 scale-4 replay pass in the normal benchmark test target; [red/green evidence](artifacts/2026-10-09-t777/README.md)
 is retained. T777 is resolved; the earlier research-only description is historical.
 
-## T782 implementation and larger-block review
+## T782 implementation: bounded conversion scratch
 
 AVX2 now reduces scale-2/4 boxes into two 128-pixel rows of worker-local scratch
 (1 KB), then applies the existing color kernel. Each RGB output average truncates
@@ -327,12 +256,6 @@ Scale 1 remains near baseline (469.672 versus 472.838 us, one worker). Gains
 are conversion costs, not tablet FPS claims. All 198 individual native functions
 pass coverage; permanent oracle and GCC/Clang ASan/UBSan tests pass. T782 resolved.
 
-The requested 1/2/4/8/16 KB tile sweep found roughly 2–5% better dense medians
-in some larger-tile cases, with overlapping trial ranges and no consistent sparse
-benefit. The tile is stack memory accessed by ordinary loads/stores: there are
-**no per-tile syscalls** to amortize. The selected default remains 1 KB. Increasing
-it changes loop overhead, stack use and cache behavior, not an I/O transfer size.
-
 The separate C/Rust I/O review found:
 
 - C `fifo_writer.c::write_fifo_bytes` already requests the entire remaining frame;
@@ -344,8 +267,7 @@ The separate C/Rust I/O review found:
   Configuration packets still use three writes; that limited opportunity is T784.
 - Rust's production framed/IVF packet readers request complete payloads through
   `BufReader`; large reads can bypass an empty buffer. Its 512 KB streaming
-  Annex B reader is test-only. A measured 8/32/64 KB reader comparison is T785,
-  not a proven bottleneck or an instruction to wait until buffers fill.
+  Annex B reader is test-only. Production readers use the 8 KiB default buffer.
 - Larger FIFO capacity already has a user control and [retained measurements](../benchmarks/2026-09-17-pipe-capacity.md):
   it can reduce write attempts/CPU but increase queued-frame age. The old tests
   do not justify a blanket default increase or frame batching.
@@ -403,14 +325,5 @@ conversion. Their cause belongs to T749 render/import/readback investigation;
 they cannot validate damage order. T750 is blocked on that concrete prerequisite,
 not on speculative extra NV12 copying. No EVDI or libevdi changes, new Blent runtime
 heuristics, downloads or live-host changes were made.
-
-### T773 evaluation closure
-
-[Follow-up measurements and permanent transition tests](artifacts/2026-10-09-t773/README.md)
-close the cache evaluation with no cache adopted. Successful EDID atom lookups
-already cost zero requests after warmup. Retaining both full checks satisfies the
-existing correctness contract; current event handling cannot safely invalidate
-a metadata cache. Earlier open-research notes above are historical. No runtime
-metadata speedup or physical-driver acceptance is claimed.
 
 </details>

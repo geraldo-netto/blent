@@ -177,8 +177,7 @@ GPU capture uses X11's renderD129; FIFO uses the existing renderD128 encoder.
 
 Damage improves both latency percentiles in all three 29 Hz pairs. At 30 Hz it
 improves two p50 pairs but worsens all three p95 pairs against periodic GPU.
-There is no consistent all-rate latency gain; keep it opt-in. T593 records the
-matched-rate tail follow-up. FIFO timing differs from the historical September
+There is no consistent all-rate latency gain; keep it opt-in. FIFO timing differs from the historical September
 21 setup; these are new paired observations on an active, unpinned workstation,
 not a controlled cross-date regression attribution. CPU excludes compositor,
 other applications and Android; no battery or optical-latency claim is made.

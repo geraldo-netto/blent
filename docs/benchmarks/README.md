@@ -31,7 +31,6 @@ the original detailed record; its numbers are not recertified for current code.
 | [2026-09-17-discovery](2026-09-17-discovery.md) | A stalled synthetic device no longer blocked ready devices. The fixtures establish discovery isolation, not physical multi-tablet throughput. |
 | [2026-09-17-fake-tablet](2026-09-17-fake-tablet.md) | Reusable receive storage greatly reduced the fake client's copying cost. The client acknowledges receipt without decoding or rendering. |
 | [2026-09-17-input-batching](2026-09-17-input-batching.md) | Batching preserved every input event and synchronization boundary while reducing counted writes. No physical input-latency improvement was measured. |
-| [2026-09-17-io-uring](2026-09-17-io-uring.md) | The tested io_uring alternative showed mixed paced results. Readiness-based production I/O was retained; no new production dependency was justified. |
 | [2026-09-17-packet-storage](2026-09-17-packet-storage.md) | Large known packet allocations avoided a publication copy. The measured savings concern packet ownership, not total encoding or display latency. |
 | [2026-09-17-pipe-capacity](2026-09-17-pipe-capacity.md) | Larger pipes sometimes reduced transfer CPU but held older frames behind a slow reader. The experiment did not justify an unconditional larger default. |
 | [2026-09-17-readiness](2026-09-17-readiness.md) | Immediate readiness shortened raw-transfer tails, with higher CPU in some large concurrent cases. Notification and cancellation correctness were tested separately. |

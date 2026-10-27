@@ -79,9 +79,8 @@ on every launch and no camera activation.
    an ordinary live calibration.
 5. Run known content: text/edges, scrolling, motion, sparse updates and idle.
    Interleave baseline/candidate trials with warmup. Match/sweep source phase,
-   following T593; a favorable phase is not a codec improvement. Keep capture
-   policy fixed. The rejected cadence candidate and unsupported T599
-   ownership-only shortcut are excluded; cross-GPU admission still needs T578.
+   because a favorable phase is not a codec improvement. Keep capture
+   policy fixed; cross-GPU admission still needs T578.
 
 Avoid a Cartesian product of codec × decoder × runtime × encoder × conversion
 budgets. Use bounded coordinate trials, prune invalid candidates, then check the

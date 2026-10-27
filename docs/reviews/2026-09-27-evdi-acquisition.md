@@ -32,19 +32,10 @@ before returning a slave descriptor. Blent adds its exclusive inode lease and
 connected-output recheck. Any optimization must retain all these checks and close
 failed descriptors; an unobservable owner is not permission to claim a device.
 
-A narrow candidate is a monotonic elapsed-time budget checked within process
-scanning, retaining the existing wait limit and subsequent DRM checks. That would
-bound repeated metadata work; it would not establish that unreadable metadata
-means no master. Native permission failures, master-to-slave transitions, timeout,
-shutdown and lease contention would need permanent regressions and native evidence.
-A cooperative deadline also cannot promise to preempt an arbitrarily blocked
-kernel filesystem operation.
-
 The September 21 decision requires stock libevdi; `packaging/appimage/sources.py`
 also requires the unmodified pinned source. On 2026-09-30 the maintainer reaffirmed
-stock libevdi; the proposed local patch is not authorized. T558 remains blocked on
-a stock ownership-preserving bounded acquisition API, unless the maintainer later
-revises that dependency policy. Any implementation still needs ownership validation.
+stock libevdi. Bounded acquisition requires
+a stock ownership-preserving bounded acquisition API and native ownership validation.
 No dependency, DRM device,
 privilege, live module or running helper was changed. The earlier timing is a
 historical observation, not a newly benchmarked result.

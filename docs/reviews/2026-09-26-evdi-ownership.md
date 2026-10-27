@@ -3,10 +3,8 @@
 Historical record. Names, commands, support claims and TODO states below describe
 the recorded revision. Use the [review map](README.md) for current guidance.
 
-Investigation complete. Do not suppress EVDI grabbing while the same-GPU consumer
-runs. There is no supported ownership-only operation in the reviewed EVDI ABI.
-This closes the proposed userspace shortcut without changing capture behavior.
-T593's rejected cadence candidate does not prevent this independent ABI review.
+EVDI grabbing completes compositor flips, including while a same-GPU consumer
+runs. The reviewed ABI couples pixel readback to that completion handshake.
 
 ## Evidence
 
@@ -34,22 +32,10 @@ is not asserted to be byte/source-identical to the pinned upstream revision.
 This supports retaining the existing handshake; no intentional compositor stall
 or invalid-ioctl experiment was necessary.
 
-## Consequences
+## Implemented boundary
 
-- An error-path trick using an invalid destination/dimension is not a supported
-  copy-free acknowledgement contract and must not become a production adapter.
-- A future driver extension would need explicit discard/acknowledge semantics,
-  frame/fence ownership, cursor handling and full refresh on FIFO fallback.
-  It would also introduce kernel deployment/version support obligations.
-- A different virtual-display backend could avoid this dependency, but needs its
-  own compositor/native validation. A shared interface alone is not support.
-- Same-GPU import still avoids its own userspace raw-frame transfer. EVDI drain,
-  GPU color conversion, encoder access and compressed transport prevent an
-  end-to-end zero-copy claim. Cross-GPU explicit-layout admission remains T578.
-
-No readback savings are claimed, no production code changed, and existing
-ownership/fallback/restart/resize coverage stays intact. Before any future
-suppression implementation, add permanent red-before-green regressions for
-those lifecycle transitions and stale-frame rejection, then measure CPU and
-complete render ACKs. The current ABI review resolves T599; it does not silently
-approve maintaining a new kernel ABI.
+Same-GPU import avoids its own userspace raw-frame transfer. EVDI drain,
+GPU color conversion, encoder access and compressed transport remain, so this
+is not end-to-end zero-copy. Existing ownership, restart and resize tests remain
+applicable. This ABI review changed no production code and claims no readback
+savings or cross-GPU support.
