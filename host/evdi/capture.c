@@ -159,8 +159,9 @@ static int retire_mode_buffers(capture_context_t *capture) {
         return 0;
     }
 
-    /* The kernel must drop its reference to the old framebuffer BEFORE we
-       free it — freeing first is a use-after-free during a pending grab. */
+    /* This event-loop callback cannot overlap its synchronous pixel grab.
+       Unregister removes libevdi's userspace node borrowing the framebuffer;
+       remove that borrow before freeing storage. It is not a kernel fence. */
     if (capture->buffer_registered) {
         evdi_unregister_buffer(capture->handle, 0);
         capture->buffer_registered = 0;
