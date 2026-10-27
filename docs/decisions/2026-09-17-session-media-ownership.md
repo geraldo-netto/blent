@@ -5,6 +5,31 @@ Status: retain the existing default backend; adopt the contracts and ordered
 implementation gates below. Proposed wire/control/backend extensions in this
 record are not implemented merely by recording this decision.
 
+## How to read this decision today
+
+This is the September 17 design decision and its original implementation order.
+Its ownership rules remain useful: one owner retains each resource until every
+consumer finishes, and cancellation does not prove cleanup. Later implementations
+and evidence are described in [architecture](../architecture.md).
+
+The owner's October 20 no-backward-compatibility policy supersedes this record's
+old-peer compatibility requirements. Keep capability checks needed by current
+backends; do not preserve obsolete versions solely for compatibility. Historical
+TODO IDs and planned gates below do not reopen retired or declined work, including
+stylus and multi-tablet campaigns. Current dispositions are in [TODO.md](../../TODO.md).
+
+```mermaid
+flowchart LR
+    Session[Session owns work] --> Raw[Raw frame lease]
+    Raw --> Encoder[Encoder borrows immutable pixels]
+    Encoder --> Packet[Immutable packet owner]
+    Packet --> Consumers[Transport consumers]
+    Consumers --> Release[Final consumer releases storage]
+```
+
+Stopping the session withdraws permission to publish. It does not free storage
+still borrowed by an encoder or transport consumer.
+
 ## Decision and alternatives
 
 Keep one owned tablet session, Linux EVDI helper process isolation, stock FFmpeg
@@ -129,6 +154,10 @@ clear aggregation semantics. Hidden UI telemetry should not cause perpetual
 polling. Collection is bounded and optional, and must be benchmarked itself.
 Fake-tablet ACKs represent receipt with synthetic decode time, not real rendering.
 
+<details>
+<summary>Original implementation order and acceptance requirements</summary>
+
+
 ## Implementation order and acceptance gates
 
 1. **Stable owners and cancellation:** the six foundation items establish
@@ -168,3 +197,5 @@ Android trials also need matched brightness/refresh/charging/temperature and
 sustained net-charge measurements. Synthetic results cannot establish battery
 savings or end-to-end display latency. Keep a candidate optional or unpromoted
 when hardware evidence is missing, and retain the outstanding TODO requirement.
+
+</details>

@@ -1,9 +1,30 @@
 # Display quiescence contract
 
-Status: portable contract and Linux adapters implemented under T1050; production
-USB activity composition implemented under T1051 and renewable USB acceptance
-verified under T1016; automated joined host acceptance verified under T1009.
-Android decoder/wake integration remains T1011; physical acceptance remains T914.
+The host and Android implementations are integrated. Automated joined checks
+passed under [T1058](reviews/artifacts/2026-10-19-t1058/README.md) and
+[T1011](reviews/artifacts/2026-10-19-t1011/README.md). These tests use controlled
+native substitutes; they do not establish physical screen, suspend or power
+behavior. The former T914 physical-acceptance tracking was retired without
+claiming completion. Current actionable work is in [TODO.md](../TODO.md).
+
+## What a pause proves
+
+A pause first denies new work. Each original producer must then confirm that
+its own native work has stopped before the controller can permit a fresh run.
+“Quiescent” means those original producers have supplied the required evidence;
+a timeout or a stopped UI is insufficient.
+
+```mermaid
+flowchart LR
+    Pause[Pause request] --> Cutoff[Deny new work]
+    Cutoff --> Capture[Capture settles original work]
+    Cutoff --> Selector[Selector settles original trials]
+    Capture --> Receipts[All original receipts]
+    Selector --> Receipts
+    Receipts --> Resume[Fresh permit may resume]
+```
+
+## Controller contract
 
 One display runtime owns one controller state. Its capture and selector producers
 are bound before startup, with a fixed capacity of one or two. Controller clones

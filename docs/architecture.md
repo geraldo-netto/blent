@@ -1,12 +1,15 @@
 # Architecture
 
+<details>
+<summary>Platform scope and related design records</summary>
+
 This describes the Linux host and Android client in the current checkout.
 Windows has an [authenticated USB/Wi-Fi connection preview](windows-port.md),
 daemon lifecycle, optional per-user autostart and an opt-in native touch/mouse
 preview for a selected monitor. Native fixture tests cover these contracts;
-physical tablet acceptance remains T522. Display capture and full input support
+physical tablet acceptance remains unqualified (historical T522). Display capture and full input support
 remain unavailable. Known behavioral
-limits are tracked in [TODO.md](https://github.com/geraldo-netto/blent/blob/configurable-input-devices/TODO.md); describing a path does not certify
+limits are tracked in [TODO.md](../TODO.md); describing a path does not certify
 it on every desktop or device.
 
 The [2026-09-17 architecture review](reviews/2026-09-17-architecture.md) records
@@ -24,6 +27,46 @@ coordinator and the existing private trust worker. USB connection and offline
 maintenance share one access slot through original worker/store and completion-
 relay retirement. View loss revokes commands without discarding accepted work;
 independent media owners retain their separate cleanup obligations.
+
+</details>
+
+## How the pieces fit
+
+Blent makes an extra computer display available on an Android tablet. The host
+captures and compresses its pictures; Android decodes them. Touch and control
+messages travel back separately. Camera, microphone and speaker sessions have
+independent Start/Stop, consent and cleanup.
+
+```mermaid
+flowchart LR
+    Desktop[Linux desktop] --> Capture[EVDI capture helper]
+    Capture --> Encoder[FFmpeg encoder]
+    Encoder --> Video[Video transport]
+    Video --> Android[Android decoder and screen]
+    Android --> Control[Authenticated input and control]
+    Control --> Host[Host session]
+    Host --> Capture
+```
+
+Shared contracts define messages and ownership. Linux and Android adapters own
+their operating-system resources. A session may stop accepting work immediately,
+but its resources stay reserved until the original workers finish cleanup.
+
+| Read about | Reference |
+| --- | --- |
+| Picture delivery | [Pipeline](#pipeline), [video format](#video-tcp) |
+| Tasks, buffers and cleanup | [Processes and settings](#processes-and-settings) |
+| Input and settings messages | [Control WebSocket](#inputcontrol-websocket) |
+| Direct USB, pairing and independent media | [Connection contract](reviews/2026-10-10-t846-connection-contract.md) |
+| Pausing display work | [Activity signal](display-activity-signal.md), [quiescence](display-quiescence.md), [wake policy](display-wake-policy.md) |
+| Access and process isolation | [Security model](#security-model) |
+| Pixel conversion | [CPU conversion](#cpu-conversion-dispatch) |
+
+The sections below retain exact implementation details for maintainers. Expand
+the relevant topic when implementing or diagnosing that part.
+
+<details>
+<summary>Detailed capture, encoder, decoder and input pipeline</summary>
 
 ## Pipeline
 
@@ -70,7 +113,7 @@ independent media owners retain their separate cleanup obligations.
    frames. The TCP server skips a lagging client's backlog to a retained IDR,
    or waits for another IDR if necessary.
 5. **Decode.** Android receives length-prefixed encoded access units through
-   adb forwarding and feeds MediaCodec, rendering to a SurfaceView. Negotiated
+   the selected ADB or direct USB route and feeds MediaCodec, rendering to a SurfaceView. Negotiated
    automatic selections name a compatible decoder and request only its advertised
    standard low-latency/operating-rate hints. Legacy/manual defaults request the
    legacy hints (including a Qualcomm vendor key) and a 2x operating rate without
@@ -117,6 +160,11 @@ record exactness checks and distribution-dependent costs, without claiming a
 frame-latency improvement. The [T404 replay](benchmarks/2026-09-17-timing.md)
 records the earlier sort-based implementation, lookup tradeoffs and allocation
 counts as historical evidence.
+
+</details>
+
+<details>
+<summary>Process ownership, cleanup, buffers and settings</summary>
 
 ## Processes and settings
 
@@ -330,7 +378,7 @@ so streaming, input and encoding do not depend on capture management.
 `framed_annex_b` reads stock FFmpeg tee/framecrc metadata followed by each exact
 H.264/HEVC encoded packet from the same pipe. It checks bounded stream metadata,
 length, codec, timestamp order and checksum before `annex_b` assembles the packet
-using `encoder_io`'s shared NAL scanner. No following picture is needed to flush
+using the shared NAL scanner in `annex_scan.rs`. No following picture is needed to flush
 the current one. Borrowed complete NALs copy into bounded contiguous access-unit
 storage. Keyframe configuration
 is inserted before large slices, avoiding a second picture copy at publication.
@@ -392,6 +440,8 @@ describes the ownership tests, fallback and historical same-process stage costs.
 The worker sends compressed bytes through stdout; the parent allocates the bounded
 packet and applies its delivery budget. Raw shared-slot transport is unchanged.
 
+### Settings storage and platform boundaries
+
 `blent-config::model` owns the portable settings schema, sanitization and edit
 merging. Saves compare each field with the editor's original snapshot, including
 nested camera fields, and merge changes into the latest locked configuration.
@@ -407,9 +457,11 @@ The `platform` feature supplies shared service entry points.
 Configuration location queries are fallible,
 so missing/relative Linux bases cannot redirect writes into the current
 directory. Windows uses known folders and owned process jobs. Its private
-runtime ACL/lease validation still needs a native Windows runner, and its
-application backend capabilities remain disabled. See the
-[T493 validation report](reviews/2026-09-19-windows-services.md).
+runtime ACL/lease foundation passed the scoped
+[T493 native validation](reviews/2026-09-26-windows-foundation.md).
+The [Windows preview](windows-port.md) implements lifecycle and selected-monitor
+touch/mouse; display capture remains unavailable. New GUI and thread-exit
+validation gaps remain explicit in [TODO.md](../TODO.md).
 
 The `blent` library builds attachment ownership, authentication, control and
 video transport, bounded encoded queues, latency accounting and session
@@ -432,6 +484,8 @@ and bounded command services; Windows CLI and GUI consume the same report.
 The GUI collects versions through its cached background status worker, keeping
 dependency probes out of rendering and retaining explicit unsupported states.
 
+### Process responsibilities
+
 - `blent`: daemon, adb monitor, per-tablet sessions, tray and settings state.
   The Linux `session::Spec` constructs native adapters and delegates to the
   shared library's `session::Spec` for every slot. Preparation exposes settings
@@ -448,7 +502,9 @@ dependency probes out of rendering and retaining explicit unsupported states.
   when free, then searches other cards; it does not reserve an inactive card.
   Card removal or another application's use can change the assignment.
   The helper publishes the actual card for placement/input mapping. If no card
-  is available it tries to add one; failure leaves capture waiting/retrying.
+  is available, it may add one only when the Xorg safety guard permits it.
+  Under Xorg, preallocate cards before login; a failed or disallowed addition
+  leaves capture waiting/retrying. See [installation](installation.md).
   An explicit helper `--card` pin remains strict and never falls back.
 - `ffmpeg`: one per active encoding slot, unless built with the optional
   in-process encoder.
@@ -562,14 +618,21 @@ failed edits remain pending for the next update. Shutdown cancels lock waits
 and joins the worker, including any already-started filesystem commit. Neither
 aborting an async caller nor dropping a handle rolls back an in-progress write.
 
+### Monitor inventory
+
 `host/src/kscreen.rs` owns the KScreen command boundary and typed output
 inventory. Placement derives logical bounds from pixels and scale; input
 mapping chooses a connector; diagnostics report raw mode dimensions and color
 profiles. They share parsing without conflating these policies. Missing fields
 retain the established defaults, and a missing connector name remains distinct
 from an empty name. Graphics-tablet mapping prefers an enabled physical output
-marked primary by either the legacy boolean or modern `priority: 1` schema,
+marked primary by the current `priority: 1` schema,
 then falls back to the first enabled physical output in inventory order.
+
+</details>
+
+<details>
+<summary>Exact wire formats and Android decoder contracts</summary>
 
 ## Protocol
 
@@ -582,8 +645,8 @@ same per-run 64-character hex token. Video authentication has a three-second
 deadline; WebSocket upgrade and input authentication share a three-second
 accept-to-authentication deadline. With checks disabled, video accepts either
 no token or one saved 64-byte hexadecimal token; neither is authenticated.
-This permits existing Android preferences and legacy tokenless clients to work
-without changing the enabled-authentication handshake.
+This is the explicit disabled-authentication mode. It grants no identity proof;
+the enabled-authentication handshake still requires the token.
 
 Explicit launch/reconnect still delivers credentials through the shell-permission
 protected `TokenActivity`, which opens the launcher. Authentication retries use
@@ -591,8 +654,7 @@ the equally protected `TokenReceiver` broadcast instead (T420); they never start
 an Activity or foreground service. A started Android session observes token
 changes and reconnects with the new credentials. A stopped session stays stopped
 and consumes the latest stored token when the user returns. Update host and APK
-together: an older APK without the receiver cannot consume this recovery path;
-the explicit launch gate remains compatible. Tokens travel on ADB shell stdin,
+together; the token receiver is required for this recovery path. Tokens travel on ADB shell stdin,
 never in the local ADB process arguments. Fake-ADB and API 27/34 lifecycle tests
 cover delivery, permission declarations, active rotation and background resume;
 physical replay is not established by those fixtures. The broader T382
@@ -612,14 +674,14 @@ an optional saved-token prelude when authentication is disabled). Its first byte
 starts a separate three-second completion deadline. Malformed, partial, repeated
 or extra acknowledgement input ends this viewer. The grant belongs to that
 original socket; closure revokes its read-only view and a replacement starts
-without a grant. An absent control greeting offer means legacy behavior.
+without a grant. Without a control greeting offer, the socket has no liveness grant.
 
 Capture observes viewers through the independent read-only `ViewerActivity`
 contract. Each original queue receiver owns one membership; its drop removes that
 membership and actual subscription together. The registry retains weak membership
 references and reads the original connection's grant source, without copying its
 mutable capability. Liveness readiness requires viewers present and every member
-acknowledged; legacy/unmanaged receivers and closed sources deny it. Structural
+acknowledged; ungranted receivers and closed sources deny it. Structural
 membership changes and original ACK/source closure wake an observation armed before
 reading current state. Old observations may retain read views, but cannot retain
 membership or grant replacements permission. Empty/closed views wait without
@@ -748,22 +810,22 @@ create/restart a session, and queued video/control callbacks retain their
 ordering and generation checks. Hidden statistics no longer start a one-second
 presentation sampling loop; visible statistics still update once per second.
 
-`StreamingPowerBinding` owns the Activity's power-state observer from start to
-stop. It combines authenticated control/route state, video readiness, acknowledged
-pen-only mode and the saved opt-in battery preference. Stops cancel observation
-before stopping the service, so retired Activities cannot restart it. Rejected
-service starts degrade without killing streaming. `StreamingService` promotes
-in `onCreate` and validates promotion on each update; rejection/destroy/null
-restart release all locks and cancel pending work. T395 still tracks the older
-cold-start timeout whose exact failing sequence remains unknown.
+`StreamingPowerBinding` observes the original Activity and control source.
+The application-owned power runtime admits only current foreground requests;
+queued callbacks cannot restore a retired owner's demand. `StreamingService`
+handles foreground notification and delivery, while the isolated `:power` worker
+owns native wake locks. A failed service start is reported without killing the
+independent media sessions. Stop withdraws demand immediately; actual lock,
+worker and queued-call retirement remains independently required.
 
-Normal mode preserves its CPU and Wi-Fi locks. Battery mode relies on the visible
-Activity's existing screen-on flag, omitting the extra partial CPU lock. Active
-network or unknown-route sessions retain the Wi-Fi lock; confirmed USB releases
-it immediately. An inactive network/unknown session releases it after five seconds;
-repeated inactive updates do not extend that deadline, recovery cancels release,
-and Activity stop releases immediately. No brightness, refresh, FPS, scale, quality
-or decoder profile changes are implied by the battery switch.
+Normal eligible display work requests CPU and Wi-Fi wake locks. Battery saver
+omits the CPU lock and retains Wi-Fi only for active network or unknown-route
+media. Confirmed USB withdraws Wi-Fi demand immediately; inactive network demand
+has a five-second grace. Paused, unavailable or background display work requests
+no display wake locks or screen-on flag. Camera/audio consent stays independent.
+Brightness, refresh, FPS, scale, quality and decoder profile do not change with
+this switch. The [wake policy](display-wake-policy.md) defines the full state table,
+original-owner checks and cleanup barriers.
 
 The monitor supplies actual ADB transport to each attachment generation. The
 accepted control lease snapshots that route into an optional `transport` greeting
@@ -771,6 +833,8 @@ field (`usb` or `network`), independently of physical identity. Android resets i
 on connection retirement; old hosts or unknown values remain conservative. The
 loopback socket address and USB charging state never determine the route. Network
 ADB can use a medium other than Wi-Fi; this metadata does not identify the radio.
+
+### Android decoder lifetime
 
 Android's `VideoReceiver` coordinates run generations, Surface readiness and
 visible connection state. `VideoTransport` owns the socket from before blocking
@@ -907,6 +971,8 @@ input adapter clamps tilt to ±90° and emits milliradians with an axis resoluti
 of 1000 units/radian. This matches [libinput's angular conversion](https://gitlab.freedesktop.org/libinput/libinput/-/blob/1.26.2/src/evdev-tablet.c#L371)
 within 0.03° of the clamped wire value; Android's degree protocol is unchanged.
 
+</details>
+
 ## Security model
 
 Default authentication, local token storage and loopback binding restrict
@@ -960,6 +1026,9 @@ delay for H.264 High; Constrained Baseline stayed responsive. Lower idle work
 therefore needs coordinated keyframe scheduling and profile-aware validation.
 This does not enable arbitrary encoded-reference dropping.
 
+<details>
+<summary>CPU conversion and native C ownership reference</summary>
+
 ## CPU conversion dispatch
 
 The Linux EVDI helper inherits `BLENT_CONVERSION_SIMD` from the host process.
@@ -1007,3 +1076,5 @@ headers. Capture and writer use atomic damage, readiness, wakeup and latency
 operations; they do not lock exchange internals. The composition root allocates
 owners, and native fixtures retain explicit private access. See the
 [T823 boundary validation](reviews/2026-10-10-c-owner-contracts.md).
+
+</details>

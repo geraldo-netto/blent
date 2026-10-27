@@ -1,9 +1,28 @@
 # Display activity signal contract
 
-Status: independent Rust projection/schema and Kotlin schema validation implemented
-under T1055; original host control publication implemented under T1056. Android
-decoder consumption is implemented under T1057; wake ownership remains T1058. No peer resource release is claimed from this
-contract alone; joined Android acceptance remains T1011 and physical acceptance T914.
+The host and Android implementations are integrated. Automated joined checks
+passed under [T1058](reviews/artifacts/2026-10-19-t1058/README.md) and
+[T1011](reviews/artifacts/2026-10-19-t1011/README.md). These tests use controlled
+native substitutes; they do not establish physical screen, suspend or power
+behavior. The former T914 physical-acceptance tracking was retired without
+claiming completion. Current actionable work is in [TODO.md](../TODO.md).
+
+## Purpose
+
+The host tells Android whether display work may continue. A pause stops new
+work; it does not prove that a decoder or native resource has finished cleanup.
+Every update belongs to its original authenticated connection.
+
+```mermaid
+flowchart LR
+    Host[Original host controller] --> Signal[Bounded activity message]
+    Signal --> Inbox[Android validates original connection]
+    Inbox --> Decoder[Decoder eligibility]
+    Inbox --> Wake[Wake policy]
+    Decoder --> Cleanup[Original worker cleanup]
+```
+
+## Message contract
 
 The original authenticated control connection owns the signal sequence. A hint
 carries no credential, consent, capture permission or native retirement proof.
@@ -134,10 +153,10 @@ progress; native cleanup additionally requires original worker/native retirement
 evidence. Missing evidence keeps ownership and capacity retained, rather than
 being converted into a timeout permission. Permanent SDK 27/34 lifecycle tests
 hold retirement open, coalesce interruptions, replace/background control owners,
-reject malformed/stale signals and exercise legacy fallback plus configuration
+reject malformed/stale signals and exercise unsupported-source fallback plus configuration
 callbacks. Dispatch tests cover 1,000 coalesced views and scheduling/report faults;
 bounded counter-transition tests cover invalid ranges. Physical native wake and
-host/tablet acceptance remain T1058/T914.
+host/tablet acceptance remains unqualified; joined automated acceptance is linked above.
 
 
 ## Retained support history
@@ -153,11 +172,11 @@ native retirement proof.
 The control owner carries the previous bit into its fresh inbox before opening a
 replacement socket. That socket receives a fresh opaque identity and starts
 Unavailable. Coalescing observed/lost/replacement updates therefore cannot erase
-known source loss before UI delivery. Only the fresh source's own explicit legacy
+known source loss before UI delivery. Only the fresh source's own explicit unsupported
 greeting resets the bit and records Unsupported. A late old greeting or optional
 observer failure cannot reset current history. This is local bounded metadata;
-the wire schema and host protocol stay unchanged. Activity wake projection remains
-T1061; native power ownership is T1060 and joined acceptance T1058/T1011.
+the wire schema and host protocol stay unchanged. Activity wake projection is implemented under
+T1061; native power ownership is T1060 and joined automated acceptance is linked above.
 
 The existing original control lock serializes receive/close/replacement. One inbox
 owns its mutable support bit and current immutable snapshot; readers borrow those
@@ -188,6 +207,6 @@ It does not retain ControlSession, sockets, callbacks, a UI object or a native
 resource. Caller-owned messages are read synchronously and not retained. Additional
 borrowed snapshots remain bounded by their containing delivery/request owners;
 release is ordinary containing-owner settlement, with no native cleanup allocation.
-Queued/native power consumption of this narrow relevance contract remains T1069,
-and Activity/window projection remains T1061. Current-view relevance alone never
+Queued/native power consumption implements this narrow relevance contract under
+T1069; Activity/window projection is implemented under T1061. Current-view relevance alone never
 supplies authentication, native permission, quiescence or retirement proof.

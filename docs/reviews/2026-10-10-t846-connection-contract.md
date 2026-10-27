@@ -1,11 +1,89 @@
 # T846 connection contract and integration boundary
 
+## Connection in plain language
+
+Direct USB lets the computer and tablet share one authenticated cable connection
+without Android debugging. Pairing proves which peer is connected; it does not
+start a camera or microphone. Each media resource needs its own current consent,
+permission and admitted session. Stopping one resource leaves the others independent.
+
+```mermaid
+flowchart LR
+    Cable[Discover selected USB device] --> Choice[Approve exact peer identity]
+    Choice --> TLS[Verify mutual TLS authentication]
+    TLS --> Window[Agree bounded receive capacity]
+    Window --> Offer[Offer one media resource]
+    Offer --> Consent[Current local consent and permission]
+    Consent --> Commit[Prepare and commit resource]
+    Commit --> Media[Transfer admitted media]
+```
+
+Linux and Android implement display, camera, microphone and speakers. Selected
+API 36 tablet trials qualify pairing, camera and both audio directions within
+the recorded conditions below. Direct USB display/touch and broader joined
+qualification remain incomplete. Other devices and older native providers are
+not certified by those results. Windows direct USB is unsupported; macOS is declined.
+
+### Find the contract you need
+
+| Topic | Start here |
+| --- | --- |
+| Wire bytes, credit and queue bounds | [Domain layer](#implemented-domain-layer) |
+| Peer identity, approval and native ownership | [Discovery](#discovery-approval-and-native-ownership) |
+| Resource admission and revocation | [Management policy](#implemented-management-activation-policy-t851), [record schema](#implemented-management-record-version-1-t850) |
+| Host broker and local endpoints | [Linux broker](#t853-on-demand-linux-broker-composition) |
+| Android native workers and control IPC | [Session runner](#t883-bounded-android-native-session-runner), [private process](#t884-private-android-connection-process-and-control-boundary) |
+| Pairing presentation | [Android](#t892t893-production-android-pairing-presentation), [host](#t894-production-host-pairing-controls) |
+| Display routing and cleanup | [Android display](#t907-android-activity-display-routing), [Linux display](#t908-linux-daemon-display-integration) |
+| Camera and audio | [Camera consent](#t934-camera-consent-ownership), [shared consent](#shared-original-owner-android-consent-t982), [duplex checks](#t1000-automated-joined-duplex-isolation-2026-10-11) |
+
+### Terms used below
+
+- **Lease:** permission bound to one original owner and resource. Equal-looking
+  identifiers from another connection cannot recreate it.
+- **Credit:** permission to send a bounded number of bytes. Bytes remain charged
+  until the actual consumer releases them.
+- **Borrow:** temporary access to another owner's storage or handle. The owner
+  cannot free or reuse it while that access remains outstanding.
+- **Admission:** permission to start work after reserving its capacity.
+- **Revocation:** immediate withdrawal of permission to do new work.
+- **Retirement:** confirmed completion of the original work and cleanup. A timeout,
+  UI status, cancel request or closed socket alone does not establish it.
+- **Quarantine:** retain an uncertain owner and its capacity until retirement is
+  proven. Other independent resources can continue.
+
+```mermaid
+flowchart LR
+    Revoke[Revoke authority] --> Cutoff[Reject new work]
+    Cutoff --> Local[Retire original local workers and borrows]
+    Cutoff --> Peer[Settle required peer terminal exchange]
+    Local --> Join[Join all required evidence]
+    Peer --> Join
+    Join --> Reuse[Release capacity for replacement]
+```
+
+Link loss waives peer settlement only where the contract says so. It never waives
+local native cleanup. Uncertain evidence keeps the original capacity reserved.
+
+### Current evidence and historical details
+
+The expandable records preserve exact schemas, independent requirements and
+implementation evidence. “Pending”, “now”, capability masks and test counts inside
+milestone records describe that milestone, unless explicitly updated there.
+Use the current summary here and [TODO.md](../../TODO.md) for current status.
+Retired tracking is not completed acceptance; this reference does not reopen it.
+
+
+<details>
+<summary>Selected-device evidence and limits, updated through October 21</summary>
+
+
 Current Android composition advertises display, camera, microphone and speakers
 (mask 15) under T932/T978/T998. Linux display T908, camera T933, and both typed
 USB audio directions T979/T999 are implemented. Original consent, permission,
 native consumer ownership and independent resource retirement remain required;
 T1000 qualifies joined automated duplex fixtures. Host and Android pairing and
-media controls are implemented. Production trials on the API36 RugKing Pad 2 Pro
+media controls are implemented. Production trials on the API 36 RugKing Pad 2 Pro
 have delivered debugging-off USB camera frames, microphone PCM and audible
 speaker tones. Software-only reconnect, saved trust and fresh local media consent
 also passed; [T1237](artifacts/2026-10-21-t1237/README.md) retains that scoped
@@ -14,7 +92,7 @@ now verifies separate original camera/audio worker retirement after debugging-of
 hot reconnect, before debugging restoration. Earlier uninstrumented Stop reports
 have no established cause. Selected-device camera T858, speaker T860 and
 microphone/duplex T859 acceptance now pass. [Selected-device pairing T855](artifacts/2026-10-21-pairing-acceptance/T855/README.md)
-also passes after T1251's236 host/129 Android cases and T1252's physical
+also passes after T1251's 236 host and 129 Android cases and T1252's physical
 saved-list/Forget/denial/remembered-approval, debugging-off persisted reconnect
 and original-peer revocation checks. Original native workers retire before
 debugging restoration; independent new reads confirm saved trust removal.
@@ -29,6 +107,12 @@ and scoped validation at that milestone. Later implementation sections supersede
 then-pending work; their historical counts never imply current whole-project
 coverage or physical support. Current code and the explicit summary above govern
 implemented behavior.
+
+</details>
+
+<details>
+<summary>Wire reference: envelope, credits and fair scheduling</summary>
+
 
 ## Implemented domain layer
 
@@ -116,6 +200,12 @@ metadata and DATA and rotates metadata across channels. Sequences are assigned a
 reservation; metadata cannot reorder already committed payloads. Failed writes
 poison the physical connection rather than retry potentially transmitted bytes.
 
+</details>
+
+<details>
+<summary>Authentication, discovery and bounded native ownership</summary>
+
+
 ## Discovery, approval and native ownership
 
 The bounded eight-byte `BLPA` discovery header identifies version, endpoint role
@@ -124,7 +214,8 @@ machine binds approval and subsequent TLS proof to an exact certificate fingerpr
 and epoch; stale callbacks, deadline expiry and revoked leases cannot authorize
 streams. Cancellation enters Closing, with no replacement until native retirement.
 Persistent trust storage and production approval UI are implemented under
-T868/T892/T893; joined physical approval qualification remains T855.
+T868/T892/T893; selected-device T855 qualification is linked in the current
+evidence summary above.
 
 After local approval, each peer sends the eight-byte `BLPR` readiness marker
 (version 1, endpoint role, two reserved zero bytes), then validates the peer's
@@ -157,8 +248,8 @@ larger gadget read can complete. Both changes have permanent failing-before/pass
 regressions, including invalid packet sizes and socket-setting rollback. It retains retirement responsibility through startup/close failures and
 blocked native I/O. Absolute native deadlines remain the process supervisor's job.
 The profile-only encrypted probe composes these adapters. The Android 16 native
-provider and duplex transfer pass the diagnostic trial below. Debugging-off synthetic qualification also passes (below); production lifecycle
-integration remains open.
+provider and duplex transfer pass the diagnostic trial below. Debugging-off synthetic qualification also passes (below); selected production
+qualification and its remaining limits are listed above.
 
 ## Experimental authentication adapters
 
@@ -168,8 +259,8 @@ and an authenticated protocol preface; API 29+ also requires `blent-usb/1` ALPN.
 caller; parsing a certificate does not grant approval. Persistent trust, explicit
 revocation policy and authenticated admission are implemented under T868/T852 below.
 The Linux broker runtime, production approval UI and Android connection service
-are implemented under T853/T854/T892/T893. Their full physical application
-qualification remains T846/T855. The optional Cargo
+are implemented under T853/T854/T892/T893. Broader physical application
+qualification remains incomplete; selected T855 pairing evidence is linked above. The optional Cargo
 feature uses cached dependencies; all pre-existing locked package versions are
 preserved. New cached crypto dependency notices and archive checksums are retained in
 `licenses/accessory-transport/`, included by the existing distribution-docs list.
@@ -209,6 +300,12 @@ tracks an existing inventory gap for authored Kotlin primary constructor/init
 bodies; their JaCoCo constructor counters are additionally checked directly.
 A scoped pass is not a whole-project or physical-backend coverage claim.
 
+</details>
+
+<details>
+<summary>October 10 synthetic encrypted transport measurements</summary>
+
+
 ## Native encrypted diagnostic trial
 
 On October 10, the Linux host and Android 16 tablet completed 4,096 mutually
@@ -243,6 +340,12 @@ These are stop-and-wait synthetic measurements, not rendering latency or maximum
 throughput. An earlier 71-echo partial run had 40–80 ms delays and then timed out
 reading a payload. TCP_NODELAY and USB termination were changed together; this
 trial does not isolate their individual performance effects or compare against ADB.
+
+</details>
+
+<details>
+<summary>Original delivery sequence and historical dependencies</summary>
+
 
 ## Delivery milestones after decomposition
 
@@ -296,6 +399,12 @@ not block local-build implementation or acceptance; no release packaging pass is
 claimed. API 27/28 JVM tests do not satisfy T863; its missing physical provider
 validation is explicit. No completion percentage or release date is inferred from
 item counts: Android service, presentation, lifecycle and media integration remain substantial work.
+
+</details>
+
+<details>
+<summary>Resource admission, retirement and management wire schema</summary>
+
 
 ### Implemented management activation policy (T851)
 
@@ -406,6 +515,12 @@ no remote endpoint address, port, path or executable is representable.
 [Retained T850 validation](artifacts/2026-10-10-t850/README.md) proves codecs and
 bounded parsing only. Brokers still must supply authenticated identity, enforce
 leases/permissions and perform actual resource preparation and retirement.
+
+</details>
+
+<details>
+<summary>Original integration plan, local routes and TLS adapter contract</summary>
+
 
 ## Remaining integration and acceptance
 
@@ -576,6 +691,12 @@ This establishes real Rust/JSSE adapter interoperability, not physical Android
 TLS-provider or USB acceptance. Native API 27/28 checks, persisted trust/UI,
 revocation and full channel/media integration remain T846 work.
 
+</details>
+
+<details>
+<summary>Host identity, trust, registration and Linux broker reference</summary>
+
+
 ## T867 durable host identity
 
 `secure_connection::identity_store` implements bounded certificate/key persistence
@@ -607,7 +728,7 @@ interrupted pending/temp state. A durable intent marker precedes complete atomic
 publication; synchronized publication precedes marker removal. Failure before intent
 durability cannot promise persistence, and no failure reports a successful revoke.
 Both adapters preserve existing evidence for explicit repair. [Validation](artifacts/2026-10-10-t868/README.md)
-includes shared malformed vectors, per-function counters and an actual API36 tablet
+includes shared malformed vectors, per-function counters and an actual API 36 tablet
 filesystem probe run without installing/restarting the app. T852 still composes these
 stores with stock TLS; production presentation and resources remain separate work.
 
@@ -623,7 +744,7 @@ a separate broker or UI dependency to the contracts.
 [Integration evidence](artifacts/2026-10-10-t852/README.md) demonstrates persisted host
 identity reuse through real mutual TLS, restart/reconnect, explicit revoke and wrong
 certificate rejection. Android's stock adapter interoperates with Rust while saving
-and reopening trust on API27/34 JVM fixtures. The host broker is implemented under T853. Android service/UI and media
+and reopening trust on API 27/34 JVM fixtures. The host broker is implemented under T853. Android service/UI and media
 remain T854–T858; no current ADB-free production-display support is claimed.
 
 ## T871 local registration boundary
@@ -860,6 +981,12 @@ debugging-off production media acceptance: pairing qualification T855 and displa
 required alongside T846; Android service T854 is implemented. Linux is the implemented broker backend;
 Windows runtime support is unavailable, and macOS remains declined.
 
+</details>
+
+<details>
+<summary>Android transport, private worker and setup reference</summary>
+
+
 ## T881 Android transport ownership
 
 Android now implements the same BLCP v1 receive-window contract as the host.
@@ -888,9 +1015,9 @@ receive-credit release remain the session owner's responsibilities.
 loan and frame-claim regressions, fragmented/coalesced frames, exact extents,
 bounded mutation, deadlines and independent directions. Actual maintained Rust
 and Android TLS adapters exchange BLCP plus management CREDIT/DATA using the new
-framing on API27/34 JVM fixtures. Production resource dispatch is T882; native
+framing on API 27/34 JVM fixtures. Production resource dispatch is T882; native
 service ownership is T854. JVM interoperability does not satisfy physical-device
-acceptance or the API27/28 native-provider gap T863.
+acceptance or the API 27/28 native-provider gap T863.
 
 ## T882 Android resource-session boundary
 
@@ -1109,7 +1236,7 @@ profile is injected; T854 coordinates the production profile with the host helpe
 
 `AndroidAccessoryPermission` owns one permission request and its native cleanup.
 Callbacks use a private action, an immutable package-directed PendingIntent and
-an app-signature permission gate on API27/34; API33+ additionally registers a
+an app-signature permission gate on API 27/34; API33+ additionally registers a
 nonexported receiver. Extras claiming permission are ignored. The receiver only
 correlates a current request and admits one background hint. Queue rejection
 changes local failure state; it does not perform native cancellation on the
@@ -1269,6 +1396,12 @@ Validation and exact source/counter evidence are retained under
 [T854 artifacts](artifacts/2026-10-10-t854/README.md). Synthetic KeyStore provider
 tests exercise the loader boundary and signatures only; native AndroidKeyStore
 isolation, physical USB and actual Binder-kill acceptance remain T855/T846.
+
+</details>
+
+<details>
+<summary>Pairing presentation and display ownership milestones</summary>
+
 
 ## T892/T893 production Android pairing presentation
 
@@ -1615,6 +1748,12 @@ no media authority.
 shared schema and changed Linux consumers. Native Windows test checking exposed
 an older fixture initializer defect, retained separately as T926.
 
+</details>
+
+<details>
+<summary>Display composition and allocation evidence</summary>
+
+
 ## T990 immutable media endpoint metadata
 
 The shared Android media access adapter now projects typed endpoint metadata
@@ -1733,6 +1872,12 @@ still experimental; Windows native USB remains unsupported under T902.
 Native USB builds report missing ADB as unavailable optional automatic discovery;
 direct USB does not require it. Default builds retain the install/restart guidance.
 Discovery/retry behavior is unchanged. [Permanent red/green regression and counters](artifacts/2026-10-11-t929/README.md) cover both build configurations.
+
+</details>
+
+<details>
+<summary>Camera consent, endpoint and native retirement reference</summary>
+
 
 ## T931 portable camera invitation boundary
 
@@ -2068,6 +2213,12 @@ were resolved under T981: permanent bounded tag/audio-profile properties and a
 fresh full common collection now pass the individual gate for all 10 management
 methods. T976 evidence remains its historical partial result.
 
+</details>
+
+<details>
+<summary>Shared audio consent, duplex isolation and fixture evidence</summary>
+
+
 ### Shared audio invitation boundary (T977)
 
 Current camera/audio domains share `connection::media::{Target, Transports,
@@ -2162,6 +2313,12 @@ camera/microphone/speaker, Stop, failure/death and held cleanup assertions remai
 [Fresh ordinary suite, native counters and red/green evidence](artifacts/2026-10-12-t1004/README.md).
 Physical acceptance remains postponed.
 
+</details>
+
+<details>
+<summary>Display startup recovery and original native completion</summary>
+
+
 ## T928 independent display startup recovery (2026-10-12)
 
 Linux USB composition retains an exact portable admission recovery observer outside
@@ -2194,3 +2351,5 @@ panic test fails before recovery and passes unchanged afterward.
 [Native evidence](artifacts/2026-10-12-t928/README.md) records source fingerprints,
 normal-suite checks, native individual counters and complexity. Real devices,
 production host services and physical acceptance remain untouched/postponed.
+
+</details>

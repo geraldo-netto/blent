@@ -217,7 +217,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 813,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -225,7 +225,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "aca495ae83e374fb611e7f2e7e70f9011a86bbac6e43c9b9e928d713539d8f02",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/appimage-plan.md",
@@ -249,7 +251,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 9179,
       "long_paragraphs": 28,
       "joined_word_number_tokens": 0,
@@ -257,7 +259,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "6f537adc57deb01fdce58b9316f4ceec2a04c2b47605136917e8e8fe1df7ad53",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/assets/README.md",
@@ -1283,7 +1287,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 1535,
       "long_paragraphs": 2,
       "joined_word_number_tokens": 0,
@@ -1291,7 +1295,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "80f26f713a82e7ba19447467391257263e73b6e54fa6881dcd3eceaf89a07989",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/development.md",
@@ -1315,7 +1321,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 1694,
       "long_paragraphs": 3,
       "joined_word_number_tokens": 0,
@@ -1323,14 +1329,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "0ca993f10ea4aec21fbe08d86e0dd1b77ef2bb1e4a6411496645035e762059ce",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/display-quiescence.md",
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 704,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1338,14 +1346,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "af77c417e84ae1cb911b98268794cf5ef6adb44e44a6a183182a86d48e4df55b",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/display-wake-policy.md",
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 2918,
       "long_paragraphs": 9,
       "joined_word_number_tokens": 0,
@@ -1353,7 +1363,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "972c1924ec38ab1a2c12d5fdd9fea47defd4cfde50f883b7f0017033bbf295e0",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/faq.md",
@@ -1377,7 +1389,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 1092,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1385,7 +1397,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "0ac1e47a532e3790b8593225e55791e35c3c5f0e35f17fad500a2b90b317bcdf",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/installation.md",
@@ -1409,7 +1423,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 1726,
       "long_paragraphs": 0,
       "joined_word_number_tokens": 0,
@@ -1417,14 +1431,16 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "77020132c59aef3b7a3fff9a2a33a2866b63bf91ee08e8a1d53b53c975c32b2c",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/nfc-plan.md",
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 678,
       "long_paragraphs": 1,
       "joined_word_number_tokens": 0,
@@ -1432,7 +1448,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "f02668d8a601d7ccae5df295f8b5058eb3ebd619bb17412bcaea623f72d95036",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/pipe-buffer.md",
@@ -4175,7 +4193,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 18313,
       "long_paragraphs": 22,
       "joined_word_number_tokens": 0,
@@ -4183,7 +4201,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "2111ea83d5c23e162657fe19eedf2b6d6020f6143e4b1cb7dc815f38a585a758",
+      "outcome": "rewritten"
     },
     {
       "path": "docs/reviews/2026-10-10-t846-usb-prototype.md",
@@ -11730,7 +11750,7 @@
       "owner": "T1326",
       "role": "active technical contract or architecture reference",
       "action": "rewrite",
-      "review_note": "Lead with reader goal; define terms, shorten dense prose, separate reference detail and verify current instructions.",
+      "review_note": "Reviewed all active references and the full connection contract. Added plain explanations, topic navigation and ownership/flow diagrams; retained exact schemas, bounds and dated evidence in focused references. Corrected source-verified protocol, monitor, Xorg, power integration and Windows contradictions; distinguished historical milestones and superseded compatibility requirements. Validated 190 local links/anchors, balanced detail sections and distribution-notice regression.",
       "words": 2837,
       "long_paragraphs": 4,
       "joined_word_number_tokens": 0,
@@ -11738,7 +11758,9 @@
       "local_only": false,
       "audience": "maintainers and evidence reviewers",
       "authority": "preserve independent requirements; check implemented claims against source",
-      "review_stage": "classified; substantive review assigned to owner"
+      "review_stage": "reviewed",
+      "reviewed_sha256": "b021bcfd1d9acab5c636bfeac7829b4ef0f4ff18c601ab4585ac79aa0532dbc5",
+      "outcome": "rewritten"
     },
     {
       "path": "licenses/accessory-transport/README.md",

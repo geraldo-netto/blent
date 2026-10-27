@@ -5,6 +5,21 @@ T575 adds an explicitly enabled prototype for X11 and H.264 VAAPI Baseline.
 measured processes' CPU use but increased video latency. See the
 [measurements and limitations](benchmarks/2026-09-21-gpu-adapter/README.md).
 
+This prototype uses the GPU to copy and convert desktop pixels before encoding.
+It still needs EVDI and performs copies; it is not a fully zero-copy pipeline.
+
+```mermaid
+flowchart LR
+    X11[Owned X11 output] --> Pixmap[Private GPU pixmap]
+    Pixmap --> Fence[Wait for producer completion]
+    Fence --> NV12[Convert to owned NV12 surface]
+    NV12 --> Encoder[VAAPI encoder]
+    Encoder --> Packets[Normal encoded transport]
+```
+
+The producer fence protects the pixmap; final frame references protect each
+converted surface. The sections below describe the optional developer setup.
+
 ## Build and enable
 
 Build the ordinary host without `inproc-encoder`. Separately build the native
@@ -103,7 +118,8 @@ and continues CPU readback; Xorg/EVDI and GPU conversion
 still copy pixels, and USB/Android have their own buffers. T579 added the
 opt-in damage mode and [matched native measurements](reviews/2026-09-26-next-batch.md#t579--damage-triggered-gpu-capture).
 It improves the measured 29 Hz case but worsens p95 against periodic capture at
-30 Hz. T593 tracks that tail latency; T578 tracks explicit cross-device layout negotiation. [T580 measurements](benchmarks/2026-09-21-fifo-demand/README.md)
+30 Hz. The historical T593/T578 follow-ups concern tail latency and cross-device layout
+negotiation; neither is a completed capability or an active commitment here. [T580 measurements](benchmarks/2026-09-21-fifo-demand/README.md)
 cover the redundant conversion removed from the retained EVDI owner.
 
 ## Repeatable validation

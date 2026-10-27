@@ -1,11 +1,13 @@
-# Windows integration plan
+# Windows preview and remaining work
 
-Status: staged implementation, updated 2026-09-29. Linux remains the supported
+Status: incomplete preview. Linux remains the supported
 runtime for streaming. Windows daemon lifecycle, optional autostart and an
 authenticated USB/Wi-Fi connection preview are implemented. Native touch/mouse
 adapters and authenticated session/Android controls are integrated as an opt-in
 selected-monitor preview. Capture, stylus and packaging remain unavailable.
-Physical USB/touch/mouse acceptance remains T522; extended-display acceptance is T674.
+Physical USB/touch/mouse and extended-display acceptance are not established
+by these component tests. T522/T674 are historical acceptance references, not
+active TODO commitments.
 The first Windows release target is **Windows 11 x64**, selected by the maintainer
 on 2026-09-26. Windows 10 and ARM64 are outside this initial scope. This target
 decision does not enable runtime capabilities; driver and packaging choices
@@ -14,6 +16,40 @@ remain pending.
 On 2026-09-27 the maintainer declined stylus work while explicitly retaining
 touch and mouse support. T526 is `wont_fix`; existing Linux/Android pen code
 and permanent tests remain. Windows stylus support stays unavailable.
+
+## What works today
+
+| Capability | Status |
+| --- | --- |
+| Daemon Start/Stop/status, GUI settings, tray, autostart | Implemented; scoped native lifecycle evidence below |
+| Authenticated ADB USB/Wi-Fi connection | Preview |
+| Touch/mouse on a selected existing monitor | Opt-in preview; physical tablet qualification remains separate |
+| Tablet extended display, capture and camera | Unavailable |
+| Direct USB without ADB | Unsupported on Windows |
+| Stylus | Declined; unavailable |
+| Installer/release package | Not completed |
+
+[TODO.md](../TODO.md) is the current work list. Its Windows GUI and thread-exit
+validation gaps are still blocked on native evidence. IDs in the historical
+milestones below preserve traceability; removing a tracking row did not certify
+that feature or authorize new Windows work.
+
+```mermaid
+flowchart LR
+    Shared[Shared settings and session contracts] --> Linux[Linux adapters]
+    Shared --> Windows[Windows preview adapters]
+    Windows --> Lifecycle[Lifecycle and selected-monitor input]
+    Windows -. incomplete .-> Capture[Virtual display and capture]
+    Capture -. acceptance needed .-> Release[Packaged supported release]
+```
+
+For implementation planning, use [feature parity](#feature-parity-gate),
+[decisions](#decisions-and-resources-needed), [architecture](#architecture-and-reuse)
+and the [acceptance checklist](#milestones-and-acceptance-checks).
+
+<details>
+<summary>Implementation milestones and dated native evidence</summary>
+
 
 The initial [cross-compilation review](reviews/2026-09-19-windows-cross-compilation.md)
 recorded GNU/MSVC failures at `63b332e`. The subsequent
@@ -129,7 +165,7 @@ Delivery sequence: **Windows compilation → touch/mouse operation → extended
 display → packaged release**. Each milestone has separate acceptance checks;
 a successful Windows build alone does not establish functional support.
 
-The current [TODO ledger](../TODO.md) separates independently reviewable work:
+The original roadmap separated these independently reviewable outcomes:
 
 | Milestone | Implementation and prerequisites | Physical acceptance |
 | --- | --- | --- |
@@ -141,6 +177,8 @@ The current [TODO ledger](../TODO.md) separates independently reviewable work:
 This table separates implemented building blocks from remaining integration and
 acceptance. Each implementation retains its own permanent tests and per-function coverage; native fixtures and physical
 acceptance remain separate evidence. The completed T531 tray is not pending work.
+
+</details>
 
 ## Feature-parity gate
 
@@ -184,9 +222,9 @@ Work depending on an unanswered choice must wait for that choice.
   Visual Studio/WDK versions and matching SDK/WDK build numbers from
   [Microsoft's WDK guidance](https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk).
 - An owned driver also needs an appropriate signing and distribution process.
-  Microsoft's current Hardware Dev Center submission requirements include
-  an EV certificate associated with the account. Verify the applicable
-  release route before promising customer installation; see
+  The original plan anticipated an EV certificate associated with the submission
+  account. Verify the applicable signing and release requirements before promising
+  customer installation; see
   [driver signing requirements](https://learn.microsoft.com/en-us/windows-hardware/drivers/dashboard/code-signing-reqs).
 
 ## Architecture and reuse
@@ -206,10 +244,10 @@ mapping. Linux owns its EVDI card receiver inside the input adapter. Shared
 credentials use stock `getrandom`; socket buffer hints use stock `socket2`.
 Private credential persistence and process lifecycle remain platform services.
 
-These interfaces compile for GNU and MSVC Windows targets, but the Windows
-preview starts authenticated protocol sessions with unavailable capture/input
-adapters; it does not enable those native backend capabilities. Windows native
-display/capture/input adapters still need implementation and acceptance.
+These interfaces compile for GNU and MSVC Windows targets. The Windows preview
+has an explicit opt-in touch/mouse adapter for a selected existing monitor.
+Display capture remains unavailable; neither compilation nor that input preview
+establishes an extended display or full physical tablet acceptance.
 Narrower `VirtualDisplay` and `FrameSource` interfaces remain design candidates
 for those adapters, not implemented cross-platform backends. Preserve existing
 Android brightness/refresh preferences and Linux regressions during that work.
@@ -231,6 +269,10 @@ before selecting it. Direct IDD swap-chain access would require a suitable
 driver interface or an owned driver.
 
 ## Milestones and acceptance checks
+
+The checklist preserves the release requirements. Earlier building blocks have
+been implemented as described above; the checklist is not a claim that all work
+is pending or permission to resume retired items.
 
 ### 1. Isolate platform dependencies
 
@@ -261,11 +303,10 @@ capabilities accurately, and label artifacts as incomplete until validated.
 
 - Implement native touch and mouse injection through explicit Windows adapters.
   Preserve the shared enabled-device policy and owned contact/button cleanup.
-- Define a non-stylus mouse event/configuration path before session integration.
-  The existing `input_pointer` is a pen-derived virtual pointer, and
-  `InputConfig::any_device` considers only touch/pen. These existing contracts
-  do not establish independent mouse support; preserve current Linux behavior
-  and permanent regressions while adding the Windows path.
+- Preserve the independent non-stylus mouse path implemented for the preview.
+  Linux's pen-derived `input_pointer` is a separate feature; it does not establish
+  Windows mouse support. Retain the native Windows adapter and shared mapping
+  regressions alongside Linux behavior.
 - Map the selected monitor across negative desktop coordinates, rotation and
   mixed DPI, with bounded coordinate/geometry validation.
 - Test session and privilege restrictions, including ordinary versus elevated

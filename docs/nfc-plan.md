@@ -3,9 +3,21 @@
 T546 research supports a read-only tag-to-computer feature using Android reader
 mode and the existing authenticated attachment. Blent does not implement NFC
 sharing yet. The remaining product choice is whether standard NDEF records meet
-the intended use case, or a specific non-NDEF tag/protocol is required. T740
-retains that decision before implementation; this document proposes a concrete
-first version and its dependent work.
+the intended use case, or a specific non-NDEF tag/protocol is required. The historical T740 proposal
+recorded that decision; it is not an active implementation commitment. This page
+preserves the proposed first version. Resume only after the scope is selected.
+
+```mermaid
+flowchart LR
+    Tag[NFC tag] --> Reader[Proposed foreground Android reader]
+    Reader --> Bounds[Validate bounded NDEF records]
+    Bounds --> Link[Authenticated connection]
+    Link --> List[Read-only computer list or JSON]
+    List --> Save[User chooses Copy or Save]
+```
+
+NDEF is a standard format for tag records. The proposed reader would deliver
+records; it would not open links or run their contents.
 
 ## Verified platform capabilities
 
@@ -14,7 +26,7 @@ Android API 36, returned `android.hardware.nfc`, `android.hardware.nfc.any`,
 `android.hardware.nfc.hce` and `android.hardware.nfc.uicc`; `service check nfc`
 reported the NFC service. This establishes advertised hardware/service presence,
 not enabled reader state or successful tag reads. No NFC setting or tag was
-changed. Camera prerequisites T621/T540 have already passed.
+changed; this was a capability query, not a tag-reading trial.
 
 Android's reader mode is available from API 19 and is limited to a foreground
 Activity. Reader mode temporarily changes NFC operation, including card-emulation
@@ -60,6 +72,9 @@ independent receiver bounds. Framework-created tag objects are not an applicatio
 allocation guarantee. Native timeout/close behavior must be tested on the tablet.
 
 ## Implementation dependencies and acceptance
+
+These IDs preserve the original work breakdown. They do not reopen retired
+tracking or authorize device trials; [TODO.md](../TODO.md) lists active work.
 
 1. **T740:** choose the proposed NDEF-to-GUI/CLI scope or name the required
    non-NDEF technology and desktop consumer. The latter needs a revised protocol

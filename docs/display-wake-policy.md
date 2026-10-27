@@ -1,11 +1,30 @@
 # Android display wake policy
 
-Status: independent desired policy (T1059), original-request admission (T1062),
-handle ownership (T1063) and foreground native service ownership (T1060) are
-implemented. T1061 integrates original control observations with foreground native
-and Window demand. Joined acceptance remains T1058/T1011; physical wake/power
-evidence remains T914. Automated adapter checks establish policy behavior, without
-claiming measured power savings.
+The host and Android implementations are integrated. Automated joined checks
+passed under [T1058](reviews/artifacts/2026-10-19-t1058/README.md) and
+[T1011](reviews/artifacts/2026-10-19-t1011/README.md). These tests use controlled
+native substitutes; they do not establish physical screen, suspend or power
+behavior. The former T914 physical-acceptance tracking was retired without
+claiming completion. Current actionable work is in [TODO.md](../TODO.md).
+
+## What the policy controls
+
+Wake locks ask Android to keep CPU or Wi-Fi work available. The Activity's
+screen-on flag asks it to keep that window visible. Display pause or source loss
+withdraws these requests; camera and audio keep their own consent and lifetimes.
+Releasing a wake request does not prove that a decoder has stopped.
+
+```mermaid
+flowchart LR
+    State[Current display and foreground state] --> Policy[Desired wake policy]
+    Policy --> Request[Original request admission]
+    Request --> Service[Foreground service]
+    Service --> Worker[Isolated native wake owner]
+    State --> Window[Activity screen-on policy]
+    Worker --> Proof[Actual retirement before reuse]
+```
+
+## Desired state
 
 `StreamingPower` is an immutable, platform-independent policy input containing
 battery-saver preference, authenticated media activity, observed transport and
@@ -292,7 +311,7 @@ T1061 reads the live original control source independently of queued UI delivery
 Observed activity requires foreground ownership, authentication and current applied
 mode/decoder metadata. Pause denies wake immediately, even before its UI hint is
 applied. Supported source loss stays Unavailable through notification coalescing;
-a fresh explicit unsupported greeting retains the documented legacy fallback.
+a fresh explicit unsupported greeting retains the documented unsupported-source fallback.
 An initial source without support history waits normally. Existing pen mode can
 operate without a decoder, but cannot override pause or background cutoff.
 

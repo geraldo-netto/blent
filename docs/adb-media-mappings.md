@@ -7,6 +7,22 @@ read logs and use unrelated mappings. During that lifetime, they must not replac
 or remove Blent's temporary endpoints, or run `adb reverse --remove-all`.
 Direct USB media uses its own adapter and does not create these mappings.
 
+## Lifetime
+
+```mermaid
+flowchart LR
+    Reserve[Reserve capacity and endpoints] --> Create[Create without replacing a route]
+    Create --> Use[Invite and serve media]
+    Use --> Stop[Stop new invitations]
+    Stop --> Observe[Confirm original commands and mapping cleanup]
+    Observe --> Release[Close listeners and join worker]
+```
+
+An uncertain outcome stays at the observation step and keeps its reservation.
+Stopping a caller does not transfer cleanup to the user.
+
+### Admission and worker ownership
+
 Each mapping reserves capacity before native creation and retains one original
 device serial, remote endpoint and local destination. A host loopback listener
 reserves the chosen numeric endpoint until cleanup. The lease also owns a native
@@ -36,6 +52,8 @@ or snapshot is interpreted. A caller's five-second close wait may return an erro
 the worker, mapping admission and endpoint reservation remain retained. A deadline,
 cancelled reply or logical session result is not cleanup proof.
 
+## Cleanup decisions
+
 The platform-independent policy in `common/src/adb_reverse/temporary.rs` defines
 four creation states and three snapshot classifications. Listings are bounded
 to 64 KiB and malformed/duplicate endpoints reject before mutation.
@@ -56,6 +74,8 @@ errors preserve ownership. Successful settlement closes both owned listener desc
 then joins the worker and releases admission. A worker panic leaves its original
 reservation/admission quarantined instead of asserting cleanup.
 
+## Resource bounds and eventual cleanup
+
 Conservation: every started mapping worker owns one reserved admission; each
 command owns at most one child and one collector observation; no admission is
 reused before native settlement, worker destruction and join. Metadata views
@@ -75,6 +95,8 @@ must execute each submitted mutation at most once and return successful replies
 only after applying that effect. External replacement during the admitted
 lifetime violates the accepted contract; snapshot checks alone cannot prevent
 that race.
+
+## Evidence and limits
 
 Permanent T1090 tests execute the actual Rust adapter against private native
 Python CLI/server fixtures, with separate ownership and join of the fake server.

@@ -1,10 +1,29 @@
-# Media capability negotiation and selection research
+# Media capability negotiation
 
 T477, 2026-09-18. This document records the research and implementation contract
 for T478/T479. Both the richer report/selection contract and bounded measured
 ranking are implemented. See the [T479 evidence and limits](benchmarks/2026-09-18-profile-selection.md) and
-[video codecs](video-codecs.md) for the running protocol. Windows remains a
-[planned host port](windows-port.md).
+[video codecs](video-codecs.md) for the running protocol. Windows remains an incomplete
+[host preview](windows-port.md), without display capture.
+
+## Selection in plain language
+
+A tablet's claim that it supports a codec is only a starting point. Blent checks
+the exact picture format, tries a compatible encoder/decoder pair, and requires
+fresh render acknowledgements before selecting it. Faster results on one tested
+setup do not establish better battery life or performance on another device.
+
+```mermaid
+flowchart LR
+    Report[Current scoped decoder report] --> Match[Match encoder output and decoder format]
+    Match --> Trial[Bounded candidate trial]
+    Trial --> Render[Fresh render acknowledgements]
+    Render --> Rank[Compare qualified measurements]
+    Rank --> Select[Select or keep working fallback]
+```
+
+Use [video codecs](video-codecs.md) for user choices and current wire examples.
+The reference below preserves the selection requirements and dated research.
 
 ## What announcements can establish
 
@@ -12,8 +31,8 @@ The current Android `DecoderCapabilities` report identifies codec families and
 whether a compatible decoder advertises hardware acceleration for the negotiated
 width, height and FPS. `ControlSession` collects it on its IO scope, serializes
 inventory queries and rejects completion after socket/format retirement. The
-host separately probes stock encoders. Current rich peers compare bounded live
-ACK windows after fidelity/capacity screening; legacy peers use output cadence.
+host separately probes stock encoders. Current protocol-2 peers compare bounded
+live render-acknowledgement windows after quality and capacity screening.
 Activation requires three new render acknowledgements. T468 aligns decoder creation with the
 format-compatible inventory; T465 monitors failures after initial verification.
 
@@ -55,8 +74,8 @@ The [MediaFormat contract](https://developer.android.com/reference/android/media
 distinguishes requested encoder profiles from actual output. Operating rate and
 priority are requests, not speed guarantees. Do not forward arbitrary vendor
 keys; a private hint needs a documented vendor/codec applicability rule and a
-separate experiment. Preserve legacy behavior for old peers until a validated
-replacement is selected. The optional in-process encoder is a different adapter
+separate experiment. Update current host and Android callers together; obsolete
+peer versions are not a compatibility requirement. The optional in-process encoder is a different adapter
 and cannot inherit CLI probe evidence.
 
 Tablet encoder inventory has no selection role: Android receives and decodes
@@ -66,11 +85,12 @@ would need its own capability direction and contract.
 
 ## T478 contract
 
-Extend the control protocol, retaining the existing family report for old peers.
-The host explicitly advertises the richer version. New Android must not send a
-new protocol to a host which did not request it. Missing/unknown versions keep
-the existing H.264 and version-one paths; unknown detail cannot authorize a new
-profile. A malformed richer report must not replace a working report.
+The current decoder report requires scoped protocol 2. The host advertises that
+version and its format scope; Android reports only after that valid offer.
+Version-one reports and malformed or stale reports are rejected. Missing detail
+cannot authorize a new profile. The original September 18 compatibility proposal
+was superseded by the no-backward-compatibility policy and current validation in
+`common/src/negotiation.rs::valid_protocol`.
 
 Scope reports to the controlling connection, format revision, encoded width,
 height and FPS. Refresh on reconnect and relevant format changes, including a
@@ -101,6 +121,10 @@ configuration failure or missing render progress advances to a bounded fallback.
 Requested hints are not reported as effective settings. No default preference,
 explicit override or persisted user setting is silently migrated. T417's later
 Android diagnostic UI remains separate.
+
+<details>
+<summary>September 18 measurements and their limits</summary>
+
 
 ## Existing measured comparison
 
@@ -135,6 +159,8 @@ do not establish battery savings; the gauge advances in coarse 9.99 mAh steps.
 T479 reports measured setup and fresh-stream timing separately from the
 permanent lifecycle regressions. Its short power/thermal observations still do
 not establish a battery winner. Advertising alone does not promote a profile.
+
+</details>
 
 ## T479 measurement and ranking gate
 
@@ -183,7 +209,7 @@ new settings owner for further profile selection.
 | --- | --- |
 | Shared wire/policy | Valid bounded round trip; malformed/oversized/unknown versions; profile/level/depth/hint intersections; unsupported and unknown remain distinct |
 | Android inventory | API 27/29/30+ behavior, exceptions, missing features, identity bounds, exact format/profile support and off-main collection |
-| Control lifecycle | Old host/new tablet and new host/old tablet; reconnect, changed FPS/dimensions, away-and-back format, cancelled or late report cannot replace current state |
+| Control lifecycle | Current protocol-2 endpoints; reject obsolete versions; reconnect, changed FPS/dimensions, away-and-back format, cancelled or late report cannot replace current state |
 | Decoder selection | Selected decoder belongs to advertised compatible tuple; local revalidation; vendor hints not generically forwarded; failed configure/hints/watchdog fallback |
 | Host adapter | Stock encoder's measured output agrees with selected profile/depth; capture/wire restrictions; unavailable encoder/probe failure retains fallback |
 | Ranking/recovery | Deterministic tradeoffs and evidence identity; bounded calibration; manual/background/idle cancellation; failed candidate tried once; no stale result or rollback promotion |
