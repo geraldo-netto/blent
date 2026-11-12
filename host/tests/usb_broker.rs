@@ -81,7 +81,7 @@ async fn stop(child: OwnedChild) {
 async fn t853_executable_election_client_death_signal_and_identity_restart() {
     let root = tempfile::tempdir().unwrap();
     let helper = root.path().join("helper");
-    std::fs::write(&helper, b"#!/bin/sh\n[ \"$1\" = --list ] || exit 7\nprintf 'BLUI\\000\\000\\000\\001\\000\\000\\000\\000\\000\\000\\000\\000'\n").unwrap();
+    std::fs::write(&helper, b"#!/bin/sh\n[ \"$1\" = --list ] || exit 7\nprintf 'BLUI\\000\\000\\000\\002\\000\\000\\000\\000\\000\\000\\000\\000'\n").unwrap();
     std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o700)).unwrap();
     let child = start(root.path());
     let first = connect(root.path()).await;

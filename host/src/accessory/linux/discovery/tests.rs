@@ -78,6 +78,7 @@ fn t876_inventory_extent_metadata_and_duplicate_rejections() {
     for (offset, value) in [
         (0, 0),
         (4, 1),
+        (7, 1), // T1354: obsolete inventory versions remain rejected.
         (10, 1),
         (16, 0),
         (17, 128),
