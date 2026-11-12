@@ -1,0 +1,18 @@
+{
+  "sources": {
+    "host/src/doctor.rs": "cabeeabb290d589226116f25c99ffd2e3195b6a127fb90121c094e16c1dc918d",
+    "host/src/doctor/regression_tests.rs": "4150977efbcd4a98ef2d2cf2a4935b1ddad7c9f9cb1821057b784115654950d6"
+  },
+  "functions": [
+    {
+      "file": "host/src/doctor.rs",
+      "name": "check_named_virtual_display",
+      "first": 663,
+      "last": 692,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

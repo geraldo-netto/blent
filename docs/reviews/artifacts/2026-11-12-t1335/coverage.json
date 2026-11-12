@@ -1,0 +1,13 @@
+[
+  {
+    "file": "host/src/doctor.rs",
+    "name": "check_named_virtual_display",
+    "line": 663,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

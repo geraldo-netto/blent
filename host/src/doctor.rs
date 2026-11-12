@@ -668,7 +668,7 @@ async fn check_named_virtual_display(
 ) {
     if connectors.is_empty() {
         r.line(Level::Fail, "EVDI connector", "none found in sysfs");
-        r.hint("the evdi module is loaded but exposes no DRM connector — keep the live module loaded; use Blent system setup and reboot");
+        r.hint("check the evdi module diagnostic above; use Blent system setup and reboot instead of changing live DRM devices");
         return;
     }
     report_connectors(r, connectors);

@@ -59,3 +59,19 @@ async fn t513_keyboard_report_requires_an_exact_supported_mode() {
         );
     }
 }
+
+#[tokio::test]
+async fn t1335_absent_connector_does_not_assert_module_is_loaded() {
+    let mut report = Report::new();
+    check_named_virtual_display(
+        &mut report,
+        &FileConfig::default(),
+        &[],
+        std::ffi::OsStr::new("unused-with-no-connectors"),
+    ).await;
+    let messages = report.messages.borrow().join("\n");
+    assert_eq!(report.failures, 1);
+    assert!(messages.contains("none found in sysfs"));
+    assert!(!messages.contains("module is loaded"), "T1335 absence is not module-load evidence");
+    assert!(messages.contains("system setup") && messages.contains("reboot"));
+}

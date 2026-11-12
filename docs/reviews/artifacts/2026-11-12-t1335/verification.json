@@ -1,0 +1,34 @@
+{
+  "finding": "T1335",
+  "result": "resolved",
+  "date": "2026-11-12",
+  "behavior": "Missing EVDI connectors no longer imply a loaded EVDI module. The hint refers to the independent module diagnostic and preserves setup/reboot guidance instead of live DRM mutation.",
+  "regression": "Permanent doctor::regression_tests::t1335_absent_connector_does_not_assert_module_is_loaded failed before the wording change and passes afterward.",
+  "tests": {
+    "doctor_passed": 49,
+    "doctor_executed": 49
+  },
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7",
+    "functions_measured": 1,
+    "functions_passing": 1,
+    "minimum_percent": 100.0,
+    "method": "Fresh instrumented target, source hashes verified; per-function line gate with no exclusions."
+  },
+  "complexity": {
+    "tool": "repository scripts/complexity; syn 2.0.119; tree-sitter 0.25.2",
+    "functions_measured": 96,
+    "maximum": 9
+  },
+  "ownership": "Only a static diagnostic string changes. Report owns any test message copy for its existing local lifetime; no new process, native handle, allocation policy, asynchronous handoff or input bound. Existing connector/command lifetime tests retained.",
+  "deployment": "Source fix and automated verification only; installed runtime was not replaced during this open-item review.",
+  "artifacts": {
+    "doctor.log.gz": "a88e08baca7e7d7cd2f2ddcc1e6fa74b705aa41f99df7eb61d1f287b7adc3502",
+    "coverage-tests.log.gz": "b0ff5c9b770544cf4abd4d6654507be882d14f7e8e5aa7912a3ee888fbdde433",
+    "manifest.json": "477085674d41fa85689c3bd8aaaeb411fadf72c3e9694976cec5444033d83011",
+    "complexity.json": "59be851f57ff5713ca7414b4d6510abea03fbb3ac9bfbdd3325d267398216d3c",
+    "t1335-red.log.gz": "424d69d3f6711b06fc0d90baac17b5c2bc6a98ef62a009751203b3cd15f64b9a",
+    "coverage.json": "a119a5acce3577effb7d1d3736586c861a83958d4012bd521252dc143742d06b",
+    "coverage.lcov.gz": "b6bba8485567ba1c59cd4754cd73d24a8f9401038afc701d9730ac7eff334c57"
+  }
+}
