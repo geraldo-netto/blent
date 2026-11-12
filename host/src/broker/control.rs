@@ -182,13 +182,19 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             revision,
             local: self.local.clone(),
         }];
-        notices.extend(self.devices.iter().map(|(&target, device)| Notice::Device {
-            revision,
-            target,
-            vendor: device.vendor,
-            product: device.product,
-            accessory: device.accessory,
-            names: device.names.clone(),
+        notices.extend(self.devices.iter().map(|(&target, device)| {
+            Notice::Device {
+                revision,
+                target,
+                vendor: device.vendor,
+                product: device.product,
+                accessory: device.accessory,
+                names: device.names.clone(),
+                connection: self
+                    .links
+                    .iter()
+                    .find_map(|(&id, link)| (link.key == device.key).then_some(id)),
+            }
         }));
         notices.extend(self.links.iter().map(|(&connection, link)| Notice::Link {
             revision,

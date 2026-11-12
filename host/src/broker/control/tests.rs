@@ -522,3 +522,65 @@ fn t853_authority_metadata_correlates_exact_job_and_durable_reply() {
         .complete_authority(job.run(&mut rig.trust), 6)
         .unwrap();
 }
+
+fn displayed_view(control: &Control) -> blent_config::connection::control_view::View {
+    use blent_config::connection::control_view::{Assembler, Limits, Model};
+    let mut assembler = Assembler::new(Limits::default()).unwrap();
+    let mut snapshot = None;
+    for notice in control.snapshot() {
+        snapshot = assembler.push(notice).unwrap();
+    }
+    Model::default().publish(snapshot.unwrap()).unwrap()
+}
+
+#[test]
+fn t1337_owned_device_cannot_prepare_a_second_connect() {
+    let mut rig = Rig::new(vec![]);
+    rig.start(1);
+    rig.control.replace_devices(vec![device(1)]).unwrap();
+    let view = displayed_view(&rig.control);
+    let target = *view.snapshot().devices().keys().next().unwrap();
+    assert!(
+        view.prepare(Command::Connect {
+            revision: view.snapshot().revision(),
+            target,
+        })
+        .is_err(),
+        "T1337 refreshed row must remain locked while physical device is owned"
+    );
+}
+
+fn row_state(rig: &Rig, connection: Option<u64>) {
+    let view = displayed_view(&rig.control);
+    let target = *view.snapshot().devices().keys().next().unwrap();
+    assert_eq!(view.snapshot().devices()[&target].connection, connection);
+    assert_eq!(
+        view.prepare(Command::Connect {
+            revision: view.snapshot().revision(),
+            target
+        })
+        .is_ok(),
+        connection.is_none()
+    );
+}
+
+#[test]
+fn t1337_row_unlock_waits_for_native_and_control_retirement() {
+    let mut rig = Rig::new(vec![]);
+    let (id, _, hold) = rig.pending(1, peer(8));
+    rig.control.replace_devices(vec![device(1)]).unwrap();
+    for state in [State::Pending, State::Approved, State::Authenticated] {
+        rig.control.links.get_mut(&id).unwrap().state = state;
+        row_state(&rig, Some(id));
+    }
+    rig.control.failed(id).unwrap();
+    row_state(&rig, Some(id));
+    rig.control.native_finished(id).unwrap();
+    rig.control.quarantine(id).unwrap();
+    assert!(rig.control.collect_retired().unwrap().is_empty());
+    row_state(&rig, Some(id));
+    drop(hold);
+    row_state(&rig, Some(id));
+    assert_eq!(rig.control.collect_retired().unwrap(), vec![id]);
+    row_state(&rig, None);
+}

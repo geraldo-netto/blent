@@ -132,6 +132,10 @@ fn allowed(snapshot: &Snapshot, command: &Command) -> Result<()> {
                 *revision == snapshot.revision() && snapshot.devices().contains_key(target),
                 "stale USB device selection"
             );
+            ensure!(
+                snapshot.devices()[target].connection.is_none(),
+                "USB device is already in use"
+            );
             Ok(())
         }
         Command::Decide {

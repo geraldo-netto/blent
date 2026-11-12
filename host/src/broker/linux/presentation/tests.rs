@@ -47,6 +47,7 @@ fn notices(revision: u64, state: State) -> Vec<Notice> {
             product: 0x2d00,
             accessory: true,
             names: Default::default(),
+            connection: None,
         },
         Notice::Link {
             revision,

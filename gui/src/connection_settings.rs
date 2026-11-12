@@ -202,13 +202,21 @@ impl Panel {
         device: &blent_config::connection::control_view::Device,
     ) {
         device_description(ui, device);
+        if let Some(connection) = device.connection {
+            ui.strong(device_state_label(
+                view.snapshot().links()[&connection].state,
+            ));
+        }
         ui.horizontal_wrapped(|ui| {
             ui.small(format!(
                 "USB {:04x}:{:04x} · Device {target}",
                 device.vendor, device.product
             ));
             if ui
-                .add_enabled(self.pending.is_none(), egui::Button::new("Connect"))
+                .add_enabled(
+                    self.pending.is_none() && device.connection.is_none(),
+                    egui::Button::new("Connect"),
+                )
                 .clicked()
             {
                 self.send(
@@ -307,6 +315,16 @@ impl Panel {
                 }
             });
         }
+    }
+}
+fn device_state_label(state: State) -> &'static str {
+    match state {
+        State::Discovering => "Connecting",
+        State::Pending => "Awaiting approval",
+        State::Approved => "Verifying connection",
+        State::Authenticated => "Connected",
+        State::Closing => "Disconnecting",
+        State::Quarantined => "Cleanup pending",
     }
 }
 fn device_description(ui: &mut egui::Ui, device: &blent_config::connection::control_view::Device) {

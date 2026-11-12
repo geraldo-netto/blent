@@ -108,6 +108,12 @@ manufacturer may differ from the retail brand. **Android accessory mode** helps
 identify an Android candidate, but names and USB IDs do not authenticate it.
 Compare the pairing fingerprints before approving a tablet.
 
+A USB row shows its broker connection state, including **Connected**,
+**Disconnecting**, and **Cleanup pending**. **Connect** stays disabled while
+that connection owns the physical device, including during discovery refreshes.
+It becomes available only after the connection and its native worker retire.
+Use the connection’s **Disconnect** button to stop it.
+
 - **Several tablets** — `max_tablets` supports 1–4 slots. Historical testing
   used one physical tablet plus a simulated client. Automated tests cover
   independent slots and busy-card fallback. Multiple physical tablets have not

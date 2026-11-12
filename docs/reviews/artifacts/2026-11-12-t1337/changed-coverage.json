@@ -1,0 +1,125 @@
+[
+  {
+    "file": "common/src/connection/control/codec.rs",
+    "name": "short",
+    "line": 74,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control/codec.rs",
+    "name": "connection",
+    "line": 77,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control/codec.rs",
+    "name": "encode",
+    "line": 188,
+    "language": "rust",
+    "covered": 46,
+    "total": 46,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control/codec.rs",
+    "name": "decode",
+    "line": 244,
+    "language": "rust",
+    "covered": 23,
+    "total": 23,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control_view.rs",
+    "name": "allowed",
+    "line": 126,
+    "language": "rust",
+    "covered": 25,
+    "total": 25,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control_view/snapshot.rs",
+    "name": "record",
+    "line": 73,
+    "language": "rust",
+    "covered": 36,
+    "total": 37,
+    "percent": 97.29729729729729,
+    "passes": true,
+    "missing": [
+      124
+    ]
+  },
+  {
+    "file": "common/src/connection/control_view/snapshot.rs",
+    "name": "validate_connections",
+    "line": 128,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control_view/snapshot.rs",
+    "name": "push",
+    "line": 190,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "device",
+    "line": 197,
+    "language": "rust",
+    "covered": 31,
+    "total": 31,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "device_state_label",
+    "line": 320,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control.rs",
+    "name": "snapshot",
+    "line": 179,
+    "language": "rust",
+    "covered": 33,
+    "total": 33,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

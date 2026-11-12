@@ -1,0 +1,52 @@
+{
+  "finding": "T1337",
+  "result": "resolved",
+  "date": "2026-11-12",
+  "behavior": "Broker-owned USB rows show the owning connection state and cannot prepare another Connect until exact native and control retirement. Refresh preserves physical-key correlation.",
+  "tests": {
+    "broker": 239,
+    "control_contract_and_view": 24,
+    "gui": 17,
+    "total_passed": 280,
+    "total_executed": 280
+  },
+  "regression_before_fix": [
+    "Controller inventory row prepared a duplicate Connect",
+    "GUI row lacked Connected and enabled Connect"
+  ],
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7",
+    "method": "Fresh instrumented target; source fingerprints verified; per-function LCOV gate, no exclusions.",
+    "functions_measured": 11,
+    "functions_passing": 11,
+    "minimum_percent": 97.29729729729729
+  },
+  "complexity": {
+    "tool": "repository scripts/complexity; syn 2.0.119; tree-sitter 0.25.2",
+    "functions": 202,
+    "maximum": 9
+  },
+  "ownership": {
+    "owner": "Existing Controller link owns its physical key; snapshot is an immutable projection.",
+    "bounds": "512 device records and existing link capacity; optional counter is bounded by MAX_COUNTER. No new native allocations, tasks or leases.",
+    "cutoff": "Connect preparation rejects any owned row. Inventory refresh cannot retire a link.",
+    "settlement": "collect_retired retains the original link until its control lease and attached native Completion retire. Cancellation and quarantine remain owned.",
+    "invariants": "Each row references at most one existing link; duplicate/missing owner references reject the complete snapshot. No borrowed link or device pointer escapes.",
+    "tests": "Permanent refresh, duplicate-connect, approval, authentication, quarantine, native-proof and lease-retirement tests."
+  },
+  "limits": [
+    "ADB reservations are tracked separately under T1338; this commit covers broker-owned links.",
+    "Linux widget tests pass; native Windows evidence remains T1271."
+  ],
+  "artifacts": {
+    "broker.log.gz": "28d6560c300903bff0ba85404ae9fbfc9d94f8ab3169bcc7789b489c74c7112c",
+    "manifest.json": "058c6d03ae27fdaad8ba14f138b834ae5ef07bebf338ffe02b48200719fb1169",
+    "complexity.json": "93ed27cd5b46cbf8bdef557287b1f20fcff337ea185fa95630287dc916df6620",
+    "gui.log.gz": "423778e41bc9da3037d5509dd63f61598eeb4c0f971a1df6496f74714cbcd2f3",
+    "coverage.lcov.gz": "304d4060d95c4e7958cb764d8ae3e282e153de2f22aae944cea55bab3fd5794f",
+    "gui-red.log.gz": "6f5390a885b92f8b702629c18226bf709ec69dc196764ec8a805b4e1a4e68081",
+    "common.log.gz": "8b0bd83766c7207545eec05c44cc4272b5262f21f8b4002538576c3adb168f0f",
+    "broker-red.log.gz": "52e8f962fb7f197abda3942261387ce31b35d44951adac106387e48f5e821b01",
+    "changed-coverage.json": "eb3d33b8b0d8fa3708811eecc45302dab811a1f970059a7a576ddafb6148dc54"
+  }
+}

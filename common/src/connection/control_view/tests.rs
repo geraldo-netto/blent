@@ -24,6 +24,7 @@ fn device(revision: u64, target: u64) -> Notice {
         product: 0x2d00,
         accessory: true,
         names: Default::default(),
+        connection: None,
     }
 }
 fn link(revision: u64, connection: u64, state: State) -> Notice {
@@ -77,6 +78,7 @@ fn t900_complete_snapshot_preserves_corresponding_identity_and_sorted_metadata()
             product: 0x2d00,
             accessory: true,
             names: Default::default(),
+            connection: None,
         }
     );
     assert_eq!(snapshot.links()[&2].ticket, Some(ticket()));
@@ -443,4 +445,21 @@ fn t924_lifetime_tokens_do_not_pin_obsolete_snapshots() {
     );
     let replacement = model.publish(snapshot(1, State::Authenticated)).unwrap();
     assert!(!lifetime.same_as(&replacement.lifetime()));
+}
+
+#[test]
+fn t1337_snapshot_rejects_missing_or_duplicate_device_owner() {
+    for owners in [vec![999], vec![2, 2]] {
+        let mut assembler = Assembler::new(Limits::default()).unwrap();
+        assembler.push(begin(1)).unwrap();
+        for (index, owner) in owners.into_iter().enumerate() {
+            let mut notice = device(1, index as u64 + 1);
+            if let Notice::Device { connection, .. } = &mut notice {
+                *connection = Some(owner);
+            }
+            assembler.push(notice).unwrap();
+        }
+        assembler.push(link(1, 2, State::Pending)).unwrap();
+        assert!(assembler.push(Notice::End { revision: 1 }).is_err());
+    }
 }

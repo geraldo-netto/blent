@@ -38,6 +38,7 @@ pub struct Device {
     pub product: u16,
     pub accessory: bool,
     pub names: super::super::control::DeviceNames,
+    pub connection: Option<u64>,
 }
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Link {
@@ -77,6 +78,7 @@ impl Snapshot {
                 product,
                 accessory,
                 names,
+                connection,
                 ..
             } => {
                 ensure!(
@@ -92,6 +94,7 @@ impl Snapshot {
                                 product,
                                 accessory,
                                 names,
+                                connection,
                             }
                         )
                         .is_none(),
@@ -121,6 +124,17 @@ impl Snapshot {
             Notice::Begin { .. } => anyhow::bail!("snapshot already started"),
         }
         Ok(false)
+    }
+    fn validate_connections(&self) -> Result<()> {
+        let mut seen = std::collections::BTreeSet::new();
+        for connection in self.devices.values().filter_map(|device| device.connection) {
+            ensure!(
+                self.links.contains_key(&connection),
+                "device owner link missing"
+            );
+            ensure!(seen.insert(connection), "link owns multiple USB rows");
+        }
+        Ok(())
     }
     fn link(
         &mut self,
@@ -194,6 +208,7 @@ impl Assembler {
             "mixed snapshot revisions"
         );
         if snapshot.record(notice, self.limits)? {
+            snapshot.validate_connections()?;
             return Ok(Some(snapshot));
         }
         self.pending = Some(snapshot);

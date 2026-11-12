@@ -53,6 +53,7 @@ fn notices() -> Vec<Notice> {
             product: 0,
             accessory: false,
             names: Default::default(),
+            connection: None,
         },
         Notice::Device {
             revision: 1,
@@ -61,6 +62,7 @@ fn notices() -> Vec<Notice> {
             product: 0x2d00,
             accessory: true,
             names: Default::default(),
+            connection: None,
         },
         Notice::Saved {
             revision: 1,
@@ -288,6 +290,7 @@ fn t1336_device_name_and_model_survive_control_wire() {
         bytes.extend_from_slice(&(value.len() as u16).to_be_bytes());
         bytes.extend_from_slice(value.as_bytes());
     }
+    bytes.push(0); // No owning connection.
     let notice = Notice::decode(&bytes).expect("T1336 manufacturer/model must reach the GUI");
     assert_eq!(notice.encode().unwrap(), bytes);
 }
@@ -302,6 +305,7 @@ fn t1336_maximum_names_fit_registration_and_reject_malformed_fields() {
         product: 0x2d01,
         accessory: true,
         names,
+        connection: None,
     };
     let message = Message::Report {
         request: 1,
@@ -320,4 +324,31 @@ fn t1336_maximum_names_fit_registration_and_reject_malformed_fields() {
     let mut corrupt = bytes;
     corrupt[22..24].copy_from_slice(&257u16.to_be_bytes());
     assert!(Notice::decode(&corrupt).is_err());
+}
+
+#[test]
+fn t1337_device_owner_counter_is_bounded_and_canonical() {
+    for connection in [
+        None,
+        Some(0),
+        Some(1),
+        Some(MAX_COUNTER),
+        Some(MAX_COUNTER + 1),
+    ] {
+        let mut notice = notices().remove(1);
+        if let Notice::Device {
+            connection: owner, ..
+        } = &mut notice
+        {
+            *owner = connection;
+        }
+        let encoded = notice.encode();
+        assert_eq!(
+            encoded.is_ok(),
+            connection.is_none_or(|value| (1..=MAX_COUNTER).contains(&value))
+        );
+        if let Ok(bytes) = encoded {
+            assert_eq!(Notice::decode(&bytes).unwrap(), notice);
+        }
+    }
 }

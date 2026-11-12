@@ -77,6 +77,15 @@ fn peer(value: u64) -> PeerId {
     PeerId::parse(format!("{value:064x}")).unwrap()
 }
 fn publish(model: &mut Model, revision: u64, epoch: u64, state: State) -> View {
+    publish_ownership(model, revision, epoch, state, None)
+}
+fn publish_ownership(
+    model: &mut Model,
+    revision: u64,
+    epoch: u64,
+    state: State,
+    connection: Option<u64>,
+) -> View {
     let mut assembler = Assembler::new(Limits::default()).unwrap();
     let mut snapshot = None;
     for notice in [
@@ -95,6 +104,7 @@ fn publish(model: &mut Model, revision: u64, epoch: u64, state: State) -> View {
                 "RugKing Pad 2 Pro".into(),
             )
             .unwrap(),
+            connection,
         },
         Notice::Link {
             revision,
@@ -530,6 +540,7 @@ fn replace_named_device(handle: &Handle, manufacturer: &str, model: &str, access
                 model.into(),
             )
             .unwrap(),
+            connection: None,
         },
         Notice::End { revision: 2 },
     ] {
@@ -573,4 +584,61 @@ fn t1336_long_names_wrap_in_small_windows() {
             assert!(rect.right() <= width, "T1336 clipped {label}: {rect:?}");
         }
     }
+}
+
+#[test]
+fn t1337_owned_usb_row_shows_state_and_disables_connect() {
+    let (mut panel, handle) = fixture();
+    {
+        let mut fake = handle.0.lock().unwrap();
+        fake.status.view = Some(publish_ownership(
+            &mut fake.model,
+            2,
+            1,
+            State::Authenticated,
+            Some(2),
+        ));
+    }
+    let ctx = egui::Context::default();
+    let labels = frame(&mut panel, &ctx, 600.0, Vec::new());
+    assert!(
+        labels.iter().any(|(text, _)| text == "Connected"),
+        "T1337 active USB row needs Connected status"
+    );
+    click(&mut panel, &ctx, "Connect");
+    assert!(handle.0.lock().unwrap().commands.is_empty());
+}
+
+#[test]
+fn t1337_row_stays_locked_through_approval_and_cleanup() {
+    for (index, state) in [
+        State::Pending,
+        State::Approved,
+        State::Authenticated,
+        State::Closing,
+        State::Quarantined,
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let (mut panel, handle) = fixture();
+        {
+            let mut fake = handle.0.lock().unwrap();
+            fake.status.view = Some(publish_ownership(
+                &mut fake.model,
+                index as u64 + 2,
+                1,
+                state,
+                Some(2),
+            ));
+        }
+        let ctx = egui::Context::default();
+        let labels = frame(&mut panel, &ctx, 320.0, Vec::new());
+        assert!(labels
+            .iter()
+            .any(|(text, _)| text == device_state_label(state)));
+        click(&mut panel, &ctx, "Connect");
+        assert!(handle.0.lock().unwrap().commands.is_empty());
+    }
+    assert_eq!(device_state_label(State::Discovering), "Connecting");
 }

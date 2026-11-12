@@ -56,6 +56,8 @@ pub enum Notice {
         product: u16,
         accessory: bool,
         names: DeviceNames,
+        /// Current owning link; absent only after real retirement.
+        connection: Option<u64>,
     },
     Link {
         revision: u64,

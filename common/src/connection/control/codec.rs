@@ -2,7 +2,7 @@ use super::*;
 use crate::connection::wire::MAX_COUNTER;
 use anyhow::{ensure, Result};
 
-const MAX_BODY: usize = 26 + 2 * names::MAX_NAME_BYTES;
+const MAX_BODY: usize = 35 + 2 * names::MAX_NAME_BYTES;
 fn counter(value: u64) -> Result<()> {
     ensure!(
         (1..=MAX_COUNTER).contains(&value),
@@ -73,6 +73,13 @@ impl<'a> Input<'a> {
     }
     fn short(&mut self) -> Result<u16> {
         Ok(u16::from_be_bytes(self.take(2)?.try_into()?))
+    }
+    fn connection(&mut self) -> Result<Option<u64>> {
+        if self.flag()? {
+            Ok(Some(self.counter()?))
+        } else {
+            Ok(None)
+        }
     }
     fn name(&mut self) -> Result<String> {
         let length = self.short()? as usize;
@@ -193,6 +200,7 @@ impl Notice {
                 product,
                 accessory,
                 names,
+                connection,
             } => {
                 out.push(1);
                 push_counter(&mut out, *revision)?;
@@ -202,6 +210,10 @@ impl Notice {
                 out.push(u8::from(*accessory));
                 push_name(&mut out, names.manufacturer());
                 push_name(&mut out, names.model());
+                out.push(u8::from(connection.is_some()));
+                if let Some(connection) = connection {
+                    push_counter(&mut out, *connection)?;
+                }
             }
             Self::Link {
                 revision,
@@ -245,6 +257,7 @@ impl Notice {
                 product: input.short()?,
                 accessory: input.flag()?,
                 names: input.names()?,
+                connection: input.connection()?,
             },
             2 => decode_link(&mut input, revision)?,
             3 => Self::Saved {
