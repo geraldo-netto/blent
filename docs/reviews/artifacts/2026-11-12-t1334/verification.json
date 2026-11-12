@@ -1,0 +1,24 @@
+{
+  "finding": "T1334",
+  "result": "resolved",
+  "date": "2026-11-12",
+  "action": "Reviewed existing repair; no module installation, live DRM mutation, configuration change or reboot performed in this review.",
+  "kernel": "7.0.0-42-generic",
+  "module": {
+    "filename": "/lib/modules/7.0.0-42-generic/ubuntu/dkms/evdi/evdi.ko.zst",
+    "signer": "Canonical Ltd. Kernel Module Signing",
+    "loaded": true,
+    "initial_device_count": "2",
+    "device_count": "2"
+  },
+  "boot_configuration": {
+    "/usr/lib/modules-load.d/uscreen.conf": "evdi\nuinput\n",
+    "/usr/lib/modprobe.d/uscreen-evdi.conf": "# Two virtual displays available from boot: one per tablet slot. Creating\n# one later needs root, so it is cheaper to have them ready.\noptions evdi initial_device_count=2\n"
+  },
+  "acceptance": "Both EVDI devices created at 15:57:58 Europe/Rome before Xorg at 15:58:01 this boot. Host reported rendered tablet frame acknowledgements at 19:31:47\u201319:31:57 on the same boot. Missing-module and boot-capacity repair is complete.",
+  "remaining": "T1340 independently tracks missing post-19:36-reload video evidence; earlier frame acknowledgements do not close it.",
+  "artifacts": {
+    "boot-evidence.log.gz": "41eb712ca6b167cbf6d88960ce14393f3e663da07ddf5002e7ce11a82fba5ac7",
+    "frame-ack-evidence.log.gz": "30b27b838a0c3e773b3e242477901953ef33750977027fc658f2a027cea96736"
+  }
+}
