@@ -3,3 +3,4 @@
 pub use super::bridge::{Bridge, Target};
 pub use super::decoder::connection;
 pub use super::outputs::Frames;
+pub use crate::adb_command::broadcast_accepted;

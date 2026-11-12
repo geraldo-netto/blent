@@ -27,7 +27,7 @@ pub(crate) async fn output_observed(
 
 /// Current Android ordered broadcast contract: one exact completion with result 1.
 /// Other diagnostic lines do not grant acceptance; malformed UTF-8 is rejected.
-pub(crate) fn broadcast_accepted(stdout: &[u8]) -> bool {
+pub fn broadcast_accepted(stdout: &[u8]) -> bool {
     let Ok(text) = std::str::from_utf8(stdout) else {
         return false;
     };

@@ -8,6 +8,14 @@ import test_secure_connection_interop as interop
 
 
 class CameraProbeCompileTest(unittest.TestCase):
+    def test_t1356_camera_example_has_no_duplicated_unused_command_helpers(self):
+        with tempfile.TemporaryDirectory(prefix='blent-t1356-clippy-') as temporary:
+            interop.SecureConnectionInteropTest().command(
+                ['cargo', 'clippy', '--offline', '--locked', '-p', 'blent',
+                 '--features', 'accessory-transport', '--example', 'camera-feedback-probe',
+                 '--tests', '--', '-D', 'warnings'],
+                dict(os.environ, CARGO_NET_OFFLINE='true'), Path(temporary) / 'compiler.log')
+
     def test_t1342_camera_feedback_example_compiles_its_test_target(self):
         with tempfile.TemporaryDirectory(prefix='blent-t1342-compile-') as temporary:
             interop.SecureConnectionInteropTest().command(

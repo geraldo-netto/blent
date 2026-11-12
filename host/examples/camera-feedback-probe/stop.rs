@@ -1,7 +1,7 @@
 //! Native scoped cutoff. Acknowledgement grants no native retirement proof.
 use super::probe;
-use crate::adb_command::broadcast_accepted;
 use anyhow::{ensure, Result};
+use blent::camera::probe::broadcast_accepted;
 use blent_config::{camera::stop::Request, commands::AsyncCommandExt};
 use std::time::Duration;
 use tokio::process::Command;
