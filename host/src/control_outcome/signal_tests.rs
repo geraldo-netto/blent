@@ -128,6 +128,9 @@ async fn t1129_completed_work_does_not_request_an_unrelated_stop() {
     }
 }
 
+// T1368: these native CLI adapters exist only on Linux. Portable signal
+// settlement tests above remain compiled on every platform.
+#[cfg(target_os = "linux")]
 #[tokio::test]
 async fn t1129_media_cli_entrypoints_validate_without_native_devices() {
     let camera = blent_config::camera::CameraOptions {

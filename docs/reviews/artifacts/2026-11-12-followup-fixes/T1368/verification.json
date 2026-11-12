@@ -1,0 +1,7 @@
+{
+  "finding": "Windows compilation admitted a Linux-only native CLI test",
+  "regression": "Existing normal-suite t1129_media_cli_entrypoints_validate_without_native_devices retained on Linux; all portable signal tests retained on Windows. Existing CI Windows test-build command is the permanent compilation gate.",
+  "Linux": "5 signal/CLI regressions passed",
+  "Windows": "Linux-only CLI errors eliminated; independent T1369 token-helper error remains for its own commit",
+  "runtime_change": false
+}

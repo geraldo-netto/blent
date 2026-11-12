@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1368 | open | medium | small | Restore Windows test compilation by scoping the Linux-native media CLI regression. `host/src/control_outcome/signal_tests.rs::t1129_media_cli_entrypoints_validate_without_native_devices` invokes Linux-only camera/audio modules and the Linux CameraOptions shape without an OS gate. MinGW `cargo check --workspace --all-features --tests` fails with E0433/E0560. Keep the native regression on Linux and all portable signal-settlement tests on Windows; require both builds and the Linux test to pass. This is a build-boundary correction, not removal of supported Windows runtime coverage. |
 | T1369 | open | medium | small | Remove the Linux runtime dependency from the portable media invitation check. `host/src/media_connection.rs::invite_once` calls `blent_config::runtime::token_matches`, whose module is absent on Windows; the existing Windows test-build gate fails E0433. Call the independent credentials contract directly, retain constant-time token comparison and bounded invalid-token regressions, and pass Linux tests plus Windows compilation. Runtime behavior must remain unchanged; native Windows media support is not implied. |
 
 
