@@ -9,7 +9,7 @@ use std::sync::{
 
 #[tokio::test]
 async fn t1100_default_start_rejects_process_authority_exhaustion_before_effects() {
-    let _guard = admission::test_guard();
+    let _guard = admission::test_guard().await;
     let pool = admission::shared().unwrap();
     let held: Vec<_> = (0..pool.capacity())
         .map(|_| pool.reserve().unwrap())

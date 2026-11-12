@@ -119,10 +119,10 @@ fn t846_identity_and_certificate_bounds_and_pin_checks() {
     let identity = identity();
     let peer = peer(&identity);
     let certificate = CertificateDer::from(identity.certificate());
-    verify_peer(Some(&[certificate.clone()]), Some(ALPN), &peer).unwrap();
+    verify_peer(Some(std::slice::from_ref(&certificate)), Some(ALPN), &peer).unwrap();
     assert!(verify_peer(None, Some(ALPN), &peer).is_err());
     assert!(verify_peer(Some(&[]), Some(ALPN), &peer).is_err());
-    verify_peer(Some(&[certificate.clone()]), None, &peer).unwrap();
+    verify_peer(Some(std::slice::from_ref(&certificate)), None, &peer).unwrap();
     assert!(verify_peer(Some(&[certificate]), Some(b"other/1"), &peer).is_err());
     assert!(verify_peer(Some(&[CertificateDer::from(vec![0; 8])]), Some(ALPN), &peer).is_err());
     for size in [0, 1, 4096, 4097, 8192] {

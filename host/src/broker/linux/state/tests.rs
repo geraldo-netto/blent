@@ -42,7 +42,10 @@ fn t853_persistent_identity_and_trust_survive_restart_with_exclusive_ownership()
         .trust
         .authenticated(&mut pairing, &ticket, &peer, 2)
         .unwrap();
-    assert_eq!(state.trust.approved_peers().unwrap(), &[peer.clone()]);
+    assert_eq!(
+        state.trust.approved_peers().unwrap(),
+        std::slice::from_ref(&peer)
+    );
     let owner = state.identity.clone();
     drop(state);
     assert!(open(root.path(), 2).is_err());

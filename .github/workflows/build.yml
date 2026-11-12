@@ -58,7 +58,7 @@ jobs:
         run: cargo check --locked -p blent --features accessory-transport --bin blent
 
       - name: Enforce host and common Clippy warnings (T842)
-        run: cargo clippy --locked -p blent -p blent-config --lib --tests -- -D warnings
+        run: cargo clippy --locked --workspace --lib --bins --tests --features blent/accessory-transport -- -D warnings
 
       - name: Build daemon and GUI
         run: cargo build --release --features blent/native-audio

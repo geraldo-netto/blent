@@ -22,9 +22,9 @@ fn cached(
 }
 
 #[cfg(test)]
-pub(in crate::broker::linux) fn test_guard() -> std::sync::MutexGuard<'static, ()> {
-    static GATE: std::sync::Mutex<()> = std::sync::Mutex::new(());
-    GATE.lock().unwrap_or_else(|poisoned| poisoned.into_inner())
+pub(in crate::broker::linux) async fn test_guard() -> tokio::sync::MutexGuard<'static, ()> {
+    static GATE: tokio::sync::Mutex<()> = tokio::sync::Mutex::const_new(());
+    GATE.lock().await
 }
 
 #[cfg(test)]

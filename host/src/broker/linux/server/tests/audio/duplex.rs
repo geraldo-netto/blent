@@ -169,14 +169,18 @@ async fn duplex(microphone_first: bool) {
     speaker_signals.progresses().await;
     stop_first(
         microphone_first,
-        &microphone,
-        &speakers,
-        &mut mic_signals,
-        &mut speaker_signals,
-        mic_stop,
-        mic_work,
-        speaker_stop,
-        speaker_work,
+        Lane {
+            native: &microphone,
+            signals: &mut mic_signals,
+            stop: mic_stop,
+            work: mic_work,
+        },
+        Lane {
+            native: &speakers,
+            signals: &mut speaker_signals,
+            stop: speaker_stop,
+            work: speaker_work,
+        },
     )
     .await;
     let mic_report = microphone.report.clone();
@@ -201,68 +205,40 @@ async fn duplex(microphone_first: bool) {
         .unwrap();
     fixture.finish().await;
 }
-async fn stop_first(
-    microphone_first: bool,
-    microphone: &NativeAudio,
-    speakers: &NativeAudio,
-    mic_signals: &mut Signals,
-    speaker_signals: &mut Signals,
-    mic_stop: watch::Sender<bool>,
-    mic_work: tokio::task::JoinHandle<anyhow::Result<()>>,
-    speaker_stop: watch::Sender<bool>,
-    speaker_work: tokio::task::JoinHandle<anyhow::Result<()>>,
-) {
-    let (
-        first,
-        second,
-        first_signals,
-        second_signals,
-        first_stop,
-        first_work,
-        second_stop,
-        second_work,
-    ) = if microphone_first {
-        (
-            microphone,
-            speakers,
-            mic_signals,
-            speaker_signals,
-            mic_stop,
-            mic_work,
-            speaker_stop,
-            speaker_work,
-        )
+struct Lane<'a> {
+    native: &'a NativeAudio,
+    signals: &'a mut Signals,
+    stop: watch::Sender<bool>,
+    work: tokio::task::JoinHandle<anyhow::Result<()>>,
+}
+async fn stop_first(microphone_first: bool, microphone: Lane<'_>, speakers: Lane<'_>) {
+    let (first, second) = if microphone_first {
+        (microphone, speakers)
     } else {
-        (
-            speakers,
-            microphone,
-            speaker_signals,
-            mic_signals,
-            speaker_stop,
-            speaker_work,
-            mic_stop,
-            mic_work,
-        )
+        (speakers, microphone)
     };
-    first_stop.send_replace(true);
-    bounded(first_work).await.unwrap().unwrap();
-    assert!(!second_work.is_finished());
-    first.retire(first_signals, second_signals, second).await;
-    assert!(!second_work.is_finished());
-    second_stop.send_replace(true);
-    bounded(second_work).await.unwrap().unwrap();
-    let close = second.bridge.close();
+    first.stop.send_replace(true);
+    bounded(first.work).await.unwrap().unwrap();
+    assert!(!second.work.is_finished());
+    first
+        .native
+        .retire(first.signals, second.signals, second.native)
+        .await;
+    assert!(!second.work.is_finished());
+    second.stop.send_replace(true);
+    bounded(second.work).await.unwrap().unwrap();
+    let close = second.native.bridge.close();
     tokio::pin!(close);
     tokio::select! {
         result=&mut close=>panic!("T1000 second remote proof completed {result:?}"),
-        result=&mut second_signals.revoked=>result.unwrap(),
+        result=&mut second.signals.revoked=>result.unwrap(),
     }
-    assert!(!second.report.native_retired());
-    second_signals.release.take().unwrap().send(()).unwrap();
+    assert!(!second.native.report.native_retired());
+    second.signals.release.take().unwrap().send(()).unwrap();
     bounded(&mut close).await.unwrap();
     assert!(
-        !second.report.native_retired(),
+        !second.native.report.native_retired(),
         "T1000 original registration owner is still held"
     );
-    assert!(second.bridge.retired());
+    assert!(second.native.bridge.retired());
 }

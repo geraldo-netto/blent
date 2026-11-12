@@ -159,7 +159,7 @@ impl Fixture {
     }
     async fn complete(&mut self) {
         let native = self.state.config.usb.as_mut().unwrap();
-        while native.starting() {
+        if native.starting() {
             let result = tokio::time::timeout(Duration::from_secs(2), native.next())
                 .await
                 .unwrap();
@@ -176,7 +176,6 @@ impl Fixture {
                 );
             }
             self.state.usb_completed(result);
-            break;
         }
     }
     async fn stop(self) {

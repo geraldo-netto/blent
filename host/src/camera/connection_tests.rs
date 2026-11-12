@@ -274,7 +274,6 @@ async fn t933_usb_selection_reaches_output_ownership_without_adb() {
         },
         front_device: root.path().join("missing-front"),
         rear_device: root.path().join("missing-rear"),
-        ..Default::default()
     };
     let (_stop, stopped) = watch::channel(false);
     let report = Report::new(watch::channel(State::Starting).0, watch::channel(None).0);

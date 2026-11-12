@@ -846,8 +846,7 @@ fn t1339_grid_connect_buttons_remain_keyboard_accessible() {
     let labels = frame(&mut panel, &ctx, 900.0, Vec::new());
     let target = labels
         .iter()
-        .filter(|(text, _)| text == "Connect")
-        .last()
+        .rfind(|(text, _)| text == "Connect")
         .unwrap()
         .1;
     for _ in 0..10 {
