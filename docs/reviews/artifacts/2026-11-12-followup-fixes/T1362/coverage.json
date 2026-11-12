@@ -1,0 +1,29 @@
+{
+  "function": {
+    "file": "scripts/install.sh",
+    "name": "install_desktop_entry",
+    "first": 181,
+    "last": 193,
+    "language": "shell",
+    "nested": [],
+    "entry": 0,
+    "body": 0
+  },
+  "source_sha256": "1733852d30f3fe5be06ea04945f88b1a9d29a7c6ce8334e1464e7c8d7793b931",
+  "covered": 8,
+  "executable": 8,
+  "percent": 100.0,
+  "lines": {
+    "184": 1,
+    "185": 1,
+    "186": 1,
+    "187": 1,
+    "188": 1,
+    "189": 1,
+    "191": 1,
+    "192": 1
+  },
+  "complexity": 4,
+  "tool": "Blent native Bash DEBUG tracer and project complexity checker; tree-sitter 0.25.2",
+  "ownership": "The installer owns one staged file; waits for the writer before rename; removes staging after failure. A successful rename transfers the file to the installed path. Destination directories are rejected."
+}

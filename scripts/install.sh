@@ -181,9 +181,15 @@ install_binaries() {
 install_desktop_entry() {
     # Absolute path: the app menu does not necessarily have ~/.local/bin on
     # its PATH, so a bare "blent-gui" can be a menu entry that does nothing.
-    bash "$SCRIPT_DIR/write-desktop-entry.sh" "$BIN_DIR/blent-gui" "$SCRIPT_DIR/blent.desktop" > "$APP_DIR/blent.desktop" \
-        && info "Desktop entry installed (Blent in the app menu)"
-    return 0
+    local staged
+    staged=$(mktemp "$APP_DIR/.blent-desktop.XXXXXXXX") || return
+    if bash "$SCRIPT_DIR/write-desktop-entry.sh" "$BIN_DIR/blent-gui" "$SCRIPT_DIR/blent.desktop" > "$staged" \
+        && mv -fT -- "$staged" "$APP_DIR/blent.desktop"; then
+        info "Desktop entry installed (Blent in the app menu)"
+        return 0
+    fi
+    rm -f -- "$staged"
+    return 1
 }
 
 install_icons() {
