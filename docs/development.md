@@ -789,7 +789,13 @@ python3 scripts/ci/test-host-offline.py \
 
 The default runs `cargo test -p blent --all-features --no-fail-fast` offline and
 locked, including the normal integration fixtures. Extra Cargo commands follow
-`--`; `llvm-cov test` is supported too. The matching cached codecs-extra extension
+`--`; `llvm-cov test` is supported too. For explicit `cargo test --bins` selections,
+the runner first builds the selected production binaries with matching package,
+feature, profile and target options. This supplies the native encoder worker;
+plain Cargo's binary-unit selection does not build that ordinary executable.
+Use this runner for that selection, or explicitly build matching binaries first.
+For fresh binary-unit coverage, use `scripts/coverage/rust_collect.py`; it prepares
+an instrumented worker in its own target tree and attests its bytes. The matching cached codecs-extra extension
 supplies libx264-enabled FFmpeg; the SDK supplies headers, remaining native Rust
 libraries, interpreter and transitive RPATH (including PulseAudio's private
 library directory). Real host PipeWire tools execute with their host plugin

@@ -25,6 +25,38 @@ def snapshot(root):
 
 
 class RustCollectTest(unittest.TestCase):
+    def test_t1355_fresh_binary_coverage_builds_and_attests_matching_worker(self):
+        import rust_collect
+        with tempfile.TemporaryDirectory(prefix='blent-t1355-coverage-') as directory:
+            root = Path(directory)
+            (root/'Cargo.toml').write_text('[package]\nname="worker-test"\nversion="0.0.0"\nedition="2021"\n[[bin]]\nname="worker-test"\npath="probe.rs"\n[features]\nselected=[]\n')
+            (root/'Cargo.lock').write_text('version = 4\n[[package]]\nname="worker-test"\nversion="0.0.0"\n')
+            (root/'probe.rs').write_text('fn worker() { assert!(cfg!(feature="selected")); println!("worker"); }\nfn main() { worker(); }\n#[test] fn needs_worker() { let exe=std::env::current_exe().unwrap(); let worker=exe.parent().unwrap().parent().unwrap().join("worker-test"); let result=std::process::Command::new(worker).output().unwrap(); assert!(result.status.success()); assert_eq!(result.stdout,b"worker\\n"); }\n')
+            output = root/'evidence'
+            selection = rust_collect.Selection(packages=('worker-test',), binaries=True, all_features=True)
+            proof = rust_collect.collect(root, output, selection, snapshotter=snapshot)
+            self.assertIn('target/debug/worker-test', proof['objects'])
+            self.assertEqual(proof['objects']['target/debug/worker-test'],
+                             hashlib.sha256((output/'target/debug/worker-test').read_bytes()).hexdigest())
+            report = (output/'rust.lcov').read_text()
+            self.assertRegex(report, r'DA:1,[1-9][0-9]*')
+            self.assertIn('--bins', proof['command'])
+            self.assertNotIn('--tests', proof['command'])
+
+    def test_t1355_coverage_exports_are_parsed_as_data_and_fail_closed(self):
+        from unittest.mock import Mock
+        import io
+        import rust_collect
+        for invalid in ['echo unsafe', 'export BAD-NAME=x', 'export TWO=words extra', 'x'*(1024*1024+1)]:
+            runner = Mock(return_value=subprocess.CompletedProcess([], 0, invalid))
+            with self.subTest(length=len(invalid)), self.assertRaises(ValueError):
+                rust_collect.instrumented_environment(Path('.'), {}, runner, io.StringIO())
+        runner = Mock(return_value=subprocess.CompletedProcess([], 0, "export VALUE='literal $(never-run)'\n"))
+        inherited = {'KEEP': 'original'}
+        actual = rust_collect.instrumented_environment(Path('.'), inherited, runner, io.StringIO())
+        self.assertEqual(actual, {'KEEP': 'original', 'VALUE': 'literal $(never-run)'})
+        self.assertEqual(inherited, {'KEEP': 'original'})
+
     def test_t1006_actual_offline_cargo_accepts_combined_unit_targets(self):
         with tempfile.TemporaryDirectory(prefix='blent-t1006-units-') as directory:
             root = Path(directory)

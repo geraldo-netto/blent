@@ -89,6 +89,20 @@ physical USB acceptance. Sources, GCC counters, logs and `report.json` are retai
 Missing counters or changed sources fail. CI combines this evidence with capture
 and GPU counters; one C scope cannot stand in for another.
 
+## Binary-unit Rust prerequisites
+
+`rust_collect.py --bins` first builds matching production binaries using the
+selected package/features and the installed `cargo llvm-cov show-env --sh`
+instrumentation. The worker, unit harnesses and profile counters all belong to
+the collector's newly created target tree. The test command then keeps those
+same-run artifacts with `--no-clean`; preexisting output directories remain
+rejected. The attestation includes the prerequisite command and worker hash.
+This does not add integration tests to a binary-only test selection.
+
+The ordinary cached-SDK test runner also prepares production binaries before
+explicit `cargo test --bins` runs. Direct Cargo binary-unit selection alone does
+not provide the encoder worker; build matching binaries first or use that runner.
+
 ## Owned C boundary testing (T767)
 
 The normal Cargo integration tests retain deterministic invalid-input cases and

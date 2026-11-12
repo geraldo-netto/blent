@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import shlex
 
 from model import fingerprint, verify_sources
 from report import ROOT, snapshot
@@ -88,6 +89,48 @@ def validate_collection(root, manifest, snapshotter, output):
     return owned_objects(output / 'target')
 
 
+def instrumented_environment(root, env, runner, log):
+    result = runner(['cargo', 'llvm-cov', 'show-env', '--sh'], cwd=root, env=env,
+                    stdout=subprocess.PIPE, stderr=log, check=True, text=True)
+    if len(result.stdout) > 1024 * 1024:
+        raise ValueError('coverage environment exceeds its admitted extent')
+    prepared = dict(env)
+    for line in result.stdout.splitlines():
+        tokens = shlex.split(line)
+        if len(tokens) != 2 or tokens[0] != 'export' or '=' not in tokens[1]:
+            raise ValueError('invalid native coverage environment export')
+        name, value = tokens[1].split('=', 1)
+        if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', name):
+            raise ValueError('invalid native coverage environment name')
+        prepared[name] = value
+    return prepared
+
+
+def binary_command(selection):
+    args = ['cargo', 'build', '--offline', '--locked', '--bins']
+    args.extend(names('package', selection.packages))
+    args.extend(names('features', selection.features))
+    if not selection.packages:
+        args.append('--workspace')
+    if selection.all_features:
+        args.append('--all-features')
+    return args
+
+
+def execute(root, args, selection, env, runner, log):
+    prerequisites = []
+    if selection.binaries:
+        build = binary_command(selection)
+        prepared = instrumented_environment(root, env, runner, log)
+        runner(build, cwd=root, env=prepared, stdout=log, stderr=subprocess.STDOUT, check=True)
+        prerequisites.append(build)
+        # This target was created exclusively by collect. Retain this run's
+        # instrumented worker and counters, never a previous target's objects.
+        args.insert(3, '--no-clean')
+    runner(args, cwd=root, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
+    return prerequisites
+
+
 def collect(root, output, selection, runner=subprocess.run, snapshotter=snapshot, inherited=None):
     root, output = root.resolve(), output.absolute()
     args = command(selection, output / 'rust.lcov')
@@ -103,10 +146,10 @@ def collect(root, output, selection, runner=subprocess.run, snapshotter=snapshot
     manifest = snapshotter(root)
     (output / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     with (output / 'collection.log').open('w') as log:
-        runner(args, cwd=root, env=environment(target, os.environ if inherited is None else inherited),
-               stdout=log, stderr=subprocess.STDOUT, check=True)
+        prerequisites = execute(root, args, selection,
+                                environment(target, os.environ if inherited is None else inherited), runner, log)
     objects = validate_collection(root, manifest, snapshotter, output)
-    proof = dict(version=1, command=args, sources=manifest['sources'],
+    proof = dict(version=1, command=args, prerequisites=prerequisites, sources=manifest['sources'],
                  build_sources=manifest.get('build_sources', manifest['sources']), objects=objects,
                  report_sha256=fingerprint(output / 'rust.lcov'), collector_sha256=fingerprint(Path(__file__)))
     (output / 'attestation.json').write_text(json.dumps(proof, indent=2) + '\n')

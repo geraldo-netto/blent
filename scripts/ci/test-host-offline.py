@@ -6,6 +6,13 @@ from pathlib import Path
 import shlex
 import shutil
 import tempfile
+import sys
+import subprocess
+
+from cargo_test_build import binary_build
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'benchmarks'))
+import profile_process as owned
 
 
 def arguments():
@@ -129,6 +136,17 @@ def command(extra):
     return ['cargo', args[0], '--offline', '--locked', *args[1:]]
 
 
+def prepare(invocation, environment, root):
+    build = binary_build(invocation)
+    if build is None:
+        return
+    print('Production binary prerequisite: ' + shlex.join(build), flush=True)
+    process = owned.start(build, cwd=root, env=environment, stdin=subprocess.DEVNULL)
+    status = owned.wait(process)
+    if status:
+        raise subprocess.CalledProcessError(status, build)
+
+
 def main():
     args = arguments()
     sdk, codecs, target, clang = (path.expanduser().resolve() for path in (args.sdk, args.codecs, args.target_dir, args.libclang))
@@ -138,6 +156,7 @@ def main():
     env['PATH'] = native_tools(target, env.get('PATH', os.defpath))
     invocation = command(args.cargo_args)
     print(f'SDK: {sdk}\nCodecs: {codecs}\nTarget/cache owner: {target}\nCommand: {shlex.join(invocation)}', flush=True)
+    prepare(invocation, env, Path.cwd())
     # Replace this process: terminal cancellation and original process-group ownership persist.
     os.execvpe(invocation[0], invocation, env)
 

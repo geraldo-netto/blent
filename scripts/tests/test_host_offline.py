@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 import tempfile
 import unittest
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'ci'))
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location('host_offline', ROOT/'scripts/ci/test-host-offline.py')
@@ -120,3 +122,17 @@ class HostOfflineTest(unittest.TestCase):
                 with self.assertRaises(ValueError): runner.publish_tool(path,'foreign')
             self.assertEqual(path.read_text(),'original')
             self.assertEqual(len(list(root.iterdir())),1)
+
+
+class BinaryPreparationTest(unittest.TestCase):
+    def test_t1355_fresh_binary_suite_builds_the_production_worker_first(self):
+        import subprocess
+        with tempfile.TemporaryDirectory(prefix='blent-t1355-test-') as directory:
+            root = Path(directory)
+            (root/'Cargo.toml').write_text('[package]\nname="worker-test"\nversion="0.0.0"\nedition="2021"\n[[bin]]\nname="worker-test"\npath="main.rs"\n[features]\nselected=[]\n')
+            (root/'Cargo.lock').write_text('version = 4\n[[package]]\nname="worker-test"\nversion="0.0.0"\n')
+            (root/'main.rs').write_text('fn main() { assert!(cfg!(feature="selected")); println!("worker"); }\n#[test] fn needs_worker() { let exe=std::env::current_exe().unwrap(); let worker=exe.parent().unwrap().parent().unwrap().join("worker-test"); let result=std::process::Command::new(worker).output().unwrap(); assert!(result.status.success()); assert_eq!(result.stdout,b"worker\\n"); }\n')
+            invocation = runner.command(['test', '--bins', '--all-features', '--manifest-path', str(root/'Cargo.toml'), '--target-dir', str(root/'target')])
+            runner.prepare(invocation, dict(os.environ), root)
+            result = subprocess.run(invocation, cwd=root, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
