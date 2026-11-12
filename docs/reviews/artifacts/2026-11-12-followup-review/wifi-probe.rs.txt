@@ -1,0 +1,62 @@
+use blent::usb::{Adb, CommandFuture, Commands};
+use blent_config::{FileConfig, persistence_contract::{Snapshots, Transactions, Edit}};
+use std::{sync::{Arc, atomic::{AtomicBool, AtomicUsize, Ordering::SeqCst}}, process::{Output, ExitStatus}, os::unix::process::ExitStatusExt};
+
+#[derive(Default)]
+struct State {
+    connected: AtomicBool,
+    leases: AtomicUsize,
+    disconnects: AtomicUsize,
+    fail_disconnect: bool,
+    fail_connect_ack: bool,
+}
+struct Lease(Arc<State>);
+impl Drop for Lease {
+    fn drop(&mut self) { self.0.leases.fetch_sub(1, SeqCst); }
+}
+#[derive(Clone)]
+struct Fake(Arc<State>);
+impl Commands for Fake {
+    fn route_lease(&self, _: &str) -> anyhow::Result<Box<dyn Send>> {
+        self.0.leases.fetch_add(1, SeqCst);
+        Ok(Box::new(Lease(self.0.clone())))
+    }
+    fn execute(&self, args: Vec<String>, _: Option<Vec<u8>>) -> CommandFuture<'_> {
+        Box::pin(async move {
+            if args[0] == "connect" {
+                self.0.connected.store(true, SeqCst);
+                anyhow::ensure!(!self.0.fail_connect_ack, "injected connect acknowledgement loss");
+                return Ok(Output { status: ExitStatus::from_raw(0), stdout: format!("connected to {}", args[1]).into_bytes(), stderr: vec![] });
+            }
+            assert_eq!(args[0], "disconnect");
+            self.0.disconnects.fetch_add(1, SeqCst);
+            anyhow::ensure!(!self.0.fail_disconnect, "injected disconnect failure");
+            self.0.connected.store(false, SeqCst);
+            Ok(Output { status: ExitStatus::from_raw(0), stdout: vec![], stderr: vec![] })
+        })
+    }
+}
+#[derive(Clone, Default)]
+struct Changed(Arc<AtomicUsize>);
+impl Snapshots for Changed {
+    fn snapshot(&self) -> FileConfig {
+        let first = self.0.fetch_add(1, SeqCst) == 0;
+        FileConfig { wifi_address: if first { "fixture:5555".into() } else { String::new() }, ..Default::default() }
+    }
+}
+impl Transactions for Changed {
+    fn transact(&self, _: &AtomicBool, _: Edit<'_>) -> anyhow::Result<FileConfig> {
+        anyhow::bail!("unexpected transaction")
+    }
+}
+#[tokio::main(flavor = "current_thread")]
+async fn main() {
+    for (failure, lost_ack) in [(false, false), (true, false), (false, true)] {
+        let state = Arc::new(State { fail_disconnect: failure, fail_connect_ack: lost_ack, ..Default::default() });
+        let result = blent::wifi::reconnect(&Adb(Fake(state.clone())), &Changed::default()).await;
+        println!("fail_disconnect={failure}, lost_connect_ack={lost_ack}, result={result:?}, connected={}, leases={}, disconnects={}", state.connected.load(SeqCst), state.leases.load(SeqCst), state.disconnects.load(SeqCst));
+        assert_eq!(state.connected.load(SeqCst), failure || lost_ack);
+        assert_eq!(state.leases.load(SeqCst), 0);
+        assert_eq!(state.disconnects.load(SeqCst), usize::from(!lost_ack));
+    }
+}

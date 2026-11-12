@@ -1,0 +1,6 @@
+   Compiling blent-followup-wifi-probe v0.0.0 (/home/netto/.cache/blent-review-20261112-followup/wifi-probe)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.75s
+     Running `target/debug/blent-followup-wifi-probe`
+fail_disconnect=false, lost_connect_ack=false, result=None, connected=false, leases=0, disconnects=1
+fail_disconnect=true, lost_connect_ack=false, result=None, connected=true, leases=0, disconnects=1
+fail_disconnect=false, lost_connect_ack=true, result=None, connected=true, leases=0, disconnects=0

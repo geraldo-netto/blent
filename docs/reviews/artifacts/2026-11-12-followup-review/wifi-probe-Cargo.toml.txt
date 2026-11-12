@@ -1,0 +1,10 @@
+[package]
+name = "blent-followup-wifi-probe"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+blent = { path = "/backups/disk2/projects/blent/host" }
+blent-config = { path = "/backups/disk2/projects/blent/common" }
+anyhow = "1"
+tokio = { version = "1", features = ["rt", "macros"] }

@@ -1,0 +1,23 @@
+{
+  "baseline": "ab1c33e6841c4ea97bdf23f7a3614102733e916c",
+  "finding_source_sha256": {
+    "common/src/model.rs": "46f0c900123dc8accde57fe73e9110a31484a46895dc152b3704cc91393ad21f",
+    "common/src/android.rs": "66e2df41ccbcffc709e784ea6ad03f531ddfefc42aaad39f612231b8bbad9197",
+    "host/src/linux_main.rs": "95dbb4ee712cb1f49995c7e86729079a4c853a8cbb9cf94a5471c79cd38ebd50",
+    "host/src/attachment/auth.rs": "32b9858d402cfa795a558e11acc25d18277805cccfdcca752de42f585a8233ce",
+    "host/src/stream.rs": "3e8afbcf13b007c4956ac51279b08785c24fcc668dcf8c00642b7f9531acd212",
+    "gui/src/main.rs": "efa43dd06a764cb99e3390cf0d1c53477fc4ad1a941d80e5fb852e1ff3b006c9",
+    "android/app/src/main/java/com/blent/RemoteDisplay.kt": "3015f4a4e127c7a2091c71a3c5781ad653148daf2b08cbcd47d72c1a46dac52e",
+    "android/app/src/main/java/com/blent/SessionCoordinator.kt": "6c982063c822d3a0232b099523acbebecaef0e9347e04ccb3a34a8735f8225ed",
+    "android/app/src/main/java/com/blent/TokenReceiver.kt": "65e2ea88b419b893f342290ff2291f9d021530a797087a9af1fbacd2c8fb037b",
+    "android/app/src/test/java/com/blent/RemoteDisplayTest.kt": "da1572e1b54d17161487ab31a18e4e2412b5e3e1d354afb08efe08fc85d01e08",
+    ".github/workflows/build.yml": "892544e46e80687c95aa10a9f70c6ce04da823f140b268d9e624862cb8040303",
+    "host/Cargo.toml": "91a7ef73bff65a7136765df1ec58b97b5e8b0eddc61d8c05b49032e229628101",
+    "scripts/install.sh": "f25efaddeb8063056f057946424b3584047439b9c7b334922e5f864c091263c0",
+    "host/src/wifi/attempt.rs": "892d1b1ede8745992993aef28d471ab6ce0045fc2047a9092cfafbaf4eeb6fd4",
+    "host/src/wifi/policy.rs": "79ee9d836244b97ea6efb05aa41cfb06f37594707cd8db231bce4920621f760a",
+    "docs/compatibility.md": "a8b10dc2da0cda3d12ec519a52e47d02809f0c0c9ada7033ab30da9537a94f5e",
+    "docs/architecture.md": "6f537adc57deb01fdce58b9316f4ceec2a04c2b47605136917e8e8fe1df7ad53"
+  },
+  "note": "Fingerprints identify finding evidence, not a claim of full function review or coverage."
+}

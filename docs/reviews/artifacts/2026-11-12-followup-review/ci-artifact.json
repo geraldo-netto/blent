@@ -1,0 +1,10 @@
+{
+  "baseline": "ab1c33e6841c4ea97bdf23f7a3614102733e916c",
+  "build_command": "cargo build --release --features blent/native-audio",
+  "broker_required_features": [
+    "accessory-transport"
+  ],
+  "host_default_features": [],
+  "broker_in_upload_manifest": true,
+  "missing_feature": true
+}

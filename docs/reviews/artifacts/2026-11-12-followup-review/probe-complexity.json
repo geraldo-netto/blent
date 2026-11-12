@@ -1,0 +1,36 @@
+{
+  "tool": "scripts/complexity/check.py file_scores (project Rust frontend)",
+  "tree_sitter": "0.25.2",
+  "functions": [
+    {
+      "line": 15,
+      "name": "drop",
+      "score": 1
+    },
+    {
+      "line": 20,
+      "name": "route_lease",
+      "score": 1
+    },
+    {
+      "line": 24,
+      "name": "execute",
+      "score": 2
+    },
+    {
+      "line": 42,
+      "name": "snapshot",
+      "score": 2
+    },
+    {
+      "line": 48,
+      "name": "transact",
+      "score": 1
+    },
+    {
+      "line": 53,
+      "name": "main",
+      "score": 2
+    }
+  ]
+}
