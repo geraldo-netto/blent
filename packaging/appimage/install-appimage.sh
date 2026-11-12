@@ -68,13 +68,10 @@ install_service() {
 }
 
 install_desktop() {
-    local temporary
-    mkdir -p -- "$DATA_BASE/applications" "$DATA_BASE/icons/hicolor/scalable/apps" "$HOME/.local/bin"
-    temporary=$(mktemp "$DATA_BASE/applications/.blent.XXXXXXXX")
-    bash "$TOOLS/write-desktop-entry.sh" "$ENTRY" "$TOOLS/blent.desktop" --gui > "$temporary"
-    mv -f -- "$temporary" "$DATA_BASE/applications/blent.desktop"
-    cp -- "$APPDIR/usr/share/icons/hicolor/scalable/apps/blent.svg" "$DATA_BASE/icons/hicolor/scalable/apps/"
-    ln -sfnT -- "$ENTRY" "$HOME/.local/bin/blent"
+    mkdir -p -- "$DATA_BASE/applications" "$DATA_BASE/icons/hicolor/scalable/apps" "$HOME/.local/bin" || return
+    publish_file "$DATA_BASE/applications/blent.desktop" 600 bash "$TOOLS/write-desktop-entry.sh" "$ENTRY" "$TOOLS/blent.desktop" --gui || return
+    cp -- "$APPDIR/usr/share/icons/hicolor/scalable/apps/blent.svg" "$DATA_BASE/icons/hicolor/scalable/apps/" || return
+    ln -sfnT -- "$ENTRY" "$HOME/.local/bin/blent" || return
     install_gui_entry
 }
 

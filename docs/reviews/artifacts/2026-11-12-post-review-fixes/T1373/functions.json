@@ -1,0 +1,15 @@
+[
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_desktop",
+    "line": 70,
+    "language": "shell",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+    "complexity": 5
+  }
+]
