@@ -1,6 +1,6 @@
 //! Shared Wi-Fi policy: all persistence is asynchronous through explicit ports.
 use crate::{
-    persistence_port::{AsyncPersistence, AsyncSnapshots},
+    persistence_port::{AsyncPersistence, AsyncSnapshots, AsyncTransactions},
     usb::{args, Adb, Commands},
 };
 use anyhow::{ensure, Context, Result};
@@ -113,15 +113,9 @@ pub async fn setup<C: Commands + Clone + 'static>(
 
 async fn disable<C: Commands + Clone + 'static>(
     adb: &Adb<C>,
-    store: &impl AsyncPersistence,
+    store: &impl AsyncTransactions,
 ) -> Result<super::Setup> {
-    let old = store.snapshot().await?.wifi_address;
-    store
-        .transact(Box::new(|config| {
-            config.wifi_address.clear();
-            Ok(())
-        }))
-        .await?;
+    let old = take_address(store).await?;
     if !valid_address(&old) {
         return Ok(super::Setup::NoSavedAddress);
     }
@@ -136,6 +130,21 @@ async fn disable<C: Commands + Clone + 'static>(
         .await
         .context("Saved Wi-Fi address forgotten; transport disconnect unconfirmed")?;
     Ok(super::Setup::Disconnected)
+}
+
+/// The edit owns one removed address; no native route is admitted before commit.
+/// A failed/cancelled transaction drops its bounded handoff without ADB effects.
+async fn take_address(store: &impl AsyncTransactions) -> Result<String> {
+    let (send, receive) = tokio::sync::oneshot::channel();
+    store
+        .transact(Box::new(move |config| {
+            send.send(std::mem::take(&mut config.wifi_address))
+                .map_err(|_| anyhow::anyhow!("Wi-Fi off request cancelled"))
+        }))
+        .await?;
+    receive
+        .await
+        .context("Wi-Fi off transaction did not remove an address")
 }
 async fn usb_tablet<C: Commands + Clone + 'static>(
     adb: &Adb<C>,

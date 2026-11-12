@@ -1,4 +1,5 @@
 use super::*;
+mod atomic;
 mod off;
 use crate::usb::{CommandFuture, NativeCommands};
 use blent_config::storage::ConfigStore;

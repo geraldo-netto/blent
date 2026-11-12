@@ -1,0 +1,383 @@
+{
+  "functions": [
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "publish_file",
+      "line": 18,
+      "language": "shell",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 5
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_image",
+      "line": 36,
+      "language": "shell",
+      "covered": 2,
+      "total": 2,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 2
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "write_service",
+      "line": 57,
+      "language": "shell",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_service",
+      "line": 64,
+      "language": "shell",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 4
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_desktop",
+      "line": 70,
+      "language": "shell",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 5
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "write_gui_entry",
+      "line": 96,
+      "language": "shell",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 1
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_gui_entry",
+      "line": 106,
+      "language": "shell",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "write_entry",
+      "line": 113,
+      "language": "shell",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 1
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_entry",
+      "line": 123,
+      "language": "shell",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "update_autostart",
+      "line": 130,
+      "language": "shell",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "34faaadc206c6d9bc8e102ad189c55d49aa379d49147a4a43fa1f984dd7914db",
+      "complexity": 4
+    },
+    {
+      "file": "scripts/install.sh",
+      "name": "write_installed_user_service",
+      "line": 213,
+      "language": "shell",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "328e4abafc7d9424dafe05cf3ba41c6f7cfb0d6326e68558d1d7d204a69c8b51",
+      "complexity": 6
+    },
+    {
+      "file": "scripts/install.sh",
+      "name": "install_autostart_entry",
+      "line": 225,
+      "language": "shell",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "328e4abafc7d9424dafe05cf3ba41c6f7cfb0d6326e68558d1d7d204a69c8b51",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "is_configured",
+      "line": 23,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "53b5f59b6553ad1a746753eb77a4b9e53e248fc648a6f0d23c884db39abac964",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "is_configured",
+      "line": 168,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "53b5f59b6553ad1a746753eb77a4b9e53e248fc648a6f0d23c884db39abac964",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/wifi.rs",
+      "name": "setup",
+      "line": 25,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "63939edba3af149c5a7669859e8b90897953df92710faa9ccb4e3c870114bdb2",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/wifi/linux.rs",
+      "name": "setup",
+      "line": 10,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "921d9f5c8e538136b794b9e0b78ad0f4cc4530cd00bd0ee8e34ddb63a1e95a30",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "setup",
+      "line": 79,
+      "language": "rust",
+      "covered": 33,
+      "total": 34,
+      "percent": 97.05882352941177,
+      "passes": true,
+      "missing": [
+        106
+      ],
+      "source_sha256": "f4c00199e45f43a37b519cb873dd103a505571d2bfdbe2198b5ea5e82b14d466",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "disable",
+      "line": 114,
+      "language": "rust",
+      "covered": 19,
+      "total": 20,
+      "percent": 95.0,
+      "passes": true,
+      "missing": [
+        120
+      ],
+      "source_sha256": "f4c00199e45f43a37b519cb873dd103a505571d2bfdbe2198b5ea5e82b14d466",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/wifi/policy.rs",
+      "name": "take_address",
+      "line": 137,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "f4c00199e45f43a37b519cb873dd103a505571d2bfdbe2198b5ea5e82b14d466",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/wifi/outcome.rs",
+      "name": "message",
+      "line": 11,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "608e0c784addc6c49a0ffb9023bdcc1c6873dd23271357c4b8197cfba09a0cd4",
+      "complexity": 5
+    },
+    {
+      "file": "common/src/workspace.rs",
+      "name": "merge",
+      "line": 59,
+      "language": "rust",
+      "covered": 6,
+      "total": 7,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [
+        62
+      ],
+      "source_sha256": "ab1822d30772bb388f062e1af7df2a5648d189a0573feb2145bccf4f2e2dbc1b",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/workspace.rs",
+      "name": "name_rank",
+      "line": 69,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "ab1822d30772bb388f062e1af7df2a5648d189a0573feb2145bccf4f2e2dbc1b",
+      "complexity": 1
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "tablets",
+      "line": 39,
+      "language": "rust",
+      "covered": 14,
+      "total": 16,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        42,
+        48
+      ],
+      "source_sha256": "b212468c6797fc8fe68e89a8cc273fb7f96dc3f6ffc525a8b09c59ffd3096d35",
+      "complexity": 3
+    },
+    {
+      "file": "gui/src/connection_settings/tablets.rs",
+      "name": "project",
+      "line": 12,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "76904dccbc2d685be720a098d70383647360c3cf8f1f95df6608fd82f360691c",
+      "complexity": 4
+    },
+    {
+      "file": "gui/src/connection_settings/tablets.rs",
+      "name": "label",
+      "line": 26,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "76904dccbc2d685be720a098d70383647360c3cf8f1f95df6608fd82f360691c",
+      "complexity": 5
+    }
+  ],
+  "measured_changed_functions": 25,
+  "all_measured_at_least_80_percent": true,
+  "all_measured_complexity_at_most_9": true,
+  "native_windows_entry": "Unmeasured; T1376 retained blocked. Cross-compilation passed; no native Windows runtime claim.",
+  "tools": {
+    "rustc": "1.98.1 (48a229cea 2026-09-01)",
+    "cargo-llvm-cov": "0.8.7",
+    "bash": "5.2.21",
+    "python": "3.12.3",
+    "complexity": "project checker; syn 2.0.119, tree-sitter 0.25.2, Kotlin PSI 1.9.20"
+  },
+  "validation": {
+    "shell_tests": {
+      "passed": 49,
+      "registered": 49
+    },
+    "common_library_tests": {
+      "passed": 430,
+      "registered": 430
+    },
+    "gui_tests": {
+      "passed": 192,
+      "registered": 192
+    },
+    "host_library_before_atomic_followup": {
+      "passed": 1062,
+      "registered": 1065,
+      "existing_ignored": 3
+    },
+    "final_wifi_tests": {
+      "library_passed": 35,
+      "library_selected": 35,
+      "process_exit_passed": 2,
+      "process_exit_registered": 2,
+      "native_cli_passed": 4,
+      "native_cli_registered": 4
+    },
+    "clippy": "pass",
+    "format": "pass",
+    "complexity": {
+      "functions_measured": 28884,
+      "above_nine": 0
+    },
+    "windows_all_features_test_cross_compile": "pass; existing Linux-only FailureStage test-variant warning retained"
+  }
+}

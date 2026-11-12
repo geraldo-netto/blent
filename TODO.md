@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1377 | open | medium | small | Make Wi-Fi off select and clear its saved address in the same configuration transaction. `host/src/wifi/policy.rs::disable` snapshots the old address before separately clearing the current config; a concurrent save between those steps can replace the address, so off clears the replacement but disconnects only the stale address. Capture the removed address under the existing transaction lock, then disconnect exactly that address. Add a permanent interleaving regression before fixing; preserve async storage and caller-loss ownership. Completion: every successfully cleared address is the one submitted for disconnect, while later independent saves remain intact. Discovered while fixing T1374; independently verifiable configuration atomicity outcome. |
 
 
 ## Other items
