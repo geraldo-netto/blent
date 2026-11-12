@@ -1,0 +1,31 @@
+2026-11-12 read-only black-screen diagnosis (T1340 / recovery T1343)
+
+Confirmed native chain:
+- host-current.log:39 video client connects19:36:01.552; line40 startup codec wait expires after5s.
+- host-current.log:74 codec config extracted19:36:14.703.
+- host-current.log:76 original X11 power observer loses sample deadline19:36:16.613.
+- host-current.log:77-79 capture activity sequence2 active=0 ACK and video session ends19:36:16.640.
+- power.txt:1413-1414 Android window screen-bright wake request acquired19:36:01.364, released19:36:16.878.
+- Host helper remains capture-inactive sequence2 through19:57:07 virtual-display teardown. Later input reconnects do not produce new video sessions.
+- fresh-dpms-probe.txt: installed host binary --blent-activity-dpms 250000000 4 returns four supported/on=true observations and exits0. xset q also reports Monitor is On. Probe changes no desktop power setting.
+- activities.txt:31 MainActivity STOPPED; windows.txt:384 has no surface; brightness override0.5, no KEEP_SCREEN_ON. These are current OS observations, not a rejection of the owner's awake/unlocked confirmation.
+
+Code chain:
+- common/src/host_activity.rs:51 default native sample deadline2s.
+- host/src/activity/dpms.rs:114-125 sample timeout;165-182 error publishes Lost(display=true), retires helper, exits permanently.
+- host/src/activity/native.rs:53-63 Lost clears display_on while preserving capability.
+- common/src/host_activity/policy.rs:76-85 configured pause_on_display_off + unknown supported display -> DisplayUnknown/no display demand.
+- host/src/activity_follow.rs:167-194 creates source once;196-227 keeps polling successful source whose DPMS backend exited. No replacement path.
+- common/src/display_activity/projection.rs maps denied demand to active=false for every new authenticated control connection.
+- android SessionCoordinator.kt:277-300 stops video for inactive hint; fresh active hint starts it. StreamingPower.kt DisplayWakeState.PAUSED withdraws screen-on demand.
+- Android onStop disconnects control/session; recovery while stopped requires ordinary framework foreground/surface restoration. No independently confirmed Android recovery defect.
+
+Permanent regression needed before fixing T1343:
+Inject supported/on=true observer; force one original read to timeout; assert immediate unavailable/display pause; hold old native completion and verify no unfunded replacement or old-event revival; supply actual retirement; admit fresh source/epoch yielding on=true; verify fresh publication and display admission without daemon restart. Include repeated loss, creation failure, cancellation during creation/retirement, stale callbacks, changed capabilities, and bounded retry admission/backoff. Keep source/creator/child Completion ownership through all paths. Never reuse old epoch or treat timeout/task completion as original native settlement.
+Existing T1013 stalled helper test verifies state clearing and retirement only; T1018 tests terminal source loss/ownership; neither tests reacquisition. Existing Android T1057 lifecycle and T1061 window tests cover false->true display recovery with controlled native substitutes.
+
+Remaining uncertainty:
+Original two-second DPMS delay cause is unknown; no native stack/syscall trace exists for that retired helper. Timing follows EVDI setup but correlation does not prove EVDI/X server blocking. No service restart, power-setting change, tablet launch, permissions change, screenshot/media capture, repository edit, test run, or mapping mutation was performed by this investigation.
+
+Next controlled native validation (requires parent coordination):
+Restore host observation through a verified fix or deliberate daemon recreation; simultaneously observe fresh DPMS status, capture active ACK, video connection/config/keyframe and tablet render ACK. Android must be framework foreground with valid surface for visible-frame acceptance. Keep owner confirmation as valid; inspect lifecycle mismatch rather than asking them to repeat it.

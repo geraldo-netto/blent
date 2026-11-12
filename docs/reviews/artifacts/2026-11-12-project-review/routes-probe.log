@@ -1,0 +1,2 @@
+CONFIRMED: creation acknowledgement failure leaves a mapping after retire() returns Ok
+CONFIRMED: replacement between listing and removal deletes foreign destination tcp:9999

@@ -1,0 +1,446 @@
+{
+  "date": "2026-11-12",
+  "reviewed_commit": "378698e49464d5ba6ff95f6bb633340e0326d8cb",
+  "scope": "Repository-wide source/contract review with targeted manual traces and automated suite/static checks. This is not a line-by-line examination of every file or proof that no defects remain.",
+  "domains": [
+    "Android lifecycle, display framing and consent",
+    "host activity/capture/video recovery",
+    "ADB attachment and delegated mapping ownership",
+    "paired USB broker, authentication, bounded transport and GUI projection",
+    "camera/audio session boundaries",
+    "configuration and platform adapters",
+    "installation, packaging, CI and coverage tooling",
+    "current setup and compatibility documentation"
+  ],
+  "limitations": [
+    "No production fix or new regression implementation in this review.",
+    "No physical mapping mutation, media-capture trial, daemon restart or app reinstallation.",
+    "No native Windows or macOS validation. Retained blocked/declined dispositions are not reopened.",
+    "Existing opt-in timing benchmarks remain ignored.",
+    "No fresh whole-project per-function line-coverage certification; native USB C is the measured production scope in this pass.",
+    "Render acknowledgements alone do not prove nonblack visible pixels."
+  ],
+  "source_sha256": {
+    "AGENTS.md": "657a780365fa54da9aca6c85aea43b4dfc0f824e43f7c6da48ddc8a9fd1048da",
+    "host/src/activity/dpms.rs": "bc67d0edbb4fdb72f908db91e19ba790daac722e33786abdf203fe933fd46f5a",
+    "host/src/activity/native.rs": "3ec7cdb9db11b9ef4444a8921826a857a5094e80cf6a20a6465f32c6bf4dd8c5",
+    "host/src/activity_follow.rs": "7839b5a1edb57f803d44bec7a6ae0e0b5037281c9ec0ea3adf744a372bdee558",
+    "common/src/host_activity/policy.rs": "ac08ee2f670b7c972e421a7a97b7e073bd63ab44962aaa7afb1f70b1af443536",
+    "host/src/usb/routes.rs": "d1d8cbca316b37afa3804ea6fd1620f241188674d5b96ccb9e04961913b9e475",
+    "host/src/usb/monitor.rs": "02cc452694a8446d147e8b0514885d07fd25a25336d7a371d5c4574ad5e28e17",
+    "host/src/windows_main.rs": "79df6f59146aebf0430ae30ac88294e2d3b12851476289da19a61163a4938c49",
+    "host/src/monitor/routes.rs": "ba752e571150cec530493b320ffe970c80fb6917fddac38af7495cc8c412a3a3",
+    "host/src/monitor/retirement.rs": "aef60f004a0538800bba3e2a2b4f863bbce2c5a5aa8ad99db16917c0e2eca06c",
+    "common/src/adb_reverse.rs": "1caca6f784e6880b78588a458319358050a0d61b933f7892eddbc47b5070336a",
+    "host/src/camera/decoder.rs": "77bccf7dade76031e66a49dfd7b3eb2a08d87ca76a345d3ed944fc4b6924a5e3",
+    "host/src/camera/retirement_tests.rs": "b62a72015a908b56ce6cf82654697290c0a600c977760366f4ea94753cf48207",
+    "host/examples/camera-feedback-probe/linux.rs": "935695a2a462e54c511707b0710d58ef11eb387ceeff5a275dfbad9048dd5dbb",
+    "host/src/doctor/regression_tests.rs": "4150977efbcd4a98ef2d2cf2a4935b1ddad7c9f9cb1821057b784115654950d6",
+    "android/app/src/main/java/com/blent/connection/SecureConnection.kt": "68c03a8918796afeebd4ca559bc56186e69c1be042cf1fee516de932c037d1ac",
+    "android/app/build.gradle.kts": "282ad045302d37d6bb382e78a4f1bc60d6a80174473d942dfc8722b58d8f7968",
+    "scripts/coverage/script_check.py": "799844be391ce828fcc271675acbdeace96b0a253a63f400d0e2a79aaf304632",
+    "scripts/coverage/test_capture_check.py": "86890d8f009e652911bc6fa15007c4f0c79aedd8742a3a7e6cc636e0e35913f9",
+    "scripts/coverage/test_copies.py": "363b626b29ab7dbc577832c5c828b7061106c31fd2565a6e03332d92edd816eb",
+    "scripts/tests/test_script_lifecycle.py": "d5043fc811b7cf8935686d60250a7804a96416f15bb38c86a403b5c8aa30437e",
+    "packaging/arch/PKGBUILD": "b6c93c19d54b32a4611116027b0e44b924060bec48daa88660b34eb840dd0904",
+    "README.md": "535a11f98ef48dfde27e9bbb26777203d7dd0c6d07b17da4cdf462642b8b8a69",
+    "docs/llms.txt": "45b09539ebe0e177022717396733193ed87d663067cee5a73fceae7babdbe052",
+    "docs/index.html": "872e25585551af091ced890b08da3af97b7562a1f21260da0770bd85534314c3",
+    "docs/installation.md": "ce6c7c6c85292a2c03cb31bd866944ae309d2bd8cb9854f81bb1c0148e45f4ce",
+    "docs/faq.md": "31ca14888d94f5b984cf20e561a8f69526c9f2b8e0c15484927ac3ffa782546c",
+    "host/tests/usb_broker.rs": "f67db7e8a8e1aa5fb2b82e450f54c8f8b727608a5a52d8887fb419f2fc616074",
+    "host/src/accessory/linux/discovery.rs": "2e68452c01adc7e652563050b6b2ddab2ca5c5a94b57992280d1fe6530a3a0be",
+    "host/accessory/discovery.c": "54f6df49c38263c7e8497e23dab3c2beddeada9f1acad31b3b30bf85f81d60aa",
+    "host/src/encoder_worker.rs": "2827f2c0cd13c3130cbb73e31bdb4193d74764e2354b0b9b9d484c8a9cc816db",
+    "host/src/encoder_worker/tests.rs": "87adfe05c1e2d403290e318007007ae67704a141a50632fe030ce257bdee9915",
+    "scripts/coverage/rust_collect.py": "424a5268196d91aa85f17531c5c812a30d65ab39d5f2b89619268874511d075e"
+  },
+  "versions": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "clippy": "clippy 0.1.98 (48a229ceae 2026-09-01)",
+    "python_scripts": "Python 3.12.3",
+    "python_complexity": "Python 3.14.6"
+  },
+  "findings": {
+    "new": [
+      "T1341",
+      "T1342",
+      "T1343",
+      "T1344",
+      "T1345",
+      "T1346",
+      "T1347",
+      "T1348",
+      "T1349",
+      "T1350",
+      "T1351",
+      "T1352",
+      "T1353",
+      "T1354",
+      "T1355"
+    ],
+    "updated_existing": [
+      "T1340"
+    ],
+    "authoritative_ledger": "../../../../TODO.md"
+  },
+  "complexity": {
+    "command": "/tmp/blent-t1336-venv/bin/python scripts/complexity/check.py --verbose",
+    "functions": 28731,
+    "above_9": 0,
+    "artifact": "complexity-functions.tsv.gz",
+    "limitations": "Local source checker, not native SonarQube. Pinned parser scope/exclusions in scripts/complexity/README.md. Includes tests and retained authored artifacts; not a production-support count.",
+    "checker_tests": {
+      "run": 36,
+      "failed": 0
+    }
+  },
+  "android": {
+    "command": "./android/gradlew -p android testDebugUnitTest lintDebug --offline --no-daemon --rerun-tasks",
+    "exit_code": 0,
+    "unit_tests": 2714,
+    "failed": 0,
+    "skipped": 0,
+    "xml_suites": 366,
+    "lint_diagnostics": 9,
+    "lint_triage": {
+      "ObsoleteSdkInt": "T1347",
+      "AutoboxingStateCreation": "Three deliberate boxed Float states preserve signed-zero/NaN equality; no defect inferred.",
+      "InlinedApi": "Integer codec constants are used as capability identifiers; no unsupported method invocation established.",
+      "UnusedAttribute": "dataExtractionRules is paired with fullBackupContent for the older supported Android APIs.",
+      "DiscouragedApi": "Landscape default coexists with explicit user orientation policy; warning alone does not establish a behavioral defect."
+    }
+  },
+  "usb_c_coverage": {
+    "command": "scripts/coverage/capture_check.py <new-output> --scope host/accessory/",
+    "functions": 43,
+    "at_least_80_percent": 43,
+    "below_80": 0,
+    "unmeasured": 0,
+    "evidence": "usb-coverage.log.gz",
+    "scope": "Fake native USB device boundaries; not physical USB acceptance."
+  },
+  "commands": {
+    "all_targets": {
+      "command": "cargo test --locked --workspace --all-targets --no-fail-fast --features blent/accessory-transport",
+      "exit_code": 101,
+      "finding": "T1342"
+    },
+    "formatter": {
+      "command": "python3 scripts/format-rust.py --check",
+      "exit_code": 1,
+      "finding": "T1341"
+    },
+    "clippy_expanded": {
+      "command": "cargo clippy --locked --workspace --lib --bins --tests --features blent/accessory-transport -- -D warnings",
+      "exit_code": 101,
+      "diagnostics": 9,
+      "finding": "T1350"
+    },
+    "clippy_ci": {
+      "command": "cargo clippy --locked -p blent -p blent-config --lib --tests -- -D warnings",
+      "exit_code": 0
+    },
+    "scripts": {
+      "command": "python3 -m unittest discover -s scripts/tests -p 'test_*.py'",
+      "exit_code": 1,
+      "run": 537,
+      "passed": 535,
+      "failed": 1,
+      "skipped": 1,
+      "skip": "Native Windows mutation-runner process ownership",
+      "finding": "T1353"
+    },
+    "coverage_tools_python312": {
+      "command": "<Python 3.12 venv>/bin/python -m unittest discover -s scripts/coverage -p 'test_*.py'",
+      "exit_code": 1,
+      "run": 107,
+      "failed": 1,
+      "finding": "T1348"
+    },
+    "coverage_tools_python314": {
+      "exit_code": 1,
+      "run": 107,
+      "failed": 2,
+      "findings": [
+        "T1348",
+        "T1349"
+      ],
+      "control": "Copied-source tests pass when ctrace is explicitly selected; full mixed-ABI subprocess collection still requires compatible native tracer admission."
+    },
+    "all_features_library": {
+      "command": "scripts/ci/test-host-offline.py <cached SDK/codecs> -- test -p blent --all-features --lib --no-fail-fast",
+      "exit_code": 0,
+      "passed": 1041,
+      "failed": 0,
+      "ignored": 3
+    },
+    "production_targets": {
+      "command": "cargo test --locked --workspace --lib --bins --tests --no-fail-fast --features blent/accessory-transport",
+      "status": "completed",
+      "exit_code": 101,
+      "finding": "T1354",
+      "failed_tests": [
+        "t853_executable_election_client_death_signal_and_identity_restart"
+      ],
+      "artifact": "rust-production-tests.log.gz"
+    },
+    "all_feature_binaries": {
+      "command": "scripts/ci/test-host-offline.py <cached SDK/codecs> -- test -p blent --all-features --bins --no-fail-fast",
+      "status": "completed",
+      "exit_code": 101,
+      "finding": "T1355",
+      "daemon": {
+        "passed": 380,
+        "failed": 21,
+        "ignored": 2
+      },
+      "audio": {
+        "passed": 11,
+        "failed": 0
+      },
+      "broker": {
+        "passed": 1,
+        "failed": 0
+      },
+      "artifact": "rust-all-feature-bins.log.gz"
+    },
+    "all_feature_binaries_prebuilt": {
+      "command": "Same binary-unit command after cargo build -p blent --all-features --bins in the same SDK target",
+      "exit_code": 0,
+      "daemon": {
+        "passed": 401,
+        "failed": 0,
+        "ignored": 2
+      },
+      "audio": {
+        "passed": 11,
+        "failed": 0
+      },
+      "broker": {
+        "passed": 1,
+        "failed": 0
+      },
+      "artifact": "rust-all-feature-bins-prebuilt.log.gz",
+      "scope": "The prebuild is a diagnostic control, not a fix to fresh-target test/coverage orchestration."
+    },
+    "broker_fixture_control": {
+      "original_test_exit_code": 101,
+      "diagnostic_copy_exit_code": 0,
+      "change": "Only fake-helper BLUI version byte 1 -> 2 in an external copy of the existing test; repository test unchanged.",
+      "source": "usb-broker-v2-control.txt",
+      "scope": "Private temporary runtime/state and fake inventory helper; no physical USB device access. Original owned broker children finish or are retired on fixture drop.",
+      "complexity": [
+        {
+          "line": 15,
+          "name": "bounded",
+          "complexity": 1
+        },
+        {
+          "line": 20,
+          "name": "executable",
+          "complexity": 1
+        },
+        {
+          "line": 28,
+          "name": "start",
+          "complexity": 1
+        },
+        {
+          "line": 39,
+          "name": "connect",
+          "complexity": 3
+        },
+        {
+          "line": 52,
+          "name": "identity",
+          "complexity": 5
+        },
+        {
+          "line": 68,
+          "name": "stop",
+          "complexity": 1
+        },
+        {
+          "line": 81,
+          "name": "t853_executable_election_client_death_signal_and_identity_restart",
+          "complexity": 1
+        },
+        {
+          "line": 107,
+          "name": "t853_executable_help_and_invalid_configuration_exit_boundedly",
+          "complexity": 1
+        }
+      ],
+      "logs": [
+        "usb-broker-isolated.log.gz",
+        "usb-broker-v2-control.log.gz"
+      ]
+    }
+  },
+  "adb_route_probe": {
+    "findings": [
+      "T1344",
+      "T1345"
+    ],
+    "source": "routes-probe.txt",
+    "results": "routes-probe.log",
+    "scope": "Two deterministic fake-command sequences using compiled production blent::usb::Routes; no real ADB command or device access.",
+    "ownership": "Each scenario owns one Arc/Mutex state with at most two mappings and one bounded async sequence; no detached work or native allocation. Routes and adapter borrows end before state destruction.",
+    "complexity": [
+      {
+        "line": 7,
+        "name": "reply",
+        "complexity": 1
+      },
+      {
+        "line": 8,
+        "name": "port",
+        "complexity": 1
+      },
+      {
+        "line": 9,
+        "name": "listing",
+        "complexity": 3
+      },
+      {
+        "line": 14,
+        "name": "execute",
+        "complexity": 7
+      },
+      {
+        "line": 24,
+        "name": "execute",
+        "complexity": 1
+      },
+      {
+        "line": 27,
+        "name": "lost_ack",
+        "complexity": 1
+      },
+      {
+        "line": 34,
+        "name": "replaced_route",
+        "complexity": 1
+      },
+      {
+        "line": 41,
+        "name": "main",
+        "complexity": 1
+      }
+    ]
+  },
+  "black_screen": {
+    "finding": "T1343",
+    "integration": "T1340",
+    "evidence": [
+      "black-screen-diagnosis.txt",
+      "fresh-dpms-probe.txt",
+      "host-observer-events.log"
+    ],
+    "confirmed": "After observer loss, capture remains disabled without a replacement source despite fresh display-on evidence.",
+    "unresolved": "Original sample delay and earlier nonblack-frame behavior are not established."
+  },
+  "artifacts": {
+    "rust-default.log.gz": {
+      "bytes": 824,
+      "sha256": "e2ce2cdd33b6e69b7dbd689fbfd937f65075991d6c033599de9303a5ccca507b"
+    },
+    "usb-coverage.log.gz": {
+      "bytes": 88,
+      "sha256": "c3e1a428ef2ca1bdb8f243884fc5eb2843af2efc6283ee86609238231b52fb5c"
+    },
+    "clippy.log.gz": {
+      "bytes": 1679,
+      "sha256": "d7464f657c7eb0e4777daacf51f9c27859497ab26c8507ab3b49ae9de063e538"
+    },
+    "rust-all-feature-bins.log.gz": {
+      "bytes": 13567,
+      "sha256": "28335cf826b7fdbb63df1b72b8a07c03b583c16292d823b3266dcb2b5a0e9a7c"
+    },
+    "coverage-tool-tests-ctrace.log.gz": {
+      "bytes": 1221,
+      "sha256": "06c3ff5bf18cf1358a484796101f45f6af3b17dbb118d40f2c7a9f03cebe416b"
+    },
+    "black-screen-diagnosis.txt": {
+      "bytes": 4013,
+      "sha256": "e650ec2b13b5d1bc568e8c4d27bf99490d53f71aac6d7329d5bc33bf4cc63dc2"
+    },
+    "routes-probe.txt": {
+      "bytes": 2469,
+      "sha256": "cf077ab9289e38c84e0fde48835f092e221767a249d3a474952b8c8a13800d33"
+    },
+    "coverage-tool-tests-ready.log.gz": {
+      "bytes": 956,
+      "sha256": "b379b945a9a2e75c0b0bba9a572b74a375edbeaedaf506c8d2d8ad09b3813523"
+    },
+    "coverage-core-control.log.gz": {
+      "bytes": 97,
+      "sha256": "226c47071697b652c15f63a11c9a03f1037b4b5a315ee89250199fdcc610475f"
+    },
+    "coverage-tool-tests-python312.log.gz": {
+      "bytes": 573,
+      "sha256": "8b60f57eb0c6edfeb8d70d866bd239afdd13546cd303aadb32b9863b7b59388d"
+    },
+    "host-observer-events.log": {
+      "bytes": 479,
+      "sha256": "2c923a8da26d73ff03d0062fff9f701a8dc4e005a3821f8c827ce26ae1df38f8"
+    },
+    "usb-broker-isolated.log.gz": {
+      "bytes": 1659,
+      "sha256": "0f9be67d3241f6af6bec8060fa295e97d151a2e2cb3a9b443c0a44130e91a7d8"
+    },
+    "routes-probe.log": {
+      "bytes": 175,
+      "sha256": "4821787643eaa3150dca7eea4fd443646cc66356ebd84fe9e673f92a91d445c3"
+    },
+    "script-tests.log.gz": {
+      "bytes": 1013,
+      "sha256": "744210b5e022a53fe25ff8755d712ebdf9f6027c2ae6d906dd7dd44c3e23e3f9"
+    },
+    "rust-all-feature-bins-prebuilt.log.gz": {
+      "bytes": 11802,
+      "sha256": "b19c19983247d63eac6328168a8386eb1f88be7ab7c973e79f9d2556b413d444"
+    },
+    "rust-all-features.log.gz": {
+      "bytes": 28176,
+      "sha256": "fe65a47e160dd1299ea7a2b2e1e04c0869f5b123fa5ffedb81dde3e232a0d0ba"
+    },
+    "usb-broker-v2-control.log.gz": {
+      "bytes": 154,
+      "sha256": "9558f841ec8a5e58ce36ef2a819e447a2d4e64ee57671eb38a19fcaa550d5d82"
+    },
+    "rust-production-tests.log.gz": {
+      "bytes": 63067,
+      "sha256": "f7274d20ce42b063f253effc1d872dd25210790375c03606134731233e782375"
+    },
+    "usb-broker-v2-control.txt": {
+      "bytes": 4294,
+      "sha256": "f1add202f3a2dd8f3d6cdcbdb9f16e9c8a10a242f767f12dedb8905a0ee22e6c"
+    },
+    "fresh-dpms-probe.txt": {
+      "bytes": 116,
+      "sha256": "4be54f56f483849ca071feca03224984f23929567a27093289963592ce80778e"
+    },
+    "complexity-functions.tsv.gz": {
+      "bytes": 297441,
+      "sha256": "11ab5ae91bb8567bf4510e5781c9ed3fbb1cec53e4683f5d1ea837f19a78116d"
+    },
+    "clippy-ci.log.gz": {
+      "bytes": 153,
+      "sha256": "7d15e03dae62f913638d7e682e84d02865063462e109d26599bcb27bd2369aa6"
+    },
+    "rust-format.log.gz": {
+      "bytes": 366,
+      "sha256": "f2bad5729fa0fe586bdf8bab6f8ed47a4533ced0ba69d8f3dd3cac82402af706"
+    },
+    "rust-all-feature-worker-build.log.gz": {
+      "bytes": 534,
+      "sha256": "04fc7240c70765108a28ee46bebdc745c46d0f13a6198240365f5711222908a8"
+    },
+    "complexity-tool-tests.log.gz": {
+      "bytes": 183,
+      "sha256": "f58267315044b5b4f87616f3cc31dcc36d402cffc99e9dcf294a5654777ff606"
+    }
+  }
+}

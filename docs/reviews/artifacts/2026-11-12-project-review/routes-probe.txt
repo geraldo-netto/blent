@@ -1,0 +1,41 @@
+use blent::usb::{Adb, Commands, CommandFuture, Routes};
+use std::{collections::BTreeMap, process::{Output, ExitStatus}, os::unix::process::ExitStatusExt, sync::{Arc,Mutex}};
+#[derive(Default)]
+struct State { mappings: BTreeMap<u16,u16>, fail_creation: bool, replace_after_list: bool, removed_foreign: bool }
+#[derive(Clone,Default)]
+struct Fake(Arc<Mutex<State>>);
+fn reply(text:String)->Output { Output { status:ExitStatus::from_raw(0), stdout:text.into_bytes(), stderr:vec![] } }
+fn port(text:&str)->u16 { text.strip_prefix("tcp:").unwrap().parse().unwrap() }
+fn listing(state:&mut State)->Output {
+ let text=state.mappings.iter().map(|(a,b)|format!("UsbFfs tcp:{a} tcp:{b}\n")).collect();
+ if state.replace_after_list { state.mappings.insert(8891,9999); state.replace_after_list=false; }
+ reply(text)
+}
+fn execute(state:&mut State,args:&[String])->std::io::Result<Output> {
+ match args[3].as_str() {
+ "--list"=>Ok(listing(state)),
+ "--no-rebind"=> { state.mappings.insert(port(&args[4]),port(&args[5]));
+ if state.fail_creation { return Err(std::io::Error::other("simulated client acknowledgement failure after delegated creation")); }
+ Ok(reply(String::new())) },
+ "--remove"=> { if state.mappings.remove(&port(&args[4]))==Some(9999) { state.removed_foreign=true; } Ok(reply(String::new())) },
+ _=>panic!("unexpected fake operation") }
+}
+impl Commands for Fake {
+ fn execute(&self,args:Vec<String>,_:Option<Vec<u8>>)->CommandFuture<'_> {
+ Box::pin(async move { Ok(execute(&mut self.0.lock().unwrap(),&args)?) }) }
+}
+async fn lost_ack() {
+ let fake=Fake::default(); fake.0.lock().unwrap().fail_creation=true;
+ let adb=Adb(fake.clone()); let mut routes=Routes::new("FAKE",(9000,9001)).unwrap();
+ assert!(routes.prepare(&adb).await.is_err()); routes.retire(&adb).await.unwrap();
+ assert_eq!(fake.0.lock().unwrap().mappings.get(&8890),Some(&9000));
+ println!("CONFIRMED: creation acknowledgement failure leaves a mapping after retire() returns Ok");
+}
+async fn replaced_route() {
+ let fake=Fake::default(); let adb=Adb(fake.clone()); let mut routes=Routes::new("FAKE",(9000,9001)).unwrap();
+ routes.prepare(&adb).await.unwrap(); fake.0.lock().unwrap().replace_after_list=true;
+ routes.retire(&adb).await.unwrap(); assert!(fake.0.lock().unwrap().removed_foreign);
+ println!("CONFIRMED: replacement between listing and removal deletes foreign destination tcp:9999");
+}
+#[tokio::main(flavor="current_thread")]
+async fn main() { lost_ack().await; replaced_route().await; }

@@ -1,0 +1,4 @@
+Nov 12 19:36:16 morpheus env[199461]: 2026-11-12T18:36:16.613188Z  WARN blent::activity::dpms: 169: original X11 power observer lost error=deadline has elapsed
+Nov 12 19:36:16 morpheus env[199657]: [evdi-helper] capture-activity request sequence=2 active=0
+Nov 12 19:36:16 morpheus env[199657]: [evdi-helper] capture-activity ack sequence=2 active=0
+Nov 12 19:36:16 morpheus env[199461]: 2026-11-12T18:36:16.640033Z  INFO blent::stream: 138: Client 127.0.0.1:33657 session ended
