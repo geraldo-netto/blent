@@ -9,12 +9,27 @@ struct State {
     hold_disconnect: AtomicBool,
     existing: AtomicBool,
     disconnected: AtomicUsize,
+    present: Mutex<HashSet<String>>,
 }
 #[derive(Clone, Default)]
 struct Fake(Arc<State>);
 impl Commands for Fake {
     fn execute(&self, args: Vec<String>, _: Option<Vec<u8>>) -> CommandFuture<'_> {
         Box::pin(async move {
+            if args[0] == "devices" {
+                let rows = self
+                    .0
+                    .present
+                    .lock()
+                    .unwrap()
+                    .iter()
+                    .map(|address| format!("{address}\tdevice\n"))
+                    .collect::<String>();
+                return Ok(crate::wifi::tests::output(
+                    0,
+                    &format!("List of devices attached\n{rows}"),
+                ));
+            }
             let connect = args[0] == "connect";
             if (connect && self.0.hold_connect.load(Ordering::Acquire))
                 || (!connect && self.0.hold_disconnect.load(Ordering::Acquire))
@@ -24,6 +39,9 @@ impl Commands for Fake {
             }
             if !connect {
                 self.0.disconnected.fetch_add(1, Ordering::AcqRel);
+                self.0.present.lock().unwrap().remove(&args[1]);
+            } else {
+                self.0.present.lock().unwrap().insert(args[1].clone());
             }
             let prefix = if self.0.existing.load(Ordering::Acquire) {
                 "already connected to"

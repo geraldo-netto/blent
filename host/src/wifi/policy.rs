@@ -20,6 +20,20 @@ pub fn valid_address(address: &str) -> bool {
     };
     valid_host(host) && valid_port(port)
 }
+/// Identity used by in-process reservations, native locks and transport observations.
+pub(crate) fn endpoint_key(address: &str) -> String {
+    if let Ok(endpoint) = address.parse::<std::net::SocketAddr>() {
+        return endpoint.to_string();
+    }
+    match address.rsplit_once(':') {
+        Some((host, port)) => match port.parse::<u16>() {
+            Ok(port) => format!("{}:{port}", host.to_ascii_lowercase()),
+            Err(_) => address.to_owned(),
+        },
+        None => address.to_owned(),
+    }
+}
+
 fn valid_port(port: &str) -> bool {
     port.bytes().all(|b| b.is_ascii_digit()) && port.parse::<u16>().is_ok_and(|port| port > 0)
 }

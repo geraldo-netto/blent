@@ -57,23 +57,41 @@ fn record(line: &str) -> Option<(&str, &str)> {
 }
 
 pub fn parse(text: &str) -> Option<Vec<String>> {
+    let mut ready: Vec<_> = entries(text)?
+        .into_iter()
+        .filter(|(_, state)| *state == "device")
+        .map(|(serial, _)| serial.to_owned())
+        .collect();
+    ready.sort_by_key(|serial| transport_of(serial) != Transport::Usb);
+    Some(ready)
+}
+
+/// A transport remains present while offline/authorizing. Only a complete valid
+/// inventory can prove absence for exclusive endpoint cleanup.
+pub fn all_transports(text: &str) -> Option<Vec<String>> {
+    Some(
+        entries(text)?
+            .into_iter()
+            .map(|(serial, _)| serial.to_owned())
+            .collect(),
+    )
+}
+
+fn entries(text: &str) -> Option<Vec<(&str, &str)>> {
     let mut lines = text.lines().map(str::trim).filter(|line| !line.is_empty());
     if lines.next()? != "List of devices attached" {
         return None;
     }
     let mut seen = std::collections::HashSet::new();
-    let mut ready = Vec::new();
+    let mut records = Vec::new();
     for line in lines {
         let (serial, state) = record(line)?;
         if !seen.insert(serial) {
             return None;
         }
-        if state == "device" {
-            ready.push(serial.to_owned());
-        }
+        records.push((serial, state));
     }
-    ready.sort_by_key(|serial| transport_of(serial) != Transport::Usb);
-    Some(ready)
+    Some(records)
 }
 
 pub fn package_presence(out: &std::process::Output) -> Option<bool> {

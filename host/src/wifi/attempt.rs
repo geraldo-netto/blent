@@ -12,6 +12,7 @@ use std::{
     time::Duration,
 };
 use tokio::sync::oneshot;
+mod cleanup;
 
 struct Owners {
     pool: Pool,
@@ -36,17 +37,18 @@ impl Owners {
     }
     fn reserve(&self, address: &str) -> Result<(blent_config::retirement::Admission, Address)> {
         ensure!(super::valid_address(address), "Invalid Wi-Fi address");
+        let address = super::policy::endpoint_key(address);
         let slot = self.pool.reserve()?;
         let mut addresses = self.addresses.lock().unwrap();
         ensure!(
-            addresses.insert(address.into()),
+            addresses.insert(address.clone()),
             "Wi-Fi address still active or retiring"
         );
         Ok((
             slot,
             Address {
                 owners: self.addresses.clone(),
-                address: address.into(),
+                address,
             },
         ))
     }
@@ -63,10 +65,20 @@ impl Drop for Address {
 struct Retiring {
     thread: Thread,
     _address: Address,
+    ownership: Arc<RouteOwnership>,
+}
+#[derive(Default)]
+struct RouteOwnership {
+    native: Mutex<Option<Box<dyn Send>>>,
+    settled: std::sync::atomic::AtomicBool,
 }
 impl Observe for Retiring {
     fn poll_complete(&mut self) -> bool {
         self.thread.poll_complete()
+            && self
+                .ownership
+                .settled
+                .load(std::sync::atomic::Ordering::Acquire)
     }
 }
 
@@ -93,14 +105,20 @@ impl Attempt {
         let completion = slot.completion();
         let (decision, chosen) = oneshot::channel();
         let (ready, reply) = oneshot::channel();
+        let ownership = Arc::new(RouteOwnership::default());
+        let worker = ownership.clone();
         let handle = std::thread::Builder::new()
             .name("blent-wifi-attempt".into())
             .spawn(move || {
-                run(adb, address, connect, ready, chosen);
+                run(adb, address, connect, ready, chosen, &worker);
+                worker
+                    .settled
+                    .store(true, std::sync::atomic::Ordering::Release);
             })?;
         slot.retain(Retiring {
             thread: Thread::new(handle),
             _address: lease,
+            ownership,
         });
         let attempt = Self {
             decision: Some(decision),
@@ -135,16 +153,18 @@ fn run<C: Commands>(
     connect: bool,
     ready: oneshot::Sender<Result<()>>,
     chosen: oneshot::Receiver<bool>,
+    ownership: &RouteOwnership,
 ) {
     // Native lease acquisition is confined to this admitted thread. Its guard
     // outlives connect, caller decision, and any compensating disconnect.
-    let _lease = match adb.0.route_lease(&address) {
+    let lease = match adb.0.route_lease(&address) {
         Ok(lease) => lease,
         Err(error) => {
             let _ = ready.send(Err(error));
             return;
         }
     };
+    *ownership.native.lock().unwrap() = Some(lease);
     let runtime = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build();
@@ -172,9 +192,12 @@ async fn execute_attempt<C: Commands>(
         Ok(created) => {
             let _ = ready.send(Ok(()));
             if !chosen.await.unwrap_or(false) && created {
-                if let Err(error) = command(&adb, &address, false).await {
-                    tracing::warn!("Wi-Fi route cleanup failed: {error:#}");
-                }
+                cleanup::retire(
+                    &adb,
+                    &address,
+                    blent_config::adb_reverse::temporary::Creation::Acknowledged,
+                )
+                .await;
             }
         }
         Err(error) => {
@@ -197,5 +220,7 @@ async fn command<C: Commands>(adb: &Adb<C>, address: &str, connect: bool) -> Res
     Ok(String::from_utf8_lossy(&bytes).trim() != format!("already connected to {address}"))
 }
 
+#[cfg(test)]
+mod rollback_tests;
 #[cfg(test)]
 pub(super) mod tests;

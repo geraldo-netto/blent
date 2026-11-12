@@ -10,7 +10,9 @@ pub mod connection;
 pub mod monitor;
 mod network;
 mod preview;
+mod route_command;
 mod route_lock;
+pub use route_command::{RouteCommand, RouteFuture};
 mod routes;
 pub use routes::Routes;
 
@@ -23,6 +25,19 @@ pub trait Commands: Send + Sync {
     }
 
     fn execute(&self, arguments: Vec<String>, input: Option<Vec<u8>>) -> CommandFuture<'_>;
+
+    /// In-memory adapters have no separate native lifetime. Native adapters must
+    /// override this and await original child/collector fences before returning.
+    /// Errors conservatively retain a possible delegated effect unless the
+    /// adapter independently proves no creator started.
+    fn execute_route(&self, arguments: Vec<String>) -> RouteFuture<'_> {
+        Box::pin(async move {
+            RouteCommand {
+                output: self.execute(arguments, None).await,
+                started: true,
+            }
+        })
+    }
 }
 
 /// Uses the common native adapter: argument arrays and Windows job ownership,
@@ -30,6 +45,9 @@ pub trait Commands: Send + Sync {
 #[derive(Clone)]
 pub struct NativeCommands(pub PathBuf);
 impl Commands for NativeCommands {
+    fn execute_route(&self, arguments: Vec<String>) -> RouteFuture<'_> {
+        Box::pin(route_command::native(&self.0, arguments))
+    }
     fn route_lease(&self, address: &str) -> Result<Box<dyn Send>> {
         route_lock::acquire(address)
     }
@@ -142,6 +160,17 @@ mod tests;
 
 /// A missing optional executable still permits local configuration retirement.
 impl<C: Commands> Commands for Option<C> {
+    fn execute_route(&self, arguments: Vec<String>) -> RouteFuture<'_> {
+        match self {
+            Some(commands) => commands.execute_route(arguments),
+            None => Box::pin(async {
+                RouteCommand {
+                    output: Err(anyhow::anyhow!("ADB executable unavailable")),
+                    started: false,
+                }
+            }),
+        }
+    }
     fn route_lease(&self, address: &str) -> Result<Box<dyn Send>> {
         match self {
             Some(commands) => commands.route_lease(address),

@@ -16,10 +16,7 @@ pub(super) fn acquire(address: &str) -> Result<Box<dyn Send>> {
     Ok(Box::new(file))
 }
 fn stripe(address: &str) -> u64 {
-    let canonical = address
-        .parse::<std::net::SocketAddr>()
-        .map(|a| a.to_string())
-        .unwrap_or_else(|_| address.to_ascii_lowercase());
+    let canonical = crate::wifi::endpoint_key(address);
     canonical
         .bytes()
         .fold(14695981039346656037u64, |hash, byte| {

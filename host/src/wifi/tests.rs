@@ -13,6 +13,7 @@ struct State {
     ip: String,
     reply: String,
     change: Option<ConfigStore>,
+    network: std::collections::BTreeSet<String>,
 }
 #[derive(Clone, Default)]
 struct Fake(Arc<Mutex<State>>);
@@ -44,24 +45,39 @@ impl Commands for Fake {
             {
                 return Ok(output(1, ""));
             }
-            let text = match args[0].as_str() {
-                "devices" => s.inventory.clone(),
-                "connect" => {
-                    if let Some(store) = s.change.take() {
-                        store
-                            .update(|c| {
-                                c.wifi_address.clear();
-                                Ok(())
-                            })
-                            .unwrap();
-                    }
-                    s.reply.clone()
-                }
-                "disconnect" => String::new(),
-                _ => device_reply(&s, &args),
-            };
+            let text = command_reply(&mut s, &args);
             Ok(output(0, &text))
         })
+    }
+}
+fn command_reply(s: &mut State, args: &[String]) -> String {
+    match args[0].as_str() {
+        "devices" => {
+            s.inventory.clone()
+                + &s.network
+                    .iter()
+                    .map(|address| format!("{address}\tdevice\n"))
+                    .collect::<String>()
+        }
+        "connect" => {
+            if connected(s.reply.as_bytes(), &args[1]) {
+                s.network.insert(args[1].clone());
+            }
+            if let Some(store) = s.change.take() {
+                store
+                    .update(|c| {
+                        c.wifi_address.clear();
+                        Ok(())
+                    })
+                    .unwrap();
+            }
+            s.reply.clone()
+        }
+        "disconnect" => {
+            s.network.remove(&args[1]);
+            String::new()
+        }
+        _ => device_reply(s, args),
     }
 }
 fn device_reply(s: &State, args: &[String]) -> String {
@@ -85,7 +101,7 @@ fn fixture() -> (tempfile::TempDir, ConfigStore, Adb<Fake>) {
     }
     (root, store, Adb(fake))
 }
-#[tokio::test(start_paused = true)]
+#[tokio::test]
 async fn t691_setup_off_and_stale_connect_preserve_configuration_ownership() {
     let (_root, store, adb) = fixture();
     store
@@ -117,7 +133,7 @@ async fn t691_setup_off_and_stale_connect_preserve_configuration_ownership() {
     assert!(store.load().wifi_address.is_empty());
     assert!(reconnect(&adb, &store).await.is_none());
 }
-#[tokio::test(start_paused = true)]
+#[tokio::test]
 async fn t691_setup_rejects_unavailable_devices_addresses_and_false_success() {
     for failed in ["devices", "pm", "tcpip", "connect"] {
         let (_root, store, adb) = fixture();
@@ -391,18 +407,21 @@ impl crate::persistence_port::AsyncTransactions for Failed {
     }
 }
 
-#[tokio::test(start_paused = true)]
+#[tokio::test]
 async fn t826_failed_commit_disconnects_new_route_before_returning_failure() {
     let (_root, _store, adb) = fixture();
     assert!(policy::setup(&adb, &Failed, false).await.is_err());
-    assert_eq!(
-        adb.0 .0.lock().unwrap().calls.last().unwrap(),
-        &vec!["disconnect".to_owned(), "192.0.2.1:5555".to_owned()],
+    let state = adb.0 .0.lock().unwrap();
+    assert!(state
+        .calls
+        .contains(&vec!["disconnect".into(), "192.0.2.1:5555".into()]));
+    assert!(
+        state.network.is_empty(),
         "T826: failed commit leaked the new route"
     );
 }
 
-#[tokio::test(start_paused = true)]
+#[tokio::test]
 async fn t826_failed_commit_preserves_an_existing_network_route() {
     let (_root, _store, adb) = fixture();
     adb.0 .0.lock().unwrap().reply = "already connected to 192.0.2.1:5555".into();
@@ -485,7 +504,7 @@ impl crate::persistence_port::AsyncTransactions for HeldReads {
         })
     }
 }
-#[tokio::test(start_paused = true)]
+#[tokio::test]
 async fn t834_cancelled_post_connect_commit_retires_route_without_editing_store() {
     let (_root, store, adb) = fixture();
     let held = HeldReads {
@@ -498,8 +517,6 @@ async fn t834_cancelled_post_connect_commit_retires_route_without_editing_store(
         _ = held.entered.notified() => {}
     }
     drop(attempt);
-    // Native ownership uses real time; resume before waiting on worker retirement.
-    tokio::time::resume();
     tokio::time::timeout(std::time::Duration::from_secs(2), async {
         loop {
             if adb

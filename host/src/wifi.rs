@@ -6,6 +6,7 @@ mod attempt;
 mod policy;
 #[cfg(test)]
 use policy::connected;
+pub(crate) use policy::endpoint_key;
 pub use policy::valid_address;
 
 pub async fn reconnect<
