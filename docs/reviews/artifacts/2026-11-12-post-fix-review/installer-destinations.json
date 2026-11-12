@@ -1,0 +1,68 @@
+[
+  {
+    "case": "source-service",
+    "kind": "directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "destination_entries": [
+      ".blent.KmsGfCxS",
+      "retained"
+    ]
+  },
+  {
+    "case": "source-service",
+    "kind": "symlink-directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "destination_entries": [
+      ".blent.MV0roEiO",
+      "retained"
+    ]
+  },
+  {
+    "case": "appimage-image",
+    "kind": "directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "destination_entries": [
+      ".image.siEgRrte",
+      "retained"
+    ]
+  },
+  {
+    "case": "appimage-image",
+    "kind": "symlink-directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "destination_entries": [
+      ".image.vpSDCyJL",
+      "retained"
+    ]
+  },
+  {
+    "case": "appimage-launcher",
+    "kind": "directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "destination_entries": [
+      ".launcher.JSem58AP",
+      "retained"
+    ]
+  },
+  {
+    "case": "appimage-launcher",
+    "kind": "symlink-directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "destination_entries": [
+      ".launcher.RHFnGMuZ",
+      "retained"
+    ]
+  }
+]

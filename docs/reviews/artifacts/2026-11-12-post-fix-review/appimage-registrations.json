@@ -1,0 +1,90 @@
+[
+  {
+    "case": "service",
+    "kind": "directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "systemd/user/blent.service/.blent.YeqkkqhE"
+    ]
+  },
+  {
+    "case": "service",
+    "kind": "symlink-directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "redirect/.blent.VyWxvHjV"
+    ]
+  },
+  {
+    "case": "service",
+    "kind": "renderer-failure",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "systemd/user/.blent.XQTyHSAu"
+    ]
+  },
+  {
+    "case": "desktop",
+    "kind": "directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "applications/blent.desktop/.blent.H7CQLvvX"
+    ]
+  },
+  {
+    "case": "desktop",
+    "kind": "symlink-directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "redirect/.blent.JzxUSk8f"
+    ]
+  },
+  {
+    "case": "desktop",
+    "kind": "renderer-failure",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "applications/.blent.zhQ7egix"
+    ]
+  },
+  {
+    "case": "autostart",
+    "kind": "directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "autostart/blent.desktop/.blent.UP0LDNTJ"
+    ]
+  },
+  {
+    "case": "autostart",
+    "kind": "symlink-directory",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": [
+      "redirect/.blent.bZs0gkHY"
+    ]
+  },
+  {
+    "case": "autostart",
+    "kind": "renderer-failure",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "staging_entries": []
+  }
+]

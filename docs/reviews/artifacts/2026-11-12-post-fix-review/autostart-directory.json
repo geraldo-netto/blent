@@ -1,0 +1,12 @@
+{
+  "command": "production install_autostart_entry with directory destination in a temporary tree",
+  "returncode": 0,
+  "entries": [
+    "autostart",
+    "autostart/blent.desktop",
+    "autostart/blent.desktop/.blent.5ikTwriV",
+    "autostart/blent.desktop/retained"
+  ],
+  "stdout": "",
+  "stderr": ""
+}

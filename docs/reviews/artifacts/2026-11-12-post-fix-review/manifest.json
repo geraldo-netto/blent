@@ -1,0 +1,16 @@
+{
+  "base_commit": "f0dda8f18af60cec46ed27ff0d4225fd160e7fd5",
+  "source_sha256": {
+    "scripts/install.sh": "1733852d30f3fe5be06ea04945f88b1a9d29a7c6ce8334e1464e7c8d7793b931",
+    "packaging/appimage/install-appimage.sh": "c10cd3ea987a7a08ad59de0583810f7db95da2ce4e11f7deae7d1bb7a656b36b",
+    "host/src/wifi/policy.rs": "46d29bdab78205497057c1b48146333358eeaaa86937885ac5e50943e8cf9b7a",
+    "host/src/wifi/attempt.rs": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6",
+    "host/src/usb/route_lock.rs": "a93043697d95facd02d606e680bb92742bb2a480c5a30452272e3da6bccea2af",
+    "gui/src/connection_settings.rs": "00b77d18701d73f6181076a17e8f93f25bcaa1ac16dd75988a7b040b387ef2f2",
+    "gui/src/resource_workspace.rs": "c892caf4d317c32aa6fc8ad99243860a6e2b3d4857042f36072e654f68d1164b",
+    "common/src/workspace.rs": "37478825358fd1df30933e788e417e01fdcf78f2d6af7cb34eed35cfedf002f8",
+    "common/src/connection/control_view/snapshot.rs": "05dcf501714ee1c34fdeb320bf92771448761763e20127580b343785d567ebc6"
+  },
+  "cli_build": "cargo build --locked -p blent --features accessory-transport --bin blent",
+  "cli_sha256": "6fad7cc8abddfb04e04436c4114eb9c8e19a10661dc1a3cecaabafc581fbc31f"
+}

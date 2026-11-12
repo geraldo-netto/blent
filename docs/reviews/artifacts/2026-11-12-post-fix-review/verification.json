@@ -1,0 +1,24 @@
+{
+  "script_tests": {
+    "command": "python3 -m unittest discover -s scripts/tests",
+    "exit": 0,
+    "log": "script-tests.log.gz",
+    "skip_reason": "test_mutation_runner.MutationIsolationTest.test_t652_windows_deadline_kills_separate_group_descendants: native Windows process ownership",
+    "registered": 550,
+    "passed": 549,
+    "skipped": 1,
+    "failed": 0,
+    "elapsed_seconds": 421.992
+  },
+  "host_build": {
+    "command": "cargo build --locked -p blent --features accessory-transport --bin blent",
+    "exit": 0,
+    "log": "host-build.log.gz"
+  },
+  "ledger_check": {
+    "unique_rows": 19,
+    "open_added": 6,
+    "other_rows_unchanged": true,
+    "report_links_resolved": 10
+  }
+}

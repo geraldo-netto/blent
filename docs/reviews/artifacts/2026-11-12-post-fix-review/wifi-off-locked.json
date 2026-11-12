@@ -1,0 +1,8 @@
+{
+  "case": "native CLI off while endpoint stripe is held",
+  "exit": 0,
+  "stdout": "Wi-Fi off. Saved address forgotten; tablet network ADB listener is unchanged.\n",
+  "stderr": "",
+  "adb_invocations": "",
+  "saved_address_cleared": true
+}
