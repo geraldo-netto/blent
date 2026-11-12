@@ -26,6 +26,7 @@ fn candidate() -> Candidate {
         product: 7,
         device_class: 0,
         support: Support::Unknown,
+        names: Default::default(),
     }
 }
 struct Fixture {
@@ -216,3 +217,26 @@ async fn t853_failed_inventory_rejects_inspect_until_successful_refresh() {
 mod camera;
 
 mod audio;
+
+#[tokio::test]
+async fn t1336_inventory_names_reach_control_snapshot() {
+    let mut fixture = Fixture::new().await;
+    let mut observed = candidate();
+    observed.names = blent_config::connection::control::DeviceNames::new(
+        "Unisoc".into(),
+        "RugKing Pad 2 Pro".into(),
+    )
+    .unwrap();
+    fixture.server.inventory_result(Ok(vec![observed])).unwrap();
+    let notices = fixture.server.controller.snapshot();
+    let names = notices
+        .iter()
+        .find_map(|notice| match notice {
+            Notice::Device { names, .. } => Some(names),
+            _ => None,
+        })
+        .unwrap();
+    assert_eq!(names.manufacturer(), "Unisoc");
+    assert_eq!(names.model(), "RugKing Pad 2 Pro");
+    fixture.finish().await;
+}

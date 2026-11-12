@@ -37,6 +37,7 @@ pub struct Device {
     pub vendor: u16,
     pub product: u16,
     pub accessory: bool,
+    pub names: super::super::control::DeviceNames,
 }
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Link {
@@ -75,6 +76,7 @@ impl Snapshot {
                 vendor,
                 product,
                 accessory,
+                names,
                 ..
             } => {
                 ensure!(
@@ -88,7 +90,8 @@ impl Snapshot {
                             Device {
                                 vendor,
                                 product,
-                                accessory
+                                accessory,
+                                names,
                             }
                         )
                         .is_none(),

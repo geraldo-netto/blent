@@ -6,6 +6,8 @@ use blent_config::{commands::OwnedChild, retirement::Completion};
 use std::{collections::BTreeSet, path::Path, process::Stdio, time::Duration};
 use tokio::{io::AsyncReadExt, process::ChildStdout, time::Instant};
 
+mod names;
+
 const HEADER: usize = 16;
 const RECORD: usize = 16;
 pub const MAX_DEVICES: usize = 512;
@@ -52,6 +54,7 @@ pub struct Candidate {
     pub product: u16,
     pub device_class: u8,
     pub support: Support,
+    pub names: blent_config::connection::control::DeviceNames,
 }
 impl Candidate {
     /// Local display hint only, not an identity or a command argument.
@@ -114,7 +117,7 @@ impl Scan {
         let operation = async {
             let bytes = collect(&mut output, HEADER + limits.devices * RECORD).await?;
             ensure!(child.wait().await?.success(), "USB inventory helper failed");
-            decode(&bytes, limits.devices)
+            names::enrich(decode(&bytes, limits.devices)?).await
         };
         let result = tokio::time::timeout_at(deadline, operation)
             .await
@@ -202,6 +205,7 @@ fn candidate(bytes: &[u8]) -> Result<Candidate> {
         product,
         device_class: bytes[3],
         support,
+        names: Default::default(),
     })
 }
 

@@ -1,0 +1,272 @@
+{
+  "minimum_percent": 80,
+  "passes": true,
+  "functions": [
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "short",
+      "line": 74,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "name",
+      "line": 77,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "names",
+      "line": 82,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "encode",
+      "line": 181,
+      "language": "rust",
+      "covered": 41,
+      "total": 41,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "decode",
+      "line": 232,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "push_name",
+      "line": 276,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/names.rs",
+      "name": "new",
+      "line": 14,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/names.rs",
+      "name": "manufacturer",
+      "line": 23,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/names.rs",
+      "name": "model",
+      "line": 27,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/names.rs",
+      "name": "validate",
+      "line": 32,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control/names.rs",
+      "name": "unsafe_character",
+      "line": 42,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "record",
+      "line": 72,
+      "language": "rust",
+      "covered": 34,
+      "total": 35,
+      "percent": 97.14285714285714,
+      "passes": true,
+      "missing": [
+        121
+      ]
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "devices",
+      "line": 185,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device",
+      "line": 197,
+      "language": "rust",
+      "covered": 24,
+      "total": 24,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_description",
+      "line": 312,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "finish",
+      "line": 109,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "candidate",
+      "line": 182,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux/discovery/names.rs",
+      "name": "enrich",
+      "line": 17,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux/discovery/names.rs",
+      "name": "start",
+      "line": 25,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux/discovery/names.rs",
+      "name": "read",
+      "line": 41,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux/discovery/names.rs",
+      "name": "matches_candidate",
+      "line": 61,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/accessory/linux/discovery/names.rs",
+      "name": "attribute",
+      "line": 74,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "snapshot",
+      "line": 179,
+      "language": "rust",
+      "covered": 29,
+      "total": 29,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "inventory_result",
+      "line": 121,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

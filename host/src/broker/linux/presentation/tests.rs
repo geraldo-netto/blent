@@ -46,6 +46,7 @@ fn notices(revision: u64, state: State) -> Vec<Notice> {
             vendor: 0x18d1,
             product: 0x2d00,
             accessory: true,
+            names: Default::default(),
         },
         Notice::Link {
             revision,

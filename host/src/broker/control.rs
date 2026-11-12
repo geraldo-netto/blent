@@ -63,6 +63,7 @@ pub struct Device<K, T> {
     pub vendor: u16,
     pub product: u16,
     pub accessory: bool,
+    pub names: blent_config::connection::control::DeviceNames,
 }
 pub enum Action<T> {
     None,
@@ -187,6 +188,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             vendor: device.vendor,
             product: device.product,
             accessory: device.accessory,
+            names: device.names.clone(),
         }));
         notices.extend(self.links.iter().map(|(&connection, link)| Notice::Link {
             revision,

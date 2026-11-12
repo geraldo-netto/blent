@@ -190,26 +190,36 @@ impl Panel {
         }
         for (target, device) in view.snapshot().devices() {
             ui.push_id(("device", target), |ui| {
-                ui.horizontal_wrapped(|ui| {
-                    ui.label(format!(
-                        "Device {target}: {:04x}:{:04x}",
-                        device.vendor, device.product
-                    ));
-                    if ui
-                        .add_enabled(self.pending.is_none(), egui::Button::new("Connect"))
-                        .clicked()
-                    {
-                        self.send(
-                            view,
-                            Command::Connect {
-                                revision: view.snapshot().revision(),
-                                target: *target,
-                            },
-                        );
-                    }
-                });
+                ui.group(|ui| self.device(ui, view, *target, device));
             });
         }
+    }
+    fn device(
+        &mut self,
+        ui: &mut egui::Ui,
+        view: &View,
+        target: u64,
+        device: &blent_config::connection::control_view::Device,
+    ) {
+        device_description(ui, device);
+        ui.horizontal_wrapped(|ui| {
+            ui.small(format!(
+                "USB {:04x}:{:04x} · Device {target}",
+                device.vendor, device.product
+            ));
+            if ui
+                .add_enabled(self.pending.is_none(), egui::Button::new("Connect"))
+                .clicked()
+            {
+                self.send(
+                    view,
+                    Command::Connect {
+                        revision: view.snapshot().revision(),
+                        target,
+                    },
+                );
+            }
+        });
     }
     fn links(&mut self, ui: &mut egui::Ui, view: &View) {
         for (connection, link) in view.snapshot().links() {
@@ -298,6 +308,25 @@ impl Panel {
             });
         }
     }
+}
+fn device_description(ui: &mut egui::Ui, device: &blent_config::connection::control_view::Device) {
+    let model = device.names.model();
+    ui.strong(if model.is_empty() {
+        "Model unavailable"
+    } else {
+        model
+    });
+    let manufacturer = device.names.manufacturer();
+    if manufacturer.is_empty() {
+        ui.label("Manufacturer unavailable");
+    } else {
+        ui.label(format!("Manufacturer: {manufacturer}"));
+    }
+    ui.small(if device.accessory {
+        "Android accessory mode"
+    } else {
+        "Tablet support unconfirmed"
+    });
 }
 fn fingerprint(ui: &mut egui::Ui, label: &str, value: &str) {
     ui.label(format!("{label} fingerprint (SHA-256)"));

@@ -52,6 +52,7 @@ fn notices() -> Vec<Notice> {
             vendor: u16::MAX,
             product: 0,
             accessory: false,
+            names: Default::default(),
         },
         Notice::Device {
             revision: 1,
@@ -59,6 +60,7 @@ fn notices() -> Vec<Notice> {
             vendor: 0x18d1,
             product: 0x2d00,
             accessory: true,
+            names: Default::default(),
         },
         Notice::Saved {
             revision: 1,
@@ -273,4 +275,49 @@ fn t877_mutations_and_arbitrary_bounded_inputs_are_canonical_or_rejected() {
             }
         }
     }
+}
+
+#[test]
+fn t1336_device_name_and_model_survive_control_wire() {
+    // Independent current-format record: IDs/flag, then two u16-length UTF-8 names.
+    let mut bytes = vec![1];
+    bytes.extend_from_slice(&1u64.to_be_bytes());
+    bytes.extend_from_slice(&2u64.to_be_bytes());
+    bytes.extend_from_slice(&[0x18, 0xd1, 0x2d, 1, 1]);
+    for value in ["Unisoc", "RugKing Pad 2 Pro"] {
+        bytes.extend_from_slice(&(value.len() as u16).to_be_bytes());
+        bytes.extend_from_slice(value.as_bytes());
+    }
+    let notice = Notice::decode(&bytes).expect("T1336 manufacturer/model must reach the GUI");
+    assert_eq!(notice.encode().unwrap(), bytes);
+}
+
+#[test]
+fn t1336_maximum_names_fit_registration_and_reject_malformed_fields() {
+    let names = DeviceNames::new("a".repeat(256), "é".repeat(128)).unwrap();
+    let notice = Notice::Device {
+        revision: 1,
+        target: 2,
+        vendor: 0x18d1,
+        product: 0x2d01,
+        accessory: true,
+        names,
+    };
+    let message = Message::Report {
+        request: 1,
+        notice: notice.clone(),
+    };
+    assert!(Message::decode(&message.encode().unwrap()).unwrap() == message);
+    let bytes = notice.encode().unwrap();
+    for end in 0..bytes.len() {
+        assert!(Notice::decode(&bytes[..end]).is_err());
+    }
+    for invalid in [0, 0xff, b'\n'] {
+        let mut corrupt = bytes.clone();
+        corrupt[24] = invalid;
+        assert!(Notice::decode(&corrupt).is_err());
+    }
+    let mut corrupt = bytes;
+    corrupt[22..24].copy_from_slice(&257u16.to_be_bytes());
+    assert!(Notice::decode(&corrupt).is_err());
 }

@@ -111,6 +111,7 @@ mod tests {
             product: 201,
             device_class: 0,
             support: discovery::Support::Unknown,
+            names: Default::default(),
         };
         for address in [0, 128, 255] {
             selected.address = address;

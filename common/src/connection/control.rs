@@ -3,6 +3,8 @@
 //! Native handles, paths, processes and UI types do not cross this boundary.
 use super::pairing::{PeerId, Ticket};
 mod codec;
+pub mod names;
+pub use names::DeviceNames;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Command {
@@ -53,6 +55,7 @@ pub enum Notice {
         vendor: u16,
         product: u16,
         accessory: bool,
+        names: DeviceNames,
     },
     Link {
         revision: u64,

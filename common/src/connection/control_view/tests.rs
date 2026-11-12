@@ -23,6 +23,7 @@ fn device(revision: u64, target: u64) -> Notice {
         vendor: 0x18d1,
         product: 0x2d00,
         accessory: true,
+        names: Default::default(),
     }
 }
 fn link(revision: u64, connection: u64, state: State) -> Notice {
@@ -74,7 +75,8 @@ fn t900_complete_snapshot_preserves_corresponding_identity_and_sorted_metadata()
         Device {
             vendor: 0x18d1,
             product: 0x2d00,
-            accessory: true
+            accessory: true,
+            names: Default::default(),
         }
     );
     assert_eq!(snapshot.links()[&2].ticket, Some(ticket()));

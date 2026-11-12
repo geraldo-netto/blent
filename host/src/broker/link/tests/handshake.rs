@@ -48,6 +48,7 @@ fn controller(local: PeerId) -> (Control, u64, u64) {
             vendor: 1,
             product: 1,
             accessory: false,
+            names: Default::default(),
         }])
         .unwrap();
     let (revision, target) = control

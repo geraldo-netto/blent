@@ -2,7 +2,7 @@ use super::*;
 use crate::connection::wire::MAX_COUNTER;
 use anyhow::{ensure, Result};
 
-const MAX_BODY: usize = 128;
+const MAX_BODY: usize = 26 + 2 * names::MAX_NAME_BYTES;
 fn counter(value: u64) -> Result<()> {
     ensure!(
         (1..=MAX_COUNTER).contains(&value),
@@ -73,6 +73,14 @@ impl<'a> Input<'a> {
     }
     fn short(&mut self) -> Result<u16> {
         Ok(u16::from_be_bytes(self.take(2)?.try_into()?))
+    }
+    fn name(&mut self) -> Result<String> {
+        let length = self.short()? as usize;
+        ensure!(length <= names::MAX_NAME_BYTES, "USB name exceeds capacity");
+        Ok(std::str::from_utf8(self.take(length)?)?.to_owned())
+    }
+    fn names(&mut self) -> Result<DeviceNames> {
+        DeviceNames::new(self.name()?, self.name()?)
     }
     fn finish(self) -> Result<()> {
         ensure!(self.0.is_empty(), "trailing control bytes");
@@ -184,6 +192,7 @@ impl Notice {
                 vendor,
                 product,
                 accessory,
+                names,
             } => {
                 out.push(1);
                 push_counter(&mut out, *revision)?;
@@ -191,6 +200,8 @@ impl Notice {
                 out.extend_from_slice(&vendor.to_be_bytes());
                 out.extend_from_slice(&product.to_be_bytes());
                 out.push(u8::from(*accessory));
+                push_name(&mut out, names.manufacturer());
+                push_name(&mut out, names.model());
             }
             Self::Link {
                 revision,
@@ -233,6 +244,7 @@ impl Notice {
                 vendor: input.short()?,
                 product: input.short()?,
                 accessory: input.flag()?,
+                names: input.names()?,
             },
             2 => decode_link(&mut input, revision)?,
             3 => Self::Saved {
@@ -259,4 +271,9 @@ fn decode_link(input: &mut Input<'_>, revision: u64) -> Result<Notice> {
         state,
         trusted,
     })
+}
+
+fn push_name(out: &mut Vec<u8>, name: &str) {
+    out.extend_from_slice(&(name.len() as u16).to_be_bytes());
+    out.extend_from_slice(name.as_bytes());
 }

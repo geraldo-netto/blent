@@ -1,0 +1,69 @@
+{
+  "finding": "T1336",
+  "date": "2026-11-12",
+  "result": "resolved",
+  "behavior": "USB rows show bounded USB product/model and manufacturer, accessory-mode hint, and secondary USB IDs. Missing names are explicit. Labels never authorize Connect or pairing.",
+  "tests": {
+    "broker": 237,
+    "accessory": 23,
+    "control_contract_and_view": 22,
+    "gui_connection_settings": 15,
+    "total_passed": 297,
+    "total_executed": 297
+  },
+  "regression_before_fix": {
+    "wire": "trailing control bytes",
+    "gui": "missing RugKing Pad 2 Pro"
+  },
+  "coverage": {
+    "platform": "Linux",
+    "tool": "cargo-llvm-cov 0.8.7",
+    "method": "Fresh instrumented target; unchanged Rust source hashes checked before importing native LCOV; repository per-function gate applied to changed functions plus adjacent short decoder. No lines excluded.",
+    "functions_passing": 24,
+    "functions_measured": 24,
+    "minimum_percent": 97.14285714285714
+  },
+  "complexity": {
+    "tool": "repository scripts/complexity checker; syn 2.0.119; tree-sitter 0.25.2",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "python": "Python 3.14.6",
+    "functions": 274,
+    "maximum": 9,
+    "scope": "All functions in changed Rust files, including tests. Supplementary external native scan main: 2."
+  },
+  "native_observation": {
+    "method": "Read-only Scan::start/finish using existing blent-usb-io --list; no device opens, claims, USB control transfers, pairing, or media capture.",
+    "devices_observed": 6,
+    "devices_with_model_names": 5,
+    "tablet": "18d1:2d01, Unisoc, RugKing Pad 2 Pro",
+    "helper_retired": true
+  },
+  "ownership": {
+    "owner": "Existing admitted Task owns the descriptor batch; reaper retains admission until native completion and join on cancellation/caller loss.",
+    "bounds": "At most 512 candidates; each name <=256 UTF-8 bytes; each attribute read <=258 bytes; at most one metadata worker per scan; cancelled workers remain charged to the existing global work-admission pool.",
+    "handoff": "Worker owns candidates and files; oneshot transfers result only after worker join; cancelled receiver drops result; snapshot replacement releases old strings through existing snapshot ownership.",
+    "invariants": "No raw pointers or borrowed names escape; descriptor hints cannot change target/revision authority; native files close before worker completion; no release of worker admission based solely on timeout.",
+    "cleanup_assumption": "A running filesystem syscall must eventually return for eventual cleanup. If it does not, worker and admission remain retained. Kernel/device safety is not proved by hosted tests.",
+    "tests": "Permanent blocked FIFO cancellation, unplug during read, successful join, missing/invalid/oversized descriptors, UTF-8 and control-character bounds."
+  },
+  "limits": [
+    "Linux implementation and rendering validated; native Windows GUI evidence remains T1271 and ADB-free USB remains unsupported there.",
+    "The USB-reported manufacturer can differ from the retail brand; custom Android device nicknames are not exposed by these descriptors.",
+    "Existing installed app was not replaced; local GUI and broker binaries rebuilt together."
+  ],
+  "artifacts": {
+    "accessory.log.gz": "f5e6701f4b50397e88f5c7f9a9226b905eed07a4f913e3c28be80d58363befb3",
+    "broker.log.gz": "506969ed8359a9f0054e55f3f0d487223227701b538ddb97e601e3eeeb408ad9",
+    "build.log.gz": "435a1f210347f850dcbee4369b067988d2eb903ba05685d5929606823849992a",
+    "changed-coverage.json": "c35e29f5d4f43c3c1a3bce2086424017db6aa81a157763a65be1a10f0fdaddee",
+    "check.log.gz": "78f56fe89c6ead246b4db8bec2b6e10843ad4dbb6aac390a50228813ea62bf4b",
+    "common.log.gz": "34b5b43360e1092af3b7e5a7f2a19cee78f5c90e579c4b1ab0a3b287f661b81b",
+    "complexity.json": "dbde9e2f0510a2da413fb737ae839dd1cf17b7618992e2bca715b107169450a9",
+    "coverage.lcov.gz": "aab93f0c15c046185fc6c83ef6868ab9fd2e13d2e4ac6287708a36340d85dbb3",
+    "gui-red.log.gz": "ebd6b50a53e36ca37172a60410a4a4d7dd2609cac1aedff530f1037b3985c1cb",
+    "gui.log.gz": "a60c999c1b3cbe7c12ae7c85fe05db0e95a801447bbf10fa1069782f1b3010d4",
+    "manifest.json": "c72be791ca2722e1a300d4863f759f03baadc541c83bc30b32c8ef9491ff982a",
+    "native.log.gz": "58fde39c9e9affbc9ece61d688615722d911925bfc5ea2c9f3058cbe6139cb7e",
+    "wire-red.log.gz": "7eaa4061916fd9d9190f03a4e42ff9472befcc9273fc51ef08bfad4d2cd37385"
+  }
+}

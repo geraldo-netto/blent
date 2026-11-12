@@ -90,6 +90,11 @@ fn publish(model: &mut Model, revision: u64, epoch: u64, state: State) -> View {
             vendor: 0x18d1,
             product: 0x2d00,
             accessory: true,
+            names: blent_config::connection::control::DeviceNames::new(
+                "Unisoc".into(),
+                "RugKing Pad 2 Pro".into(),
+            )
+            .unwrap(),
         },
         Notice::Link {
             revision,
@@ -488,4 +493,84 @@ fn t894_terminal_status_does_not_hide_incomplete_cleanup() {
     assert!(!labels
         .iter()
         .any(|(text, _)| text == "Waiting for native cleanup; retry unavailable."));
+}
+
+#[test]
+fn t1336_usb_list_shows_model_and_manufacturer() {
+    let (mut panel, _) = fixture();
+    let labels = frame(&mut panel, &egui::Context::default(), 600.0, Vec::new());
+    for expected in [
+        "RugKing Pad 2 Pro",
+        "Manufacturer: Unisoc",
+        "Android accessory mode",
+    ] {
+        assert!(
+            labels.iter().any(|(text, _)| text == expected),
+            "T1336 missing {expected}"
+        );
+    }
+}
+
+fn replace_named_device(handle: &Handle, manufacturer: &str, model: &str, accessory: bool) {
+    let mut assembler = Assembler::new(Limits::default()).unwrap();
+    let mut snapshot = None;
+    for notice in [
+        Notice::Begin {
+            revision: 2,
+            local: peer(1),
+        },
+        Notice::Device {
+            revision: 2,
+            target: 7,
+            vendor: 0x1234,
+            product: 0x5678,
+            accessory,
+            names: blent_config::connection::control::DeviceNames::new(
+                manufacturer.into(),
+                model.into(),
+            )
+            .unwrap(),
+        },
+        Notice::End { revision: 2 },
+    ] {
+        snapshot = assembler.push(notice).unwrap();
+    }
+    let mut fake = handle.0.lock().unwrap();
+    fake.status.view = Some(fake.model.publish(snapshot.unwrap()).unwrap());
+}
+
+#[test]
+fn t1336_unnamed_device_remains_explicit_and_selectable() {
+    let (mut panel, handle) = fixture();
+    replace_named_device(&handle, "", "", false);
+    let ctx = egui::Context::default();
+    let labels = frame(&mut panel, &ctx, 320.0, Vec::new());
+    for expected in [
+        "Model unavailable",
+        "Manufacturer unavailable",
+        "Tablet support unconfirmed",
+        "USB 1234:5678 · Device 7",
+    ] {
+        assert!(labels.iter().any(|(text, _)| text == expected));
+    }
+    click(&mut panel, &ctx, "Connect");
+    assert_eq!(
+        handle.0.lock().unwrap().commands,
+        [Command::Connect {
+            revision: 2,
+            target: 7
+        }]
+    );
+}
+
+#[test]
+fn t1336_long_names_wrap_in_small_windows() {
+    let (mut panel, handle) = fixture();
+    replace_named_device(&handle, &"M".repeat(256), &"X".repeat(256), false);
+    for width in [320.0, 600.0] {
+        let ctx = egui::Context::default();
+        for (label, rect) in frame(&mut panel, &ctx, width, Vec::new()) {
+            assert!(rect.right() <= width, "T1336 clipped {label}: {rect:?}");
+        }
+    }
 }

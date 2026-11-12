@@ -100,6 +100,14 @@ The tray controls the running daemon.
   measured traffic and a calling application's upload settings remain separate.
 ## Connections and input devices
 
+In **Connections → USB devices**, each row shows the USB product/model name
+and manufacturer reported by the device. For example, a tablet can appear as
+**RugKing Pad 2 Pro**, with **Manufacturer: Unisoc** below it. USB identifiers
+remain secondary details. Missing names are marked unavailable; the USB
+manufacturer may differ from the retail brand. **Android accessory mode** helps
+identify an Android candidate, but names and USB IDs do not authenticate it.
+Compare the pairing fingerprints before approving a tablet.
+
 - **Several tablets** — `max_tablets` supports 1–4 slots. Historical testing
   used one physical tablet plus a simulated client. Automated tests cover
   independent slots and busy-card fallback. Multiple physical tablets have not

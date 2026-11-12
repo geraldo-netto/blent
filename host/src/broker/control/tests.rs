@@ -39,6 +39,7 @@ fn device(key: u64) -> Device<u64, u64> {
         vendor: 0x18d1,
         product: 0x2d00,
         accessory: true,
+        names: Default::default(),
     }
 }
 impl Rig {
