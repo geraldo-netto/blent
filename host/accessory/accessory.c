@@ -43,20 +43,28 @@ static void check_reopen(int status)
     accessory_require(retryable, "cannot open re-enumerating target");
 }
 
-static void start_accessory(libusb_device_handle *handle, int production) {
+static void start_accessory(libusb_device_handle *handle, int production)
+{
+    accessory_require_available(handle);
     unsigned char version[2];
-    int count=libusb_control_transfer(handle,0xc0,51,0,0,version,2,1000);
-    accessory_require(count==2 && (version[0] || version[1]),"AOA unsupported");
-    const char *strings[]={"Blent",production?"Blent":"Blent USB Probe",
-                          production?"Blent USB connection":"T846 synthetic USB integrity test","1",
-                          "https://github.com/geraldo-netto/blent",production?"blent-1":"blent-probe-1"};
-    for (int index=0;index<6;index++) {
-        int length=(int)strlen(strings[index])+1;
-        count=libusb_control_transfer(handle,0x40,52,0,(uint16_t)index,
-                                     (unsigned char *)strings[index],(uint16_t)length,1000);
-        accessory_require(count==length,"AOA identification transfer");
+    int count = libusb_control_transfer(handle, 0xc0, 51, 0, 0, version, 2, 1000);
+    accessory_require(count == 2 && (version[0] || version[1]), "AOA unsupported");
+    const char *strings[] = {"Blent",
+                             production ? "Blent" : "Blent USB Probe",
+                             production ? "Blent USB connection"
+                                        : "T846 synthetic USB integrity test",
+                             "1",
+                             "https://github.com/geraldo-netto/blent",
+                             production ? "blent-1" : "blent-probe-1"};
+    for (int index = 0; index < 6; index++)
+    {
+        int length = (int)strlen(strings[index]) + 1;
+        count = libusb_control_transfer(handle, 0x40, 52, 0, (uint16_t)index,
+                                        (unsigned char *)strings[index], (uint16_t)length, 1000);
+        accessory_require(count == length, "AOA identification transfer");
     }
-    accessory_require(libusb_control_transfer(handle,0x40,53,0,0,NULL,0,1000)==0,"AOA mode switch");
+    accessory_require(libusb_control_transfer(handle, 0x40, 53, 0, 0, NULL, 0, 1000) == 0,
+                      "AOA mode switch");
 }
 static void wait_accessory(accessory_usb *usb, accessory_target target) {
     struct timespec pause={.tv_nsec=100000000};
@@ -102,13 +110,15 @@ static void claim_accessory(accessory_usb *usb);
 
 static void reset_accessory(accessory_usb *usb, accessory_target target)
 {
+    accessory_require_available(usb->handle);
     claim_accessory(usb);
     /* Gadget queues survive a logical close. Keep the old device referenced so
      * its memory address cannot be reused as evidence of a new native object. */
     libusb_device *original = libusb_ref_device(libusb_get_device(usb->handle));
     int status = libusb_reset_device(usb->handle);
     accessory_require(status == 0 || status == LIBUSB_ERROR_NOT_FOUND ||
-                      status == LIBUSB_ERROR_NO_DEVICE, "USB reset failed");
+                          status == LIBUSB_ERROR_NO_DEVICE,
+                      "USB reset failed");
     libusb_close(usb->handle);
     usb->handle = NULL;
     usb->claimed = 0;
@@ -138,17 +148,24 @@ static int endpoints(const struct libusb_interface_descriptor *desc, accessory_u
     accessory_require(usb->interface<0,"ambiguous accessory interface");
     usb->interface=desc->bInterfaceNumber; usb->input=input; usb->output=output; usb->output_packet=packet; return 1;
 }
-static void claim_accessory(accessory_usb *usb) {
-    struct libusb_config_descriptor *config=NULL;
-    accessory_require(libusb_get_active_config_descriptor(libusb_get_device(usb->handle),&config)==0,"active USB configuration");
-    for (int index=0;index<config->bNumInterfaces;index++) {
-        const struct libusb_interface *item=&config->interface[index];
-        for (int alt=0;alt<item->num_altsetting;alt++) endpoints(&item->altsetting[alt],usb);
+static void claim_accessory(accessory_usb *usb)
+{
+    accessory_require_available(usb->handle);
+    struct libusb_config_descriptor *config = NULL;
+    accessory_require(
+        libusb_get_active_config_descriptor(libusb_get_device(usb->handle), &config) == 0,
+        "active USB configuration");
+    for (int index = 0; index < config->bNumInterfaces; index++)
+    {
+        const struct libusb_interface *item = &config->interface[index];
+        for (int alt = 0; alt < item->num_altsetting; alt++)
+            endpoints(&item->altsetting[alt], usb);
     }
     libusb_free_config_descriptor(config);
-    accessory_require(usb->interface>=0,"accessory bulk interface unavailable");
-    accessory_require(libusb_claim_interface(usb->handle,usb->interface)==0,"accessory interface busy or unavailable");
-    usb->claimed=1;
+    accessory_require(usb->interface >= 0, "accessory bulk interface unavailable");
+    accessory_require(libusb_claim_interface(usb->handle, usb->interface) == 0,
+                      "accessory interface busy or unavailable");
+    usb->claimed = 1;
 }
 static void check_selection(libusb_device_handle *handle,const accessory_selection *selected) {
     if(!selected) return;
@@ -169,6 +186,7 @@ static void open_target(accessory_usb *usb, accessory_target target,
     accessory_require(open_error == 0, "cannot open target; check USB permission");
     accessory_require(usb->handle != NULL, "target absent");
     check_selection(usb->handle, selected);
+    accessory_require_available(usb->handle);
     if (is_accessory(usb->handle))
     {
         reset_accessory(usb, target);
@@ -184,8 +202,8 @@ static void open_target(accessory_usb *usb, accessory_target target,
     struct libusb_device_descriptor desc;
     accessory_require(libusb_get_device_descriptor(libusb_get_device(usb->handle), &desc) == 0,
                       "accessory identity");
-    fprintf(stderr, "Accessory %04x:%04x interface %d; approve %s on tablet.\n",
-            desc.idVendor, desc.idProduct, usb->interface, selected ? "Blent" : "Blent USB Probe");
+    fprintf(stderr, "Accessory %04x:%04x interface %d; approve %s on tablet.\n", desc.idVendor,
+            desc.idProduct, usb->interface, selected ? "Blent" : "Blent USB Probe");
     fprintf(stderr, "ADB interface advertised: %s\n", desc.idProduct == 0x2d01 ? "yes" : "no");
 }
 void accessory_open(accessory_usb *usb,accessory_target target) { open_target(usb,target,NULL); }

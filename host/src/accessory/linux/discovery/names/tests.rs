@@ -24,6 +24,7 @@ fn fixture() -> (tempfile::TempDir, Candidate) {
             device_class: 0,
             support: Support::Accessory,
             names: DeviceNames::default(),
+            availability: blent_config::connection::control::Availability::Available,
         },
     )
 }

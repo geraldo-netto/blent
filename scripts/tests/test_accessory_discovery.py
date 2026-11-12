@@ -17,7 +17,7 @@ def compile_arguments(binary):
     native = ROOT / 'host/accessory'
     return ['-std=c11', '-Wall', '-Wextra', '-Werror',
             '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(native),
-            str(fixture / 'discovery_fixture.c'), str(native / 'discovery.c'),
+            str(fixture / 'discovery_fixture.c'), str(native / 'discovery.c'), str(native / 'availability.c'),
             str(native / 'contract.c'), '-o', str(binary)]
 
 
@@ -46,7 +46,7 @@ class AccessoryDiscoveryTest(unittest.TestCase):
             subprocess.run([compiler, *arguments, '--coverage'], check=True)
             subprocess.run([binary, '0', '64'], check=True, capture_output=True)
             notes = sorted(directory.glob('*.gcno'))
-            self.assertEqual(len(notes), 3, 'T1314: source coverage notes collided')
+            self.assertEqual(len(notes), 4, 'T1314: source coverage notes collided')
             subprocess.run(['gcov', '--json-format', *map(str, notes)],
                            cwd=directory, check=True, capture_output=True)
             expected = {argument for argument in arguments if argument.endswith('.c')}
@@ -58,12 +58,19 @@ class AccessoryDiscoveryTest(unittest.TestCase):
     def test_t876_fixed_records_filter_roots_hubs_without_opening_devices(self):
         result = self.run_inventory(0)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(result.stdout[:16], b'BLUI\0\0\0\1\0\3' + b'\0' * 6)
+        self.assertEqual(result.stdout[:16], b'BLUI\0\0\0\2\0\3' + b'\0' * 6)
         self.assertEqual(len(result.stdout), 64)
         self.assertEqual(struct.unpack('>BBBBHH7sB', result.stdout[16:32]),
                          (1, 3, 7, 255, 0x1234, 0x5678, bytes(range(1, 8)), 0))
         self.assertIn(b'freed=1 exited=1', result.stderr)
-        self.assertEqual(self.run_inventory(1).stdout, b'BLUI\0\0\0\1' + b'\0' * 8)
+        self.assertEqual(self.run_inventory(1).stdout, b'BLUI\0\0\0\2' + b'\0' * 8)
+
+    def test_t1338_inventory_reports_reserved_and_unknown_without_usb_effects(self):
+        for mode, expected in [(13, 1), (14, 2)]:
+            result = self.run_inventory(mode)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout[31::16], bytes([expected] * 3))
+            self.assertIn(b'freed=1 exited=1', result.stderr)
 
     def test_t876_native_failure_capacity_and_metadata_bounds(self):
         for mode in range(2, 12):

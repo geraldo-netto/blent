@@ -187,6 +187,8 @@ permission setup. Check both with `blent doctor`.
    Enable/place the EVDI output in desktop Display settings if necessary. KDE
    Wayland has the most automation; see [compatibility](compatibility.md).
 
+Turn USB debugging off before selecting the paired, debugging-free USB route;
+Blent reserves devices for ADB while they advertise debugging.
 For the paired USB route and separate camera/audio permissions, see the
 [main guide](../README.md). ADB authorization and Blent pairing are distinct.
 

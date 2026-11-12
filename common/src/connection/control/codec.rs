@@ -2,7 +2,7 @@ use super::*;
 use crate::connection::wire::MAX_COUNTER;
 use anyhow::{ensure, Result};
 
-const MAX_BODY: usize = 35 + 2 * names::MAX_NAME_BYTES;
+const MAX_BODY: usize = 36 + 2 * names::MAX_NAME_BYTES;
 fn counter(value: u64) -> Result<()> {
     ensure!(
         (1..=MAX_COUNTER).contains(&value),
@@ -200,6 +200,7 @@ impl Notice {
                 product,
                 accessory,
                 names,
+                availability,
                 connection,
             } => {
                 out.push(1);
@@ -210,6 +211,7 @@ impl Notice {
                 out.push(u8::from(*accessory));
                 push_name(&mut out, names.manufacturer());
                 push_name(&mut out, names.model());
+                out.push(*availability as u8);
                 out.push(u8::from(connection.is_some()));
                 if let Some(connection) = connection {
                     push_counter(&mut out, *connection)?;
@@ -257,6 +259,7 @@ impl Notice {
                 product: input.short()?,
                 accessory: input.flag()?,
                 names: input.names()?,
+                availability: super::Availability::parse(input.byte()?)?,
                 connection: input.connection()?,
             },
             2 => decode_link(&mut input, revision)?,

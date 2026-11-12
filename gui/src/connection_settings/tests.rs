@@ -104,6 +104,7 @@ fn publish_ownership(
                 "RugKing Pad 2 Pro".into(),
             )
             .unwrap(),
+            availability: blent_config::connection::control::Availability::Available,
             connection,
         },
         Notice::Link {
@@ -540,6 +541,7 @@ fn replace_named_device(handle: &Handle, manufacturer: &str, model: &str, access
                 model.into(),
             )
             .unwrap(),
+            availability: blent_config::connection::control::Availability::Available,
             connection: None,
         },
         Notice::End { revision: 2 },
@@ -641,4 +643,60 @@ fn t1337_row_stays_locked_through_approval_and_cleanup() {
         assert!(handle.0.lock().unwrap().commands.is_empty());
     }
     assert_eq!(device_state_label(State::Discovering), "Connecting");
+}
+
+fn reserved_view(
+    model: &mut Model,
+    availability: blent_config::connection::control::Availability,
+) -> View {
+    let mut assembler = Assembler::new(Limits::default()).unwrap();
+    assembler
+        .push(Notice::Begin {
+            revision: 2,
+            local: peer(1),
+        })
+        .unwrap();
+    assembler
+        .push(Notice::Device {
+            revision: 2,
+            target: 1,
+            vendor: 0x18d1,
+            product: 0x4ee8,
+            accessory: false,
+            names: Default::default(),
+            availability,
+            connection: None,
+        })
+        .unwrap();
+    model
+        .publish(
+            assembler
+                .push(Notice::End { revision: 2 })
+                .unwrap()
+                .unwrap(),
+        )
+        .unwrap()
+}
+
+#[test]
+fn t1338_reserved_or_unknown_device_disables_connect() {
+    use blent_config::connection::control::Availability;
+    for (availability, label) in [
+        (Availability::Debugging, "Reserved for USB debugging"),
+        (Availability::Unknown, "USB availability unknown"),
+    ] {
+        let (mut panel, handle) = fixture();
+        {
+            let mut fake = handle.0.lock().unwrap();
+            fake.status.view = Some(reserved_view(&mut fake.model, availability));
+        }
+        let ctx = egui::Context::default();
+        let labels = frame(&mut panel, &ctx, 600.0, Vec::new());
+        assert!(
+            labels.iter().any(|(text, _)| text == label),
+            "T1338 missing {label}"
+        );
+        click(&mut panel, &ctx, "Connect");
+        assert!(handle.0.lock().unwrap().commands.is_empty());
+    }
 }

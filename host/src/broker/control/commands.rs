@@ -31,6 +31,10 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
             .get(&target)
             .ok_or_else(|| anyhow::anyhow!("unknown device"))?;
         ensure!(
+            device.availability == blent_config::connection::control::Availability::Available,
+            "USB device reserved or unavailable"
+        );
+        ensure!(
             !self.links.values().any(|link| link.key == device.key),
             "physical device still owned"
         );

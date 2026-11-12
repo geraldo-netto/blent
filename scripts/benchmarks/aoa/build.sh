@@ -9,5 +9,6 @@ mkdir -p "$probe_output"
 cc -std=c11 -O2 -g -Wall -Wextra -Werror -I"$probe_headers" -I"$probe_root/host/accessory" \
     "$probe_root/scripts/benchmarks/aoa/main.c" \
     "$probe_root/host/accessory/accessory.c" \
+    "$probe_root/host/accessory/availability.c" \
     "$probe_root/host/accessory/contract.c" \
     -l:libusb-1.0.so.0 -lz -o "$probe_output/aoa-probe"

@@ -49,6 +49,7 @@ fn controller(local: PeerId) -> (Control, u64, u64) {
             product: 1,
             accessory: false,
             names: Default::default(),
+            availability: blent_config::connection::control::Availability::Available,
         }])
         .unwrap();
     let (revision, target) = control

@@ -133,7 +133,9 @@ fn allowed(snapshot: &Snapshot, command: &Command) -> Result<()> {
                 "stale USB device selection"
             );
             ensure!(
-                snapshot.devices()[target].connection.is_none(),
+                snapshot.devices()[target].connection.is_none()
+                    && snapshot.devices()[target].availability
+                        == super::control::Availability::Available,
                 "USB device is already in use"
             );
             Ok(())

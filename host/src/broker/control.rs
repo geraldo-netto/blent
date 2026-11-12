@@ -63,6 +63,7 @@ pub struct Device<K, T> {
     pub vendor: u16,
     pub product: u16,
     pub accessory: bool,
+    pub availability: blent_config::connection::control::Availability,
     pub names: blent_config::connection::control::DeviceNames,
 }
 pub enum Action<T> {
@@ -190,6 +191,7 @@ impl<K: Ord + Clone, T: Clone> Controller<K, T> {
                 product: device.product,
                 accessory: device.accessory,
                 names: device.names.clone(),
+                availability: device.availability,
                 connection: self
                     .links
                     .iter()

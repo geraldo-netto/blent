@@ -114,6 +114,13 @@ that connection owns the physical device, including during discovery refreshes.
 It becomes available only after the connection and its native worker retire.
 Use the connection’s **Disconnect** button to stop it.
 
+While a device advertises USB debugging, its row shows **Reserved for USB
+debugging** and disables **Connect**. Use **Tablets** for ADB display sharing.
+To use debugging-free USB instead, turn USB debugging off on the tablet and
+refresh discovery. An unreadable USB configuration shows **USB availability
+unknown** and also disables Connect. The native helper rechecks the selected
+device before any mode switch, reset, or interface claim.
+
 - **Several tablets** — `max_tablets` supports 1–4 slots. Historical testing
   used one physical tablet plus a simulated client. Automated tests cover
   independent slots and busy-card fallback. Multiple physical tablets have not

@@ -137,6 +137,7 @@ impl Server {
                     product: payload.product,
                     accessory: payload.support == Support::Accessory,
                     names: payload.names.clone(),
+                    availability: payload.availability,
                     payload,
                 }
             })

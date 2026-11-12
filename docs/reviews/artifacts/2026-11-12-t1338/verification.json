@@ -1,0 +1,76 @@
+{
+  "finding": "T1338",
+  "result": "resolved",
+  "date": "2026-11-12",
+  "owner_decision": "Reserve USB devices for ADB while USB debugging is enabled. Disabling debugging and refreshing discovery releases the mode reservation; no new ADB session lock is introduced.",
+  "behavior": "Native active-configuration observation reports Available, Debugging, or Unknown. Shared view and controller deny unavailable rows. Selected native handles recheck before reset, AOA transfers and interface claim; unavailable configuration rejects. Current BLUI v2 and control codec replace the old wire formats.",
+  "tests": {
+    "broker": 240,
+    "accessory": 24,
+    "control_contract_and_view": 25,
+    "gui": 18,
+    "native": 38,
+    "make": 8,
+    "total_passed": 353,
+    "total_executed": 353
+  },
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7; GCC/gcov native counters",
+    "rust_functions": 12,
+    "rust_passing": 12,
+    "rust_minimum": 97.43589743589743,
+    "native_functions": 43,
+    "native_passing": 43,
+    "native_minimum": 92.3076923076923,
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "gcov": "gcov (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "complexity": {
+    "tool": "repository scripts/complexity; syn 2.0.119; tree-sitter 0.25.2",
+    "functions": 469,
+    "maximum": 9
+  },
+  "native_observation": {
+    "method": "Read-only rebuilt helper --list 64; no claims, mode switches or resets",
+    "devices": 6,
+    "reserved_devices": 1,
+    "tablet": "18d1:4ee8 bus 3 port 2.4.4 address 11; ADB independently reports RugKing_Pad_2_Pro there",
+    "stream": "Existing daemon continued receiving tablet render acknowledgements; debugging was left enabled."
+  },
+  "ownership": {
+    "owner": "Existing supervised helper owns libusb handles, context and physical-port lock until process retirement. New policy owns one temporary active-configuration allocation per call.",
+    "bounds": "512 candidates; fixed 16-byte inventory records; one availability byte. Library-validated descriptor arrays are borrowed only during classification.",
+    "handoff": "Configuration freed exactly once on successful lookup; error returns Unknown without publishing a borrowed pointer. Snapshot carries only a copied enum.",
+    "cutoff": "Recheck exact opened handle before native effect; stale optimistic inventory cannot authorize debugging-enabled device. Broker link retirement still controls existing ownership.",
+    "settlement": "No new asynchronous workers, retained state, callbacks or ADB mappings; existing helper admission and process retirement remain authoritative. No status timeout unlocks a debugging reservation.",
+    "validation": "Permanent descriptor boundary/property tests, exact release fixture, unknown errors, mode-switch/reset forbidden-effect counters, shared controller refresh and widget disabled-action tests; ASan/UBSan enabled."
+  },
+  "sources": [
+    "https://android.git.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/adb.h"
+  ],
+  "limits": [
+    "Physical debugging-off transition not performed; automated refresh/descriptor tests cover release.",
+    "Native Windows GUI evidence remains T1271; ADB-free USB remains unsupported there.",
+    "Combined desktop reinstall and installed GUI acceptance remain under T1339."
+  ],
+  "artifacts": {
+    "native-build.log.gz": "63cd980bc677c99c234e24bc78f867f27b31c568766a9b60a66dcfabaeb1ad46",
+    "release-build.log.gz": "e5504b466bdabe86d4b932efab21b036e55b1cd45003af6ea50694271ee88069",
+    "broker.log.gz": "144d4e1b14bedfecde01f20bd6733ddc48cf0fdf02b7de5c29912f996f726f45",
+    "make-tests.log.gz": "540291d9d319cdd676cb6c4347c5042c363b92eafac0c3f614cb33e0f5b386f0",
+    "native-manifest.json": "644c929a6050d0d74dec9cabcfc1b45810d3c4beec78824c9b2a8b12a42a6dfc",
+    "native-report.json": "5cdfa47998bd988bf123ab8d4f16d0e6fcba3a0d80d08c48ce50e4392e65e614",
+    "policy-red.log.gz": "f98f24e1a5c8ecd5e89352770965563af5829b0f04975e6ebee288d35f8918fb",
+    "manifest.json": "b587082d4d75d58a2dc06eaa320046b53dcb205a257c96720c7ccbaca0f2e5c4",
+    "native-counters.json.gz": "10fd8af5b0953662b7cb5d2b9e3530331491cb2e43939e5ea005c3cd4fd15828",
+    "accessory.log.gz": "16bf7a9a8866959a5aeab9f362c7ab4dd79d514ee98fb78b0bded02e2e39ecfb",
+    "complexity.json": "57d8d459d56840a13ebf666e73655ba3cc09265f23130a9491733921b26b6d78",
+    "native-tests.log.gz": "bead44b67cdd221ca27dc06e80a202b6999bdd941e37d3d7b8304cd31726dc8f",
+    "gui.log.gz": "d215eb427562dd968d2ca60a12d58c7723e74ded1d1468887217f1dadb832377",
+    "native-red.log.gz": "7de14b3eeb69b97b3c1bf4405baedcb1d54f9d2dd7cf5c0590952d5ffd35fda6",
+    "coverage.lcov.gz": "4518f440c627308cc4c7dc989d21042e00f338a217732da0357e0194de959d81",
+    "gui-red.log.gz": "5b8ed9e2baa67a2c9891c1792ec3e75924a6c2fbfb3534d546465465ca37a134",
+    "common.log.gz": "573326c2309e98f4fe7c413cc06d9429957ca4ec6e9f334d715c68d12f538610",
+    "changed-coverage.json": "4d1f7f7a46700c5557da638e9179e9a380c803de567dd1d491def9eb8fc3bb89"
+  }
+}

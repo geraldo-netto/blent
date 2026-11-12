@@ -22,21 +22,32 @@ static int inventory_limit(const char *text) {
 static void put16(unsigned char *bytes,uint16_t value) {
     bytes[0]=(unsigned char)(value>>8); bytes[1]=(unsigned char)value;
 }
-static int inventory_record(libusb_device *device,unsigned char *bytes) {
-    uint8_t ports[7]={0};
-    int count=libusb_get_port_numbers(device,ports,sizeof(ports));
-    accessory_require(count>=0 && count<=7,"invalid discovery port depth");
-    if (!count) return 0; /* Root controller, not a selectable peripheral. */
+static int inventory_record(libusb_device *device, unsigned char *bytes)
+{
+    uint8_t ports[7] = {0};
+    int count = libusb_get_port_numbers(device, ports, sizeof(ports));
+    accessory_require(count >= 0 && count <= 7, "invalid discovery port depth");
+    if (!count)
+        return 0; /* Root controller, not a selectable peripheral. */
     struct libusb_device_descriptor descriptor;
-    accessory_require(libusb_get_device_descriptor(device,&descriptor)==0,"discovery descriptor unavailable");
-    if (descriptor.bDeviceClass==9) return 0; /* USB hubs cannot be accessory targets. */
-    bytes[0]=libusb_get_bus_number(device); bytes[1]=libusb_get_device_address(device);
-    accessory_require(bytes[0]>0 && bytes[1]>0 && bytes[1]<=127,"invalid discovery bus/address");
-    bytes[2]=(unsigned char)count; bytes[3]=descriptor.bDeviceClass;
-    put16(bytes+4,descriptor.idVendor); put16(bytes+6,descriptor.idProduct);
-    for (int index=0;index<count;index++) {
-        accessory_require(ports[index]>0,"invalid discovery port"); bytes[8+index]=ports[index];
+    accessory_require(libusb_get_device_descriptor(device, &descriptor) == 0,
+                      "discovery descriptor unavailable");
+    if (descriptor.bDeviceClass == 9)
+        return 0; /* USB hubs cannot be accessory targets. */
+    bytes[0] = libusb_get_bus_number(device);
+    bytes[1] = libusb_get_device_address(device);
+    accessory_require(bytes[0] > 0 && bytes[1] > 0 && bytes[1] <= 127,
+                      "invalid discovery bus/address");
+    bytes[2] = (unsigned char)count;
+    bytes[3] = descriptor.bDeviceClass;
+    put16(bytes + 4, descriptor.idVendor);
+    put16(bytes + 6, descriptor.idProduct);
+    for (int index = 0; index < count; index++)
+    {
+        accessory_require(ports[index] > 0, "invalid discovery port");
+        bytes[8 + index] = ports[index];
     }
+    bytes[15] = (unsigned char)accessory_availability(device);
     return 1;
 }
 static int inventory_records(libusb_context *context,int limit,unsigned char *bytes) {
@@ -53,17 +64,18 @@ static int inventory_records(libusb_context *context,int limit,unsigned char *by
     libusb_free_device_list(devices,1);
     return count;
 }
-int accessory_list(const char *text) {
-    int limit=inventory_limit(text);
-    unsigned char bytes[INVENTORY_HEADER+INVENTORY_MAX*INVENTORY_RECORD]={0};
-    memcpy(bytes,"BLUI\0\0\0\1",8);
-    libusb_context *context=NULL;
-    accessory_require(libusb_init(&context)==0,"discovery initialization failed");
-    int count=inventory_records(context,limit,bytes);
+int accessory_list(const char *text)
+{
+    int limit = inventory_limit(text);
+    unsigned char bytes[INVENTORY_HEADER + INVENTORY_MAX * INVENTORY_RECORD] = {0};
+    memcpy(bytes, "BLUI\0\0\0\2", 8);
+    libusb_context *context = NULL;
+    accessory_require(libusb_init(&context) == 0, "discovery initialization failed");
+    int count = inventory_records(context, limit, bytes);
     libusb_exit(context);
-    put16(bytes+8,(uint16_t)count);
-    size_t length=INVENTORY_HEADER+(size_t)count*INVENTORY_RECORD;
-    accessory_require(fwrite(bytes,1,length,stdout)==length,"discovery output failed");
-    accessory_require(fflush(stdout)==0,"discovery output flush failed");
+    put16(bytes + 8, (uint16_t)count);
+    size_t length = INVENTORY_HEADER + (size_t)count * INVENTORY_RECORD;
+    accessory_require(fwrite(bytes, 1, length, stdout) == length, "discovery output failed");
+    accessory_require(fflush(stdout) == 0, "discovery output flush failed");
     return 0;
 }

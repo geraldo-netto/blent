@@ -54,6 +54,7 @@ pub struct Candidate {
     pub product: u16,
     pub device_class: u8,
     pub support: Support,
+    pub availability: blent_config::connection::control::Availability,
     pub names: blent_config::connection::control::DeviceNames,
 }
 impl Candidate {
@@ -154,7 +155,7 @@ fn decode(bytes: &[u8], capacity: usize) -> Result<Vec<Candidate>> {
         "invalid inventory decode capacity"
     );
     ensure!(
-        bytes.len() >= HEADER && &bytes[..8] == b"BLUI\0\0\0\x01",
+        bytes.len() >= HEADER && &bytes[..8] == b"BLUI\0\0\0\x02",
         "invalid USB inventory header"
     );
     let count = u16::from_be_bytes([bytes[8], bytes[9]]) as usize;
@@ -187,7 +188,7 @@ fn candidate(bytes: &[u8]) -> Result<Candidate> {
         "invalid peripheral address/class"
     );
     ensure!(
-        bytes[8 + depth..].iter().all(|byte| *byte == 0),
+        bytes[8 + depth..15].iter().all(|byte| *byte == 0),
         "invalid USB record padding"
     );
     let target = Target::new(bytes[0], &bytes[8..8 + depth])?;
@@ -205,6 +206,7 @@ fn candidate(bytes: &[u8]) -> Result<Candidate> {
         product,
         device_class: bytes[3],
         support,
+        availability: blent_config::connection::control::Availability::parse(bytes[15])?,
         names: Default::default(),
     })
 }

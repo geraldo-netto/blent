@@ -1,0 +1,136 @@
+[
+  {
+    "file": "common/src/connection/control.rs",
+    "name": "parse",
+    "line": 53,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control/codec.rs",
+    "name": "encode",
+    "line": 188,
+    "language": "rust",
+    "covered": 48,
+    "total": 48,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control/codec.rs",
+    "name": "decode",
+    "line": 246,
+    "language": "rust",
+    "covered": 24,
+    "total": 24,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control_view.rs",
+    "name": "allowed",
+    "line": 126,
+    "language": "rust",
+    "covered": 27,
+    "total": 27,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "common/src/connection/control_view/snapshot.rs",
+    "name": "record",
+    "line": 74,
+    "language": "rust",
+    "covered": 38,
+    "total": 39,
+    "percent": 97.43589743589743,
+    "passes": true,
+    "missing": [
+      127
+    ]
+  },
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "device",
+    "line": 197,
+    "language": "rust",
+    "covered": 35,
+    "total": 35,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "device_availability",
+    "line": 324,
+    "language": "rust",
+    "covered": 15,
+    "total": 15,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/accessory/linux/discovery.rs",
+    "name": "decode",
+    "line": 152,
+    "language": "rust",
+    "covered": 19,
+    "total": 19,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/accessory/linux/discovery.rs",
+    "name": "candidate",
+    "line": 183,
+    "language": "rust",
+    "covered": 22,
+    "total": 22,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control.rs",
+    "name": "snapshot",
+    "line": 180,
+    "language": "rust",
+    "covered": 34,
+    "total": 34,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/control/commands.rs",
+    "name": "connect",
+    "line": 21,
+    "language": "rust",
+    "covered": 39,
+    "total": 39,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/broker/linux/server/commands.rs",
+    "name": "inventory_result",
+    "line": 121,
+    "language": "rust",
+    "covered": 26,
+    "total": 26,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

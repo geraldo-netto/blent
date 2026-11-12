@@ -5,9 +5,9 @@ LIBUSB_LIBS ?= -l:libusb-1.0.so.0
 
 OUTPUT ?= blent-usb-io
 
-$(OUTPUT): stream.c accessory.c contract.c discovery.c accessory.h
+$(OUTPUT): stream.c accessory.c contract.c discovery.c availability.c accessory.h
 	mkdir -p "$(dir $(OUTPUT))"
-	$(CC) -std=c11 $(CFLAGS) -Wall -Wextra -Werror $(LIBUSB_CFLAGS) stream.c accessory.c contract.c discovery.c -pthread $(LIBUSB_LIBS) -o "$@"
+	$(CC) -std=c11 $(CFLAGS) -Wall -Wextra -Werror $(LIBUSB_CFLAGS) stream.c accessory.c contract.c discovery.c availability.c -pthread $(LIBUSB_LIBS) -o "$@"
 
 .PHONY: clean
 clean:

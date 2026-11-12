@@ -874,9 +874,16 @@ this contract for production presentation using the T853 orchestration boundary.
 
 `blent-usb-io --list LIMIT` provides bounded inventory without ADB, device opens,
 string queries, interface claims or accessory mode switches. The stock libusb
-adapter emits BLUI v1: 16-byte header (eight-byte magic, big-endian count u16, six
+adapter emits BLUI v2 (T1338): 16-byte header (eight-byte magic, big-endian count u16, six
 zero reserved bytes), then 16-byte records (bus, address, port depth, device class,
-VID/PID as big-endian u16, seven zero-padded port numbers, final zero reserved byte).
+VID/PID as big-endian u16, seven zero-padded port numbers, final availability byte:
+0 available, 1 reserved for USB debugging, 2 configuration unknown). Older
+inventory formats are rejected. Availability comes from active interface
+descriptors; ff/42/01 reserves the device independently of VID/PID or ADB
+authorization. Configuration read failure blocks Connect. The native helper
+rechecks the selected handle before mode switches, resets, and interface claims.
+Turning debugging off and refreshing inventory releases this mode reservation;
+existing broker ownership still requires exact native retirement (T1337).
 The maximum is 512 candidates; capacity overflow fails instead of truncating.
 Root controllers and hubs are excluded. Other devices have unknown support unless
 already reporting the stock accessory VID/PID; this observation grants no trust.

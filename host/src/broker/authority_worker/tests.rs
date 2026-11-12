@@ -145,6 +145,7 @@ impl Prepared {
                 product: 1,
                 accessory: false,
                 names: Default::default(),
+                availability: blent_config::connection::control::Availability::Available,
             }])
             .unwrap();
         let (revision, target) = target(&control.snapshot());

@@ -37,6 +37,7 @@ pub struct Device {
     pub vendor: u16,
     pub product: u16,
     pub accessory: bool,
+    pub availability: crate::connection::control::Availability,
     pub names: super::super::control::DeviceNames,
     pub connection: Option<u64>,
 }
@@ -78,6 +79,7 @@ impl Snapshot {
                 product,
                 accessory,
                 names,
+                availability,
                 connection,
                 ..
             } => {
@@ -94,6 +96,7 @@ impl Snapshot {
                                 product,
                                 accessory,
                                 names,
+                                availability,
                                 connection,
                             }
                         )

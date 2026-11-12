@@ -2,7 +2,7 @@ use super::*;
 use std::os::unix::fs::PermissionsExt;
 
 fn bytes(records: &[[u8; RECORD]]) -> Vec<u8> {
-    let mut bytes = b"BLUI\0\0\0\x01".to_vec();
+    let mut bytes = b"BLUI\0\0\0\x02".to_vec();
     bytes.extend_from_slice(&(records.len() as u16).to_be_bytes());
     bytes.extend_from_slice(&[0; 6]);
     for record in records {
@@ -85,7 +85,7 @@ fn t876_inventory_extent_metadata_and_duplicate_rejections() {
         (18, 8),
         (19, 9),
         (24, 0),
-        (31, 1),
+        (31, 3),
     ] {
         let mut invalid = valid.clone();
         invalid[offset] = value;
@@ -213,4 +213,17 @@ async fn t876_invalid_scan_configuration_never_starts_native_work() {
     assert!(!helper.with_extension("pid").exists());
     assert!(Scan::start(Path::new("relative"), Limits::default()).is_err());
     assert!(Scan::start(&helper.with_extension("absent"), Limits::default()).is_err());
+}
+
+#[test]
+fn t1338_inventory_availability_domain_is_exhaustive() {
+    for value in 0..=u8::MAX {
+        let mut data = record(1);
+        data[15] = value;
+        let result = decode(&bytes(&[data]), 1);
+        assert_eq!(result.is_ok(), value <= 2);
+        if let Ok(candidates) = result {
+            assert_eq!(candidates[0].availability as u8, value);
+        }
+    }
 }

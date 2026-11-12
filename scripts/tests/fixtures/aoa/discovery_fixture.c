@@ -59,3 +59,30 @@ int main(int argc,char **argv) {
     for (int index=0;index<513;index++) {devices[index].index=index;entries[index]=&devices[index];}
     return accessory_list(argv[2]);
 }
+
+int libusb_get_active_config_descriptor(libusb_device *device, struct libusb_config_descriptor **out)
+{
+    (void)device;
+    if (mode == 14)
+    {
+        return LIBUSB_ERROR_IO;
+    }
+    static struct libusb_interface_descriptor descriptor = {255, 66, 1, 0, 0, 0, NULL};
+    static struct libusb_interface interface = {&descriptor, 1};
+    static struct libusb_config_descriptor config = {0};
+    config.bNumInterfaces = mode == 13;
+    config.interface = &interface;
+    *out = &config;
+    return 0;
+}
+
+void libusb_free_config_descriptor(struct libusb_config_descriptor *config)
+{
+    assert(config != NULL);
+}
+
+libusb_device *libusb_get_device(libusb_device_handle *handle)
+{
+    (void)handle;
+    abort();
+}

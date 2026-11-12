@@ -148,6 +148,12 @@ int libusb_reset_device(libusb_device_handle *value)
 
 int libusb_get_device_descriptor(libusb_device *value, struct libusb_device_descriptor *out)
 {
+    if (mode == 13)
+    {
+        out->idVendor = 0x1234;
+        out->idProduct = 0x5678;
+        return 0;
+    }
     out->idVendor = 0x18d1;
     out->idProduct = 0x2d01;
     if (value == &replacement && !switched && mode != 5)
@@ -183,13 +189,29 @@ int libusb_control_transfer(libusb_device_handle *value, uint8_t type, uint8_t r
 int libusb_get_active_config_descriptor(libusb_device *value, struct libusb_config_descriptor **out)
 {
     (void)value;
+    if (mode == 14)
+    {
+        return LIBUSB_ERROR_IO;
+    }
+    static struct libusb_interface_descriptor alternatives[2];
+    static struct libusb_interface debug_interface;
+    static struct libusb_config_descriptor debug_config;
+    if (mode == 12 || mode == 13)
+    {
+        alternatives[0] = descriptor;
+        alternatives[1] = (struct libusb_interface_descriptor){255, 66, 1, 0, 1, 0, NULL};
+        debug_interface = (struct libusb_interface){alternatives, 2};
+        debug_config = (struct libusb_config_descriptor){1, &debug_interface};
+        *out = &debug_config;
+        return 0;
+    }
     *out = &config;
     return 0;
 }
 
 void libusb_free_config_descriptor(struct libusb_config_descriptor *value)
 {
-    assert(value == &config);
+    assert(value != NULL);
 }
 
 int libusb_claim_interface(libusb_device_handle *value, int number)
@@ -229,11 +251,17 @@ int nanosleep(const struct timespec *duration, struct timespec *remaining)
     return 0;
 }
 
+static void report_effects(void)
+{
+    fprintf(stderr, "resets=%d switched=%d claimed=%d\n", reset_calls, switched, claimed);
+}
+
 int main(int argc, char **argv)
 {
     assert(argc == 2 || argc == 3);
+    assert(atexit(report_effects) == 0);
     mode = atoi(argv[1]);
-    assert(mode >= 0 && mode <= 11);
+    assert(mode >= 0 && mode <= 14);
     if (mode == 9)
     {
         assert(argc == 3);
@@ -249,6 +277,11 @@ int main(int argc, char **argv)
     if (mode == 10)
     {
         selected.product = 0x2d00;
+    }
+    if (mode == 13)
+    {
+        selected.vendor = 0x1234;
+        selected.product = 0x5678;
     }
     accessory_open_selected(&usb, target, selected);
     unsigned char bytes[8];

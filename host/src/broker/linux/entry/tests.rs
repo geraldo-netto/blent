@@ -24,7 +24,7 @@ fn settings(root: &std::path::Path) -> Settings {
     let helper = root.join("helper");
     std::fs::write(
         &helper,
-        b"#!/bin/sh\nprintf 'BLUI\\000\\000\\000\\001\\000\\000\\000\\000\\000\\000\\000\\000'\n",
+        b"#!/bin/sh\nprintf 'BLUI\\000\\000\\000\\002\\000\\000\\000\\000\\000\\000\\000\\000'\n",
     )
     .unwrap();
     std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o700)).unwrap();

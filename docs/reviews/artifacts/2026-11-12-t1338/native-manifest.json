@@ -1,0 +1,441 @@
+{
+  "sources": {
+    "host/accessory/accessory.c": "b35a3a19d82a31ee64d0e00932bb30fe7cb360e693c07ad26158ac1d034bd133",
+    "host/accessory/availability.c": "91197f041395314535bcf01e103e403e17946a4e280c7784fe75d8d19e678c90",
+    "host/accessory/contract.c": "74d550ecec37985fba9a6f2df64a5408aff35d1bdf198f23abba189238bd813c",
+    "host/accessory/discovery.c": "54f6df49c38263c7e8497e23dab3c2beddeada9f1acad31b3b30bf85f81d60aa",
+    "host/accessory/stream.c": "1fe4705cd4df408ab7bbb3207f46cc2992287365f49dacde8203cdd0591a6498"
+  },
+  "functions": [
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "matches",
+      "first": 10,
+      "last": 15,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "find_device",
+      "first": 16,
+      "last": 27,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "is_accessory",
+      "first": 28,
+      "last": 32,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_reopen",
+      "first": 33,
+      "last": 44,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "start_accessory",
+      "first": 46,
+      "last": 68,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "wait_accessory",
+      "first": 69,
+      "last": 83,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "wait_fresh_device",
+      "first": 85,
+      "last": 107,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "reset_accessory",
+      "first": 111,
+      "last": 131,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_interface",
+      "first": 133,
+      "last": 136,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "endpoints",
+      "first": 137,
+      "last": 150,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "claim_accessory",
+      "first": 151,
+      "last": 169,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_selection",
+      "first": 170,
+      "last": 178,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "open_target",
+      "first": 179,
+      "last": 208,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_open",
+      "first": 209,
+      "last": 209,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_open_selected",
+      "first": 210,
+      "last": 213,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_transfer",
+      "first": 214,
+      "last": 219,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "transfer_timeout",
+      "first": 220,
+      "last": 224,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "check_progress",
+      "first": 225,
+      "last": 228,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_transfer",
+      "first": 229,
+      "last": 241,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/accessory.c",
+      "name": "accessory_close",
+      "first": 242,
+      "last": 248,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/availability.c",
+      "name": "debugging_interface",
+      "first": 6,
+      "last": 11,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/availability.c",
+      "name": "debugging_alternate",
+      "first": 13,
+      "last": 23,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/availability.c",
+      "name": "configuration_availability",
+      "first": 25,
+      "last": 35,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/availability.c",
+      "name": "accessory_availability",
+      "first": 37,
+      "last": 47,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/availability.c",
+      "name": "accessory_require_available",
+      "first": 49,
+      "last": 53,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_require",
+      "first": 13,
+      "last": 15,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_clock",
+      "first": 16,
+      "last": 20,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "number",
+      "first": 21,
+      "last": 26,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_parse_target",
+      "first": 27,
+      "last": 37,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "selected_number",
+      "first": 38,
+      "last": 44,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_parse_selection",
+      "first": 45,
+      "last": 52,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/contract.c",
+      "name": "accessory_lock",
+      "first": 54,
+      "last": 62,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "inventory_limit",
+      "first": 15,
+      "last": 21,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "put16",
+      "first": 22,
+      "last": 24,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "inventory_record",
+      "first": 25,
+      "last": 52,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "inventory_records",
+      "first": 53,
+      "last": 66,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/discovery.c",
+      "name": "accessory_list",
+      "first": 67,
+      "last": 81,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "output_all",
+      "first": 13,
+      "last": 21,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "read_usb",
+      "first": 22,
+      "last": 30,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "receive_bytes",
+      "first": 31,
+      "last": 39,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "send_usb",
+      "first": 40,
+      "last": 49,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "send_bytes",
+      "first": 50,
+      "last": 59,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/accessory/stream.c",
+      "name": "main",
+      "first": 60,
+      "last": 79,
+      "language": "c",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

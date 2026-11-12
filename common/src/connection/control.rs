@@ -41,6 +41,25 @@ pub enum State {
     Quarantined = 5,
 }
 
+/// Current USB mode availability; never a pairing identity or retirement proof.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u8)]
+pub enum Availability {
+    Available = 0,
+    Debugging = 1,
+    Unknown = 2,
+}
+impl Availability {
+    pub fn parse(value: u8) -> anyhow::Result<Self> {
+        match value {
+            0 => Ok(Self::Available),
+            1 => Ok(Self::Debugging),
+            2 => Ok(Self::Unknown),
+            _ => anyhow::bail!("invalid USB availability"),
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Notice {
     /// Starts a snapshot; local is the computer certificate fingerprint.
@@ -56,6 +75,7 @@ pub enum Notice {
         product: u16,
         accessory: bool,
         names: DeviceNames,
+        availability: Availability,
         /// Current owning link; absent only after real retirement.
         connection: Option<u64>,
     },

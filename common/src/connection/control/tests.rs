@@ -53,6 +53,7 @@ fn notices() -> Vec<Notice> {
             product: 0,
             accessory: false,
             names: Default::default(),
+            availability: crate::connection::control::Availability::Available,
             connection: None,
         },
         Notice::Device {
@@ -62,6 +63,7 @@ fn notices() -> Vec<Notice> {
             product: 0x2d00,
             accessory: true,
             names: Default::default(),
+            availability: crate::connection::control::Availability::Available,
             connection: None,
         },
         Notice::Saved {
@@ -290,6 +292,7 @@ fn t1336_device_name_and_model_survive_control_wire() {
         bytes.extend_from_slice(&(value.len() as u16).to_be_bytes());
         bytes.extend_from_slice(value.as_bytes());
     }
+    bytes.push(0); // Available USB mode.
     bytes.push(0); // No owning connection.
     let notice = Notice::decode(&bytes).expect("T1336 manufacturer/model must reach the GUI");
     assert_eq!(notice.encode().unwrap(), bytes);
@@ -305,6 +308,7 @@ fn t1336_maximum_names_fit_registration_and_reject_malformed_fields() {
         product: 0x2d01,
         accessory: true,
         names,
+        availability: Availability::Available,
         connection: None,
     };
     let message = Message::Report {
@@ -350,5 +354,19 @@ fn t1337_device_owner_counter_is_bounded_and_canonical() {
         if let Ok(bytes) = encoded {
             assert_eq!(Notice::decode(&bytes).unwrap(), notice);
         }
+    }
+}
+
+#[test]
+fn t1338_availability_wire_domain_is_exhaustive() {
+    for value in 0..=u8::MAX {
+        assert_eq!(Availability::parse(value).is_ok(), value <= 2);
+    }
+    for value in 0..=2 {
+        let mut notice = notices().remove(1);
+        if let Notice::Device { availability, .. } = &mut notice {
+            *availability = Availability::parse(value).unwrap();
+        }
+        assert_eq!(Notice::decode(&notice.encode().unwrap()).unwrap(), notice);
     }
 }

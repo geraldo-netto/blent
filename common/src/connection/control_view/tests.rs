@@ -24,6 +24,7 @@ fn device(revision: u64, target: u64) -> Notice {
         product: 0x2d00,
         accessory: true,
         names: Default::default(),
+        availability: crate::connection::control::Availability::Available,
         connection: None,
     }
 }
@@ -78,6 +79,7 @@ fn t900_complete_snapshot_preserves_corresponding_identity_and_sorted_metadata()
             product: 0x2d00,
             accessory: true,
             names: Default::default(),
+            availability: crate::connection::control::Availability::Available,
             connection: None,
         }
     );

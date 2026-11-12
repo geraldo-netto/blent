@@ -47,6 +47,7 @@ fn notices(revision: u64, state: State) -> Vec<Notice> {
             product: 0x2d00,
             accessory: true,
             names: Default::default(),
+            availability: blent_config::connection::control::Availability::Available,
             connection: None,
         },
         Notice::Link {
@@ -428,7 +429,7 @@ async fn t901_production_broker_snapshot_runs_with_an_isolated_synthetic_invento
     use crate::broker::linux::server::{Server, Settings as BrokerSettings};
     let root = tempfile::tempdir().unwrap();
     let helper = root.path().join("inventory-helper");
-    std::fs::write(&helper, b"#!/usr/bin/python3\nimport sys\nif sys.argv[1] != '--list':\n    sys.exit(7)\nsys.stdout.buffer.write(bytes.fromhex('424c554900000001000100000000000001030100123400070200000000000000'))\n").unwrap();
+    std::fs::write(&helper, b"#!/usr/bin/python3\nimport sys\nif sys.argv[1] != '--list':\n    sys.exit(7)\nsys.stdout.buffer.write(bytes.fromhex('424c554900000002000100000000000001030100123400070200000000000000'))\n").unwrap();
     std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o700)).unwrap();
     let options = BrokerSettings::new(
         root.path().join("runtime"),

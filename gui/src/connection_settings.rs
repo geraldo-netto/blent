@@ -207,6 +207,7 @@ impl Panel {
                 view.snapshot().links()[&connection].state,
             ));
         }
+        device_availability(ui, device.availability);
         ui.horizontal_wrapped(|ui| {
             ui.small(format!(
                 "USB {:04x}:{:04x} · Device {target}",
@@ -214,7 +215,10 @@ impl Panel {
             ));
             if ui
                 .add_enabled(
-                    self.pending.is_none() && device.connection.is_none(),
+                    self.pending.is_none()
+                        && device.connection.is_none()
+                        && device.availability
+                            == blent_config::connection::control::Availability::Available,
                     egui::Button::new("Connect"),
                 )
                 .clicked()
@@ -317,6 +321,24 @@ impl Panel {
         }
     }
 }
+fn device_availability(
+    ui: &mut egui::Ui,
+    availability: blent_config::connection::control::Availability,
+) {
+    use blent_config::connection::control::Availability;
+    match availability {
+        Availability::Available => {}
+        Availability::Debugging => {
+            ui.strong("Reserved for USB debugging");
+            ui.small("Use Tablets for display sharing. Turn USB debugging off to use this connection mode.");
+        }
+        Availability::Unknown => {
+            ui.strong("USB availability unknown");
+            ui.small("Refresh discovery before connecting.");
+        }
+    }
+}
+
 fn device_state_label(state: State) -> &'static str {
     match state {
         State::Discovering => "Connecting",

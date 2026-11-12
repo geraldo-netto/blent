@@ -26,7 +26,7 @@ class MakeTest(unittest.TestCase):
         source = REPO/'host/accessory'
         destination = root/'host/accessory'
         destination.mkdir(parents=True)
-        for name in ['Makefile', 'stream.c', 'accessory.c', 'contract.c', 'discovery.c', 'accessory.h']:
+        for name in ['Makefile', 'stream.c', 'accessory.c', 'contract.c', 'discovery.c', 'availability.c', 'accessory.h']:
             shutil.copy(source/name, destination/name)
 
     def make_environment(self, tools=None):

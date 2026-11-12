@@ -44,7 +44,7 @@ async fn t853_inventory_terminal_notice_observes_actual_task_retirement() {
     let root = tempfile::tempdir().unwrap();
     let path = helper(
         root.path(),
-        "printf 'BLUI\\000\\000\\000\\001\\000\\000\\000\\000\\000\\000\\000\\000'",
+        "printf 'BLUI\\000\\000\\000\\002\\000\\000\\000\\000\\000\\000\\000\\000'",
     );
     let mut inventory = Inventory::start(path, Limits::default()).unwrap();
     assert!(!inventory.finished());

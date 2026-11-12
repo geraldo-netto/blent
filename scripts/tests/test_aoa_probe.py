@@ -112,7 +112,7 @@ class AoaProbeEnumerationTest(unittest.TestCase):
         adapter = ROOT / 'host/accessory'
         subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
                         '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(adapter),
-                        str(fixture / 'enumeration.c'), str(adapter / 'accessory.c'),
+                        str(fixture / 'enumeration.c'), str(adapter / 'accessory.c'), str(adapter / 'availability.c'),
                         str(adapter / 'contract.c'), '-o', str(cls.binary)], check=True)
 
     def test_t846_usb_zero_length_packets_are_bounded_read_events(self):
@@ -121,7 +121,7 @@ class AoaProbeEnumerationTest(unittest.TestCase):
         binary = Path(self.directory.name) / 'bulk'
         subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
                         '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(adapter),
-                        str(fixture / 'bulk.c'), str(adapter / 'accessory.c'),
+                        str(fixture / 'bulk.c'), str(adapter / 'accessory.c'), str(adapter / 'availability.c'),
                         str(adapter / 'contract.c'), '-o', str(binary)], check=True)
         for mode, expected, calls in [(1, 0, 4), (2, 2, 9), (3, 2, 1),
                                       (4, 2, 1), (5, 2, 1), (6, 2, 0), (7, 2, 0), (8, 2, 1)]:

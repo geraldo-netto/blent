@@ -17,11 +17,19 @@ class AccessoryReconnectTest(unittest.TestCase):
         adapter = ROOT / 'host/accessory'
         subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
                         '-fsanitize=address,undefined', '-I' + str(fixture), '-I' + str(adapter),
-                        str(fixture / 'reconnect.c'), str(adapter / 'accessory.c'),
+                        str(fixture / 'reconnect.c'), str(adapter / 'accessory.c'), str(adapter / 'availability.c'),
                         str(adapter / 'contract.c'), '-o', str(cls.binary)], check=True)
 
     def run_case(self, mode, *values):
         return subprocess.run([self.binary, str(mode), *map(str, values)], capture_output=True, text=True)
+
+    def test_t1338_debugging_or_unknown_configuration_rejects_before_usb_effects(self):
+        for mode in (12, 13, 14):
+            with self.subTest(mode=mode):
+                result = self.run_case(mode)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn('reserved or unavailable', result.stderr)
+                self.assertIn('resets=0 switched=0 claimed=0', result.stderr)
 
     def test_t1237_reopening_delivers_current_approval_marker(self):
         for mode in (0, 10):

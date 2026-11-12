@@ -40,6 +40,7 @@ fn device(key: u64) -> Device<u64, u64> {
         product: 0x2d00,
         accessory: true,
         names: Default::default(),
+        availability: blent_config::connection::control::Availability::Available,
     }
 }
 impl Rig {
@@ -583,4 +584,36 @@ fn t1337_row_unlock_waits_for_native_and_control_retirement() {
     row_state(&rig, Some(id));
     assert_eq!(rig.control.collect_retired().unwrap(), vec![id]);
     row_state(&rig, None);
+}
+
+#[test]
+fn t1338_reservation_blocks_both_view_and_broker_until_refresh() {
+    use blent_config::connection::control::Availability;
+    let mut rig = Rig::new(vec![]);
+    for availability in [
+        Availability::Debugging,
+        Availability::Unknown,
+        Availability::Available,
+    ] {
+        let mut selected = device(1);
+        selected.availability = availability;
+        rig.control.replace_devices(vec![selected]).unwrap();
+        let target = *rig.control.devices.keys().next().unwrap();
+        let command = Command::Connect {
+            revision: rig.control.revision,
+            target,
+        };
+        assert_eq!(
+            displayed_view(&rig.control)
+                .prepare(command.clone())
+                .is_ok(),
+            availability == Availability::Available,
+            "T1338 UI admission"
+        );
+        assert_eq!(
+            rig.control.command(rig.client, command, 0).is_ok(),
+            availability == Availability::Available,
+            "T1338 native admission"
+        );
+    }
 }

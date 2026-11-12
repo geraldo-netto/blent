@@ -1,0 +1,1198 @@
+{
+  "sources": {
+    "common/src/connection/control.rs": "7ba1955e2661c0d36919c262eb2a5d5913043fe867166c2d7d6e5dd85efc7e8d",
+    "common/src/connection/control/codec.rs": "3a938a75f4d4d6ecdaf991bf5611c827c9a5a2fed13e3036cbb3ea39d3a15596",
+    "common/src/connection/control/tests.rs": "57f20871f0ab9231acc31581eb55f04264db0c20587e373f87014a82711bd8c2",
+    "common/src/connection/control_view.rs": "82a0e3d15e85550c41c8653a549322345332e20720653fe807cb4dac17a81d75",
+    "common/src/connection/control_view/snapshot.rs": "05dcf501714ee1c34fdeb320bf92771448761763e20127580b343785d567ebc6",
+    "common/src/connection/control_view/tests.rs": "5b224169798258f0f697f283e0b23c189c4dd10955943d0066f37353f01f1ce3",
+    "gui/src/connection_settings.rs": "e602d037ea8f3aa0a35bc8d090fe9e7951d20cdfb6048e506acbad3af4828534",
+    "gui/src/connection_settings/tests.rs": "8707ef94095e74f9980879c0f456eda5df71220e1452e7edb53055d76df542c0",
+    "host/src/accessory/linux.rs": "76db3af7c41081a58c0538df3bfbd677efb89b794f9df5caf3fa4296257bd2a0",
+    "host/src/accessory/linux/discovery.rs": "2e68452c01adc7e652563050b6b2ddab2ca5c5a94b57992280d1fe6530a3a0be",
+    "host/src/accessory/linux/discovery/names/tests.rs": "6267f5d7b238efc96a42bfb743716e90cb40c45b871fa412ee02c5ebefa7678f",
+    "host/src/accessory/linux/discovery/tests.rs": "b4d47865cb6f3c30d04e64358174bba83dd55e937ac7c3d3f2cfa878e7508eb4",
+    "host/src/broker/authority_worker/tests.rs": "ed0de4e69eacbcdf66eb076e8f7ac6bccafbc9203eee567f9bd86052bacdc342",
+    "host/src/broker/control.rs": "f8a3878462088fd2aa272110dede187b6f770eebaa4bbc44d690d5eeda0bd738",
+    "host/src/broker/control/commands.rs": "8dc863960768cb717e8e890bbbaae140caa34499a766e255a0e15baa94646654",
+    "host/src/broker/control/tests.rs": "5c42e456c76ff40f215cb224c1831fcb59b6be262a16ae5866dea89e8adf9948",
+    "host/src/broker/link/tests/handshake.rs": "18c2dd4ce09be8dfebac2f92f28e0fb50dc1a781eb0a023800e76514cfe9199d",
+    "host/src/broker/linux/entry/tests.rs": "12ab3368ae67528cf35ea1566b5e48b346b3a9d9875449a9aac9ee66c7e124f5",
+    "host/src/broker/linux/inventory/tests.rs": "674ee4594aa03d1cf3a29523bb639647bba87ebdfcc90ddffc414b9a22d03b45",
+    "host/src/broker/linux/presentation/tests.rs": "91ee103be525ac333e36bbe67f817114ebcccd9bf486d9bc6038a0093f4250f4",
+    "host/src/broker/linux/server/commands.rs": "bc1556f73f19a2117601eaa73c00e1438b864a0a9e156e3534581df2f05277a3",
+    "host/src/broker/linux/server/tests.rs": "cdaa3e1d29d027d513abbb5eb1d14c74dfcc84b3145d1b3470f772296822a2e8"
+  },
+  "functions": [
+    {
+      "file": "common/src/connection/control.rs",
+      "name": "parse",
+      "first": 53,
+      "last": 60,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "counter",
+      "first": 6,
+      "last": 12,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "push_counter",
+      "first": 13,
+      "last": 17,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "push_ticket",
+      "first": 18,
+      "last": 22,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "push_optional",
+      "first": 23,
+      "last": 29,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "new",
+      "first": 32,
+      "last": 38,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "take",
+      "first": 39,
+      "last": 44,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "byte",
+      "first": 45,
+      "last": 47,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "flag",
+      "first": 48,
+      "last": 52,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "counter",
+      "first": 53,
+      "last": 57,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "peer",
+      "first": 58,
+      "last": 60,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "ticket",
+      "first": 61,
+      "last": 66,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "optional",
+      "first": 67,
+      "last": 73,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "short",
+      "first": 74,
+      "last": 76,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "connection",
+      "first": 77,
+      "last": 83,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "name",
+      "first": 84,
+      "last": 88,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "names",
+      "first": 89,
+      "last": 91,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "finish",
+      "first": 92,
+      "last": 95,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "encode",
+      "first": 99,
+      "last": 131,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "decode",
+      "first": 132,
+      "last": 158,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "parse",
+      "first": 162,
+      "last": 172,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "validate",
+      "first": 173,
+      "last": 185,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "encode",
+      "first": 188,
+      "last": 245,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "decode",
+      "first": 246,
+      "last": 276,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "decode_link",
+      "first": 278,
+      "last": 290,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control/codec.rs",
+      "name": "push_name",
+      "first": 292,
+      "last": 295,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "same_as",
+      "first": 17,
+      "last": 19,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "same_lifetime",
+      "first": 29,
+      "last": 31,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "lifetime",
+      "first": 32,
+      "last": 34,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "snapshot",
+      "first": 35,
+      "last": 37,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "prepare",
+      "first": 38,
+      "last": 45,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "default",
+      "first": 61,
+      "last": 66,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "reset",
+      "first": 71,
+      "last": 74,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "view",
+      "first": 75,
+      "last": 77,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "publish",
+      "first": 78,
+      "last": 89,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "check_snapshot",
+      "first": 90,
+      "last": 107,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "command",
+      "first": 108,
+      "last": 123,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "allowed",
+      "first": 126,
+      "last": 169,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "matching",
+      "first": 170,
+      "last": 181,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view.rs",
+      "name": "known",
+      "first": 182,
+      "last": 189,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "default",
+      "first": 10,
+      "last": 16,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "validate",
+      "first": 19,
+      "last": 33,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "revision",
+      "first": 59,
+      "last": 61,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "computer",
+      "first": 62,
+      "last": 64,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "devices",
+      "first": 65,
+      "last": 67,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "links",
+      "first": 68,
+      "last": 70,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "saved",
+      "first": 71,
+      "last": 73,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "record",
+      "first": 74,
+      "last": 130,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "validate_connections",
+      "first": 131,
+      "last": 141,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "link",
+      "first": 142,
+      "last": 176,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "new",
+      "first": 186,
+      "last": 192,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "push",
+      "first": 193,
+      "last": 219,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "common/src/connection/control_view/snapshot.rs",
+      "name": "revision",
+      "first": 221,
+      "last": 229,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "default",
+      "first": 26,
+      "last": 35,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "tablets",
+      "first": 38,
+      "last": 64,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "show",
+      "first": 65,
+      "last": 87,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "summary",
+      "first": 88,
+      "last": 95,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "refresh",
+      "first": 96,
+      "last": 114,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "complete",
+      "first": 115,
+      "last": 123,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "start",
+      "first": 124,
+      "last": 136,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "send",
+      "first": 137,
+      "last": 158,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "controls",
+      "first": 159,
+      "last": 184,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "devices",
+      "first": 185,
+      "last": 196,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device",
+      "first": 197,
+      "last": 235,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "links",
+      "first": 236,
+      "last": 274,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "pair",
+      "first": 275,
+      "last": 304,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "saved",
+      "first": 305,
+      "last": 322,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_availability",
+      "first": 324,
+      "last": 340,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_state_label",
+      "first": 342,
+      "last": 351,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_description",
+      "first": 352,
+      "last": 370,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "fingerprint",
+      "first": 371,
+      "last": 379,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "phase_label",
+      "first": 380,
+      "last": 389,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "link_label",
+      "first": 390,
+      "last": 399,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "new",
+      "first": 15,
+      "last": 24,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "arguments",
+      "first": 25,
+      "last": 34,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "completion",
+      "first": 38,
+      "last": 40,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "retire",
+      "first": 41,
+      "last": 50,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "open",
+      "first": 55,
+      "last": 57,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "open_selected",
+      "first": 60,
+      "last": 73,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux.rs",
+      "name": "open_arguments",
+      "first": 74,
+      "last": 94,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "default",
+      "first": 21,
+      "last": 26,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "validate",
+      "first": 29,
+      "last": 39,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "physical_path",
+      "first": 62,
+      "last": 64,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "start",
+      "first": 75,
+      "last": 100,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "completion",
+      "first": 104,
+      "last": 106,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "finish",
+      "first": 110,
+      "last": 134,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "collect",
+      "first": 137,
+      "last": 150,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "decode",
+      "first": 152,
+      "last": 181,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/accessory/linux/discovery.rs",
+      "name": "candidate",
+      "first": 183,
+      "last": 212,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "default",
+      "first": 28,
+      "last": 36,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "validate",
+      "first": 39,
+      "last": 55,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "new",
+      "first": 103,
+      "last": 124,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "fresh",
+      "first": 125,
+      "last": 130,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "changed",
+      "first": 131,
+      "last": 135,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "editable",
+      "first": 136,
+      "last": 139,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "admitting",
+      "first": 140,
+      "last": 146,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "admit_client",
+      "first": 147,
+      "last": 155,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "drop_client",
+      "first": 158,
+      "last": 160,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "replace_devices",
+      "first": 161,
+      "last": 179,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "snapshot",
+      "first": 180,
+      "last": 216,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "pairing",
+      "first": 217,
+      "last": 222,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "lease",
+      "first": 223,
+      "last": 227,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control.rs",
+      "name": "closing",
+      "first": 230,
+      "last": 237,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "command",
+      "first": 4,
+      "last": 20,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "connect",
+      "first": 21,
+      "last": 66,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "decide",
+      "first": 67,
+      "last": 96,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "disconnect",
+      "first": 97,
+      "last": 107,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "revoke",
+      "first": 108,
+      "last": 128,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "identified",
+      "first": 132,
+      "last": 170,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/control/commands.rs",
+      "name": "close",
+      "first": 173,
+      "last": 182,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "request",
+      "first": 4,
+      "last": 32,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "control_command",
+      "first": 33,
+      "last": 57,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "action",
+      "first": 58,
+      "last": 66,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "start",
+      "first": 67,
+      "last": 94,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "send_link",
+      "first": 95,
+      "last": 106,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "scan",
+      "first": 107,
+      "last": 120,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "host/src/broker/linux/server/commands.rs",
+      "name": "inventory_result",
+      "first": 121,
+      "last": 148,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

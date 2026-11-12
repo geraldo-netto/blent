@@ -112,6 +112,7 @@ mod tests {
             device_class: 0,
             support: discovery::Support::Unknown,
             names: Default::default(),
+            availability: blent_config::connection::control::Availability::Available,
         };
         for address in [0, 128, 255] {
             selected.address = address;

@@ -15,7 +15,7 @@ mirror.
 
 **Does Blent work over a normal USB cable?**
 Yes, over a normal data-capable USB cable (charge-only cables carry no data).
-On Linux, paired direct USB does not require USB debugging: open
+On Linux, paired direct USB requires USB debugging to be turned off: open
 **Connections → USB connection** on the desktop, find and connect the tablet,
 then compare and approve the matching fingerprints. This route remains a preview;
 discovery and pairing do not establish native acceptance or grant camera/audio

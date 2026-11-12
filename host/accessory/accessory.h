@@ -2,6 +2,7 @@
 #ifndef BLENT_AOA_PROBE_H
 #define BLENT_AOA_PROBE_H
 #include <stdint.h>
+typedef struct libusb_device libusb_device;
 typedef struct libusb_context libusb_context;
 typedef struct libusb_device_handle libusb_device_handle;
 typedef struct { uint8_t bus, ports[7]; int count; } accessory_target;
@@ -17,5 +18,8 @@ void accessory_transfer(accessory_usb *usb, int receive, unsigned char *data, in
 void accessory_close(accessory_usb *usb);
 void accessory_require(int condition, const char *message);
 uint64_t accessory_clock(void);
+enum { ACCESSORY_AVAILABLE = 0, ACCESSORY_DEBUGGING = 1, ACCESSORY_UNKNOWN = 2 };
+int accessory_availability(libusb_device *device);
+void accessory_require_available(libusb_device_handle *handle);
 int accessory_list(const char *limit);
 #endif
