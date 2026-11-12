@@ -13,6 +13,17 @@ CONFIG_BASE=$(absolute_base "${XDG_CONFIG_HOME:-}" "$HOME/.config")
 DEST="$DATA_BASE/blent/appimage"
 TOOLS="$APPDIR/usr/share/blent"
 
+# This subshell owns staging through renderer failure, interruption and rename.
+# -T protects the exact destination even if its type changes after inspection.
+publish_file() (
+    local destination=$1 mode=$2 temporary
+    shift 2
+    temporary=$(mktemp "${destination%/*}/.blent.XXXXXXXX") || exit
+    trap 'rm -f -- "$temporary"' EXIT
+    "$@" > "$temporary" && chmod "$mode" "$temporary" &&
+        [[ ! -d "$destination" ]] && mv -fT -- "$temporary" "$destination"
+)
+
 check_stopped() {
     local state
     state=$("$APPDIR/usr/bin/blent" status)
@@ -124,17 +135,14 @@ ENTRY_SCRIPT
 }
 
 update_autostart() {
-    local entry="$CONFIG_BASE/autostart/blent.desktop" temporary
+    local entry="$CONFIG_BASE/autostart/blent.desktop"
     if systemctl --user is-enabled blent.service >/dev/null 2>&1; then
-        mkdir -p -- "$CONFIG_BASE/autostart"
-        temporary=$(mktemp "$CONFIG_BASE/autostart/.blent.XXXXXXXX")
-        cat "$TOOLS/blent-service-autostart.desktop" > "$temporary"
+        mkdir -p -- "$CONFIG_BASE/autostart" || return
+        publish_file "$entry" 600 cat "$TOOLS/blent-service-autostart.desktop"
     else
         [[ -f "$entry" ]] || return 0
-        temporary=$(mktemp "$CONFIG_BASE/autostart/.blent.XXXXXXXX")
-        bash "$TOOLS/write-desktop-entry.sh" "$ENTRY" "$entry" start > "$temporary"
+        publish_file "$entry" 600 bash "$TOOLS/write-desktop-entry.sh" "$ENTRY" "$entry" start
     fi
-    mv -f -- "$temporary" "$entry"
 }
 
 check_destination() {

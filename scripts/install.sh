@@ -226,7 +226,7 @@ install_autostart_entry() {
     local directory="$CONFIG_BASE/autostart" staged
     mkdir -p "$directory" || return
     staged=$(mktemp "$directory/.blent.XXXXXXXX") || return
-    if "$@" > "$staged" && mv -f "$staged" "$directory/blent.desktop"; then
+    if "$@" > "$staged" && [ ! -d "$directory/blent.desktop" ] && mv -fT "$staged" "$directory/blent.desktop"; then
         return 0
     fi
     rm -f "$staged"

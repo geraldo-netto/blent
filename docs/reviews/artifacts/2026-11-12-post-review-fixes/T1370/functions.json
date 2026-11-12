@@ -1,0 +1,41 @@
+[
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "publish_file",
+    "line": 18,
+    "language": "shell",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "1e328f90e440089b5633d2a951097b938e0fec72a932e056c74d1ddac128fb75",
+    "complexity": 5
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "update_autostart",
+    "line": 137,
+    "language": "shell",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "1e328f90e440089b5633d2a951097b938e0fec72a932e056c74d1ddac128fb75",
+    "complexity": 4
+  },
+  {
+    "file": "scripts/install.sh",
+    "name": "install_autostart_entry",
+    "line": 225,
+    "language": "shell",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "de6aab9c67e661cdffa46eab1fc36ef57e7a1a117fefa1c57f84feb53c7405ba",
+    "complexity": 6
+  }
+]
