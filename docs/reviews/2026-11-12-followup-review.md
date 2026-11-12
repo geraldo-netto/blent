@@ -1,7 +1,12 @@
 # Project follow-up review — 2026-11-12
 
 Reviewed baseline: `ab1c33e6841c4ea97bdf23f7a3614102733e916c`.
-Seven confirmed findings are recorded as T1358–T1364 in [TODO.md](../../TODO.md).
+The review initially recorded T1358–T1364 in [TODO.md](../../TODO.md).
+T1360 was subsequently disproved: the Linux GUI dependency enables the host USB
+feature through Cargo feature unification. The original local manifest inspection
+omitted that dependency edge. The permanent CI artifact test executes the current
+release command against the actual binary feature gates and that dependency edge,
+with both clean and stale output directories; both cases pass. No CI fix is needed.
 This review changes the ledger and evidence only. Production fixes and their
 permanent failing-before/passing-after regressions remain open.
 
@@ -36,7 +41,7 @@ reinstall, live connection interruption or publication was performed.
 | --- | --- | --- |
 | T1358 | The exposed Linux tokenless mode cannot start Android video with an empty token store. Host delivery supplies no credential; RemoteDisplay refuses a null credential even with a valid surface. | The existing host tokenless regression passes (1/1 selected test). The existing RemoteDisplay lifecycle regression passes (1/1 selected test) and explicitly asserts zero worker requests after start plus surface with no token. These independent tests confirm opposite boundary policies; neither tests the joined configuration. Add the missing joined startup/transition regression before fixing the contract. |
 | T1359 | The bitrate clamp diagnostic claims measured USB capacity for both an upward and a downward policy clamp. | `common/src/model.rs` defines the range as policy, then logs transport insufficiency for every out-of-range value. Inputs 0 and 60001 reach that branch. Correct wording and verify both boundaries; this is not evidence of a measured throughput defect. |
-| T1360 | The CI release command omits the feature required for the USB broker advertised in its upload manifest. | Cargo metadata confirms `required-features = [accessory-transport]` and no host default features. The release command only enables native-audio. Earlier checks and temporary coverage targets do not supply this release binary. This is manifest/source evidence, not a remotely executed CI failure. Add a clean-target artifact regression. |
+| T1360 | Retracted: the GUI enables the required host feature transitively. | The original feature inspection ignored `gui/Cargo.toml`’s Linux dependency on blent with accessory-transport. `scripts/tests/test_ci_artifacts.py` now executes the CI command in isolated Cargo workspaces reproducing the binary gates and dependency, checking every advertised Rust executable in clean and stale-target cases. Both pass without a production change. |
 | T1361 | Current guides assign remaining acceptance to retired T857/T846/T737 tracking. | `git show 7827286f -- TODO.md` records retirement without completion. Preserve that distinction in compatibility/architecture prose; no native campaign is reopened. |
 | T1362 | A desktop-entry writer failure truncates the existing launcher and returns success. | Execute the actual installer function with main disabled, only temporary directories, an existing launcher, and a writer exiting 42. Observed function status 0 and empty launcher. Add permanent failure-atomic publication regressions. |
 | T1363 | Failed compensating Wi-Fi disconnect drops the route lease while the route remains active. | The isolated Rust probe calls compiled production `wifi::reconnect` with a fake Commands adapter and a changed persisted address. Successful rollback leaves connected=false and leases=0. Failed rollback leaves connected=true and leases=0, after one disconnect attempt. Retain cleanup ownership and test eventual recovery before reuse. |
