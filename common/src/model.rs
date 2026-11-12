@@ -141,12 +141,6 @@ pub struct FileConfig {
     /// more precision to work in, which is what removes banding from
     /// gradients at a given bitrate. Costs a format conversion per frame.
     pub ten_bit: bool,
-    /// Require the tablet to present its attachment's credential before it is
-    /// sent any video or allowed to inject input. Protected ADB broadcasts
-    /// deliver the token without launching the app. Without this, any local process —
-    /// or any other app on the tablet — could connect to the loopback ports,
-    /// read the screen and drive the mouse. Keep authentication enabled.
-    pub require_token: bool,
     /// Ask GitHub once a day whether a newer release exists, and say so in
     /// the tray and in `blent doctor`. Nothing is ever downloaded or
     /// installed by the daemon; updating stays with you or your package
@@ -211,7 +205,6 @@ impl Default for FileConfig {
             pen_only: false,
             position: "right".into(),
             ten_bit: false,
-            require_token: true,
             check_updates: true,
             max_tablets: 1,
             wifi_address: String::new(),

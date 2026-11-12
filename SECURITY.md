@@ -34,7 +34,7 @@ The host video and input servers bind to **127.0.0.1**, on ports 8890/8891
 by default, plus two ports per additional tablet slot. On the ADB route, the
 tablet reaches these ports through `adb reverse`.
 
-With the default `require_token = true`, each logical tablet attachment gets a
+The applications require authentication. Each logical tablet attachment gets a
 random 256-bit token, encoded as 64 hex characters, shared by its video and input
 channels. Replacement, detach and slot reuse invalidate the old credential and
 accepted connection leases. A proven same-tablet USB/Wi-Fi migration keeps its
@@ -48,13 +48,17 @@ TokenReceiver broadcast; only an enabled, fresh-attachment auto-launch may open
 an Activity. The host attempts to remove both old reverse routes before reusing
 the slot, waiting for owned device work and extra-session teardown. An offline
 device may not acknowledge cleanup: the revoked token still rejects its late
-connections. Keep authentication enabled; **tokenless mode cannot provide this
-attachment isolation**, even though existing accepted leases are still retired.
-Video and input must authenticate before receiving video or injecting input. In disabled
-mode, video accepts tokenless clients or consumes one optional saved 64-byte
-hex token without checking its value. This explicit disabled-authentication
-mode is never used when token authentication is enabled. Incomplete optional prefixes expire
-three seconds after their first byte; malformed or extra input closes the viewer.
+connections. Video and input authenticate before receiving video or injecting
+input; disabling authentication is no longer an application setting.
+
+Direct USB pairing remembers approved certificate fingerprints by default.
+The first connection still requires comparing and approving both fingerprints.
+Unchanged saved fingerprints avoid repeat approval, but each connection proves
+possession through TLS. A changed peer fingerprint requires new approval;
+a changed local identity invalidates the associated trust record. Forget/revoke
+removes saved approval. Users may uncheck Remember for a temporary pairing.
+These saved public fingerprints are separate from ADB's automatically delivered,
+rotating attachment credentials.
 
 Processes running as the same Linux user can read the token. Authorized adb
 hosts and privileged Android apps are also inside the trust boundary: the

@@ -236,7 +236,6 @@ fn t894_widgets_match_fingerprint_labels_and_explicit_remembered_approval() {
         assert!(labels.iter().any(|(text, _)| text == expected));
     }
     assert!(handle.0.lock().unwrap().commands.is_empty());
-    click(&mut panel, &ctx, "Remember this tablet");
     click(&mut panel, &ctx, "Approve tablet");
     assert_eq!(
         handle.0.lock().unwrap().commands,
@@ -321,7 +320,7 @@ fn t894_remember_choice_is_scoped_to_exact_ticket_and_pending_state() {
     click(&mut panel, &ctx, "Remember this tablet");
     frame(&mut panel, &ctx, 600.0, Vec::new());
     assert!(
-        panel.choices[&2].remember,
+        !panel.choices[&2].remember,
         "unchanged polling must preserve choice"
     );
     {
@@ -329,7 +328,7 @@ fn t894_remember_choice_is_scoped_to_exact_ticket_and_pending_state() {
         fake.status.view = Some(publish(&mut fake.model, 2, 2, State::Pending));
     }
     frame(&mut panel, &ctx, 600.0, Vec::new());
-    assert!(!panel.choices[&2].remember);
+    assert!(panel.choices[&2].remember);
     {
         let mut fake = handle.0.lock().unwrap();
         fake.status.view = Some(publish(&mut fake.model, 3, 2, State::Authenticated));
@@ -867,4 +866,19 @@ fn t1339_grid_connect_buttons_remain_keyboard_accessible() {
         }
     }
     panic!("T1339 last grid action inaccessible by keyboard");
+}
+
+#[test]
+fn t1358_approval_remembers_matching_fingerprints_by_default() {
+    let (mut panel, handle) = fixture();
+    let ctx = egui::Context::default();
+    click(&mut panel, &ctx, "Approve tablet");
+    assert!(matches!(
+        handle.0.lock().unwrap().commands[0],
+        Command::Decide {
+            allow: true,
+            remember: true,
+            ..
+        }
+    ));
 }

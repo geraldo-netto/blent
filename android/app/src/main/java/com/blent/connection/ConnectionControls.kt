@@ -52,12 +52,12 @@ internal fun ConnectionFingerprints(choice: ConnectionChoice) {
 }
 
 /** Always visible while approval is pending, even with the settings sheet closed.
- * Local checkbox resets for every exact choice; no remember or approve on attach. */
+ * Remembering defaults on for each exact choice; approval still requires a click. */
 @Composable
 internal fun ConnectionPairingDialog(binding: ConnectionBinding) {
     val view by binding.state.collectAsState()
     val choice = view.approval ?: return
-    var rememberComputer by remember(choice) { mutableStateOf(false) }
+    var rememberComputer by remember(choice) { mutableStateOf(true) }
     AlertDialog(
         onDismissRequest = { binding.decide(choice, false, false) },
         title = { Text("Pair with this computer?") },

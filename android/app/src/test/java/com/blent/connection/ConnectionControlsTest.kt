@@ -29,6 +29,19 @@ class ConnectionControlsTest {
         } } }
     }
 
+    @Test fun t1358ApprovalRemembersMatchingFingerprintsByDefault() {
+        ConnectionUiFixture().use { fixture ->
+            render(fixture)
+            compose.onNodeWithText("Connect USB").performClick()
+            compose.runOnIdle { fixture.prompt() }
+            compose.onNodeWithContentDescription("Remember this computer").assertIsOn()
+            compose.onNodeWithText("Approve computer").performClick()
+            compose.runOnIdle {
+                assertEquals(ConnectionWorkerCommand.Decide(fixture.ticket, true, true), fixture.workers.single().commands.single())
+            }
+        }
+    }
+
     @Test fun t893ExplicitApprovalUsesMatchingLabelsAndDurableTrustBeforeRevoke() {
         ConnectionUiFixture().use { fixture ->
             render(fixture)
@@ -38,7 +51,7 @@ class ConnectionControlsTest {
             compose.onNodeWithText("Pair with this computer?").assertExists()
             compose.onAllNodesWithText("Computer fingerprint: ${fixture.computer.fingerprint}").onLast().assertExists()
             compose.onAllNodesWithText("Tablet fingerprint: ${fixture.tablet.fingerprint}").onLast().assertExists()
-            compose.onNodeWithContentDescription("Remember this computer").assertIsOff().performClick()
+            compose.onNodeWithContentDescription("Remember this computer").assertIsOn()
             compose.onNodeWithText("Approve computer").performClick()
             compose.runOnIdle {
                 assertEquals(listOf(ConnectionWorkerCommand.Decide(fixture.ticket, true, true)), fixture.workers.single().commands)
@@ -70,13 +83,13 @@ class ConnectionControlsTest {
             }
             compose.onNodeWithText("Connect USB").performClick()
             compose.runOnIdle { fixture.prompt() }
-            compose.onNodeWithContentDescription("Remember this computer").assertIsOff()
+            compose.onNodeWithContentDescription("Remember this computer").assertIsOn()
             compose.onNodeWithText("Approve computer").performClick()
             compose.onNodeWithText("Disconnect USB").performClick()
             compose.onNodeWithText("Closing USB resources…").assertExists()
             compose.onNodeWithText("Disconnect USB").assertIsNotEnabled()
             compose.runOnIdle {
-                assertEquals(ConnectionWorkerCommand.Decide(fixture.ticket, true, false), fixture.workers.last().commands.single())
+                assertEquals(ConnectionWorkerCommand.Decide(fixture.ticket, true, true), fixture.workers.last().commands.single())
                 assertEquals(1, fixture.workers.last().cancelled)
             }
         }

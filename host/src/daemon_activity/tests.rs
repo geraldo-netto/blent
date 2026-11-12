@@ -304,7 +304,6 @@ async fn daemon_config() -> crate::Cli {
         input_pen: false,
         input_pointer: false,
         check_updates: false,
-        require_token: false,
         auto_launch_app: false,
         video_port: 29410,
         input_port: 29411,

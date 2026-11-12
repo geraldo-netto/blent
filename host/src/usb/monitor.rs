@@ -23,10 +23,6 @@ pub struct Monitor<C> {
 }
 impl<C: Commands + Clone + 'static> Monitor<C> {
     pub fn new(adb: Adb<C>, config: FileConfig, stop: watch::Receiver<bool>) -> Result<Self> {
-        ensure!(
-            config.require_token,
-            "Windows USB preview requires require_token = true"
-        );
         let ports =
             blent_config::slot_ports(config.video_port, config.input_port, config.max_tablets)?;
         let slots = (0..ports.len()).map(|_| None).collect();

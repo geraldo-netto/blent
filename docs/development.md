@@ -309,7 +309,7 @@ them. See the [settings guide](settings.md) for paths and user controls.
 | `max_tablets` | 1 | Up to four slots; EVDI capacity required |
 | `input_touch` / `input_pen` / `input_pointer` | true / true / true | Pointer creation also requires pen |
 | `video_port` / `input_port` | 8890 / 8891 | Incremented by two per additional slot |
-| `require_token` / `check_updates` / `auto_launch_app` | true / true / true | Keep authentication enabled; update checks are optional |
+| `check_updates` / `auto_launch_app` | true / true | Update checks and app auto-launch are optional; authentication is always required |
 | `wifi_address` | empty | Set by `blent wifi`; reread for reconnect attempts |
 
 On Linux, **Video → Conversion capacity** offers Auto or a manual 1–128 value.

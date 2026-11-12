@@ -77,10 +77,6 @@ async fn setup_wifi(
     Ok(())
 }
 async fn serve(path: &Path, config: blent_config::FileConfig) -> Result<()> {
-    anyhow::ensure!(
-        config.require_token,
-        "Windows USB preview requires require_token = true"
-    );
     let session = lifecycle::Session::start(path)?;
     let result = serve_usb(&session, config).await;
     result.and(session.shutdown())

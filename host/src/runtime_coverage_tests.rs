@@ -45,8 +45,16 @@ fn isolated() {
 }
 
 fn runtime_contract(root: &Path) {
-    assert!(create_session_token(true).unwrap().is_some());
-    assert!(create_session_token(false).unwrap().is_none());
+    // T1358: initial and subsequent startup both deliver a current credential.
+    let first = create_session_token().unwrap();
+    let next = create_session_token().unwrap();
+    assert_ne!(first, next);
+    for token in [first, next] {
+        assert_eq!(token.len(), 64);
+        assert!(token.bytes().all(|byte| byte.is_ascii_hexdigit()));
+        assert!(blent_config::android::app_launch_command(Some(&token)).contains(&token));
+        assert!(blent_config::android::token_delivery_command(Some(&token)).contains(&token));
+    }
     assert!(session_ledger().is_some());
     // An absent/non-directory XDG path deliberately falls back to /run/user.
     // Keep an existing private fixture directory so validation cannot escape it.
@@ -54,11 +62,13 @@ fn runtime_contract(root: &Path) {
     std::fs::create_dir(&invalid).unwrap();
     std::fs::set_permissions(&invalid, std::fs::Permissions::from_mode(0o777)).unwrap();
     std::env::set_var("XDG_RUNTIME_DIR", &invalid);
-    let error = match create_session_token(true) {
+    let error = match create_session_token() {
         Ok(_) => panic!("T497 unsafe runtime was accepted"),
         Err(error) => error,
     };
-    assert!(error.to_string().contains("require_token is on"));
+    assert!(error
+        .to_string()
+        .contains("Display authentication credential unavailable"));
     assert!(session_ledger().is_none());
     let absent = root.join("not-a-runtime-directory");
     std::fs::write(&absent, "fixture").unwrap();
@@ -67,7 +77,7 @@ fn runtime_contract(root: &Path) {
         runtime::runtime_dir().unwrap().starts_with(root),
         "T497 runtime fallback escaped fixture"
     );
-    assert!(create_session_token(true).unwrap().is_some());
+    assert_eq!(create_session_token().unwrap().len(), 64);
     std::env::set_var("XDG_RUNTIME_DIR", root);
     let mut devices = vec!["existing".into()];
     add_fake_tablets(&mut devices);

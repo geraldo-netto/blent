@@ -1,0 +1,594 @@
+{
+  "tools": "cargo-llvm-cov 0.8.7; JaCoCo 0.8.15; project complexity checker/tree-sitter 0.25.2 and pinned Kotlin frontend",
+  "rust": [
+    {
+      "file": "host/src/linux_main.rs",
+      "name": "run_daemon_with",
+      "line": 1610,
+      "language": "rust",
+      "covered": 193,
+      "total": 200,
+      "percent": 96.5,
+      "passes": true,
+      "missing": [
+        1735,
+        1753,
+        1754,
+        1755,
+        1838,
+        1839,
+        1853
+      ],
+      "complexity": 7,
+      "sha256": "926b5fed2ebc35f0b2e53b43ee415d71f903b863ec2d7b077d941daa9e3358a4"
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "name": "create_session_token",
+      "line": 1944,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "sha256": "926b5fed2ebc35f0b2e53b43ee415d71f903b863ec2d7b077d941daa9e3358a4"
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "new",
+      "line": 25,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "sha256": "94ee90d22cfeb9152511396dce2311b1a2cb349aea08ebde496af7dfca8facac"
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "pair",
+      "line": 286,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 6,
+      "sha256": "00b77d18701d73f6181076a17e8f93f25bcaa1ac16dd75988a7b040b387ef2f2"
+    },
+    {
+      "file": "gui/src/main.rs",
+      "name": "setting_security",
+      "line": 835,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "sha256": "0f5310b9aef069defd05660f392152b1246cde5b99f217234604e4c138b65bd3"
+    },
+    {
+      "file": "common/src/model.rs",
+      "name": "default",
+      "line": 183,
+      "language": "rust",
+      "covered": 39,
+      "total": 39,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "sha256": "a8b9f26ff1043eb546d56d33a43fab99ac6b6a4a818dbc0a68cb1fc01ad377ff"
+    }
+  ],
+  "kotlin": [
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "ConnectionPairingDialog",
+      "line": 54,
+      "language": "kotlin",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt",
+          "name": "ConnectionPairingDialog",
+          "signature": "(Lcom/blent/connection/ConnectionBinding;Landroidx/compose/runtime/Composer;I)V",
+          "line": 57,
+          "covered": 9,
+          "total": 9
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 60,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt",
+          "name": "ConnectionPairingDialog$lambda$14",
+          "signature": "(Landroidx/compose/runtime/MutableState;)Z",
+          "line": 60,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt",
+          "name": "ConnectionPairingDialog$lambda$15",
+          "signature": "(Landroidx/compose/runtime/MutableState;Z)V",
+          "line": 60,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 62,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 62,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 63,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-7$1",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 63,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 64,
+      "language": "kotlin",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 65,
+          "covered": 10,
+          "total": 10
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$1$1",
+          "name": "invoke",
+          "signature": "(Z)V",
+          "line": 69,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$2",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/ui/semantics/SemanticsPropertyReceiver;)V",
+          "line": 70,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 65,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$1$1",
+          "name": "invoke",
+          "signature": "(Z)V",
+          "line": 69,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$2",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/ui/semantics/SemanticsPropertyReceiver;)V",
+          "line": 70,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 68,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$1$1",
+          "name": "invoke",
+          "signature": "(Z)V",
+          "line": 69,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$2",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/ui/semantics/SemanticsPropertyReceiver;)V",
+          "line": 70,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 69,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$1$1",
+          "name": "invoke",
+          "signature": "(Z)V",
+          "line": 69,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 70,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$4$1$1$2",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/ui/semantics/SemanticsPropertyReceiver;)V",
+          "line": 70,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 76,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-5$1",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 76,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-5$1",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 76,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$2$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-5$1",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+          "line": 76,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 77,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-6$1",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 77,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-6$1",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    },
+    {
+      "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+      "name": "<lambda>",
+      "line": 77,
+      "language": "kotlin",
+      "covered": 1,
+      "total": 1,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "evidence": "JaCoCo method line counters; every mapped variant must pass",
+      "variants": [
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/runtime/Composer;I)V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ConnectionControlsKt$ConnectionPairingDialog$3$1",
+          "name": "invoke",
+          "signature": "()V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        },
+        {
+          "file": "android/app/src/main/java/com/blent/connection/ConnectionControls.kt",
+          "owner": "com/blent/connection/ComposableSingletons$ConnectionControlsKt$lambda-6$1",
+          "name": "invoke",
+          "signature": "(Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/runtime/Composer;I)V",
+          "line": 77,
+          "covered": 1,
+          "total": 1
+        }
+      ]
+    }
+  ],
+  "kotlin_source_sha256": "abb500c71ddaef26c68f40db8f49385d6a8b74e3bb8adcf97381ece8c2708f1a",
+  "native_windows": "T1366; source removal only, native serve counters not available",
+  "ownership": "The synchronous token factory returns one owned 64-hex credential or an error. Config/UI borrow their existing owner; pairing choices remain scoped to exact tickets. Cached public fingerprints never bypass fresh TLS proof or attachment credential rotation."
+}

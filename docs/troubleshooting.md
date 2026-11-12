@@ -44,9 +44,9 @@ permission workaround.
 Check that the app and host came from the same checkout. For the ADB route,
 check that ADB still shows the tablet as authorized. A stale token, failed token delivery or
 mismatched builds can cause this; an older app is not the only explanation.
-Keep `require_token = true` for authentication. The former optional-token client
-mismatch (T267) has regression coverage; disabling authentication is not a
-repair step. Delivery retries back off, potentially to ten minutes; reconnecting the
+Authentication is always required; there is no disable switch. ADB delivers
+attachment credentials automatically. Direct USB remembers approved fingerprints
+by default and asks again when the peer fingerprint changes. Delivery retries back off, potentially to ten minutes; reconnecting the
 cable triggers a fresh attempt. Do not include session tokens in public logs.
 
 ## Black screen on the tablet

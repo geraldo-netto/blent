@@ -647,10 +647,6 @@ async fn t525_monitor_partial_bind_command_failure_and_invalid_config() {
     monitor.shutdown().await.unwrap();
     for config in [
         blent_config::FileConfig {
-            require_token: false,
-            ..Default::default()
-        },
-        blent_config::FileConfig {
             max_tablets: 0,
             ..Default::default()
         },
@@ -971,4 +967,11 @@ async fn t691_absent_inventory_cleanup_requires_reconfirmed_identity() {
     adb.0 .0.lock().unwrap().fail = None;
     monitor.shutdown().await.unwrap();
     assert!(adb.0 .0.lock().unwrap().routes.is_empty());
+}
+
+#[test]
+fn t1358_removed_authentication_toggle_cannot_disable_preview_credentials() {
+    let config: blent_config::FileConfig = toml::from_str("require_token = false").unwrap();
+    assert!(!toml::to_string(&config).unwrap().contains("require_token"));
+    assert!(monitor::Monitor::new(Adb(Fake::default()), config, watch::channel(false).1).is_ok());
 }

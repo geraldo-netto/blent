@@ -834,17 +834,7 @@ impl App {
 
     fn setting_security(&mut self, ui: &mut egui::Ui) {
         ui.label("Security");
-        ui.vertical(|ui| {
-            ui.checkbox(&mut self.cfg.require_token, "Require the session token");
-            ui.label(
-                egui::RichText::new(
-                    "Keep enabled. Disabling token authentication allows local processes \
-                 to read the screen and inject input.",
-                )
-                .small()
-                .weak(),
-            );
-        });
+        ui.label("Connections require authentication. Approved fingerprints are remembered.");
         ui.end_row();
     }
 

@@ -38,6 +38,24 @@ class TokenDeliveryTest {
         assertEquals(token, Prefs(app).hostToken)
     }
 
+    @Test fun t1358_fresh_and_rotated_credentials_reach_waiting_android_session() {
+        val app = RuntimeEnvironment.getApplication()
+        val prefs = Prefs(app).apply { hostToken = null }
+        val capture = TouchCapture(WebSocket.Factory { _, _ -> Socket() })
+        val session = SessionCoordinator(prefs, { it() }, null, capture)
+        session.start()
+        try {
+            assertNull(capture.token)
+            for (token in listOf("1".repeat(64), "2".repeat(64))) {
+                TokenReceiver().onReceive(app, Intent().putExtra("token", token))
+                shadowOf(Looper.getMainLooper()).idle()
+                assertEquals(token, capture.token)
+                assertEquals(token, prefs.hostToken)
+            }
+            assertNull(shadowOf(app).nextStartedActivity)
+        } finally { session.stop() }
+    }
+
     private class Socket : WebSocket {
         override fun request() = Request.Builder().url(AdbDisplayRoutes.controlUrl).build()
         override fun queueSize() = 0L

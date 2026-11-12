@@ -1689,7 +1689,7 @@ where
 
     capture::select_gpu(&mut cap_config, &file_cfg.encoding_gpu).await;
 
-    let token = create_session_token(file_cfg.require_token)?;
+    let token = Some(create_session_token()?);
     let token_dir = token.as_ref().map(|_| runtime::runtime_dir()).transpose()?;
     let (mode_tx, mode_persistence) = mode_channel(pen_only);
     let activity = daemon_activity::start(activity_factory, file_cfg.host_activity)?;
@@ -1941,26 +1941,11 @@ fn heal_config(file_cfg: &config::FileConfig) {
     }
 }
 
-fn create_session_token(required: bool) -> Result<Option<String>> {
-    // One secret per daemon run. Handed to the app over adb when it is
-    // launched; anything connecting to the loopback ports without it gets
-    // nothing. See config::FileConfig::require_token.
-    let token: Option<String> = if required {
-        // Fail closed. Running without a token because the runtime dir was
-        // unwritable would quietly turn a required check into no check.
-        match runtime::new_session_token() {
-            Ok(t) => Some(t),
-            Err(e) => anyhow::bail!(
-                "require_token is on but no session token could be created: {}. \
-                 Fix the runtime directory, or set require_token = false.",
-                e
-            ),
-        }
-    } else {
-        warn!("require_token = false: any local process can read the screen and inject input");
-        None
-    };
-    Ok(token)
+fn create_session_token() -> Result<String> {
+    // ADB delivers credentials automatically; remembered fingerprint approval
+    // belongs to the direct connection trust store, not this per-run secret.
+    runtime::new_session_token()
+        .context("Display authentication credential unavailable; fix the runtime directory")
 }
 
 fn persist_settings_with(

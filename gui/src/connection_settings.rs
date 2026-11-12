@@ -286,7 +286,7 @@ impl Panel {
     fn pair(&mut self, ui: &mut egui::Ui, view: &View, connection: u64, ticket: &Ticket) {
         let choice = self.choices.entry(connection).or_insert_with(|| Choice {
             ticket: ticket.clone(),
-            remember: false,
+            remember: true,
         });
         ui.label("Compare each fingerprint with the same label on the tablet. Approve only when both match.");
         ui.add_enabled(
