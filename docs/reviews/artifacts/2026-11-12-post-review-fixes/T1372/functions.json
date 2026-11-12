@@ -1,0 +1,67 @@
+[
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_image",
+    "line": 36,
+    "language": "shell",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "15bc98193f582103afad4924b0b9dd53eb1c60dee9df02b6b006f42fed385ee1",
+    "complexity": 2
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "write_gui_entry",
+    "line": 99,
+    "language": "shell",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "15bc98193f582103afad4924b0b9dd53eb1c60dee9df02b6b006f42fed385ee1",
+    "complexity": 1
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_gui_entry",
+    "line": 109,
+    "language": "shell",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "15bc98193f582103afad4924b0b9dd53eb1c60dee9df02b6b006f42fed385ee1",
+    "complexity": 3
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "write_entry",
+    "line": 116,
+    "language": "shell",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "15bc98193f582103afad4924b0b9dd53eb1c60dee9df02b6b006f42fed385ee1",
+    "complexity": 1
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_entry",
+    "line": 126,
+    "language": "shell",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "15bc98193f582103afad4924b0b9dd53eb1c60dee9df02b6b006f42fed385ee1",
+    "complexity": 3
+  }
+]

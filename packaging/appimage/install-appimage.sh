@@ -34,14 +34,8 @@ check_stopped() {
 }
 
 install_image() {
-    local temporary
-    temporary=$(mktemp "$DEST/.image.XXXXXXXX")
-    if cp -- "$APPIMAGE" "$temporary" && chmod 755 "$temporary" && mv -f -- "$temporary" "$DEST/Blent.AppImage"; then
-        LAUNCHER="$DEST/Blent.AppImage"
-    else
-        rm -f -- "$temporary"
-        return 1
-    fi
+    publish_file "$DEST/Blent.AppImage" 755 cat "$APPIMAGE" || return
+    LAUNCHER="$DEST/Blent.AppImage"
 }
 
 install_extracted() {
@@ -102,37 +96,37 @@ link_gui_entry() {
     return 1
 }
 
-install_gui_entry() {
-    local temporary
-    # A sibling link avoids embedding user paths in executable shell text.
-    ln -sfnT -- "$ENTRY" "$DEST/gui-launcher"
-    temporary=$(mktemp "$DEST/.gui-launcher.XXXXXXXX")
-    cat > "$temporary" <<'GUI_SCRIPT'
+write_gui_entry() {
+    cat <<'GUI_SCRIPT'
 #!/bin/sh
 # BLENT_APPIMAGE_GUI_WRAPPER=1
 set -eu
 launcher=$(readlink -f -- "$0")
 exec "${launcher%/*}/gui-launcher" --gui "$@"
 GUI_SCRIPT
-    chmod 755 "$temporary"
-    mv -f -- "$temporary" "$DEST/blent-gui"
+}
+
+install_gui_entry() {
+    # A sibling link avoids embedding user paths in executable shell text.
+    ln -sfnT -- "$ENTRY" "$DEST/gui-launcher" || return
+    publish_file "$DEST/blent-gui" 755 write_gui_entry || return
     link_gui_entry
 }
 
-install_entry() {
-    ENTRY=$LAUNCHER
-    [[ $LAUNCHER = "$DEST/Blent.AppImage" ]] || return 0
-    local temporary
-    temporary=$(mktemp "$DEST/.launcher.XXXXXXXX")
-    cat > "$temporary" <<'ENTRY_SCRIPT'
+write_entry() {
+    cat <<'ENTRY_SCRIPT'
 #!/bin/sh
 set -eu
 launcher=$(readlink -f -- "$0")
 export APPIMAGE_EXTRACT_AND_RUN=1
 exec "${launcher%/*}/Blent.AppImage" "$@"
 ENTRY_SCRIPT
-    chmod 755 "$temporary"
-    mv -f -- "$temporary" "$DEST/blent"
+}
+
+install_entry() {
+    ENTRY=$LAUNCHER
+    [[ $LAUNCHER = "$DEST/Blent.AppImage" ]] || return 0
+    publish_file "$DEST/blent" 755 write_entry || return
     ENTRY="$DEST/blent"
 }
 
