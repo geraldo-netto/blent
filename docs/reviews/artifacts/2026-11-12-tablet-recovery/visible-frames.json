@@ -1,0 +1,42 @@
+[
+  {
+    "phase": 1,
+    "expected_rgb": [
+      22,
+      78,
+      99
+    ],
+    "observed_rgb": [
+      23,
+      78,
+      99
+    ],
+    "marker_rgb": [
+      255,
+      255,
+      255
+    ],
+    "unix_time": 1794515444.2069557,
+    "app_restarted": false
+  },
+  {
+    "phase": 2,
+    "expected_rgb": [
+      112,
+      26,
+      117
+    ],
+    "observed_rgb": [
+      112,
+      27,
+      117
+    ],
+    "marker_rgb": [
+      255,
+      255,
+      255
+    ],
+    "unix_time": 1794515445.6536574,
+    "app_restarted": true
+  }
+]

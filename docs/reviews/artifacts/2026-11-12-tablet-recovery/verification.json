@@ -1,0 +1,57 @@
+{
+  "workspace_rust": {
+    "completed_test_programs": 86,
+    "passed_cases": 2624,
+    "failed_cases": 0,
+    "ignored_cases": 7,
+    "source_commit_at_start": "fae2a5ab",
+    "command": "cargo test --locked --workspace --all-targets --no-fail-fast --features blent/accessory-transport"
+  },
+  "android": {
+    "passed": 2714,
+    "total": 2714,
+    "skipped": 0,
+    "obsolete_sdk_lint_issues": 0
+  },
+  "python_scripts": {
+    "passed": 541,
+    "total": 542,
+    "skipped": 1,
+    "skip_reason": "existing native Windows process-ownership test"
+  },
+  "python_coverage_tools": {
+    "passed": 111,
+    "total": 111
+  },
+  "native_encoder_each_of_normal_and_coverage_runs": {
+    "passed": 413,
+    "total": 415,
+    "ignored_benchmarks": 2
+  },
+  "current_complexity": {
+    "measured_functions": 28767,
+    "over_limit": 0,
+    "maximum_allowed": 9,
+    "tool": "scripts/complexity/check.py; tree-sitter 0.25.2; project Rust/Kotlin frontends",
+    "checker_sha256": "99095e6ca5dfb364b150e617320a7b16046feb0b0f63e36f1078c8da1c4e06b5"
+  },
+  "current_format_and_expanded_clippy": "passed",
+  "subsequent_focused_checks": {
+    "T1356": {
+      "example_checks_passed": 3,
+      "example_checks_total": 3,
+      "native_stop_passed": 4,
+      "native_stop_total": 4,
+      "acknowledgement_tests_passed": 5,
+      "acknowledgement_tests_total": 5,
+      "changed_function_line_coverage": "8/8 executable lines"
+    },
+    "T1357": {
+      "argument_tests_passed": 4,
+      "argument_tests_total": 4,
+      "offline_runner_tests_passed": 10,
+      "offline_runner_tests_total": 10
+    }
+  },
+  "scope_note": "Full suites started before the later example visibility cleanup and Cargo short-option refinement; those final changes have the separate focused runs above. Native acceptance covers one selected Linux/X11/tablet configuration, not Windows or broad device parity."
+}

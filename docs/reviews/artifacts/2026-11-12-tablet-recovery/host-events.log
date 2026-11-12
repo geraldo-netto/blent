@@ -1,0 +1,71 @@
+2026-11-12T20:26:16.339616Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.3ms  p95 21.2ms  max 21.5ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:21.539990Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.4ms  p95 22.0ms  max 24.1ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:21.779967Z  WARN blent::activity::dpms: 169: original X11 power observer lost error=deadline has elapsed
+2026-11-12T20:26:21.787217Z  WARN blent::activity_follow: 182: original activity observation lost error=native activity observer requires replacement
+[evdi-helper] capture-activity request sequence=2 active=0
+[evdi-helper] capture-activity ack sequence=2 active=0
+2026-11-12T20:26:21.799691Z  INFO blent::stream: 138: Client 127.0.0.1:43417 session ended
+[evdi-helper] capture-activity request sequence=3 active=1
+[evdi-helper] capture-activity ack sequence=3 active=1
+2026-11-12T20:26:26.626116Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.7ms  p95 23.3ms  max 39.4ms  (14 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:31.627639Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.5ms  p95 21.6ms  max 23.9ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:36.628011Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.4ms  p95 26.0ms  max 26.8ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:38.088615Z  INFO blent::stream: 138: Client 127.0.0.1:35005 session ended
+[evdi-helper] capture-activity request sequence=4 active=0
+[evdi-helper] capture-activity ack sequence=4 active=0
+[evdi-helper] capture-activity request sequence=5 active=1
+[evdi-helper] capture-activity ack sequence=5 active=1
+2026-11-12T20:26:41.814472Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.0ms  p95 23.8ms  max 54.4ms  (18 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:46.814512Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.4ms  p95 24.5ms  max 25.9ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:51.814962Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.2ms  p95 25.1ms  max 25.8ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:26:57.014347Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.0ms  p95 24.6ms  max 24.9ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:02.213278Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.2ms  p95 25.1ms  max 25.9ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:07.213863Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.3ms  p95 24.6ms  max 25.2ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:12.214170Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.1ms  p95 23.0ms  max 25.3ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:17.214452Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.6ms  p95 24.3ms  max 24.8ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:22.214495Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.4ms  p95 23.5ms  max 23.7ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:27.214870Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.9ms  p95 24.8ms  max 25.2ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:32.412997Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.5ms  p95 24.4ms  max 24.9ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:37.414784Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.9ms  p95 25.0ms  max 26.4ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:42.614734Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.8ms  p95 24.4ms  max 25.0ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:47.814060Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.1ms  p95 25.2ms  max 25.6ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:52.814331Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.0ms  p95 23.9ms  max 25.5ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:27:57.814531Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.1ms  p95 25.7ms  max 26.1ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:02.814905Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.3ms  p95 25.2ms  max 25.2ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:08.014247Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.9ms  p95 24.8ms  max 26.3ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:13.014289Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.7ms  p95 24.0ms  max 25.3ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:18.015835Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.7ms  p95 23.6ms  max 27.5ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:23.214104Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.9ms  p95 25.9ms  max 26.0ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:28.214303Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.2ms  p95 24.5ms  max 26.6ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:33.413454Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 22.0ms  p95 23.2ms  max 24.9ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:38.416963Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.3ms  p95 22.6ms  max 24.2ms  (25 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:43.614024Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.9ms  p95 22.3ms  max 22.6ms  (26 samples, 1 in flight, 0 aged out)
+2026-11-12T20:28:48.614360Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.4ms  p95 21.9ms  max 22.1ms  (25 samples, 1 in flight, 0 aged out)
+[evdi-helper] capture-activity request sequence=6 active=0
+[evdi-helper] capture-activity ack sequence=6 active=0
+2026-11-12T20:28:52.128036Z  INFO blent::stream: 138: Client 127.0.0.1:55237 session ended
+[evdi-helper] capture-activity request sequence=7 active=1
+[evdi-helper] capture-activity ack sequence=7 active=1
+2026-11-12T20:29:29.384071Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.1ms  p95 22.4ms  max 23.6ms  (18 samples, 1 in flight, 0 aged out)
+2026-11-12T20:29:34.549437Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.8ms  p95 23.2ms  max 47.0ms  (40 samples, 1 in flight, 0 aged out)
+2026-11-12T20:29:39.644387Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.1ms  p95 22.1ms  max 48.7ms  (39 samples, 1 in flight, 0 aged out)
+2026-11-12T20:29:44.749555Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.6ms  p95 21.7ms  max 21.8ms  (42 samples, 1 in flight, 0 aged out)
+2026-11-12T20:29:49.749745Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.6ms  p95 23.0ms  max 27.3ms  (40 samples, 1 in flight, 0 aged out)
+2026-11-12T20:29:54.751000Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.3ms  p95 22.8ms  max 50.7ms  (40 samples, 1 in flight, 0 aged out)
+2026-11-12T20:29:59.817444Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.0ms  p95 22.5ms  max 32.1ms  (41 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:04.868919Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.6ms  p95 21.7ms  max 22.2ms  (39 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:09.951329Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.3ms  p95 21.4ms  max 21.9ms  (41 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:14.982161Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.8ms  p95 22.0ms  max 22.7ms  (40 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:20.152539Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.7ms  p95 21.9ms  max 22.5ms  (39 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:25.267831Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.0ms  p95 22.1ms  max 50.3ms  (41 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:30.349500Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.7ms  p95 21.8ms  max 22.4ms  (40 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:35.367764Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.9ms  p95 22.6ms  max 50.9ms  (38 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:40.552843Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.7ms  p95 26.8ms  max 50.9ms  (41 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:44.369067Z  INFO blent::stream: 138: Client 127.0.0.1:37549 session ended
+[evdi-helper] capture-activity request sequence=8 active=0
+[evdi-helper] capture-activity ack sequence=8 active=0
+[evdi-helper] capture-activity request sequence=9 active=1
+[evdi-helper] capture-activity ack sequence=9 active=1
+2026-11-12T20:30:45.671365Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.6ms  p95 21.8ms  max 32.7ms  (32 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:50.740207Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 20.8ms  p95 22.1ms  max 22.3ms  (42 samples, 1 in flight, 0 aged out)
+2026-11-12T20:30:55.772479Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 21.2ms  p95 22.5ms  max 23.0ms  (39 samples, 1 in flight, 0 aged out)

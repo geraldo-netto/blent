@@ -1,0 +1,15 @@
+{
+  "tablet_model": "RugKing Pad 2 Pro",
+  "android_release": "16",
+  "android_api": 36,
+  "adb_version": "1.0.41 / 34.0.4-debian",
+  "host_backend": "Linux X11 / EVDI",
+  "host_binary_sha256": "862f465bb1c616882db262cfffdb0efe82257db633ac80a2c23dc928f3c4a42d",
+  "apk_sha256": "fcc3baf1570b340bc0293c92ff21147d80c36225f119d8e89b0aff443555433b",
+  "apk_certificate_sha256": "1b34ed115e476f4d178b49f6076cf9ed6cc07d474f9230ec952bc97bbba70400",
+  "reverse_mappings_before_and_after": [
+    "tcp:8890 -> tcp:8890",
+    "tcp:8891 -> tcp:8891"
+  ],
+  "mapping_scope": "Display only; no camera/audio mapping trial or reverse --remove-all."
+}
