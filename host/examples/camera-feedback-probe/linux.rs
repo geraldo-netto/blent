@@ -1,23 +1,13 @@
 //! Opt-in native benchmark: real tablet → production decoder, no V4L2 required.
 //! Outputs timing/counts only; never stores camera pictures. Requests scoped capture stop after measurement.
 #![allow(dead_code)]
-#[path = "../../src/camera/bridge.rs"]
-mod bridge;
-#[path = "../../src/camera/decoder.rs"]
-mod decoder;
-// T816: compile the production decoder with its bounded lease owner.
-#[path = "../../src/camera/frame_pool.rs"]
-mod frame_pool;
+use blent::camera::probe;
 #[path = "options.rs"]
 mod options;
-#[path = "../../src/camera/outputs.rs"]
-mod outputs;
 #[path = "ownership.rs"]
 mod ownership;
 #[path = "policy.rs"]
 mod policy;
-#[path = "../../src/camera/protocol.rs"]
-mod protocol;
 #[path = "samples.rs"]
 mod samples;
 mod stop;
@@ -46,7 +36,7 @@ pub(super) async fn run() -> Result<()> {
     let token = blent_config::runtime::random_token()?;
     let (created_mapping, mapping_retirement) = ownership::channel();
     let mapping_creation = Mutex::new(Some(created_mapping));
-    let created = bridge::Bridge::create(
+    let created = probe::Bridge::create(
         "/usr/bin/adb".into(),
         args.camera.serial.as_deref(),
         &route,
@@ -82,7 +72,7 @@ pub(super) async fn run() -> Result<()> {
 
 async fn sample(
     listener: Arc<TcpListener>,
-    bridge: &bridge::Bridge,
+    bridge: &probe::Bridge,
     token: &str,
     args: &Options,
     mut samples: samples::Samples,
@@ -90,7 +80,7 @@ async fn sample(
 ) -> Result<()> {
     let (front, front_rx) = watch::channel(None);
     let (rear, rear_rx) = watch::channel(None);
-    let frames: [outputs::Frames; 2] = [front, rear];
+    let frames: [probe::Frames; 2] = [front, rear];
     let received = match args.camera.lens {
         blent_config::camera::Lens::Front => front_rx,
         blent_config::camera::Lens::Rear => rear_rx,
@@ -114,7 +104,7 @@ async fn decode_session(
     listener: Arc<TcpListener>,
     token: String,
     profile: CameraProfile,
-    frames: [outputs::Frames; 2],
+    frames: [probe::Frames; 2],
     mut stop: watch::Receiver<bool>,
     report: Report,
 ) -> Result<()> {
@@ -128,12 +118,12 @@ async fn connections(
     listener: &TcpListener,
     token: &str,
     profile: &CameraProfile,
-    frames: &[outputs::Frames; 2],
+    frames: &[probe::Frames; 2],
     report: Report,
 ) -> Result<()> {
     loop {
         let (socket, _) = listener.accept().await?;
-        let result = decoder::connection(
+        let result = probe::connection(
             socket,
             token,
             Path::new("/usr/bin/ffmpeg"),

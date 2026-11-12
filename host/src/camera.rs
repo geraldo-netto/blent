@@ -11,6 +11,7 @@ pub mod output_device;
 pub mod output_worker;
 pub mod output_writer;
 mod outputs;
+pub mod probe;
 pub(crate) mod protocol;
 #[cfg(test)]
 mod retirement_tests;
