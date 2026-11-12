@@ -168,3 +168,29 @@ async fn t834_optional_command_port_preserves_execution_and_lease_errors() {
     assert!(none.route_lease("host:5").is_err());
     assert!(none.execute(vec![], None).await.is_err());
 }
+
+#[test]
+fn t1365_closed_admission_rejects_future_creators() {
+    let owners = Owners::new(1).unwrap();
+    super::shutdown(&owners);
+    assert!(owners.reserve("host:5").is_err());
+    assert_eq!(owners.pool.active(), 0);
+    super::shutdown(&owners);
+}
+
+#[test]
+fn t1365_shutdown_closes_admission_before_waiting_for_owned_slots() {
+    let owners = Arc::new(Owners::new(2).unwrap());
+    let held = owners.reserve("host:5").unwrap();
+    let worker = owners.clone();
+    let native = std::thread::spawn(move || super::shutdown(&worker));
+    while !owners.addresses.lock().unwrap().closed {
+        std::thread::yield_now();
+    }
+    assert!(owners.reserve("other:5").is_err());
+    assert_eq!(owners.pool.active(), 1);
+    assert!(!native.is_finished());
+    drop(held);
+    native.join().unwrap();
+    assert_eq!(owners.pool.active(), 0);
+}

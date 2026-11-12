@@ -45,3 +45,16 @@ The owner waits to observe its exclusively owned endpoint, removes it once, then
 waits for confirmed absence. Explicit Wi-Fi-off uses the same removal owner.
 T1364 tests exercise effects both before and after acknowledgement failure,
 preexisting transports, malformed snapshots, bounded replies and proven nonstarts.
+
+Graceful host process exit closes Wi-Fi admission and waits for every admitted
+attempt to settle after its producers stop. An unknown outcome can therefore
+keep the process alive after its foreground work returns. The process must remain
+alive for this guarantee: forced OS termination or power loss cannot run the
+shutdown fence. Blent does not claim durable recovery across those events.
+Successful retained connections transfer to configured reconnection policy;
+they have no pending compensating cleanup when their attempt finishes.
+
+T1365 checks graceful process-entry teardown with a delayed removal, preserves
+the original return value, and checks that cutoff rejects new creators before
+waiting for occupied slots. The GUI does not directly create network ADB attempts;
+the host process owns this fence on both platform entry paths.

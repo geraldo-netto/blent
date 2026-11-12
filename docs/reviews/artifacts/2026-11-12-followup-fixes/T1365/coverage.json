@@ -1,0 +1,85 @@
+{
+  "tools": "cargo-llvm-cov 0.8.7; project complexity checker/tree-sitter 0.25.2",
+  "functions": [
+    {
+      "file": "host/src/runtime_owner.rs",
+      "name": "run",
+      "line": 3,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "sha256": "6bca870d685c8315da6b257f2a0db15b2b1159021c460c2ad8dd681861d008e7"
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "new",
+      "line": 27,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "sha256": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6"
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "reserve",
+      "line": 43,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "sha256": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6"
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "shutdown",
+      "line": 63,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "sha256": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6"
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "drop",
+      "line": 74,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "sha256": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6"
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "drop",
+      "line": 86,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "sha256": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6"
+    }
+  ],
+  "scope": "Linux process-entry shutdown and shared admission cutoff; native Windows entry validation retained in T1367",
+  "ownership": "Admission cutoff and address insertion share one mutex. Admitted native workers retain their own runtimes, original route guards and pool slots after caller/runtime stop. Exit waits for exact slot retirement; forced OS termination/power loss are outside this graceful-exit guarantee."
+}

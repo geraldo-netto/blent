@@ -16,7 +16,12 @@ mod cleanup;
 
 struct Owners {
     pool: Pool,
-    addresses: Arc<Mutex<HashSet<String>>>,
+    addresses: Arc<Mutex<Reservations>>,
+}
+#[derive(Default)]
+struct Reservations {
+    closed: bool,
+    addresses: HashSet<String>,
 }
 impl Owners {
     fn new(capacity: usize) -> std::io::Result<Self> {
@@ -40,8 +45,9 @@ impl Owners {
         let address = super::policy::endpoint_key(address);
         let slot = self.pool.reserve()?;
         let mut addresses = self.addresses.lock().unwrap();
+        ensure!(!addresses.closed, "Wi-Fi process is closing");
         ensure!(
-            addresses.insert(address.clone()),
+            addresses.addresses.insert(address.clone()),
             "Wi-Fi address still active or retiring"
         );
         Ok((
@@ -53,13 +59,32 @@ impl Owners {
         ))
     }
 }
+/// Close admission under the same lock used by reserve, then settle all slots.
+fn shutdown(owners: &Owners) {
+    owners.addresses.lock().unwrap().closed = true;
+    while owners.pool.active() != 0 {
+        std::thread::sleep(Duration::from_millis(5));
+    }
+}
+
+/// Process-entry guard, dropped after producers and their runtime stop.
+/// This fences graceful exit only; forced OS termination cannot run destructors.
+pub struct ProcessExit;
+impl Drop for ProcessExit {
+    fn drop(&mut self) {
+        if let Ok(owners) = Owners::shared() {
+            shutdown(owners);
+        }
+    }
+}
+
 struct Address {
-    owners: Arc<Mutex<HashSet<String>>>,
+    owners: Arc<Mutex<Reservations>>,
     address: String,
 }
 impl Drop for Address {
     fn drop(&mut self) {
-        self.owners.lock().unwrap().remove(&self.address);
+        self.owners.lock().unwrap().addresses.remove(&self.address);
     }
 }
 struct Retiring {
