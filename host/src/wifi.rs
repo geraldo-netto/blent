@@ -4,7 +4,9 @@ use anyhow::Result;
 use blent_config::persistence_contract::{Snapshots, Transactions};
 mod attempt;
 pub use attempt::ProcessExit;
+mod outcome;
 mod policy;
+pub use outcome::Setup;
 #[cfg(test)]
 use policy::connected;
 pub(crate) use policy::endpoint_key;
@@ -24,7 +26,7 @@ pub async fn setup<C: Commands + Clone + 'static, S: Snapshots + Transactions + 
     adb: &Adb<C>,
     store: &S,
     off: bool,
-) -> Result<Option<String>> {
+) -> Result<Setup> {
     let owner = crate::config_jobs::Store::new(store.clone())?;
     policy::setup(adb, &owner, off).await
 }

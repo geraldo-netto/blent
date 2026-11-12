@@ -18,6 +18,11 @@ pub use routes::Routes;
 
 pub type CommandFuture<'a> = Pin<Box<dyn Future<Output = Result<Output>> + Send + 'a>>;
 pub trait Commands: Send + Sync {
+    /// An explicitly absent adapter permits forgetting configuration only.
+    /// This is not a probe of executable, server or transport readiness.
+    fn is_configured(&self) -> bool {
+        true
+    }
     /// Lease the adapter's route namespace. Native adapters also coordinate
     /// across processes; in-memory adapters have no external namespace.
     fn route_lease(&self, _address: &str) -> Result<Box<dyn Send>> {
@@ -160,6 +165,9 @@ mod tests;
 
 /// A missing optional executable still permits local configuration retirement.
 impl<C: Commands> Commands for Option<C> {
+    fn is_configured(&self) -> bool {
+        self.as_ref().is_some_and(Commands::is_configured)
+    }
     fn execute_route(&self, arguments: Vec<String>) -> RouteFuture<'_> {
         match self {
             Some(commands) => commands.execute_route(arguments),

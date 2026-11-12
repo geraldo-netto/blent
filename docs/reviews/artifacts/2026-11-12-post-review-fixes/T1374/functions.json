@@ -1,0 +1,97 @@
+[
+  {
+    "file": "host/src/usb.rs",
+    "name": "is_configured",
+    "line": 23,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "53b5f59b6553ad1a746753eb77a4b9e53e248fc648a6f0d23c884db39abac964",
+    "complexity": 1
+  },
+  {
+    "file": "host/src/usb.rs",
+    "name": "is_configured",
+    "line": 168,
+    "language": "rust",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "53b5f59b6553ad1a746753eb77a4b9e53e248fc648a6f0d23c884db39abac964",
+    "complexity": 1
+  },
+  {
+    "file": "host/src/wifi.rs",
+    "name": "setup",
+    "line": 25,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "63939edba3af149c5a7669859e8b90897953df92710faa9ccb4e3c870114bdb2",
+    "complexity": 1
+  },
+  {
+    "file": "host/src/wifi/linux.rs",
+    "name": "setup",
+    "line": 10,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "921d9f5c8e538136b794b9e0b78ad0f4cc4530cd00bd0ee8e34ddb63a1e95a30",
+    "complexity": 1
+  },
+  {
+    "file": "host/src/wifi/policy.rs",
+    "name": "setup",
+    "line": 79,
+    "language": "rust",
+    "covered": 33,
+    "total": 34,
+    "percent": 97.05882352941177,
+    "passes": true,
+    "missing": [
+      106
+    ],
+    "source_sha256": "aecae33d4c80ef9d90b1fbfad22b684f6ede002dd6ba3c7e72f50aebe4feb8cb",
+    "complexity": 4
+  },
+  {
+    "file": "host/src/wifi/policy.rs",
+    "name": "disable",
+    "line": 114,
+    "language": "rust",
+    "covered": 25,
+    "total": 26,
+    "percent": 96.15384615384616,
+    "passes": true,
+    "missing": [
+      134
+    ],
+    "source_sha256": "aecae33d4c80ef9d90b1fbfad22b684f6ede002dd6ba3c7e72f50aebe4feb8cb",
+    "complexity": 4
+  },
+  {
+    "file": "host/src/wifi/outcome.rs",
+    "name": "message",
+    "line": 11,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "608e0c784addc6c49a0ffb9023bdcc1c6873dd23271357c4b8197cfba09a0cd4",
+    "complexity": 5
+  }
+]

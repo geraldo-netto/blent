@@ -1,4 +1,5 @@
 use super::*;
+mod off;
 use crate::usb::{CommandFuture, NativeCommands};
 use blent_config::storage::ConfigStore;
 use std::{
@@ -121,8 +122,8 @@ async fn t691_setup_off_and_stale_connect_preserve_configuration_ownership() {
         })
         .unwrap();
     assert_eq!(
-        setup(&adb, &store, false).await.unwrap().as_deref(),
-        Some("192.0.2.1:5555")
+        setup(&adb, &store, false).await.unwrap(),
+        Setup::Connected("192.0.2.1:5555".into())
     );
     assert_eq!(store.load().quality, 24);
     assert_eq!(
@@ -140,7 +141,10 @@ async fn t691_setup_off_and_stale_connect_preserve_configuration_ownership() {
         .calls
         .contains(&vec!["disconnect".into(), "192.0.2.1:5555".into()]));
     setup(&adb, &store, false).await.unwrap();
-    assert!(setup(&adb, &store, true).await.unwrap().is_none());
+    assert_eq!(
+        setup(&adb, &store, true).await.unwrap(),
+        Setup::Disconnected
+    );
     assert!(store.load().wifi_address.is_empty());
     assert!(reconnect(&adb, &store).await.is_none());
 }
@@ -229,7 +233,10 @@ async fn t691_native_adb_setup_and_off_use_owned_commands_and_store() {
             .join(blent_config::platform::executable_name("adb")),
     ));
     let store = ConfigStore::new(root.path().join("config.toml"));
-    assert!(setup(&adb, &store, false).await.unwrap().is_some());
+    assert!(matches!(
+        setup(&adb, &store, false).await.unwrap(),
+        Setup::Connected(_)
+    ));
     assert_eq!(adb.identity("USB").await.as_deref(), Some("owned-tablet"));
     assert!(Reconnect::new(
         store.path().unwrap().to_owned(),
@@ -242,7 +249,10 @@ async fn t691_native_adb_setup_and_off_use_owned_commands_and_store() {
     .connect()
     .await
     .is_some());
-    assert!(setup(&adb, &store, true).await.unwrap().is_none());
+    assert_eq!(
+        setup(&adb, &store, true).await.unwrap(),
+        Setup::Disconnected
+    );
     assert!(store.load().wifi_address.is_empty());
 }
 #[test]
@@ -327,9 +337,12 @@ async fn t691_off_without_commands_still_forgets_saved_address() {
             Ok(())
         })
         .unwrap();
-    setup(&Adb(None::<NativeCommands>), &store, true)
-        .await
-        .unwrap();
+    assert_eq!(
+        setup(&Adb(None::<NativeCommands>), &store, true)
+            .await
+            .unwrap(),
+        Setup::AdbUnavailable
+    );
     assert!(store.load().wifi_address.is_empty());
 }
 

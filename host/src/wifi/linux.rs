@@ -8,15 +8,12 @@ use anyhow::Result;
 /// listener on port 5555; an authorized adb connection carries the tunnel.
 /// --off forgets/disconnects that address but does not disable the listener.
 pub async fn setup(off: bool) -> Result<()> {
-    let address = crate::wifi::setup(
+    let outcome = crate::wifi::setup(
         &crate::usb::Adb(crate::usb::NativeCommands("adb".into())),
         &blent_config::storage::ConfigStore::default(),
         off,
     )
     .await?;
-    match address {
-        Some(address) => println!("Connected to {address}. USB remains preferred; the daemon reconnects while Wi-Fi is configured."),
-        None => println!("Wi-Fi off. Saved address forgotten; tablet network ADB listener is unchanged."),
-    }
+    println!("{}", outcome.message());
     Ok(())
 }

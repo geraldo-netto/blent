@@ -135,8 +135,10 @@ device before any mode switch, reset, or interface claim.
   disabling Pen preserves the pointer preference for when Pen is enabled again.
 - **Wi-Fi** — `blent wifi` once, with the cable in: it switches the tablet
   over, remembers the address and reconnects to it by itself whenever the
-  cable is out. `blent wifi --off` forgets the address and disconnects; it
-  does not disable the tablet's network adb listener. See [SECURITY.md](../SECURITY.md).
+  cable is out. `blent wifi --off` forgets the address and attempts to disconnect.
+  It reports a confirmed disconnect separately from forgetting an address when
+  ADB is unavailable, and returns an error if cleanup cannot be admitted or
+  confirmed. It does not disable the tablet's network adb listener. See [SECURITY.md](../SECURITY.md).
   USB preference also recognizes network ADB endpoints and mDNS wireless
   identifiers. See [benchmarks](benchmarks.md)
   for historical Wi-Fi results.

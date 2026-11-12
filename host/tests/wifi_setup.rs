@@ -112,3 +112,29 @@ fn t514_successful_address_fallback_and_off_preserve_the_cli_contract() {
     assert!(!fixture.run("tcpip-failed", false).status.success());
     assert_eq!(fixture.address(), "192.0.2.99:5555");
 }
+
+#[test]
+fn t1374_off_reports_unconfirmed_disconnect_when_native_lease_is_busy() {
+    let fixture = Fixture::new();
+    let runtime = fixture.0.path().join("blent");
+    std::fs::create_dir(&runtime).unwrap();
+    std::fs::set_permissions(&runtime, std::fs::Permissions::from_mode(0o700)).unwrap();
+    // All 64 bounded stripes are held, independent of the production hash.
+    let locks: Vec<_> = (0..64)
+        .map(|stripe| {
+            let file =
+                std::fs::File::create(runtime.join(format!("wifi-attempt-{stripe}.lock"))).unwrap();
+            file.lock().unwrap();
+            file
+        })
+        .collect();
+    let result = fixture.run("success", true);
+    assert!(
+        !result.status.success(),
+        "T1374: failed admission reported Wi-Fi off"
+    );
+    assert!(String::from_utf8_lossy(&result.stderr).contains("disconnect unconfirmed"));
+    assert!(fixture.address().is_empty());
+    assert!(!fixture.0.path().join("adb.calls").exists());
+    drop(locks);
+}

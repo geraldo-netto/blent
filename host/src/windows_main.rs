@@ -67,14 +67,8 @@ async fn setup_wifi(
         off || adb.is_some(),
         "Wi-Fi setup unavailable: adb.exe missing from PATH"
     );
-    let address = blent::wifi::setup(&Adb(adb.map(NativeCommands)), store, off).await?;
-    println!(
-        "{}",
-        address.map_or_else(
-            || "Wi-Fi off; saved address forgotten; tablet listener unchanged".into(),
-            |address| format!("Connected to {address}; USB remains preferred")
-        )
-    );
+    let outcome = blent::wifi::setup(&Adb(adb.map(NativeCommands)), store, off).await?;
+    println!("{}", outcome.message());
     Ok(())
 }
 async fn serve(path: &Path, config: blent_config::FileConfig) -> Result<()> {

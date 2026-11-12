@@ -43,7 +43,9 @@ the computer first. Run `blent wifi` once with the cable plugged in: it puts
 the tablet's adb on the network, remembers the address, and from then on the
 daemon reconnects on its own whenever the cable is out. The tablet goes back
 to USB-only when it reboots, so that one command has to be repeated after a
-tablet restart. `blent wifi --off` forgets the address and disconnects; it
+tablet restart. `blent wifi --off` forgets the address and attempts to disconnect.
+Its output distinguishes confirmed disconnection from unavailable ADB; failed
+cleanup admission returns an error even though the address was forgotten. It
 does not close the tablet's adb TCP listener. Host video/input ports stay on
 loopback, but `blent wifi` opens tablet port 5555. Use a trusted network;
 see [SECURITY.md](../SECURITY.md#connections-and-trust-boundaries) for returning

@@ -80,21 +80,9 @@ pub async fn setup<C: Commands + Clone + 'static>(
     adb: &Adb<C>,
     store: &impl AsyncPersistence,
     off: bool,
-) -> Result<Option<String>> {
+) -> Result<super::Setup> {
     if off {
-        let old = store.snapshot().await?.wifi_address;
-        store
-            .transact(Box::new(|config| {
-                config.wifi_address.clear();
-                Ok(())
-            }))
-            .await?;
-        if valid_address(&old) {
-            if let Ok(attempt) = super::attempt::Attempt::start(adb, &old, false).await {
-                let _ = attempt.finish(true).await;
-            }
-        }
-        return Ok(None);
+        return disable(adb, store).await;
     }
     let devices = adb.inventory().await.context("ADB inventory unavailable")?;
     let serial = usb_tablet(adb, &devices)
@@ -120,7 +108,34 @@ pub async fn setup<C: Commands + Clone + 'static>(
         return Err(error);
     }
     attempt.finish(true).await?;
-    Ok(Some(address))
+    Ok(super::Setup::Connected(address))
+}
+
+async fn disable<C: Commands + Clone + 'static>(
+    adb: &Adb<C>,
+    store: &impl AsyncPersistence,
+) -> Result<super::Setup> {
+    let old = store.snapshot().await?.wifi_address;
+    store
+        .transact(Box::new(|config| {
+            config.wifi_address.clear();
+            Ok(())
+        }))
+        .await?;
+    if !valid_address(&old) {
+        return Ok(super::Setup::NoSavedAddress);
+    }
+    if !adb.0.is_configured() {
+        return Ok(super::Setup::AdbUnavailable);
+    }
+    let attempt = super::attempt::Attempt::start(adb, &old, false)
+        .await
+        .context("Saved Wi-Fi address forgotten; transport disconnect unconfirmed")?;
+    attempt
+        .finish(true)
+        .await
+        .context("Saved Wi-Fi address forgotten; transport disconnect unconfirmed")?;
+    Ok(super::Setup::Disconnected)
 }
 async fn usb_tablet<C: Commands + Clone + 'static>(
     adb: &Adb<C>,
