@@ -187,11 +187,22 @@ impl Panel {
         ui.strong("USB devices");
         if view.snapshot().devices().is_empty() {
             ui.label("No USB devices found. Connect your tablet and open Blent.");
+            return;
         }
-        for (target, device) in view.snapshot().devices() {
-            ui.push_id(("device", target), |ui| {
-                ui.group(|ui| self.device(ui, view, *target, device));
+        let devices: Vec<_> = view.snapshot().devices().iter().collect();
+        let count = device_columns(ui.available_width()).min(devices.len());
+        for row in devices.chunks(count) {
+            ui.columns(count, |columns| {
+                for (column, (target, device)) in columns.iter_mut().zip(row) {
+                    column.push_id(("device", target), |ui| {
+                        ui.group(|ui| {
+                            ui.set_min_width(ui.available_width());
+                            self.device(ui, view, **target, device);
+                        });
+                    });
+                }
             });
+            ui.add_space(4.0);
         }
     }
     fn device(
@@ -321,6 +332,14 @@ impl Panel {
         }
     }
 }
+// Match the workspace's row-of-columns layout; widths are egui logical points.
+fn device_columns(width: f32) -> usize {
+    if !width.is_finite() {
+        return 1;
+    }
+    ((width / 280.0).floor() as usize).clamp(1, 8)
+}
+
 fn device_availability(
     ui: &mut egui::Ui,
     availability: blent_config::connection::control::Availability,

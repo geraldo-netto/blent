@@ -1,0 +1,218 @@
+{
+  "sources": {
+    "gui/src/connection_settings.rs": "c32a69bbb0d4d93bbd73963290a2210b9cd15004341ba0cc8806d35d52352043",
+    "gui/src/connection_settings/tests.rs": "658b658e5ff0752e7bef507f3a997f75fb40b26fb9060dc98b291b1619be86a1"
+  },
+  "functions": [
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "default",
+      "first": 26,
+      "last": 35,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "tablets",
+      "first": 38,
+      "last": 64,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "show",
+      "first": 65,
+      "last": 87,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "summary",
+      "first": 88,
+      "last": 95,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "refresh",
+      "first": 96,
+      "last": 114,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "complete",
+      "first": 115,
+      "last": 123,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "start",
+      "first": 124,
+      "last": 136,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "send",
+      "first": 137,
+      "last": 158,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "controls",
+      "first": 159,
+      "last": 184,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "devices",
+      "first": 185,
+      "last": 207,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device",
+      "first": 208,
+      "last": 246,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "links",
+      "first": 247,
+      "last": 285,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "pair",
+      "first": 286,
+      "last": 315,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "saved",
+      "first": 316,
+      "last": 333,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_columns",
+      "first": 336,
+      "last": 341,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_availability",
+      "first": 343,
+      "last": 359,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_state_label",
+      "first": 361,
+      "last": 370,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "device_description",
+      "first": 371,
+      "last": 389,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "fingerprint",
+      "first": 390,
+      "last": 398,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "phase_label",
+      "first": 399,
+      "last": 408,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "gui/src/connection_settings.rs",
+      "name": "link_label",
+      "first": 409,
+      "last": 418,
+      "language": "rust",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

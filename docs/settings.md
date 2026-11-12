@@ -101,7 +101,8 @@ The tray controls the running daemon.
 ## Connections and input devices
 
 In **Connections → USB devices**, each row shows the USB product/model name
-and manufacturer reported by the device. For example, a tablet can appear as
+and manufacturer reported by the device. Cards reflow into columns as the window
+widens and return to one column in narrow windows. For example, a tablet can appear as
 **RugKing Pad 2 Pro**, with **Manufacturer: Unisoc** below it. USB identifiers
 remain secondary details. Missing names are marked unavailable; the USB
 manufacturer may differ from the retail brand. **Android accessory mode** helps

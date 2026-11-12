@@ -700,3 +700,172 @@ fn t1338_reserved_or_unknown_device_disables_connect() {
         assert!(handle.0.lock().unwrap().commands.is_empty());
     }
 }
+
+fn grid_devices(handle: &Handle) {
+    use blent_config::connection::control::{Availability, DeviceNames};
+    let mut assembler = Assembler::new(Limits::default()).unwrap();
+    assembler
+        .push(Notice::Begin {
+            revision: 2,
+            local: peer(1),
+        })
+        .unwrap();
+    for target in 1..=6 {
+        assembler
+            .push(Notice::Device {
+                revision: 2,
+                target,
+                vendor: 0x1234,
+                product: 0x5678,
+                accessory: false,
+                names: DeviceNames::new("Maker".into(), format!("Tablet {target}")).unwrap(),
+                availability: if target == 2 {
+                    Availability::Debugging
+                } else {
+                    Availability::Available
+                },
+                connection: None,
+            })
+            .unwrap();
+    }
+    let snapshot = assembler
+        .push(Notice::End { revision: 2 })
+        .unwrap()
+        .unwrap();
+    let mut fake = handle.0.lock().unwrap();
+    fake.status.view = Some(fake.model.publish(snapshot).unwrap());
+}
+
+fn label_rect(labels: &[(String, egui::Rect)], label: &str) -> egui::Rect {
+    labels.iter().find(|(text, _)| text == label).unwrap().1
+}
+
+#[test]
+fn t1339_usb_cards_use_columns_and_reflow_in_narrow_windows() {
+    let (mut panel, handle) = fixture();
+    grid_devices(&handle);
+    let ctx = egui::Context::default();
+    for (width, columns) in [(320.0, 1), (600.0, 2), (900.0, 3), (320.0, 1)] {
+        let labels = frame(&mut panel, &ctx, width, Vec::new());
+        let first = label_rect(&labels, "Tablet 1");
+        let same_row = label_rect(&labels, &format!("Tablet {columns}"));
+        let next_row = label_rect(&labels, &format!("Tablet {}", columns + 1));
+        assert!(
+            (first.top() - same_row.top()).abs() < 1.0,
+            "T1339 missing {columns} columns"
+        );
+        assert!(next_row.top() > first.bottom());
+        assert!(
+            labels.iter().all(|(_, rect)| rect.right() <= width),
+            "T1339 clipped card"
+        );
+    }
+}
+
+#[test]
+fn t1339_column_counts_are_bounded_for_invalid_and_extreme_widths() {
+    for width in [
+        f32::NAN,
+        f32::NEG_INFINITY,
+        f32::INFINITY,
+        -1.0,
+        0.0,
+        279.0,
+        280.0,
+        559.9,
+    ] {
+        assert_eq!(device_columns(width), 1);
+    }
+    for columns in 2..=8 {
+        assert_eq!(device_columns(columns as f32 * 280.0), columns);
+    }
+    assert_eq!(device_columns(f32::MAX), 8);
+}
+
+fn pointer_click(panel: &mut Panel, ctx: &egui::Context, width: f32, position: egui::Pos2) {
+    for pressed in [true, false] {
+        frame(
+            panel,
+            ctx,
+            width,
+            vec![
+                egui::Event::PointerMoved(position),
+                egui::Event::PointerButton {
+                    pos: position,
+                    button: egui::PointerButton::Primary,
+                    pressed,
+                    modifiers: egui::Modifiers::NONE,
+                },
+            ],
+        );
+    }
+}
+
+#[test]
+fn t1339_columns_keep_target_identity_and_reserved_buttons_disabled() {
+    let (mut panel, handle) = fixture();
+    grid_devices(&handle);
+    let ctx = egui::Context::default();
+    let labels = frame(&mut panel, &ctx, 900.0, Vec::new());
+    let buttons: Vec<_> = labels
+        .iter()
+        .filter(|(text, _)| text == "Connect")
+        .map(|(_, rect)| rect.center())
+        .collect();
+    assert_eq!(buttons.len(), 6);
+    pointer_click(&mut panel, &ctx, 900.0, buttons[1]);
+    assert!(handle.0.lock().unwrap().commands.is_empty());
+    pointer_click(&mut panel, &ctx, 900.0, buttons[5]);
+    assert_eq!(
+        handle.0.lock().unwrap().commands,
+        [Command::Connect {
+            revision: 2,
+            target: 6
+        }]
+    );
+}
+
+fn key_events(key: egui::Key) -> Vec<egui::Event> {
+    [true, false]
+        .into_iter()
+        .map(|pressed| egui::Event::Key {
+            key,
+            physical_key: None,
+            pressed,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        })
+        .collect()
+}
+
+#[test]
+fn t1339_grid_connect_buttons_remain_keyboard_accessible() {
+    let (mut panel, handle) = fixture();
+    grid_devices(&handle);
+    let ctx = egui::Context::default();
+    let labels = frame(&mut panel, &ctx, 900.0, Vec::new());
+    let target = labels
+        .iter()
+        .filter(|(text, _)| text == "Connect")
+        .last()
+        .unwrap()
+        .1;
+    for _ in 0..10 {
+        frame(&mut panel, &ctx, 900.0, key_events(egui::Key::Tab));
+        let focused = ctx
+            .memory(|memory| memory.focused())
+            .and_then(|id| ctx.read_response(id));
+        if focused.is_some_and(|response| response.rect.contains(target.center())) {
+            frame(&mut panel, &ctx, 900.0, key_events(egui::Key::Enter));
+            assert_eq!(
+                handle.0.lock().unwrap().commands,
+                [Command::Connect {
+                    revision: 2,
+                    target: 6
+                }]
+            );
+            return;
+        }
+    }
+    panic!("T1339 last grid action inaccessible by keyboard");
+}

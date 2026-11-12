@@ -1,0 +1,59 @@
+{
+  "finding": "T1339",
+  "result": "resolved",
+  "date": "2026-11-12",
+  "behavior": "USB cards use available window width for 1\u20138 columns and return to one column in narrow windows. Existing workspace row/column pattern reused; target IDs and action policy unchanged.",
+  "regression_before_fix": "Wide 600-point window still stacked cards; permanent test failed: T1339 missing 2 columns.",
+  "tests": {
+    "gui_passed": 22,
+    "gui_executed": 22,
+    "coverage": "Responsive resize, invalid/extreme widths, reserved click rejection, sixth device exact target, keyboard access, existing connection state tests."
+  },
+  "coverage": {
+    "tool": "cargo-llvm-cov 0.8.7",
+    "production_functions_measured": 2,
+    "production_functions_passing": 2,
+    "minimum_percent": 100,
+    "method": "Fresh instrumented target; source fingerprints verified; per-function gate with no exclusions."
+  },
+  "complexity": {
+    "tool": "repository scripts/complexity; syn 2.0.119; tree-sitter 0.25.2",
+    "functions": 60,
+    "maximum": 8
+  },
+  "ownership": {
+    "owner": "Current frame borrows the immutable bounded broker snapshot; widget presentation owns no device handles.",
+    "allocation": "At most 512 device references in a frame-local vector; column count 1\u20138, clamped to nonempty inventory size.",
+    "handoff": "References stay inside synchronous egui closures and are dropped at frame return; stable target-based widget IDs preserve action identity.",
+    "settlement": "No callbacks, tasks, native leases, shared mutable resource state or retained pointers added. Existing command preparation and broker retirement remain authoritative."
+  },
+  "native_acceptance": {
+    "platform": "Linux X11",
+    "method": "Installed optimized binary on a temporary Xvfb display, connected to the real running USB broker; exact test GUI and Xvfb services stopped after screenshots.",
+    "device_count": 6,
+    "wide_columns": 3,
+    "width620_columns": 2,
+    "width320_columns": 1,
+    "tablet": "RugKing Pad 2 Pro: Reserved for USB debugging; Connect disabled",
+    "installation": "User AppDir reinstalled; daemon and desktop GUI restarted; installed checksum validation passed for all 6 of 6 binaries. Running daemon, GUI and broker executable checksums matched installed files.",
+    "android": "Matching APK was already reinstalled earlier in this task; unchanged Android MainActivity relaunched."
+  },
+  "limits": [
+    "Native Windows GUI evidence remains T1271.",
+    "Post-reload video frame acceptance remains T1340; authorized ADB and completed launch are not video proof."
+  ],
+  "artifacts": {
+    "native-build.log.gz": "0f4c52a3876a715aec60ceb11d1e08aef9bf3809de42a6f06fee908d2881446e",
+    "install.log.gz": "826060474ed042c31f771f415667c8e7c4ce398811132b77aebf88affa5c9030",
+    "release-build.log.gz": "0ead957e31a8e272e9ece85d37035faa3a92737ccd44e8cd9d7da77f3882caa9",
+    "installed-columns-320.png": "d9ec5bac13b6a05543a68090ed732d06543355664497ff30e749be8ce588581a",
+    "manifest.json": "9399fa60620622fa6319589eee8e346d62e2ee8932354963a10050348643ffce",
+    "complexity.json": "fa607dd2f7c9b365f3a9677ecedea75285821eb4fd2c39da18911f01f83c2f85",
+    "gui.log.gz": "38c2b8d5110a6dc5f4232cee95edeb33be8d9c0167a0b59c3c2dc3cc706f6aed",
+    "installed-columns-620.png": "4e1ac47042d212853997853cae8ed10a302d71f74d9520b47d2b358989ab8889",
+    "coverage.lcov.gz": "d24f2dd106ed8a89da797d462f3d4d994567fe2709d8aa4e1fae075f79303459",
+    "gui-red.log.gz": "63bcb5ced38aaf36a549ee9d43f1b4b3e93819156dbc5c05a016940de6c552ea",
+    "installed-columns.png": "91f350c47ff00b30570d5e3427b22a4e1cee7380767b41f967decffcd593869a",
+    "changed-coverage.json": "e134d53c0a5c7daf2d59589cf00991ab321265d961141741b3bdc2d938b792ae"
+  }
+}

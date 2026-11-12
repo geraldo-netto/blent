@@ -1,0 +1,24 @@
+[
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "devices",
+    "line": 185,
+    "language": "rust",
+    "covered": 21,
+    "total": 21,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "gui/src/connection_settings.rs",
+    "name": "device_columns",
+    "line": 336,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]
