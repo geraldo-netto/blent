@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import shutil
 import sys
 
 import coverage
@@ -39,7 +40,7 @@ def validate_snapshot(root, manifest):
 
 def configuration(directory, root):
     config = configparser.ConfigParser(interpolation=None)
-    config['run'] = dict(parallel='true', plugins='copies',
+    config['run'] = dict(core='ctrace', parallel='true', plugins='copies',
                          source=str(root), data_file=str(directory/'.coverage'))
     path = directory/'coverage.ini'
     with path.open('w') as stream:
@@ -47,7 +48,25 @@ def configuration(directory, root):
     return path
 
 
+def native_tracers():
+    system = shutil.which('python3')
+    if system is None:
+        raise ValueError('python3 with a native coverage tracer is required')
+    interpreters = [sys.executable, system]
+    if Path('/usr/bin/python3').is_file():
+        interpreters.append('/usr/bin/python3')
+    parent = str(Path(coverage.__file__).resolve().parent.parent)
+    probe = f'import sys; sys.path.insert(0, {parent!r}); from coverage.tracer import CTracer'
+    for executable in dict.fromkeys(interpreters):
+        result = subprocess.run([executable, '-I', '-S', '-c', probe], capture_output=True, text=True)
+        if result.returncode:
+            raise ValueError(f'{executable} cannot load the native coverage tracer; '
+                             'create the coverage venv with /usr/bin/python3 and use matching python3 on PATH: '
+                             + result.stderr.strip())
+
+
 def environment(directory, root):
+    native_tracers()
     hook = directory/'hook'
     hook.mkdir()
     tools = Path(__file__).resolve().parent
@@ -58,7 +77,7 @@ def environment(directory, root):
     # must already be importable at that point, including in system Python.
     paths = [str(hook), str(tools), str(Path(coverage.__file__).resolve().parent.parent)]
     paths.extend(filter(None, os.environ.get('PYTHONPATH', '').split(os.pathsep)))
-    return dict(os.environ, PYTHONPATH=os.pathsep.join(paths), PYTHONNOUSERSITE='1',
+    return dict(os.environ, COVERAGE_CORE='ctrace', PYTHONPATH=os.pathsep.join(paths), PYTHONNOUSERSITE='1',
                 COVERAGE_PROCESS_START=str(configuration(directory, root)),
                 BLENT_COVERAGE_ROOT=str(root), BLENT_COVERAGE_MANIFEST=str(directory/'manifest.json'),
                 BLENT_PYTHON_CALLS=str(directory/'calls'),

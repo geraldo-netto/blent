@@ -38,8 +38,8 @@ class CopyTest(unittest.TestCase):
             manifest = root/'manifest.json'
             manifest.write_text(json.dumps({'sources': {'fixture.py': fingerprint(original)}}))
             config = root/'coverage.ini'
-            config.write_text(f'[run]\nplugins = copies\nsource = {source}\ndata_file = {root}/.coverage\n')
-            env = dict(os.environ, BLENT_COVERAGE_ROOT=str(source), BLENT_COVERAGE_MANIFEST=str(manifest),
+            config.write_text(f'[run]\ncore = ctrace\nplugins = copies\nsource = {source}\ndata_file = {root}/.coverage\n')
+            env = dict(os.environ, COVERAGE_CORE='ctrace', BLENT_COVERAGE_ROOT=str(source), BLENT_COVERAGE_MANIFEST=str(manifest),
                        PYTHONPATH=str(Path(__file__).parent.resolve()))
             env.pop('COVERAGE_PROCESS_START', None)
             env.pop('BLENT_PYTHON_CALLS', None)

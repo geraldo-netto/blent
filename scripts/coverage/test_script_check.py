@@ -17,6 +17,23 @@ from script_check import environment, python_report, snapshot
 
 
 class CollectionTest(unittest.TestCase):
+    def test_t1349_configuration_requires_plugin_capable_native_core(self):
+        import configparser
+        with tempfile.TemporaryDirectory() as name:
+            directory = Path(name)
+            config = configparser.ConfigParser()
+            config.read(script_check.configuration(directory, directory))
+            self.assertEqual(config.get('run', 'core', fallback=None), 'ctrace')
+
+    def test_t1349_incompatible_child_tracer_rejects_before_writing_hooks(self):
+        with tempfile.TemporaryDirectory() as name:
+            directory = Path(name)
+            failure = subprocess.CompletedProcess(['python3'], 1, '', 'CTracer unavailable')
+            with patch.object(script_check.subprocess, 'run', return_value=failure):
+                with self.assertRaisesRegex(ValueError, 'native coverage tracer'):
+                    environment(directory, directory)
+            self.assertFalse((directory/'hook').exists())
+
     def test_t497_archived_recipe_execution_keeps_native_reporting_valid(self):
         with tempfile.TemporaryDirectory() as name:
             directory = Path(name)

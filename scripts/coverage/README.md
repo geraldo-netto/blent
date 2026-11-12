@@ -39,7 +39,7 @@ this is a scoped result, not a whole-project percentage.
 Install the reporting tools in an isolated environment:
 
 ```sh
-python3 -m venv /tmp/blent-coverage-venv
+/usr/bin/python3 -m venv /tmp/blent-coverage-venv
 /tmp/blent-coverage-venv/bin/python -m pip install -r scripts/coverage/requirements.txt
 /tmp/blent-coverage-venv/bin/python -m unittest discover -s scripts/coverage -p 'test_*.py'
 ```
@@ -135,7 +135,13 @@ allows a report containing gaps to be written without failing the command; the
 report still says `passes: false`. Remove that option to enforce the threshold.
 Test failures always fail collection.
 
-Python uses coverage.py subprocess counters and separate function-call evidence.
+Python uses coverage.py's native `ctrace` core for copied-source file tracers,
+plus separate function-call evidence. The collector checks that its interpreter,
+`python3` on PATH and `/usr/bin/python3` can load the same installed native tracer
+before creating subprocess hooks. Use the system interpreter to create the venv
+and a matching Python ABI on PATH. A mixed-ABI venv is rejected; the default
+Python 3.14 SysMonitor core cannot provide this copied-source attribution.
+The core is explicit in both configuration and the child environment.
 Loading a definition, including a one-line function, is not counted as invoking
 it. Byte-identical copied fixtures are attributed to their original sources by
 SHA-256; changed or ambiguous copies do not receive credit. Bash uses native DEBUG
