@@ -1,0 +1,41 @@
+[
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "write_service",
+    "line": 63,
+    "language": "shell",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "a904386f158e0345d046149ae4150879ec2bbb89d75e061b99b4d6efdd212121",
+    "complexity": 3
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_service",
+    "line": 70,
+    "language": "shell",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "a904386f158e0345d046149ae4150879ec2bbb89d75e061b99b4d6efdd212121",
+    "complexity": 4
+  },
+  {
+    "file": "scripts/install.sh",
+    "name": "write_installed_user_service",
+    "line": 213,
+    "language": "shell",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "328e4abafc7d9424dafe05cf3ba41c6f7cfb0d6326e68558d1d7d204a69c8b51",
+    "complexity": 6
+  }
+]

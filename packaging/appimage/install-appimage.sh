@@ -60,14 +60,16 @@ install_extracted() {
     LAUNCHER="$DEST/Blent.AppDir/AppRun"
 }
 
+write_service() {
+    local marker
+    marker=$(printf '%s' "$LAUNCHER" | od -An -tx1 | tr -d ' \n') || return
+    printf '# BLENT_APPIMAGE_PATH_HEX=%s\n' "$marker" || return
+    bash "$TOOLS/write-systemd-service.sh" "$ENTRY" "$TOOLS/blent.service"
+}
+
 install_service() {
-    local temporary marker
-    mkdir -p -- "$CONFIG_BASE/systemd/user"
-    temporary=$(mktemp "$CONFIG_BASE/systemd/user/.blent.XXXXXXXX")
-    marker=$(printf '%s' "$LAUNCHER" | od -An -tx1 | tr -d ' \n')
-    printf '# BLENT_APPIMAGE_PATH_HEX=%s\n' "$marker" > "$temporary"
-    bash "$TOOLS/write-systemd-service.sh" "$ENTRY" "$TOOLS/blent.service" >> "$temporary"
-    mv -f -- "$temporary" "$CONFIG_BASE/systemd/user/blent.service"
+    mkdir -p -- "$CONFIG_BASE/systemd/user" || return
+    publish_file "$CONFIG_BASE/systemd/user/blent.service" 600 write_service || return
     systemctl --user daemon-reload 2>/dev/null || true
 }
 

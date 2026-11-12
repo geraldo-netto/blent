@@ -214,7 +214,7 @@ write_installed_user_service() {
     mkdir -p "$CONFIG_BASE/systemd/user" || return
     local staged
     staged=$(mktemp "$CONFIG_BASE/systemd/user/.blent.XXXXXXXX") || return
-    if write_user_service > "$staged" && mv -f "$staged" "$CONFIG_BASE/systemd/user/blent.service"; then
+    if write_user_service > "$staged" && [ ! -d "$CONFIG_BASE/systemd/user/blent.service" ] && mv -fT "$staged" "$CONFIG_BASE/systemd/user/blent.service"; then
         :
     else
         rm -f "$staged"
