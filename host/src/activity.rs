@@ -81,6 +81,7 @@ mod dpms;
 struct Shared {
     observations: Mutex<Observations>,
     stopped: AtomicBool,
+    replacement: AtomicBool,
     wake: Notify,
     lifetime: SourceLifetime,
 }
@@ -200,6 +201,7 @@ impl LinuxSource {
         let shared = Arc::new(Shared {
             observations: Mutex::new(observations),
             stopped: AtomicBool::new(false),
+            replacement: AtomicBool::new(false),
             wake: Notify::new(),
             lifetime,
         });
@@ -258,7 +260,14 @@ impl Source for LinuxSource {
         self.capabilities
     }
     fn poll(&mut self) -> Result<Option<Event>> {
-        self.shared.state().poll()
+        let event = self.shared.state().poll()?;
+        if event.is_none() && !self.shared.stopped.load(Ordering::Acquire) {
+            ensure!(
+                !self.shared.replacement.load(Ordering::Acquire),
+                "native activity observer requires replacement"
+            );
+        }
+        Ok(event)
     }
     fn stop(&mut self) {
         self.shared.stop();

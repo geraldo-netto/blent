@@ -1,0 +1,11 @@
+{
+  "common/src/host_activity/source_contract.rs": "37b252e1df133ddbf2929b6456af1d3d1f8873ee4b04e710a899bf08a65a8023",
+  "common/src/host_activity/source_lifetime.rs": "5ad668c882dd4e45cf63903bb598671423ce8ed2e13c697ea760fc207d650acb",
+  "host/src/activity.rs": "49536df7bae220a497653fca32e673921ec8e059a2487da6f5eba0a0e806b0f1",
+  "host/src/activity/dpms.rs": "a74049f6abc1ceb7be4430ed4d520f75be9349644508f3ed1b5f9cad4b59181b",
+  "host/src/activity/dpms/tests.rs": "520701e12ae6e3f3ca145ba8cd359ebc0e0287808541743033b6b54fc40470b4",
+  "host/src/activity_follow.rs": "e30e69fd2901bf7790a9c70fa13872b46e5b9128e478fe44aa3a77b949a98c22",
+  "host/src/activity_follow/recovery.rs": "053d5018d9682d6dc2d0dc5fb66436140a485e6a0c7fbf8be8d534c9f31c24f2",
+  "host/src/activity_follow_tests.rs": "6e35fe24ec50e234540cdd1198e447b289098532a536106d0d8263548b029b98",
+  "host/src/activity_follow_recovery_tests.rs": "00e60b1a89269f119a183b9296dcb0189f9d81368a08338d05c50cf20fa44117"
+}

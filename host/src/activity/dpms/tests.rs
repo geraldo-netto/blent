@@ -174,6 +174,10 @@ async fn t1013_capability_withdrawal_or_stalled_original_clears_only_display_sta
         );
         assert_eq!(lost.locked, Some(false));
         retired(&source).await;
+        assert!(
+            source.poll().is_err(),
+            "T1343 lost observer must request replacement"
+        );
     }
 }
 #[tokio::test]

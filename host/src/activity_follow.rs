@@ -157,55 +157,21 @@ fn pool() -> Result<&'static Pool> {
     .as_ref()
     .map_err(|error| anyhow::anyhow!("activity admission: {error}"))
 }
-async fn run(
-    factory: Arc<dyn SourceFactory>,
-    settings: Settings,
-    preferences: blent_config::host_activity::Settings,
-    lifetime: SourceLifetime,
-    shared: Arc<Shared>,
-) -> Result<()> {
-    let creation = std::panic::AssertUnwindSafe(async {
-        tokio::select! { biased;
-            _ = shared.stopped() => anyhow::bail!("activity creation stopped"),
-            value = tokio::time::timeout(settings.startup_deadline, factory.create(settings.source, lifetime)) => Ok(value??),
-        }
-    }).catch_unwind().await;
-    let mut binding =
-        match creation.unwrap_or_else(|_| Err(anyhow::anyhow!("activity creator panicked"))) {
-            Ok(binding) => binding,
-            Err(error) => {
-                tracing::warn!(%error, "activity source creation failed");
-                shared.publish(Publication::Failed);
-                return Ok(());
-            }
-        };
-    let outcome =
-        std::panic::AssertUnwindSafe(observe(&mut binding, settings, preferences, &shared))
-            .catch_unwind()
-            .await;
-    if !matches!(outcome, Ok(Ok(()))) {
-        tracing::warn!(?outcome, "activity source following failed");
-        shared.publish(Publication::Failed);
-    }
-    binding.source.stop();
-    while !binding.source.retired() {
-        tokio::time::sleep(settings.interval).await;
-    }
-    Ok(())
-}
+mod recovery;
+use recovery::run;
 async fn observe(
     binding: &mut StartedSource,
     settings: Settings,
     preferences: blent_config::host_activity::Settings,
     shared: &Shared,
-) -> Result<()> {
+) -> Result<bool> {
     let capabilities = binding.source.capabilities();
     let mut feed = Feed::new(binding.epoch, capabilities, preferences)?;
     let mut timer = tokio::time::interval(settings.interval);
     timer.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     loop {
         if shared.stopped.load(Ordering::Acquire) {
-            return Ok(());
+            return Ok(false);
         }
         if let Err(error) = drain(binding.source.as_mut(), &mut feed, settings.source.queue) {
             feed.lost();
@@ -214,14 +180,14 @@ async fn observe(
                 snapshot: feed.snapshot(true, false),
             });
             tracing::warn!(%error, "original activity observation lost");
-            return Ok(());
+            return Ok(true);
         }
         shared.publish(Publication::Observed {
             capabilities,
             snapshot: feed.snapshot(true, false),
         });
         tokio::select! { biased;
-            _ = shared.stopped() => return Ok(()),
+            _ = shared.stopped() => return Ok(false),
             _ = timer.tick() => {},
         }
     }
@@ -240,3 +206,7 @@ fn drain(source: &mut dyn Source, feed: &mut Feed, capacity: usize) -> Result<()
 #[cfg(test)]
 #[path = "activity_follow_tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "activity_follow_recovery_tests.rs"]
+mod recovery_tests;

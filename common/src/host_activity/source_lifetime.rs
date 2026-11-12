@@ -23,11 +23,14 @@ impl SourceLifetime {
     }
     /// Register before transferring native ownership or exposing its result.
     pub fn retain(&self, completion: Completion) {
-        self.0
+        let mut native = self
+            .0
             .native
             .lock()
-            .unwrap_or_else(std::sync::PoisonError::into_inner)
-            .push(completion);
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        // Certificates are monotonic. Forget settled attempts, never live debt.
+        native.retain(|proof| !proof.is_complete());
+        native.push(completion);
     }
 }
 struct Native(Vec<Completion>);
@@ -46,5 +49,34 @@ impl Drop for Owned {
             .take()
             .expect("owned source admission")
             .retain(Native(std::mem::take(native)));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::retirement::Pool;
+
+    #[test]
+    fn t1343_retry_certificates_remain_bounded_without_forgetting_live_native_debt() {
+        let owner = SourceLifetime::new(Pool::new(1).unwrap().reserve().unwrap());
+        let pool = Pool::new(2).unwrap();
+        let original = pool.reserve().unwrap();
+        owner.retain(original.completion());
+        for _ in 0..256 {
+            let attempt = pool.reserve().unwrap();
+            owner.retain(attempt.completion());
+            assert_eq!(owner.0.native.lock().unwrap().len(), 2);
+            drop(attempt);
+        }
+        let complete = owner.completion();
+        drop(owner);
+        assert!(!complete.is_complete());
+        drop(original);
+        let settled = std::time::Instant::now();
+        while !complete.is_complete() {
+            assert!(settled.elapsed() < std::time::Duration::from_secs(3));
+            std::thread::yield_now();
+        }
     }
 }

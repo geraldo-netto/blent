@@ -1,0 +1,150 @@
+[
+  {
+    "file": "host/src/activity.rs",
+    "name": "start",
+    "line": 188,
+    "language": "rust",
+    "covered": 31,
+    "total": 33,
+    "percent": 93.93939393939394,
+    "passes": true,
+    "missing": [
+      216,
+      217
+    ]
+  },
+  {
+    "file": "host/src/activity.rs",
+    "name": "poll",
+    "line": 262,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity/dpms.rs",
+    "name": "run",
+    "line": 165,
+    "language": "rust",
+    "covered": 19,
+    "total": 19,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow.rs",
+    "name": "observe",
+    "line": 162,
+    "language": "rust",
+    "covered": 29,
+    "total": 30,
+    "percent": 96.66666666666667,
+    "passes": true,
+    "missing": [
+      174
+    ]
+  },
+  {
+    "file": "common/src/host_activity/source_lifetime.rs",
+    "name": "retain",
+    "line": 25,
+    "language": "rust",
+    "covered": 9,
+    "total": 9,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "run",
+    "line": 11,
+    "language": "rust",
+    "covered": 16,
+    "total": 16,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "run",
+    "line": 28,
+    "language": "rust",
+    "covered": 13,
+    "total": 13,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "attempt",
+    "line": 44,
+    "language": "rust",
+    "covered": 20,
+    "total": 20,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "create",
+    "line": 67,
+    "language": "rust",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "follow",
+    "line": 74,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "outcome",
+    "line": 81,
+    "language": "rust",
+    "covered": 7,
+    "total": 7,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "retry",
+    "line": 91,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "host/src/activity_follow/recovery.rs",
+    "name": "settle_and_backoff",
+    "line": 97,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

@@ -167,6 +167,7 @@ impl Probe {
         let outcome = self.watch(&shared).await;
         if let Err(error) = outcome {
             tracing::warn!(%error, "original X11 power observer lost");
+            shared.replacement.store(true, Ordering::Release);
         }
         let _ = shared.update(native::Patch::Lost(Capabilities {
             display: self.initial.supported,

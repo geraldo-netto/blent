@@ -68,20 +68,20 @@ use std::{
     },
     time::Duration,
 };
-struct State {
-    events: Mutex<VecDeque<Event>>,
-    stop: AtomicBool,
-    released: AtomicBool,
-    failure: std::sync::atomic::AtomicU8,
+pub(super) struct State {
+    pub(super) events: Mutex<VecDeque<Event>>,
+    pub(super) stop: AtomicBool,
+    pub(super) released: AtomicBool,
+    pub(super) failure: std::sync::atomic::AtomicU8,
 }
 struct Ready {
     state: Arc<State>,
     caps: Capabilities,
     epoch: u64,
 }
-struct Input {
-    state: Arc<State>,
-    caps: Capabilities,
+pub(super) struct Input {
+    pub(super) state: Arc<State>,
+    pub(super) caps: Capabilities,
 }
 impl Source for Input {
     fn capabilities(&self) -> Capabilities {
@@ -120,7 +120,7 @@ impl SourceFactory for Ready {
         })
     }
 }
-fn state() -> Arc<State> {
+pub(super) fn state() -> Arc<State> {
     Arc::new(State {
         events: Mutex::new(VecDeque::new()),
         stop: AtomicBool::new(false),
@@ -128,7 +128,7 @@ fn state() -> Arc<State> {
         failure: std::sync::atomic::AtomicU8::new(0),
     })
 }
-fn running(revision: u64) -> Event {
+pub(super) fn running(revision: u64) -> Event {
     Event {
         epoch: 7,
         revision,
@@ -139,20 +139,20 @@ fn running(revision: u64) -> Event {
         },
     }
 }
-fn caps() -> Capabilities {
+pub(super) fn caps() -> Capabilities {
     Capabilities {
         power: true,
         lock: true,
         display: true,
     }
 }
-fn settings() -> Settings {
+pub(super) fn settings() -> Settings {
     Settings {
         interval: Duration::from_millis(1),
         ..Settings::default()
     }
 }
-async fn until(mut predicate: impl FnMut() -> bool) {
+pub(super) async fn until(mut predicate: impl FnMut() -> bool) {
     tokio::time::timeout(Duration::from_secs(3), async {
         while !predicate() {
             tokio::time::sleep(Duration::from_millis(1)).await;
