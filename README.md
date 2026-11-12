@@ -50,7 +50,7 @@ checks contact GitHub; see [security and privacy](SECURITY.md).
 
 | Route | Setup | Limits |
 | --- | --- | --- |
-| Paired direct USB, Linux | **Connections → USB connection → Find USB devices**; connect, compare Computer/Tablet fingerprints, explicitly approve the matching peer. | No USB debugging required. Preview/native acceptance limits remain visible. Pairing grants no camera/audio consent. |
+| Paired direct USB, Linux | Turn **USB debugging off** on Android. Open **Connections → USB connection → Find USB devices**; connect, compare Computer/Tablet fingerprints, explicitly approve the matching peer. | ADB-enabled devices remain reserved for debugging. Preview/native acceptance limits remain visible. Pairing grants no camera/audio consent. |
 | ADB over USB | Install `adb`, enable Android USB debugging and authorize the computer. | Host sets up forwarding and normally launches the app. ADB is Android's debugging connection tool; this route uses session tokens. |
 
 Direct USB uses authenticated peer credentials. Its discovery or pairing success
