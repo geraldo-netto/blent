@@ -24,10 +24,6 @@ internal class SecureConnection(keys: Array<KeyManager>, approvedCertificate: By
 
         private val PREFACE = byteArrayOf(66, 76, 69, 78, 84, 85, 83, 66, 0, 1)
 
-        // API 27/28 use the authenticated preface without public ALPN calls.
-        // Native qualification is separate from this adapter's API eligibility.
-        fun supported(): Boolean = Build.VERSION.SDK_INT >= 27
-
         private fun certificate(bytes: ByteArray): X509Certificate {
             require(bytes.size in 1..MAX_CERTIFICATE)
             val input = ByteArrayInputStream(bytes)
@@ -56,7 +52,6 @@ internal class SecureConnection(keys: Array<KeyManager>, approvedCertificate: By
         var owned = socket
         try {
             val readTimeout = socket.soTimeout
-            check(supported()) { "Accessory TLS requires API 27" }
             val secured = context.socketFactory.createSocket(socket, HOSTNAME, socket.port, true) as SSLSocket
             owned = secured
             configure(secured)
@@ -77,6 +72,7 @@ internal class SecureConnection(keys: Array<KeyManager>, approvedCertificate: By
         socket.enabledProtocols = socket.supportedProtocols.filter { it == "TLSv1.3" || it == "TLSv1.2" }.toTypedArray()
         socket.sslParameters = socket.sslParameters.apply {
             endpointIdentificationAlgorithm = "HTTPS"
+            // API 27/28 use the authenticated preface without public ALPN calls.
             if (Build.VERSION.SDK_INT >= 29) applicationProtocols = arrayOf(PROTOCOL)
         }
     }

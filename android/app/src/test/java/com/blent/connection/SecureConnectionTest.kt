@@ -82,7 +82,6 @@ class SecureConnectionTest {
         } finally { listener.close(); executor.shutdownNow(); assertTrue(executor.awaitTermination(5, TimeUnit.SECONDS)) }
     }
     @Test fun t846MutualTlsTransfersBytesOnlyForApprovedIdentities() {
-        assertTrue(SecureConnection.supported())
         assertTrue(trial())
         assertFalse(trial(clientPeer = "stranger"))
         assertFalse(trial(serverPeer = "stranger"))
@@ -112,7 +111,6 @@ class SecureConnectionTest {
         }
     }
     @Test @Config(sdk = [27]) fun t846Api27UsesAuthenticatedPrefaceWithoutPublicAlpn() {
-        assertTrue(SecureConnection.supported())
         assertTrue(trial(protocol = null, tls12 = true))
         assertFalse(trial(clientPeer = "stranger", protocol = null))
         assertFalse(trial(serverPeer = "stranger", protocol = null))
