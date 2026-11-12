@@ -45,13 +45,14 @@ class ScriptLifecycleTests(unittest.TestCase):
                                     cwd=root, env=environment, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             commands = (root/'commands').read_text().splitlines()
-            self.assertEqual(len(commands), 4)
+            self.assertEqual(len(commands), 5)  # T1353: include the native USB helper.
             self.assertTrue(all(f'|{source}|' in command for command in commands))
             self.assertIn('--target-dir target --manifest-path host/Cargo.toml', commands[0])
             self.assertIn('--target-dir target --manifest-path gui/Cargo.toml', commands[1])
-            self.assertIn('evdi-1.15.0/library', commands[2])
-            self.assertIn('-levdi -lpthread -Wl,-rpath,$ORIGIN', commands[3])
-            self.assertIn('host/evdi/frame_exchange.c host/evdi/fifo_writer.c', commands[3])
+            self.assertEqual(commands[2], f'make|{source}|--always-make -C host/accessory OUTPUT=../../target/release/blent-usb-io')
+            self.assertIn('evdi-1.15.0/library', commands[3])
+            self.assertIn('-levdi -lpthread -Wl,-rpath,$ORIGIN', commands[4])
+            self.assertIn('host/evdi/frame_exchange.c host/evdi/fifo_writer.c', commands[4])
 
     def test_t497_gui_cleanup_reaps_owned_children_and_tolerates_empty_state(self):
         with tempfile.TemporaryDirectory() as directory:
