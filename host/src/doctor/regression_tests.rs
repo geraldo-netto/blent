@@ -68,10 +68,14 @@ async fn t1335_absent_connector_does_not_assert_module_is_loaded() {
         &FileConfig::default(),
         &[],
         std::ffi::OsStr::new("unused-with-no-connectors"),
-    ).await;
+    )
+    .await;
     let messages = report.messages.borrow().join("\n");
     assert_eq!(report.failures, 1);
     assert!(messages.contains("none found in sysfs"));
-    assert!(!messages.contains("module is loaded"), "T1335 absence is not module-load evidence");
+    assert!(
+        !messages.contains("module is loaded"),
+        "T1335 absence is not module-load evidence"
+    );
     assert!(messages.contains("system setup") && messages.contains("reboot"));
 }
