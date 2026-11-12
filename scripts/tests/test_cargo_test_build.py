@@ -7,6 +7,17 @@ from cargo_test_build import binary_build
 
 
 class BinaryBuildTest(unittest.TestCase):
+    def test_t1357_current_compact_options_and_help_preserve_cargo_semantics(self):
+        command = ['cargo', 'test', '--bins', '-pblent', '-j2', '-Fnative-encoder',
+                   '-r', '-vv', '-m', 'manifest with spaces', '--timings', '--ignore-rust-version']
+        self.assertEqual(binary_build(command), ['cargo', 'build', '--bins', '-p', 'blent',
+            '-j', '2', '-F', 'native-encoder', '-r', '-v', '-v', '-m',
+            'manifest with spaces', '--timings', '--ignore-rust-version'])
+        for flag in ['-h', '--help']:
+            self.assertIsNone(binary_build(['cargo', 'test', '--bins', flag]))
+        self.assertEqual(binary_build(['cargo', 'test', '--bins', '-rp=blent']),
+                         ['cargo', 'build', '--bins', '-r', '-p', 'blent'])
+
     def test_t1355_features_profile_paths_and_package_selection_survive(self):
         original = ['cargo', 'test', '--bins', '--lib', '-p', 'blent', '--features=native-encoder',
                     '--no-default-features', '--profile', 'test', '--target-dir', 'literal space',
