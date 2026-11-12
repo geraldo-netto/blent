@@ -1,5 +1,40 @@
 use super::*;
 
+#[test]
+fn t1375_generic_labels_never_displace_available_descriptive_names() {
+    for named_presence in [Presence::Unknown, Presence::Available, Presence::Connected] {
+        for generic_presence in [Presence::Unknown, Presence::Available, Presence::Connected] {
+            assert_named_merge(named_presence, generic_presence);
+        }
+    }
+}
+
+fn assert_named_merge(named_presence: Presence, generic_presence: Presence) {
+    let identity =
+        Identity::UsbPeer(crate::connection::pairing::PeerId::parse("ab".repeat(32)).unwrap());
+    let named = Device::new(
+        identity.clone(),
+        "Zed Tablet (Maker)".into(),
+        named_presence,
+        false,
+    )
+    .unwrap();
+    let generic = Device::new(identity.clone(), identity.label(), generic_presence, true).unwrap();
+    for observations in [[named.clone(), generic.clone()], [generic, named]] {
+        let mut catalog = Catalog::new(1).unwrap();
+        for device in observations {
+            catalog.insert(device).unwrap();
+        }
+        assert_eq!(catalog.devices()[0].name(), "Zed Tablet (Maker)", "T1375");
+        assert_eq!(
+            catalog.devices()[0].presence(),
+            named_presence.max(generic_presence)
+        );
+        assert!(catalog.devices()[0].display_assigned());
+        assert_eq!(catalog.devices()[0].identity(), &identity);
+    }
+}
+
 fn id(value: &str) -> Identity {
     Identity::Adb(value.into())
 }

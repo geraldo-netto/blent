@@ -58,12 +58,20 @@ impl Device {
 
     fn merge(&mut self, other: Self) {
         self.display_assigned |= other.display_assigned;
-        if (other.presence, std::cmp::Reverse(&other.name))
-            > (self.presence, std::cmp::Reverse(&self.name))
-        {
+        if other.name_rank() > self.name_rank() {
             self.name = other.name;
         }
         self.presence = self.presence.max(other.presence);
+    }
+
+    // Borrow only this frame's bounded name. Generic identity labels carry no
+    // model information, even when their source has stronger presence evidence.
+    fn name_rank(&self) -> (bool, Presence, std::cmp::Reverse<&str>) {
+        (
+            self.name != self.identity.label(),
+            self.presence,
+            std::cmp::Reverse(&self.name),
+        )
     }
 }
 

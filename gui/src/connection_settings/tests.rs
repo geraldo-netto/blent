@@ -8,6 +8,27 @@ use blent_config::connection::{
 use std::sync::{Arc, Mutex};
 
 #[test]
+fn t1375_workspace_retains_the_connected_usb_model_and_manufacturer() {
+    let (mut panel, handle) = fixture();
+    {
+        let mut fake = handle.0.lock().unwrap();
+        fake.status.view = Some(publish_ownership(
+            &mut fake.model,
+            2,
+            1,
+            State::Authenticated,
+            Some(2),
+        ));
+    }
+    let tablets = panel.tablets();
+    assert_eq!(tablets[0].name(), "RugKing Pad 2 Pro (Unisoc)");
+    assert_eq!(
+        tablets[0].identity(),
+        &blent_config::tablets::Identity::UsbPeer(peer(2))
+    );
+}
+
+#[test]
 fn t1273_only_current_authenticated_links_supply_workspace_tablets() {
     let (mut panel, handle) = fixture();
     assert!(Panel::default().tablets().is_empty());

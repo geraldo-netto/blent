@@ -9,6 +9,7 @@ use blent_config::connection::{
 use eframe::egui;
 use std::{collections::BTreeMap, time::Duration};
 mod backend;
+mod tablets;
 
 struct Choice {
     ticket: Ticket,
@@ -47,19 +48,8 @@ impl Panel {
         };
         view.snapshot()
             .links()
-            .values()
-            .filter(|link| link.state == State::Authenticated)
-            .filter_map(|link| link.ticket.as_ref())
-            .filter_map(|ticket| {
-                let identity = blent_config::tablets::Identity::UsbPeer(ticket.peer.clone());
-                blent_config::workspace::Device::new(
-                    identity.clone(),
-                    identity.label(),
-                    blent_config::workspace::Presence::Connected,
-                    false,
-                )
-                .ok()
-            })
+            .iter()
+            .filter_map(|(connection, link)| tablets::project(view.snapshot(), *connection, link))
             .collect()
     }
     pub(super) fn show(&mut self, ui: &mut egui::Ui) {
