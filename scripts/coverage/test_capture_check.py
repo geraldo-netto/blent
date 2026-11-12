@@ -19,10 +19,12 @@ class CaptureGateTest(unittest.TestCase):
     def test_t1313_usb_suite_includes_discovery_and_selection(self):
         command = capture_check.suite('host/accessory/')
         self.assertEqual(command[:3], [sys.executable, '-m', 'unittest'])
+        self.assertEqual(len(command[3:]), 5)  # T1348: each required suite once.
         self.assertEqual(set(command[3:]), {
             'scripts/tests/test_aoa_probe.py', 'scripts/tests/test_aoa_reconnect.py',
             'scripts/tests/test_accessory_discovery.py',
             'scripts/tests/test_accessory_selection.py',
+            'scripts/tests/test_accessory_availability.py',
         })
 
     def test_t497_native_gate_distinguishes_missing_function_coverage(self):
