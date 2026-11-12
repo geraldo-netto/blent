@@ -156,3 +156,29 @@ fn t991_camera_native_boundary_rejects_credential_request_mismatch_before_owners
         "T991 mismatched bootstrap/registration credentials reached native ownership"
     );
 }
+
+#[tokio::test]
+async fn t1369_portable_invitation_checks_every_token_byte_and_length() {
+    let rig = authenticated();
+    let bridge = bridge(&rig);
+    let expected = "ab".repeat(32);
+    for index in 0..64 {
+        let mut wrong = expected.as_bytes().to_vec();
+        wrong[index] = b'0';
+        assert!(bridge
+            .invite(std::str::from_utf8(&wrong).unwrap(), &profile())
+            .await
+            .is_err());
+    }
+    for length in 0..=65 {
+        assert!(bridge
+            .invite(&"f".repeat(length), &profile())
+            .await
+            .is_err());
+    }
+    assert!(rig.calls.lock().unwrap().clients.is_empty());
+    bridge.invite(&expected, &profile()).await.unwrap();
+    rig.complete();
+    bridge.close().await.unwrap();
+    assert!(bridge.retired());
+}

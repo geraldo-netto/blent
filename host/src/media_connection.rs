@@ -58,7 +58,8 @@ impl<P: Clone + PartialEq + Send + Sync> Bridge<P> {
     }
     async fn invite_once(&self, token: &str, profile: &P) -> Result<()> {
         ensure!(
-            blent_config::runtime::token_matches(&self.token, token) && self.profile == *profile,
+            blent_config::credentials::token_matches(&self.token, token)
+                && self.profile == *profile,
             "USB media invitation differs from original request"
         );
         ensure!(

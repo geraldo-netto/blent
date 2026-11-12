@@ -4,7 +4,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1369 | open | medium | small | Remove the Linux runtime dependency from the portable media invitation check. `host/src/media_connection.rs::invite_once` calls `blent_config::runtime::token_matches`, whose module is absent on Windows; the existing Windows test-build gate fails E0433. Call the independent credentials contract directly, retain constant-time token comparison and bounded invalid-token regressions, and pass Linux tests plus Windows compilation. Runtime behavior must remain unchanged; native Windows media support is not implied. |
 
 
 ## Other items

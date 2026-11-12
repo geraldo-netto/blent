@@ -1,0 +1,19 @@
+{
+  "tools": "cargo-llvm-cov 0.8.7; project checker/tree-sitter 0.25.2",
+  "functions": [
+    {
+      "file": "host/src/media_connection.rs",
+      "name": "invite_once",
+      "line": 59,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 5,
+      "sha256": "5c3e6f7f272b3384b5f0b8e0084d3f5880c7d463c0203dfc896bc7b5fd583228"
+    }
+  ],
+  "ownership": "One invocation borrows the bridge-owned credential and profile; comparison uses the same constant-time credentials function formerly reexported through Linux runtime. Admission, original registration and cleanup are unchanged. Regression covers every 64-byte position and rejected lengths 0..65."
+}
