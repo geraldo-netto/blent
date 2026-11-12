@@ -7,14 +7,16 @@ use std::process::{Command, Output};
 const ADB: &str = r#"#!/bin/sh
 printf '%s\n' "$*" >> "$HOME/adb.calls"
 case "$*" in
-  devices|'devices -l') printf 'List of devices attached\nTABLET\tdevice\n';;
+  devices|'devices -l')
+    printf 'List of devices attached\nTABLET\tdevice\n'
+    if [ -s "$HOME/wifi-route" ]; then read -r route < "$HOME/wifi-route"; printf '%s\tdevice\n' "$route"; fi;;
   *'shell pm path '*) echo 'package:/fixture.apk';;
   *'tcpip 5555') [ "$BLENT_T514_MODE" != tcpip-failed ];;
   *'addr show wlan0') echo 'inet 192.0.2.10/24'; [ "$BLENT_T514_MODE" = success ];;
   *'route get 1.1.1.1') echo 'src 192.0.2.20'; [ "$BLENT_T514_MODE" != probe-failed ];;
   *'inet addr') echo 'inet 192.0.2.30/24'; exit 1;;
-  'connect '*) echo "connected to $2"; [ "$BLENT_T514_MODE" != connect-failed ];;
-  'disconnect '*) exit 0;;
+  'connect '*) printf '%s\n' "$2" > "$HOME/wifi-route"; echo "connected to $2"; [ "$BLENT_T514_MODE" != connect-failed ];;
+  'disconnect '*) : > "$HOME/wifi-route";;
   *) exit 85;;
 esac
 "#;

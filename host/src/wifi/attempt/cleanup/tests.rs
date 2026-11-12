@@ -71,7 +71,7 @@ async fn t1363_invalid_snapshots_never_discharge_cleanup() {
     let mut invalid = reply(0, "");
     invalid.output.as_mut().unwrap().stdout = vec![255];
     for command in [invalid, reply(1, ""), reply(0, &"x".repeat(65537))] {
-        assert!(present(&scripted(vec![command]), "host:5").await.is_err());
+        assert!(observe(&scripted(vec![command]), "host:5").await.is_err());
     }
 }
 #[test]

@@ -1,0 +1,86 @@
+{
+  "tool": "cargo-llvm-cov 0.8.7; project checker/tree-sitter 0.25.2",
+  "scope": "Linux creation and cleanup functions; platform limits in adb-network-lifecycle.md",
+  "functions": [
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "execute_attempt",
+      "line": 180,
+      "language": "rust",
+      "covered": 26,
+      "total": 27,
+      "percent": 96.29629629629629,
+      "passes": true,
+      "missing": [
+        188
+      ],
+      "complexity": 8,
+      "sha256": "c6f439b135615a1026b609442917700c8ea23123fdceb3f4c5674f4341cc6864"
+    },
+    {
+      "file": "host/src/wifi/attempt.rs",
+      "name": "connect_route",
+      "line": 213,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 3,
+      "sha256": "c6f439b135615a1026b609442917700c8ea23123fdceb3f4c5674f4341cc6864"
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "retire",
+      "line": 6,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 4,
+      "sha256": "ea70f0ce55534cc1e3963832463799ad8c8a98253060a1883d79317868bc8057"
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "once",
+      "line": 17,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 6,
+      "sha256": "ea70f0ce55534cc1e3963832463799ad8c8a98253060a1883d79317868bc8057"
+    },
+    {
+      "file": "host/src/wifi/attempt/cleanup.rs",
+      "name": "observe",
+      "line": 47,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 3,
+      "sha256": "ea70f0ce55534cc1e3963832463799ad8c8a98253060a1883d79317868bc8057"
+    },
+    {
+      "file": "host/src/adb_inventory.rs",
+      "name": "entries",
+      "line": 69,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 5,
+      "sha256": "f5551d4656afc97e5ac248668f74cbd23f067ac24ec12039b356f3065a03dac8"
+    }
+  ]
+}

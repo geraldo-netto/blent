@@ -122,10 +122,16 @@ async fn wifi_contract(root: &Path) {
         &adb,
         r#"#!/bin/sh
 printf '%s\n' "$*" >> "$HOME/adb-calls"
-if [ "$1" = connect ]; then
-  printf "wifi_address = '192.0.2.10:5555'\n" > "$XDG_CONFIG_HOME/blent/config.toml"
-  printf 'connected\n'
-fi
+case "$1" in
+  devices)
+    printf 'List of devices attached\n'
+    if [ -s "$HOME/wifi-route" ]; then printf '192.0.2.9:5555\tdevice\n'; fi;;
+  connect)
+    printf "wifi_address = '192.0.2.10:5555'\n" > "$XDG_CONFIG_HOME/blent/config.toml"
+    printf 'owned' > "$HOME/wifi-route"
+    printf 'connected\n';;
+  disconnect) : > "$HOME/wifi-route";;
+esac
 "#,
     )
     .unwrap();
@@ -142,7 +148,7 @@ fi
     );
     assert_eq!(
         std::fs::read_to_string(root.join("adb-calls")).unwrap(),
-        "connect 192.0.2.9:5555\ndisconnect 192.0.2.9:5555\n"
+        "devices\nconnect 192.0.2.9:5555\ndevices\ndisconnect 192.0.2.9:5555\ndevices\n"
     );
 }
 

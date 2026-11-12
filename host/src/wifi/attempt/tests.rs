@@ -118,6 +118,7 @@ async fn t834_cancellation_preserves_preexisting_route_and_off_is_owned() {
     let owners = Owners::new(1).unwrap();
     let adb = Adb(Fake::default());
     adb.0 .0.existing.store(true, Ordering::Release);
+    adb.0 .0.present.lock().unwrap().insert("host:5".into());
     drop(
         Attempt::with_owner(&owners, adb.clone(), "host:5", true)
             .await

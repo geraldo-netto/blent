@@ -187,40 +187,64 @@ async fn execute_attempt<C: Commands>(
     if ready.is_closed() {
         return;
     }
-    let result = command(&adb, &address, connect).await;
+    use blent_config::adb_reverse::temporary::Creation;
+    let mut creation = Creation::NotStarted;
+    let result = if connect {
+        connect_route(&adb, &address, &mut creation).await
+    } else {
+        cleanup::retire(&adb, &address, Creation::Acknowledged).await;
+        Ok(false)
+    };
     match result {
         Ok(created) => {
             let _ = ready.send(Ok(()));
             if !chosen.await.unwrap_or(false) && created {
-                cleanup::retire(
-                    &adb,
-                    &address,
-                    blent_config::adb_reverse::temporary::Creation::Acknowledged,
-                )
-                .await;
+                cleanup::retire(&adb, &address, creation).await;
             }
         }
         Err(error) => {
             let _ = ready.send(Err(error));
+            if creation != Creation::NotStarted {
+                cleanup::retire(&adb, &address, creation).await;
+            }
         }
     }
 }
-async fn command<C: Commands>(adb: &Adb<C>, address: &str, connect: bool) -> Result<bool> {
-    let operation = if connect { "connect" } else { "disconnect" };
-    let bytes = adb
-        .checked(vec![operation.into(), address.into()], None)
-        .await?;
-    if !connect {
-        return Ok(false);
+async fn connect_route<C: Commands>(
+    adb: &Adb<C>,
+    address: &str,
+    creation: &mut blent_config::adb_reverse::temporary::Creation,
+) -> Result<bool> {
+    use blent_config::adb_reverse::temporary::Creation;
+    if let Some(ready) = cleanup::observe(adb, address).await? {
+        ensure!(ready, "Existing network ADB transport is not ready");
+        return Ok(false); // Existing transports never become compensation targets.
     }
+    *creation = Creation::Uncertain;
+    let command = adb
+        .0
+        .execute_route(vec!["connect".into(), address.into()])
+        .await;
+    if !command.started {
+        *creation = Creation::NotStarted;
+    }
+    let output = command.output?;
     ensure!(
-        super::policy::connected(&bytes, address),
+        output.status.success() && output.stdout.len() <= 65536,
+        "ADB network connection outcome unconfirmed"
+    );
+    ensure!(
+        super::policy::connected(&output.stdout, address),
         "ADB did not confirm network connection"
     );
-    Ok(String::from_utf8_lossy(&bytes).trim() != format!("already connected to {address}"))
+    *creation = Creation::Acknowledged;
+    Ok(true)
 }
 
 #[cfg(test)]
 mod rollback_tests;
 #[cfg(test)]
 pub(super) mod tests;
+
+#[cfg(test)]
+mod creation_tests;

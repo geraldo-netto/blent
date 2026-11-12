@@ -66,18 +66,7 @@ pub fn parse(text: &str) -> Option<Vec<String>> {
     Some(ready)
 }
 
-/// A transport remains present while offline/authorizing. Only a complete valid
-/// inventory can prove absence for exclusive endpoint cleanup.
-pub fn all_transports(text: &str) -> Option<Vec<String>> {
-    Some(
-        entries(text)?
-            .into_iter()
-            .map(|(serial, _)| serial.to_owned())
-            .collect(),
-    )
-}
-
-fn entries(text: &str) -> Option<Vec<(&str, &str)>> {
+pub(crate) fn entries(text: &str) -> Option<Vec<(&str, &str)>> {
     let mut lines = text.lines().map(str::trim).filter(|line| !line.is_empty());
     if lines.next()? != "List of devices attached" {
         return None;

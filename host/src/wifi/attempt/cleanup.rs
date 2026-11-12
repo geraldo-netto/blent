@@ -15,7 +15,7 @@ pub(super) async fn retire<C: Commands>(adb: &Adb<C>, address: &str, mut state: 
 }
 
 async fn once<C: Commands>(adb: &Adb<C>, address: &str, state: &mut Creation) -> Result<bool> {
-    let present = present(adb, address).await?;
+    let present = observe(adb, address).await?.is_some();
     let route = if present {
         Route::Owned
     } else {
@@ -43,18 +43,21 @@ async fn once<C: Commands>(adb: &Adb<C>, address: &str, state: &mut Creation) ->
     }
 }
 
-pub(super) async fn present<C: Commands>(adb: &Adb<C>, address: &str) -> Result<bool> {
+/// None means confirmed absent; Some(false) means present but not ready.
+pub(super) async fn observe<C: Commands>(adb: &Adb<C>, address: &str) -> Result<Option<bool>> {
     let command = adb.0.execute_route(vec!["devices".into()]).await;
     let output = command.output?;
     ensure!(
         output.status.success() && output.stdout.len() <= 65536,
         "ADB transport inventory unavailable"
     );
-    let entries = crate::adb_inventory::all_transports(std::str::from_utf8(&output.stdout)?)
+    let entries = crate::adb_inventory::entries(std::str::from_utf8(&output.stdout)?)
         .context("Invalid ADB transport inventory")?;
-    Ok(entries.iter().any(|serial| {
-        super::super::policy::endpoint_key(serial) == super::super::policy::endpoint_key(address)
-    }))
+    let key = crate::wifi::endpoint_key(address);
+    Ok(entries
+        .iter()
+        .find(|(serial, _)| crate::wifi::endpoint_key(serial) == key)
+        .map(|(_, state)| *state == "device"))
 }
 
 #[cfg(test)]

@@ -77,6 +77,10 @@ use tokio::sync::watch;
 use tracing::error;
 use tracing::{info, warn};
 
+#[cfg(test)]
+#[path = "../tests/support/wifi_adb.rs"]
+mod wifi_adb_fixture;
+
 fn main() -> Result<()> {
     if let Some(result) = blent::dpms_probe::dispatch(std::env::args_os().skip(1)) {
         return result;
@@ -990,11 +994,9 @@ printf '%s\n' "$2" >> "$0.log"
 
     #[tokio::test]
     async fn t691_reconnect_rejects_disconnected_as_success() {
-        use std::os::unix::fs::PermissionsExt;
         let root = tempfile::tempdir().unwrap();
         let adb = root.path().join("adb");
-        std::fs::write(&adb, "#!/bin/sh\necho disconnected\n").unwrap();
-        std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
+        wifi_adb_fixture::install(&adb, false);
         let path = root.path().join("config.toml");
         std::fs::write(&path, "wifi_address = \"192.0.2.1:5555\"\n").unwrap();
         assert_eq!(
@@ -1004,19 +1006,17 @@ printf '%s\n' "$2" >> "$0.log"
             None,
             "T691: disconnected must not authorize a network route"
         );
+        assert_eq!(
+            std::fs::read_to_string(adb.with_extension("log")).unwrap(),
+            "devices\nconnect 192.0.2.1:5555\ndevices\ndisconnect 192.0.2.1:5555\ndevices\n"
+        );
     }
 
     #[tokio::test]
     async fn t105_live_wifi_off_and_address_changes_reach_adb() {
-        use std::os::unix::fs::PermissionsExt;
         let dir = tempfile::tempdir().unwrap();
         let adb = dir.path().join("adb");
-        std::fs::write(
-            &adb,
-            "#!/bin/sh\nprintf '%s\\n' \"$*\" >> \"$0.log\"\necho connected\n",
-        )
-        .unwrap();
-        std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
+        wifi_adb_fixture::install(&adb, true);
         let path = dir.path().join("config.toml");
         let write =
             |address| std::fs::write(&path, format!("wifi_address = \"{address}\"\n")).unwrap();
@@ -1029,7 +1029,7 @@ printf '%s\n' "$2" >> "$0.log"
         assert_eq!(reconnect.connect().await.as_deref(), Some("192.0.2.2:5555"));
         assert_eq!(
             std::fs::read_to_string(adb.with_extension("log")).unwrap(),
-            "connect 192.0.2.1:5555\nconnect 192.0.2.2:5555\n"
+            "devices\nconnect 192.0.2.1:5555\ndevices\nconnect 192.0.2.2:5555\n"
         );
     }
 

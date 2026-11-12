@@ -35,6 +35,16 @@ pub(super) fn output(code: u32, text: &str) -> Output {
     }
 }
 impl Commands for Fake {
+    fn execute_route(&self, args: Vec<String>) -> crate::usb::RouteFuture<'_> {
+        Box::pin(async move {
+            let output = self.execute(args.clone(), None).await;
+            // This in-memory fixture performs no mutation for rejected replies.
+            let started = output.as_ref().is_ok_and(|out| {
+                out.status.success() && (args[0] != "connect" || connected(&out.stdout, &args[1]))
+            });
+            crate::usb::RouteCommand { output, started }
+        })
+    }
     fn execute(&self, args: Vec<String>, _: Option<Vec<u8>>) -> CommandFuture<'_> {
         Box::pin(async move {
             let mut s = self.0.lock().unwrap();
@@ -119,6 +129,7 @@ async fn t691_setup_off_and_stale_connect_preserve_configuration_ownership() {
         reconnect(&adb, &store).await.as_deref(),
         Some("192.0.2.1:5555")
     );
+    adb.0 .0.lock().unwrap().network.clear(); // Recreate a missing route before the stale save.
     adb.0 .0.lock().unwrap().change = Some(store.clone());
     assert!(reconnect(&adb, &store).await.is_none());
     assert!(adb
@@ -424,6 +435,12 @@ async fn t826_failed_commit_disconnects_new_route_before_returning_failure() {
 #[tokio::test]
 async fn t826_failed_commit_preserves_an_existing_network_route() {
     let (_root, _store, adb) = fixture();
+    adb.0
+         .0
+        .lock()
+        .unwrap()
+        .network
+        .insert("192.0.2.1:5555".into());
     adb.0 .0.lock().unwrap().reply = "already connected to 192.0.2.1:5555".into();
     assert!(policy::setup(&adb, &Failed, false).await.is_err());
     assert!(

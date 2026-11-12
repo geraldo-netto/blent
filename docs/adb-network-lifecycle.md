@@ -34,3 +34,14 @@ and counters remain subject to the existing platform validation ledger items.
 T1363 regressions cover failed rollback, delayed removal observation, caller loss,
 replacement exclusion, unrelated admissions, alias reservations, malformed and
 nonready inventories, safe pre-spawn retry and native command completion.
+
+Before connecting, a valid inventory distinguishes a preexisting endpoint from a
+new creator. Preexisting transports are preserved without issuing connect or
+compensating disconnect. Otherwise the owner marks creation uncertain before
+calling the native adapter. A spawn rejection proved by that adapter can release
+the attempt; errors, oversized replies and unrecognized replies after possible
+creation cannot. Empty inventories do not settle a possible delayed creator.
+The owner waits to observe its exclusively owned endpoint, removes it once, then
+waits for confirmed absence. Explicit Wi-Fi-off uses the same removal owner.
+T1364 tests exercise effects both before and after acknowledgement failure,
+preexisting transports, malformed snapshots, bounded replies and proven nonstarts.
