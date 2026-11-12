@@ -232,7 +232,9 @@ release inside the worker; replacement waits for actual child retirement. A stuc
 worker retains capacity until reaped. This does not recover a GPU/kernel-wide hang.
 The Linux entry point explicitly bounds final Tokio shutdown; remaining native
 threads are terminated by process exit, not reported as successfully completed.
-Windows job/reaper acceptance and native counters remain T737.
+Windows job/reaper acceptance and native counters are not established by these
+Linux results. Their former T737 tracking was retired without claiming completion;
+the current Windows validation obligations are listed in [TODO.md](../TODO.md).
 Command output also has the byte and collection bounds below.
 
 
