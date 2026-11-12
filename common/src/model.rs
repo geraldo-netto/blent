@@ -1,6 +1,8 @@
 //! Portable settings schema, validation and edit merging. No OS services.
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
+#[cfg(test)]
+mod diagnostic_tests;
 mod merge;
 
 /// Maximum accepted configured bitrate, in kbps. This is a project policy
@@ -339,8 +341,10 @@ impl FileConfig {
         let bitrate = self.bitrate.clamp(MIN_BITRATE_KBPS, MAX_BITRATE_KBPS);
         if bitrate != self.bitrate {
             tracing::warn!(
-                "Bitrate {} kbps is beyond what the USB transport sustains — clamped to {} kbps",
+                "Bitrate {} kbps is outside the configured range {}–{} kbps — clamped to {} kbps",
                 self.bitrate,
+                MIN_BITRATE_KBPS,
+                MAX_BITRATE_KBPS,
                 bitrate
             );
             self.bitrate = bitrate;
