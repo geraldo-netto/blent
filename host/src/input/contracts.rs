@@ -67,8 +67,8 @@ fn t484_old_decoder_receipt_cannot_acknowledge_new_encoder_packets() {
     assert_eq!(encoder.rendered(), 1);
 }
 
-#[test]
-fn t370_dispatch_preserves_order_and_controller_ownership_with_adapters() {
+#[tokio::test]
+async fn t370_dispatch_preserves_order_and_controller_ownership_with_adapters() {
     let sink = Arc::new(Recorder::default());
     let settings = Recorder::default();
     let controllers = Arc::new(Controllers::new(sink.clone()));
@@ -80,24 +80,25 @@ fn t370_dispatch_preserves_order_and_controller_ownership_with_adapters() {
         r#"{"type":"config","fps":45}"#,
         r#"{"type":"mode","pen_only":true}"#,
     ] {
-        assert!(dispatch_controller_text(
-            text,
+        assert!(
+            dispatch_controller_text(text, &controllers, first.id, &settings, &latency, true)
+                .finish()
+                .await
+        );
+    }
+    let second = controllers.claim();
+    assert!(
+        !dispatch_controller_text(
+            r#"{"type":"mode","pen_only":false}"#,
             &controllers,
             first.id,
             &settings,
             &latency,
-            true
-        ));
-    }
-    let second = controllers.claim();
-    assert!(!dispatch_controller_text(
-        r#"{"type":"mode","pen_only":false}"#,
-        &controllers,
-        first.id,
-        &settings,
-        &latency,
-        true,
-    ));
+            true,
+        )
+        .finish()
+        .await
+    );
     drop(first);
     assert_eq!(
         *sink.0.lock().unwrap(),
@@ -166,6 +167,7 @@ async fn t370_server_cancels_injected_backend_when_owner_ends() {
         }),
     );
     let listener = server.bind().await.unwrap();
+    assert!(server.native_completion().is_none());
     let task = tokio::spawn(async move { server.run_with_listener(listener).await });
     tokio::time::timeout(std::time::Duration::from_secs(1), started.notified())
         .await
@@ -199,8 +201,8 @@ fn t281_attachment() -> crate::attachment::Attachment {
     )
 }
 
-#[test]
-fn t281_retired_socket_cannot_claim_or_dispatch_into_current_controller() {
+#[tokio::test]
+async fn t281_retired_socket_cannot_claim_or_dispatch_into_current_controller() {
     let tablet = t281_attachment();
     tablet.begin(Some("a".into()));
     let old = tablet.lease();
@@ -225,10 +227,10 @@ fn t281_retired_socket_cannot_claim_or_dispatch_into_current_controller() {
     };
     let resolution =
         r#"{"type":"resolution","width":1280,"height":800,"width_mm":240,"height_mm":150}"#;
-    assert!(!dispatch.text(resolution));
+    assert!(!dispatch.text(resolution).finish().await);
     assert!(settings.0.lock().unwrap().is_empty());
     dispatch.attachment = Some(&current);
-    assert!(dispatch.text(resolution));
+    assert!(dispatch.text(resolution).finish().await);
     assert_eq!(
         *settings.0.lock().unwrap(),
         ["resolution (1280, 800) (240, 150)"]
@@ -317,8 +319,8 @@ fn t1176_claim(controllers: &Arc<Controllers>) -> Option<ControllerLease> {
     )
 }
 
-#[test]
-fn t1176_exhausted_claim_keeps_original_authority_and_cleanup() {
+#[tokio::test]
+async fn t1176_exhausted_claim_keeps_original_authority_and_cleanup() {
     let sink = Arc::new(Recorder::default());
     let controllers = Arc::new(Controllers::new(sink.clone()));
     let old = t1176_claim(&controllers).unwrap();
@@ -341,14 +343,18 @@ fn t1176_exhausted_claim_keeps_original_authority_and_cleanup() {
         effects,
         "T1176: stale drop released current input"
     );
-    assert!(dispatch_controller_text(
-        r#"{"type":"touch","x":0.2,"y":0.3,"pressure":0.4,"action":0,"slot":2}"#,
-        &controllers,
-        original.id,
-        &Recorder::default(),
-        &crate::latency::LatencyTracker::new(),
-        true,
-    ));
+    assert!(
+        dispatch_controller_text(
+            r#"{"type":"touch","x":0.2,"y":0.3,"pressure":0.4,"action":0,"slot":2}"#,
+            &controllers,
+            original.id,
+            &Recorder::default(),
+            &crate::latency::LatencyTracker::new(),
+            true,
+        )
+        .finish()
+        .await
+    );
     drop(original);
     assert_eq!(sink.0.lock().unwrap().len(), effects + 2);
     assert_eq!(sink.0.lock().unwrap().last().unwrap(), "release");

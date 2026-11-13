@@ -98,8 +98,34 @@ fn mouse(phase: Phase, button: Option<Button>, x: f64) -> Command {
         },
     }
 }
-fn negotiate(sink: &dyn InputSink) {
-    sink.direct(Command::Negotiate { version: 1 }).unwrap();
+async fn execute(sink: &dyn InputSink, command: Command) -> Result<()> {
+    sink.direct(command)?.await
+}
+
+async fn wait_touches(evidence: &Evidence) {
+    tokio::time::timeout(std::time::Duration::from_secs(3), async {
+        loop {
+            let count = evidence
+                .calls
+                .lock()
+                .unwrap()
+                .iter()
+                .filter(|call| call.starts_with("touch"))
+                .count();
+            if count == 3 {
+                break;
+            }
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .expect("T673 queued touch effects did not arrive");
+}
+
+async fn negotiate(sink: &dyn InputSink) {
+    execute(sink, Command::Negotiate { version: 1 })
+        .await
+        .unwrap();
 }
 
 #[tokio::test]
@@ -109,16 +135,18 @@ async fn t673_tablet_and_mode_changes_retire_negotiation_before_reuse() {
     let (tablet, tablet_rx) = watch::channel(true);
     let (mode, mode_rx) = watch::channel(true);
     let task = tokio::spawn(backend.follow(tablet_rx, mode_rx, InputConfig::default()));
-    negotiate(&sink);
+    negotiate(&sink).await;
     tablet.send(false).unwrap();
     wait_retired(&*sink).await;
-    assert!(sink.direct(mouse(Phase::Move, None, 0.5)).is_err());
+    assert!(execute(&*sink, mouse(Phase::Move, None, 0.5))
+        .await
+        .is_err());
     tablet.send(true).unwrap();
     tokio::task::yield_now().await;
-    negotiate(&sink);
+    negotiate(&sink).await;
     mode.send(false).unwrap();
     wait_retired(&*sink).await;
-    negotiate(&sink);
+    negotiate(&sink).await;
     drop(mode);
     tokio::time::timeout(std::time::Duration::from_secs(2), task)
         .await
@@ -137,8 +165,8 @@ async fn wait_retired(sink: &dyn InputSink) {
     .unwrap();
 }
 
-#[test]
-fn t673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_input() {
+#[tokio::test]
+async fn t673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_input() {
     let (backend, evidence) = backend(Mode::Touch, true, true);
     let sink = backend.sink();
     let (mode, _) = watch::channel(true);
@@ -154,39 +182,58 @@ fn t673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_input(
             false,
         )
     };
-    assert!(dispatch(
-        r#"{"type":"direct_input","command":{"type":"negotiate","version":1}}"#
-    ));
+    assert!(
+        dispatch(r#"{"type":"direct_input","command":{"type":"negotiate","version":1}}"#)
+            .finish()
+            .await
+    );
     for action in [0, 2, 1] {
-        assert!(dispatch(&format!(
-            r#"{{"type":"touch","x":0.5,"y":0.5,"pressure":1,"action":{action},"slot":0}}"#
-        )));
+        assert!(
+            dispatch(&format!(
+                r#"{{"type":"touch","x":0.5,"y":0.5,"pressure":1,"action":{action},"slot":0}}"#
+            ))
+            .finish()
+            .await
+        );
     }
-    assert!(!dispatch(
-        r#"{"type":"pen","x":0.5,"y":0.5,"pressure":1,"tilt_x":0,"tilt_y":0,"action":0}"#
-    ));
+    assert!(
+        !dispatch(
+            r#"{"type":"pen","x":0.5,"y":0.5,"pressure":1,"tilt_x":0,"tilt_y":0,"action":0}"#
+        )
+        .finish()
+        .await
+    );
     evidence.fail.store(true, Ordering::SeqCst);
     assert!(!dispatch(
         r#"{"type":"direct_input","command":{"type":"event","event":{"type":"touch","x":0.5,"y":0.5,"slot":0,"phase":"down"}}}"#
-    ));
+    ).finish().await);
     assert!(!sink.direct_status().unwrap().negotiated);
 }
 
-#[test]
-fn t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input() {
+#[tokio::test]
+async fn t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input() {
     let (backend, e) = backend(Mode::DirectMouse, true, true);
     let sink = backend.sink();
     assert!(!sink.direct_status().unwrap().negotiated);
-    assert!(sink.direct(mouse(Phase::Move, None, 0.5)).is_err());
+    assert!(execute(&*sink, mouse(Phase::Move, None, 0.5))
+        .await
+        .is_err());
     assert!(e.calls.lock().unwrap().is_empty());
     for version in [0, 2, 255, u32::MAX] {
-        assert!(sink.direct(Command::Negotiate { version }).is_err());
+        assert!(execute(&*sink, Command::Negotiate { version })
+            .await
+            .is_err());
     }
-    negotiate(&sink);
-    sink.direct(mouse(Phase::Down, Some(Button::Left), 0.5))
+    negotiate(&sink).await;
+    execute(&*sink, mouse(Phase::Down, Some(Button::Left), 0.5))
+        .await
         .unwrap();
-    sink.direct(mouse(Phase::Move, None, 0.75)).unwrap();
-    sink.direct(Command::Select { mode: Mode::Touch }).unwrap();
+    execute(&*sink, mouse(Phase::Move, None, 0.75))
+        .await
+        .unwrap();
+    execute(&*sink, Command::Select { mode: Mode::Touch })
+        .await
+        .unwrap();
     let calls = e.calls.lock().unwrap().clone();
     assert!(
         calls.iter().position(|v| v == "retire").unwrap()
@@ -195,6 +242,7 @@ fn t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input() {
     sink.touch((0.5, 0.5, 1.0), 0, 0);
     sink.touch((0.75, 0.5, 1.0), 2, 0);
     sink.touch((0.75, 0.5, 0.0), 1, 0);
+    wait_touches(&e).await;
     assert!(e.calls.lock().unwrap().iter().any(|v| v.contains("touch")));
     sink.touch((0.5, 0.5, 1.0), 255, 255);
     assert!(!sink.direct_status().unwrap().negotiated);
@@ -206,28 +254,40 @@ fn t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input() {
         1.01,
         f64::MAX,
     ] {
-        negotiate(&sink);
-        sink.direct(Command::Select {
-            mode: Mode::DirectMouse,
-        })
+        negotiate(&sink).await;
+        execute(
+            &*sink,
+            Command::Select {
+                mode: Mode::DirectMouse,
+            },
+        )
+        .await
         .unwrap();
-        assert!(sink.direct(mouse(Phase::Move, None, x)).is_err());
+        assert!(execute(&*sink, mouse(Phase::Move, None, x)).await.is_err());
         assert!(!sink.direct_status().unwrap().negotiated);
     }
-    negotiate(&sink);
+    negotiate(&sink).await;
     e.fail.store(true, Ordering::SeqCst);
-    assert!(sink
-        .direct(mouse(Phase::Down, Some(Button::Right), 0.0))
-        .is_err());
+    assert!(
+        execute(&*sink, mouse(Phase::Down, Some(Button::Right), 0.0))
+            .await
+            .is_err()
+    );
     e.fail.store(false, Ordering::SeqCst);
-    negotiate(&sink);
+    negotiate(&sink).await;
     e.width.store(10, Ordering::SeqCst);
-    assert!(sink.direct(mouse(Phase::Move, None, 1.0)).is_err());
-    negotiate(&sink);
-    sink.direct(mouse(Phase::Move, None, 1.0)).unwrap();
+    assert!(execute(&*sink, mouse(Phase::Move, None, 1.0))
+        .await
+        .is_err());
+    negotiate(&sink).await;
+    execute(&*sink, mouse(Phase::Move, None, 1.0))
+        .await
+        .unwrap();
     sink.release_all();
     sink.release_all();
-    assert!(sink.direct(Command::Select { mode: Mode::Touch }).is_err());
+    assert!(execute(&*sink, Command::Select { mode: Mode::Touch })
+        .await
+        .is_err());
     sink.pen(
         PenSample {
             position: (0.0, 0.0, 0.0),
@@ -240,12 +300,14 @@ fn t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input() {
     );
 }
 
-#[test]
-fn t673_disabled_modes_and_seeded_wire_values_never_reach_devices() {
+#[tokio::test]
+async fn t673_disabled_modes_and_seeded_wire_values_never_reach_devices() {
     for mode in [Mode::Touch, Mode::DirectMouse] {
         let (backend, e) = backend(mode, false, false);
         let sink = backend.sink();
-        assert!(sink.direct(Command::Negotiate { version: 1 }).is_err());
+        assert!(execute(&*sink, Command::Negotiate { version: 1 })
+            .await
+            .is_err());
         assert!(e.calls.lock().unwrap().is_empty());
     }
     for value in -32..=300 {
@@ -257,8 +319,8 @@ fn t673_disabled_modes_and_seeded_wire_values_never_reach_devices() {
         if let Ok(command) = parsed {
             let (backend, _) = backend(Mode::Touch, true, false);
             let sink = backend.sink();
-            negotiate(&sink);
-            assert_eq!(sink.direct(command).is_ok(), value < 10);
+            negotiate(&sink).await;
+            assert_eq!(execute(&*sink, command).await.is_ok(), value < 10);
         }
     }
     for text in [
@@ -275,6 +337,7 @@ async fn t673_authenticated_owner_replacement_and_disconnect_retire_buttons() {
     use futures_util::{SinkExt, StreamExt};
     use tokio_tungstenite::tungstenite::Message;
     let (backend, e) = backend(Mode::DirectMouse, true, true);
+    let proof = backend.completion();
     let (_tablet, tablet) = watch::channel(true);
     let (mode, _) = watch::channel(true);
     let server = super::super::InputServer::with_backend(
@@ -333,7 +396,7 @@ async fn t673_authenticated_owner_replacement_and_disconnect_retire_buttons() {
         .await
         .unwrap();
     second.next().await.unwrap().unwrap();
-    assert!(e.calls.lock().unwrap().iter().any(|call| call == "retire"));
+    responsiveness::observed(&e, "retire", 1).await;
     second
         .send(Message::Text(
             r#"{"type":"direct_input","command":{"type":"negotiate","version":1}}"#.into(),
@@ -347,6 +410,9 @@ async fn t673_authenticated_owner_replacement_and_disconnect_retire_buttons() {
     }
     task.abort();
     let _ = task.await;
+    responsiveness::retired(proof).await;
     let calls = e.calls.lock().unwrap();
     assert!(calls.iter().filter(|call| *call == "retire").count() >= 2);
 }
+
+mod responsiveness;

@@ -16,6 +16,7 @@ mod linux;
 #[cfg(target_os = "linux")]
 pub use linux::Backend as LinuxBackend;
 mod activity;
+mod inbox;
 #[cfg(target_os = "linux")]
 mod mapping;
 mod settings;
@@ -190,6 +191,10 @@ impl InputServer {
             .context(format!("Failed to bind input server to {}", addr))?;
         info!("Input server on ws://{}", addr);
         Ok(listener)
+    }
+
+    pub(crate) fn native_completion(&self) -> Option<blent_config::retirement::Completion> {
+        self.backend.native_completion()
     }
 
     pub async fn run_with_listener(&self, listener: TcpListener) -> Result<()> {
@@ -367,7 +372,7 @@ async fn handle_connection(
 
 async fn serve_controller(
     mut ws_sender: futures_util::stream::SplitSink<InputSocket, Message>,
-    mut ws_receiver: futures_util::stream::SplitStream<InputSocket>,
+    ws_receiver: futures_util::stream::SplitStream<InputSocket>,
     config: InputConfig,
     channels: ControlChannels,
     attachment: Option<&crate::attachment::Lease>,
@@ -381,6 +386,7 @@ async fn serve_controller(
         activity,
     } = channels;
     let mut activity = activity::Observer::new(activity);
+    let mut inbox = inbox::Inbox::new(ws_receiver);
     let settings =
         SessionSettings::new(&settings_tx, &mode_tx, config.pen).with_fixed_mode(fixed_mode);
     let mut mode_rx = mode_tx.subscribe();
@@ -432,7 +438,7 @@ async fn serve_controller(
         let msg = tokio::select! {
             biased;
             _ = ownership.changed() => break,
-            incoming = ws_receiver.next() => match incoming {
+            incoming = inbox.next() => match incoming {
                 Some(m) => m,
                 None => break,
             },
@@ -473,8 +479,15 @@ async fn serve_controller(
             }
         };
 
-        if !handle_controller_message(msg, &dispatch, &settings, &mut ws_sender, &mut ownership)
-            .await?
+        if !handle_controller_message(
+            msg,
+            &dispatch,
+            &settings,
+            &mut ws_sender,
+            &mut ownership,
+            &mut inbox,
+        )
+        .await?
         {
             break;
         }
@@ -489,10 +502,12 @@ async fn handle_controller_message(
     settings: &SessionSettings<'_>,
     sender: &mut futures_util::stream::SplitSink<InputSocket, Message>,
     ownership: &mut watch::Receiver<u64>,
+    inbox: &mut inbox::Inbox,
 ) -> Result<bool> {
     match message {
         Ok(Message::Text(text)) => {
-            if !dispatch.text(&text) {
+            let accepted = inbox.complete(dispatch.text(&text), ownership).await;
+            if !accepted {
                 return Ok(false);
             }
             if direct_reply_needed(&text) {
@@ -570,8 +585,8 @@ struct ControllerDispatch<'a> {
     attachment: Option<&'a crate::attachment::Lease>,
 }
 impl ControllerDispatch<'_> {
-    fn text(&self, text: &str) -> bool {
-        let mut accepted = false;
+    fn text(&self, text: &str) -> Dispatch {
+        let mut accepted = Dispatch::Immediate(false);
         let mut dispatch = || {
             accepted = dispatch_controller_text(
                 text,
@@ -599,18 +614,37 @@ fn dispatch_controller_text(
     settings: &dyn SettingsSink,
     latency: &crate::latency::LatencyTracker,
     pen_enabled: bool,
-) -> bool {
+) -> Dispatch {
     match serde_json::from_str::<InputEvent>(text) {
         Ok(event) => {
             let generation = controllers.generation.borrow();
             if *generation != lease {
-                return false;
+                return Dispatch::Immediate(false);
             }
             return dispatch_event(event, &controllers.devices, settings, latency, pen_enabled);
         }
         Err(e) => warn!("Invalid input: {} - {}", e, text),
     }
-    true
+    Dispatch::Immediate(true)
+}
+
+enum Dispatch {
+    Immediate(bool),
+    Direct(Result<backend::DirectReply>),
+}
+impl Dispatch {
+    async fn finish(self) -> bool {
+        let result = match self {
+            Self::Immediate(accepted) => return accepted,
+            Self::Direct(Ok(reply)) => reply.await,
+            Self::Direct(Err(error)) => Err(error),
+        };
+        if let Err(error) = result {
+            warn!("Direct input rejected: {error}");
+            return false;
+        }
+        true
+    }
 }
 
 fn dispatch_event(
@@ -619,30 +653,25 @@ fn dispatch_event(
     settings: &dyn SettingsSink,
     latency: &crate::latency::LatencyTracker,
     pen_enabled: bool,
-) -> bool {
+) -> Dispatch {
     match event {
         InputEvent::Touch {
             x, y, action, slot, ..
         } if devices.direct_status().is_some() => {
             latency.note_interaction();
-            direct::legacy_touch(x, y, action, slot)
-                .and_then(|command| devices.direct(command))
-                .is_ok()
+            Dispatch::Direct(
+                direct::legacy_touch(x, y, action, slot)
+                    .and_then(|command| devices.direct(command)),
+            )
         }
         InputEvent::Direct { command } => {
             latency.note_interaction();
-            match devices.direct(command) {
-                Ok(()) => true,
-                Err(error) => {
-                    warn!("Direct input rejected: {error}");
-                    false
-                }
-            }
+            Dispatch::Direct(devices.direct(command))
         }
-        InputEvent::Pen { .. } if devices.direct_status().is_some() => false,
+        InputEvent::Pen { .. } if devices.direct_status().is_some() => Dispatch::Immediate(false),
         event => {
             handle_event(event, devices, settings, latency, pen_enabled);
-            true
+            Dispatch::Immediate(true)
         }
     }
 }

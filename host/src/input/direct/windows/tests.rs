@@ -24,6 +24,7 @@ async fn t673_native_authenticated_session_delivers_and_retires_in_owned_window(
         })
         .unwrap();
     let backend = native(config, true, true, store.clone()).unwrap();
+    let completion = backend.completion();
     let (_tablet, tablet) = watch::channel(true);
     let (mode, _) = watch::channel(true);
     let server = crate::input::InputServer::with_backend(
@@ -114,6 +115,8 @@ async fn t673_native_authenticated_session_delivers_and_retires_in_owned_window(
     window::pump();
     task.abort();
     let _ = task.await;
+    retired(completion).await;
+    window::pump();
     let native = Native {
         store: store.clone(),
     };
@@ -139,4 +142,17 @@ async fn t673_native_authenticated_session_delivers_and_retires_in_owned_window(
         Mode::Touch,
         "T673: reconnect lost saved input mode"
     );
+    let completion = restarted.completion();
+    drop(restarted);
+    retired(completion).await;
+}
+
+async fn retired(completion: blent_config::retirement::Completion) {
+    tokio::time::timeout(std::time::Duration::from_secs(3), async {
+        while !completion.is_complete() {
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .expect("T1402 original native input worker did not retire");
 }

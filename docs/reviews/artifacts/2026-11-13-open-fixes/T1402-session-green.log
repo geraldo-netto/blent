@@ -1,0 +1,253 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.01s
+     Running unittests src/lib.rs (target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa)
+
+running 94 tests
+test activity::tests::t1008_private_fallback_session_uid_and_capabilities_are_explicit ... ok
+test attachment::registered::tests::t916_closed_session_and_stale_native_close_cannot_mutate_replacement ... ok
+test audio::session_tests::t1243_truncated_microphone_frames_retire_only_the_original_native_helper ... ok
+test audio::session_tests::t992_audio_clock_pcm_processing_override_and_original_loss_retire_only_this_session ... ok
+test audio::session_tests::t992_audio_direction_capabilities_and_loss_errors_are_explicit ... ok
+test audio::session_tests::t992_audio_native_failure_and_stall_leave_original_route_owned_until_actual_proof ... ok
+test audio::session_tests::t992_audio_original_pending_stop_and_loss_do_not_start_helper ... ok
+test audio::session_tests::t992_audio_stuck_native_lease_never_reports_success_or_releases_actual_completion ... ok
+test audio::session_tests::t999_audio_microphone_clock_pcm_original_loss_and_native_retirement ... ok
+test audio::session_tests::t999_audio_microphone_stuck_native_lease_retains_independent_completion ... ok
+test audio::session_tests::t999_audio_microphone_usb_capability_tracks_native_accessory_build ... ok
+test broker::linux::server::tests::display::t908_real_tls_exported_session_carries_config_frame_ack_and_touch_then_retires ... ok
+test broker::session::channels::tests::t872_consumer_boundaries_wraparound_and_exhaustion ... ok
+test broker::session::tests::barriers::t872_early_admitted_waits_for_complete_commit_publication ... ok
+test broker::session::tests::barriers::t872_early_media_credit_waits_for_commit_flush ... ok
+test broker::session::tests::barriers::t872_early_revoked_waits_for_complete_revoke_publication ... ok
+test broker::session::tests::barriers::t872_fragmented_capabilities_and_malformed_management_fail_closed ... ok
+test broker::session::tests::barriers::t872_invalid_runtime_bounds_are_rejected_before_admission ... ok
+test broker::session::tests::barriers::t872_permission_then_preparation_keeps_authority_ungranted ... ok
+test broker::session::tests::barriers::t872_prepared_after_local_cancel_never_installs_channels ... ok
+test broker::session::tests::barriers::t872_rejections_retire_without_consuming_mux_generation ... ok
+test broker::session::tests::barriers::t872_stale_management_keys_never_mutate_live_authority ... ok
+test broker::session::tests::cancellation::t994_late_local_cancel_preserves_sibling_and_replacement_authority ... ok
+test broker::session::tests::cancellation::t994_local_cancel_still_revokes_pending_and_current_exact_original ... ok
+test broker::session::tests::cancellation::t994_stale_local_cancel_never_targets_a_different_full_lease ... ok
+test broker::session::tests::consumer::t872_audio_channels_and_peer_revoke_remain_independent ... ok
+test broker::session::tests::consumer::t872_consumer_completion_reannounces_buffered_remainder ... ok
+test broker::session::tests::consumer::t872_idle_tick_and_stale_readiness_preserve_retirement ... ok
+test broker::session::tests::consumer::t872_local_pairing_retries_do_not_change_peer_wire_namespace ... ok
+test broker::session::tests::consumer::t872_readiness_memory_is_bounded_when_consumer_does_not_poll_events ... ok
+test broker::session::tests::consumer::t872_stale_equal_length_completion_cannot_release_new_borrow ... ok
+test broker::session::tests::consumer::t872_tiny_consumption_does_not_starve_peer_revocation ... ok
+test broker::session::tests::pump::t878_large_requested_block_adapts_to_small_negotiated_window ... ok
+test broker::session::tests::pump::t878_session_adapter_keeps_exact_consumer_and_channel_authority ... ok
+test broker::session::tests::t872_awaited_event_uses_current_time_for_resource_deadline ... ok
+test broker::session::tests::t872_disconnect_retains_resource_until_native_callback ... ok
+test broker::session::tests::t872_disconnect_settles_already_retired_native_consumer ... ok
+test broker::session::tests::t872_display_and_camera_have_independent_bounded_consumers ... ok
+test broker::session::tests::t872_expired_commit_drains_without_double_close ... ok
+test broker::session::tests::t872_peer_media_terminal_revokes_resource ... ok
+test broker::session::tests::t872_pre_admission_payload_becomes_readable_on_admission ... ok
+test broker::session::tests::t872_premature_media_terminal_cannot_corrupt_inactive_generation ... ok
+test broker::session::tests::t872_revoke_waits_for_peer_and_actual_native_retirement ... ok
+test broker::session::tests::tls::t872_stock_mutual_tls_carries_admitted_duplex_control ... ok
+test camera::connection_tests::t931_camera_session_invites_through_independent_port ... ok
+test camera::connection_tests::t933_connection_loss_stops_sessions_without_claiming_producer_retirement ... ok
+test camera::native_tests::t572_isolated_native_devices_and_session_cleanup ... ok
+test camera::tests::t539_producer_failure_retires_session_and_rejects_foreign_clients ... ok
+test camera::tests::t539_stalled_decoder_cannot_hold_camera_session_forever ... ok
+test camera_control::tests::t543_failed_session_waits_for_explicit_retry ... ok
+test input::activity::socket_tests::t1056_portable_session_binds_original_source_before_initial_authenticated_greeting ... ok
+test input::direct::tests::responsiveness::session::t1402_session_retirement_retains_original_input_worker ... ok
+test media_storage::tests::t391_shared_backing_cannot_escape_to_an_unaccounted_session ... ok
+test pipe_encoder::tests::t529_stock_software_encoder_round_trips_fresh_sessions_and_geometry ... Input #0, rawvideo, from 'pipe:0':
+  Duration: N/A, start: 1794583098.000000, bitrate: 1474 kb/s
+  Stream #0:0: Video: rawvideo (NV12 / 0x3231564E), nv12(tv, bt709), 64x64, 1474 kb/s, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (rawvideo (native) -> h264 (libx264))
+[libx264 @ 0x588b89678900] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x588b89678900] profile Constrained Baseline, level 2.1, 4:2:0, 8-bit
+Output #0, tee, to '[f=framecrc:flush_packets=1]pipe:1|[f=data:flush_packets=1]pipe:1':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, nv12(tv, bt709, progressive), 64x64, q=2-31, 30 fps, 1000k tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 4000000/0/0 buffer size: 266000 vbv_delay: N/A
+frame=    0 fps=0.0 q=15.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A    [out#0/tee @ 0x588b896771c0] video:1kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+frame=    3 fps=0.0 q=4.0 Lsize=N/A time=00:00:00.00 bitrate=N/A speed=0.000275x    
+[libx264 @ 0x588b89678900] frame I:1     Avg QP:15.00  size:   741
+[libx264 @ 0x588b89678900] frame P:2     Avg QP: 4.50  size:    10
+[libx264 @ 0x588b89678900] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x588b89678900] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4:  0.0%  0.0%  0.0%  0.0%  0.0%    skip:100.0%
+[libx264 @ 0x588b89678900] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0% inter: 0.0% 0.0% 0.0%
+[libx264 @ 0x588b89678900] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x588b89678900] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x588b89678900] kb/s:60.88
+Input #0, rawvideo, from 'pipe:0':
+  Duration: N/A, start: 1794583098.133333, bitrate: 2949 kb/s
+  Stream #0:0: Video: rawvideo (NV12 / 0x3231564E), nv12(tv, bt709), 128x64, 2949 kb/s, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (rawvideo (native) -> h264 (libx264))
+[libx264 @ 0x597b90192100] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x597b90192100] profile Constrained Baseline, level 2.1, 4:2:0, 8-bit
+Output #0, tee, to '[f=framecrc:flush_packets=1]pipe:1|[f=data:flush_packets=1]pipe:1':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, nv12(tv, bt709, progressive), 128x64, q=2-31, 30 fps, 1000k tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 4000000/0/0 buffer size: 266000 vbv_delay: N/A
+frame=    0 fps=0.0 q=15.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A    [out#0/tee @ 0x597b901909c0] video:1kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+frame=    3 fps=0.0 q=5.0 Lsize=N/A time=00:00:00.00 bitrate=N/A speed=0.000692x    
+[libx264 @ 0x597b90192100] frame I:1     Avg QP:15.00  size:   754
+[libx264 @ 0x597b90192100] frame P:2     Avg QP: 5.50  size:    10
+[libx264 @ 0x597b90192100] mb I  I16..4: 100.0%  0.0%  0.0%
+[libx264 @ 0x597b90192100] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4:  0.0%  0.0%  0.0%  0.0%  0.0%    skip:100.0%
+[libx264 @ 0x597b90192100] coded y,uvDC,uvAC intra: 0.0% 0.0% 0.0% inter: 0.0% 0.0% 0.0%
+[libx264 @ 0x597b90192100] i16 v,h,dc,p: 75%  0% 25%  0%
+[libx264 @ 0x597b90192100] i8c dc,h,v,p: 100%  0%  0%  0%
+[libx264 @ 0x597b90192100] kb/s:61.92
+ok
+test raw_transfer::tests::t635_timeout_retires_partial_input_and_fresh_session_recovers ... ok
+test registered_session::tests::activity::acceptance::t1016_all_original_retirement_orders_preserve_selected_intent_across_repeated_cycles ... ok
+test registered_session::tests::activity::acceptance::t1016_display_pause_does_not_revoke_camera_microphone_or_speaker_owners ... ok
+test registered_session::tests::activity::t1051_broker_retirement_cannot_release_a_held_native_participant ... ok
+test registered_session::tests::activity::t1051_closed_observer_or_dead_native_producer_cannot_renew ... ok
+test registered_session::tests::activity::t1051_coalesced_stop_cancels_late_startup_and_renewal_without_reconnect_storm ... ok
+test registered_session::tests::activity::t1051_foreign_replacement_is_not_revoked_or_paused_by_late_owner_close ... ok
+test registered_session::tests::activity::t1051_pending_activity_cannot_register_or_release_selected_capacity ... ok
+test registered_session::tests::activity::t1051_registration_failure_retires_before_retry_and_gates_native_work ... ok
+test registered_session::tests::activity::t1051_resume_waits_for_broker_and_every_original_native_receipt ... ok
+test registered_session::tests::activity::t1051_unavailable_sources_pause_without_closing_unrelated_work_or_releasing_capacity ... ok
+test registered_session::tests::t925_cancel_before_admission_and_late_active_cannot_revive_session ... ok
+test registered_session::tests::t925_cancelled_preflight_cannot_bind_over_replacement_authority ... ok
+test registered_session::tests::t925_capacity_waits_for_both_registration_and_native_session ... ok
+test registered_session::tests::t925_closing_capacity_cannot_start_another_display_owner ... ok
+test registered_session::tests::t925_drop_and_unpublished_start_failure_keep_cleanup_owned ... ok
+test registered_session::tests::t925_native_failure_closes_only_its_own_registration ... ok
+test registered_session::tests::t925_preflight_rejects_wrong_stale_capacity_ports_and_retry_bounds ... ok
+test registered_session::tests::t925_registration_renewal_preserves_runtime_geometry_and_fresh_credentials ... ok
+test registered_session::tests::t925_stale_authority_and_late_cancel_cannot_revoke_a_replacement ... ok
+test session_supervision::native_tests::t1026_dropped_owner_retains_late_original_creator_and_native ... ok
+test session_supervision::native_tests::t1026_success_error_panic_and_cancellation_retain_original_native ... 
+thread 'session_supervision::native_tests::t1026_success_error_panic_and_cancellation_retain_original_native' (485832) panicked at host/src/session_supervision/native_tests.rs:31:22:
+T1026 parent panicked with original native cleanup held
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test session_supervision::tests::t814_cleanup_error_and_panic_publish_failure ... 
+thread 'session_supervision::tests::t814_cleanup_error_and_panic_publish_failure' (485841) panicked at host/src/session_supervision.rs:307:17:
+T814 cleanup panic
+ok
+test session_supervision::tests::t814_retiring_session_keeps_slot_until_native_cleanup_and_siblings_progress ... ok
+test session_supervision::tests::t928_terminal_startup_worker_outcomes_remain_failures ... 
+thread 'session_supervision::tests::t928_terminal_startup_worker_outcomes_remain_failures' (485847) panicked at host/src/session_supervision.rs:289:13:
+T928 worker panic
+ok
+test session_work::tests::activity_tests::t1027_missing_activity_source_remains_explicitly_unsupported ... ok
+test session_work::tests::activity_tests::t1027_session_receives_original_failure_stop_and_closed_source ... ok
+test session_work::tests::activity_tests::t1027_sessions_share_original_activity_capabilities_and_stop_fences ... ok
+test session_work::tests::activity_tests::t1045_original_saved_preferences_reach_the_capture_boundary ... ok
+test session_work::tests::activity_tests::t1045_prepared_session_keeps_explicit_viewer_preferences ... ok
+test session_work::tests::native_retirement_tests::t1026_constructor_panic_keeps_original_native_admission ... 
+thread 'session_work::tests::native_retirement_tests::t1026_constructor_panic_keeps_original_native_admission' (485853) panicked at host/src/session_work/native_retirement_tests.rs:13:9:
+T1026 native exposure before constructor panic
+ok
+test session_work::tests::native_retirement_tests::t1026_route_retirement_waits_for_native_after_supervisor_finished ... ok
+test session_work::tests::t925_dropped_owned_runtime_requests_cleanup_without_waiting ... ok
+test session_work::tests::t925_owned_runtime_waits_for_supervisor_and_native_completion ... ok
+test session_work::tests::t925_shared_primary_close_preserves_daemon_owned_capture ... ok
+test session_work::tests::t928_capture_startup_panic_drops_partial_listeners_before_completion_reuse ... 
+thread 'session_work::tests::t928_capture_startup_panic_drops_partial_listeners_before_completion_reuse' (485860) panicked at host/src/session_work/tests.rs:186:9:
+T928 capture constructor fails before worker exposure
+ok
+test session_work::tests::t928_legacy_server_work_serves_both_channels_and_releases_owned_ports ... ok
+test stream::resources::t391_one_two_four_sessions_release_resources ... 
+running 1 test
+test stream::resources::t391_one_two_four_sessions_release_resources ... T391 resources {"sessions":1,"before":{"fds":10,"tasks":0,"rss_kib":11744},"peak":{"fds":22,"tasks":9,"rss_kib":30724},"after":{"fds":10,"tasks":0,"rss_kib":31108},"retained_peak_bytes":[655361],"readers":[{"frames":120,"configs":2,"arrival_us":[397,474,336,283,281,270,419,503,438,307,325,415,489,387,425,389,611,640,307,405,303,385,300,298,312,407,346,402,351,438,392,403,394,388,377,409,297,245,251,345,356,293,359,309,243,331,238,247,367,355,255,240,244,245,239,236,240,246,235,365,308,353,280,263,271,402,514,369,353,380,247,261,369,355,362,334,242,262,247,242,254,285,249,356,269,368,240,265,292,292,336,242,273,246,273,294,250,274,281,287,412,248,239,402,382,326,246,243,226,252,258,267,238,380,463,431,337,361,276,336]}],"allocations":{"allocations":3518,"reallocations":731,"requested_bytes":8533307,"explicit_copy_bytes":0,"scanner_input_bytes":0}}
+T391 resources {"sessions":2,"before":{"fds":10,"tasks":0,"rss_kib":31364},"peak":{"fds":34,"tasks":18,"rss_kib":32612},"after":{"fds":10,"tasks":0,"rss_kib":31524},"retained_peak_bytes":[655361,655361],"readers":[{"frames":120,"configs":2,"arrival_us":[348,587,363,433,475,396,373,424,414,337,311,311,275,393,405,330,283,440,268,273,264,448,283,451,263,279,300,289,272,266,348,402,314,281,259,265,275,275,467,267,273,387,365,475,496,535,259,454,420,260,452,428,446,403,269,256,257,431,365,256,295,255,251,252,448,437,438,387,382,302,432,522,581,570,496,590,611,598,666,475,491,427,423,401,413,413,273,461,714,427,379,269,422,288,294,409,264,269,383,286,411,365,368,272,369,393,256,306,490,485,342,445,432,401,402,438,444,274,635,474]},{"frames":120,"configs":2,"arrival_us":[410,702,470,533,572,503,485,522,519,452,427,442,407,599,533,339,423,677,408,402,405,680,420,643,403,409,446,427,407,398,362,641,466,414,400,396,404,405,598,403,409,590,613,606,725,412,394,704,558,392,562,536,685,641,411,388,399,664,495,387,336,388,395,385,650,692,680,538,535,432,552,761,807,644,618,438,790,758,844,587,611,631,606,613,632,573,416,578,810,590,397,407,656,431,446,559,405,405,596,495,625,584,520,412,539,379,399,506,619,594,496,631,679,599,536,685,697,410,719,715]}],"allocations":{"allocations":5453,"reallocations":736,"requested_bytes":16552908,"explicit_copy_bytes":0,"scanner_input_bytes":0}}
+T391 resources {"sessions":4,"before":{"fds":10,"tasks":0,"rss_kib":31524},"peak":{"fds":58,"tasks":36,"rss_kib":34048},"after":{"fds":10,"tasks":0,"rss_kib":31808},"retained_peak_bytes":[655361,655361,655361,655361],"readers":[{"frames":120,"configs":2,"arrival_us":[360,573,452,483,427,508,566,571,472,467,540,395,340,460,454,343,316,471,613,542,603,401,384,393,552,304,518,517,506,396,633,557,500,430,576,342,445,455,318,458,468,448,317,312,307,336,296,310,314,326,321,330,329,447,299,436,294,303,352,311,310,383,513,522,567,407,561,392,421,658,467,545,368,372,576,394,557,550,423,516,391,601,519,340,584,344,582,354,586,529,436,388,518,502,482,544,532,631,749,1091,874,915,1151,908,902,774,978,897,903,905,866,894,891,880,944,971,926,893,930,921]},{"frames":120,"configs":2,"arrival_us":[402,704,559,584,546,609,662,661,574,572,629,519,482,665,664,338,449,598,721,649,720,533,523,550,774,443,712,671,666,522,396,789,747,587,701,488,631,601,457,659,681,634,464,448,447,350,440,445,455,461,460,465,478,639,440,642,436,439,576,447,354,521,726,729,767,547,750,538,631,780,598,677,503,504,765,383,689,681,565,651,532,733,651,480,735,481,749,492,779,748,343,529,680,654,654,756,750,877,1067,1563,1246,1266,1537,1268,1628,900,1355,1259,1265,1256,1229,1249,1261,1243,1316,1319,1289,1255,1303,1280]},{"frames":120,"configs":2,"arrival_us":[369,829,692,713,675,736,792,781,694,696,777,660,631,879,814,305,592,752,876,843,869,674,670,710,916,581,852,807,806,665,342,1047,926,767,854,635,781,741,606,830,826,773,618,590,592,304,589,588,603,605,607,605,625,782,591,832,586,582,722,588,315,666,953,927,913,699,896,683,793,929,743,823,650,643,912,311,839,820,707,789,673,872,792,619,876,619,890,630,920,959,323,676,837,815,832,965,978,1140,1388,2053,1616,1627,1907,1628,2363,783,1742,1620,1637,1616,1614,1631,1634,1604,1711,1690,1670,1617,1680,1642]},{"frames":120,"configs":2,"arrival_us":[380,954,818,838,802,861,920,904,819,825,927,800,779,1043,960,306,735,902,1025,1106,1015,815,816,850,1058,718,987,943,946,807,308,1255,1068,969,1000,782,934,872,749,970,975,914,771,732,737,316,734,737,751,749,753,746,772,925,738,973,735,724,867,729,307,787,1142,1041,1021,827,1013,803,930,1051,876,935,776,772,1026,308,952,926,812,889,785,971,895,735,979,734,991,737,1024,1135,306,798,961,947,987,1135,1167,1391,1671,2487,1934,1958,2225,1929,2670,774,2055,1937,1978,1949,1942,1936,1948,1924,2055,2002,1986,1924,1995,1963]}],"allocations":{"allocations":9322,"reallocations":746,"requested_bytes":32592078,"explicit_copy_bytes":0,"scanner_input_bytes":0}}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1106 filtered out; finished in 6.18s
+
+ok
+test usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup ... ok
+test wifi::tests::t691_tray_distinguishes_network_and_usb_and_bounds_session_counts ... ok
+
+test result: ok. 94 passed; 0 failed; 0 ignored; 0 measured; 1013 filtered out; finished in 16.25s
+

@@ -154,6 +154,11 @@ impl Prepared {
         daemon_stop: watch::Receiver<bool>,
         admission: SessionAdmission,
     ) -> Result<(Runtime, crate::session_network::RetainedListeners)> {
+        let mut retained_workers = Workers::empty(admission);
+        let retirement = retained_workers.capture_lifetime();
+        if let Some(original) = self.input.native_completion() {
+            retirement.retain(original);
+        }
         let (video, _) = video_queue::channel(
             video_queue::QUEUE_PACKETS,
             self.resources.idr_wanted.clone(),
@@ -163,8 +168,6 @@ impl Prepared {
                 .await?;
         let (gate_tx, gate_rx) = watch::channel(false);
         let (stop_tx, stop_rx) = watch::channel(false);
-        let mut retained_workers = Workers::empty(admission);
-        let retirement = retained_workers.capture_lifetime();
         let workers = catch_unwind(AssertUnwindSafe(|| {
             self.capture.start(CaptureContext {
                 activity: self.activity,

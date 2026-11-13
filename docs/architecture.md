@@ -200,6 +200,7 @@ systemd user-service environment override.
 | `BLENT_SESSION_LIMIT` | 64 | 1..4096 | Session supervisors, including unfinished worker handles. |
 | `BLENT_TASK_LIMIT` | 64 | 1..4096 | Independently owned capture/media tasks, including started blocking work. |
 | `BLENT_ADB_MAPPING_LIMIT` | 16 | 1..4096 | Active and retiring temporary camera/audio mappings; each retains its cleanup worker and endpoint reservation. |
+| `BLENT_INPUT_WORKER_LIMIT` | 16 | 1..4096 | Active and retiring direct-input workers; stalled native calls retain their original thread and admission. |
 | `BLENT_DISPLAY_ROUTE_LIMIT` | 16 | 1..4096 | Active and retiring display ADB route owners; each retains its original worker and device/local-port leases until settlement. |
 | `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
@@ -220,6 +221,25 @@ Linux keeps the original display ticket closed and reserved while route cleanup
 reports failure, including across device reconnect. Graceful monitor shutdown
 awaits that settlement. Cancelling or dropping a monitor task transfers no reuse
 authority: the route worker still owns its native device/local-port leases.
+
+Direct input uses one original native thread per backend. Command admission and
+reply waiting are separate: the controller awaits a cancellable reply without
+holding attachment/controller locks or blocking the async executor. Each backend
+admits at most 17 outstanding commands (one executing and 16 queued); completed
+but unconsumed replies retain admission too. Cancellation revokes that authority,
+discards unstarted commands and wakes idle cleanup. A successor waits behind the
+original native operation. Backend loss retains the original worker in the bounded
+retirement pool until actual native thread exit; dropping a reply cannot revoke a
+successor's authority. The session supervisor retains this same original proof
+before listener startup, so session/endpoint reuse cannot outrun input retirement.
+Failed native button release remains tracked separately
+until T1403 is resolved.
+
+While awaiting direct input, a socket reads ahead at most 16 frames of at most
+64 KiB each. Close, read failure or overflow revokes the controller; buffered
+frames preserve wire order and are discarded at cutoff. This bounds the extra
+per-connection payload to 1 MiB, plus the current/incoming frame and transport
+buffers. There is no detached per-command waiter or unbounded result queue.
 
 Larger capacities allow more concurrent work and retain more memory/handles when
 resources stall. Shorter waits return control sooner but can report incomplete
