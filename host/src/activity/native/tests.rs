@@ -261,3 +261,49 @@ async fn t1008_private_original_signal_fences_reject_replay_foreign_and_malforme
         assert!(display_signal(target, state, &absent).unwrap().is_none());
     }
 }
+
+#[test]
+fn t1429_initial_query_error_classification_preserves_explicit_unsupported() {
+    for (name, retry) in [
+        ("UnknownProperty", false),
+        ("UnknownInterface", false),
+        ("UnknownMethod", false),
+        ("Failed", true),
+        ("NoReply", true),
+        ("AccessDenied", true),
+        ("UnknownObject", true),
+    ] {
+        let error = zbus::Error::MethodError(
+            format!("org.freedesktop.DBus.Error.{name}")
+                .try_into()
+                .unwrap(),
+            None,
+            message(LOGIN_PATH, MANAGER, "Probe", ()),
+        );
+        assert_eq!(retry_query(&error.into()), retry);
+    }
+    assert!(retry_query(&anyhow::anyhow!("malformed snapshot")));
+}
+#[tokio::test]
+async fn t1429_invalid_initial_boolean_values_request_recovery() {
+    if !private("activity::native::tests::t1429_invalid_initial_boolean_values_request_recovery") {
+        return;
+    }
+    let fixture = Fixture::new().await;
+    let bus = Connection::session().await.unwrap();
+    let wrong = boolean(
+        &bus,
+        "org.cinnamon.Muffin.DisplayConfig",
+        "/org/cinnamon/Muffin/DisplayConfig",
+        "org.cinnamon.Muffin.DisplayConfig",
+        "PowerSaveMode",
+    )
+    .await;
+    assert!(wrong.value.is_none());
+    assert!(wrong.initial_failed);
+    let absent = boolean(&bus, LOGIN, LOGIN_PATH, MANAGER, "AbsentProperty").await;
+    assert!(absent.value.is_none());
+    assert!(!absent.initial_failed);
+    bus.close().await.unwrap();
+    fixture.server.close().await.unwrap();
+}

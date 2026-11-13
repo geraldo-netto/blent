@@ -1,0 +1,102 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.84s
+
+COMMAND /tmp/blent-t1429-coverage/library-tests activity:: --nocapture
+
+running 59 tests
+test activity::dpms::tests::t1013_capability_withdrawal_or_stalled_original_clears_only_display_state ... ok
+test activity::dpms::tests::t1013_helper_heartbeat_fits_the_configured_observation_deadline ... ok
+test activity::dpms::tests::t1013_native_pipe_extent_schema_and_timeout_reject_before_authority ... ok
+test activity::dpms::tests::t1013_native_pipe_transitions_retain_original_process_until_actual_exit ... ok
+test activity::dpms::tests::t1013_timed_out_creator_keeps_native_proof_until_late_child_is_reaped ... ok
+test activity::dpms::tests::t1013_unavailable_and_invalid_programs_retire_without_forged_capabilities ... ok
+test activity::dpms::tests::t1018_cancelled_native_constructor_retains_scope_through_late_child_creation_and_reap ... ok
+test activity::dpms::tests::t1030_joined_startup_waits_for_original_dependent_cleanup ... ok
+test activity::native::tests::t1008_bounded_native_property_packets_validate_before_state_publication ... ok
+test activity::native::tests::t1008_native_lost_fields_preserve_sibling_authority_and_power_flags ... ok
+test activity::native::tests::t1008_native_mapping_rejects_unknown_desktop_names ... ok
+test activity::native::tests::t1008_native_mode_fuzz_rejects_invalid_values_and_ranges ... ok
+test activity::native::tests::t1008_private_original_signal_fences_reject_replay_foreign_and_malformed_state ... ok
+test activity::native::tests::t1429_initial_query_error_classification_preserves_explicit_unsupported ... ok
+test activity::native::tests::t1429_invalid_initial_boolean_values_request_recovery ... ok
+test activity::tests::continuity::t1418_all_capability_subsets_reject_loss_without_forgetting_admission ... ok
+test activity::tests::continuity::t1418_delayed_display_owner_recovers_with_fresh_state ... ok
+test activity::tests::continuity::t1418_delayed_power_owner_recovers_with_fresh_state ... ok
+test activity::tests::continuity::t1418_initially_unsupported_stays_explicit_without_retry ... ok
+test activity::tests::continuity::t1418_prolonged_absence_remains_conservative_and_stop_settles ... ok
+test activity::tests::continuity::t1418_rejected_partial_source_retains_native_debt_through_stop ... ok
+test activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement ... ok
+test activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires ... ok
+test activity::tests::continuity::t1429_explicit_unsupported_property_stays_unknown_without_retry ... ok
+test activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement ... ok
+test activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt ... ok
+test activity::tests::recovery::t1413_compositor_replacement_waits_for_original_native_settlement ... ok
+test activity::tests::recovery::t1413_explicit_stop_never_recreates_native_sources ... ok
+test activity::tests::recovery::t1413_logind_replacement_waits_for_original_native_settlement ... ok
+test activity::tests::recovery::t1413_native_transport_closure_recovers_with_fresh_epoch ... ok
+test activity::tests::t1008_compositor_properties_do_not_claim_direct_x11_display_power ... ok
+test activity::tests::t1008_private_fallback_session_uid_and_capabilities_are_explicit ... ok
+test activity::tests::t1008_private_invalidated_properties_require_fresh_original_snapshot ... ok
+test activity::tests::t1008_private_missing_owners_are_unsupported_and_cannot_invent_observations ... ok
+test activity::tests::t1008_private_native_transitions_and_actual_source_retirement ... ok
+test activity::tests::t1008_private_owner_replacement_cannot_restore_old_source_or_pause_sibling_backend ... ok
+test activity::tests::t1008_source_stop_keeps_actual_held_native_retirement ... ok
+test activity::tests::t1008_unavailable_buses_and_invalid_settings_remain_explicit ... ok
+test activity::tests::t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power ... ok
+test activity::tests::t1018_private_native_factory_follows_configured_preferences_and_original_source_cleanup ... ok
+test activity::tests::t1084_power_factory_invalid_settings_release_original_unstarted_admission ... ok
+test activity::tests::t1084_private_power_factory_ignores_desktop_helpers_and_follows_original_logind ... ok
+test activity::tests::t1084_private_power_factory_reports_absent_logind_without_display_fallback ... ok
+test input::activity::socket_tests::t1056_authentication_and_original_attachment_cutoff_fence_every_hint ... ok
+test input::activity::socket_tests::t1056_portable_session_binds_original_source_before_initial_authenticated_greeting ... ok
+test input::activity::socket_tests::t1056_replaced_controller_cannot_publish_after_current_owner_claims_socket ... ok
+test input::activity::socket_tests::t1056_unsupported_source_omits_hint_and_wrong_auth_never_receives_one ... ok
+test input::activity::tests::t1056_absent_and_closed_sources_cannot_spin_or_announce_unsupported_work ... ok
+test input::activity::tests::t1056_original_notice_captures_publication_before_first_poll_and_coalesced_stops ... ok
+test registered_session::tests::activity::acceptance::t1016_all_original_retirement_orders_preserve_selected_intent_across_repeated_cycles ... ok
+test registered_session::tests::activity::acceptance::t1016_display_pause_does_not_revoke_camera_microphone_or_speaker_owners ... ok
+test registered_session::tests::activity::t1051_broker_retirement_cannot_release_a_held_native_participant ... ok
+test registered_session::tests::activity::t1051_closed_observer_or_dead_native_producer_cannot_renew ... ok
+test registered_session::tests::activity::t1051_coalesced_stop_cancels_late_startup_and_renewal_without_reconnect_storm ... ok
+test registered_session::tests::activity::t1051_foreign_replacement_is_not_revoked_or_paused_by_late_owner_close ... ok
+test registered_session::tests::activity::t1051_pending_activity_cannot_register_or_release_selected_capacity ... ok
+test registered_session::tests::activity::t1051_registration_failure_retires_before_retry_and_gates_native_work ... ok
+test registered_session::tests::activity::t1051_resume_waits_for_broker_and_every_original_native_receipt ... ok
+test registered_session::tests::activity::t1051_unavailable_sources_pause_without_closing_unrelated_work_or_releasing_capacity ... ok
+
+test result: ok. 59 passed; 0 failed; 0 ignored; 0 measured; 1087 filtered out; finished in 6.68s
+
+
+COMMAND /tmp/blent-t1429-coverage/library-tests activity_follow:: --nocapture
+
+running 11 tests
+test activity_follow::recovery_tests::t1343_failed_replacement_retries_and_stop_prevents_further_creation ... ok
+test activity_follow::recovery_tests::t1343_loss_replaces_only_after_original_native_fence_with_fresh_evidence ... ok
+test activity_follow::recovery_tests::t1343_replacement_rejects_old_epochs_and_uses_fresh_capabilities ... ok
+test activity_follow::tests::t1018_bounded_drain_accepts_a_source_replenished_concurrently_with_consumption ... ok
+test activity_follow::tests::t1018_bounded_settings_reject_invalid_ranges_before_any_factory_exposure ... ok
+test activity_follow::tests::t1018_cancelled_or_dropped_creator_keeps_capacity_until_actual_native_join ... ok
+test activity_follow::tests::t1018_failed_timed_out_and_invalid_creation_never_publish_a_grant ...
+thread 'activity_follow::tests::t1018_failed_timed_out_and_invalid_creation_never_publish_a_grant' (1268106) panicked at host/src/activity_follow_tests.rs:254:17:
+T1018 creator panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test activity_follow::tests::t1018_identical_publications_and_late_updates_after_stop_do_not_wake_consumers ... ok
+test activity_follow::tests::t1018_ordered_edges_survive_coalescing_and_stop_waits_for_actual_source_retirement ... ok
+test activity_follow::tests::t1018_pending_creation_stop_is_prompt_and_observed_separately_from_retirement ... ok
+test activity_follow::tests::t1018_source_loss_and_panics_fail_without_freeing_stuck_native_ownership ...
+thread 'activity_follow::tests::t1018_source_loss_and_panics_fail_without_freeing_stuck_native_ownership' (1268122) panicked at host/src/activity_follow_tests.rs:93:18:
+T1018 input panic
+ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 1135 filtered out; finished in 0.42s
+
+
+COMMAND /tmp/blent-t1429-coverage/library-tests activity_view:: --nocapture
+
+running 3 tests
+test activity_view::tests::t1043_replacement_view_never_changes_the_original_publication_source ... ok
+test activity_view::tests::t1043_unsupported_original_source_and_absent_composition_stay_idle_and_usable ... ok
+test activity_view::tests::t1043_watch_notice_is_armed_before_publication_and_first_poll_closure ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1143 filtered out; finished in 0.03s

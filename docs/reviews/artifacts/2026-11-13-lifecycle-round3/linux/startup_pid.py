@@ -8,6 +8,8 @@ import subprocess
 import sys
 import tempfile
 
+sys.dont_write_bytecode = True
+
 
 def fixture():
     path = Path.cwd() / 'host/tests/daemon_startup/signals.py'

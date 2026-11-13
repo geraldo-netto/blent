@@ -330,3 +330,79 @@ async fn t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires() {
     assert_eq!(*reader.borrow(), Publication::Stopped);
     fixture.server.close().await.unwrap();
 }
+
+async fn initial_failure(field: usize) {
+    let fixture = Fixture::new().await;
+    let failures = [
+        &fixture.values.fail_sleep,
+        &fixture.values.fail_shutdown,
+        &fixture.values.fail_lock,
+    ];
+    let failing = failures[field];
+    failing.store(true, Ordering::Release);
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let (factory, following) =
+        start_held(Arc::new(PowerFactory::default()), Some(held.completion()));
+    let mut reader = following.subscribe();
+    let lost = followed(&mut reader, |s| s.source_lost).await;
+    conservative(&mut reader).await;
+    assert_eq!(
+        factory.calls.load(Ordering::Acquire),
+        1,
+        "T1429 failed initial native debt fences retry"
+    );
+    assert!(!factory.proofs.lock().unwrap()[0].is_complete());
+    drop(held);
+    attempts(&factory, 3).await;
+    conservative(&mut reader).await;
+    failing.store(false, Ordering::Release);
+    let fresh = followed(&mut reader, |s| s.demand.display).await;
+    assert!(fresh.demand.stamp.epoch > lost.demand.stamp.epoch);
+    assert!(fresh.demand.auxiliary);
+    finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1429_initial_power_and_lock_query_failures_retry_after_original_settlement() {
+    if !private("activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement") { return; }
+    for field in 0..3 {
+        initial_failure(field).await;
+    }
+}
+#[tokio::test]
+async fn t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt() {
+    if !private("activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt") { return; }
+    let fixture = Fixture::new().await;
+    fixture.values.fail_sleep.store(true, Ordering::Release);
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let (factory, following) =
+        start_held(Arc::new(PowerFactory::default()), Some(held.completion()));
+    let mut reader = following.subscribe();
+    followed(&mut reader, |s| s.source_lost).await;
+    following.stop();
+    assert!(
+        !following.retired(),
+        "T1429 stop cannot erase initial query native debt"
+    );
+    drop(held);
+    finish(&factory, following).await;
+    assert_eq!(factory.calls.load(Ordering::Acquire), 1);
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1429_explicit_unsupported_property_stays_unknown_without_retry() {
+    if !private("activity::tests::continuity::t1429_explicit_unsupported_property_stays_unknown_without_retry") { return; }
+    let fixture = Fixture::new().await;
+    fixture.values.missing_sleep.store(true, Ordering::Release);
+    let (factory, following) = start(Arc::new(PowerFactory::default()));
+    let mut reader = following.subscribe();
+    let snapshot = followed(&mut reader, |s| !s.demand.display).await;
+    assert!(!snapshot.source_lost);
+    assert!(!snapshot.demand.auxiliary);
+    conservative(&mut reader).await;
+    assert_eq!(factory.calls.load(Ordering::Acquire), 1);
+    finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}

@@ -1,0 +1,53 @@
+
+running 3 tests
+test activity::tests::continuity::t1429_explicit_unsupported_property_stays_unknown_without_retry ... ok
+test activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement ...
+thread 'activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement' (1257796) panicked at host/src/activity/tests.rs:221:5:
+
+running 1 test
+test activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1143 filtered out; finished in 3.00s
+
+
+thread 'activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement' (1257800) panicked at host/src/activity/tests.rs:508:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt ...
+thread 'activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt' (1257845) panicked at host/src/activity/tests.rs:221:5:
+
+running 1 test
+test activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1143 filtered out; finished in 3.00s
+
+
+thread 'activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt' (1257849) panicked at host/src/activity/tests.rs:508:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1429_initial_power_and_lock_query_failures_retry_after_original_settlement
+    activity::tests::continuity::t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 1141 filtered out; finished in 6.34s
+
+
+EXIT 101

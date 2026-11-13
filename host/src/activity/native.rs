@@ -69,6 +69,7 @@ impl Patch {
 struct Flag {
     value: Option<bool>,
     floor: Sequence,
+    initial_failed: bool,
 }
 impl Flag {
     fn set(&mut self, value: Option<bool>, position: Sequence) -> bool {
@@ -238,7 +239,11 @@ impl Actor {
             owners,
             kind: Kind::Display {
                 target,
-                state: Flag { value, floor },
+                state: Flag {
+                    value,
+                    floor,
+                    initial_failed: false,
+                },
             },
             capabilities: Capabilities {
                 display: true,
@@ -277,6 +282,16 @@ impl Actor {
         self.bus.close().await?;
         Ok(())
     }
+    fn initial_query_failed(&self) -> bool {
+        match &self.kind {
+            Kind::Logind(data) => {
+                data.sleep.initial_failed
+                    || data.shutdown.initial_failed
+                    || data.locked.initial_failed
+            }
+            Kind::Display { .. } => false,
+        }
+    }
     async fn watch(&mut self, shared: &Shared) -> Result<()> {
         loop {
             let wake = shared.wake.notified();
@@ -285,6 +300,10 @@ impl Actor {
             if shared.stopped.load(Ordering::Acquire) {
                 return Ok(());
             }
+            ensure!(
+                !self.initial_query_failed(),
+                "initial activity property query failed"
+            );
             tokio::select! { biased;
                 _ = &mut wake => return Ok(()),
                 owner = self.owners.next() => self.owner_change(owner.context("activity owner stream closed")??)?,
@@ -439,13 +458,31 @@ async fn property(
         .await?;
     Ok((payload(&reply)?, reply.recv_position()))
 }
+fn retry_query(error: &anyhow::Error) -> bool {
+    match error.downcast_ref::<zbus::Error>() {
+        Some(zbus::Error::MethodError(name, _, _)) => !matches!(
+            name.as_str(),
+            "org.freedesktop.DBus.Error.UnknownProperty"
+                | "org.freedesktop.DBus.Error.UnknownInterface"
+                | "org.freedesktop.DBus.Error.UnknownMethod"
+        ),
+        _ => true,
+    }
+}
 async fn boolean(bus: &Connection, owner: &str, path: &str, interface: &str, name: &str) -> Flag {
     match property(bus, owner, path, interface, name).await {
-        Ok((value, floor)) => Flag {
-            value: bool::try_from(value).ok(),
-            floor,
+        Ok((value, floor)) => {
+            let value = bool::try_from(value).ok();
+            Flag {
+                initial_failed: value.is_none(),
+                value,
+                floor,
+            }
+        }
+        Err(error) => Flag {
+            initial_failed: retry_query(&error),
+            ..Flag::default()
         },
-        Err(_) => Flag::default(),
     }
 }
 async fn session_path(bus: &Connection, owner: &str, id: Option<&str>) -> Option<String> {

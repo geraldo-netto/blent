@@ -1,0 +1,89 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "sources": {
+    "host/src/activity/native.rs": "6698f55548a9422de1c6d67737deb9ae76b3367af7a9e59b50d7f01693e9e25b",
+    "host/src/activity/tests.rs": "b8c00784bc9790185a6b9611306999c8a285adec90fa17a769b1b4b7c95a89e3",
+    "host/src/activity/native/tests.rs": "3793d2e63051c05a32346b7561852156ac1e091f5f30f518c9eaff107da200d2",
+    "host/src/activity/continuity_tests.rs": "c2756e3b50c1d4e22eee094d8350a338ef66399db4b15d06d1a00927ffbf6041"
+  },
+  "functions": [
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 210,
+      "name": "display",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 285,
+      "name": "initial_query_failed",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 295,
+      "name": "watch",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 461,
+      "name": "retry_query",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 472,
+      "name": "boolean",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 45,
+      "name": "preparing_for_sleep",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 55,
+      "name": "preparing_for_shutdown",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/native/tests.rs",
+      "line": 266,
+      "name": "t1429_initial_query_error_classification_preserves_explicit_unsupported",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/native/tests.rs",
+      "line": 288,
+      "name": "t1429_invalid_initial_boolean_values_request_recovery",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 334,
+      "name": "initial_failure",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 367,
+      "name": "t1429_initial_power_and_lock_query_failures_retry_after_original_settlement",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 374,
+      "name": "t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 395,
+      "name": "t1429_explicit_unsupported_property_stays_unknown_without_retry",
+      "complexity": 3
+    }
+  ]
+}

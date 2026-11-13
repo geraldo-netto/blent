@@ -1,0 +1,118 @@
+{
+  "tools": "Blent syn2.0.119 Rust frontend; Python AST standard cyclomatic count",
+  "sources": [
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/linux/refresh_failure.rs",
+      "sha256": "6badc660eedb87b1ddcb50ce1333c9068bbe2bef635fe5d3c1cebfccffccbc2d",
+      "functions": [
+        {
+          "line": 14,
+          "name": "power_save_mode",
+          "complexity": 2
+        },
+        {
+          "line": 22,
+          "name": "observed",
+          "complexity": 3
+        },
+        {
+          "line": 31,
+          "name": "running",
+          "complexity": 1
+        },
+        {
+          "line": 34,
+          "name": "paused",
+          "complexity": 1
+        },
+        {
+          "line": 37,
+          "name": "changed",
+          "complexity": 2
+        },
+        {
+          "line": 43,
+          "name": "settled",
+          "complexity": 2
+        },
+        {
+          "line": 47,
+          "name": "exercise",
+          "complexity": 1
+        },
+        {
+          "line": 66,
+          "name": "run",
+          "complexity": 1
+        },
+        {
+          "line": 73,
+          "name": "main",
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/linux/startup_pid.py",
+      "sha256": "8d82d271fcf09d74ea2efd98e35cceb64b412a6b567b1ac4a7aef9a6fa93e89a",
+      "functions": [
+        {
+          "line": 12,
+          "name": "fixture",
+          "complexity": 1
+        },
+        {
+          "line": 20,
+          "name": "main",
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/linux/initial_query_failure.rs",
+      "sha256": "e6da52f0215094f1a529d0e232b8eda8790fa3f741ef6527d9ada8313d9cd7f1",
+      "functions": [
+        {
+          "line": 12,
+          "name": "preparing_for_sleep",
+          "complexity": 2
+        },
+        {
+          "line": 19,
+          "name": "preparing_for_shutdown",
+          "complexity": 1
+        },
+        {
+          "line": 21,
+          "name": "get_session_by_pid",
+          "complexity": 1
+        },
+        {
+          "line": 25,
+          "name": "observed",
+          "complexity": 2
+        },
+        {
+          "line": 32,
+          "name": "settled",
+          "complexity": 2
+        },
+        {
+          "line": 36,
+          "name": "exercise",
+          "complexity": 1
+        },
+        {
+          "line": 51,
+          "name": "run",
+          "complexity": 1
+        },
+        {
+          "line": 58,
+          "name": "main",
+          "complexity": 1
+        }
+      ]
+    }
+  ]
+}

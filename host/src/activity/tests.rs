@@ -32,6 +32,9 @@ pub(super) struct Values {
     lock: AtomicBool,
     display: AtomicI32,
     mode: AtomicU8,
+    fail_sleep: AtomicBool,
+    fail_shutdown: AtomicBool,
+    missing_sleep: AtomicBool,
     fail_lock: AtomicBool,
     fail_display: AtomicBool,
 }
@@ -39,12 +42,21 @@ struct Manager(Arc<Values>);
 #[zbus::interface(name = "org.freedesktop.login1.Manager")]
 impl Manager {
     #[zbus(property)]
-    fn preparing_for_sleep(&self) -> bool {
-        self.0.sleep.load(Ordering::Acquire)
+    fn preparing_for_sleep(&self) -> zbus::fdo::Result<bool> {
+        if self.0.missing_sleep.load(Ordering::Acquire) {
+            return Err(zbus::fdo::Error::UnknownProperty("PreparingForSleep".into()));
+        }
+        if self.0.fail_sleep.load(Ordering::Acquire) {
+            return Err(zbus::fdo::Error::Failed("T1429 sleep query failure".into()));
+        }
+        Ok(self.0.sleep.load(Ordering::Acquire))
     }
     #[zbus(property)]
-    fn preparing_for_shutdown(&self) -> bool {
-        self.0.shutdown.load(Ordering::Acquire)
+    fn preparing_for_shutdown(&self) -> zbus::fdo::Result<bool> {
+        if self.0.fail_shutdown.load(Ordering::Acquire) {
+            return Err(zbus::fdo::Error::Failed("T1429 shutdown query failure".into()));
+        }
+        Ok(self.0.shutdown.load(Ordering::Acquire))
     }
     #[zbus(name = "GetSessionByPID")]
     fn get_session_by_pid(&self, _pid: u32) -> zbus::fdo::Result<OwnedObjectPath> {

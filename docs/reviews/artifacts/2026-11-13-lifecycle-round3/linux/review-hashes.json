@@ -1,0 +1,7 @@
+{
+  "target/debug/blent": "928eb1e9e3aaeebb7340f70785c05b5bc096ce55a5124a0d099fe096e1c08187",
+  "target/debug/build/blent/c16265474e6be6f1/out/libblent-c16265474e6be6f1.rlib": "7d7de9f1a01c820fbe877c90db48999207027c37fa9efd66d4a9690c5a616827",
+  "host/src/activity/native.rs": "55199699967fb035cb972add58df60b5604608b9233b1a48ade0758fbd3c49c6",
+  "host/src/daemon_shutdown.rs": "1e310a8bb959fbc432b8023da6d78519fd84af7a0cf5912381b5541fdafab33c",
+  "host/src/linux_main.rs": "dbd8d5d2d5aaefe7a37d39624f98090bb6261dd621fc8cc00557fc71be5cc31a"
+}
