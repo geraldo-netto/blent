@@ -1,0 +1,63 @@
+{
+  "tools": "Rust1.100.0 native LLVM coverage, cargo-llvm-cov0.8.7, syn2.0.119",
+  "tests": {
+    "passed": 8,
+    "failed": 0,
+    "scope": "7 input_creation integration cases plus exhaustive identity property case"
+  },
+  "functions": [
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "admit",
+      "line": 32,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "follow",
+      "line": 46,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "for_instance",
+      "line": 171,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "objects": {
+    "lib": {
+      "file": "blent-193737eb4ff8727a",
+      "sha256": "c0e31cfbe1fc68f13dfe8d2c956d14c5ad3ebc55b3ffee3ba5fb07ecc4414ec6"
+    },
+    "integration": {
+      "file": "input_creation-b07b9921c0d02750",
+      "sha256": "8c4a4727e92fef3c98559975f98cdc6e8ce10ffa74c9b21d7adba24d96e6412d"
+    }
+  },
+  "source_sha256": {
+    "host/src/input.rs": "c6d9ca4d561c907c28ced6c5d846016988e0841e45776b11c89d842a83f452ed",
+    "host/src/input/config.rs": "172809b01120422daac4ae9d8de03d0949d1152ca0edbc5b846a7292945c0d8d",
+    "host/src/input/linux.rs": "59cf47c76c9412ed3465bca4218c26af814118e289e11eb25643760ef77e55ca",
+    "host/src/input/linux/coverage_tests.rs": "de5bf8550a108eb0b9e6810e2be33dd27b7913b9b3e6cb48aa0783307a422023",
+    "host/src/input/mapping/coverage_tests.rs": "182abffd63c3cade78c470c48562e2e14b770364208224dc0ec38fc3fd2e66cf",
+    "host/src/input/mapping/x11_cache/tests.rs": "ea18cb72e489aeba957bcf935ed17ef637efbeb60618dbd37b4d1decb00f0aad",
+    "host/src/input/mapping/x11_tests.rs": "1b9174300db1ab17f585391df56a0e76315dc590a6e53c0593a66e4ee5507b18",
+    "host/tests/input_creation.rs": "17d609c3eab8527fd9ad7670b77f89b7ffbc492aee1a7e9a13dd11c0c5033377"
+  }
+}

@@ -8,6 +8,8 @@ pub struct InputConfig {
     pub port: u16,
     /// Which tablet this server belongs to (0 = the first). Decides device
     /// names, product ids, and which virtual output the devices map to.
+    /// Linux admits 0..=4095, including display-only followers; larger values
+    /// reject the follower before claiming its identity or creating devices.
     pub instance: u32,
     /// Session token the client must present first; `None` disables it.
     pub token: Option<String>,

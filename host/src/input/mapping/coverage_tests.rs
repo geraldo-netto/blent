@@ -206,7 +206,7 @@ async fn t497_mapping_retries_verify_device_ownership_and_readback() {
     }
     crate::test_logging::enable();
     let root = std::path::PathBuf::from(std::env::var_os("HOME").unwrap());
-    let identity = DeviceIdentity::for_instance(127);
+    let identity = DeviceIdentity::for_instance(127).unwrap();
     target_contract(&root).await;
     device_contract(&root, &identity).await;
     mapping_contract(&root, &identity).await;

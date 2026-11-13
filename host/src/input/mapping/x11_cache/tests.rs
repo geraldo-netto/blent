@@ -41,7 +41,7 @@ fn t625_readback_requires_bounded_node_and_finite_nine_value_matrix() {
 
 #[test]
 fn t625_topology_missing_device_and_reused_identity_invalidate_readback() {
-    let ident = DeviceIdentity::for_instance(0);
+    let ident = DeviceIdentity::for_instance(0).unwrap();
     let list = "Blent Touch id=10 [slave pointer]";
     let mut cache = Mappings::default();
     cache.prepare("initial topology", list, &ident);

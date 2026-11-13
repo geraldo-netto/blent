@@ -74,7 +74,7 @@ fn assert_intercepted() {
 }
 
 fn construction_contract() {
-    let names = DeviceIdentity::for_instance(127);
+    let names = DeviceIdentity::for_instance(127).unwrap();
     for flags in 0..8 {
         let cfg = InputConfig {
             touch: flags & 1 != 0,
@@ -111,7 +111,7 @@ async fn owner_contract() {
     let cfg = InputConfig::default();
     assert_eq!(
         owner
-            .create_devices(&cfg, &DeviceIdentity::for_instance(0))
+            .create_devices(&cfg, &DeviceIdentity::for_instance(0).unwrap())
             .await,
         3
     );
@@ -129,7 +129,7 @@ async fn owner_contract() {
     assert_eq!(TOUCH_DEVICES.load(Ordering::SeqCst), 0);
     assert_eq!(owner.release_for_remap(false, None), 0);
     owner
-        .create_devices(&cfg, &DeviceIdentity::for_instance(0))
+        .create_devices(&cfg, &DeviceIdentity::for_instance(0).unwrap())
         .await;
     drop(owner);
     tokio::task::yield_now().await;
@@ -183,4 +183,33 @@ fn diagnostic_contract() {
     assert!(log.contains("Mode is now pen-only"));
     assert!(log.contains("Pen DOWN"));
     assert!(log.contains("Pen UP"));
+}
+
+#[test]
+fn t1430_device_identity_range_is_checked_and_every_admitted_identity_is_distinct() {
+    let mut names = std::collections::HashSet::new();
+    let mut products = std::collections::HashSet::new();
+    for instance in 0..=4095 {
+        let identity = DeviceIdentity::for_instance(instance).unwrap();
+        assert!(names.insert(identity.touch));
+        assert!(names.insert(identity.pen));
+        assert!(names.insert(identity.pointer));
+        assert!(products.insert(identity.product_touch));
+        assert!(products.insert(identity.product_pen));
+        assert!(products.insert(identity.product_pointer));
+        assert_eq!(identity.product_touch as u32, instance * 16 + 1);
+        assert_eq!(identity.product_pen as u32, instance * 16 + 2);
+        assert_eq!(identity.product_pointer as u32, instance * 16 + 3);
+    }
+    for invalid in [4096, 65535, 65536, u32::MAX] {
+        assert_eq!(
+            DeviceIdentity::for_instance(invalid).unwrap_err().kind(),
+            std::io::ErrorKind::InvalidInput
+        );
+    }
+    let mut value = 1430u32;
+    for _ in 0..256 {
+        value = value.wrapping_mul(1664525).wrapping_add(1013904223);
+        assert!(DeviceIdentity::for_instance(value | (1 << 16)).is_err());
+    }
 }

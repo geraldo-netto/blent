@@ -815,7 +815,7 @@ mod tests {
         assert!(
             super::map_kwin_device(
                 "event-fixture",
-                &super::DeviceIdentity::for_instance(0),
+                &super::DeviceIdentity::for_instance(0).unwrap(),
                 &selected
             )
             .await
@@ -1818,7 +1818,7 @@ fi
         ];
         map_devices_using(
             false,
-            &DeviceIdentity::for_instance(1),
+            &DeviceIdentity::for_instance(1).unwrap(),
             Some(9),
             3,
             "x11",
@@ -1844,7 +1844,7 @@ fi
         std::fs::remove_file(root.join("mapped")).unwrap();
         map_devices_using(
             true,
-            &DeviceIdentity::for_instance(0),
+            &DeviceIdentity::for_instance(0).unwrap(),
             Some(8),
             2,
             "x11",

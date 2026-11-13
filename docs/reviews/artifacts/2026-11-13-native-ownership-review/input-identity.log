@@ -1,0 +1,12 @@
+instance=0 no_devices=true unpolled_follow_panicked=false
+instance=4095 no_devices=true unpolled_follow_panicked=false
+
+thread 'main' (1179272) panicked at host/src/input/linux.rs:169:20:
+attempt to multiply with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+instance=4096 no_devices=true unpolled_follow_panicked=true
+instance=65536 no_devices=true unpolled_follow_panicked=false
+
+thread 'main' (1179272) panicked at host/src/input/linux.rs:167:28:
+attempt to add with overflow
+instance=4294967295 no_devices=true unpolled_follow_panicked=true

@@ -29,6 +29,11 @@ impl Backend {
             lifetime: lifetime::Lifetime::new()?,
         })
     }
+    fn admit(&self, instance: u32) -> std::io::Result<DeviceIdentity> {
+        let identity = DeviceIdentity::for_instance(instance)?;
+        self.lifetime.claim(instance)?;
+        Ok(identity)
+    }
 }
 
 impl InputBackend for Backend {
@@ -44,17 +49,20 @@ impl InputBackend for Backend {
         mode: watch::Receiver<bool>,
         config: InputConfig,
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> {
-        if let Err(error) = self.lifetime.claim(config.instance) {
-            warn!("Input follower rejected: {error}");
-            return Box::pin(async {});
-        }
+        let identity = match self.admit(config.instance) {
+            Ok(identity) => identity,
+            Err(error) => {
+                warn!("Input follower rejected: {error}");
+                return Box::pin(async {});
+            }
+        };
         Box::pin(follow_input_devices(
             tablet,
             mode,
             self.card.clone(),
             self.devices.clone(),
             self.lifetime.clone(),
-            DeviceIdentity::for_instance(config.instance),
+            identity,
             config,
         ))
     }
@@ -160,21 +168,27 @@ pub struct DeviceIdentity {
 }
 
 impl DeviceIdentity {
-    pub fn for_instance(instance: u32) -> Self {
+    pub fn for_instance(instance: u32) -> std::io::Result<Self> {
+        if instance > u16::MAX as u32 / 16 {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Linux input instance must be 0..4095",
+            ));
+        }
         let suffix = if instance == 0 {
             String::new()
         } else {
             format!(" {}", instance + 1)
         };
         let base = (instance as u16) * 16;
-        Self {
+        Ok(Self {
             touch: format!("{}{}", TOUCH_DEVICE_NAME, suffix),
             pen: format!("{}{}", PEN_DEVICE_NAME, suffix),
             pointer: format!("{}{}", POINTER_DEVICE_NAME, suffix),
             product_touch: PRODUCT_TOUCH + base,
             product_pen: PRODUCT_PEN + base,
             product_pointer: PRODUCT_POINTER + base,
-        }
+        })
     }
     pub(super) fn owns(&self, name: &str) -> bool {
         name == self.touch || name == self.pen || name == self.pointer

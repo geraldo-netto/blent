@@ -401,3 +401,68 @@ fn t1422_invalid_capacity_never_admits_native_work() {
     assert!(LinuxBackend::new(watch::channel(None).1).is_err());
     assert_eq!(counts(), (0, 0));
 }
+
+async fn identity_boundary(instance: u32, valid: bool) {
+    let (_card, card) = watch::channel(None);
+    let (_tablet, tablet) = watch::channel(false);
+    let (_mode, mode) = watch::channel(false);
+    let backend = LinuxBackend::new(card).unwrap();
+    let proof = backend.native_completion().unwrap();
+    let config = InputConfig {
+        instance,
+        touch: false,
+        pen: false,
+        pointer: false,
+        ..Default::default()
+    };
+    let follow = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        backend.follow(tablet.clone(), mode.clone(), config.clone())
+    }));
+    assert!(
+        follow.is_ok(),
+        "T1430 invalid identity must reject without panic"
+    );
+    let mut follow = follow.unwrap();
+    assert_eq!(futures_util::poll!(&mut follow).is_pending(), valid);
+    drop(follow);
+    if !valid {
+        let mut current = backend.follow(
+            tablet,
+            mode,
+            InputConfig {
+                instance: 0,
+                ..config
+            },
+        );
+        assert!(
+            futures_util::poll!(&mut current).is_pending(),
+            "T1430 rejected identity consumed the follower"
+        );
+        drop(current);
+    }
+    drop(backend);
+    complete(&proof).await;
+    assert_eq!(counts(), (0, 0));
+}
+
+#[test]
+fn t1430_identity_boundary_rejects_without_panic_or_admission() {
+    if std::env::var_os("BLENT_T1422_GATE").is_none() {
+        fixture(
+            "t1430_identity_boundary_rejects_without_panic_or_admission",
+            0,
+            "64",
+        );
+        return;
+    }
+    intercepted();
+    blent::runtime_owner::run(async {
+        for instance in [0, 4095] {
+            identity_boundary(instance, true).await;
+        }
+        for instance in [4096, 65535, 65536, u32::MAX] {
+            identity_boundary(instance, false).await;
+        }
+    })
+    .unwrap();
+}

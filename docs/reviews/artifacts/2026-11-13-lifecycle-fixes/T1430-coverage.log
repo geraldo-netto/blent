@@ -1,0 +1,19 @@
+RUN integration []
+
+running 7 tests
+test t1422_cancelled_creation_retains_native_proof_and_identity ... ok
+test t1422_capacity_rejects_before_creation_and_recovers_after_settlement ... ok
+test t1422_failed_constructor_settles_original_admission ... ok
+test t1422_invalid_capacity_never_admits_native_work ... ok
+test t1422_process_exit_waits_for_cancelled_constructor ... ok
+test t1422_session_retirement_waits_for_original_constructor ... ok
+test t1430_identity_boundary_rejects_without_panic_or_admission ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.47s
+
+RUN lib ['t1430']
+
+running 1 test
+test input::linux::coverage_tests::t1430_device_identity_range_is_checked_and_every_admitted_identity_is_distinct ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 827 filtered out; finished in 0.01s
