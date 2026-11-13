@@ -93,7 +93,7 @@ impl Pool {
     pub fn reserve(&self) -> io::Result<Admission> {
         self.0
             .used
-            .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+            .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
                 (used < self.0.capacity).then_some(used + 1)
             })
             .map_err(|_| {

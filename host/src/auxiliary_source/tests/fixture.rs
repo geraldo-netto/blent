@@ -84,7 +84,7 @@ impl SourceFactory for Factory {
 fn original(state: &State) -> Arc<Original> {
     static EPOCH: AtomicU64 = AtomicU64::new(0);
     let epoch = EPOCH
-        .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+        .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
             value.checked_add(1)
         })
         .unwrap()

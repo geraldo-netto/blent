@@ -1,0 +1,3 @@
+Command: python3 scripts/format-rust.py --check
+Observed exit status: 0
+Both workspace cargo fmt and Linux include rustfmt stages passed.

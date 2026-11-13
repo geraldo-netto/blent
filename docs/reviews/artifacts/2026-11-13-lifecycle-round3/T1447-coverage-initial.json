@@ -1,0 +1,122 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "sdk": "/home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files",
+  "codecs": "/home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra/7ccd63f7532e93ce345b67dedc492748bba449917e81a031502715bc38e3f438/files",
+  "objects": {
+    "default-blent_config": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent-config/8ddea468b19bb823/out/blent_config-8ddea468b19bb823",
+      "snapshot": "/tmp/blent-t1447/coverage/default-blent_config",
+      "sha256": "abc10434faee9dfcb509a8dc645d0f7dce5d0b3e78a44468da9be6c1be1bef53"
+    },
+    "default-blent": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/193737eb4ff8727a/out/blent-193737eb4ff8727a",
+      "snapshot": "/tmp/blent-t1447/coverage/default-blent",
+      "sha256": "d55176cc6d097b7acada72b3f55a28510b38077d79c406c45ea14a0133350f89"
+    },
+    "native-blent": {
+      "original": "/backups/disk2/blent-work/2026-10-20-all-open/T835/target/llvm-cov-target/debug/build/blent/a0b80416287d182c/out/blent-a0b80416287d182c",
+      "snapshot": "/tmp/blent-t1447/coverage/native-blent",
+      "sha256": "ade3652d8ced55b87e435a158ba0c2683cb8e5f42181e6d7991ba2ec84f66174"
+    }
+  },
+  "source_sha256": {
+    "common/src/retirement.rs": "963bc0c8caf45fa7d40f1b478186f2e91a250ee5149f9257d175d37fd1071c15",
+    "host/src/activity.rs": "3901dcc7121d7c232b46635b5549efa17838d28d3debfd61431bab1ac52c722e",
+    "host/src/config_jobs.rs": "751da78941b99c73498e8a169255c68535a4e7ad55bb9621518df8e3a6f52d8c",
+    "host/src/media_storage.rs": "9717160f167196b4dd0ab5a1972f86b57b1555c654ac5ce456db906a60ba3f39",
+    "host/src/video_queue.rs": "c8194074e2727a0c31d025902959d492547ef2653ba34a35a0373ec78dd29f7b",
+    "host/src/raw_memory.rs": "fa24360f39dace15bc185c8a1ae6bb2b47b72e8ba77667d06a752ff92b32b9bb",
+    "host/src/encoder_worker.rs": "d4e99f1accbb6afbad23292c932c87b633ad6a623434f6537f13c692207b17ef",
+    "host/src/auxiliary_source/tests/fixture.rs": "4d0093117271359828f9e88ef45147833a333254bd99a4070ce37153a4ec751f"
+  },
+  "functions": [
+    {
+      "file": "common/src/retirement.rs",
+      "function": "reserve",
+      "first": 93,
+      "last": 109,
+      "complexity": 3,
+      "scope": "production",
+      "covered": 17,
+      "executable": 17,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/activity.rs",
+      "function": "epoch",
+      "first": 29,
+      "last": 36,
+      "complexity": 4,
+      "scope": "production",
+      "covered": 8,
+      "executable": 8,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "reserve",
+      "first": 134,
+      "last": 141,
+      "complexity": 3,
+      "scope": "production",
+      "covered": 8,
+      "executable": 8,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/media_storage.rs",
+      "function": "reserve",
+      "first": 23,
+      "last": 35,
+      "complexity": 3,
+      "scope": "production",
+      "covered": 13,
+      "executable": 13,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/video_queue.rs",
+      "function": "subscriber",
+      "first": 68,
+      "last": 83,
+      "complexity": 2,
+      "scope": "production",
+      "covered": 16,
+      "executable": 16,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "function": "new",
+      "first": 181,
+      "last": 189,
+      "complexity": 3,
+      "scope": "production",
+      "covered": 7,
+      "executable": 8,
+      "percent": 87.5
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "function": "nonce",
+      "first": 23,
+      "last": 27,
+      "complexity": 3,
+      "scope": "production",
+      "covered": 3,
+      "executable": 4,
+      "percent": 75.0
+    },
+    {
+      "file": "host/src/auxiliary_source/tests/fixture.rs",
+      "function": "original",
+      "first": 84,
+      "last": 105,
+      "complexity": 2,
+      "scope": "fixture",
+      "covered": 20,
+      "executable": 20,
+      "percent": 100.0
+    }
+  ]
+}

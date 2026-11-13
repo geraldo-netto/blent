@@ -22,7 +22,11 @@ pub(crate) struct Output {
 }
 pub(crate) fn nonce() -> Result<u64> {
     static NEXT: AtomicU64 = AtomicU64::new(1);
-    NEXT.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+    reserve_nonce(&NEXT)
+}
+fn reserve_nonce(counter: &AtomicU64) -> Result<u64> {
+    counter
+        .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
         .map_err(|_| anyhow::anyhow!("Encoder worker nonce exhausted"))
 }
 pub(crate) fn spawn(

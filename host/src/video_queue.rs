@@ -71,7 +71,7 @@ impl VideoSender {
     ) -> Option<VideoReceiver> {
         self.viewers
             .epoch
-            .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+            .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
                 epoch.checked_add(1)
             })
             .ok()?;

@@ -1,0 +1,85 @@
+{
+  "tool": "blent-rust-source 0.1.0/syn 2.0.119",
+  "functions": [
+    {
+      "file": "common/src/retirement.rs",
+      "function": "reserve",
+      "first": 93,
+      "last": 109,
+      "complexity": 3,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/activity.rs",
+      "function": "epoch",
+      "first": 29,
+      "last": 36,
+      "complexity": 4,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "reserve",
+      "first": 134,
+      "last": 141,
+      "complexity": 3,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/media_storage.rs",
+      "function": "reserve",
+      "first": 23,
+      "last": 35,
+      "complexity": 3,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/video_queue.rs",
+      "function": "subscriber",
+      "first": 68,
+      "last": 83,
+      "complexity": 2,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/raw_memory.rs",
+      "function": "new",
+      "first": 181,
+      "last": 189,
+      "complexity": 3,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "function": "nonce",
+      "first": 23,
+      "last": 26,
+      "complexity": 1,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/encoder_worker.rs",
+      "function": "reserve_nonce",
+      "first": 27,
+      "last": 31,
+      "complexity": 3,
+      "scope": "production"
+    },
+    {
+      "file": "host/src/auxiliary_source/tests/fixture.rs",
+      "function": "original",
+      "first": 84,
+      "last": 105,
+      "complexity": 2,
+      "scope": "fixture"
+    },
+    {
+      "file": "host/src/encoder_worker/tests.rs",
+      "function": "t1447_nonce_exhaustion_rejects_repeatedly_without_wrapping",
+      "first": 8,
+      "last": 19,
+      "complexity": 2,
+      "scope": "test"
+    }
+  ]
+}

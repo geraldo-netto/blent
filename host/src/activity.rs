@@ -28,7 +28,7 @@ fn compositor_desktop(session: &str, desktop: &str) -> String {
 }
 fn epoch(counter: &AtomicU64) -> Result<u64> {
     counter
-        .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+        .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
             value.checked_add(1)
         })
         .map(|value| value + 1)

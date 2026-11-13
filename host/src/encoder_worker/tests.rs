@@ -3,6 +3,21 @@ use std::{
     os::fd::{AsRawFd, IntoRawFd},
     time::Duration,
 };
+
+#[test]
+fn t1447_nonce_exhaustion_rejects_repeatedly_without_wrapping() {
+    let counter = AtomicU64::new(u64::MAX - 1);
+    assert_eq!(reserve_nonce(&counter).unwrap(), u64::MAX - 1);
+    assert_eq!(counter.load(Ordering::Relaxed), u64::MAX);
+    for _ in 0..2 {
+        assert_eq!(
+            reserve_nonce(&counter).unwrap_err().to_string(),
+            "Encoder worker nonce exhausted"
+        );
+        assert_eq!(counter.load(Ordering::Relaxed), u64::MAX);
+    }
+}
+
 fn job() -> Job {
     Job {
         encoder: "libx264".into(),

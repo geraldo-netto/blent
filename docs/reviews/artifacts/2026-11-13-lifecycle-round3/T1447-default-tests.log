@@ -1,0 +1,106 @@
+COHORT blent_config retirement::
+
+running 8 tests
+test retirement::fence_tests::t1272_consumed_owner_fence_preserves_original_admission ... ok
+test retirement::observations::tests::t1124_bound_observation_survives_ticket_and_poisoned_mutex ...
+thread 'retirement::observations::tests::t1124_bound_observation_survives_ticket_and_poisoned_mutex' (1854467) panicked at common/src/retirement/observations/tests.rs:46:9:
+T1124 injected lock-owner failure
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test retirement::observations::tests::t1124_two_slot_exhaustive_transition_model ... ok
+test retirement::observations::tests::t1124_zero_capacity_and_original_identity_boundaries ... ok
+test retirement::tests::t814_capacity_boundaries_reject_invalid_values ... ok
+test retirement::tests::t814_panicking_adapter_keeps_its_slot_without_stalling_siblings ...
+thread 'blent-retirement' (1854480) panicked at common/src/retirement.rs:308:13:
+T814 observation failure
+ok
+test retirement::tests::t814_retirement_retains_capacity_and_siblings_progress ... ok
+test retirement::tests::t841_completed_messages_preserve_retirement_ownership ...
+thread 'retirement::tests::t841_completed_messages_preserve_retirement_ownership' (1854483) panicked at common/src/retirement.rs:308:13:
+T814 observation failure
+ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 426 filtered out; finished in 0.04s
+
+EXIT 0
+COHORT blent activity::tests::t1008_unavailable_buses_and_invalid_settings_remain_explicit
+
+running 1 test
+test activity::tests::t1008_unavailable_buses_and_invalid_settings_remain_explicit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 882 filtered out; finished in 0.00s
+
+EXIT 0
+COHORT blent config_jobs::
+
+running 9 tests
+test config_jobs::tests::t1432_closed_queue_contains_discard_panic_and_continues_original_worker ...
+thread 'config_jobs::tests::t1432_closed_queue_contains_discard_panic_and_continues_original_worker' (1854495) panicked at host/src/config_jobs/tests.rs:314:9:
+T1432 opaque queued destructor panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test config_jobs::tests::t1432_cutoff_gate_fixture ... ok
+test config_jobs::tests::t1432_held_shared_initialization_cannot_delay_process_cutoff ... ok
+test config_jobs::tests::t826_abandoned_active_read_retains_capacity_until_native_exit ... ok
+test config_jobs::tests::t826_cancellation_during_commit_retains_real_outcome ... ok
+test config_jobs::tests::t826_cancelled_lock_wait_never_commits_and_worker_failure_is_observed ...
+thread 'blent-config-query' (1854519) panicked at host/src/config_jobs/tests.rs:160:13:
+broken snapshot
+ok
+test config_jobs::tests::t826_held_store_bounds_queue_cancels_queued_work_and_retains_worker ... ok
+test config_jobs::tests::t826_reusable_sibling_progress_and_partial_construction_retirement ... ok
+test config_jobs::tests::t826_worker_capacity_rejects_invalid_or_nonunicode_configuration ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 874 filtered out; finished in 0.32s
+
+EXIT 0
+COHORT blent media_storage::
+
+running 3 tests
+test media_storage::tests::t391_shared_backing_cannot_escape_to_an_unaccounted_session ... ok
+test media_storage::tests::t391_slice_retains_full_capacity_once_until_final_release ... ok
+test media_storage::tests::t497_debug_view_and_retirement_do_not_change_storage_ownership ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 880 filtered out; finished in 0.00s
+
+EXIT 0
+COHORT blent video_queue::
+
+running 7 tests
+test video_queue::tests::t391_budget_pressure_requires_idr_and_counts_shared_config_once ... ok
+test video_queue::tests::t391_unauthenticated_receivers_and_oversized_packets_retain_nothing ... ok
+test video_queue::viewers::exhaustion_tests::t1177_bounded_wide_oracle_rejects_without_receivers_or_epoch_reuse ... ok
+test video_queue::viewers::exhaustion_tests::t1177_concurrent_final_admission_reserves_only_one_original ... ok
+test video_queue::viewers::exhaustion_tests::t1177_denial_keeps_original_presence_capability_and_subscription ... ok
+test video_queue::viewers::exhaustion_tests::t1177_terminal_empty_registry_cannot_restart_continuity ... ok
+test video_queue::viewers::tests::t1041_retired_entries_are_removed_even_while_original_notices_survive ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 876 filtered out; finished in 0.00s
+
+EXIT 0
+COHORT blent auxiliary_source::tests::
+
+running 12 tests
+test auxiliary_source::tests::t1081_backend_errors_and_panics_remain_failed_without_legacy_fallback ...
+thread 'blent-aux-activity' (1854598) panicked at host/src/auxiliary_source/tests/fixture.rs:78:35:
+T1081 native creator panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test auxiliary_source::tests::t1081_cancelled_blocking_constructor_disposes_its_exact_late_root ... ok
+test auxiliary_source::tests::t1081_concurrent_admission_and_all_six_release_orders_keep_one_source ... ok
+test auxiliary_source::tests::t1081_constructor_native_exhaustion_joins_failed_worker_without_replacing_original ... ok
+test auxiliary_source::tests::t1081_invalid_settings_and_cached_failures_never_retry_initialization ... ok
+test auxiliary_source::tests::t1081_last_release_retains_actual_native_fence_before_source_reuse ... ok
+test auxiliary_source::tests::t1081_last_release_with_borrowed_publication_never_blocks_client ... ok
+test auxiliary_source::tests::t1081_late_backend_creation_retains_native_ownership_after_last_consumer ... ok
+test auxiliary_source::tests::t1081_owner_lost_before_startup_receipt_still_joins_original_worker ... ok
+test auxiliary_source::tests::t1081_private_public_adapter_is_explicitly_unsupported_without_logind ... ok
+test auxiliary_source::tests::t1081_three_client_runtimes_share_original_source_until_last_release ... ok
+test auxiliary_source::tests::t1081_worker_unwind_closes_original_publication_before_runtime_destruction ...
+thread 'auxiliary_source::tests::t1081_worker_unwind_closes_original_publication_before_runtime_destruction' (1854749) panicked at host/src/auxiliary_source/worker.rs:146:9:
+A Tokio 1.x context was found, but timers are disabled. Call `enable_time` on the runtime builder to enable timers.
+ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 871 filtered out; finished in 0.58s
+
+EXIT 0

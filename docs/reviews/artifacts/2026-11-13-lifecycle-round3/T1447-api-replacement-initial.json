@@ -1,0 +1,50 @@
+[
+  {
+    "file": "common/src/retirement.rs",
+    "before_sha256": "a7b7d66e71f63448699397875b80a8dae28e0d75014c2e7dc9d2df0a0a1a42af",
+    "after_sha256": "963bc0c8caf45fa7d40f1b478186f2e91a250ee5149f9257d175d37fd1071c15",
+    "replacement_count": 1
+  },
+  {
+    "file": "host/src/activity.rs",
+    "before_sha256": "2cff0212d10c8c7b9cbfe7dc9038552b9f0f86b90ccdb655c7be12629ad7ebef",
+    "after_sha256": "3901dcc7121d7c232b46635b5549efa17838d28d3debfd61431bab1ac52c722e",
+    "replacement_count": 1
+  },
+  {
+    "file": "host/src/config_jobs.rs",
+    "before_sha256": "9493e5df6f73b122c5a6c75162452770b2d85d17978a31ecc83e3e21c0a41f36",
+    "after_sha256": "751da78941b99c73498e8a169255c68535a4e7ad55bb9621518df8e3a6f52d8c",
+    "replacement_count": 1
+  },
+  {
+    "file": "host/src/media_storage.rs",
+    "before_sha256": "319756cdeaa4a998183c6cb96270f2de622eeb09e3dfc98c06145f3f2a2e9a54",
+    "after_sha256": "9717160f167196b4dd0ab5a1972f86b57b1555c654ac5ce456db906a60ba3f39",
+    "replacement_count": 1
+  },
+  {
+    "file": "host/src/video_queue.rs",
+    "before_sha256": "ddb01b736d1e306b9b0628f3895ad5ecf207ddac264acc7dad8bc5bf23e4a708",
+    "after_sha256": "c8194074e2727a0c31d025902959d492547ef2653ba34a35a0373ec78dd29f7b",
+    "replacement_count": 1
+  },
+  {
+    "file": "host/src/raw_memory.rs",
+    "before_sha256": "8ddca0274d5a9658bfdcf549b1f14ba920af5a0c816315c25ec3346f9ed23a71",
+    "after_sha256": "fa24360f39dace15bc185c8a1ae6bb2b47b72e8ba77667d06a752ff92b32b9bb",
+    "replacement_count": 1
+  },
+  {
+    "file": "host/src/encoder_worker.rs",
+    "before_sha256": "2827f2c0cd13c3130cbb73e31bdb4193d74764e2354b0b9b9d484c8a9cc816db",
+    "after_sha256": "d4e99f1accbb6afbad23292c932c87b633ad6a623434f6537f13c692207b17ef",
+    "replacement_count": 1
+  },
+  {
+    "file": "host/src/auxiliary_source/tests/fixture.rs",
+    "before_sha256": "299409554d90412514e16e9d5ec6ee00df38957f1f27b56fb43e3ab538881a92",
+    "after_sha256": "4d0093117271359828f9e88ef45147833a333254bd99a4070ce37153a4ec751f",
+    "replacement_count": 1
+  }
+]

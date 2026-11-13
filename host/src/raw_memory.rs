@@ -181,7 +181,7 @@ impl Reader {
     pub fn new(socket: Socket, dimensions: (u32, u32), slots: u32) -> Result<Self> {
         static NEXT_NONCE: AtomicU64 = AtomicU64::new(1);
         let nonce = NEXT_NONCE
-            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |value| {
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |value| {
                 value.checked_add(1)
             })
             .map_err(|_| anyhow::anyhow!("raw handshake nonce exhausted"))?;
