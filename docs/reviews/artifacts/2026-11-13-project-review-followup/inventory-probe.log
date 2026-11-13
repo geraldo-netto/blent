@@ -1,0 +1,5 @@
+   Compiling blent-review-probe v0.0.0 (/home/netto/.cache/blent-review-20261113-second/probe)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.43s
+     Running `/home/netto/.cache/blent-review-20261113/probe/target/debug/inventory`
+serial bytes=10: inventory confirmed=true, route admitted=false
+serial bytes=1025: inventory confirmed=true, route admitted=false

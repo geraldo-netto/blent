@@ -1,0 +1,540 @@
+{
+  "date": "2026-11-13",
+  "revision": "5cfcfd8bc6018e2e15354f1ef443e33ab0877775",
+  "status": "complete_with_findings",
+  "findings": {
+    "medium": [
+      "T1383",
+      "T1386"
+    ],
+    "low": [
+      "T1384",
+      "T1385",
+      "T1387",
+      "T1388"
+    ]
+  },
+  "rust": {
+    "summary": {
+      "passed": 2563,
+      "failed": 0,
+      "ignored": 7,
+      "registered": 2570,
+      "test_executables": 48
+    },
+    "commands": [
+      {
+        "name": "common",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "blent-config",
+          "--lib"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "host-gui",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "blent",
+          "-p",
+          "blent-gui",
+          "--lib",
+          "--bins",
+          "--tests",
+          "--features",
+          "blent/accessory-transport"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "programs": [
+      {
+        "program": "unittests src/lib.rs (target/debug/deps/blent_config-3c91fd8c3226d586)",
+        "passed": 430,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 10.7
+      },
+      {
+        "program": "unittests src/lib.rs (target/debug/deps/blent-74de745a54d1c2f6)",
+        "passed": 1074,
+        "failed": 0,
+        "ignored": 3,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 104.6
+      },
+      {
+        "program": "unittests src/main.rs (target/debug/deps/blent-8461f18b025039c8)",
+        "passed": 608,
+        "failed": 0,
+        "ignored": 4,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 144.65
+      },
+      {
+        "program": "unittests src/bin/usb_broker.rs (target/debug/deps/blent_usb_broker-c2f2bfdcfca6809a)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/activity_dpms.rs (target/debug/deps/activity_dpms-7f31502497f640c6)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.11
+      },
+      {
+        "program": "tests/adb_mapping_retirement.rs (target/debug/deps/adb_mapping_retirement-913b4d7844141808)",
+        "passed": 27,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 15.19
+      },
+      {
+        "program": "tests/arch_output.rs (target/debug/deps/arch_output-14f38b52b35da235)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.35
+      },
+      {
+        "program": "tests/audio_native.rs (target/debug/deps/audio_native-1cf07529c6061293)",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/audio_staging.rs (target/debug/deps/audio_staging-d43917ebddfd62b6)",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.01
+      },
+      {
+        "program": "tests/c_benchmarks.rs (target/debug/deps/c_benchmarks-687978ddc3502780)",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 7.64
+      },
+      {
+        "program": "tests/camera_pool.rs (target/debug/deps/camera_pool-8f0e924dc41726ec)",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.02
+      },
+      {
+        "program": "tests/camera_probe.rs (target/debug/deps/camera_probe-73ba1982d9631598)",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 2.75
+      },
+      {
+        "program": "tests/camera_probe_options.rs (target/debug/deps/camera_probe_options-b452d2b3632892fd)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/camera_probe_policy.rs (target/debug/deps/camera_probe_policy-6f870643c72543e5)",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/camera_probe_samples.rs (target/debug/deps/camera_probe_samples-935493c258871cf6)",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/capture_activity.rs (target/debug/deps/capture_activity-069ca07191fc61ba)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 3.31
+      },
+      {
+        "program": "tests/capture_contract.rs (target/debug/deps/capture_contract-4f24365f9cbc7d27)",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/config_diagnostics.rs (target/debug/deps/config_diagnostics-f2a8612b6ec5fa04)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.02
+      },
+      {
+        "program": "tests/connection_routes.rs (target/debug/deps/connection_routes-f5d57bebd30e4042)",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/contract_build.rs (target/debug/deps/contract_build-1497a6276020527a)",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/control_failure.rs (target/debug/deps/control_failure-9df2a5eec3eda15a)",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.1
+      },
+      {
+        "program": "tests/conversion.rs (target/debug/deps/conversion-de0d2ab011499ce3)",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 61.7
+      },
+      {
+        "program": "tests/evdi_helper.rs (target/debug/deps/evdi_helper-32aa24b3c9b4d0aa)",
+        "passed": 70,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 200.26
+      },
+      {
+        "program": "tests/evdi_modules.rs (target/debug/deps/evdi_modules-fa7ba2d3154c2c97)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 3.91
+      },
+      {
+        "program": "tests/frame_retirement.rs (target/debug/deps/frame_retirement-0eacb3987b258433)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 1.28
+      },
+      {
+        "program": "tests/gpu_capture.rs (target/debug/deps/gpu_capture-545055335eb875d2)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.47
+      },
+      {
+        "program": "tests/guest_probe.rs (target/debug/deps/guest_probe-784daaea7ae43e7b)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.22
+      },
+      {
+        "program": "tests/linux_lifecycle.rs (target/debug/deps/linux_lifecycle-0887843a0212be97)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.45
+      },
+      {
+        "program": "tests/portable_host.rs (target/debug/deps/portable_host-8aa8f8a124b30315)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/portable_session.rs (target/debug/deps/portable_session-4afa90bbb78421c9)",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/portable_usb.rs (target/debug/deps/portable_usb-7c3ffa0561755357)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.1
+      },
+      {
+        "program": "tests/rect_native.rs (target/debug/deps/rect_native-4ea6ea66a7f0c413)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.12
+      },
+      {
+        "program": "tests/runtime_exit.rs (target/debug/deps/runtime_exit-52bbb14ccedbcad2)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.02
+      },
+      {
+        "program": "tests/session_failure.rs (target/debug/deps/session_failure-e0393228aae7add5)",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.01
+      },
+      {
+        "program": "tests/shared_encode_replay.rs (target/debug/deps/shared_encode_replay-610a90bc00a78aec)",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/shutdown_deadline.rs (target/debug/deps/shutdown_deadline-13940a767a6d6c86)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 5.11
+      },
+      {
+        "program": "tests/tooling.rs (target/debug/deps/tooling-e66c7db1c1eac5a3)",
+        "passed": 42,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 253.2
+      },
+      {
+        "program": "tests/usb_broker.rs (target/debug/deps/usb_broker-117ce332c55a5f1c)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.11
+      },
+      {
+        "program": "tests/vdisplay.rs (target/debug/deps/vdisplay-35059757ac229437)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.01
+      },
+      {
+        "program": "tests/wifi_exit.rs (target/debug/deps/wifi_exit-068c6e6dcf66c1c7)",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.24
+      },
+      {
+        "program": "tests/wifi_setup.rs (target/debug/deps/wifi_setup-53919fd650ab737e)",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 8.84
+      },
+      {
+        "program": "tests/windows_autostart.rs (target/debug/deps/windows_autostart-2b0ddfca9d4b6ad5)",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/windows_cli.rs (target/debug/deps/windows_cli-c50c44a21dcbaec5)",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/windows_direct_usb.rs (target/debug/deps/windows_direct_usb-facb5275e69f9711)",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/windows_lifecycle.rs (target/debug/deps/windows_lifecycle-aa7f6bd4566b5928)",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "tests/windows_usb.rs (target/debug/deps/windows_usb-cefbd1e2cd8f05d4)",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 0.0
+      },
+      {
+        "program": "unittests src/main.rs (target/debug/deps/blent_gui-0a968f5725d31814)",
+        "passed": 192,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 34.14
+      },
+      {
+        "program": "tests/startup.rs (target/debug/deps/startup-22af68ef1dbd0f27)",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 0,
+        "seconds": 20.47
+      }
+    ]
+  },
+  "android": {
+    "command": "./android/gradlew -p android testDebugUnitTest --offline --no-daemon --console=plain --rerun-tasks",
+    "exit_code": 1,
+    "registered": 2718,
+    "passed": 2713,
+    "failed": 5,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 366,
+    "finding": "T1384"
+  },
+  "complexity": {
+    "command": "/tmp/blent-t1336-venv/bin/python scripts/complexity/check.py --verbose",
+    "measured_functions": 28928,
+    "above_nine": 0,
+    "exit_code": 0
+  },
+  "format": {
+    "command": "python3 scripts/format-rust.py --check",
+    "exit_code": 0
+  },
+  "probes": {
+    "identity": 0,
+    "inventory": 0,
+    "reconnect": 0,
+    "command": "CARGO_TARGET_DIR=/home/netto/.cache/blent-review-20261113/probe/target cargo run --offline --locked --manifest-path /home/netto/.cache/blent-review-20261113-second/probe/Cargo.toml --bin NAME",
+    "native_device_access": false
+  },
+  "scope_limits": [
+    "Focused source inspection, not manual examination of every source line",
+    "No native Windows execution",
+    "No physical tablet or virtual-display attachment",
+    "Optional PipeWire/libavcodec configurations not built",
+    "No fresh whole-project per-function coverage collection",
+    "No production or permanent-test changes"
+  ],
+  "remaining_existing_ledger": {
+    "blocked": 11,
+    "wont_fix": 4
+  },
+  "tools": {
+    "rustc": "1.98.1 (48a229cea 2026-09-01)",
+    "python_complexity": "3.14.6",
+    "gradle": "8.5",
+    "kotlin": "1.9.20",
+    "robolectric": "4.17",
+    "complexity_frontend": "project scripts/complexity/check.py; syn 2.0.119 Rust frontend"
+  }
+}

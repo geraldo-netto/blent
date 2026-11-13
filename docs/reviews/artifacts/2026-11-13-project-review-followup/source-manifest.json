@@ -1,0 +1,27 @@
+{
+  "revision": "5cfcfd8bc6018e2e15354f1ef443e33ab0877775",
+  "files": {
+    "host/src/linux_main.rs": "2709f659072cd51fa58e58f15e2765a5beee3fcc8aa44622226920fa2f812045",
+    "host/src/adb_inventory.rs": "f5551d4656afc97e5ac248668f74cbd23f067ac24ec12039b356f3065a03dac8",
+    "host/src/usb.rs": "53b5f59b6553ad1a746753eb77a4b9e53e248fc648a6f0d23c884db39abac964",
+    "host/src/usb/routes.rs": "d1d8cbca316b37afa3804ea6fd1620f241188674d5b96ccb9e04961913b9e475",
+    "host/src/usb/network.rs": "7dc4fe5da363ff1a35ee8e36d292c9acdd36c084237342463a8483eb058dfe90",
+    "host/src/usb/network/queries.rs": "b6bc2c87597d15e2c2eab42928fa86c828338d28eb2de5999fe0206324822630",
+    "host/src/usb/monitor.rs": "4912332c9695f28f561cc7def23de612a463f0ddfeccf1751a903fe2edb71c04",
+    "host/src/wifi/policy.rs": "f4c00199e45f43a37b519cb873dd103a505571d2bfdbe2198b5ea5e82b14d466",
+    "host/src/wifi/attempt.rs": "7201be145b6e596a6180c75ef046e0ce515a0e2b38f6a78e14f15086e57390c6",
+    "host/src/wifi/attempt/cleanup.rs": "ea70f0ce55534cc1e3963832463799ad8c8a98253060a1883d79317868bc8057",
+    "host/src/transport.rs": "ee1bd373d65b8edb40c6eac267396fc70c76a84f2a4a4ca159e84e3cb746fbe8",
+    "common/src/tablets.rs": "bf4a43952c6cf2e650d707301602c7b54ba3f20b76296b90c95738915926c8a0",
+    "android/app/src/main/java/com/blent/connection/ConnectionControls.kt": "abb500c71ddaef26c68f40db8f49385d6a8b74e3bb8adcf97381ece8c2708f1a",
+    "android/app/src/test/java/com/blent/connection/ConnectionActivityUiTest.kt": "a2b9c8ec2aa58c899898dc072c84242fec0b19783834ef8fea56e7d92babbe04",
+    "android/app/src/test/java/com/blent/SavedUiOrderTest.kt": "94e19a06f4d8eda3bd3ec7e9db3a9da90b1f39e62219e2765c36f0d37d5bb90b",
+    "android/app/src/main/java/com/blent/BlentUi.kt": "0ab3bb91210ae200e493c30b100f28d7fa6276db255dcffbd0013c727ba8fb50",
+    "host/src/input.rs": "7f4f862f90a30fe4ee7d5c19758cf1759a5f912e4ab9ad48d987ed33bad14df4",
+    "docs/settings.md": "920a0686467f1a130f49a446bb6e67129f5cda0eb2920a7001a2c4a24151670e",
+    "docs/architecture.md": "5011df8e1ce0c522e1171131d1c08f41ececc2ff193d9482501420f496b51117",
+    "docs/index.html": "68af1fb785c546956eb87eeb005c3fa5d1b8af90ac22bb333be605c294ab1845",
+    "docs/llms.txt": "1bd5374d5e89e4ad73edd3591b21e329f74d50911ee64e04ff8d3d1e6b70bf82",
+    "SECURITY.md": "8640abccd0fa02174c1c4835245903ced193ed4fed659b069cb6b4fba8e9ee86"
+  }
+}
