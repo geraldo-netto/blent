@@ -1,0 +1,17 @@
+{
+  "case": "reconnect",
+  "status": 0,
+  "before": [
+    [
+      "tcp:8890",
+      "tcp:8890"
+    ],
+    [
+      "tcp:8891",
+      "tcp:8891"
+    ]
+  ],
+  "after": [],
+  "original_mappings_preserved": false,
+  "temporary_mappings_removed": true
+}

@@ -1,0 +1,28 @@
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n", "stderr": "", "monotonic_ns": 2611215332245}
+{"args": ["reverse", "--no-rebind", "tcp:54901", "tcp:48823"], "status": 0, "stdout": "54901\n", "stderr": "", "monotonic_ns": 2611222899729}
+{"args": ["reverse", "--no-rebind", "tcp:54901", "tcp:1"], "status": 1, "stdout": "", "stderr": "adb: error: cannot rebind existing socket\n", "monotonic_ns": 2611229163618}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2611236133875}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2611242690411}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2611590825606}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2611595179526}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2611980795368}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2611985528422}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2612362884866}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2612369134888}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2612774903621}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2612780345719}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2613132826379}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": "", "monotonic_ns": 2613138849251}
+{"args": ["reverse", "--remove", "tcp:54901"], "status": 0, "stdout": "", "stderr": "", "monotonic_ns": 2613144755898}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n", "stderr": "", "monotonic_ns": 2613152302701}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n", "stderr": "", "monotonic_ns": 2638477473385}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2640995534267}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n", "stderr": "", "monotonic_ns": 2715167111384}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2716954566303}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2716959723726}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2717066081442}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2717171198869}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2717278408832}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2717384344439}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "\n", "stderr": "", "monotonic_ns": 2717499485016}
+{"args": ["reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n", "stderr": "", "monotonic_ns": 2717617131027}

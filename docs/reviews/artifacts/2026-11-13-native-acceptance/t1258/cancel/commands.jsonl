@@ -1,0 +1,5 @@
+{"event": "real_adb_joined", "monotonic_ns": 2612012209396, "args": ["-s", "8002RH1010011900", "reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": ""}
+{"event": "real_adb_joined", "monotonic_ns": 2612049866745, "args": ["-s", "8002RH1010011900", "reverse", "--no-rebind", "tcp:45243", "tcp:41635"], "status": 0, "stdout": "45243\n", "stderr": ""}
+{"event": "real_adb_joined", "monotonic_ns": 2612106040347, "args": ["-s", "8002RH1010011900", "reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\nUsbFfs tcp:45243 tcp:41635\n\n", "stderr": ""}
+{"event": "real_adb_joined", "monotonic_ns": 2612151528919, "args": ["-s", "8002RH1010011900", "reverse", "--remove", "tcp:45243"], "status": 0, "stdout": "", "stderr": ""}
+{"event": "real_adb_joined", "monotonic_ns": 2612296735960, "args": ["-s", "8002RH1010011900", "reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:54901 tcp:48823\n\n", "stderr": ""}

@@ -1,0 +1,6 @@
+{"event":"removal_pending_destination_retained","retired":false}
+{"event":"native_transport_reconnect_requested","retired":false}
+{"event":"native_transport_returned_original_owner_retained","retired":false}
+{"event":"close_caller_lost_original_owner_retained","retired":false}
+{"event":"original_worker_and_endpoints_retired","retired":true}
+{"event":"original_worker_and_endpoints_retired","retired":true}

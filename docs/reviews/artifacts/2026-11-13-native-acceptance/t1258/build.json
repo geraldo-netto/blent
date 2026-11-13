@@ -1,0 +1,9 @@
+{
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "locked_offline_build": "passed",
+  "production_behavior_changes": "none; ownership comments only",
+  "probe_functions_measured": 26,
+  "functions_over_complexity_nine": 0,
+  "coverage_scope": "nonessential review probe; production coverage and full regressions not rerun"
+}

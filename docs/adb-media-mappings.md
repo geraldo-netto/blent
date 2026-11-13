@@ -106,3 +106,17 @@ endpoint release. The finite policy model checks all 12 state/route combinations
 invalid listing/port bounds retain independent oracles. These checks establish
 the tested host behavior; they do not claim physical tablet acceptance or prove
 unrestricted native ADB behavior. Existing platform support labels remain.
+
+[T1258 native acceptance, 2026-11-13](reviews/artifacts/2026-11-13-native-acceptance/t1258/result.json)
+passed seven scoped cases on a RugKing Pad 2 Pro (Android 16/API36) using ADB
+34.0.4-debian: normal close, owner drop, cancellation after submission, lost
+acknowledgement, delayed removal acknowledgement, `--no-rebind` refusal and
+host-requested USB transport reconnect. The probe includes the production mapping
+owner and retains original command/thread completion before port reuse. A wrapper
+delays local acknowledgements around real ADB commands; it does not simulate the
+device's mapping effects. Non-reconnect cases preserve an unrelated control
+mapping and both display mappings. Native reconnect clears reverse listeners;
+Blent subsequently repairs its display mappings. The initial trial's incorrect
+immediate-preservation assertion and its correction are retained in the evidence.
+No tablet settings, media permissions or packages were changed. These results do
+not qualify physical cable removal, arbitrary adbd delays or other devices.

@@ -1,0 +1,5 @@
+{"event": "real_adb_joined", "monotonic_ns": 2638517752370, "args": ["-s", "8002RH1010011900", "reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n", "stderr": ""}
+{"event": "real_adb_joined", "monotonic_ns": 2638563441738, "args": ["-s", "8002RH1010011900", "reverse", "--no-rebind", "tcp:37219", "tcp:45149"], "status": 0, "stdout": "37219\n", "stderr": ""}
+{"event": "real_adb_joined", "monotonic_ns": 2638606890769, "args": ["-s", "8002RH1010011900", "reverse", "--list"], "status": 0, "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\nUsbFfs tcp:37219 tcp:45149\n\n", "stderr": ""}
+{"event": "real_adb_joined", "monotonic_ns": 2640799413330, "args": ["-s", "8002RH1010011900", "reverse", "--remove", "tcp:37219"], "status": 1, "stdout": "", "stderr": "adb: error: listener 'tcp:37219' not found\n"}
+{"event": "real_adb_joined", "monotonic_ns": 2640934918020, "args": ["-s", "8002RH1010011900", "reverse", "--list"], "status": 0, "stdout": "\n", "stderr": ""}

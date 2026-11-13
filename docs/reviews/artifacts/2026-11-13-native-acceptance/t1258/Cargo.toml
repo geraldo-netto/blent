@@ -1,0 +1,15 @@
+[package]
+name = "blent-t1258-native"
+version = "0.1.0"
+edition = "2021"
+[dependencies]
+anyhow = "1"
+tokio = { version = "1", features = ["full"] }
+socket2 = "0.6"
+serde_json = "1"
+blent-config = { path = "../../../../../common" }
+[[bin]]
+name = "blent-t1258-native"
+path = "probe.rs"
+
+[workspace]

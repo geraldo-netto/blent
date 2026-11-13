@@ -1,0 +1,34 @@
+{
+  "case": "drop",
+  "status": 0,
+  "before": [
+    [
+      "tcp:54901",
+      "tcp:48823"
+    ],
+    [
+      "tcp:8890",
+      "tcp:8890"
+    ],
+    [
+      "tcp:8891",
+      "tcp:8891"
+    ]
+  ],
+  "after": [
+    [
+      "tcp:54901",
+      "tcp:48823"
+    ],
+    [
+      "tcp:8890",
+      "tcp:8890"
+    ],
+    [
+      "tcp:8891",
+      "tcp:8891"
+    ]
+  ],
+  "original_mappings_preserved": true,
+  "temporary_mappings_removed": true
+}

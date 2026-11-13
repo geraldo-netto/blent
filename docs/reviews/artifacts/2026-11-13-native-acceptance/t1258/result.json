@@ -1,0 +1,35 @@
+{
+  "id": "T1258",
+  "status": "accepted_selected_device",
+  "cases": [
+    "no_rebind",
+    "normal",
+    "drop",
+    "cancel",
+    "lost_ack",
+    "remove_delay",
+    "reconnect-confirmed"
+  ],
+  "cases_accepted": 7,
+  "cases_planned": 7,
+  "adb": "1.0.41 / 34.0.4-debian",
+  "device": "8002RH1010011900 / RugKing Pad 2 Pro / Android16 API36",
+  "implementation": "probe.rs includes unchanged production adb_command and adb_mapping modules; production common crate supplies command ownership and native retirement. Rust dependencies pinned in accompanying Cargo.lock.",
+  "delayed_outcomes": "Wrapper performs real ADB mutations and joins the actual ADB child, then withholds its acknowledgement. Caller cancellation and empty/deleted endpoint observation never substitute for original command/collector/thread retirement.",
+  "reconnect": "Host requested real ADB USB transport reconnect; observed transport_id 2 -> 3. Android cleared reverse mappings. Original temporary cleanup retained its destination until settlement; Blent independently restored its display mappings. No physical cable removal was requested.",
+  "initial_probe_failure": "reconnect/result.json preserves the first trial whose immediate baseline-preservation assertion was wrong for native transport reset. first-reconnect-assessment.json distinguishes this oracle correction from production behavior.",
+  "conservation": "One production mapping at a time, one separately owned control mapping during non-reconnect cases, retained host sockets until cleanup, joined native commands, completion tickets observed before exit. No detached mutation or unfinished proof remains.",
+  "final_mappings": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n",
+  "limits": "Selected-device native acceptance with controlled host acknowledgement delays; not arbitrary adbd scheduling, kernel-fault, physical cable-loss or all-device certification. General regression/sanitizer/performance campaigns remain paused.",
+  "source_sha256": {
+    "host/src/adb_command.rs": "25875e54016ead45c3a429c7d5ac06b0feee9c61d7d37b0f84b2522ccde1b922",
+    "host/src/adb_mapping/native.rs": "07c679344fb663a92c5132cfa9d9923df077eee086f475c916951b847f09ce60",
+    "host/src/adb_mapping/worker.rs": "32453707557613477df4636df205c37168af148783f5eff46f76051396c1af05",
+    "host/src/adb_mapping/mod.rs": "2acbc2734da114b00e635507a90a2f05f4c1a8c8a95ca2498bfeabb87876a6d7",
+    "common/src/commands.rs": "f7902e40e341805aff4ef734f808aa1f437951cb819d3ae173c8f48effba906b",
+    "common/src/retirement.rs": "a7b7d66e71f63448699397875b80a8dae28e0d75014c2e7dc9d2df0a0a1a42af",
+    "common/src/adb_reverse/temporary.rs": "48fb19a5f96f79ecca65ade958ab8d9450642280acb2bf07f0fe62ca78f51f65"
+  },
+  "reproduce_build": "cargo build --offline --locked --manifest-path docs/reviews/artifacts/2026-11-13-native-acceptance/t1258/Cargo.toml --target-dir /tmp/blent-t1258/target",
+  "reproduce_run": "run.py requires a clean per-case output directory and the explicitly selected serial; actual effects require a connected authorized device. Preserve artifacts instead of overwriting existing case directories."
+}

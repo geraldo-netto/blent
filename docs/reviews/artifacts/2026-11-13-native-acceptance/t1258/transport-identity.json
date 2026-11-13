@@ -1,0 +1,4 @@
+{
+  "before": "List of devices attached\n8002RH1010011900       device usb:3-2.4.4 product:GQ8002RH1_EEA model:RugKing_Pad_2_Pro device:GQ8002RH1 transport_id:2\n\n",
+  "after": "List of devices attached\n8002RH1010011900       device usb:3-2.4.4 product:GQ8002RH1_EEA model:RugKing_Pad_2_Pro device:GQ8002RH1 transport_id:3\n\n"
+}

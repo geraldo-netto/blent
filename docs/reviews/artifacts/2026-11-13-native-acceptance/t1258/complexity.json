@@ -1,0 +1,163 @@
+{
+  "tool": "Blent local counter; syn 2.0.119 Rust frontend; Python AST",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "tree_sitter": "0.25.2",
+  "functions": [
+    {
+      "file": "run.py",
+      "line": 21,
+      "function": "adb",
+      "complexity": 1
+    },
+    {
+      "file": "run.py",
+      "line": 29,
+      "function": "listing",
+      "complexity": 3
+    },
+    {
+      "file": "run.py",
+      "line": 36,
+      "function": "reserve",
+      "complexity": 1
+    },
+    {
+      "file": "run.py",
+      "line": 42,
+      "function": "create_control",
+      "complexity": 2
+    },
+    {
+      "file": "run.py",
+      "line": 48,
+      "function": "remove_control",
+      "complexity": 3
+    },
+    {
+      "file": "run.py",
+      "line": 56,
+      "function": "run_case",
+      "complexity": 5
+    },
+    {
+      "file": "run.py",
+      "line": 75,
+      "function": "control_cases",
+      "complexity": 5
+    },
+    {
+      "file": "run.py",
+      "line": 96,
+      "function": "restored_routes",
+      "complexity": 5
+    },
+    {
+      "file": "run.py",
+      "line": 110,
+      "function": "main",
+      "complexity": 2
+    },
+    {
+      "file": "probe.rs",
+      "line": 23,
+      "function": "record",
+      "complexity": 1
+    },
+    {
+      "file": "probe.rs",
+      "line": 26,
+      "function": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "probe.rs",
+      "line": 29,
+      "function": "create",
+      "complexity": 2
+    },
+    {
+      "file": "probe.rs",
+      "line": 34,
+      "function": "wait_file",
+      "complexity": 2
+    },
+    {
+      "file": "probe.rs",
+      "line": 39,
+      "function": "release",
+      "complexity": 1
+    },
+    {
+      "file": "probe.rs",
+      "line": 43,
+      "function": "settle",
+      "complexity": 4
+    },
+    {
+      "file": "probe.rs",
+      "line": 55,
+      "function": "ordinary",
+      "complexity": 2
+    },
+    {
+      "file": "probe.rs",
+      "line": 66,
+      "function": "cancel_after_submission",
+      "complexity": 1
+    },
+    {
+      "file": "probe.rs",
+      "line": 84,
+      "function": "failed_ack",
+      "complexity": 1
+    },
+    {
+      "file": "probe.rs",
+      "line": 92,
+      "function": "delayed_removal",
+      "complexity": 2
+    },
+    {
+      "file": "probe.rs",
+      "line": 114,
+      "function": "reconnect_transport",
+      "complexity": 1
+    },
+    {
+      "file": "probe.rs",
+      "line": 127,
+      "function": "run",
+      "complexity": 8
+    },
+    {
+      "file": "probe.rs",
+      "line": 140,
+      "function": "main",
+      "complexity": 1
+    },
+    {
+      "file": "adb-wrapper.py",
+      "line": 15,
+      "function": "record",
+      "complexity": 1
+    },
+    {
+      "file": "adb-wrapper.py",
+      "line": 20,
+      "function": "gate",
+      "complexity": 2
+    },
+    {
+      "file": "adb-wrapper.py",
+      "line": 26,
+      "function": "execute",
+      "complexity": 1
+    },
+    {
+      "file": "adb-wrapper.py",
+      "line": 33,
+      "function": "main",
+      "complexity": 9
+    }
+  ]
+}

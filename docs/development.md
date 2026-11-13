@@ -770,9 +770,11 @@ listener reservations and cleanup admission until native settlement and worker
 retirement. Unknown delegated outcomes remain owned; an empty listing or elapsed
 deadline alone cannot release an unconfirmed creator. Cleanup is conditional on
 the host process remaining alive and native outcomes eventually becoming
-observable. T1258 tracks selected-tablet acceptance of installed ADB/Android
-behavior; it still needs a selected tablet and authorization for that physical
-correctness trial. Host fixtures do not substitute for that acceptance.
+observable. [T1258 selected-tablet acceptance](reviews/artifacts/2026-11-13-native-acceptance/t1258/result.json)
+passed seven scoped cases on the RugKing Pad 2 Pro with Android 16/API36 and
+ADB 34.0.4-debian, including host-requested native USB transport reconnect.
+Acknowledgement delays were controlled on the host around actual ADB mutations;
+physical cable removal and arbitrary native scheduling were not qualified.
 
 ## Offline host tests with a cached SDK
 

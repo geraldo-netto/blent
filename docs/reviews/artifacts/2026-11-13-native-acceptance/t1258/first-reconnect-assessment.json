@@ -1,0 +1,8 @@
+{
+  "original_result": "reconnect/result.json",
+  "failed_assertion": "Immediate baseline mapping preservation across native ADB transport reset",
+  "classification": "Trial oracle assumed transport persistence that native ADB does not provide; not a production mapping-owner regression",
+  "observed": "Native reconnect removed reverse listeners. The production owner retained its reservation until original removal command completion and observed absence. Blent repaired display routes and resumed render acknowledgements without configuration changes.",
+  "revised_acceptance": "Owner's temporary mapping is gone after actual retirement, destination reusable only afterward, and baseline display routes are restored by their owner. Retain before/immediate-after/restored snapshots and original failed trial.",
+  "scope": "Host-requested native USB transport reconnect; no physical cable removal or tablet setting change"
+}

@@ -42,8 +42,9 @@ cleanup and black output. A replacement waits for the original output workers
 and FFmpeg decoder and, for direct USB, the original registration to retire.
 Unconfirmed cleanup keeps replacement pending; Stop also cancels that pending
 start. ADB mappings remain owned through cleanup under the
-[exclusive-endpoint contract](adb-media-mappings.md). Physical delegated-effect
-acceptance remains separate (T1258). Camera operations never attach EVDI or restart display sharing.
+[exclusive-endpoint contract](adb-media-mappings.md). [T1258 mapping acceptance](reviews/artifacts/2026-11-13-native-acceptance/t1258/result.json)
+covers the selected RugKing tablet and recorded ADB version, independently of
+camera capture. Camera operations never attach EVDI or restart display sharing.
 
 **Apply** saves camera preferences without starting capture. **Start camera**
 uses the current controls; **Restart camera** applies changed controls to an
