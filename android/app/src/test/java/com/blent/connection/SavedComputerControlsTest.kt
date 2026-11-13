@@ -20,7 +20,7 @@ import org.robolectric.annotation.LooperMode
 class SavedComputerControlsTest {
     @get:Rule val compose = createComposeRule()
     private fun render(f: ConnectionUiFixture) {
-        val configured = ConfiguredConnection(f.binding, f.preferences, f.scope)
+        val configured = ConfiguredConnection(f.binding, f.preferences, f.scope, TrustedAttachments)
         compose.setContent { BlentTheme { Column { ConnectionControls(f.binding, configured, f.saved) } } }
     }
     private fun open() { compose.onNodeWithText("Saved computers").performClick() }

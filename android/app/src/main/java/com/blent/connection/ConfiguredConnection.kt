@@ -14,6 +14,7 @@ internal class ConfiguredConnection(
     private val binding: ConnectionBinding,
     val preferences: ConnectionPreferenceStore,
     private val scope: CoroutineScope,
+    private val attachment: AttachmentAdmission,
 ) {
     private enum class Request { MANUAL, ATTACHMENT, RETRY }
     private data class Selection(val attempt: Any?, val active: Boolean)
@@ -25,6 +26,7 @@ internal class ConfiguredConnection(
 
     @Synchronized fun connect() {
         if (current != null || binding.state.value.active) return
+        attachment.consume()
         start(Request.MANUAL)
     }
 
@@ -63,6 +65,8 @@ internal class ConfiguredConnection(
     }
 
     private suspend fun run(identity: Any, request: Request, initial: Selection): Any? {
+        if (request == Request.ATTACHMENT && !attachment.take()) return null
+        currentCoroutineContext().ensureActive()
         if (request != Request.MANUAL && !attachmentReady(initial)) return null
         val selected = preferences.load()
         currentCoroutineContext().ensureActive()
@@ -98,6 +102,7 @@ internal class ConfiguredConnection(
 
     @Synchronized fun disconnect() {
         current?.execution?.cancel()
+        attachment.consume()
         binding.disconnect()
     }
 }

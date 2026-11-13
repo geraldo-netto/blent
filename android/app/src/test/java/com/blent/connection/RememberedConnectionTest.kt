@@ -138,7 +138,7 @@ class RememberedConnectionTest {
             val storageDispatcher = ConnectionActorScheduler()
             val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + rig.dispatcher)
             val configured = ConfiguredConnection(rig.binding,
-                ConnectionPreferenceStore(PreferenceMemoryStorage(), storageDispatcher), scope)
+                ConnectionPreferenceStore(PreferenceMemoryStorage(), storageDispatcher), scope, TrustedAttachments)
             try {
                 configured.observeRemembered(); rig.dispatcher.runCurrent()
                 rig.end(original); rig.dispatcher.advanceTo(2000)

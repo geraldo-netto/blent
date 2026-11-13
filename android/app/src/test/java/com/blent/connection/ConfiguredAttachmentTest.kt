@@ -19,7 +19,7 @@ class ConfiguredAttachmentTest {
         val workers = mutableListOf<Worker>()
         val binding = ConnectionBinding(scope, { _, report -> Worker(report).also(workers::add) })
         val preferences = ConnectionPreferenceStore(PreferenceMemoryStorage(), Dispatchers.Unconfined)
-        val configured = ConfiguredConnection(binding, preferences, scope)
+        val configured = ConfiguredConnection(binding, preferences, scope, TrustedAttachments)
         fun connect(): Worker { configured.connect(); return workers.last() }
         override fun close() {
             configured.disconnect()
@@ -76,7 +76,7 @@ class ConfiguredAttachmentTest {
         Rig().use { rig ->
             val original = rig.connect()
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
-            val configured = ConfiguredConnection(rig.binding, rig.preferences, scope)
+            val configured = ConfiguredConnection(rig.binding, rig.preferences, scope, TrustedAttachments)
             try {
                 configured.attach()
                 assertTrue(configured.state.value.pending)
@@ -93,7 +93,7 @@ class ConfiguredAttachmentTest {
             val original = rig.connect()
             val dispatcher = ConnectionActorScheduler()
             val scope = CoroutineScope(SupervisorJob() + dispatcher)
-            val configured = ConfiguredConnection(rig.binding, rig.preferences, scope)
+            val configured = ConfiguredConnection(rig.binding, rig.preferences, scope, TrustedAttachments)
             try {
                 configured.attach(); dispatcher.runCurrent()
                 rig.binding.disconnect()
@@ -112,7 +112,7 @@ class ConfiguredAttachmentTest {
         Rig().use { rig ->
             val dispatcher = ConnectionActorScheduler()
             val store = ConnectionPreferenceStore(PreferenceMemoryStorage(), dispatcher)
-            val configured = ConfiguredConnection(rig.binding, store, rig.scope)
+            val configured = ConfiguredConnection(rig.binding, store, rig.scope, TrustedAttachments)
             configured.attach()
             assertTrue(configured.state.value.pending)
             val intervening = rig.connect()
@@ -130,7 +130,7 @@ class ConfiguredAttachmentTest {
             val original = rig.connect()
             val dispatcher = ConnectionActorScheduler()
             val scope = CoroutineScope(SupervisorJob() + dispatcher)
-            val configured = ConfiguredConnection(rig.binding, rig.preferences, scope)
+            val configured = ConfiguredConnection(rig.binding, rig.preferences, scope, TrustedAttachments)
             try {
                 configured.attach()
                 rig.binding.disconnect()

@@ -6,6 +6,7 @@ import org.robolectric.util.ReflectionHelpers
 /** Scoped replacement of the process owner, restoring it only after test workers
  * retire. Never adds a production reset that could forget a quarantined owner. */
 internal class ConnectionUiFixture : AutoCloseable {
+    val nativeAttachment = NativeAttachmentFixture()
     class Worker(val report: (ConnectionWorkerEvent) -> Unit) : ConnectionWorker {
         val released = CompletableDeferred<Unit>()
         val commands = java.util.concurrent.CopyOnWriteArrayList<ConnectionWorkerCommand>()
@@ -40,6 +41,7 @@ internal class ConnectionUiFixture : AutoCloseable {
     fun prompt() { workers.last().report(ConnectionWorkerEvent.Pairing(ticket, tablet)) }
     fun connect() { binding.connect(ConnectionWorkerSpec("usb")) }
     override fun close() {
+        nativeAttachment.close()
         binding.disconnect()
         workers.forEach { it.released.complete(Unit) }
         savedRuns.forEach { it.release.complete(Unit); it.finish.complete(Unit) }

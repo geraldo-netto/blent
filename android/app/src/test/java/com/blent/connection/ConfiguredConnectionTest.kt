@@ -14,7 +14,7 @@ class ConfiguredConnectionTest {
         ConnectionUiFixture().use { fixture ->
             val storage = PreferenceMemoryStorage()
             val store = ConnectionPreferenceStore(storage, Dispatchers.Unconfined)
-            val configured = ConfiguredConnection(fixture.binding, store, fixture.scope)
+            val configured = ConfiguredConnection(fixture.binding, store, fixture.scope, TrustedAttachments)
             val original = ConnectionWorkerSpec("usb", timerMs = 1000)
             assertTrue(store.save(ConnectionPreferences.fields(original)).isSuccess)
             configured.connect()
@@ -35,7 +35,7 @@ class ConfiguredConnectionTest {
         ConnectionUiFixture().use { fixture ->
             val dispatcher = ConnectionActorScheduler()
             val storage = PreferenceMemoryStorage()
-            val configured = ConfiguredConnection(fixture.binding, ConnectionPreferenceStore(storage, dispatcher), fixture.scope)
+            val configured = ConfiguredConnection(fixture.binding, ConnectionPreferenceStore(storage, dispatcher), fixture.scope, TrustedAttachments)
             configured.connect(); configured.connect()
             assertTrue(configured.state.value.pending)
             assertEquals(0, storage.reads)
@@ -55,7 +55,7 @@ class ConfiguredConnectionTest {
             val storage = PreferenceMemoryStorage()
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
             try {
-                val configured = ConfiguredConnection(fixture.binding, ConnectionPreferenceStore(storage, dispatcher), scope)
+                val configured = ConfiguredConnection(fixture.binding, ConnectionPreferenceStore(storage, dispatcher), scope, TrustedAttachments)
                 configured.connect(); configured.disconnect(); configured.connect()
                 assertTrue(configured.state.value.pending)
                 dispatcher.runCurrent()
@@ -75,7 +75,7 @@ class ConfiguredConnectionTest {
         ConnectionUiFixture().use { fixture ->
             val storage = PreferenceMemoryStorage()
             val store = ConnectionPreferenceStore(storage, Dispatchers.Unconfined)
-            val configured = ConfiguredConnection(fixture.binding, store, fixture.scope)
+            val configured = ConfiguredConnection(fixture.binding, store, fixture.scope, TrustedAttachments)
             storage.encoded = "broken"
             configured.connect()
             assertNotNull(configured.state.value.failure)

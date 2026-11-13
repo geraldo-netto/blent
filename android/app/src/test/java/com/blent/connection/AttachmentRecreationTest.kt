@@ -60,7 +60,10 @@ class AttachmentRecreationTest {
                 assertEquals("T1396 restored Intent cannot create a worker", 1, fixture.workers.size)
                 assertFalse("T1396 restored Intent cannot lift cutoff", fixture.binding.state.value.reconnectAllowed)
                 when (restart) {
-                    Restart.ATTACHMENT -> restored.newIntent(Intent(UsbManager.ACTION_USB_ACCESSORY_ATTACHED))
+                    Restart.ATTACHMENT -> {
+                        fixture.nativeAttachment.reattach()
+                        restored.newIntent(Intent(UsbManager.ACTION_USB_ACCESSORY_ATTACHED))
+                    }
                     Restart.MANUAL -> restored.get().configuredConnection.connect()
                     Restart.NONE -> Unit
                 }

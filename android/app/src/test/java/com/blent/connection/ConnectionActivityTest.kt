@@ -33,6 +33,7 @@ class ConnectionActivityTest {
                     assertEquals(0, fixture.workers.single().cancelled)
                     replacement.get().configuredConnection.disconnect()
                     fixture.workers.single().released.complete(Unit)
+                    fixture.nativeAttachment.reattach()
                     replacement.newIntent(Intent(UsbManager.ACTION_USB_ACCESSORY_ATTACHED))
                     assertEquals(listOf(original, next), fixture.specifications)
                     assertTrue(fixture.workers.last().commands.isEmpty())

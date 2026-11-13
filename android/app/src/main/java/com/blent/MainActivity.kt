@@ -47,7 +47,8 @@ class MainActivity : ComponentActivity() {
         val prefs = Prefs(this)
         connection = ConnectionOwner.get(applicationContext)
         savedComputers = ConnectionOwner.getSaved(applicationContext)
-        configuredConnection = ConfiguredConnection(connection, AndroidConnectionPreferences.get(applicationContext), lifecycleScope)
+        configuredConnection = ConfiguredConnection(connection, AndroidConnectionPreferences.get(applicationContext), lifecycleScope,
+            AndroidAttachmentOwner.get(applicationContext))
         configuredConnection.observeRemembered()
         cameras = CameraOwner.get(applicationContext)
         val cameraAccess = checkNotNull(CameraOwner.access)

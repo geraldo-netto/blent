@@ -20,7 +20,7 @@ import org.robolectric.annotation.LooperMode
 class ConnectionPreferenceControlsTest {
     @get:Rule val compose = createComposeRule()
     private fun render(fixture: ConnectionUiFixture, store: ConnectionPreferenceStore): ConfiguredConnection {
-        val configured = ConfiguredConnection(fixture.binding, store, fixture.scope)
+        val configured = ConfiguredConnection(fixture.binding, store, fixture.scope, TrustedAttachments)
         compose.setContent { BlentTheme { Column { ConnectionControls(fixture.binding, configured, fixture.saved) } } }
         return configured
     }

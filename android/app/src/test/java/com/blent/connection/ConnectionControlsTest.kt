@@ -22,7 +22,7 @@ class ConnectionControlsTest {
 
     private fun render(fixture: ConnectionUiFixture) {
         val configured = ConfiguredConnection(fixture.binding,
-            ConnectionPreferenceStore(PreferenceMemoryStorage(), kotlinx.coroutines.Dispatchers.Unconfined), fixture.scope)
+            ConnectionPreferenceStore(PreferenceMemoryStorage(), kotlinx.coroutines.Dispatchers.Unconfined), fixture.scope, TrustedAttachments)
         compose.setContent { BlentTheme { Column {
             ConnectionControls(fixture.binding, configured, fixture.saved)
             ConnectionPairingDialog(fixture.binding)

@@ -23,7 +23,7 @@ internal class RememberedConnectionFixture : AutoCloseable {
     val binding = ConnectionBinding(bindingScope, { _, report -> Worker(report).also(workers::add) })
     val storage = PreferenceMemoryStorage()
     val preferences = ConnectionPreferenceStore(storage, Dispatchers.Unconfined)
-    val configured = ConfiguredConnection(binding, preferences, scope)
+    val configured = ConfiguredConnection(binding, preferences, scope, TrustedAttachments)
     val peer = ConnectionPeer.parse("ab".repeat(32))
     val tablet = ConnectionPeer.parse("cd".repeat(32))
     val ticket = ConnectionTicket(1, peer)

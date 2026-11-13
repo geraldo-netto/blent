@@ -1536,6 +1536,11 @@ old destination. Stopping an Activity cancels its route observation and stops
 control/video while preserving the application-owned connection and independent
 camera/audio owners. Resuming checks the latest route before reconnecting;
 recreation creates fresh Activity bindings against the retained connection.
+Automatic accessory requests require a current native accessory and an unused
+process-owned attachment epoch. Android's protected detach broadcast renews the
+epoch; Activity actions and supplied accessory extras do not. The same attachment
+cannot undo Disconnect/Deny/Revoke, including after Activity recreation. Manual
+Connect remains available. Missing detach evidence rejects automatic admission.
 A revoked route cannot be restored by background resume or persisted ADB
 credentials. The DUMP-protected token boundary publishes a monotonic delivery
 revision with each accepted token, including unchanged tokens. Only a delivery
