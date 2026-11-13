@@ -114,6 +114,7 @@ async fn owner_contract() {
         touch_registered: false,
         lifetime: lifetime::Lifetime::new().unwrap(),
         payload: None,
+        mapping_identity: None,
     };
     let original = owner.lifetime.completion();
     let cfg = InputConfig::default();

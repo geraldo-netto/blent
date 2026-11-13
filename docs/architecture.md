@@ -266,6 +266,25 @@ Busctl mutations request an infinite native reply timeout; qdbus retains its own
 finite protocol timeout, whose failure remains unknown. Neither changes the
 five-second caller result deadline or native byte/admission bounds.
 
+X11 input payloads add a creation-specific suffix to the checked instance names;
+product IDs retain the fixed 0..4095 instance range. One process-owned issuer
+stores a CSPRNG 128-bit namespace and a checked 64-bit sequence, with constant
+storage and no issued-name history. Issued names are ASCII and at most 69 bytes,
+within uinput's 80-byte field. Entropy failure issues nothing and can retry;
+sequence exhaustion or a poisoned issuer rejects before cursor preparation or
+native construction. The sequence never wraps or reuses a value in this process.
+Across process restarts, namespace separation assumes independent CSPRNG output;
+it is probabilistic uniqueness, not an absolute collision guarantee.
+
+Constructor, cursor policy and mapper share the exact immutable creation identity.
+Remap retains it; detach/reattach issues a new one. Retirement drops local name
+copies only after the mapper future is cut off; any original mutation owns its
+copied arguments. Stale creation names and nonmatching foreign names cannot satisfy the current
+creation's expected kinds. KWin keeps its stable names and does not consume this
+issuer, since it persists settings by vendor/product/name. Creation names do not
+make X11 numeric IDs stable across server restart or reassignment; subsequent
+command addressing is a separate identity boundary.
+
 Display ADB routes keep one original worker through creation, repair and cleanup.
 Caller cancellation and Activity/session stop do not settle an unacknowledged ADB
 server effect. Empty snapshots cannot retire an unknown creator; cleanup waits for

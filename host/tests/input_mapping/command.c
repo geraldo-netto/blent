@@ -36,6 +36,47 @@ static void hold_original(void)
     }
 }
 
+static int old_registration(void)
+{
+    const char *ready = getenv("BLENT_T1445_REGISTRATION");
+    return ready && access(ready, F_OK) != 0;
+}
+
+static int visible_id(void)
+{
+    const char *ready = getenv("BLENT_T1445_REGISTRATION");
+    return ready && access(ready, F_OK) == 0 ? 42 : 41;
+}
+
+static void device_name(char name[80])
+{
+    FILE *log = fopen(getenv("BLENT_T497_UINPUT_LOG"), "r");
+    if (!log)
+    {
+        abort();
+    }
+    char line[256];
+    name[0] = '\0';
+    while (fgets(line, sizeof(line), log))
+    {
+        if (strncmp(line, "name ", 5) != 0)
+        {
+            continue;
+        }
+        line[strcspn(line, "\n")] = '\0';
+        snprintf(name, 80, "%.79s", line + 5);
+        if (old_registration())
+        {
+            break;
+        }
+    }
+    fclose(log);
+    if (!name[0])
+    {
+        abort();
+    }
+}
+
 static int xinput(int argc, char **argv)
 {
     if (argc > 1 && strcmp(argv[1], "map-to-output") == 0)
@@ -46,11 +87,16 @@ static int xinput(int argc, char **argv)
     }
     else if (argc > 1 && strcmp(argv[1], "list-props") == 0)
     {
-        puts("Device Node (12): \"/dev/input/event41\"\nCoordinate Transformation Matrix (13): 1,0,0,0,1,0,0,0,1");
+        printf("Device Node (12): \"/dev/input/event%d\"\nCoordinate Transformation Matrix (13): 1,0,0,0,1,0,0,0,1\n", visible_id());
     }
     else
     {
-        puts("Blent Touch id=41 [slave pointer]");
+        char name[80];
+        device_name(name);
+        printf("%s id=%d [slave pointer]\n", name, visible_id());
+        printf("%s foreign id=99 [slave pointer]\n", name);
+        fflush(stdout);
+        record_call("listed", 0, NULL);
     }
     return 0;
 }

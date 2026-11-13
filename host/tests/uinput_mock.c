@@ -67,17 +67,24 @@ static int owned_descriptor(int fd) {
         actual.st_dev == expected.st_dev && actual.st_ino == expected.st_ino;
 }
 
-static void record(FILE *log, unsigned long request, uintptr_t argument) {
+static void record(FILE *log, unsigned long request, uintptr_t argument)
+{
     fprintf(log, "request %lu\n", request);
-    if (request == UI_DEV_SETUP) {
+    if (request == UI_DEV_SETUP)
+    {
         const struct uinput_setup *setup = (const void *)argument;
         fprintf(log, "device %u %u %u %u %zu\n", setup->id.bustype, setup->id.vendor,
             setup->id.product, setup->id.version, strnlen(setup->name, sizeof(setup->name)));
-    } else if (request == UI_ABS_SETUP) {
+        fprintf(log, "name %.*s\n", (int)sizeof(setup->name), setup->name);
+    }
+    else if (request == UI_ABS_SETUP)
+    {
         const struct uinput_abs_setup *setup = (const void *)argument;
         fprintf(log, "axis %u %d %d %d\n", setup->code, setup->absinfo.minimum,
             setup->absinfo.maximum, setup->absinfo.resolution);
-    } else if (request != UI_DEV_CREATE && request != UI_DEV_DESTROY) {
+    }
+    else if (request != UI_DEV_CREATE && request != UI_DEV_DESTROY)
+    {
         fprintf(log, "value %lu %d\n", request, (int)argument);
     }
 }

@@ -12,6 +12,7 @@ use std::sync::{atomic::Ordering, Arc};
 use tokio::sync::watch;
 use tracing::{debug, info, warn};
 
+mod creation_identity;
 mod cursor;
 mod lifetime;
 mod payload;
@@ -143,9 +144,9 @@ pub(super) const INPUT_PROP_DIRECT: i32 = 0x01;
 /// at runtime without recreating uinput devices.
 pub(super) const COORD_MAX: i32 = 65535;
 
-/// Identity of the virtual input devices. These must stay stable: KDE keys the
-/// device→output association in kcminputrc on vendor/product/name, so changing
-/// any of them silently orphans the mapping written by `map_devices_to_output`.
+/// Stable instance product IDs and KWin base names. KWin persists its mapping
+/// by vendor/product/name. X11 payload construction adds a unique creation suffix
+/// to these base names so a stale server registration cannot satisfy replacement.
 pub(super) const UINPUT_VENDOR: u16 = 0x4553;
 pub(super) const PRODUCT_TOUCH: u16 = 0x0001;
 pub(super) const PRODUCT_PEN: u16 = 0x0002;
@@ -154,10 +155,9 @@ pub(super) const TOUCH_DEVICE_NAME: &str = "Blent Touch";
 pub(super) const PEN_DEVICE_NAME: &str = "Blent Pen";
 pub(super) const POINTER_DEVICE_NAME: &str = "Blent Pointer";
 
-/// Device names and product ids for the N-th tablet. The first keeps the
-/// original names and ids so existing KWin input mappings stay valid; every
-/// further one gets a numbered name and its own product range, since KWin
-/// keys its per-device settings on vendor/product/name.
+/// Base names and product IDs for the N-th tablet. KWin retains these stable
+/// names because its settings are keyed by vendor/product/name. X11 payloads
+/// derive creation-specific names while preserving this checked product range.
 #[derive(Clone, Debug)]
 pub struct DeviceIdentity {
     pub touch: String,
@@ -606,6 +606,7 @@ pub(super) struct DeviceOwner {
     pub(super) touch_registered: bool,
     lifetime: Arc<lifetime::Lifetime>,
     payload: Option<payload::Live>,
+    mapping_identity: Option<DeviceIdentity>,
 }
 impl DeviceOwner {
     pub(super) async fn create_devices(
@@ -613,13 +614,16 @@ impl DeviceOwner {
         cfg: &InputConfig,
         ident: &DeviceIdentity,
     ) -> usize {
-        if let Err(error) = self.admit_payload() {
-            warn!("Input payload admission failed: {error}");
-            return 0;
-        }
+        let creation = match self.admit_creation(ident) {
+            Ok(identity) => identity,
+            Err(error) => {
+                warn!("Input creation admission failed: {error}");
+                return 0;
+            }
+        };
         // Arm before uinput creation: Muffin hides the pointer in device-added.
-        cursor::prepare(cfg.touch, &ident.touch).await;
-        let (c, i) = (cfg.clone(), ident.clone());
+        cursor::prepare(cfg.touch, &creation.touch).await;
+        let (c, i) = (cfg.clone(), creation);
         // Device creation sleeps to let udev settle, so it
         // runs off the async runtime.
         let (send, receive) = tokio::sync::oneshot::channel();
@@ -648,16 +652,19 @@ impl DeviceOwner {
         count
     }
 
-    fn admit_payload(&mut self) -> std::io::Result<()> {
+    fn admit_creation(&mut self, base: &DeviceIdentity) -> std::io::Result<DeviceIdentity> {
         if self.payload.is_some() {
             return Err(std::io::ErrorKind::AlreadyExists.into());
         }
+        let identity = creation_identity::for_session(base)?;
         self.payload = Some(self.lifetime.admit_payload()?);
-        Ok(())
+        self.mapping_identity = Some(identity.clone());
+        Ok(identity)
     }
 
     fn retire_payload(&mut self) -> Option<blent_config::retirement::Completion> {
         let live = self.payload.take()?;
+        self.mapping_identity.take();
         let devices = {
             let mut devices = self
                 .devices
@@ -1078,6 +1085,7 @@ async fn follow_input_devices(
         touch_registered: false,
         lifetime,
         payload: None,
+        mapping_identity: None,
     };
     let mut present = false;
     tablet_rx.borrow_and_update();
@@ -1106,7 +1114,11 @@ async fn follow_input_devices(
         // a change during the wait simply restarts it.
         if !wait_for_mapping_change(&mut tablet_rx, &mut mode_rx, &mut card_rx, async {
             if count > 0 {
-                map_devices_to_output(commands.as_ref(), pen_only, &ident, card, count).await;
+                let creation = owner
+                    .mapping_identity
+                    .as_ref()
+                    .expect("created input payload retains its mapping identity");
+                map_devices_to_output(commands.as_ref(), pen_only, creation, card, count).await;
             }
         })
         .await

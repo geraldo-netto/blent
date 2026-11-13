@@ -1,0 +1,77 @@
+COHORT final-input_commands-
+
+running 3 tests
+test t1433_cancelled_osk_retains_input_and_shared_restore_gate ... ok
+test t1433_one_task_slot_still_funds_original_osk_final_restoration ... ok
+test t1433_process_cutoff_preserves_admitted_input_osk_cleanup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.84s
+
+COHORT final-input_creation-
+
+running 7 tests
+test t1422_cancelled_creation_retains_native_proof_and_identity ... ok
+test t1422_capacity_rejects_before_creation_and_recovers_after_settlement ... ok
+test t1422_failed_constructor_settles_original_admission ... ok
+test t1422_invalid_capacity_never_admits_native_work ... ok
+test t1422_process_exit_waits_for_cancelled_constructor ... ok
+test t1422_session_retirement_waits_for_original_constructor ... ok
+test t1430_identity_boundary_rejects_without_panic_or_admission ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.65s
+
+COHORT final-input_mapping-
+
+running 8 tests
+test identity::t1445_replacement_ignores_old_registration_and_maps_new_creation_without_watch_event ... ok
+test t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained ... ok
+test t1439_cancelled_mapping_retains_device_identity_and_osk_order ... ok
+test t1439_detach_and_latest_reattach_wait_for_original_payload_retirement ... ok
+test t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated ... ok
+test t1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration ... ok
+test t1439_remap_waits_for_original_commands_before_reading_or_writing_again ... ok
+test t1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.67s
+
+COHORT final-library-input__linux__
+
+running 13 tests
+test input::linux::coverage_tests::t1430_device_identity_range_is_checked_and_every_admitted_identity_is_distinct ... ok
+test input::linux::coverage_tests::t497_uinput_construction_errors_and_owned_retirement ... ok
+test input::linux::creation_identity::tests::t1445_bounded_instance_namespace_sequence_names_preserve_products ... ok
+test input::linux::creation_identity::tests::t1445_counter_exhaustion_and_poison_never_reuse_an_issued_stamp ...
+thread '<unnamed>' (1766599) panicked at host/src/input/linux/creation_identity/tests.rs:36:17:
+T1445 poisoned identity owner
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test input::linux::creation_identity::tests::t1445_entropy_failure_issues_nothing_and_success_initializes_once ... ok
+test input::linux::creation_identity::tests::t1445_kwin_names_do_not_consume_entropy_or_sequence ... ok
+test input::linux::creation_identity::tests::t1445_shared_issuer_serializes_concurrent_creations ... ok
+test input::linux::cursor::tests::t604_policy_is_scoped_to_enabled_cinnamon_x11_touch ... ok
+test input::linux::cursor::tests::t604_private_bus_acceptance_failure_and_bounded_preparation ... ok
+test input::linux::lifetime::tests::t1433_osk_observation_exhaustion_rejects_without_forgetting_originals ... ok
+test input::linux::payload::tests::t1439_cleanup_observes_original_task_join_and_retains_failure ... ok
+test input::linux::payload::tests::t1439_one_payload_slot_rejects_overlap_and_recovers_without_native_devices ... ok
+test input::linux::payload::tests::t1439_payload_pool_rejects_initialization_failure_without_replacing_its_grant ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 869 filtered out; finished in 6.80s
+
+COHORT final-library-input__mapping__
+
+running 13 tests
+test input::mapping::coverage_tests::t497_mapping_retries_verify_device_ownership_and_readback ... ok
+test input::mapping::x11_cache::tests::t625_changed_failed_and_missing_property_reads_remap_without_trusting_old_state ... ok
+test input::mapping::x11_cache::tests::t625_readback_requires_bounded_node_and_finite_nine_value_matrix ... ok
+test input::mapping::x11_cache::tests::t625_topology_missing_device_and_reused_identity_invalidate_readback ... ok
+test input::mapping::x11_tests::t577_edid_parser_rejects_bounded_invalid_lengths_and_checksums ... ok
+test input::mapping::x11_tests::t577_missing_invalid_and_ambiguous_identity_never_falls_back_to_names ... ok
+test input::mapping::x11_tests::t577_physical_mode_excludes_renamed_virtual_outputs_and_unknown_owners ... ok
+test input::mapping::x11_tests::t577_provider_renaming_cannot_assign_another_tablets_output ... ok
+test input::mapping::x11_tests::t622_late_input_does_not_force_stable_output_probes ... ok
+test input::mapping::x11_tests::t622_stale_topology_refreshes_until_owned_edid_appears ... ok
+test input::mapping::x11_tests::t625_late_pen_does_not_remap_verified_touch_and_pointer ... ok
+test input::mapping::x11_tests::t730_missing_kwin_does_not_override_x11_mapping_results ... ok
+test input::mapping::x11_tests::t730_unavailable_x11_mapper_reports_its_own_failure ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 869 filtered out; finished in 7.91s

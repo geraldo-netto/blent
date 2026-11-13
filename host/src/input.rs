@@ -203,9 +203,9 @@ impl InputServer {
         // the desktop with nothing behind them, and merely having those
         // present changes desktop behaviour (Cinnamon and GNOME on X11 hide
         // the mouse cursor around touch devices). Recreating them on attach is
-        // safe: DeviceIdentity is fixed per instance, names and product ids
-        // alike, so the desktop's per-device settings and the output mapping
-        // below find the same device every time.
+        // scoped to each payload: instance product IDs and KWin names stay
+        // stable, while X11 creation names distinguish delayed old registrations.
+        // Each mapper uses the exact identity chosen for its current payload.
         if !self.config.any_device() {
             info!(
                 "Virtual input devices are all off (input_touch / input_pen / \

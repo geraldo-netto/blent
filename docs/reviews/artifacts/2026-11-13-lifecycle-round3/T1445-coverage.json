@@ -1,0 +1,181 @@
+{
+  "tool": "Rust1.100.0/LLVM23.1.5; cargo-llvm-cov0.8.7; scripts/coverage source inventories",
+  "coverage": [
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "create_devices",
+      "line": 612,
+      "language": "rust",
+      "covered": 30,
+      "total": 33,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        636,
+        637,
+        647
+      ]
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "admit_creation",
+      "line": 655,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "retire_payload",
+      "line": 665,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "follow_input_devices",
+      "line": 1073,
+      "language": "rust",
+      "covered": 47,
+      "total": 47,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "new",
+      "line": 11,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "issue",
+      "line": 19,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "name",
+      "line": 36,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "identity",
+      "line": 39,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "issue_using",
+      "line": 50,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "issue",
+      "line": 59,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "identity_using",
+      "line": 63,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/creation_identity.rs",
+      "name": "for_session",
+      "line": 73,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "source_hashes": {
+    "host/src/input.rs": "6b27a8cb50bd3273c31ad3cb4bacd43115b017d613d4f4c874e2b8c596ea91c1",
+    "host/src/input/linux.rs": "f3326b612fa0461d1c8e1f2999b16fcbf4523dd176604a40a6bcb743df773837",
+    "host/src/input/linux/creation_identity.rs": "490a7940df2670fd21e12b35ca228a9568e7d66f19ade83aeb4f8f80b6079d3f",
+    "host/src/input/linux/creation_identity/tests.rs": "b9105fe8fb13a62a45c6f30fabdca2f824484956b9c3db98dbeefb7066d71f59",
+    "host/src/input/linux/coverage_tests.rs": "310df4f48d1ea8494e7f9037e3bd6ae1e18c8656becaa40948cfaf55f9592da6",
+    "host/tests/input_mapping.rs": "b36cfd518b1cd5d0589ce8d28fd924cdb866c58a70182670c5985ce148f83993",
+    "host/tests/input_mapping/identity.rs": "7c6b47b0073784cfa71ffbcee7659687888bb3ce7032c132c46847a9d82a2e9b",
+    "host/tests/input_mapping/fixture.rs": "951cf93c35ceb8998b8c720b5e661d00d2ea5792f7a804ee5879e25b357b94b2",
+    "host/tests/input_mapping/command.c": "ea56b8c06c49fbb37e22a2e39adb5e791a6ad7794d20d64b256084d77985c5a7",
+    "host/tests/uinput_mock.c": "a81459e729ed2b149690941affa99c853797b90d973432be05dc0c1fc4770e9e",
+    "docs/architecture.md": "e0390b52851058eefd48a8e08f88ddf50aea0ae730f3de32728c7126b8fa9e98"
+  },
+  "objects": [
+    {
+      "name": "input_creation",
+      "sha256": "b589d8c7a2b0ecee49dbfebcb6cb7cfa5cd243fb5e993b8a7fb68b6237ee85ac"
+    },
+    {
+      "name": "input_commands",
+      "sha256": "a8b9f36a6287557e527f130bf7152cbca4eae141a777161c413f721b85f59be1"
+    },
+    {
+      "name": "input_mapping",
+      "sha256": "09bdf96c6a3df68f2a56e6b38c3d4abe91c9c0beb1e064d6c8e6042a603625b6"
+    },
+    {
+      "name": "library",
+      "sha256": "2e8b7b237b6e3f3087c6139c05888a7d3e2c5275c91fdad81baedc13d23beacb"
+    }
+  ],
+  "profiles": 35,
+  "tests": {
+    "input_mapping": 8,
+    "input_commands": 3,
+    "input_creation": 7,
+    "input_linux": 13,
+    "input_mapping_unit": 13
+  },
+  "documentation_only_containing_function": "host/src/input.rs::run_with_listener comment changed; executable body unchanged"
+}

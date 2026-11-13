@@ -19,6 +19,12 @@ fn compile(root: &Path, sources: &[&str], target: &str, shared: bool) {
 }
 
 pub fn run(test: &str, status: &str) {
+    run_with_registration(test, status, false);
+}
+pub fn run_registration(test: &str) {
+    run_with_registration(test, "0", true);
+}
+fn run_with_registration(test: &str, status: &str, delayed: bool) {
     let directory = tempfile::tempdir().unwrap();
     let root = directory.path();
     compile(root, &["input_mapping/command.c"], "xinput", false);
@@ -38,7 +44,8 @@ pub fn run(test: &str, status: &str) {
     std::fs::create_dir(root.join("sysfs")).unwrap();
     std::fs::write(root.join("device"), "").unwrap();
     std::fs::write(root.join("calls"), "").unwrap();
-    let result = std::process::Command::new(std::env::current_exe().unwrap())
+    let mut command = std::process::Command::new(std::env::current_exe().unwrap());
+    command
         .args(["--exact", test, "--nocapture"])
         .env("LD_PRELOAD", root.join("shim.so"))
         .env("BLENT_T497_UINPUT_FILE", root.join("device"))
@@ -54,9 +61,11 @@ pub fn run(test: &str, status: &str) {
         .env("XDG_RUNTIME_DIR", root)
         .env("XDG_SESSION_TYPE", "x11")
         .env("XDG_CURRENT_DESKTOP", "test")
-        .env_remove("DBUS_SESSION_BUS_ADDRESS")
-        .output()
-        .unwrap();
+        .env_remove("DBUS_SESSION_BUS_ADDRESS");
+    if delayed {
+        command.env("BLENT_T1445_REGISTRATION", root.join("registration"));
+    }
+    let result = command.output().unwrap();
     assert!(
         result.status.success(),
         "{}{}",

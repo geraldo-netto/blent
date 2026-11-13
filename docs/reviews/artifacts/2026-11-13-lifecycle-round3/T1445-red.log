@@ -1,0 +1,29 @@
+
+running 1 test
+
+thread 'identity::t1445_replacement_ignores_old_registration_and_maps_new_creation_without_watch_event' (1734835) panicked at host/tests/input_mapping/fixture.rs:69:5:
+
+running 1 test
+test identity::t1445_replacement_ignores_old_registration_and_maps_new_creation_without_watch_event ... FAILED
+
+failures:
+
+failures:
+    identity::t1445_replacement_ignores_old_registration_and_maps_new_creation_without_watch_event
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.62s
+
+
+thread 'identity::t1445_replacement_ignores_old_registration_and_maps_new_creation_without_watch_event' (1734851) panicked at host/tests/input_mapping/identity.rs:58:5:
+T1445 old registration satisfied a new creation
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test identity::t1445_replacement_ignores_old_registration_and_maps_new_creation_without_watch_event ... FAILED
+
+failures:
+
+failures:
+    identity::t1445_replacement_ignores_old_registration_and_maps_new_creation_without_watch_event
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.72s

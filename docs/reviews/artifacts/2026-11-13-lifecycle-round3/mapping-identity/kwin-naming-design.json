@@ -1,0 +1,19 @@
+{
+  "scope": "T1445 fix is scoped to confirmed X11 creation identity. No KWin registration race is claimed or fixed.",
+  "consulted": "2026-11-13",
+  "primary_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/KDE/kwin/master/src/backends/libinput/device.cpp",
+      "sha256": "473d52adc8c6599bde287d7f2876c44fe70e880526edad1b20c4cd191ff115c6"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KDE/kwin/master/src/backends/libinput/connection.cpp",
+      "sha256": "4da3c12df0bf33b20997cad373316179fb61a51591bfd9de0ba6cad4ab6093df"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KDE/kwin/master/src/backends/libinput/device.h",
+      "sha256": "2b9d222a4362009271354cf8717b5d0aad8a30294c54b6ce23ad3b44a16c42f3"
+    }
+  ],
+  "finding_for_design": "Connection::applyDeviceConfig groups preferences by vendor/product/name. Device::setOutputName writes OutputUuid. Per-creation names therefore risk persistent metadata growth in KWin; retain its existing names rather than expanding the confirmed X11 fix there."
+}

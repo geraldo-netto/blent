@@ -1,0 +1,14 @@
+{
+  "library_scope": "Frozen T1433 pre-T1439 library, d1bb5d6e; mapping identity lookup unchanged in current draft.",
+  "hashes": {
+    "libblent.rlib": "8c3ed1dc4c5ced28f4d9979ed8002c01e3220ce80ed61d7ad5a0b79b5ffa4f3a",
+    "libblent_config.rlib": "2b600f9baf34d53faad85ab119768227df8f283475ed10cf76bbfee06423ba0f"
+  },
+  "current_draft": {
+    "scope": "T1439 original payload draft plus T1444 explicit mutation port/common retained command API; built before saturation cleanup correction. Identity behavior unchanged.",
+    "hashes": {
+      "libblent.rlib": "a40b12c1af455b3cef2fda10e16b21fa3adade5794685ebb31272b29a22a3e0f",
+      "libblent_config.rlib": "40f7d23729ad10112ded6862178be14f22e7c8a0594214f4c245030792eb9710"
+    }
+  }
+}

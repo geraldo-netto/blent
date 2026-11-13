@@ -386,3 +386,6 @@ fn t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated() {
         .unwrap()
         .block_on(saturated_cleanup());
 }
+
+#[path = "input_mapping/identity.rs"]
+mod identity;

@@ -1,0 +1,17 @@
+{
+  "baseline": "e4bcb6f1/T1441 frozen library; permanent regression executed before T1445 behavior edits",
+  "libraries": {
+    "blent_config": "8269e6c7238f1acd4961b54b728621d810477b6147e4cf697c3283b34fd7505a",
+    "blent": "a65ecd24d62d58b5fb55af5d2fa4365d463468561bb1899af51b81d1f7c048ac"
+  },
+  "command": "rustc --edition=2021 --test -C instrument-coverage host/tests/input_mapping.rs with exact frozen dependencies; full cache argument vector retained outside repository in /tmp/blent-t1445/red-command.json",
+  "run": "red-test identity::t1445_ --nocapture",
+  "exit_code": 101,
+  "source_hashes": {
+    "host/tests/input_mapping.rs": "b36cfd518b1cd5d0589ce8d28fd924cdb866c58a70182670c5985ce148f83993",
+    "host/tests/input_mapping/identity.rs": "7c6b47b0073784cfa71ffbcee7659687888bb3ce7032c132c46847a9d82a2e9b",
+    "host/tests/input_mapping/fixture.rs": "951cf93c35ceb8998b8c720b5e661d00d2ea5792f7a804ee5879e25b357b94b2",
+    "host/tests/input_mapping/command.c": "ea56b8c06c49fbb37e22a2e39adb5e791a6ad7794d20d64b256084d77985c5a7",
+    "host/tests/uinput_mock.c": "a81459e729ed2b149690941affa99c853797b90d973432be05dc0c1fc4770e9e"
+  }
+}
