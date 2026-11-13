@@ -1,0 +1,56 @@
+{
+  "tool": "Blent syn 2.0.119 cyclomatic counter",
+  "file": "host/src/media_connection/tests.rs",
+  "functions": [
+    {
+      "line": 9,
+      "function": "bridge",
+      "complexity": 1
+    },
+    {
+      "line": 20,
+      "function": "t933_camera_invitation_supervision_and_actual_retirement_are_independent",
+      "complexity": 1
+    },
+    {
+      "line": 42,
+      "function": "t933_camera_invitation_wait_and_cancellation_keep_original_owner",
+      "complexity": 1
+    },
+    {
+      "line": 64,
+      "function": "t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration",
+      "complexity": 2
+    },
+    {
+      "line": 87,
+      "function": "t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles",
+      "complexity": 2
+    },
+    {
+      "line": 131,
+      "function": "t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership",
+      "complexity": 1
+    },
+    {
+      "line": 149,
+      "function": "t1369_portable_invitation_checks_every_token_byte_and_length",
+      "complexity": 3
+    },
+    {
+      "line": 177,
+      "function": "wait_for_retirement",
+      "complexity": 3
+    },
+    {
+      "line": 194,
+      "function": "poll_complete",
+      "complexity": 1
+    },
+    {
+      "line": 200,
+      "function": "t1395_virtual_protocol_time_cannot_expire_native_retirement_wait",
+      "complexity": 1
+    }
+  ]
+}

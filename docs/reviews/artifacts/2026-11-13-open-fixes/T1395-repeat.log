@@ -1,0 +1,240 @@
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+
+
+running 7 tests
+test media_connection::tests::t1369_portable_invitation_checks_every_token_byte_and_length ... ok
+test media_connection::tests::t1395_virtual_protocol_time_cannot_expire_native_retirement_wait ... ok
+test media_connection::tests::t933_camera_invitation_supervision_and_actual_retirement_are_independent ... ok
+test media_connection::tests::t933_camera_invitation_wait_and_cancellation_keep_original_owner ... ok
+test media_connection::tests::t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registration ... ok
+test media_connection::tests::t991_camera_and_audio_share_original_invitation_and_retained_cleanup_without_crossing_profiles ... ok
+test media_connection::tests::t991_camera_native_boundary_rejects_credential_request_mismatch_before_ownership ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1082 filtered out; finished in 0.01s
+

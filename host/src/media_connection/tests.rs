@@ -80,13 +80,7 @@ async fn t933_camera_mismatched_or_replayed_invitation_cannot_expose_new_registr
     drop(bridge);
     assert!(!completion.is_complete());
     rig.complete();
-    tokio::time::timeout(Duration::from_secs(1), async {
-        while !completion.is_complete() {
-            tokio::time::sleep(Duration::from_millis(1)).await;
-        }
-    })
-    .await
-    .unwrap();
+    wait_for_retirement(completion).await;
 }
 
 #[tokio::test(start_paused = true)]
@@ -128,13 +122,7 @@ async fn t991_camera_and_audio_share_original_invitation_and_retained_cleanup_wi
         drop(bridge);
         assert!(!completion.is_complete());
         rig.complete();
-        tokio::time::timeout(Duration::from_secs(1), async {
-            while !completion.is_complete() {
-                tokio::time::sleep(Duration::from_millis(1)).await;
-            }
-        })
-        .await
-        .unwrap();
+        wait_for_retirement(completion).await;
     }
 }
 
@@ -181,4 +169,57 @@ async fn t1369_portable_invitation_checks_every_token_byte_and_length() {
     rig.complete();
     bridge.close().await.unwrap();
     assert!(bridge.retired());
+}
+
+// Real reaper completion is independent of the protocol's paused Tokio clock.
+// This joined test waiter borrows only the retained completion ticket; timeout
+// failure never authorizes native release or turns a missing fence into success.
+async fn wait_for_retirement(completion: blent_config::retirement::Completion) {
+    tokio::task::spawn_blocking(move || {
+        let deadline = std::time::Instant::now() + Duration::from_secs(8);
+        while !completion.is_complete() {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "T1395 original native retirement did not complete"
+            );
+            std::thread::sleep(Duration::from_millis(1));
+        }
+    })
+    .await
+    .expect("T1395 native retirement waiter failed");
+}
+
+struct RetirementGate(std::sync::Arc<std::sync::atomic::AtomicBool>);
+impl blent_config::retirement::Observe for RetirementGate {
+    fn poll_complete(&mut self) -> bool {
+        self.0.load(Ordering::Acquire)
+    }
+}
+
+#[tokio::test(start_paused = true)]
+async fn t1395_virtual_protocol_time_cannot_expire_native_retirement_wait() {
+    use blent_config::retirement::Pool;
+    let pool = Pool::new(1).unwrap();
+    let admission = pool.reserve().unwrap();
+    let completion = admission.completion();
+    let ready = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
+    admission.retain(RetirementGate(ready.clone()));
+    let waiting = tokio::spawn(wait_for_retirement(completion.clone()));
+    tokio::task::yield_now().await;
+    tokio::time::advance(Duration::from_secs(2)).await;
+    tokio::task::yield_now().await;
+    let retained = !waiting.is_finished();
+    assert!(!completion.is_complete());
+    assert!(pool.reserve().is_err());
+    // Release before checking the wait result so even the failing control keeps
+    // its original native owner funded through eventual reaper completion.
+    ready.store(true, Ordering::Release);
+    let result = waiting.await;
+    assert!(
+        retained,
+        "T1395 virtual time expired a native retirement wait"
+    );
+    result.unwrap();
+    assert!(completion.is_complete());
+    assert_eq!(pool.active(), 0);
 }

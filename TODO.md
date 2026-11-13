@@ -25,7 +25,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1395 | open | low | small | Owner reopened this item and its focused tests on 2026-11-13. Make the T991 media-retirement regression wait for real reaper progress independently of Tokio virtual time. `host/src/media_connection/tests.rs:97–137` uses `start_paused = true` and a one-second Tokio timeout to await `Bridge::drop` cleanup, but `common/src/retirement.rs::reap` runs on a real OS thread with a five-millisecond receive interval. The 2026-11-13 workspace run failed at line 137; 20 isolated executions of the unchanged test produced 19 passes and one identical timeout. This is a scheduling-dependent test failure, not evidence that production cleanup exceeded a real second or leaked. Preserve every ownership/retirement assertion; synchronize the real reaper observation with an appropriate real-time or explicit completion boundary while retaining virtual-time protocol checks. Complete with a permanent failing-before/passing-after regression/control and repeated normal-suite execution. Evidence: `docs/reviews/artifacts/2026-11-13-wide-review/media-retirement-repeat.json` and `rust-tests.log.gz`. |
 
 ## Desktop interface
 
