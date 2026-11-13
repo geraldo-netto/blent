@@ -1,0 +1,78 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source 0.1.0 / syn 2.0.119; Python AST",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "functions": [
+    {
+      "file": "host/src/daemon_pid.rs",
+      "line": 10,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_pid.rs",
+      "line": 18,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_pid.rs",
+      "line": 28,
+      "function": "t1428_publication_removes_only_its_own_pid",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_pid.rs",
+      "line": 45,
+      "function": "t1428_failed_publication_and_unwind_leave_no_owned_pid",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_pid.rs",
+      "line": 58,
+      "function": "t1428_cancelled_workflow_retires_pid",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1658,
+      "function": "run_daemon_with",
+      "complexity": 7
+    },
+    {
+      "file": "host/tests/daemon_startup.rs",
+      "line": 4,
+      "function": "t1423_startup_signals_retain_cleanup_and_early_stop",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup.rs",
+      "line": 9,
+      "function": "t1428_failed_startup_removes_owned_pid",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup.rs",
+      "line": 13,
+      "function": "run_fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/pid_cleanup.py",
+      "line": 13,
+      "function": "failed_startup",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/pid_cleanup.py",
+      "line": 32,
+      "function": "main",
+      "complexity": 1
+    }
+  ],
+  "source_sha256": {
+    "host/src/daemon_pid.rs": "a7aaa2414556cc9d21d6f7402f1e7b093bb1559a92954f221fcb2fa0bfbce389",
+    "host/src/linux_main.rs": "3b7030798f2f088667d819f38413fb4f7f55ba9ba882c55775b1d2aa8aa9df55",
+    "host/tests/daemon_startup.rs": "52c215d608043d28c0786203b43ea050dc60aecf8350049ff7d57f81659ec546",
+    "host/tests/daemon_startup/pid_cleanup.py": "310bc0b25f6f519aa35d81925a55945176207634e22abb5bcfe4e93a90809832"
+  }
+}

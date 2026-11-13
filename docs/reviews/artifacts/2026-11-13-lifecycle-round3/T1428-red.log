@@ -1,0 +1,10 @@
+{"exit": 1, "pid_file_exists": true}
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/host/tests/daemon_startup/pid_cleanup.py", line 40, in <module>
+    main()
+  File "/backups/disk2/projects/blent/host/tests/daemon_startup/pid_cleanup.py", line 36, in main
+    failed_startup(str(Path(sys.argv[1]).resolve()))
+  File "/backups/disk2/projects/blent/host/tests/daemon_startup/pid_cleanup.py", line 27, in failed_startup
+    assert not pid.exists(), 'T1428: failed startup left its PID published'
+           ^^^^^^^^^^^^^^^^
+AssertionError: T1428: failed startup left its PID published

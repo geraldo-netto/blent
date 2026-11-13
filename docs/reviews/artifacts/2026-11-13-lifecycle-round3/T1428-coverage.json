@@ -1,0 +1,41 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "source_sha256": {
+    "host/src/daemon_pid.rs": "a7aaa2414556cc9d21d6f7402f1e7b093bb1559a92954f221fcb2fa0bfbce389",
+    "host/src/linux_main.rs": "3b7030798f2f088667d819f38413fb4f7f55ba9ba882c55775b1d2aa8aa9df55"
+  },
+  "object_sha256": {
+    "daemon_startup:test:True": "6195f4592fadf0a7d1e723d8bda5ffd7afe9523bc66d4f4126e8b64ab95f6a9c",
+    "blent:bin:False": "f8c4fa1e82ccd2fe9815ab7fee2279613876fc4ad91974e6a19d45ef1663b4b5",
+    "blent:bin:True": "be81da4c800ebe4e27a6e8dd382a7dba460e9bcf70f60db710ffb9f032888196"
+  },
+  "functions": [
+    {
+      "file": "host/src/daemon_pid.rs",
+      "function": "new",
+      "first": 10,
+      "last": 14,
+      "covered": 5,
+      "executable": 5,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/daemon_pid.rs",
+      "function": "drop",
+      "first": 18,
+      "last": 20,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "function": "run_daemon_with",
+      "first": 1658,
+      "last": 1906,
+      "covered": 194,
+      "executable": 203,
+      "percent": 95.57
+    }
+  ]
+}

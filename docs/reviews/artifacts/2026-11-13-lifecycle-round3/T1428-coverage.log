@@ -1,0 +1,61 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.83s
+
+RUN blent:bin:True FILTER=daemon_pid::
+
+running 3 tests
+test daemon_pid::tests::t1428_cancelled_workflow_retires_pid ... ok
+test daemon_pid::tests::t1428_failed_publication_and_unwind_leave_no_owned_pid ...
+thread 'daemon_pid::tests::t1428_failed_publication_and_unwind_leave_no_owned_pid' (1186003) panicked at host/src/daemon_pid.rs:51:13:
+T1428: workflow unwinds after publication
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test daemon_pid::tests::t1428_publication_removes_only_its_own_pid ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 625 filtered out; finished in 0.02s
+
+
+RUN blent:bin:True FILTER=daemon_shutdown::
+
+running 2 tests
+test daemon_shutdown::tests::t1423_only_requested_admission_rejection_becomes_graceful_stop ... ok
+test daemon_shutdown::tests::t1423_owner_drop_aborts_original_signal_observer ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 626 filtered out; finished in 0.00s
+
+
+RUN blent:bin:True FILTER=daemon_activity::
+
+running 5 tests
+test daemon_activity::tests::t1027_daemon_owns_one_source_and_preserves_preferences_edges_and_native_retirement ... ok
+test daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests ... ok
+test daemon_activity::tests::t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel ... ok
+test daemon_activity::tests::t1027_unsupported_capabilities_and_loss_remain_visible_without_recreation ... ok
+test daemon_activity::tests::t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 623 filtered out; finished in 0.51s
+
+
+RUN blent:bin:True FILTER=t305_
+
+running 2 tests
+test cli_tests::t305_shutdown_already_requested_is_not_lost ... ok
+test cli_tests::t305_shutdown_waits_for_true_or_channel_closure ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 626 filtered out; finished in 0.00s
+
+
+RUN daemon_startup:test:True FILTER=
+
+running 2 tests
+test t1423_startup_signals_retain_cleanup_and_early_stop ... {"case": "banner", "signal": 15, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 15, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "config", "invalid": false, "installed": true, "exit": 0, "adb_started": false}
+{"case": "config", "invalid": true, "installed": true, "exit": 1, "adb_started": false}
+ok
+test t1428_failed_startup_removes_owned_pid ... {"exit": 1, "pid_file_exists": false}
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.46s

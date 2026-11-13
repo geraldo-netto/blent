@@ -2,6 +2,15 @@
 //! T1423: real daemon startup, isolated from devices, services and the ADB server.
 #[test]
 fn t1423_startup_signals_retain_cleanup_and_early_stop() {
+    run_fixture("signals.py");
+}
+
+#[test]
+fn t1428_failed_startup_removes_owned_pid() {
+    run_fixture("pid_cleanup.py");
+}
+
+fn run_fixture(script: &str) {
     let output = std::process::Command::new("/usr/bin/unshare")
         .args([
             "--user",
@@ -12,10 +21,11 @@ fn t1423_startup_signals_retain_cleanup_and_early_stop() {
             "--mount-proc",
             "/usr/bin/python3",
         ])
-        .arg(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/tests/daemon_startup/signals.py"
-        ))
+        .arg(
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .join("tests/daemon_startup")
+                .join(script),
+        )
         .arg(env!("CARGO_BIN_EXE_blent"))
         .output()
         .unwrap();

@@ -16,6 +16,7 @@ use blent::camera;
 mod capture;
 use blent::config;
 mod daemon_activity;
+mod daemon_pid;
 mod daemon_shutdown;
 mod desktop;
 use blent::device_tasks;
@@ -1685,9 +1686,8 @@ where
     blent_config::scheduling::apply_configured();
     blent_config::scheduling::apply_shared_adb(file_cfg.scheduling_priority);
 
-    // Write PID file for clean stop/status
-    let pid = std::process::id();
-    std::fs::write(&pid_path, pid.to_string())?;
+    // T1428: retire our publication on every exit from startup or shutdown.
+    let _pid_file = daemon_pid::Publication::new(pid_path)?;
 
     heal_config(&file_cfg);
     blent_config::linux::pipe::publish_current()?;
@@ -1858,7 +1858,7 @@ where
 
     println!();
     println!("================================================");
-    println!("  blent daemon running (PID: {})", pid);
+    println!("  blent daemon running (PID: {})", std::process::id());
     println!("================================================");
     println!("  On your tablet, open the Blent app");
     println!("  ADB ports will be auto-forwarded if possible.");
@@ -1900,13 +1900,6 @@ where
     if let Some(h) = update_handle {
         h.abort();
     }
-
-    // Clean up PID file
-    // Only if it is still ours. Winding down takes a few seconds, and a
-    // daemon started in the meantime has already written its own PID here;
-    // deleting that leaves the new daemon untracked - doctor calls it an
-    // orphan and `blent stop` can no longer find it.
-    remove_pid_file_if_ours(&pid_path, pid);
 
     info!("blent daemon stopped");
     Ok(())
