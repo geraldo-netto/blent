@@ -84,7 +84,8 @@ class MainActivity : ComponentActivity() {
                 ConnectionPairingDialog(connection)
             }
         }
-        accessoryIntent(intent)
+        // T1396: recreation retains the launch Intent; it is not a new attachment.
+        if (savedInstanceState == null) accessoryIntent(intent)
         window.decorView.post { windowPolicy.enableImmersiveMode() }
     }
 

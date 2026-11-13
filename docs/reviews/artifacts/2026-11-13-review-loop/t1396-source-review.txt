@@ -1,0 +1,6 @@
+T1396 source correction, 2026-11-13
+Command: ./android/gradlew -p android compileDebugKotlin --console plain
+Result: successful; no test execution.
+Complexity: scripts/complexity/kotlin.py, pinned Kotlin PSI 1.9.20; MainActivity.onCreate = 2.
+Lifetime: no new resource owner, callback or retained state. Saved-state presence only gates dispatch of an already-consumed launch Intent. Genuine onNewIntent dispatch remains unchanged. ConnectionBinding/ResourceLane retain original worker ownership and retirement.
+Limits: no new permanent regression or per-function line-counter result; owner paused all tests. T1396 remains deferred for acceptance.

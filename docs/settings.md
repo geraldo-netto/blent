@@ -133,6 +133,8 @@ failed attempts up to 30 seconds, and return to 2 seconds after authentication.
 Changed or forgotten peers still require approval; an initial unknown connection
 or an unremembered manual failure does not start a retry loop. Disconnect, Deny
 and Revoke stop automatic recovery, including while cleanup or a retry is pending.
+Activity restoration does not replay the original USB attachment; a fresh
+attachment Intent or explicit Connect is required after an explicit cutoff.
 Destroying the Activity cancels its retry observer; an established application-owned
 link remains owned. This does not promise unattended recovery after application
 process death or certify physical tablet/display behavior.
