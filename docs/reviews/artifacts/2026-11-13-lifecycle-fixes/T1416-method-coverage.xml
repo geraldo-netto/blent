@@ -1,0 +1,428 @@
+<report name="T1416 scoped production methods; exact JaCoCo subset">
+  <package name="com/blent">
+    <class name="com/blent/DisplayWorkerOwner" sourcefilename="DisplayWorkerOwner.kt">
+      <method name="&lt;init&gt;" desc="(Lkotlinx/coroutines/CoroutineScope;)V" line="12">
+        <counter type="INSTRUCTION" missed="0" covered="17" />
+        <counter type="LINE" missed="0" covered="2" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="open" desc="()Ljava/lang/Object;" line="18">
+        <counter type="INSTRUCTION" missed="0" covered="14" />
+        <counter type="LINE" missed="0" covered="5" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="owns" desc="(Ljava/lang/Object;)Z" line="25">
+        <counter type="INSTRUCTION" missed="0" covered="10" />
+        <counter type="BRANCH" missed="0" covered="4" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="3" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="clear" desc="(Ljava/lang/Object;)V" line="28">
+        <counter type="INSTRUCTION" missed="0" covered="11" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="4" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="replace" desc="(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V" line="35">
+        <counter type="INSTRUCTION" missed="0" covered="44" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="7" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="discard" desc="()V" line="44">
+        <counter type="INSTRUCTION" missed="0" covered="11" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="3" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="status" desc="(Ljava/lang/String;)V" line="50">
+        <counter type="INSTRUCTION" missed="1" covered="8" />
+        <counter type="BRANCH" missed="1" covered="1" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="1" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$receive$1" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="()Ljava/lang/Boolean;" line="120">
+        <counter type="INSTRUCTION" missed="0" covered="7" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$receive$2" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="()V" line="121">
+        <counter type="INSTRUCTION" missed="0" covered="13" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/DisplayWorkerRequest$open$1" sourcefilename="DisplayWorkerOwner.kt" />
+    <class name="com/blent/DisplayWorkerOwner$lane$1" sourcefilename="DisplayWorkerOwner.kt" />
+    <class name="com/blent/RemoteDisplay" sourcefilename="RemoteDisplay.kt">
+      <method name="&lt;init&gt;" desc="(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLcom/blent/DisplayWorkerOwner;Lkotlin/jvm/functions/Function3;)V" line="11">
+        <counter type="INSTRUCTION" missed="0" covered="80" />
+        <counter type="LINE" missed="0" covered="14" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="&lt;init&gt;" desc="(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLcom/blent/DisplayWorkerOwner;Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V" line="11">
+        <counter type="INSTRUCTION" missed="0" covered="46" />
+        <counter type="LINE" missed="0" covered="6" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getRoutes" desc="()Lcom/blent/DisplayRoutes;" line="22">
+        <counter type="INSTRUCTION" missed="0" covered="3" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setRoutes" desc="(Lcom/blent/DisplayRoutes;)V" line="24">
+        <counter type="INSTRUCTION" missed="0" covered="38" />
+        <counter type="BRANCH" missed="0" covered="10" />
+        <counter type="LINE" missed="0" covered="6" />
+        <counter type="COMPLEXITY" missed="0" covered="6" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getToken" desc="()Ljava/lang/String;" line="31">
+        <counter type="INSTRUCTION" missed="0" covered="9" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setToken" desc="(Ljava/lang/String;)V" line="32">
+        <counter type="INSTRUCTION" missed="0" covered="17" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getMimeType" desc="()Ljava/lang/String;" line="34">
+        <counter type="INSTRUCTION" missed="0" covered="4" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setMimeType" desc="(Ljava/lang/String;)V" line="35">
+        <counter type="INSTRUCTION" missed="0" covered="14" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getStreamFps" desc="()I" line="37">
+        <counter type="INSTRUCTION" missed="0" covered="4" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setStreamFps" desc="(I)V" line="38">
+        <counter type="INSTRUCTION" missed="1" covered="25" />
+        <counter type="BRANCH" missed="1" covered="5" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="1" covered="3" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getOnFrameRendered" desc="()Lkotlin/jvm/functions/Function1;" line="39">
+        <counter type="INSTRUCTION" missed="0" covered="3" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setOnFrameRendered" desc="(Lkotlin/jvm/functions/Function1;)V" line="39">
+        <counter type="INSTRUCTION" missed="0" covered="4" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getStartupStatus" desc="()Lkotlinx/coroutines/flow/MutableStateFlow;" line="40">
+        <counter type="INSTRUCTION" missed="0" covered="3" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getRetirementStatus" desc="()Lkotlinx/coroutines/flow/MutableStateFlow;" line="41">
+        <counter type="INSTRUCTION" missed="0" covered="3" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getDecoderDiagnostics" desc="()Lkotlinx/coroutines/flow/MutableStateFlow;" line="42">
+        <counter type="INSTRUCTION" missed="0" covered="3" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="observeConnection" desc="(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V" line="55">
+        <counter type="INSTRUCTION" missed="0" covered="17" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="3" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setVideoLiveness" desc="(Z)V" line="59">
+        <counter type="INSTRUCTION" missed="0" covered="11" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="4" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setStreamFormat" desc="(Lcom/blent/DecoderFormat;)V" line="64">
+        <counter type="INSTRUCTION" missed="0" covered="12" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="4" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="setSurface" desc="(Landroid/view/SurfaceView;)V" line="69">
+        <counter type="INSTRUCTION" missed="5" covered="24" />
+        <counter type="BRANCH" missed="3" covered="5" />
+        <counter type="LINE" missed="0" covered="6" />
+        <counter type="COMPLEXITY" missed="3" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="onSurfaceDestroyed" desc="()V" line="75">
+        <counter type="INSTRUCTION" missed="0" covered="6" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="start" desc="()V" line="77">
+        <counter type="INSTRUCTION" missed="0" covered="21" />
+        <counter type="BRANCH" missed="1" covered="3" />
+        <counter type="LINE" missed="0" covered="5" />
+        <counter type="COMPLEXITY" missed="1" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="stop" desc="()V" line="82">
+        <counter type="INSTRUCTION" missed="0" covered="6" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="replace" desc="()V" line="84">
+        <counter type="INSTRUCTION" missed="9" covered="108" />
+        <counter type="BRANCH" missed="2" covered="12" />
+        <counter type="LINE" missed="0" covered="19" />
+        <counter type="COMPLEXITY" missed="2" covered="6" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="current" desc="(J)Z" line="106">
+        <counter type="INSTRUCTION" missed="0" covered="15" />
+        <counter type="BRANCH" missed="0" covered="4" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="3" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="ended" desc="(JLjava/lang/Exception;)V" line="108">
+        <counter type="INSTRUCTION" missed="0" covered="17" />
+        <counter type="LINE" missed="0" covered="2" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="receive" desc="(JLcom/blent/WorkerEvent;)V" line="118">
+        <counter type="INSTRUCTION" missed="3" covered="50" />
+        <counter type="BRANCH" missed="2" covered="6" />
+        <counter type="LINE" missed="0" covered="6" />
+        <counter type="COMPLEXITY" missed="2" covered="3" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="publish" desc="(Lcom/blent/WorkerEvent$Display;)V" line="126">
+        <counter type="INSTRUCTION" missed="4" covered="41" />
+        <counter type="BRANCH" missed="1" covered="3" />
+        <counter type="LINE" missed="0" covered="8" />
+        <counter type="COMPLEXITY" missed="1" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="disconnect" desc="()V" line="136">
+        <counter type="INSTRUCTION" missed="0" covered="28" />
+        <counter type="LINE" missed="0" covered="5" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getFps" desc="()F" line="141">
+        <counter type="INSTRUCTION" missed="0" covered="3" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getMbps" desc="()F" line="142">
+        <counter type="INSTRUCTION" missed="0" covered="3" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$snapshots$1" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="(Ljava/lang/Exception;)V" line="43">
+        <counter type="INSTRUCTION" missed="0" covered="8" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/DisplayWorkerOwner$replace$3" sourcefilename="DisplayWorkerOwner.kt" />
+    <class name="com/blent/DisplayWorkerOwner$replace$2" sourcefilename="DisplayWorkerOwner.kt" />
+    <class name="com/blent/DisplayWorkerOwner$replace$1" sourcefilename="DisplayWorkerOwner.kt" />
+    <class name="com/blent/BlentApplication" sourcefilename="BlentApplication.kt">
+      <method name="&lt;init&gt;" desc="()V" line="11">
+        <counter type="INSTRUCTION" missed="0" covered="16" />
+        <counter type="LINE" missed="0" covered="3" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getStreamingPower$app_debug" desc="()Lcom/blent/StreamingPowerRuntime;" line="12">
+        <counter type="INSTRUCTION" missed="0" covered="7" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="getDisplayWorkers$app_debug" desc="()Lcom/blent/DisplayWorkerOwner;" line="13">
+        <counter type="INSTRUCTION" missed="0" covered="7" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/BlentApplication$streamingPower$2" sourcefilename="BlentApplication.kt">
+      <method name="invoke" desc="()Lcom/blent/StreamingPowerRuntime;" line="12">
+        <counter type="INSTRUCTION" missed="0" covered="14" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$onDisconnected$1" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="()V" line="52">
+        <counter type="INSTRUCTION" missed="0" covered="1" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$1" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="(Lcom/blent/MediaTask$Display;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;)Lcom/blent/AndroidWorkerRun;" line="15">
+        <counter type="INSTRUCTION" missed="0" covered="15" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/BlentApplication$displayWorkers$2" sourcefilename="BlentApplication.kt">
+      <method name="invoke" desc="()Lcom/blent/DisplayWorkerOwner;" line="14">
+        <counter type="INSTRUCTION" missed="0" covered="13" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$onConnected$1" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="()V" line="51">
+        <counter type="INSTRUCTION" missed="0" covered="1" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$replace$2" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="(Lcom/blent/WorkerEvent;)V" line="102">
+        <counter type="INSTRUCTION" missed="0" covered="8" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$replace$3" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="(Ljava/lang/Exception;)V" line="102">
+        <counter type="INSTRUCTION" missed="0" covered="8" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$replace$1" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="(Lkotlin/jvm/functions/Function1;)Lcom/blent/LifecycleRun;" line="101">
+        <counter type="INSTRUCTION" missed="0" covered="11" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$replace$4" sourcefilename="RemoteDisplay.kt">
+      <method name="invoke" desc="(Ljava/lang/String;)V" line="103">
+        <counter type="INSTRUCTION" missed="0" covered="5" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/DisplayWorkerRequest" sourcefilename="DisplayWorkerOwner.kt">
+      <method name="&lt;init&gt;" desc="(Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V" line="53">
+        <counter type="INSTRUCTION" missed="0" covered="18" />
+        <counter type="LINE" missed="0" covered="5" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="open" desc="()Lcom/blent/LifecycleRun;" line="65">
+        <counter type="INSTRUCTION" missed="6" covered="16" />
+        <counter type="BRANCH" missed="1" covered="1" />
+        <counter type="LINE" missed="0" covered="2" />
+        <counter type="COMPLEXITY" missed="1" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="event" desc="(Lcom/blent/WorkerEvent;)V" line="68">
+        <counter type="INSTRUCTION" missed="0" covered="10" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="status" desc="(Ljava/lang/String;)V" line="69">
+        <counter type="INSTRUCTION" missed="1" covered="9" />
+        <counter type="BRANCH" missed="1" covered="1" />
+        <counter type="LINE" missed="0" covered="1" />
+        <counter type="COMPLEXITY" missed="1" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="finished" desc="(Ljava/lang/Exception;)V" line="71">
+        <counter type="INSTRUCTION" missed="0" covered="18" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="5" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="retired" desc="(Lcom/blent/ResourceRetirement;)V" line="77">
+        <counter type="INSTRUCTION" missed="0" covered="11" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="3" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="detach" desc="()V" line="81">
+        <counter type="INSTRUCTION" missed="0" covered="14" />
+        <counter type="LINE" missed="0" covered="5" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/RemoteDisplay$ended$1" sourcefilename="RemoteDisplay.kt">
+      <method name="invokeSuspend" desc="(Ljava/lang/Object;)Ljava/lang/Object;" line="109">
+        <counter type="INSTRUCTION" missed="0" covered="31" />
+        <counter type="BRANCH" missed="1" covered="3" />
+        <counter type="LINE" missed="0" covered="6" />
+        <counter type="COMPLEXITY" missed="1" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+  </package>
+</report>

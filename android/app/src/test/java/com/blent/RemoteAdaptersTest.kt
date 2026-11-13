@@ -149,19 +149,20 @@ class RemoteAdaptersTest {
     @Test fun t809_defaultRemoteDisplayFactoryUsesBinderAndReleasesIt() = runBlocking {
         val endpoint = Endpoint()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
-        val surface = Surface(SurfaceTexture(0))
+        val texture = SurfaceTexture(0)
+        val surface = Surface(texture)
         val view = object : SurfaceView(RuntimeEnvironment.getApplication()) {
             override fun getHolder(): SurfaceHolder = Proxy.newProxyInstance(SurfaceHolder::class.java.classLoader,
                 arrayOf(SurfaceHolder::class.java)) { _, method, _ -> if (method.name == "getSurface") surface else null } as SurfaceHolder
         }
-        val receiver = RemoteDisplay(App(endpoint), scope)
+        val receiver = RemoteDisplay(App(endpoint), scope, workers = DisplayWorkerOwner(scope))
         try {
             receiver.token = "a".repeat(64); receiver.setSurface(view); receiver.start()
             withTimeout(2000) { endpoint.started.await() }
             assertTrue(endpoint.deaths.isNotEmpty())
             receiver.stop(); until { endpoint.deaths.isEmpty() }
             assertTrue(surface.isValid)
-        } finally { receiver.stop(); scope.cancel(); surface.release() }
+        } finally { receiver.stop(); scope.cancel(); surface.release(); texture.release() }
     }
     @Test fun t809_remoteMetadataRoundTripAndUnavailableFallbackAreExplicit() = runBlocking {
         WorkerTestBridge.install()

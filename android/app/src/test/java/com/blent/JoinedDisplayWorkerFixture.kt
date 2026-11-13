@@ -81,7 +81,7 @@ internal class JoinedDisplayWorkerFixture {
     val originals = CopyOnWriteArrayList<Original>()
     private val texture = SurfaceTexture(0)
     private val surface = Surface(texture)
-    val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope) { task, output, report ->
+    val receiver = RemoteDisplay(RuntimeEnvironment.getApplication(), scope, workers = DisplayWorkerOwner(scope)) { task, output, report ->
         check(originals.size < 2)
         Original(task, output, report).also { originals.add(it) }
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.blent.DisplayReplacementTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-13T17:14:39" hostname="morpheus" time="0.096">
+  <properties/>
+  <testcase name="t1416OnlyLatestWantedReplacementMayStart[27]" classname="com.blent.DisplayReplacementTest" time="0.016"/>
+  <testcase name="t1416ReplacementWaitsForOriginalRetirementAndSurvivesOldStop[27]" classname="com.blent.DisplayReplacementTest" time="0.012"/>
+  <testcase name="t1416StoppedPendingReplacementNeverAcquiresWorker[27]" classname="com.blent.DisplayReplacementTest" time="0.009"/>
+  <testcase name="t1416UnstartedAndSupersededViewsCannotCancelCurrentDisplay[27]" classname="com.blent.DisplayReplacementTest" time="0.01"/>
+  <testcase name="t1416OnlyLatestWantedReplacementMayStart" classname="com.blent.DisplayReplacementTest" time="0.014"/>
+  <testcase name="t1416ReplacementWaitsForOriginalRetirementAndSurvivesOldStop" classname="com.blent.DisplayReplacementTest" time="0.012"/>
+  <testcase name="t1416StoppedPendingReplacementNeverAcquiresWorker" classname="com.blent.DisplayReplacementTest" time="0.011"/>
+  <testcase name="t1416UnstartedAndSupersededViewsCannotCancelCurrentDisplay" classname="com.blent.DisplayReplacementTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

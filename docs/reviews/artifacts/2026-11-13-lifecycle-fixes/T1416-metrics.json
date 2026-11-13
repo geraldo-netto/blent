@@ -1,0 +1,614 @@
+{
+  "tools": {
+    "coverage": "JaCoCo 0.8.15, Gradle 8.5, Robolectric 4.17",
+    "complexity": "Blent local Kotlin PSI 1.9.20 checker"
+  },
+  "coverage_scope": "Every line-bearing method in the four named production classes and their compiled callbacks, across three source files; not entire Android project",
+  "coverage": [
+    {
+      "class": "com/blent/DisplayWorkerOwner",
+      "method": "<init>",
+      "descriptor": "(Lkotlinx/coroutines/CoroutineScope;)V",
+      "covered_lines": 2,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerOwner",
+      "method": "open",
+      "descriptor": "()Ljava/lang/Object;",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerOwner",
+      "method": "owns",
+      "descriptor": "(Ljava/lang/Object;)Z",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerOwner",
+      "method": "clear",
+      "descriptor": "(Ljava/lang/Object;)V",
+      "covered_lines": 4,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerOwner",
+      "method": "replace",
+      "descriptor": "(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+      "covered_lines": 7,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerOwner",
+      "method": "discard",
+      "descriptor": "()V",
+      "covered_lines": 3,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerOwner",
+      "method": "status",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$receive$1",
+      "method": "invoke",
+      "descriptor": "()Ljava/lang/Boolean;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$receive$2",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLcom/blent/DisplayWorkerOwner;Lkotlin/jvm/functions/Function3;)V",
+      "covered_lines": 14,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "<init>",
+      "descriptor": "(Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;JLcom/blent/DisplayWorkerOwner;Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getRoutes",
+      "descriptor": "()Lcom/blent/DisplayRoutes;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setRoutes",
+      "descriptor": "(Lcom/blent/DisplayRoutes;)V",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getToken",
+      "descriptor": "()Ljava/lang/String;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setToken",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getMimeType",
+      "descriptor": "()Ljava/lang/String;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setMimeType",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getStreamFps",
+      "descriptor": "()I",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setStreamFps",
+      "descriptor": "(I)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getOnFrameRendered",
+      "descriptor": "()Lkotlin/jvm/functions/Function1;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setOnFrameRendered",
+      "descriptor": "(Lkotlin/jvm/functions/Function1;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getStartupStatus",
+      "descriptor": "()Lkotlinx/coroutines/flow/MutableStateFlow;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getRetirementStatus",
+      "descriptor": "()Lkotlinx/coroutines/flow/MutableStateFlow;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getDecoderDiagnostics",
+      "descriptor": "()Lkotlinx/coroutines/flow/MutableStateFlow;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "observeConnection",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V",
+      "covered_lines": 3,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setVideoLiveness",
+      "descriptor": "(Z)V",
+      "covered_lines": 4,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setStreamFormat",
+      "descriptor": "(Lcom/blent/DecoderFormat;)V",
+      "covered_lines": 4,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "setSurface",
+      "descriptor": "(Landroid/view/SurfaceView;)V",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "onSurfaceDestroyed",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "start",
+      "descriptor": "()V",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "stop",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "replace",
+      "descriptor": "()V",
+      "covered_lines": 19,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "current",
+      "descriptor": "(J)Z",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "ended",
+      "descriptor": "(JLjava/lang/Exception;)V",
+      "covered_lines": 2,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "receive",
+      "descriptor": "(JLcom/blent/WorkerEvent;)V",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "publish",
+      "descriptor": "(Lcom/blent/WorkerEvent$Display;)V",
+      "covered_lines": 8,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "disconnect",
+      "descriptor": "()V",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getFps",
+      "descriptor": "()F",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay",
+      "method": "getMbps",
+      "descriptor": "()F",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$snapshots$1",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/BlentApplication",
+      "method": "<init>",
+      "descriptor": "()V",
+      "covered_lines": 3,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/BlentApplication",
+      "method": "getStreamingPower$app_debug",
+      "descriptor": "()Lcom/blent/StreamingPowerRuntime;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/BlentApplication",
+      "method": "getDisplayWorkers$app_debug",
+      "descriptor": "()Lcom/blent/DisplayWorkerOwner;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/BlentApplication$streamingPower$2",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/StreamingPowerRuntime;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$onDisconnected$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$1",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/MediaTask$Display;Landroid/view/Surface;Lkotlin/jvm/functions/Function1;)Lcom/blent/AndroidWorkerRun;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/BlentApplication$displayWorkers$2",
+      "method": "invoke",
+      "descriptor": "()Lcom/blent/DisplayWorkerOwner;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$onConnected$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$replace$2",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/WorkerEvent;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$replace$3",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$replace$1",
+      "method": "invoke",
+      "descriptor": "(Lkotlin/jvm/functions/Function1;)Lcom/blent/LifecycleRun;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$replace$4",
+      "method": "invoke",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerRequest",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerRequest",
+      "method": "open",
+      "descriptor": "()Lcom/blent/LifecycleRun;",
+      "covered_lines": 2,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerRequest",
+      "method": "event",
+      "descriptor": "(Lcom/blent/WorkerEvent;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerRequest",
+      "method": "status",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerRequest",
+      "method": "finished",
+      "descriptor": "(Ljava/lang/Exception;)V",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerRequest",
+      "method": "retired",
+      "descriptor": "(Lcom/blent/ResourceRetirement;)V",
+      "covered_lines": 3,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/DisplayWorkerRequest",
+      "method": "detach",
+      "descriptor": "()V",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/RemoteDisplay$ended$1",
+      "method": "invokeSuspend",
+      "descriptor": "(Ljava/lang/Object;)Ljava/lang/Object;",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    }
+  ],
+  "suites": [
+    {
+      "name": "com.blent.AndroidWorkerRunTest",
+      "tests": "28",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:35",
+      "hostname": "morpheus",
+      "time": "2.418"
+    },
+    {
+      "name": "com.blent.DisplayActivityLifecycleTest",
+      "tests": "16",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:38",
+      "hostname": "morpheus",
+      "time": "0.968"
+    },
+    {
+      "name": "com.blent.DisplayReplacementNativeTest",
+      "tests": "2",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:39",
+      "hostname": "morpheus",
+      "time": "0.077"
+    },
+    {
+      "name": "com.blent.DisplayReplacementTest",
+      "tests": "8",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:39",
+      "hostname": "morpheus",
+      "time": "0.096"
+    },
+    {
+      "name": "com.blent.DisplayWorkerOwnerTest",
+      "tests": "4",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:39",
+      "hostname": "morpheus",
+      "time": "0.031"
+    },
+    {
+      "name": "com.blent.JoinedDisplayActivityTest",
+      "tests": "2",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:39",
+      "hostname": "morpheus",
+      "time": "0.328"
+    },
+    {
+      "name": "com.blent.MediaWorkerServiceTest",
+      "tests": "10",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:39",
+      "hostname": "morpheus",
+      "time": "0.131"
+    },
+    {
+      "name": "com.blent.RemoteAdaptersTest",
+      "tests": "10",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:39",
+      "hostname": "morpheus",
+      "time": "4.259"
+    },
+    {
+      "name": "com.blent.RemoteDisplayTest",
+      "tests": "26",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:43",
+      "hostname": "morpheus",
+      "time": "0.247"
+    },
+    {
+      "name": "com.blent.ResourceLaneTest",
+      "tests": "6",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:44",
+      "hostname": "morpheus",
+      "time": "0.057"
+    },
+    {
+      "name": "com.blent.RetainedAdbCutoffTest",
+      "tests": "12",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T17:14:44",
+      "hostname": "morpheus",
+      "time": "2.573"
+    }
+  ],
+  "tests": 124,
+  "failures": 0,
+  "skips": 0,
+  "files": {
+    "android/app/src/main/java/com/blent/BlentApplication.kt": "ae99b5e443b44183666c6b5d73adaa9a06328c83c0bb12e1a27adc6cff4c6bda",
+    "android/app/src/main/java/com/blent/RemoteDisplay.kt": "ec589a5a27ba8c727cc5dd115d300bce70032196cd74f6cc9549efc7ba766d7a",
+    "android/app/src/main/java/com/blent/DisplayWorkerOwner.kt": "dcd53506a2f6645b77806ceb8eea5ca524f3f1b83cfb0163238ac3fb48cc277f",
+    "android/app/src/test/java/com/blent/DisplayReplacementTest.kt": "dc0758d96597de7999c5cb5547fcc32084d2e3586050f4a20389f5e2ae79c248",
+    "android/app/src/test/java/com/blent/DisplayReplacementNativeTest.kt": "b7a5a4c613e98beab2302b3891b4bc682576e9e3e497aecfbde1de24a6fc2e65",
+    "android/app/src/test/java/com/blent/DisplayWorkerOwnerTest.kt": "e9049b3e875e55f788ed7dba327d58d0b461fb810a3f709b00bdb5a1635feef8",
+    "android/app/src/test/java/com/blent/RemoteAdaptersTest.kt": "8cf6f0269bb5fb99216a04291415ff2f10208aad2c2eb0b26b49e38cd2d5a0c0",
+    "android/app/src/test/java/com/blent/JoinedDisplayWorkerFixture.kt": "45517b8ef9ff186815c2e939b9639e92d75cc281e5a04ac48d387a693008f83e"
+  }
+}

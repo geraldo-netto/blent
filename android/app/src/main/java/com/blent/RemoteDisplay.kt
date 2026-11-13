@@ -6,10 +6,12 @@ import android.view.SurfaceView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
-/** Activity adapter. Format/Surface replacements share one bounded retirement lane. */
+/** Activity presentation adapter. Every instance shares the application's
+ * original display-worker retirement fence; callbacks stay client-bound. */
 internal class RemoteDisplay(context: Context,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate),
     initialGeneration: Long = 0,
+    private val workers: DisplayWorkerOwner = (context.applicationContext as BlentApplication).displayWorkers,
     private val worker: (MediaTask.Display, Surface, (WorkerEvent) -> Unit) -> LifecycleRun = { task, surface, events -> AndroidWorkerRun(context, task, surface, events) },
 ) : DisplaySession<SurfaceView> {
     private var liveness = false
@@ -39,7 +41,7 @@ internal class RemoteDisplay(context: Context,
     override val retirementStatus = MutableStateFlow<String?>(null)
     override val decoderDiagnostics = MutableStateFlow(DecoderDiagnostics())
     private val snapshots = LatestDispatch(scope) { startupStatus.value = "Display status update failed: ${it.message}" }
-    private val lane = ResourceLane(scope, { retirementStatus.value = it })
+    private var client: Any? = null
     private var wanted = false
     private var surface: Surface? = null
     private val generations = GenerationFence(initialGeneration)
@@ -71,16 +73,21 @@ internal class RemoteDisplay(context: Context,
         replace()
     }
     override fun onSurfaceDestroyed() { surface = null; replace() }
-    override fun start() { if (!wanted) { wanted = true; replace() } }
+    override fun start() {
+        if (wanted && workers.owns(client)) return
+        client = workers.open()
+        wanted = true
+        replace()
+    }
     override fun stop() { wanted = false; replace() }
     private fun replace() {
         generations.revoke()
-        lane.stop()
+        workers.clear(client)
         disconnect()
         val output = surface ?: return
         val selected = configuredRoutes ?: return
         if (selected.token == null) return
-        if (!wanted) return
+        if (!wanted || !workers.owns(client)) return
         val revision = generations.acquire()
         if (revision == null) {
             wanted = false
@@ -89,24 +96,29 @@ internal class RemoteDisplay(context: Context,
         }
         startupStatus.value = "Starting isolated display worker…"
         val request = MediaTask.Display(selected, format, liveness)
+        val status = retirementStatus
         try {
-            lane.replace({ worker(request, output) { event -> receive(revision, event) } }, { failure ->
-                scope.launch {
-                    if (generations.current(revision)) {
-                        generations.revoke()
-                        wanted = false
-                        disconnect()
-                        startupStatus.value = failure?.message
-                    }
-                }
-            })
+            workers.replace(checkNotNull(client), { events -> worker(request, output, events) },
+                { event -> receive(revision, event) }, { failure -> ended(revision, failure) },
+                { status.value = it })
         } catch (error: Exception) { startupStatus.value = error.message }
     }
+    private fun current(revision: Long): Boolean = generations.current(revision) && workers.owns(client)
+    private fun ended(revision: Long, failure: Exception?) {
+        scope.launch {
+            if (current(revision)) {
+                generations.revoke()
+                wanted = false
+                disconnect()
+                startupStatus.value = failure?.message
+            }
+        }
+    }
     private fun receive(revision: Long, event: WorkerEvent) {
-        if (!generations.current(revision)) return
+        if (!current(revision)) return
         when (event) {
-            is WorkerEvent.Rendered -> onFrameRendered?.invoke(RenderAcknowledgement(event.sequence, event.decodeMicros, event.decoder) { generations.current(revision) })
-            is WorkerEvent.Display -> snapshots.submit { if (generations.current(revision)) publish(event) }
+            is WorkerEvent.Rendered -> onFrameRendered?.invoke(RenderAcknowledgement(event.sequence, event.decodeMicros, event.decoder) { current(revision) })
+            is WorkerEvent.Display -> snapshots.submit { if (current(revision)) publish(event) }
             else -> Unit
         }
     }

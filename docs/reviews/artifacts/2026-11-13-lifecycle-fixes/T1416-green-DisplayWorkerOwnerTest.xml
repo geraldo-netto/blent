@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.blent.DisplayWorkerOwnerTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-13T17:14:39" hostname="morpheus" time="0.031">
+  <properties/>
+  <testcase name="t1416CancelledSponsorSettlesUnopenedRequest" classname="com.blent.DisplayWorkerOwnerTest" time="0.01"/>
+  <testcase name="t1416OriginalRetirementSurvivesSponsorCancellation" classname="com.blent.DisplayWorkerOwnerTest" time="0.016"/>
+  <testcase name="t1416UnknownNativeRetirementFencesEveryClientAndDropsObservers" classname="com.blent.DisplayWorkerOwnerTest" time="0.002"/>
+  <testcase name="t1416FactoryFailureSettlesOnceAndAllowsFreshAdmission" classname="com.blent.DisplayWorkerOwnerTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

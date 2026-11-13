@@ -20,7 +20,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1416 | open | medium | small | Serialize Android display-worker retirement across Activity instances. `MainActivity.kt:63` creates a new `RemoteDisplay`, whose `RemoteDisplay.kt:42` retirement lane is instance-local; replacement can bind/start the singleton `DisplayWorkerService` while the old instance still owns its binding and native retirement. Android reuses the original bound-service Binder; the new generation fails `MediaWorkerService.kt::start`, terminates the original worker process, and the replacement clears its wanted state on failure, leaving video stopped. Hosted API 27/34 probes using the actual display/Binder adapters each observed two binds before original retirement release, one worker termination and `Worker command rejected`; an injected longer EXIT grace made the ordering deterministic, not a device timing measurement. Add a process-owned admission/retirement fence with exact original binding/process-death proof, while keeping Activity surfaces and callbacks scoped to their owners. Permanent recreation regression must hold old retirement, forbid replacement bind/START until settlement, then prove successful replacement and rejection of stale callbacks; retain same-instance replacement and stop controls. Evidence: `docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt` and `probe.log`. |
 
 ## Desktop interface
 
