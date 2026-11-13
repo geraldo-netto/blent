@@ -1,0 +1,6 @@
+    Checking tokio-rustls v0.26.5
+    Checking zbus v4.4.0
+    Checking blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Checking blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Checking blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.70s
