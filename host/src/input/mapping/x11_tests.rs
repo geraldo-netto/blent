@@ -197,7 +197,7 @@ async fn t730_missing_kwin_does_not_override_x11_mapping_results() {
     .await;
     assert_eq!(
         std::fs::read_to_string(root.path().join("mapped")).unwrap(),
-        "map-to-output 10 DVI-I-2-1\n"
+        "map-to-output Blent Touch DVI-I-2-1\n"
     );
     let log = crate::test_logging::text();
     assert!(log.contains("Mapped 'Blent Touch'"), "{log}");
@@ -278,7 +278,7 @@ print((root/'outputs').read_text())
     );
     assert_eq!(
         std::fs::read_to_string(root.path().join("mapped")).unwrap(),
-        "map-to-output 10 DVI-I-2-1\n"
+        "map-to-output Blent Touch DVI-I-2-1\n"
     );
 }
 
@@ -327,7 +327,7 @@ print((root/('wanted' if n >= 2 else 'foreign')).read_text())
     );
     assert_eq!(
         std::fs::read_to_string(root.path().join("mapped")).unwrap(),
-        "map-to-output 10 DVI-I-2-1\n"
+        "map-to-output Blent Touch DVI-I-2-1\n"
     );
 }
 
@@ -356,7 +356,7 @@ elif sys.argv[1] == 'list-props':
  print('Coordinate Transformation Matrix (124): 1, 0, 0, 0, 1, 0, 0, 0, 1')
 else:
  with (root/'mapped').open('a') as f: f.write(' '.join(sys.argv[1:])+'\n')
- if sys.argv[2]=='12' and int((root/'lists').read_text()) < 3: sys.exit(1)
+ if sys.argv[2]=='Blent Pen' and int((root/'lists').read_text()) < 3: sys.exit(1)
 "#,
     );
     map_x11_devices(
@@ -372,11 +372,11 @@ else:
     .await;
     let mapped = std::fs::read_to_string(root.path().join("mapped")).unwrap();
     assert_eq!(
-        mapped.matches("map-to-output 10 ").count(),
+        mapped.matches("map-to-output Blent Touch ").count(),
         1,
         "T625: stable touch was remapped while waiting for pen"
     );
-    assert_eq!(mapped.matches("map-to-output 11 ").count(), 1);
-    assert_eq!(mapped.matches("map-to-output 12 ").count(), 3);
-    assert!(!mapped.contains("map-to-output 20 "));
+    assert_eq!(mapped.matches("map-to-output Blent Pointer ").count(), 1);
+    assert_eq!(mapped.matches("map-to-output Blent Pen ").count(), 3);
+    assert!(!mapped.contains("map-to-output Blent Touch 2 "));
 }

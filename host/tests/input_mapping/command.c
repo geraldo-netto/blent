@@ -77,27 +77,108 @@ static void device_name(char name[80])
     }
 }
 
+static void record_target(const char *action, int id)
+{
+    char text[16];
+    snprintf(text, sizeof(text), "%d", id);
+    char *arguments[] = {NULL, text};
+    record_call(action, 2, arguments);
+}
+
+static int numeric_id(const char *selector)
+{
+    const struct
+    {
+        const char *text;
+        int id;
+    } entries[] = {{"41", 41}, {"42", 42}, {"99", 99}};
+    for (int i = 0; i < 3; i++)
+    {
+        if (strcmp(selector, entries[i].text) == 0)
+        {
+            return entries[i].id;
+        }
+    }
+    return 0;
+}
+
+static int resolve_selector(const char *selector)
+{
+    char name[80];
+    device_name(name);
+    const char *changed = getenv("BLENT_T1446_REASSIGN");
+    if (strcmp(selector, name) == 0)
+    {
+        if (changed && strcmp(changed, "ambiguous") == 0)
+        {
+            return 0;
+        }
+        return changed ? 42 : visible_id();
+    }
+    char foreign[88];
+    snprintf(foreign, sizeof(foreign), "%s foreign", name);
+    if (strcmp(selector, foreign) == 0)
+    {
+        return 99;
+    }
+    return numeric_id(selector);
+}
+
+static int map_selector(int argc, char **argv)
+{
+    if (argc < 4)
+    {
+        return 64;
+    }
+    hold_original();
+    int id = resolve_selector(argv[2]);
+    if (id == 0)
+    {
+        record_call("selection-rejected", 0, NULL);
+        return 7;
+    }
+    record_target("mapped", id);
+    const char *status = getenv("BLENT_T1439_MAP_STATUS");
+    return status ? atoi(status) : 0;
+}
+
+static int properties_selector(int argc, char **argv)
+{
+    if (argc < 3)
+    {
+        return 64;
+    }
+    int id = resolve_selector(argv[2]);
+    if (id == 0)
+    {
+        return 7;
+    }
+    record_target("properties", id);
+    printf("Device Node (12): \"/dev/input/event%d\"\nCoordinate Transformation Matrix (13): 1,0,0,0,1,0,0,0,1\n", id);
+    return 0;
+}
+
+static void list_devices(void)
+{
+    char name[80];
+    device_name(name);
+    printf("%s id=%d [slave pointer]\n", name, visible_id());
+    printf("%s foreign id=99 [slave pointer]\n", name);
+    fflush(stdout);
+    record_call("listed", 0, NULL);
+}
+
 static int xinput(int argc, char **argv)
 {
     if (argc > 1 && strcmp(argv[1], "map-to-output") == 0)
     {
-        hold_original();
-        const char *status = getenv("BLENT_T1439_MAP_STATUS");
-        return status ? atoi(status) : 0;
+        return map_selector(argc, argv);
     }
-    else if (argc > 1 && strcmp(argv[1], "list-props") == 0)
+    if (argc > 1 && strcmp(argv[1], "list-props") == 0)
     {
-        printf("Device Node (12): \"/dev/input/event%d\"\nCoordinate Transformation Matrix (13): 1,0,0,0,1,0,0,0,1\n", visible_id());
+        return properties_selector(argc, argv);
     }
-    else
-    {
-        char name[80];
-        device_name(name);
-        printf("%s id=%d [slave pointer]\n", name, visible_id());
-        printf("%s foreign id=99 [slave pointer]\n", name);
-        fflush(stdout);
-        record_call("listed", 0, NULL);
-    }
+    list_devices();
     return 0;
 }
 

@@ -281,9 +281,13 @@ Remap retains it; detach/reattach issues a new one. Retirement drops local name
 copies only after the mapper future is cut off; any original mutation owns its
 copied arguments. Stale creation names and nonmatching foreign names cannot satisfy the current
 creation's expected kinds. KWin keeps its stable names and does not consume this
-issuer, since it persists settings by vendor/product/name. Creation names do not
-make X11 numeric IDs stable across server restart or reassignment; subsequent
-command addressing is a separate identity boundary.
+issuer, since it persists settings by vendor/product/name. Each X11 mutation and
+property helper resolves the exact observed creation name in its current registry;
+numeric IDs remain snapshot cache/diagnostic data and are never reused as later
+command selectors. This protects the boundary between helper connections without
+claiming atomicity against arbitrary registry changes between name lookup and
+effect inside one helper. Ambiguous or otherwise unconfirmed native CLI outcomes
+retain the existing bounded quarantine policy.
 
 Display ADB routes keep one original worker through creation, repair and cleanup.
 Caller cancellation and Activity/session stop do not settle an unacknowledged ADB

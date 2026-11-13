@@ -1836,14 +1836,14 @@ fi
         assert_eq!(
             mapped.lines().collect::<Vec<_>>(),
             [
-                "map-to-output 20 DVI-I-2-1",
-                "list-props 20 ",
-                "map-to-output 21 DVI-I-2-1",
-                "list-props 21 ",
-                "map-to-output 22 DVI-I-2-1",
-                "list-props 22 ",
-                "map-to-output 23 DVI-I-2-1",
-                "list-props 23 "
+                "map-to-output Blent Touch 2 DVI-I-2-1",
+                "list-props Blent Touch 2 ",
+                "map-to-output Blent Pen 2 Pen (0) DVI-I-2-1",
+                "list-props Blent Pen 2 Pen (0) ",
+                "map-to-output Blent Pen 2 Eraser (0) DVI-I-2-1",
+                "list-props Blent Pen 2 Eraser (0) ",
+                "map-to-output Blent Pointer 2 DVI-I-2-1",
+                "list-props Blent Pointer 2 "
             ]
         );
         std::fs::remove_file(root.join("mapped")).unwrap();
@@ -1863,10 +1863,10 @@ fi
         assert_eq!(
             mapped.lines().collect::<Vec<_>>(),
             [
-                "map-to-output 10 eDP-1",
-                "list-props 10 ",
-                "map-to-output 11 eDP-1",
-                "list-props 11 "
+                "map-to-output Blent Touch eDP-1",
+                "list-props Blent Touch ",
+                "map-to-output Blent Pen Pen (0) eDP-1",
+                "list-props Blent Pen Pen (0) "
             ]
         );
         std::fs::remove_dir_all(root).unwrap();

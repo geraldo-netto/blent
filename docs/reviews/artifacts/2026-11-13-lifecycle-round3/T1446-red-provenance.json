@@ -1,0 +1,16 @@
+{
+  "baseline": "99a0a361/T1445 frozen library; all 3 regressions added and failed before production behavior edits",
+  "libraries": {
+    "blent_config": "40f7d23729ad10112ded6862178be14f22e7c8a0594214f4c245030792eb9710",
+    "blent": "656153b6d99a0ed701550ab8daafd48d6803765444355c81bcc845f3810d8725"
+  },
+  "integration_run": "red-test reassignment:: --test-threads=1 --nocapture (exit 101; 2 failed)",
+  "unit_run": "cargo test -p blent --offline --lib t1446_cached_readback_resolves_creation_name_in_each_current_registry -- --test-threads=1 --nocapture (exit 101; 1 failed)",
+  "full_direct_command": "External /tmp/blent-t1446/red-command.json; cache manifests excluded from repository",
+  "permanent_red_sources": {
+    "host/tests/input_mapping/reassignment.rs": "f26fc9f1da2c7679ee4150338a815e8a6ac3c9f1c55a455daadba562519dccae",
+    "host/src/input/mapping/x11_cache/tests.rs": "4db3b23eced564f3b1ad0ea4b3cf61331e160536f1383949047f3d1d1b542a10",
+    "host/tests/input_mapping/fixture.rs": "5c6e37cde33b9532fcead111cbfd49b31e9e6a95118c3c89770a0c0d4b505b45",
+    "host/tests/input_mapping/command.c": "648f8e81013cd6d2edf17ce51988247e6868b6450f6d3af629a8eca977a6b1b6"
+  }
+}

@@ -1,0 +1,21 @@
+
+running 1 test
+
+running 1 test
+busctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard available
+busctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode
+busctl --user --timeout=infinity set-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode i 0
+xrandr --current --prop
+xinput list --short
+listed
+xinput map-to-output 41 HDMI-1
+applied-to-foreign-registration
+xinput list-props 41
+
+test numeric_selection_crosses_server_incarnations ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+test numeric_selection_crosses_server_incarnations ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s

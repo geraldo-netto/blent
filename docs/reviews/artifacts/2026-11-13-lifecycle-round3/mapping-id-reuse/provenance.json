@@ -1,0 +1,12 @@
+{
+  "baseline": "e4bcb6f1/T1441 frozen library; before T1445/T1446 behavior changes",
+  "libraries": {
+    "blent_config": "8269e6c7238f1acd4961b54b728621d810477b6147e4cf697c3283b34fd7505a",
+    "blent": "a65ecd24d62d58b5fb55af5d2fa4365d463468561bb1899af51b81d1f7c048ac"
+  },
+  "source_hashes": {
+    "docs/reviews/artifacts/2026-11-13-lifecycle-round3/mapping-id-reuse/fixture.rs": "b7630eafd5a857d6a46a31f87cd45f5ba1c3d3afdf36fa90300a504a04bbe8ea",
+    "docs/reviews/artifacts/2026-11-13-lifecycle-round3/mapping-id-reuse/probe.rs": "d533b4739c1dd44c21f946af101224d4eafcaed499ce29e16f6d9505e341641d",
+    "docs/reviews/artifacts/2026-11-13-lifecycle-round3/mapping-id-reuse/command.c": "21f12ee9c94526fd6c563c723bd491df7517dc524bf2f2c049e16145026cee1c"
+  }
+}

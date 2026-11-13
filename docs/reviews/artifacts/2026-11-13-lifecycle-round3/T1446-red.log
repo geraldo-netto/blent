@@ -1,0 +1,59 @@
+
+running 2 tests
+test reassignment::t1446_ambiguous_creation_name_retains_unknown_native_outcome ...
+thread 'reassignment::t1446_ambiguous_creation_name_retains_unknown_native_outcome' (1780541) panicked at host/tests/input_mapping/fixture.rs:75:5:
+
+running 1 test
+test reassignment::t1446_ambiguous_creation_name_retains_unknown_native_outcome ... FAILED
+
+failures:
+
+failures:
+    reassignment::t1446_ambiguous_creation_name_retains_unknown_native_outcome
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.30s
+
+
+thread 'reassignment::t1446_ambiguous_creation_name_retains_unknown_native_outcome' (1780559) panicked at host/tests/input_mapping/reassignment.rs:58:5:
+T1446 bypassed ambiguous-name rejection with a numeric selector
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test reassignment::t1446_mutation_and_readback_use_current_creation_after_id_reassignment ...
+thread 'reassignment::t1446_mutation_and_readback_use_current_creation_after_id_reassignment' (1780592) panicked at host/tests/input_mapping/fixture.rs:75:5:
+
+running 1 test
+test reassignment::t1446_mutation_and_readback_use_current_creation_after_id_reassignment ... FAILED
+
+failures:
+
+failures:
+    reassignment::t1446_mutation_and_readback_use_current_creation_after_id_reassignment
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.30s
+
+
+thread 'reassignment::t1446_mutation_and_readback_use_current_creation_after_id_reassignment' (1780608) panicked at host/tests/input_mapping/reassignment.rs:31:5:
+T1446 numeric mutation followed a foreign registration: busctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard available
+busctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode
+busctl --user --timeout=infinity set-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode i 0
+xrandr --current --prop
+xinput list --short
+listed
+xinput map-to-output 41 HDMI-1
+mapped 41
+xinput list-props 41
+properties 41
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+
+failures:
+
+failures:
+    reassignment::t1446_ambiguous_creation_name_retains_unknown_native_outcome
+    reassignment::t1446_mutation_and_readback_use_current_creation_after_id_reassignment
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.80s

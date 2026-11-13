@@ -39,30 +39,30 @@ impl Mappings {
         output: &str,
     ) -> bool {
         if let Some((_, saved)) = self.devices.get(id) {
-            if properties(commands, program, id).await.as_ref() == Some(saved) {
+            if properties(commands, program, name).await.as_ref() == Some(saved) {
                 return true;
             }
         }
         self.devices.remove(id);
         let ok = commands
-            .mutate(program, &["map-to-output", id, output])
+            .mutate(program, &["map-to-output", name, output])
             .await
             .is_ok_and(|out| out.status.success());
         if ok {
-            if let Some(readback) = properties(commands, program, id).await {
+            if let Some(readback) = properties(commands, program, name).await {
                 self.devices.insert(id.into(), (name.into(), readback));
             }
-            tracing::info!("Mapped '{}' (X11 id {}) to {}", name, id, output);
+            tracing::info!("Mapped '{}' (listed X11 id {}) to {}", name, id, output);
         }
         ok
     }
 }
 
-async fn properties(commands: &dyn CommandPort, program: &str, id: &str) -> Option<String> {
+async fn properties(commands: &dyn CommandPort, program: &str, name: &str) -> Option<String> {
     let result = x11_query(
         commands,
         program,
-        &["list-props", id],
+        &["list-props", name],
         "xinput",
         "Could not read X11 mapping properties",
     )

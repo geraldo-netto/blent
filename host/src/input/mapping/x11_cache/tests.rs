@@ -178,3 +178,60 @@ else:
             .await
     );
 }
+
+#[derive(Default)]
+struct CreationQueries(std::sync::Mutex<Vec<(bool, String)>>);
+impl CreationQueries {
+    fn record(&self, mutation: bool, args: &[&str]) -> std::io::Result<std::process::Output> {
+        use std::os::unix::process::ExitStatusExt;
+        let selector = args
+            .get(1)
+            .ok_or_else(|| std::io::Error::other("missing selector"))?;
+        self.0
+            .lock()
+            .unwrap()
+            .push((mutation, (*selector).to_owned()));
+        Ok(std::process::Output {
+            status: std::process::ExitStatus::from_raw(0),
+            stdout: PROPERTIES.as_bytes().to_vec(),
+            stderr: Vec::new(),
+        })
+    }
+}
+impl crate::native_commands::CommandPort for CreationQueries {
+    fn output<'a>(
+        &'a self,
+        _: &'a str,
+        args: &'a [&'a str],
+    ) -> std::pin::Pin<
+        Box<dyn std::future::Future<Output = std::io::Result<std::process::Output>> + Send + 'a>,
+    > {
+        Box::pin(async move { self.record(false, args) })
+    }
+    fn mutate<'a>(
+        &'a self,
+        _: &'a str,
+        args: &'a [&'a str],
+    ) -> std::pin::Pin<
+        Box<dyn std::future::Future<Output = std::io::Result<std::process::Output>> + Send + 'a>,
+    > {
+        Box::pin(async move { self.record(true, args) })
+    }
+}
+#[tokio::test]
+async fn t1446_cached_readback_resolves_creation_name_in_each_current_registry() {
+    let commands = CreationQueries::default();
+    let name = "Blent Touch @creation-with-spaces";
+    let mut cache = Mappings::default();
+    for _ in 0..2 {
+        assert!(cache.map(&commands, "xinput", "41", name, "HDMI-1").await);
+    }
+    assert_eq!(
+        *commands.0.lock().unwrap(),
+        [
+            (true, name.to_owned()),
+            (false, name.to_owned()),
+            (false, name.to_owned()),
+        ]
+    );
+}

@@ -389,3 +389,6 @@ fn t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated() {
 
 #[path = "input_mapping/identity.rs"]
 mod identity;
+
+#[path = "input_mapping/reassignment.rs"]
+mod reassignment;

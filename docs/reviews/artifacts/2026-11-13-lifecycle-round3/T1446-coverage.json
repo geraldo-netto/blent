@@ -1,0 +1,59 @@
+{
+  "tool": "Rust 1.100.0; LLVM 23.1.5; cargo-llvm-cov 0.8.7; scripts/coverage source inventories",
+  "coverage": [
+    {
+      "file": "host/src/input/mapping/x11_cache.rs",
+      "name": "map",
+      "line": 33,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping/x11_cache.rs",
+      "name": "properties",
+      "line": 61,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "objects": [
+    {
+      "name": "input_commands",
+      "sha256": "0f6903a0c358fa783ff400ee8aa32b766768b8daf328faa1aae850512a118555"
+    },
+    {
+      "name": "input_creation",
+      "sha256": "e884c3e194e9a8cb63de4de23b087029f2ff5c039948a84d989f3fe1a24b27b5"
+    },
+    {
+      "name": "input_mapping",
+      "sha256": "b156dabd89e90f459f9c2687f0d15b9d7e799109c325770c76020348a939c18a"
+    },
+    {
+      "name": "library",
+      "sha256": "45de72602330f9e63d3aab0cf4462835b3e82dcdd1d8fd15204ad6d374422643"
+    }
+  ],
+  "profile_count": 38,
+  "sources": {
+    "docs/architecture.md": "da763dcba37521810a2c167f4e8dd7b9efc69ab7e9a901e7a6bb2e2d0fba0d75",
+    "host/src/input.rs": "549e950cde7f7c5584a3e2236fb5d0b358ac32d5724d943928e5be148c69b6c0",
+    "host/src/input/mapping/x11_cache.rs": "026978236daca05542dcbc1c1583d1e2065b955cf3c1d12a10e7b4b21a58d26f",
+    "host/src/input/mapping/x11_cache/tests.rs": "4db3b23eced564f3b1ad0ea4b3cf61331e160536f1383949047f3d1d1b542a10",
+    "host/src/input/mapping/x11_tests.rs": "321b596c2b8de3c44315f5f5a15096302b5f4be4625d7105e00d32ebad831a90",
+    "host/tests/input_mapping.rs": "b58138af72df32b702a8a35c5194bedb813f4d2f884b29565a70ff0d9206df82",
+    "host/tests/input_mapping/command.c": "648f8e81013cd6d2edf17ce51988247e6868b6450f6d3af629a8eca977a6b1b6",
+    "host/tests/input_mapping/fixture.rs": "5c6e37cde33b9532fcead111cbfd49b31e9e6a95118c3c89770a0c0d4b505b45",
+    "host/tests/input_mapping/identity.rs": "2fa15d63b77d4e5c0a0a5b5e2a08b5aba1d475b37bbe037e11e79738f592ec69",
+    "host/tests/input_mapping/reassignment.rs": "f26fc9f1da2c7679ee4150338a815e8a6ac3c9f1c55a455daadba562519dccae"
+  },
+  "selected_tests": 48
+}

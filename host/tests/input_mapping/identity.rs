@@ -11,10 +11,10 @@ async fn occurrences(needle: &str, count: usize) {
 async fn replacement_mapped() -> bool {
     loop {
         let calls = fixture::calls();
-        if calls.matches("xinput map-to-output 41 ").count() > 1 {
+        if calls.matches("mapped 41\n").count() > 1 {
             return false;
         }
-        if calls.contains("xinput list-props 42") {
+        if calls.contains("properties 42") {
             return true;
         }
         pause().await;
@@ -28,7 +28,7 @@ async fn delayed_registration() {
     let backend = LinuxBackend::new(cards).unwrap();
     let native = backend.native_completion().unwrap();
     let task = tokio::spawn(backend.follow(tablets, modes, config()));
-    occurrences("xinput list-props 41", 1).await;
+    occurrences("properties 41", 1).await;
     tablet.send(false).unwrap();
     destroyed(1).await;
     tablet.send(true).unwrap();
@@ -45,7 +45,7 @@ async fn delayed_registration() {
     if !automatic {
         // Faulty-control cleanup also proves the new registration is reachable.
         card.send(Some(1)).unwrap();
-        occurrences("xinput list-props 42", 1).await;
+        occurrences("properties 42", 1).await;
     }
     let calls = fixture::calls();
     tablet.send(false).unwrap();
@@ -56,9 +56,9 @@ async fn delayed_registration() {
     complete(&native).await;
     super::reaped().await;
     assert!(automatic, "T1445 old registration satisfied a new creation");
-    assert_eq!(calls.matches("xinput map-to-output 41 ").count(), 1);
-    assert!(calls.contains("xinput map-to-output 42 "));
-    assert!(!calls.contains("xinput map-to-output 99 "));
+    assert_eq!(calls.matches("mapped 41\n").count(), 1);
+    assert!(calls.contains("mapped 42\n"));
+    assert!(!calls.contains("mapped 99\n"));
     assert_eq!(fixture::counts(), (2, 2));
 }
 #[test]

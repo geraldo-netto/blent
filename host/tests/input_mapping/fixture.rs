@@ -19,12 +19,15 @@ fn compile(root: &Path, sources: &[&str], target: &str, shared: bool) {
 }
 
 pub fn run(test: &str, status: &str) {
-    run_with_registration(test, status, false);
+    run_with_options(test, status, false, None);
 }
 pub fn run_registration(test: &str) {
-    run_with_registration(test, "0", true);
+    run_with_options(test, "0", true, None);
 }
-fn run_with_registration(test: &str, status: &str, delayed: bool) {
+pub fn run_reassignment(test: &str, mode: &str) {
+    run_with_options(test, "0", false, Some(mode));
+}
+fn run_with_options(test: &str, status: &str, delayed: bool, reassignment: Option<&str>) {
     let directory = tempfile::tempdir().unwrap();
     let root = directory.path();
     compile(root, &["input_mapping/command.c"], "xinput", false);
@@ -64,6 +67,9 @@ fn run_with_registration(test: &str, status: &str, delayed: bool) {
         .env_remove("DBUS_SESSION_BUS_ADDRESS");
     if delayed {
         command.env("BLENT_T1445_REGISTRATION", root.join("registration"));
+    }
+    if let Some(mode) = reassignment {
+        command.env("BLENT_T1446_REASSIGN", mode);
     }
     let result = command.output().unwrap();
     assert!(
