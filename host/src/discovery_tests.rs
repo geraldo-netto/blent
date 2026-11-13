@@ -281,7 +281,8 @@ async fn t390_initial_discovery_connects_fast_tablet_before_slow_probe() {
         token: None,
         devices: (false, false, false),
     }
-    .prepare(mode.clone()).unwrap()
+    .prepare(mode.clone())
+    .unwrap()
     .tablet;
     let mut attached = tablet.subscribe();
     let extra = ExtraSessionTemplate {
@@ -354,7 +355,8 @@ pub(crate) fn monitor_inputs(
         token: None,
         devices: (false, false, false),
     }
-    .prepare(mode.clone()).unwrap()
+    .prepare(mode.clone())
+    .unwrap()
     .tablet;
     let extra = ExtraSessionTemplate {
         max_tablets,

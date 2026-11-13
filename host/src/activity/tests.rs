@@ -57,7 +57,9 @@ impl Manager {
     #[zbus(property)]
     fn preparing_for_sleep(&self) -> zbus::fdo::Result<bool> {
         if self.0.missing_sleep.load(Ordering::Acquire) {
-            return Err(zbus::fdo::Error::UnknownProperty("PreparingForSleep".into()));
+            return Err(zbus::fdo::Error::UnknownProperty(
+                "PreparingForSleep".into(),
+            ));
         }
         if self.0.fail_sleep.load(Ordering::Acquire) {
             return Err(zbus::fdo::Error::Failed("T1429 sleep query failure".into()));
@@ -67,7 +69,9 @@ impl Manager {
     #[zbus(property)]
     fn preparing_for_shutdown(&self) -> zbus::fdo::Result<bool> {
         if self.0.fail_shutdown.load(Ordering::Acquire) {
-            return Err(zbus::fdo::Error::Failed("T1429 shutdown query failure".into()));
+            return Err(zbus::fdo::Error::Failed(
+                "T1429 shutdown query failure".into(),
+            ));
         }
         Ok(self.0.shutdown.load(Ordering::Acquire))
     }
@@ -83,7 +87,9 @@ impl Manager {
     }
     fn get_session(&self, id: &str) -> Result<OwnedObjectPath, SessionError> {
         if self.0.fail_session.load(Ordering::Acquire) {
-            return Err(SessionError::TemporaryFailure("T1438 session lookup".into()));
+            return Err(SessionError::TemporaryFailure(
+                "T1438 session lookup".into(),
+            ));
         }
         if id != "fixture" || self.0.mode.load(Ordering::Acquire) == 3 {
             return Err(SessionError::NoSuchSession("unknown session".into()));
@@ -103,7 +109,10 @@ impl Session {
     }
     #[zbus(property)]
     async fn user(&self) -> zbus::fdo::Result<(u32, OwnedObjectPath)> {
-        tokio::time::sleep(Duration::from_millis(self.0.user_delay_ms.load(Ordering::Acquire))).await;
+        tokio::time::sleep(Duration::from_millis(
+            self.0.user_delay_ms.load(Ordering::Acquire),
+        ))
+        .await;
         if self.0.fail_user.load(Ordering::Acquire) {
             return Err(zbus::fdo::Error::Failed("T1438 User lookup".into()));
         }
@@ -124,7 +133,10 @@ struct Display(Arc<Values>);
 impl Display {
     #[zbus(property)]
     async fn power_save_mode(&self) -> zbus::fdo::Result<i32> {
-        tokio::time::sleep(Duration::from_millis(self.0.display_delay_ms.load(Ordering::Acquire))).await;
+        tokio::time::sleep(Duration::from_millis(
+            self.0.display_delay_ms.load(Ordering::Acquire),
+        ))
+        .await;
         if self.0.missing_display.load(Ordering::Acquire) {
             return Err(zbus::fdo::Error::UnknownProperty("PowerSaveMode".into()));
         }
@@ -361,7 +373,10 @@ async fn t1008_private_owner_replacement_cannot_restore_old_source_or_pause_sibl
     let next = event(&mut source).await;
     assert_eq!(next.state.display_on, None);
     assert_eq!(next.state.power, Some(Power::Suspending));
-    assert!(source.poll().is_err(), "T1413 dead observer requests replacement");
+    assert!(
+        source.poll().is_err(),
+        "T1413 dead observer requests replacement"
+    );
     let mut fresh = fixture.source(None, "Cinnamon", 32).await;
     assert!(fresh.epoch() > source.epoch());
     assert_eq!(event(&mut fresh).await.state.display_on, Some(true));
@@ -380,7 +395,14 @@ async fn t1008_private_fallback_session_uid_and_capabilities_are_explicit() {
     fixture.values.mode.store(1, Ordering::Release);
     let boundary = "x".repeat(128);
     let oversized = "x".repeat(129);
-    for id in [None, Some(""), Some("bad/id"), Some("unknown"), Some(boundary.as_str()), Some(oversized.as_str())] {
+    for id in [
+        None,
+        Some(""),
+        Some("bad/id"),
+        Some("unknown"),
+        Some(boundary.as_str()),
+        Some(oversized.as_str()),
+    ] {
         let mut source = fixture.source(id, "KDE", 32).await;
         assert_eq!(
             source.capabilities(),
@@ -600,10 +622,10 @@ fn lifetime() -> SourceLifetime {
     )
 }
 
-#[path = "recovery_tests.rs"]
-mod recovery;
 #[path = "continuity_tests.rs"]
 mod continuity;
+#[path = "recovery_tests.rs"]
+mod recovery;
 
 #[tokio::test]
 async fn t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power() {
@@ -717,7 +739,10 @@ async fn invalid_power_factory(settings: Settings) {
     use blent_config::host_activity::SourceFactory;
     let original = lifetime();
     let proof = original.completion();
-    assert!(PowerFactory::default().create(settings, original).await.is_err());
+    assert!(PowerFactory::default()
+        .create(settings, original)
+        .await
+        .is_err());
     power_lifetime_released(proof).await;
 }
 #[tokio::test]

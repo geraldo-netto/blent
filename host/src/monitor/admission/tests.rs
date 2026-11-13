@@ -96,7 +96,8 @@ async fn t917_full_capacity_retires_extra_without_invalidating_primary() {
         token: None,
         devices: (false, false, false),
     }
-    .prepare(state.config.extra.mode_tx.clone()).unwrap()
+    .prepare(state.config.extra.mode_tx.clone())
+    .unwrap()
     .start(state.config.extra.shutdown_rx.clone())
     .await
     .unwrap();

@@ -82,7 +82,8 @@ fn authenticated(root: &std::path::Path) -> Monitor {
         token: Some("a".repeat(64)),
         devices: (false, false, false),
     }
-    .prepare(state.config.extra.mode_tx.clone()).unwrap()
+    .prepare(state.config.extra.mode_tx.clone())
+    .unwrap()
     .tablet;
     let directory = root.join("tokens");
     std::fs::create_dir(&directory).unwrap();

@@ -1550,7 +1550,8 @@ printf '%s\n' "$2" >> "$0.log"
                 Default::default(),
                 card_rx,
                 tablet_rx,
-            ).unwrap();
+            )
+            .unwrap();
             let (video_tx, _) = crate::video_queue::channel(8, Default::default());
             let result = start_servers(stream, input, video_tx).await;
             let failed = result.is_err();
@@ -1587,7 +1588,8 @@ printf '%s\n' "$2" >> "$0.log"
             token: None,
             devices: (false, false, false),
         }
-        .prepare(watch::channel(false).0).unwrap();
+        .prepare(watch::channel(false).0)
+        .unwrap();
         let tablet_tx = prepared.tablet;
         ExtraSession::from_workers(
             1,

@@ -811,9 +811,10 @@ mod tests {
             run_t299_mapping_fixture(NAME);
             return;
         }
-        let selected = super::primary_non_evdi_output(&crate::native_commands::AcknowledgedCommands)
-            .await
-            .unwrap();
+        let selected =
+            super::primary_non_evdi_output(&crate::native_commands::AcknowledgedCommands)
+                .await
+                .unwrap();
         assert!(
             super::map_kwin_device(
                 &crate::native_commands::AcknowledgedCommands,
@@ -1553,7 +1554,8 @@ esac
             Arc::new(tokio::sync::Notify::new()),
             card,
             tablet,
-        ).unwrap();
+        )
+        .unwrap();
         let listener = server.bind().await.unwrap();
         let addr = listener.local_addr().unwrap();
         let task = tokio::spawn(async move { server.run_with_listener(listener).await });
@@ -1757,7 +1759,8 @@ esac
             Arc::new(tokio::sync::Notify::new()),
             card_rx,
             tablet_rx,
-        ).unwrap();
+        )
+        .unwrap();
         let listener = server.bind().await.unwrap();
         let addr = listener.local_addr().unwrap();
         let task = tokio::spawn(async move { server.run_with_listener(listener).await });

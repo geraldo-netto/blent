@@ -95,8 +95,8 @@ mod command_output;
 pub mod update;
 
 pub mod encoder_worker_contract;
-pub mod runtime_owner;
 mod process_retirement;
+pub mod runtime_owner;
 
 #[cfg(feature = "accessory-transport")]
 pub mod secure_connection;

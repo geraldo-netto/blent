@@ -303,7 +303,12 @@ mod tests {
         drop(video);
         let (mode, _) = watch::channel(false);
         let (_shutdown, shutdown_rx) = watch::channel(false);
-        assert!(spec(ports).prepare(mode).unwrap().start(shutdown_rx).await.is_err());
+        assert!(spec(ports)
+            .prepare(mode)
+            .unwrap()
+            .start(shutdown_rx)
+            .await
+            .is_err());
         tokio::net::TcpListener::bind(("127.0.0.1", ports.0))
             .await
             .unwrap();

@@ -84,7 +84,8 @@ async fn t413_unknown_package_probe_preserves_assignment_and_geometry() {
         token: None,
         devices: (false, false, false),
     }
-    .prepare(watch::channel(false).0).unwrap();
+    .prepare(watch::channel(false).0)
+    .unwrap();
     state.config.tablet = prepared.tablet.clone();
     state.config.tablet.begin(Some("OLD-identity".into()));
     refresh(&mut state).await;

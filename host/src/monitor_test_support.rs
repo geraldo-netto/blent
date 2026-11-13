@@ -27,7 +27,8 @@ fn fixture(assigned: &[String], auto_launch: bool, token: Option<&str>, adb: &st
             token: token.map(str::to_owned),
             devices: (false, false, false),
         }
-        .prepare(state.config.extra.mode_tx.clone()).unwrap();
+        .prepare(state.config.extra.mode_tx.clone())
+        .unwrap();
         state.attachments.insert(serial.clone(), prepared.tablet);
     }
     state

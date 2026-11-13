@@ -27,10 +27,10 @@ const MODE_MANUAL: &str = "0";
 
 mod operation;
 mod restoration;
-pub use restoration::Restoration;
 use crate::native_commands::CommandPort;
 use blent_config::retirement::Completion;
 use operation::Gate;
+pub use restoration::Restoration;
 
 static KEYBOARD_OPERATION: std::sync::LazyLock<Gate> = std::sync::LazyLock::new(Gate::default);
 type Observer<'a> = &'a (dyn Fn(Completion) -> io::Result<()> + Send + Sync);

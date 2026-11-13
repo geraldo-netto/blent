@@ -1,0 +1,2448 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source 0.1.0 / syn 2.0.119",
+  "scope": "Containing files changed only by the authoritative formatter; includes unchanged functions, not changed behavior.",
+  "functions": [
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 2,
+      "function": "on_buses",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 58,
+      "function": "preparing_for_sleep",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 70,
+      "function": "preparing_for_shutdown",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 79,
+      "function": "get_session_by_pid",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 88,
+      "function": "get_session",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 104,
+      "function": "locked_hint",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 111,
+      "function": "user",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 135,
+      "function": "power_save_mode",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 156,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 175,
+      "function": "source",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 189,
+      "function": "power",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 195,
+      "function": "changed",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 221,
+      "function": "event",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 233,
+      "function": "retired",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 242,
+      "function": "private",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 269,
+      "function": "t1008_private_native_transitions_and_actual_source_retirement",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 331,
+      "function": "t1008_private_owner_replacement_cannot_restore_old_source_or_pause_sibling_backend",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 389,
+      "function": "t1008_private_fallback_session_uid_and_capabilities_are_explicit",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 437,
+      "function": "t1008_unavailable_buses_and_invalid_settings_remain_explicit",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 475,
+      "function": "t1008_private_invalidated_properties_require_fresh_original_snapshot",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 505,
+      "function": "t1008_source_stop_keeps_actual_held_native_retirement",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 528,
+      "function": "t1008_private_missing_owners_are_unsupported_and_cannot_invent_observations",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 540,
+      "function": "t1008_compositor_properties_do_not_claim_direct_x11_display_power",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 547,
+      "function": "followed",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 567,
+      "function": "t1018_private_native_factory_follows_configured_preferences_and_original_source_cleanup",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 616,
+      "function": "lifetime",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 631,
+      "function": "t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 667,
+      "function": "t1084_private_power_factory_ignores_desktop_helpers_and_follows_original_logind",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 712,
+      "function": "t1084_private_power_factory_reports_absent_logind_without_display_fallback",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 728,
+      "function": "power_lifetime_released",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 738,
+      "function": "invalid_power_factory",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 749,
+      "function": "t1084_power_factory_invalid_settings_release_original_unstarted_admission",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 34,
+      "function": "capabilities",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 37,
+      "function": "poll",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 44,
+      "function": "stop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 47,
+      "function": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 52,
+      "function": "create",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 78,
+      "function": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 84,
+      "function": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 95,
+      "function": "running",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 106,
+      "function": "until",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 115,
+      "function": "snapshot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 122,
+      "function": "t1027_daemon_owns_one_source_and_preserves_preferences_edges_and_native_retirement",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 188,
+      "function": "t1027_unsupported_capabilities_and_loss_remain_visible_without_recreation",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 220,
+      "function": "t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 254,
+      "function": "isolated_daemon",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 299,
+      "function": "daemon_config",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 319,
+      "function": "shutdown_requests",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 342,
+      "function": "t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 377,
+      "function": "t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 8,
+      "function": "t511_tablet_routes_require_valid_non_loopback_ipv4",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 56,
+      "function": "fake_adb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 74,
+      "function": "wait_file",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 85,
+      "function": "t390_slow_token_delivery_cannot_delay_another_tablet",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 114,
+      "function": "t390_device_jobs_complete_independently_and_bound_concurrency",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 149,
+      "function": "t390_device_jobs_cancel_without_ever_starting_queued_work",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 172,
+      "function": "isolated_monitor_test",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 212,
+      "function": "t435_shared_umask_keeps_monitor_fixture_private",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 242,
+      "function": "discovery_adb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 264,
+      "function": "t390_initial_discovery_connects_fast_tablet_before_slow_probe",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 338,
+      "function": "monitor_inputs",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 383,
+      "function": "wait_sessions",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 407,
+      "function": "scaling_adb",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 429,
+      "function": "scaling_ports",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 446,
+      "function": "scaling_case",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 509,
+      "function": "assert_forward_pair",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 537,
+      "function": "t390_one_two_four_tablets_connect_and_stop_while_probe_is_stalled",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 550,
+      "function": "t708_scaling_fixture_avoids_an_occupied_pid_derived_slot",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 51,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 58,
+      "function": "claim",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 62,
+      "function": "claim_with",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 87,
+      "function": "drop",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 123,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 143,
+      "function": "with_backend",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 167,
+      "function": "with_activity",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 176,
+      "function": "with_fixed_mode",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 182,
+      "function": "with_attachment",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 187,
+      "function": "bind",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 196,
+      "function": "native_completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 200,
+      "function": "run_with_listener",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 286,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 304,
+      "function": "handle_connection",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 373,
+      "function": "serve_controller",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 499,
+      "function": "handle_controller_message",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 536,
+      "function": "direct_reply_needed",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 545,
+      "function": "send_settings_rejection",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 556,
+      "function": "claim_controller",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 588,
+      "function": "text",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 610,
+      "function": "dispatch_controller_text",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 636,
+      "function": "finish",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 650,
+      "function": "dispatch_event",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 681,
+      "function": "send_controller_message",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 698,
+      "function": "authenticate_input",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 738,
+      "function": "handle_event",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 808,
+      "function": "t299_primary_selection_reaches_kwin_mapping_arguments",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 834,
+      "function": "run_t299_mapping_fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 881,
+      "function": "t299_primary_selection_uses_current_priority_and_safe_defaults",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 942,
+      "function": "t372_mapping_selects_from_the_shared_inventory",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 965,
+      "function": "t375_android_motion_fixture_matches_host_fields",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 980,
+      "function": "t247_connected_fixture_matches_production_response",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 993,
+      "function": "t145_fallback_preserves_card_ownership",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1027,
+      "function": "last_input_value",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1043,
+      "function": "input_frames",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1068,
+      "function": "libinput_tilt_degrees",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1078,
+      "function": "t287_wire_tilt_reconstructs_physical_degrees_from_declared_axes",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1110,
+      "function": "assert_t287_tilt",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1129,
+      "function": "t318_pen_lifecycle_matches_android_samples",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1165,
+      "function": "assert_t318_modifier_precedes_tip",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1186,
+      "function": "t318_key_state",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1196,
+      "function": "assert_t318_pen_state",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1227,
+      "function": "t317_proximity_exit_releases_stylus_button_for_next_press",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1302,
+      "function": "t286_release_updates_pen_axes_before_leaving_proximity",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1364,
+      "function": "t286_hover_exit_parks_pointer_at_final_release_position",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1403,
+      "function": "t146_normalized_input_stays_in_axes_and_releases",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1460,
+      "function": "t086_touch_stays_down_until_last_contact_lifts",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1500,
+      "function": "t092_idle_and_partial_upgrades_expire",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1538,
+      "function": "t092_pending_connections_are_bounded",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1581,
+      "function": "t323_replacement_cancels_a_backpressured_control_writer",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1649,
+      "function": "t085_reconnect_preserves_current_controller_contacts",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1708,
+      "function": "t109_state_changes_cancel_pending_mapping",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1744,
+      "function": "t084_stopping_server_closes_clients_and_watcher",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1787,
+      "function": "t029_x11_maps_only_this_tablets_devices_and_card",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1881,
+      "function": "settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1908,
+      "function": "on_event",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1930,
+      "function": "t472_clamped_config_preserves_concurrent_selection_without_restart",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1962,
+      "function": "t472_repeated_geometry_and_config_retain_unrelated_state",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1999,
+      "function": "t332_invalid_fps_or_geometry_never_retires_working_settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2030,
+      "function": "t1038_liveness_offer_requires_media_settings_and_explicit_socket_ack",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2043,
+      "function": "t332_manual_geometry_validates_selected_dimensions_at_current_fps",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2055,
+      "function": "t276_replies_follow_geometry_and_scale_across_reconnect",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2089,
+      "function": "t276_scaled_greeting_matches_android_fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2104,
+      "function": "t346_greeting_uses_one_encoder_settings_snapshot",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2144,
+      "function": "t388_greeting_reports_accepted_route_and_omits_unknown",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2171,
+      "function": "connection",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2181,
+      "function": "connection_with_attachment",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2193,
+      "function": "connection_with_controls",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2236,
+      "function": "t497_external_mode_updates_reach_the_current_controller",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2251,
+      "function": "response",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2263,
+      "function": "t223_fixed_resolution_keeps_pixels_but_negotiates_physical_size",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2279,
+      "function": "t275_manual_geometry_is_independent_of_native_edid_limits",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2304,
+      "function": "t321_negotiated_small_panel_uses_supported_refresh",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2322,
+      "function": "t275_selected_manual_and_automatic_modes_keep_edid_bounds",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2343,
+      "function": "t120_greeting_and_apply_report_effective_frame_rate",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2360,
+      "function": "t432_new_controller_cannot_reuse_old_apk_capabilities",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2387,
+      "function": "t1176_denied_workflow_preserves_decoder_settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2405,
+      "function": "t432_vp9_requires_current_peer_format_support",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2410,
+      "function": "t1187_terminal_reports_cannot_restore_metadata_or_advertise_a_scope",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2450,
+      "function": "t478_malformed_stale_and_away_back_reports_cannot_replace_current_scope",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2482,
+      "function": "t434_disconnect_retires_capability_epoch_without_persisting_fallback",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2502,
+      "function": "t433_av1_requires_current_peer_format_support",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2506,
+      "function": "framed_peer_support",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2538,
+      "function": "t332_rejected_command_returns_current_settings_without_restart",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2567,
+      "function": "t063_greeting_reports_live_encoder_codec",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2576,
+      "function": "t063_codec_changes_are_pushed_to_connected_clients",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2588,
+      "function": "t284_tablet_cannot_switch_inproc_capture_to_vaapi",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2603,
+      "function": "t787_tablet_can_select_baseline_vaapi_adapter",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2616,
+      "function": "t063_unknown_encoder_from_tablet_is_rejected",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 2634,
+      "function": "t062_greeting_advertises_disabled_input_devices",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/wake_tests.rs",
+      "line": 6,
+      "function": "t405_idle_input_listener_has_no_periodic_wakeups",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 85,
+      "function": "main",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 95,
+      "function": "run_cli",
+      "complexity": 9
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 117,
+      "function": "setup_wifi",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 124,
+      "function": "setup_logging",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 135,
+      "function": "effective_config",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 158,
+      "function": "wifi_device_with",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 168,
+      "function": "t250_activity_and_token_targets_use_fork_package_and_original_classes",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 178,
+      "function": "t250_discovery_requires_the_fork_even_when_upstream_is_installed",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 193,
+      "function": "t321_explicit_cli_low_clock_is_not_silently_repaired",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 206,
+      "function": "t612_cli_worker_override_preserves_saved_preference",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 224,
+      "function": "t474_cli_overrides_saved_capacity_and_reaches_every_slot",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 255,
+      "function": "t474_conversion_capacity_cli_accepts_auto_and_bounds",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 271,
+      "function": "isolated_config_test",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 292,
+      "function": "t332_start_rejects_cli_and_saved_invalid_modes_before_resources",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 321,
+      "function": "t288_start_rejects_cli_and_saved_pen_mode_before_resources",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 349,
+      "function": "t284_start_rejects_vaapi_before_runtime_or_helper_setup",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 382,
+      "function": "assert_persistence_keeps_runtime_responsive",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 410,
+      "function": "t385_mode_persistence_does_not_block_runtime",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 426,
+      "function": "t385_settings_persistence_does_not_block_runtime",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 457,
+      "function": "t297_failed_settings_save_is_retried_on_next_update",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 524,
+      "function": "t296_mode_changes_before_writer_start_are_persisted",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 561,
+      "function": "t292_queued_first_settings_update_is_persisted",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 632,
+      "function": "t200_runtime_persistence_preserves_cli_and_unchanged_fields",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 695,
+      "function": "t108_t330_extra_slots_do_not_inherit_card_pins",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 715,
+      "function": "t122_cli_distinguishes_omitted_helper_from_explicit_override",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 726,
+      "function": "t122_explicit_missing_helper_cannot_fall_back",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 746,
+      "function": "t110_extra_token_delivery_is_targeted_and_rate_limited",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 803,
+      "function": "t144_primary_and_extra_wait_for_both_reverse_mappings_and_retry",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 870,
+      "function": "sorted_launches",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 878,
+      "function": "t143_t445_process_loss_stays_manual_across_retry_boundaries",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 967,
+      "function": "t142_every_slot_and_wifi_setup_require_the_app",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1005,
+      "function": "t691_reconnect_rejects_disconnected_as_success",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1025,
+      "function": "t105_live_wifi_off_and_address_changes_reach_adb",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1046,
+      "function": "t1383_invalid_physical_identities_remain_distinct",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1091,
+      "function": "t278_network_serial_forms_do_not_claim_usb_transport",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1107,
+      "function": "t278_usb_replaces_current_mdns_without_guessing_unknown_identities",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1140,
+      "function": "t278_wifi_setup_never_uses_mdns_as_the_usb_prerequisite",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1175,
+      "function": "t106_usb_migration_preserves_physical_tablet_identity",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1202,
+      "function": "t107_dual_transports_use_one_physical_slot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1232,
+      "function": "t039_host_sends_tokens_only_to_the_protected_activity",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1241,
+      "function": "t065_dead_flags_are_rejected_instead_of_silently_ignored",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1259,
+      "function": "t305_shutdown_already_requested_is_not_lost",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1280,
+      "function": "t305_shutdown_waits_for_true_or_channel_closure",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1295,
+      "function": "t237_process_fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1309,
+      "function": "t237_child",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1327,
+      "function": "t237_discovery_recognizes_default_and_explicit_daemons",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1346,
+      "function": "t237_stop_recovers_missing_and_stale_pid_files_without_touching_other_commands",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1375,
+      "function": "t244_status_recovers_daemon_despite_stale_pid_file",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1431,
+      "function": "t030_pid_reuse_does_not_mistake_another_process_for_blent",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1443,
+      "function": "t033_stop_waits_for_daemon_cleanup",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1466,
+      "function": "t032_extra_tablets_exclude_the_selected_primary_not_the_first_entry",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1473,
+      "function": "t067_manual_forwarding_uses_custom_host_ports",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1480,
+      "function": "t069_each_disappearance_allows_a_new_wifi_announcement",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1489,
+      "function": "t281_attachment_identity_requires_proven_transport_equivalence",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1509,
+      "function": "t031_server_bind_failure_prevents_successful_startup",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1570,
+      "function": "t068_extra_session_waits_for_capture_cleanup",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1611,
+      "function": "t072_launched_children_are_reaped_after_exit",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1631,
+      "function": "t066_cli_overrides_use_the_same_limits_as_saved_settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1657,
+      "function": "run_daemon",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1668,
+      "function": "run_daemon_with",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1919,
+      "function": "wait_for_shutdown",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1928,
+      "function": "ensure_single_daemon",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1959,
+      "function": "heal_config",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1978,
+      "function": "create_session_token",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1985,
+      "function": "persist_settings_with",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2028,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2039,
+      "function": "apply_encoder",
+      "complexity": 9
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2058,
+      "function": "apply_geometry",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2080,
+      "function": "mode_channel",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2087,
+      "function": "run",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2096,
+      "function": "persist_mode",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2112,
+      "function": "persist_settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2125,
+      "function": "other_daemons",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2129,
+      "function": "is_daemon_process",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2133,
+      "function": "remove_pid_file_if_ours",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2144,
+      "function": "get_pid_path",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2149,
+      "function": "select_helper",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2174,
+      "function": "find_helper",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2231,
+      "function": "slot_capture_config",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2243,
+      "function": "spawn_extra_session",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2257,
+      "function": "prepare_extra_session",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2277,
+      "function": "adb_monitor_using",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2301,
+      "function": "session_ledger",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2313,
+      "function": "add_fake_tablets",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2325,
+      "function": "wait_extra_relaunch",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2345,
+      "function": "default",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2353,
+      "function": "ready",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2357,
+      "function": "allow",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2370,
+      "function": "announce_transport",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2387,
+      "function": "prepare",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2430,
+      "function": "launch_app_using",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2434,
+      "function": "redeliver_token_using",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2438,
+      "function": "app_command_using",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2458,
+      "function": "is_fake_serial",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2478,
+      "function": "unique_devices",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2504,
+      "function": "probe_device_identity",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2519,
+      "function": "app_installed_with",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2525,
+      "function": "app_presence_with",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2544,
+      "function": "app_devices_with",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2563,
+      "function": "select_tablet",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2576,
+      "function": "pick_device_with",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2587,
+      "function": "stop_pids",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2611,
+      "function": "extra_devices",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2619,
+      "function": "disconnected_primary",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2624,
+      "function": "forwarding_instructions",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2628,
+      "function": "stop_daemon",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2632,
+      "function": "stop_daemon_at",
+      "complexity": 9
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2651,
+      "function": "show_status",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2675,
+      "function": "list_displays",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 110,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 141,
+      "function": "event",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 173,
+      "function": "tick",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 182,
+      "function": "queue_inventory",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 225,
+      "function": "inventory_ready",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 245,
+      "function": "probe_ready",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 258,
+      "function": "revalidate_identity",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 271,
+      "function": "change_primary",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 295,
+      "function": "can_prepare",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 305,
+      "function": "prepare",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 329,
+      "function": "prepare_primary",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 361,
+      "function": "available_slot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 365,
+      "function": "prepare_extra",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 410,
+      "function": "reconcile",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 444,
+      "function": "remove_gone",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 457,
+      "function": "prepared",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 485,
+      "function": "mutation_ready",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 504,
+      "function": "redeliver",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 526,
+      "function": "primary_token",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 542,
+      "function": "extra_token",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 555,
+      "function": "publish",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 564,
+      "function": "sessions",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 593,
+      "function": "stop",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 621,
+      "function": "step",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 646,
+      "function": "apply_event",
+      "complexity": 9
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 661,
+      "function": "with_usb",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 680,
+      "function": "run",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 707,
+      "function": "t388_route_follows_adb_transport_not_physical_identity",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 735,
+      "function": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 751,
+      "function": "t390_promoting_an_extra_retires_its_previous_slot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/admission/tests.rs",
+      "line": 3,
+      "function": "peer",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/admission/tests.rs",
+      "line": 7,
+      "function": "t917_usb_preempts_adb_only_after_owned_cleanup_and_rejects_stale_retirement",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/admission/tests.rs",
+      "line": 53,
+      "function": "t917_free_usb_slot_preserves_adb_primary",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/admission/tests.rs",
+      "line": 69,
+      "function": "t917_full_capacity_retires_extra_without_invalidating_primary",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 5,
+      "function": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 34,
+      "function": "ready",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 58,
+      "function": "t444_replacement_removes_both_old_routes_before_slot_reuse",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 77,
+      "function": "authenticated",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 95,
+      "function": "t444_changed_physical_identity_on_same_serial_retires_credentials",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 114,
+      "function": "t444_delivery_rotation_retry_and_known_route_migration_preserve_focus",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 150,
+      "function": "drained",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 158,
+      "function": "t444_failed_credential_delivery_retries_before_first_launch",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 189,
+      "function": "t444_unwritable_token_publication_never_prepares_a_route",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 208,
+      "function": "t444_inflight_creator_settles_before_replacement",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 259,
+      "function": "t444_auth_retry_uses_current_key_with_bounded_background_delivery",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 292,
+      "function": "t444_failed_owned_job_retires_pending_route_and_rejects_late_completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 7,
+      "function": "check_forwarding",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 32,
+      "function": "forwarding_ports",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 50,
+      "function": "repair",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 60,
+      "function": "fake_adb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 90,
+      "function": "t557_repairs_only_missing_routes_and_uses_no_rebind",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 111,
+      "function": "t557_conflicts_malformed_lists_and_backend_failures_never_rebind",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 142,
+      "function": "t557_periodic_repair_preserves_assignment_and_joins_existing_mutations",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 173,
+      "function": "t557_extra_repair_uses_its_existing_slot_ports",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/probe_tests.rs",
+      "line": 6,
+      "function": "t413_package_probe_requires_known_exit_and_response_shape",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/probe_tests.rs",
+      "line": 31,
+      "function": "package_adb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/probe_tests.rs",
+      "line": 52,
+      "function": "refresh",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/probe_tests.rs",
+      "line": 68,
+      "function": "t413_unknown_package_probe_preserves_assignment_and_geometry",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/probe_tests.rs",
+      "line": 120,
+      "function": "t413_unknown_initial_probe_is_not_eligible_and_absence_is_confirmed",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 16,
+      "function": "peer",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 21,
+      "function": "status",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 24,
+      "function": "submit",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 27,
+      "function": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 30,
+      "function": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 35,
+      "function": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 50,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 53,
+      "function": "with_activity",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 125,
+      "function": "links",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 161,
+      "function": "complete",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 182,
+      "function": "stop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 190,
+      "function": "t908_primary_handoff_rejects_unrelated_listener_capabilities",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 218,
+      "function": "t908_primary_and_extra_start_independently_and_retain_real_ports",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 264,
+      "function": "t908_selected_usb_preempts_adb_after_cleanup_and_ambiguity_preserves_it",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 295,
+      "function": "t908_bind_failure_releases_only_unpublished_start_and_retries_later",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 327,
+      "function": "status",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 346,
+      "function": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 349,
+      "function": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 355,
+      "function": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 363,
+      "function": "t908_active_native_status_and_usb_steps_do_not_queue_adb_inventory",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 417,
+      "function": "t908_native_event_has_bounded_ticks_and_independent_startup_completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 445,
+      "function": "t908_invalid_extra_instance_rolls_back_before_native_work",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 454,
+      "function": "t908_stuck_startup_does_not_stall_another_peer_and_late_cancel_is_owned",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 504,
+      "function": "t908_panicked_startup_quarantines_capacity_and_other_peer_still_progresses",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 548,
+      "function": "t908_shutdown_joins_pending_startup_without_admitting_late_binding",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 558,
+      "function": "t928_panicked_startup_reclaims_only_after_original_native_retirement",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 629,
+      "function": "t928_cancelled_unpublished_start_joins_original_task_before_reclaim",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 676,
+      "function": "t928_exhausted_native_startup_capacity_releases_only_unexposed_ticket",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 716,
+      "function": "t928_shared_primary_starts_with_one_native_session_slot",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 752,
+      "function": "t928_shared_startup_capacity_failure_releases_unexposed_binding",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 4,
+      "function": "fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 37,
+      "function": "finish",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 48,
+      "function": "deliver_extra_token",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 64,
+      "function": "tick_assigned_apps",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 82,
+      "function": "deliver_assigned_tokens",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 92,
+      "function": "t431_inflight_mutation_does_not_consume_token_backoff",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 106,
+      "function": "t431_reassignment_rejects_late_recovery_and_cancels_work",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 135,
+      "function": "t420_token_retry_does_not_launch_over_another_foreground_app",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 38,
+      "function": "state_path",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 43,
+      "function": "get_mode",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 48,
+      "function": "set_mode",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 54,
+      "function": "disable",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 63,
+      "function": "disable_from",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 83,
+      "function": "valid_mode",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 90,
+      "function": "invalid_backup",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 94,
+      "function": "sync_backup_directory",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 98,
+      "function": "read_backup",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 119,
+      "function": "save_backup_with",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 136,
+      "function": "backup_ready",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 167,
+      "function": "restore_unlocked",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 174,
+      "function": "restore_from",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 200,
+      "function": "sync_touch_state",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 212,
+      "function": "reconcile",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 235,
+      "function": "reconcile_current",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 255,
+      "function": "t334_invalid_existing_backup_never_suppresses_or_restores",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 283,
+      "function": "t334_unreadable_state_never_changes_the_keyboard",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 306,
+      "function": "t334_valid_backup_is_preserved_and_restoration_can_retry",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 334,
+      "function": "t334_failed_or_interrupted_writes_never_publish_empty_or_replace_valid_state",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 359,
+      "function": "t334_new_state_must_be_saved_before_suppression",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 385,
+      "function": "t334_unwritable_state_destination_does_not_suppress",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 399,
+      "function": "t334_saved_state_must_be_a_regular_file_without_symlinks",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 425,
+      "function": "t1433_rejected_operation_observation_prevents_keyboard_effects",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 447,
+      "function": "t148_detach_during_disable_reconciles_current_device_count",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 474,
+      "function": "t148_concurrent_device_changes_serialize_keyboard_writes",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/osk.rs",
+      "line": 514,
+      "function": "t111_restore_retries_preserved_setting_until_confirmed",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 22,
+      "function": "settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 41,
+      "function": "prepare",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 83,
+      "function": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 147,
+      "function": "t450_initial_or_already_seen_stop_is_forwarded",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 178,
+      "function": "t450_false_update_keeps_capture_alive_until_true_or_channel_close",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 207,
+      "function": "spec",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 220,
+      "function": "t281_coalesced_detach_attach_cannot_reuse_previous_geometry",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 243,
+      "function": "t281_current_metadata_survives_delayed_gate_and_transport_migration",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 296,
+      "function": "t368_second_bind_failure_releases_first_listener",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 318,
+      "function": "t368_runtime_owns_listeners_and_queued_initial_settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 347,
+      "function": "t1050_original_quiescence_owner_is_bound_before_startup_and_reaches_runtime",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 377,
+      "function": "t497_server_task_errors_keep_the_service_name_and_do_not_escape",
+      "complexity": 3
+    }
+  ],
+  "source_sha256": {
+    "host/src/activity/tests.rs": "d6d645c9d3922b08d64915267cb516ae8fb754dd525524df2f0cf5f40b5b6250",
+    "host/src/daemon_activity/tests.rs": "f33ec7bbad8d5f590bb1dd08e9898da41cef5e65961a7ef2c0a40fb45c90b89d",
+    "host/src/discovery_tests.rs": "29bb7097dca2f84d8737d1454ec28375aee46cd71ab38d9269e764f398f179d6",
+    "host/src/input.rs": "7656d167d0b0b8b27ab9b5d89e279244259cac80582e0975991fa3a4596e3517",
+    "host/src/input/wake_tests.rs": "d528507b9a637661a52b634a53596e791c15f84c53963f7c376cb353fcbdbfae",
+    "host/src/lib.rs": "a16b3ef265b24e91894a0cedfedded705da708b65e3040a59c48925d4d41ea4a",
+    "host/src/linux_main.rs": "92ecbe137babd347f177fa27cb2d55cac87ee2ee5aba833e4f538cd4df10eade",
+    "host/src/monitor.rs": "43d40280f230892743b9843fb982ce3a8b2b3ae9d47e6cbb76665ebd1335807e",
+    "host/src/monitor/admission/tests.rs": "dc913f4c7b2c4ab18a4e51551c4d6fd5019837c521783d9286aa9a7685543dc7",
+    "host/src/monitor/credential_tests.rs": "779ebdd2d19b21bbce9eace0a29fc57df072dd73072a02d33eaa541135578905",
+    "host/src/monitor/forwarding.rs": "74dd23f917d738b10b0a81459d1a7a8fc338b0ecd741b43a9c1e8d841edd1ad7",
+    "host/src/monitor/probe_tests.rs": "f63a48e17cf939795f6dea4e45fec5feda2bffdb4caff90ac2e4564ff095b648",
+    "host/src/monitor/usb_display/tests.rs": "54a8826b91632e544c7e9930c79c1248b174466795b23adba202ae147c0cb626",
+    "host/src/monitor_test_support.rs": "26757cefcddd7c40f7f87d90d3011dc36cd35c832428c00799793143b918f35e",
+    "host/src/osk.rs": "bde96d826147ad1d0676cc66c71563bf389e98451c88a8330ae65556867be88c",
+    "host/src/session.rs": "7208d4ea3f207a46787c9b7c9a45cb9baa08317be2faa0001f0e7806e4098070"
+  }
+}

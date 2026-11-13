@@ -1,0 +1,70 @@
+{
+  "baseline": "921495d77a3f6938405e1c08ee4e70f155c86117",
+  "rustfmt": "rustfmt 1.11.0-stable (0ef1bc3860 2026-11-09)",
+  "sources": {
+    "host/src/activity/tests.rs": {
+      "before_sha256": "717f4a65f5a90ec0144ea38d5bd548c1ad5d5185e0bf0df3ccc064dc83a94f97",
+      "after_sha256": "d6d645c9d3922b08d64915267cb516ae8fb754dd525524df2f0cf5f40b5b6250"
+    },
+    "host/src/daemon_activity/tests.rs": {
+      "before_sha256": "b052744f2b7b7afd8af9d1f2090ab98d9c3566fb534da4a425bd6a39d4b695ef",
+      "after_sha256": "f33ec7bbad8d5f590bb1dd08e9898da41cef5e65961a7ef2c0a40fb45c90b89d"
+    },
+    "host/src/discovery_tests.rs": {
+      "before_sha256": "608f51b59f7e1f87937c37e037b91e3233b18346bac5e8c11ef38f7b2e0e9ba0",
+      "after_sha256": "29bb7097dca2f84d8737d1454ec28375aee46cd71ab38d9269e764f398f179d6"
+    },
+    "host/src/input.rs": {
+      "before_sha256": "549e950cde7f7c5584a3e2236fb5d0b358ac32d5724d943928e5be148c69b6c0",
+      "after_sha256": "7656d167d0b0b8b27ab9b5d89e279244259cac80582e0975991fa3a4596e3517"
+    },
+    "host/src/input/wake_tests.rs": {
+      "before_sha256": "86c236b5159c68be2042bb3870466e3fcfde7de8ae65bd0d3a8256c5671be40b",
+      "after_sha256": "d528507b9a637661a52b634a53596e791c15f84c53963f7c376cb353fcbdbfae"
+    },
+    "host/src/lib.rs": {
+      "before_sha256": "91a20ef9492b15c5c7c7c99516eaec8e05d651852e13f55402470993ea6a3f04",
+      "after_sha256": "a16b3ef265b24e91894a0cedfedded705da708b65e3040a59c48925d4d41ea4a"
+    },
+    "host/src/linux_main.rs": {
+      "before_sha256": "13dca95caee3fa0cf32ccfdb2aa183690c076ce12412c6b5d90dfe116c31818d",
+      "after_sha256": "92ecbe137babd347f177fa27cb2d55cac87ee2ee5aba833e4f538cd4df10eade"
+    },
+    "host/src/monitor.rs": {
+      "before_sha256": "66038a86d44702a8ac2c067ffab27052fde1c34db8ec75cec71068721b54c618",
+      "after_sha256": "43d40280f230892743b9843fb982ce3a8b2b3ae9d47e6cbb76665ebd1335807e"
+    },
+    "host/src/monitor/admission/tests.rs": {
+      "before_sha256": "caa2d102fc02a49947226e32cdfc7fde806d4fb4ef63a0753b1dace0bfafb77f",
+      "after_sha256": "dc913f4c7b2c4ab18a4e51551c4d6fd5019837c521783d9286aa9a7685543dc7"
+    },
+    "host/src/monitor/credential_tests.rs": {
+      "before_sha256": "52977e09a49de34680add1522231e8ee066dbe33ed5df7a7818dfd5e712b8410",
+      "after_sha256": "779ebdd2d19b21bbce9eace0a29fc57df072dd73072a02d33eaa541135578905"
+    },
+    "host/src/monitor/forwarding.rs": {
+      "before_sha256": "7cebcf4e227cad3ee862b1244403fd96c2f88e6b242e2eade8bfb6ce35418e37",
+      "after_sha256": "74dd23f917d738b10b0a81459d1a7a8fc338b0ecd741b43a9c1e8d841edd1ad7"
+    },
+    "host/src/monitor/probe_tests.rs": {
+      "before_sha256": "2091ded57b0c356f7c621fabd0e9739b6b76806af3c5362f8e5563d729027068",
+      "after_sha256": "f63a48e17cf939795f6dea4e45fec5feda2bffdb4caff90ac2e4564ff095b648"
+    },
+    "host/src/monitor/usb_display/tests.rs": {
+      "before_sha256": "0fad56e903e37e513aae17f144d6be335f9b6fbc3636c327202c61e189cd5071",
+      "after_sha256": "54a8826b91632e544c7e9930c79c1248b174466795b23adba202ae147c0cb626"
+    },
+    "host/src/monitor_test_support.rs": {
+      "before_sha256": "54adb0bbf90957c65ac88430b3f22008ada43525b3371f72899eb4953aba65e1",
+      "after_sha256": "26757cefcddd7c40f7f87d90d3011dc36cd35c832428c00799793143b918f35e"
+    },
+    "host/src/osk.rs": {
+      "before_sha256": "76c68279179d040aab6ffe9d5e20bae113c10ba770beaf5edfdf1fe643b3db4f",
+      "after_sha256": "bde96d826147ad1d0676cc66c71563bf389e98451c88a8330ae65556867be88c"
+    },
+    "host/src/session.rs": {
+      "before_sha256": "fac4dd18b6d30f8b2a5909dd69f2dba431b65bb716670b4268f60a1ba2bb69f1",
+      "after_sha256": "7208d4ea3f207a46787c9b7c9a45cb9baa08317be2faa0001f0e7806e4098070"
+    }
+  }
+}

@@ -72,7 +72,8 @@ impl Fixture {
             token: None,
             devices: (false, false, false),
         }
-        .prepare(state.config.extra.mode_tx.clone()).unwrap()
+        .prepare(state.config.extra.mode_tx.clone())
+        .unwrap()
         .with_activity(activity);
         let settings = prepared.settings.clone();
         let (runtime, listeners) = prepared
@@ -194,7 +195,8 @@ async fn t908_primary_handoff_rejects_unrelated_listener_capabilities() {
         token: None,
         devices: (false, false, false),
     }
-    .prepare(fixture.state.config.extra.mode_tx.clone()).unwrap();
+    .prepare(fixture.state.config.extra.mode_tx.clone())
+    .unwrap();
     let (other, listeners) = prepared
         .start_exported(fixture.state.config.extra.shutdown_rx.clone())
         .await
