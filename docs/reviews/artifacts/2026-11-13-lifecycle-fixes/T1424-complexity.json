@@ -1,0 +1,32 @@
+{
+  "tool": "Blent Kotlin PSI 1.9.20 local cyclomatic checker",
+  "functions": [
+    [
+      "android/app/src/test/java/com/blent/connection/ConnectionReattachTest.kt",
+      16,
+      "t1392AttachmentDuringOldExecutionSurvivesUntilRetirement",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/ConnectionReattachTest.kt",
+      17,
+      "<lambda>",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/ConnectionReattachTest.kt",
+      37,
+      "t1424DuplicateAttachmentCannotMintAReplacementEpoch",
+      1
+    ],
+    [
+      "android/app/src/test/java/com/blent/connection/ConnectionReattachTest.kt",
+      38,
+      "<lambda>",
+      1
+    ]
+  ],
+  "source_sha256": {
+    "android/app/src/test/java/com/blent/connection/ConnectionReattachTest.kt": "8aaa97d8b4cbf2106b9c1ae339e011e18f96dda195e5bb50c0d09200fc5da26e"
+  }
+}

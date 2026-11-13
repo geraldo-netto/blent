@@ -1,0 +1,880 @@
+{
+  "tools": {
+    "coverage": "JaCoCo 0.8.15, Gradle 8.5, Robolectric 4.17",
+    "complexity": "Blent Kotlin PSI 1.9.20 local checker"
+  },
+  "coverage_scope": "Union of maintained T1419/T1420 native method variants, after integrated recheck. T1424 changes tests only. Kotlin inline bodies measured in enclosing methods; only native JaCoCo supported filters apply.",
+  "coverage": [
+    {
+      "class": "com/blent/connection/ConnectionDisplayBinding",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/DisplayRouteTarget;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionDisplayBinding",
+      "method": "apply",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;)V",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionOwner$get$1",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;)Lcom/blent/connection/ConnectionWorker;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionOwner$get$1$1",
+      "method": "invoke",
+      "descriptor": "()Landroid/content/Context;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionBinding$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionOwner",
+      "method": "get",
+      "descriptor": "(Landroid/content/Context;)Lcom/blent/connection/ConnectionBinding;",
+      "covered_lines": 4,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionView",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionChoice;Ljava/lang/Boolean;ZZLjava/lang/Object;Lcom/blent/connection/ConnectionPeer;ZLjava/lang/String;Lcom/blent/connection/ConnectionDisplayChoice;Ljava/lang/Object;Lcom/blent/connection/ConnectionCameraOfferChoice;Lcom/blent/connection/ConnectionCameraRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;)V",
+      "covered_lines": 19,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionView",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionChoice;Ljava/lang/Boolean;ZZLjava/lang/Object;Lcom/blent/connection/ConnectionPeer;ZLjava/lang/String;Lcom/blent/connection/ConnectionDisplayChoice;Ljava/lang/Object;Lcom/blent/connection/ConnectionCameraOfferChoice;Lcom/blent/connection/ConnectionCameraRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 20,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionView",
+      "method": "getDisplaySelection",
+      "descriptor": "()Ljava/lang/Object;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;)V",
+      "covered_lines": 8,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 2,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "publish",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;)V",
+      "covered_lines": 7,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "displayTransition",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;Lcom/blent/connection/ConnectionView;)Z",
+      "covered_lines": 2,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;JLcom/blent/connection/ConnectionAccess;Lkotlin/jvm/functions/Function0;)V",
+      "covered_lines": 13,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;JLcom/blent/connection/ConnectionAccess;Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/SessionCoordinator",
+      "method": "selectDisplay",
+      "descriptor": "(Lcom/blent/DisplayEndpoint;)V",
+      "covered_lines": 11,
+      "missed_lines": 0,
+      "percent": 100.0
+    }
+  ],
+  "tests": [
+    {
+      "name": "com.blent.BackgroundAdbDeliveryTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.JoinedDisplayActivityTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.NullDisplayCutoffTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.RetainedAdbCutoffTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.RevokedAdbDeliveryTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.SessionDisplayRouteTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAccessBinderTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAccessBindingTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAccessMediaTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAccessOwnerLossTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAccessTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionActivityTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionActivityUiTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionActorSchedulerTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAdmissionRunTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAdmissionWaitTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioAccessTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioBindingTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioCodecTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioOwnershipTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioPermissionCodecTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioPermissionRuntimeTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioProjectionTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionAudioRuntimeTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionBindingTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraAccessTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraBindingLoopbackTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraBindingTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraCaptureOwnerTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraCodecTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraConsentTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraIpcTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraPresentationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraPublicationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraRuntimeLoopbackTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraRuntimeTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCameraSessionTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionChannelBuffersTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCompletionWakeTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionControlsTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCutoffTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDeadlineReuseTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDeadlineTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayActivityTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayBindingTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionFlowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionFramesTest",
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionHelloTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionIdentityTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionJoinedAudioUiTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionJoinedCameraFixtureTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionJoinedCameraTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionJoinedDuplexTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionJoinedMicrophoneTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionJoinedSpeakerTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionLocalDeadlineTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionLocalPumpTest",
+      "tests": "19",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionLocalResourcesTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionLocalWakeTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionManagementTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionMediaConsentTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionMediaProjectionTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionMuxTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionOwnerTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPairingTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPreferenceControlsTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPreferenceFormTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPreferenceHistoryTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPreferenceLifetimeTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPreferenceStoreTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPreferencesTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPresentationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionProducerAllocationTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPublicationsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionQueueTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionReadyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionReattachTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionReconnectStopTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionResourcesTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionRunnerInvalidTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionRuntimeDeadlineTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionRuntimeEndpointsTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionRuntimeOwnerTest",
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionSessionLimitsTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionSessionRunnerTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionSettingsContractTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionSetupBoundaryTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionSetupDeadlineTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionSetupOwnerTest",
+      "tests": "31",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionStaleControlFailureTest",
+      "tests": "24",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionStopInterleavingsTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionTransportDeadlineTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionTrustAdmissionTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionTrustTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionWaitTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionWindowTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionWireTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionWorkerCodecTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionWorkerIpcTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionWorkerServiceTest",
+      "tests": "34",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionWorkerWaitTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/DisplayRoutes.kt": "7496f5817203e0c0f1dfa46cb8d921b209f8b79e951878c93d67096ca908da53",
+    "android/app/src/main/java/com/blent/SessionCoordinator.kt": "591030c727a4cbd0dabd3fe52472fefc13e942dae5b96e580b17b02778b632b4",
+    "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt": "52eabbdaadd854a2690c54ac7252afb1a6cf02ebef7da19e653c31273586bada",
+    "android/app/src/main/java/com/blent/connection/ConnectionDisplayBinding.kt": "b3f82920ae08931671bc264140f190d113faa68738a2a7bee66a26b9d4f9a344",
+    "android/app/src/main/java/com/blent/connection/ConnectionOwner.kt": "5393964558d22b1d1417e04ec335f8fe41d0b1f937990e22442a133b4529fbfb",
+    "android/app/src/main/java/com/blent/connection/ConnectionPresentation.kt": "720303b289f28d874b27d8bdc7942946931daa2171fd6551f49fcbf2a0834440",
+    "android/app/src/test/java/com/blent/BackgroundAdbDeliveryTest.kt": "9d7572ff1ef1b5ae82bb5b8dbed088732e6d8cbd8bca38045bee97aba97208e7",
+    "android/app/src/test/java/com/blent/JoinedDisplayActivityTest.kt": "6a44b94fd443f845e247705e8e73ac89ff1e0f1642884700576beefa8d162767",
+    "android/app/src/test/java/com/blent/NullDisplayCutoffTest.kt": "bf37e066599afc941b9b69e824158a38aeb3f536e98cc994f5f34f4b193cb7cb",
+    "android/app/src/test/java/com/blent/RetainedAdbCutoffTest.kt": "b12932842f26b79b4516b0fb4f13a3c4f89154bdf548abc16483fe301c0f7529",
+    "android/app/src/test/java/com/blent/RevokedAdbDeliveryTest.kt": "677b537a2f5d1218bc95c7731c27a4ae4dad94a266d2dd7a8413ea405203e25f",
+    "android/app/src/test/java/com/blent/SessionDisplayRouteTest.kt": "15969c66be4756f3d44db1ae9673bb51c9c2dade89d04234a8223c6e6eee0a27",
+    "android/app/src/test/java/com/blent/connection/ConnectionCutoffTest.kt": "dbd4093fc522075868dbdac18afd27cfc2365a17c6bbeb56761a09b8a68d45ce",
+    "android/app/src/test/java/com/blent/connection/ConnectionDisplayBindingTest.kt": "db3710a44ccb5168d460b22617243de1b5497b59acf68de989bc36629f0260f5",
+    "android/app/src/test/java/com/blent/connection/ConnectionOwnerTest.kt": "bd0314f1a40868d0f8f534303ac16f8c593dfde826edc84bd994606849ac41f6",
+    "android/app/src/test/java/com/blent/connection/ConnectionReattachTest.kt": "8aaa97d8b4cbf2106b9c1ae339e011e18f96dda195e5bb50c0d09200fc5da26e",
+    "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt": "8a44908059bbf975fc6a7586a8ac4016e17170646502d6dee69c4216a9c237aa"
+  }
+}
