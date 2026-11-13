@@ -1,0 +1,141 @@
+host/evdi/conversion.c:99:43: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+   99 |         p = row0 + (size_t)x * 4;       b = p[bi]; g = p[1]; r = p[ri];
+      |                                           ^
+host/evdi/conversion.c:311:5: note: Taking false branch
+  311 |     if (!pixel_order_valid(frame->order)) { pool->last_jobs = 0; return; }
+      |     ^
+host/evdi/conversion.c:312:25: note: Assuming field 'dirty' is null
+  312 |     conv_work_t work = (frame->dirty || frame->spans) ? measure_work(frame) : (conv_work_t){0};
+      |                         ^~~~~~~~~~~~
+host/evdi/conversion.c:312:25: note: Left side of '||' is false
+host/evdi/conversion.c:312:41: note: Assuming field 'spans' is null
+  312 |     conv_work_t work = (frame->dirty || frame->spans) ? measure_work(frame) : (conv_work_t){0};
+      |                                         ^~~~~~~~~~~~
+host/evdi/conversion.c:312:24: note: '?' condition is false
+  312 |     conv_work_t work = (frame->dirty || frame->spans) ? measure_work(frame) : (conv_work_t){0};
+      |                        ^
+host/evdi/conversion.c:316:9: note: Assuming 'count' is not equal to 0
+  316 |     if (count == 0) return;
+      |         ^~~~~~~~~~
+host/evdi/conversion.c:316:5: note: Taking false branch
+  316 |     if (count == 0) return;
+      |     ^
+host/evdi/conversion.c:317:9: note: Assuming 'count' is equal to 1
+  317 |     if (count == 1) { pool->kernel(frame); return; }
+      |         ^~~~~~~~~~
+host/evdi/conversion.c:317:5: note: Taking true branch
+  317 |     if (count == 1) { pool->kernel(frame); return; }
+      |     ^
+host/evdi/conversion.c:317:23: note: Calling 'convert_avx2_rgba_job'
+  317 |     if (count == 1) { pool->kernel(frame); return; }
+      |                       ^~~~~~~~~~~~~~~~~~~
+host/evdi/conversion.c:152:92: note: Calling 'convert_avx2_ordered'
+  152 | __attribute__((target("avx2"))) static void convert_avx2_rgba_job(const conv_job_t *job) { convert_avx2_ordered(job, 0, 1); }
+      |                                                                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion.c:146:14: note: Field 'scale' is not equal to 1
+  146 |     if (job->scale == 1) convert_strip(job, adaptive, swap_rb);
+      |              ^
+host/evdi/conversion.c:146:5: note: Taking false branch
+  146 |     if (job->scale == 1) convert_strip(job, adaptive, swap_rb);
+      |     ^
+host/evdi/conversion.c:147:19: note: Field 'scale' is not equal to 2
+  147 |     else if (job->scale == 2) convert_box_strip(job, 2, adaptive, swap_rb);
+      |                   ^
+host/evdi/conversion.c:147:10: note: Taking false branch
+  147 |     else if (job->scale == 2) convert_box_strip(job, 2, adaptive, swap_rb);
+      |          ^
+host/evdi/conversion.c:148:10: note: Calling 'convert_box_strip'
+  148 |     else convert_box_strip(job, 4, adaptive, swap_rb);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion_box.h:60:29: note: Assuming 'cy' is < field 'cy1'
+   60 |     for (int cy = job->cy0; cy < job->cy1; cy++) {
+      |                             ^~~~~~~~~~~~~
+host/evdi/conversion_box.h:60:5: note: Loop condition is true.  Entering loop body
+   60 |     for (int cy = job->cy0; cy < job->cy1; cy++) {
+      |     ^
+host/evdi/conversion_box.h:61:9: note: Taking false branch
+   61 |         if (!row_is_dirty(job->dirty, cy)) continue;
+      |         ^
+host/evdi/conversion_box.h:63:21: note: 'adaptive' is 0
+   63 |         int split = adaptive && pixel_row_split(row);
+      |                     ^~~~~~~~
+host/evdi/conversion_box.h:63:30: note: Left side of '&&' is false
+   63 |         int split = adaptive && pixel_row_split(row);
+      |                              ^
+host/evdi/conversion_box.h:64:9: note: Loop condition is true.  Entering loop body
+   64 |         for (int part = 0; part <= split; part++) convert_box_span(job, cy, row_part(row, part, split), scale, swap_rb);
+      |         ^
+host/evdi/conversion_box.h:64:51: note: Calling 'convert_box_span'
+   64 |         for (int part = 0; part <= split; part++) convert_box_span(job, cy, row_part(row, part, split), scale, swap_rb);
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion_box.h:44:30: note: Assuming 'x' is < field 'end'
+   44 |     for (int x = span.begin; x < span.end; x += TILE) {
+      |                              ^~~~~~~~~~~~
+host/evdi/conversion_box.h:44:5: note: Loop condition is true.  Entering loop body
+   44 |     for (int x = span.begin; x < span.end; x += TILE) {
+      |     ^
+host/evdi/conversion_box.h:46:13: note: Assuming 'count' is <= TILE
+   46 |         if (count > TILE) count = TILE;
+      |             ^~~~~~~~~~~~
+host/evdi/conversion_box.h:46:9: note: Taking false branch
+   46 |         if (count > TILE) count = TILE;
+      |         ^
+host/evdi/conversion_box.h:47:9: note: Loop condition is true.  Entering loop body
+   47 |         for (int row = 0; row < 2; row++) {
+      |         ^
+host/evdi/conversion_box.h:49:13: note: Calling 'box_row'
+   49 |             box_row(pixels + row * STRIDE, source, job->stride, count, scale);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion_box.h:31:21: note: 'x' is < 'width'
+   31 |     for (int x = 0; x < width; x += 2) {
+      |                     ^
+host/evdi/conversion_box.h:31:5: note: Loop condition is true.  Entering loop body
+   31 |     for (int x = 0; x < width; x += 2) {
+      |     ^
+host/evdi/conversion_box.h:33:24: note: 'scale' is not equal to 2
+   33 |         __m128i pair = scale == 2 ? box_two(pixels, stride) : box_four(pixels, stride);
+      |                        ^~~~~
+host/evdi/conversion_box.h:33:24: note: '?' condition is false
+host/evdi/conversion_box.h:34:9: note: Calling '_mm_storel_epi64'
+   34 |         _mm_storel_epi64((__m128i *)(destination + x * 4), pair);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion_box.h:34:9: note: Returning from '_mm_storel_epi64'
+   34 |         _mm_storel_epi64((__m128i *)(destination + x * 4), pair);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion_box.h:31:21: note: Assuming 'x' is >= 'width'
+   31 |     for (int x = 0; x < width; x += 2) {
+      |                     ^~~~~~~~~
+host/evdi/conversion_box.h:31:5: note: Loop condition is false. Execution continues on line 31
+   31 |     for (int x = 0; x < width; x += 2) {
+      |     ^
+host/evdi/conversion_box.h:49:13: note: Returning from 'box_row'
+   49 |             box_row(pixels + row * STRIDE, source, job->stride, count, scale);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion_box.h:47:9: note: Loop condition is true.  Entering loop body
+   47 |         for (int row = 0; row < 2; row++) {
+      |         ^
+host/evdi/conversion_box.h:47:9: note: Loop condition is false. Execution continues on line 51
+host/evdi/conversion_box.h:54:9: note: Calling 'convert_native_span'
+   54 |         convert_native_span(&reduced, 0, (pixel_span_t){0, count}, swap_rb);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/conversion.c:89:51: note: 'swap_rb' is 1
+   89 |     const int w = j->ow, stride = j->stride, bi = swap_rb ? 2 : 0, ri = swap_rb ? 0 : 2;
+      |                                                   ^~~~~~~
+host/evdi/conversion.c:89:51: note: '?' condition is true
+host/evdi/conversion.c:89:46: note: 'bi' initialized to 2
+   89 |     const int w = j->ow, stride = j->stride, bi = swap_rb ? 2 : 0, ri = swap_rb ? 0 : 2;
+      |                                              ^~
+host/evdi/conversion.c:89:73: note: 'swap_rb' is 1
+   89 |     const int w = j->ow, stride = j->stride, bi = swap_rb ? 2 : 0, ri = swap_rb ? 0 : 2;
+      |                                                                         ^~~~~~~
+host/evdi/conversion.c:89:73: note: '?' condition is true
+host/evdi/conversion.c:96:30: note: 'x' is < field 'end'
+   96 |     for (int x = span.begin; x < span.end; x += 2) {
+      |                              ^
+host/evdi/conversion.c:96:5: note: Loop condition is true.  Entering loop body
+   96 |     for (int x = span.begin; x < span.end; x += 2) {
+      |     ^
+host/evdi/conversion.c:99:43: note: Assigned value is garbage or undefined
+   99 |         p = row0 + (size_t)x * 4;       b = p[bi]; g = p[1]; r = p[ri];
+      |                                           ^ ~~~~~
+1 warning generated.

@@ -1,0 +1,52 @@
+host/gpu/events.c:34:24: warning: Array access (from variable 'rectangles') results in a null pointer dereference [core.NullDereference]
+   34 |         XRectangle r = rectangles[i];
+      |                        ^
+host/gpu/events.c:71:17: note: Assuming field 'leased' is not equal to 0
+   71 |     gpu_require(!c->leased, "event wait after final GPU consumer");
+      |                 ^~~~~~~~~~
+host/gpu/events.c:72:5: note: Loop condition is true.  Entering loop body
+   72 |     for (;;) {
+      |     ^
+host/gpu/events.c:74:9: note: Calling 'gpu_events_drain'
+   74 |         gpu_events_drain(c); sample_pointer(c);
+      |         ^~~~~~~~~~~~~~~~~~~
+host/gpu/events.c:43:26: note: 'i' is < 256
+   43 |     for (unsigned i = 0; i < 256 && XEventsQueued(c->display, QueuedAlready); i++) {
+      |                          ^
+host/gpu/events.c:43:26: note: Left side of '&&' is true
+host/gpu/events.c:43:5: note: Loop condition is true.  Entering loop body
+   43 |     for (unsigned i = 0; i < 256 && XEventsQueued(c->display, QueuedAlready); i++) {
+      |     ^
+host/gpu/events.c:45:13: note: Assuming field 'damage' is not equal to 0
+   45 |         if (c->damage && event.type == c->damage_event + XDamageNotify) c->dirty |= damaged(c);
+      |             ^~~~~~~~~
+host/gpu/events.c:45:13: note: Left side of '&&' is true
+host/gpu/events.c:45:26: note: Assuming the condition is true
+   45 |         if (c->damage && event.type == c->damage_event + XDamageNotify) c->dirty |= damaged(c);
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/events.c:45:9: note: Taking true branch
+   45 |         if (c->damage && event.type == c->damage_event + XDamageNotify) c->dirty |= damaged(c);
+      |         ^
+host/gpu/events.c:45:85: note: Calling 'damaged'
+   45 |         if (c->damage && event.type == c->damage_event + XDamageNotify) c->dirty |= damaged(c);
+      |                                                                                     ^~~~~~~~~~
+host/gpu/events.c:31:5: note: 'rectangles' initialized here
+   31 |     XRectangle *rectangles = XFixesFetchRegion(c->display, c->region, &count);
+      |     ^~~~~~~~~~~~~~~~~~~~~~
+host/gpu/events.c:32:17: note: Assuming 'count' is not equal to 0
+   32 |     gpu_require(count == 0 || rectangles != NULL, "damage rectangles");
+      |                 ^~~~~~~~~~
+host/gpu/events.c:32:17: note: Left side of '||' is false
+host/gpu/events.c:32:31: note: Assuming 'rectangles' is equal to NULL
+   32 |     gpu_require(count == 0 || rectangles != NULL, "damage rectangles");
+      |                               ^~~~~~~~~~~~~~~~~~
+host/gpu/events.c:33:21: note: Assuming 'i' is < 'count'
+   33 |     for (int i = 0; i < count; i++) {
+      |                     ^~~~~~~~~
+host/gpu/events.c:33:5: note: Loop condition is true.  Entering loop body
+   33 |     for (int i = 0; i < count; i++) {
+      |     ^
+host/gpu/events.c:34:24: note: Array access (from variable 'rectangles') results in a null pointer dereference
+   34 |         XRectangle r = rectangles[i];
+      |                        ^~~~~~~~~~
+1 warning generated.

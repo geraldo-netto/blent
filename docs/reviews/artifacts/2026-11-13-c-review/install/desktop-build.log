@@ -1,0 +1,8 @@
+SDK: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/0cc82216a407cc993941b5ddabd446becc3c9a6219d9bcf50125c60101dcad46/files
+Codecs: /home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra/7ccd63f7532e93ce345b67dedc492748bba449917e81a031502715bc38e3f438/files
+Target/cache owner: /home/netto/.cache/blent-reinstall-20261112/target
+Command: cargo build --offline --locked --release --workspace --bins --features blent/native-audio,blent/accessory-transport
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `release` profile [optimized] target(s) in 29.45s

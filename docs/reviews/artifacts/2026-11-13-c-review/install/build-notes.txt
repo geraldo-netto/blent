@@ -1,0 +1,5 @@
+Desktop: scripts/ci/test-host-offline.py invoked explicitly with cargo build --release --workspace --bins --features blent/native-audio,blent/accessory-transport; no test command.
+Android: ./gradlew --offline :app:assembleRelease; no test task. Unsigned release aligned and signed with existing designated key outside repository; project verify-release-apk.py accepted final artifact.
+EVDI: gcc -O3 -Wall -Wextra, all 11 host/evdi C translation units, -levdi -lpthread -Ihost/evdi, sibling $ORIGIN rpath; installed libevdi.so.1.15.0 link input.
+USB: make -C host/accessory with external OUTPUT and installed SDK libusb headers; -O2 -g -Wall -Wextra -Werror, host libusb ABI.
+No test, sanitizer, benchmark, driver installation or reboot executed.

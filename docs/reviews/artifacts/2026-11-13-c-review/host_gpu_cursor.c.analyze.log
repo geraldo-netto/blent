@@ -1,0 +1,217 @@
+host/gpu/cursor.c:17:5: warning: Potential leak of memory pointed to by 'pixels' [unix.Malloc]
+   17 |     XImage *image = XCreateImage(c->display, DefaultVisual(c->display, DefaultScreen(c->display)),
+      |     ^
+host/gpu/cursor.c:107:9: note: Assuming the condition is false
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |         ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:9: note: Left side of '||' is false
+host/gpu/cursor.c:107:33: note: Assuming field 'cursor_invalid' is 0
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |                                 ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:9: note: Left side of '||' is false
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |         ^
+host/gpu/cursor.c:107:54: note: Assuming field 'cursor_source' is 0
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |                                                      ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:5: note: Taking true branch
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |     ^
+host/gpu/cursor.c:108:9: note: Calling 'refresh_cursor'
+  108 |         refresh_cursor(c);
+      |         ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:90:17: note: Assuming 'cursor' is not equal to NULL
+   90 |     gpu_require(cursor != NULL, "XFixes cursor image");
+      |                 ^~~~~~~~~~~~~~
+host/gpu/cursor.c:93:12: note: Field 'cursor_source' is 0
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |            ^
+host/gpu/cursor.c:93:26: note: Left side of '&&' is false
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |                          ^
+host/gpu/cursor.c:98:5: note: Taking true branch
+   98 |     if (intersects(c, cursor)) composite(c, cursor);
+      |     ^
+host/gpu/cursor.c:98:32: note: Calling 'composite'
+   98 |     if (intersects(c, cursor)) composite(c, cursor);
+      |                                ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:51:5: note: Calling 'cache_cursor'
+   51 |     cache_cursor(c, cursor);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:40:9: note: Assuming field 'cursor_destination' is not equal to 0
+   40 |     if (!c->cursor_destination) {
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:40:5: note: Taking false branch
+   40 |     if (!c->cursor_destination) {
+      |     ^
+host/gpu/cursor.c:45:12: note: Field 'cursor_source' is 0
+   45 |     if (c->cursor_source && c->cursor_serial == cursor->cursor_serial) return;
+      |            ^
+host/gpu/cursor.c:45:26: note: Left side of '&&' is false
+   45 |     if (c->cursor_source && c->cursor_serial == cursor->cursor_serial) return;
+      |                          ^
+host/gpu/cursor.c:46:24: note: Calling 'cursor_picture'
+   46 |     c->cursor_source = cursor_picture(c, cursor);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:27:21: note: Calling 'cursor_image'
+   27 |     XImage *image = cursor_image(c, cursor);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:15:17: note: Assuming the condition is true
+   15 |     gpu_require(count <= 1024 * 1024, "bounded cursor image");
+      |                 ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:16:20: note: Memory is allocated
+   16 |     char *pixels = calloc(count, 4); gpu_require(pixels != NULL, "cursor allocation");
+      |                    ^~~~~~~~~~~~~~~~
+host/gpu/cursor.c:16:50: note: Assuming 'pixels' is not equal to NULL
+   16 |     char *pixels = calloc(count, 4); gpu_require(pixels != NULL, "cursor allocation");
+      |                                                  ^~~~~~~~~~~~~~
+host/gpu/cursor.c:17:5: note: Potential leak of memory pointed to by 'pixels'
+   17 |     XImage *image = XCreateImage(c->display, DefaultVisual(c->display, DefaultScreen(c->display)),
+      |     ^
+host/gpu/cursor.c:22:13: warning: Dereference of null pointer [core.NullDereference]
+   22 |             XPutPixel(image, x, y, cursor->pixels[y * cursor->width + x]);
+      |             ^
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xutil.h:221:5: note: expanded from macro 'XPutPixel'
+  221 |         ((*((ximage)->f.put_pixel))((ximage), (x), (y), (pixel)))
+      |            ^
+host/gpu/cursor.c:107:9: note: Assuming the condition is false
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |         ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:9: note: Left side of '||' is false
+host/gpu/cursor.c:107:33: note: Assuming field 'cursor_invalid' is 0
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |                                 ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:9: note: Left side of '||' is false
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |         ^
+host/gpu/cursor.c:107:54: note: Assuming field 'cursor_source' is 0
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |                                                      ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:5: note: Taking true branch
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |     ^
+host/gpu/cursor.c:108:9: note: Calling 'refresh_cursor'
+  108 |         refresh_cursor(c);
+      |         ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:90:17: note: Assuming 'cursor' is not equal to NULL
+   90 |     gpu_require(cursor != NULL, "XFixes cursor image");
+      |                 ^~~~~~~~~~~~~~
+host/gpu/cursor.c:93:12: note: Field 'cursor_source' is 0
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |            ^
+host/gpu/cursor.c:93:26: note: Left side of '&&' is false
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |                          ^
+host/gpu/cursor.c:98:5: note: Taking true branch
+   98 |     if (intersects(c, cursor)) composite(c, cursor);
+      |     ^
+host/gpu/cursor.c:98:32: note: Calling 'composite'
+   98 |     if (intersects(c, cursor)) composite(c, cursor);
+      |                                ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:51:5: note: Calling 'cache_cursor'
+   51 |     cache_cursor(c, cursor);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:40:9: note: Assuming field 'cursor_destination' is not equal to 0
+   40 |     if (!c->cursor_destination) {
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:40:5: note: Taking false branch
+   40 |     if (!c->cursor_destination) {
+      |     ^
+host/gpu/cursor.c:45:12: note: Field 'cursor_source' is 0
+   45 |     if (c->cursor_source && c->cursor_serial == cursor->cursor_serial) return;
+      |            ^
+host/gpu/cursor.c:45:26: note: Left side of '&&' is false
+   45 |     if (c->cursor_source && c->cursor_serial == cursor->cursor_serial) return;
+      |                          ^
+host/gpu/cursor.c:46:24: note: Calling 'cursor_picture'
+   46 |     c->cursor_source = cursor_picture(c, cursor);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:27:21: note: Calling 'cursor_image'
+   27 |     XImage *image = cursor_image(c, cursor);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:15:17: note: Assuming the condition is false
+   15 |     gpu_require(count <= 1024 * 1024, "bounded cursor image");
+      |                 ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:16:50: note: Assuming 'pixels' is equal to NULL
+   16 |     char *pixels = calloc(count, 4); gpu_require(pixels != NULL, "cursor allocation");
+      |                                                  ^~~~~~~~~~~~~~
+host/gpu/cursor.c:17:5: note: 'image' initialized here
+   17 |     XImage *image = XCreateImage(c->display, DefaultVisual(c->display, DefaultScreen(c->display)),
+      |     ^~~~~~~~~~~~~
+host/gpu/cursor.c:19:17: note: Assuming 'image' is equal to NULL
+   19 |     gpu_require(image != NULL, "cursor XImage");
+      |                 ^~~~~~~~~~~~~
+host/gpu/cursor.c:19:17: note: Assuming pointer value is null
+   19 |     gpu_require(image != NULL, "cursor XImage");
+      |                 ^~~~~~~~~~~~~
+host/gpu/cursor.c:20:26: note: Assuming 'y' is < field 'height'
+   20 |     for (unsigned y = 0; y < cursor->height; y++)
+      |                          ^~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:20:5: note: Loop condition is true.  Entering loop body
+   20 |     for (unsigned y = 0; y < cursor->height; y++)
+      |     ^
+host/gpu/cursor.c:21:30: note: Assuming 'x' is < field 'width'
+   21 |         for (unsigned x = 0; x < cursor->width; x++)
+      |                              ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:21:9: note: Loop condition is true.  Entering loop body
+   21 |         for (unsigned x = 0; x < cursor->width; x++)
+      |         ^
+host/gpu/cursor.c:22:13: note: Dereference of null pointer
+   22 |             XPutPixel(image, x, y, cursor->pixels[y * cursor->width + x]);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xutil.h:221:5: note: expanded from macro 'XPutPixel'
+  221 |         ((*((ximage)->f.put_pixel))((ximage), (x), (y), (pixel)))
+      |            ^~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:93:49: warning: Access to field 'cursor_serial' results in a dereference of a null pointer (loaded from variable 'cursor') [core.NullDereference]
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |                                                 ^
+host/gpu/cursor.c:107:9: note: Assuming the condition is true
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |         ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:30: note: Left side of '||' is true
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |                              ^
+host/gpu/cursor.c:108:9: note: Calling 'refresh_cursor'
+  108 |         refresh_cursor(c);
+      |         ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:89:5: note: 'cursor' initialized here
+   89 |     XFixesCursorImage *cursor = XFixesGetCursorImage(c->display);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:90:17: note: Assuming 'cursor' is equal to NULL
+   90 |     gpu_require(cursor != NULL, "XFixes cursor image");
+      |                 ^~~~~~~~~~~~~~
+host/gpu/cursor.c:93:9: note: Assuming field 'cursor_source' is not equal to 0
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |         ^~~~~~~~~~~~~~~~
+host/gpu/cursor.c:93:9: note: Left side of '&&' is true
+host/gpu/cursor.c:93:49: note: Access to field 'cursor_serial' results in a dereference of a null pointer (loaded from variable 'cursor')
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |                                                 ^~~~~~
+host/gpu/cursor.c:97:42: warning: Access to field 'width' results in a dereference of a null pointer (loaded from variable 'cursor') [core.NullDereference]
+   97 |     c->cursor_shape = (gpu_cursor_shape){cursor->width, cursor->height, cursor->xhot, cursor->yhot};
+      |                                          ^
+host/gpu/cursor.c:107:9: note: Assuming the condition is true
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |         ^~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:107:30: note: Left side of '||' is true
+  107 |     if (!gpu_events_drain(c) || c->cursor_invalid || !c->cursor_source) {
+      |                              ^
+host/gpu/cursor.c:108:9: note: Calling 'refresh_cursor'
+  108 |         refresh_cursor(c);
+      |         ^~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:89:5: note: 'cursor' initialized here
+   89 |     XFixesCursorImage *cursor = XFixesGetCursorImage(c->display);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/cursor.c:90:17: note: Assuming 'cursor' is equal to NULL
+   90 |     gpu_require(cursor != NULL, "XFixes cursor image");
+      |                 ^~~~~~~~~~~~~~
+host/gpu/cursor.c:93:9: note: Assuming field 'cursor_source' is 0
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |         ^~~~~~~~~~~~~~~~
+host/gpu/cursor.c:93:26: note: Left side of '&&' is false
+   93 |     if (c->cursor_source && c->cursor_serial != cursor->cursor_serial) {
+      |                          ^
+host/gpu/cursor.c:97:42: note: Access to field 'width' results in a dereference of a null pointer (loaded from variable 'cursor')
+   97 |     c->cursor_shape = (gpu_cursor_shape){cursor->width, cursor->height, cursor->xhot, cursor->yhot};
+      |                                          ^~~~~~
+4 warnings generated.

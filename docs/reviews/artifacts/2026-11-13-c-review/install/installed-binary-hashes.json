@@ -1,0 +1,26 @@
+{
+  "blent": {
+    "sha256": "e803b71c0988fb9a3d5d027d89b8cbddb2b6db89272712726e52275e9f8190cc",
+    "matches_build": true
+  },
+  "blent-gui": {
+    "sha256": "c63eca363c02f1b174bb1ff67700f7011af63ab9c8f8d7f0811c2b06e3be2f7b",
+    "matches_build": true
+  },
+  "blent-audio": {
+    "sha256": "e3c9d2cb25b765e4fa9bb49f973f2de0e33d7e1ad293f235a9e3cb401302a985",
+    "matches_build": true
+  },
+  "blent-usb-broker": {
+    "sha256": "ab5dc8619cdec72ede48725d54ccc636e70d6dfbe45b98f1d4b06c7faa334c97",
+    "matches_build": true
+  },
+  "evdi_helper": {
+    "sha256": "9a2a5c8cf0fe9100ff9e6a8b3957049efa96716ef24aee75442c2a43cb1c7bb0",
+    "matches_build": true
+  },
+  "blent-usb-io": {
+    "sha256": "09a1aba3c42c122a7e9902ce0310f732a903bdf4e5402983000ea61ee5d497fe",
+    "matches_build": true
+  }
+}

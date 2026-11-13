@@ -1,0 +1,52 @@
+host/gpu/encode.c:41:54: warning: Access to field 'data' results in a dereference of a null pointer (loaded from field 'frames') [core.NullDereference]
+   41 |     AVHWFramesContext *frames = (AVHWFramesContext *)e->frames->data;
+      |                                                      ^
+host/gpu/encode.c:78:23: note: Calling 'frame_pool'
+   78 |     import_rgb(e, c); frame_pool(e, options); codec_open(e, options);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~
+host/gpu/encode.c:39:5: note: Value assigned to field 'frames'
+   39 |     e->frames = av_hwframe_ctx_alloc(e->device);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/encode.c:40:17: note: Assuming field 'frames' is equal to NULL
+   40 |     gpu_require(e->frames != NULL, "NV12 frame pool");
+      |                 ^~~~~~~~~~~~~~~~~
+host/gpu/encode.c:40:17: note: Assuming pointer value is null
+   40 |     gpu_require(e->frames != NULL, "NV12 frame pool");
+      |                 ^~~~~~~~~~~~~~~~~
+host/gpu/encode.c:41:54: note: Access to field 'data' results in a dereference of a null pointer (loaded from field 'frames')
+   41 |     AVHWFramesContext *frames = (AVHWFramesContext *)e->frames->data;
+      |                                                      ^  ~~~~~~
+host/gpu/encode.c:53:21: warning: Access to field 'width' results in a dereference of a null pointer (loaded from field 'codec') [core.NullDereference]
+   53 |     e->codec->width = options->width; e->codec->height = options->height;
+      |                     ^
+host/gpu/encode.c:78:47: note: Calling 'codec_open'
+   78 |     import_rgb(e, c); frame_pool(e, options); codec_open(e, options);
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~
+host/gpu/encode.c:50:17: note: Assuming 'codec' is equal to NULL
+   50 |     gpu_require(codec != NULL, "stock h264_vaapi encoder");
+      |                 ^~~~~~~~~~~~~
+host/gpu/encode.c:51:5: note: Value assigned to field 'codec'
+   51 |     e->codec = avcodec_alloc_context3(codec);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/encode.c:52:17: note: Assuming field 'codec' is equal to NULL
+   52 |     gpu_require(e->codec != NULL, "codec allocation");
+      |                 ^~~~~~~~~~~~~~~~
+host/gpu/encode.c:52:17: note: Assuming pointer value is null
+   52 |     gpu_require(e->codec != NULL, "codec allocation");
+      |                 ^~~~~~~~~~~~~~~~
+host/gpu/encode.c:53:21: note: Access to field 'width' results in a dereference of a null pointer (loaded from field 'codec')
+   53 |     e->codec->width = options->width; e->codec->height = options->height;
+      |        ~~~~~        ^
+host/gpu/encode.c:120:16: warning: Access to field 'pts' results in a dereference of a null pointer (loaded from variable 'frame') [core.NullDereference]
+  120 |     frame->pts = timestamp;
+      |     ~~~~~      ^
+host/gpu/encode.c:118:5: note: 'frame' initialized here
+  118 |     AVFrame *frame = av_frame_alloc(); gpu_require(frame != NULL, "frame allocation");
+      |     ^~~~~~~~~~~~~~
+host/gpu/encode.c:118:52: note: Assuming 'frame' is equal to NULL
+  118 |     AVFrame *frame = av_frame_alloc(); gpu_require(frame != NULL, "frame allocation");
+      |                                                    ^~~~~~~~~~~~~
+host/gpu/encode.c:120:16: note: Access to field 'pts' results in a dereference of a null pointer (loaded from variable 'frame')
+  120 |     frame->pts = timestamp;
+      |     ~~~~~      ^
+3 warnings generated.

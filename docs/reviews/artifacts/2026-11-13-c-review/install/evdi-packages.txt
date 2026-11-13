@@ -1,0 +1,2 @@
+linux-main-modules-evdi-7.0.0-43-generic	install ok installed
+linux-modules-evdi-generic-hwe-24.04	install ok installed

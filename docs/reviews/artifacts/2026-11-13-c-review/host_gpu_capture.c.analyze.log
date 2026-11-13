@@ -1,0 +1,178 @@
+host/gpu/capture.c:24:59: warning: Access to field 'name' results in a dereference of a null pointer (loaded from variable 'output') [core.NullDereference]
+   24 |     gpu_require(gpu_output_matches(c, options, c->output, output->name), "unchanged output identity");
+      |                                                           ^
+host/gpu/capture.c:109:17: note: Assuming field 'leased' is not equal to 0
+  109 |     gpu_require(!c->leased, "final RGB consumer release");
+      |                 ^~~~~~~~~~
+host/gpu/capture.c:110:5: note: Calling 'check_geometry'
+  110 |     check_geometry(c, options);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:56:9: note: Assuming field 'pattern' is 0
+   56 |     if (options->pattern) return;
+      |         ^~~~~~~~~~~~~~~~
+host/gpu/capture.c:56:5: note: Taking false branch
+   56 |     if (options->pattern) return;
+      |     ^
+host/gpu/capture.c:58:17: note: Assuming 'resources' is equal to NULL
+   58 |     gpu_require(resources != NULL, "RandR current inventory");
+      |                 ^~~~~~~~~~~~~~~~~
+host/gpu/capture.c:59:25: note: Calling 'geometry'
+   59 |     XRRCrtcInfo *info = geometry(c, resources, options);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:22:5: note: 'output' initialized here
+   22 |     XRROutputInfo *output = XRRGetOutputInfo(c->display, resources, c->output);
+      |     ^~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:23:17: note: Assuming 'output' is null
+   23 |     gpu_require(output && output->connection == RR_Connected && output->crtc, "active capture output");
+      |                 ^~~~~~
+host/gpu/capture.c:23:24: note: Left side of '&&' is false
+   23 |     gpu_require(output && output->connection == RR_Connected && output->crtc, "active capture output");
+      |                        ^
+host/gpu/capture.c:24:59: note: Access to field 'name' results in a dereference of a null pointer (loaded from variable 'output')
+   24 |     gpu_require(gpu_output_matches(c, options, c->output, output->name), "unchanged output identity");
+      |                                                           ^~~~~~
+host/gpu/capture.c:39:25: warning: Access to field 'noutput' results in a dereference of a null pointer (loaded from variable 'resources') [core.NullDereference]
+   39 |     for (int i = 0; i < resources->noutput; i++) {
+      |                         ^
+host/gpu/capture.c:85:50: note: Assuming field 'display' is not equal to NULL
+   85 |     c->display = XOpenDisplay(NULL); gpu_require(c->display != NULL, "X11 connection");
+      |                                                  ^~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:88:17: note: Assuming field 'root_depth' is not equal to 24
+   88 |     gpu_require(DefaultDepth(c->display, DefaultScreen(c->display)) == 24, "24-bit X11 screen");
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xlib.h:109:33: note: expanded from macro 'DefaultDepth'
+  109 | #define DefaultDepth(dpy, scr)  (ScreenOfDisplay(dpy,scr)->root_depth)
+      |                                 ^
+host/gpu/capture.c:90:17: note: Assuming the condition is false
+   90 |     gpu_require(XSyncInitialize(c->display, &major, &minor) && (major * 100 + minor >= 301), "SYNC 3.1 fences");
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:90:61: note: Left side of '&&' is false
+   90 |     gpu_require(XSyncInitialize(c->display, &major, &minor) && (major * 100 + minor >= 301), "SYNC 3.1 fences");
+      |                                                             ^
+host/gpu/capture.c:91:9: note: Assuming field 'pattern' is 0
+   91 |     if (!options->pattern) locate_output(c, options);
+      |         ^~~~~~~~~~~~~~~~~
+host/gpu/capture.c:91:5: note: Taking true branch
+   91 |     if (!options->pattern) locate_output(c, options);
+      |     ^
+host/gpu/capture.c:91:28: note: Calling 'locate_output'
+   91 |     if (!options->pattern) locate_output(c, options);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:36:5: note: 'resources' initialized here
+   36 |     XRRScreenResources *resources = XRRGetScreenResourcesCurrent(c->display, c->root);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:37:17: note: Assuming 'resources' is equal to NULL
+   37 |     gpu_require(resources != NULL, "RandR inventory");
+      |                 ^~~~~~~~~~~~~~~~~
+host/gpu/capture.c:39:25: note: Access to field 'noutput' results in a dereference of a null pointer (loaded from variable 'resources')
+   39 |     for (int i = 0; i < resources->noutput; i++) {
+      |                         ^~~~~~~~~
+host/gpu/capture.c:42:67: warning: Access to field 'name' results in a dereference of a null pointer (loaded from variable 'info') [core.NullDereference]
+   42 |         if (gpu_output_matches(c, options, resources->outputs[i], info->name)) {
+      |                                                                   ^
+host/gpu/capture.c:85:50: note: Assuming field 'display' is not equal to NULL
+   85 |     c->display = XOpenDisplay(NULL); gpu_require(c->display != NULL, "X11 connection");
+      |                                                  ^~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:88:17: note: Assuming field 'root_depth' is not equal to 24
+   88 |     gpu_require(DefaultDepth(c->display, DefaultScreen(c->display)) == 24, "24-bit X11 screen");
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xlib.h:109:33: note: expanded from macro 'DefaultDepth'
+  109 | #define DefaultDepth(dpy, scr)  (ScreenOfDisplay(dpy,scr)->root_depth)
+      |                                 ^
+host/gpu/capture.c:90:17: note: Assuming the condition is false
+   90 |     gpu_require(XSyncInitialize(c->display, &major, &minor) && (major * 100 + minor >= 301), "SYNC 3.1 fences");
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:90:61: note: Left side of '&&' is false
+   90 |     gpu_require(XSyncInitialize(c->display, &major, &minor) && (major * 100 + minor >= 301), "SYNC 3.1 fences");
+      |                                                             ^
+host/gpu/capture.c:91:9: note: Assuming field 'pattern' is 0
+   91 |     if (!options->pattern) locate_output(c, options);
+      |         ^~~~~~~~~~~~~~~~~
+host/gpu/capture.c:91:5: note: Taking true branch
+   91 |     if (!options->pattern) locate_output(c, options);
+      |     ^
+host/gpu/capture.c:91:28: note: Calling 'locate_output'
+   91 |     if (!options->pattern) locate_output(c, options);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:37:17: note: Assuming 'resources' is not equal to NULL
+   37 |     gpu_require(resources != NULL, "RandR inventory");
+      |                 ^~~~~~~~~~~~~~~~~
+host/gpu/capture.c:39:21: note: Assuming 'i' is < field 'noutput'
+   39 |     for (int i = 0; i < resources->noutput; i++) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:39:5: note: Loop condition is true.  Entering loop body
+   39 |     for (int i = 0; i < resources->noutput; i++) {
+      |     ^
+host/gpu/capture.c:40:9: note: 'info' initialized here
+   40 |         XRROutputInfo *info = XRRGetOutputInfo(c->display, resources, resources->outputs[i]);
+      |         ^~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:41:21: note: Assuming 'info' is equal to NULL
+   41 |         gpu_require(info != NULL, "RandR output");
+      |                     ^~~~~~~~~~~~
+host/gpu/capture.c:42:67: note: Access to field 'name' results in a dereference of a null pointer (loaded from variable 'info')
+   42 |         if (gpu_output_matches(c, options, resources->outputs[i], info->name)) {
+      |                                                                   ^~~~
+host/gpu/capture.c:73:17: warning: Access to field 'width' results in a dereference of a null pointer (loaded from variable 'reply') [core.NullDereference]
+   73 |     gpu_require(reply->width == c->width && reply->height == c->height, "export dimensions");
+      |                 ^
+host/gpu/capture.c:85:50: note: Assuming field 'display' is not equal to NULL
+   85 |     c->display = XOpenDisplay(NULL); gpu_require(c->display != NULL, "X11 connection");
+      |                                                  ^~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:88:17: note: Assuming field 'root_depth' is not equal to 24
+   88 |     gpu_require(DefaultDepth(c->display, DefaultScreen(c->display)) == 24, "24-bit X11 screen");
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xlib.h:109:33: note: expanded from macro 'DefaultDepth'
+  109 | #define DefaultDepth(dpy, scr)  (ScreenOfDisplay(dpy,scr)->root_depth)
+      |                                 ^
+host/gpu/capture.c:90:17: note: Assuming the condition is false
+   90 |     gpu_require(XSyncInitialize(c->display, &major, &minor) && (major * 100 + minor >= 301), "SYNC 3.1 fences");
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:90:61: note: Left side of '&&' is false
+   90 |     gpu_require(XSyncInitialize(c->display, &major, &minor) && (major * 100 + minor >= 301), "SYNC 3.1 fences");
+      |                                                             ^
+host/gpu/capture.c:91:9: note: Assuming field 'pattern' is not equal to 0
+   91 |     if (!options->pattern) locate_output(c, options);
+      |         ^~~~~~~~~~~~~~~~~
+host/gpu/capture.c:91:5: note: Taking false branch
+   91 |     if (!options->pattern) locate_output(c, options);
+      |     ^
+host/gpu/capture.c:96:5: note: Calling 'export_pixmap'
+   96 |     export_pixmap(c);
+      |     ^~~~~~~~~~~~~~~~
+host/gpu/capture.c:69:5: note: 'reply' initialized here
+   69 |     xcb_dri3_buffer_from_pixmap_reply_t *reply = xcb_dri3_buffer_from_pixmap_reply(connection,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:71:17: note: Assuming 'reply' is null
+   71 |     gpu_require(reply && reply->nfd == 1, "DRI3 single-object pixmap export");
+      |                 ^~~~~
+host/gpu/capture.c:71:23: note: Left side of '&&' is false
+   71 |     gpu_require(reply && reply->nfd == 1, "DRI3 single-object pixmap export");
+      |                       ^
+host/gpu/capture.c:73:17: note: Access to field 'width' results in a dereference of a null pointer (loaded from variable 'reply')
+   73 |     gpu_require(reply->width == c->width && reply->height == c->height, "export dimensions");
+      |                 ^~~~~
+host/gpu/capture.c:86:15: warning: Access to field 'screens' results in a dereference of a null pointer (loaded from field 'display') [core.NullDereference]
+   86 |     c->root = DefaultRootWindow(c->display);
+      |               ^                    ~~~~~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xlib.h:90:34: note: expanded from macro 'DefaultRootWindow'
+   90 | #define DefaultRootWindow(dpy)  (ScreenOfDisplay(dpy,DefaultScreen(dpy))->root)
+      |                                  ^               ~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xlib.h:119:36: note: expanded from macro 'ScreenOfDisplay'
+  119 | #define ScreenOfDisplay(dpy, scr)(&((_XPrivDisplay)(dpy))->screens[scr])
+      |                                    ^                ~~~
+host/gpu/capture.c:85:5: note: Value assigned to field 'display'
+   85 |     c->display = XOpenDisplay(NULL); gpu_require(c->display != NULL, "X11 connection");
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:85:50: note: Assuming field 'display' is equal to NULL
+   85 |     c->display = XOpenDisplay(NULL); gpu_require(c->display != NULL, "X11 connection");
+      |                                                  ^~~~~~~~~~~~~~~~~~
+host/gpu/capture.c:86:15: note: Access to field 'screens' results in a dereference of a null pointer (loaded from field 'display')
+   86 |     c->root = DefaultRootWindow(c->display);
+      |               ^                    ~~~~~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xlib.h:90:34: note: expanded from macro 'DefaultRootWindow'
+   90 | #define DefaultRootWindow(dpy)  (ScreenOfDisplay(dpy,DefaultScreen(dpy))->root)
+      |                                  ^               ~~~
+/tmp/blent-c-review-20261113/sysroot/usr/include/X11/Xlib.h:119:36: note: expanded from macro 'ScreenOfDisplay'
+  119 | #define ScreenOfDisplay(dpy, scr)(&((_XPrivDisplay)(dpy))->screens[scr])
+      |                                    ^                ~~~
+5 warnings generated.

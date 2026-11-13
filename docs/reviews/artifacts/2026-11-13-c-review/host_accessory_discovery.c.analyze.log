@@ -1,0 +1,19 @@
+host/accessory/discovery.c:18:25: warning: Null pointer passed to 1st parameter expecting 'nonnull' [core.NonNullParamChecker]
+   18 |     unsigned long value=strtoul(text,&end,10);
+      |                         ^
+host/accessory/discovery.c:69:33: note: Passing value via 1st parameter 'text'
+   69 |     int limit = inventory_limit(text);
+      |                                 ^~~~
+host/accessory/discovery.c:69:17: note: Calling 'inventory_limit'
+   69 |     int limit = inventory_limit(text);
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+host/accessory/discovery.c:16:23: note: Assuming 'text' is null
+   16 |     accessory_require(text && *text>='1' && *text<='9',"invalid discovery capacity");
+      |                       ^~~~
+host/accessory/discovery.c:16:28: note: Left side of '&&' is false
+   16 |     accessory_require(text && *text>='1' && *text<='9',"invalid discovery capacity");
+      |                            ^
+host/accessory/discovery.c:18:25: note: Null pointer passed to 1st parameter expecting 'nonnull'
+   18 |     unsigned long value=strtoul(text,&end,10);
+      |                         ^       ~~~~
+1 warning generated.

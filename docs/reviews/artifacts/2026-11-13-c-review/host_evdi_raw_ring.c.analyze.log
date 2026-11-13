@@ -1,0 +1,21 @@
+host/evdi/raw_ring.c:80:90: warning: The left operand of '!=' is a garbage value [core.UndefinedBinaryOperatorResult]
+   80 |     if (getpeername(socket, (struct sockaddr *)&peer, &peer_size) < 0 || peer.sun_family != AF_UNIX) return 0;
+      |                                                                          ~~~~~~~~~~~~~~~ ^
+host/evdi/raw_ring.c:77:9: note: Assuming the condition is false
+   77 |     if (getsockopt(socket, SOL_SOCKET, SO_TYPE, &type, &size) < 0 || type != SOCK_SEQPACKET) return 0;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/raw_ring.c:77:9: note: Left side of '||' is false
+host/evdi/raw_ring.c:77:70: note: Assuming 'type' is equal to SOCK_SEQPACKET
+   77 |     if (getsockopt(socket, SOL_SOCKET, SO_TYPE, &type, &size) < 0 || type != SOCK_SEQPACKET) return 0;
+      |                                                                      ^~~~~~~~~~~~~~~~~~~~~~
+host/evdi/raw_ring.c:77:5: note: Taking false branch
+   77 |     if (getsockopt(socket, SOL_SOCKET, SO_TYPE, &type, &size) < 0 || type != SOCK_SEQPACKET) return 0;
+      |     ^
+host/evdi/raw_ring.c:80:9: note: Assuming the condition is false
+   80 |     if (getpeername(socket, (struct sockaddr *)&peer, &peer_size) < 0 || peer.sun_family != AF_UNIX) return 0;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+host/evdi/raw_ring.c:80:9: note: Left side of '||' is false
+host/evdi/raw_ring.c:80:90: note: The left operand of '!=' is a garbage value
+   80 |     if (getpeername(socket, (struct sockaddr *)&peer, &peer_size) < 0 || peer.sun_family != AF_UNIX) return 0;
+      |                                                                          ~~~~~~~~~~~~~~~ ^
+1 warning generated.

@@ -1,0 +1,3414 @@
+{
+  "files": 69,
+  "functions": 567,
+  "maximum": 9,
+  "violations": [],
+  "versions": {
+    "tree-sitter": "0.25.2",
+    "tree-sitter-c": "0.24.2"
+  },
+  "rows": [
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 10,
+      "name": "matches",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 16,
+      "name": "find_device",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 28,
+      "name": "is_accessory",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 33,
+      "name": "check_reopen",
+      "score": 5
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 46,
+      "name": "start_accessory",
+      "score": 7
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 69,
+      "name": "wait_accessory",
+      "score": 6
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 85,
+      "name": "wait_fresh_device",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 111,
+      "name": "reset_accessory",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 133,
+      "name": "accessory_interface",
+      "score": 5
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 137,
+      "name": "endpoints",
+      "score": 9
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 151,
+      "name": "claim_accessory",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 170,
+      "name": "check_selection",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 179,
+      "name": "open_target",
+      "score": 5
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 209,
+      "name": "accessory_open",
+      "score": 1
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 210,
+      "name": "accessory_open_selected",
+      "score": 2
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 214,
+      "name": "check_transfer",
+      "score": 5
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 220,
+      "name": "transfer_timeout",
+      "score": 1
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 225,
+      "name": "check_progress",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 229,
+      "name": "accessory_transfer",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/accessory.c",
+      "line": 242,
+      "name": "accessory_close",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/availability.c",
+      "line": 6,
+      "name": "debugging_interface",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/availability.c",
+      "line": 13,
+      "name": "debugging_alternate",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/availability.c",
+      "line": 25,
+      "name": "configuration_availability",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/availability.c",
+      "line": 37,
+      "name": "accessory_availability",
+      "score": 2
+    },
+    {
+      "path": "host/accessory/availability.c",
+      "line": 49,
+      "name": "accessory_require_available",
+      "score": 1
+    },
+    {
+      "path": "host/accessory/contract.c",
+      "line": 13,
+      "name": "accessory_require",
+      "score": 2
+    },
+    {
+      "path": "host/accessory/contract.c",
+      "line": 16,
+      "name": "accessory_clock",
+      "score": 1
+    },
+    {
+      "path": "host/accessory/contract.c",
+      "line": 21,
+      "name": "number",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/contract.c",
+      "line": 27,
+      "name": "accessory_parse_target",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/contract.c",
+      "line": 38,
+      "name": "selected_number",
+      "score": 6
+    },
+    {
+      "path": "host/accessory/contract.c",
+      "line": 45,
+      "name": "accessory_parse_selection",
+      "score": 1
+    },
+    {
+      "path": "host/accessory/contract.c",
+      "line": 54,
+      "name": "accessory_lock",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/discovery.c",
+      "line": 15,
+      "name": "inventory_limit",
+      "score": 6
+    },
+    {
+      "path": "host/accessory/discovery.c",
+      "line": 22,
+      "name": "put16",
+      "score": 1
+    },
+    {
+      "path": "host/accessory/discovery.c",
+      "line": 25,
+      "name": "inventory_record",
+      "score": 7
+    },
+    {
+      "path": "host/accessory/discovery.c",
+      "line": 53,
+      "name": "inventory_records",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/discovery.c",
+      "line": 67,
+      "name": "accessory_list",
+      "score": 1
+    },
+    {
+      "path": "host/accessory/stream.c",
+      "line": 13,
+      "name": "output_all",
+      "score": 4
+    },
+    {
+      "path": "host/accessory/stream.c",
+      "line": 22,
+      "name": "read_usb",
+      "score": 5
+    },
+    {
+      "path": "host/accessory/stream.c",
+      "line": 31,
+      "name": "receive_bytes",
+      "score": 3
+    },
+    {
+      "path": "host/accessory/stream.c",
+      "line": 40,
+      "name": "send_usb",
+      "score": 5
+    },
+    {
+      "path": "host/accessory/stream.c",
+      "line": 50,
+      "name": "send_bytes",
+      "score": 5
+    },
+    {
+      "path": "host/accessory/stream.c",
+      "line": 60,
+      "name": "main",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 14,
+      "name": "capture_now_us",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 19,
+      "name": "capture_now_ms",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 21,
+      "name": "cmp_int",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 26,
+      "name": "on_dpms",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 32,
+      "name": "capture_pixel_order",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 36,
+      "name": "capture_to_nv12",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 46,
+      "name": "mark_all_dirty",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 56,
+      "name": "apply_damage",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 67,
+      "name": "mark_damage",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 73,
+      "name": "cursor_damage",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 79,
+      "name": "restore_cursor",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 83,
+      "name": "draw_cursor",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 88,
+      "name": "capture_active",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 95,
+      "name": "publish_frame",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 117,
+      "name": "reject_mode",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 124,
+      "name": "validate_frame_format",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 137,
+      "name": "validate_mode_dimensions",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 150,
+      "name": "retire_mode_buffers",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 172,
+      "name": "configure_mode_geometry",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 204,
+      "name": "allocate_framebuffer",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 233,
+      "name": "allocate_stream_buffers",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 251,
+      "name": "mode_buffers_allocated",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 257,
+      "name": "on_mode_changed",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 303,
+      "name": "normalize_framebuffer_rect",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 317,
+      "name": "normalize_full_frame",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 330,
+      "name": "normalize_framebuffer",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 339,
+      "name": "normalize_snapshot",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 351,
+      "name": "grab_snapshot",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 383,
+      "name": "grab_now",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 388,
+      "name": "on_update_ready",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 406,
+      "name": "on_crtc_state",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 411,
+      "name": "cursor_event_image",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 425,
+      "name": "publish_cursor",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 431,
+      "name": "on_cursor_set",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 454,
+      "name": "on_cursor_move",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 463,
+      "name": "capture_period_ms",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 471,
+      "name": "capture_poll_timeout",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 517,
+      "name": "request_capture_if_due",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 534,
+      "name": "recover_capture_if_stalled",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 554,
+      "name": "report_capture_stats",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 581,
+      "name": "capture_wakeup_fd",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 587,
+      "name": "resume_capture",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 605,
+      "name": "apply_capture_activity",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 620,
+      "name": "acknowledge_capture_activity",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 627,
+      "name": "service_capture_control",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 639,
+      "name": "capture_event_count",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 652,
+      "name": "dispatch_capture_events",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 662,
+      "name": "poll_capture_events",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 689,
+      "name": "publish_shared_capture",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 717,
+      "name": "service_shared_capture",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 722,
+      "name": "shared_poll_timeout",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 736,
+      "name": "capture_tick",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 755,
+      "name": "trace_display_progress",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 773,
+      "name": "service_display_progress",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/capture.c",
+      "line": 794,
+      "name": "capture_run",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/capture_activity.c",
+      "line": 3,
+      "name": "capture_activity_decode",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture_activity.c",
+      "line": 16,
+      "name": "capture_activity_encode",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture_activity.c",
+      "line": 24,
+      "name": "capture_activity_next",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/capture_control.c",
+      "line": 10,
+      "name": "capture_control_socket",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/capture_control.c",
+      "line": 21,
+      "name": "capture_control_init",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/capture_control.c",
+      "line": 32,
+      "name": "capture_control_poll",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/capture_control.c",
+      "line": 57,
+      "name": "capture_control_ack",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 9,
+      "name": "conv_copy_rgba_to_bgra",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 16,
+      "name": "row_is_dirty",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 20,
+      "name": "row_span",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 24,
+      "name": "clamp_byte",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 31,
+      "name": "write_chroma",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 41,
+      "name": "convert_scaled_span",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 72,
+      "name": "row_part",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 78,
+      "name": "convert_strip_scaled",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 88,
+      "name": "convert_native_span",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 115,
+      "name": "convert_strip",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 127,
+      "name": "convert_ordered_job",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 137,
+      "name": "convert_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 138,
+      "name": "convert_adaptive_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 139,
+      "name": "convert_rgba_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 140,
+      "name": "convert_rgba_adaptive_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 144,
+      "name": "convert_avx2_ordered",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 150,
+      "name": "convert_avx2_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 151,
+      "name": "convert_avx2_adaptive_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 152,
+      "name": "convert_avx2_rgba_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 153,
+      "name": "convert_avx2_rgba_adaptive_job",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 156,
+      "name": "conv_simd_available",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 165,
+      "name": "conv_pool_set_simd",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 174,
+      "name": "avx2_scale",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 178,
+      "name": "use_avx2",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 187,
+      "name": "select_kernel",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 200,
+      "name": "row_work",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 208,
+      "name": "measure_work",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 223,
+      "name": "job_count",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 232,
+      "name": "conv_worker",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 254,
+      "name": "conv_pool_start",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 275,
+      "name": "weighted_end",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 283,
+      "name": "prepare_jobs",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 299,
+      "name": "start_workers",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 310,
+      "name": "conv_pool_convert",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 327,
+      "name": "conv_pool_stop",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion.c",
+      "line": 338,
+      "name": "conv_pool_destroy",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion_box.h",
+      "line": 7,
+      "name": "box_two",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/conversion_box.h",
+      "line": 15,
+      "name": "box_four",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/conversion_box.h",
+      "line": 29,
+      "name": "box_row",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/conversion_box.h",
+      "line": 40,
+      "name": "convert_box_span",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/conversion_box.h",
+      "line": 58,
+      "name": "convert_box_strip",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 5,
+      "name": "cursor_image_valid",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 13,
+      "name": "cursor_overlay_destroy",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 23,
+      "name": "cursor_copy_image",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 36,
+      "name": "replace_image",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 47,
+      "name": "cursor_overlay_set",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 61,
+      "name": "can_adopt",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 67,
+      "name": "cursor_overlay_take",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 79,
+      "name": "cursor_overlay_restore",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 92,
+      "name": "cursor_visible",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 101,
+      "name": "cursor_blend",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 112,
+      "name": "cursor_draw_row",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/cursor_overlay.c",
+      "line": 122,
+      "name": "cursor_overlay_draw",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 51,
+      "name": "handle_signal",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 58,
+      "name": "available_cpus",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 73,
+      "name": "conv_pool_init",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 85,
+      "name": "choose_card_after",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 95,
+      "name": "find_card_after",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 109,
+      "name": "find_evdi_device_after",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 128,
+      "name": "find_evdi_device_in",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 132,
+      "name": "connector_status_connected",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 144,
+      "name": "directory_has_connected_output",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 157,
+      "name": "card_connected_in",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 172,
+      "name": "open_available_device_in",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 194,
+      "name": "open_session_device_in",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 203,
+      "name": "request_evdi_device",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 217,
+      "name": "wait_for_available_device",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 234,
+      "name": "numeric_argument",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 243,
+      "name": "numeric_option_known",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 248,
+      "name": "set_card_index",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 254,
+      "name": "bounded_scale",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 259,
+      "name": "bounded_fps",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 263,
+      "name": "set_numeric_option",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 274,
+      "name": "conversion_capacity",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 281,
+      "name": "set_helper_option",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 302,
+      "name": "parse_helper_options",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 313,
+      "name": "initialize_helper_runtime",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 325,
+      "name": "acquire_capture_device_in",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 356,
+      "name": "acquire_capture_device",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 360,
+      "name": "open_edid_file",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 374,
+      "name": "read_edid_file",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 406,
+      "name": "start_capture_writer",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 427,
+      "name": "shutdown_capture",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 462,
+      "name": "run_capture",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 468,
+      "name": "configure_raw_socket",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 479,
+      "name": "configure_capture_control",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 492,
+      "name": "configure_capture_channels",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 507,
+      "name": "configure_conversion_simd",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 514,
+      "name": "configure_capture_format",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/evdi_helper.c",
+      "line": 520,
+      "name": "main",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 11,
+      "name": "fifo_now_ms",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 19,
+      "name": "capacity_value",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 30,
+      "name": "requested_capacity",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 43,
+      "name": "report_capacity",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 61,
+      "name": "update_capacity",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 75,
+      "name": "release_retired_fifo",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 82,
+      "name": "fifo_writer_open",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 127,
+      "name": "wait_fifo_writable",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 138,
+      "name": "retry_fifo_write",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 147,
+      "name": "write_fifo_bytes",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 164,
+      "name": "retire_partial_fifo",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 181,
+      "name": "fifo_writer_write",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/fifo_writer.c",
+      "line": 199,
+      "name": "fifo_writer_close",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 12,
+      "name": "frame_exchange_init",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 22,
+      "name": "frame_exchange_enable_demand",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 28,
+      "name": "frame_exchange_reader",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 44,
+      "name": "frame_exchange_take_request",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 54,
+      "name": "frame_exchange_begin",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 63,
+      "name": "full_spans",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 68,
+      "name": "frame_exchange_mark_all",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 78,
+      "name": "mark_region",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 84,
+      "name": "frame_exchange_damage",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 90,
+      "name": "frame_exchange_damage_rect",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 98,
+      "name": "histories_allocated",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 103,
+      "name": "frame_exchange_resize",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 125,
+      "name": "frame_exchange_allocated",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 129,
+      "name": "frame_exchange_quiescent",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 137,
+      "name": "frame_exchange_retire",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 154,
+      "name": "frame_exchange_publish",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 177,
+      "name": "wait_for_frame",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 188,
+      "name": "frame_exchange_claim",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 231,
+      "name": "frame_exchange_release",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 240,
+      "name": "frame_exchange_free",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 254,
+      "name": "frame_exchange_target",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 258,
+      "name": "frame_exchange_dimensions",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 261,
+      "name": "frame_exchange_is_ready",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 262,
+      "name": "frame_exchange_wakeup_fd",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 263,
+      "name": "frame_exchange_set_ready",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 269,
+      "name": "frame_exchange_wake",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 274,
+      "name": "frame_exchange_update",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 281,
+      "name": "frame_damage_rect",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 284,
+      "name": "frame_exchange_invalidate",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 289,
+      "name": "frame_exchange_latency_add",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/frame_exchange.c",
+      "line": 295,
+      "name": "frame_exchange_latency_take",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 11,
+      "name": "advice_current",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 21,
+      "name": "read_idle_control",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 38,
+      "name": "idle_fields",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 54,
+      "name": "idle_source_matches",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 60,
+      "name": "idle_control_value",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 75,
+      "name": "read_interval",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 82,
+      "name": "idle_control_interval",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 87,
+      "name": "initial_advice_valid",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 94,
+      "name": "idle_control_begin",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 121,
+      "name": "idle_control_reader_interval",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/idle_control.c",
+      "line": 129,
+      "name": "idle_control_end",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/pixel_damage.h",
+      "line": 10,
+      "name": "pixel_damage_range",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/pixel_damage.h",
+      "line": 23,
+      "name": "pixel_chroma_range",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/pixel_damage.h",
+      "line": 33,
+      "name": "pixel_larger_gap",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/pixel_damage.h",
+      "line": 37,
+      "name": "pixel_remaining_gap",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/pixel_damage.h",
+      "line": 44,
+      "name": "pixel_row_merge",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/pixel_damage.h",
+      "line": 53,
+      "name": "pixel_damage_merge",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/pixel_damage.h",
+      "line": 62,
+      "name": "pixel_damage_region",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/pixel_format.h",
+      "line": 6,
+      "name": "pixel_order_valid",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/pixel_span.h",
+      "line": 13,
+      "name": "pixel_row_split",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/pixel_span.h",
+      "line": 19,
+      "name": "pixel_span_clipped",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 18,
+      "name": "raw_u32",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 21,
+      "name": "raw_u64",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 24,
+      "name": "raw_read64",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 27,
+      "name": "raw_read32",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 31,
+      "name": "raw_message",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 46,
+      "name": "raw_send",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 65,
+      "name": "raw_retire",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 75,
+      "name": "raw_ring_init",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 87,
+      "name": "raw_geometry",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 97,
+      "name": "raw_ring_mark_all",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 105,
+      "name": "raw_ring_damage",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 117,
+      "name": "raw_ring_converted",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 122,
+      "name": "raw_allocate_histories",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 133,
+      "name": "raw_allocate",
+      "score": 7
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 150,
+      "name": "raw_ring_resize",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 166,
+      "name": "raw_close_rights",
+      "score": 5
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 179,
+      "name": "raw_control",
+      "score": 9
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 198,
+      "name": "raw_receive",
+      "score": 8
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 211,
+      "name": "raw_ring_service",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 220,
+      "name": "raw_ring_acquire",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 232,
+      "name": "raw_ring_publish",
+      "score": 6
+    },
+    {
+      "path": "host/evdi/raw_ring.c",
+      "line": 244,
+      "name": "raw_ring_close",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 17,
+      "name": "writer_now_us",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 24,
+      "name": "writer_now_ms",
+      "score": 1
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 29,
+      "name": "writer_idle_ms",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 36,
+      "name": "record_latency",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 54,
+      "name": "add_period",
+      "score": 2
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 64,
+      "name": "ensure_writer_fifo",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 82,
+      "name": "claim_writer_frame",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 103,
+      "name": "writer_frame_due",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 122,
+      "name": "pace_writer",
+      "score": 3
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 147,
+      "name": "write_writer_frame",
+      "score": 4
+    },
+    {
+      "path": "host/evdi/writer.c",
+      "line": 160,
+      "name": "writer_run",
+      "score": 8
+    },
+    {
+      "path": "host/gpu/cadence.c",
+      "line": 3,
+      "name": "gpu_cursor_intersects",
+      "score": 8
+    },
+    {
+      "path": "host/gpu/cadence.c",
+      "line": 13,
+      "name": "gpu_capture_deadline",
+      "score": 3
+    },
+    {
+      "path": "host/gpu/cadence.c",
+      "line": 19,
+      "name": "gpu_intersects",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/cadence.c",
+      "line": 24,
+      "name": "gpu_refresh_due",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 9,
+      "name": "check_transform",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 21,
+      "name": "geometry",
+      "score": 5
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 35,
+      "name": "locate_output",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 55,
+      "name": "check_geometry",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 66,
+      "name": "export_pixmap",
+      "score": 5
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 81,
+      "name": "gpu_capture_open",
+      "score": 3
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 100,
+      "name": "pattern",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 108,
+      "name": "gpu_capture_take",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 126,
+      "name": "gpu_capture_release",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/capture.c",
+      "line": 132,
+      "name": "gpu_capture_close",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 7,
+      "name": "intersects",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 13,
+      "name": "cursor_image",
+      "score": 3
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 26,
+      "name": "cursor_picture",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 39,
+      "name": "cache_cursor",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 50,
+      "name": "composite",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 56,
+      "name": "gpu_cursor_close",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 65,
+      "name": "watch_cursor",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 73,
+      "name": "cached_cursor",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 88,
+      "name": "refresh_cursor",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/cursor.c",
+      "line": 103,
+      "name": "gpu_cursor",
+      "score": 6
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 10,
+      "name": "gpu_av",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 17,
+      "name": "import_rgb",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 38,
+      "name": "frame_pool",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 48,
+      "name": "codec_open",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 70,
+      "name": "gpu_encoder_open",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 86,
+      "name": "convert",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 108,
+      "name": "drain",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 116,
+      "name": "gpu_encode",
+      "score": 3
+    },
+    {
+      "path": "host/gpu/encode.c",
+      "line": 132,
+      "name": "gpu_encoder_close",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/events.c",
+      "line": 8,
+      "name": "gpu_events_open",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/events.c",
+      "line": 24,
+      "name": "damaged",
+      "score": 3
+    },
+    {
+      "path": "host/gpu/events.c",
+      "line": 41,
+      "name": "gpu_events_drain",
+      "score": 6
+    },
+    {
+      "path": "host/gpu/events.c",
+      "line": 51,
+      "name": "cursor_affects_output",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/events.c",
+      "line": 58,
+      "name": "sample_pointer",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/events.c",
+      "line": 70,
+      "name": "gpu_events_wait",
+      "score": 6
+    },
+    {
+      "path": "host/gpu/events.c",
+      "line": 87,
+      "name": "gpu_events_close",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/identity.c",
+      "line": 11,
+      "name": "gpu_render_device",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/identity.c",
+      "line": 27,
+      "name": "gpu_identity_load",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/identity.c",
+      "line": 41,
+      "name": "gpu_output_matches",
+      "score": 8
+    },
+    {
+      "path": "host/gpu/main.c",
+      "line": 10,
+      "name": "pace",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/main.c",
+      "line": 15,
+      "name": "stream",
+      "score": 6
+    },
+    {
+      "path": "host/gpu/main.c",
+      "line": 37,
+      "name": "main",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/options.c",
+      "line": 9,
+      "name": "gpu_require",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/options.c",
+      "line": 15,
+      "name": "gpu_now_ns",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/options.c",
+      "line": 21,
+      "name": "number",
+      "score": 5
+    },
+    {
+      "path": "host/gpu/options.c",
+      "line": 28,
+      "name": "gpu_parse",
+      "score": 3
+    },
+    {
+      "path": "host/gpu/options.c",
+      "line": 43,
+      "name": "gpu_edid_valid",
+      "score": 9
+    },
+    {
+      "path": "host/gpu/options.c",
+      "line": 56,
+      "name": "gpu_same_render_node",
+      "score": 2
+    },
+    {
+      "path": "host/gpu/options.c",
+      "line": 60,
+      "name": "gpu_identity_transform",
+      "score": 4
+    },
+    {
+      "path": "host/gpu/output.c",
+      "line": 6,
+      "name": "gpu_emit_header",
+      "score": 1
+    },
+    {
+      "path": "host/gpu/output.c",
+      "line": 13,
+      "name": "gpu_emit_packet",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 10,
+      "name": "Java_com_blent_benchmark_RectNative_create",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 15,
+      "name": "Java_com_blent_benchmark_RectNative_destroy",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 20,
+      "name": "valid_span",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 24,
+      "name": "valid_decode",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 28,
+      "name": "Java_com_blent_benchmark_RectNative_decode",
+      "score": 8
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 47,
+      "name": "Java_com_blent_benchmark_RectNative_rgbHash",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 57,
+      "name": "Java_com_blent_benchmark_RectNative_enableTimestamps",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 69,
+      "name": "Java_com_blent_benchmark_RectNative_nextFrame",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_decode.c",
+      "line": 79,
+      "name": "Java_com_blent_benchmark_RectNative_presented",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/android-rect/native/rect_hash.c",
+      "line": 5,
+      "name": "rect_rgb_hash",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/aoa/main.c",
+      "line": 18,
+      "name": "cleanup",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/aoa/main.c",
+      "line": 19,
+      "name": "put32",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/aoa/main.c",
+      "line": 22,
+      "name": "put64",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/aoa/main.c",
+      "line": 25,
+      "name": "frame",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/aoa/main.c",
+      "line": 38,
+      "name": "exchange",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/aoa/main.c",
+      "line": 50,
+      "name": "wait_child",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/aoa/main.c",
+      "line": 61,
+      "name": "main",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 22,
+      "name": "now",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 26,
+      "name": "compare",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 30,
+      "name": "add_rectangle",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 34,
+      "name": "workload",
+      "score": 8
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 47,
+      "name": "mark_spans",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 54,
+      "name": "mark_tiles",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 63,
+      "name": "paint",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 74,
+      "name": "floor256",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 75,
+      "name": "oracle_pixel",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 85,
+      "name": "oracle_block",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 99,
+      "name": "initialize",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 108,
+      "name": "reset_output",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 112,
+      "name": "convert_tiles",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 126,
+      "name": "row_work",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 130,
+      "name": "fused_count",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 139,
+      "name": "weighted_jobs",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 148,
+      "name": "schedule",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 155,
+      "name": "weighted_convert",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 164,
+      "name": "execute",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 169,
+      "name": "distribution",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 178,
+      "name": "converted_pixels",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 184,
+      "name": "measure",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 204,
+      "name": "measure_schedule",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-conversion.c",
+      "line": 218,
+      "name": "main",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-gpu.c",
+      "line": 11,
+      "name": "compare",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/c-review-gpu.c",
+      "line": 15,
+      "name": "init",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-gpu.c",
+      "line": 30,
+      "name": "measure",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/c-review-gpu.c",
+      "line": 45,
+      "name": "main",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/checked_arguments.h",
+      "line": 13,
+      "name": "benchmark_number",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 32,
+      "name": "clock_ns",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 51,
+      "name": "mark_batch",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 63,
+      "name": "mark_work",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 68,
+      "name": "mark_work",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 84,
+      "name": "convert",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 93,
+      "name": "rotate",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 101,
+      "name": "checksum",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 107,
+      "name": "initialize",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 127,
+      "name": "run_lane",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 155,
+      "name": "destroy",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 163,
+      "name": "compare",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 168,
+      "name": "last_jobs",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 176,
+      "name": "print_lanes",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 192,
+      "name": "resident_peak_kib",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 204,
+      "name": "report",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 213,
+      "name": "arguments",
+      "score": 9
+    },
+    {
+      "path": "scripts/benchmarks/conversion.c",
+      "line": 222,
+      "name": "main",
+      "score": 8
+    },
+    {
+      "path": "scripts/benchmarks/conversion_exchange.h",
+      "line": 11,
+      "name": "replay_publish",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 33,
+      "name": "now_ns",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 39,
+      "name": "convert",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 50,
+      "name": "rotate",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 58,
+      "name": "mark",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 66,
+      "name": "mutate",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 72,
+      "name": "initialize",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 85,
+      "name": "compare",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 90,
+      "name": "checksum",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 96,
+      "name": "measure",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/damage_regions.c",
+      "line": 127,
+      "name": "main",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/consume.c",
+      "line": 7,
+      "name": "startup_placeholder",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/consume.c",
+      "line": 11,
+      "name": "prelude",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/consume.c",
+      "line": 16,
+      "name": "read_frame",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/consume.c",
+      "line": 22,
+      "name": "main",
+      "score": 8
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/gbm_readback.c",
+      "line": 9,
+      "name": "readback",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/gbm_readback.c",
+      "line": 20,
+      "name": "gbm_surface_lock_front_buffer",
+      "score": 7
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/observe.c",
+      "line": 6,
+      "name": "evdi_register_buffer",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/observe.c",
+      "line": 10,
+      "name": "sample_pixels",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/observe.c",
+      "line": 19,
+      "name": "evdi_grab_pixels",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 14,
+      "name": "stamp_us",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 15,
+      "name": "guest_only",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 20,
+      "name": "gray",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 21,
+      "name": "luma",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 22,
+      "name": "expected",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 34,
+      "name": "decode",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 43,
+      "name": "check_row",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/pattern.h",
+      "line": 52,
+      "name": "check_image",
+      "score": 7
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 12,
+      "name": "flip",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 15,
+      "name": "property",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 30,
+      "name": "resource_extent",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 36,
+      "name": "connector_extent",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 44,
+      "name": "read_output",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 58,
+      "name": "evdi_card",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 66,
+      "name": "connected_card",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 82,
+      "name": "primary",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 91,
+      "name": "framebuffer",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 101,
+      "name": "drain",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 105,
+      "name": "submit",
+      "score": 8
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/produce.c",
+      "line": 126,
+      "name": "main",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 20,
+      "name": "ping",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 22,
+      "name": "clock_id",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 26,
+      "name": "global",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 33,
+      "name": "global_remove",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 35,
+      "name": "configure",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 39,
+      "name": "top_configure",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 42,
+      "name": "top_close",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 44,
+      "name": "frame_done",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 48,
+      "name": "sync_output",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 49,
+      "name": "presented",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 54,
+      "name": "discarded",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 58,
+      "name": "setup",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 69,
+      "name": "paint",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 75,
+      "name": "submit",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 89,
+      "name": "hold",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/evdi_snapshot/wayland.c",
+      "line": 97,
+      "name": "main",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/frame-retirement.c",
+      "line": 12,
+      "name": "counted_usleep",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/frame-retirement.c",
+      "line": 16,
+      "name": "counted_wait",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/frame-retirement.c",
+      "line": 25,
+      "name": "now",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/frame-retirement.c",
+      "line": 30,
+      "name": "delay",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/frame-retirement.c",
+      "line": 35,
+      "name": "retire",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/frame-retirement.c",
+      "line": 43,
+      "name": "main",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/gpu-scene.c",
+      "line": 13,
+      "name": "now_ns",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/gpu-scene.c",
+      "line": 18,
+      "name": "paint",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/gpu-scene.c",
+      "line": 29,
+      "name": "main",
+      "score": 7
+    },
+    {
+      "path": "scripts/benchmarks/idle_writer.c",
+      "line": 15,
+      "name": "monotonic_us",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/idle_writer.c",
+      "line": 22,
+      "name": "observed_write",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/idle_writer.c",
+      "line": 39,
+      "name": "sleep_until",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/idle_writer.c",
+      "line": 50,
+      "name": "publish",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/idle_writer.c",
+      "line": 64,
+      "name": "mixed_damage",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/idle_writer.c",
+      "line": 83,
+      "name": "main",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 30,
+      "name": "now",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 36,
+      "name": "tcp_pair",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 52,
+      "name": "read_exact",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 63,
+      "name": "receive",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 81,
+      "name": "initialize",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 93,
+      "name": "advance",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 101,
+      "name": "poll_frame",
+      "score": 8
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 121,
+      "name": "queue_write",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 132,
+      "name": "retry_ready",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 138,
+      "name": "complete",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 152,
+      "name": "uring_frame",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 162,
+      "name": "pace",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 170,
+      "name": "compare",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 175,
+      "name": "destroy",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 181,
+      "name": "run",
+      "score": 7
+    },
+    {
+      "path": "scripts/benchmarks/io-uring.c",
+      "line": 211,
+      "name": "main",
+      "score": 9
+    },
+    {
+      "path": "scripts/benchmarks/normalization.c",
+      "line": 13,
+      "name": "stamp",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/normalization.c",
+      "line": 17,
+      "name": "compare_stamp",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/normalization.c",
+      "line": 21,
+      "name": "rectangles",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/normalization.c",
+      "line": 30,
+      "name": "check",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/normalization.c",
+      "line": 42,
+      "name": "measure",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/normalization.c",
+      "line": 57,
+      "name": "main",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 31,
+      "name": "now",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 37,
+      "name": "pace",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 46,
+      "name": "start",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 51,
+      "name": "read_exact",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 62,
+      "name": "receive_frame",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 77,
+      "name": "consume",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 88,
+      "name": "wait_writable",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 95,
+      "name": "sample_pending",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 101,
+      "name": "send_frame",
+      "score": 7
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 114,
+      "name": "produce",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 130,
+      "name": "initialize",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 150,
+      "name": "compare",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 155,
+      "name": "report_session",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 170,
+      "name": "measure",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 190,
+      "name": "validate",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/pipe-capacity.c",
+      "line": 200,
+      "name": "main",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 34,
+      "name": "clock_ns",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 39,
+      "name": "counters",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 45,
+      "name": "difference",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 50,
+      "name": "rounded",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 51,
+      "name": "layout",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 57,
+      "name": "pixels",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 60,
+      "name": "advise",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 66,
+      "name": "seal_size",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 72,
+      "name": "allocate",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 95,
+      "name": "release_storage",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 100,
+      "name": "send_descriptor",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 110,
+      "name": "receive_descriptor",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 124,
+      "name": "receive_storage",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 138,
+      "name": "send_bytes",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 141,
+      "name": "receive_bytes",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 144,
+      "name": "transfer",
+      "score": 5
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 155,
+      "name": "verify",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 159,
+      "name": "huge_kb",
+      "score": 7
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 174,
+      "name": "await_release",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 180,
+      "name": "publish",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 188,
+      "name": "producer",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 211,
+      "name": "consume",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 223,
+      "name": "report",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 232,
+      "name": "consumer",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/raw-ring.c",
+      "line": 250,
+      "name": "main",
+      "score": 7
+    },
+    {
+      "path": "scripts/benchmarks/readiness.c",
+      "line": 7,
+      "name": "counted_write",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/readiness.c",
+      "line": 11,
+      "name": "counted_poll",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/readiness.c",
+      "line": 20,
+      "name": "bench_write",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/readiness.c",
+      "line": 27,
+      "name": "bench_counts",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 21,
+      "name": "now_ns",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 26,
+      "name": "initialize",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 45,
+      "name": "mutate",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 55,
+      "name": "drain",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 60,
+      "name": "hash_slot",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 66,
+      "name": "compare",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 71,
+      "name": "measure",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/shared-damage.c",
+      "line": 97,
+      "name": "main",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 21,
+      "name": "argument",
+      "score": 6
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 32,
+      "name": "geometry",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 38,
+      "name": "options_parse",
+      "score": 9
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 49,
+      "name": "now_ns",
+      "score": 1
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 53,
+      "name": "wait_until",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 57,
+      "name": "write_frame",
+      "score": 4
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 64,
+      "name": "pattern",
+      "score": 3
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 75,
+      "name": "reserve",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 89,
+      "name": "finish_shared",
+      "score": 2
+    },
+    {
+      "path": "scripts/benchmarks/shared-encode-producer.c",
+      "line": 100,
+      "name": "main",
+      "score": 9
+    }
+  ]
+}

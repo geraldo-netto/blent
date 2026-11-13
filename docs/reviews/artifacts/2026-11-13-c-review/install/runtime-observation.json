@@ -1,0 +1,52 @@
+{
+  "source_commit": "e0f3aa57fcca9390f49594e1f041bcd75cbb646b",
+  "desktop_services": {
+    "blent.service": {
+      "exit": 0,
+      "stdout": "MainPID=307641\nResult=success\nActiveState=active\nSubState=running",
+      "stderr": ""
+    },
+    "blent-gui-reload-20261113-c-review.service": {
+      "exit": 0,
+      "stdout": "MainPID=307682\nResult=success\nActiveState=active\nSubState=running",
+      "stderr": ""
+    }
+  },
+  "desktop_processes": {
+    "blent.service": {
+      "pid": 307641,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent",
+      "sha256": "e803b71c0988fb9a3d5d027d89b8cbddb2b6db89272712726e52275e9f8190cc"
+    },
+    "blent-gui-reload-20261113-c-review.service": {
+      "pid": 307682,
+      "executable": "/home/netto/.local/share/blent/appimage/Blent.AppDir/usr/bin/blent-gui",
+      "sha256": "c63eca363c02f1b174bb1ff67700f7011af63ab9c8f8d7f0811c2b06e3be2f7b"
+    }
+  },
+  "desktop_status": {
+    "exit": 0,
+    "stdout": "blent is running (PID: 307641)",
+    "stderr": ""
+  },
+  "android_serial": "8002RH1010011900",
+  "android_package": "io.github.geraldo_netto.blent",
+  "android_pid": {
+    "exit": 0,
+    "stdout": "4294",
+    "stderr": ""
+  },
+  "android_apk_sha256": "6d3fd41e926e0c5ca56776283e0cab6f89722cad28b63f44ae9a8d404dfaa11f",
+  "installed_apk_matches_build": true,
+  "android_launch": "Starting: Intent { cmp=io.github.geraldo_netto.blent/com.blent.MainActivity }\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: io.github.geraldo_netto.blent/com.blent.MainActivity\nWaitTime: 725\nComplete\n",
+  "kernel": "7.0.0-43-generic",
+  "evdi_loaded": false,
+  "modinfo": {
+    "exit": 0,
+    "stdout": "filename:       /lib/modules/7.0.0-43-generic/ubuntu/dkms/evdi/evdi.ko.zst\nlicense:        GPL\ndescription:    Extensible Virtual Display Interface\nauthor:         DisplayLink (UK) Ltd.\nimport_ns:      DMA_BUF\nimport_ns:      DMA_BUF\nsrcversion:     C477D84009DFBE1A8FCE08C\ndepends:        drm_ttm_helper\nname:           evdi\nretpoline:      Y\nvermagic:       7.0.0-43-generic SMP preempt mod_unload modversions \nsig_id:         PKCS#7\nsigner:         Canonical Ltd. Kernel Module Signing\nsig_key:        E9:DF:13:0F:92:92:A9:B7\nsig_hashalgo:   sha512\nsignature:      0B:51:25:BE:AB:3E:AA:3D:21:41:E4:3A:F6:9D:06:14:67:E3:02:43:\n\t\t2B:0C:C0:C8:1E:DE:17:F6:F7:40:11:5D:2F:14:27:07:C3:1C:2B:72:\n\t\tD8:B0:CF:1D:E0:A1:1F:6D:E2:23:9E:09:5F:3A:2B:CA:5C:76:17:D7:\n\t\t50:1A:80:F2:76:9B:4F:66:98:88:E6:C2:5A:ED:91:CB:95:10:40:C2:\n\t\t69:E9:E8:B7:64:88:90:0E:66:86:DF:26:21:AF:EC:34:63:08:B9:24:\n\t\t67:19:56:EA:49:D7:D6:5F:11:90:7C:B8:55:0F:2E:03:AD:2E:A2:C5:\n\t\tC1:E1:90:23:9B:C4:EE:B0:A0:BC:92:5F:91:40:25:D4:1B:D9:9D:20:\n\t\t26:D1:41:ED:75:7C:0B:6B:2D:F7:4D:1A:E6:41:12:8D:AB:47:BD:1D:\n\t\t2D:30:FA:04:3C:0C:75:B7:74:FE:6F:D3:EB:AB:FC:3F:59:63:42:00:\n\t\t2D:F2:81:FA:70:E4:88:23:17:FE:4B:2D:9F:91:E1:44:7B:68:50:6F:\n\t\tE0:E2:80:40:7D:2B:0B:14:44:84:09:80:05:33:38:9D:0A:ED:62:19:\n\t\tA4:7F:C1:CB:46:A8:DD:CE:20:D7:FC:48:8A:AA:62:9D:DF:BD:BD:26:\n\t\t84:CF:E6:A8:66:5F:52:BA:6B:02:0D:BE:BE:52:14:2A:07:60:A3:A4:\n\t\tD4:50:6D:AB:49:3B:5A:CE:B4:0D:27:50:A2:AD:39:45:A6:9A:12:94:\n\t\t85:09:56:AD:B6:18:FE:75:7E:86:11:13:04:E3:7B:82:56:16:67:95:\n\t\tBC:FD:0E:4E:6A:53:A1:68:2B:75:48:F4:5E:11:5C:18:81:76:91:CE:\n\t\tA2:A2:FC:ED:38:73:40:AC:7B:B6:BD:E3:20:4F:1F:E1:EB:D4:22:7E:\n\t\tE6:A7:D9:F9:B2:8A:42:B5:3C:EF:90:99:C6:C3:DE:FF:66:11:01:D5:\n\t\tAD:74:FE:3C:A2:D4:40:CF:01:A9:FD:A7:C7:A2:E8:02:14:40:F4:7E:\n\t\t3D:DF:07:83:D4:03:9B:4D:B3:C4:E6:98:07:D3:6C:3A:A6:FA:AF:B6:\n\t\t56:AB:5E:30:E5:4F:D9:82:3E:F9:FC:DE:AE:18:CF:1E:F0:8A:83:0F:\n\t\t4D:16:8F:D3:DC:B6:35:62:57:99:B2:6D:68:2A:2F:9D:AD:09:20:D5:\n\t\t67:95:1C:3D:F7:81:43:3A:81:B9:74:BF:0A:A9:37:B1:2F:89:4C:BE:\n\t\t1D:F2:1F:9E:98:8B:78:10:C9:B3:57:B0:40:05:33:F3:A9:90:79:93:\n\t\tA2:1C:51:FD:0D:F9:64:A2:0F:4B:39:C3:55:25:82:F8:88:A5:E1:B6:\n\t\t38:D5:28:20:E2:CE:F3:D9:FD:BF:5B:34\nparm:           initial_loglevel:Initial log level (int)\nparm:           initial_device_count:Initial DRM device count (default: 0) (ushort)",
+    "stderr": ""
+  },
+  "tests": "paused; none executed",
+  "driver_and_reboot": "paused under T1389; neither performed",
+  "backup": "/home/netto/.cache/blent-reinstall-20261113-c-review/previous.AppDir"
+}

@@ -1,0 +1,4 @@
+make: Entering directory '/backups/disk2/projects/blent/host/accessory'
+mkdir -p "/tmp/blent-c-review-20261113/install/"
+cc -std=c11 -O2 -g -Wall -Wextra -Werror -I/home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/active/files/include/libusb-1.0 stream.c accessory.c contract.c discovery.c availability.c -pthread -l:libusb-1.0.so.0 -o "/tmp/blent-c-review-20261113/install/blent-usb-io"
+make: Leaving directory '/backups/disk2/projects/blent/host/accessory'
