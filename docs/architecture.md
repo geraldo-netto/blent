@@ -642,18 +642,18 @@ Slot indices start at zero. Default video port is `8890 + 2*slot`; default
 input port is `8891 + 2*slot`. Both listeners bind to `127.0.0.1`; configured
 base ports must leave non-overlapping valid ports for every slot.
 
-With default token authentication enabled, both connections must present the
-same per-run 64-character hex token. Video authentication has a three-second
-deadline; WebSocket upgrade and input authentication share a three-second
-accept-to-authentication deadline. With checks disabled, video accepts either
-no token or one saved 64-byte hexadecimal token; neither is authenticated.
-This is the explicit disabled-authentication mode. It grants no identity proof;
-the enabled-authentication handshake still requires the token.
+Applications require both connections to present the same 64-character hex
+credential for their logical tablet attachment. Detach, replacement and slot
+reuse invalidate that credential and its connection leases. A proven same-tablet
+USB/Wi-Fi handoff preserves the credential but retires the old connections.
+Video authentication has a three-second deadline; WebSocket upgrade and input
+authentication share a three-second accept-to-authentication deadline.
 
-Explicit launch/reconnect still delivers credentials through the shell-permission
-protected `TokenActivity`, which opens the launcher. Authentication retries use
-the equally protected `TokenReceiver` broadcast instead (T420); they never start
-an Activity or foreground service. A started Android session observes token
+Initial attachment, explicit reconnect and authentication retries deliver
+credentials through the shell-permission protected `TokenReceiver` broadcast.
+Only an enabled, fresh-attachment auto-launch may open `TokenActivity` and the
+launcher. Credential delivery alone starts no Activity or foreground service.
+A started Android session observes token
 changes and reconnects with the new credentials. A stopped session stays stopped
 and consumes the latest stored token when the user returns. Update host and APK
 together; the token receiver is required for this recovery path. Tokens travel on ADB shell stdin,
@@ -664,15 +664,16 @@ validation campaign is closed as `wont_fix` for now.
 
 ### Video TCP
 
-The client sends exactly 64 ASCII token bytes, with **no newline or length
-prefix** when authentication is enabled. With authentication disabled, the
-server starts sending immediately and concurrently consumes an optional token.
-Once that optional prefix begins, its remaining bytes must arrive within three
-seconds. Malformed, incomplete or extra client input closes the viewer; EOF
-releases its capture subscription even when no video frames are available.
-A new client can acknowledge display-liveness protocol 1 on this same video
-connection with the exact eight bytes `!BLENT1\n` after authentication (and after
-an optional saved-token prelude when authentication is disabled). Its first byte
+The application client sends exactly 64 ASCII token bytes, with **no newline or
+length prefix**, before receiving video. The low-level server API also retains
+an unauthenticated mode for isolated callers/tests; applications do not expose
+it. In that API mode the server starts sending immediately and consumes an
+optional 64-byte hexadecimal prefix with a three-second completion deadline.
+That prefix grants no identity proof. Malformed, incomplete or extra input
+closes the viewer; EOF releases its capture subscription even without frames.
+A client can acknowledge display-liveness protocol 1 on this same connection
+with the exact eight bytes `!BLENT1\n` after authentication (or after the optional
+prefix in the low-level unauthenticated API). Its first byte
 starts a separate three-second completion deadline. Malformed, partial, repeated
 or extra acknowledgement input ends this viewer. The grant belongs to that
 original socket; closure revokes its read-only view and a replacement starts
