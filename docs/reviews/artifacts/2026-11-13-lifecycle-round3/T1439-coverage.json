@@ -1,0 +1,278 @@
+{
+  "tool": "Rust1.100.0/LLVM23.1.5; cargo-llvm-cov0.8.7; scripts/coverage per-function source inventory",
+  "coverage": [
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "create_devices",
+      "line": 611,
+      "language": "rust",
+      "covered": 30,
+      "total": 33,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        632,
+        633,
+        643
+      ]
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "admit_payload",
+      "line": 651,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "retire_payload",
+      "line": 659,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "remove_devices",
+      "line": 672,
+      "language": "rust",
+      "covered": 6,
+      "total": 7,
+      "percent": 85.71428571428571,
+      "passes": true,
+      "missing": [
+        677
+      ]
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "drop",
+      "line": 706,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "follow_input_devices",
+      "line": 1066,
+      "language": "rust",
+      "covered": 42,
+      "total": 42,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "retain",
+      "line": 68,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "observe_osk",
+      "line": 76,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "admit_payload",
+      "line": 82,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "observe_osk",
+      "line": 90,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "pool",
+      "line": 94,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "poll_complete",
+      "line": 107,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "pool",
+      "line": 12,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "initialized_pool",
+      "line": 17,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "new",
+      "line": 35,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "completion",
+      "line": 48,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "retire",
+      "line": 51,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "restored",
+      "line": 76,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "destroyed",
+      "line": 89,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "poll_complete",
+      "line": 106,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/payload.rs",
+      "name": "restore",
+      "line": 118,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "source_hashes": {
+    "host/src/input/linux.rs": "03578425309107b9ce6a8a045a5b51fee1c801588edf1080b80fea170b837711",
+    "host/src/input/linux/lifetime.rs": "8d89a7b57ba391f4ff4b228257f8ade45fc6345d68a7d95232798d532e4e9664",
+    "host/src/input/linux/payload.rs": "cb6e2af64fc658ddb3b7b8eeb394b376f8e877dd0124c44b99ce670c0f7c58b4",
+    "host/src/input/linux/coverage_tests.rs": "05cad67f77fd0459c4a63437b28ae8c424b219bf08df1a3c570fe11ce6eb15c1",
+    "host/tests/input_mapping.rs": "c72cdf68f07103aca6adbca2b8560ba4b4a7d5cddc3fee01e180f09aaeef8408",
+    "host/tests/input_mapping/fixture.rs": "45449f384ce813dc8e1430c821f27f76d4c034b5a41150c5e169f5d7cdcc8f28",
+    "host/tests/input_mapping/command.c": "df21066c4ce1ec210eebe8760e5f97f2e8732f84242f4436ad0dff52dbe19b24",
+    "host/tests/input_mapping/sysfs.c": "f234365a7bad921ee7d3ce58323a4b151ad092cc352bef1ccb8d5b17779d8de3",
+    "docs/architecture.md": "9d9ded3c18ab1d43c5b71f662a4f1c9794884ed7b32a9d1cbb4432a41be1b1b8"
+  },
+  "objects": [
+    {
+      "name": "input_commands",
+      "sha256": "7dd4d261ebd05adf0e382cf0800e893c8f55b3689313d3ba28268e4ccc994050"
+    },
+    {
+      "name": "input_mapping",
+      "sha256": "0ad01a0e132b35ab9553a61c216bde2f470bcdd717a7a0934038f0c29b112774"
+    },
+    {
+      "name": "input_creation",
+      "sha256": "4dbaad95ad6aabdbe65ebeabf1c8b67cdedbad1d2796e543efda42d52f4f95f8"
+    },
+    {
+      "name": "library",
+      "sha256": "592fe3de2785d7151d8e90ea3517c9b0ab88d0c867c34fc1b298eec9ca26543f"
+    }
+  ],
+  "profiles": 30,
+  "tests": {
+    "input_mapping": 7,
+    "input_commands": 3,
+    "input_creation": 7,
+    "input_linux": 8
+  }
+}

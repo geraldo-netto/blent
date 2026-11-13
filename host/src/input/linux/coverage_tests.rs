@@ -100,12 +100,20 @@ fn construction_contract() {
     );
 }
 
+fn native_creations() -> usize {
+    std::fs::read_to_string(std::env::var_os("BLENT_T497_UINPUT_LOG").unwrap())
+        .unwrap()
+        .matches("request 21761\n")
+        .count()
+}
+
 async fn owner_contract() {
     let devices = Arc::new(std::sync::Mutex::new(InjectDevices::empty()));
     let mut owner = DeviceOwner {
         devices: devices.clone(),
         touch_registered: false,
         lifetime: lifetime::Lifetime::new().unwrap(),
+        payload: None,
     };
     let original = owner.lifetime.completion();
     let cfg = InputConfig::default();
@@ -116,6 +124,16 @@ async fn owner_contract() {
         3
     );
     assert_eq!(TOUCH_DEVICES.load(Ordering::SeqCst), 1);
+    // T1439: an active payload cannot admit another native construction.
+    let before = native_creations();
+    assert_eq!(
+        owner
+            .create_devices(&cfg, &DeviceIdentity::for_instance(0).unwrap())
+            .await,
+        0
+    );
+    assert_eq!(native_creations(), before);
+    assert_eq!(devices.lock().unwrap().count(), 3);
     for (pen_only, card) in [(false, None), (true, Some(17))] {
         devices
             .lock()
@@ -132,8 +150,6 @@ async fn owner_contract() {
         .create_devices(&cfg, &DeviceIdentity::for_instance(0).unwrap())
         .await;
     drop(owner);
-    tokio::task::yield_now().await;
-    assert_eq!(TOUCH_DEVICES.load(Ordering::SeqCst), 0);
     assert_eq!(devices.lock().unwrap().count(), 0);
     tokio::time::timeout(std::time::Duration::from_secs(3), async {
         while !original.is_complete() {
@@ -142,6 +158,7 @@ async fn owner_contract() {
     })
     .await
     .unwrap();
+    assert_eq!(TOUCH_DEVICES.load(Ordering::SeqCst), 0);
 }
 
 #[tokio::test]

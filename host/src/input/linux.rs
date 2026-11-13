@@ -14,6 +14,7 @@ use tracing::{debug, info, warn};
 
 mod cursor;
 mod lifetime;
+mod payload;
 
 pub struct Backend {
     devices: Arc<std::sync::Mutex<InjectDevices>>,
@@ -599,16 +600,12 @@ async fn osk_touch_device_added(lifetime: &lifetime::Lifetime) {
     crate::osk::sync_touch_state(&TOUCH_DEVICES, &|proof| lifetime.observe_osk(proof)).await;
 }
 
-async fn osk_touch_device_removed(lifetime: &lifetime::Lifetime) {
-    TOUCH_DEVICES.fetch_sub(1, Ordering::SeqCst);
-    crate::osk::sync_touch_state(&TOUCH_DEVICES, &|proof| lifetime.observe_osk(proof)).await;
-}
-
 /// Own device lifetime even when the watcher is cancelled inside an await.
 pub(super) struct DeviceOwner {
     pub(super) devices: Arc<std::sync::Mutex<InjectDevices>>,
     pub(super) touch_registered: bool,
     lifetime: Arc<lifetime::Lifetime>,
+    payload: Option<payload::Live>,
 }
 impl DeviceOwner {
     pub(super) async fn create_devices(
@@ -616,6 +613,10 @@ impl DeviceOwner {
         cfg: &InputConfig,
         ident: &DeviceIdentity,
     ) -> usize {
+        if let Err(error) = self.admit_payload() {
+            warn!("Input payload admission failed: {error}");
+            return 0;
+        }
         // Arm before uinput creation: Muffin hides the pointer in device-added.
         cursor::prepare(cfg.touch, &ident.touch).await;
         let (c, i) = (cfg.clone(), ident.clone());
@@ -647,20 +648,32 @@ impl DeviceOwner {
         count
     }
 
+    fn admit_payload(&mut self) -> std::io::Result<()> {
+        if self.payload.is_some() {
+            return Err(std::io::ErrorKind::AlreadyExists.into());
+        }
+        self.payload = Some(self.lifetime.admit_payload()?);
+        Ok(())
+    }
+
+    fn retire_payload(&mut self) -> Option<blent_config::retirement::Completion> {
+        let live = self.payload.take()?;
+        let devices = {
+            let mut devices = self
+                .devices
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner);
+            devices.release_all();
+            std::mem::replace(&mut *devices, InjectDevices::empty())
+        };
+        Some(live.retire(devices, std::mem::take(&mut self.touch_registered)))
+    }
+
     pub(super) async fn remove_devices(&mut self) {
-        let old = self
-            .devices
-            .lock()
-            .map(|mut g| {
-                g.release_all();
-                std::mem::replace(&mut *g, InjectDevices::empty())
-            })
-            .ok();
-        let had_touch = old.as_ref().is_some_and(|d| d.touch.is_some());
-        drop(old);
-        if had_touch {
-            self.touch_registered = false;
-            osk_touch_device_removed(&self.lifetime).await;
+        if let Some(proof) = self.retire_payload() {
+            while !proof.is_complete() {
+                tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+            }
         }
         info!("Tablet detached — virtual input devices removed");
     }
@@ -691,16 +704,7 @@ impl DeviceOwner {
 
 impl Drop for DeviceOwner {
     fn drop(&mut self) {
-        if let Ok(mut devices) = self.devices.lock() {
-            devices.release_all();
-            *devices = InjectDevices::empty();
-        }
-        if self.touch_registered {
-            TOUCH_DEVICES.fetch_sub(1, Ordering::SeqCst);
-            // Drop cannot await; recovery state remains on disk if runtime shutdown
-            // prevents this final restoration from completing.
-            self.lifetime.restore_touch();
-        }
+        self.retire_payload();
     }
 }
 
@@ -1073,6 +1077,7 @@ async fn follow_input_devices(
         devices: devices.clone(),
         touch_registered: false,
         lifetime,
+        payload: None,
     };
     let mut present = false;
     tablet_rx.borrow_and_update();

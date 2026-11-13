@@ -1,0 +1,12 @@
+{
+  "scope": "Permanent saturation regression added before correcting T1439 draft cleanup. Full task pool caused no restoration; existing native retirement completed. T1444 explicit mutation port draft included, ordinary fake success only.",
+  "build": "cargo test -p blent --offline --test input_mapping --no-run --message-format=json",
+  "run": "input_mapping --exact t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated --nocapture",
+  "exit_code": 101,
+  "libraries": {
+    "libblent.rlib": "a40b12c1af455b3cef2fda10e16b21fa3adade5794685ebb31272b29a22a3e0f",
+    "libblent_config.rlib": "40f7d23729ad10112ded6862178be14f22e7c8a0594214f4c245030792eb9710"
+  },
+  "permanent_regression": "host/tests/input_mapping.rs::t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated",
+  "correction": "One restoration JoinHandle is funded by the retained payload admission and observed through actual join plus independent OSK operation receipts. No work_admission reserve or detached watcher is needed."
+}

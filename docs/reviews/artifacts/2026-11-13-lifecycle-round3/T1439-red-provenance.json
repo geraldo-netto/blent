@@ -1,0 +1,20 @@
+{
+  "baseline": "Frozen T1433 measured library, before T1439 production edits; source/object provenance in T1433-coverage.json",
+  "compiler": "rustc1.100.0 --edition=2021 --test -C instrument-coverage host/tests/input_mapping.rs",
+  "dependencies": {
+    "libc": "0bd56eb7069dd7a0995266cab856b9521b933235feb02ec8e66c3dc894b5774f",
+    "tokio": "fce6006f8ebb0f99f121f27163f4a8ba8c2b78c497402d6fdec9886f85e0dab1",
+    "tempfile": "7ea3b9e1f22c878dae7ff36e11292eeffe243c6effa16172ced57670b23d6599",
+    "blent_config": "2b600f9baf34d53faad85ab119768227df8f283475ed10cf76bbfee06423ba0f",
+    "blent": "8c3ed1dc4c5ced28f4d9979ed8002c01e3220ce80ed61d7ad5a0b79b5ffa4f3a",
+    "futures_util": "1c9a6b12ad61c60b68422ad4099cc6d7cc53918729c80370338bc54d7062e412"
+  },
+  "permanent_test_sources": {
+    "host/tests/input_mapping.rs": "dc4a85758da3f602be2a4d27e6a8fd8dff37af1a467b9519856ae57521542f9b",
+    "host/tests/input_mapping/fixture.rs": "45449f384ce813dc8e1430c821f27f76d4c034b5a41150c5e169f5d7cdcc8f28",
+    "host/tests/input_mapping/sysfs.c": "f234365a7bad921ee7d3ce58323a4b151ad092cc352bef1ccb8d5b17779d8de3",
+    "host/tests/input_mapping/command.c": "df21066c4ce1ec210eebe8760e5f97f2e8732f84242f4436ad0dff52dbe19b24"
+  },
+  "full_command": "external /tmp/blent-t1439-coverage/red-command.json; cache paths excluded from portable evidence",
+  "original_red": "Two original regressions failed before production changes. Four later transition/process/quarantine controls also fail on the same frozen baseline."
+}

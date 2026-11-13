@@ -1,0 +1,59 @@
+
+running 2 tests
+test t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained ... FAILED
+test t1439_cancelled_mapping_retains_device_identity_and_osk_order ... FAILED
+
+failures:
+
+---- t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained stdout ----
+
+thread 't1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained' (1457447) panicked at host/tests/input_mapping/fixture.rs:59:5:
+
+running 1 test
+test t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained ... FAILED
+
+failures:
+
+failures:
+    t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.39s
+
+
+thread 't1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained' (1457463) panicked at host/tests/input_mapping.rs:128:5:
+assertion `left == right` failed: T1439 original destruction preceded mapper settlement
+  left: (1, 1)
+ right: (1, 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- t1439_cancelled_mapping_retains_device_identity_and_osk_order stdout ----
+
+thread 't1439_cancelled_mapping_retains_device_identity_and_osk_order' (1457493) panicked at host/tests/input_mapping/fixture.rs:59:5:
+
+running 1 test
+held_counts=(1, 1) input_complete=true restored_early=true identity_rejected=false
+test t1439_cancelled_mapping_retains_device_identity_and_osk_order ... FAILED
+
+failures:
+
+failures:
+    t1439_cancelled_mapping_retains_device_identity_and_osk_order
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.39s
+
+
+thread 't1439_cancelled_mapping_retains_device_identity_and_osk_order' (1457517) panicked at host/tests/input_mapping.rs:79:5:
+assertion `left == right` failed: T1439 destroyed original while mapper held
+  left: (1, 1)
+ right: (1, 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+
+failures:
+    t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained
+    t1439_cancelled_mapping_retains_device_identity_and_osk_order
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s

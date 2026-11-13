@@ -1,0 +1,29 @@
+
+running 1 test
+
+thread 't1439_detach_restores_keyboard_with_unrelated_task_admission_saturated' (1584408) panicked at host/tests/input_mapping/fixture.rs:60:5:
+
+running 1 test
+test t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated ... FAILED
+
+failures:
+
+failures:
+    t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.42s
+
+
+thread 't1439_detach_restores_keyboard_with_unrelated_task_admission_saturated' (1584424) panicked at host/tests/input_mapping.rs:369:5:
+T1439 payload cleanup lost OSK restoration to unrelated task admission
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated ... FAILED
+
+failures:
+
+failures:
+    t1439_detach_restores_keyboard_with_unrelated_task_admission_saturated
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.59s

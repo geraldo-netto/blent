@@ -1,0 +1,153 @@
+
+running 6 tests
+test t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained ... FAILED
+test t1439_cancelled_mapping_retains_device_identity_and_osk_order ... FAILED
+test t1439_detach_and_latest_reattach_wait_for_original_payload_retirement ... FAILED
+test t1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration ... FAILED
+test t1439_remap_waits_for_original_commands_before_reading_or_writing_again ... FAILED
+test t1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit ... FAILED
+
+failures:
+
+---- t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained stdout ----
+
+thread 't1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained' (1540930) panicked at host/tests/input_mapping/fixture.rs:60:5:
+
+running 1 test
+test t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained ... FAILED
+
+failures:
+
+failures:
+    t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.39s
+
+
+thread 't1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained' (1540964) panicked at host/tests/input_mapping.rs:128:5:
+assertion `left == right` failed: T1439 original destruction preceded mapper settlement
+  left: (1, 1)
+ right: (1, 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- t1439_cancelled_mapping_retains_device_identity_and_osk_order stdout ----
+
+thread 't1439_cancelled_mapping_retains_device_identity_and_osk_order' (1541074) panicked at host/tests/input_mapping/fixture.rs:60:5:
+
+running 1 test
+held_counts=(1, 1) input_complete=true restored_early=true identity_rejected=false
+test t1439_cancelled_mapping_retains_device_identity_and_osk_order ... FAILED
+
+failures:
+
+failures:
+    t1439_cancelled_mapping_retains_device_identity_and_osk_order
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.39s
+
+
+thread 't1439_cancelled_mapping_retains_device_identity_and_osk_order' (1541102) panicked at host/tests/input_mapping.rs:79:5:
+assertion `left == right` failed: T1439 destroyed original while mapper held
+  left: (1, 1)
+ right: (1, 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+---- t1439_detach_and_latest_reattach_wait_for_original_payload_retirement stdout ----
+
+thread 't1439_detach_and_latest_reattach_wait_for_original_payload_retirement' (1541193) panicked at host/tests/input_mapping/fixture.rs:60:5:
+
+running 1 test
+test t1439_detach_and_latest_reattach_wait_for_original_payload_retirement ... FAILED
+
+failures:
+
+failures:
+    t1439_detach_and_latest_reattach_wait_for_original_payload_retirement
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.61s
+
+
+thread 't1439_detach_and_latest_reattach_wait_for_original_payload_retirement' (1541224) panicked at host/tests/input_mapping.rs:186:5:
+assertion `left == right` failed: T1439 transition destroyed or replaced an unsettled payload
+  left: (2, 1)
+ right: (1, 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+---- t1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration stdout ----
+
+thread 't1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration' (1541370) panicked at host/tests/input_mapping/fixture.rs:60:5:
+
+running 1 test
+test t1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration ... FAILED
+
+failures:
+
+failures:
+    t1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.26s
+
+
+thread 't1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration' (1541401) panicked at host/tests/input_mapping.rs:275:5:
+T1439 process exit preceded original mapping and payload retirement
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+---- t1439_remap_waits_for_original_commands_before_reading_or_writing_again stdout ----
+
+thread 't1439_remap_waits_for_original_commands_before_reading_or_writing_again' (1541509) panicked at host/tests/input_mapping/fixture.rs:60:5:
+
+running 1 test
+test t1439_remap_waits_for_original_commands_before_reading_or_writing_again ... FAILED
+
+failures:
+
+failures:
+    t1439_remap_waits_for_original_commands_before_reading_or_writing_again
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.46s
+
+
+thread 't1439_remap_waits_for_original_commands_before_reading_or_writing_again' (1541540) panicked at host/tests/input_mapping.rs:191:5:
+assertion `left == right` failed: T1439 successor commands overtook original mapper
+  left: "busctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard available\nbusctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode\nbusctl --user set-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode i 0\nxrandr --current --prop\nxinput list --short\nxinput map-to-output 41 HDMI-1\nxrandr --current --prop\nxinput list --short\nxinput map-to-output 41 HDMI-1\nxinput list-props 41\n"
+ right: "busctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard available\nbusctl --user get-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode\nbusctl --user set-property org.kde.KWin /VirtualKeyboard org.kde.kwin.VirtualKeyboard mode i 0\nxrandr --current --prop\nxinput list --short\nxinput map-to-output 41 HDMI-1\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+---- t1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit stdout ----
+
+thread 't1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit' (1541689) panicked at host/tests/input_mapping/fixture.rs:60:5:
+
+running 1 test
+test t1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit ... FAILED
+
+failures:
+
+failures:
+    t1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.39s
+
+
+thread 't1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit' (1541720) panicked at host/tests/input_mapping.rs:318:5:
+assertion `left == right` failed: T1439 unknown remote mutation released native identity
+  left: (1, 1)
+ right: (1, 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+
+failures:
+    t1439_cancelled_mapping_cleanup_progresses_with_backend_facade_retained
+    t1439_cancelled_mapping_retains_device_identity_and_osk_order
+    t1439_detach_and_latest_reattach_wait_for_original_payload_retirement
+    t1439_process_exit_waits_for_mapping_device_destruction_and_osk_restoration
+    t1439_remap_waits_for_original_commands_before_reading_or_writing_again
+    t1439_unknown_mapping_outcome_quarantines_payload_after_original_child_exit
+
+test result: FAILED. 0 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.06s

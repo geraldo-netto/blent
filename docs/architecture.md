@@ -219,16 +219,26 @@ for original settlement. The process drain retains these input admissions too.
 The input and task limits bound active/retiring work; lowering them reduces
 resource use but can reject new sessions while cleanup remains pending.
 
-Each input lifetime separately funds two constructor/final-task receipts and two
-OSK operation observations. The shared keyboard gate has a fixed two-receipt pool:
-one serialized operation plus its predecessor's completion-publication gap.
-These receipts do not consume task slots, so a final cleanup task can still run
-with `BLENT_TASK_LIMIT=1`. Before each OSK command, two bounded observations are
-reserved for its original child and output collector. Cancellation retains both
-proofs and the original keyboard-operation gate until settlement; a command
-failure/deadline does not permit another keyboard effect. Input-owned final
-restoration inherits the existing input admission after process cutoff. Its
-command receipts are distinct from its task completion, avoiding a self-wait.
+Each input lifetime funds one original constructor receipt, one live/retiring
+payload observation and two OSK operation observations. A fixed 4096-slot payload
+pool matches the maximum backend admission; each backend admits only one payload
+until its predecessor settles. Cutoff removes that payload from the live sink
+immediately. Its original native devices remain owned until mapping commands and
+remote mutation outcomes settle, then one admitted cleanup worker destroys them.
+The same payload grant funds one final OSK restoration task through its actual
+join and separate command receipts. Cleanup therefore works even when unrelated
+work fills `BLENT_TASK_LIMIT`; no new shared task slot or process admission is
+required after cutoff. Failed/unknown cleanup retains the original grant and
+identity, while successful cleanup permits replacement.
+
+The shared keyboard gate has a fixed two-receipt pool: one serialized operation
+plus its predecessor's completion-publication gap. Before each OSK command, two
+bounded observations are reserved for its original child and output collector.
+Cancellation retains both proofs and the original keyboard-operation gate until
+settlement; a command failure/deadline does not permit another keyboard effect.
+Input-owned final restoration inherits the existing input admission after process
+cutoff. Its command receipts are distinct from its task completion, avoiding a
+self-wait; the cleanup task holds no reference back to its input lifetime.
 
 Native input/OSK mutations use one operation slot per observed command port,
 funded by the existing input lifetime or keyboard-operation admission. The caller

@@ -6,6 +6,10 @@ use std::{
     sync::{Arc, LazyLock, Mutex, OnceLock},
 };
 
+pub(super) const MAX_BACKENDS: usize = 4096;
+pub(super) type OskObservations =
+    Arc<Mutex<blent_config::retirement::observations::Observations<2>>>;
+
 static IDENTITIES: LazyLock<Mutex<HashSet<u32>>> = LazyLock::new(Mutex::default);
 
 pub(super) struct Lifetime {
@@ -14,11 +18,12 @@ pub(super) struct Lifetime {
 }
 #[derive(Default)]
 struct State {
-    commands: Arc<crate::native_commands::ObservedCommands>,
     claimed: bool,
     identity: Option<Identity>,
-    native: Vec<Completion>,
-    osk: blent_config::retirement::observations::Observations<2>,
+    native: Option<Completion>,
+    osk: OskObservations,
+    commands: Arc<crate::native_commands::ObservedCommands>,
+    payload: blent_config::retirement::observations::Observations<1>,
 }
 struct Identity(u32);
 impl Identity {
@@ -62,38 +67,29 @@ impl Lifetime {
     }
     pub(super) fn retain(&self, proof: Completion) {
         let mut state = self.state.lock().unwrap();
-        state.native.retain(|proof| !proof.is_complete());
-        // One sequential constructor and one final OSK restoration are funded.
-        assert!(state.native.len() < 2, "Input native observation capacity");
-        state.native.push(proof);
+        assert!(
+            state.native.as_ref().is_none_or(Completion::is_complete),
+            "original constructor remains owned"
+        );
+        state.native = Some(proof);
     }
     pub(super) fn observe_osk(&self, proof: Completion) -> io::Result<()> {
-        self.state.lock().unwrap().osk.reserve()?.bind(proof);
-        Ok(())
+        observe_osk(&self.state.lock().unwrap().osk, proof)
     }
     pub(super) fn commands(&self) -> Arc<crate::native_commands::ObservedCommands> {
         self.state.lock().unwrap().commands.clone()
     }
-    pub(super) fn restore_touch(self: &Arc<Self>) {
-        let lifetime = self.clone();
-        match crate::owned_task::Task::spawn(async move {
-            crate::osk::sync_touch_state(&super::TOUCH_DEVICES, &|proof| {
-                lifetime.observe_osk(proof)
-            })
-            .await;
-            Ok(())
-        }) {
-            Ok(task) => {
-                self.retain(task.completion());
-                tokio::spawn(async move {
-                    let _ = task.await;
-                });
-            }
-            Err(error) => {
-                tracing::warn!("OSK restoration admission failed: {error}; disk recovery retained")
-            }
-        }
+    pub(super) fn admit_payload(&self) -> io::Result<super::payload::Live> {
+        let mut state = self.state.lock().unwrap();
+        let observation = state.payload.reserve()?;
+        let live = super::payload::Live::new(state.commands.clone(), state.osk.clone())?;
+        observation.bind(live.completion());
+        Ok(live)
     }
+}
+pub(super) fn observe_osk(observations: &OskObservations, proof: Completion) -> io::Result<()> {
+    observations.lock().unwrap().reserve()?.bind(proof);
+    Ok(())
 }
 fn pool() -> io::Result<&'static Pool> {
     static POOL: OnceLock<io::Result<Pool>> = OnceLock::new();
@@ -101,7 +97,7 @@ fn pool() -> io::Result<&'static Pool> {
         Pool::new(blent_config::retirement_limits::configured(
             "BLENT_INPUT_LIMIT",
             64,
-            4096,
+            MAX_BACKENDS,
         )?)
     })
     .as_ref()
@@ -110,8 +106,9 @@ fn pool() -> io::Result<&'static Pool> {
 impl Observe for State {
     fn poll_complete(&mut self) -> bool {
         self.commands.complete()
-            && self.osk.complete()
-            && self.native.iter().all(Completion::is_complete)
+            && self.payload.complete()
+            && self.osk.lock().unwrap().complete()
+            && self.native.as_ref().is_none_or(Completion::is_complete)
     }
 }
 impl Drop for Lifetime {
@@ -135,11 +132,25 @@ mod tests {
         lifetime.observe_osk(first.completion()).unwrap();
         lifetime.observe_osk(second.completion()).unwrap();
         assert!(lifetime.observe_osk(next.completion()).is_err());
-        assert!(!lifetime.state.lock().unwrap().osk.complete());
+        assert!(!lifetime
+            .state
+            .lock()
+            .unwrap()
+            .osk
+            .lock()
+            .unwrap()
+            .complete());
         drop(first);
         lifetime.observe_osk(next.completion()).unwrap();
         drop((second, next));
-        assert!(lifetime.state.lock().unwrap().osk.complete());
+        assert!(lifetime
+            .state
+            .lock()
+            .unwrap()
+            .osk
+            .lock()
+            .unwrap()
+            .complete());
         let proof = lifetime.completion();
         drop(lifetime);
         while !proof.is_complete() {
