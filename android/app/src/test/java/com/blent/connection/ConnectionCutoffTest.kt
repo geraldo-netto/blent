@@ -4,6 +4,26 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ConnectionCutoffTest {
+    @Test fun t1420NullRouteCutoffHasOriginalIdentityIndependentOfObservation() {
+        val model = ConnectionPresentation()
+        assertNull(model.state.value.displaySelection)
+        val token = model.begin()
+        val opened = checkNotNull(model.state.value.displaySelection)
+        model.cleanup("original pending")
+        model.started(token)
+        assertSame(opened, model.state.value.displaySelection)
+        model.stop(token)
+        val stopped = checkNotNull(model.state.value.displaySelection)
+        assertNotSame(opened, stopped)
+        model.ended(token, null)
+        model.retired(token)
+        assertSame(stopped, model.state.value.displaySelection)
+        model.stop(token)
+        assertSame(stopped, model.state.value.displaySelection)
+        model.begin()
+        assertNotSame(stopped, model.state.value.displaySelection)
+    }
+
     @Test fun t1419AuthorityPrecedesPublicationAndIgnoresMetadataAndRepeatedSnapshots() {
         lateinit var model: ConnectionPresentation
         val before = ArrayList<ConnectionView>()

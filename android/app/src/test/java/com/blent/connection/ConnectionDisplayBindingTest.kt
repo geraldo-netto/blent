@@ -6,22 +6,24 @@ import org.junit.Test
 
 class ConnectionDisplayBindingTest {
     private fun view(choice: ConnectionDisplayChoice) = ConnectionView(active = true, authenticated = true,
-        peer = ConnectionChoice(choice.route.lease.connection, ConnectionPeer.parse("cd".repeat(32))), display = choice)
+        peer = ConnectionChoice(choice.route.lease.connection, ConnectionPeer.parse("cd".repeat(32))), display = choice,
+        displaySelection = Any())
 
     @Test fun t907InitialAdbRemainsUntilExplicitUsbSelectionAndExactChoiceChangesAreConflated() {
         val outputs = ArrayList<DisplayEndpoint?>()
         val binding = ConnectionDisplayBinding(DisplayRouteTarget(outputs::add))
         binding.apply(ConnectionView()); assertTrue(outputs.isEmpty())
-        binding.apply(ConnectionView(active = true)); assertEquals(listOf<DisplayEndpoint?>(null), outputs)
+        binding.apply(ConnectionView(active = true, displaySelection = Any())); assertEquals(listOf<DisplayEndpoint?>(null), outputs)
         val choice = ConnectionDisplayChoice(displayRoute())
         val state = view(choice)
         binding.apply(state); val selected = checkNotNull(outputs.last())
         assertEquals(23456, selected.controlPort); assertEquals(23457, selected.videoPort)
         assertEquals((0 until 32).joinToString("") { "%02x".format(it) }, selected.token)
         binding.apply(state.copy(status = "unchanged route")); assertEquals(2, outputs.size)
-        binding.apply(state.copy(display = ConnectionDisplayChoice(displayRoute())))
+        binding.apply(state.copy(display = ConnectionDisplayChoice(displayRoute()), displaySelection = Any()))
         assertEquals(3, outputs.size) // Equal counters in a new process still replace.
-        binding.apply(ConnectionView()); binding.apply(ConnectionView())
+        val stopped = ConnectionView(displaySelection = Any())
+        binding.apply(stopped); binding.apply(stopped)
         assertEquals(4, outputs.size); assertNull(outputs.last())
         assertFalse(selected.toString().contains(selected.token))
     }
@@ -67,7 +69,7 @@ class ConnectionDisplayBindingTest {
         for (view in views) {
             val outputs = ArrayList<DisplayEndpoint?>()
             val binding = ConnectionDisplayBinding(DisplayRouteTarget(outputs::add))
-            binding.apply(view)
+            binding.apply(view.copy(displaySelection = Any()))
             assertTrue("T907 malformed snapshot cannot select a native destination", outputs.all { it == null })
         }
     }

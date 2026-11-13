@@ -4,19 +4,16 @@ import com.blent.DisplayEndpoint
 import com.blent.DisplayRouteTarget
 
 /** Activity-owned boundary adapter. Main-thread calls only; no Context, native
- * work or application-owned Activity reference. Initial disconnected state preserves ADB;
- * an active USB selection with no route revokes the old destination. Choice identity includes
- * process lifetime, so equal counters in a replacement still replace routes. */
+ * work or application-owned Activity reference. Untouched state preserves ADB.
+ * Each source transition is applied once, even when both endpoints are null.
+ * Metadata and repeated observations retain the same original transition identity. */
 internal class ConnectionDisplayBinding(private val target: DisplayRouteTarget) {
-    private var selected: ConnectionDisplayChoice? = null
-    private var claimed = false
+    private var selected: Any? = null
     fun apply(view: ConnectionView) {
-        val choice = admitted(view)
-        if (!claimed && choice == null && !view.active) return
-        if (claimed && selected === choice) return
-        claimed = true
-        selected = choice
-        val route = choice?.route
+        val selection = view.displaySelection ?: return
+        if (selected === selection) return
+        selected = selection
+        val route = admitted(view)?.route
         target.selectDisplay(route?.let { DisplayEndpoint(credential(it.credential), it.displayPort, it.controlPort) })
     }
     private fun admitted(view: ConnectionView): ConnectionDisplayChoice? {

@@ -24,6 +24,8 @@ internal data class ConnectionView(
     val authenticated: Boolean = false,
     val cleanup: String? = null,
     val display: ConnectionDisplayChoice? = null,
+    /** Original transition identity, including null-route cutoff; null is untouched. */
+    val displaySelection: Any? = null,
     val cameraOffer: ConnectionCameraOfferChoice? = null,
     val camera: ConnectionCameraRouteChoice? = null,
     val microphoneOffer: ConnectionAudioOfferChoice? = null,
@@ -97,8 +99,11 @@ internal class ConnectionPresentation(private val cutOffDisplay: () -> Unit = {}
     private fun resetMedia() { camera.reset(); microphone.reset(); speakers.reset() }
     private fun clearMedia() { camera.clear(); microphone.clear(); speakers.clear() }
     private fun publish(value: ConnectionView) {
-        if (displayTransition(mutable.value, value)) cutOffDisplay()
-        mutable.value = value.copy(retryPeer = rememberedPeer(value), microphoneOffer = microphone.offer, microphone = microphone.route,
+        val selection = if (displayTransition(mutable.value, value)) {
+            cutOffDisplay()
+            Any()
+        } else mutable.value.displaySelection
+        mutable.value = value.copy(displaySelection = selection, retryPeer = rememberedPeer(value), microphoneOffer = microphone.offer, microphone = microphone.route,
             speakersOffer = speakers.offer, speakers = speakers.route)
     }
     private fun displayTransition(previous: ConnectionView, next: ConnectionView): Boolean =

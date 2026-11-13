@@ -1,0 +1,143 @@
+{
+  "tools": {
+    "coverage": "JaCoCo 0.8.15, Gradle 8.5, Robolectric 4.17",
+    "complexity": "Blent Kotlin PSI 1.9.20 local checker"
+  },
+  "coverage_scope": "Changed maintained methods, constructor variants and getter with native line counters. Kotlin inline bodies measured in enclosing methods. No exclusions beyond native JaCoCo supported filters. Unchanged methods are not claimed.",
+  "coverage": [
+    {
+      "class": "com/blent/connection/ConnectionDisplayBinding",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/DisplayRouteTarget;)V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionDisplayBinding",
+      "method": "apply",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;)V",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionView",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionChoice;Ljava/lang/Boolean;ZZLjava/lang/Object;Lcom/blent/connection/ConnectionPeer;ZLjava/lang/String;Lcom/blent/connection/ConnectionDisplayChoice;Ljava/lang/Object;Lcom/blent/connection/ConnectionCameraOfferChoice;Lcom/blent/connection/ConnectionCameraRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;)V",
+      "covered_lines": 19,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionView",
+      "method": "<init>",
+      "descriptor": "(Ljava/lang/String;Lcom/blent/connection/ConnectionChoice;Lcom/blent/connection/ConnectionChoice;Ljava/lang/Boolean;ZZLjava/lang/Object;Lcom/blent/connection/ConnectionPeer;ZLjava/lang/String;Lcom/blent/connection/ConnectionDisplayChoice;Ljava/lang/Object;Lcom/blent/connection/ConnectionCameraOfferChoice;Lcom/blent/connection/ConnectionCameraRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;Lcom/blent/connection/ConnectionAudioOfferChoice;Lcom/blent/connection/ConnectionAudioRouteChoice;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 20,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionView",
+      "method": "getDisplaySelection",
+      "descriptor": "()Ljava/lang/Object;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "publish",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;)V",
+      "covered_lines": 7,
+      "missed_lines": 0,
+      "percent": 100.0
+    }
+  ],
+  "tests": [
+    {
+      "name": "com.blent.BackgroundAdbDeliveryTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.NullDisplayCutoffTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.RetainedAdbCutoffTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.RevokedAdbDeliveryTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.SessionDisplayRouteTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionBindingTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCutoffTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayActivityTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayBindingTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPresentationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/connection/ConnectionPresentation.kt": "720303b289f28d874b27d8bdc7942946931daa2171fd6551f49fcbf2a0834440",
+    "android/app/src/main/java/com/blent/connection/ConnectionDisplayBinding.kt": "b3f82920ae08931671bc264140f190d113faa68738a2a7bee66a26b9d4f9a344",
+    "android/app/src/test/java/com/blent/NullDisplayCutoffTest.kt": "bf37e066599afc941b9b69e824158a38aeb3f536e98cc994f5f34f4b193cb7cb",
+    "android/app/src/test/java/com/blent/connection/ConnectionCutoffTest.kt": "dbd4093fc522075868dbdac18afd27cfc2365a17c6bbeb56761a09b8a68d45ce",
+    "android/app/src/test/java/com/blent/connection/ConnectionDisplayBindingTest.kt": "db3710a44ccb5168d460b22617243de1b5497b59acf68de989bc36629f0260f5"
+  }
+}
