@@ -50,7 +50,8 @@ fn known_state(state: &str) -> bool {
 
 fn record(line: &str) -> Option<(&str, &str)> {
     let (serial, state) = line.split_once('\t')?;
-    if serial.is_empty() || serial.contains('\0') || !known_state(state) {
+    blent_config::tablets::validate_adb_serial(serial).ok()?;
+    if !known_state(state) {
         return None;
     }
     Some((serial, state))
@@ -102,6 +103,38 @@ pub fn package_presence(out: &std::process::Output) -> Option<bool> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn t1386_serial_contract_rejects_controls_and_oversize() {
+        for code in (0..=31).chain(127..=159) {
+            let serial = format!("a{}b", char::from_u32(code).unwrap());
+            assert_eq!(
+                parse(&format!("List of devices attached\n{serial}\tdevice\n")),
+                None,
+                "T1386: {code}"
+            );
+        }
+        for size in [1025, 1026, 2048] {
+            assert_eq!(
+                parse(&format!(
+                    "List of devices attached\n{}\toffline\n",
+                    "x".repeat(size)
+                )),
+                None
+            );
+        }
+        for serial in [
+            "é".repeat(512),
+            "x".repeat(1024),
+            "tablet.local:5555".into(),
+            "tablet._adb-tls-connect._tcp".into(),
+        ] {
+            assert_eq!(
+                parse(&format!("List of devices attached\n{serial}\tdevice\n")),
+                Some(vec![serial])
+            );
+        }
+    }
 
     #[test]
     fn t650_native_argument_nul_never_confirms_inventory() {

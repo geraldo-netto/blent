@@ -751,7 +751,7 @@ async fn t525_two_slots_preserve_assignments_and_cleanup_independently() {
 }
 
 #[tokio::test]
-async fn t650_malformed_serial_preserves_connected_attachment_and_credential() {
+async fn t1386_malformed_serial_preserves_connected_attachment_and_credential() {
     use futures_util::{SinkExt, StreamExt};
     use tokio_tungstenite::tungstenite::Message;
     let (adb, mut monitor, _stop, ports) = monitor_fixture().await;
@@ -760,14 +760,20 @@ async fn t650_malformed_serial_preserves_connected_attachment_and_credential() {
     let sessions = monitor.sessions();
     let mut socket = control(ports.1, &token).await;
     let _ = socket.next().await.unwrap().unwrap();
-    for serial in ["\0USB", "USB\0corrupt", "USB\0"] {
+    for serial in [
+        "\0USB".into(),
+        "USB\0corrupt".into(),
+        "USB\0".into(),
+        "a\x1bb".into(),
+        "x".repeat(1025),
+    ] {
         adb.0 .0.lock().unwrap().inventory =
             format!("List of devices attached\n{serial}\tdevice\n");
         monitor.poll().await;
         assert_eq!(
             monitor.sessions(),
             sessions,
-            "T650: malformed inventory detached known tablet"
+            "T1386/T650: malformed inventory detached known tablet"
         );
         assert_eq!(delivered(&adb), token);
         socket.send(Message::Ping(vec![42])).await.unwrap();

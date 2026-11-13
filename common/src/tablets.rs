@@ -12,7 +12,7 @@ pub const MAX_SESSIONS: usize = 4;
 
 /// Explicit ADB identities contain 1..=1024 UTF-8 bytes and no control characters.
 /// Borrowed validation admits no native work and retains no input storage.
-pub(crate) fn validate_adb_serial(serial: &str) -> Result<()> {
+pub fn validate_adb_serial(serial: &str) -> Result<()> {
     ensure!(
         !serial.is_empty() && serial.len() <= 1024 && !serial.chars().any(char::is_control),
         "invalid ADB identity"

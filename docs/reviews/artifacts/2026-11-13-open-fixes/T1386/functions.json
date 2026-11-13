@@ -1,0 +1,15 @@
+[
+  {
+    "file": "host/src/adb_inventory.rs",
+    "name": "record",
+    "line": 51,
+    "language": "rust",
+    "covered": 8,
+    "total": 8,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "679a1567adc0ddb18ed455c01102e512cb3fa50b841aa8f9481cdc666a93b34f",
+    "complexity": 2
+  }
+]
