@@ -905,7 +905,7 @@ async fn t691_network_reconnect_rereads_saved_address_and_bounds_inventory() {
     let (adb, monitor, _stop, ports) = monitor_fixture().await;
     adb.0 .0.lock().unwrap().inventory = "List of devices attached\n".into();
     let mut monitor = monitor.with_network(store.clone());
-    monitor.poll().await;
+    reconnect::wait_for_attachment(&mut monitor).await;
     assert_eq!(
         monitor.sessions()[0]
             .identity
@@ -984,3 +984,4 @@ fn t1358_removed_authentication_toggle_cannot_disable_preview_credentials() {
 
 mod identity;
 mod progress;
+mod reconnect;

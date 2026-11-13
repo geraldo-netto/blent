@@ -1,5 +1,6 @@
 use super::*;
 use blent_config::storage::ConfigStore;
+use futures_util::FutureExt;
 use std::collections::HashMap;
 use tokio::time::Instant;
 mod queries;
@@ -10,6 +11,7 @@ pub(super) struct Network {
     identities: HashMap<String, String>,
     launches: crate::launch_policy::Launches,
     next_retry: Instant,
+    reconnect: crate::device_tasks::DeviceTasks<()>,
 }
 impl Network {
     pub fn new(store: ConfigStore) -> Self {
@@ -19,6 +21,7 @@ impl Network {
             identities: HashMap::new(),
             launches: Default::default(),
             next_retry: Instant::now(),
+            reconnect: crate::device_tasks::DeviceTasks::new(1),
         }
     }
     pub fn identity(&self, serial: &str) -> Option<&String> {
@@ -70,19 +73,7 @@ impl Network {
         if devices.len() > 256 {
             return None;
         }
-        let address = self.store.load().wifi_address;
-        if !current.iter().any(|s| devices.contains(s))
-            && !devices.contains(&address)
-            && Instant::now() >= self.next_retry
-        {
-            self.next_retry = Instant::now() + Duration::from_secs(5);
-            if crate::wifi::reconnect(adb, &self.store).await.is_some() {
-                devices = adb.all_devices().await?;
-            }
-        }
-        if devices.len() > 256 {
-            return None;
-        }
+        self.schedule_reconnect(adb, current, &devices);
         devices.sort_by_key(|serial| {
             (
                 transport_of(serial) != Transport::Usb,
@@ -91,6 +82,33 @@ impl Network {
         });
         self.observe(adb, &devices).await;
         Some(self.select(devices))
+    }
+    fn schedule_reconnect<C: Commands + Clone + 'static>(
+        &mut self,
+        adb: &Adb<C>,
+        current: &[String],
+        devices: &[String],
+    ) {
+        // One original job survives poll cancellation. Attempt owns native
+        // creation/compensation and its address until exact retirement, even
+        // when this scheduler is stopped or dropped.
+        let _ = self.reconnect.next().now_or_never();
+        if self.reconnect.contains("saved")
+            || Instant::now() < self.next_retry
+            || current.iter().any(|s| devices.contains(s))
+        {
+            return;
+        }
+        let address = self.store.load().wifi_address;
+        if !crate::wifi::valid_address(&address) || devices.contains(&address) {
+            return;
+        }
+        self.next_retry = Instant::now() + Duration::from_secs(5);
+        let adb = adb.clone();
+        let store = self.store.clone();
+        self.reconnect.schedule("saved".into(), async move {
+            crate::wifi::reconnect(&adb, &store).await;
+        });
     }
     fn select(&self, devices: Vec<String>) -> Vec<String> {
         let devices: Vec<_> = devices
@@ -119,6 +137,7 @@ impl Network {
         }
     }
     pub async fn stop(&mut self) {
+        self.reconnect.stop().await;
         self.queries.stop().await;
         self.identities.clear();
     }

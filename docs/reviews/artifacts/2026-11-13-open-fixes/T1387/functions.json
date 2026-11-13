@@ -1,0 +1,54 @@
+[
+  {
+    "file": "host/src/usb/network.rs",
+    "name": "new",
+    "line": 17,
+    "language": "rust",
+    "covered": 10,
+    "total": 10,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "d95ea292b994d61fce0025985fd91b5c9de2994cfdc6987a40bb398278e314fd",
+    "complexity": 1
+  },
+  {
+    "file": "host/src/usb/network.rs",
+    "name": "devices",
+    "line": 67,
+    "language": "rust",
+    "covered": 19,
+    "total": 19,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "d95ea292b994d61fce0025985fd91b5c9de2994cfdc6987a40bb398278e314fd",
+    "complexity": 3
+  },
+  {
+    "file": "host/src/usb/network.rs",
+    "name": "schedule_reconnect",
+    "line": 86,
+    "language": "rust",
+    "covered": 23,
+    "total": 23,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "d95ea292b994d61fce0025985fd91b5c9de2994cfdc6987a40bb398278e314fd",
+    "complexity": 7
+  },
+  {
+    "file": "host/src/usb/network.rs",
+    "name": "stop",
+    "line": 139,
+    "language": "rust",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "d95ea292b994d61fce0025985fd91b5c9de2994cfdc6987a40bb398278e314fd",
+    "complexity": 1
+  }
+]
