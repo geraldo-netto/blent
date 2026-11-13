@@ -1,0 +1,108 @@
+{
+  "tool": "Blent syn 2.0.119 complexity frontend",
+  "maximum": 9,
+  "functions": [
+    {
+      "file": "host/src/capture/display_pause.rs",
+      "line": 11,
+      "name": "quiesce_recovering",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/capture/quiescence.rs",
+      "line": 13,
+      "name": "quiesce_and_publish",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/capture/supervision.rs",
+      "line": 79,
+      "name": "await_replacement",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/capture/activity_tests.rs",
+      "line": 76,
+      "name": "streaming_manager",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 9,
+      "name": "stream_recovers",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 39,
+      "name": "t1415_invalid_pause_ack_recovers_only_on_renewed_demand",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 45,
+      "name": "t1415_pause_control_eof_recovers_only_on_renewed_demand",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 51,
+      "name": "t1415_encoder_replacement_recovers_after_retained_helper_pause_eof",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 72,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 79,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 84,
+      "name": "bind_pause",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 95,
+      "name": "held_failure",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 118,
+      "name": "spawn_pause",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 129,
+      "name": "t1415_failed_pause_waits_for_original_cleanup_before_quiescence",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 157,
+      "name": "t1415_cancelled_failed_pause_retains_original_cleanup_for_retry",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 186,
+      "name": "t1415_failed_pause_retains_cancelled_reader_generation_until_native_exit",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/capture/pause_recovery_tests.rs",
+      "line": 210,
+      "name": "retain_reader",
+      "complexity": 2
+    }
+  ]
+}

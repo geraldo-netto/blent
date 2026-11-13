@@ -1,0 +1,170 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.18s
+     Running unittests src/main.rs (target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be)
+
+running 3 tests
+test capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence ... 
+thread 'capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence' (777130) panicked at host/src/capture/ownership_tests.rs:18:9:
+T429: 
+running 1 test
+test capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence ... FAILED
+
+failures:
+
+failures:
+    capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 618 filtered out; finished in 0.04s
+
+
+thread 'capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence' (777132) panicked at host/src/capture/pause_recovery_tests.rs:122:5:
+T1415 pause failure escaped native retirement
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand ... 
+thread 'capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand' (777143) panicked at host/src/capture/ownership_tests.rs:18:9:
+T429: 
+running 1 test
+test capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand ... FAILED
+
+failures:
+
+failures:
+    capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 618 filtered out; finished in 0.14s
+
+Input #0, rawvideo, from '/tmp/.tmpmS4JKM/blent/capture.fifo':
+  Duration: N/A, start: 1794588946.283333, bitrate: 1474 kb/s
+  Stream #0:0: Video: rawvideo (NV12 / 0x3231564E), nv12(tv, bt709), 64x32, 1474 kb/s, 60 tbr, 60 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (rawvideo (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x63a65c074cc0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x63a65c074cc0] profile Constrained Baseline, level 3.2, 4:2:0, 8-bit
+Output #0, tee, to '[f=framecrc:flush_packets=1]pipe:1|[f=data:flush_packets=1]pipe:1':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, nv12(tv, bt709, progressive), 64x32, q=2-31, 60 fps, 1000k tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 20000000/0/0 buffer size: 666000 vbv_delay: N/A
+frame=    0 fps=0.0 q=15.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A    
+thread 'capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand' (777145) panicked at host/src/capture/pause_recovery_tests.rs:18:5:
+T1415 failed pause killed capture supervisor
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+test capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand ... 
+thread 'capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand' (777158) panicked at host/src/capture/ownership_tests.rs:18:9:
+T429: 
+running 1 test
+test capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand ... FAILED
+
+failures:
+
+failures:
+    capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 618 filtered out; finished in 0.14s
+
+Input #0, rawvideo, from '/tmp/.tmpx6JPDs/blent/capture.fifo':
+  Duration: N/A, start: 1794588946.416667, bitrate: 1474 kb/s
+  Stream #0:0: Video: rawvideo (NV12 / 0x3231564E), nv12(tv, bt709), 64x32, 1474 kb/s, 60 tbr, 60 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (rawvideo (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x625c1c407cc0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x625c1c407cc0] profile Constrained Baseline, level 3.2, 4:2:0, 8-bit
+Output #0, tee, to '[f=framecrc:flush_packets=1]pipe:1|[f=data:flush_packets=1]pipe:1':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, nv12(tv, bt709, progressive), 64x32, q=2-31, 60 fps, 1000k tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 20000000/0/0 buffer size: 666000 vbv_delay: N/A
+frame=    0 fps=0.0 q=15.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A    
+thread 'capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand' (777160) panicked at host/src/capture/pause_recovery_tests.rs:18:5:
+T1415 failed pause killed capture supervisor
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+
+failures:
+
+failures:
+    capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence
+    capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand
+    capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 616 filtered out; finished in 0.33s
+
+error: test failed, to rerun pass `-p blent --bin blent`

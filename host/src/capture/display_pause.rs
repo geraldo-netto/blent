@@ -6,6 +6,23 @@ use super::{
 };
 
 impl CaptureManager {
+    /// Recovery policy for supervisor-owned pauses. Strict reader/control
+    /// validation remains in quiesce_display; failed native work must retire.
+    pub(super) async fn quiesce_recovering(&mut self) {
+        if let Err(error) = self.quiesce_display(None).await {
+            tracing::warn!(%error, "Capture pause failed; retiring the original helper");
+            self.helper.terminate().await;
+        }
+        // Cancellation may leave the original child/stdout debt without a child
+        // handle. Never replace the missing ACK with logical termination.
+        if !self.helper.is_running() {
+            while self.helper.restart_ready().is_err() {
+                tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+            }
+        }
+        self.reset_codec();
+    }
+
     /// The reader result must not have been separately consumed by the caller.
     /// Retries after cancellation retain original control and native cleanup.
     pub(super) async fn quiesce_display(

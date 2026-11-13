@@ -1,0 +1,329 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.66s
+     Running unittests src/main.rs (target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be)
+
+running 25 tests
+test capture::activity_tests::pause_recovery::t1415_cancelled_failed_pause_retains_original_cleanup_for_retry ... ok
+test capture::activity_tests::pause_recovery::t1415_encoder_replacement_recovers_after_retained_helper_pause_eof ... ok
+test capture::activity_tests::pause_recovery::t1415_failed_pause_retains_cancelled_reader_generation_until_native_exit ... ok
+test capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence ... ok
+test capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand ... ok
+test capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand ... ok
+test capture::activity_tests::registered::joined::t1009_assertion_unwind_cannot_return_before_original_native_fixture_retirement ... ok
+test capture::activity_tests::registered::joined::t1009_coalesced_resume_and_original_authority_loss_cannot_replay_native_pixels ... ok
+test capture::activity_tests::registered::joined::t1009_joined_display_off_suspend_unavailable_resume_wait_for_original_native_ack ... ok
+test capture::activity_tests::registered::t1016_registration_pause_waits_for_actual_native_generation_and_resumes_fresh_codec_keyframe ... ok
+test capture::activity_tests::t1015_actual_running_pause_retains_helper_and_resumes_fresh_codec_and_idr ... ok
+test capture::activity_tests::t1015_bad_resume_ack_retires_helper_and_uses_bounded_recovery_backoff ... ok
+test capture::activity_tests::t1015_coalesced_lock_resume_still_quiesces_original_pixels_and_encoder ... ok
+test capture::activity_tests::t1015_current_guard_denies_first_effect_and_obsolete_ready_profile_result ... ok
+test capture::activity_tests::t1015_disabled_no_viewer_preference_keeps_original_encoder_generation ... ok
+test capture::activity_tests::t1015_explicit_display_mode_detach_restarts_with_fresh_header_ownership ... ok
+test capture::activity_tests::t1015_known_unsupported_source_retains_existing_stream_after_loss_and_closure ... ok
+test capture::activity_tests::t1015_last_viewer_pause_retains_monitor_and_resumes_fresh_generation ... ok
+test capture::activity_tests::t1015_lock_during_actual_helper_handshake_retires_original_startup_before_resume ... ok
+test capture::activity_tests::t1015_pending_source_cannot_create_native_helper_or_fifo ... ok
+test capture::activity_tests::t1015_same_identity_profile_handoff_retires_original_work_before_fresh_resume ... ok
+test capture::activity_tests::t1015_supported_source_closure_pauses_original_work ... ok
+test capture::activity_tests::t1015_supported_source_loss_failure_and_stop_cannot_restart_work ... ok
+test capture::activity_tests::t1054_forged_ack_cannot_replace_original_request_identity_in_trace ... ok
+test capture::activity_tests::t1054_original_request_record_precedes_ack_even_when_recording_is_held ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 597 filtered out; finished in 4.25s
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/main.rs (target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be)
+
+running 4 tests
+test capture::quiescence::tests::t1050_cancelled_observer_never_manufactures_completion_or_affects_sibling ... ok
+test capture::quiescence::tests::t1050_idle_capture_wakes_for_original_pause_without_a_display_or_settings_event ... ok
+test capture::quiescence::tests::t1050_original_helper_and_encoder_native_cleanup_fence_registration ... ok
+test capture::quiescence::tests::t1050_original_helper_pause_ack_precedes_receipt_and_preserves_monitor ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 618 filtered out; finished in 0.15s
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/main.rs (target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be)
+
+running 7 tests
+test capture::encoding::pause_tests::t1046_canceled_ack_retries_original_request_and_retains_original_monitor ... ok
+test capture::encoding::pause_tests::t1046_canceled_pause_cannot_rotate_fifo_or_reuse_held_original_reader_cleanup ... ok
+test capture::encoding::pause_tests::t1046_foreign_ack_denies_quiescence_without_claiming_completion_or_replacing_helper ... ok
+test capture::encoding::pause_tests::t1046_pause_waits_for_original_canceled_startup_creator_native_join ... ok
+test capture::encoding::pause_tests::t1046_quiescence_keeps_original_helper_and_retires_each_native_generation ... ok
+test capture::encoding::pause_tests::t1046_reader_join_keeps_progress_after_stop_grace_without_canceling_transaction ... ok
+test capture::encoding::pause_tests::t1046_unstarted_pause_is_safe_and_uncontrolled_helper_remains_explicitly_unsupported ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 615 filtered out; finished in 0.61s
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/main.rs (target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be)
+
+running 4 tests
+test capture::encoding::retirement_tests::t1029_joined_reader_waits_for_original_idle_cleanup ... ok
+test capture::encoding::retirement_tests::t1047_canceled_retirement_retries_after_original_reader_join_and_held_idle ... ok
+test capture::encoding::retirement_tests::t814_encoder_cleanup_errors_and_panics_are_not_success ... 
+thread 'capture::encoding::retirement_tests::t814_encoder_cleanup_errors_and_panics_are_not_success' (814692) panicked at host/src/capture/encoding.rs:426:17:
+T814 cleanup panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test capture::encoding::retirement_tests::t819_async_encoder_task_cancellation_and_completion_are_observed ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 618 filtered out; finished in 0.10s
+

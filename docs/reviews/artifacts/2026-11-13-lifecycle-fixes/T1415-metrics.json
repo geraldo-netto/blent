@@ -1,0 +1,48 @@
+{
+  "tool": "rustc 1.100.0 LLVM native counters; cargo-llvm-cov 0.8.7; Blent syn 2.0.119 complexity frontend",
+  "selected_tests": 40,
+  "failed": 0,
+  "functions": [
+    {
+      "file": "host/src/capture/display_pause.rs",
+      "name": "quiesce_recovering",
+      "line": 11,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 4,
+      "source_sha256": "a26c89057456e8a1e45d304f372130324a408a4c965e9c84344a1e2fbbf76ce0"
+    },
+    {
+      "file": "host/src/capture/quiescence.rs",
+      "name": "quiesce_and_publish",
+      "line": 13,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "813582aeb540a55029ce51e78e030f54037fdeeb722971d72fdf9d24113409ce"
+    },
+    {
+      "file": "host/src/capture/supervision.rs",
+      "name": "await_replacement",
+      "line": 79,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        90
+      ],
+      "complexity": 7,
+      "source_sha256": "dcc839d671471ce641e25ecb8f53355d6bfb91f9fd6da1b331da0e8cac2fbd0f"
+    }
+  ]
+}

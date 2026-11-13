@@ -11,15 +11,12 @@ impl CaptureManager {
     }
 
     pub(super) async fn quiesce_and_publish(&mut self, pause: Option<Pause>) -> anyhow::Result<()> {
-        self.quiesce_display(None).await?;
+        self.quiesce_recovering().await;
         let Some(pause) = pause else {
             return Ok(());
         };
-        // A retained helper supplied its exact false ACK above. If the original
-        // helper was terminated/cancelled instead, await child AND stdout proofs.
-        while !self.helper.is_running() && self.helper.restart_ready().is_err() {
-            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
-        }
+        // Recovery returned only after an exact false ACK or original child AND
+        // stdout settlement, with the encoder's native generation also retired.
         self.quiescence
             .as_ref()
             .expect("original capture participant")

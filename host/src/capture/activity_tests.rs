@@ -105,6 +105,9 @@ while True:
         if not active:
             (root / 'pause-requested').write_text('original writer closed; ACK held if requested')
             while (root / 'hold-pause').exists() and not (root / 'release-pause').exists(): select.select([], [], [], 0.01)
+            if (root / 'close-pause').exists():
+                control.close()
+                break
         if (root / 'foreign-ack').exists(): request = request[:8] + bytes([1 - request[8]])
         if (root / 'hold-record').exists():
             (root / 'record-waiting').write_text('original request received; record held')
@@ -360,6 +363,9 @@ impl Drop for Stream {
         }
     }
 }
+
+#[path = "pause_recovery_tests.rs"]
+mod pause_recovery;
 #[tokio::test]
 async fn t1015_coalesced_lock_resume_still_quiesces_original_pixels_and_encoder() {
     if ownership_tests::isolated("capture::activity_tests::t1015_coalesced_lock_resume_still_quiesces_original_pixels_and_encoder") { return; }

@@ -78,7 +78,7 @@ impl CaptureManager {
     }
     async fn await_replacement(&mut self, needs_pause: bool) -> Result<()> {
         if needs_pause && self.display_work.is_some() && self.helper.is_running() {
-            self.quiesce_display(None).await?;
+            self.quiesce_recovering().await;
         } else {
             self.encoder.stop();
             while self.encoder.ensure_retired().is_err() {
