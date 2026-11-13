@@ -106,6 +106,20 @@ class Prefs(context: Context) {
     internal val hostTokenDelivery: Long
         get() = sp.getLong("host_token_delivery", 0)
 
+    /** The selection cutoff survives Activity and process replacement. Only a
+     * later accepted delivery can restore ADB; absence means untouched startup.
+     * Invalid persisted cutoffs fail closed, without reusing delivery identity. */
+    internal val adbDeliveryPermitted: Boolean
+        get() {
+            if (!sp.contains("adb_delivery_cutoff")) return true
+            val cutoff = sp.getLong("adb_delivery_cutoff", -1)
+            return cutoff >= 0 && hostTokenDelivery > cutoff
+        }
+
+    internal fun cutOffAdbDelivery() = synchronized(deliveryGate) {
+        sp.edit().putLong("adb_delivery_cutoff", hostTokenDelivery.coerceAtLeast(0)).apply()
+    }
+
     internal fun recordHostTokenDelivery(token: String): Boolean = synchronized(deliveryGate) {
         val previous = hostTokenDelivery
         if (previous < 0 || previous == Long.MAX_VALUE) return false

@@ -1,0 +1,74 @@
+JUnit version 4.13.2
+.CUTOFF fresh=true active=false reconnect=false delivery=2 sockets=1 port=8891
+..CUTOFF fresh=false active=false reconnect=false delivery=1 sockets=1 port=8891
+E.CUTOFF fresh=true active=false reconnect=false delivery=2 sockets=1 port=8891
+..CUTOFF fresh=false active=false reconnect=false delivery=1 sockets=1 port=8891
+E.REPLACEMENT recreate=true binds=2 originalRetirementReleased=false workerTerminations=1 replacementStatus=Worker command rejected
+E.REPLACEMENT recreate=false binds=1 originalRetirementReleased=false workerTerminations=0 replacementStatus=Starting isolated display worker…
+.REPLACEMENT recreate=true binds=2 originalRetirementReleased=false workerTerminations=1 replacementStatus=Worker command rejected
+E.REPLACEMENT recreate=false binds=1 originalRetirementReleased=false workerTerminations=0 replacementStatus=Starting isolated display worker…
+
+Time: 2.879
+There were 4 failures:
+1) replacementActivityCompositionMustRetainAdbCutoff[27](com.blent.ReviewAdbCutoffProbe)
+java.lang.AssertionError: Only post-cutoff protected delivery authorizes ADB after recreation expected:<0> but was:<1>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.ReviewAdbCutoffProbe.recreate(ReviewAdbCutoffProbe.kt:49)
+	at com.blent.ReviewAdbCutoffProbe.replacementActivityCompositionMustRetainAdbCutoff(ReviewAdbCutoffProbe.kt:24)
+2) replacementActivityCompositionMustRetainAdbCutoff(com.blent.ReviewAdbCutoffProbe)
+java.lang.AssertionError: Only post-cutoff protected delivery authorizes ADB after recreation expected:<0> but was:<1>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.ReviewAdbCutoffProbe.recreate(ReviewAdbCutoffProbe.kt:49)
+	at com.blent.ReviewAdbCutoffProbe.replacementActivityCompositionMustRetainAdbCutoff(ReviewAdbCutoffProbe.kt:24)
+3) replacementDisplayMustWaitForOriginalServiceRetirement[27](com.blent.ReviewDisplayReplacementProbe)
+java.lang.AssertionError: Replacement Activity must not bind the retiring singleton display worker expected:<1> but was:<2>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.ReviewDisplayReplacementProbe$checkDisplay$1.invokeSuspend(ReviewDisplayReplacementProbe.kt:89)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:235)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:168)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:474)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl(CancellableContinuationImpl.kt:508)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$default(CancellableContinuationImpl.kt:497)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:595)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:493)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:85)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:59)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:38)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.blent.ReviewDisplayReplacementProbe.checkDisplay(ReviewDisplayReplacementProbe.kt:60)
+	at com.blent.ReviewDisplayReplacementProbe.replacementDisplayMustWaitForOriginalServiceRetirement(ReviewDisplayReplacementProbe.kt:57)
+4) replacementDisplayMustWaitForOriginalServiceRetirement(com.blent.ReviewDisplayReplacementProbe)
+java.lang.AssertionError: Replacement Activity must not bind the retiring singleton display worker expected:<1> but was:<2>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.ReviewDisplayReplacementProbe$checkDisplay$1.invokeSuspend(ReviewDisplayReplacementProbe.kt:89)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:235)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:168)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:474)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl(CancellableContinuationImpl.kt:508)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$default(CancellableContinuationImpl.kt:497)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:595)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:493)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:85)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:59)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:38)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.blent.ReviewDisplayReplacementProbe.checkDisplay(ReviewDisplayReplacementProbe.kt:60)
+	at com.blent.ReviewDisplayReplacementProbe.replacementDisplayMustWaitForOriginalServiceRetirement(ReviewDisplayReplacementProbe.kt:57)
+
+FAILURES!!!
+Tests run: 10,  Failures: 4
+

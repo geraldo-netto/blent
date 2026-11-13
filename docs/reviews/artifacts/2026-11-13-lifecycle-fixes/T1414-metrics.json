@@ -1,0 +1,136 @@
+{
+  "tools": {
+    "coverage": "JaCoCo 0.8.15, Gradle 8.5, Robolectric 4.17",
+    "complexity": "Blent local Kotlin PSI 1.9.20 checker"
+  },
+  "coverage": [
+    {
+      "class": "com/blent/SessionCoordinator",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/Prefs;Lkotlin/jvm/functions/Function1;Lcom/blent/DisplaySession;Lcom/blent/TouchCapture;Lcom/blent/ReleaseChecks;Lcom/blent/DisplayRouteSequence;)V",
+      "covered_lines": 24,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/SessionCoordinator",
+      "method": "<init>",
+      "descriptor": "(Lcom/blent/Prefs;Lkotlin/jvm/functions/Function1;Lcom/blent/DisplaySession;Lcom/blent/TouchCapture;Lcom/blent/ReleaseChecks;Lcom/blent/DisplayRouteSequence;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 6,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/SessionCoordinator",
+      "method": "selectDisplay",
+      "descriptor": "(Lcom/blent/DisplayEndpoint;)V",
+      "covered_lines": 10,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/SessionCoordinator",
+      "method": "adbAfterExternal",
+      "descriptor": "(Ljava/lang/String;)V",
+      "covered_lines": 8,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/Prefs",
+      "method": "getAdbDeliveryPermitted$app_debug",
+      "descriptor": "()Z",
+      "covered_lines": 3,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/Prefs",
+      "method": "cutOffAdbDelivery$app_debug",
+      "descriptor": "()V",
+      "covered_lines": 3,
+      "missed_lines": 0,
+      "percent": 100.0
+    }
+  ],
+  "suites": [
+    {
+      "name": "com.blent.AdbDeliveryCutoffTest",
+      "tests": "8",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T16:54:15",
+      "hostname": "morpheus",
+      "time": "2.099"
+    },
+    {
+      "name": "com.blent.RetainedAdbCutoffTest",
+      "tests": "12",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T16:54:17",
+      "hostname": "morpheus",
+      "time": "2.538"
+    },
+    {
+      "name": "com.blent.RevokedAdbDeliveryTest",
+      "tests": "8",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T16:54:20",
+      "hostname": "morpheus",
+      "time": "1.609"
+    },
+    {
+      "name": "com.blent.SessionDisplayRouteTest",
+      "tests": "10",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T16:54:21",
+      "hostname": "morpheus",
+      "time": "0.292"
+    },
+    {
+      "name": "com.blent.SessionRevocationTest",
+      "tests": "10",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T16:54:21",
+      "hostname": "morpheus",
+      "time": "0.22"
+    },
+    {
+      "name": "com.blent.TokenDeliveryTest",
+      "tests": "8",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T16:54:22",
+      "hostname": "morpheus",
+      "time": "0.141"
+    },
+    {
+      "name": "com.blent.connection.AttachmentRecreationTest",
+      "tests": "12",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-11-13T16:54:22",
+      "hostname": "morpheus",
+      "time": "1.702"
+    }
+  ],
+  "tests": 68,
+  "failures": 0,
+  "files": {
+    "android/app/src/main/java/com/blent/Prefs.kt": "0dbc48c7290c8582a084248a085c66156219d531f3876f60a849a8ff178ab035",
+    "android/app/src/main/java/com/blent/SessionCoordinator.kt": "50d3d33113aaff84401f597d153e8a4d166a167c657fb5625f0f160460454641",
+    "android/app/src/test/java/com/blent/RetainedAdbCutoffTest.kt": "e02104d37224845275ba7bfa463afad402320660f710f6c42b5b061c11e014e1",
+    "android/app/src/test/java/com/blent/AdbDeliveryCutoffTest.kt": "8fb188acc7cee6b672be1cdef3968d022fa708b37fd6daacbbb2bac534c7ccf4"
+  }
+}

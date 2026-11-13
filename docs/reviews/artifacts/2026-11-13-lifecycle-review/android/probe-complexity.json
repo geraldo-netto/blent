@@ -1,0 +1,271 @@
+{
+  "tool": "Blent local cyclomatic checker, Kotlin PSI 1.9.20 / Python AST 3.12.3",
+  "scope": "Two hosted review probe files and their two reproduction scripts; not production or full project",
+  "scores": [
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt",
+      "line": 22,
+      "name": "drainUi",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt",
+      "line": 23,
+      "name": "replacementActivityCompositionMustRetainAdbCutoff",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt",
+      "line": 27,
+      "name": "freshProtectedDeliveryPermitsReplacementActivityAdb",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt",
+      "line": 31,
+      "name": "recreate",
+      "complexity": 3
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt",
+      "line": 32,
+      "name": "<lambda>",
+      "complexity": 3
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt",
+      "line": 54,
+      "name": "originalActivityCompositionKeepsAdbCutoff",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt",
+      "line": 66,
+      "name": "deliver",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 20,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 23,
+      "name": "getApplicationContext",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 24,
+      "name": "bindService",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 25,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 30,
+      "name": "unbindService",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 31,
+      "name": "die",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 34,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 37,
+      "name": "isBinderAlive",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 38,
+      "name": "linkToDeath",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 39,
+      "name": "unlinkToDeath",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 40,
+      "name": "onTransact",
+      "complexity": 2
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 45,
+      "name": "die",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 45,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 51,
+      "name": "view",
+      "complexity": 3
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 51,
+      "name": "<init>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 52,
+      "name": "getHolder",
+      "complexity": 2
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 53,
+      "name": "<lambda>",
+      "complexity": 2
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 55,
+      "name": "until",
+      "complexity": 2
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 57,
+      "name": "replacementDisplayMustWaitForOriginalServiceRetirement",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 58,
+      "name": "sameDisplayWaitsForOriginalServiceRetirement",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 60,
+      "name": "checkDisplay",
+      "complexity": 7
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 60,
+      "name": "<lambda>",
+      "complexity": 7
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 69,
+      "name": "<lambda>",
+      "complexity": 4
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 70,
+      "name": "execute",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 71,
+      "name": "cancel",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 72,
+      "name": "retire",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 75,
+      "name": "receiver",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 75,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 76,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 77,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 85,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 86,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt",
+      "line": 92,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/export-classpath.gradle.kts",
+      "line": 4,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/export-classpath.gradle.kts",
+      "line": 6,
+      "name": "<lambda>",
+      "complexity": 1
+    },
+    {
+      "path": "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/export-classpath.gradle.kts",
+      "line": 9,
+      "name": "<lambda>",
+      "complexity": 1
+    }
+  ],
+  "maximum": 7,
+  "files": {
+    "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewAdbCutoffProbe.kt": "edc7a6540d7d8e3d577b92ce464a34a682b13be3a4ac4abd59803f9b22478bd0",
+    "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/ReviewDisplayReplacementProbe.kt": "0ac8a8d9bb85df08a62e8ab9758b6e4fa8a9997aeb7bd2cde844445036aa482d",
+    "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/export-classpath.gradle.kts": "d93e48a42e9274bcc61843543587d160687304232e5c98e4cfdb0028fd0af731",
+    "docs/reviews/artifacts/2026-11-13-lifecycle-review/android/run-probe.py": "19f6ba1917ec16b749221b7f1aec8851e7d39de42e9ec238fcaa966b528196ce"
+  }
+}

@@ -1,0 +1,48 @@
+<report name="T1414 changed maintained methods; exact JaCoCo subset">
+  <package name="com/blent">
+    <class name="com/blent/SessionCoordinator" sourcefilename="SessionCoordinator.kt">
+      <method name="&lt;init&gt;" desc="(Lcom/blent/Prefs;Lkotlin/jvm/functions/Function1;Lcom/blent/DisplaySession;Lcom/blent/TouchCapture;Lcom/blent/ReleaseChecks;Lcom/blent/DisplayRouteSequence;)V" line="70">
+        <counter type="INSTRUCTION" missed="1" covered="157" />
+        <counter type="BRANCH" missed="1" covered="5" />
+        <counter type="LINE" missed="0" covered="24" />
+        <counter type="COMPLEXITY" missed="1" covered="3" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="&lt;init&gt;" desc="(Lcom/blent/Prefs;Lkotlin/jvm/functions/Function1;Lcom/blent/DisplaySession;Lcom/blent/TouchCapture;Lcom/blent/ReleaseChecks;Lcom/blent/DisplayRouteSequence;ILkotlin/jvm/internal/DefaultConstructorMarker;)V" line="70">
+        <counter type="INSTRUCTION" missed="0" covered="51" />
+        <counter type="LINE" missed="0" covered="6" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="selectDisplay" desc="(Lcom/blent/DisplayEndpoint;)V" line="346">
+        <counter type="INSTRUCTION" missed="0" covered="35" />
+        <counter type="BRANCH" missed="0" covered="2" />
+        <counter type="LINE" missed="0" covered="10" />
+        <counter type="COMPLEXITY" missed="0" covered="2" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="adbAfterExternal" desc="(Ljava/lang/String;)V" line="378">
+        <counter type="INSTRUCTION" missed="0" covered="39" />
+        <counter type="BRANCH" missed="1" covered="5" />
+        <counter type="LINE" missed="0" covered="8" />
+        <counter type="COMPLEXITY" missed="1" covered="3" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+    <class name="com/blent/Prefs" sourcefilename="Prefs.kt">
+      <method name="getAdbDeliveryPermitted$app_debug" desc="()Z" line="114">
+        <counter type="INSTRUCTION" missed="0" covered="26" />
+        <counter type="BRANCH" missed="0" covered="6" />
+        <counter type="LINE" missed="0" covered="3" />
+        <counter type="COMPLEXITY" missed="0" covered="4" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="cutOffAdbDelivery$app_debug" desc="()V" line="119">
+        <counter type="INSTRUCTION" missed="0" covered="21" />
+        <counter type="LINE" missed="0" covered="3" />
+        <counter type="COMPLEXITY" missed="0" covered="1" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+    </class>
+  </package>
+</report>

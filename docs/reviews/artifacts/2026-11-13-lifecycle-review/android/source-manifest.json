@@ -1,0 +1,206 @@
+{
+  "revision": "56250b928c0d42d8b53caa8c592c62e3d982cc5b",
+  "files": [
+    {
+      "path": "android/app/src/main/java/com/blent/MainActivity.kt",
+      "scope": "complete file read",
+      "sha256": "810e93317e5a4ea4fcf383a3ca89929e61b0eb27909ba8b203f33049191641f6"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "scope": "complete file read",
+      "sha256": "91469f6c74d5ba899eae525092f3aed137a766c4e8e1bb037191c2800701f753"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/DisplaySession.kt",
+      "scope": "complete file read",
+      "sha256": "ef1074a3841fbec48de7627b30b486fd58025baf0eeebabf3c49b67015d3d3a7"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/BlentApplication.kt",
+      "scope": "complete file read",
+      "sha256": "f9e1b7eab85b1e5936ed38848be74ac4288060f148135f3efd8f263cbcd37258"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/TokenReceiver.kt",
+      "scope": "complete file read",
+      "sha256": "23bbcd1d497db27f1b9de0995c1b59f7366432a07c543f1505b689912d1a0597"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/TokenActivity.kt",
+      "scope": "complete file read",
+      "sha256": "ff0ea5517f342389081f947259129299a61216c273dd981270240037ff701147"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+      "scope": "complete file read",
+      "sha256": "3015f4a4e127c7a2091c71a3c5781ad653148daf2b08cbcd47d72c1a46dac52e"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "scope": "complete file read",
+      "sha256": "3695a725d22af5db51f22b5a856d795fa1fcd816c5cd1c9af0dcff31455d4932"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "scope": "complete file read",
+      "sha256": "26eb590696e54d5fb40d9e059886610307ae8ab32c5d301a1a4afd897f2b0e35"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/MediaWorkerService.kt",
+      "scope": "complete file read",
+      "sha256": "a9016085ad8d6c95513cf0f021d2ca9beae1f6a58fd99147b07eccce5e7d226a"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/RetirementGuard.kt",
+      "scope": "complete file read",
+      "sha256": "45d032d30a445b3a26389dd949797c7394ffd80297dba8176830dc3e5a3c9833"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/LatestDispatch.kt",
+      "scope": "complete file read",
+      "sha256": "8507ff1d1e30f91f4bd1bb380596fe5874515f8defffd6fcc84b59e9dd41cfc4"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/WorkerIpc.kt",
+      "scope": "complete file read",
+      "sha256": "527be271b1599924efac7d3b822044a7a5a7102218cbc4a9007f6832f1f0d7c1"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/StreamingPowerBinding.kt",
+      "scope": "complete file read",
+      "sha256": "bc76f4715b7e37cfa405d9bfe8f3f82227322068e9459cb0389f81f3f00821a4"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/StreamingService.kt",
+      "scope": "complete file read",
+      "sha256": "56337118e40f001d43062d0ec892c4d09773b8be2775c582f86824674a759399"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/CameraActivityOwner.kt",
+      "scope": "complete file read",
+      "sha256": "e06f599abff8676e50c9c7668e7efe5837d4cfcca3a27bcbfd5486dcc1938aff"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/AudioActivityOwner.kt",
+      "scope": "complete file read",
+      "sha256": "d4ec72b15be7dfd911d0c724f82307b456ae30a686d03cfc5a52c734d2ab2f95"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt",
+      "scope": "complete file read",
+      "sha256": "9ee1da2aa197a2b6df3140cdf85c5a4fb3e9f8c6868a2bf1260e32e5fa0fac03"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/AndroidAttachmentAdmission.kt",
+      "scope": "complete file read",
+      "sha256": "22c25ee9cc65d2ac4e02c857bbac768a331ec4098329f6cc0349bbc0b36dc91b"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/AttachmentAdmission.kt",
+      "scope": "complete file read",
+      "sha256": "c68499092479bea84a4807ad7b30da7616fe3c7d6d55334f7530bd66755ebf92"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionOwner.kt",
+      "scope": "complete file read",
+      "sha256": "faad40acab94fc5e2effd8570bfee305245c0a8bde3d7ecf40847d3df28dcc42"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt",
+      "scope": "complete file read",
+      "sha256": "d83a3e48a67018fb7d85f5bb24b76f319ff787cb5267071ac160ff380bf49178"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/RememberedConnection.kt",
+      "scope": "complete file read",
+      "sha256": "dba5ce33eb74a81ea8cb14ad6a9fcbb641250079d33d3e22938f9dd7ade4decf"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionDisplayBinding.kt",
+      "scope": "complete file read",
+      "sha256": "ed8b0a7530a6bff8a16f591053d577aff25d30609b0bbca9c6d31df03593fc8f"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionWorkerService.kt",
+      "scope": "complete file read",
+      "sha256": "1775b1eee20510c8b6a4e105c7983a29aa2eaea8a7a50b4c2cd91d23c52423d1"
+    },
+    {
+      "path": "android/app/src/main/AndroidManifest.xml",
+      "scope": "complete file read",
+      "sha256": "3b4ed74e6cbcc8419a5a66afbd29890788ce9606f717a830bfa6d3436550d944"
+    },
+    {
+      "path": "android/app/build.gradle.kts",
+      "scope": "complete file read",
+      "sha256": "282ad045302d37d6bb382e78a4f1bc60d6a80174473d942dfc8722b58d8f7968"
+    },
+    {
+      "path": "android/app/proguard-rules.pro",
+      "scope": "complete file read",
+      "sha256": "9ed265cd185358dfdedde33fbb6422572d79a805aacae164ecb61bb5f72e8695"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/RevokedAdbDeliveryTest.kt",
+      "scope": "complete file read",
+      "sha256": "41b2cb8c440c9071ed3a5e344bde799072a45a225ca672069f3c30ef6e43a4a1"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "scope": "complete file read",
+      "sha256": "86cadb806b4a06472d62fe477bd4e7716c18e1e2bbef0bf156d2ddef9b766c36"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+      "scope": "complete file read",
+      "sha256": "c667f2deb400afeca9894325a240d50ada62967ec42aa50221e01b445e3eaa5e"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/SessionSurfaceContractTest.kt",
+      "scope": "complete file read",
+      "sha256": "f8a4bfb4678e87a904398a56bcd25af45b73c5662a1e2f645dabdb39857764ac"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/SurfaceCallbackContractTest.kt",
+      "scope": "complete file read",
+      "sha256": "52c17a2815d27806cba47f4f0fe20d3daa18bb2b465bcbf26aa724093bc507a5"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/Prefs.kt",
+      "scope": "token storage/delivery/observer and adjacent documentation",
+      "sha256": "db639210868d1af71d7fdaa24a23cbbaa79c0463479e51c02b48b3df57c74685"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/TouchCapture.kt",
+      "scope": "route/token and connection delegation",
+      "sha256": "e857364fdc07c1b035bb9f08d425d7e3a2064d3d9f922d1a65f78f82aafe962b"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionPresentation.kt",
+      "scope": "ConnectionView, reducer initialization and relevant fields",
+      "sha256": "ba2ce769a00b3266a12b3af6d7be9be6ef2297dc177f9a1a190365ed378b7b99"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/SessionDisplayRouteTest.kt",
+      "scope": "fixture and first route/lifecycle cases",
+      "sha256": "74c4fc997887fa7ace57156ee60ca4886d696f406f7ec95493d364ffc32bed95"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/RemoteDisplayTest.kt",
+      "scope": "fixture, retirement and early failure cases",
+      "sha256": "da1572e1b54d17161487ab31a18e4e2412b5e3e1d354afb08efe08fc85d01e08"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/MediaWorkerServiceTest.kt",
+      "scope": "service fixture and first retirement/rejection cases",
+      "sha256": "0033778c4d378990a1562d86a7ce5080d323c352020b0e1f3f1b31a122465aaf"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/AndroidWorkerRunTest.kt",
+      "scope": "Binder/context fixture and first retirement case",
+      "sha256": "4877fecf843c1e78ad0c44140fe8833e3953f014c31b45678afe72b615890cef"
+    }
+  ],
+  "scope": "Source examination; not execution coverage or entire Android project coverage"
+}

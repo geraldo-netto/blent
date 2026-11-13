@@ -91,9 +91,8 @@ internal class SessionCoordinator(
         val available get() = format && codec
     }
     private var decoderSupport by mutableStateOf(DecoderSupport())
-    private var externalDisplay = false
+    private var externalDisplay = !prefs.adbDeliveryPermitted
     private var externalAvailable = false
-    private var deliveryCutoff = prefs.hostTokenDelivery
     val presentation = StreamPresentation(videoReceiver, touchCapture)
 
     private data class WakeLocal(
@@ -121,7 +120,12 @@ internal class SessionCoordinator(
     private fun powerValues(local: WakeLocal, connection: ControlConnection, state: DisplayWakeState) =
         StreamingPower(local.saver, connection.authenticated && (local.video || local.pen), connection.transport, state)
 
-    init { touchCapture?.setQueueBudget(prefs.controlQueueBytes); applyToken(false); connectStreamCallbacks() }
+    init {
+        if (externalDisplay) clearRoutes()
+        touchCapture?.setQueueBudget(prefs.controlQueueBytes)
+        applyToken(false)
+        connectStreamCallbacks()
+    }
 
     fun handle(event: SettingsEvent) {
         when (event) {
@@ -341,7 +345,7 @@ internal class SessionCoordinator(
     override fun selectDisplay(endpoint: DisplayEndpoint?) {
         externalDisplay = true
         externalAvailable = false
-        deliveryCutoff = prefs.hostTokenDelivery
+        prefs.cutOffAdbDelivery()
         try {
             clearRoutes()
             if (endpoint == null) return
@@ -371,7 +375,7 @@ internal class SessionCoordinator(
     private fun adbAfterExternal(token: String?) {
         // Only a protected delivery accepted after the latest USB cutoff can
         // select ADB. Launcher/resume events cannot manufacture this authority.
-        if (externalAvailable || prefs.hostTokenDelivery <= deliveryCutoff || token == null) return
+        if (externalAvailable || !prefs.adbDeliveryPermitted || token == null) return
         try {
             clearRoutes()
             val adb = AdbDisplayRoutes.create(token)
