@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_t1407_competing_install_cannot_publish_or_register (test_appimage_install_lock.AppImageInstallLockTest.test_t1407_competing_install_cannot_publish_or_register)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_appimage_install_lock.py", line 62, in test_t1407_competing_install_cannot_publish_or_register
+    self.assertNotEqual(result.returncode, 0, 'T1407: competing installer claimed success')
+AssertionError: 0 == 0 : T1407: competing installer claimed success
+
+----------------------------------------------------------------------
+Ran 1 test in 22.934s
+
+FAILED (failures=1)

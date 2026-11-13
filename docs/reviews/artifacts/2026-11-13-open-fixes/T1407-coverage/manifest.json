@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "sources": {
+    "packaging/appimage/install-appimage.sh": "ade40a0e5d02b5585be12143618feffdc62955ef2c2c30ad005ef96f07ecac77"
+  },
+  "functions": [
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "absolute_base",
+      "first": 8,
+      "last": 10,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "publish_file",
+      "first": 18,
+      "last": 25,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "check_stopped",
+      "first": 27,
+      "last": 34,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "lock_installation",
+      "first": 38,
+      "last": 45,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_image",
+      "first": 47,
+      "last": 50,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_extracted",
+      "first": 52,
+      "last": 66,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "write_service",
+      "first": 68,
+      "last": 73,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_service",
+      "first": 75,
+      "last": 79,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_desktop",
+      "first": 81,
+      "last": 87,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "backup_gui_entry",
+      "first": 89,
+      "last": 96,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "link_gui_entry",
+      "first": 98,
+      "last": 105,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "write_gui_entry",
+      "first": 107,
+      "last": 115,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_gui_entry",
+      "first": 117,
+      "last": 122,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "write_entry",
+      "first": 124,
+      "last": 132,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "install_entry",
+      "first": 134,
+      "last": 139,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "update_autostart",
+      "first": 141,
+      "last": 150,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "name": "check_destination",
+      "first": 152,
+      "last": 158,
+      "language": "shell",
+      "nested": [],
+      "entry": 0,
+      "body": 0
+    }
+  ]
+}

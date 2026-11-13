@@ -33,6 +33,17 @@ check_stopped() {
     esac
 }
 
+# Keep the same lock inode through registration. Children inherit the lock so
+# caller loss cannot admit a replacement while an original command still runs.
+lock_installation() {
+    mkdir -p -- "$DEST" || return
+    exec {INSTALL_LOCK_FD}> "$DEST/.install.lock" || return
+    flock -n "$INSTALL_LOCK_FD" || {
+        echo 'Another Blent installation owns this destination; retry after it finishes.' >&2
+        return 1
+    }
+}
+
 install_image() {
     publish_file "$DEST/Blent.AppImage" 755 cat "$APPIMAGE" || return
     LAUNCHER="$DEST/Blent.AppImage"
@@ -43,11 +54,11 @@ install_extracted() {
     [[ ! -e "$previous" ]] || { echo 'Resolve the previous interrupted AppDir installation first.' >&2; return 1; }
     temporary=$(mktemp -d "$DEST/.appdir.XXXXXXXX")
     if ! cp -a -- "$APPDIR/." "$temporary/"; then rm -rf -- "$temporary"; return 1; fi
-    if [[ -e "$DEST/Blent.AppDir" ]]; then mv -- "$DEST/Blent.AppDir" "$previous"; fi
-    if mv -- "$temporary" "$DEST/Blent.AppDir"; then
+    if [[ -e "$DEST/Blent.AppDir" ]]; then mv -T "$DEST/Blent.AppDir" "$previous"; fi
+    if mv -T "$temporary" "$DEST/Blent.AppDir"; then
         rm -rf -- "$previous"
     else
-        [[ ! -e "$previous" ]] || mv -- "$previous" "$DEST/Blent.AppDir"
+        [[ ! -e "$previous" ]] || mv -T "$previous" "$DEST/Blent.AppDir"
         rm -rf -- "$temporary"
         return 1
     fi
@@ -148,7 +159,9 @@ check_destination() {
 
 check_stopped
 check_destination
-mkdir -p -- "$DEST"
+lock_installation
+# State may have changed between the first check and acquiring the destination.
+check_stopped
 if [[ -n ${APPIMAGE:-} && -f $APPIMAGE ]]; then install_image; else install_extracted; fi
 install_entry
 install_service

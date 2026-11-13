@@ -82,6 +82,12 @@ The [runtime supports extraction](https://docs.appimage.org/user-guide/troublesh
 ./squashfs-root/AppRun --install-user
 ```
 
+User installation holds a destination lock through bundle publication and launcher
+registration. A concurrent installation for the same destination is rejected;
+retry after the first finishes. The lock file remains in the private installation
+directory; do not remove it to bypass an active installer. Extracted bundle
+renames target the exact directory and retain the previous bundle on failed publication.
+
 Registration from a manually extracted directory copies it to
 `$XDG_DATA_HOME/blent/appimage/Blent.AppDir`. Registration from automatic
 extract-and-run copies the original image. The launcher propagates extraction

@@ -54,7 +54,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1407 | open | medium | small | Serialize extracted AppDir installation and publish to the exact destination. `packaging/appimage/install-appimage.sh::install_extracted` checks the shared `Blent.AppDir.previous`/`Blent.AppDir` paths without an installation lock and uses directory-target `mv` without `-T`; `AppRun` dispatches independent installer processes without serialization. Static interleaving on a fresh destination: two installers both observe no current AppDir; installer A renames its staging directory to `Blent.AppDir`; installer B's `mv` then succeeds by nesting its staging directory inside A's AppDir. Both report success although B's executable was never selected; subsequent service/launcher writes may come from a different bundle than the installed executable. Give the complete installation transaction one destination-scoped owner, use exact-path publication and preserve an owned rollback on failure; do not merely add another preflight existence check. After explicit test resumption, add a permanent controlled concurrent-install regression with distinguishable bundles and failure/rollback controls. This review traced shell semantics only; it did not execute installers or tests. |
 
 ## Engineering verification
 

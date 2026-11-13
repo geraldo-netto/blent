@@ -1,0 +1,189 @@
+[
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "absolute_base",
+    "line": 8,
+    "language": "shell",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "publish_file",
+    "line": 18,
+    "language": "shell",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "check_stopped",
+    "line": 27,
+    "language": "shell",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "lock_installation",
+    "line": 38,
+    "language": "shell",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_image",
+    "line": 47,
+    "language": "shell",
+    "covered": 2,
+    "total": 2,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_extracted",
+    "line": 52,
+    "language": "shell",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "write_service",
+    "line": 68,
+    "language": "shell",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_service",
+    "line": 75,
+    "language": "shell",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_desktop",
+    "line": 81,
+    "language": "shell",
+    "covered": 5,
+    "total": 5,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "backup_gui_entry",
+    "line": 89,
+    "language": "shell",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "link_gui_entry",
+    "line": 98,
+    "language": "shell",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "write_gui_entry",
+    "line": 107,
+    "language": "shell",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_gui_entry",
+    "line": 117,
+    "language": "shell",
+    "covered": 3,
+    "total": 3,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "write_entry",
+    "line": 124,
+    "language": "shell",
+    "covered": 1,
+    "total": 1,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "install_entry",
+    "line": 134,
+    "language": "shell",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "update_autostart",
+    "line": 141,
+    "language": "shell",
+    "covered": 6,
+    "total": 6,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  },
+  {
+    "file": "packaging/appimage/install-appimage.sh",
+    "name": "check_destination",
+    "line": 152,
+    "language": "shell",
+    "covered": 4,
+    "total": 4,
+    "percent": 100.0,
+    "passes": true,
+    "missing": []
+  }
+]

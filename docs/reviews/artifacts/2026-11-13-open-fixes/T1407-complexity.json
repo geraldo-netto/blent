@@ -1,0 +1,137 @@
+{
+  "tool": "Blent local counter; tree-sitter-bash 0.25.1, Python AST",
+  "functions": [
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 8,
+      "function": "absolute_base",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 18,
+      "function": "publish_file",
+      "complexity": 5
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 27,
+      "function": "check_stopped",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 38,
+      "function": "lock_installation",
+      "complexity": 4
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 47,
+      "function": "install_image",
+      "complexity": 2
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 52,
+      "function": "install_extracted",
+      "complexity": 6
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 68,
+      "function": "write_service",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 75,
+      "function": "install_service",
+      "complexity": 4
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 81,
+      "function": "install_desktop",
+      "complexity": 5
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 89,
+      "function": "backup_gui_entry",
+      "complexity": 5
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 98,
+      "function": "link_gui_entry",
+      "complexity": 6
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 107,
+      "function": "write_gui_entry",
+      "complexity": 1
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 117,
+      "function": "install_gui_entry",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 124,
+      "function": "write_entry",
+      "complexity": 1
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 134,
+      "function": "install_entry",
+      "complexity": 3
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 141,
+      "function": "update_autostart",
+      "complexity": 4
+    },
+    {
+      "file": "packaging/appimage/install-appimage.sh",
+      "line": 152,
+      "function": "check_destination",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_appimage_install_lock.py",
+      "line": 13,
+      "function": "setUp",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/test_appimage_install_lock.py",
+      "line": 20,
+      "function": "wait_for_publication",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_appimage_install_lock.py",
+      "line": 27,
+      "function": "prepare_gate",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/test_appimage_install_lock.py",
+      "line": 45,
+      "function": "concurrent_install",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/test_appimage_install_lock.py",
+      "line": 59,
+      "function": "test_t1407_competing_install_cannot_publish_or_register",
+      "complexity": 1
+    }
+  ]
+}
