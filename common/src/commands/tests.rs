@@ -103,19 +103,19 @@ fn t328_denied_signal_does_not_extend_deadline() {
 #[test]
 fn t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets() {
     assert!(daemon_command_timeout(false) > DAEMON_STOP_TIMEOUT);
-    assert!(SERVICE_STOP_TIMEOUT > DAEMON_STOP_TIMEOUT);
-    assert!(daemon_command_timeout(true) > SERVICE_STOP_TIMEOUT * 2);
+    assert_eq!(daemon_command_timeout(true), Duration::from_secs(35));
+    assert_eq!(daemon_command_timeout(true), MANAGED_COMMAND_TIMEOUT);
     for unit in [
         include_str!("../../../scripts/blent.service"),
         include_str!("../../../packaging/blent.service"),
     ] {
-        let seconds: u64 = unit
+        let cleanup = unit
             .lines()
             .find_map(|line| line.strip_prefix("TimeoutStopSec="))
-            .expect("T268: explicit service stop deadline")
-            .parse()
-            .unwrap();
-        assert_eq!(Duration::from_secs(seconds), SERVICE_STOP_TIMEOUT);
+            .expect("T1417: explicit service cleanup policy");
+        assert_eq!(cleanup, "infinity", "T1417: retain original cleanup");
+        assert!(unit.lines().any(|line| line == "SendSIGKILL=no"));
+        assert!(!unit.lines().any(|line| line.starts_with("ExecStop=")));
     }
 }
 

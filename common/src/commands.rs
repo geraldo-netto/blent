@@ -31,14 +31,15 @@ pub const COMMAND_TIMEOUT: Duration = Duration::from_secs(5);
 
 /// Grace allowed by the daemon's `stop` command.
 pub const DAEMON_STOP_TIMEOUT: Duration = Duration::from_secs(10);
-/// Matches TimeoutStopSec in both shipped systemd user units (T268).
-pub const SERVICE_STOP_TIMEOUT: Duration = Duration::from_secs(15);
+/// Client response budget for managed commands, independent of service cleanup.
+/// A timed-out client does not settle native work; systemd retains the service
+/// until its original cleanup completes (T1417).
+pub const MANAGED_COMMAND_TIMEOUT: Duration = Duration::from_secs(35);
 
-/// A service stop may spend one budget on ExecStop and another retiring the
-/// service process. Leave a further command budget for dispatch/restart.
+/// Bound the caller's wait, without imposing a native retirement deadline.
 pub fn daemon_command_timeout(managed: bool) -> Duration {
     if managed {
-        SERVICE_STOP_TIMEOUT * 2 + COMMAND_TIMEOUT
+        MANAGED_COMMAND_TIMEOUT
     } else {
         DAEMON_STOP_TIMEOUT + COMMAND_TIMEOUT
     }

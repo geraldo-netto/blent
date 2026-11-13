@@ -1,0 +1,17 @@
+{
+  "tool": "rustc1.100.0 LLVM native counters; cargo-llvm-cov0.8.7; project syn2.0.119 complexity frontend",
+  "functions": [
+    {
+      "file": "common/src/commands.rs",
+      "name": "daemon_command_timeout",
+      "line": 40,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "88af20dd081df900c6a09e0ad2098c268b1baf546112221d94216a46a55ca61c"
+    }
+  ]
+}
