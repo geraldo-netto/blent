@@ -85,11 +85,12 @@ async fn retired(source: &LinuxSource) {
 }
 struct OtherFields;
 impl Backend for OtherFields {
-    fn include(&self, caps: &mut Capabilities, state: &mut HostState) {
+    fn include(&self, caps: &mut Capabilities, state: &mut HostState) -> bool {
         caps.power = true;
         caps.lock = true;
         state.power = Some(blent_config::host_activity::Power::Running);
         state.locked = Some(false);
+        true
     }
     fn spawn(self: Box<Self>, _: Arc<Shared>) -> Result<Work> {
         Ok(Work::asynchronous(Task::spawn(async { Ok(()) })?))

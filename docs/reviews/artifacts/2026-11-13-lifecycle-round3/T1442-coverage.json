@@ -1,0 +1,87 @@
+{
+  "tool": "cargo-llvm-cov 0.8.7 / Rust 1.100.0 / LLVM 23.1.5 native counters",
+  "sources": {
+    "host/src/activity.rs": "7779d4ad0b23280d37ec0e8798d2033029110748c47697fa7cba4b7dbf9c1d94",
+    "host/src/activity/native.rs": "b3091e3f3d948ae67986cda16c7a9951f3bd2caca890dacc99bacb80aff1f881",
+    "host/src/activity/dpms.rs": "e89ffd5d79e9719dfb6d6a3ed7aa914c536b45e13de5216645a96806130d4283",
+    "host/src/activity_follow/recovery.rs": "601b7a09730516eddf0b61696c53ea0b3fb0a99a7d8ff0f218f8de4cfb40422f",
+    "common/src/host_activity/source_contract.rs": "03734f6daa9653299c4112ec159bfaad90432cf4f583d9321669a2035171ba72"
+  },
+  "objects": {
+    "library-tests": {
+      "path": "/tmp/blent-t1442-coverage/library-tests",
+      "sha256": "5b3e1a0d4428539e2aa4afb050c98eec79df117ed9c696c4c7f1b90c4653e4a7"
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/activity.rs",
+      "name": "include",
+      "line": 73,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity.rs",
+      "name": "start",
+      "line": 187,
+      "language": "rust",
+      "covered": 34,
+      "total": 36,
+      "percent": 94.44444444444444,
+      "passes": true,
+      "missing": [
+        216,
+        217
+      ]
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "include",
+      "line": 241,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/dpms.rs",
+      "name": "include",
+      "line": 210,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity_follow/recovery.rs",
+      "name": "attempt",
+      "line": 44,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "common/src/host_activity/source_contract.rs",
+      "name": "fmt",
+      "line": 21,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

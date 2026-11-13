@@ -170,3 +170,57 @@ async fn t1343_replacement_rejects_old_epochs_and_uses_fresh_capabilities() {
         finish(following, &replacement_state).await;
     }
 }
+
+struct RetryInitial {
+    held: Mutex<Option<Completion>>,
+    calls: AtomicUsize,
+    state: Arc<State>,
+}
+impl SourceFactory for RetryInitial {
+    fn create(&self, _: SourceSettings, lifetime: SourceLifetime) -> SourceCreation {
+        self.calls.fetch_add(1, Ordering::AcqRel);
+        let held = self.held.lock().unwrap().take();
+        let state = self.state.clone();
+        Box::pin(async move {
+            if let Some(held) = held {
+                lifetime.retain(held);
+                return Err(RetrySourceCreation.into());
+            }
+            Ok(StartedSource {
+                epoch: 7,
+                source: Box::new(Input {
+                    state,
+                    caps: caps(),
+                }),
+            })
+        })
+    }
+}
+#[tokio::test]
+async fn t1442_retryable_initial_creation_requires_original_completion() {
+    assert_eq!(
+        RetrySourceCreation.to_string(),
+        "initial native activity evidence unavailable; retry after settlement"
+    );
+    let pool = Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let state = state();
+    state.events.lock().unwrap().push_back(Event {
+        epoch: 7,
+        ..running(1)
+    });
+    let factory = Arc::new(RetryInitial {
+        held: Mutex::new(Some(held.completion())),
+        calls: AtomicUsize::new(0),
+        state: state.clone(),
+    });
+    let following = Following::start(factory.clone(), settings(), Default::default()).unwrap();
+    until(|| *following.subscribe().borrow() == Publication::Failed).await;
+    tokio::time::sleep(Duration::from_millis(70)).await;
+    assert_eq!(factory.calls.load(Ordering::Acquire), 1);
+    assert!(!following.retired());
+    drop(held);
+    observed(&following, 7).await;
+    assert_eq!(factory.calls.load(Ordering::Acquire), 2);
+    finish(following, &state).await;
+}

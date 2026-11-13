@@ -40,7 +40,8 @@ fn fresh_epoch() -> Result<u64> {
 }
 /// One backend owns its native proof independently of its task result.
 trait Backend: Send {
-    fn include(&self, caps: &mut Capabilities, state: &mut HostState);
+    /// Include provisional fields; false rejects creation before capability admission.
+    fn include(&self, caps: &mut Capabilities, state: &mut HostState) -> bool;
     fn spawn(self: Box<Self>, shared: Arc<Shared>) -> Result<Work>;
 }
 struct Work {
@@ -69,8 +70,8 @@ impl Work {
     }
 }
 impl Backend for native::Actor {
-    fn include(&self, caps: &mut Capabilities, state: &mut HostState) {
-        self.include(caps, state);
+    fn include(&self, caps: &mut Capabilities, state: &mut HostState) -> bool {
+        self.include(caps, state)
     }
     fn spawn(self: Box<Self>, shared: Arc<Shared>) -> Result<Work> {
         Ok(Work::asynchronous(Task::spawn(async move {
@@ -191,8 +192,9 @@ impl LinuxSource {
     ) -> Result<Self> {
         let mut capabilities = Capabilities::default();
         let mut state = HostState::default();
+        let mut initial = true;
         for actor in &actors {
-            actor.include(&mut capabilities, &mut state);
+            initial = actor.include(&mut capabilities, &mut state) && initial;
         }
         let mut observations = Observations::new(epoch, capabilities, settings.queue)?;
         observations.publish(state)?;
@@ -214,6 +216,11 @@ impl LinuxSource {
                 source.stop();
                 return Err(error);
             }
+        }
+        // Rejected candidates still own every actor through stop and native
+        // settlement. They must never teach continuity unproven capabilities.
+        if !initial {
+            return Err(blent_config::host_activity::RetrySourceCreation.into());
         }
         Ok(source)
     }

@@ -238,7 +238,7 @@ impl Actor {
             deadline,
         })
     }
-    pub fn include(&self, caps: &mut Capabilities, state: &mut HostState) {
+    pub fn include(&self, caps: &mut Capabilities, state: &mut HostState) -> bool {
         caps.power |= self.capabilities.power;
         caps.lock |= self.capabilities.lock;
         caps.display |= self.capabilities.display;
@@ -251,6 +251,7 @@ impl Actor {
         if self.capabilities.display {
             state.display_on = self.state.display_on;
         }
+        !self.initial_query_failed()
     }
     pub async fn run(mut self, shared: Arc<Shared>) -> Result<()> {
         let outcome = std::panic::AssertUnwindSafe(self.watch(&shared))

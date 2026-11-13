@@ -325,13 +325,10 @@ async fn t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires() {
     followed(&mut reader, |s| s.source_lost).await;
     conservative(&mut reader).await;
     attempts(&factory, 3).await;
-    assert!(
-        matches!(
-            *reader.borrow(),
-            Publication::Observed { capabilities, snapshot }
-                if capabilities.display && snapshot.source_lost && !snapshot.demand.display
-        ),
-        "T1436 known failed display retains authority while retrying"
+    assert_eq!(
+        *reader.borrow(),
+        Publication::Failed,
+        "T1442 failed replacement must not establish capabilities"
     );
     finish(&factory, following).await;
     assert_eq!(*reader.borrow(), Publication::Stopped);
@@ -352,7 +349,7 @@ async fn initial_failure(field: usize) {
     let (factory, following) =
         start_held(Arc::new(PowerFactory::default()), Some(held.completion()));
     let mut reader = following.subscribe();
-    let lost = followed(&mut reader, |s| s.source_lost).await;
+    failed_initial(&mut reader).await;
     conservative(&mut reader).await;
     assert_eq!(
         factory.calls.load(Ordering::Acquire),
@@ -365,7 +362,6 @@ async fn initial_failure(field: usize) {
     conservative(&mut reader).await;
     failing.store(false, Ordering::Release);
     let fresh = followed(&mut reader, |s| s.demand.display).await;
-    assert!(fresh.demand.stamp.epoch > lost.demand.stamp.epoch);
     assert!(fresh.demand.auxiliary);
     finish(&factory, following).await;
     fixture.server.close().await.unwrap();
@@ -387,7 +383,7 @@ async fn t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt() 
     let (factory, following) =
         start_held(Arc::new(PowerFactory::default()), Some(held.completion()));
     let mut reader = following.subscribe();
-    followed(&mut reader, |s| s.source_lost).await;
+    failed_initial(&mut reader).await;
     following.stop();
     assert!(
         !following.retired(),
@@ -432,7 +428,7 @@ async fn initial_display_failure(kind: usize) {
     let held = pool.reserve().unwrap();
     let (factory, following) = start_held(Arc::new(Factory::default()), Some(held.completion()));
     let mut reader = following.subscribe();
-    let lost = followed(&mut reader, |s| s.source_lost).await;
+    failed_initial(&mut reader).await;
     conservative(&mut reader).await;
     assert_eq!(
         factory.calls.load(Ordering::Acquire),
@@ -444,10 +440,7 @@ async fn initial_display_failure(kind: usize) {
     fixture.values.display_delay_ms.store(0, Ordering::Release);
     fixture.values.display.store(3, Ordering::Release);
     drop(held);
-    let fresh = followed(&mut reader, |s| {
-        s.demand.stamp.epoch > lost.demand.stamp.epoch && !s.source_lost
-    })
-    .await;
+    let fresh = followed(&mut reader, |s| !s.source_lost).await;
     assert!(
         !fresh.demand.display,
         "T1436 fresh display-off snapshot must deny demand"
@@ -483,7 +476,7 @@ async fn t1436_initial_display_failure_stop_keeps_original_debt() {
     let held = pool.reserve().unwrap();
     let (factory, following) = start_held(Arc::new(Factory::default()), Some(held.completion()));
     let mut reader = following.subscribe();
-    followed(&mut reader, |s| s.source_lost).await;
+    failed_initial(&mut reader).await;
     conservative(&mut reader).await;
     following.stop();
     assert!(!following.retired());
@@ -514,4 +507,43 @@ async fn t1436_explicit_unsupported_initial_display_stays_non_retrying() {
         finish(&factory, following).await;
     }
     fixture.server.close().await.unwrap();
+}
+
+async fn uncertain_display_becomes_unsupported(missing: bool) {
+    let fixture = Fixture::new().await;
+    fixture.values.fail_display.store(true, Ordering::Release);
+    let (factory, following) = start(Arc::new(Factory::default()));
+    let mut reader = following.subscribe();
+    failed_initial(&mut reader).await;
+    fixture.values.display.store(-1, Ordering::Release);
+    fixture
+        .values
+        .missing_display
+        .store(missing, Ordering::Release);
+    fixture.values.fail_display.store(false, Ordering::Release);
+    attempts(&factory, 2).await;
+    eprintln!("initial failure now explicit unsupported: mode={}, missing={}, attempts={}, publication={:?}", fixture.values.display.load(Ordering::Acquire), missing, factory.calls.load(Ordering::Acquire), *reader.borrow());
+    followed(&mut reader, |s| s.demand.display).await;
+    assert!(
+        matches!(*reader.borrow(), Publication::Observed { capabilities, .. } if !capabilities.display)
+    );
+    finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1442_initially_uncertain_display_can_recover_to_explicit_unsupported() {
+    if !private("activity::tests::continuity::t1442_initially_uncertain_display_can_recover_to_explicit_unsupported") { return; }
+    for missing in [false, true] {
+        uncertain_display_becomes_unsupported(missing).await;
+    }
+}
+
+async fn failed_initial(reader: &mut tokio::sync::watch::Receiver<Publication>) {
+    tokio::time::timeout(
+        Duration::from_secs(3),
+        reader.wait_for(|value| *value == Publication::Failed),
+    )
+    .await
+    .unwrap()
+    .unwrap();
 }

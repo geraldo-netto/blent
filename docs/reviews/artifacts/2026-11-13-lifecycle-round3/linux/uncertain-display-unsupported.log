@@ -1,0 +1,29 @@
+
+running 1 test
+test activity::tests::continuity::initially_uncertain_display_can_recover_to_explicit_unsupported ...
+thread 'activity::tests::continuity::initially_uncertain_display_can_recover_to_explicit_unsupported' (1381211) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test activity::tests::continuity::initially_uncertain_display_can_recover_to_explicit_unsupported ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::initially_uncertain_display_can_recover_to_explicit_unsupported
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1174 filtered out; finished in 3.01s
+
+
+thread 'activity::tests::continuity::initially_uncertain_display_can_recover_to_explicit_unsupported' (1381216) panicked at host/src/activity/tests.rs:535:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::initially_uncertain_display_can_recover_to_explicit_unsupported
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1174 filtered out; finished in 3.02s

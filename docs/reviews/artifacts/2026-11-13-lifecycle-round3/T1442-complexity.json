@@ -1,0 +1,118 @@
+{
+  "tool": "Blent local syn 2.0.119 cyclomatic frontend",
+  "sources": {
+    "common/src/host_activity.rs": "815908f6b5c8c619226741d034348cf582efa7cc1874f9acf2ebedb24ba48d62",
+    "common/src/host_activity/source_contract.rs": "03734f6daa9653299c4112ec159bfaad90432cf4f583d9321669a2035171ba72",
+    "host/src/activity.rs": "7779d4ad0b23280d37ec0e8798d2033029110748c47697fa7cba4b7dbf9c1d94",
+    "host/src/activity/native.rs": "b3091e3f3d948ae67986cda16c7a9951f3bd2caca890dacc99bacb80aff1f881",
+    "host/src/activity/dpms.rs": "e89ffd5d79e9719dfb6d6a3ed7aa914c536b45e13de5216645a96806130d4283",
+    "host/src/activity/dpms/tests.rs": "abfee9fc89145e39744b2d3e062c33078430601b94b503388a1a7ea64dfd74e8",
+    "host/src/activity/continuity_tests.rs": "24443d91b3f1aa96950683268439fb482bb5caa52424432aaa2fe78068fd2953",
+    "host/src/activity_follow/recovery.rs": "601b7a09730516eddf0b61696c53ea0b3fb0a99a7d8ff0f218f8de4cfb40422f",
+    "host/src/activity_follow_recovery_tests.rs": "5de7d45f9ad57ee80abde76455377205d5e9e21ef2befd6efcfa6911c161fa28"
+  },
+  "functions": [
+    {
+      "file": "common/src/host_activity/source_contract.rs",
+      "line": 21,
+      "name": "fmt",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity.rs",
+      "line": 73,
+      "name": "include",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity.rs",
+      "line": 187,
+      "name": "start",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 241,
+      "name": "include",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/dpms.rs",
+      "line": 210,
+      "name": "include",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/dpms/tests.rs",
+      "line": 88,
+      "name": "include",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 318,
+      "name": "t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 338,
+      "name": "initial_failure",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 377,
+      "name": "t1429_stop_during_failed_initial_snapshot_keeps_original_native_debt",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 413,
+      "name": "initial_display_failure",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 467,
+      "name": "t1436_initial_display_failure_stop_keeps_original_debt",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 512,
+      "name": "uncertain_display_becomes_unsupported",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 534,
+      "name": "t1442_initially_uncertain_display_can_recover_to_explicit_unsupported",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 541,
+      "name": "failed_initial",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity_follow/recovery.rs",
+      "line": 44,
+      "name": "attempt",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/activity_follow_recovery_tests.rs",
+      "line": 180,
+      "name": "create",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity_follow_recovery_tests.rs",
+      "line": 200,
+      "name": "t1442_retryable_initial_creation_requires_original_completion",
+      "complexity": 2
+    }
+  ]
+}

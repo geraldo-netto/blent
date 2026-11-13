@@ -20,7 +20,7 @@ mod source_lifetime;
 pub use activity_snapshot::{ActivitySnapshot, ActivityTarget};
 pub use feed::Feed;
 pub use source_contract::{
-    Publication, SourceCreation, SourceFactory, SourceLifetime, StartedSource,
+    Publication, RetrySourceCreation, SourceCreation, SourceFactory, SourceLifetime, StartedSource,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]

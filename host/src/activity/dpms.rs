@@ -207,11 +207,12 @@ impl Probe {
     }
 }
 impl Backend for Probe {
-    fn include(&self, caps: &mut Capabilities, state: &mut HostState) {
+    fn include(&self, caps: &mut Capabilities, state: &mut HostState) -> bool {
         caps.display |= self.initial.supported;
         if self.initial.supported {
             state.display_on = self.initial.on;
         }
+        true
     }
     fn spawn(self: Box<Self>, shared: Arc<Shared>) -> Result<Work> {
         let native = self.startup.native.clone();
