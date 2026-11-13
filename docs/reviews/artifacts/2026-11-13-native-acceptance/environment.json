@@ -1,0 +1,77 @@
+{
+  "observed_utc": "2026-11-13T13:36:12.328474+00:00",
+  "evdi_loaded": true,
+  "commands": [
+    {
+      "argv": [
+        "uname",
+        "-r"
+      ],
+      "status": 0,
+      "stdout": "7.0.0-43-generic\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "uptime",
+        "-s"
+      ],
+      "status": 0,
+      "stdout": "2026-11-13 13:56:05\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "cat",
+        "/sys/module/evdi/parameters/initial_device_count"
+      ],
+      "status": 0,
+      "stdout": "2\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "version"
+      ],
+      "status": 0,
+      "stdout": "Android Debug Bridge version 1.0.41\nVersion 34.0.4-debian\nInstalled as /usr/lib/android-sdk/platform-tools/adb\nRunning on Linux 7.0.0-43-generic (x86_64)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "devices",
+        "-l"
+      ],
+      "status": 0,
+      "stdout": "List of devices attached\n8002RH1010011900       device usb:3-2.4.4 product:GQ8002RH1_EEA model:RugKing_Pad_2_Pro device:GQ8002RH1 transport_id:1\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "8002RH1010011900",
+        "reverse",
+        "--list"
+      ],
+      "status": 0,
+      "stdout": "UsbFfs tcp:8890 tcp:8890\nUsbFfs tcp:8891 tcp:8891\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "8002RH1010011900",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "status": 0,
+      "stdout": "Ulefone/GQ8002RH1_EEA/GQ8002RH1:16/BP2A.250605.031.A3/1782987754:user/release-keys\n",
+      "stderr": ""
+    }
+  ]
+}

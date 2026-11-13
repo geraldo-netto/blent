@@ -1,0 +1,100 @@
+2026-11-13T13:34:32.494838Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 20.1ms  max 27.8ms  (150 samples, 1 in flight, 0 aged out)
+2026-11-13T13:34:32.494862Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.7ms  p95 13.5ms  (150 samples)
+2026-11-13T13:34:33.794917Z  INFO blent::capture::cli_encoder: 302: Encoder: 150 access units in 5.0s, 0.2 MB/s (1618 kbps)
+[evdi-helper] 30.0 grabs/s (total 61794), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (150 frames)
+2026-11-13T13:34:37.495140Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.8ms  p95 20.8ms  max 53.0ms  (150 samples, 1 in flight, 0 aged out)
+2026-11-13T13:34:37.495170Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 13.6ms  (150 samples)
+2026-11-13T13:34:38.795185Z  INFO blent::capture::cli_encoder: 302: Encoder: 150 access units in 5.0s, 0.2 MB/s (1718 kbps)
+[evdi-helper] 30.0 grabs/s (total 61944), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.1ms (150 frames)
+2026-11-13T13:34:42.527244Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.8ms  p95 20.1ms  max 58.5ms  (152 samples, 1 in flight, 0 aged out)
+2026-11-13T13:34:42.527262Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 13.6ms  (152 samples)
+2026-11-13T13:34:43.795407Z  INFO blent::capture::cli_encoder: 302: Encoder: 153 access units in 5.0s, 0.2 MB/s (1346 kbps)
+[evdi-helper] 31.8 grabs/s (total 62103), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (159 frames)
+2026-11-13T13:34:47.562566Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 19.0ms  p95 20.7ms  max 34.0ms  (163 samples, 1 in flight, 0 aged out)
+2026-11-13T13:34:47.562595Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.0ms  p95 13.8ms  (163 samples)
+2026-11-13T13:34:48.795794Z  INFO blent::capture::cli_encoder: 302: Encoder: 162 access units in 5.0s, 0.1 MB/s (1083 kbps)
+[evdi-helper] 32.0 grabs/s (total 62264), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (161 frames)
+2026-11-13T13:34:52.562865Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 20.1ms  max 39.3ms  (159 samples, 1 in flight, 0 aged out)
+2026-11-13T13:34:52.562894Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.9ms  p95 13.7ms  (159 samples)
+2026-11-13T13:34:53.829278Z  INFO blent::capture::cli_encoder: 302: Encoder: 161 access units in 5.0s, 0.1 MB/s (1067 kbps)
+[evdi-helper] 31.9 grabs/s (total 62424), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 0.9ms p95 1.1ms (160 frames)
+2026-11-13T13:34:57.596499Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 21.3ms  max 46.6ms  (160 samples, 1 in flight, 0 aged out)
+2026-11-13T13:34:57.596529Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.7ms  p95 13.8ms  (160 samples)
+2026-11-13T13:34:58.829633Z  INFO blent::capture::cli_encoder: 302: Encoder: 157 access units in 5.0s, 0.2 MB/s (1515 kbps)
+[evdi-helper] 33.2 grabs/s (total 62590), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 18.4ms (175 frames)
+2026-11-13T13:35:02.596642Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.6ms  p95 24.9ms  max 52.8ms  (209 samples, 2 in flight, 0 aged out)
+2026-11-13T13:35:02.596675Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.9ms  p95 14.6ms  (209 samples)
+2026-11-13T13:35:03.835546Z  INFO blent::capture::cli_encoder: 302: Encoder: 236 access units in 5.0s, 0.3 MB/s (2687 kbps)
+[evdi-helper] 46.2 grabs/s (total 62821), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 18.0ms p95 24.2ms (256 frames)
+2026-11-13T13:35:07.596669Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.4ms  p95 22.2ms  max 52.6ms  (271 samples, 2 in flight, 0 aged out)
+2026-11-13T13:35:07.596686Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 14.6ms  (271 samples)
+2026-11-13T13:35:08.838880Z  INFO blent::capture::cli_encoder: 302: Encoder: 277 access units in 5.0s, 0.5 MB/s (3625 kbps)
+[evdi-helper] 39.1 grabs/s (total 63017), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 18.1ms p95 23.8ms (256 frames)
+2026-11-13T13:35:12.614131Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.3ms  p95 23.6ms  max 30.3ms  (258 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:12.614156Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.7ms  p95 14.2ms  (258 samples)
+2026-11-13T13:35:13.852471Z  INFO blent::capture::cli_encoder: 302: Encoder: 253 access units in 5.0s, 0.5 MB/s (4352 kbps)
+[evdi-helper] 45.7 grabs/s (total 63246), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.2ms p95 24.4ms (236 frames)
+2026-11-13T13:35:17.614537Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.4ms  p95 21.4ms  max 57.0ms  (243 samples, 2 in flight, 0 aged out)
+2026-11-13T13:35:17.614566Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 14.1ms  (243 samples)
+2026-11-13T13:35:18.881509Z  INFO blent::capture::cli_encoder: 302: Encoder: 222 access units in 5.0s, 0.4 MB/s (2996 kbps)
+[evdi-helper] 39.8 grabs/s (total 63445), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 0.9ms p95 1.1ms (199 frames)
+2026-11-13T13:35:22.614745Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.6ms  p95 21.4ms  max 30.0ms  (202 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:22.614771Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.9ms  p95 13.8ms  (202 samples)
+2026-11-13T13:35:23.905050Z  INFO blent::capture::cli_encoder: 302: Encoder: 212 access units in 5.0s, 0.3 MB/s (2235 kbps)
+[evdi-helper] 39.6 grabs/s (total 63643), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 0.9ms p95 1.2ms (198 frames)
+2026-11-13T13:35:27.615226Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 20.6ms  max 39.0ms  (198 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:27.615252Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.9ms  p95 13.7ms  (198 samples)
+2026-11-13T13:35:28.915220Z  INFO blent::capture::cli_encoder: 302: Encoder: 201 access units in 5.0s, 0.3 MB/s (2559 kbps)
+[evdi-helper] 42.0 grabs/s (total 63853), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 0.9ms p95 1.2ms (210 frames)
+2026-11-13T13:35:32.615713Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.9ms  p95 20.5ms  max 45.7ms  (198 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:32.615739Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.9ms  p95 13.8ms  (198 samples)
+2026-11-13T13:35:33.915421Z  INFO blent::capture::cli_encoder: 302: Encoder: 196 access units in 5.0s, 0.3 MB/s (2581 kbps)
+[evdi-helper] 36.8 grabs/s (total 64037), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (184 frames)
+2026-11-13T13:35:37.615894Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.6ms  p95 22.6ms  max 42.7ms  (193 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:37.615921Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 13.7ms  (193 samples)
+2026-11-13T13:35:38.915899Z  INFO blent::capture::cli_encoder: 302: Encoder: 185 access units in 5.0s, 0.3 MB/s (2402 kbps)
+[evdi-helper] 40.0 grabs/s (total 64237), mode:1 dpms:1 pending:0
+[evdi-helper] capture→fifo p50 1.0ms p95 1.1ms (200 frames)
+2026-11-13T13:35:42.633086Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 22.4ms  max 57.8ms  (206 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:42.633114Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.0ms  p95 14.1ms  (206 samples)
+2026-11-13T13:35:43.932979Z  INFO blent::capture::cli_encoder: 302: Encoder: 215 access units in 5.0s, 0.3 MB/s (2734 kbps)
+[evdi-helper] 42.7 grabs/s (total 64451), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (214 frames)
+2026-11-13T13:35:47.633303Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.4ms  p95 21.4ms  max 34.3ms  (214 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:47.633327Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 13.8ms  (214 samples)
+2026-11-13T13:35:48.933410Z  INFO blent::capture::cli_encoder: 302: Encoder: 204 access units in 5.0s, 0.3 MB/s (2259 kbps)
+[evdi-helper] 40.6 grabs/s (total 64654), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.2ms (203 frames)
+2026-11-13T13:35:52.633675Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.6ms  p95 20.4ms  max 35.5ms  (199 samples, 1 in flight, 0 aged out)
+2026-11-13T13:35:52.633704Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.9ms  p95 13.7ms  (199 samples)
+2026-11-13T13:35:53.933732Z  INFO blent::capture::cli_encoder: 302: Encoder: 197 access units in 5.0s, 0.3 MB/s (2164 kbps)
+[evdi-helper] 39.4 grabs/s (total 64851), mode:1 dpms:1 pending:0
+[evdi-helper] capture→fifo p50 1.0ms p95 1.5ms (197 frames)
+2026-11-13T13:35:57.648253Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.7ms  p95 20.7ms  max 34.6ms  (196 samples, 2 in flight, 0 aged out)
+2026-11-13T13:35:57.648279Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.9ms  p95 13.8ms  (196 samples)
+2026-11-13T13:35:58.934275Z  INFO blent::capture::cli_encoder: 302: Encoder: 205 access units in 5.0s, 0.3 MB/s (2266 kbps)
+[evdi-helper] 42.4 grabs/s (total 65063), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 1.5ms (212 frames)
+2026-11-13T13:36:02.651169Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.8ms  p95 20.8ms  max 44.0ms  (203 samples, 2 in flight, 0 aged out)
+2026-11-13T13:36:02.651197Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 13.1ms  p95 14.2ms  (203 samples)
+2026-11-13T13:36:03.934495Z  INFO blent::capture::cli_encoder: 302: Encoder: 207 access units in 5.0s, 0.3 MB/s (2599 kbps)
+[evdi-helper] 41.6 grabs/s (total 65271), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 1.0ms p95 19.3ms (210 frames)
+2026-11-13T13:36:07.667314Z  INFO blent::latency: 407: Latency packet-ready→render-ACK (host clock): p50 18.3ms  p95 21.0ms  max 46.9ms  (241 samples, 2 in flight, 0 aged out)
+2026-11-13T13:36:07.667332Z  INFO blent::latency: 418: Latency tablet arrival→render-callback (tablet clock): p50 12.8ms  p95 14.0ms  (241 samples)
+2026-11-13T13:36:08.934580Z  INFO blent::capture::cli_encoder: 302: Encoder: 239 access units in 5.0s, 0.4 MB/s (3223 kbps)
+[evdi-helper] 40.2 grabs/s (total 65472), mode:1 dpms:1 pending:1
+[evdi-helper] capture→fifo p50 2.6ms p95 25.8ms (223 frames)

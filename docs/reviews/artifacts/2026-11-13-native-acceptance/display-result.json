@@ -1,0 +1,17 @@
+{
+  "id": "T1389",
+  "status": "accepted_selected_device",
+  "observed_utc": "2026-11-13T13:43:21.228713+00:00",
+  "kernel": "7.0.0-43-generic",
+  "module_loaded": true,
+  "initial_device_count": "2",
+  "device": "8002RH1010011900 / RugKing Pad 2 Pro / Android 16 API36",
+  "evidence": [
+    "environment.json",
+    "display-progress.log",
+    "display-after-reconnect.log"
+  ],
+  "acceptance": "Captured frame totals increase, encoder access units are produced, and tablet arrival-to-render callback and host render-ACK samples continue. Display resumes after native ADB transport reconnect.",
+  "scope": "Existing Linux installation, selected physical tablet and current session; no claim of all hardware, performance targets or unrestricted leak freedom.",
+  "system_changes": "None: no module insertion, administrator command, driver install, reboot or tablet configuration change performed."
+}
