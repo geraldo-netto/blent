@@ -33,6 +33,7 @@ pub struct Status {
     pub touch: bool,
     pub mouse: bool,
     pub negotiated: bool,
+    pub cleanup_pending: bool,
 }
 
 pub trait Environment: 'static {
@@ -64,6 +65,7 @@ struct Gate {
     current: Arc<Authority>,
     status: Status,
     closed: bool,
+    cleanup_pending: bool,
 }
 struct Message {
     command: Command,
@@ -101,14 +103,18 @@ impl Backend {
             touch,
             mouse,
             negotiated: false,
+            cleanup_pending: false,
         };
         let gate = Arc::new(Mutex::new(Gate {
             current: Authority::new(),
             status: status.clone(),
             closed: false,
+            cleanup_pending: false,
         }));
         let (sender, receiver) = mpsc::sync_channel(QUEUED_COMMANDS);
         let owned = gate.clone();
+        let settled = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        let original = settled.clone();
         let handle = thread::Builder::new()
             .name("blent-direct-input".into())
             .spawn(move || {
@@ -121,9 +127,10 @@ impl Backend {
                     receiver,
                     owned,
                 );
+                original.store(true, std::sync::atomic::Ordering::Release);
             })?;
         let completion = admission.completion();
-        admission.retain(blent_config::retirement_work::Thread::new(handle));
+        admission.retain(worker::Retiring::new(handle, settled));
         Ok(Self {
             sink: Arc::new(Sink {
                 sender,
@@ -133,7 +140,7 @@ impl Backend {
             completion,
         })
     }
-    /// Exact original worker exit; native release acceptance remains an adapter obligation.
+    /// Successful native settlement plus exact original worker exit, including TLS.
     pub fn completion(&self) -> blent_config::retirement::Completion {
         self.completion.clone()
     }
@@ -259,6 +266,7 @@ impl InputSink for Sink {
         let gate = self.gate.lock().unwrap();
         let mut status = gate.status.clone();
         status.negotiated = status.negotiated && !gate.current.cancelled();
+        status.cleanup_pending = gate.cleanup_pending;
         Some(status)
     }
 }

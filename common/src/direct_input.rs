@@ -86,7 +86,10 @@ pub enum MouseAction {
     Up(Button),
 }
 
-/// Native implementations must retain ownership on failure and release it on drop.
+/// Native implementations retain exact obligations on failure. Their creating
+/// owner must retry `retire` successfully before dropping/replacing the adapter;
+/// a best-effort destructor is not release evidence. Successful retirement is
+/// idempotent and must leave unrelated input unchanged.
 pub trait Adapter {
     fn touch(&mut self, frame: &[Contact]) -> Result<()>;
     fn mouse(&mut self, point: (u16, u16), action: MouseAction) -> Result<()>;

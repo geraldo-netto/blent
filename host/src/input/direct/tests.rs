@@ -415,4 +415,5 @@ async fn t673_authenticated_owner_replacement_and_disconnect_retire_buttons() {
     assert!(calls.iter().filter(|call| *call == "retire").count() >= 2);
 }
 
+mod cleanup;
 mod responsiveness;

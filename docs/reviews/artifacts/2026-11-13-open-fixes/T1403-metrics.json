@@ -1,0 +1,451 @@
+{
+  "tool": "rustc 1.100.0 LLVM native counters; cargo-llvm-cov 0.8.7; Blent syn 2.0.119 complexity frontend",
+  "tests": 116,
+  "failed": 0,
+  "functions": [
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "new",
+      "line": 51,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "7bd660c6e91dd41627ecf4c4bc0b7395eedc5aa46bbd7dac963e89341bc664b2",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "new",
+      "line": 92,
+      "language": "rust",
+      "covered": 51,
+      "total": 51,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "7bd660c6e91dd41627ecf4c4bc0b7395eedc5aa46bbd7dac963e89341bc664b2",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "completion",
+      "line": 144,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "7bd660c6e91dd41627ecf4c4bc0b7395eedc5aa46bbd7dac963e89341bc664b2",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "direct_status",
+      "line": 265,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "7bd660c6e91dd41627ecf4c4bc0b7395eedc5aa46bbd7dac963e89341bc664b2",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/state.rs",
+      "name": "start",
+      "line": 17,
+      "language": "rust",
+      "covered": 22,
+      "total": 23,
+      "percent": 95.65217391304348,
+      "passes": true,
+      "missing": [
+        36
+      ],
+      "source_sha256": "1c9191e4df90f3ba302eb62758c6c18726e2a69c05a470b7ea1bac1c85637e9b",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "name": "new",
+      "line": 11,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "dd3c413e40660577571a3127bd95e3c0267b84b8584bd35f44eab2e7f7b3f9f2",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "name": "poll_complete",
+      "line": 19,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "dd3c413e40660577571a3127bd95e3c0267b84b8584bd35f44eab2e7f7b3f9f2",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "name": "serve",
+      "line": 24,
+      "language": "rust",
+      "covered": 20,
+      "total": 21,
+      "percent": 95.23809523809524,
+      "passes": true,
+      "missing": [
+        44
+      ],
+      "source_sha256": "dd3c413e40660577571a3127bd95e3c0267b84b8584bd35f44eab2e7f7b3f9f2",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "name": "settle",
+      "line": 52,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "dd3c413e40660577571a3127bd95e3c0267b84b8584bd35f44eab2e7f7b3f9f2",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "name": "protected",
+      "line": 66,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "dd3c413e40660577571a3127bd95e3c0267b84b8584bd35f44eab2e7f7b3f9f2",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "name": "apply",
+      "line": 70,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "dd3c413e40660577571a3127bd95e3c0267b84b8584bd35f44eab2e7f7b3f9f2",
+      "complexity": 7
+    }
+  ],
+  "changed_file_complexity": [
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 51,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 54,
+      "name": "cancel",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 57,
+      "name": "cancelled",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 92,
+      "name": "new",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 144,
+      "name": "completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 149,
+      "name": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 173,
+      "name": "complete",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 178,
+      "name": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 186,
+      "name": "admit",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 213,
+      "name": "request",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 236,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 245,
+      "name": "release_all",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 251,
+      "name": "touch",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 259,
+      "name": "pen",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 262,
+      "name": "direct",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 265,
+      "name": "direct_status",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 274,
+      "name": "legacy_touch",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 286,
+      "name": "sink",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 289,
+      "name": "native_completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 292,
+      "name": "follow",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/state.rs",
+      "line": 9,
+      "name": "retire",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/state.rs",
+      "line": 17,
+      "name": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/state.rs",
+      "line": 42,
+      "name": "command",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 11,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 19,
+      "name": "poll_complete",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 24,
+      "name": "serve",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 52,
+      "name": "settle",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 66,
+      "name": "protected",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 70,
+      "name": "apply",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 96,
+      "name": "execute",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 112,
+      "name": "publish",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/worker.rs",
+      "line": 125,
+      "name": "t1403_thread_exit_without_native_settlement_cannot_release_admission",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 25,
+      "name": "touch",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 28,
+      "name": "mouse",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 51,
+      "name": "retire",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 68,
+      "name": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 77,
+      "name": "snapshot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 80,
+      "name": "create",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 88,
+      "name": "save",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 98,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 102,
+      "name": "model",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 118,
+      "name": "observe_cleanup",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 129,
+      "name": "press",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 135,
+      "name": "assert_settled",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 150,
+      "name": "t1403_caller_loss_retains_failed_button_cleanup_until_recovery",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 167,
+      "name": "t1403_failed_save_retains_provisional_native_owner",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 187,
+      "name": "t1403_replacement_waits_for_failed_release_and_recovers",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 209,
+      "name": "t1403_failed_event_returns_while_original_cleanup_remains_owned",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/tests/cleanup.rs",
+      "line": 229,
+      "name": "t1403_adapter_unwinding_preserves_existing_native_obligations",
+      "complexity": 1
+    }
+  ],
+  "native_windows": "Cross-compiled only; T1409 retains execution/counters"
+}

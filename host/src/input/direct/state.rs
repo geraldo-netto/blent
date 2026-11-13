@@ -29,9 +29,12 @@ impl<E: Environment> State<E> {
         };
         let snapshot = self.environment.snapshot()?;
         snapshot.select(&config.monitor)?;
-        let session = Session::new(self.environment.create(mode)?, &config, &snapshot)?;
+        self.session = Some(Session::new(
+            self.environment.create(mode)?,
+            &config,
+            &snapshot,
+        )?);
         self.environment.save(&config)?;
-        self.session = Some(session);
         self.status.mode = mode;
         self.status.negotiated = true;
         Ok(())

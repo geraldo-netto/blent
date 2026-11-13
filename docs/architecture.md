@@ -232,8 +232,16 @@ original native operation. Backend loss retains the original worker in the bound
 retirement pool until actual native thread exit; dropping a reply cannot revoke a
 successor's authority. The session supervisor retains this same original proof
 before listener startup, so session/endpoint reuse cannot outrun input retirement.
-Failed native button release remains tracked separately
-until T1403 is resolved.
+Failed native release retains its original device/session on that same thread.
+The status projection exposes `cleanup_pending`; commands cannot overtake that
+cleanup. Retries occur every 100 ms only while release is rejected, with one
+warning per cleanup episode. Provisional native sessions are retained before
+fallible configuration save. Adapter command/cleanup unwinding preserves the
+existing session for retirement. Completion requires successful cleanup and actual
+thread exit; an unexpected outer panic/destructor failure cannot pass that fence.
+Eventual cleanup assumes native release eventually succeeds. Forced process
+termination cannot honor this in-process ownership contract; normal daemon-exit
+integration remains tracked in T1410.
 
 While awaiting direct input, a socket reads ahead at most 16 frames of at most
 64 KiB each. Close, read failure or overflow revokes the controller; buffered
