@@ -18,6 +18,24 @@ impl RouteOwner {
             .await
     }
 
+    /// The display ticket remains owned until original native cleanup settles.
+    /// Cancellation drops this view; Routes' bounded worker retains its debt
+    /// and device/local-port leases independently of the monitor task/runtime.
+    pub(super) async fn settle(&self, adb: &str, serial: &str) {
+        let mut reported = false;
+        loop {
+            match self.retire(adb).await {
+                Ok(()) => return,
+                Err(error) if !reported => {
+                    warn!("Display routes on {serial} remain owned: {error}");
+                    reported = true;
+                }
+                Err(_) => {}
+            }
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+    }
+
     pub(super) async fn retire(&self, adb: &str) -> Result<()> {
         let mut owned = self.0.lock().await;
         if let Some(routes) = owned.as_mut() {

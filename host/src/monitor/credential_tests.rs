@@ -9,6 +9,10 @@ fn fixture(root: &std::path::Path) -> Monitor {
         &adb,
         r#"#!/bin/sh
 printf '%s\n' "$*" >> "$0.actions"
+if [ "$3" = shell ] && [ "$4" = getprop ]; then
+    case "$2" in USB-A|192.0.2.5:5555) echo physical-A ;; *) echo "$2" ;; esac
+    exit 0
+fi
 if [ "$3" = shell ]; then cat >> "$0.commands"; fi
 if [ "$3" = reverse ]; then
     file="$0.$2.routes"
@@ -200,7 +204,7 @@ async fn t444_unwritable_token_publication_never_prepares_a_route() {
 }
 
 #[tokio::test]
-async fn t444_inflight_route_is_cancelled_before_replacement() {
+async fn t444_inflight_creator_settles_before_replacement() {
     let root = tempfile::tempdir().unwrap();
     let mut state = fixture(root.path());
     let adb = root.path().join("adb");
@@ -208,7 +212,7 @@ async fn t444_inflight_route_is_cancelled_before_replacement() {
     let gate = r#"
 if [ "$2" = USB-A ] && [ "$4" = --no-rebind ] && [ "$5" = tcp:8891 ]; then
     touch "$0.entered"
-    sleep 10
+    while [ ! -f "$0.release" ]; do sleep 0.01; done
     echo late-forward >> "$0.actions"
 fi
 "#;
@@ -227,14 +231,25 @@ fi
     .await
     .unwrap();
     state.change_primary(&Some("USB-B".into()));
+    let premature = tokio::time::timeout(Duration::from_millis(100), ready(&mut state))
+        .await
+        .is_ok();
+    std::fs::write(root.path().join("adb.release"), "release original creator").unwrap();
     ready(&mut state).await;
+    assert!(
+        !premature,
+        "T1344/T1346 replacement crossed an admitted creator"
+    );
     let actions = std::fs::read_to_string(root.path().join("adb.actions")).unwrap();
-    assert!(!actions.contains("late-forward"));
+    assert!(actions.contains("late-forward"));
     assert!(
         actions.find("USB-A reverse --remove tcp:8890").unwrap()
             < actions.find("USB-B reverse --no-rebind tcp:8890").unwrap()
     );
-    assert!(!actions.contains("USB-A reverse --remove tcp:8891"));
+    assert!(
+        actions.find("USB-A reverse --remove tcp:8891").unwrap()
+            < actions.find("USB-B reverse --no-rebind tcp:8891").unwrap()
+    );
     assert!(!state.mutations.contains("USB-A"));
     state.stop().await;
 }

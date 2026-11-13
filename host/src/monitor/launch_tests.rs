@@ -208,7 +208,11 @@ fn t557_adb(root: &std::path::Path) -> PathBuf {
     let original = std::fs::read_to_string(&path).unwrap();
     let reverse = r#"if [ "$3" = reverse ]; then
     if [ "$4" = --list ]; then cat "$0.maps" 2>/dev/null; exit 0; fi
-    if [ "$4" = --remove ]; then exit 0; fi
+    if [ "$4" = --remove ]; then
+        awk -v remote="$5" '$2 != remote' "$0.maps" > "$0.next"
+        mv "$0.next" "$0.maps"
+        exit 0
+    fi
     if [ "$4" = --no-rebind ]; then shift; fi
     printf 'UsbFfs %s %s\n' "$4" "$5" >> "$0.maps"
     exit 0

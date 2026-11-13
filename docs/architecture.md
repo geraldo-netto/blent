@@ -216,6 +216,10 @@ serial ownership remains available when the device exposes no separate identity.
 Native device/local-port leases use 256 persistent lock stripes; collisions reject
 admission conservatively. Leases remain held through cleanup and original native
 thread exit. Higher capacity cannot override an unresolved endpoint reservation.
+Linux keeps the original display ticket closed and reserved while route cleanup
+reports failure, including across device reconnect. Graceful monitor shutdown
+awaits that settlement. Cancelling or dropping a monitor task transfers no reuse
+authority: the route worker still owns its native device/local-port leases.
 
 Larger capacities allow more concurrent work and retain more memory/handles when
 resources stall. Shorter waits return control sooner but can report incomplete

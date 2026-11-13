@@ -31,12 +31,7 @@ impl Monitor {
                 None => None,
             };
             if let Some(routes) = routes {
-                if let Err(error) = routes.retire(&adb).await {
-                    // Credentials were revoked before retirement. T1346 tracks
-                    // this lost cleanup debt; logical stop is not settlement.
-                    // Deletion relies on T1345's exclusive endpoint contract.
-                    warn!("Could not retire owned routes on {serial}: {error}");
-                }
+                routes.settle(&adb, &serial).await;
             }
             if let Some(completion) = completion {
                 // Bounded logical stop can leave native workers quarantined.

@@ -47,8 +47,14 @@ mod tests {
     use super::*;
     use std::os::unix::fs::PermissionsExt;
 
-    async fn repair(adb: &str, serial: &str, ports: (u16, u16)) -> Result<()> {
-        RouteOwner::default().prepare(serial, ports, adb).await
+    async fn repair(adb: &str, serial: &str, ports: (u16, u16)) -> (Result<()>, String) {
+        let owner = RouteOwner::default();
+        let result = owner.prepare(serial, ports, adb).await;
+        let actions =
+            std::fs::read_to_string(PathBuf::from(adb).with_extension("args")).unwrap_or_default();
+        // T1344: retain the original fake native owner through actual cleanup.
+        owner.retire(adb).await.unwrap();
+        (result, actions)
     }
 
     fn fake_adb(root: &std::path::Path, listing: &[u8]) -> PathBuf {
@@ -63,8 +69,16 @@ if [ "$4" = --list ]; then
     cat "$0.listing"
     exit 0
 fi
-if [ -f "$0.rebind-fail" ]; then exit 1; fi
+if [ "$4" = --remove ]; then
+    awk -v remote="$5" '$2 != remote' "$0.listing" > "$0.next"
+    mv "$0.next" "$0.listing"
+    exit 0
+fi
 [ "$4" = --no-rebind ] || exit 2
+printf 'UsbFfs %s %s\n' "$5" "$6" >> "$0.listing"
+# Lost acknowledgement after the original effect; cleanup must retain it.
+if [ -f "$0.rebind-fail" ]; then exit 1; fi
+exit 0
 "#,
         )
         .unwrap();
@@ -76,25 +90,20 @@ if [ -f "$0.rebind-fail" ]; then exit 1; fi
     async fn t557_repairs_only_missing_routes_and_uses_no_rebind() {
         let root = tempfile::tempdir().unwrap();
         let adb = fake_adb(root.path(), b"UsbFfs tcp:8890 tcp:9010\n");
-        repair(adb.to_str().unwrap(), "USB", (9010, 9011))
-            .await
-            .unwrap();
-        assert_eq!(
-            std::fs::read_to_string(adb.with_extension("args")).unwrap(),
-            "-s USB reverse --list\n-s USB reverse --no-rebind tcp:8891 tcp:9011\n"
-        );
+        let (result, actions) = repair(adb.to_str().unwrap(), "USB", (9010, 9011)).await;
+        result.unwrap();
+        assert_eq!(actions, "-s USB shell getprop ro.serialno\n-s USB reverse --list\n-s USB reverse --no-rebind tcp:8891 tcp:9011\n");
         std::fs::write(
             adb.with_extension("listing"),
             "UsbFfs tcp:8890 tcp:9010\nUsbFfs tcp:8891 tcp:9011\n",
         )
         .unwrap();
         std::fs::remove_file(adb.with_extension("args")).unwrap();
-        repair(adb.to_str().unwrap(), "USB", (9010, 9011))
-            .await
-            .unwrap();
+        let (result, actions) = repair(adb.to_str().unwrap(), "USB", (9010, 9011)).await;
+        result.unwrap();
         assert_eq!(
-            std::fs::read_to_string(adb.with_extension("args")).unwrap(),
-            "-s USB reverse --list\n"
+            actions,
+            "-s USB shell getprop ro.serialno\n-s USB reverse --list\n"
         );
     }
 
@@ -108,25 +117,24 @@ if [ -f "$0.rebind-fail" ]; then exit 1; fi
         ] {
             let adb = fake_adb(root.path(), listing);
             std::fs::remove_file(adb.with_extension("args")).ok();
-            assert!(repair(adb.to_str().unwrap(), "USB", (9010, 9011))
-                .await
-                .is_err());
+            let (result, actions) = repair(adb.to_str().unwrap(), "USB", (9010, 9011)).await;
+            assert!(result.is_err());
             assert_eq!(
-                std::fs::read_to_string(adb.with_extension("args")).unwrap(),
-                "-s USB reverse --list\n"
+                actions,
+                "-s USB shell getprop ro.serialno\n-s USB reverse --list\n"
             );
         }
         let adb = fake_adb(root.path(), b"");
         for suffix in ["list-fail", "rebind-fail"] {
             let marker = adb.with_extension(suffix);
             std::fs::write(&marker, "fail").unwrap();
-            assert!(repair(adb.to_str().unwrap(), "USB", (9010, 9011))
-                .await
-                .is_err());
+            let (result, _) = repair(adb.to_str().unwrap(), "USB", (9010, 9011)).await;
             std::fs::remove_file(marker).unwrap();
+            assert!(result.is_err());
         }
         assert!(repair("/missing-t557-adb", "USB", (9010, 9011))
             .await
+            .0
             .is_err());
     }
 

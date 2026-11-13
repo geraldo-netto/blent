@@ -13,7 +13,7 @@ printf '%s\n' "$*" >> "$0.log"
 [ "$3" = reverse ] || { cat >/dev/null; exit 0; }
 case "$4" in
 --list) [ ! -f "$0.offline" ] || exit 1; cat "$0.listing"; exit 0 ;;
---remove) remote=$5 ;;
+--remove) [ ! -f "$0.fail-remove" ] || exit 1; remote=$5 ;;
 --no-rebind) remote=$5; target=$6
     grep -q "^UsbFfs $remote " "$0.listing" && exit 1 ;;
 *) remote=$4; target=$5 ;;
@@ -76,7 +76,8 @@ async fn t705_partial_preparation_retains_unacknowledged_creation_until_observed
     let (serial, result) = state.mutations.next().await;
     state.mutation_ready(serial, result);
     assert!(!state.ready.contains("USB"));
-    state.stop().await;
+    let stopping = tokio::spawn(state.stop());
+    assert!(owner.retire(adb.to_str().unwrap()).await.is_err());
     assert_eq!(listing(&adb), foreign);
     let log = std::fs::read_to_string(adb.with_extension("log")).unwrap();
     assert!(log.contains("--remove tcp:8890"));
@@ -93,6 +94,7 @@ async fn t705_partial_preparation_retains_unacknowledged_creation_until_observed
     )
     .unwrap();
     owner.retire(adb.to_str().unwrap()).await.unwrap();
+    stopping.await.unwrap();
     assert_eq!(listing(&adb), foreign);
 }
 
@@ -111,7 +113,7 @@ async fn t705_repaired_routes_are_owned_and_retired() {
 }
 
 #[tokio::test]
-async fn t705_offline_cleanup_releases_slot_and_revokes_the_old_lease() {
+async fn t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease() {
     let (_root, mut state, adb) = fixture("");
     state.config.tablet = session::Spec {
         capture: Default::default(),
@@ -131,21 +133,23 @@ async fn t705_offline_cleanup_releases_slot_and_revokes_the_old_lease() {
         !lease.apply(|| ()),
         "T705: stale client survived retirement"
     );
-    let retired = tokio::time::timeout(Duration::from_secs(1), state.retiring.join_next())
-        .await
-        .unwrap()
-        .unwrap()
-        .unwrap();
-    state.retired(retired);
-    assert!(state.retiring_slots.is_empty());
-    assert!(state.routes.is_empty());
-    assert!(!std::fs::read_to_string(adb.with_extension("log"))
-        .unwrap()
-        .contains("--remove"));
-    state.stop().await;
+    let early = tokio::time::timeout(Duration::from_millis(150), state.retiring.join_next()).await;
+    let premature = early.is_ok();
+    let retained = state.retiring_slots.contains(&0);
     std::fs::remove_file(adb.with_extension("offline")).unwrap();
     owner.retire(adb.to_str().unwrap()).await.unwrap();
+    let retired = match early {
+        Ok(result) => result.unwrap().unwrap(),
+        Err(_) => state.retiring.join_next().await.unwrap().unwrap(),
+    };
+    state.retired(retired);
     assert!(listing(&adb).is_empty());
+    state.stop().await;
+    assert!(
+        !premature,
+        "T1346 returned a display ticket before route settlement"
+    );
+    assert!(retained, "T1346 missing reservation while offline");
 }
 
 #[tokio::test]
@@ -172,4 +176,90 @@ async fn t705_invalid_route_owners_fail_before_native_commands() {
             .is_err());
     }
     assert!(!adb.with_extension("log").exists());
+}
+
+#[tokio::test]
+async fn t1346_failed_removals_keep_ticket_until_original_effects_arrive() {
+    let foreign = "UsbFfs tcp:9999 localabstract:external\n";
+    let (_root, mut state, adb) = fixture(foreign);
+    prepare(&mut state).await;
+    let owner = state.routes["USB"].clone();
+    std::fs::write(adb.with_extension("fail-remove"), "").unwrap();
+    state.change_primary(&None);
+    tokio::time::timeout(Duration::from_secs(3), async {
+        loop {
+            let log = std::fs::read_to_string(adb.with_extension("log")).unwrap();
+            if log.lines().filter(|line| line.contains("--remove")).count() == 2 {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .unwrap();
+    let early = tokio::time::timeout(Duration::from_millis(250), state.retiring.join_next()).await;
+    let premature = early.is_ok();
+    let retained = state.retiring_slots.contains(&0);
+    // Reconnect supplies the original delegated removal outcomes, not permission
+    // to issue duplicate unknown removers that could reach a replacement.
+    std::fs::remove_file(adb.with_extension("fail-remove")).unwrap();
+    std::fs::write(adb.with_extension("listing"), foreign).unwrap();
+    owner.retire(adb.to_str().unwrap()).await.unwrap();
+    let retired = match early {
+        Ok(result) => result.unwrap().unwrap(),
+        Err(_) => state.retiring.join_next().await.unwrap().unwrap(),
+    };
+    state.retired(retired);
+    let log = std::fs::read_to_string(adb.with_extension("log")).unwrap();
+    let removes = log.lines().filter(|line| line.contains("--remove")).count();
+    let replacement = RouteOwner::default();
+    replacement
+        .prepare("USB", (18000, 18001), adb.to_str().unwrap())
+        .await
+        .unwrap();
+    owner.retire(adb.to_str().unwrap()).await.unwrap();
+    let replacement_preserved = listing(&adb).contains("tcp:8890 tcp:18000");
+    replacement.retire(adb.to_str().unwrap()).await.unwrap();
+    state.stop().await;
+    assert!(
+        !premature && retained,
+        "T1346 failed removal released a display ticket"
+    );
+    assert_eq!(removes, 2, "T1346 each original remover is issued once");
+    assert!(replacement_preserved);
+    assert_eq!(listing(&adb), foreign);
+}
+
+async fn namespace_released() {
+    use blent::usb::{Commands, NativeCommands};
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while NativeCommands("unused".into())
+            .display_route_lease("USB", (18000, 18001))
+            .is_err()
+        {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+    })
+    .await
+    .expect("T1346 original native worker did not release its namespace");
+}
+
+#[tokio::test]
+async fn t1346_monitor_loss_retains_cleanup_and_namespace_until_reconnect() {
+    use blent::usb::{Commands, NativeCommands};
+    let (_root, mut state, adb) = fixture("");
+    prepare(&mut state).await;
+    std::fs::write(adb.with_extension("offline"), "").unwrap();
+    state.change_primary(&None);
+    drop(state); // Includes cancellation of the retirement coroutine.
+    let overlap = NativeCommands("unused".into()).display_route_lease("USB", (18000, 18001));
+    let refused = overlap.is_err();
+    drop(overlap);
+    std::fs::remove_file(adb.with_extension("offline")).unwrap();
+    namespace_released().await;
+    assert!(refused, "T1346 caller loss permitted endpoint reuse");
+    assert!(
+        listing(&adb).is_empty(),
+        "T1346 caller loss abandoned known mappings"
+    );
 }

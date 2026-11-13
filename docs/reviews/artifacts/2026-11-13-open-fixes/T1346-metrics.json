@@ -1,0 +1,330 @@
+{
+  "tool": "rustc 1.100.0 LLVM native counters; cargo-llvm-cov 0.8.7; Blent syn 2.0.119 complexity frontend",
+  "tests": 77,
+  "failed": 0,
+  "functions": [
+    {
+      "file": "host/src/monitor/routes.rs",
+      "name": "settle",
+      "line": 24,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "a0c6a9920a26bfff57f37f9f23d7a8d207e415f44b8dbfccc7286cfdd25afa5e",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "name": "retire",
+      "line": 5,
+      "language": "rust",
+      "covered": 37,
+      "total": 37,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "44d7ac25311f6faed00c6ee184c8826e1bb0ae015a7154cfb560c4675928aad7",
+      "complexity": 8
+    }
+  ],
+  "changed_file_complexity": [
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 5,
+      "name": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 34,
+      "name": "ready",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 58,
+      "name": "t444_replacement_removes_both_old_routes_before_slot_reuse",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 77,
+      "name": "authenticated",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 94,
+      "name": "t444_changed_physical_identity_on_same_serial_retires_credentials",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 113,
+      "name": "t444_delivery_rotation_retry_and_known_route_migration_preserve_focus",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 149,
+      "name": "drained",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 157,
+      "name": "t444_failed_credential_delivery_retries_before_first_launch",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 188,
+      "name": "t444_unwritable_token_publication_never_prepares_a_route",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 207,
+      "name": "t444_inflight_creator_settles_before_replacement",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 258,
+      "name": "t444_auth_retry_uses_current_key_with_bounded_background_delivery",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 291,
+      "name": "t444_failed_owned_job_retires_pending_route_and_rejects_late_completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 7,
+      "name": "check_forwarding",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 32,
+      "name": "forwarding_ports",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 50,
+      "name": "repair",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 60,
+      "name": "fake_adb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 90,
+      "name": "t557_repairs_only_missing_routes_and_uses_no_rebind",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 111,
+      "name": "t557_conflicts_malformed_lists_and_backend_failures_never_rebind",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 142,
+      "name": "t557_periodic_repair_preserves_assignment_and_joins_existing_mutations",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 173,
+      "name": "t557_extra_repair_uses_its_existing_slot_ports",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 5,
+      "name": "adb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 27,
+      "name": "launches",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 34,
+      "name": "complete",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 54,
+      "name": "inventory",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 73,
+      "name": "t445_new_route_probe_preserves_launch_history_until_identity_is_known",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 99,
+      "name": "t445_same_attachment_never_reopens_after_route_repair_or_process_loss",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 156,
+      "name": "t445_forwarding_retry_keeps_the_first_launch_and_disabled_stays_manual",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 181,
+      "name": "t445_synthetic_attachment_never_launches_a_real_android_activity",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 206,
+      "name": "t557_adb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 228,
+      "name": "t557_ready_attachment_repairs_lost_mappings_without_reopening_android",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/launch_tests.rs",
+      "line": 255,
+      "name": "t609_display_command_reports_spawn_and_exit_failure",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "line": 5,
+      "name": "retire",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "line": 47,
+      "name": "retired",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/retirement.rs",
+      "line": 60,
+      "name": "remove_assignment",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 5,
+      "name": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 36,
+      "name": "prepare",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 42,
+      "name": "listing",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 47,
+      "name": "t705_conflicting_initial_routes_remain_foreign",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 58,
+      "name": "t705_matching_external_and_replaced_routes_survive_retirement",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 70,
+      "name": "t705_partial_preparation_retains_unacknowledged_creation_until_observed",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 102,
+      "name": "t705_repaired_routes_are_owned_and_retired",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 116,
+      "name": "t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 156,
+      "name": "t705_invalid_route_owners_fail_before_native_commands",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 182,
+      "name": "t1346_failed_removals_keep_ticket_until_original_effects_arrive",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 233,
+      "name": "namespace_released",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 248,
+      "name": "t1346_monitor_loss_retains_cleanup_and_namespace_until_reconnect",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/routes.rs",
+      "line": 9,
+      "name": "prepare",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/routes.rs",
+      "line": 24,
+      "name": "settle",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/routes.rs",
+      "line": 39,
+      "name": "retire",
+      "complexity": 2
+    }
+  ],
+  "counter_source": "Exact executed instrumented blent binary, not stale cached objects. Native source records retained in T1346-current.lcov.gz."
+}
