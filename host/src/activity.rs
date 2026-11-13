@@ -171,13 +171,10 @@ impl LinuxSource {
             }
         }
         if let (Some(bus), Some(target)) = (session, native::Target::desktop(desktop)) {
-            match tokio::time::timeout(
-                settings.deadline,
-                native::Actor::display(bus, target, settings.queue, settings.deadline),
-            )
-            .await
-            {
-                Ok(Ok(actor)) => actors.push(Box::new(actor)),
+            // The actor owns one absolute acquisition deadline so a failed
+            // snapshot of a known owner remains conservative and retryable.
+            match native::Actor::display(bus, target, settings.queue, settings.deadline).await {
+                Ok(actor) => actors.push(Box::new(actor)),
                 error => tracing::warn!(
                     ?error,
                     "Linux compositor display-power observations unsupported"

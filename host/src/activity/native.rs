@@ -213,23 +213,12 @@ impl Actor {
         capacity: usize,
         deadline: Duration,
     ) -> Result<Self> {
-        let (owner, signals, owners) = streams(&bus, target.name, capacity).await?;
-        let (value, floor) =
-            property(&bus, &owner, target.path, target.name, "PowerSaveMode").await?;
-        let value = display_mode(i32::try_from(value)?)?;
-        ensure!(
-            value.is_some(),
-            "compositor display-power observation unsupported"
-        );
+        let expires = tokio::time::Instant::now() + deadline;
+        let (owner, signals, owners) =
+            tokio::time::timeout_at(expires, streams(&bus, target.name, capacity)).await??;
+        let observed = display_snapshot(&bus, &owner, target, expires).await?;
         let state = HostState {
-            display_on: if original_owner(&bus, target.name, &owner)
-                .await
-                .unwrap_or(false)
-            {
-                value
-            } else {
-                None
-            },
+            display_on: observed.value,
             ..HostState::default()
         };
         Ok(Self {
@@ -239,11 +228,7 @@ impl Actor {
             owners,
             kind: Kind::Display {
                 target,
-                state: Flag {
-                    value,
-                    floor,
-                    initial_failed: false,
-                },
+                state: observed,
             },
             capabilities: Capabilities {
                 display: true,
@@ -289,7 +274,7 @@ impl Actor {
                     || data.shutdown.initial_failed
                     || data.locked.initial_failed
             }
-            Kind::Display { .. } => false,
+            Kind::Display { state, .. } => state.initial_failed,
         }
     }
     async fn watch(&mut self, shared: &Shared) -> Result<()> {
@@ -380,6 +365,47 @@ impl Actor {
         match &mut self.kind {
             Kind::Logind(data) => data.signal(message),
             Kind::Display { target, state } => display_signal(*target, state, message),
+        }
+    }
+}
+async fn display_snapshot(
+    bus: &Connection,
+    owner: &str,
+    target: Target,
+    expires: tokio::time::Instant,
+) -> Result<Flag> {
+    let query = async {
+        let (value, floor) =
+            property(bus, owner, target.path, target.name, "PowerSaveMode").await?;
+        ensure!(
+            original_owner(bus, target.name, owner).await?,
+            "original display owner lost during initial query"
+        );
+        Ok::<_, anyhow::Error>((display_mode(i32::try_from(value)?)?, floor))
+    };
+    let snapshot = match tokio::time::timeout_at(expires, query).await {
+        Ok(snapshot) => snapshot,
+        Err(error) => Err(error.into()),
+    };
+    display_flag(snapshot)
+}
+fn display_flag(snapshot: Result<(Option<bool>, Sequence)>) -> Result<Flag> {
+    match snapshot {
+        Err(error) if retry_query(&error) => Ok(Flag {
+            initial_failed: true,
+            ..Flag::default()
+        }),
+        Err(error) => Err(error),
+        Ok((value, floor)) => {
+            ensure!(
+                value.is_some(),
+                "compositor display-power observation unsupported"
+            );
+            Ok(Flag {
+                value,
+                floor,
+                initial_failed: false,
+            })
         }
     }
 }

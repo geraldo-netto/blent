@@ -1,0 +1,74 @@
+{
+  "tool": "cargo-llvm-cov0.8.7 / Rust1.100.0 LLVM23.1.5 native counters",
+  "sources": {
+    "host/src/activity.rs": "6e5671ac54617a79e2f62f4299fb8588d83437359a81a0087a55b8a6273d945c",
+    "host/src/activity/native.rs": "edcd7da68c3431e558d54ea2c96cf426a6eac9b94fa7538b99bc24df38e6fba9"
+  },
+  "objects": {
+    "library-tests": {
+      "path": "/tmp/blent-t1436-coverage/library-tests",
+      "sha256": "04b49013a728e59707e25ee85f3770902c5a630a986e038372bb7cea80ee64ec"
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/activity.rs",
+      "name": "discover",
+      "line": 154,
+      "language": "rust",
+      "covered": 24,
+      "total": 25,
+      "percent": 96.0,
+      "passes": true,
+      "missing": [
+        180
+      ]
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "display",
+      "line": 210,
+      "language": "rust",
+      "covered": 30,
+      "total": 30,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "initial_query_failed",
+      "line": 270,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "display_snapshot",
+      "line": 371,
+      "language": "rust",
+      "covered": 17,
+      "total": 18,
+      "percent": 94.44444444444444,
+      "passes": true,
+      "missing": [
+        382
+      ]
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "display_flag",
+      "line": 392,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

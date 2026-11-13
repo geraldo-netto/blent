@@ -37,6 +37,8 @@ pub(super) struct Values {
     missing_sleep: AtomicBool,
     fail_lock: AtomicBool,
     fail_display: AtomicBool,
+    missing_display: AtomicBool,
+    display_delay_ms: AtomicU64,
 }
 struct Manager(Arc<Values>);
 #[zbus::interface(name = "org.freedesktop.login1.Manager")]
@@ -100,7 +102,11 @@ struct Display(Arc<Values>);
 #[zbus::interface(name = "org.cinnamon.Muffin.DisplayConfig")]
 impl Display {
     #[zbus(property)]
-    fn power_save_mode(&self) -> zbus::fdo::Result<i32> {
+    async fn power_save_mode(&self) -> zbus::fdo::Result<i32> {
+        tokio::time::sleep(Duration::from_millis(self.0.display_delay_ms.load(Ordering::Acquire))).await;
+        if self.0.missing_display.load(Ordering::Acquire) {
+            return Err(zbus::fdo::Error::UnknownProperty("PowerSaveMode".into()));
+        }
         if self.0.fail_display.load(Ordering::Acquire) {
             return Err(zbus::fdo::Error::Failed(
                 "T1427 display query failure".into(),

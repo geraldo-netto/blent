@@ -325,7 +325,14 @@ async fn t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires() {
     followed(&mut reader, |s| s.source_lost).await;
     conservative(&mut reader).await;
     attempts(&factory, 3).await;
-    assert_eq!(*reader.borrow(), Publication::Failed);
+    assert!(
+        matches!(
+            *reader.borrow(),
+            Publication::Observed { capabilities, snapshot }
+                if capabilities.display && snapshot.source_lost && !snapshot.demand.display
+        ),
+        "T1436 known failed display retains authority while retrying"
+    );
     finish(&factory, following).await;
     assert_eq!(*reader.borrow(), Publication::Stopped);
     fixture.server.close().await.unwrap();
@@ -404,5 +411,107 @@ async fn t1429_explicit_unsupported_property_stays_unknown_without_retry() {
     conservative(&mut reader).await;
     assert_eq!(factory.calls.load(Ordering::Acquire), 1);
     finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+
+async fn initial_display_failure(kind: usize) {
+    let fixture = Fixture::new().await;
+    fixture
+        .values
+        .display
+        .store(if kind == 2 { 4 } else { 3 }, Ordering::Release);
+    fixture
+        .values
+        .fail_display
+        .store(kind == 0, Ordering::Release);
+    fixture
+        .values
+        .display_delay_ms
+        .store(if kind == 1 { 100 } else { 0 }, Ordering::Release);
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let (factory, following) = start_held(Arc::new(Factory::default()), Some(held.completion()));
+    let mut reader = following.subscribe();
+    let lost = followed(&mut reader, |s| s.source_lost).await;
+    conservative(&mut reader).await;
+    assert_eq!(
+        factory.calls.load(Ordering::Acquire),
+        1,
+        "T1436 known display failure retains original debt"
+    );
+    assert!(!factory.proofs.lock().unwrap()[0].is_complete());
+    fixture.values.fail_display.store(false, Ordering::Release);
+    fixture.values.display_delay_ms.store(0, Ordering::Release);
+    fixture.values.display.store(3, Ordering::Release);
+    drop(held);
+    let fresh = followed(&mut reader, |s| {
+        s.demand.stamp.epoch > lost.demand.stamp.epoch && !s.source_lost
+    })
+    .await;
+    assert!(
+        !fresh.demand.display,
+        "T1436 fresh display-off snapshot must deny demand"
+    );
+    assert!(
+        matches!(*reader.borrow(), Publication::Observed { capabilities, .. } if capabilities.display)
+    );
+    fixture.values.display.store(0, Ordering::Release);
+    fixture
+        .changed(DISPLAY_PATH, DISPLAY, "PowerSaveMode", Some(0i32.into()))
+        .await;
+    followed(&mut reader, |s| s.demand.display).await;
+    finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1436_initial_display_read_error_and_timeout_recover_after_original_settlement() {
+    if !private("activity::tests::continuity::t1436_initial_display_read_error_and_timeout_recover_after_original_settlement") { return; }
+    for kind in 0..3 {
+        initial_display_failure(kind).await;
+    }
+}
+#[tokio::test]
+async fn t1436_initial_display_failure_stop_keeps_original_debt() {
+    if !private(
+        "activity::tests::continuity::t1436_initial_display_failure_stop_keeps_original_debt",
+    ) {
+        return;
+    }
+    let fixture = Fixture::new().await;
+    fixture.values.fail_display.store(true, Ordering::Release);
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let (factory, following) = start_held(Arc::new(Factory::default()), Some(held.completion()));
+    let mut reader = following.subscribe();
+    followed(&mut reader, |s| s.source_lost).await;
+    conservative(&mut reader).await;
+    following.stop();
+    assert!(!following.retired());
+    drop(held);
+    finish(&factory, following).await;
+    assert_eq!(factory.calls.load(Ordering::Acquire), 1);
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1436_explicit_unsupported_initial_display_stays_non_retrying() {
+    if !private("activity::tests::continuity::t1436_explicit_unsupported_initial_display_stays_non_retrying") { return; }
+    let fixture = Fixture::new().await;
+    for missing_property in [false, true] {
+        fixture
+            .values
+            .missing_display
+            .store(missing_property, Ordering::Release);
+        fixture.values.display.store(-1, Ordering::Release);
+        let (factory, following) = start(Arc::new(Factory::default()));
+        let mut reader = following.subscribe();
+        let first = followed(&mut reader, |s| s.demand.display).await;
+        assert!(!first.source_lost);
+        assert!(
+            matches!(*reader.borrow(), Publication::Observed { capabilities, .. } if !capabilities.display)
+        );
+        tokio::time::sleep(Duration::from_millis(150)).await;
+        assert_eq!(factory.calls.load(Ordering::Acquire), 1);
+        finish(&factory, following).await;
+    }
     fixture.server.close().await.unwrap();
 }

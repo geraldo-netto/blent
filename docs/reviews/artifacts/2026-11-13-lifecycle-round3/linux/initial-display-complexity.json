@@ -1,0 +1,42 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "source_sha256": "083ece0782a380908b97cab61d701ee416e43a13cfaca1279bea6f43d9df0939",
+  "library_sha256": "5a6d779d524472fb775f6e0bd0f37ecb06f910b9da8a29c8a897b7b80910501d",
+  "functions": [
+    {
+      "line": 14,
+      "name": "power_save_mode",
+      "complexity": 2
+    },
+    {
+      "line": 22,
+      "name": "observed",
+      "complexity": 3
+    },
+    {
+      "line": 31,
+      "name": "discovered",
+      "complexity": 1
+    },
+    {
+      "line": 34,
+      "name": "settled",
+      "complexity": 2
+    },
+    {
+      "line": 38,
+      "name": "exercise",
+      "complexity": 1
+    },
+    {
+      "line": 53,
+      "name": "run",
+      "complexity": 1
+    },
+    {
+      "line": 60,
+      "name": "main",
+      "complexity": 1
+    }
+  ]
+}

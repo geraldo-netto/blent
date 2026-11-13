@@ -1,0 +1,77 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "sources": {
+    "host/src/activity.rs": "6e5671ac54617a79e2f62f4299fb8588d83437359a81a0087a55b8a6273d945c",
+    "host/src/activity/native.rs": "edcd7da68c3431e558d54ea2c96cf426a6eac9b94fa7538b99bc24df38e6fba9",
+    "host/src/activity/tests.rs": "fbe1fad944082ea8aebb15a21bbae5e85620d842689fe2b8213466ea190940b6",
+    "host/src/activity/continuity_tests.rs": "7275eead629f582f3540342516111589f1b95cf238b815665777e4b34fb36148"
+  },
+  "functions": [
+    {
+      "file": "host/src/activity.rs",
+      "line": 154,
+      "name": "discover",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 210,
+      "name": "display",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 270,
+      "name": "initial_query_failed",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 371,
+      "name": "display_snapshot",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 392,
+      "name": "display_flag",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 105,
+      "name": "power_save_mode",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 318,
+      "name": "t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 417,
+      "name": "initial_display_failure",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 467,
+      "name": "t1436_initial_display_read_error_and_timeout_recover_after_original_settlement",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 474,
+      "name": "t1436_initial_display_failure_stop_keeps_original_debt",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 496,
+      "name": "t1436_explicit_unsupported_initial_display_stays_non_retrying",
+      "complexity": 4
+    }
+  ]
+}
