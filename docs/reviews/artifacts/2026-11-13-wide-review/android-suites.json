@@ -1,0 +1,2962 @@
+[
+  {
+    "name": "com.blent.benchmark.UsbReplayTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.647"
+  },
+  {
+    "name": "com.blent.PortableLifecycleTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.012"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCompletionWakeTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.006"
+  },
+  {
+    "name": "com.blent.connection.ConnectionDeadlineTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.VideoGenerationTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.215"
+  },
+  {
+    "name": "com.blent.RemoteDisplayTest",
+    "tests": "26",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.228"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraCodecTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.088"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPreferenceLifetimeTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.01"
+  },
+  {
+    "name": "com.blent.connection.ConnectionRuntimeEndpointsTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.connection.AccessoryAdmissionOwnerTest",
+    "tests": "17",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.054"
+  },
+  {
+    "name": "com.blent.DecoderStartupTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.218"
+  },
+  {
+    "name": "com.blent.connection.TrustDirectoryOwnershipTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.OrientationTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.09"
+  },
+  {
+    "name": "com.blent.DecoderDeadlineTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.338"
+  },
+  {
+    "name": "com.blent.NativeDeadlineTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.062"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPreferenceControlsTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "5.623"
+  },
+  {
+    "name": "com.blent.AudioContractTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.164"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustRoutingTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.108"
+  },
+  {
+    "name": "com.blent.InputWireTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.047"
+  },
+  {
+    "name": "com.blent.activity.DisplayActivitySourceTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.037"
+  },
+  {
+    "name": "com.blent.WorkerBridgeRetirementTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.11"
+  },
+  {
+    "name": "com.blent.MediaWindowWakeTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.074"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAccessBindingTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.connection.ConnectionHelloTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.LicenseAssetsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.032"
+  },
+  {
+    "name": "com.blent.ControlCredentialTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.056"
+  },
+  {
+    "name": "com.blent.DisplayActivityDeliveryTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.024"
+  },
+  {
+    "name": "com.blent.AudioPermissionIdentityTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.AudioActivityOwnerTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.012"
+  },
+  {
+    "name": "com.blent.CodecRetirementFailureTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.026"
+  },
+  {
+    "name": "com.blent.connection.TabletSessionLifecycleTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.003"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustWorkerFaultTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.LocalPermissionLauncherTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.AudioPacketsTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAdmissionRunTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "6.048"
+  },
+  {
+    "name": "com.blent.connection.ConnectionFlowTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.075"
+  },
+  {
+    "name": "com.blent.DisplayPowerRequestsModelTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.006"
+  },
+  {
+    "name": "com.blent.RetirementFailureTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.664"
+  },
+  {
+    "name": "com.blent.WifiIdleTimerTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.connection.ConnectionSessionLimitsTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.activity.DisplayActivityInboxTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.053"
+  },
+  {
+    "name": "com.blent.SessionSurfaceContractTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.861"
+  },
+  {
+    "name": "com.blent.PortableVideoContractTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.connection.RememberedConnectionActivityTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.102"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraRuntimeLoopbackTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.052"
+  },
+  {
+    "name": "com.blent.connection.AndroidConnectionPreferencesTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.328"
+  },
+  {
+    "name": "com.blent.connection.LocalResourceLoopbackTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.DecoderMailboxDefaultTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.202"
+  },
+  {
+    "name": "com.blent.DecoderWaitUiTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.209"
+  },
+  {
+    "name": "com.blent.connection.ConnectionWindowTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.122"
+  },
+  {
+    "name": "com.blent.ControlBackpressureTest",
+    "tests": "20",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.206"
+  },
+  {
+    "name": "com.blent.RetirementGuardTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.connection.IdentityLockChildTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.connection.TabletSessionBoundaryTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.007"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraCaptureOwnerTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.121"
+  },
+  {
+    "name": "com.blent.HostedTestResourcesTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.ReplayPacingTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.AudioPlaybackTest",
+    "tests": "20",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.976"
+  },
+  {
+    "name": "com.blent.CameraFreshnessTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.DecoderDiagnosticsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.079"
+  },
+  {
+    "name": "com.blent.ProfileSoftwareTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.connection.AndroidConnectionFactoryTest",
+    "tests": "20",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.286"
+  },
+  {
+    "name": "com.blent.ControlLoadTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.111"
+  },
+  {
+    "name": "com.blent.CameraFeedbackTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.188"
+  },
+  {
+    "name": "com.blent.FormatBoundaryCorpusTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.049"
+  },
+  {
+    "name": "com.blent.connection.ConnectionTrustTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.242"
+  },
+  {
+    "name": "com.blent.CameraPermissionIdentityTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.AudioOutputTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.01"
+  },
+  {
+    "name": "com.blent.AudioNativeClockTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.082"
+  },
+  {
+    "name": "com.blent.AudioClockTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.154"
+  },
+  {
+    "name": "com.blent.connection.AndroidPeerTrustStoreTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.247"
+  },
+  {
+    "name": "com.blent.connection.ConnectionJoinedSpeakerTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.072"
+  },
+  {
+    "name": "com.blent.SettingsAccessibilityTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.561"
+  },
+  {
+    "name": "com.blent.BoundedRetirementTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "5.009"
+  },
+  {
+    "name": "com.blent.CodecVersionTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.057"
+  },
+  {
+    "name": "com.blent.AudioSpeakerOwnerTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.039"
+  },
+  {
+    "name": "com.blent.connection.AccessorySelectionTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.072"
+  },
+  {
+    "name": "com.blent.ControlCapacityTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.114"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioCodecTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.044"
+  },
+  {
+    "name": "com.blent.connection.ConnectionWorkerServiceTest",
+    "tests": "34",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.407"
+  },
+  {
+    "name": "com.blent.CameraStartupDeadlineTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.022"
+  },
+  {
+    "name": "com.blent.CameraCaptureOwnershipTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.ControlGenerationTest",
+    "tests": "20",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.283"
+  },
+  {
+    "name": "com.blent.ProfileLauncherTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.015"
+  },
+  {
+    "name": "com.blent.connection.ConnectionSetupBoundaryTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.028"
+  },
+  {
+    "name": "com.blent.connection.ConnectionResourcesTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.014"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraBindingTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.007"
+  },
+  {
+    "name": "com.blent.connection.AndroidConnectionWorkerRunTest",
+    "tests": "60",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.955"
+  },
+  {
+    "name": "com.blent.WorkerGenerationsTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.003"
+  },
+  {
+    "name": "com.blent.connection.ConnectionLocalDeadlineTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.006"
+  },
+  {
+    "name": "com.blent.connection.ConnectionWaitTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.connection.AndroidAccessoryAdmissionBackendTest",
+    "tests": "28",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.247"
+  },
+  {
+    "name": "com.blent.SavedUiOrderTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "51.637"
+  },
+  {
+    "name": "com.blent.connection.SocketConnectionSetupTest",
+    "tests": "18",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.357"
+  },
+  {
+    "name": "com.blent.connection.LocalSpeakerOwnerTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.01"
+  },
+  {
+    "name": "com.blent.AudioControlsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.46"
+  },
+  {
+    "name": "com.blent.connection.ConnectionJoinedCameraFixtureTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.045"
+  },
+  {
+    "name": "com.blent.CameraRecoveryTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.553"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustCoordinatorStoreTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.02"
+  },
+  {
+    "name": "com.blent.PowerWakeEventTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.037"
+  },
+  {
+    "name": "com.blent.CameraServiceOwnershipTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.062"
+  },
+  {
+    "name": "com.blent.PenLifecycleTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.166"
+  },
+  {
+    "name": "com.blent.MediaControlIdentityTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.UsbMediaMainStatusTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.404"
+  },
+  {
+    "name": "com.blent.PowerWorkerIntegrationTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.083"
+  },
+  {
+    "name": "com.blent.CameraConsentObservationTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.025"
+  },
+  {
+    "name": "com.blent.WakeLeaseTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.SocketReplayTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.398"
+  },
+  {
+    "name": "com.blent.connection.ConnectionWorkerCodecTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.025"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPublicationsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.AudioActivityAttachmentTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.784"
+  },
+  {
+    "name": "com.blent.connection.AndroidConnectionSetupBackendTest",
+    "tests": "18",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.116"
+  },
+  {
+    "name": "com.blent.JoinedDisplayHistoryTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.115"
+  },
+  {
+    "name": "com.blent.connection.SocketBridgeTest",
+    "tests": "17",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.036"
+  },
+  {
+    "name": "com.blent.PowerServiceLifecycleTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.043"
+  },
+  {
+    "name": "com.blent.connection.ConnectionJoinedAudioUiTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.974"
+  },
+  {
+    "name": "com.blent.CameraCaptureObservationTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.008"
+  },
+  {
+    "name": "com.blent.connection.ConnectionWorkerWaitTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.013"
+  },
+  {
+    "name": "com.blent.activity.DisplayActivitySignalTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.025"
+  },
+  {
+    "name": "com.blent.SurfaceWakeupTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.039"
+  },
+  {
+    "name": "com.blent.connection.ConnectionMuxTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.016"
+  },
+  {
+    "name": "com.blent.NativePowerFaultTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.18"
+  },
+  {
+    "name": "com.blent.connection.LocalCameraOwnerTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustCollectorTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.19"
+  },
+  {
+    "name": "com.blent.StreamingObserverFailureTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.119"
+  },
+  {
+    "name": "com.blent.RemoteAdaptersTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.206"
+  },
+  {
+    "name": "com.blent.VideoConnectionBoundaryTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.08"
+  },
+  {
+    "name": "com.blent.DecoderDiagnosticsUiTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.728"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustBindingTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.012"
+  },
+  {
+    "name": "com.blent.CameraHostControlTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.312"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPreferenceFormTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.926"
+  },
+  {
+    "name": "com.blent.StreamingBindingTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.11"
+  },
+  {
+    "name": "com.blent.connection.ConnectionOwnerTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.058"
+  },
+  {
+    "name": "com.blent.CameraRetirementTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.1"
+  },
+  {
+    "name": "com.blent.connection.IdentityHardlinkLockTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.05"
+  },
+  {
+    "name": "com.blent.connection.ConnectionIdentityTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.104"
+  },
+  {
+    "name": "com.blent.AudioRetirementTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.081"
+  },
+  {
+    "name": "com.blent.connection.ConnectionStopInterleavingsTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.037"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPairingTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.036"
+  },
+  {
+    "name": "com.blent.DisplayWakeIntegrationTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.245"
+  },
+  {
+    "name": "com.blent.connection.SecureConnectionTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.357"
+  },
+  {
+    "name": "com.blent.benchmark.ReplayRetirementTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.SettingsLayoutTest",
+    "tests": "38",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "6.574"
+  },
+  {
+    "name": "com.blent.connection.LocalCameraOwnerLoopbackTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.027"
+  },
+  {
+    "name": "com.blent.AudioBindingTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.244"
+  },
+  {
+    "name": "com.blent.SparseDecoderWindowTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.connection.LocalCameraPermitFailureTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.DecoderNegotiationTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.349"
+  },
+  {
+    "name": "com.blent.connection.ConnectionTrustAdmissionTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.003"
+  },
+  {
+    "name": "com.blent.DisplayWakeSnapshotTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.connection.SavedBrowserOwnershipTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.496"
+  },
+  {
+    "name": "com.blent.BackupRulesTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.04"
+  },
+  {
+    "name": "com.blent.WindowPowerBindingTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.111"
+  },
+  {
+    "name": "com.blent.CameraOwnerAttachmentTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.014"
+  },
+  {
+    "name": "com.blent.connection.ConnectionRuntimeDeadlineTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.connection.ConnectionActorSchedulerTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.003"
+  },
+  {
+    "name": "com.blent.CameraStopTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.263"
+  },
+  {
+    "name": "com.blent.connection.SavedComputerControlsTest",
+    "tests": "18",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.748"
+  },
+  {
+    "name": "com.blent.MediaControlsReconnectTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.072"
+  },
+  {
+    "name": "com.blent.ScopedPowerPermitTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.VideoNegotiationTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.064"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustWorkerTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.01"
+  },
+  {
+    "name": "com.blent.connection.ConnectionDisplayTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.008"
+  },
+  {
+    "name": "com.blent.CameraWaitStatusTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.019"
+  },
+  {
+    "name": "com.blent.connection.LocalSpeakerProtocolTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.ResourceLaneTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.049"
+  },
+  {
+    "name": "com.blent.MetadataSnapshotTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.161"
+  },
+  {
+    "name": "com.blent.connection.AuthorityPeerAdmissionTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.connection.JoinedAudioWorkerFixtureTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.54"
+  },
+  {
+    "name": "com.blent.NumericFormatBoundsTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.135"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioBindingTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustServiceTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.081"
+  },
+  {
+    "name": "com.blent.connection.ConnectionActivityTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.875"
+  },
+  {
+    "name": "com.blent.PowerServiceQueueTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.098"
+  },
+  {
+    "name": "com.blent.PowerApplicationOwnerTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.684"
+  },
+  {
+    "name": "com.blent.ScopedPowerRunTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.connection.ConnectionChannelBuffersTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.02"
+  },
+  {
+    "name": "com.blent.AudioGenerationTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.099"
+  },
+  {
+    "name": "com.blent.CameraConsentControlsTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.684"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAdmissionWaitTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.003"
+  },
+  {
+    "name": "com.blent.AudioAccessObservationTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.067"
+  },
+  {
+    "name": "com.blent.CameraGenerationTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.083"
+  },
+  {
+    "name": "com.blent.connection.LocalCameraResourceTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.connection.IdentityForeignLockTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.043"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustIpcRetirementTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.68"
+  },
+  {
+    "name": "com.blent.connection.TabletConnectionRunTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.029"
+  },
+  {
+    "name": "com.blent.connection.ConnectionSetupOwnerTest",
+    "tests": "31",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.059"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAccessOwnerLossTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.CameraPacketBufferTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.032"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioProjectionTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionSettingsContractTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.003"
+  },
+  {
+    "name": "com.blent.connection.IdentityFileLockTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.008"
+  },
+  {
+    "name": "com.blent.AudioOwnerTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.128"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPreferenceHistoryTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.032"
+  },
+  {
+    "name": "com.blent.StreamingPowerIntentTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.045"
+  },
+  {
+    "name": "com.blent.AudioServiceTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.143"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustPresentationTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.WakeLeaseModelTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.StreamingPowerTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.237"
+  },
+  {
+    "name": "com.blent.CodecReportTest",
+    "tests": "28",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.28"
+  },
+  {
+    "name": "com.blent.PairingUiOrderTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.029"
+  },
+  {
+    "name": "com.blent.connection.ConnectionActivityUiTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "9.057"
+  },
+  {
+    "name": "com.blent.AudioMicrophoneTest",
+    "tests": "11",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.232"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraIpcTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.057"
+  },
+  {
+    "name": "com.blent.MediaProfilesTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.468"
+  },
+  {
+    "name": "com.blent.AoaProbeWireTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.01"
+  },
+  {
+    "name": "com.blent.CalibrationStartupTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.871"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraPublicationTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.connection.ConnectionRuntimeOwnerTest",
+    "tests": "15",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.VideoPacketValidationTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.011"
+  },
+  {
+    "name": "com.blent.connection.ConnectionWireTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.334"
+  },
+  {
+    "name": "com.blent.connection.ConnectionWorkerIpcTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.123"
+  },
+  {
+    "name": "com.blent.connection.SavedComputerActivityTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.355"
+  },
+  {
+    "name": "com.blent.DecoderWatchdogTest",
+    "tests": "28",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.129"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraRuntimeTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.017"
+  },
+  {
+    "name": "com.blent.CameraTargetBindingTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.01"
+  },
+  {
+    "name": "com.blent.connection.StreamConnectionIoTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.035"
+  },
+  {
+    "name": "com.blent.AoaSecureEchoTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.105"
+  },
+  {
+    "name": "com.blent.RegressionTest",
+    "tests": "54",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.758"
+  },
+  {
+    "name": "com.blent.CameraContractTest",
+    "tests": "18",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.251"
+  },
+  {
+    "name": "com.blent.connection.AccessoryOpeningBoundaryTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.158"
+  },
+  {
+    "name": "com.blent.WorkerManifestTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.014"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraAccessTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.019"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPreferencesTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.011"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAccessTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.006"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraSessionTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.CameraStartupTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.476"
+  },
+  {
+    "name": "com.blent.connection.SavedComputerPersistenceUiTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.665"
+  },
+  {
+    "name": "com.blent.connection.LocalCameraLoopbackTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.029"
+  },
+  {
+    "name": "com.blent.SurfaceCallbackContractTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.027"
+  },
+  {
+    "name": "com.blent.connection.LocalEndpointNativeTest",
+    "tests": "15",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.088"
+  },
+  {
+    "name": "com.blent.FramedDecoderTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.162"
+  },
+  {
+    "name": "com.blent.MediaWorkerServiceTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.235"
+  },
+  {
+    "name": "com.blent.AudioCaptureTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "15.513"
+  },
+  {
+    "name": "com.blent.connection.IdentityKernelLockTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.064"
+  },
+  {
+    "name": "com.blent.connection.ConfiguredAttachmentTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.035"
+  },
+  {
+    "name": "com.blent.connection.ConnectionDeadlineReuseTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.DecodedOutputDrainerTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.075"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAccessBinderTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.43"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAccessMediaTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.connection.AndroidUsbConnectionTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.071"
+  },
+  {
+    "name": "com.blent.connection.ConnectionProducerAllocationTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.033"
+  },
+  {
+    "name": "com.blent.VideoPacketReaderTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.142"
+  },
+  {
+    "name": "com.blent.StreamFormatTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.14"
+  },
+  {
+    "name": "com.blent.MediaConsentAudioTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.014"
+  },
+  {
+    "name": "com.blent.DecoderSchedulingTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.196"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraBindingLoopbackTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.586"
+  },
+  {
+    "name": "com.blent.connection.ConnectionStaleControlFailureTest",
+    "tests": "24",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.015"
+  },
+  {
+    "name": "com.blent.VideoLivenessTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.538"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustFingerprintTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.PowerPermitAdmissionTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.184"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioRuntimeTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.014"
+  },
+  {
+    "name": "com.blent.PowerWakeContractTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.055"
+  },
+  {
+    "name": "com.blent.TokenDeliveryTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.139"
+  },
+  {
+    "name": "com.blent.AndroidWakeHandleTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.04"
+  },
+  {
+    "name": "com.blent.DisplayPowerRequestsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.AudioSpeakerTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.076"
+  },
+  {
+    "name": "com.blent.StreamingPowerContractTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.DecoderSetupTest",
+    "tests": "34",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.299"
+  },
+  {
+    "name": "com.blent.CameraControlsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.183"
+  },
+  {
+    "name": "com.blent.DisplayActivityLifecycleTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.61"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraPresentationTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.connection.ConnectionMediaConsentTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.InputAccessorBoundsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.047"
+  },
+  {
+    "name": "com.blent.connection.ConnectionMediaProjectionTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.012"
+  },
+  {
+    "name": "com.blent.AudioDriftCacheTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.DisplayWakeAcceptanceTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.419"
+  },
+  {
+    "name": "com.blent.SessionDisplayRouteTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.343"
+  },
+  {
+    "name": "com.blent.connection.TabletSessionInvalidTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.014"
+  },
+  {
+    "name": "com.blent.StatusDispatchTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.031"
+  },
+  {
+    "name": "com.blent.connection.ConnectionLocalResourcesTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.003"
+  },
+  {
+    "name": "com.blent.connection.AndroidIdentityStoreTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.06"
+  },
+  {
+    "name": "com.blent.CameraRateTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.0"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPresentationTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.CameraConsentMainActivityTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.535"
+  },
+  {
+    "name": "com.blent.PowerWakeRunTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.007"
+  },
+  {
+    "name": "com.blent.connection.ConnectionTransportDeadlineTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.connection.ConnectionDisplayBindingTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.013"
+  },
+  {
+    "name": "com.blent.connection.ConnectionLocalWakeTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.008"
+  },
+  {
+    "name": "com.blent.CameraCaptureSelectionTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.GenerationFenceTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.008"
+  },
+  {
+    "name": "com.blent.DirectDecoderInputTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.292"
+  },
+  {
+    "name": "com.blent.DecoderConfigurationTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.027"
+  },
+  {
+    "name": "com.blent.connection.ConnectionJoinedDuplexTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "6.011"
+  },
+  {
+    "name": "com.blent.FrameTimingTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.066"
+  },
+  {
+    "name": "com.blent.connection.IdentityTlsTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.125"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustRuntimeTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.AudioIdentityTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.012"
+  },
+  {
+    "name": "com.blent.CapabilityIsolationTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.29"
+  },
+  {
+    "name": "com.blent.connection.LocalMicrophoneOwnerTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.006"
+  },
+  {
+    "name": "com.blent.connection.ConnectionFramesTest",
+    "tests": "15",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.019"
+  },
+  {
+    "name": "com.blent.connection.ConnectionSessionRunnerTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioOwnershipTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.073"
+  },
+  {
+    "name": "com.blent.connection.ConnectionJoinedMicrophoneTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.878"
+  },
+  {
+    "name": "com.blent.connection.ConnectionReattachTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.485"
+  },
+  {
+    "name": "com.blent.DisplayPowerRelevanceTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.activity.DisplayActivityHistoryTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.053"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioAccessTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.012"
+  },
+  {
+    "name": "com.blent.CameraCaptureTest",
+    "tests": "28",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "10.352"
+  },
+  {
+    "name": "com.blent.CameraManifestTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.029"
+  },
+  {
+    "name": "com.blent.DisplaySettingsTest",
+    "tests": "16",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.084"
+  },
+  {
+    "name": "com.blent.connection.ConnectionReconnectStopTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.173"
+  },
+  {
+    "name": "com.blent.JoinedDisplayReplayTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.232"
+  },
+  {
+    "name": "com.blent.connection.ConnectionManagementTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.076"
+  },
+  {
+    "name": "com.blent.NativeQueryLaneTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.043"
+  },
+  {
+    "name": "com.blent.CameraUsbCaptureOwnerTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.048"
+  },
+  {
+    "name": "com.blent.connection.SavedComputersTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.LauncherIconTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.089"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustFactoryTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.116"
+  },
+  {
+    "name": "com.blent.connection.ConnectionJoinedCameraTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.279"
+  },
+  {
+    "name": "com.blent.CallbackDecoderTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.212"
+  },
+  {
+    "name": "com.blent.connection.ConnectionDisplayActivityTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.986"
+  },
+  {
+    "name": "com.blent.connection.ConnectionCameraConsentTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.connection.RememberedConnectionTest",
+    "tests": "11",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.05"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustProcessTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.531"
+  },
+  {
+    "name": "com.blent.connection.ConnectionRunnerInvalidTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.ChannelPacketReaderTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.133"
+  },
+  {
+    "name": "com.blent.CameraDeadlineTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.668"
+  },
+  {
+    "name": "com.blent.ResourceRetirementErrorTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.AndroidWorkerRunTest",
+    "tests": "28",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.917"
+  },
+  {
+    "name": "com.blent.connection.ConnectionQueueTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.connection.ConnectionSetupDeadlineTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.011"
+  },
+  {
+    "name": "com.blent.AudioConsentControlsTest",
+    "tests": "18",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "8.562"
+  },
+  {
+    "name": "com.blent.connection.ConfiguredConnectionTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.068"
+  },
+  {
+    "name": "com.blent.VideoCodecTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.089"
+  },
+  {
+    "name": "com.blent.StreamingPowerEdgeTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.106"
+  },
+  {
+    "name": "com.blent.connection.BoundedPeerCopyTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.013"
+  },
+  {
+    "name": "com.blent.SettingsControlContractTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.497"
+  },
+  {
+    "name": "com.blent.ControlActivityHistoryTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.054"
+  },
+  {
+    "name": "com.blent.connection.AndroidSavedTrustRunTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.053"
+  },
+  {
+    "name": "com.blent.connection.ConnectionControlsTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.899"
+  },
+  {
+    "name": "com.blent.DisplayRoutesTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.087"
+  },
+  {
+    "name": "com.blent.connection.AndroidConnectionWorkerTest",
+    "tests": "30",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.458"
+  },
+  {
+    "name": "com.blent.connection.TabletSessionModelTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.017"
+  },
+  {
+    "name": "com.blent.connection.TrustDirectoryNativeTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.01"
+  },
+  {
+    "name": "com.blent.AudioTargetBindingTest",
+    "tests": "15",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioPermissionRuntimeTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.DirectInputTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.773"
+  },
+  {
+    "name": "com.blent.connection.TrustKernelLockTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.066"
+  },
+  {
+    "name": "com.blent.connection.ConnectionAudioPermissionCodecTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.017"
+  },
+  {
+    "name": "com.blent.AudioProtocolVersionTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.MediaScreenWakeSourceTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.213"
+  },
+  {
+    "name": "com.blent.ActivityUiContractTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "6.927"
+  },
+  {
+    "name": "com.blent.connection.AccessoryPermissionBoundaryTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.1"
+  },
+  {
+    "name": "com.blent.InputNumericBoundsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.045"
+  },
+  {
+    "name": "com.blent.connection.ConnectionReadyTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.connection.AccessoryFixtureIsolationTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.414"
+  },
+  {
+    "name": "com.blent.SessionRevocationTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.196"
+  },
+  {
+    "name": "com.blent.connection.ConnectionBindingTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.078"
+  },
+  {
+    "name": "com.blent.LocalPermissionPromptsTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.connection.TabletSessionTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.004"
+  },
+  {
+    "name": "com.blent.WorkerContractTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.159"
+  },
+  {
+    "name": "com.blent.connection.SavedTrustProtocolTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.009"
+  },
+  {
+    "name": "com.blent.ComposeOrderTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "4.86"
+  },
+  {
+    "name": "com.blent.connection.AndroidAccessorySelectionTest",
+    "tests": "23",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.22"
+  },
+  {
+    "name": "com.blent.connection.TrustSnapshotAdmissionTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.ResourceRetirementNotificationTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.016"
+  },
+  {
+    "name": "com.blent.AoaSecureDiagnosticsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.connection.ConnectionLocalPumpTest",
+    "tests": "19",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.012"
+  },
+  {
+    "name": "com.blent.CameraConsentPolicyTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.002"
+  },
+  {
+    "name": "com.blent.connection.LocalCameraControlTest",
+    "tests": "10",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.022"
+  },
+  {
+    "name": "com.blent.StreamingPowerRuntimeTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.069"
+  },
+  {
+    "name": "com.blent.connection.AccessoryAdmissionDeadlineTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.039"
+  },
+  {
+    "name": "com.blent.connection.AndroidAccessoryPortsTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.047"
+  },
+  {
+    "name": "com.blent.CameraActivityOwnerTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.005"
+  },
+  {
+    "name": "com.blent.ReplayClipTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.006"
+  },
+  {
+    "name": "com.blent.ReleaseCheckTest",
+    "tests": "28",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.133"
+  },
+  {
+    "name": "com.blent.JoinedDisplayActivityTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.148"
+  },
+  {
+    "name": "com.blent.connection.ConnectionPreferenceStoreTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.001"
+  },
+  {
+    "name": "com.blent.CameraConsentOwnerTest",
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.074"
+  }
+]

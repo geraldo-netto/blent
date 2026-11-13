@@ -1,0 +1,28 @@
+JUnit version 4.13.2
+.RECREATION workers=2, reconnectAllowed=true
+E.RECREATION workers=2, reconnectAllowed=true
+.RECREATION workers=1, reconnectAllowed=false
+.RECREATION workers=2, reconnectAllowed=true
+E.RECREATION workers=2, reconnectAllowed=true
+.RECREATION workers=1, reconnectAllowed=false
+
+Time: 2.657
+There were 2 failures:
+1) t1396RestoredAttachmentIntentMustNotUndoExplicitDisconnect[27](com.blent.connection.ReviewRecreationProbe)
+java.lang.AssertionError: Restored launch intent is not a new attachment expected:<1> but was:<2>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.connection.ReviewRecreationProbe.restored(ReviewRecreationProbe.kt:44)
+	at com.blent.connection.ReviewRecreationProbe.t1396RestoredAttachmentIntentMustNotUndoExplicitDisconnect(ReviewRecreationProbe.kt:18)
+2) t1396RestoredAttachmentIntentMustNotUndoExplicitDisconnect(com.blent.connection.ReviewRecreationProbe)
+java.lang.AssertionError: Restored launch intent is not a new attachment expected:<1> but was:<2>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.connection.ReviewRecreationProbe.restored(ReviewRecreationProbe.kt:44)
+	at com.blent.connection.ReviewRecreationProbe.t1396RestoredAttachmentIntentMustNotUndoExplicitDisconnect(ReviewRecreationProbe.kt:18)
+
+FAILURES!!!
+Tests run: 6,  Failures: 2
+

@@ -1,0 +1,573 @@
+{
+  "date": "2026-11-13",
+  "scope": "Review only; no production fixes or permanent regression additions. Tests disregarded after owner steering; active Rust continuation cancelled with SIGINT, exit 130, original process group confirmed empty.",
+  "checks": [
+    {
+      "name": "rust-tests",
+      "programs": [
+        {
+          "program": "unittests src/lib.rs (target/debug/deps/blent-74de745a54d1c2f6)",
+          "last_summary": [
+            "FAILED",
+            "1084",
+            "1",
+            "3",
+            "0",
+            "0"
+          ]
+        }
+      ],
+      "completion": "failed; T1395"
+    },
+    {
+      "name": "rust-complete",
+      "programs": [
+        {
+          "program": "unittests src/lib.rs (target/debug/deps/blent-74de745a54d1c2f6)",
+          "last_summary": [
+            "ok",
+            "1085",
+            "0",
+            "3",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "unittests src/main.rs (target/debug/deps/blent-8461f18b025039c8)",
+          "last_summary": [
+            "ok",
+            "610",
+            "0",
+            "4",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "unittests src/bin/usb_broker.rs (target/debug/deps/blent_usb_broker-c2f2bfdcfca6809a)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/activity_dpms.rs (target/debug/deps/activity_dpms-7f31502497f640c6)",
+          "last_summary": [
+            "ok",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/adb_mapping_retirement.rs (target/debug/deps/adb_mapping_retirement-913b4d7844141808)",
+          "last_summary": [
+            "ok",
+            "27",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/arch_output.rs (target/debug/deps/arch_output-14f38b52b35da235)",
+          "last_summary": [
+            "ok",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/audio_native.rs (target/debug/deps/audio_native-1cf07529c6061293)",
+          "last_summary": [
+            "ok",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/audio_staging.rs (target/debug/deps/audio_staging-d43917ebddfd62b6)",
+          "last_summary": [
+            "ok",
+            "3",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/c_benchmarks.rs (target/debug/deps/c_benchmarks-687978ddc3502780)",
+          "last_summary": [
+            "ok",
+            "5",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/camera_pool.rs (target/debug/deps/camera_pool-8f0e924dc41726ec)",
+          "last_summary": [
+            "ok",
+            "5",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/camera_probe.rs (target/debug/deps/camera_probe-73ba1982d9631598)",
+          "last_summary": [
+            "ok",
+            "5",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/camera_probe_options.rs (target/debug/deps/camera_probe_options-b452d2b3632892fd)",
+          "last_summary": [
+            "ok",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/camera_probe_policy.rs (target/debug/deps/camera_probe_policy-6f870643c72543e5)",
+          "last_summary": [
+            "ok",
+            "5",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/camera_probe_samples.rs (target/debug/deps/camera_probe_samples-935493c258871cf6)",
+          "last_summary": [
+            "ok",
+            "5",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/capture_activity.rs (target/debug/deps/capture_activity-069ca07191fc61ba)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/capture_contract.rs (target/debug/deps/capture_contract-4f24365f9cbc7d27)",
+          "last_summary": [
+            "ok",
+            "4",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/config_diagnostics.rs (target/debug/deps/config_diagnostics-f2a8612b6ec5fa04)",
+          "last_summary": [
+            "ok",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/connection_routes.rs (target/debug/deps/connection_routes-f5d57bebd30e4042)",
+          "last_summary": [
+            "ok",
+            "4",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/contract_build.rs (target/debug/deps/contract_build-1497a6276020527a)",
+          "last_summary": [
+            "ok",
+            "16",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/control_failure.rs (target/debug/deps/control_failure-9df2a5eec3eda15a)",
+          "last_summary": [
+            "ok",
+            "4",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/conversion.rs (target/debug/deps/conversion-de0d2ab011499ce3)",
+          "last_summary": [
+            "ok",
+            "12",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/evdi_helper.rs (target/debug/deps/evdi_helper-32aa24b3c9b4d0aa)",
+          "last_summary": [
+            "ok",
+            "70",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/evdi_modules.rs (target/debug/deps/evdi_modules-fa7ba2d3154c2c97)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/frame_retirement.rs (target/debug/deps/frame_retirement-0eacb3987b258433)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/gpu_capture.rs (target/debug/deps/gpu_capture-545055335eb875d2)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/guest_probe.rs (target/debug/deps/guest_probe-784daaea7ae43e7b)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/linux_lifecycle.rs (target/debug/deps/linux_lifecycle-0887843a0212be97)",
+          "last_summary": [
+            "ok",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/portable_host.rs (target/debug/deps/portable_host-8aa8f8a124b30315)",
+          "last_summary": [
+            "ok",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/portable_session.rs (target/debug/deps/portable_session-4afa90bbb78421c9)",
+          "last_summary": [
+            "ok",
+            "3",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/portable_usb.rs (target/debug/deps/portable_usb-7c3ffa0561755357)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/rect_native.rs (target/debug/deps/rect_native-4ea6ea66a7f0c413)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/runtime_exit.rs (target/debug/deps/runtime_exit-52bbb14ccedbcad2)",
+          "last_summary": [
+            "ok",
+            "2",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/session_failure.rs (target/debug/deps/session_failure-e0393228aae7add5)",
+          "last_summary": [
+            "ok",
+            "16",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/shared_encode_replay.rs (target/debug/deps/shared_encode_replay-610a90bc00a78aec)",
+          "last_summary": [
+            "ok",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/shutdown_deadline.rs (target/debug/deps/shutdown_deadline-13940a767a6d6c86)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/tooling.rs (target/debug/deps/tooling-e66c7db1c1eac5a3)",
+          "last_summary": null
+        }
+      ],
+      "completion": "cancelled at owner request, incomplete; no passing whole-run claim"
+    },
+    {
+      "name": "native-feature-tests",
+      "programs": [
+        {
+          "program": "unittests src/lib.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-7669c2f8095d3888)",
+          "last_summary": [
+            "ok",
+            "1085",
+            "0",
+            "3",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "unittests src/main.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent-bd313daf64c13f71)",
+          "last_summary": [
+            "ok",
+            "404",
+            "0",
+            "2",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "unittests src/bin/audio.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent_audio-c5c1e7505222a054)",
+          "last_summary": [
+            "ok",
+            "11",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "unittests src/bin/usb_broker.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/blent_usb_broker-f841bf24c67e43cc)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/audio_native.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/audio_native-513bb73309d907d8)",
+          "last_summary": [
+            "ok",
+            "3",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        {
+          "program": "tests/shared_encode_replay.rs (/backups/disk2/blent-work/2026-10-20-all-open/T835/target/debug/deps/shared_encode_replay-66587325864d8c9d)",
+          "last_summary": [
+            "ok",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      ],
+      "completion": "completed, exit 0"
+    },
+    {
+      "name": "Android testDebugUnitTest",
+      "registered": 2740,
+      "passed": 2740,
+      "suites": 370,
+      "completion": "completed before owner steering"
+    },
+    {
+      "name": "scripts/tests unittest discovery",
+      "registered": 566,
+      "passed": 565,
+      "skipped": 1,
+      "skip_reason": "Windows-only descendant retirement",
+      "completion": "completed before owner steering"
+    },
+    {
+      "name": "complexity checker tests",
+      "registered": 36,
+      "passed": 36
+    },
+    {
+      "name": "coverage checker tests",
+      "registered": 111,
+      "passed": 111
+    },
+    {
+      "name": "supported-source complexity",
+      "measured_functions": 29058,
+      "above_nine": 0,
+      "limitations": "JavaScript and PowerShell omitted (T1397/T1398); function count includes evidence sources and is not a manual-review or coverage count"
+    },
+    {
+      "name": "T1396 hosted reproduction",
+      "registered": 6,
+      "expected_bug_failures": 2,
+      "passing_controls": 4,
+      "hosted_apis": [
+        27,
+        34
+      ],
+      "junit_exit": 1,
+      "compiler_exit": 0
+    },
+    {
+      "name": "T1395 repeated unchanged regression",
+      "registered": 20,
+      "passed": 19,
+      "failed": 1
+    },
+    {
+      "name": "Rust formatting",
+      "result": "failed",
+      "finding": "T1400"
+    },
+    {
+      "name": "local Markdown target existence",
+      "documents": 33,
+      "missing_local_targets": 0,
+      "limitations": "No external URL or anchor verification"
+    }
+  ],
+  "tools": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+    "python": "Python 3.12.3",
+    "node": "v24.18.0",
+    "complexity_dependencies": [
+      "tree-sitter==0.25.2",
+      "tree-sitter-bash==0.25.1",
+      "tree-sitter-c==0.24.2"
+    ],
+    "coverage": "coverage 7.15.2"
+  },
+  "commands": {
+    "rust_initial": "cargo test --locked --workspace --lib --bins --tests --features blent/accessory-transport",
+    "rust_interrupted": "cargo test --locked --workspace --lib --bins --tests --features blent/accessory-transport --no-fail-fast",
+    "android": "./android/gradlew -p android testDebugUnitTest --console plain",
+    "scripts": "python3 -m unittest discover -s scripts/tests -v",
+    "complexity": "<pinned-venv>/bin/python scripts/complexity/check.py --verbose",
+    "complexity_unit": "<pinned-venv>/bin/python -m unittest discover -s scripts/complexity -p test_*.py",
+    "coverage_unit": "<pinned-venv>/bin/python -m unittest discover -s scripts/coverage -p test_*.py",
+    "format": "python3 scripts/format-rust.py --check",
+    "optional_native": "python3 scripts/ci/test-host-offline.py --sdk /home/netto/.local/share/flatpak/runtime/org.freedesktop.Sdk/x86_64/25.08/active/files --codecs /home/netto/.local/share/flatpak/runtime/org.freedesktop.Platform.codecs-extra/x86_64/25.08-extra/active/files --target-dir /backups/disk2/blent-work/2026-10-20-all-open/T835/target --libclang /usr/lib/llvm-18/lib -- test -p blent --all-features --lib --bins --test audio_native --test shared_encode_replay --no-fail-fast -j 2"
+  }
+}

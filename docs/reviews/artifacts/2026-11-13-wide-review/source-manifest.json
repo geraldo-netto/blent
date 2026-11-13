@@ -1,0 +1,22 @@
+{
+  "revision": "04d77f88eaae732e925f254c817b66baefb940d4",
+  "sha256": {
+    "host/src/media_connection/tests.rs": "ba30e6547c5e1a1822a6ea0a8502f5bbae0f801d86b3a3351959972f2c0633db",
+    "host/src/media_connection.rs": "2bbf54093b7ae05270a49c501fdb6c3c29dc2907041693263fa9adb740fdd68b",
+    "common/src/retirement.rs": "a7b7d66e71f63448699397875b80a8dae28e0d75014c2e7dc9d2df0a0a1a42af",
+    "android/app/src/main/java/com/blent/MainActivity.kt": "2119ec0e70f637cce247f144a01b4ba6f6a72199d511a5ad524764d5db88730b",
+    "android/app/src/main/java/com/blent/connection/ConfiguredConnection.kt": "b80b3ed8a2177afb563566828718b4cbb26b2b682ae0f2515c54d4073f880931",
+    "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt": "a02e25a8943386e50a52e905188507245994219a70f61e74d8ed8e2b92a4ab76",
+    "scripts/complexity/check.py": "99095e6ca5dfb364b150e617320a7b16046feb0b0f63e36f1078c8da1c4e06b5",
+    "scripts/coverage/inventory.py": "dd02ae2eb990d271cf9384f6aa42c660350cdc1eb00168f956dfbe647d1ea173",
+    "host/src/input/linux/cinnamon_cursor.js": "a0aadc65fab5327f6d5b1cf0441961ce372f8ee60cb399f76575e0e51837fbbb",
+    "host/tests/cinnamon_cursor.js": "a2cc5e89bd960694cdaa1acf361523db14989809471ad0fd407ef0d059b97b0d",
+    "scripts/dev/windows-vm/minimal.ps1": "cf97114cc60e7fb92c2890876a7d773a89a640958415b7143ddc50b28d22864e",
+    "scripts/dev/windows-vm/run-native.ps1": "0cdcaca98e3556a4f2d6a7cbf468452336bbc3397386fda4db002992983f03e7",
+    "scripts/tests/windows_vm_dns.ps1": "e85547118a02ab2570a814a83bd42cf359181d58740ab373c0009665f03a45a7",
+    "host/src/linux_main.rs": "cf0afcbbbe11d48326f76b8fe744d2f02e316db1c488c1d16fd0713f84a61ec3",
+    "scripts/format-rust.py": "cb66c4da53c53cb45d06d77fdc7f27b06547d6b60146a3c07349d94f309ac8c9",
+    ".github/workflows/build.yml": "892544e46e80687c95aa10a9f70c6ce04da823f140b268d9e624862cb8040303",
+    "docs/settings.md": "c9987c26c0ef7aef6055f92aeca2adf826b031a58faffa6a5c9e034113fe1ee3"
+  }
+}

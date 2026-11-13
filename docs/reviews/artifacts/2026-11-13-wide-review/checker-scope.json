@@ -1,0 +1,32 @@
+[
+  {
+    "path": "host/src/input/linux/cinnamon_cursor.js",
+    "language": null,
+    "owned": true,
+    "included": false
+  },
+  {
+    "path": "host/tests/cinnamon_cursor.js",
+    "language": null,
+    "owned": true,
+    "included": false
+  },
+  {
+    "path": "scripts/dev/windows-vm/minimal.ps1",
+    "language": null,
+    "owned": true,
+    "included": false
+  },
+  {
+    "path": "scripts/dev/windows-vm/run-native.ps1",
+    "language": null,
+    "owned": true,
+    "included": false
+  },
+  {
+    "path": "scripts/tests/windows_vm_dns.ps1",
+    "language": null,
+    "owned": true,
+    "included": false
+  }
+]
