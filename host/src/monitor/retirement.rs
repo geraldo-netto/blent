@@ -32,8 +32,9 @@ impl Monitor {
             };
             if let Some(routes) = routes {
                 if let Err(error) = routes.retire(&adb).await {
-                    // Offline cleanup remains bounded; credentials were revoked
-                    // before retirement, and foreign routes are never removed.
+                    // Credentials were revoked before retirement. T1346 tracks
+                    // this lost cleanup debt; logical stop is not settlement.
+                    // Deletion relies on T1345's exclusive endpoint contract.
                     warn!("Could not retire owned routes on {serial}: {error}");
                 }
             }

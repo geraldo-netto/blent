@@ -39,8 +39,10 @@ pub fn missing(text: &str, expected: &[(u16, u16)]) -> Result<Vec<(u16, u16)>> {
     Ok(missing)
 }
 
-/// Cleanup may retire only still-matching owned destinations. A replaced or
-/// absent route is no longer ours; malformed snapshots authorize no mutation.
+/// Select owned destinations matching this snapshot; malformed snapshots
+/// authorize no mutation. This is not atomic compare-and-delete: adapters rely
+/// on exclusive endpoint ownership through original creation/cleanup settlement.
+/// Preexisting and unrelated routes remain externally owned.
 pub fn matching(text: &str, owned: &[(u16, u16)]) -> Result<Vec<(u16, u16)>> {
     let mappings = parse(text)?;
     Ok(owned

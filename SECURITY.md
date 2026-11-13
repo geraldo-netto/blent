@@ -30,6 +30,16 @@ account or privileged Android debugging access.
 
 ### ADB connections
 
+Blent exclusively manages display reverse endpoints it creates until their
+original creation and cleanup outcomes settle (owner decision 2026-11-13).
+Other programs may use ADB and unrelated mappings, but must not replace/remove
+these endpoints or run `adb reverse --remove-all` during that ownership.
+Preexisting mappings remain externally owned. ADB has no atomic
+compare-and-delete operation; listing before removal cannot protect against
+external replacement during this interval. Outstanding creation and cleanup
+ownership defects remain tracked in T1344, T1346 and T1352; this contract does
+not claim those fixes are complete.
+
 The host video and input servers bind to **127.0.0.1**, on ports 8890/8891
 by default, plus two ports per additional tablet slot. On the ADB route, the
 tablet reaches these ports through `adb reverse`.

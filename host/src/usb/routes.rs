@@ -2,6 +2,10 @@ use super::*;
 
 /// Only routes created successfully by this owner may be removed on retirement.
 /// Existing matching routes are usable but remain externally owned.
+/// Admitted display endpoints are exclusively managed by Blent until original
+/// creation and cleanup settle (T1345). Snapshot checks cannot prevent external
+/// replacement between listing and removal; that violates the ownership contract.
+/// T1344 separately tracks ownership of creators whose acknowledgement is lost.
 pub struct Routes {
     serial: String,
     expected: [(u16, u16); 2],
