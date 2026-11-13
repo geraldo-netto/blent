@@ -695,9 +695,14 @@ share the Linux layout and ABI validator. Native install smoke scripts under
 ### Lifecycle command deadlines
 
 The CLI allows 10 seconds for daemon cleanup. GUI direct stop/restart commands
-allow 15 seconds; systemd actions allow 35 seconds. Both shipped user units set
-`TimeoutStopSec=15`: the GUI budget covers ExecStop, subsequent service retirement
-and dispatch/restart overhead. These lifecycle limits are defined in
+allow 15 seconds; systemd actions allow 35 seconds. Both shipped user units use
+`TimeoutStopSec=infinity`, `KillMode=mixed` and `SendSIGKILL=no`. Systemd sends
+SIGTERM only to the daemon, which owns native child shutdown and cleanup; there
+is no separate ExecStop command. Pending cleanup keeps the unit stopping and
+prevents a restart from overtaking the original owner. A GUI command can time
+out while that service operation remains pending. Forced administrative kill
+or machine power loss cannot preserve this graceful-cleanup guarantee. These
+command-response limits are defined in
 `common/src/commands.rs`; other external commands retain their five-second
 limit. The GUI runs lifecycle actions on its worker and reports an error without
 starting a replacement if a direct stop times out. On Linux each bounded command

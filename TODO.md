@@ -52,7 +52,6 @@
 
 | id | status | severity | effort | description |
 | --- | --- | --- | --- | --- |
-| T1412 | open | medium | small | Make service termination preserve admitted cleanup ownership. `scripts/blent.service:22` and `packaging/blent.service:14` set `TimeoutStopSec=15`; the installed unit confirms `KillMode=control-group` and `SendSIGKILL=yes`. If cleanup remains pending beyond the service stop budget, systemd forcibly kills the retained process/native owners, contradicting the exact-settlement requirement even for the implemented Wi-Fi exit guard. The CLI's 10-second stop wait reports an error without itself force-killing; changing that wait alone does not fix this. Define a unit stop policy that allows the daemon's owned cleanup to settle, align both templates and installed-service documentation, and add a permanent isolated-unit regression holding an original cleanup obligation beyond the former timeout before releasing it. Verify stop/restart cannot admit replacement ownership early. Independent of T1411's internal Linux fence; both are required for display-route service shutdown. Evidence: `docs/reviews/artifacts/2026-11-13-lifecycle-review/service/`. |
 
 ## Engineering verification
 

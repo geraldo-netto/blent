@@ -17,9 +17,11 @@ CPUWeight=1000
 # following the tablet. Without it the daemon generates an EDID at runtime for
 # whatever resolution is configured or reported.
 ExecStart=%h/.local/bin/blent --helper %h/.local/bin/evdi_helper start
-ExecStop=%h/.local/bin/blent stop
-# T268: longer than the CLI cleanup grace, bounded by the GUI action budget.
-TimeoutStopSec=15
+# T1412: the daemon owns native child shutdown and exact cleanup settlement.
+# A caller's response deadline must not kill that owner or its children.
+KillMode=mixed
+SendSIGKILL=no
+TimeoutStopSec=infinity
 Restart=on-failure
 RestartSec=3
 StandardOutput=journal

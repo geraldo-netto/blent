@@ -1,0 +1,138 @@
+{
+  "tool": "project scripts/complexity/check.py Python AST/tree-sitter Bash",
+  "python": "3.12.3",
+  "functions": [
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 15,
+      "function": "service_policy",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 22,
+      "function": "run",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 26,
+      "function": "await_file",
+      "complexity": 3
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 35,
+      "function": "test_t1412_templates_and_renderer_preserve_cleanup_policy",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 49,
+      "function": "test_t1412_native_stop_retains_original_owner_past_former_timeout",
+      "complexity": 3
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 58,
+      "function": "test_t1412_native_restart_waits_for_original_settlement",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 65,
+      "function": "exercise_native",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 88,
+      "function": "stop_owned_unit",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 96,
+      "function": "start_owned_unit",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_service_retirement.py",
+      "line": 105,
+      "function": "assert_retained",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/service_retirement_fixture.py",
+      "line": 9,
+      "function": "wait_for",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/service_retirement_fixture.py",
+      "line": 14,
+      "function": "child",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/service_retirement_fixture.py",
+      "line": 20,
+      "function": "parent",
+      "complexity": 2
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 12,
+      "function": "test_t231_unreachable_enabled_service_does_not_create_a_second_startup",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 23,
+      "function": "test_t231_failed_enable_is_not_reported_as_success",
+      "complexity": 1
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 34,
+      "function": "test_t231_installer_uses_desktop_autostart_without_a_user_manager",
+      "complexity": 5
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 54,
+      "function": "verify_autostart_launch",
+      "complexity": 3
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 63,
+      "function": "test_t396_service_commands_follow_the_installed_binary_prefix",
+      "complexity": 5
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 90,
+      "function": "environment",
+      "complexity": 5
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 105,
+      "function": "verify_files",
+      "complexity": 4
+    },
+    {
+      "file": "scripts/tests/test_user_paths.py",
+      "line": 118,
+      "function": "test_t233_make_and_script_install_into_configured_xdg_locations",
+      "complexity": 4
+    },
+    {
+      "file": "scripts/write-systemd-service.sh",
+      "line": 4,
+      "function": "systemd_path",
+      "complexity": 2
+    }
+  ]
+}

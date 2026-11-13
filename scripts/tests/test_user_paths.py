@@ -85,7 +85,7 @@ class UserPathsTest(unittest.TestCase):
                         self.assertTrue((prefix / binary).is_file())
                     unit = (config / 'systemd/user/blent.service').read_text()
                     self.assertIn(f'ExecStart=:/usr/bin/env "{escaped}/blent" --helper "{escaped}/evdi_helper" start\n', unit)
-                    self.assertIn(f'ExecStop=:/usr/bin/env "{escaped}/blent" stop\n', unit)
+                    self.assertNotIn('ExecStop=', unit)
 
     def environment(self, root, mode):
         env, _ = fixture(root, 'relative', True)

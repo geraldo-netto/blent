@@ -9,9 +9,11 @@ Type=simple
 # The daemon applies the user's High/Normal preference at startup.
 CPUWeight=1000
 ExecStart=/usr/bin/blent start
-ExecStop=/usr/bin/blent stop
-# T268: longer than the CLI cleanup grace, bounded by the GUI action budget.
-TimeoutStopSec=15
+# T1412: the daemon owns native child shutdown and exact cleanup settlement.
+# A caller's response deadline must not kill that owner or its children.
+KillMode=mixed
+SendSIGKILL=no
+TimeoutStopSec=infinity
 Restart=on-failure
 RestartSec=3
 

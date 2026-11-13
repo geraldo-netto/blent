@@ -1,0 +1,57 @@
+FFFF
+======================================================================
+FAIL: test_t1412_native_stop_retains_original_owner_past_former_timeout (test_service_retirement.ServiceRetirementTest.test_t1412_native_stop_retains_original_owner_past_former_timeout) (template='scripts/blent.service')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 57, in test_t1412_native_stop_retains_original_owner_past_former_timeout
+    self.exercise_native(template)
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 70, in exercise_native
+    self.assert_retained(unit, root)
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 90, in assert_retained
+    self.assertEqual(state, 'deactivating', 'Original cleanup owner was killed')
+AssertionError: 'failed' != 'deactivating'
+- failed
++ deactivating
+ : Original cleanup owner was killed
+
+======================================================================
+FAIL: test_t1412_native_stop_retains_original_owner_past_former_timeout (test_service_retirement.ServiceRetirementTest.test_t1412_native_stop_retains_original_owner_past_former_timeout) (template='packaging/blent.service')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 57, in test_t1412_native_stop_retains_original_owner_past_former_timeout
+    self.exercise_native(template)
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 70, in exercise_native
+    self.assert_retained(unit, root)
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 90, in assert_retained
+    self.assertEqual(state, 'deactivating', 'Original cleanup owner was killed')
+AssertionError: 'failed' != 'deactivating'
+- failed
++ deactivating
+ : Original cleanup owner was killed
+
+======================================================================
+FAIL: test_t1412_templates_and_renderer_preserve_cleanup_policy (test_service_retirement.ServiceRetirementTest.test_t1412_templates_and_renderer_preserve_cleanup_policy) (template='scripts/blent.service')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 40, in test_t1412_templates_and_renderer_preserve_cleanup_policy
+    self.assertEqual(policy['TimeoutStopSec'], 'infinity')
+AssertionError: '15' != 'infinity'
+- 15
++ infinity
+
+
+======================================================================
+FAIL: test_t1412_templates_and_renderer_preserve_cleanup_policy (test_service_retirement.ServiceRetirementTest.test_t1412_templates_and_renderer_preserve_cleanup_policy) (template='packaging/blent.service')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/scripts/tests/test_service_retirement.py", line 40, in test_t1412_templates_and_renderer_preserve_cleanup_policy
+    self.assertEqual(policy['TimeoutStopSec'], 'infinity')
+AssertionError: '15' != 'infinity'
+- 15
++ infinity
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 32.256s
+
+FAILED (failures=4)
