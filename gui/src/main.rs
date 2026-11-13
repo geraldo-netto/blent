@@ -1236,13 +1236,15 @@ fn settings_grid(ui: &mut egui::Ui, id: impl std::hash::Hash, render: impl FnOnc
 }
 
 fn main() -> eframe::Result {
-    let scheduling_status = blent_config::scheduling::apply_configured();
-    let options = native_options();
-    eframe::run_native(
-        "Blent",
-        options,
-        Box::new(move |cc| Ok(Box::new(App::new(cc, scheduling_status)))),
-    )
+    platform::run_gui(|| {
+        let scheduling_status = blent_config::scheduling::apply_configured();
+        let options = native_options();
+        eframe::run_native(
+            "Blent",
+            options,
+            Box::new(move |cc| Ok(Box::new(App::new(cc, scheduling_status)))),
+        )
+    })
 }
 
 fn native_options() -> eframe::NativeOptions {

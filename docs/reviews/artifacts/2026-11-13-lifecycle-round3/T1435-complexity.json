@@ -1,0 +1,108 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source0.1.0/syn2.0.119; Python AST 3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "source_sha256": {
+    "gui/src/main.rs": "5f556742d7091052cc6e57ea4794b2e04c63d1b719d8bbf5ba37906dec0ae49a",
+    "gui/src/platform/lifetime.rs": "1c54d0f2181d47deff66354efc25bf7450365bd0bc691163704c8f6a66bffde4",
+    "gui/src/platform/lifetime/tests.rs": "da3d687a128288d402485aed34fd9cb794d656467fe684803d12f8b13f00a4d4",
+    "gui/tests/process_exit.rs": "04d7aa135459cf85e55b10cdb0dd327d873d6a504876ddbb04344101b3902bd6",
+    "gui/tests/process_exit.py": "cdf74692d93824ae0be670e2105080245ef86c6a2b21934f9a922df94df46c7d"
+  },
+  "functions": [
+    {
+      "file": "gui/src/main.rs",
+      "line": 1238,
+      "function": "main",
+      "complexity": 3
+    },
+    {
+      "file": "gui/src/platform/lifetime.rs",
+      "line": 2,
+      "function": "run_gui",
+      "complexity": 2
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 14,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 21,
+      "function": "controller",
+      "complexity": 4
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 48,
+      "function": "outcome",
+      "complexity": 4
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 58,
+      "function": "assert_outcome",
+      "complexity": 4
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 73,
+      "function": "held_exit",
+      "complexity": 5
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 114,
+      "function": "t1435_gui_exit_fixture",
+      "complexity": 3
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 125,
+      "function": "t1435_gui_entry_retains_camera_and_original_control_thread",
+      "complexity": 3
+    },
+    {
+      "file": "gui/src/platform/lifetime/tests.rs",
+      "line": 134,
+      "function": "run_child",
+      "complexity": 3
+    },
+    {
+      "file": "gui/tests/process_exit.rs",
+      "line": 4,
+      "function": "t1435_actual_gui_entry_closes_on_private_display",
+      "complexity": 1
+    },
+    {
+      "file": "gui/tests/process_exit.py",
+      "line": 11,
+      "function": "isolate_devices",
+      "complexity": 4
+    },
+    {
+      "file": "gui/tests/process_exit.py",
+      "line": 24,
+      "function": "environment",
+      "complexity": 2
+    },
+    {
+      "file": "gui/tests/process_exit.py",
+      "line": 41,
+      "function": "owns_window",
+      "complexity": 4
+    },
+    {
+      "file": "gui/tests/process_exit.py",
+      "line": 50,
+      "function": "close_owned",
+      "complexity": 2
+    },
+    {
+      "file": "gui/tests/process_exit.py",
+      "line": 62,
+      "function": "run",
+      "complexity": 2
+    }
+  ]
+}

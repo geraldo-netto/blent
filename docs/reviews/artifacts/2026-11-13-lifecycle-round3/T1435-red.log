@@ -1,0 +1,223 @@
+   Compiling linux-raw-sys v0.12.1
+   Compiling smallvec v1.15.1
+   Compiling scoped-tls v1.0.1
+   Compiling libloading v0.8.9
+   Compiling downcast-rs v1.2.1
+   Compiling percent-encoding v2.3.2
+   Compiling ttf-parser v0.25.1
+   Compiling cursor-icon v1.2.0
+   Compiling xcursor v0.3.10
+   Compiling xkeysym v0.2.1
+   Compiling ab_glyph_rasterizer v0.1.10
+   Compiling linux-raw-sys v0.4.15
+   Compiling memmap2 v0.9.10
+   Compiling bytemuck_derive v1.10.2
+   Compiling arrayref v0.3.9
+   Compiling strict-num v0.1.1
+   Compiling accesskit v0.19.0
+   Compiling quick-xml v0.39.4
+   Compiling ahash v0.8.12
+   Compiling dlib v0.5.3
+   Compiling x11-dl v2.21.0
+   Compiling form_urlencoded v1.2.2
+   Compiling foldhash v0.1.5
+   Compiling adler2 v2.0.1
+   Compiling arrayvec v0.7.6
+   Compiling as-raw-xcb-connection v1.0.1
+   Compiling x11rb-protocol v0.13.2
+   Compiling crc32fast v1.5.0
+   Compiling wayland-sys v0.31.11
+   Compiling parking_lot_core v0.9.12
+   Compiling raw-window-handle v0.6.2
+   Compiling hashbrown v0.15.5
+   Compiling miniz_oxide v0.8.9
+   Compiling num-traits v0.2.19
+   Compiling fdeflate v0.3.7
+   Compiling thiserror-impl v2.0.18
+   Compiling smol_str v0.2.2
+   Compiling profiling v1.0.18
+   Compiling icu_normalizer v2.2.0
+   Compiling dpi v0.1.2
+   Compiling nohash-hasher v0.2.0
+   Compiling epaint_default_fonts v0.32.3
+   Compiling pxfm v0.1.29
+   Compiling unicode-segmentation v1.13.3
+   Compiling byteorder-lite v0.1.0
+   Compiling parking_lot v0.12.5
+   Compiling rustix v0.38.44
+   Compiling glutin_egl_sys v0.7.1
+   Compiling web-time v1.1.0
+   Compiling glow v0.16.0
+   Compiling tracing-subscriber v0.3.23
+   Compiling tokio v1.52.3
+   Compiling xkbcommon-dl v0.4.2
+   Compiling flate2 v1.1.9
+   Compiling accesskit_consumer v0.28.0
+   Compiling bytemuck v1.25.0
+   Compiling idna_adapter v1.2.2
+   Compiling png v0.18.1
+   Compiling tiny-skia-path v0.11.4
+   Compiling emath v0.32.3
+   Compiling idna v1.1.0
+   Compiling thiserror v2.0.18
+   Compiling ecolor v0.32.3
+   Compiling url v2.5.8
+   Compiling rustix v1.1.4
+   Compiling tiny-skia v0.11.4
+   Compiling tungstenite v0.21.0
+   Compiling webbrowser v1.2.1
+   Compiling zbus_xml v5.1.1
+   Compiling owned_ttf_parser v0.25.1
+   Compiling wayland-scanner v0.31.10
+   Compiling ab_glyph v0.2.32
+   Compiling zbus-lockstep v0.5.2
+   Compiling epaint v0.32.3
+   Compiling glutin_glx_sys v0.6.1
+   Compiling moxcms v0.8.1
+   Compiling zbus-lockstep-macros v0.5.2
+   Compiling glutin v0.32.3
+   Compiling egui v0.32.3
+   Compiling tokio-tungstenite v0.21.0
+   Compiling tokio-rustls v0.26.5
+   Compiling tokio-util v0.7.18
+   Compiling polling v3.11.0
+   Compiling wayland-backend v0.3.15
+   Compiling gethostname v1.1.0
+   Compiling tempfile v3.27.0
+   Compiling async-io v2.6.0
+   Compiling calloop v0.13.0
+   Compiling calloop v0.14.4
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling async-signal v0.2.14
+   Compiling zbus v4.4.0
+   Compiling async-process v2.5.0
+   Compiling wayland-client v0.31.14
+   Compiling wayland-csd-frame v0.3.0
+   Compiling zbus v5.16.0
+   Compiling image v0.25.10
+   Compiling wayland-protocols v0.32.12
+   Compiling wayland-cursor v0.31.14
+   Compiling calloop-wayland-source v0.3.0
+   Compiling calloop-wayland-source v0.4.1
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+   Compiling egui_glow v0.32.3
+   Compiling x11rb v0.13.2
+   Compiling arboard v3.6.1
+   Compiling wayland-protocols-wlr v0.3.12
+   Compiling wayland-protocols-plasma v0.3.12
+   Compiling wayland-protocols-experimental v20250721.0.1
+   Compiling wayland-protocols-misc v0.3.12
+   Compiling atspi-common v0.9.0
+   Compiling ksni v0.3.6
+   Compiling smithay-client-toolkit v0.19.2
+   Compiling smithay-client-toolkit v0.20.0
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling sctk-adwaita v0.10.1
+   Compiling smithay-clipboard v0.7.3
+   Compiling winit v0.30.13
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+   Compiling atspi-proxies v0.9.0
+   Compiling accesskit_atspi_common v0.12.0
+   Compiling atspi-connection v0.9.0
+   Compiling atspi v0.25.0
+   Compiling accesskit_unix v0.15.0
+   Compiling glutin-winit v0.5.0
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:31:10
+   |
+31 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+31 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+31 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:136:14
+    |
+136 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+136 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+136 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+   Compiling accesskit_winit v0.27.0
+   Compiling egui-winit v0.32.3
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+   Compiling eframe v0.32.3
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.87s
+     Running unittests src/main.rs (target/debug/build/blent-gui/20ab51cf01d97c1d/out/blent_gui-20ab51cf01d97c1d)
+
+running 1 test
+test platform::lifetime::tests::t1435_gui_entry_retains_camera_and_original_control_thread ...
+thread 'platform::lifetime::tests::t1435_gui_entry_retains_camera_and_original_control_thread' (1449227) panicked at gui/src/platform/lifetime/tests.rs:152:5:
+normal TLS=false:
+running 1 test
+test platform::lifetime::tests::t1435_gui_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    platform::lifetime::tests::t1435_gui_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 193 filtered out; finished in 0.01s
+
+
+thread 'platform::lifetime::tests::t1435_gui_exit_fixture' (1449232) panicked at gui/src/platform/lifetime/tests.rs:107:5:
+T1435 GUI entry returned before original camera/control/TLS retirement
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    platform::lifetime::tests::t1435_gui_entry_retains_camera_and_original_control_thread
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 193 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p blent-gui --bin blent-gui`

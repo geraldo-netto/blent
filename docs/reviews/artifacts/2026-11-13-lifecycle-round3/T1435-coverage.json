@@ -1,0 +1,32 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "source_sha256": {
+    "gui/src/main.rs": "5f556742d7091052cc6e57ea4794b2e04c63d1b719d8bbf5ba37906dec0ae49a",
+    "gui/src/platform/lifetime.rs": "1c54d0f2181d47deff66354efc25bf7450365bd0bc691163704c8f6a66bffde4"
+  },
+  "object_sha256": {
+    "process_exit:test:True": "e1da10fc170a0cefaada714d8ad6cdc855b21a1c5295abf0048b4e871ea2950e",
+    "blent-gui:bin:False": "0472505d0e52ec946735bb8807125adef334271a049f71a634e1888e119e0342",
+    "blent-gui:bin:True": "6e06804b1a7d3a4caad33c4cfcb6fa19a75855c9c358dad9449940d0a4cda345"
+  },
+  "functions": [
+    {
+      "file": "gui/src/main.rs",
+      "function": "main",
+      "first": 1238,
+      "last": 1248,
+      "covered": 10,
+      "executable": 10,
+      "percent": 100.0
+    },
+    {
+      "file": "gui/src/platform/lifetime.rs",
+      "function": "run_gui",
+      "first": 2,
+      "last": 10,
+      "covered": 4,
+      "executable": 4,
+      "percent": 100.0
+    }
+  ]
+}

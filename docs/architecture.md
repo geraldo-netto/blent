@@ -341,6 +341,11 @@ requests are discarded under the existing panic boundary; already-started storag
 calls retain their actual outcomes. Idle shared workers no longer pin exit, and
 retained Store views cannot submit work after process cutoff.
 The Wi-Fi process-exit fence remains independent.
+The Linux GUI runs its eframe workflow on the calling thread inside the same
+runtime owner. Window closure, GUI errors and unwinding retain admitted media
+controllers through their original native thread/TLS completion before process
+exit. The adapter adds no ownership to the separate status/update/action threads;
+those retain their existing contracts. Non-Linux GUI entry behavior is unchanged.
 Windows job/reaper acceptance and native counters are not established by these
 Linux results. Their former T737 tracking was retired without claiming completion;
 the current Windows validation obligations are listed in [TODO.md](../TODO.md).

@@ -1,0 +1,191 @@
+   Compiling rustix v1.1.4
+   Compiling linux-raw-sys v0.12.1
+   Compiling smallvec v1.15.1
+   Compiling pkg-config v0.3.33
+   Compiling scoped-tls v1.0.1
+   Compiling libloading v0.8.9
+   Compiling downcast-rs v1.2.1
+   Compiling wayland-client v0.31.14
+   Compiling wayland-backend v0.3.15
+   Compiling khronos_api v3.1.0
+   Compiling percent-encoding v2.3.2
+   Compiling rustix v0.38.44
+   Compiling ttf-parser v0.25.1
+   Compiling ahash v0.8.12
+   Compiling ab_glyph_rasterizer v0.1.10
+   Compiling linux-raw-sys v0.4.15
+   Compiling xml-rs v0.8.28
+   Compiling cursor-icon v1.2.0
+   Compiling xcursor v0.3.10
+   Compiling dlib v0.5.3
+   Compiling bytemuck_derive v1.10.2
+   Compiling parking_lot_core v0.9.12
+   Compiling log v0.4.32
+   Compiling xkeysym v0.2.1
+   Compiling memmap2 v0.9.10
+   Compiling quick-xml v0.39.4
+   Compiling accesskit v0.19.0
+   Compiling smithay-client-toolkit v0.19.2
+   Compiling arrayref v0.3.9
+   Compiling crc32fast v1.5.0
+   Compiling strict-num v0.1.1
+   Compiling form_urlencoded v1.2.2
+   Compiling num-traits v0.2.19
+   Compiling adler2 v2.0.1
+   Compiling foldhash v0.1.5
+   Compiling arrayvec v0.7.6
+   Compiling as-raw-xcb-connection v1.0.1
+   Compiling x11rb-protocol v0.13.2
+   Compiling parking_lot v0.12.5
+   Compiling winit v0.30.13
+   Compiling icu_normalizer v2.2.0
+   Compiling miniz_oxide v0.8.9
+   Compiling hashbrown v0.15.5
+   Compiling raw-window-handle v0.6.2
+   Compiling thiserror v2.0.18
+   Compiling wayland-sys v0.31.11
+   Compiling x11-dl v2.21.0
+   Compiling fdeflate v0.3.7
+   Compiling thiserror-impl v2.0.18
+   Compiling nohash-hasher v0.2.0
+   Compiling epaint_default_fonts v0.32.3
+   Compiling pxfm v0.1.29
+   Compiling smol_str v0.2.2
+   Compiling smithay-client-toolkit v0.20.0
+   Compiling profiling v1.0.18
+   Compiling dpi v0.1.2
+   Compiling glutin v0.32.3
+   Compiling unicode-segmentation v1.13.3
+   Compiling tokio v1.52.3
+   Compiling byteorder-lite v0.1.0
+   Compiling glutin-winit v0.5.0
+   Compiling litrs v1.0.0
+   Compiling gl_generator v0.14.0
+   Compiling web-time v1.1.0
+   Compiling glow v0.16.0
+   Compiling tracing-subscriber v0.3.23
+   Compiling flate2 v1.1.9
+   Compiling xkbcommon-dl v0.4.2
+   Compiling accesskit_consumer v0.28.0
+   Compiling idna_adapter v1.2.2
+   Compiling document-features v0.2.12
+   Compiling glutin_glx_sys v0.6.1
+   Compiling glutin_egl_sys v0.7.1
+   Compiling idna v1.1.0
+   Compiling bytemuck v1.25.0
+   Compiling png v0.18.1
+   Compiling tiny-skia-path v0.11.4
+   Compiling emath v0.32.3
+   Compiling url v2.5.8
+   Compiling ecolor v0.32.3
+   Compiling zbus_xml v5.1.1
+   Compiling tiny-skia v0.11.4
+   Compiling tungstenite v0.21.0
+   Compiling webbrowser v1.2.1
+   Compiling wayland-scanner v0.31.10
+   Compiling owned_ttf_parser v0.25.1
+   Compiling zbus-lockstep v0.5.2
+   Compiling ab_glyph v0.2.32
+   Compiling epaint v0.32.3
+   Compiling zbus-lockstep-macros v0.5.2
+   Compiling moxcms v0.8.1
+   Compiling egui v0.32.3
+   Compiling tokio-tungstenite v0.21.0
+   Compiling tokio-rustls v0.26.5
+   Compiling tokio-util v0.7.18
+   Compiling polling v3.11.0
+   Compiling gethostname v1.1.0
+   Compiling tempfile v3.27.0
+   Compiling async-io v2.6.0
+   Compiling calloop v0.13.0
+   Compiling calloop v0.14.4
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling async-signal v0.2.14
+   Compiling zbus v4.4.0
+   Compiling async-process v2.5.0
+   Compiling wayland-csd-frame v0.3.0
+   Compiling zbus v5.16.0
+   Compiling image v0.25.10
+   Compiling wayland-protocols v0.32.12
+   Compiling wayland-cursor v0.31.14
+   Compiling calloop-wayland-source v0.3.0
+   Compiling calloop-wayland-source v0.4.1
+   Compiling egui_glow v0.32.3
+   Compiling x11rb v0.13.2
+   Compiling wayland-protocols-wlr v0.3.12
+   Compiling wayland-protocols-plasma v0.3.12
+   Compiling wayland-protocols-misc v0.3.12
+   Compiling wayland-protocols-experimental v20250721.0.1
+   Compiling atspi-common v0.9.0
+   Compiling ksni v0.3.6
+   Compiling arboard v3.6.1
+   Compiling sctk-adwaita v0.10.1
+   Compiling smithay-clipboard v0.7.3
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+   Compiling atspi-proxies v0.9.0
+   Compiling accesskit_atspi_common v0.12.0
+   Compiling atspi-connection v0.9.0
+   Compiling atspi v0.25.0
+   Compiling accesskit_unix v0.15.0
+   Compiling accesskit_winit v0.27.0
+   Compiling egui-winit v0.32.3
+   Compiling eframe v0.32.3
+   Compiling blent-gui v1.2.3 (/backups/disk2/projects/blent/gui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.73s
+
+RUN blent-gui:bin:True FILTER=platform::lifetime::
+
+running 2 tests
+test platform::lifetime::tests::t1435_gui_entry_retains_camera_and_original_control_thread ... ok
+test platform::lifetime::tests::t1435_gui_exit_fixture ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 192 filtered out; finished in 0.69s
+
+
+RUN blent-gui:bin:True FILTER=media_owner::
+
+running 1 test
+test media_owner::tests::t1273_original_media_owner_survives_queued_start_and_retirement ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 193 filtered out; finished in 0.00s
+
+
+RUN blent-gui:bin:True FILTER=camera_settings::
+
+running 7 tests
+test camera_settings::tests::t1273_camera_states_preserve_pending_and_retiring_ownership ... ok
+test camera_settings::tests::t1273_queued_camera_start_cannot_be_retargeted ... ok
+test camera_settings::tests::t1295_invalid_serials_never_reach_camera_backend ... ok
+test camera_settings::tests::t543_portable_backend_contract_and_status_are_separate_from_preferences ... ok
+test camera_settings::tests::t974_exact_usb_profile_reaches_only_camera_backend ... ok
+test camera_settings::tests::t974_unavailable_saved_target_remains_visible_and_rendering_never_rewrites_it ... ok
+test camera_settings::tests::t974_unsupported_invalid_and_ambiguous_camera_targets_never_create_backend ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 187 filtered out; finished in 0.01s
+
+
+RUN blent-gui:bin:True FILTER=audio_settings::
+
+running 8 tests
+test audio_settings::tests::t1273_audio_states_preserve_pending_and_retiring_ownership ... ok
+test audio_settings::tests::t1295_invalid_serials_never_reach_audio_backend ... ok
+test audio_settings::tests::t718_audio_controls_preserve_passive_preferences_and_validate_start ... ok
+test audio_settings::tests::t979_bounded_profile_and_nonhex_target_inputs_never_reach_backend ... ok
+test audio_settings::tests::t979_exact_speaker_usb_and_microphone_adb_options_reach_only_selected_backend ... ok
+test audio_settings::tests::t979_invalid_full_audio_targets_never_reach_even_a_permissive_backend ... ok
+test audio_settings::tests::t979_unavailable_direction_and_factory_failure_never_create_or_retain_backend ... ok
+test audio_settings::tests::t979_unavailable_saved_audio_targets_remain_visible_and_rendering_stays_passive ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 186 filtered out; finished in 0.03s
+
+
+RUN process_exit:test:True FILTER=
+
+running 1 test
+test t1435_actual_gui_entry_closes_on_private_display ... dbus-daemon[20]: Cannot setup inotify for '/root/.local/share/dbus-1/services'; error 'Permission denied'
+dbus-daemon[20]: [session uid=0 pid=20] Activating service name='org.a11y.Bus' requested by ':1.0' (uid=0 pid=24 comm="/backups/disk2/projects/blent/target/llvm-cov-targ" label="vscode (unconfined)")
+dbus-daemon[20]: [session uid=0 pid=20] Successfully activated service 'org.a11y.Bus'
+PASS actual GUI entry: owned Xvfb window closed, exit=0
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
