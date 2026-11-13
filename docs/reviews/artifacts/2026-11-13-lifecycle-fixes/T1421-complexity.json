@@ -1,0 +1,204 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source0.1.0 /syn2.0.119",
+  "maximum": 9,
+  "functions": [
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 25,
+      "function": "default",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 34,
+      "function": "validate",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 54,
+      "function": "publish",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 69,
+      "function": "stop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 78,
+      "function": "stopped",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 93,
+      "function": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 123,
+      "function": "subscribe",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 126,
+      "function": "stop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 129,
+      "function": "retired",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 144,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 148,
+      "function": "pool",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 162,
+      "function": "observe",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "line": 195,
+      "function": "drain",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 24,
+      "function": "reserve",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 43,
+      "function": "cancelled",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 46,
+      "function": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 50,
+      "function": "settled",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 55,
+      "function": "drain",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 68,
+      "function": "t1411_cutoff_preserves_original_admissions_and_rejects_reuse",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 85,
+      "function": "t1411_completed_history_is_bounded_and_empty_exit_finishes",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 97,
+      "function": "t1411_observation_capacity_is_independent_of_pool_release",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/activity_exit.rs",
+      "line": 9,
+      "function": "t1421_activity_exit_fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/activity_exit.rs",
+      "line": 16,
+      "function": "t1421_exit_retains_delayed_activity_creation_and_cleanup",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 20,
+      "function": "capabilities",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 23,
+      "function": "poll",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 26,
+      "function": "stop",
+      "complexity": 0
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 27,
+      "function": "retired",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 32,
+      "function": "create",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 49,
+      "function": "creation",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 61,
+      "function": "settle",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 67,
+      "function": "work",
+      "complexity": 7
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 94,
+      "function": "run",
+      "complexity": 6
+    },
+    {
+      "file": "host/tests/activity_exit/fixture.rs",
+      "line": 143,
+      "function": "outcome",
+      "complexity": 4
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "tool": "rustc1.100.0 native LLVM counters; cargo-llvm-cov0.8.7; project syn2.0.119 complexity frontend",
+  "objects": {
+    "runtime_exit": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/2893d16f6fe25cce/out/runtime_exit-2893d16f6fe25cce",
+    "activity_exit": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/e80524ee30223e98/out/activity_exit-e80524ee30223e98",
+    "wifi_exit": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/55efbfe8abbe0977/out/wifi_exit-55efbfe8abbe0977",
+    "process_exit": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/b315a4d32c4f1e56/out/process_exit-b315a4d32c4f1e56",
+    "blent": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa"
+  },
+  "functions": [
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "reserve",
+      "first": 24,
+      "last": 42,
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 4,
+      "source_sha256": "bfd9d34e70ec97c37af99d094f75fdf1c9a8b8ba42230395466fd022ff15bf94"
+    },
+    {
+      "file": "host/src/activity_follow.rs",
+      "function": "start",
+      "first": 93,
+      "last": 122,
+      "covered": 28,
+      "total": 29,
+      "percent": 96.55172413793103,
+      "missing": [
+        114
+      ],
+      "complexity": 1,
+      "source_sha256": "0fa18768e4255f43995dea578dd47522d616c34f1b706eedd1c8dc287001ae42"
+    }
+  ]
+}

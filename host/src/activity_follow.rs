@@ -97,7 +97,7 @@ impl Following {
     ) -> Result<Self> {
         settings.validate()?;
         let pool = pool()?;
-        let owner = SourceLifetime::new(pool.reserve()?);
+        let owner = SourceLifetime::new(crate::process_retirement::PROCESS.reserve(pool)?);
         let native = owner.completion();
         let (updates, _) = watch::channel(Publication::Pending);
         let shared = Arc::new(Shared {

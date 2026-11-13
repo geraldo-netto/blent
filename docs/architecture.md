@@ -204,7 +204,7 @@ systemd user-service environment override.
 | `BLENT_DISPLAY_ROUTE_LIMIT` | 16 | 1..4096 | Active and retiring display ADB route owners; each retains its original worker and device/local-port leases until settlement. |
 | `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
-| `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after admitted session/display-route cleanup settles. |
+| `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after admitted session/display-route/activity cleanup settles. |
 | `BLENT_ENCODER_STOP_MS` | 1000 ms | 1..60000 ms | Encoder-task completion wait before refusing replacement. |
 
 Display ADB routes keep one original worker through creation, repair and cleanup.
@@ -286,12 +286,13 @@ runs in a supervised process, with parent-death signalling, generation checks an
 bounded compressed packets. Shared raw leases survive until codec final reference
 release inside the worker; replacement waits for actual child retirement. A stuck
 worker retains capacity until reaped. This does not recover a GPU/kernel-wide hang.
-The Linux entry point closes session/display-route admission on normal return,
-error return or unwind, asks active owners to stop, and keeps Tokio running until
-the original completion tickets settle. Its process registry retains at most
-8192 pending observations (the two supported pool maxima of 4096), with explicit
-exhaustion rejection even during the gap between pool release and completion
-publication. The pools remain the resource owners; the registry retains only
+The Linux entry point closes session/display-route/activity admission on normal
+return, error return or unwind. It asks active session/route owners to stop and
+keeps Tokio running until all original completion tickets settle, including the
+activity source stopped or cancelled by daemon teardown. Its process registry
+retains at most 8196 pending observations (session/route maxima of 4096 each plus
+four activity sources), with explicit exhaustion rejection even during the gap
+between pool release and completion publication. The pools remain the resource owners; the registry retains only
 original completion observations. Failed cleanup keeps the process alive and
 prevents new admission. Eventual exit requires original cleanup to succeed and
 native/task retirement to become observable; a deadline does not grant release.

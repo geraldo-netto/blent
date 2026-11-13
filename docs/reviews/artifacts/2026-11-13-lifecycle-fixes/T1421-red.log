@@ -1,0 +1,102 @@
+    Blocking waiting for file lock on build directory
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.17s
+     Running tests/activity_exit.rs (target/debug/build/blent/e80524ee30223e98/out/activity_exit-e80524ee30223e98)
+
+running 2 tests
+test t1421_activity_exit_fixture ... ok
+test t1421_exit_retains_delayed_activity_creation_and_cleanup ...
+thread 't1421_exit_retains_delayed_activity_creation_and_cleanup' (952881) panicked at host/tests/activity_exit.rs:24:9:
+T1421 delayed:
+running 1 test
+test t1421_activity_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    t1421_activity_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 5.01s
+
+
+thread 't1421_activity_exit_fixture' (952886) panicked at host/tests/activity_exit/fixture.rs:126:5:
+assertion `left == right` failed: T1421 process exit abandoned original native source
+  left: true
+ right: false
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    t1421_exit_retains_delayed_activity_creation_and_cleanup
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.02s
+
+error: test failed, to rerun pass `-p blent --test activity_exit`
