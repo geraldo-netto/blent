@@ -1,0 +1,45 @@
+{
+  "tool": "scripts/complexity/check.py blent-rust-source0.1.0/syn2.0.119",
+  "functions": [
+    {
+      "line": 6,
+      "function": "abandon",
+      "complexity": 2
+    },
+    {
+      "line": 20,
+      "function": "deadline",
+      "complexity": 1
+    },
+    {
+      "line": 34,
+      "function": "observe",
+      "complexity": 4
+    },
+    {
+      "line": 70,
+      "function": "direct_restore_exit",
+      "complexity": 2
+    },
+    {
+      "line": 80,
+      "function": "direct_restore_deadline_exit",
+      "complexity": 2
+    }
+  ],
+  "source_sha256": {
+    "docs/reviews/artifacts/2026-11-13-lifecycle-round3/direct-osk/probe.rs": "195e744a4265439d090bd7ba5c569f8648232392217a61d9b09ab35988550f04",
+    "host/tests/input_commands/fixture.rs": "ca6f2d65c265e2046f1030c05a5e36d9bac8e5e3083a9c8050c6c2892c1e9110",
+    "host/tests/input_commands/command.c": "d80a7c4f3845c1d0e753c5e7f022f33af047aadd273b9532b2a3285200dd8647",
+    "host/tests/input_commands/deny_kill.c": "9778bcb83d8fd7bebb00315ae2ef1a5b46803f390fe1310fb7ae72c4dc176aaf",
+    "host/src/osk.rs": "e98f9e722f9ef3c5a732e28a6c781fb54e7f4c4f81f9aee6250fffe9c19ff883",
+    "host/src/osk/operation.rs": "d4804256121babf221f1d4d0836438ac73ab9a047155de400d089591dac34b67",
+    "host/src/native_commands.rs": "47712bf42e5ed8899fab712095e1bd4bf94defee20718333ba6a3909209b0fb7",
+    "host/src/runtime_owner.rs": "be703311dd966c577c8a228de272581f3825614cda5f923293697be9dfa6fa82"
+  },
+  "object_sha256": {
+    "/tmp/blent-direct-osk/probe": "2c31b9a2495fdf7faf09fad2cbed88dc971d44691a911bb8d2a06aad3e6873ff",
+    "/tmp/blent-direct-osk/libblent.rlib": "8c3ed1dc4c5ced28f4d9979ed8002c01e3220ce80ed61d7ad5a0b79b5ffa4f3a",
+    "/tmp/blent-direct-osk/libblent_config.rlib": "2b600f9baf34d53faad85ab119768227df8f283475ed10cf76bbfee06423ba0f"
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "objects": {
+    "daemon_startup": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/a5ff914d9f04e87f/out/daemon_startup-a5ff914d9f04e87f",
+      "snapshot": "/tmp/blent-t1441-coverage/daemon_startup",
+      "sha256": "5273015da9309642797054d52a790bcf4bd4b3570c12486cbcc9ee26962dce13"
+    },
+    "runtime_exit": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/02a4c51399652113/out/runtime_exit-02a4c51399652113",
+      "snapshot": "/tmp/blent-t1441-coverage/runtime_exit",
+      "sha256": "566732f74199bed43fe32faa6d82ffc0d3a4b29b84be79a8b8db0c847e032ee2"
+    },
+    "activity_exit": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/037a96d076d458bb/out/activity_exit-037a96d076d458bb",
+      "snapshot": "/tmp/blent-t1441-coverage/activity_exit",
+      "sha256": "ab89f3a31600de842bbabd73128eb93738af873309e2278e57bd7d7da429ed79"
+    },
+    "wifi_exit": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/afba50f0f80bcdf2/out/wifi_exit-afba50f0f80bcdf2",
+      "snapshot": "/tmp/blent-t1441-coverage/wifi_exit",
+      "sha256": "6c947eaf2458aaf82c0b8282b3d688da66532446921a24499b1f3d7cf0e92a4f"
+    },
+    "osk_exit": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/f0bca9b13a5bebd9/out/osk_exit-f0bca9b13a5bebd9",
+      "snapshot": "/tmp/blent-t1441-coverage/osk_exit",
+      "sha256": "5c53d7997b6a8b0a343b9c2780f35c71554651b4b214a37b994a5cf691846962"
+    },
+    "input_commands": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/600853494f6cfd27/out/input_commands-600853494f6cfd27",
+      "snapshot": "/tmp/blent-t1441-coverage/input_commands",
+      "sha256": "de797d63555d926f46610dcc7550c3e3eb28980298ffd28d659d929acd4a0a60"
+    },
+    "control_exit": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/1e0dc6a0a89fc75d/out/control_exit-1e0dc6a0a89fc75d",
+      "snapshot": "/tmp/blent-t1441-coverage/control_exit",
+      "sha256": "ac16b9fcd9a0224b623bd45512a281f4aaaf6056cff613d76507b103f3247159"
+    },
+    "process_exit": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/85f044dfc7c51b3b/out/process_exit-85f044dfc7c51b3b",
+      "snapshot": "/tmp/blent-t1441-coverage/process_exit",
+      "sha256": "4746d074bd51cfbad59a26d034d8c99aa18781ae9e4df18ce4939202c75fe7bb"
+    },
+    "app": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/blent",
+      "snapshot": "/tmp/blent-t1441-coverage/app",
+      "sha256": "e1990f08979e7f2307c184cb5f420ce51ffc8dbc84b4348dbe0bdcd921635933"
+    },
+    "lib": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/193737eb4ff8727a/out/blent-193737eb4ff8727a",
+      "snapshot": "/tmp/blent-t1441-coverage/lib",
+      "sha256": "111766abebb03bd91fac3a59a079b4cd2b9c367d71416bba8af68b0de2de2fb8"
+    },
+    "bin": {
+      "original": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/8954077b1bf9fb64/out/blent-8954077b1bf9fb64",
+      "snapshot": "/tmp/blent-t1441-coverage/bin",
+      "sha256": "2472d639460be37695cd8a93fed4338806211cd4fb6b8a65856f7734307250b2"
+    }
+  },
+  "source_sha256": {
+    "host/src/osk/restoration.rs": "73dc5252b048845f9d1dce348598f729f836cd05921f407f84537351cb38b5f4",
+    "host/src/osk/operation.rs": "528a25c71c4a8e241edb6b43d5a1fa022553b81278cd7de6c03f633bf45a499c",
+    "host/src/process_retirement.rs": "abcbdd9cc91c9c47555dd4e63ed2246d2b153a421d7c3cad3a6fbb1945651c58",
+    "host/src/linux_main.rs": "13dca95caee3fa0cf32ccfdb2aa183690c076ce12412c6b5d90dfe116c31818d"
+  },
+  "functions": [
+    {
+      "file": "host/src/osk/restoration.rs",
+      "function": "pool",
+      "first": 8,
+      "last": 13,
+      "covered": 5,
+      "executable": 5,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "function": "new",
+      "first": 22,
+      "last": 27,
+      "covered": 4,
+      "executable": 4,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "function": "run",
+      "first": 31,
+      "last": 33,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "function": "restore",
+      "first": 35,
+      "last": 49,
+      "covered": 11,
+      "executable": 11,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "function": "drop",
+      "first": 52,
+      "last": 57,
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "function": "poll_complete",
+      "first": 62,
+      "last": 64,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/osk/operation.rs",
+      "function": "pool",
+      "first": 17,
+      "last": 24,
+      "covered": 4,
+      "executable": 5,
+      "percent": 80.0
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "reserve",
+      "first": 26,
+      "last": 39,
+      "covered": 14,
+      "executable": 14,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "function": "run_daemon_with",
+      "first": 1666,
+      "last": 1915,
+      "covered": 195,
+      "executable": 204,
+      "percent": 95.59
+    }
+  ]
+}

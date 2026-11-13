@@ -1,0 +1,104 @@
+MODE cancel
+
+running 1 test
+
+thread 't1441_private_launcher' (1629074) panicked at host/tests/input_commands/fixture.rs:53:5:
+
+running 1 test
+test t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals ... FAILED
+
+failures:
+
+failures:
+    t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.02s
+
+
+thread 't1441_direct_restore_exit_retains_cancelled_and_timed_out_originals' (1629088) panicked at host/tests/osk_exit.rs:102:5:
+T1441 process entry returned before original OSK restoration settled
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test t1441_private_launcher ... FAILED
+
+failures:
+
+failures:
+    t1441_private_launcher
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.11s
+
+EXIT 101
+MODE deadline
+
+running 1 test
+
+thread 't1441_private_launcher' (1629133) panicked at host/tests/input_commands/fixture.rs:53:5:
+
+running 1 test
+test t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals ... FAILED
+
+failures:
+
+failures:
+    t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 5.04s
+
+
+thread 't1441_direct_restore_exit_retains_cancelled_and_timed_out_originals' (1629155) panicked at host/tests/osk_exit.rs:102:5:
+T1441 process entry returned before original OSK restoration settled
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test t1441_private_launcher ... FAILED
+
+failures:
+
+failures:
+    t1441_private_launcher
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 5.12s
+
+EXIT 101
+MODE cutoff
+
+running 1 test
+
+thread 't1441_private_launcher' (1629641) panicked at host/tests/input_commands/fixture.rs:53:5:
+
+running 1 test
+test t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals ... FAILED
+
+failures:
+
+failures:
+    t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 5.05s
+
+
+thread 't1441_direct_restore_exit_retains_cancelled_and_timed_out_originals' (1629655) panicked at host/tests/osk_exit.rs:102:5:
+T1441 process entry returned before original OSK restoration settled
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test t1441_private_launcher ... FAILED
+
+failures:
+
+failures:
+    t1441_private_launcher
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 5.21s
+
+EXIT 101
+MODE normal
+
+running 1 test
+test t1441_private_launcher ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.17s
+
+EXIT 0

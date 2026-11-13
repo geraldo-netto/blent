@@ -95,7 +95,7 @@ async fn keyboard(root: &Path) {
     crate::osk::sync_touch_state(&devices, &|_| Ok(())).await;
     assert_eq!(std::fs::read_to_string(root.join("mode")).unwrap(), "2\n");
     assert!(!backup.exists());
-    crate::osk::restore().await;
+    crate::osk::Restoration::new().unwrap().run().await;
     assert!(!backup.exists());
 }
 

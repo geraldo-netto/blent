@@ -1,0 +1,9 @@
+{
+  "host/tests/osk_exit.rs": "68e36597c20489e93ef6f5ace77eac08eab67aaa109fd94a255eab0d8de26612",
+  "host/src/osk.rs": "e98f9e722f9ef3c5a732e28a6c781fb54e7f4c4f81f9aee6250fffe9c19ff883",
+  "host/src/osk/operation.rs": "d4804256121babf221f1d4d0836438ac73ab9a047155de400d089591dac34b67",
+  "host/src/native_commands.rs": "546b0fb3782f4b36629892d8152595ed34367c7a6329f9f387bf3c1b12cfdd04",
+  "host/src/native_commands/mutation.rs": "74d512e144f8f5e426e00dfda6a1d2a4d4ac46e47d054509081a024daee4aa21",
+  "common/src/commands.rs": "aeabb41669525e70f17767b3581bbf78bdfe7a67314b5e2ba487eded36065385",
+  "common/src/commands/output.rs": "b8a4d40195df136ae8f4054e5ddf9e7f4075c4c85d116de864a4d537be80bedb"
+}

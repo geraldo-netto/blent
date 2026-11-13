@@ -26,6 +26,8 @@ const IFACE: &str = "org.kde.kwin.VirtualKeyboard";
 const MODE_MANUAL: &str = "0";
 
 mod operation;
+mod restoration;
+pub use restoration::Restoration;
 use crate::native_commands::CommandPort;
 use blent_config::retirement::Completion;
 use operation::Gate;
@@ -160,14 +162,6 @@ where
         return false;
     }
     true
-}
-
-/// Put the on-screen keyboard back the way the user had it.
-pub async fn restore() {
-    match KEYBOARD_OPERATION.acquire().await {
-        Ok(_operation) => restore_unlocked(KEYBOARD_OPERATION.commands.as_ref()).await,
-        Err(error) => warn!("OSK restoration admission failed: {error}; disk recovery retained"),
-    }
 }
 
 async fn restore_unlocked(commands: &dyn CommandPort) {

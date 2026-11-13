@@ -1,0 +1,173 @@
+COHORT lib osk::
+
+running 17 tests
+test osk::operation::tests::t1433_operation_capacity_rejects_before_effects_and_recovers ... ok
+test osk::restoration::tests::t1441_cached_pool_failure_preserves_error_and_success_keeps_one_slot ... ok
+test osk::restoration::tests::t1441_cancelled_gate_wait_has_no_original_effect_or_retained_slot ... ok
+test osk::restoration::tests::t1441_cancelled_owner_keeps_exact_original_through_cutoff ... ok
+test osk::restoration::tests::t1441_operation_exhaustion_releases_unused_restoration ... ok
+test osk::restoration::tests::t1441_unused_reservation_releases_and_cutoff_rejects_successors ... ok
+test osk::tests::t111_restore_retries_preserved_setting_until_confirmed ... ok
+test osk::tests::t1433_rejected_operation_observation_prevents_keyboard_effects ... ok
+test osk::tests::t148_concurrent_device_changes_serialize_keyboard_writes ... ok
+test osk::tests::t148_detach_during_disable_reconciles_current_device_count ... ok
+test osk::tests::t334_failed_or_interrupted_writes_never_publish_empty_or_replace_valid_state ... ok
+test osk::tests::t334_invalid_existing_backup_never_suppresses_or_restores ... ok
+test osk::tests::t334_new_state_must_be_saved_before_suppression ... ok
+test osk::tests::t334_saved_state_must_be_a_regular_file_without_symlinks ... ok
+test osk::tests::t334_unreadable_state_never_changes_the_keyboard ... ok
+test osk::tests::t334_unwritable_state_destination_does_not_suppress ... ok
+test osk::tests::t334_valid_backup_is_preserved_and_restoration_can_retry ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 860 filtered out; finished in 0.10s
+
+EXIT 0
+COHORT lib process_retirement::
+
+running 3 tests
+test process_retirement::tests::t1411_completed_history_is_bounded_and_empty_exit_finishes ... ok
+test process_retirement::tests::t1411_cutoff_preserves_original_admissions_and_rejects_reuse ... ok
+test process_retirement::tests::t1411_observation_capacity_is_independent_of_pool_release ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 874 filtered out; finished in 0.59s
+
+EXIT 0
+COHORT lib native_commands::
+
+running 12 tests
+test native_commands::mutation::tests::t1444_mutation_worker_panic_is_unknown_even_without_native_debt ...
+thread 'native_commands::mutation::tests::t1444_mutation_worker_panic_is_unknown_even_without_native_debt' (1700182) panicked at host/src/native_commands/mutation/tests.rs:28:9:
+T1444 original worker panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test native_commands::mutation::tests::t1444_native_exit_and_missing_ack_are_distinct_from_no_effect ... ok
+test native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt ... ok
+test native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation ... ok
+test native_commands::mutation_tests::t1444_failed_spawn_is_no_effect_and_original_success_releases ... ok
+test native_commands::mutation_tests::t1444_native_exit_without_ack_retains_bounded_quarantine ... ok
+test native_commands::mutation_tests::t1444_query_only_port_cannot_start_mutation ... ok
+test native_commands::osk_tests::t1444_cancelled_osk_set_retains_gate_until_original_ack ... ok
+test native_commands::tests::t1433_child_and_collector_must_both_settle_in_either_order ... ok
+test native_commands::tests::t1433_command_slots_are_bounded_and_cancelled_reservations_recover ... ok
+test native_commands::tests::t1433_failed_spawn_retires_collector_and_allows_later_commands ... ok
+test native_commands::tests::t1433_unknown_original_prevents_successor_command_effects ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 865 filtered out; finished in 5.72s
+
+EXIT 0
+COHORT lib kwin::coverage_tests::
+
+running 1 test
+test kwin::coverage_tests::t497_kwin_adapters_restore_only_the_owned_keyboard_state ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 876 filtered out; finished in 0.33s
+
+EXIT 0
+COHORT bin daemon_pid::tests
+
+running 6 tests
+test daemon_pid::tests::t1428_cancelled_workflow_retires_pid ... ok
+test daemon_pid::tests::t1428_failed_publication_and_unwind_leave_no_owned_pid ...
+thread 'daemon_pid::tests::t1428_failed_publication_and_unwind_leave_no_owned_pid' (1700595) panicked at host/src/daemon_pid.rs:61:13:
+T1428: workflow unwinds after publication
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test daemon_pid::tests::t1428_publication_removes_only_its_own_pid ... ok
+test daemon_pid::tests::t1443_partial_publication_child ... ok
+test daemon_pid::tests::t1443_partial_write_preserves_absent_or_previous_pid_hint ... ok
+test daemon_pid::tests::t1443_rejected_publication_preserves_destination_and_cleans_temporary_file ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 605 filtered out; finished in 0.01s
+
+EXIT 0
+COHORT bin daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests
+
+running 1 test
+test daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 610 filtered out; finished in 0.10s
+
+EXIT 0
+COHORT daemon_startup
+
+running 2 tests
+test t1423_startup_signals_retain_cleanup_and_early_stop ... {"case": "banner", "signal": 15, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 15, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "config", "invalid": false, "installed": true, "exit": 0, "adb_started": false}
+{"case": "config", "invalid": true, "installed": true, "exit": 1, "adb_started": false}
+ok
+test t1428_failed_startup_removes_owned_pid ... {"exit": 1, "pid_file_exists": false}
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.42s
+
+EXIT 0
+COHORT runtime_exit
+
+running 2 tests
+test t819_final_runtime_exit_is_bounded_after_started_native_work ... ok
+test t819_runtime_exit_fixture ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+EXIT 0
+COHORT control_exit
+
+running 4 tests
+test t1432_configuration_exit_fixture ... ok
+test t1432_control_exit_fixture ... ok
+test t1432_exit_waits_for_original_control_work_and_tls ... ok
+test t1432_shared_configuration_pool_closes_without_static_deadlock ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+
+EXIT 0
+COHORT osk_exit
+
+running 3 tests
+test t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals ... ok
+test t1441_direct_restore_fixture ... ok
+test t1441_private_launcher ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.50s
+
+EXIT 0
+COHORT activity_exit
+
+running 2 tests
+test t1421_activity_exit_fixture ... ok
+test t1421_exit_retains_delayed_activity_creation_and_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.98s
+
+EXIT 0
+COHORT input_commands
+
+running 3 tests
+test t1433_cancelled_osk_retains_input_and_shared_restore_gate ... ok
+test t1433_one_task_slot_still_funds_original_osk_final_restoration ... ok
+test t1433_process_cutoff_preserves_admitted_input_osk_cleanup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.78s
+
+EXIT 0
+COHORT wifi_exit
+
+running 2 tests
+test t1365_exit_fixture ... ok
+test t1365_process_exit_waits_for_original_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+EXIT 0
+COHORT process_exit
+
+running 2 tests
+test t1411_process_exit_fixture ... ok
+test t1411_process_exit_retains_routes_and_async_native_session_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s
+
+EXIT 0

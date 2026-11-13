@@ -1,0 +1,2 @@
+cancel=true runtime_returned_before_release=true original_child_alive=true calls=1
+cancel=false runtime_returned_before_release=true original_child_alive=true calls=2

@@ -239,6 +239,15 @@ settlement; a command failure/deadline does not permit another keyboard effect.
 Input-owned final restoration inherits the existing input admission after process
 cutoff. Its command receipts are distinct from its task completion, avoiding a
 self-wait; the cleanup task holds no reference back to its input lifetime.
+Direct daemon restoration reserves its separate one-slot process sponsor after
+configuration validation and before startup effects. Shutdown consumes that existing
+reservation after cutoff; it never admits a replacement cleanup owner. The direct
+`Restoration::run` cleanup workflow awaits original operation settlement, including
+remote acknowledgement, and can remain pending indefinitely on an unknown outcome.
+Cancelling it transfers that exact operation proof to process retirement; cancelling
+before gate acquisition releases the unused reservation without an effect. Unused
+reservations also release on startup errors. This cleanup wait is distinct from the
+unchanged five-second command-result wait described below.
 
 Native input/OSK mutations use one operation slot per observed command port,
 funded by the existing input lifetime or keyboard-operation admission. The caller
@@ -348,8 +357,9 @@ The Linux entry point closes session/display-route/activity/input/control admiss
 return, error return or unwind. It asks active session/route owners to stop and
 keeps Tokio running until all original completion tickets settle, including the
 activity source stopped or cancelled by daemon teardown. Its process registry
-retains at most 12420 pending observations (session/route/input maxima of 4096 each,
-four activity sources, and shared/config control-pool maxima of 64 each). Custom
+retains at most 12421 pending observations (session/route/input maxima of 4096 each,
+four activity sources, shared/config control-pool maxima of 64 each, and one
+direct keyboard-restoration sponsor). Custom
 control pools consume the same total observation bound; they are not collectively
 limited to the shared pool's 64 slots. Explicit exhaustion rejects new work even during the gap
 between pool release and completion publication. The pools remain the resource owners; the registry retains only

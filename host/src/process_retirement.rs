@@ -1,6 +1,7 @@
 //! Process exit observes original admissions; pools remain resource owners.
-//! At most 12420 pending proofs are funded: session/route/input maxima of 4096 each,
+//! At most 12421 pending proofs are funded: session/route/input maxima of 4096 each,
 //! plus 4 activity sources and the shared/config control-pool maxima of 64 each.
+//! One additional receipt funds direct daemon keyboard restoration.
 //! Custom control pools consume this same observation bound.
 //! This separate bound includes the gap between pool release and publication.
 //! Cutoff serializes with admission, wakes live supervisors, and keeps their
@@ -26,7 +27,7 @@ impl Registry {
         let mut state = self.state.lock().unwrap();
         Self::require_open(state.closed)?;
         state.pending.retain(|proof| !proof.is_complete());
-        if state.pending.len() >= 12420 {
+        if state.pending.len() >= 12421 {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::WouldBlock,
                 "Process retirement observation capacity exhausted",
@@ -104,7 +105,7 @@ mod tests {
     #[tokio::test]
     async fn t1411_observation_capacity_is_independent_of_pool_release() {
         let registry = Registry::default();
-        // T1421/T1422 activity/input plus T1432 shared/config control maxima.
+        // T1421/T1422 activity/input, T1432 control, and T1441 direct restore maxima.
         let pools = [
             Pool::new(4096).unwrap(),
             Pool::new(4096).unwrap(),
@@ -112,6 +113,7 @@ mod tests {
             Pool::new(4096).unwrap(),
             Pool::new(64).unwrap(),
             Pool::new(64).unwrap(),
+            Pool::new(1).unwrap(),
         ];
         let mut admitted = Vec::new();
         for pool in &pools {
@@ -127,7 +129,7 @@ mod tests {
         assert_eq!(spare.active(), 0);
         drop(admitted.pop());
         let replacement = registry.reserve(&spare).unwrap();
-        assert_eq!(registry.state.lock().unwrap().pending.len(), 12420);
+        assert_eq!(registry.state.lock().unwrap().pending.len(), 12421);
         drop((admitted, replacement));
         registry.drain().await;
     }

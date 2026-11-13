@@ -1681,6 +1681,7 @@ where
         &file_cfg.encoding_gpu,
     ))?;
     blent::runtime_owner::check_running()?;
+    let keyboard_restoration = osk::Restoration::new()?;
 
     runtime::runtime_dir().context("validate private runtime directory")?;
     let helper_path = find_helper(cli.helper.as_deref())?;
@@ -1897,7 +1898,7 @@ where
 
     // The input server restores the keyboard when the last tablet detaches;
     // this covers a shutdown with a tablet still attached.
-    osk::restore().await;
+    keyboard_restoration.run().await;
 
     adb_handle.abort();
     save_handle.abort();

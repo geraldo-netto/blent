@@ -1,0 +1,12 @@
+{
+  "docs/architecture.md": "bd3b308c68470f5d6e21dd53573ef80105dfb753e39c229ff480b236d0bc5937",
+  "host/src/osk.rs": "76c68279179d040aab6ffe9d5e20bae113c10ba770beaf5edfdf1fe643b3db4f",
+  "host/src/osk/operation.rs": "528a25c71c4a8e241edb6b43d5a1fa022553b81278cd7de6c03f633bf45a499c",
+  "host/src/osk/restoration.rs": "73dc5252b048845f9d1dce348598f729f836cd05921f407f84537351cb38b5f4",
+  "host/src/osk/restoration/tests.rs": "b21092ed5c6351f44a2b0204d49d30e4dd78c72b55321e8ba42d6b93f34b21a9",
+  "host/src/linux_main.rs": "13dca95caee3fa0cf32ccfdb2aa183690c076ce12412c6b5d90dfe116c31818d",
+  "host/src/process_retirement.rs": "abcbdd9cc91c9c47555dd4e63ed2246d2b153a421d7c3cad3a6fbb1945651c58",
+  "host/src/kwin/coverage_tests.rs": "ac6eb4e5b0b41232529c8573652712d40bbb367deeef20a9f8cf8067a2408a26",
+  "host/tests/input_commands.rs": "acf02d0c3964ee17272a68e60bc2f7bd8876f12937b678cb582f43b53a33180f",
+  "host/tests/osk_exit.rs": "213e7cf4bd60e8eea5747d8001dc69668f590109c79bee546ae2fbbfa6cee2a8"
+}

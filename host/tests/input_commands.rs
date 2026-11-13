@@ -40,7 +40,7 @@ async fn cancellation() {
     task.abort();
     assert!(task.await.unwrap_err().is_cancelled());
     drop(backend);
-    let restore = tokio::spawn(blent::osk::restore());
+    let restore = tokio::spawn(blent::osk::Restoration::new().unwrap().run());
     tokio::time::sleep(Duration::from_millis(150)).await;
     let early_completion = proof.is_complete();
     let early_restore = restore.is_finished();

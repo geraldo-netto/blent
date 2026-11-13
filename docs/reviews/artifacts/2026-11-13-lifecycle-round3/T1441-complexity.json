@@ -1,0 +1,203 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source 0.1.0/syn 2.0.119",
+  "functions": [
+    {
+      "file": "host/src/osk/restoration.rs",
+      "line": 8,
+      "function": "pool",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "line": 22,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "line": 31,
+      "function": "run",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "line": 35,
+      "function": "restore",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "line": 52,
+      "function": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/osk/restoration.rs",
+      "line": 62,
+      "function": "poll_complete",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk/restoration/tests.rs",
+      "line": 4,
+      "function": "admitted",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk/restoration/tests.rs",
+      "line": 11,
+      "function": "complete",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/osk/restoration/tests.rs",
+      "line": 18,
+      "function": "t1441_cached_pool_failure_preserves_error_and_success_keeps_one_slot",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/osk/restoration/tests.rs",
+      "line": 39,
+      "function": "t1441_unused_reservation_releases_and_cutoff_rejects_successors",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk/restoration/tests.rs",
+      "line": 56,
+      "function": "t1441_cancelled_gate_wait_has_no_original_effect_or_retained_slot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk/restoration/tests.rs",
+      "line": 76,
+      "function": "t1441_cancelled_owner_keeps_exact_original_through_cutoff",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/osk/restoration/tests.rs",
+      "line": 97,
+      "function": "t1441_operation_exhaustion_releases_unused_restoration",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 7,
+      "function": "prepared_restore",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 10,
+      "function": "child_path",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 13,
+      "function": "release_path",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 16,
+      "function": "original_started",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 24,
+      "function": "warm_backend",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 33,
+      "function": "cancelled",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 41,
+      "function": "deadline",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 56,
+      "function": "settle",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 62,
+      "function": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 70,
+      "function": "pending_exit",
+      "complexity": 5
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 108,
+      "function": "successful_restore",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 132,
+      "function": "t1441_direct_restore_fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 145,
+      "function": "t1441_direct_restore_exit_retains_cancelled_and_timed_out_originals",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/osk_exit.rs",
+      "line": 167,
+      "function": "t1441_private_launcher",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1666,
+      "function": "run_daemon_with",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/osk/operation.rs",
+      "line": 17,
+      "function": "pool",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 26,
+      "function": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 106,
+      "function": "t1411_observation_capacity_is_independent_of_pool_release",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/kwin/coverage_tests.rs",
+      "line": 87,
+      "function": "keyboard",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/input_commands.rs",
+      "line": 20,
+      "function": "cancellation",
+      "complexity": 2
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "executable": "/backups/disk2/projects/blent/target/debug/build/blent/f0bca9b13a5bebd9/out/osk_exit-f0bca9b13a5bebd9",
+  "sha256": "a703e314c8e365e0cbbccf850b4ce6887bc7c9fff73098a696823c0808691273",
+  "results": [
+    {
+      "mode": "cancel",
+      "exit_code": 101
+    },
+    {
+      "mode": "deadline",
+      "exit_code": 101
+    },
+    {
+      "mode": "cutoff",
+      "exit_code": 101
+    },
+    {
+      "mode": "normal",
+      "exit_code": 0
+    }
+  ],
+  "frozen_executable": "/tmp/blent-t1441-red-sources/osk_exit"
+}

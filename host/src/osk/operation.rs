@@ -14,7 +14,7 @@ pub(super) struct Gate {
     pub(super) commands: Arc<ObservedCommands>,
 }
 impl Gate {
-    fn pool(&self) -> io::Result<&Pool> {
+    pub(super) fn pool(&self) -> io::Result<&Pool> {
         // One serialized operation plus its predecessor's completion publication.
         // Independent of task admission: cleanup must not compete with its sponsor.
         self.pool
