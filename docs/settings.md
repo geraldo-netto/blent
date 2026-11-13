@@ -125,6 +125,18 @@ retires. Disconnect, Deny and Revoke suppress automatic retries for that physica
 attachment until confirmed unplug/replug or an explicit Connect request. An
 unavailable inventory cannot clear that suppression. Pairing grants no media consent.
 
+On Android, an accessory attachment received during an old connection's cleanup
+is retained until that owner retires. After a successfully authenticated,
+remembered connection ends unexpectedly, the current Activity retries without
+requiring another cable event. Retries wait 2 seconds initially, double after
+failed attempts up to 30 seconds, and return to 2 seconds after authentication.
+Changed or forgotten peers still require approval; an initial unknown connection
+or an unremembered manual failure does not start a retry loop. Disconnect, Deny
+and Revoke stop automatic recovery, including while cleanup or a retry is pending.
+Destroying the Activity cancels its retry observer; an established application-owned
+link remains owned. This does not promise unattended recovery after application
+process death or certify physical tablet/display behavior.
+
 While a device advertises USB debugging, its row shows **Reserved for USB
 debugging** and disables **Connect**. Use **Tablets** for ADB display sharing.
 To use debugging-free USB instead, turn USB debugging off on the tablet and

@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-13",
+  "original_open": [
+    "T1383",
+    "T1384",
+    "T1385",
+    "T1386",
+    "T1387",
+    "T1388"
+  ],
+  "additional_fixes": [
+    "T1390",
+    "T1391",
+    "T1392",
+    "T1393",
+    "T1394"
+  ],
+  "new_native_blocker": "T1389",
+  "test_selections": {
+    "common_library": {
+      "passed": 431,
+      "failed": 0,
+      "ignored": 0
+    },
+    "portable_usb_before_fixture_followup": {
+      "passed": 37,
+      "failed": 0,
+      "ignored": 0
+    },
+    "usb_fixture_followup": {
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    "broker": {
+      "passed": 247,
+      "failed": 0,
+      "ignored": 0
+    },
+    "android_final": {
+      "registered": 58,
+      "passed": 58,
+      "failed": 0,
+      "skipped": 0,
+      "suites": 10
+    }
+  },
+  "complexity": {
+    "functions": 29053,
+    "over_nine": 0,
+    "artifact": "complexity-final.log.gz"
+  },
+  "checks": {
+    "workspace_clippy_warnings_denied": true,
+    "rust_format": true,
+    "windows_gnu_default_cross_compilation": true,
+    "host_accessory_bins_build": true
+  },
+  "native_windows_execution": false,
+  "device_installation": false,
+  "push": false,
+  "tools": {
+    "rustc": "1.98.1",
+    "cargo_llvm_cov": "0.8.7",
+    "python": "3.12.3",
+    "java": "21.0.13",
+    "jacoco": "0.8.15",
+    "kotlin_psi": "1.9.20"
+  },
+  "debug_apk_sha256": "859692e0d034997e5b291349b10e5f2b78edcc35a40890aa062d387521c35777",
+  "android_final_authored_coverage": {
+    "entries": 45,
+    "passing": 45,
+    "minimum_percent": 100.0,
+    "artifact": "../2026-11-13-reconnect/T1393/coverage.json"
+  },
+  "native_verification": "Owner requested it remain blocked on 2026-11-13"
+}

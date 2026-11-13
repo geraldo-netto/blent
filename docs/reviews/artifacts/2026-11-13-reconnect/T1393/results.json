@@ -1,0 +1,14 @@
+{
+  "junit": {
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 10
+  },
+  "apk": {
+    "path": "android/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 10117554,
+    "sha256": "859692e0d034997e5b291349b10e5f2b78edcc35a40890aa062d387521c35777"
+  }
+}

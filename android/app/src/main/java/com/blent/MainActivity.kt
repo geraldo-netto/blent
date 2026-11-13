@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
         connection = ConnectionOwner.get(applicationContext)
         savedComputers = ConnectionOwner.getSaved(applicationContext)
         configuredConnection = ConfiguredConnection(connection, AndroidConnectionPreferences.get(applicationContext), lifecycleScope)
+        configuredConnection.observeRemembered()
         cameras = CameraOwner.get(applicationContext)
         val cameraAccess = checkNotNull(CameraOwner.access)
         microphone = AudioOwner.get(applicationContext)

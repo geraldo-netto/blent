@@ -1,0 +1,74 @@
+T1393 remembered Android retry without another attachment event — 2026-11-13
+
+Cause and change
+ConnectionAdmissionRun ends after a worker failure; previously no Android owner
+restarted it without ACCESSORY_ATTACHED or manual Connect. ConfiguredConnection
+now owns one Activity-scoped remembered-session observer. It arms only after
+fresh authentication and confirmed remembered trust. A durable same-attempt peer
+projection survives coalesced authenticated/end events, including first approval
+whose persistence completes after authentication.
+
+Natural failure retries after 2 seconds, doubles to a 30-second cap, and resets
+to 2 seconds after successful authentication even when success/end coalesce.
+Initial unknown, public-pin-only and unremembered failures do not arm recovery.
+Changed/forgotten peers remain subject to approval. Explicit disconnect/deny/revoke,
+intervening attempts and Activity scope cancellation disarm prior retry intent.
+Disconnect also cuts off a retired generation during pending backoff. Failed
+settings or quarantined native ownership cannot invent a replacement admission.
+
+Ownership and limits
+The observer retains only immutable attempt tokens, one proven public peer,
+small boolean outcomes and one bounded delay. Helpers project transient full
+ConnectionViews before returning; route metadata/credentials are not retained
+across retry waits. Configured start requests capture only token + wasActive
+before coroutine dispatch. The retry port takes/returns tokens and rechecks
+eligibility after settings I/O. Snapshot lifetime reduction is not physical
+erasure proof. ResourceLane retains the original native owner through cleanup;
+logical completion, delay expiry and cancellation do not authorize early reuse.
+Application-owned established links survive Activity destruction; retry observation
+is Activity-owned and stops. No unattended process-death recovery is claimed.
+
+Permanent normal-suite evidence
+- Original MainActivity regression failed on API 27/34 before the fix: 2/2 failed.
+- Disconnect-after-full-retirement regression separately failed before cutoff fix.
+- Coalesced-success-at-capped-backoff regression failed before durable reset:
+  expected next retry at 62000 ms, observed 90000 ms.
+- Virtual-time tests cover delayed native retirement, capped failure retries,
+  reset after success, persisted first approval, changed/forgotten peers, manual
+  replacement, explicit cutoff, scope loss, invalid settings, quarantined owner
+  and binding-level cutoff during pending settings. T1392 regressions remain.
+Final run: 58/58 registered JUnit cases passed in 10 classes; no failures/errors/skips.
+All 3 SavedUiOrderTest wrapper cases passed, including their nested prelude cases
+(which are additional executions, not additional registered cases in this count).
+
+Command, executed from android/
+./gradlew --offline -I ../scripts/coverage/android.init.gradle testDebugUnitTest
+ --tests com.blent.connection.RememberedConnectionActivityTest
+ --tests com.blent.connection.RememberedConnectionTest
+ --tests com.blent.connection.ConnectionReattachTest
+ --tests com.blent.connection.ConfiguredAttachmentTest
+ --tests com.blent.connection.ConnectionActivityTest
+ --tests com.blent.connection.ConfiguredConnectionTest
+ --tests com.blent.connection.ConnectionPresentationTest
+ --tests com.blent.connection.ConnectionActivityUiTest
+ --tests com.blent.connection.ConnectionPreferenceControlsTest
+ --tests com.blent.SavedUiOrderTest profileCoverage assembleDebug
+
+JaCoCo 0.8.15 and repository report.collect: 45/45 selected authored production
+methods/constructors/callbacks measured 100% line coverage. This includes the union
+of T1392/T1393 changed functions in edited files, plus the retained connection
+controls function. Inline bodies use enclosing native method counters per policy;
+callbacks with separate methods retain separate counters. Source hashes, exact
+function rows and full compressed JaCoCo XML are retained. Kotlin PSI 1.9.20 local
+complexity checker: 246 functions across 11 scoped production/test files, maximum 9.
+These final source hashes/counters supersede earlier T1392 evidence for files
+changed again by T1393. Main thread retains the independent whole-project check.
+
+Debug APK built, not installed:
+android/app/build/outputs/apk/debug/app-debug.apk
+10117554 bytes
+SHA256 859692e0d034997e5b291349b10e5f2b78edcc35a40890aa062d387521c35777
+
+Scope: shared Kotlin/JVM and Robolectric API 27/34 execution. No physical tablet
+reconnect/display claim, device mutation or deployment. T1389 retains the missing
+host-module/reboot/native-frame acceptance prerequisite.

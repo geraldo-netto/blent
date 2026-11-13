@@ -15,14 +15,17 @@ internal class ConfiguredConnection(
     val preferences: ConnectionPreferenceStore,
     private val scope: CoroutineScope,
 ) {
+    private enum class Request { MANUAL, ATTACHMENT, RETRY }
+    private data class Selection(val attempt: Any?, val active: Boolean)
     private class Attempt(val identity: Any, val execution: Job)
     private var current: Attempt? = null
+    private var remembered: Job? = null
     private val mutableState = MutableStateFlow(ConfiguredConnectionView())
     val state = mutableState.asStateFlow()
 
     @Synchronized fun connect() {
         if (current != null || binding.state.value.active) return
-        start(false)
+        start(Request.MANUAL)
     }
 
     /** Coalesce attachment notifications without canceling a healthy worker.
@@ -30,33 +33,58 @@ internal class ConfiguredConnection(
      * replacement behind original native retirement. */
     @Synchronized fun attach() {
         if (current != null) return
-        start(true)
+        start(Request.ATTACHMENT)
     }
 
-    private fun start(attachment: Boolean) {
+    @Synchronized fun observeRemembered() {
+        if (remembered != null) return
+        remembered = scope.launch { RememberedConnection(binding.state, ::retry).run() }
+    }
+
+    private suspend fun retry(attempt: Any): Any? = admitRetry(attempt)?.await()
+
+    @Synchronized private fun admitRetry(attempt: Any): Deferred<Any?>? {
+        val currentView = binding.state.value
+        if (current != null || currentView.active) return null
+        if (currentView.attempt !== attempt || !currentView.reconnectAllowed) return null
+        return start(Request.RETRY)
+    }
+
+    private fun start(request: Request): Deferred<Any?> {
         val identity = Any()
-        val initial = binding.state.value
-        val execution = scope.launch(start = CoroutineStart.LAZY) { run(identity, attachment, initial) }
+        val initial = binding.state.value.let { Selection(it.attempt, it.active) }
+        val outcome = CompletableDeferred<Any?>()
+        val execution = scope.launch(start = CoroutineStart.LAZY) { outcome.complete(run(identity, request, initial)) }
         current = Attempt(identity, execution)
         mutableState.value = ConfiguredConnectionView(pending = true)
-        execution.invokeOnCompletion { finished(identity) }
+        execution.invokeOnCompletion { outcome.complete(null); finished(identity) }
         execution.start()
+        return outcome
     }
 
-    private suspend fun run(identity: Any, attachment: Boolean, initial: ConnectionView) {
-        if (attachment && !attachmentReady(initial)) return
+    private suspend fun run(identity: Any, request: Request, initial: Selection): Any? {
+        if (request != Request.MANUAL && !attachmentReady(initial)) return null
         val selected = preferences.load()
         currentCoroutineContext().ensureActive()
-        synchronized(this) {
-            if (current?.identity !== identity) return
-            if (attachment && binding.state.value.attempt !== initial.attempt) return
-            val failure = selected.exceptionOrNull()
-            if (failure != null) mutableState.value = ConfiguredConnectionView(true, connectionPreferenceFailure(failure))
-            else if (!binding.state.value.active) binding.connect(selected.getOrThrow())
-        }
+        return admit(identity, request, initial, selected)
     }
 
-    private suspend fun attachmentReady(initial: ConnectionView): Boolean {
+    @Synchronized private fun admit(identity: Any, request: Request, initial: Selection,
+        selected: Result<ConnectionWorkerSpec>): Any? {
+        if (current?.identity !== identity) return null
+        if (request != Request.MANUAL && binding.state.value.attempt !== initial.attempt) return null
+        if (request == Request.RETRY && !binding.state.value.reconnectAllowed) return null
+        val failure = selected.exceptionOrNull()
+        if (failure != null) {
+            mutableState.value = ConfiguredConnectionView(true, connectionPreferenceFailure(failure))
+            return null
+        }
+        if (binding.state.value.active) return null
+        binding.connect(selected.getOrThrow())
+        return binding.state.value.attempt.takeIf { it !== initial.attempt }
+    }
+
+    private suspend fun attachmentReady(initial: Selection): Boolean {
         if (!initial.active) return true
         val ended = binding.state.first { !it.active || it.attempt !== initial.attempt }
         return ended.attempt === initial.attempt && ended.reconnectAllowed

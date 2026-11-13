@@ -20,6 +20,7 @@ internal data class ConnectionView(
     val active: Boolean = false,
     val reconnectAllowed: Boolean = true,
     val attempt: Any? = null,
+    val retryPeer: ConnectionPeer? = null,
     val authenticated: Boolean = false,
     val cleanup: String? = null,
     val display: ConnectionDisplayChoice? = null,
@@ -95,8 +96,15 @@ internal class ConnectionPresentation {
     private fun resetMedia() { camera.reset(); microphone.reset(); speakers.reset() }
     private fun clearMedia() { camera.clear(); microphone.clear(); speakers.clear() }
     private fun publish(value: ConnectionView) {
-        mutable.value = value.copy(microphoneOffer = microphone.offer, microphone = microphone.route,
+        mutable.value = value.copy(retryPeer = rememberedPeer(value), microphoneOffer = microphone.offer, microphone = microphone.route,
             speakersOffer = speakers.offer, speakers = speakers.route)
+    }
+    /** Durable same-attempt eligibility survives conflated authenticated/end
+     * observations. A cached pin alone cannot produce it. */
+    private fun rememberedPeer(value: ConnectionView): ConnectionPeer? = when {
+        !value.reconnectAllowed || value.remembered != true -> null
+        value.authenticated -> value.peer?.ticket?.peer
+        else -> value.retryPeer?.takeIf { it == value.peer?.ticket?.peer }
     }
     private val audioPresentations = arrayOf<ConnectionAudioPresentation?>(null, null, microphone, speakers)
     private fun audioPresentation(resource: ConnectionManagement.Resource): ConnectionAudioPresentation? = audioPresentations[resource.ordinal]
@@ -178,7 +186,11 @@ internal class ConnectionPresentation {
     }
 
     @Synchronized fun stop(token: Any) {
-        if (generation !== token || finished) return
+        if (generation !== token) return
+        if (finished) {
+            publish(mutable.value.copy(reconnectAllowed = false))
+            return
+        }
         accepting = false
         clearMedia()
         publish(mutable.value.copy(approval = null, active = false, reconnectAllowed = false, authenticated = false, display = null, cameraOffer = null, camera = null,
