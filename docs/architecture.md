@@ -197,6 +197,7 @@ systemd user-service environment override.
 | `BLENT_WIFI_ATTEMPTS` | 8 | 1..64 | Active/retiring Wi-Fi attempts; one owner per address until native join. |
 | `BLENT_CONTROL_WORKERS` | 8 | 1..64 | Shared camera/audio/config control threads, including retiring owners. |
 | `BLENT_PROCESS_LIMIT` | 128 | 1..4096 | Owned command/media children, including unreaped children and dependent cleanup. |
+| `BLENT_INPUT_LIMIT` | 64 | 1..4096 | Linux input backends, including unfinished constructors and original device identity cleanup. |
 | `BLENT_SESSION_LIMIT` | 64 | 1..4096 | Session supervisors, including unfinished worker handles. |
 | `BLENT_TASK_LIMIT` | 64 | 1..4096 | Independently owned capture/media tasks, including started blocking work. |
 | `BLENT_ADB_MAPPING_LIMIT` | 16 | 1..4096 | Active and retiring temporary camera/audio mappings; each retains its cleanup worker and endpoint reservation. |
@@ -204,8 +205,18 @@ systemd user-service environment override.
 | `BLENT_DISPLAY_ROUTE_LIMIT` | 16 | 1..4096 | Active and retiring display ADB route owners; each retains its original worker and device/local-port leases until settlement. |
 | `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
-| `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after admitted session/display-route/activity cleanup settles. |
+| `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after admitted session/display-route/activity/input cleanup settles. |
 | `BLENT_ENCODER_STOP_MS` | 1000 ms | 1..60000 ms | Encoder-task completion wait before refusing replacement. |
+
+Linux input reserves its backend admission before session startup, and publishes
+its original completion to session retirement before the follower starts. Each
+backend admits one follower; its device identity remains exclusive through actual
+constructor join, device destruction and retained OSK cleanup. Cancelling a
+constructor drops its result receiver, so a late native result is destroyed by
+the original worker instead of entering the stopped session. Replacement waits
+for original settlement. The process drain retains these input admissions too.
+The input and task limits bound active/retiring work; lowering them reduces
+resource use but can reject new sessions while cleanup remains pending.
 
 Display ADB routes keep one original worker through creation, repair and cleanup.
 Caller cancellation and Activity/session stop do not settle an unacknowledged ADB
@@ -286,11 +297,11 @@ runs in a supervised process, with parent-death signalling, generation checks an
 bounded compressed packets. Shared raw leases survive until codec final reference
 release inside the worker; replacement waits for actual child retirement. A stuck
 worker retains capacity until reaped. This does not recover a GPU/kernel-wide hang.
-The Linux entry point closes session/display-route/activity admission on normal
+The Linux entry point closes session/display-route/activity/input admission on normal
 return, error return or unwind. It asks active session/route owners to stop and
 keeps Tokio running until all original completion tickets settle, including the
 activity source stopped or cancelled by daemon teardown. Its process registry
-retains at most 8196 pending observations (session/route maxima of 4096 each plus
+retains at most 12292 pending observations (session/route/input maxima of 4096 each plus
 four activity sources), with explicit exhaustion rejection even during the gap
 between pool release and completion publication. The pools remain the resource owners; the registry retains only
 original completion observations. Failed cleanup keeps the process alive and

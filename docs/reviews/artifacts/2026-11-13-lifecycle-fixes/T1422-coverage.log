@@ -1,0 +1,85 @@
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/004da59b73a46bc7/out/input_creation-004da59b73a46bc7', '', '--nocapture']
+
+running 6 tests
+test t1422_cancelled_creation_retains_native_proof_and_identity ... ok
+test t1422_capacity_rejects_before_creation_and_recovers_after_settlement ... ok
+test t1422_failed_constructor_settles_original_admission ... ok
+test t1422_invalid_capacity_never_admits_native_work ... ok
+test t1422_process_exit_waits_for_cancelled_constructor ... ok
+test t1422_session_retirement_waits_for_original_constructor ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.40s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'session::tests::', '--nocapture']
+
+running 7 tests
+test session::tests::t1050_original_quiescence_owner_is_bound_before_startup_and_reaches_runtime ... ok
+test session::tests::t281_coalesced_detach_attach_cannot_reuse_previous_geometry ... ok
+test session::tests::t281_current_metadata_survives_delayed_gate_and_transport_migration ... ok
+test session::tests::t368_runtime_owns_listeners_and_queued_initial_settings ... ok
+test session::tests::t368_second_bind_failure_releases_first_listener ... ok
+test session::tests::t450_false_update_keeps_capture_alive_until_true_or_channel_close ... ok
+test session::tests::t450_initial_or_already_seen_stop_is_forwarded ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 615 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'daemon_activity::tests::t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel', '--nocapture']
+
+running 1 test
+test daemon_activity::tests::t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 621 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'daemon_activity::tests::t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences', '--nocapture']
+
+running 1 test
+test daemon_activity::tests::t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 621 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests', '--nocapture']
+
+running 1 test
+test daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 621 filtered out; finished in 0.10s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa', 'input::linux::coverage_tests::t497_uinput_construction_errors_and_owned_retirement', '--nocapture']
+
+running 1 test
+test input::linux::coverage_tests::t497_uinput_construction_errors_and_owned_retirement ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1136 filtered out; finished in 3.49s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa', 'input::wake_tests::', '--nocapture']
+
+running 1 test
+test input::wake_tests::t405_idle_input_listener_has_no_periodic_wakeups ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1136 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa', 'input::contracts::', '--nocapture']
+
+running 11 tests
+test input::contracts::t1176_bounded_wide_oracle_preserves_lease_and_effect_counts ... ok
+test input::contracts::t1176_concurrent_last_claim_has_one_winner_and_original_drop ... ok
+test input::contracts::t1176_denied_claim_has_no_initialization_or_device_effects ... ok
+test input::contracts::t1176_exhausted_claim_keeps_original_authority_and_cleanup ... ok
+test input::contracts::t281_retired_socket_cannot_claim_or_dispatch_into_current_controller ... ok
+test input::contracts::t281_socket_accepted_before_replacement_cannot_authenticate_after_it ... ok
+test input::contracts::t370_dispatch_preserves_order_and_controller_ownership_with_adapters ... ok
+test input::contracts::t370_server_cancels_injected_backend_when_owner_ends ... ok
+test input::contracts::t484_old_decoder_receipt_cannot_acknowledge_new_encoder_packets ... ok
+test input::contracts::t673_legacy_backend_declines_direct_events_explicitly ... ok
+test input::contracts::t673_versioned_direct_input_wire_is_independent_of_pen ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 1126 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa', 'process_retirement::tests::', '--nocapture']
+
+running 3 tests
+test process_retirement::tests::t1411_completed_history_is_bounded_and_empty_exit_finishes ... ok
+test process_retirement::tests::t1411_cutoff_preserves_original_admissions_and_rejects_reuse ... ok
+test process_retirement::tests::t1411_observation_capacity_is_independent_of_pool_release ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1134 filtered out; finished in 0.57s

@@ -128,16 +128,16 @@ impl InputServer {
         relaunch: Arc<tokio::sync::Notify>,
         card_rx: watch::Receiver<Option<u32>>,
         tablet_rx: watch::Receiver<bool>,
-    ) -> Self {
-        Self::with_backend(
+    ) -> std::io::Result<Self> {
+        Ok(Self::with_backend(
             config,
             settings_tx,
             mode_tx,
             latency,
             relaunch,
             tablet_rx,
-            Arc::new(linux::Backend::new(card_rx)),
-        )
+            Arc::new(linux::Backend::new(card_rx)?),
+        ))
     }
 
     pub fn with_backend(
@@ -1549,7 +1549,7 @@ esac
             Arc::new(tokio::sync::Notify::new()),
             card,
             tablet,
-        );
+        ).unwrap();
         let listener = server.bind().await.unwrap();
         let addr = listener.local_addr().unwrap();
         let task = tokio::spawn(async move { server.run_with_listener(listener).await });
@@ -1753,7 +1753,7 @@ esac
             Arc::new(tokio::sync::Notify::new()),
             card_rx,
             tablet_rx,
-        );
+        ).unwrap();
         let listener = server.bind().await.unwrap();
         let addr = listener.local_addr().unwrap();
         let task = tokio::spawn(async move { server.run_with_listener(listener).await });

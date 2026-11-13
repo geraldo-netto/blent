@@ -105,7 +105,9 @@ async fn owner_contract() {
     let mut owner = DeviceOwner {
         devices: devices.clone(),
         touch_registered: false,
+        lifetime: lifetime::Lifetime::new().unwrap(),
     };
+    let original = owner.lifetime.completion();
     let cfg = InputConfig::default();
     assert_eq!(
         owner
@@ -133,6 +135,13 @@ async fn owner_contract() {
     tokio::task::yield_now().await;
     assert_eq!(TOUCH_DEVICES.load(Ordering::SeqCst), 0);
     assert_eq!(devices.lock().unwrap().count(), 0);
+    tokio::time::timeout(std::time::Duration::from_secs(3), async {
+        while !original.is_complete() {
+            tokio::time::sleep(std::time::Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
 }
 
 #[tokio::test]

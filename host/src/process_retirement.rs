@@ -1,5 +1,5 @@
 //! Process exit observes original admissions; pools remain resource owners.
-//! At most 8196 pending proofs are funded: session/route maxima of 4096 each,
+//! At most 12292 pending proofs are funded: session/route/input maxima of 4096 each,
 //! plus the independent activity-source maximum of 4.
 //! This separate bound includes the gap between pool release and publication.
 //! Cutoff serializes with admission, wakes live supervisors, and keeps their
@@ -30,7 +30,7 @@ impl Registry {
             ));
         }
         state.pending.retain(|proof| !proof.is_complete());
-        if state.pending.len() >= 8196 {
+        if state.pending.len() >= 12292 {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::WouldBlock,
                 "Process retirement observation capacity exhausted",
@@ -96,11 +96,12 @@ mod tests {
     #[tokio::test]
     async fn t1411_observation_capacity_is_independent_of_pool_release() {
         let registry = Registry::default();
-        // T1421 adds the four independently admitted activity sources.
+        // T1421 adds four activity sources; T1422 adds 4096 input owners.
         let pools = [
             Pool::new(4096).unwrap(),
             Pool::new(4096).unwrap(),
             Pool::new(4).unwrap(),
+            Pool::new(4096).unwrap(),
         ];
         let mut admitted = Vec::new();
         for pool in &pools {
@@ -116,7 +117,7 @@ mod tests {
         assert_eq!(spare.active(), 0);
         drop(admitted.pop());
         let replacement = registry.reserve(&spare).unwrap();
-        assert_eq!(registry.state.lock().unwrap().pending.len(), 8196);
+        assert_eq!(registry.state.lock().unwrap().pending.len(), 12292);
         drop((admitted, replacement));
         registry.drain().await;
     }

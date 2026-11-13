@@ -166,7 +166,7 @@ impl Fixture {
         let headers = manager.codec_config();
         let (control, mut participants) = blent::display_quiescence::channel(1).unwrap();
         let (video, received) = crate::video_queue::channel(8, Default::default());
-        let backend = Arc::new(crate::input::LinuxBackend::new(manager.card_rx()));
+        let backend = Arc::new(crate::input::LinuxBackend::new(manager.card_rx()).unwrap());
         let (mode, _) = watch::channel(false);
         let prepared = blent::session::Spec {
             settings: settings(&manager.config),

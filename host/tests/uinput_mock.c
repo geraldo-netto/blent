@@ -82,16 +82,48 @@ static void record(FILE *log, unsigned long request, uintptr_t argument) {
     }
 }
 
-static int fake_ioctl(int fd, unsigned long request, uintptr_t argument) {
-    if (!owned_descriptor(fd)) { errno = EBADF; return -1; }
+/* T1422: private test gate; release on every fixture unwind before runtime join. */
+static void await_creation_release(unsigned long request)
+{
+    const char *gate = getenv("BLENT_T1422_GATE");
+    if (request != UI_DEV_CREATE || !gate)
+    {
+        return;
+    }
+    while (access(gate, F_OK) != 0)
+    {
+        usleep(1000);
+    }
+}
+
+static int fake_ioctl(int fd, unsigned long request, uintptr_t argument)
+{
+    if (!owned_descriptor(fd))
+    {
+        errno = EBADF;
+        return -1;
+    }
     const char *failure = getenv("BLENT_T497_UINPUT_FAIL");
-    if (failure && strtoul(failure, NULL, 10) == request) { errno = EINVAL; return -1; }
+    if (failure && strtoul(failure, NULL, 10) == request)
+    {
+        errno = EINVAL;
+        return -1;
+    }
     const char *path = getenv("BLENT_T497_UINPUT_LOG");
-    if (!path) { errno = ENOENT; return -1; }
+    if (!path)
+    {
+        errno = ENOENT;
+        return -1;
+    }
     FILE *log = fopen(path, "a");
-    if (!log) return -1;
+    if (!log)
+    {
+        return -1;
+    }
     record(log, request, argument);
-    return fclose(log);
+    int result = fclose(log);
+    await_creation_release(request);
+    return result;
 }
 
 int ioctl(int fd, unsigned long request, ...) {

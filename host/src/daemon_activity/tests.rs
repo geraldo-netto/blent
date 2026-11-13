@@ -227,7 +227,7 @@ fn t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel() {
         token: None,
         devices: (false, false, false),
     }
-    .prepare(template.mode_tx.clone())
+    .prepare(template.mode_tx.clone()).unwrap()
     .with_activity(Some(view.clone()));
     assert!(primary.activity.unwrap().same_channel(&view));
     // Both ADB extra startup and USB extra startup call this same constructor.

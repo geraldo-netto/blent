@@ -74,7 +74,7 @@ async fn control() -> Control {
         Default::default(),
         card_rx,
         tablet_rx,
-    );
+    ).unwrap();
     let listener = server.bind().await.unwrap();
     let address = listener.local_addr().unwrap();
     let task = tokio::spawn(async move { server.run_with_listener(listener).await });

@@ -21,7 +21,7 @@ async fn t405_idle_input_listener_has_no_periodic_wakeups() {
         Default::default(),
         card_rx,
         tablet_rx,
-    );
+    ).unwrap();
     let listener = server.bind().await.unwrap();
     let mut future = Box::pin(server.run_with_listener(listener));
     let probe = Arc::new(Probe::default());

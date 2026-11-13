@@ -1,0 +1,45 @@
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::admission::tests::', '--nocapture']
+
+running 3 tests
+test monitor::admission::tests::t917_free_usb_slot_preserves_adb_primary ... ok
+test monitor::admission::tests::t917_full_capacity_retires_extra_without_invalidating_primary ... ok
+test monitor::admission::tests::t917_usb_preempts_adb_only_after_owned_cleanup_and_rejects_stale_retirement ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 619 filtered out; finished in 0.02s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::probe_tests::', '--nocapture']
+
+running 3 tests
+test monitor::probe_tests::t413_package_probe_requires_known_exit_and_response_shape ... ok
+test monitor::probe_tests::t413_unknown_initial_probe_is_not_eligible_and_absence_is_confirmed ... ok
+test monitor::probe_tests::t413_unknown_package_probe_preserves_assignment_and_geometry ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 619 filtered out; finished in 0.02s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::route_tests::', '--nocapture']
+
+running 8 tests
+test monitor::route_tests::t1346_failed_removals_keep_ticket_until_original_effects_arrive ...
+thread 'monitor::route_tests::t1346_failed_removals_keep_ticket_until_original_effects_arrive' (1090593) panicked at host/src/monitor/route_tests.rs:186:29:
+no entry found for key
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test monitor::route_tests::t1346_monitor_loss_retains_cleanup_and_namespace_until_reconnect ...
+thread 'monitor::route_tests::t1346_monitor_loss_retains_cleanup_and_namespace_until_reconnect' (1090604) panicked at host/src/monitor/route_tests.rs:244:6:
+T1346 original native worker did not release its namespace: Elapsed(())
+FAILED
+test monitor::route_tests::t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease ...
+thread 'monitor::route_tests::t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease' (1090675) panicked at host/src/monitor/route_tests.rs:127:29:
+no entry found for key
+FAILED
+test monitor::route_tests::t705_conflicting_initial_routes_remain_foreign ... ok
+test monitor::route_tests::t705_invalid_route_owners_fail_before_native_commands ... ok
+test monitor::route_tests::t705_matching_external_and_replaced_routes_survive_retirement ...
+thread 'monitor::route_tests::t705_matching_external_and_replaced_routes_survive_retirement' (1090690) panicked at host/src/monitor/route_tests.rs:62:5:
+assertion failed: state.ready.contains("USB")
+FAILED
+test monitor::route_tests::t705_partial_preparation_retains_unacknowledged_creation_until_observed ...
+thread 'monitor::route_tests::t705_partial_preparation_retains_unacknowledged_creation_until_observed' (1090696) panicked at host/src/monitor/route_tests.rs:80:5:
+assertion failed: owner.retire(adb.to_str().unwrap()).await.is_err()
+FAILED
+test monitor::route_tests::t705_repaired_routes_are_owned_and_retired ...

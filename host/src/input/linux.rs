@@ -13,18 +13,21 @@ use tokio::sync::watch;
 use tracing::{debug, info, warn};
 
 mod cursor;
+mod lifetime;
 
 pub struct Backend {
     devices: Arc<std::sync::Mutex<InjectDevices>>,
     card: watch::Receiver<Option<u32>>,
+    lifetime: Arc<lifetime::Lifetime>,
 }
 
 impl Backend {
-    pub fn new(card: watch::Receiver<Option<u32>>) -> Self {
-        Self {
+    pub fn new(card: watch::Receiver<Option<u32>>) -> std::io::Result<Self> {
+        Ok(Self {
             devices: Arc::new(std::sync::Mutex::new(InjectDevices::empty())),
             card,
-        }
+            lifetime: lifetime::Lifetime::new()?,
+        })
     }
 }
 
@@ -32,17 +35,25 @@ impl InputBackend for Backend {
     fn sink(&self) -> Arc<dyn InputSink> {
         self.devices.clone()
     }
+    fn native_completion(&self) -> Option<blent_config::retirement::Completion> {
+        Some(self.lifetime.completion())
+    }
     fn follow(
         &self,
         tablet: watch::Receiver<bool>,
         mode: watch::Receiver<bool>,
         config: InputConfig,
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> {
+        if let Err(error) = self.lifetime.claim(config.instance) {
+            warn!("Input follower rejected: {error}");
+            return Box::pin(async {});
+        }
         Box::pin(follow_input_devices(
             tablet,
             mode,
             self.card.clone(),
             self.devices.clone(),
+            self.lifetime.clone(),
             DeviceIdentity::for_instance(config.instance),
             config,
         ))
@@ -583,6 +594,7 @@ pub(super) async fn osk_touch_device_removed() {
 pub(super) struct DeviceOwner {
     pub(super) devices: Arc<std::sync::Mutex<InjectDevices>>,
     pub(super) touch_registered: bool,
+    lifetime: Arc<lifetime::Lifetime>,
 }
 impl DeviceOwner {
     pub(super) async fn create_devices(
@@ -595,9 +607,20 @@ impl DeviceOwner {
         let (c, i) = (cfg.clone(), ident.clone());
         // Device creation sleeps to let udev settle, so it
         // runs off the async runtime.
-        let created = tokio::task::spawn_blocking(move || InjectDevices::create(&c, &i))
-            .await
-            .unwrap_or_else(|_| InjectDevices::empty());
+        let (send, receive) = tokio::sync::oneshot::channel();
+        let task = match crate::owned_task::Task::spawn_blocking(move || {
+            let _ = send.send(InjectDevices::create(&c, &i));
+            Ok(())
+        }) {
+            Ok(task) => task,
+            Err(error) => {
+                warn!("Input construction admission failed: {error}");
+                return 0;
+            }
+        };
+        self.lifetime.retain(task.completion());
+        let _ = task.await;
+        let created = receive.await.unwrap_or_else(|_| InjectDevices::empty());
         let count = created.count();
         let has_touch = created.touch.is_some();
         if let Ok(mut guard) = self.devices.lock() {
@@ -662,7 +685,7 @@ impl Drop for DeviceOwner {
             TOUCH_DEVICES.fetch_sub(1, Ordering::SeqCst);
             // Drop cannot await; recovery state remains on disk if runtime shutdown
             // prevents this final restoration from completing.
-            tokio::spawn(crate::osk::sync_touch_state(&TOUCH_DEVICES));
+            self.lifetime.restore_touch();
         }
     }
 }
@@ -976,17 +999,19 @@ pub(super) fn log_missing_pen(
     }
 }
 
-pub(super) async fn follow_input_devices(
+async fn follow_input_devices(
     mut tablet_rx: watch::Receiver<bool>,
     mut mode_rx: watch::Receiver<bool>,
     mut card_rx: watch::Receiver<Option<u32>>,
     devices: Arc<std::sync::Mutex<InjectDevices>>,
+    lifetime: Arc<lifetime::Lifetime>,
     ident: DeviceIdentity,
     cfg: InputConfig,
 ) {
     let mut owner = DeviceOwner {
         devices: devices.clone(),
         touch_registered: false,
+        lifetime,
     };
     let mut present = false;
     tablet_rx.borrow_and_update();

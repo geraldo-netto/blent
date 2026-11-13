@@ -1,0 +1,447 @@
+{
+  "tool": "Blent syn 2.0.119 Rust frontend; project tree-sitter C standard cyclomatic counter",
+  "functions": [
+    {
+      "file": "host/src/input.rs",
+      "line": 123,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1533,
+      "name": "t092_pending_connections_are_bounded",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input.rs",
+      "line": 1738,
+      "name": "t084_stopping_server_closes_clients_and_watcher",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "line": 25,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "line": 38,
+      "name": "native_completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "line": 41,
+      "name": "follow",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "line": 600,
+      "name": "create_devices",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "line": 679,
+      "name": "drop",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "line": 1002,
+      "name": "follow_input_devices",
+      "complexity": 9
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 23,
+      "name": "claim",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 34,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 39,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 46,
+      "name": "completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 49,
+      "name": "claim",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 61,
+      "name": "retain",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 68,
+      "name": "restore_touch",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 85,
+      "name": "pool",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 98,
+      "name": "poll_complete",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "line": 103,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux/coverage_tests.rs",
+      "line": 103,
+      "name": "owner_contract",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/wake_tests.rs",
+      "line": 6,
+      "name": "t405_idle_input_listener_has_no_periodic_wakeups",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 41,
+      "name": "prepare",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 220,
+      "name": "t281_coalesced_detach_attach_cannot_reuse_previous_geometry",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 243,
+      "name": "t281_current_metadata_survives_delayed_gate_and_transport_migration",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 296,
+      "name": "t368_second_bind_failure_releases_first_listener",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 313,
+      "name": "t368_runtime_owns_listeners_and_queued_initial_settings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session.rs",
+      "line": 342,
+      "name": "t1050_original_quiescence_owner_is_bound_before_startup_and_reaches_runtime",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1500,
+      "name": "t031_server_bind_failure_prevents_successful_startup",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1560,
+      "name": "t068_extra_session_waits_for_capture_cleanup",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1655,
+      "name": "run_daemon_with",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 2268,
+      "name": "prepare_extra_session",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 24,
+      "name": "reserve",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 97,
+      "name": "t1411_observation_capacity_is_independent_of_pool_release",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 12,
+      "name": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 53,
+      "name": "intercepted",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 61,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 65,
+      "name": "counts",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 73,
+      "name": "created",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 76,
+      "name": "wait_creates",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 85,
+      "name": "complete",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 94,
+      "name": "cancellation",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 150,
+      "name": "t1422_cancelled_creation_retains_native_proof_and_identity",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 162,
+      "name": "abandoned",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 189,
+      "name": "settle",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 195,
+      "name": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 202,
+      "name": "process_exit",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 227,
+      "name": "t1422_process_exit_waits_for_cancelled_constructor",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 240,
+      "name": "failed_creation",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 266,
+      "name": "t1422_failed_constructor_settles_original_admission",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 281,
+      "name": "start",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 294,
+      "name": "session_spec",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 317,
+      "name": "session_retirement",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 345,
+      "name": "t1422_session_retirement_waits_for_original_constructor",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 358,
+      "name": "capacity",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 372,
+      "name": "t1422_capacity_rejects_before_creation_and_recovers_after_settlement",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/input_creation.rs",
+      "line": 389,
+      "name": "t1422_invalid_capacity_never_admits_native_work",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/uinput_mock.c",
+      "line": 86,
+      "name": "await_creation_release",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/uinput_mock.c",
+      "line": 99,
+      "name": "fake_ioctl",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/capture/registered_tests.rs",
+      "line": 164,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 220,
+      "name": "t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 264,
+      "name": "t390_initial_discovery_connects_fast_tablet_before_slow_probe",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/discovery_tests.rs",
+      "line": 337,
+      "name": "monitor_inputs",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor.rs",
+      "line": 751,
+      "name": "t390_promoting_an_extra_retires_its_previous_slot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/admission/tests.rs",
+      "line": 69,
+      "name": "t917_full_capacity_retires_extra_without_invalidating_primary",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/credential_tests.rs",
+      "line": 77,
+      "name": "authenticated",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/forwarding.rs",
+      "line": 173,
+      "name": "t557_extra_repair_uses_its_existing_slot_ports",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/probe_tests.rs",
+      "line": 68,
+      "name": "t413_unknown_package_probe_preserves_assignment_and_geometry",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 116,
+      "name": "t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 53,
+      "name": "with_activity",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/usb_display/tests.rs",
+      "line": 189,
+      "name": "t908_primary_handoff_rejects_unrelated_listener_capabilities",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor_test_support.rs",
+      "line": 4,
+      "name": "fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 58,
+      "name": "control",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "line": 35,
+      "name": "sink",
+      "complexity": 1
+    }
+  ],
+  "tool_versions": {
+    "tree-sitter": "0.25.2",
+    "tree-sitter-c": "0.24.2"
+  }
+}

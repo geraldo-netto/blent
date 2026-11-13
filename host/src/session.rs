@@ -38,7 +38,7 @@ impl Spec {
         }
     }
 
-    pub fn prepare(self, mode: watch::Sender<bool>) -> Prepared {
+    pub fn prepare(self, mode: watch::Sender<bool>) -> anyhow::Result<Prepared> {
         let count = if cfg!(feature = "inproc-encoder") {
             1
         } else {
@@ -48,8 +48,8 @@ impl Spec {
             .expect("fixed native display participant capacity");
         let settings = self.settings();
         let manager = capture::CaptureManager::new(self.capture.clone());
-        let backend = Arc::new(input::LinuxBackend::new(manager.card_rx()));
-        blent::session::Spec {
+        let backend = Arc::new(input::LinuxBackend::new(manager.card_rx())?);
+        Ok(blent::session::Spec {
             settings,
             instance: self.capture.instance,
             ports: self.ports,
@@ -70,7 +70,7 @@ impl Spec {
             }),
             backend,
         )
-        .with_quiescence(quiescence)
+        .with_quiescence(quiescence))
     }
 }
 
@@ -219,7 +219,7 @@ mod tests {
     #[tokio::test]
     async fn t281_coalesced_detach_attach_cannot_reuse_previous_geometry() {
         let (mode, mode_rx) = watch::channel(false);
-        let prepared = spec((0, 0)).prepare(mode);
+        let prepared = spec((0, 0)).prepare(mode).unwrap();
         let tablet = prepared.tablet;
         let settings = prepared.settings;
         let (gate, active) = watch::channel(false);
@@ -242,7 +242,7 @@ mod tests {
     #[tokio::test]
     async fn t281_current_metadata_survives_delayed_gate_and_transport_migration() {
         let (mode, mode_rx) = watch::channel(false);
-        let prepared = spec((0, 0)).prepare(mode);
+        let prepared = spec((0, 0)).prepare(mode).unwrap();
         let tablet = prepared.tablet;
         let settings = prepared.settings;
         let (gate, active) = watch::channel(false);
@@ -303,7 +303,7 @@ mod tests {
         drop(video);
         let (mode, _) = watch::channel(false);
         let (_shutdown, shutdown_rx) = watch::channel(false);
-        assert!(spec(ports).prepare(mode).start(shutdown_rx).await.is_err());
+        assert!(spec(ports).prepare(mode).unwrap().start(shutdown_rx).await.is_err());
         tokio::net::TcpListener::bind(("127.0.0.1", ports.0))
             .await
             .unwrap();
@@ -320,7 +320,7 @@ mod tests {
         drop((video, input));
         let (mode, _) = watch::channel(false);
         let (_shutdown, shutdown_rx) = watch::channel(false);
-        let prepared = spec(ports).prepare(mode);
+        let prepared = spec(ports).prepare(mode).unwrap();
         let mut settings = prepared.settings.borrow().clone();
         settings.fps = 30;
         prepared.settings.send(settings).unwrap();
@@ -342,7 +342,7 @@ mod tests {
     async fn t1050_original_quiescence_owner_is_bound_before_startup_and_reaches_runtime() {
         let (mode, _) = watch::channel(false);
         let (_stop, stopped) = watch::channel(false);
-        let prepared = spec((0, 0)).prepare(mode);
+        let prepared = spec((0, 0)).prepare(mode).unwrap();
         let control = prepared.quiescence.as_ref().unwrap().clone();
         let fence = control.pause();
         assert!(

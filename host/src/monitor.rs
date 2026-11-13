@@ -760,7 +760,7 @@ mod tests {
             token: None,
             devices: (false, false, false),
         }
-        .prepare(state.config.extra.mode_tx.clone())
+        .prepare(state.config.extra.mode_tx.clone()).unwrap()
         .start(state.config.extra.shutdown_rx.clone())
         .await
         .unwrap();

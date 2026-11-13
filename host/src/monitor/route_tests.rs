@@ -121,7 +121,7 @@ async fn t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease() {
         token: Some("a".repeat(64)),
         devices: (false, false, false),
     }
-    .prepare(state.config.extra.mode_tx.clone())
+    .prepare(state.config.extra.mode_tx.clone()).unwrap()
     .tablet;
     prepare(&mut state).await;
     let owner = state.routes["USB"].clone();
