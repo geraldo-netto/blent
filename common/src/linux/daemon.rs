@@ -1,6 +1,6 @@
 //! Daemon identity shared by CLI lifecycle and GUI status/action routing.
-use super::cli::{Cli, Commands};
 use super::processes::{self, Process};
+use crate::cli::{Cli, Commands};
 use clap::Parser;
 use std::path::Path;
 
