@@ -267,6 +267,7 @@ impl Actor {
             .catch_unwind()
             .await;
         if !matches!(outcome, Ok(Ok(()))) {
+            shared.replacement.store(true, Ordering::Release);
             tracing::warn!(
                 ?outcome,
                 "Linux activity backend lost; original fields unknown"

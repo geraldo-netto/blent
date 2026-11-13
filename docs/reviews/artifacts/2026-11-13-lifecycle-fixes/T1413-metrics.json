@@ -1,0 +1,22 @@
+{
+  "tool": "rustc 1.100.0 LLVM native counters; cargo-llvm-cov 0.8.7; Blent syn 2.0.119 complexity frontend",
+  "selected_tests": 46,
+  "failed": 0,
+  "functions": [
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "run",
+      "line": 265,
+      "language": "rust",
+      "covered": 12,
+      "total": 13,
+      "percent": 92.3076923076923,
+      "passes": true,
+      "missing": [
+        273
+      ],
+      "complexity": 2,
+      "source_sha256": "55199699967fb035cb972add58df60b5604608b9233b1a48ade0758fbd3c49c6"
+    }
+  ]
+}

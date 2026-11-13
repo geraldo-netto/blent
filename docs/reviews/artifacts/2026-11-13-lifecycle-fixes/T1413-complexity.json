@@ -1,0 +1,84 @@
+{
+  "tool": "Blent syn 2.0.119 complexity frontend",
+  "maximum": 9,
+  "functions": [
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 265,
+      "name": "run",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 14,
+      "name": "create",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 44,
+      "name": "factory",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 57,
+      "name": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 73,
+      "name": "finish",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 84,
+      "name": "replacement",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 101,
+      "name": "owner_recovery",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 148,
+      "name": "stale_signal",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 159,
+      "name": "t1413_logind_replacement_waits_for_original_native_settlement",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 169,
+      "name": "t1413_compositor_replacement_waits_for_original_native_settlement",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 175,
+      "name": "t1413_native_transport_closure_recovers_with_fresh_epoch",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 196,
+      "name": "t1413_explicit_stop_never_recreates_native_sources",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 270,
+      "name": "t1008_private_owner_replacement_cannot_restore_old_source_or_pause_sibling_backend",
+      "complexity": 3
+    }
+  ]
+}

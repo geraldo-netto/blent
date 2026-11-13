@@ -300,9 +300,19 @@ async fn t1008_private_owner_replacement_cannot_restore_old_source_or_pause_sibl
         .await
         .unwrap();
     fixture.power("PrepareForSleep", true).await;
+    // T1413: drain an already observed sibling event before the source reports
+    // its terminal recovery request; an empty poll now correctly returns Err.
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while source.shared.state().current().power != Some(Power::Suspending) {
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    })
+    .await
+    .unwrap();
     let next = event(&mut source).await;
     assert_eq!(next.state.display_on, None);
     assert_eq!(next.state.power, Some(Power::Suspending));
+    assert!(source.poll().is_err(), "T1413 dead observer requests replacement");
     let mut fresh = fixture.source(None, "Cinnamon", 32).await;
     assert!(fresh.epoch() > source.epoch());
     assert_eq!(event(&mut fresh).await.state.display_on, Some(true));
@@ -538,6 +548,9 @@ fn lifetime() -> SourceLifetime {
             .unwrap(),
     )
 }
+
+#[path = "recovery_tests.rs"]
+mod recovery;
 
 #[tokio::test]
 async fn t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power() {

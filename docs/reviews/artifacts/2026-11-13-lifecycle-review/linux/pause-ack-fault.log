@@ -1,0 +1,31 @@
+
+running 1 test
+Input #0, rawvideo, from '/tmp/blent-review-pause-9_uf6fqo/blent/capture.fifo':
+  Duration: N/A, start: 1794586019.316667, bitrate: 1474 kb/s
+  Stream #0:0: Video: rawvideo (NV12 / 0x3231564E), nv12(tv, bt709), 64x32, 1474 kb/s, 60 tbr, 60 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (rawvideo (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x58f9aef87d00] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x58f9aef87d00] profile Constrained Baseline, level 3.2, 4:2:0, 8-bit
+Output #0, tee, to '[f=framecrc:flush_packets=1]pipe:1|[f=data:flush_packets=1]pipe:1':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, nv12(tv, bt709, progressive), 64x32, q=2-31, 60 fps, 1000k tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 20000000/0/0 buffer size: 666000 vbv_delay: N/A
+frame=    0 fps=0.0 q=15.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A    
+thread 'capture::activity_tests::t1015_actual_running_pause_retains_helper_and_resumes_fresh_codec_and_idr' (641481) panicked at host/src/capture/activity_tests.rs:163:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test capture::activity_tests::t1015_actual_running_pause_retains_helper_and_resumes_fresh_codec_and_idr ... FAILED
+
+failures:
+
+failures:
+    capture::activity_tests::t1015_actual_running_pause_retains_helper_and_resumes_fresh_codec_and_idr
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 615 filtered out; finished in 5.18s
+
