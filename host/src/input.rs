@@ -811,9 +811,12 @@ mod tests {
             run_t299_mapping_fixture(NAME);
             return;
         }
-        let selected = super::primary_non_evdi_output().await.unwrap();
+        let selected = super::primary_non_evdi_output(&crate::native_commands::AcknowledgedCommands)
+            .await
+            .unwrap();
         assert!(
             super::map_kwin_device(
+                &crate::native_commands::AcknowledgedCommands,
                 "event-fixture",
                 &super::DeviceIdentity::for_instance(0).unwrap(),
                 &selected
@@ -841,6 +844,7 @@ printf '%s' '{"outputs":[{"name":"eDP-1","enabled":true,"priority":2},{"name":"H
                 "busctl",
                 r#"#!/bin/sh
 printf '%s\n' "$*" >> "$BLENT_T299_TRACE"
+if [ "$2" = --timeout=infinity ]; then shift; fi
 if [ "$2" = set-property ]; then printf '%s' "$8" > "$BLENT_T299_VALUE"; exit 0; fi
 case "$6" in
  available) printf 'b true\n';;
@@ -1817,6 +1821,7 @@ fi
             },
         ];
         map_devices_using(
+            &crate::native_commands::AcknowledgedCommands,
             false,
             &DeviceIdentity::for_instance(1).unwrap(),
             Some(9),
@@ -1843,6 +1848,7 @@ fi
         );
         std::fs::remove_file(root.join("mapped")).unwrap();
         map_devices_using(
+            &crate::native_commands::AcknowledgedCommands,
             true,
             &DeviceIdentity::for_instance(0).unwrap(),
             Some(8),

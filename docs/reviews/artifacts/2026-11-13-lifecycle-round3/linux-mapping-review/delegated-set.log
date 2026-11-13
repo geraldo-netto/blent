@@ -1,0 +1,3 @@
+command_result=Err(Custom { kind: TimedOut, error: "command timed out; detached or privileged work may still be running" }); original_child_and_collector_complete=true; remote_applied=false
+remote_applied_after_both_native_receipts=true
+private_server_closed=true

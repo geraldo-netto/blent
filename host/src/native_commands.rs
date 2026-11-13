@@ -21,6 +21,14 @@ pub(crate) trait CommandPort: Sync {
         program: &'a str,
         args: &'a [&'a str],
     ) -> Pin<Box<dyn Future<Output = io::Result<Output>> + Send + 'a>>;
+    /// Query-only ports cannot authorize a mutation without an owning sponsor.
+    fn mutate<'a>(
+        &'a self,
+        _program: &'a str,
+        _args: &'a [&'a str],
+    ) -> Pin<Box<dyn Future<Output = io::Result<Output>> + Send + 'a>> {
+        Box::pin(async { Err(io::ErrorKind::Unsupported.into()) })
+    }
 }
 
 /// Ordinary command callers own their existing command adapter contract.
@@ -40,24 +48,86 @@ impl CommandPort for SystemCommands {
     }
 }
 
+mod mutation;
+
+/// One command/mutation slot, funded by the owning input payload or OSK operation.
+/// That owner must retain this port until complete(), including caller loss.
 #[derive(Default)]
 pub(crate) struct ObservedCommands {
-    originals: Mutex<Observations<2>>,
+    state: Mutex<State>,
+}
+#[derive(Default)]
+struct State {
+    originals: Observations<2>,
+    mutation: Option<mutation::Operation>,
+}
+impl State {
+    fn complete(&mut self) -> bool {
+        if !self.originals.complete() {
+            return false;
+        }
+        if let Some(operation) = self.mutation.as_mut() {
+            if !operation.complete() {
+                return false;
+            }
+            self.mutation = None;
+        }
+        true
+    }
+    fn reserve(&mut self) -> io::Result<[Reservation; 2]> {
+        if !self.complete() {
+            return Err(io::ErrorKind::WouldBlock.into());
+        }
+        let collector = self.originals.reserve()?;
+        let child = self.originals.reserve()?;
+        Ok([collector, child])
+    }
 }
 impl ObservedCommands {
-    fn originals(&self) -> MutexGuard<'_, Observations<2>> {
-        self.originals
+    fn state(&self) -> MutexGuard<'_, State> {
+        self.state
             .lock()
             .unwrap_or_else(std::sync::PoisonError::into_inner)
     }
     pub(crate) fn complete(&self) -> bool {
-        self.originals().complete()
+        self.state().complete()
     }
     fn reserve(&self) -> io::Result<[Reservation; 2]> {
-        let mut originals = self.originals();
-        let collector = originals.reserve()?;
-        let child = originals.reserve()?;
-        Ok([collector, child])
+        self.state().reserve()
+    }
+    fn start_mutation(
+        &self,
+        program: &str,
+        args: &[&str],
+    ) -> io::Result<Option<tokio::sync::oneshot::Receiver<io::Result<Output>>>> {
+        let mut state = self.state();
+        if !state.complete() {
+            return Ok(None);
+        }
+        let receipts = state.reserve()?;
+        let (operation, result) = mutation::Operation::start(program, args, receipts);
+        state.mutation = Some(operation);
+        Ok(Some(result))
+    }
+    async fn mutation_result(&self, program: &str, args: &[&str]) -> io::Result<Output> {
+        loop {
+            if let Some(result) = self.start_mutation(program, args)? {
+                return result
+                    .await
+                    .unwrap_or_else(|_| Err(io::Error::other("original mutation result lost")));
+            }
+            tokio::time::sleep(Duration::from_millis(1)).await;
+        }
+    }
+    async fn mutate_bounded(&self, program: &str, args: &[&str]) -> io::Result<Output> {
+        tokio::time::timeout(COMMAND_TIMEOUT, self.mutation_result(program, args))
+            .await
+            .unwrap_or_else(|_| {
+                Err(io::Error::new(
+                    io::ErrorKind::TimedOut,
+                    "mutation result deadline; original operation remains owned",
+                ))
+            })
     }
     async fn run(&self, program: &str, args: &[&str]) -> io::Result<Output> {
         // A command deadline does not authorize another effect while the old
@@ -89,7 +159,24 @@ impl CommandPort for ObservedCommands {
     ) -> Pin<Box<dyn Future<Output = io::Result<Output>> + Send + 'a>> {
         Box::pin(self.run(program, args))
     }
+    fn mutate<'a>(
+        &'a self,
+        program: &'a str,
+        args: &'a [&'a str],
+    ) -> Pin<Box<dyn Future<Output = io::Result<Output>> + Send + 'a>> {
+        Box::pin(self.mutate_bounded(program, args))
+    }
 }
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod mutation_tests;
+
+#[cfg(test)]
+mod test_port;
+#[cfg(test)]
+pub(crate) use test_port::AcknowledgedCommands;
+#[cfg(test)]
+mod osk_tests;

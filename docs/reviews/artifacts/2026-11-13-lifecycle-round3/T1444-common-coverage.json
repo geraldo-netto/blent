@@ -1,0 +1,73 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "source_sha256": {
+    "common/src/commands.rs": "aeabb41669525e70f17767b3581bbf78bdfe7a67314b5e2ba487eded36065385",
+    "common/src/commands/output.rs": "b8a4d40195df136ae8f4054e5ddf9e7f4075c4c85d116de864a4d537be80bedb"
+  },
+  "object_sha256": "ff0311d7233ca3c4bf10c076df5637b48da153a8c266603ccd8245e4f84ae11e",
+  "functions": [
+    {
+      "file": "common/src/commands.rs",
+      "function": "output_timeout_observed",
+      "first": 147,
+      "last": 181,
+      "covered": 25,
+      "executable": 25,
+      "percent": 100.0
+    },
+    {
+      "file": "common/src/commands.rs",
+      "function": "output_input_timeout_observed",
+      "first": 255,
+      "last": 262,
+      "covered": 8,
+      "executable": 8,
+      "percent": 100.0
+    },
+    {
+      "file": "common/src/commands.rs",
+      "function": "output_input_retained_observed",
+      "first": 264,
+      "last": 270,
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "common/src/commands.rs",
+      "function": "execute_observed",
+      "first": 273,
+      "last": 310,
+      "covered": 30,
+      "executable": 32,
+      "percent": 93.75
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "function": "new",
+      "first": 45,
+      "last": 56,
+      "covered": 10,
+      "executable": 10,
+      "percent": 100.0
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "function": "start",
+      "first": 57,
+      "last": 79,
+      "covered": 23,
+      "executable": 23,
+      "percent": 100.0
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "function": "collect",
+      "first": 134,
+      "last": 168,
+      "covered": 32,
+      "executable": 32,
+      "percent": 100.0
+    }
+  ]
+}

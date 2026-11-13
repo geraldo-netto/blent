@@ -1,4 +1,4 @@
-//! Command deadlines, not transactional cancellation of delegated operations.
+//! Bounded waits and explicitly retained executions; delegated effects are not transactional.
 //! Linux commands get a private process group. Timeout/cancellation signals its
 //! members and reaps the direct child when permitted. Windows commands enter
 //! an owned kill-on-close job before their suspended initial thread resumes.
@@ -152,7 +152,7 @@ impl SyncCommandExt for Command {
         let admission = retirement::reserve()?;
         crate::retirement_limits::reap_budget()?;
         let deadline = command_deadline(timeout)?;
-        let mut output = CapturedOutput::new(self, deadline)?;
+        let mut output = CapturedOutput::new(self, Some(deadline))?;
         output.observe(observer);
         #[cfg(windows)]
         let job = windows::Job::new()?;
@@ -228,6 +228,15 @@ pub trait AsyncCommandExt {
         timeout: Duration,
         observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
     ) -> impl std::future::Future<Output = io::Result<Output>> + Send;
+    /// No execution deadline: retain the original command and collector until their
+    /// result, preserving byte/admission bounds and the same original proof reports.
+    /// The execution future must remain owned. Dropping it still initiates native
+    /// retirement, which cannot certify settlement of a delegated mutation.
+    fn output_input_retained_observed(
+        &mut self,
+        input: Option<&[u8]>,
+        observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
+    ) -> impl std::future::Future<Output = io::Result<Output>> + Send;
 }
 impl AsyncCommandExt for tokio::process::Command {
     async fn output_timeout(&mut self, timeout: Duration) -> io::Result<Output> {
@@ -249,34 +258,55 @@ impl AsyncCommandExt for tokio::process::Command {
         timeout: Duration,
         observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
     ) -> io::Result<Output> {
-        let deadline = command_deadline(timeout)?;
-        let mut output = CapturedOutput::new(self.as_std_mut(), deadline)?;
-        output.observe(observer);
-        self.stdin(if input.is_some() {
-            Stdio::piped()
-        } else {
-            Stdio::null()
-        });
-        let mut child = OwnedChild::spawn(self)?;
-        observer(child.completion());
-        let operation = async {
-            let status = tokio::select! {
-                status = feed_and_wait(&mut child,input) => status?,
-                result = output.result() => return Err(result.err().unwrap_or_else(|| io::Error::other("collector completed before child"))),
-            };
-            output.finish_async(status).await
-        };
-        let result = tokio::time::timeout_at(tokio::time::Instant::from_std(deadline), operation)
-            .await
-            .unwrap_or_else(|_| Err(timed_out()));
-        if result.is_err() {
-            let retirement = child.retire(Duration::ZERO).await;
-            if !retirement.completion.is_complete() {
-                tracing::warn!("Command retirement incomplete; capacity remains reserved");
-            }
-        }
-        result
+        execute_observed(self, input, Some(command_deadline(timeout)?), observer).await
     }
+
+    async fn output_input_retained_observed(
+        &mut self,
+        input: Option<&[u8]>,
+        observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
+    ) -> io::Result<Output> {
+        execute_observed(self, input, None, observer).await
+    }
+}
+
+async fn execute_observed(
+    command: &mut tokio::process::Command,
+    input: Option<&[u8]>,
+    deadline: Option<std::time::Instant>,
+    observer: &(dyn Fn(crate::retirement::Completion) + Send + Sync),
+) -> io::Result<Output> {
+    let mut output = CapturedOutput::new(command.as_std_mut(), deadline)?;
+    output.observe(observer);
+    command.stdin(if input.is_some() {
+        Stdio::piped()
+    } else {
+        Stdio::null()
+    });
+    let mut child = OwnedChild::spawn(command)?;
+    observer(child.completion());
+    let operation = async {
+        let status = tokio::select! {
+            status = feed_and_wait(&mut child,input) => status?,
+            result = output.result() => return Err(result.err().unwrap_or_else(|| io::Error::other("collector completed before child"))),
+        };
+        output.finish_async(status).await
+    };
+    let result = match deadline {
+        Some(deadline) => {
+            tokio::time::timeout_at(tokio::time::Instant::from_std(deadline), operation)
+                .await
+                .unwrap_or_else(|_| Err(timed_out()))
+        }
+        None => operation.await,
+    };
+    if result.is_err() {
+        let retirement = child.retire(Duration::ZERO).await;
+        if !retirement.completion.is_complete() {
+            tracing::warn!("Command retirement incomplete; capacity remains reserved");
+        }
+    }
+    result
 }
 
 async fn feed_and_wait(child: &mut OwnedChild, input: Option<&[u8]>) -> io::Result<ExitStatus> {
@@ -295,3 +325,7 @@ mod tests;
 #[cfg(test)]
 #[path = "commands/observation_tests.rs"]
 mod observation_tests;
+
+#[cfg(all(test, target_os = "linux"))]
+#[path = "commands/retained_tests.rs"]
+mod retained_tests;

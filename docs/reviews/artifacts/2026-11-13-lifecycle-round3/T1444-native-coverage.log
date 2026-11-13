@@ -1,0 +1,43 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.66s
+
+COMMAND library-tests native_commands:: --nocapture --test-threads=1
+
+running 12 tests
+test native_commands::mutation::tests::t1444_mutation_worker_panic_is_unknown_even_without_native_debt ...
+thread 'native_commands::mutation::tests::t1444_mutation_worker_panic_is_unknown_even_without_native_debt' (1616378) panicked at host/src/native_commands/mutation/tests.rs:28:9:
+T1444 original worker panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test native_commands::mutation::tests::t1444_native_exit_and_missing_ack_are_distinct_from_no_effect ... ok
+test native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt ... ok
+test native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation ... ok
+test native_commands::mutation_tests::t1444_failed_spawn_is_no_effect_and_original_success_releases ... ok
+test native_commands::mutation_tests::t1444_native_exit_without_ack_retains_bounded_quarantine ... ok
+test native_commands::mutation_tests::t1444_query_only_port_cannot_start_mutation ... ok
+test native_commands::osk_tests::t1444_cancelled_osk_set_retains_gate_until_original_ack ... ok
+test native_commands::tests::t1433_child_and_collector_must_both_settle_in_either_order ... ok
+test native_commands::tests::t1433_command_slots_are_bounded_and_cancelled_reservations_recover ... ok
+test native_commands::tests::t1433_failed_spawn_retires_collector_and_allows_later_commands ... ok
+test native_commands::tests::t1433_unknown_original_prevents_successor_command_effects ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 1173 filtered out; finished in 5.79s
+
+
+COMMAND library-tests osk:: --nocapture --test-threads=1
+
+running 12 tests
+test osk::operation::tests::t1433_operation_capacity_rejects_before_effects_and_recovers ... ok
+test osk::tests::t111_restore_retries_preserved_setting_until_confirmed ... ok
+test osk::tests::t1433_rejected_operation_observation_prevents_keyboard_effects ... ok
+test osk::tests::t148_concurrent_device_changes_serialize_keyboard_writes ... ok
+test osk::tests::t148_detach_during_disable_reconciles_current_device_count ... ok
+test osk::tests::t334_failed_or_interrupted_writes_never_publish_empty_or_replace_valid_state ... ok
+test osk::tests::t334_invalid_existing_backup_never_suppresses_or_restores ... ok
+test osk::tests::t334_new_state_must_be_saved_before_suppression ... ok
+test osk::tests::t334_saved_state_must_be_a_regular_file_without_symlinks ... ok
+test osk::tests::t334_unreadable_state_never_changes_the_keyboard ... ok
+test osk::tests::t334_unwritable_state_destination_does_not_suppress ... ok
+test osk::tests::t334_valid_backup_is_preserved_and_restoration_can_retry ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 1173 filtered out; finished in 0.05s

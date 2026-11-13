@@ -14,6 +14,7 @@ pub(super) struct Lifetime {
 }
 #[derive(Default)]
 struct State {
+    commands: Arc<crate::native_commands::ObservedCommands>,
     claimed: bool,
     identity: Option<Identity>,
     native: Vec<Completion>,
@@ -70,6 +71,9 @@ impl Lifetime {
         self.state.lock().unwrap().osk.reserve()?.bind(proof);
         Ok(())
     }
+    pub(super) fn commands(&self) -> Arc<crate::native_commands::ObservedCommands> {
+        self.state.lock().unwrap().commands.clone()
+    }
     pub(super) fn restore_touch(self: &Arc<Self>) {
         let lifetime = self.clone();
         match crate::owned_task::Task::spawn(async move {
@@ -105,7 +109,9 @@ fn pool() -> io::Result<&'static Pool> {
 }
 impl Observe for State {
     fn poll_complete(&mut self) -> bool {
-        self.osk.complete() && self.native.iter().all(Completion::is_complete)
+        self.commands.complete()
+            && self.osk.complete()
+            && self.native.iter().all(Completion::is_complete)
     }
 }
 impl Drop for Lifetime {

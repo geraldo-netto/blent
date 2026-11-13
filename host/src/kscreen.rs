@@ -77,13 +77,17 @@ pub async fn outputs() -> Option<Vec<Output>> {
 }
 
 pub async fn outputs_using(program: &std::ffi::OsStr) -> Option<Vec<Output>> {
-    parse(
-        &fetch_with(tokio::process::Command::new(program))
-            .await
-            .ok()?
-            .stdout,
-    )
-    .ok()
+    parse_result(fetch_with(tokio::process::Command::new(program)).await)
+}
+
+pub(crate) async fn outputs_with(
+    commands: &dyn crate::native_commands::CommandPort,
+) -> Option<Vec<Output>> {
+    parse_result(commands.output("kscreen-doctor", &["-j"]).await)
+}
+
+fn parse_result(result: std::io::Result<std::process::Output>) -> Option<Vec<Output>> {
+    parse(&result.ok()?.stdout).ok()
 }
 
 pub fn enabled_matching_output<'a>(out: &'a Output, names: &[String]) -> Option<(u32, &'a str)> {
@@ -345,6 +349,32 @@ mod tests {
         let response = fetch_with(command).await.unwrap();
         assert_eq!(response.status.code(), Some(7));
         assert!(parse(&response.stdout).unwrap().is_empty());
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    async fn t1444_named_inventory_adapter_preserves_parse_and_spawn_results() {
+        use std::os::unix::fs::PermissionsExt;
+        let directory = tempfile::tempdir().unwrap();
+        let program = directory.path().join("kscreen-doctor");
+        for (body, valid) in [
+            ("printf '%s' '{\"outputs\":[]}'; exit 7", true),
+            ("printf '%s' 'invalid json'", false),
+        ] {
+            std::fs::write(
+                &program,
+                format!("#!/bin/sh\ntest \"$1\" = -j || exit 31\n{body}\n"),
+            )
+            .unwrap();
+            std::fs::set_permissions(&program, std::fs::Permissions::from_mode(0o700)).unwrap();
+            let result = outputs_using(program.as_os_str()).await;
+            assert_eq!(result.is_some(), valid);
+            if let Some(outputs) = result {
+                assert!(outputs.is_empty());
+            }
+        }
+        std::fs::remove_file(&program).unwrap();
+        assert!(outputs_using(program.as_os_str()).await.is_none());
     }
 
     fn inventory(outputs: &[Value]) -> Vec<Output> {

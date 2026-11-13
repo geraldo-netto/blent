@@ -1,0 +1,98 @@
+{
+  "host/src/native_commands.rs": [
+    {
+      "name": "mutate",
+      "first": 25,
+      "last": 31
+    },
+    {
+      "name": "complete",
+      "first": 65,
+      "last": 76
+    },
+    {
+      "name": "reserve",
+      "first": 77,
+      "last": 84
+    },
+    {
+      "name": "state",
+      "first": 87,
+      "last": 91
+    },
+    {
+      "name": "complete",
+      "first": 92,
+      "last": 94
+    },
+    {
+      "name": "reserve",
+      "first": 95,
+      "last": 97
+    },
+    {
+      "name": "start_mutation",
+      "first": 98,
+      "last": 111
+    },
+    {
+      "name": "mutation_result",
+      "first": 112,
+      "last": 121
+    },
+    {
+      "name": "mutate_bounded",
+      "first": 122,
+      "last": 131
+    },
+    {
+      "name": "mutate",
+      "first": 162,
+      "last": 168
+    }
+  ],
+  "host/src/native_commands/mutation.rs": [
+    {
+      "name": "start",
+      "first": 21,
+      "last": 42
+    },
+    {
+      "name": "complete",
+      "first": 43,
+      "last": 57
+    },
+    {
+      "name": "execute",
+      "first": 59,
+      "last": 88
+    },
+    {
+      "name": "classify",
+      "first": 89,
+      "last": 99
+    }
+  ],
+  "host/src/kwin.rs": [
+    {
+      "name": "set_property_with",
+      "first": 174,
+      "last": 219
+    },
+    {
+      "name": "mutation_succeeded",
+      "first": 221,
+      "last": 225
+    },
+    {
+      "name": "list_strings",
+      "first": 228,
+      "last": 230
+    },
+    {
+      "name": "list_strings_with",
+      "first": 232,
+      "last": 262
+    }
+  ]
+}

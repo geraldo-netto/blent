@@ -184,6 +184,7 @@ async fn t730_missing_kwin_does_not_override_x11_mapping_results() {
     .unwrap();
     let randr = tool(root.path(), "xrandr", "print((root/'outputs').read_text())");
     map_devices_using(
+        &crate::native_commands::AcknowledgedCommands,
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -221,6 +222,7 @@ async fn t730_unavailable_x11_mapper_reports_its_own_failure() {
     std::env::set_var("PATH", root.path());
     assert!(crate::kwin::backend().await.is_none());
     map_devices_using(
+        &crate::native_commands::AcknowledgedCommands,
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -258,6 +260,7 @@ print((root/'outputs').read_text())
 "#,
     );
     map_x11_devices(
+        &crate::native_commands::AcknowledgedCommands,
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -305,6 +308,7 @@ print((root/('wanted' if n >= 2 else 'foreign')).read_text())
 "#,
     );
     map_x11_devices(
+        &crate::native_commands::AcknowledgedCommands,
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),
@@ -356,6 +360,7 @@ else:
 "#,
     );
     map_x11_devices(
+        &crate::native_commands::AcknowledgedCommands,
         false,
         &DeviceIdentity::for_instance(0).unwrap(),
         Some(1),

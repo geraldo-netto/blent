@@ -1,0 +1,118 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib test) generated 1 warning (run `cargo fix --lib -p blent-config --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.23s
+     Running unittests src/lib.rs (target/debug/build/blent-config/ef649b5beebb5167/out/blent_config-ef649b5beebb5167)
+
+running 34 tests
+test commands::observation_tests::t1031_async_reports_original_proofs_on_input_timeout_and_spawn_failure ... ok
+test commands::observation_tests::t1031_cancelled_async_command_keeps_exact_original_proofs ... ok
+test commands::observation_tests::t1031_panicking_sync_observer_cannot_leak_exposed_child ...
+thread 'commands::observation_tests::t1031_panicking_sync_observer_cannot_leak_exposed_child' (1566073) panicked at common/src/commands/observation_tests.rs:155:13:
+T1031 observer failure after actual child exposure
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test commands::observation_tests::t1031_sync_reports_original_collector_and_child_on_success_or_timeout ... ok
+test commands::observation_tests::t1031_sync_spawn_failure_still_reports_exposed_collector ... ok
+test commands::observation_tests::t1031_unrepresentable_deadlines_reject_before_native_exposure ... ok
+test commands::observation_tests::t1139_delayed_startup_preserves_success_and_short_timeout_proofs ... ok
+test commands::output::tests::t1031_held_collector_reports_exact_original_thread_until_join ... ok
+test commands::output::tests::t1142_slow_preparation_does_not_count_as_blocked_collection_control ... ok
+test commands::output::tests::t815_child_exit_after_idle_probe_still_drains_final_bytes ... ok
+test commands::output::tests::t815_collection_failure_panic_and_cancellation_retire_owners ...
+thread 'blent-output' (1566140) panicked at common/src/commands/output/tests.rs:174:9:
+T815 native reader panic
+ok
+test commands::output::tests::t815_held_collection_cannot_block_control_or_release_its_capacity ... ok
+test commands::output::tests::t815_interrupted_reads_retry_without_losing_budget_or_bytes ... ok
+test commands::output_limits::tests::t815_stream_and_total_boundaries_preserve_only_admitted_bytes ... ok
+test commands::retained_tests::t1444_native_child ... ok
+test commands::retained_tests::t1444_retained_execution_keeps_original_bounds_and_proofs ... ok
+test commands::retained_tests::t1444_retained_fixture ... ok
+test commands::tests::t094_async_command_is_bounded_and_reaped ... ok
+test commands::tests::t094_cancelled_command_is_reaped ... ok
+test commands::tests::t094_sync_command_is_bounded_and_reaped ... ok
+test commands::tests::t1197_readmitted_fixture_waits_for_actual_exit_without_a_startup_deadline ...
+running 1 test
+test commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 3.03s
+
+ok
+test commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets ... ok
+test commands::tests::t328_denied_signal_does_not_extend_deadline ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t590_denied_group_signal_reports_unretired_work ... ok
+test commands::tests::t609_cancelled_stdin_writer_is_reaped ... ok
+test commands::tests::t609_stdin_delivery_closes_input_and_preserves_bytes ... ok
+test commands::tests::t609_timeout_covers_blocked_stdin_write ... ok
+test commands::tests::t814_accepted_signal_does_not_make_reaping_unbounded ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t814_dependent_lease_cleanup_cannot_hold_control_deadline ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+ok
+test commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline ... ok
+test commands::tests::t815_collection_failure_after_reap_never_signals_a_reusable_pid ... ok
+test commands::tests::t836_extreme_retirement_grace_never_panics_or_loses_ownership ...
+running 1 test
+test commands::tests::t496_fixture_process ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t836_representable_grace_and_cancelled_retirement_preserve_ownership ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 34 passed; 0 failed; 0 ignored; 0 measured; 400 filtered out; finished in 12.98s

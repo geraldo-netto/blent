@@ -1,0 +1,383 @@
+{
+  "tool": "scripts/complexity/check.py blent-rust-source0.1.0/syn2.0.119",
+  "source_sha256": {
+    "common/src/commands.rs": "aeabb41669525e70f17767b3581bbf78bdfe7a67314b5e2ba487eded36065385",
+    "common/src/commands/output.rs": "b8a4d40195df136ae8f4054e5ddf9e7f4075c4c85d116de864a4d537be80bedb",
+    "common/src/commands/output/tests.rs": "887aca6c6391cef32b7397df2d7ef55c39c7e4b6cff5383e4d3dffdf4cf8f27d",
+    "common/src/commands/retained_tests.rs": "0d5ced7559f42eb3348732b25ad9bf8fffbd8badef4173283a790336897a649c"
+  },
+  "functions": [
+    {
+      "file": "common/src/commands.rs",
+      "line": 20,
+      "function": "spawn_reaped",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 40,
+      "function": "daemon_command_timeout",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 49,
+      "function": "output_bounded",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 61,
+      "function": "command_deadline",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 72,
+      "function": "timed_out",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 79,
+      "function": "prepare_group",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 96,
+      "function": "terminate_group",
+      "complexity": 3
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 113,
+      "function": "retire_sync",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 122,
+      "function": "reap_after_signal",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 125,
+      "function": "reap_reserved",
+      "complexity": 4
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 144,
+      "function": "output_timeout",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 147,
+      "function": "output_timeout_observed",
+      "complexity": 5
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 183,
+      "function": "wait_collected",
+      "complexity": 6
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 205,
+      "function": "output_bounded",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 242,
+      "function": "output_timeout",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 246,
+      "function": "output_input_timeout",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 255,
+      "function": "output_input_timeout_observed",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 264,
+      "function": "output_input_retained_observed",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 273,
+      "function": "execute_observed",
+      "complexity": 7
+    },
+    {
+      "file": "common/src/commands.rs",
+      "line": 312,
+      "function": "feed_and_wait",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 25,
+      "function": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 45,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 57,
+      "function": "start",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 80,
+      "function": "observe",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 83,
+      "function": "child_exited",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 88,
+      "function": "poll_result",
+      "complexity": 4
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 95,
+      "function": "result",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 98,
+      "function": "finish_sync",
+      "complexity": 5
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 110,
+      "function": "finish_async",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 116,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 120,
+      "function": "output",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 127,
+      "function": "collector_lost",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 134,
+      "function": "collect",
+      "complexity": 8
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 169,
+      "function": "read_available",
+      "complexity": 6
+    },
+    {
+      "file": "common/src/commands/output.rs",
+      "line": 188,
+      "function": "poll_source",
+      "complexity": 4
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 3,
+      "function": "limits",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 14,
+      "function": "read",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 20,
+      "function": "completed",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 28,
+      "function": "t815_held_collection_cannot_block_control_or_release_its_capacity",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 35,
+      "function": "t1142_slow_preparation_does_not_count_as_blocked_collection_control",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 42,
+      "function": "known_status",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 50,
+      "function": "held_collection",
+      "complexity": 6
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 114,
+      "function": "read",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 123,
+      "function": "t815_interrupted_reads_retry_without_losing_budget_or_bytes",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 138,
+      "function": "read",
+      "complexity": 4
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 154,
+      "function": "t815_child_exit_after_idle_probe_still_drains_final_bytes",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 173,
+      "function": "read",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 179,
+      "function": "t815_collection_failure_panic_and_cancellation_retire_owners",
+      "complexity": 3
+    },
+    {
+      "file": "common/src/commands/output/tests.rs",
+      "line": 235,
+      "function": "t1031_held_collector_reports_exact_original_thread_until_join",
+      "complexity": 3
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 10,
+      "function": "child",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 24,
+      "function": "t1444_native_child",
+      "complexity": 8
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 53,
+      "function": "invoke",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 67,
+      "function": "started",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 76,
+      "function": "settled",
+      "complexity": 3
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 88,
+      "function": "held_execution",
+      "complexity": 2
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 115,
+      "function": "input_and_spawn",
+      "complexity": 3
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 139,
+      "function": "cancellation",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 149,
+      "function": "output_bound",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 155,
+      "function": "admission_bound",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 168,
+      "function": "scenario",
+      "complexity": 8
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 180,
+      "function": "t1444_retained_fixture",
+      "complexity": 1
+    },
+    {
+      "file": "common/src/commands/retained_tests.rs",
+      "line": 192,
+      "function": "t1444_retained_execution_keeps_original_bounds_and_proofs",
+      "complexity": 2
+    }
+  ]
+}

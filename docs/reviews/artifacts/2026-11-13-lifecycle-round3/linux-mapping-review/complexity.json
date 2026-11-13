@@ -1,0 +1,38 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "source_sha256": "37af4671a116a84027577d8831b09c2aacae13493d27a938d10a6a9ba9d028e0",
+  "binary_sha256": "01078b0e79bd827d60632a54e5a4b07444f8be9e5f00a3d49eedb487b2be34aa",
+  "common_library_sha256": "dfee13ba12a927be3366cb1007d958b772bcdbc8509c8ffc73c9d831969a80f3",
+  "functions": [
+    {
+      "line": 13,
+      "name": "output_name",
+      "complexity": 1
+    },
+    {
+      "line": 15,
+      "name": "set_output_name",
+      "complexity": 1
+    },
+    {
+      "line": 21,
+      "name": "settle",
+      "complexity": 2
+    },
+    {
+      "line": 26,
+      "name": "execute",
+      "complexity": 3
+    },
+    {
+      "line": 45,
+      "name": "run",
+      "complexity": 1
+    },
+    {
+      "line": 54,
+      "name": "main",
+      "complexity": 1
+    }
+  ]
+}

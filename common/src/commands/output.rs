@@ -1,4 +1,4 @@
-//! One bounded collector owns both nonblocking pipes. Never collect on an executor.
+//! One byte/admission-bounded collector owns both pipes, with an optional execution deadline.
 use super::{
     output_limits::{Bytes, Limits},
     output_pipe::Reader,
@@ -42,7 +42,7 @@ pub(super) struct CapturedOutput {
     completion: Completion,
 }
 impl CapturedOutput {
-    pub fn new(command: &mut Command, deadline: Instant) -> io::Result<Self> {
+    pub fn new(command: &mut Command, deadline: Option<Instant>) -> io::Result<Self> {
         let limits = Limits::environment()?;
         let admission = reserve()?;
         let (stdout, out) = io::pipe()?;
@@ -57,7 +57,7 @@ impl CapturedOutput {
     fn start(
         sources: Sources,
         limits: Limits,
-        deadline: Instant,
+        deadline: Option<Instant>,
         admission: Admission,
     ) -> io::Result<Self> {
         let state = Arc::new(AtomicU8::new(RUNNING));
@@ -131,7 +131,12 @@ fn collector_lost() -> io::Error {
     )
 }
 
-fn collect(mut sources: Sources, limits: Limits, deadline: Instant, state: &AtomicU8) -> Collected {
+fn collect(
+    mut sources: Sources,
+    limits: Limits,
+    deadline: Option<Instant>,
+    state: &AtomicU8,
+) -> Collected {
     let mut bytes = Bytes::new(limits);
     let mut closed = [false; 2];
     let mut scratch = [0u8; 16384];
@@ -140,7 +145,7 @@ fn collect(mut sources: Sources, limits: Limits, deadline: Instant, state: &Atom
         if observed == CANCELLED {
             return Err(io::ErrorKind::Interrupted.into());
         }
-        if Instant::now() >= deadline {
+        if deadline.is_some_and(|deadline| Instant::now() >= deadline) {
             return Err(timed_out());
         }
         let mut progress = false;

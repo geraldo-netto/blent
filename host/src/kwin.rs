@@ -171,16 +171,6 @@ pub(crate) async fn get_property_with(
 
 /// Write a scalar property. `signature` is the D-Bus type: `s` for a string,
 /// `i` for an int — busctl needs it, qdbus infers it.
-pub async fn set_property(
-    path: &str,
-    iface: &str,
-    prop: &str,
-    signature: &str,
-    value: &str,
-) -> bool {
-    set_property_with(&SystemCommands, path, iface, prop, signature, value).await
-}
-
 pub(crate) async fn set_property_with(
     port: &dyn CommandPort,
     path: &str,
@@ -190,48 +180,66 @@ pub(crate) async fn set_property_with(
     value: &str,
 ) -> bool {
     match backend_with(port).await {
-        Some(Backend::Busctl) => output_of(
-            port,
-            "busctl",
-            &[
-                "--user",
-                "set-property",
-                SERVICE,
-                path,
-                iface,
-                prop,
-                signature,
-                value,
-            ],
-        )
-        .await
-        .is_some(),
-        Some(Backend::Qdbus(cmd)) => output_of(
-            port,
-            cmd,
-            &[
-                "--literal",
-                SERVICE,
-                path,
-                "org.freedesktop.DBus.Properties.Set",
-                iface,
-                prop,
-                value,
-            ],
-        )
-        .await
-        .is_some(),
+        Some(Backend::Busctl) => {
+            mutation_succeeded(
+                port,
+                "busctl",
+                &[
+                    "--user",
+                    "--timeout=infinity",
+                    "set-property",
+                    SERVICE,
+                    path,
+                    iface,
+                    prop,
+                    signature,
+                    value,
+                ],
+            )
+            .await
+        }
+        Some(Backend::Qdbus(cmd)) => {
+            mutation_succeeded(
+                port,
+                cmd,
+                &[
+                    "--literal",
+                    SERVICE,
+                    path,
+                    "org.freedesktop.DBus.Properties.Set",
+                    iface,
+                    prop,
+                    value,
+                ],
+            )
+            .await
+        }
         None => false,
     }
 }
 
+async fn mutation_succeeded(port: &dyn CommandPort, program: &str, args: &[&str]) -> bool {
+    port.mutate(program, args)
+        .await
+        .is_ok_and(|output| output.status.success())
+}
+
 /// An array-of-strings property, such as the list of input devices.
 pub async fn list_strings(path: &str, iface: &str, prop: &str) -> Option<Vec<String>> {
-    match backend().await? {
+    list_strings_with(&SystemCommands, path, iface, prop).await
+}
+
+pub(crate) async fn list_strings_with(
+    port: &dyn CommandPort,
+    path: &str,
+    iface: &str,
+    prop: &str,
+) -> Option<Vec<String>> {
+    match backend_with(port).await? {
         Backend::Busctl => {
             // `as 12 "event7" "event8" …` — every other field between quotes.
             let raw = output_of(
-                &SystemCommands,
+                port,
                 "busctl",
                 &["--user", "get-property", SERVICE, path, iface, prop],
             )
@@ -247,7 +255,7 @@ pub async fn list_strings(path: &str, iface: &str, prop: &str) -> Option<Vec<Str
         Backend::Qdbus(cmd) => {
             // qdbus reads a property through its member name, one per line.
             let member = format!("{}.{}", iface, prop);
-            let raw = output_of(&SystemCommands, cmd, &[SERVICE, path, &member]).await?;
+            let raw = output_of(port, cmd, &[SERVICE, path, &member]).await?;
             Some(raw.split_whitespace().map(str::to_string).collect())
         }
     }

@@ -111,7 +111,11 @@ async fn t497_kwin_adapters_restore_only_the_owned_keyboard_state() {
     assert_eq!(backend().await.unwrap().name(), kind);
     properties(&root, kind == "busctl").await;
     keyboard(&root).await;
-    assert!(set_property("/fixture", "fixture", "mode", "i", "1").await);
+    let commands = crate::native_commands::ObservedCommands::default();
+    assert!(set_property_with(&commands, "/fixture", "fixture", "mode", "i", "1").await);
+    while !commands.complete() {
+        tokio::task::yield_now().await;
+    }
     assert_eq!(
         get_property("/fixture", "fixture", "mode").await.as_deref(),
         Some("1")

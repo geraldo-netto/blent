@@ -1,0 +1,20 @@
+
+running 12 tests
+test native_commands::mutation::tests::t1444_mutation_worker_panic_is_unknown_even_without_native_debt ...
+thread 'native_commands::mutation::tests::t1444_mutation_worker_panic_is_unknown_even_without_native_debt' (1597583) panicked at host/src/native_commands/mutation/tests.rs:28:9:
+T1444 original worker panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test native_commands::mutation::tests::t1444_native_exit_and_missing_ack_are_distinct_from_no_effect ... ok
+test native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt ... ok
+test native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation ... ok
+test native_commands::mutation_tests::t1444_failed_spawn_is_no_effect_and_original_success_releases ... ok
+test native_commands::mutation_tests::t1444_native_exit_without_ack_retains_bounded_quarantine ... ok
+test native_commands::mutation_tests::t1444_query_only_port_cannot_start_mutation ... ok
+test native_commands::osk_tests::t1444_cancelled_osk_set_retains_gate_until_original_ack ... ok
+test native_commands::tests::t1433_child_and_collector_must_both_settle_in_either_order ... ok
+test native_commands::tests::t1433_command_slots_are_bounded_and_cancelled_reservations_recover ... ok
+test native_commands::tests::t1433_failed_spawn_retires_collector_and_allows_later_commands ... ok
+test native_commands::tests::t1433_unknown_original_prevents_successor_command_effects ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 1172 filtered out; finished in 5.73s

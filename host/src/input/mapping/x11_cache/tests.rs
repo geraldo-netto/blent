@@ -93,8 +93,28 @@ else:
     std::fs::write(root.path().join("properties"), PROPERTIES).unwrap();
     let mut cache = Mappings::default();
     let program = program.to_str().unwrap();
-    assert!(cache.map(program, "10", "Blent Touch", "DVI-I-2-1").await);
-    assert!(cache.map(program, "10", "Blent Touch", "DVI-I-2-1").await);
+    assert!(
+        cache
+            .map(
+                &crate::native_commands::AcknowledgedCommands,
+                program,
+                "10",
+                "Blent Touch",
+                "DVI-I-2-1"
+            )
+            .await
+    );
+    assert!(
+        cache
+            .map(
+                &crate::native_commands::AcknowledgedCommands,
+                program,
+                "10",
+                "Blent Touch",
+                "DVI-I-2-1"
+            )
+            .await
+    );
     assert_eq!(
         std::fs::read_to_string(root.path().join("calls")).unwrap(),
         "1"
@@ -105,20 +125,56 @@ else:
         b"unavailable".to_vec(),
     ] {
         std::fs::write(root.path().join("properties"), &properties).unwrap();
-        assert!(cache.map(program, "10", "Blent Touch", "DVI-I-2-1").await);
+        assert!(
+            cache
+                .map(
+                    &crate::native_commands::AcknowledgedCommands,
+                    program,
+                    "10",
+                    "Blent Touch",
+                    "DVI-I-2-1"
+                )
+                .await
+        );
     }
     std::fs::write(root.path().join("read-failed"), "").unwrap();
-    assert!(cache.map(program, "10", "Blent Touch", "DVI-I-2-1").await);
+    assert!(
+        cache
+            .map(
+                &crate::native_commands::AcknowledgedCommands,
+                program,
+                "10",
+                "Blent Touch",
+                "DVI-I-2-1"
+            )
+            .await
+    );
     assert!(cache.devices.is_empty());
     assert_eq!(
         std::fs::read_to_string(root.path().join("calls")).unwrap(),
         "5"
     );
     std::fs::write(root.path().join("map-failed"), "").unwrap();
-    assert!(!cache.map(program, "10", "Blent Touch", "DVI-I-2-1").await);
     assert!(
         !cache
-            .map("/nonexistent-t625", "10", "Blent Touch", "DVI-I-2-1")
+            .map(
+                &crate::native_commands::AcknowledgedCommands,
+                program,
+                "10",
+                "Blent Touch",
+                "DVI-I-2-1"
+            )
+            .await
+    );
+    assert!(
+        !cache
+            .map(
+                &crate::native_commands::AcknowledgedCommands,
+                "/nonexistent-t625",
+                "10",
+                "Blent Touch",
+                "DVI-I-2-1"
+            )
             .await
     );
 }

@@ -1,17 +1,17 @@
 //! Desktop-specific mapping adapters, independent of wire authentication.
 use super::linux::{DeviceIdentity, KWIN_INPUT_IFACE};
-use blent_config::commands::AsyncCommandExt;
+use crate::native_commands::CommandPort;
 use tracing::{info, warn};
 mod x11;
 mod x11_cache;
 use x11::{x11_active_outputs, x11_target_output};
 
-pub(super) async fn primary_non_evdi_output() -> Option<String> {
+pub(super) async fn primary_non_evdi_output(commands: &dyn CommandPort) -> Option<String> {
     let evdi: Vec<String> = crate::vdisplay::evdi_connectors()
         .into_iter()
         .map(|c| c.name)
         .collect();
-    primary_physical_output(&crate::kscreen::outputs().await?, &evdi)
+    primary_physical_output(&crate::kscreen::outputs_with(commands).await?, &evdi)
 }
 
 pub(super) fn primary_physical_output(
@@ -32,8 +32,13 @@ pub(super) fn primary_physical_output(
     fallback
 }
 
-pub(super) async fn kwin_device_property(sysname: &str, property: &str) -> Option<String> {
-    crate::kwin::get_property(
+pub(super) async fn kwin_device_property(
+    commands: &dyn CommandPort,
+    sysname: &str,
+    property: &str,
+) -> Option<String> {
+    crate::kwin::get_property_with(
+        commands,
         &format!("/org/kde/KWin/InputDevice/{}", sysname),
         KWIN_INPUT_IFACE,
         property,
@@ -58,6 +63,7 @@ pub(super) async fn kwin_device_property(sysname: &str, property: &str) -> Optio
 /// `expected` is how many devices this instance actually created; the retry
 /// loop stops once that many are mapped rather than assuming all three exist.
 pub(super) async fn map_devices_to_output(
+    commands: &dyn CommandPort,
     pen_only: bool,
     ident: &DeviceIdentity,
     card: Option<u32>,
@@ -65,6 +71,7 @@ pub(super) async fn map_devices_to_output(
 ) {
     let session_type = std::env::var("XDG_SESSION_TYPE").unwrap_or_default();
     map_devices_using(
+        commands,
         pen_only,
         ident,
         card,
@@ -79,6 +86,7 @@ pub(super) async fn map_devices_to_output(
 
 #[allow(clippy::too_many_arguments)]
 pub(super) async fn map_devices_using(
+    commands: &dyn CommandPort,
     pen_only: bool,
     ident: &DeviceIdentity,
     card: Option<u32>,
@@ -92,10 +100,14 @@ pub(super) async fn map_devices_using(
         return;
     }
     if session_type == "x11" {
-        map_x11_devices(pen_only, ident, card, expected, xinput, xrandr, connectors).await;
+        map_x11_devices(
+            commands, pen_only, ident, card, expected, xinput, xrandr, connectors,
+        )
+        .await;
         return;
     }
     let Some(output) = target_output(
+        commands,
         pen_only,
         card,
         std::time::Duration::from_secs(10),
@@ -119,7 +131,8 @@ pub(super) async fn map_devices_using(
             tokio::time::sleep(std::time::Duration::from_millis(250)).await;
         }
 
-        let Some(devices) = crate::kwin::list_strings(
+        let Some(devices) = crate::kwin::list_strings_with(
+            commands,
             "/org/kde/KWin/InputDevice",
             "org.kde.KWin.InputDeviceManager",
             "devicesSysNames",
@@ -132,7 +145,7 @@ pub(super) async fn map_devices_using(
 
         let mut mapped = 0;
         for sysname in devices {
-            mapped += usize::from(map_kwin_device(&sysname, ident, &output).await);
+            mapped += usize::from(map_kwin_device(commands, &sysname, ident, &output).await);
         }
 
         if mapped >= expected {
@@ -143,14 +156,20 @@ pub(super) async fn map_devices_using(
     warn!("Input devices did not appear in KWin within 5s — mapping skipped");
 }
 
-pub(super) async fn map_kwin_device(sysname: &str, ident: &DeviceIdentity, output: &str) -> bool {
-    let Some(name) = kwin_device_property(sysname, "name").await else {
+pub(super) async fn map_kwin_device(
+    commands: &dyn CommandPort,
+    sysname: &str,
+    ident: &DeviceIdentity,
+    output: &str,
+) -> bool {
+    let Some(name) = kwin_device_property(commands, sysname, "name").await else {
         return false;
     };
     if !ident.owns(&name) {
         return false;
     }
-    let ok = crate::kwin::set_property(
+    let ok = crate::kwin::set_property_with(
+        commands,
         &format!("/org/kde/KWin/InputDevice/{}", sysname),
         KWIN_INPUT_IFACE,
         "outputName",
@@ -164,7 +183,7 @@ pub(super) async fn map_kwin_device(sysname: &str, ident: &DeviceIdentity, outpu
             // keeps the old value when the output is not usable yet.
             // Only what reads back counts, so a lost mapping is
             // retried on the next pass instead of logged as done.
-            match kwin_device_property(sysname, "outputName").await {
+            match kwin_device_property(commands, sysname, "outputName").await {
                 Some(now) if now == output => {
                     info!("Mapped '{}' ({}) to output {}", name, sysname, output);
                     return true;
@@ -178,7 +197,7 @@ pub(super) async fn map_kwin_device(sysname: &str, ident: &DeviceIdentity, outpu
             }
         }
         false => warn!(
-            "Could not map '{}': KWin refused the outputName property",
+            "Could not map '{}': KWin output mapping was not confirmed",
             name
         ),
     }
@@ -206,6 +225,7 @@ pub(super) fn x11_device_kind<'a>(name: &str, ident: &'a DeviceIdentity) -> Opti
 
 #[allow(clippy::too_many_arguments)]
 pub(super) async fn map_x11_devices(
+    commands: &dyn CommandPort,
     pen_only: bool,
     ident: &DeviceIdentity,
     card: Option<u32>,
@@ -221,7 +241,8 @@ pub(super) async fn map_x11_devices(
         }
         let current = crate::vdisplay::evdi_connectors();
         let connectors = fixed_connectors.unwrap_or(&current);
-        let output = x11_mapping_output(pen_only, card, xrandr, connectors, attempt).await;
+        let output =
+            x11_mapping_output(commands, pen_only, card, xrandr, connectors, attempt).await;
         let output = match output {
             Ok(Some(output)) => output,
             Ok(None) => {
@@ -231,6 +252,7 @@ pub(super) async fn map_x11_devices(
             Err(()) => return,
         };
         let Some(devices) = x11_query(
+            commands,
             xinput,
             &["list", "--short"],
             "xinput",
@@ -241,6 +263,7 @@ pub(super) async fn map_x11_devices(
             return;
         };
         if map_x11_list(
+            commands,
             &String::from_utf8_lossy(&devices.stdout),
             ident,
             xinput,
@@ -259,20 +282,22 @@ pub(super) async fn map_x11_devices(
 /// Cached resources suffice while only input devices are arriving. Missing or
 /// stale EDID ownership triggers an explicit refresh at most once per second.
 async fn x11_mapping_output(
+    commands: &dyn CommandPort,
     pen_only: bool,
     card: Option<u32>,
     xrandr: &str,
     connectors: &[crate::vdisplay::EvdiConnector],
     attempt: u32,
 ) -> Result<Option<x11_cache::Target>, ()> {
-    let cached = x11_read_target(pen_only, card, xrandr, connectors, true).await?;
+    let cached = x11_read_target(commands, pen_only, card, xrandr, connectors, true).await?;
     if cached.is_some() || !attempt.is_multiple_of(4) {
         return Ok(cached);
     }
-    x11_read_target(pen_only, card, xrandr, connectors, false).await
+    x11_read_target(commands, pen_only, card, xrandr, connectors, false).await
 }
 
 async fn x11_read_target(
+    commands: &dyn CommandPort,
     pen_only: bool,
     card: Option<u32>,
     xrandr: &str,
@@ -285,6 +310,7 @@ async fn x11_read_target(
         &["--prop"]
     };
     let report = x11_query(
+        commands,
         xrandr,
         args,
         "xrandr",
@@ -304,16 +330,13 @@ async fn x11_read_target(
 }
 
 pub(super) async fn x11_query(
+    commands: &dyn CommandPort,
     program: &str,
     args: &[&str],
     tool: &str,
     failure: &str,
 ) -> Option<std::process::Output> {
-    let Ok(output) = tokio::process::Command::new(program)
-        .args(args)
-        .output_bounded()
-        .await
-    else {
+    let Ok(output) = commands.output(program, args).await else {
         warn!("X11 input mapping needs {}", tool);
         return None;
     };
@@ -349,6 +372,7 @@ pub(super) fn x11_list_entry<'a, 'b>(
 }
 
 async fn map_x11_list(
+    commands: &dyn CommandPort,
     text: &str,
     ident: &DeviceIdentity,
     xinput: &str,
@@ -363,7 +387,7 @@ async fn map_x11_list(
         let Some((id, name, kind)) = x11_list_entry(line, ident) else {
             continue;
         };
-        let ok = cache.map(xinput, id, name, &output.name).await;
+        let ok = cache.map(commands, xinput, id, name, &output.name).await;
         if ok {
             mapped.insert(kind);
         } else {
@@ -385,6 +409,7 @@ async fn map_x11_list(
 /// `timeout` and only then falls back to the best name it knows, so a mapping
 /// is at least attempted on a desktop where kscreen-doctor cannot answer.
 pub(super) async fn target_output(
+    commands: &dyn CommandPort,
     pen_only: bool,
     card: Option<u32>,
     timeout: std::time::Duration,
@@ -393,11 +418,11 @@ pub(super) async fn target_output(
     let deadline = tokio::time::Instant::now() + timeout;
     loop {
         if pen_only {
-            if let Some(name) = primary_non_evdi_output().await {
+            if let Some(name) = primary_non_evdi_output(commands).await {
                 return Some(name);
             }
             // No kscreen-doctor means no KDE session: nothing to wait for.
-            crate::kscreen::outputs().await?;
+            crate::kscreen::outputs_with(commands).await?;
         } else {
             let discovered = known_connectors
                 .is_none()
@@ -407,7 +432,7 @@ pub(super) async fn target_output(
                 .unwrap_or_default();
             // Keep this tablet's assigned card, including during discovery gaps.
             let fallback = fallback_output(connectors, card);
-            let Some(outputs) = crate::kscreen::outputs().await else {
+            let Some(outputs) = crate::kscreen::outputs_with(commands).await else {
                 return fallback;
             };
             let enabled = enabled_named_output(&outputs, fallback.as_deref());

@@ -1,0 +1,13 @@
+# T1444 adapter verification
+
+The prerequisite snapshot routes KWin setters and X11 map-to-output through the explicit mutation port. KWin properties/lists, KScreen inventory, RandR inventory and X11 properties remain queries. The input lifetime retains its own command owner through original outcome settlement; its process admission observes that owner. Mapping diagnostics describe unconfirmed outcomes rather than claiming an acknowledged rejection. T1439's payload-destruction correction remains a separate following change.
+
+Normal adapter checks identified one fixture mismatch after adding busctl's explicit infinite remote timeout: T299 interpreted fixed argument positions without consuming the new option. Its fixture now consumes that option while retaining the original selected-output assertion. The final named-executable KScreen test covers successful parsing even on a failed command exit, malformed output and spawn failure, preserving that public query contract.
+
+Final exact-object verification executes 40 tests: 13 mapping, 9 KScreen, 5 KWin, 2 T299, 1 T029, 3 input-command lifecycle and 7 input-construction lifecycle tests. All pass. Logs are in `T1444-adapter-green.log`; the private native fixtures check interception before constructors and use private commands/sysfs views. This is hosted protocol/ownership evidence, not physical compositor or tablet acceptance.
+
+`T1444-adapter-coverage.json` measures all 19 changed adapter production functions independently: 19 pass at least 80%, 16 reach 100%, minimum 85.37%. KWin's four changed functions are counted in the separate native-core report, avoiding duplication. Its exact LCOV hash binds these values to `T1444-native-coverage.lcov` and the native report's three frozen executables. Final profiles came only from `/tmp/blent-t1444-adapter-profiles-v2` and the native agent's matching final run.
+
+`T1444-adapter-complexity.json` records 251 containing functions across 10 adapter/source/test files, including unchanged functions; maximum 9. This count is not the changed production-function inventory. Measurement uses the repository's syn 2.0.119 Rust parser/checker. No suppressions or unsupported-function passes were introduced.
+
+The command owner is one Arc-backed authoritative state per input lifetime. Query/mutation adapters borrow that port; original native receipts and the acknowledged-result obligation remain under its admitted input sponsor after caller cancellation. Unknown mutation outcomes retain admission and exclude successor effects. T1439 separately supplies retention of the actual original device payload through that same outcome, so this prerequisite does not claim that still-open payload issue resolved.

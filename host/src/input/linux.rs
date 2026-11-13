@@ -1068,6 +1068,7 @@ async fn follow_input_devices(
     ident: DeviceIdentity,
     cfg: InputConfig,
 ) {
+    let commands = lifetime.commands();
     let mut owner = DeviceOwner {
         devices: devices.clone(),
         touch_registered: false,
@@ -1100,7 +1101,7 @@ async fn follow_input_devices(
         // a change during the wait simply restarts it.
         if !wait_for_mapping_change(&mut tablet_rx, &mut mode_rx, &mut card_rx, async {
             if count > 0 {
-                map_devices_to_output(pen_only, &ident, card, count).await;
+                map_devices_to_output(commands.as_ref(), pen_only, &ident, card, count).await;
             }
         })
         .await

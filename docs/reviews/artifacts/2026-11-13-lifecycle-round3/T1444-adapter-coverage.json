@@ -1,0 +1,237 @@
+{
+  "scope": "T1444 changed mapping/input/kscreen adapter functions; kwin list wrappers counted in native-core report, not duplicated here",
+  "tool": "Rust LLVM23.1.5 LCOV; scripts/coverage inventory/model per function",
+  "coverage": [
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "follow_input_devices",
+      "line": 1062,
+      "language": "rust",
+      "covered": 35,
+      "total": 41,
+      "percent": 85.36585365853658,
+      "passes": true,
+      "missing": [
+        1090,
+        1091,
+        1092,
+        1094,
+        1104,
+        1110
+      ]
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "commands",
+      "line": 74,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux/lifetime.rs",
+      "name": "poll_complete",
+      "line": 111,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "primary_non_evdi_output",
+      "line": 9,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "kwin_device_property",
+      "line": 35,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "map_devices_to_output",
+      "line": 65,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "map_devices_using",
+      "line": 88,
+      "language": "rust",
+      "covered": 54,
+      "total": 54,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "map_kwin_device",
+      "line": 159,
+      "language": "rust",
+      "covered": 33,
+      "total": 33,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "map_x11_devices",
+      "line": 227,
+      "language": "rust",
+      "covered": 44,
+      "total": 46,
+      "percent": 95.65217391304348,
+      "passes": true,
+      "missing": [
+        263,
+        279
+      ]
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "x11_mapping_output",
+      "line": 284,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "x11_read_target",
+      "line": 299,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "x11_query",
+      "line": 332,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "map_x11_list",
+      "line": 374,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping.rs",
+      "name": "target_output",
+      "line": 411,
+      "language": "rust",
+      "covered": 35,
+      "total": 38,
+      "percent": 92.10526315789474,
+      "passes": true,
+      "missing": [
+        450,
+        454,
+        455
+      ]
+    },
+    {
+      "file": "host/src/input/mapping/x11_cache.rs",
+      "name": "map",
+      "line": 33,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/mapping/x11_cache.rs",
+      "name": "properties",
+      "line": 61,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kscreen.rs",
+      "name": "outputs_using",
+      "line": 79,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kscreen.rs",
+      "name": "outputs_with",
+      "line": 83,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/kscreen.rs",
+      "name": "parse_result",
+      "line": 89,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "source_hashes": {
+    "host/src/input/linux.rs": "7da771ce74f9dae10c6960ca6667240f69dc3dec9441c482306ac96be4f9d33d",
+    "host/src/input/linux/lifetime.rs": "bff240a3f899d53cb0a6b1b44805b56491e3f59acb3157b8519bda9f76214171",
+    "host/src/input/mapping.rs": "df3a6dc859efc27080a74c026af65a37cc7114ecb4fbbeb38dcf747e88f9397c",
+    "host/src/input/mapping/x11_cache.rs": "0f653fc9bf3f76ba5156e2042e12c2ed883f00c59c7ca792cbd37c851f397afa",
+    "host/src/kscreen.rs": "607eb4823f19848aa03c7525ee6d9307deede81805ec623ea529f23f70caafdd"
+  },
+  "lcov_sha256": "34889919dbf2e7a28d58c4615630650f5993a4a8dfca355c507e957451bae31a"
+}

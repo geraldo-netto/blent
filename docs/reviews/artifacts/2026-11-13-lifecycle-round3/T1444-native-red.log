@@ -1,0 +1,49 @@
+
+running 2 tests
+test native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt ...
+thread 'native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt' (1564398) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt ... FAILED
+
+failures:
+
+failures:
+    native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1178 filtered out; finished in 0.16s
+
+
+thread 'native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt' (1564402) panicked at host/src/native_commands/mutation_tests.rs:108:5:
+T1444 caller cancellation retired an unacknowledged remote Set
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation ...
+thread 'native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation' (1564409) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation ... FAILED
+
+failures:
+
+failures:
+    native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1178 filtered out; finished in 5.16s
+
+
+thread 'native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation' (1564413) panicked at host/src/native_commands/mutation_tests.rs:127:5:
+T1444 caller deadline retired an unacknowledged remote Set
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+
+failures:
+
+failures:
+    native_commands::mutation_tests::t1444_cancelled_mutation_retains_original_reply_and_debt
+    native_commands::mutation_tests::t1444_deadline_ends_caller_wait_but_retains_original_mutation
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 1177 filtered out; finished in 5.33s

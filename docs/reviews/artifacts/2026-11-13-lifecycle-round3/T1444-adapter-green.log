@@ -1,0 +1,87 @@
+COHORT verified-input_commands-
+
+running 3 tests
+test t1433_cancelled_osk_retains_input_and_shared_restore_gate ... ok
+test t1433_one_task_slot_still_funds_original_osk_final_restoration ... ok
+test t1433_process_cutoff_preserves_admitted_input_osk_cleanup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.56s
+
+
+COHORT verified-input_creation-
+
+running 7 tests
+test t1422_cancelled_creation_retains_native_proof_and_identity ... ok
+test t1422_capacity_rejects_before_creation_and_recovers_after_settlement ... ok
+test t1422_failed_constructor_settles_original_admission ... ok
+test t1422_invalid_capacity_never_admits_native_work ... ok
+test t1422_process_exit_waits_for_cancelled_constructor ... ok
+test t1422_session_retirement_waits_for_original_constructor ... ok
+test t1430_identity_boundary_rejects_without_panic_or_admission ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.43s
+
+
+COHORT verified-library-tests-input__mapping__
+
+running 13 tests
+test input::mapping::coverage_tests::t497_mapping_retries_verify_device_ownership_and_readback ... ok
+test input::mapping::x11_cache::tests::t625_changed_failed_and_missing_property_reads_remap_without_trusting_old_state ... ok
+test input::mapping::x11_cache::tests::t625_readback_requires_bounded_node_and_finite_nine_value_matrix ... ok
+test input::mapping::x11_cache::tests::t625_topology_missing_device_and_reused_identity_invalidate_readback ... ok
+test input::mapping::x11_tests::t577_edid_parser_rejects_bounded_invalid_lengths_and_checksums ... ok
+test input::mapping::x11_tests::t577_missing_invalid_and_ambiguous_identity_never_falls_back_to_names ... ok
+test input::mapping::x11_tests::t577_physical_mode_excludes_renamed_virtual_outputs_and_unknown_owners ... ok
+test input::mapping::x11_tests::t577_provider_renaming_cannot_assign_another_tablets_output ... ok
+test input::mapping::x11_tests::t622_late_input_does_not_force_stable_output_probes ... ok
+test input::mapping::x11_tests::t622_stale_topology_refreshes_until_owned_edid_appears ... ok
+test input::mapping::x11_tests::t625_late_pen_does_not_remap_verified_touch_and_pointer ... ok
+test input::mapping::x11_tests::t730_missing_kwin_does_not_override_x11_mapping_results ... ok
+test input::mapping::x11_tests::t730_unavailable_x11_mapper_reports_its_own_failure ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 1172 filtered out; finished in 8.02s
+
+
+COHORT verified-library-tests-input__tests__t029
+
+running 1 test
+test input::tests::t029_x11_maps_only_this_tablets_devices_and_card ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1184 filtered out; finished in 0.04s
+
+
+COHORT verified-library-tests-input__tests__t299
+
+running 2 tests
+test input::tests::t299_primary_selection_reaches_kwin_mapping_arguments ... ok
+test input::tests::t299_primary_selection_uses_current_priority_and_safe_defaults ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1183 filtered out; finished in 0.01s
+
+
+COHORT verified-library-tests-kscreen__
+
+running 9 tests
+test kscreen::tests::t1330_invalid_priority_never_selects_a_primary ... ok
+test kscreen::tests::t1330_primary_selection_uses_only_current_priority ... ok
+test kscreen::tests::t1444_named_inventory_adapter_preserves_parse_and_spawn_results ... ok
+test kscreen::tests::t171_normalization_is_idempotent_and_preserves_other_outputs ... ok
+test kscreen::tests::t171_scaled_layout_preserves_all_four_positions ... ok
+test kscreen::tests::t298_fractional_scale_neighbors_do_not_overlap ... ok
+test kscreen::tests::t372_inventory_command_is_injectable_and_preserves_json_on_failed_exit ... ok
+test kscreen::tests::t372_parser_preserves_missing_and_wrong_type_defaults ... ok
+test kscreen::tests::t372_shared_inventory_preserves_placement_and_connector_identity ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 1176 filtered out; finished in 0.01s
+
+
+COHORT verified-library-tests-kwin__
+
+running 5 tests
+test kwin::coverage_tests::t497_kwin_adapters_restore_only_the_owned_keyboard_state ... ok
+test kwin::regression_tests::t512_qdbus_preserves_signed_scalar_values ... ok
+test kwin::tests::busctl_scalar_drops_the_signature_and_quotes ... ok
+test kwin::tests::busctl_string_array_is_split_on_quotes ... ok
+test kwin::tests::t064_transient_probe_failure_is_retried_until_backend_is_available ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 1180 filtered out; finished in 0.36s

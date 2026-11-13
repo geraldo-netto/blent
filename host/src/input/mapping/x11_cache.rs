@@ -1,6 +1,6 @@
 //! Retry-local readback: avoid repeating RandR probes inside xinput's mapper.
 use super::{x11_list_entry, x11_query, DeviceIdentity};
-use blent_config::commands::AsyncCommandExt;
+use crate::native_commands::CommandPort;
 use std::collections::HashMap;
 
 pub(super) struct Target {
@@ -30,20 +30,26 @@ impl Mappings {
             .retain(|id, (name, _)| present.get(id.as_str()) == Some(&name.as_str()));
     }
 
-    pub async fn map(&mut self, program: &str, id: &str, name: &str, output: &str) -> bool {
+    pub async fn map(
+        &mut self,
+        commands: &dyn CommandPort,
+        program: &str,
+        id: &str,
+        name: &str,
+        output: &str,
+    ) -> bool {
         if let Some((_, saved)) = self.devices.get(id) {
-            if properties(program, id).await.as_ref() == Some(saved) {
+            if properties(commands, program, id).await.as_ref() == Some(saved) {
                 return true;
             }
         }
         self.devices.remove(id);
-        let ok = tokio::process::Command::new(program)
-            .args(["map-to-output", id, output])
-            .output_bounded()
+        let ok = commands
+            .mutate(program, &["map-to-output", id, output])
             .await
             .is_ok_and(|out| out.status.success());
         if ok {
-            if let Some(readback) = properties(program, id).await {
+            if let Some(readback) = properties(commands, program, id).await {
                 self.devices.insert(id.into(), (name.into(), readback));
             }
             tracing::info!("Mapped '{}' (X11 id {}) to {}", name, id, output);
@@ -52,8 +58,9 @@ impl Mappings {
     }
 }
 
-async fn properties(program: &str, id: &str) -> Option<String> {
+async fn properties(commands: &dyn CommandPort, program: &str, id: &str) -> Option<String> {
     let result = x11_query(
+        commands,
         program,
         &["list-props", id],
         "xinput",

@@ -63,25 +63,55 @@ fn physical(root: &Path) {
 async fn target_contract(root: &Path) {
     physical(root);
     assert_eq!(
-        target_output(true, None, Duration::ZERO, None)
-            .await
-            .as_deref(),
+        target_output(
+            &crate::native_commands::AcknowledgedCommands,
+            true,
+            None,
+            Duration::ZERO,
+            None
+        )
+        .await
+        .as_deref(),
         Some("fixture-physical")
     );
     outputs(root, r#"{"outputs":[]}"#);
-    assert!(target_output(true, None, Duration::ZERO, None)
-        .await
-        .is_none());
-    assert!(target_output(true, None, Duration::from_millis(1), None)
-        .await
-        .is_none());
+    assert!(target_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        None,
+        Duration::ZERO,
+        None
+    )
+    .await
+    .is_none());
+    assert!(target_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        None,
+        Duration::from_millis(1),
+        None
+    )
+    .await
+    .is_none());
     outputs(root, "invalid");
-    assert!(target_output(true, None, Duration::ZERO, None)
-        .await
-        .is_none());
-    assert!(target_output(false, Some(u32::MAX), Duration::ZERO, None)
-        .await
-        .is_none());
+    assert!(target_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        None,
+        Duration::ZERO,
+        None
+    )
+    .await
+    .is_none());
+    assert!(target_output(
+        &crate::native_commands::AcknowledgedCommands,
+        false,
+        Some(u32::MAX),
+        Duration::ZERO,
+        None
+    )
+    .await
+    .is_none());
     connector_contract(root).await;
 }
 
@@ -93,16 +123,28 @@ async fn connector_contract(root: &Path) {
         connected: true,
     }];
     assert_eq!(
-        target_output(false, Some(127), Duration::ZERO, Some(&names))
-            .await
-            .as_deref(),
+        target_output(
+            &crate::native_commands::AcknowledgedCommands,
+            false,
+            Some(127),
+            Duration::ZERO,
+            Some(&names)
+        )
+        .await
+        .as_deref(),
         Some("fixture-evdi")
     );
     outputs(root, r#"{"outputs":[]}"#);
     assert_eq!(
-        target_output(false, Some(127), Duration::ZERO, Some(&names))
-            .await
-            .as_deref(),
+        target_output(
+            &crate::native_commands::AcknowledgedCommands,
+            false,
+            Some(127),
+            Duration::ZERO,
+            Some(&names)
+        )
+        .await
+        .as_deref(),
         Some("fixture-evdi")
     );
     outputs(
@@ -110,34 +152,90 @@ async fn connector_contract(root: &Path) {
         r#"{"outputs":[{"name":"fixture-evdi","enabled":true}]}"#,
     );
     assert_eq!(
-        target_output(false, Some(127), Duration::ZERO, Some(&names))
-            .await
-            .as_deref(),
+        target_output(
+            &crate::native_commands::AcknowledgedCommands,
+            false,
+            Some(127),
+            Duration::ZERO,
+            Some(&names)
+        )
+        .await
+        .as_deref(),
         Some("fixture-evdi")
     );
-    assert!(
-        target_output(false, Some(u32::MAX), Duration::ZERO, Some(&names))
-            .await
-            .is_none()
-    );
-    assert!(target_output(false, None, Duration::ZERO, Some(&[]))
-        .await
-        .is_none());
+    assert!(target_output(
+        &crate::native_commands::AcknowledgedCommands,
+        false,
+        Some(u32::MAX),
+        Duration::ZERO,
+        Some(&names)
+    )
+    .await
+    .is_none());
+    assert!(target_output(
+        &crate::native_commands::AcknowledgedCommands,
+        false,
+        None,
+        Duration::ZERO,
+        Some(&[])
+    )
+    .await
+    .is_none());
 }
 
 async fn device_contract(root: &Path, identity: &DeviceIdentity) {
-    assert!(!map_kwin_device("event7", identity, "fixture-physical").await);
+    assert!(
+        !map_kwin_device(
+            &crate::native_commands::AcknowledgedCommands,
+            "event7",
+            identity,
+            "fixture-physical"
+        )
+        .await
+    );
     std::fs::write(root.join("name"), "s \"Other input\"").unwrap();
-    assert!(!map_kwin_device("event7", identity, "fixture-physical").await);
+    assert!(
+        !map_kwin_device(
+            &crate::native_commands::AcknowledgedCommands,
+            "event7",
+            identity,
+            "fixture-physical"
+        )
+        .await
+    );
     assert!(!root.join("mapped").exists());
     std::fs::write(root.join("name"), format!("s \"{}\"", identity.pen)).unwrap();
     std::fs::write(root.join("refuse"), "").unwrap();
-    assert!(!map_kwin_device("event7", identity, "fixture-physical").await);
+    assert!(
+        !map_kwin_device(
+            &crate::native_commands::AcknowledgedCommands,
+            "event7",
+            identity,
+            "fixture-physical"
+        )
+        .await
+    );
     std::fs::remove_file(root.join("refuse")).unwrap();
     std::fs::write(root.join("readback"), "s \"wrong-output\"").unwrap();
-    assert!(!map_kwin_device("event7", identity, "fixture-physical").await);
+    assert!(
+        !map_kwin_device(
+            &crate::native_commands::AcknowledgedCommands,
+            "event7",
+            identity,
+            "fixture-physical"
+        )
+        .await
+    );
     std::fs::write(root.join("readback"), "s \"fixture-physical\"").unwrap();
-    assert!(map_kwin_device("event7", identity, "fixture-physical").await);
+    assert!(
+        map_kwin_device(
+            &crate::native_commands::AcknowledgedCommands,
+            "event7",
+            identity,
+            "fixture-physical"
+        )
+        .await
+    );
     assert_eq!(
         std::fs::read_to_string(root.join("mapped")).unwrap(),
         "s \"fixture-physical\"\n"
@@ -145,18 +243,60 @@ async fn device_contract(root: &Path, identity: &DeviceIdentity) {
 }
 
 async fn mapping_contract(root: &Path, identity: &DeviceIdentity) {
-    map_devices_to_output(true, identity, None, 0).await;
+    map_devices_to_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        identity,
+        None,
+        0,
+    )
+    .await;
     physical(root);
-    map_devices_to_output(true, identity, None, 1).await;
+    map_devices_to_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        identity,
+        None,
+        1,
+    )
+    .await;
     assert!(crate::test_logging::text().contains("KWin did not answer"));
     std::fs::write(root.join("devices"), "as 1 \"event7\"").unwrap();
-    map_devices_to_output(true, identity, None, 1).await;
+    map_devices_to_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        identity,
+        None,
+        1,
+    )
+    .await;
     std::fs::write(root.join("devices"), "as 0").unwrap();
-    map_devices_to_output(true, identity, None, 1).await;
+    map_devices_to_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        identity,
+        None,
+        1,
+    )
+    .await;
     assert!(crate::test_logging::text().contains("did not appear in KWin"));
     outputs(root, "invalid");
-    map_devices_to_output(true, identity, None, 1).await;
-    map_devices_to_output(false, identity, Some(u32::MAX), 1).await;
+    map_devices_to_output(
+        &crate::native_commands::AcknowledgedCommands,
+        true,
+        identity,
+        None,
+        1,
+    )
+    .await;
+    map_devices_to_output(
+        &crate::native_commands::AcknowledgedCommands,
+        false,
+        identity,
+        Some(u32::MAX),
+        1,
+    )
+    .await;
     let logs = crate::test_logging::text();
     assert!(logs.contains("No physical output found"));
     assert!(logs.contains("No EVDI output found"));
@@ -164,6 +304,7 @@ async fn mapping_contract(root: &Path, identity: &DeviceIdentity) {
 
 async fn adapter_failures(root: &Path) {
     assert!(x11_query(
+        &crate::native_commands::AcknowledgedCommands,
         "missing-t497-xinput",
         &[],
         "fixture-xinput",
@@ -172,6 +313,7 @@ async fn adapter_failures(root: &Path) {
     .await
     .is_none());
     assert!(x11_query(
+        &crate::native_commands::AcknowledgedCommands,
         root.join("busctl").to_str().unwrap(),
         &["unknown"],
         "fixture-bus",

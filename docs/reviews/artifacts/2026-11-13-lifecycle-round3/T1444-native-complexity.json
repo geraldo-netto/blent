@@ -1,0 +1,381 @@
+{
+  "tool": "scripts/complexity/check.py / blent-rust-source 0.1.0 / syn 2.0.119",
+  "sources": {
+    "host/src/native_commands.rs": "546b0fb3782f4b36629892d8152595ed34367c7a6329f9f387bf3c1b12cfdd04",
+    "host/src/native_commands/mutation.rs": "74d512e144f8f5e426e00dfda6a1d2a4d4ac46e47d054509081a024daee4aa21",
+    "host/src/native_commands/mutation/tests.rs": "8229b4068436a6c9f3ac6cdfbb7b0173cfabb6c516c790c0a7f81a1314c31ff9",
+    "host/src/native_commands/mutation_tests.rs": "ba02a4ff1ffbdcd44485c1150d0c13c9b357f6066879140dd8158a1f880545e9",
+    "host/src/native_commands/osk_tests.rs": "4153e46fe39e24f4e099a6204b6f964fec565ed988010a75202c585d18e8b16a",
+    "host/src/native_commands/test_port.rs": "1976d9a8f2cadcfaa18a293673c3a44f2356bf170e9949a0457f1ffbe6abda86",
+    "host/src/kwin.rs": "3e097bbb750115a49a297b2b100cd971aa25d2b65f5970aa53318fe15af08d5a",
+    "host/src/kwin/coverage_tests.rs": "8a78be37cd8e89eef798e9da78107da4bba9f1cccf67806077ae6a4e71f90b0d"
+  },
+  "functions": [
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 25,
+      "name": "mutate",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 37,
+      "name": "output",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 65,
+      "name": "complete",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 77,
+      "name": "reserve",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 87,
+      "name": "state",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 92,
+      "name": "complete",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 95,
+      "name": "reserve",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 98,
+      "name": "start_mutation",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 112,
+      "name": "mutation_result",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 122,
+      "name": "mutate_bounded",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 132,
+      "name": "run",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 155,
+      "name": "output",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands.rs",
+      "line": 162,
+      "name": "mutate",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/mutation.rs",
+      "line": 21,
+      "name": "start",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/mutation.rs",
+      "line": 43,
+      "name": "complete",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/native_commands/mutation.rs",
+      "line": 59,
+      "name": "execute",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/native_commands/mutation.rs",
+      "line": 89,
+      "name": "classify",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/native_commands/mutation/tests.rs",
+      "line": 4,
+      "name": "t1444_native_exit_and_missing_ack_are_distinct_from_no_effect",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/native_commands/mutation/tests.rs",
+      "line": 25,
+      "name": "t1444_mutation_worker_panic_is_unknown_even_without_native_debt",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 16,
+      "name": "output_name",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 20,
+      "name": "set_output_name",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 31,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 51,
+      "name": "finish",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 59,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 63,
+      "name": "until",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 72,
+      "name": "request",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 91,
+      "name": "t1444_cancelled_mutation_retains_original_reply_and_debt",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 114,
+      "name": "t1444_deadline_ends_caller_wait_but_retains_original_mutation",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 134,
+      "name": "t1444_query_only_port_cannot_start_mutation",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 148,
+      "name": "t1444_failed_spawn_is_no_effect_and_original_success_releases",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/native_commands/mutation_tests.rs",
+      "line": 163,
+      "name": "t1444_native_exit_without_ack_retains_bounded_quarantine",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 18,
+      "name": "available",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 22,
+      "name": "mode",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 26,
+      "name": "set_mode",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 44,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 65,
+      "name": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 70,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 74,
+      "name": "private",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 101,
+      "name": "until",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 110,
+      "name": "synchronize",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/native_commands/osk_tests.rs",
+      "line": 123,
+      "name": "t1444_cancelled_osk_set_retains_gate_until_original_ack",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/native_commands/test_port.rs",
+      "line": 6,
+      "name": "output",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/native_commands/test_port.rs",
+      "line": 13,
+      "name": "mutate",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 36,
+      "name": "name",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 46,
+      "name": "output_of",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 55,
+      "name": "backend",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 59,
+      "name": "backend_with",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 110,
+      "name": "cached_backend",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 123,
+      "name": "get_property",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 127,
+      "name": "get_property_with",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 174,
+      "name": "set_property_with",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 221,
+      "name": "mutation_succeeded",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 228,
+      "name": "list_strings",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 232,
+      "name": "list_strings_with",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 275,
+      "name": "t064_transient_probe_failure_is_retried_until_backend_is_available",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 291,
+      "name": "busctl_string_array_is_split_on_quotes",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kwin.rs",
+      "line": 303,
+      "name": "busctl_scalar_drops_the_signature_and_quotes",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/kwin/coverage_tests.rs",
+      "line": 24,
+      "name": "isolated",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/kwin/coverage_tests.rs",
+      "line": 52,
+      "name": "properties",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/kwin/coverage_tests.rs",
+      "line": 87,
+      "name": "keyboard",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/kwin/coverage_tests.rs",
+      "line": 103,
+      "name": "t497_kwin_adapters_restore_only_the_owned_keyboard_state",
+      "complexity": 3
+    }
+  ]
+}

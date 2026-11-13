@@ -230,6 +230,23 @@ failure/deadline does not permit another keyboard effect. Input-owned final
 restoration inherits the existing input admission after process cutoff. Its
 command receipts are distinct from its task completion, avoiding a self-wait.
 
+Native input/OSK mutations use one operation slot per observed command port,
+funded by the existing input lifetime or keyboard-operation admission. The caller
+still has a five-second result deadline. Cancellation or expiry ends that wait;
+the original reply-capable command, collector, task and outcome remain owned.
+The next operation waits for the original native proofs, actual task join and
+acknowledged outcome. Spawn rejection before a child exists proves no effect.
+Successful busctl/qdbus replies and successful xinput completion (after its XSync)
+settle the corresponding mutation. Generic post-spawn nonzero exit, signal,
+transport loss or collector failure cannot prove whether a remote effect occurred;
+they are logged and retain bounded quarantine rather than freeing identity or gate
+ownership. CLI status alone does not distinguish every explicit remote rejection
+from lost acknowledgment, so this classification is deliberately conservative.
+Isolated test ports may model definitively acknowledged rejection separately.
+Busctl mutations request an infinite native reply timeout; qdbus retains its own
+finite protocol timeout, whose failure remains unknown. Neither changes the
+five-second caller result deadline or native byte/admission bounds.
+
 Display ADB routes keep one original worker through creation, repair and cleanup.
 Caller cancellation and Activity/session stop do not settle an unacknowledged ADB
 server effect. Empty snapshots cannot retire an unknown creator; cleanup waits for
@@ -397,6 +414,14 @@ uses nonblocking pipe reads; Windows uses its explicit pipe-readiness adapter.
 Windows cross-compilation is checked; native Windows execution/counters remain
 T737. Collection start/spawn still involves native OS calls, so this is not a
 hard real-time guarantee against a stalled kernel.
+
+`AsyncCommandExt::output_input_retained_observed` is the explicit execution path
+for an admitted owner that must preserve a mutation reply. It has no execution or
+collection deadline, while retaining the same stdin/output grants, collector
+admission and original child/collector proof reporting. Dropping this execution
+future still initiates normal native retirement; the mutation owner therefore
+keeps it alive after its own caller cancels or expires. Existing bounded command
+APIs retain their execution and collection deadlines unchanged.
 
 The C helper is assembled from independently linked modules. `capture.c` owns
 the EVDI mode, registered native pixel framebuffer and event callbacks; callbacks receive

@@ -70,7 +70,7 @@ fn held_collection(asynchronous: bool, prepare: impl FnOnce() -> ExitStatus + Se
                     Box::new(io::empty()),
                 ],
                 limits(),
-                Instant::now() + Duration::from_millis(100),
+                Some(Instant::now() + Duration::from_millis(100)),
                 slot,
             )
             .unwrap();
@@ -162,7 +162,7 @@ fn t815_child_exit_after_idle_probe_still_drains_final_bytes() {
             Box::new(io::empty()),
         ],
         limits(),
-        Instant::now() + Duration::from_secs(1),
+        Some(Instant::now() + Duration::from_secs(1)),
         &state,
     )
     .unwrap();
@@ -182,7 +182,7 @@ async fn t815_collection_failure_panic_and_cancellation_retire_owners() {
         let mut capture = CapturedOutput::start(
             [Box::new(Broken(panic)), Box::new(io::empty())],
             limits(),
-            Instant::now() + Duration::from_secs(1),
+            Some(Instant::now() + Duration::from_secs(1)),
             pool.reserve().unwrap(),
         )
         .unwrap();
@@ -203,7 +203,7 @@ async fn t815_collection_failure_panic_and_cancellation_retire_owners() {
         let result = collect(
             [Box::new(io::empty()), Box::new(io::empty())],
             limits(),
-            Instant::now(),
+            Some(Instant::now()),
             &AtomicU8::new(state),
         );
         assert_eq!(
@@ -246,7 +246,7 @@ fn t1031_held_collector_reports_exact_original_thread_until_join() {
             Box::new(io::empty()),
         ],
         limits(),
-        Instant::now() + Duration::from_secs(5),
+        Some(Instant::now() + Duration::from_secs(5)),
         slot,
     )
     .unwrap();

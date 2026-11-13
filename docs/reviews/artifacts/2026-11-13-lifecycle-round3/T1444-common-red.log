@@ -1,0 +1,48 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib test) generated 1 warning (run `cargo fix --lib -p blent-config --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.07s
+     Running unittests src/lib.rs (target/debug/build/blent-config/ef649b5beebb5167/out/blent_config-ef649b5beebb5167)
+
+running 1 test
+test commands::retained_tests::t1444_retained_execution_keeps_original_bounds_and_proofs ...
+thread 'commands::retained_tests::t1444_retained_execution_keeps_original_bounds_and_proofs' (1557011) panicked at common/src/commands/retained_tests.rs:205:9:
+hold:
+running 1 test
+test commands::retained_tests::t1444_retained_fixture ... FAILED
+
+failures:
+
+failures:
+    commands::retained_tests::t1444_retained_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 433 filtered out; finished in 5.11s
+
+
+thread 'commands::retained_tests::t1444_retained_fixture' (1557013) panicked at common/src/commands/retained_tests.rs:104:5:
+T1444 retained command expired before original execution completed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    commands::retained_tests::t1444_retained_execution_keeps_original_bounds_and_proofs
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 433 filtered out; finished in 5.11s
+
+error: test failed, to rerun pass `-p blent-config --lib`

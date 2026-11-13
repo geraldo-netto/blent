@@ -1,0 +1,133 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.45
+   Compiling libc v0.2.186
+   Compiling rustix v1.1.4
+   Compiling linux-raw-sys v0.12.1
+   Compiling memchr v2.8.1
+   Compiling smallvec v1.15.1
+   Compiling tracing-subscriber v0.3.23
+   Compiling serde_json v1.0.150
+   Compiling syn v2.0.117
+   Compiling errno v0.3.14
+   Compiling getrandom v0.4.2
+   Compiling socket2 v0.6.4
+   Compiling mio v1.2.1
+   Compiling getrandom v0.3.4
+   Compiling signal-hook-registry v1.4.8
+   Compiling tempfile v3.27.0
+   Compiling serde_derive v1.0.228
+   Compiling clap_derive v4.6.1
+   Compiling tokio-macros v2.7.0
+   Compiling tracing-attributes v0.1.31
+   Compiling tokio v1.52.3
+   Compiling tracing v0.1.44
+   Compiling clap v4.6.1
+   Compiling serde v1.0.228
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.23s
+
+running 34 tests
+test commands::observation_tests::t1031_async_reports_original_proofs_on_input_timeout_and_spawn_failure ... ok
+test commands::observation_tests::t1031_cancelled_async_command_keeps_exact_original_proofs ... ok
+test commands::observation_tests::t1031_panicking_sync_observer_cannot_leak_exposed_child ...
+thread 'commands::observation_tests::t1031_panicking_sync_observer_cannot_leak_exposed_child' (1576168) panicked at common/src/commands/observation_tests.rs:155:13:
+T1031 observer failure after actual child exposure
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test commands::observation_tests::t1031_sync_reports_original_collector_and_child_on_success_or_timeout ... ok
+test commands::observation_tests::t1031_sync_spawn_failure_still_reports_exposed_collector ... ok
+test commands::observation_tests::t1031_unrepresentable_deadlines_reject_before_native_exposure ... ok
+test commands::observation_tests::t1139_delayed_startup_preserves_success_and_short_timeout_proofs ... ok
+test commands::output::tests::t1031_held_collector_reports_exact_original_thread_until_join ... ok
+test commands::output::tests::t1142_slow_preparation_does_not_count_as_blocked_collection_control ... ok
+test commands::output::tests::t815_child_exit_after_idle_probe_still_drains_final_bytes ... ok
+test commands::output::tests::t815_collection_failure_panic_and_cancellation_retire_owners ...
+thread 'blent-output' (1576233) panicked at common/src/commands/output/tests.rs:174:9:
+T815 native reader panic
+ok
+test commands::output::tests::t815_held_collection_cannot_block_control_or_release_its_capacity ... ok
+test commands::output::tests::t815_interrupted_reads_retry_without_losing_budget_or_bytes ... ok
+test commands::output_limits::tests::t815_stream_and_total_boundaries_preserve_only_admitted_bytes ... ok
+test commands::retained_tests::t1444_native_child ... ok
+test commands::retained_tests::t1444_retained_execution_keeps_original_bounds_and_proofs ... ok
+test commands::retained_tests::t1444_retained_fixture ... ok
+test commands::tests::t094_async_command_is_bounded_and_reaped ... ok
+test commands::tests::t094_cancelled_command_is_reaped ... ok
+test commands::tests::t094_sync_command_is_bounded_and_reaped ... ok
+test commands::tests::t1197_readmitted_fixture_waits_for_actual_exit_without_a_startup_deadline ...
+running 1 test
+test commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 3.04s
+
+ok
+test commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets ... ok
+test commands::tests::t328_denied_signal_does_not_extend_deadline ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t590_denied_group_signal_reports_unretired_work ... ok
+test commands::tests::t609_cancelled_stdin_writer_is_reaped ... ok
+test commands::tests::t609_stdin_delivery_closes_input_and_preserves_bytes ... ok
+test commands::tests::t609_timeout_covers_blocked_stdin_write ... ok
+test commands::tests::t814_accepted_signal_does_not_make_reaping_unbounded ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.40s
+
+ok
+test commands::tests::t814_dependent_lease_cleanup_cannot_hold_control_deadline ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+ok
+test commands::tests::t814_unconfirmed_async_exit_retains_admission_after_control_deadline ... ok
+test commands::tests::t815_collection_failure_after_reap_never_signals_a_reusable_pid ... ok
+test commands::tests::t836_extreme_retirement_grace_never_panics_or_loses_ownership ...
+running 1 test
+test commands::tests::t496_fixture_process ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+test commands::tests::t836_representable_grace_and_cancelled_retirement_preserve_ownership ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 433 filtered out; finished in 0.00s
+
+
+running 1 test
+test commands::tests::t496_fixture_process ...
+running 1 test
+test commands::tests::t496_fixture_process ... ok
+
+test result: ok. 34 passed; 0 failed; 0 ignored; 0 measured; 400 filtered out; finished in 12.87s
