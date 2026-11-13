@@ -1041,15 +1041,40 @@ printf '%s\n' "$2" >> "$0.log"
         std::fs::write(&adb, "#!/bin/sh\ncat \"$0.bytes\"\n").unwrap();
         std::fs::set_permissions(&adb, std::fs::Permissions::from_mode(0o700)).unwrap();
         let devices = ["USB".into(), "tablet:5555".into()];
-        for bytes in [vec![0xff], vec![0xfe], b"a\0b".to_vec(), b"a\x1bb".to_vec(), vec![b'a'; 1025]] {
+        for bytes in [
+            vec![0xff],
+            vec![0xfe],
+            b"a\0b".to_vec(),
+            b"a\x1bb".to_vec(),
+            vec![b'a'; 1025],
+        ] {
             std::fs::write(adb.with_extension("bytes"), bytes).unwrap();
             let mut identities = Default::default();
-            assert_eq!(unique_devices(&devices, None, &mut identities, adb.to_str().unwrap()).await, devices);
-            assert!(identities.is_empty(), "T1383: malformed identity became authoritative");
+            assert_eq!(
+                unique_devices(&devices, None, &mut identities, adb.to_str().unwrap()).await,
+                devices
+            );
+            assert!(
+                identities.is_empty(),
+                "T1383: malformed identity became authoritative"
+            );
         }
-        for bytes in [b"tablet\r\n".to_vec(), vec![b'a'; 1024], "café".as_bytes().to_vec()] {
+        for bytes in [
+            b"tablet\r\n".to_vec(),
+            vec![b'a'; 1024],
+            "café".as_bytes().to_vec(),
+        ] {
             std::fs::write(adb.with_extension("bytes"), bytes).unwrap();
-            assert_eq!(unique_devices(&devices, None, &mut Default::default(), adb.to_str().unwrap()).await, ["USB"]);
+            assert_eq!(
+                unique_devices(
+                    &devices,
+                    None,
+                    &mut Default::default(),
+                    adb.to_str().unwrap()
+                )
+                .await,
+                ["USB"]
+            );
         }
     }
 
