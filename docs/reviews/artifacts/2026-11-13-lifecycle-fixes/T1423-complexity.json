@@ -1,0 +1,287 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source0.1.0 / syn2.0.119; Python 3.12.3",
+  "maximum": 9,
+  "tool_sha256": "99095e6ca5dfb364b150e617320a7b16046feb0b0f63e36f1078c8da1c4e06b5",
+  "source_sha256": {
+    "host/src/daemon_shutdown.rs": "1e310a8bb959fbc432b8023da6d78519fd84af7a0cf5912381b5541fdafab33c",
+    "host/src/runtime_owner.rs": "bbc94f5428809eaf588d83de0f99bd1e57da3ed9387516058dc68b6f05d0402f",
+    "host/src/process_retirement.rs": "f9d647f7d942cd4092e1e5bd449aac02bc164b4b43306c3beae9c3b8100538b1",
+    "host/tests/daemon_startup.rs": "eb61f9b79046cb7978af81d84898992639846e68ef5d08eafebd0a38dfccbeaf",
+    "host/tests/daemon_startup/signals.py": "d61b77ddb20289eb56b22341b55c037c021c1f6ed1a486bc47c16b8db40c214c",
+    "host/tests/daemon_startup/fake_adb.py": "0a98a8343655955da0f4a475247e448949e69083203e193a1be96371e199fefc",
+    "host/src/linux_main.rs": "dbd8d5d2d5aaefe7a37d39624f98090bb6261dd621fc8cc00557fc71be5cc31a",
+    "host/src/daemon_activity/tests.rs": "b052744f2b7b7afd8af9d1f2090ab98d9c3566fb534da4a425bd6a39d4b695ef"
+  },
+  "functions": [
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 14,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 31,
+      "function": "wait",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 41,
+      "function": "finish",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 52,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 58,
+      "function": "admission_closed",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 69,
+      "function": "closed",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 78,
+      "function": "t1423_only_requested_admission_rejection_becomes_graceful_stop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 102,
+      "function": "t1423_owner_drop_aborts_original_signal_observer",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 8,
+      "function": "fmt",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 15,
+      "function": "request_shutdown",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 20,
+      "function": "check_running",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 24,
+      "function": "run",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 24,
+      "function": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 38,
+      "function": "cancelled",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 41,
+      "function": "require_open",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 50,
+      "function": "check_running",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 53,
+      "function": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 57,
+      "function": "settled",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 62,
+      "function": "drain",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 75,
+      "function": "t1411_cutoff_preserves_original_admissions_and_rejects_reuse",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 92,
+      "function": "t1411_completed_history_is_bounded_and_empty_exit_finishes",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 104,
+      "function": "t1411_observation_capacity_is_independent_of_pool_release",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/daemon_startup.rs",
+      "line": 4,
+      "function": "t1423_startup_signals_retain_cleanup_and_early_stop",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 17,
+      "function": "port",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 23,
+      "function": "configure",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 48,
+      "function": "await_condition",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 57,
+      "function": "routes",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 67,
+      "function": "caught",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 72,
+      "function": "full_pipe",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 85,
+      "function": "drain_once",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 91,
+      "function": "await_banner",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 99,
+      "function": "settle",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 106,
+      "function": "reap",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 112,
+      "function": "banner_case",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 139,
+      "function": "open_writer",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 153,
+      "function": "config_case",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 188,
+      "function": "main",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 93,
+      "function": "printed",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/daemon_startup/signals.py",
+      "line": 141,
+      "function": "opened",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/daemon_startup/fake_adb.py",
+      "line": 9,
+      "function": "reverse",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/daemon_startup/fake_adb.py",
+      "line": 25,
+      "function": "main",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1646,
+      "function": "run_daemon",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1657,
+      "function": "run_daemon_with",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 318,
+      "function": "shutdown_requests",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/daemon_activity/tests.rs",
+      "line": 344,
+      "function": "t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests",
+      "complexity": 4
+    }
+  ]
+}

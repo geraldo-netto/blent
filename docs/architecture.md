@@ -297,6 +297,14 @@ runs in a supervised process, with parent-death signalling, generation checks an
 bounded compressed packets. Shared raw leases survive until codec final reference
 release inside the worker; replacement waits for actual child retirement. A stuck
 worker retains capacity until reaped. This does not recover a GPU/kernel-wide hang.
+The Linux daemon registers and retains SIGTERM/SIGINT observation before reading
+configuration or admitting resources. An independent observer latches a stop and
+immediately closes process admission, including while initialization is blocked.
+Configuration validation still runs and reports its original failures; only a
+typed admission-cutoff rejection caused by a requested stop becomes a graceful
+exit. A startup checkpoint precedes runtime/PID publication; later admissions
+serialize against the same cutoff. Existing owners retain their original cleanup
+proofs, and a remembered stop reaches the normal shutdown workflow after startup.
 The Linux entry point closes session/display-route/activity/input admission on normal
 return, error return or unwind. It asks active session/route owners to stop and
 keeps Tokio running until all original completion tickets settle, including the

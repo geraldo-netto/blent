@@ -1,0 +1,139 @@
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.21s
+
+RUN blent:lib:True FILTER=process_retirement::
+
+running 3 tests
+test process_retirement::tests::t1411_completed_history_is_bounded_and_empty_exit_finishes ... ok
+test process_retirement::tests::t1411_cutoff_preserves_original_admissions_and_rejects_reuse ... ok
+test process_retirement::tests::t1411_observation_capacity_is_independent_of_pool_release ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1134 filtered out; finished in 0.63s
+
+
+RUN blent:lib:True FILTER=session_supervision::
+
+running 5 tests
+test session_supervision::native_tests::t1026_dropped_owner_retains_late_original_creator_and_native ... ok
+test session_supervision::native_tests::t1026_success_error_panic_and_cancellation_retain_original_native ...
+thread 'session_supervision::native_tests::t1026_success_error_panic_and_cancellation_retain_original_native' (1116488) panicked at host/src/session_supervision/native_tests.rs:31:22:
+T1026 parent panicked with original native cleanup held
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test session_supervision::tests::t814_cleanup_error_and_panic_publish_failure ...
+thread 'session_supervision::tests::t814_cleanup_error_and_panic_publish_failure' (1116497) panicked at host/src/session_supervision.rs:308:17:
+T814 cleanup panic
+ok
+test session_supervision::tests::t814_retiring_session_keeps_slot_until_native_cleanup_and_siblings_progress ... ok
+test session_supervision::tests::t928_terminal_startup_worker_outcomes_remain_failures ...
+thread 'session_supervision::tests::t928_terminal_startup_worker_outcomes_remain_failures' (1116503) panicked at host/src/session_supervision.rs:290:13:
+T928 worker panic
+ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 1132 filtered out; finished in 0.08s
+
+
+RUN blent:lib:True FILTER=activity_follow::
+
+running 11 tests
+test activity_follow::recovery_tests::t1343_failed_replacement_retries_and_stop_prevents_further_creation ... ok
+test activity_follow::recovery_tests::t1343_loss_replaces_only_after_original_native_fence_with_fresh_evidence ... ok
+test activity_follow::recovery_tests::t1343_replacement_rejects_old_epochs_and_uses_fresh_capabilities ... ok
+test activity_follow::tests::t1018_bounded_drain_accepts_a_source_replenished_concurrently_with_consumption ... ok
+test activity_follow::tests::t1018_bounded_settings_reject_invalid_ranges_before_any_factory_exposure ... ok
+test activity_follow::tests::t1018_cancelled_or_dropped_creator_keeps_capacity_until_actual_native_join ... ok
+test activity_follow::tests::t1018_failed_timed_out_and_invalid_creation_never_publish_a_grant ...
+thread 'activity_follow::tests::t1018_failed_timed_out_and_invalid_creation_never_publish_a_grant' (1116546) panicked at host/src/activity_follow_tests.rs:254:17:
+T1018 creator panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test activity_follow::tests::t1018_identical_publications_and_late_updates_after_stop_do_not_wake_consumers ... ok
+test activity_follow::tests::t1018_ordered_edges_survive_coalescing_and_stop_waits_for_actual_source_retirement ... ok
+test activity_follow::tests::t1018_pending_creation_stop_is_prompt_and_observed_separately_from_retirement ... ok
+test activity_follow::tests::t1018_source_loss_and_panics_fail_without_freeing_stuck_native_ownership ...
+thread 'activity_follow::tests::t1018_source_loss_and_panics_fail_without_freeing_stuck_native_ownership' (1116563) panicked at host/src/activity_follow_tests.rs:93:18:
+T1018 input panic
+ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 1126 filtered out; finished in 0.42s
+
+
+RUN blent:bin:True FILTER=daemon_shutdown::
+
+running 2 tests
+test daemon_shutdown::tests::t1423_only_requested_admission_rejection_becomes_graceful_stop ... ok
+test daemon_shutdown::tests::t1423_owner_drop_aborts_original_signal_observer ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 622 filtered out; finished in 0.00s
+
+
+RUN blent:bin:True FILTER=daemon_activity::
+
+running 5 tests
+test daemon_activity::tests::t1027_daemon_owns_one_source_and_preserves_preferences_edges_and_native_retirement ... ok
+test daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests ... ok
+test daemon_activity::tests::t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel ... ok
+test daemon_activity::tests::t1027_unsupported_capabilities_and_loss_remain_visible_without_recreation ... ok
+test daemon_activity::tests::t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 619 filtered out; finished in 0.51s
+
+
+RUN blent:bin:True FILTER=t305_
+
+running 2 tests
+test cli_tests::t305_shutdown_already_requested_is_not_lost ... ok
+test cli_tests::t305_shutdown_waits_for_true_or_channel_closure ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 622 filtered out; finished in 0.00s
+
+
+RUN daemon_startup:test:True FILTER=
+
+running 1 test
+test t1423_startup_signals_retain_cleanup_and_early_stop ... {"case": "banner", "signal": 15, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 15, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "config", "invalid": false, "installed": true, "exit": 0, "adb_started": false}
+{"case": "config", "invalid": true, "installed": true, "exit": 1, "adb_started": false}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.42s
+
+
+RUN activity_exit:test:True FILTER=
+
+running 2 tests
+test t1421_activity_exit_fixture ... ok
+test t1421_exit_retains_delayed_activity_creation_and_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.97s
+
+
+RUN process_exit:test:True FILTER=
+
+running 2 tests
+test t1411_process_exit_fixture ... ok
+test t1411_process_exit_retains_routes_and_async_native_session_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.29s
+
+
+RUN runtime_exit:test:True FILTER=
+
+running 2 tests
+test t819_final_runtime_exit_is_bounded_after_started_native_work ... ok
+test t819_runtime_exit_fixture ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+RUN wifi_exit:test:True FILTER=
+
+running 2 tests
+test t1365_exit_fixture ... ok
+test t1365_process_exit_waits_for_original_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s

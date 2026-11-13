@@ -23,12 +23,7 @@ pub(crate) struct Registry {
 impl Registry {
     pub(crate) fn reserve(&self, pool: &Pool) -> std::io::Result<Admission> {
         let mut state = self.state.lock().unwrap();
-        if state.closed {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::BrokenPipe,
-                "Process resource admission is closed",
-            ));
-        }
+        Self::require_open(state.closed)?;
         state.pending.retain(|proof| !proof.is_complete());
         if state.pending.len() >= 12292 {
             return Err(std::io::Error::new(
@@ -43,7 +38,19 @@ impl Registry {
     pub(crate) async fn cancelled(&self) {
         self.stopping.cancelled().await;
     }
-    fn close(&self) {
+    fn require_open(closed: bool) -> std::io::Result<()> {
+        if closed {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::BrokenPipe,
+                crate::runtime_owner::AdmissionClosed,
+            ));
+        }
+        Ok(())
+    }
+    pub(crate) fn check_running(&self) -> std::io::Result<()> {
+        Self::require_open(self.state.lock().unwrap().closed)
+    }
+    pub(crate) fn close(&self) {
         self.state.lock().unwrap().closed = true;
         self.stopping.cancel();
     }

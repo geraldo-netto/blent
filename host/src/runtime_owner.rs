@@ -1,5 +1,26 @@
 //! Process-entry runtime ownership. All resource supervisors finish first.
 use std::future::Future;
+
+/// Process cutoff rejected new resource admission; this is distinct from I/O failure.
+#[derive(Debug)]
+pub struct AdmissionClosed;
+impl std::fmt::Display for AdmissionClosed {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("Process resource admission is closed")
+    }
+}
+impl std::error::Error for AdmissionClosed {}
+
+/// Stop new admissions and wake owners; `run` retains the executor until settlement.
+pub fn request_shutdown() {
+    crate::process_retirement::PROCESS.close();
+}
+
+/// Startup checkpoint only; each later admission still checks cutoff atomically.
+pub fn check_running() -> std::io::Result<()> {
+    crate::process_retirement::PROCESS.check_running()
+}
+
 pub fn run<T>(work: impl Future<Output = T>) -> std::io::Result<T> {
     let _wifi_retirement = crate::wifi::ProcessExit;
     let budget =

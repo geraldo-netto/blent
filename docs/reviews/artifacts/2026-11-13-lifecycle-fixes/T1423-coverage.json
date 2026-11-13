@@ -1,0 +1,156 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "source_sha256": {
+    "host/src/daemon_shutdown.rs": "1e310a8bb959fbc432b8023da6d78519fd84af7a0cf5912381b5541fdafab33c",
+    "host/src/runtime_owner.rs": "bbc94f5428809eaf588d83de0f99bd1e57da3ed9387516058dc68b6f05d0402f",
+    "host/src/process_retirement.rs": "f9d647f7d942cd4092e1e5bd449aac02bc164b4b43306c3beae9c3b8100538b1",
+    "host/src/linux_main.rs": "dbd8d5d2d5aaefe7a37d39624f98090bb6261dd621fc8cc00557fc71be5cc31a"
+  },
+  "object_sha256": {
+    "daemon_startup:test:True": "b510c0d7c079dbc710b57973c8efafe0b29ef0c9aa5d188cb632fdde23bbeffd",
+    "runtime_exit:test:True": "e7083cd633b8f9cf562b5eb1090ec08d79f63961c721d767515e4d61b5fc8cd2",
+    "activity_exit:test:True": "cdb897da391da20f2803676bc84136ba76c56fb83103a17c313bd03c0223672a",
+    "wifi_exit:test:True": "5b7a3141f6091221bf43385d84304313e83fe26b271c6fab14035bb0ce3412b5",
+    "process_exit:test:True": "1b285cb4b806ec96de17b123b6269e8b053671d2383d0ac841b5eb1356d5a1ff",
+    "blent:bin:False": "e1ee78c381c672d75ddee185ab417a23d13349c2ffa4fe143cc0cdcfdff5b0e4",
+    "blent:lib:True": "eb52747c342a09447e02dfdfdfad8648e6f49c0a8736bb5aad2363fd686aec40",
+    "blent:bin:True": "aa697c2824fb834bfff75ef2ae3cf04183c606b2b67314f8c2825c6134e3be90"
+  },
+  "functions": [
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "function": "new",
+      "first": 14,
+      "last": 29,
+      "covered": 13,
+      "executable": 13,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "function": "wait",
+      "first": 31,
+      "last": 39,
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "function": "finish",
+      "first": 41,
+      "last": 49,
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "function": "drop",
+      "first": 52,
+      "last": 55,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "function": "admission_closed",
+      "first": 58,
+      "last": 63,
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "function": "fmt",
+      "first": 8,
+      "last": 10,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "function": "request_shutdown",
+      "first": 15,
+      "last": 17,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "function": "check_running",
+      "first": 20,
+      "last": 22,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "function": "run",
+      "first": 24,
+      "last": 40,
+      "covered": 13,
+      "executable": 13,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "reserve",
+      "first": 24,
+      "last": 37,
+      "covered": 14,
+      "executable": 14,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "require_open",
+      "first": 41,
+      "last": 49,
+      "covered": 9,
+      "executable": 9,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "check_running",
+      "first": 50,
+      "last": 52,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "close",
+      "first": 53,
+      "last": 56,
+      "covered": 4,
+      "executable": 4,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "function": "run_daemon",
+      "first": 1646,
+      "last": 1655,
+      "covered": 9,
+      "executable": 9,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "function": "run_daemon_with",
+      "first": 1657,
+      "last": 1913,
+      "covered": 196,
+      "executable": 205,
+      "percent": 95.61
+    }
+  ]
+}

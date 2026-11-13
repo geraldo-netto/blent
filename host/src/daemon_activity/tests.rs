@@ -318,6 +318,7 @@ async fn daemon_config() -> crate::Cli {
 async fn shutdown_requests() {
     for signal in [0, libc::SIGTERM, libc::SIGINT] {
         let (quit, receiver) = tokio::sync::watch::channel(false);
+        let shutdown = crate::daemon_shutdown::Listener::new().unwrap();
         let emit = tokio::spawn(async move {
             tokio::task::yield_now().await;
             if signal == 0 {
@@ -328,12 +329,15 @@ async fn shutdown_requests() {
         });
         tokio::time::timeout(
             Duration::from_secs(3),
-            crate::wait_daemon_shutdown(receiver),
+            shutdown.wait(receiver),
         )
         .await
         .unwrap()
         .unwrap();
         emit.await.unwrap();
+        // T1423: even a fresh resource facade cannot admit work after observation.
+        assert!(blent::session::Workers::reserve().is_err());
+        assert!(blent::runtime_owner::check_running().is_err());
     }
 }
 #[tokio::test]
@@ -341,7 +345,6 @@ async fn t1027_isolated_daemon_joins_original_source_and_handles_shutdown_reques
     if isolated_daemon() {
         return;
     }
-    shutdown_requests().await;
     let cli = daemon_config().await;
     let (factory, release) = fixture(Default::default());
     let observed = factory.clone();
@@ -369,6 +372,7 @@ async fn t1027_isolated_daemon_joins_original_source_and_handles_shutdown_reques
         .unwrap();
     assert!(!crate::get_pid_path().exists());
     assert_eq!(factory.state.created.load(Ordering::Acquire), 1);
+    shutdown_requests().await;
 }
 
 #[test]

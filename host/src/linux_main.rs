@@ -16,6 +16,7 @@ use blent::camera;
 mod capture;
 use blent::config;
 mod daemon_activity;
+mod daemon_shutdown;
 mod desktop;
 use blent::device_tasks;
 mod discovery;
@@ -71,7 +72,6 @@ use monitor::test_support::{deliver_extra_token, tick_assigned_apps};
 use session::start_servers;
 use session::Runtime as ExtraSession;
 use std::path::PathBuf;
-use tokio::signal;
 use tokio::sync::watch;
 #[cfg(not(feature = "accessory-transport"))]
 use tracing::error;
@@ -1644,12 +1644,14 @@ printf '%s\n' "$2" >> "$0.log"
 }
 
 async fn run_daemon(cli: Cli) -> Result<()> {
-    run_daemon_with(
+    let shutdown = daemon_shutdown::Listener::new()?;
+    let result = run_daemon_with(
         cli,
         std::sync::Arc::new(blent::activity::Factory::default()),
-        wait_daemon_shutdown,
+        |quit| shutdown.wait(quit),
     )
-    .await
+    .await;
+    shutdown.finish(result)
 }
 
 async fn run_daemon_with<S, F>(
@@ -1669,6 +1671,7 @@ where
         &effective.encoder,
         &file_cfg.encoding_gpu,
     ))?;
+    blent::runtime_owner::check_running()?;
 
     runtime::runtime_dir().context("validate private runtime directory")?;
     let helper_path = find_helper(cli.helper.as_deref())?;
@@ -1906,24 +1909,6 @@ where
     remove_pid_file_if_ours(&pid_path, pid);
 
     info!("blent daemon stopped");
-    Ok(())
-}
-
-async fn wait_daemon_shutdown(quit_rx: watch::Receiver<bool>) -> Result<()> {
-    // `blent stop` (and the GUI) send SIGTERM, not SIGINT — without a
-    // handler for it, the kernel kills the process with its default
-    // disposition and none of our cleanup (which is what kills the
-    // evdi_helper/ffmpeg children via kill_on_drop) ever runs, orphaning
-    // them to fight over the shared FIFO with the next daemon that starts.
-    let mut sigterm = signal::unix::signal(signal::unix::SignalKind::terminate())?;
-    // Quit from the tray raises the same flag the signal handlers do, so it
-    // has to be waited on here too — otherwise the pipeline winds down while
-    // the process itself stays alive with nothing left to run.
-    tokio::select! {
-        _ = signal::ctrl_c() => {}
-        _ = sigterm.recv() => {}
-        _ = wait_for_shutdown(quit_rx) => {}
-    }
     Ok(())
 }
 
