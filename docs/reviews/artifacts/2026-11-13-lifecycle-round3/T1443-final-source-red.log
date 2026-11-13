@@ -1,0 +1,32 @@
+
+running 1 test
+test daemon_pid::tests::t1443_partial_write_preserves_absent_or_previous_pid_hint ... FAILED
+
+failures:
+
+failures:
+    daemon_pid::tests::t1443_partial_write_preserves_absent_or_previous_pid_hint
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+
+thread 'daemon_pid::tests::t1443_partial_write_preserves_absent_or_previous_pid_hint' (1450503) panicked at /tmp/blent-pid-partial-review/final-source-before.rs:149:13:
+
+running 1 test
+test daemon_pid::tests::t1443_partial_publication_child ... FAILED
+
+failures:
+
+failures:
+    daemon_pid::tests::t1443_partial_publication_child
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+
+thread 'daemon_pid::tests::t1443_partial_publication_child' (1450505) panicked at /tmp/blent-pid-partial-review/final-source-before.rs:121:9:
+assertion `left == right` failed: T1443 failed write changed PID hint
+  left: Some([49, 52, 53, 48, 53, 48])
+ right: None
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

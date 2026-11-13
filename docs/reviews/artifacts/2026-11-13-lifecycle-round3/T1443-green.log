@@ -1,0 +1,15 @@
+
+running 6 tests
+test daemon_pid::tests::t1428_cancelled_workflow_retires_pid ... ok
+test daemon_pid::tests::t1428_failed_publication_and_unwind_leave_no_owned_pid ... ok
+test daemon_pid::tests::t1428_publication_removes_only_its_own_pid ... ok
+test daemon_pid::tests::t1443_partial_publication_child ... ok
+test daemon_pid::tests::t1443_partial_write_preserves_absent_or_previous_pid_hint ... ok
+test daemon_pid::tests::t1443_rejected_publication_preserves_destination_and_cleans_temporary_file ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+thread 'daemon_pid::tests::t1428_failed_publication_and_unwind_leave_no_owned_pid' (1450546) panicked at /home/netto/Desktop/projects/blent/host/src/daemon_pid.rs:61:13:
+T1428: workflow unwinds after publication
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

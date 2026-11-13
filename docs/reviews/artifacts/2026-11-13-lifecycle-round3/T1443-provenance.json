@@ -1,0 +1,7 @@
+{
+  "baseline_commit": "d1bb5d6e",
+  "permanent_red_source_sha256": "e60cb502d3019cbf1117be75498fc3eddb99b089ce7b20db7262dfe9564cdcb8",
+  "rustc": "rustc 1.100.0 (0ef1bc386 2026-11-09)",
+  "normal_suite_path": "host/src/daemon_pid.rs::tests",
+  "scope": "Exact production module plus original PID removal helper, compiled directly as a test harness. No alternate PID implementation."
+}

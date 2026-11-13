@@ -1,0 +1,103 @@
+{
+  "tool": "rustc1.100.0 LLVM23.1.5; repository coverage inventory and syn2.0.119 complexity frontend",
+  "coverage": [
+    {
+      "file": "host/src/daemon_pid.rs",
+      "name": "new",
+      "line": 13,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/daemon_pid.rs",
+      "name": "drop",
+      "line": 28,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "complexity": [
+    [
+      13,
+      "new",
+      3
+    ],
+    [
+      28,
+      "drop",
+      1
+    ],
+    [
+      38,
+      "t1428_publication_removes_only_its_own_pid",
+      1
+    ],
+    [
+      55,
+      "t1428_failed_publication_and_unwind_leave_no_owned_pid",
+      2
+    ],
+    [
+      68,
+      "t1428_cancelled_workflow_retires_pid",
+      1
+    ],
+    [
+      90,
+      "shorter_than_pid",
+      1
+    ],
+    [
+      107,
+      "drop",
+      1
+    ],
+    [
+      116,
+      "t1443_partial_publication_child",
+      1
+    ],
+    [
+      141,
+      "t1443_partial_write_preserves_absent_or_previous_pid_hint",
+      3
+    ],
+    [
+      166,
+      "t1443_rejected_publication_preserves_destination_and_cleans_temporary_file",
+      1
+    ]
+  ],
+  "source_sha256": "24bdfab76de064f3a47f6fe72b3a9343172d79e205af2ef5c4b9ccd38047b760",
+  "object_sha256": "338b61a3010bbc33cf628577b9f84035fcf3d24d639b9412f7dae2c1c9f85f60",
+  "final_red_module_sha256": "9678bcf73619d9a6f3e0a9dbf58507c545d98c15edeeaccba08dc9642c1286ba",
+  "review_fixture_complexity": {
+    "docs/reviews/artifacts/2026-11-13-lifecycle-round3/T1443-probe.rs": [
+      [
+        3,
+        "remove_pid_file_if_ours",
+        1
+      ],
+      [
+        4,
+        "main",
+        1
+      ]
+    ],
+    "docs/reviews/artifacts/2026-11-13-lifecycle-round3/T1443-harness.rs": [
+      [
+        3,
+        "remove_pid_file_if_ours",
+        4
+      ]
+    ]
+  }
+}

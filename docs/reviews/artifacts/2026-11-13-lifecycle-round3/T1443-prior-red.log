@@ -1,0 +1,17 @@
+
+running 1 test
+test daemon_pid::tests::t1443_partial_publication_child ... FAILED
+
+failures:
+
+failures:
+    daemon_pid::tests::t1443_partial_publication_child
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+
+thread 'daemon_pid::tests::t1443_partial_publication_child' (1435716) panicked at /home/netto/Desktop/projects/blent/host/src/daemon_pid.rs:117:9:
+assertion `left == right` failed: T1443 failed write changed PID hint
+  left: Some([49, 52])
+ right: Some([52, 50, 52, 50, 52, 50])
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
