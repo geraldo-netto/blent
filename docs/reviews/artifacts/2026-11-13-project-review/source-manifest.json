@@ -1,0 +1,18 @@
+{
+  "revision": "8a471d0afa9f6019f169737c9125f4c5ccd5e035",
+  "source_sha256": {
+    "host/src/usb/network.rs": "512240684dd32e30979e94f3172495badb86c3149a8a31f84b037f1ee7f72b16",
+    "host/src/usb/monitor.rs": "94ee90d22cfeb9152511396dce2311b1a2cb349aea08ebde496af7dfca8facac",
+    "host/src/usb/routes.rs": "d1d8cbca316b37afa3804ea6fd1620f241188674d5b96ccb9e04961913b9e475",
+    "host/src/discovery.rs": "01cb7eede22981690f96bb5272b9bf33339128de02f667e6807a94fd74841615",
+    "host/src/device_tasks.rs": "1fdbcb3f3c658c1194eef913cc0696a5e648a5989f54fd29891028bf8994df0d",
+    "host/src/monitor.rs": "dcdcdb6dce641d52e15e00653419676fcdb5dc6c465f53ca388d7d38ea28f82e",
+    "host/src/monitor/launch_policy.rs": "b6db40ef86df8a84b74f65317732e86c02b2ebc91205efe2256bc4e7ce283180",
+    "common/src/linux/cli.rs": "7c411f271d75aaa110fe699d05f985172da763f9cf407b4c4a7be6932f230489",
+    "common/src/linux/mod.rs": "f49ee33172029f35e0cf3285dc83eff447f63a3c791052944adaccc19ec16f39",
+    "common/src/linux/daemon.rs": "b42a8593bb67f4834d7f7503033781aff1e150b74376d433a9ff67b887cd5956",
+    "scripts/complexity/check.py": "99095e6ca5dfb364b150e617320a7b16046feb0b0f63e36f1078c8da1c4e06b5",
+    "scripts/complexity/requirements.txt": "6cbf7ca6810433ca0a37312cb0c042515c3d105b2ce59d6fde1f269e8a190068"
+  },
+  "scope": "Hashes bind finding sources and checker identity; this is not a count of files manually reviewed."
+}

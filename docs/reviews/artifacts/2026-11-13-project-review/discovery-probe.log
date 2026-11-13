@@ -1,0 +1,37 @@
+   Compiling blent-review-probe v0.0.0 (/home/netto/.cache/blent-review-20261113/probe)
+warning: method `retire` is never used
+  --> /home/netto/Desktop/projects/blent/host/src/device_tasks.rs:71:12
+   |
+16 | impl<T: Send + 'static> DeviceTasks<T> {
+   | -------------------------------------- method in this implementation
+...
+71 |     pub fn retire(&mut self, serial: &str) -> Option<JoinHandle<T>> {
+   |            ^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: methods `eligible`, `present`, `inventory`, and `initial_probes_finished` are never used
+  --> /home/netto/Desktop/projects/blent/host/src/discovery.rs:66:12
+   |
+26 | impl Discovery {
+   | -------------- methods in this implementation
+...
+66 |     pub fn eligible(&self) -> Vec<String> {
+   |            ^^^^^^^^
+...
+78 |     pub fn present(&self, serial: &str) -> bool {
+   |            ^^^^^^^
+...
+82 |     pub fn inventory(&self) -> &[String] {
+   |            ^^^^^^^^^
+...
+88 |     pub fn initial_probes_finished(&self) -> bool {
+   |            ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `blent-review-probe` (bin "discovery") generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.45s
+     Running `/home/netto/Desktop/projects/blent/target/debug/discovery`
+first observation: Some(("192.0.2.1:5555", Some("tablet-1")))
+after endpoint replacement: Some(("192.0.2.1:5555", Some("tablet-1")))
+identity query count across two observations: 1
+actual identity now: Some(("192.0.2.1:5555", "tablet-2"))

@@ -1,0 +1,10 @@
+[package]
+name = "blent-review-probe"
+version = "0.0.0"
+edition = "2021"
+[dependencies]
+blent = { path = "/home/netto/Desktop/projects/blent/host" }
+blent-config = { path = "/home/netto/Desktop/projects/blent/common" }
+tokio = { version = "1", features = ["full"] }
+anyhow = "1"
+tempfile = "3"

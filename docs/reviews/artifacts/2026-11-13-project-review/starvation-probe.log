@@ -1,0 +1,85 @@
+   Compiling blent-review-probe v0.0.0 (/home/netto/.cache/blent-review-20261113/probe)
+warning: function `valid_serial` is never used
+ --> src/bin/starvation.rs:7:4
+  |
+7 | fn valid_serial(_: &str) -> bool { unreachable!("USB-only constructor unused by probe") }
+  |    ^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `Routes` is never constructed
+ --> /home/netto/Desktop/projects/blent/host/src/usb/routes.rs:5:12
+  |
+5 | pub struct Routes {
+  |            ^^^^^^
+
+warning: associated items `new`, `for_transport`, `retarget`, `serial`, `prepare`, and `retire` are never used
+  --> /home/netto/Desktop/projects/blent/host/src/usb/routes.rs:11:12
+   |
+10 | impl Routes {
+   | ----------- associated items in this implementation
+11 |     pub fn new(serial: &str, ports: (u16, u16)) -> Result<Self> {
+   |            ^^^
+...
+18 |     pub fn for_transport(serial: &str, ports: (u16, u16)) -> Result<Self> {
+   |            ^^^^^^^^^^^^^
+...
+32 |     pub(crate) fn retarget(&mut self, serial: &str) -> Result<()> {
+   |                   ^^^^^^^^
+...
+37 |     pub fn serial(&self) -> &str {
+   |            ^^^^^^
+...
+41 |     pub async fn prepare<C: Commands>(&mut self, adb: &Adb<C>) -> Result<()> {
+   |                  ^^^^^^^
+...
+65 |     pub async fn retire<C: Commands>(&mut self, adb: &Adb<C>) -> Result<()> {
+   |                  ^^^^^^
+
+warning: fields `owner`, `serial`, and `incarnation` are never read
+  --> /home/netto/Desktop/projects/blent/host/src/monitor/launch_policy.rs:22:5
+   |
+21 | pub(super) struct Ticket {
+   |                   ------ fields in this struct
+22 |     owner: Launches,
+   |     ^^^^^
+23 |     serial: String,
+   |     ^^^^^^
+24 |     incarnation: Arc<()>,
+   |     ^^^^^^^^^^^
+
+warning: method `take` is never used
+  --> /home/netto/Desktop/projects/blent/host/src/monitor/launch_policy.rs:87:12
+   |
+84 | impl Ticket {
+   | ----------- method in this implementation
+...
+87 |     pub fn take(&self) -> bool {
+   |            ^^^^
+
+warning: methods `identity`, `attachment_identity`, `ticket`, `retarget`, and `can_retire` are never used
+  --> /home/netto/Desktop/projects/blent/host/src/usb/network.rs:21:12
+   |
+12 | impl Network {
+   | ------------ methods in this implementation
+...
+21 |     pub fn identity(&self, serial: &str) -> Option<&String> {
+   |            ^^^^^^^^
+...
+24 |     pub fn attachment_identity(&self, serial: &str) -> String {
+   |            ^^^^^^^^^^^^^^^^^^^
+...
+27 |     pub fn ticket(&self, serial: &str) -> Option<crate::launch_policy::Ticket> {
+   |            ^^^^^^
+...
+31 |     pub fn retarget(&self, routes: &mut Routes, identity: Option<&String>) -> bool {
+   |            ^^^^^^^^
+...
+45 |     pub async fn can_retire<C: Commands>(
+   |                  ^^^^^^^^^^
+
+warning: `blent-review-probe` (bin "starvation") generated 6 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.88s
+     Running `/home/netto/Desktop/projects/blent/target/debug/starvation`
+poll 1: completed inventory=false healthy identity queries=0
+poll 2: completed inventory=false healthy identity queries=0
