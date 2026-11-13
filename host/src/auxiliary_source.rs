@@ -102,7 +102,10 @@ impl Opening {
 fn shared() -> Result<Arc<Registry>> {
     static REGISTRY: OnceLock<Result<Arc<Registry>, String>> = OnceLock::new();
     cached(&REGISTRY, || {
-        Registry::new(Arc::new(crate::activity::PowerFactory), Settings::default())
+        Registry::new(
+            Arc::new(crate::activity::PowerFactory::default()),
+            Settings::default(),
+        )
     })
 }
 fn cached(

@@ -1,0 +1,72 @@
+{
+  "tool": "Rust 1.100.0 native LLVM counters, cargo-llvm-cov 0.8.7, Blent syn 2.0.119 frontend",
+  "selected_tests": 54,
+  "failed": 0,
+  "functions": [
+    {
+      "file": "host/src/activity.rs",
+      "name": "create",
+      "line": 246,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "699f59c934c3463b5209f7c93fb41b9a2bb48a21a0944345eabef7fd01971a85"
+    },
+    {
+      "file": "host/src/activity/power.rs",
+      "name": "create",
+      "line": 36,
+      "language": "rust",
+      "covered": 11,
+      "total": 11,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "ccc86bab65adcecdaa94a68ce0151972cb429484b3406176ccc36f79f2dd2ad6"
+    },
+    {
+      "file": "host/src/activity/continuity.rs",
+      "name": "accept",
+      "line": 12,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 6,
+      "source_sha256": "3d2f3574d9552c004a07ebd591cc9e248ae397469d503f11543487c820308726"
+    },
+    {
+      "file": "host/src/auxiliary_source.rs",
+      "name": "shared",
+      "line": 102,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "c597c244046b7722c70509e5074fa67227f0f7d12fef545ce25b880b5e55db11"
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "name": "run_daemon",
+      "line": 1646,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "0e327e1ca6ddf458be4ea6ed3c25df5e07debc5892932e323c6be30236826f3d"
+    }
+  ]
+}

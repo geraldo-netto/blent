@@ -1,0 +1,31 @@
+{
+  "tool": "project complexity checker, Rust syn 2.0.119",
+  "source_sha256": "b57b385373c3709e0781f6599c1fc67a1018cbed11e8a2275ef152da7d47c7ea",
+  "functions": [
+    {
+      "line": 6,
+      "function": "counts",
+      "complexity": 1
+    },
+    {
+      "line": 10,
+      "function": "wait_count",
+      "complexity": 2
+    },
+    {
+      "line": 17,
+      "function": "intercepted",
+      "complexity": 1
+    },
+    {
+      "line": 23,
+      "function": "inspect",
+      "complexity": 1
+    },
+    {
+      "line": 43,
+      "function": "main",
+      "complexity": 1
+    }
+  ]
+}

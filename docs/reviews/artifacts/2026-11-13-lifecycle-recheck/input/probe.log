@@ -1,0 +1,5 @@
+first follow joined: counts=(1, 0), native_completion_present=false
+replacement follow joined before original device destruction: counts=(2, 0)
+all fixture devices eventually destroyed: counts=(2, 2)
+
+exit=0

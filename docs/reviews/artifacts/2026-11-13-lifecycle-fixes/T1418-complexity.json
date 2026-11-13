@@ -1,0 +1,161 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "functions": [
+    {
+      "file": "host/src/activity.rs",
+      "line": 246,
+      "name": "create",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/power.rs",
+      "line": 36,
+      "name": "create",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity.rs",
+      "line": 12,
+      "name": "accept",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 494,
+      "name": "t1018_private_native_factory_follows_configured_preferences_and_original_source_cleanup",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 558,
+      "name": "t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 594,
+      "name": "t1084_private_power_factory_ignores_desktop_helpers_and_follows_original_logind",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 639,
+      "name": "t1084_private_power_factory_reports_absent_logind_without_display_fallback",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 665,
+      "name": "invalid_power_factory",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 73,
+      "name": "finish",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/recovery_tests.rs",
+      "line": 84,
+      "name": "replacement",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/auxiliary_source.rs",
+      "line": 102,
+      "name": "shared",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 1646,
+      "name": "run_daemon",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 14,
+      "name": "create",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 31,
+      "name": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 53,
+      "name": "attempts",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 62,
+      "name": "conservative",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 78,
+      "name": "finish",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 94,
+      "name": "delayed",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 144,
+      "name": "t1418_delayed_power_owner_recovers_with_fresh_state",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 152,
+      "name": "t1418_delayed_display_owner_recovers_with_fresh_state",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 161,
+      "name": "t1418_prolonged_absence_remains_conservative_and_stop_settles",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 176,
+      "name": "unsupported",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 190,
+      "name": "t1418_initially_unsupported_stays_explicit_without_retry",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 200,
+      "name": "capabilities",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 209,
+      "name": "t1418_all_capability_subsets_reject_loss_without_forgetting_admission",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 231,
+      "name": "t1418_rejected_partial_source_retains_native_debt_through_stop",
+      "complexity": 4
+    }
+  ]
+}

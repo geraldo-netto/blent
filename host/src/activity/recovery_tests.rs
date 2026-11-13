@@ -70,7 +70,7 @@ fn start(factory: Arc<NativeFactory>) -> crate::activity_follow::Following {
     .unwrap()
 }
 
-async fn finish(following: crate::activity_follow::Following) {
+pub(super) async fn finish(following: crate::activity_follow::Following) {
     following.stop();
     tokio::time::timeout(Duration::from_secs(3), async {
         while !following.retired() {
@@ -81,7 +81,7 @@ async fn finish(following: crate::activity_follow::Following) {
     .unwrap();
 }
 
-async fn replacement(fixture: &Fixture, name: &str) -> Connection {
+pub(super) async fn replacement(fixture: &Fixture, name: &str) -> Connection {
     fixture.server.release_name(name).await.unwrap();
     zbus::connection::Builder::session()
         .unwrap()

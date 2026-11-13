@@ -1,0 +1,127 @@
+{
+  "tool": "scripts/complexity/check.py; Python AST3.12.3; blent-rust-source0.1.0 /syn2.0.119",
+  "maximum_allowed": 9,
+  "functions_measured": 17,
+  "exceeding_maximum": 0,
+  "functions": [
+    {
+      "file": "activity_exit_probe.rs",
+      "line": 18,
+      "function": "capabilities",
+      "complexity": 1,
+      "source_sha256": "076f470ad4391161d5a1ea6b98a4e6bf185c29d3f23465817d46b06fdcfe6383"
+    },
+    {
+      "file": "activity_exit_probe.rs",
+      "line": 21,
+      "function": "poll",
+      "complexity": 1,
+      "source_sha256": "076f470ad4391161d5a1ea6b98a4e6bf185c29d3f23465817d46b06fdcfe6383"
+    },
+    {
+      "file": "activity_exit_probe.rs",
+      "line": 24,
+      "function": "stop",
+      "complexity": 0,
+      "source_sha256": "076f470ad4391161d5a1ea6b98a4e6bf185c29d3f23465817d46b06fdcfe6383"
+    },
+    {
+      "file": "activity_exit_probe.rs",
+      "line": 25,
+      "function": "retired",
+      "complexity": 1,
+      "source_sha256": "076f470ad4391161d5a1ea6b98a4e6bf185c29d3f23465817d46b06fdcfe6383"
+    },
+    {
+      "file": "activity_exit_probe.rs",
+      "line": 30,
+      "function": "create",
+      "complexity": 2,
+      "source_sha256": "076f470ad4391161d5a1ea6b98a4e6bf185c29d3f23465817d46b06fdcfe6383"
+    },
+    {
+      "file": "activity_exit_probe.rs",
+      "line": 52,
+      "function": "work",
+      "complexity": 4,
+      "source_sha256": "076f470ad4391161d5a1ea6b98a4e6bf185c29d3f23465817d46b06fdcfe6383"
+    },
+    {
+      "file": "activity_exit_probe.rs",
+      "line": 70,
+      "function": "main",
+      "complexity": 3,
+      "source_sha256": "076f470ad4391161d5a1ea6b98a4e6bf185c29d3f23465817d46b06fdcfe6383"
+    },
+    {
+      "file": "fake_adb.py",
+      "line": 9,
+      "function": "reverse",
+      "complexity": 3,
+      "source_sha256": "971120854451aa2d6770d4671862217f5413f8de9328a85bff26f09ab0966e18"
+    },
+    {
+      "file": "fake_adb.py",
+      "line": 25,
+      "function": "main",
+      "complexity": 2,
+      "source_sha256": "971120854451aa2d6770d4671862217f5413f8de9328a85bff26f09ab0966e18"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 16,
+      "function": "port",
+      "complexity": 1,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 22,
+      "function": "configure",
+      "complexity": 2,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 48,
+      "function": "full_pipe",
+      "complexity": 2,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 61,
+      "function": "await_routes",
+      "complexity": 5,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 71,
+      "function": "caught",
+      "complexity": 1,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 76,
+      "function": "release_stdout",
+      "complexity": 4,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 84,
+      "function": "run",
+      "complexity": 5,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    },
+    {
+      "file": "startup_signal_probe.py",
+      "line": 113,
+      "function": "main",
+      "complexity": 2,
+      "source_sha256": "f2328e4a27c724e809481cf2a09cd4e6d52c9eb7cd2f8af6fb6ab4022c9e9d88"
+    }
+  ]
+}

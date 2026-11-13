@@ -1,0 +1,41 @@
+JUnit version 4.13.2
+.ADB_ORDER timing=FOREGROUND delivery=2 admittedBeforeResume=true admittedAfter=true sockets=2 port=8891
+.ADB_ORDER timing=BACKGROUND delivery=2 admittedBeforeResume=true admittedAfter=false sockets=1 port=null
+E.ADB_ORDER timing=AFTER_RESUME delivery=2 admittedBeforeResume=true admittedAfter=true sockets=2 port=8891
+.NULL_SELECTION active=false reconnect=false delivery=2 admitted=true port=8891
+E.ADB_ORDER timing=FOREGROUND delivery=2 admittedBeforeResume=true admittedAfter=true sockets=2 port=8891
+.ADB_ORDER timing=BACKGROUND delivery=2 admittedBeforeResume=true admittedAfter=false sockets=1 port=null
+E.ADB_ORDER timing=AFTER_RESUME delivery=2 admittedBeforeResume=true admittedAfter=true sockets=2 port=8891
+.NULL_SELECTION active=false reconnect=false delivery=2 admitted=true port=8891
+E
+Time: 3.612
+There were 4 failures:
+1) backgroundPostDisconnectDeliveryMustRemainFreshAtResume[27](com.blent.ReviewAdbOrderingProbe)
+java.lang.AssertionError: Protected delivery after USB disconnect must survive foreground transition expected:<8891> but was:<null>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.ReviewAdbOrderingProbe.deliveryOrder(ReviewAdbOrderingProbe.kt:57)
+	at com.blent.ReviewAdbOrderingProbe.backgroundPostDisconnectDeliveryMustRemainFreshAtResume(ReviewAdbOrderingProbe.kt:35)
+2) disconnectAfterNullUsbSelectionMustNotLeavePreDisconnectAdbAuthority[27](com.blent.ReviewAdbOrderingProbe)
+java.lang.AssertionError: Disconnect must cut off previously delivered ADB authority expected null, but was:<DisplayRoutes(revision=2, videoPort=8890, controlPort=8891, credential=true)>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotNull(Assert.java:756)
+	at org.junit.Assert.assertNull(Assert.java:738)
+	at com.blent.ReviewAdbOrderingProbe.disconnectAfterNullUsbSelectionMustNotLeavePreDisconnectAdbAuthority(ReviewAdbOrderingProbe.kt:78)
+3) backgroundPostDisconnectDeliveryMustRemainFreshAtResume(com.blent.ReviewAdbOrderingProbe)
+java.lang.AssertionError: Protected delivery after USB disconnect must survive foreground transition expected:<8891> but was:<null>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at com.blent.ReviewAdbOrderingProbe.deliveryOrder(ReviewAdbOrderingProbe.kt:57)
+	at com.blent.ReviewAdbOrderingProbe.backgroundPostDisconnectDeliveryMustRemainFreshAtResume(ReviewAdbOrderingProbe.kt:35)
+4) disconnectAfterNullUsbSelectionMustNotLeavePreDisconnectAdbAuthority(com.blent.ReviewAdbOrderingProbe)
+java.lang.AssertionError: Disconnect must cut off previously delivered ADB authority expected null, but was:<DisplayRoutes(revision=2, videoPort=8890, controlPort=8891, credential=true)>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotNull(Assert.java:756)
+	at org.junit.Assert.assertNull(Assert.java:738)
+	at com.blent.ReviewAdbOrderingProbe.disconnectAfterNullUsbSelectionMustNotLeavePreDisconnectAdbAuthority(ReviewAdbOrderingProbe.kt:78)
+
+FAILURES!!!
+Tests run: 8,  Failures: 4

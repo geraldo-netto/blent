@@ -1,0 +1,25 @@
+{
+  "reviewed_revision": "9f8660aa",
+  "findings": [
+    "T1419",
+    "T1420"
+  ],
+  "final_probe_run": {
+    "executions": 8,
+    "expected_assertion_failures": 4,
+    "passing_controls": 4,
+    "junit_exit": 1
+  },
+  "final_existing_regression_run": {
+    "executions": 42,
+    "passed": 42,
+    "junit_exit": 0
+  },
+  "probe_metric": {
+    "authored_owners": 15,
+    "maximum_complexity": 4
+  },
+  "source_manifest_entries": 16,
+  "physical_device_operations": 0,
+  "production_or_normal_test_source_edits": 0
+}

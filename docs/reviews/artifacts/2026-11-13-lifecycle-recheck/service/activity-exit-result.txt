@@ -1,0 +1,5 @@
+HEAD9f8660aa; rustc1.100.0; fake activity source only.
+runtime_returned=true native_complete=false settled_control=false elapsed_ms=5006
+owned_native_thread_released_and_joined=true
+runtime_returned=true native_complete=true settled_control=true elapsed_ms=72
+owned_native_thread_released_and_joined=true

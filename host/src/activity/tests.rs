@@ -495,7 +495,7 @@ async fn t1018_private_native_factory_follows_configured_preferences_and_origina
     if !private("activity::tests::t1018_private_native_factory_follows_configured_preferences_and_original_source_cleanup") { return; }
     let fixture = Fixture::new().await;
     let following = crate::activity_follow::Following::start(
-        Arc::new(Factory),
+        Arc::new(Factory::default()),
         crate::activity_follow::Settings {
             interval: Duration::from_millis(1),
             ..Default::default()
@@ -551,6 +551,8 @@ fn lifetime() -> SourceLifetime {
 
 #[path = "recovery_tests.rs"]
 mod recovery;
+#[path = "continuity_tests.rs"]
+mod continuity;
 
 #[tokio::test]
 async fn t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_compositor_power() {
@@ -561,7 +563,7 @@ async fn t1018_native_x11_unavailable_helper_reports_unsupported_without_cached_
     let fixture = Fixture::new().await;
     fixture.values.display.store(3, Ordering::Release);
     let following = crate::activity_follow::Following::start(
-        Arc::new(Factory),
+        Arc::new(Factory::default()),
         crate::activity_follow::Settings {
             interval: Duration::from_millis(1),
             ..Default::default()
@@ -597,7 +599,7 @@ async fn t1084_private_power_factory_ignores_desktop_helpers_and_follows_origina
         std::env::set_var("XDG_SESSION_TYPE", session);
         let lifetime = lifetime();
         let proof = lifetime.completion();
-        let mut original = PowerFactory
+        let mut original = PowerFactory::default()
             .create(Settings::default(), lifetime)
             .await
             .unwrap();
@@ -637,7 +639,7 @@ async fn t1084_private_power_factory_ignores_desktop_helpers_and_follows_origina
 async fn t1084_private_power_factory_reports_absent_logind_without_display_fallback() {
     use blent_config::host_activity::SourceFactory;
     if !private("activity::tests::t1084_private_power_factory_reports_absent_logind_without_display_fallback") { return; }
-    let mut original = PowerFactory
+    let mut original = PowerFactory::default()
         .create(Settings::default(), lifetime())
         .await
         .unwrap();
@@ -664,7 +666,7 @@ async fn invalid_power_factory(settings: Settings) {
     use blent_config::host_activity::SourceFactory;
     let original = lifetime();
     let proof = original.completion();
-    assert!(PowerFactory.create(settings, original).await.is_err());
+    assert!(PowerFactory::default().create(settings, original).await.is_err());
     power_lifetime_released(proof).await;
 }
 #[tokio::test]

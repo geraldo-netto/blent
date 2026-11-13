@@ -1,0 +1,151 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.27s
+     Running unittests src/lib.rs (target/debug/build/blent/193737eb4ff8727a/out/blent-193737eb4ff8727a)
+
+running 4 tests
+test activity::tests::continuity::t1418_delayed_display_owner_recovers_with_fresh_state ...
+thread 'activity::tests::continuity::t1418_delayed_display_owner_recovers_with_fresh_state' (954690) panicked at host/src/activity/tests.rs:199:5:
+
+running 1 test
+test activity::tests::continuity::t1418_delayed_display_owner_recovers_with_fresh_state ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1418_delayed_display_owner_recovers_with_fresh_state
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 818 filtered out; finished in 0.05s
+
+
+thread 'activity::tests::continuity::t1418_delayed_display_owner_recovers_with_fresh_state' (954694) panicked at host/src/activity/continuity_tests.rs:48:13:
+T1418 missing known observer must deny display
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test activity::tests::continuity::t1418_delayed_power_owner_recovers_with_fresh_state ...
+thread 'activity::tests::continuity::t1418_delayed_power_owner_recovers_with_fresh_state' (954702) panicked at host/src/activity/tests.rs:199:5:
+
+running 1 test
+test activity::tests::continuity::t1418_delayed_power_owner_recovers_with_fresh_state ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1418_delayed_power_owner_recovers_with_fresh_state
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 818 filtered out; finished in 0.05s
+
+
+thread 'activity::tests::continuity::t1418_delayed_power_owner_recovers_with_fresh_state' (954706) panicked at host/src/activity/continuity_tests.rs:48:13:
+T1418 missing known observer must deny display
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+test activity::tests::continuity::t1418_initially_unsupported_stays_explicit_without_retry ... ok
+test activity::tests::continuity::t1418_prolonged_absence_remains_conservative_and_stop_settles ...
+thread 'activity::tests::continuity::t1418_prolonged_absence_remains_conservative_and_stop_settles' (954738) panicked at host/src/activity/tests.rs:199:5:
+
+running 1 test
+test activity::tests::continuity::t1418_prolonged_absence_remains_conservative_and_stop_settles ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1418_prolonged_absence_remains_conservative_and_stop_settles
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 818 filtered out; finished in 0.05s
+
+
+thread 'activity::tests::continuity::t1418_prolonged_absence_remains_conservative_and_stop_settles' (954742) panicked at host/src/activity/continuity_tests.rs:48:13:
+T1418 missing known observer must deny display
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1418_delayed_display_owner_recovers_with_fresh_state
+    activity::tests::continuity::t1418_delayed_power_owner_recovers_with_fresh_state
+    activity::tests::continuity::t1418_prolonged_absence_remains_conservative_and_stop_settles
+
+test result: FAILED. 1 passed; 3 failed; 0 ignored; 0 measured; 815 filtered out; finished in 0.67s
+
+error: test failed, to rerun pass `-p blent --lib`

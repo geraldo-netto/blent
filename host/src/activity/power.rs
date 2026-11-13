@@ -30,11 +30,14 @@ impl LinuxSource {
 
 /// Implements the independent source contract with logind power/lock observations.
 /// Display capability remains explicitly unsupported; auxiliary policy ignores lock.
-pub struct PowerFactory;
+#[derive(Default)]
+pub struct PowerFactory(continuity::Continuity);
 impl SourceFactory for PowerFactory {
     fn create(&self, settings: Settings, lifetime: SourceLifetime) -> SourceCreation {
+        let continuity = self.0.clone();
         Box::pin(async move {
             let source = LinuxSource::connect_power(settings, lifetime).await?;
+            continuity.accept(source.capabilities())?;
             Ok(StartedSource {
                 epoch: source.epoch(),
                 source: Box::new(source),

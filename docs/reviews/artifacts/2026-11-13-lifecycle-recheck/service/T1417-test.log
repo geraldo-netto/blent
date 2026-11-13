@@ -1,0 +1,32 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib test) generated 1 warning (run `cargo fix --lib -p blent-config --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+     Running unittests src/lib.rs (target/debug/build/blent-config/ef649b5beebb5167/out/blent_config-ef649b5beebb5167)
+
+running 1 test
+test commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets ...
+thread 'commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets' (912575) panicked at common/src/commands/tests.rs:117:14:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    commands::tests::t268_lifecycle_deadlines_cover_cli_and_shipped_service_budgets
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 430 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent-config --lib`

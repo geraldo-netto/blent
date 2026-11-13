@@ -1,0 +1,2 @@
+{"settled_control": false, "sigterm_handler_installed": false, "exit_code": -15, "remaining_fake_routes": 2}
+{"settled_control": true, "sigterm_handler_installed": true, "exit_code": 0, "remaining_fake_routes": 0}

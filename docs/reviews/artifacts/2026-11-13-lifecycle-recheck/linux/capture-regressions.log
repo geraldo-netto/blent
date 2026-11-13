@@ -1,0 +1,10 @@
+
+running 6 tests
+test capture::activity_tests::pause_recovery::t1415_failed_pause_waits_for_original_cleanup_before_quiescence ... ok
+test capture::activity_tests::pause_recovery::t1415_cancelled_failed_pause_retains_original_cleanup_for_retry ... ok
+test capture::activity_tests::pause_recovery::t1415_failed_pause_retains_cancelled_reader_generation_until_native_exit ... ok
+test capture::activity_tests::pause_recovery::t1415_encoder_replacement_recovers_after_retained_helper_pause_eof ... ok
+test capture::activity_tests::pause_recovery::t1415_invalid_pause_ack_recovers_only_on_renewed_demand ... ok
+test capture::activity_tests::pause_recovery::t1415_pause_control_eof_recovers_only_on_renewed_demand ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 616 filtered out; finished in 0.32s

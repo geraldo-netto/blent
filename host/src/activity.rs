@@ -13,6 +13,7 @@ use std::{
     time::Duration,
 };
 use tokio::sync::Notify;
+mod continuity;
 mod native;
 mod power;
 pub use power::PowerFactory;
@@ -239,15 +240,18 @@ impl LinuxSource {
     }
 }
 /// Native implementation of the independently defined source factory contract.
-pub struct Factory;
+#[derive(Default)]
+pub struct Factory(continuity::Continuity);
 impl blent_config::host_activity::SourceFactory for Factory {
     fn create(
         &self,
         settings: Settings,
         lifetime: SourceLifetime,
     ) -> blent_config::host_activity::SourceCreation {
+        let continuity = self.0.clone();
         Box::pin(async move {
             let source = LinuxSource::connect(settings, lifetime).await?;
+            continuity.accept(source.capabilities())?;
             Ok(blent_config::host_activity::StartedSource {
                 epoch: source.epoch(),
                 source: Box::new(source),

@@ -1,0 +1,86 @@
+{
+  "revision": "9f8660aa3f0b9c01f78142268166947c2f50f6ff",
+  "scope": "Scoped source review, not whole-Android coverage",
+  "files": [
+    {
+      "path": "android/app/src/main/java/com/blent/DisplayWorkerOwner.kt",
+      "scope": "complete file read",
+      "sha256": "dcd53506a2f6645b77806ceb8eea5ca524f3f1b83cfb0163238ac3fb48cc277f"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionDisplayBinding.kt",
+      "scope": "complete file read",
+      "sha256": "ed8b0a7530a6bff8a16f591053d577aff25d30609b0bbca9c6d31df03593fc8f"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/RemoteDisplay.kt",
+      "scope": "complete file read",
+      "sha256": "ec589a5a27ba8c727cc5dd115d300bce70032196cd74f6cc9549efc7ba766d7a"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/ResourceLane.kt",
+      "scope": "complete file read",
+      "sha256": "26eb590696e54d5fb40d9e059886610307ae8ab32c5d301a1a4afd897f2b0e35"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/RetirementGuard.kt",
+      "scope": "complete file read",
+      "sha256": "45d032d30a445b3a26389dd949797c7394ffd80297dba8176830dc3e5a3c9833"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/BlentApplication.kt",
+      "scope": "complete file read",
+      "sha256": "ae99b5e443b44183666c6b5d73adaa9a06328c83c0bb12e1a27adc6cff4c6bda"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionWorker.kt",
+      "scope": "complete file read",
+      "sha256": "ff7b1f96985bdadd865d9e154fbb0ce04624b18c5e6c28bc928bb93c6f2562b6"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/ConnectionDisplayBindingTest.kt",
+      "scope": "complete file read",
+      "sha256": "de590fb04a2cb4fcba54c9ce6ceee41b68dde86fe16fb04be48edd7da7eb1d82"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/ConnectionDisplayActivityTest.kt",
+      "scope": "complete file read",
+      "sha256": "8f248e9002410622e57082e1598fdd907838a624da4f3231c1af69733dd642f7"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt",
+      "scope": "complete file read",
+      "sha256": "c667f2deb400afeca9894325a240d50ada62967ec42aa50221e01b445e3eaa5e"
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/DisplayWorkerOwnerTest.kt",
+      "scope": "complete file read",
+      "sha256": "e9049b3e875e55f788ed7dba327d58d0b461fb810a3f709b00bdb5a1635feef8"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/MainActivity.kt",
+      "scope": "onStart/onStop/onDestroy route observation and session ordering",
+      "sha256": "810e93317e5a4ea4fcf383a3ca89929e61b0eb27909ba8b203f33049191641f6"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/SessionCoordinator.kt",
+      "scope": "initial stored authority, token application, route selection/revocation and ADB restoration",
+      "sha256": "50d3d33113aaff84401f597d153e8a4d166a167c657fb5625f0f160460454641"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/Prefs.kt",
+      "scope": "protected token delivery, cutoff storage, observation and adjacent documentation",
+      "sha256": "0dbc48c7290c8582a084248a085c66156219d531f3876f60a849a8ff178ab035"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/AndroidWorkerRun.kt",
+      "scope": "bind/start, cancellation, death/control/unbind retirement",
+      "sha256": "3695a725d22af5db51f22b5a856d795fa1fcd816c5cd1c9af0dcff31455d4932"
+    },
+    {
+      "path": "android/app/src/main/java/com/blent/connection/ConnectionPresentation.kt",
+      "scope": "peer, phase, display publication and display closure transitions",
+      "sha256": "ba2ce769a00b3266a12b3af6d7be9be6ef2297dc177f9a1a190365ed378b7b99"
+    }
+  ]
+}

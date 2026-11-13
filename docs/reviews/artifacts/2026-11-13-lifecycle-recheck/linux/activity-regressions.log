@@ -1,0 +1,8 @@
+
+running 4 tests
+test activity::tests::recovery::t1413_native_transport_closure_recovers_with_fresh_epoch ... ok
+test activity::tests::recovery::t1413_explicit_stop_never_recreates_native_sources ... ok
+test activity::tests::recovery::t1413_compositor_replacement_waits_for_original_native_settlement ... ok
+test activity::tests::recovery::t1413_logind_replacement_waits_for_original_native_settlement ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 1127 filtered out; finished in 0.33s

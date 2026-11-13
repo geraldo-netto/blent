@@ -1,0 +1,102 @@
+{
+  "tool": "Blent Kotlin PSI1.9.20/Python AST cyclomatic checker",
+  "scope": "Review probe and two reproduction scripts only",
+  "scores": [
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      19,
+      "<clinit>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      20,
+      "idle",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      21,
+      "deliver",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      23,
+      "select",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      29,
+      "disconnect",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      35,
+      "backgroundPostDisconnectDeliveryMustRemainFreshAtResume",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      36,
+      "foregroundPostDisconnectDeliveryRestoresAdb",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      37,
+      "postResumeDeliveryRestoresAdb",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      39,
+      "deliveryOrder",
+      4
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      40,
+      "<lambda>",
+      4
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      64,
+      "disconnectAfterNullUsbSelectionMustNotLeavePreDisconnectAdbAuthority",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt",
+      65,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/export-classpath.gradle.kts",
+      4,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/export-classpath.gradle.kts",
+      6,
+      "<lambda>",
+      1
+    ],
+    [
+      "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/export-classpath.gradle.kts",
+      9,
+      "<lambda>",
+      1
+    ]
+  ],
+  "maximum": 4,
+  "files": {
+    "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/ReviewAdbOrderingProbe.kt": "a522084e072ee6deb057c01080a78304099b9f58c4fb46f11eb888867a27e818",
+    "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/export-classpath.gradle.kts": "d93e48a42e9274bcc61843543587d160687304232e5c98e4cfdb0028fd0af731",
+    "docs/reviews/artifacts/2026-11-13-lifecycle-recheck/android/run-probe.py": "5a3b712eb7381ecf3d4842047390ab81335132cddd09917c335a3c59430b30bb"
+  }
+}
