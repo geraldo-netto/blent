@@ -1,0 +1,100 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:31:10
+   |
+31 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+31 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+31 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:136:14
+    |
+136 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+136 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+136 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.62s
+     Running unittests src/lib.rs (target/debug/build/blent/193737eb4ff8727a/out/blent-193737eb4ff8727a)
+
+running 17 tests
+test input::batching_tests::t1434_controller_replacement_cannot_publish_over_original_release_debt ... ok
+test input::batching_tests::t1434_device_destruction_settles_debt_and_missing_device_ignores_input ... ok
+test input::batching_tests::t1434_failed_up_keeps_original_contact_until_successful_release ... ok
+test input::batching_tests::t1434_invalid_touch_values_never_publish_or_retire_existing_debt ... ok
+test input::batching_tests::t1434_partial_and_failed_syn_frames_require_owned_release_before_new_down ... ok
+test input::batching_tests::t1434_release_faults_keep_all_original_slots_until_confirmed_syn ... ok
+test input::batching_tests::t1434_replacement_contact_waits_for_failed_cutoff_recovery ... ok
+test input::batching_tests::t406_dropping_device_does_not_publish_an_unfinished_frame ... ok
+test input::batching_tests::t406_event_bound_never_splits_or_leaks_an_unsynchronized_frame ... ok
+test input::batching_tests::t406_failed_batch_never_replays_a_delivered_prefix ... ok
+test input::batching_tests::t406_native_bytes_match_linux_input_header_layout ... ok
+test input::batching_tests::t406_pen_down_preserves_proximity_button_tip_boundaries ... ok
+test input::batching_tests::t406_pending_events_wait_for_the_current_syn_boundary ... ok
+test input::batching_tests::t406_recorded_replay_preserves_every_native_byte ... ok
+test input::batching_tests::t406_replay_writes_once_per_existing_sync_frame ... ok
+test input::batching_tests::t406_short_and_interrupted_writes_preserve_every_byte ... ok
+test input::batching_tests::t406_zero_write_and_flush_errors_retire_the_batch ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 826 filtered out; finished in 0.03s

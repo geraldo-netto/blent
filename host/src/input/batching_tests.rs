@@ -382,3 +382,271 @@ int main(void) {
     device.syn().unwrap();
     assert_eq!(&device.file.bytes[..result.stdout.len()], result.stdout);
 }
+
+fn touch_devices() -> InjectDevices<ShortWriter> {
+    InjectDevices {
+        touch: Some(UInputDevice::from_writer(ShortWriter::default())),
+        ..InjectDevices::empty()
+    }
+}
+fn touch_writer(devices: &mut InjectDevices<ShortWriter>) -> &mut ShortWriter {
+    &mut devices.touch.as_mut().unwrap().file
+}
+fn recorded_touch(devices: &InjectDevices<ShortWriter>) -> Vec<(u16, u16, i32)> {
+    events(&devices.touch.as_ref().unwrap().file.sink.bytes)
+}
+fn reject_next_touch(devices: &mut InjectDevices<ShortWriter>) {
+    touch_writer(devices)
+        .steps
+        .push_back(Err(io::ErrorKind::Other));
+}
+
+#[test]
+fn t1434_failed_up_keeps_original_contact_until_successful_release() {
+    let mut devices = touch_devices();
+    devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+    reject_next_touch(&mut devices);
+    assert!(devices.inject_touch(10, 20, 30, 1, 0).is_err());
+    let before = recorded_touch(&devices).len();
+    devices.release_all();
+    assert_eq!(
+        &recorded_touch(&devices)[before..],
+        &[
+            (EV_ABS, ABS_MT_SLOT, 0),
+            (EV_ABS, ABS_MT_TRACKING_ID, -1),
+            (EV_KEY, BTN_TOUCH, 0),
+            (EV_KEY, BTN_TOOL_FINGER, 0),
+            (EV_ABS, ABS_PRESSURE, 0),
+            (EV_SYN, SYN_REPORT, 0),
+        ]
+    );
+    assert_eq!(devices.active_slots, 0);
+    assert_eq!(devices.touch_contacts, [None; 10]);
+}
+
+#[test]
+fn t1434_replacement_contact_waits_for_failed_cutoff_recovery() {
+    let mut devices = touch_devices();
+    devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+    reject_next_touch(&mut devices);
+    devices.release_all(); // Same cutoff called by controller replacement.
+    assert_eq!(
+        devices.active_slots, 1,
+        "T1434 discarded original release debt"
+    );
+    reject_next_touch(&mut devices);
+    assert!(devices.inject_touch(40, 50, 60, 0, 1).is_err());
+    assert!(
+        devices.touch_contacts[1].is_none(),
+        "T1434 replacement admitted over debt"
+    );
+    let before = recorded_touch(&devices).len();
+    devices.inject_touch(40, 50, 60, 0, 1).unwrap();
+    let recovered = &recorded_touch(&devices)[before..];
+    assert_eq!(
+        &recovered[..6],
+        &[
+            (EV_ABS, ABS_MT_SLOT, 0),
+            (EV_ABS, ABS_MT_TRACKING_ID, -1),
+            (EV_KEY, BTN_TOUCH, 0),
+            (EV_KEY, BTN_TOOL_FINGER, 0),
+            (EV_ABS, ABS_PRESSURE, 0),
+            (EV_SYN, SYN_REPORT, 0),
+        ]
+    );
+    assert_eq!(
+        &recovered[6..8],
+        &[(EV_ABS, ABS_MT_SLOT, 1), (EV_ABS, ABS_MT_TRACKING_ID, 1)]
+    );
+    assert_eq!(devices.active_slots, 2);
+}
+
+fn failed_touch_frame(devices: &mut InjectDevices<ShortWriter>, fault: u8) {
+    let writer = touch_writer(devices);
+    match fault {
+        0 => writer.steps = [Err(io::ErrorKind::Other)].into(),
+        1 => {
+            writer.steps = [
+                Ok(2 * super::event_writer::EVENT_BYTES),
+                Err(io::ErrorKind::Other),
+            ]
+            .into()
+        }
+        2 => writer.steps = [Ok(0)].into(),
+        3 => writer.flush_error = Some(io::ErrorKind::Other),
+        _ => {
+            writer.steps = [
+                Ok(10 * super::event_writer::EVENT_BYTES),
+                Err(io::ErrorKind::Other),
+            ]
+            .into()
+        }
+    }
+}
+
+#[test]
+fn t1434_partial_and_failed_syn_frames_require_owned_release_before_new_down() {
+    for fault in 0..5 {
+        let mut devices = touch_devices();
+        failed_touch_frame(&mut devices, fault);
+        assert!(devices.inject_touch(10, 20, 30, 0, 9).is_err());
+        let before = recorded_touch(&devices).len();
+        devices.inject_touch(40, 50, 60, 0, 0).unwrap();
+        let recovered = &recorded_touch(&devices)[before..];
+        assert_eq!(
+            &recovered[..6],
+            &[
+                (EV_ABS, ABS_MT_SLOT, 9),
+                (EV_ABS, ABS_MT_TRACKING_ID, -1),
+                (EV_KEY, BTN_TOUCH, 0),
+                (EV_KEY, BTN_TOOL_FINGER, 0),
+                (EV_ABS, ABS_PRESSURE, 0),
+                (EV_SYN, SYN_REPORT, 0),
+            ]
+        );
+        assert_eq!(
+            &recovered[6..8],
+            &[(EV_ABS, ABS_MT_SLOT, 0), (EV_ABS, ABS_MT_TRACKING_ID, 0)]
+        );
+        assert_eq!(devices.active_slots, 1);
+    }
+}
+
+struct ControllerTouch(std::sync::Mutex<InjectDevices<ShortWriter>>);
+
+impl super::InputSink for ControllerTouch {
+    fn release_all(&self) {
+        self.0.lock().unwrap().release_all();
+    }
+    fn touch(&self, position: (f64, f64, f64), action: u8, slot: u8) {
+        let _ = self.0.lock().unwrap().inject_touch(
+            position.0 as i32,
+            position.1 as i32,
+            position.2 as i32,
+            action,
+            slot,
+        );
+    }
+    fn pen(&self, _: super::PenSample, _: bool) {
+        panic!("touch-only controller fixture received pen input");
+    }
+}
+
+async fn controller_down(controllers: &super::Controllers, lease: u64, slot: u8) -> bool {
+    let (mode, _) = tokio::sync::watch::channel(false);
+    let settings = None;
+    let settings = super::SessionSettings::new(&settings, &mode, false);
+    super::dispatch_controller_text(
+        &format!(r#"{{"type":"touch","x":10,"y":20,"pressure":30,"action":0,"slot":{slot}}}"#),
+        controllers,
+        lease,
+        &settings,
+        &crate::latency::LatencyTracker::new(),
+        false,
+    )
+    .finish()
+    .await
+}
+
+#[tokio::test]
+async fn t1434_controller_replacement_cannot_publish_over_original_release_debt() {
+    let sink = std::sync::Arc::new(ControllerTouch(std::sync::Mutex::new(touch_devices())));
+    let controllers = std::sync::Arc::new(super::Controllers::new(sink.clone()));
+    let first = controllers.claim();
+    assert!(controller_down(&controllers, first.id, 0).await);
+    reject_next_touch(&mut sink.0.lock().unwrap());
+    let replacement = controllers.claim();
+    reject_next_touch(&mut sink.0.lock().unwrap());
+    assert!(controller_down(&controllers, replacement.id, 1).await);
+    let state = sink.0.lock().unwrap().active_slots;
+    assert_eq!(state, 1);
+    let contact = sink.0.lock().unwrap().touch_contacts[1];
+    assert!(contact.is_none());
+    assert!(!controller_down(&controllers, first.id, 2).await);
+    assert!(controller_down(&controllers, replacement.id, 1).await);
+    let state = sink.0.lock().unwrap().active_slots;
+    assert_eq!(state, 2);
+    drop(first);
+    let state = sink.0.lock().unwrap().active_slots;
+    assert_eq!(state, 2);
+    drop(replacement);
+    let state = sink.0.lock().unwrap().active_slots;
+    assert_eq!(state, 0);
+}
+
+#[test]
+fn t1434_release_faults_keep_all_original_slots_until_confirmed_syn() {
+    for fault in 0..4 {
+        let mut devices = touch_devices();
+        devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+        devices.inject_touch(40, 50, 60, 0, 9).unwrap();
+        failed_touch_frame(&mut devices, fault);
+        devices.release_all();
+        assert_eq!(devices.active_slots, 513);
+        let before = recorded_touch(&devices).len();
+        devices.release_all();
+        assert_eq!(
+            &recorded_touch(&devices)[before..],
+            &[
+                (EV_ABS, ABS_MT_SLOT, 0),
+                (EV_ABS, ABS_MT_TRACKING_ID, -1),
+                (EV_ABS, ABS_MT_SLOT, 9),
+                (EV_ABS, ABS_MT_TRACKING_ID, -1),
+                (EV_KEY, BTN_TOUCH, 0),
+                (EV_KEY, BTN_TOOL_FINGER, 0),
+                (EV_ABS, ABS_PRESSURE, 0),
+                (EV_SYN, SYN_REPORT, 0),
+            ]
+        );
+        assert_eq!(devices.active_slots, 0);
+        let released = recorded_touch(&devices).len();
+        devices.release_all();
+        assert_eq!(recorded_touch(&devices).len(), released);
+    }
+}
+
+#[test]
+fn t1434_invalid_touch_values_never_publish_or_retire_existing_debt() {
+    let mut devices = touch_devices();
+    devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+    reject_next_touch(&mut devices);
+    devices.release_all();
+    let before = recorded_touch(&devices);
+    for slot in 10..=u8::MAX {
+        for action in 0..=2 {
+            devices
+                .inject_touch(i32::MIN, i32::MAX, 0, action, slot)
+                .unwrap();
+        }
+    }
+    for action in 3..=u8::MAX {
+        for slot in 0..10 {
+            devices
+                .inject_touch(i32::MAX, i32::MIN, 0, action, slot)
+                .unwrap();
+        }
+    }
+    assert_eq!(recorded_touch(&devices), before);
+    assert_eq!(devices.active_slots, 1);
+    devices.release_all();
+    assert_eq!(devices.active_slots, 0);
+    let released = recorded_touch(&devices).len();
+    for action in [1, 2] {
+        devices.inject_touch(10, 20, 30, action, 0).unwrap();
+    }
+    assert_eq!(recorded_touch(&devices).len(), released);
+}
+
+#[test]
+fn t1434_device_destruction_settles_debt_and_missing_device_ignores_input() {
+    let mut devices = touch_devices();
+    devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+    reject_next_touch(&mut devices);
+    devices.release_all();
+    drop(devices.touch.take());
+    devices.release_all();
+    assert_eq!(devices.active_slots, 0);
+    assert!(!devices.touch_retiring);
+    devices.inject_touch(10, 20, 30, 0, 0).unwrap();
+    assert_eq!(devices.active_slots, 0);
+}

@@ -712,10 +712,12 @@ pub(super) struct InjectDevices<W: Write + AsRawFd = File> {
     /// the user last pointed instead of vanishing.
     pub(super) pointer: Option<UInputDevice<W>>,
     pub(super) last_pen_pos: (i32, i32),
-    /// Bitmask of MT slots that currently have an active tracking ID
-    /// (DOWN received, no matching UP yet). Bit N identifies slot N, 0–9.
+    /// Conservative mask of original contacts that may exist natively.
+    /// A failed publication/release retains each bit until confirmed release.
     pub(super) active_slots: u16,
     pub(super) touch_contacts: [Option<(i32, i32, i32)>; 10],
+    /// No fresh contact publication until the original uncertain frame is released.
+    pub(super) touch_retiring: bool,
     pub(super) pen_proximity: bool,
     /// S Pen side button currently held (BTN_STYLUS). Tracked so a held
     /// button is released cleanly if the connection drops.
@@ -731,6 +733,7 @@ impl<W: Write + AsRawFd> InjectDevices<W> {
             last_pen_pos: (0, 0),
             active_slots: 0,
             touch_contacts: [None; 10],
+            touch_retiring: false,
             pen_proximity: false,
             pen_button: false,
         }
@@ -750,71 +753,52 @@ impl<W: Write + AsRawFd> InjectDevices<W> {
         action: u8,
         slot: u8,
     ) -> Result<()> {
-        let Some(contact) = self.touch_contacts.get_mut(slot as usize) else {
+        if slot >= 10 || action > 2 || self.touch.is_none() {
             return Ok(());
-        };
-        let Some(dev) = self.touch.as_mut() else {
+        }
+        if self.touch_retiring {
+            self.release_touch()?;
+        }
+        let mut contacts = self.touch_contacts;
+        if !update_touch_contact(&mut contacts[slot as usize], (x, y, pressure), action) {
             return Ok(());
-        };
-        match action {
-            0 => {
-                *contact = Some((x, y, pressure));
-                self.active_slots |= 1 << slot;
-            }
-            1 if contact.is_some() => {
-                *contact = None;
-                self.active_slots &= !(1 << slot);
-            }
-            2 if contact.is_some() => {
-                *contact = Some((x, y, pressure));
-            }
-            _ => return Ok(()),
         }
-        dev.emit(EV_ABS, ABS_MT_SLOT, slot as i32)?;
-        match action {
-            0 => dev.emit(EV_ABS, ABS_MT_TRACKING_ID, slot as i32)?,
-            1 => dev.emit(EV_ABS, ABS_MT_TRACKING_ID, -1)?,
-            _ => {}
+        // Arm before I/O: even a failed DOWN may have published a native prefix.
+        self.touch_retiring = true;
+        self.active_slots |= 1 << slot;
+        self.touch.as_mut().unwrap().touch_frame(
+            slot,
+            action,
+            (x, y, pressure),
+            contacts.iter().flatten().next().copied(),
+        )?;
+        self.touch_contacts = contacts;
+        if action == 1 {
+            self.active_slots &= !(1 << slot);
         }
-        if action != 1 {
-            dev.emit(EV_ABS, ABS_MT_POSITION_X, x)?;
-            dev.emit(EV_ABS, ABS_MT_POSITION_Y, y)?;
-            dev.emit(EV_ABS, ABS_MT_PRESSURE, pressure)?;
-        }
-        // Legacy single-touch consumers follow the first remaining contact.
-        let primary = self.touch_contacts.iter().flatten().next();
-        dev.emit(EV_KEY, BTN_TOUCH, i32::from(primary.is_some()))?;
-        dev.emit(EV_KEY, BTN_TOOL_FINGER, i32::from(primary.is_some()))?;
-        if let Some(&(x, y, pressure)) = primary {
-            dev.emit(EV_ABS, ABS_X, x)?;
-            dev.emit(EV_ABS, ABS_Y, y)?;
-            dev.emit(EV_ABS, ABS_PRESSURE, pressure)?;
-        } else {
-            dev.emit(EV_ABS, ABS_PRESSURE, 0)?;
-        }
-        dev.syn()
+        self.touch_retiring = false;
+        Ok(())
     }
 
-    /// Release all active contacts cleanly before the connection closes.
-    /// Without this, a stuck MT slot or a pen left in proximity causes
-    /// the next connection to inherit phantom input events.
-    pub(super) fn release_all(&mut self) {
-        if let Some(ref mut dev) = self.touch {
-            for slot in 0u8..16 {
-                if self.active_slots & (1u16 << slot) != 0 {
-                    let _ = dev.emit(EV_ABS, ABS_MT_SLOT, slot as i32);
-                    let _ = dev.emit(EV_ABS, ABS_MT_TRACKING_ID, -1);
-                }
-            }
-            if self.active_slots != 0 {
-                let _ = dev.emit(EV_KEY, BTN_TOUCH, 0);
-                let _ = dev.emit(EV_KEY, BTN_TOOL_FINGER, 0);
-                let _ = dev.emit(EV_ABS, ABS_PRESSURE, 0);
-                let _ = dev.syn();
+    /// Confirm release before clearing debt. Destruction of an absent device
+    /// also settles it; no retry task or unbounded frame history is retained.
+    fn release_touch(&mut self) -> Result<()> {
+        if self.active_slots != 0 {
+            self.touch_retiring = true;
+            if let Some(dev) = self.touch.as_mut() {
+                dev.release_touch_frame(self.active_slots)?;
             }
         }
         self.active_slots = 0;
         self.touch_contacts = [None; 10];
+        self.touch_retiring = false;
+        Ok(())
+    }
+
+    /// Cut off contacts before controller replacement or device destruction.
+    /// Failed touch release keeps original debt and fences fresh publication.
+    pub(super) fn release_all(&mut self) {
+        let _ = self.release_touch();
 
         if self.pen_proximity {
             if let Some(ref mut dev) = self.pen {
@@ -834,6 +818,68 @@ impl<W: Write + AsRawFd> InjectDevices<W> {
             }
         }
         self.pen_button = false;
+    }
+}
+
+fn update_touch_contact(
+    contact: &mut Option<(i32, i32, i32)>,
+    position: (i32, i32, i32),
+    action: u8,
+) -> bool {
+    match action {
+        0 => *contact = Some(position),
+        1 if contact.is_some() => *contact = None,
+        2 if contact.is_some() => *contact = Some(position),
+        _ => return false,
+    }
+    true
+}
+
+impl<W: Write + AsRawFd> UInputDevice<W> {
+    fn touch_frame(
+        &mut self,
+        slot: u8,
+        action: u8,
+        position: (i32, i32, i32),
+        primary: Option<(i32, i32, i32)>,
+    ) -> Result<()> {
+        self.emit(EV_ABS, ABS_MT_SLOT, slot as i32)?;
+        match action {
+            0 => self.emit(EV_ABS, ABS_MT_TRACKING_ID, slot as i32)?,
+            1 => self.emit(EV_ABS, ABS_MT_TRACKING_ID, -1)?,
+            _ => {}
+        }
+        if action != 1 {
+            self.emit(EV_ABS, ABS_MT_POSITION_X, position.0)?;
+            self.emit(EV_ABS, ABS_MT_POSITION_Y, position.1)?;
+            self.emit(EV_ABS, ABS_MT_PRESSURE, position.2)?;
+        }
+        self.touch_primary(primary)?;
+        self.syn()
+    }
+
+    fn touch_primary(&mut self, primary: Option<(i32, i32, i32)>) -> Result<()> {
+        self.emit(EV_KEY, BTN_TOUCH, i32::from(primary.is_some()))?;
+        self.emit(EV_KEY, BTN_TOOL_FINGER, i32::from(primary.is_some()))?;
+        if let Some((x, y, pressure)) = primary {
+            self.emit(EV_ABS, ABS_X, x)?;
+            self.emit(EV_ABS, ABS_Y, y)?;
+            self.emit(EV_ABS, ABS_PRESSURE, pressure)?;
+        } else {
+            self.emit(EV_ABS, ABS_PRESSURE, 0)?;
+        }
+        Ok(())
+    }
+
+    fn release_touch_frame(&mut self, slots: u16) -> Result<()> {
+        for slot in 0u8..10 {
+            if slots & (1u16 << slot) != 0 {
+                self.emit(EV_ABS, ABS_MT_SLOT, slot as i32)?;
+                self.emit(EV_ABS, ABS_MT_TRACKING_ID, -1)?;
+            }
+        }
+        self.touch_primary(None)?;
+        self.syn()
     }
 }
 

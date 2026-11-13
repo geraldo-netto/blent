@@ -1,0 +1,136 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:31:10
+   |
+31 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+31 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+31 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:136:14
+    |
+136 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+136 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+136 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.06s
+     Running unittests src/lib.rs (target/debug/build/blent/193737eb4ff8727a/out/blent-193737eb4ff8727a)
+
+running 5 tests
+test input::batching_tests::t1434_controller_replacement_cannot_publish_over_original_release_debt ... FAILED
+test input::batching_tests::t1434_failed_up_keeps_original_contact_until_successful_release ... FAILED
+test input::batching_tests::t1434_partial_and_failed_syn_frames_require_owned_release_before_new_down ... FAILED
+test input::batching_tests::t1434_release_faults_keep_all_original_slots_until_confirmed_syn ... FAILED
+test input::batching_tests::t1434_replacement_contact_waits_for_failed_cutoff_recovery ... FAILED
+
+failures:
+
+---- input::batching_tests::t1434_controller_replacement_cannot_publish_over_original_release_debt stdout ----
+
+thread 'input::batching_tests::t1434_controller_replacement_cannot_publish_over_original_release_debt' (1299977) panicked at host/src/input/batching_tests.rs:562:5:
+assertion `left == right` failed
+  left: 2
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- input::batching_tests::t1434_failed_up_keeps_original_contact_until_successful_release stdout ----
+
+thread 'input::batching_tests::t1434_failed_up_keeps_original_contact_until_successful_release' (1299978) panicked at host/src/input/batching_tests.rs:412:5:
+assertion `left == right` failed
+  left: []
+ right: [(3, 47, 0), (3, 57, -1), (1, 330, 0), (1, 325, 0), (3, 24, 0), (0, 0, 0)]
+
+---- input::batching_tests::t1434_partial_and_failed_syn_frames_require_owned_release_before_new_down stdout ----
+
+thread 'input::batching_tests::t1434_partial_and_failed_syn_frames_require_owned_release_before_new_down' (1299979) panicked at host/src/input/batching_tests.rs:496:9:
+assertion `left == right` failed
+  left: [(3, 47, 0), (3, 57, 0), (3, 53, 40), (3, 54, 50), (3, 58, 60), (1, 330, 1)]
+ right: [(3, 47, 9), (3, 57, -1), (1, 330, 0), (1, 325, 0), (3, 24, 0), (0, 0, 0)]
+
+---- input::batching_tests::t1434_release_faults_keep_all_original_slots_until_confirmed_syn stdout ----
+
+thread 'input::batching_tests::t1434_release_faults_keep_all_original_slots_until_confirmed_syn' (1299980) panicked at host/src/input/batching_tests.rs:585:9:
+assertion `left == right` failed
+  left: 0
+ right: 513
+
+---- input::batching_tests::t1434_replacement_contact_waits_for_failed_cutoff_recovery stdout ----
+
+thread 'input::batching_tests::t1434_replacement_contact_waits_for_failed_cutoff_recovery' (1299981) panicked at host/src/input/batching_tests.rs:433:5:
+assertion `left == right` failed: T1434 discarded original release debt
+  left: 0
+ right: 1
+
+
+failures:
+    input::batching_tests::t1434_controller_replacement_cannot_publish_over_original_release_debt
+    input::batching_tests::t1434_failed_up_keeps_original_contact_until_successful_release
+    input::batching_tests::t1434_partial_and_failed_syn_frames_require_owned_release_before_new_down
+    input::batching_tests::t1434_release_faults_keep_all_original_slots_until_confirmed_syn
+    input::batching_tests::t1434_replacement_contact_waits_for_failed_cutoff_recovery
+
+test result: FAILED. 0 passed; 5 failed; 0 ignored; 0 measured; 836 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

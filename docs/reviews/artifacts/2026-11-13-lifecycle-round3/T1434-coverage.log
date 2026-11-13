@@ -1,0 +1,57 @@
+COHORT batching
+
+running 17 tests
+test input::batching_tests::t1434_controller_replacement_cannot_publish_over_original_release_debt ... ok
+test input::batching_tests::t1434_device_destruction_settles_debt_and_missing_device_ignores_input ... ok
+test input::batching_tests::t1434_failed_up_keeps_original_contact_until_successful_release ... ok
+test input::batching_tests::t1434_invalid_touch_values_never_publish_or_retire_existing_debt ... ok
+test input::batching_tests::t1434_partial_and_failed_syn_frames_require_owned_release_before_new_down ... ok
+test input::batching_tests::t1434_release_faults_keep_all_original_slots_until_confirmed_syn ... ok
+test input::batching_tests::t1434_replacement_contact_waits_for_failed_cutoff_recovery ... ok
+test input::batching_tests::t406_dropping_device_does_not_publish_an_unfinished_frame ... ok
+test input::batching_tests::t406_event_bound_never_splits_or_leaks_an_unsynchronized_frame ... ok
+test input::batching_tests::t406_failed_batch_never_replays_a_delivered_prefix ... ok
+test input::batching_tests::t406_native_bytes_match_linux_input_header_layout ... ok
+test input::batching_tests::t406_pen_down_preserves_proximity_button_tip_boundaries ... ok
+test input::batching_tests::t406_pending_events_wait_for_the_current_syn_boundary ... ok
+test input::batching_tests::t406_recorded_replay_preserves_every_native_byte ... ok
+test input::batching_tests::t406_replay_writes_once_per_existing_sync_frame ... ok
+test input::batching_tests::t406_short_and_interrupted_writes_preserve_every_byte ... ok
+test input::batching_tests::t406_zero_write_and_flush_errors_retire_the_batch ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 826 filtered out; finished in 0.03s
+
+COHORT native
+
+running 2 tests
+test input::linux::coverage_tests::t1430_device_identity_range_is_checked_and_every_admitted_identity_is_distinct ... ok
+test input::linux::coverage_tests::t497_uinput_construction_errors_and_owned_retirement ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 841 filtered out; finished in 3.48s
+
+COHORT touch
+
+running 1 test
+test input::tests::t086_touch_stays_down_until_last_contact_lifts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 842 filtered out; finished in 0.00s
+
+COHORT controller
+
+running 1 test
+test input::tests::t085_reconnect_preserves_current_controller_contacts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 842 filtered out; finished in 0.04s
+
+COHORT input_creation
+
+running 7 tests
+test t1422_cancelled_creation_retains_native_proof_and_identity ... ok
+test t1422_capacity_rejects_before_creation_and_recovers_after_settlement ... ok
+test t1422_failed_constructor_settles_original_admission ... ok
+test t1422_invalid_capacity_never_admits_native_work ... ok
+test t1422_process_exit_waits_for_cancelled_constructor ... ok
+test t1422_session_retirement_waits_for_original_constructor ... ok
+test t1430_identity_boundary_rejects_without_panic_or_admission ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.46s

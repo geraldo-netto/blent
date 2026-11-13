@@ -1,0 +1,105 @@
+{
+  "tool": "cargo-llvm-cov 0.8.7 / Rust 1.100.0 LLVM; exact library + input_creation objects",
+  "profiles": 20,
+  "production_functions": [
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "empty",
+      "line": 728,
+      "language": "rust",
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "inject_touch",
+      "line": 748,
+      "language": "rust",
+      "covered": 33,
+      "total": 33,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "release_touch",
+      "line": 785,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "release_all",
+      "line": 800,
+      "language": "rust",
+      "covered": 18,
+      "total": 20,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        810,
+        818
+      ]
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "update_touch_contact",
+      "line": 824,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "touch_frame",
+      "line": 839,
+      "language": "rust",
+      "covered": 20,
+      "total": 20,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "touch_primary",
+      "line": 861,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/input/linux.rs",
+      "name": "release_touch_frame",
+      "line": 874,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ],
+  "sources": {
+    "host/src/input/linux.rs": "5b023dbfe7f6059d8b6b263d1f6d50ce0682d85101342c76ae8dfd24f91fb89c",
+    "host/src/input/batching_tests.rs": "b62f6fcae0b7e17c05e21eb4b51b9d9b9095208e005d16179749a5d4aa1ae9d9"
+  },
+  "objects": {
+    "library": "b0a1339446eb296b7dacff35b0976e98c7ca6605bab3eff16c3cb4fb3b32e4b5",
+    "input_creation": "18228e85f9f2df365848d90ba611fbffed26af1ff051cbb9532e85d383751801"
+  }
+}
