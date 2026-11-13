@@ -1,0 +1,15 @@
+[
+  {
+    "file": "host/src/capture/helper.rs",
+    "name": "evdi_setup_problem_in",
+    "line": 27,
+    "language": "rust",
+    "covered": 26,
+    "total": 26,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "c742f13643edce056ecea282a8ed6bab2d42e8861bb9fc7a2176c43963a7f717",
+    "complexity": 4
+  }
+]

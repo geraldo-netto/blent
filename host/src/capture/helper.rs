@@ -28,8 +28,10 @@ fn evdi_setup_problem_in(dir: &std::path::Path) -> Option<String> {
     let module_loaded = dir.exists();
     if !module_loaded {
         return Some(
-            "The evdi kernel module is not loaded. Install it (evdi-dkms; on Arch it is in \
-             the AUR) and run: sudo modprobe evdi"
+            "The evdi kernel module is not loaded. Install a compatible evdi-dkms driver \
+             for the running kernel, then use Blent's guarded system setup. Under Xorg, \
+             defer loading and device creation to reboot; preserve existing boot options. \
+             Then run: blent doctor"
                 .to_string(),
         );
     }
@@ -42,18 +44,13 @@ fn evdi_setup_problem_in(dir: &std::path::Path) -> Option<String> {
         return None;
     }
 
-    // The module is there but has no devices, and creating one needs a write
-    // to a root-only file. `initial_device_count` fixes it for good, but only
-    // takes effect when the module loads — which is why writing the
-    // modprobe.d file is not enough on a machine where evdi is already
-    // resident.
+    // The module is resident without capacity. Direct sysfs writes can hot-add
+    // DRM devices under Xorg; use the same guard as installation and GUI setup.
     Some(
-        "No EVDI device exists and /sys/devices/evdi/add is root-only, so one cannot be \
-         created. Fix it for this boot with:\n    echo 1 | sudo tee /sys/devices/evdi/add\n\
-         and for every boot with:\n    echo 'options evdi initial_device_count=2' | sudo tee \
-         /etc/modprobe.d/blent-evdi.conf\n\
-         This boot setting applies after reboot; preserve the loaded module.\n\
-         Then run: blent doctor"
+        "No EVDI device exists. Do not write /sys/devices/evdi/add directly. \
+         Use Blent's guarded system setup and preserve existing boot options, including \
+         initial_device_count. Under Xorg, defer device creation to reboot; preserve \
+         the loaded module and existing displays. Then run: blent doctor"
             .to_string(),
     )
 }
@@ -571,6 +568,24 @@ mod tests {
             .unwrap();
         assert!(helper.raw_socket.is_none());
     }
+    #[test]
+    fn t1390_evdi_guidance_preserves_xorg_and_boot_options() {
+        let root = tempfile::tempdir().unwrap();
+        let absent = root.path().join("absent");
+        let empty = root.path().join("empty");
+        std::fs::create_dir(&empty).unwrap();
+        std::fs::write(empty.join("count"), "0\n").unwrap();
+        for path in [&absent, &empty] {
+            let message = evdi_setup_problem_in(path).unwrap();
+            assert!(message.contains("guarded system setup"), "T1390: {message}");
+            assert!(message.contains("Xorg"), "T1390: {message}");
+            assert!(message.contains("reboot"), "T1390: {message}");
+            assert!(message.contains("preserve existing"), "T1390: {message}");
+            assert!(!message.contains("sudo modprobe"), "T1390: {message}");
+            assert!(!message.contains("sudo tee"), "T1390: {message}");
+        }
+    }
+
     #[test]
     fn evdi_problem_reports_a_missing_module() {
         let dir = std::env::temp_dir().join("blent-test-evdi-absent");
