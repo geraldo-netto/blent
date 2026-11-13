@@ -23,7 +23,7 @@ internal fun ConnectionControls(binding: ConnectionBinding, configured: Configur
     SettingsSection("USB connection")
     Text(view.status)
     view.cleanup?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
-    if (configuration.pending) Text("Loading USB connection settings…")
+    if (configuration.pending) Text("Preparing USB connection…")
     configuration.failure?.let { Text(it, color = MaterialTheme.colorScheme.error) }
     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Button(onClick = configured::connect, enabled = !view.active && !configuration.pending && use == null) { Text("Connect USB") }

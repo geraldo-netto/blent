@@ -1,0 +1,43 @@
+T1392 attachment during cleanup — 2026-11-13
+
+Permanent normal-suite regressions:
+- ConnectionReattachTest: actual MainActivity accessory intent while the old worker
+  is still active. Before fix API27 and API34 both fail (2 failures / 2 cases).
+- ConfiguredAttachmentTest: one coalesced attachment, separate execution/native
+  retirement, explicit disconnect, deny/revoke, scope loss, stale attempt after
+  coalesced cutoff/replacement, and settings read crossing attempt identity.
+- The stale-attempt regression separately failed before identity fencing (1/1);
+  the pre-dispatch admission regression also failed before admission capture (1/1).
+Final instrumented run: 42/42 cases passed across seven test classes.
+
+Command:
+android/gradlew -p android --offline -I scripts/coverage/android.init.gradle
+ testDebugUnitTest --tests com.blent.connection.ConnectionReattachTest
+ --tests com.blent.connection.ConfiguredAttachmentTest
+ --tests com.blent.connection.ConnectionActivityTest
+ --tests com.blent.connection.ConfiguredConnectionTest
+ --tests com.blent.connection.ConnectionPresentationTest
+ --tests com.blent.connection.ConnectionActivityUiTest
+ --tests com.blent.connection.ConnectionPreferenceControlsTest profileCoverage
+Actual command ran inside android with -I ../scripts/coverage/android.init.gradle.
+
+JaCoCo 0.8.15 plus repository Kotlin method/inline attribution: 21/21 selected
+production authored methods/constructors/callbacks pass >=80%; minimum 5/6 lines
+(83.33%) in the synchronized run callback; every other selected function is 100%.
+coverage.json keeps per-function counters/variants; source-sha256.json binds the
+four production files. Pinned Kotlin PSI 1.9.20 local complexity checker measured
+183 functions across four production files and three test files; maximum 9.
+
+Ownership: ConfiguredConnection's Activity scope owns at most one pending job
+and one immutable original attempt reference. Repeat attachment events coalesce;
+no healthy worker is canceled by an event. Explicit cutoff/owner loss cancels or
+invalidates a pending request. Attempt identity is captured before coroutine dispatch and rechecked after settings I/O;
+StateFlow conflation cannot transfer an old event to a replacement. ResourceLane
+continues to own original native cleanup and queues replacement until exact
+retirement; a timeout or logical Ended event is not retirement evidence.
+No new native allocation, descriptor, timer loop, or platform operation is added.
+The pending status says Preparing USB connection because it can await old work.
+
+Scope: shared Android/Robolectric tests, not physical replug certification.
+T1393 separately tracks retry with no accessory event; T1389 tracks native
+capture recovery on this desktop. No tablet installation or mutation performed.

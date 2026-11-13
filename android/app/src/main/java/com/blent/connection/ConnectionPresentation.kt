@@ -18,6 +18,8 @@ internal data class ConnectionView(
     val approval: ConnectionChoice? = null,
     val remembered: Boolean? = null,
     val active: Boolean = false,
+    val reconnectAllowed: Boolean = true,
+    val attempt: Any? = null,
     val authenticated: Boolean = false,
     val cleanup: String? = null,
     val display: ConnectionDisplayChoice? = null,
@@ -46,7 +48,7 @@ internal class ConnectionPresentation {
         val token = Any()
         generation = token; accepting = true; finished = false; displayOwner = 0
         resetMedia()
-        publish(ConnectionView(status = "Opening USB connection…", active = true,
+        publish(ConnectionView(status = "Opening USB connection…", active = true, attempt = token,
             cleanup = mutable.value.cleanup))
         return token
     }
@@ -161,7 +163,7 @@ internal class ConnectionPresentation {
     @Synchronized fun decide(token: Any, choice: ConnectionChoice, allow: Boolean, remember: Boolean): ConnectionWorkerCommand? {
         if (generation !== token || !accepting || mutable.value.approval !== choice) return null
         if (!allow) accepting = false
-        publish(mutable.value.copy(approval = null, active = allow,
+        publish(mutable.value.copy(approval = null, active = allow, reconnectAllowed = allow,
             status = if (allow) "Approval submitted; verifying connection…" else "Computer denied; closing connection…"))
         return ConnectionWorkerCommand.Decide(choice.ticket, allow, allow && remember)
     }
@@ -170,7 +172,7 @@ internal class ConnectionPresentation {
         if (generation !== token || !accepting || mutable.value.peer !== choice) return null
         accepting = false
         clearMedia()
-        publish(mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
+        publish(mutable.value.copy(approval = null, active = false, reconnectAllowed = false, authenticated = false, display = null, cameraOffer = null, camera = null,
             status = "Revoking computer; waiting for saved trust update…"))
         return ConnectionWorkerCommand.Revoke(choice.ticket.peer)
     }
@@ -179,7 +181,7 @@ internal class ConnectionPresentation {
         if (generation !== token || finished) return
         accepting = false
         clearMedia()
-        publish(mutable.value.copy(approval = null, active = false, authenticated = false, display = null, cameraOffer = null, camera = null,
+        publish(mutable.value.copy(approval = null, active = false, reconnectAllowed = false, authenticated = false, display = null, cameraOffer = null, camera = null,
             status = "Disconnecting USB…", cleanup = "Closing USB resources…"))
     }
 

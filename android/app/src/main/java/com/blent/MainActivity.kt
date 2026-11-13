@@ -127,7 +127,7 @@ class MainActivity : ComponentActivity() {
 
     private fun accessoryIntent(intent: Intent?): Boolean {
         if (intent?.action != UsbManager.ACTION_USB_ACCESSORY_ATTACHED) return false
-        configuredConnection.connect()
+        configuredConnection.attach()
         return true
     }
 

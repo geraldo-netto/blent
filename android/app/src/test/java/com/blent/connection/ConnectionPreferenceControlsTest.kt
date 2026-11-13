@@ -104,7 +104,7 @@ class ConnectionPreferenceControlsTest {
             val configured = render(fixture, ConnectionPreferenceStore(PreferenceMemoryStorage(), dispatcher))
             try {
                 compose.onNodeWithText("Connect USB").performClick()
-                compose.onNodeWithText("Loading USB connection settings…").assertExists()
+                compose.onNodeWithText("Preparing USB connection…").assertExists()
                 compose.onNodeWithText("Connect USB").assertIsNotEnabled()
                 compose.onNodeWithText("Disconnect USB").performClick()
                 compose.runOnIdle { dispatcher.runCurrent() }
