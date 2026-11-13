@@ -46,7 +46,11 @@ to USB-only when it reboots, so that one command has to be repeated after a
 tablet restart. `blent wifi --off` forgets the address and attempts to disconnect.
 Its output distinguishes confirmed disconnection from unavailable ADB; failed
 cleanup admission returns an error even though the address was forgotten. It
-does not close the tablet's adb TCP listener. Host video/input ports stay on
+does not close the tablet's adb TCP listener. On Linux, interrupting either Wi-Fi
+command with Ctrl+C or SIGTERM cancels further setup and waits for its original
+ADB work and cleanup to settle. It prints an interruption error and exits with
+status 1; cleanup can keep the command running until the native operation ends.
+Host video/input ports stay on
 loopback, but `blent wifi` opens tablet port 5555. Use a trusted network;
 see [SECURITY.md](../SECURITY.md#connections-and-trust-boundaries) for returning
 adbd to USB mode.

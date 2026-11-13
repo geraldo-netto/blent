@@ -1,0 +1,51 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 27.91s
+
+RUN blent:bin:True FILTER=daemon_shutdown::
+
+running 2 tests
+test daemon_shutdown::tests::t1423_only_requested_admission_rejection_becomes_graceful_stop ... ok
+test daemon_shutdown::tests::t1423_owner_drop_aborts_original_signal_observer ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 626 filtered out; finished in 0.00s
+
+
+RUN wifi_cli:test:True FILTER=
+
+running 1 test
+test t1440_wifi_cli_signals_retain_original_creation_and_cleanup ... PASS case=setup signal=2 exit=1
+PASS case=off signal=2 exit=1
+PASS case=setup signal=15 exit=1
+PASS case=off signal=15 exit=1
+PASS case=setup signal=0 exit=0
+PASS case=off signal=0 exit=0
+PASS case=rollback signal=0 exit=1
+PASS case=invalid signal=0 exit=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.76s
+
+
+RUN daemon_startup:test:True FILTER=
+
+running 2 tests
+test t1423_startup_signals_retain_cleanup_and_early_stop ... {"case": "banner", "signal": 15, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 15, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": false, "installed": true, "exit": 0, "routes": 0}
+{"case": "banner", "signal": 2, "ready": true, "installed": true, "exit": 0, "routes": 0}
+{"case": "config", "invalid": false, "installed": true, "exit": 0, "adb_started": false}
+{"case": "config", "invalid": true, "installed": true, "exit": 1, "adb_started": false}
+ok
+test t1428_failed_startup_removes_owned_pid ... {"exit": 1, "pid_file_exists": false}
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.49s
+
+
+RUN wifi_exit:test:True FILTER=
+
+running 2 tests
+test t1365_exit_fixture ... ok
+test t1365_process_exit_waits_for_original_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s

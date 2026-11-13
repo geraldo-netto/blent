@@ -28,6 +28,23 @@ impl Listener {
         Ok(Self { requested, task })
     }
 
+    /// Cancel an owned command on a catchable signal; entry teardown retains cleanup.
+    pub(crate) async fn cancel_on_signal(
+        &self,
+        work: impl std::future::Future<Output = Result<()>>,
+    ) -> Result<()> {
+        let result = tokio::select! {
+            result = work => result,
+            _ = crate::wait_for_shutdown(self.requested.clone()) => {
+                blent::runtime_owner::request_shutdown();
+                Ok(())
+            },
+        };
+        self.finish(result)?;
+        anyhow::ensure!(!*self.requested.borrow(), "Command interrupted");
+        Ok(())
+    }
+
     pub(crate) async fn wait(&self, quit: watch::Receiver<bool>) -> Result<()> {
         tokio::select! {
             _ = crate::wait_for_shutdown(self.requested.clone()) => {},

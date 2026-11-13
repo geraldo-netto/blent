@@ -1,0 +1,132 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source0.1.0/syn2.0.119; Python AST 3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "source_sha256": {
+    "host/src/linux_main.rs": "c890447e7b5a3da55fb8fb69760a1f7a18d05858782973e3994f67910b36e48b",
+    "host/src/daemon_shutdown.rs": "f98ba16a958de9417a39dd1720c448aa98d0320381f7700a7a3a0f501bcca50f",
+    "host/tests/wifi_cli.rs": "eed549a815e1eb1f35153bda779ea130e73c75a56dd514796a75dc37424ec1ef",
+    "host/tests/wifi_cli/signals.py": "78dea0092f70807c919659a01b84d99f168bfe57c6849cb8663af7ac09aa0520",
+    "host/tests/wifi_cli/fake_adb.py": "c4479fe567a71d7fbe7aa53f277953a89ed15ad7d6e4d62298bb1c8f4d9912f9"
+  },
+  "functions": [
+    {
+      "file": "host/src/linux_main.rs",
+      "line": 117,
+      "function": "setup_wifi",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 14,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 32,
+      "function": "cancel_on_signal",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 48,
+      "function": "wait",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 58,
+      "function": "finish",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 69,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 75,
+      "function": "admission_closed",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 86,
+      "function": "closed",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 95,
+      "function": "t1423_only_requested_admission_rejection_becomes_graceful_stop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "line": 119,
+      "function": "t1423_owner_drop_aborts_original_signal_observer",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/wifi_cli.rs",
+      "line": 4,
+      "function": "t1440_wifi_cli_signals_retain_original_creation_and_cleanup",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/wifi_cli/signals.py",
+      "line": 13,
+      "function": "configure",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/wifi_cli/signals.py",
+      "line": 28,
+      "function": "await_started",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/wifi_cli/signals.py",
+      "line": 36,
+      "function": "assert_retained",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/wifi_cli/signals.py",
+      "line": 44,
+      "function": "interrupt",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/wifi_cli/signals.py",
+      "line": 56,
+      "function": "finish",
+      "complexity": 8
+    },
+    {
+      "file": "host/tests/wifi_cli/signals.py",
+      "line": 74,
+      "function": "run",
+      "complexity": 5
+    },
+    {
+      "file": "host/tests/wifi_cli/fake_adb.py",
+      "line": 9,
+      "function": "barrier",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/wifi_cli/fake_adb.py",
+      "line": 15,
+      "function": "connect",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/wifi_cli/fake_adb.py",
+      "line": 22,
+      "function": "main",
+      "complexity": 3
+    }
+  ]
+}

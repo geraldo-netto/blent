@@ -1,0 +1,34 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "source_sha256": {
+    "host/src/linux_main.rs": "c890447e7b5a3da55fb8fb69760a1f7a18d05858782973e3994f67910b36e48b",
+    "host/src/daemon_shutdown.rs": "f98ba16a958de9417a39dd1720c448aa98d0320381f7700a7a3a0f501bcca50f"
+  },
+  "object_sha256": {
+    "wifi_cli:test:True": "cd16f94da7a66950cd5f453e779c79c193bf06c21fbe13861d6ae1cc22e779bd",
+    "daemon_startup:test:True": "6195f4592fadf0a7d1e723d8bda5ffd7afe9523bc66d4f4126e8b64ab95f6a9c",
+    "wifi_exit:test:True": "d32d343613901b30d94e9436833444cc4eca95fcac5772b9168845f3efcce259",
+    "blent:bin:False": "70654723c18cef7ed6b72c467d1ca4ed579467edbcab3e8017bd18a76150496a",
+    "blent:bin:True": "7412a3096e2a049961eed2392c10497b52071df5ae821d425c9022306ff454da"
+  },
+  "functions": [
+    {
+      "file": "host/src/linux_main.rs",
+      "function": "setup_wifi",
+      "first": 117,
+      "last": 122,
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/daemon_shutdown.rs",
+      "function": "cancel_on_signal",
+      "first": 32,
+      "last": 46,
+      "covered": 13,
+      "executable": 13,
+      "percent": 100.0
+    }
+  ]
+}

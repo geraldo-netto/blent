@@ -1,0 +1,41 @@
+{
+  "tool": "scripts/complexity/check.py Python AST; CPython 3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "functions": [
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/wifi-cli/fake_adb.py",
+      "line": 9,
+      "function": "connect",
+      "complexity": 2
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/wifi-cli/fake_adb.py",
+      "line": 18,
+      "function": "main",
+      "complexity": 3
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/wifi-cli/signals.py",
+      "line": 14,
+      "function": "await_file",
+      "complexity": 2
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/wifi-cli/signals.py",
+      "line": 21,
+      "function": "environment",
+      "complexity": 1
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/wifi-cli/signals.py",
+      "line": 30,
+      "function": "observe",
+      "complexity": 6
+    },
+    {
+      "file": "docs/reviews/artifacts/2026-11-13-lifecycle-round3/wifi-cli/signals.py",
+      "line": 55,
+      "function": "run",
+      "complexity": 2
+    }
+  ]
+}

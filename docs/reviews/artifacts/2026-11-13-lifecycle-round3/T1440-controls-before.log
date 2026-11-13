@@ -1,0 +1,4 @@
+PASS case=setup signal=0 exit=0
+PASS case=off signal=0 exit=0
+PASS case=rollback signal=0 exit=1
+PASS case=invalid signal=0 exit=1

@@ -4,7 +4,7 @@ use blent::annex_scan;
 #[cfg(all(test, not(feature = "inproc-encoder")))]
 use blent::ffmpeg_args;
 use blent::transport::{attachment_identity, current_transport, select_device_transports};
-use blent::wifi::{linux::setup as setup_wifi, Reconnect as WifiReconnect};
+use blent::wifi::Reconnect as WifiReconnect;
 use blent_config::android::{app_launch_command, token_delivery_command};
 #[cfg(test)]
 #[allow(dead_code)] // Shared counter helpers also serve library transport tests.
@@ -111,6 +111,14 @@ async fn run_cli() -> Result<()> {
     }
 
     Ok(())
+}
+
+/// Wi-Fi command cancellation drops its producer before process-entry retirement.
+async fn setup_wifi(off: bool) -> Result<()> {
+    let shutdown = daemon_shutdown::Listener::new()?;
+    shutdown
+        .cancel_on_signal(blent::wifi::linux::setup(off))
+        .await
 }
 
 fn setup_logging() {

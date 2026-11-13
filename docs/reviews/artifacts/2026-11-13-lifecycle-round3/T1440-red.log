@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/backups/disk2/projects/blent/host/tests/wifi_cli/signals.py", line 98, in <module>
+    run(sys.argv[1], scenario, selected)
+  File "/backups/disk2/projects/blent/host/tests/wifi_cli/signals.py", line 85, in run
+    interrupt(root, child, case, number)
+  File "/backups/disk2/projects/blent/host/tests/wifi_cli/signals.py", line 48, in interrupt
+    assert_retained(child, first)
+  File "/backups/disk2/projects/blent/host/tests/wifi_cli/signals.py", line 41, in assert_retained
+    raise AssertionError(f'T1440 CLI exited {returned} before original {operation} settled')
+AssertionError: T1440 CLI exited -2 before original connect settled
