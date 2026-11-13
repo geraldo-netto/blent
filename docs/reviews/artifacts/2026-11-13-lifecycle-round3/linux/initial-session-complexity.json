@@ -1,0 +1,63 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "source_sha256": "deacb73f7f4bff0c11bd2d3d094907d02e41a732b0a1b2e5dbd376b94b932916",
+  "library_sha256": "f47f935e41128db7ca65fad308c648c6f86431008800723bdca3db12050714b2",
+  "functions": [
+    {
+      "line": 15,
+      "name": "preparing_for_sleep",
+      "complexity": 1
+    },
+    {
+      "line": 17,
+      "name": "preparing_for_shutdown",
+      "complexity": 1
+    },
+    {
+      "line": 19,
+      "name": "get_session_by_pid",
+      "complexity": 1
+    },
+    {
+      "line": 27,
+      "name": "locked_hint",
+      "complexity": 1
+    },
+    {
+      "line": 29,
+      "name": "user",
+      "complexity": 4
+    },
+    {
+      "line": 40,
+      "name": "observed",
+      "complexity": 2
+    },
+    {
+      "line": 47,
+      "name": "query",
+      "complexity": 1
+    },
+    {
+      "line": 51,
+      "name": "settled",
+      "complexity": 2
+    },
+    {
+      "line": 55,
+      "name": "exercise",
+      "complexity": 1
+    },
+    {
+      "line": 68,
+      "name": "run",
+      "complexity": 1
+    },
+    {
+      "line": 75,
+      "name": "main",
+      "complexity": 1
+    }
+  ],
+  "probe_binary_sha256": "90df836fb4d9b11c1dcdb0012ed0eef3217a747ec3c0c366b85646ad8d41007b"
+}

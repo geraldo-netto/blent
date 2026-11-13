@@ -1,0 +1,36 @@
+
+running 8 tests
+test activity::native::tests::t1438_session_identity_payload_bounds_and_uid_are_validated ... ok
+test activity::native::tests::t1438_session_lookup_distinguishes_absence_from_failed_evidence ... ok
+test activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement ... ok
+test activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session ... ok
+test activity::tests::continuity::t1438_initial_identity_uncertainty_can_recover_to_explicit_absence ...
+thread 'activity::tests::continuity::t1438_initial_identity_uncertainty_can_recover_to_explicit_absence' (1379926) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test activity::tests::continuity::t1438_initial_identity_uncertainty_can_recover_to_explicit_absence ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1438_initial_identity_uncertainty_can_recover_to_explicit_absence
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1174 filtered out; finished in 3.01s
+
+
+thread 'activity::tests::continuity::t1438_initial_identity_uncertainty_can_recover_to_explicit_absence' (1379932) panicked at host/src/activity/tests.rs:535:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session ... ok
+test activity::tests::continuity::t1438_no_session_and_foreign_uid_remain_explicit_non_retrying ... ok
+test activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt ... ok
+
+failures:
+
+failures:
+    activity::tests::continuity::t1438_initial_identity_uncertainty_can_recover_to_explicit_absence
+
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 1167 filtered out; finished in 5.99s

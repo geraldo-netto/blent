@@ -1,0 +1,118 @@
+{
+  "tool": "cargo-llvm-cov 0.8.7 / Rust 1.100.0 / LLVM 23.1.5 native counters",
+  "sources": {
+    "host/src/activity.rs": "2cff0212d10c8c7b9cbfe7dc9038552b9f0f86b90ccdb655c7be12629ad7ebef",
+    "host/src/activity/native.rs": "6636d0337f83c8779f63f622f477404b725eda6f7024f44048f6624f414545c5"
+  },
+  "objects": {
+    "library-tests": {
+      "path": "/tmp/blent-t1438-coverage/library-tests",
+      "sha256": "576fc3b47eee790e88b461f84515855711100d5d4658116a926cef7d688bca32"
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/activity.rs",
+      "name": "discover",
+      "line": 155,
+      "language": "rust",
+      "covered": 20,
+      "total": 21,
+      "percent": 95.23809523809524,
+      "passes": true,
+      "missing": [
+        176
+      ]
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "logind",
+      "line": 165,
+      "language": "rust",
+      "covered": 28,
+      "total": 28,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "logind_snapshot",
+      "line": 501,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "logind_state",
+      "line": 520,
+      "language": "rust",
+      "covered": 16,
+      "total": 17,
+      "percent": 94.11764705882354,
+      "passes": true,
+      "missing": [
+        530
+      ]
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "session_path",
+      "line": 539,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "session_object",
+      "line": 547,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "own_session",
+      "line": 557,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "session_reply",
+      "line": 561,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "session_lookup",
+      "line": 582,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": []
+    }
+  ]
+}

@@ -161,13 +161,8 @@ impl LinuxSource {
     ) -> Vec<Box<dyn Backend>> {
         let mut actors: Vec<Box<dyn Backend>> = Vec::new();
         if let Some(bus) = system {
-            match tokio::time::timeout(
-                settings.deadline,
-                native::Actor::logind(bus, session_id, settings.queue, settings.deadline),
-            )
-            .await
-            {
-                Ok(Ok(actor)) => actors.push(Box::new(actor)),
+            match native::Actor::logind(bus, session_id, settings.queue, settings.deadline).await {
+                Ok(actor) => actors.push(Box::new(actor)),
                 error => tracing::warn!(?error, "Linux power/lock observations unsupported"),
             }
         }

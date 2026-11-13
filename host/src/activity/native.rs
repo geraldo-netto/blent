@@ -168,33 +168,19 @@ impl Actor {
         capacity: usize,
         deadline: Duration,
     ) -> Result<Self> {
-        let (owner, signals, owners) = streams(&bus, LOGIN, capacity).await?;
-        let sleep = boolean(&bus, &owner, LOGIN_PATH, MANAGER, "PreparingForSleep").await;
-        let shutdown = boolean(&bus, &owner, LOGIN_PATH, MANAGER, "PreparingForShutdown").await;
-        let session = session_path(&bus, &owner, session_id.as_deref()).await;
-        let locked = match &session {
-            Some(path) => boolean(&bus, &owner, path, SESSION, "LockedHint").await,
-            None => Flag::default(),
-        };
-        let data = Logind {
-            session,
-            sleep,
-            shutdown,
-            locked,
-        };
+        let expires = tokio::time::Instant::now() + deadline;
+        let (owner, signals, owners) =
+            tokio::time::timeout_at(expires, streams(&bus, LOGIN, capacity)).await??;
+        let data = logind_snapshot(&bus, &owner, session_id.as_deref(), expires).await;
         let capabilities = Capabilities {
             power: true,
-            lock: data.session.is_some(),
+            lock: data.session.is_some() || data.locked.initial_failed,
             display: false,
         };
-        let state = if original_owner(&bus, LOGIN, &owner).await.unwrap_or(false) {
-            HostState {
-                power: data.power(),
-                locked: data.locked.value,
-                display_on: None,
-            }
-        } else {
-            HostState::default()
+        let state = HostState {
+            power: data.power(),
+            locked: data.locked.value,
+            display_on: None,
         };
         Ok(Self {
             bus,
@@ -512,7 +498,67 @@ async fn boolean(bus: &Connection, owner: &str, path: &str, interface: &str, nam
         },
     }
 }
-async fn session_path(bus: &Connection, owner: &str, id: Option<&str>) -> Option<String> {
+async fn logind_snapshot(
+    bus: &Connection,
+    owner: &str,
+    id: Option<&str>,
+    expires: tokio::time::Instant,
+) -> Logind {
+    match tokio::time::timeout_at(expires, logind_state(bus, owner, id)).await {
+        Ok(Ok(data)) => data,
+        _ => Logind {
+            session: None,
+            sleep: Flag::default(),
+            shutdown: Flag::default(),
+            locked: Flag {
+                initial_failed: true,
+                ..Flag::default()
+            },
+        },
+    }
+}
+async fn logind_state(bus: &Connection, owner: &str, id: Option<&str>) -> Result<Logind> {
+    let sleep = boolean(bus, owner, LOGIN_PATH, MANAGER, "PreparingForSleep").await;
+    let shutdown = boolean(bus, owner, LOGIN_PATH, MANAGER, "PreparingForShutdown").await;
+    let session = session_path(bus, owner, id).await?;
+    let locked = match &session {
+        Some(path) => boolean(bus, owner, path, SESSION, "LockedHint").await,
+        None => Flag::default(),
+    };
+    ensure!(
+        original_owner(bus, LOGIN, owner).await?,
+        "original logind owner lost during initial query"
+    );
+    Ok(Logind {
+        session,
+        sleep,
+        shutdown,
+        locked,
+    })
+}
+async fn session_path(bus: &Connection, owner: &str, id: Option<&str>) -> Result<Option<String>> {
+    let Some(reply) = session_reply(bus, owner, id).await? else {
+        return Ok(None);
+    };
+    let path = session_object(&reply)?;
+    let (value, _) = property(bus, owner, path.as_str(), SESSION, "User").await?;
+    own_session(path, value)
+}
+fn session_object(reply: &Message) -> Result<OwnedObjectPath> {
+    let path: OwnedObjectPath = payload(reply)?;
+    ensure!(
+        path.as_str()
+            .starts_with("/org/freedesktop/login1/session/")
+            && path.as_str().len() <= 256,
+        "invalid logind session path"
+    );
+    Ok(path)
+}
+fn own_session(path: OwnedObjectPath, value: OwnedValue) -> Result<Option<String>> {
+    let (uid, _): (u32, OwnedObjectPath) = value.try_into()?;
+    Ok((uid == unsafe { libc::geteuid() }).then(|| path.to_string()))
+}
+async fn session_reply(bus: &Connection, owner: &str, id: Option<&str>) -> Result<Option<Message>> {
     let by_pid = bus
         .call_method(
             Some(owner),
@@ -522,29 +568,35 @@ async fn session_path(bus: &Connection, owner: &str, id: Option<&str>) -> Option
             &(std::process::id(),),
         )
         .await;
-    let reply = match by_pid {
-        Ok(reply) => reply,
-        Err(_) => {
-            let id = id.filter(|id| !id.is_empty() && id.len() <= 128 && !id.contains('/'))?;
-            bus.call_method(Some(owner), LOGIN_PATH, Some(MANAGER), "GetSession", &(id,))
-                .await
-                .ok()?
-        }
-    };
-    let path: OwnedObjectPath = payload(&reply).ok()?;
-    if !path
-        .as_str()
-        .starts_with("/org/freedesktop/login1/session/")
-        || path.as_str().len() > 256
-    {
-        return None;
+    if let Some(reply) = session_lookup(by_pid)? {
+        return Ok(Some(reply));
     }
-    let (value, _) = property(bus, owner, path.as_str(), SESSION, "User")
-        .await
-        .ok()?;
-    let (uid, _): (u32, OwnedObjectPath) = value.try_into().ok()?;
-    (uid == unsafe { libc::geteuid() }).then(|| path.to_string())
+    let Some(id) = id.filter(|id| !id.is_empty() && id.len() <= 128 && !id.contains('/')) else {
+        return Ok(None);
+    };
+    session_lookup(
+        bus.call_method(Some(owner), LOGIN_PATH, Some(MANAGER), "GetSession", &(id,))
+            .await,
+    )
 }
+fn session_lookup(reply: zbus::Result<Message>) -> Result<Option<Message>> {
+    match reply {
+        Ok(reply) => Ok(Some(reply)),
+        Err(zbus::Error::MethodError(name, _, _))
+            if matches!(
+                name.as_str(),
+                "org.freedesktop.login1.NoSessionForPID"
+                    | "org.freedesktop.login1.NoSuchSession"
+                    | "org.freedesktop.DBus.Error.UnknownMethod"
+                    | "org.freedesktop.DBus.Error.UnknownInterface"
+            ) =>
+        {
+            Ok(None)
+        }
+        Err(error) => Err(error.into()),
+    }
+}
+
 fn changed(
     message: &Message,
     interface: &str,

@@ -1,0 +1,90 @@
+
+running 5 tests
+test activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement ...
+thread 'activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement' (1364964) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1170 filtered out; finished in 3.01s
+
+
+thread 'activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement' (1364968) panicked at host/src/activity/tests.rs:535:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session ...
+thread 'activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session' (1365219) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1170 filtered out; finished in 3.00s
+
+
+thread 'activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session' (1365223) panicked at host/src/activity/tests.rs:535:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+test activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session ...
+thread 'activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session' (1365269) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1170 filtered out; finished in 3.01s
+
+
+thread 'activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session' (1365273) panicked at host/src/activity/tests.rs:535:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+test activity::tests::continuity::t1438_no_session_and_foreign_uid_remain_explicit_non_retrying ... ok
+test activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt ...
+thread 'activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt' (1365345) panicked at host/src/activity/tests.rs:248:5:
+
+running 1 test
+test activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1170 filtered out; finished in 3.01s
+
+
+thread 'activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt' (1365349) panicked at host/src/activity/tests.rs:535:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement
+    activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session
+    activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session
+    activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt
+
+test result: FAILED. 1 passed; 4 failed; 0 ignored; 0 measured; 1166 filtered out; finished in 12.61s

@@ -36,9 +36,20 @@ pub(super) struct Values {
     fail_shutdown: AtomicBool,
     missing_sleep: AtomicBool,
     fail_lock: AtomicBool,
+    fail_pid: AtomicBool,
+    fail_session: AtomicBool,
+    fail_user: AtomicBool,
+    user_delay_ms: AtomicU64,
     fail_display: AtomicBool,
     missing_display: AtomicBool,
     display_delay_ms: AtomicU64,
+}
+#[derive(Debug, zbus::DBusError)]
+#[zbus(prefix = "org.freedesktop.login1")]
+enum SessionError {
+    NoSessionForPID(String),
+    NoSuchSession(String),
+    TemporaryFailure(String),
 }
 struct Manager(Arc<Values>);
 #[zbus::interface(name = "org.freedesktop.login1.Manager")]
@@ -61,15 +72,21 @@ impl Manager {
         Ok(self.0.shutdown.load(Ordering::Acquire))
     }
     #[zbus(name = "GetSessionByPID")]
-    fn get_session_by_pid(&self, _pid: u32) -> zbus::fdo::Result<OwnedObjectPath> {
-        if self.0.mode.load(Ordering::Acquire) == 1 {
-            return Err(zbus::fdo::Error::Failed("no process session".into()));
+    fn get_session_by_pid(&self, _pid: u32) -> Result<OwnedObjectPath, SessionError> {
+        if self.0.fail_pid.load(Ordering::Acquire) {
+            return Err(SessionError::TemporaryFailure("T1438 PID lookup".into()));
+        }
+        if matches!(self.0.mode.load(Ordering::Acquire), 1 | 3) {
+            return Err(SessionError::NoSessionForPID("no process session".into()));
         }
         Ok(OwnedObjectPath::try_from(SESSION_PATH).unwrap())
     }
-    fn get_session(&self, id: &str) -> zbus::fdo::Result<OwnedObjectPath> {
-        if id != "fixture" {
-            return Err(zbus::fdo::Error::Failed("unknown session".into()));
+    fn get_session(&self, id: &str) -> Result<OwnedObjectPath, SessionError> {
+        if self.0.fail_session.load(Ordering::Acquire) {
+            return Err(SessionError::TemporaryFailure("T1438 session lookup".into()));
+        }
+        if id != "fixture" || self.0.mode.load(Ordering::Acquire) == 3 {
+            return Err(SessionError::NoSuchSession("unknown session".into()));
         }
         Ok(OwnedObjectPath::try_from(SESSION_PATH).unwrap())
     }
@@ -85,17 +102,21 @@ impl Session {
         Ok(self.0.lock.load(Ordering::Acquire))
     }
     #[zbus(property)]
-    fn user(&self) -> (u32, OwnedObjectPath) {
+    async fn user(&self) -> zbus::fdo::Result<(u32, OwnedObjectPath)> {
+        tokio::time::sleep(Duration::from_millis(self.0.user_delay_ms.load(Ordering::Acquire))).await;
+        if self.0.fail_user.load(Ordering::Acquire) {
+            return Err(zbus::fdo::Error::Failed("T1438 User lookup".into()));
+        }
         let uid = unsafe { libc::geteuid() };
         let uid = if self.0.mode.load(Ordering::Acquire) == 2 {
             uid.wrapping_add(1)
         } else {
             uid
         };
-        (
+        Ok((
             uid,
             OwnedObjectPath::try_from("/org/freedesktop/login1/user/_fixture").unwrap(),
-        )
+        ))
     }
 }
 struct Display(Arc<Values>);
@@ -357,7 +378,9 @@ async fn t1008_private_fallback_session_uid_and_capabilities_are_explicit() {
     }
     let fixture = Fixture::new().await;
     fixture.values.mode.store(1, Ordering::Release);
-    for id in [None, Some(""), Some("bad/id"), Some("unknown")] {
+    let boundary = "x".repeat(128);
+    let oversized = "x".repeat(129);
+    for id in [None, Some(""), Some("bad/id"), Some("unknown"), Some(boundary.as_str()), Some(oversized.as_str())] {
         let mut source = fixture.source(id, "KDE", 32).await;
         assert_eq!(
             source.capabilities(),

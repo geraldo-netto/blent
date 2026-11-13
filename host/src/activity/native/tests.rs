@@ -307,3 +307,60 @@ async fn t1429_invalid_initial_boolean_values_request_recovery() {
     bus.close().await.unwrap();
     fixture.server.close().await.unwrap();
 }
+
+#[test]
+fn t1438_session_lookup_distinguishes_absence_from_failed_evidence() {
+    for (name, absent) in [
+        ("org.freedesktop.login1.NoSessionForPID", true),
+        ("org.freedesktop.login1.NoSuchSession", true),
+        ("org.freedesktop.DBus.Error.UnknownMethod", true),
+        ("org.freedesktop.DBus.Error.UnknownInterface", true),
+        ("org.freedesktop.DBus.Error.Failed", false),
+        ("org.freedesktop.DBus.Error.NoReply", false),
+        ("org.freedesktop.DBus.Error.AccessDenied", false),
+    ] {
+        let error = zbus::Error::MethodError(
+            name.try_into().unwrap(),
+            None,
+            message(LOGIN_PATH, MANAGER, "Probe", ()),
+        );
+        assert_eq!(session_lookup(Err(error)).is_ok(), absent);
+    }
+    assert!(session_lookup(Err(zbus::Error::Failure("closed connection".into()))).is_err());
+}
+#[test]
+fn t1438_session_identity_payload_bounds_and_uid_are_validated() {
+    for count in [0, 1, 225, 226, 255, 256, 257, 1024] {
+        let name = format!("/org/freedesktop/login1/session/{}", "x".repeat(count));
+        if let Ok(path) = OwnedObjectPath::try_from(name.clone()) {
+            let reply = message(LOGIN_PATH, MANAGER, "Probe", path);
+            assert_eq!(session_object(&reply).is_ok(), name.len() <= 256);
+        }
+    }
+    for body in ["/", "/unrelated/session"] {
+        let reply = message(
+            LOGIN_PATH,
+            MANAGER,
+            "Probe",
+            OwnedObjectPath::try_from(body).unwrap(),
+        );
+        assert!(session_object(&reply).is_err());
+    }
+    assert!(session_object(&message(LOGIN_PATH, MANAGER, "Probe", 42u32)).is_err());
+    let path = OwnedObjectPath::try_from("/org/freedesktop/login1/session/fixture").unwrap();
+    for value in [OwnedValue::from(true), OwnedValue::from(42u32)] {
+        assert!(own_session(path.clone(), value).is_err());
+    }
+    for uid in [
+        unsafe { libc::geteuid() },
+        unsafe { libc::geteuid() }.wrapping_add(1),
+    ] {
+        let value = zbus::zvariant::Value::from((uid, path.clone()))
+            .try_to_owned()
+            .unwrap();
+        assert_eq!(
+            own_session(path.clone(), value).unwrap().is_some(),
+            uid == unsafe { libc::geteuid() }
+        );
+    }
+}

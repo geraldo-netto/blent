@@ -1,0 +1,150 @@
+{
+  "tool": "Blent local syn 2.0.119 cyclomatic frontend",
+  "sources": {
+    "host/src/activity.rs": "2cff0212d10c8c7b9cbfe7dc9038552b9f0f86b90ccdb655c7be12629ad7ebef",
+    "host/src/activity/native.rs": "6636d0337f83c8779f63f622f477404b725eda6f7024f44048f6624f414545c5",
+    "host/src/activity/native/tests.rs": "0244b76717f2637aa3075c5becdd8dbdce459c796cbf60970721d7ca6601a952",
+    "host/src/activity/tests.rs": "717f4a65f5a90ec0144ea38d5bd548c1ad5d5185e0bf0df3ccc064dc83a94f97",
+    "host/src/activity/continuity_tests.rs": "474770bdc2bf2e0c79ea8d4c8c80ad321a54ac649b9dd66bb300b40da43a583b"
+  },
+  "functions": [
+    {
+      "file": "host/src/activity.rs",
+      "line": 155,
+      "name": "discover",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 165,
+      "name": "logind",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 501,
+      "name": "logind_snapshot",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 520,
+      "name": "logind_state",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 539,
+      "name": "session_path",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 547,
+      "name": "session_object",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 557,
+      "name": "own_session",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 561,
+      "name": "session_reply",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 582,
+      "name": "session_lookup",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/native/tests.rs",
+      "line": 312,
+      "name": "t1438_session_lookup_distinguishes_absence_from_failed_evidence",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/native/tests.rs",
+      "line": 332,
+      "name": "t1438_session_identity_payload_bounds_and_uid_are_validated",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 75,
+      "name": "get_session_by_pid",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 84,
+      "name": "get_session",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 105,
+      "name": "user",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 374,
+      "name": "t1008_private_fallback_session_uid_and_capabilities_are_explicit",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 551,
+      "name": "initial_identity_failure",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 608,
+      "name": "t1438_initial_identity_failures_retry_after_original_settlement",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 615,
+      "name": "t1438_initial_user_failure_recovers_locked_session",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 622,
+      "name": "t1438_initial_identity_timeout_recovers_locked_session",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 631,
+      "name": "t1438_stop_during_identity_failure_retains_original_debt",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 653,
+      "name": "t1438_no_session_and_foreign_uid_remain_explicit_non_retrying",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 673,
+      "name": "uncertain_identity_becomes_absent",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 689,
+      "name": "t1438_initial_identity_uncertainty_can_recover_to_explicit_absence",
+      "complexity": 3
+    }
+  ]
+}

@@ -547,3 +547,148 @@ async fn failed_initial(reader: &mut tokio::sync::watch::Receiver<Publication>) 
     .unwrap()
     .unwrap();
 }
+
+async fn initial_identity_failure(field: usize) {
+    let fixture = Fixture::new().await;
+    fixture.values.lock.store(true, Ordering::Release);
+    if field == 1 {
+        fixture.values.mode.store(1, Ordering::Release);
+    }
+    fixture
+        .values
+        .fail_session
+        .store(field == 0, Ordering::Release);
+    let failing = [
+        &fixture.values.fail_pid,
+        &fixture.values.fail_session,
+        &fixture.values.fail_user,
+        &fixture.values.fail_user,
+    ][field];
+    failing.store(field != 3, Ordering::Release);
+    fixture
+        .values
+        .user_delay_ms
+        .store(if field == 3 { 100 } else { 0 }, Ordering::Release);
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let (factory, following) =
+        start_held(Arc::new(PowerFactory::default()), Some(held.completion()));
+    let mut reader = following.subscribe();
+    failed_initial(&mut reader).await;
+    conservative(&mut reader).await;
+    assert_eq!(
+        factory.calls.load(Ordering::Acquire),
+        1,
+        "T1438 original identity debt fences retry"
+    );
+    assert!(!factory.proofs.lock().unwrap()[0].is_complete());
+    drop(held);
+    attempts(&factory, 3).await;
+    conservative(&mut reader).await;
+    failing.store(false, Ordering::Release);
+    fixture.values.user_delay_ms.store(0, Ordering::Release);
+    fixture.values.fail_session.store(false, Ordering::Release);
+    let fresh = followed(&mut reader, |s| !s.source_lost).await;
+    assert!(
+        !fresh.demand.display,
+        "T1438 recovered locked session denies display"
+    );
+    assert!(
+        matches!(*reader.borrow(), Publication::Observed { capabilities, .. } if capabilities.lock)
+    );
+    fixture.values.lock.store(false, Ordering::Release);
+    fixture
+        .changed(SESSION_PATH, SESSION, "LockedHint", Some(false.into()))
+        .await;
+    followed(&mut reader, |s| s.demand.display).await;
+    finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1438_initial_identity_failures_retry_after_original_settlement() {
+    if !private("activity::tests::continuity::t1438_initial_identity_failures_retry_after_original_settlement") { return; }
+    for field in 0..2 {
+        initial_identity_failure(field).await;
+    }
+}
+#[tokio::test]
+async fn t1438_initial_user_failure_recovers_locked_session() {
+    if !private("activity::tests::continuity::t1438_initial_user_failure_recovers_locked_session") {
+        return;
+    }
+    initial_identity_failure(2).await;
+}
+#[tokio::test]
+async fn t1438_initial_identity_timeout_recovers_locked_session() {
+    if !private(
+        "activity::tests::continuity::t1438_initial_identity_timeout_recovers_locked_session",
+    ) {
+        return;
+    }
+    initial_identity_failure(3).await;
+}
+#[tokio::test]
+async fn t1438_stop_during_identity_failure_retains_original_debt() {
+    if !private(
+        "activity::tests::continuity::t1438_stop_during_identity_failure_retains_original_debt",
+    ) {
+        return;
+    }
+    let fixture = Fixture::new().await;
+    fixture.values.fail_user.store(true, Ordering::Release);
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let (factory, following) =
+        start_held(Arc::new(PowerFactory::default()), Some(held.completion()));
+    let mut reader = following.subscribe();
+    failed_initial(&mut reader).await;
+    following.stop();
+    assert!(!following.retired());
+    drop(held);
+    finish(&factory, following).await;
+    assert_eq!(factory.calls.load(Ordering::Acquire), 1);
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1438_no_session_and_foreign_uid_remain_explicit_non_retrying() {
+    if !private("activity::tests::continuity::t1438_no_session_and_foreign_uid_remain_explicit_non_retrying") { return; }
+    let fixture = Fixture::new().await;
+    fixture.values.lock.store(true, Ordering::Release);
+    for mode in [2, 3] {
+        fixture.values.mode.store(mode, Ordering::Release);
+        let (factory, following) = start(Arc::new(PowerFactory::default()));
+        let mut reader = following.subscribe();
+        let first = followed(&mut reader, |s| s.demand.display).await;
+        assert!(!first.source_lost);
+        assert!(
+            matches!(*reader.borrow(), Publication::Observed { capabilities, .. } if !capabilities.lock)
+        );
+        tokio::time::sleep(Duration::from_millis(150)).await;
+        assert_eq!(factory.calls.load(Ordering::Acquire), 1);
+        finish(&factory, following).await;
+    }
+    fixture.server.close().await.unwrap();
+}
+
+async fn uncertain_identity_becomes_absent(mode: u8) {
+    let fixture = Fixture::new().await;
+    fixture.values.fail_user.store(true, Ordering::Release);
+    let (factory, following) = start(Arc::new(PowerFactory::default()));
+    let mut reader = following.subscribe();
+    failed_initial(&mut reader).await;
+    fixture.values.mode.store(mode, Ordering::Release);
+    fixture.values.fail_user.store(false, Ordering::Release);
+    followed(&mut reader, |s| s.demand.display).await;
+    assert!(
+        matches!(*reader.borrow(), Publication::Observed { capabilities, .. } if !capabilities.lock)
+    );
+    finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1438_initial_identity_uncertainty_can_recover_to_explicit_absence() {
+    if !private("activity::tests::continuity::t1438_initial_identity_uncertainty_can_recover_to_explicit_absence") { return; }
+    for mode in [2, 3] {
+        uncertain_identity_becomes_absent(mode).await;
+    }
+}
