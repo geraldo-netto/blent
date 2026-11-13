@@ -820,3 +820,6 @@ mod route_tests;
 
 #[cfg(test)]
 mod diagnostic_tests;
+
+#[cfg(test)]
+mod identity_tests;

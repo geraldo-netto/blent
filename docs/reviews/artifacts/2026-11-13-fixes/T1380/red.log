@@ -1,0 +1,33 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.41s
+     Running unittests src/main.rs (target/debug/deps/blent-2dde2f627934020f)
+
+running 2 tests
+test monitor::identity_tests::t1380_failed_revalidation_reports_unknown_then_recovers ... FAILED
+test monitor::identity_tests::t1380_same_endpoint_replacement_retires_only_original_attachment ... FAILED
+
+failures:
+
+---- monitor::identity_tests::t1380_failed_revalidation_reports_unknown_then_recovers stdout ----
+
+thread 'monitor::identity_tests::t1380_failed_revalidation_reports_unknown_then_recovers' (1391603) panicked at host/src/monitor/identity_tests.rs:63:9:
+assertion `left == right` failed: T1380: observation was not refreshed
+  left: Some("original")
+ right: None
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- monitor::identity_tests::t1380_same_endpoint_replacement_retires_only_original_attachment stdout ----
+
+thread 'monitor::identity_tests::t1380_same_endpoint_replacement_retires_only_original_attachment' (1391615) panicked at host/src/monitor/identity_tests.rs:47:5:
+assertion `left == right` failed: T1380: cached identity hid replacement
+  left: Some("original")
+ right: Some("replacement")
+
+
+failures:
+    monitor::identity_tests::t1380_failed_revalidation_reports_unknown_then_recovers
+    monitor::identity_tests::t1380_same_endpoint_replacement_retires_only_original_attachment
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 591 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent --bin blent`

@@ -1,0 +1,43 @@
+[
+  {
+    "file": "host/src/discovery.rs",
+    "name": "refresh",
+    "line": 35,
+    "language": "rust",
+    "covered": 20,
+    "total": 20,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "3cbfb492f2e701b947be7d720f48fb41e55b42ce1e8f35058dfccb021d052671",
+    "complexity": 6
+  },
+  {
+    "file": "host/src/discovery.rs",
+    "name": "next",
+    "line": 85,
+    "language": "rust",
+    "covered": 12,
+    "total": 13,
+    "percent": 92.3076923076923,
+    "passes": true,
+    "missing": [
+      90
+    ],
+    "source_sha256": "3cbfb492f2e701b947be7d720f48fb41e55b42ce1e8f35058dfccb021d052671",
+    "complexity": 3
+  },
+  {
+    "file": "host/src/discovery.rs",
+    "name": "probe",
+    "line": 104,
+    "language": "rust",
+    "covered": 11,
+    "total": 11,
+    "percent": 100.0,
+    "passes": true,
+    "missing": [],
+    "source_sha256": "3cbfb492f2e701b947be7d720f48fb41e55b42ce1e8f35058dfccb021d052671",
+    "complexity": 2
+  }
+]

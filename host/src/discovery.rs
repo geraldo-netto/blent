@@ -5,7 +5,6 @@ use std::collections::HashMap;
 
 struct Observation {
     epoch: u64,
-    identity: Option<String>,
     eligible: bool,
     probed: bool,
 }
@@ -46,19 +45,13 @@ impl Discovery {
                 self.next_epoch += 1;
                 Observation {
                     epoch: self.next_epoch,
-                    identity: None,
                     eligible: false,
                     probed: false,
                 }
             });
             self.work.schedule(
                 serial.clone(),
-                probe(
-                    serial.clone(),
-                    adb.to_owned(),
-                    observation.epoch,
-                    observation.identity.clone(),
-                ),
+                probe(serial.clone(), adb.to_owned(), observation.epoch),
             );
         }
     }
@@ -96,7 +89,6 @@ impl Discovery {
         if observation.epoch != result.epoch {
             return None;
         }
-        observation.identity = result.identity.clone();
         observation.probed = true;
         if let Some(eligible) = result.eligible {
             observation.eligible = eligible;
@@ -109,13 +101,11 @@ impl Discovery {
     }
 }
 
-async fn probe(serial: String, adb: String, epoch: u64, known: Option<String>) -> Probe {
-    let identity = match known {
-        Some(identity) => Some(identity),
-        None => crate::probe_device_identity(&serial, &adb)
-            .await
-            .map(|(_, identity)| identity),
-    };
+async fn probe(serial: String, adb: String, epoch: u64) -> Probe {
+    // A stable endpoint string does not prove the same tablet still owns it.
+    let identity = crate::probe_device_identity(&serial, &adb)
+        .await
+        .map(|(_, identity)| identity);
     let eligible = crate::app_presence_with(&serial, &adb).await;
     Probe {
         epoch,
