@@ -1,0 +1,1152 @@
+{
+  "tool": "rustc 1.100.0 LLVM native counters; cargo-llvm-cov 0.8.7; Blent syn 2.0.119 complexity frontend",
+  "tests": 177,
+  "failed": 0,
+  "functions": [
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "new",
+      "line": 53,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "10022a4bc6a4953cd046bcc9f19a0bf2a28b61628f80ccb5a7381a816595d211",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "name": "new",
+      "line": 94,
+      "language": "rust",
+      "covered": 51,
+      "total": 51,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "10022a4bc6a4953cd046bcc9f19a0bf2a28b61628f80ccb5a7381a816595d211",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "name": "new",
+      "line": 12,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "00e49a0a73b33f89161d34c228434e750abc47815817cc8a192b5138d51d10cf",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "name": "shared",
+      "line": 18,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        28
+      ],
+      "source_sha256": "00e49a0a73b33f89161d34c228434e750abc47815817cc8a192b5138d51d10cf",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "name": "reserve",
+      "line": 30,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "00e49a0a73b33f89161d34c228434e750abc47815817cc8a192b5138d51d10cf",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "name": "shutdown",
+      "line": 35,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "00e49a0a73b33f89161d34c228434e750abc47815817cc8a192b5138d51d10cf",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "name": "reserve",
+      "line": 42,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "00e49a0a73b33f89161d34c228434e750abc47815817cc8a192b5138d51d10cf",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "name": "drop",
+      "line": 50,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "00e49a0a73b33f89161d34c228434e750abc47815817cc8a192b5138d51d10cf",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "new",
+      "line": 16,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "ed0c42c44bebf9dd77890e79eb18b09cf4b436d95b5f4a96b0497fdef32c39b0",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "with_native_retirement",
+      "line": 28,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "ed0c42c44bebf9dd77890e79eb18b09cf4b436d95b5f4a96b0497fdef32c39b0",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "connect_routes",
+      "line": 76,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "ed0c42c44bebf9dd77890e79eb18b09cf4b436d95b5f4a96b0497fdef32c39b0",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "disconnect",
+      "line": 131,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "ed0c42c44bebf9dd77890e79eb18b09cf4b436d95b5f4a96b0497fdef32c39b0",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "new",
+      "line": 29,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "poll",
+      "line": 69,
+      "language": "rust",
+      "covered": 27,
+      "total": 27,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "update",
+      "line": 103,
+      "language": "rust",
+      "covered": 15,
+      "total": 15,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "connection_current",
+      "line": 118,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "available",
+      "line": 143,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "attach",
+      "line": 168,
+      "language": "rust",
+      "covered": 36,
+      "total": 36,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "maintain",
+      "line": 209,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "shutdown",
+      "line": 243,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "da4b2b1e85ba868f9bfb783bd83e91ef504a6416187680f857f04a99708741aa",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "name": "matches",
+      "line": 39,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "1a731fbc27d3402eb56d7936058642b16617180fb36341c322703f2396617f5c",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "name": "retire",
+      "line": 48,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "1a731fbc27d3402eb56d7936058642b16617180fb36341c322703f2396617f5c",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "name": "settle_sessions",
+      "line": 64,
+      "language": "rust",
+      "covered": 9,
+      "total": 10,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        71
+      ],
+      "source_sha256": "1a731fbc27d3402eb56d7936058642b16617180fb36341c322703f2396617f5c",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "name": "drain_sessions",
+      "line": 77,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "1a731fbc27d3402eb56d7936058642b16617180fb36341c322703f2396617f5c",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "for_transport",
+      "line": 39,
+      "language": "rust",
+      "covered": 10,
+      "total": 10,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "a3a451f424a34620775b1550330058bc4e702b32e2f7ab560e4d1235b95225b0",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "retain_native",
+      "line": 61,
+      "language": "rust",
+      "covered": 7,
+      "total": 7,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "a3a451f424a34620775b1550330058bc4e702b32e2f7ab560e4d1235b95225b0",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "start",
+      "line": 93,
+      "language": "rust",
+      "covered": 35,
+      "total": 35,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "a3a451f424a34620775b1550330058bc4e702b32e2f7ab560e4d1235b95225b0",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "poll_complete",
+      "line": 189,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "source_sha256": "a3a451f424a34620775b1550330058bc4e702b32e2f7ab560e4d1235b95225b0",
+      "complexity": 3
+    }
+  ],
+  "changed_file_complexity": [
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 53,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 56,
+      "name": "cancel",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 59,
+      "name": "cancelled",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 94,
+      "name": "new",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 146,
+      "name": "completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 159,
+      "name": "complete",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 164,
+      "name": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 172,
+      "name": "admit",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 199,
+      "name": "request",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 222,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 231,
+      "name": "release_all",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 237,
+      "name": "touch",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 245,
+      "name": "pen",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 248,
+      "name": "direct",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 251,
+      "name": "direct_status",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 260,
+      "name": "legacy_touch",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 272,
+      "name": "sink",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 275,
+      "name": "native_completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct.rs",
+      "line": 278,
+      "name": "follow",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "line": 12,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "line": 18,
+      "name": "shared",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "line": 30,
+      "name": "reserve",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "line": 35,
+      "name": "shutdown",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "line": 42,
+      "name": "reserve",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/input/direct/ownership.rs",
+      "line": 50,
+      "name": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 16,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 28,
+      "name": "with_native_retirement",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 39,
+      "name": "selected",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 42,
+      "name": "serial",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 47,
+      "name": "connect",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 60,
+      "name": "connect_network",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 76,
+      "name": "connect_routes",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 97,
+      "name": "prepare",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 115,
+      "name": "refresh",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 123,
+      "name": "redeliver",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 131,
+      "name": "disconnect",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "line": 148,
+      "name": "release_routes",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 29,
+      "name": "new",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 46,
+      "name": "with_network",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 51,
+      "name": "sessions",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 69,
+      "name": "poll",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 103,
+      "name": "update",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 118,
+      "name": "connection_current",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 132,
+      "name": "candidate",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 143,
+      "name": "available",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 162,
+      "name": "assigned",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 168,
+      "name": "attach",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 209,
+      "name": "maintain",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 221,
+      "name": "retry_routes",
+      "complexity": 9
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "line": 243,
+      "name": "shutdown",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "line": 17,
+      "name": "t1410_original_physical_identity_blocks_alias_reuse",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "line": 39,
+      "name": "matches",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "line": 48,
+      "name": "retire",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "line": 64,
+      "name": "settle_sessions",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/monitor/retirement.rs",
+      "line": 77,
+      "name": "drain_sessions",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 35,
+      "name": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 39,
+      "name": "for_transport",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 51,
+      "name": "retarget",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 56,
+      "name": "serial",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 61,
+      "name": "retain_native",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 70,
+      "name": "prepare",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 93,
+      "name": "start",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 128,
+      "name": "retire",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 151,
+      "name": "completion",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 156,
+      "name": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 162,
+      "name": "check_serial",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 169,
+      "name": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 189,
+      "name": "poll_complete",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 15,
+      "name": "run",
+      "complexity": 9
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 62,
+      "name": "setup_wifi",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 75,
+      "name": "serve",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 80,
+      "name": "serve_usb",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 100,
+      "name": "run_usb",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 121,
+      "name": "wait_stop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 134,
+      "name": "usb_loop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 156,
+      "name": "poll_usb",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 180,
+      "name": "status",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 208,
+      "name": "diagnostics",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/windows_main.rs",
+      "line": 225,
+      "name": "print_input_monitors",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/input/direct/ownership/tests.rs",
+      "line": 8,
+      "name": "wait_closed",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/input/direct/ownership/tests.rs",
+      "line": 18,
+      "name": "native",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/ownership/tests.rs",
+      "line": 28,
+      "name": "t1410_process_owner_rejects_capacity_and_post_cutoff_admission",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/ownership/tests.rs",
+      "line": 42,
+      "name": "t1410_shutdown_closes_admission_and_waits_for_original_native_exit",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/ownership/tests.rs",
+      "line": 59,
+      "name": "exit_child",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/input/direct/ownership/tests.rs",
+      "line": 76,
+      "name": "t1410_entry_guard_waits_for_native_exit_in_isolated_process",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor/retirement_tests.rs",
+      "line": 5,
+      "name": "completed",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/monitor/retirement_tests.rs",
+      "line": 22,
+      "name": "hold_native",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/monitor/retirement_tests.rs",
+      "line": 57,
+      "name": "t1410_pending_native_session_excludes_its_slot_and_serial",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/monitor/retirement_tests.rs",
+      "line": 76,
+      "name": "t1410_retirement_preserves_sibling_progress_and_original_slot_recovery",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor/retirement_tests.rs",
+      "line": 123,
+      "name": "t1410_cancelled_stop_retains_reservation_before_first_await",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/monitor/retirement_tests.rs",
+      "line": 141,
+      "name": "t1410_shutdown_waits_for_original_native_completion_and_can_resume",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes/retirement_tests.rs",
+      "line": 5,
+      "name": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes/retirement_tests.rs",
+      "line": 10,
+      "name": "t1410_route_thread_exit_preserves_lease_until_original_native_session_settles",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes/retirement_tests.rs",
+      "line": 41,
+      "name": "t1410_connection_loss_keeps_original_native_lease_fence",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes/retirement_tests.rs",
+      "line": 66,
+      "name": "t1410_native_lifetime_cannot_rebind_after_admission",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 22,
+      "name": "output",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 40,
+      "name": "execute_route",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 57,
+      "name": "execute",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 72,
+      "name": "fake_reply",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 85,
+      "name": "fake_device_reply",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 108,
+      "name": "reverse_for",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 125,
+      "name": "reverse_reply",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 151,
+      "name": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 178,
+      "name": "t654_inventory_status_and_size_are_independent_requirements",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 199,
+      "name": "t525_usb_inventory_rejects_unknown_failed_and_nonready_observations",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 220,
+      "name": "t525_attachment_rotates_credentials_and_retires_owned_routes",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 267,
+      "name": "t525_partial_startup_and_failed_delivery_never_publish_ready",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 292,
+      "name": "t525_cleanup_preserves_foreign_routes_and_retains_failed_ownership",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 312,
+      "name": "t525_bounded_invalid_tokens_serials_and_ports_cause_no_commands",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 330,
+      "name": "free_port_pairs",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 359,
+      "name": "t655_concurrent_listener_fixtures_reserve_disjoint_pairs",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 385,
+      "name": "monitor_fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 403,
+      "name": "delivered",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 420,
+      "name": "control",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 437,
+      "name": "t525_monitor_reconnect_uses_shared_authenticated_protocol_and_retires_old_clients",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 490,
+      "name": "t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownership",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 559,
+      "name": "t702_shutdown_failure_still_retires_listeners_and_can_retry",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 575,
+      "name": "t657_redelivery_waits_for_each_complete_interval",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 606,
+      "name": "t525_monitor_repairs_redelivers_and_reports_failed_cleanup",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 639,
+      "name": "t525_monitor_partial_bind_command_failure_and_invalid_config",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 682,
+      "name": "t525_preview_rejects_unavailable_display_mode",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 709,
+      "name": "t525_failed_device_does_not_starve_next_eligible_usb_device",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 735,
+      "name": "t525_two_slots_preserve_assignments_and_cleanup_independently",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 771,
+      "name": "t1386_malformed_serial_preserves_connected_attachment_and_credential",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 812,
+      "name": "t691_network_usb_migration_retires_routes_through_proven_alias",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 872,
+      "name": "t691_replaced_physical_identity_does_not_remove_foreign_routes",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 913,
+      "name": "t691_network_reconnect_rereads_saved_address_and_bounds_inventory",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 975,
+      "name": "t691_absent_inventory_cleanup_requires_reconfirmed_identity",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests.rs",
+      "line": 1002,
+      "name": "t1358_removed_authentication_toggle_cannot_disable_preview_credentials",
+      "complexity": 1
+    }
+  ],
+  "native_windows": "windows_main.rs::run cross-compiled only; T1409 retains native entry/guard counters and execution"
+}

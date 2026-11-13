@@ -1,0 +1,93 @@
+    Checking smallvec v1.15.1
+    Checking linux-raw-sys v0.12.1
+    Checking percent-encoding v2.3.2
+    Checking tracing v0.1.44
+    Checking form_urlencoded v1.2.2
+    Checking parking_lot_core v0.9.12
+    Checking icu_normalizer v2.2.0
+    Checking tracing-subscriber v0.3.23
+    Checking parking_lot v0.12.5
+    Checking idna_adapter v1.2.2
+    Checking tokio v1.52.3
+    Checking idna v1.1.0
+    Checking url v2.5.8
+    Checking tungstenite v0.21.0
+    Checking rustix v1.1.4
+    Checking tokio-util v0.7.18
+    Checking tokio-rustls v0.26.5
+    Checking tokio-tungstenite v0.21.0
+    Checking polling v3.11.0
+    Checking tempfile v3.27.0
+    Checking async-io v2.6.0
+    Checking blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+    Checking async-signal v0.2.14
+    Checking zbus v4.4.0
+    Checking async-process v2.5.0
+    Checking zbus v5.16.0
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+    Checking ksni v0.3.6
+    Checking blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.42s

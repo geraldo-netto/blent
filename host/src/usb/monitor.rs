@@ -4,6 +4,9 @@ use crate::session::Runtime;
 use blent_config::{tablets::TabletSession, FileConfig};
 use tokio::{sync::watch, time::Instant};
 
+mod retirement;
+use retirement::RetiringSession;
+
 struct Active {
     connection: Connection,
     runtime: Runtime,
@@ -18,6 +21,7 @@ pub struct Monitor<C> {
     stop: watch::Receiver<bool>,
     failed: std::collections::HashMap<String, Instant>,
     pending: Vec<(Routes, Option<String>)>,
+    retiring: Vec<RetiringSession>,
     network: Option<super::network::Network>,
     store: blent_config::storage::ConfigStore,
 }
@@ -34,6 +38,7 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
             stop,
             failed: Default::default(),
             pending: Vec::new(),
+            retiring: Vec::new(),
             network: None,
             store: Default::default(),
         })
@@ -62,6 +67,7 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
     }
     /// Unknown inventory is not a disconnect. One broken device cannot stop the others.
     pub async fn poll(&mut self) {
+        self.settle_sessions();
         let observed = if let Some(network) = self.network.as_mut() {
             tokio::time::timeout(
                 Duration::from_secs(6),
@@ -96,26 +102,32 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
     }
     async fn update(&mut self, index: usize, devices: &[String]) -> Result<()> {
         if let Some(active) = self.slots[index].as_ref() {
-            let present = active
-                .connection
-                .serial()
-                .is_some_and(|serial| devices.iter().any(|device| device == &serial));
-            let identity_current = self.network.as_ref().is_none_or(|network| {
-                active
-                    .connection
-                    .serial()
-                    .and_then(|s| network.identity(&s).cloned())
-                    == active.identity
-            });
-            if present && identity_current {
+            if self.connection_current(active, devices) {
                 return self.maintain(index).await;
             }
             self.retire(index).await;
+        }
+        if self.retiring.iter().any(|retiring| retiring.index == index) {
+            return Ok(());
         }
         if let Some(serial) = self.candidate(devices).await {
             self.attach(index, &serial).await?;
         }
         Ok(())
+    }
+    fn connection_current(&self, active: &Active, devices: &[String]) -> bool {
+        let present = active
+            .connection
+            .serial()
+            .is_some_and(|serial| devices.iter().any(|device| device == &serial));
+        let identity_current = self.network.as_ref().is_none_or(|network| {
+            active
+                .connection
+                .serial()
+                .and_then(|s| network.identity(&s).cloned())
+                == active.identity
+        });
+        present && identity_current
     }
     async fn candidate(&self, devices: &[String]) -> Option<String> {
         for serial in devices {
@@ -129,10 +141,18 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
         None
     }
     fn available(&self, serial: &str) -> bool {
+        let identity = self
+            .network
+            .as_ref()
+            .and_then(|network| network.identity(serial));
         !self
-            .failed
-            .get(serial)
-            .is_some_and(|until| Instant::now() < *until)
+            .retiring
+            .iter()
+            .any(|retiring| retiring.matches(serial, identity))
+            && !self
+                .failed
+                .get(serial)
+                .is_some_and(|until| Instant::now() < *until)
             && !self.assigned(serial)
             && !self
                 .pending
@@ -154,7 +174,8 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
             runtime.tablet_tx.clone(),
             self.ports[index],
             self.config.auto_launch_app,
-        )?;
+        )?
+        .with_native_retirement(runtime.retirement.clone())?;
         self.slots[index] = Some(Active {
             connection,
             runtime,
@@ -181,13 +202,14 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
         if result.is_err() {
             self.failed
                 .insert(serial.into(), Instant::now() + Duration::from_secs(5));
+            self.retire(index).await;
         }
         result
     }
     async fn maintain(&mut self, index: usize) -> Result<()> {
         let active = self.slots[index].as_mut().unwrap();
         if let Err(error) = active.connection.refresh(&self.adb).await {
-            let _ = active.connection.disconnect(&self.adb).await;
+            self.retire(index).await;
             return Err(error);
         }
         if Instant::now() >= active.delivery {
@@ -196,26 +218,6 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
         }
         Ok(())
     }
-    async fn retire(&mut self, index: usize) {
-        if let Some(mut active) = self.slots[index].take() {
-            let routes = active.connection.release_routes();
-            active.runtime.stop().await;
-            if let Some(mut routes) = routes {
-                let safe = match self.network.as_ref() {
-                    Some(network) => {
-                        network
-                            .can_retire(&self.adb, &mut routes, active.identity.as_ref())
-                            .await
-                    }
-                    None => true,
-                };
-                if !safe || routes.retire(&self.adb).await.is_err() {
-                    self.pending.push((routes, active.identity));
-                }
-            }
-        }
-    }
-
     async fn retry_routes(&mut self, present: Option<&[String]>) {
         let mut index = 0;
         while index < self.pending.len() {
@@ -246,6 +248,8 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
         for index in 0..self.slots.len() {
             self.retire(index).await;
         }
+        self.drain_sessions().await;
+        self.retry_routes(None).await;
         ensure!(
             self.pending.is_empty(),
             "USB cleanup incomplete: {} device route owners remain",
@@ -254,3 +258,6 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod retirement_tests;

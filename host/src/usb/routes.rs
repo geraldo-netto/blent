@@ -13,6 +13,7 @@ struct Control {
     expected: [(u16, u16); 2],
     reservation: Mutex<Option<Box<dyn Send>>>,
     settled: AtomicBool,
+    native: Option<Completion>,
 }
 struct Worker {
     requests: mpsc::Sender<oneshot::Sender<Result<(), String>>>,
@@ -28,6 +29,7 @@ pub struct Routes {
     serial: Arc<Mutex<String>>,
     expected: [(u16, u16); 2],
     worker: Option<Worker>,
+    native: Option<Completion>,
 }
 impl Routes {
     pub fn new(serial: &str, ports: (u16, u16)) -> Result<Self> {
@@ -41,6 +43,7 @@ impl Routes {
             serial: Arc::new(Mutex::new(serial.into())),
             expected: [(8890, ports.0), (8891, ports.1)],
             worker: None,
+            native: None,
         })
     }
     /// Caller proves the physical identity. The worker independently checks a
@@ -52,6 +55,16 @@ impl Routes {
     }
     pub fn serial(&self) -> String {
         self.serial.lock().unwrap().clone()
+    }
+
+    /// Bind one original session before exposing any native route worker.
+    pub(crate) fn retain_native(&mut self, proof: Completion) -> Result<()> {
+        ensure!(
+            self.worker.is_none() && self.native.is_none(),
+            "Native route lifetime already bound"
+        );
+        self.native = Some(proof);
+        Ok(())
     }
 
     pub async fn prepare<C: Commands + Clone + 'static>(&mut self, adb: &Adb<C>) -> Result<()> {
@@ -87,6 +100,7 @@ impl Routes {
             expected: self.expected,
             reservation: Mutex::new(None),
             settled: AtomicBool::new(false),
+            native: self.native.clone(),
         });
         let (requests, receiver) = mpsc::channel(1);
         let (stop, stopping) = watch::channel(false);
@@ -173,6 +187,15 @@ struct Retiring {
 }
 impl Observe for Retiring {
     fn poll_complete(&mut self) -> bool {
-        self.thread.poll_complete() && self.control.settled.load(Ordering::Acquire)
+        self.thread.poll_complete()
+            && self.control.settled.load(Ordering::Acquire)
+            && self
+                .control
+                .native
+                .as_ref()
+                .is_none_or(Completion::is_complete)
     }
 }
+
+#[cfg(test)]
+mod retirement_tests;

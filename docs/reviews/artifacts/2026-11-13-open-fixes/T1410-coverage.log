@@ -1,0 +1,277 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.98s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa)
+
+running 177 tests
+test audio::usb::tests::t992_audio_usb_native_boundary_rejects_invalid_original_request_in_both_directions ... ok
+test camera::usb::retirement_tests::t1126_failed_listener_creator_releases_unbound_original_observation ... ok
+test camera::usb::retirement_tests::t1126_invalid_original_credential_never_invokes_listener_creator ... ok
+test camera::usb::retirement_tests::t1126_usb_creation_requires_original_observation_before_native_setup ... ok
+test camera::usb::retirement_tests::t1126_usb_original_bridge_drop_not_logical_construction_settles_proof ... ok
+test input::activity::socket_tests::t1056_authentication_and_original_attachment_cutoff_fence_every_hint ... ok
+test input::activity::socket_tests::t1056_portable_session_binds_original_source_before_initial_authenticated_greeting ... ok
+test input::activity::socket_tests::t1056_replaced_controller_cannot_publish_after_current_owner_claims_socket ... ok
+test input::activity::socket_tests::t1056_unsupported_source_omits_hint_and_wrong_auth_never_receives_one ... ok
+test input::activity::tests::t1056_absent_and_closed_sources_cannot_spin_or_announce_unsupported_work ... ok
+test input::activity::tests::t1056_original_notice_captures_publication_before_first_poll_and_coalesced_stops ... ok
+test input::batching_tests::t406_dropping_device_does_not_publish_an_unfinished_frame ... ok
+test input::batching_tests::t406_event_bound_never_splits_or_leaks_an_unsynchronized_frame ... ok
+test input::batching_tests::t406_failed_batch_never_replays_a_delivered_prefix ... ok
+test input::batching_tests::t406_native_bytes_match_linux_input_header_layout ... ok
+test input::batching_tests::t406_pen_down_preserves_proximity_button_tip_boundaries ... ok
+test input::batching_tests::t406_pending_events_wait_for_the_current_syn_boundary ... ok
+test input::batching_tests::t406_recorded_replay_preserves_every_native_byte ... ok
+test input::batching_tests::t406_replay_writes_once_per_existing_sync_frame ... ok
+test input::batching_tests::t406_short_and_interrupted_writes_preserve_every_byte ... ok
+test input::batching_tests::t406_zero_write_and_flush_errors_retire_the_batch ... ok
+test input::contracts::t1176_bounded_wide_oracle_preserves_lease_and_effect_counts ... ok
+test input::contracts::t1176_concurrent_last_claim_has_one_winner_and_original_drop ... ok
+test input::contracts::t1176_denied_claim_has_no_initialization_or_device_effects ... ok
+test input::contracts::t1176_exhausted_claim_keeps_original_authority_and_cleanup ... ok
+test input::contracts::t281_retired_socket_cannot_claim_or_dispatch_into_current_controller ... ok
+test input::contracts::t281_socket_accepted_before_replacement_cannot_authenticate_after_it ... ok
+test input::contracts::t370_dispatch_preserves_order_and_controller_ownership_with_adapters ... ok
+test input::contracts::t370_server_cancels_injected_backend_when_owner_ends ... ok
+test input::contracts::t484_old_decoder_receipt_cannot_acknowledge_new_encoder_packets ... ok
+test input::contracts::t673_legacy_backend_declines_direct_events_explicitly ... ok
+test input::contracts::t673_versioned_direct_input_wire_is_independent_of_pen ... ok
+test input::direct::ownership::tests::t1410_entry_guard_waits_for_native_exit_in_isolated_process ... ok
+test input::direct::ownership::tests::t1410_process_owner_rejects_capacity_and_post_cutoff_admission ... ok
+test input::direct::ownership::tests::t1410_shutdown_closes_admission_and_waits_for_original_native_exit ... ok
+test input::direct::tests::cleanup::t1403_adapter_unwinding_preserves_existing_native_obligations ... 
+thread 'blent-direct-input' (584963) panicked at host/src/input/direct/tests/cleanup.rs:29:9:
+T1403 native event panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'blent-direct-input' (584963) panicked at host/src/input/direct/tests/cleanup.rs:53:9:
+T1403 native cleanup panic
+ok
+test input::direct::tests::cleanup::t1403_caller_loss_retains_failed_button_cleanup_until_recovery ... ok
+test input::direct::tests::cleanup::t1403_failed_event_returns_while_original_cleanup_remains_owned ... ok
+test input::direct::tests::cleanup::t1403_failed_save_retains_provisional_native_owner ... ok
+test input::direct::tests::cleanup::t1403_replacement_waits_for_failed_release_and_recovers ... ok
+test input::direct::tests::responsiveness::session::t1402_session_retirement_retains_original_input_worker ... ok
+test input::direct::tests::responsiveness::socket::t1402_peer_close_revokes_blocked_native_save ... ok
+test input::direct::tests::responsiveness::socket::t1402_read_ahead_overflow_revokes_without_dispatching_buffered_frames ... ok
+test input::direct::tests::responsiveness::socket::t1402_read_ahead_retains_wire_order ... ok
+test input::direct::tests::responsiveness::t1402_blocked_save_preserves_async_sibling_progress ... ok
+test input::direct::tests::responsiveness::t1402_completed_unpolled_receipts_retain_bounded_admission ... ok
+test input::direct::tests::responsiveness::t1402_controller_replacement_revokes_blocked_dispatch_promptly ... ok
+test input::direct::tests::responsiveness::t1402_queue_rejects_overflow_and_cancellation_discards_unstarted_effects ... ok
+test input::direct::tests::responsiveness::t1402_replacement_waits_for_original_worker_and_stale_reply_cannot_revoke_it ... ok
+test input::direct::tests::responsiveness::t1402_retained_receipt_does_not_keep_closed_native_worker_alive ... ok
+test input::direct::tests::responsiveness::t1402_unpolled_reply_loss_revokes_status_without_native_wait ... ok
+test input::direct::tests::t673_authenticated_owner_replacement_and_disconnect_retire_buttons ... ok
+test input::direct::tests::t673_disabled_modes_and_seeded_wire_values_never_reach_devices ... ok
+test input::direct::tests::t673_negotiation_modes_bounds_and_failed_delivery_retire_owned_input ... ok
+test input::direct::tests::t673_tablet_and_mode_changes_retire_negotiation_before_reuse ... ok
+test input::direct::tests::t673_wire_dispatch_accepts_negotiated_touch_and_rejects_pen_and_failed_input ... ok
+test input::direct::worker::tests::t1403_thread_exit_without_native_settlement_cannot_release_admission ... ok
+test input::linux::coverage_tests::t497_uinput_construction_errors_and_owned_retirement ... ok
+test input::linux::cursor::tests::t604_policy_is_scoped_to_enabled_cinnamon_x11_touch ... ok
+test input::linux::cursor::tests::t604_private_bus_acceptance_failure_and_bounded_preparation ... ok
+test input::mapping::coverage_tests::t497_mapping_retries_verify_device_ownership_and_readback ... ok
+test input::mapping::x11_cache::tests::t625_changed_failed_and_missing_property_reads_remap_without_trusting_old_state ... ok
+test input::mapping::x11_cache::tests::t625_readback_requires_bounded_node_and_finite_nine_value_matrix ... ok
+test input::mapping::x11_cache::tests::t625_topology_missing_device_and_reused_identity_invalidate_readback ... ok
+test input::mapping::x11_tests::t577_edid_parser_rejects_bounded_invalid_lengths_and_checksums ... ok
+test input::mapping::x11_tests::t577_missing_invalid_and_ambiguous_identity_never_falls_back_to_names ... ok
+test input::mapping::x11_tests::t577_physical_mode_excludes_renamed_virtual_outputs_and_unknown_owners ... ok
+test input::mapping::x11_tests::t577_provider_renaming_cannot_assign_another_tablets_output ... ok
+test input::mapping::x11_tests::t622_late_input_does_not_force_stable_output_probes ... ok
+test input::mapping::x11_tests::t622_stale_topology_refreshes_until_owned_edid_appears ... ok
+test input::mapping::x11_tests::t625_late_pen_does_not_remap_verified_touch_and_pointer ... ok
+test input::mapping::x11_tests::t730_missing_kwin_does_not_override_x11_mapping_results ... ok
+test input::mapping::x11_tests::t730_unavailable_x11_mapper_reports_its_own_failure ... ok
+test input::settings::coverage_tests::t497_mode_adapter_preserves_dependencies_and_avoids_duplicate_wakeups ... ok
+test input::settings::coverage_tests::t497_resolution_adapter_reports_rejection_and_clears_it_after_valid_input ... ok
+test input::settings::persistence_contract_tests::t824_native_resolution_preference_reads_current_store ... ok
+test input::tests::t029_x11_maps_only_this_tablets_devices_and_card ... ok
+test input::tests::t062_greeting_advertises_disabled_input_devices ... ok
+test input::tests::t063_codec_changes_are_pushed_to_connected_clients ... ok
+test input::tests::t063_greeting_reports_live_encoder_codec ... ok
+test input::tests::t063_unknown_encoder_from_tablet_is_rejected ... ok
+test input::tests::t084_stopping_server_closes_clients_and_watcher ... ok
+test input::tests::t085_reconnect_preserves_current_controller_contacts ... ok
+test input::tests::t086_touch_stays_down_until_last_contact_lifts ... ok
+test input::tests::t092_idle_and_partial_upgrades_expire ... ok
+test input::tests::t092_pending_connections_are_bounded ... ok
+test input::tests::t1038_liveness_offer_requires_media_settings_and_explicit_socket_ack ... ok
+test input::tests::t109_state_changes_cancel_pending_mapping ... ok
+test input::tests::t1176_denied_workflow_preserves_decoder_settings ... ok
+test input::tests::t1187_terminal_reports_cannot_restore_metadata_or_advertise_a_scope ... ok
+test input::tests::t120_greeting_and_apply_report_effective_frame_rate ... ok
+test input::tests::t145_fallback_preserves_card_ownership ... ok
+test input::tests::t146_normalized_input_stays_in_axes_and_releases ... ok
+test input::tests::t223_fixed_resolution_keeps_pixels_but_negotiates_physical_size ... ok
+test input::tests::t247_connected_fixture_matches_production_response ... ok
+test input::tests::t275_manual_geometry_is_independent_of_native_edid_limits ... ok
+test input::tests::t275_selected_manual_and_automatic_modes_keep_edid_bounds ... ok
+test input::tests::t276_replies_follow_geometry_and_scale_across_reconnect ... ok
+test input::tests::t276_scaled_greeting_matches_android_fixture ... ok
+test input::tests::t286_hover_exit_parks_pointer_at_final_release_position ... ok
+test input::tests::t286_release_updates_pen_axes_before_leaving_proximity ... ok
+test input::tests::t287_wire_tilt_reconstructs_physical_degrees_from_declared_axes ... ok
+test input::tests::t299_primary_selection_reaches_kwin_mapping_arguments ... ok
+test input::tests::t299_primary_selection_uses_current_priority_and_safe_defaults ... ok
+test input::tests::t317_proximity_exit_releases_stylus_button_for_next_press ... ok
+test input::tests::t318_pen_lifecycle_matches_android_samples ... ok
+test input::tests::t321_negotiated_small_panel_uses_supported_refresh ... ok
+test input::tests::t323_replacement_cancels_a_backpressured_control_writer ... ok
+test input::tests::t332_invalid_fps_or_geometry_never_retires_working_settings ... ok
+test input::tests::t332_manual_geometry_validates_selected_dimensions_at_current_fps ... ok
+test input::tests::t332_rejected_command_returns_current_settings_without_restart ... ok
+test input::tests::t346_greeting_uses_one_encoder_settings_snapshot ... ok
+test input::tests::t372_mapping_selects_from_the_shared_inventory ... ok
+test input::tests::t375_android_motion_fixture_matches_host_fields ... ok
+test input::tests::t388_greeting_reports_accepted_route_and_omits_unknown ... ok
+test input::tests::t432_new_controller_cannot_reuse_old_apk_capabilities ... ok
+test input::tests::t432_vp9_requires_current_peer_format_support ... ok
+test input::tests::t433_av1_requires_current_peer_format_support ... ok
+test input::tests::t434_disconnect_retires_capability_epoch_without_persisting_fallback ... ok
+test input::tests::t472_clamped_config_preserves_concurrent_selection_without_restart ... ok
+test input::tests::t472_repeated_geometry_and_config_retain_unrelated_state ... ok
+test input::tests::t478_malformed_stale_and_away_back_reports_cannot_replace_current_scope ... ok
+test input::tests::t497_external_mode_updates_reach_the_current_controller ... ok
+test input::wake_tests::t405_idle_input_listener_has_no_periodic_wakeups ... ok
+test usb::monitor::retirement::tests::t1410_original_physical_identity_blocks_alias_reuse ... ok
+test usb::monitor::retirement_tests::t1410_cancelled_stop_retains_reservation_before_first_await ... ok
+test usb::monitor::retirement_tests::t1410_pending_native_session_excludes_its_slot_and_serial ... ok
+test usb::monitor::retirement_tests::t1410_retirement_preserves_sibling_progress_and_original_slot_recovery ... ok
+test usb::monitor::retirement_tests::t1410_shutdown_waits_for_original_native_completion_and_can_resume ... ok
+test usb::network::queries::tests::t1381_absent_and_stale_completions_cannot_publish ... ok
+test usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation ... 
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (588734) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (588734) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+ok
+test usb::network::queries::tests::t1381_query_deadline_publishes_unknown_and_releases_worker ... ok
+test usb::preview::tests::t525_unavailable_native_sink_safely_discards_invalid_events ... ok
+test usb::route_command::tests::t1363_native_route_commands_preserve_spawn_and_exit_evidence ... ok
+test usb::route_lock::tests::t1344_display_lease_rejects_symlink_without_unlinking ... ok
+test usb::route_lock::tests::t1344_native_display_leases_retain_devices_and_local_ports ... ok
+test usb::route_lock::tests::t834_native_lease_refuses_symlink ... ok
+test usb::route_lock::tests::t834_native_lease_rejects_overlap_and_retains_stable_bounded_files ... ok
+test usb::routes::retirement_tests::t1410_connection_loss_keeps_original_native_lease_fence ... ok
+test usb::routes::retirement_tests::t1410_native_lifetime_cannot_rebind_after_admission ... ok
+test usb::routes::retirement_tests::t1410_route_thread_exit_preserves_lease_until_original_native_session_settles ... ok
+test usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup ... ok
+test usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority ... ok
+test usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries ... ok
+test usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish ... ok
+test usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal ... ok
+test usb::tests::progress::t1381_removed_query_cannot_publish_into_reused_endpoint ... ok
+test usb::tests::reconnect::t1387_dropped_poll_and_network_retain_original_creator ... ok
+test usb::tests::reconnect::t1387_stalled_wifi_preserves_usb_progress_and_cancellation_cleanup ... ok
+test usb::tests::reconnect::t1394_fixture_loss_releases_admitted_creator ... ok
+test usb::tests::route_ownership::t1344_caller_loss_cannot_delete_a_different_physical_tablet ... ok
+test usb::tests::route_ownership::t1344_cancelled_waiter_and_owner_drop_retain_late_creator ... ok
+test usb::tests::route_ownership::t1344_empty_snapshot_cannot_release_unacknowledged_creator ... ok
+test usb::tests::route_ownership::t1344_lost_creation_acknowledgement_keeps_mapping_owned ... ok
+test usb::tests::route_ownership::t1344_network_without_physical_identity_fails_before_mutation ... ok
+test usb::tests::t1358_removed_authentication_toggle_cannot_disable_preview_credentials ... ok
+test usb::tests::t1386_malformed_serial_preserves_connected_attachment_and_credential ... ok
+test usb::tests::t525_attachment_rotates_credentials_and_retires_owned_routes ... ok
+test usb::tests::t525_bounded_invalid_tokens_serials_and_ports_cause_no_commands ... ok
+test usb::tests::t525_cleanup_preserves_foreign_routes_and_retains_failed_ownership ... ok
+test usb::tests::t525_failed_device_does_not_starve_next_eligible_usb_device ... ok
+test usb::tests::t525_monitor_partial_bind_command_failure_and_invalid_config ... ok
+test usb::tests::t525_monitor_reconnect_uses_shared_authenticated_protocol_and_retires_old_clients ... ok
+test usb::tests::t525_monitor_repairs_redelivers_and_reports_failed_cleanup ... ok
+test usb::tests::t525_partial_startup_and_failed_delivery_never_publish_ready ... ok
+test usb::tests::t525_preview_rejects_unavailable_display_mode ... ok
+test usb::tests::t525_two_slots_preserve_assignments_and_cleanup_independently ... ok
+test usb::tests::t525_usb_inventory_rejects_unknown_failed_and_nonready_observations ... ok
+test usb::tests::t654_inventory_status_and_size_are_independent_requirements ... ok
+test usb::tests::t655_concurrent_listener_fixtures_reserve_disjoint_pairs ... ok
+test usb::tests::t657_redelivery_waits_for_each_complete_interval ... ok
+test usb::tests::t691_absent_inventory_cleanup_requires_reconfirmed_identity ... ok
+test usb::tests::t691_network_reconnect_rereads_saved_address_and_bounds_inventory ... ok
+test usb::tests::t691_network_usb_migration_retires_routes_through_proven_alias ... ok
+test usb::tests::t691_replaced_physical_identity_does_not_remove_foreign_routes ... ok
+test usb::tests::t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownership ... ok
+test usb::tests::t702_shutdown_failure_still_retires_listeners_and_can_retry ... ok
+
+test result: ok. 177 passed; 0 failed; 0 ignored; 0 measured; 947 filtered out; finished in 30.77s
+
+
+    Finished report saved to /home/netto/.cache/blent-fixes-20261113/T1410-all.lcov

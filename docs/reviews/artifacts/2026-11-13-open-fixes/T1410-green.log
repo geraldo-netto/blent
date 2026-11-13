@@ -1,0 +1,92 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.61s
+     Running unittests src/lib.rs (target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa)
+
+running 8 tests
+test input::direct::ownership::tests::t1410_entry_guard_waits_for_native_exit_in_isolated_process ... ok
+test input::direct::ownership::tests::t1410_process_owner_rejects_capacity_and_post_cutoff_admission ... ok
+test input::direct::ownership::tests::t1410_shutdown_closes_admission_and_waits_for_original_native_exit ... ok
+test usb::monitor::retirement::tests::t1410_original_physical_identity_blocks_alias_reuse ... ok
+test usb::monitor::retirement_tests::t1410_cancelled_stop_retains_reservation_before_first_await ... ok
+test usb::monitor::retirement_tests::t1410_pending_native_session_excludes_its_slot_and_serial ... ok
+test usb::monitor::retirement_tests::t1410_retirement_preserves_sibling_progress_and_original_slot_recovery ... ok
+test usb::monitor::retirement_tests::t1410_shutdown_waits_for_original_native_completion_and_can_resume ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 1113 filtered out; finished in 0.79s
+

@@ -30,7 +30,7 @@ futures own their authority, permit and response channel, not borrowed UI state.
 Permanent red controls reproduce executor blockage and session retirement before
 its input worker. The final instrumented input selection passes 110 tests; a
 separate session-related selection passes 94 tests (overlap is not added into a
-unique-case count). All 42 changed production functions have >=80% native line
+unique-case count). All 42 measured production functions have >=80% native line
 coverage; changed-file complexity has no score over 9. Counters come from the
 exact executed executable, without stale unrelated cached objects. Native Windows
 code/tests cross-compile; T1408 retains actual Windows acceptance/counter work.

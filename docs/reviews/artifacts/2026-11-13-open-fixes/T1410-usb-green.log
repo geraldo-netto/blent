@@ -1,0 +1,147 @@
+    Blocking waiting for file lock on package cache
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.42s
+     Running unittests src/lib.rs (target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa)
+
+running 55 tests
+test audio::usb::tests::t992_audio_usb_native_boundary_rejects_invalid_original_request_in_both_directions ... ok
+test camera::usb::retirement_tests::t1126_failed_listener_creator_releases_unbound_original_observation ... ok
+test camera::usb::retirement_tests::t1126_invalid_original_credential_never_invokes_listener_creator ... ok
+test camera::usb::retirement_tests::t1126_usb_creation_requires_original_observation_before_native_setup ... ok
+test camera::usb::retirement_tests::t1126_usb_original_bridge_drop_not_logical_construction_settles_proof ... ok
+test usb::monitor::retirement::tests::t1410_original_physical_identity_blocks_alias_reuse ... ok
+test usb::monitor::retirement_tests::t1410_cancelled_stop_retains_reservation_before_first_await ... ok
+test usb::monitor::retirement_tests::t1410_pending_native_session_excludes_its_slot_and_serial ... ok
+test usb::monitor::retirement_tests::t1410_retirement_preserves_sibling_progress_and_original_slot_recovery ... ok
+test usb::monitor::retirement_tests::t1410_shutdown_waits_for_original_native_completion_and_can_resume ... ok
+test usb::network::queries::tests::t1381_absent_and_stale_completions_cannot_publish ... ok
+test usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation ... 
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (580940) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (580940) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+ok
+test usb::network::queries::tests::t1381_query_deadline_publishes_unknown_and_releases_worker ... ok
+test usb::preview::tests::t525_unavailable_native_sink_safely_discards_invalid_events ... ok
+test usb::route_command::tests::t1363_native_route_commands_preserve_spawn_and_exit_evidence ... ok
+test usb::route_lock::tests::t1344_display_lease_rejects_symlink_without_unlinking ... ok
+test usb::route_lock::tests::t1344_native_display_leases_retain_devices_and_local_ports ... ok
+test usb::route_lock::tests::t834_native_lease_refuses_symlink ... ok
+test usb::route_lock::tests::t834_native_lease_rejects_overlap_and_retains_stable_bounded_files ... ok
+test usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup ... ok
+test usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority ... ok
+test usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries ... ok
+test usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish ... ok
+test usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal ... ok
+test usb::tests::progress::t1381_removed_query_cannot_publish_into_reused_endpoint ... ok
+test usb::tests::reconnect::t1387_dropped_poll_and_network_retain_original_creator ... ok
+test usb::tests::reconnect::t1387_stalled_wifi_preserves_usb_progress_and_cancellation_cleanup ... ok
+test usb::tests::reconnect::t1394_fixture_loss_releases_admitted_creator ... ok
+test usb::tests::route_ownership::t1344_caller_loss_cannot_delete_a_different_physical_tablet ... ok
+test usb::tests::route_ownership::t1344_cancelled_waiter_and_owner_drop_retain_late_creator ... ok
+test usb::tests::route_ownership::t1344_empty_snapshot_cannot_release_unacknowledged_creator ... ok
+test usb::tests::route_ownership::t1344_lost_creation_acknowledgement_keeps_mapping_owned ... ok
+test usb::tests::route_ownership::t1344_network_without_physical_identity_fails_before_mutation ... ok
+test usb::tests::t1358_removed_authentication_toggle_cannot_disable_preview_credentials ... ok
+test usb::tests::t1386_malformed_serial_preserves_connected_attachment_and_credential ... ok
+test usb::tests::t525_attachment_rotates_credentials_and_retires_owned_routes ... ok
+test usb::tests::t525_bounded_invalid_tokens_serials_and_ports_cause_no_commands ... ok
+test usb::tests::t525_cleanup_preserves_foreign_routes_and_retains_failed_ownership ... ok
+test usb::tests::t525_failed_device_does_not_starve_next_eligible_usb_device ... ok
+test usb::tests::t525_monitor_partial_bind_command_failure_and_invalid_config ... ok
+test usb::tests::t525_monitor_reconnect_uses_shared_authenticated_protocol_and_retires_old_clients ... ok
+test usb::tests::t525_monitor_repairs_redelivers_and_reports_failed_cleanup ... ok
+test usb::tests::t525_partial_startup_and_failed_delivery_never_publish_ready ... ok
+test usb::tests::t525_preview_rejects_unavailable_display_mode ... ok
+test usb::tests::t525_two_slots_preserve_assignments_and_cleanup_independently ... ok
+test usb::tests::t525_usb_inventory_rejects_unknown_failed_and_nonready_observations ... ok
+test usb::tests::t654_inventory_status_and_size_are_independent_requirements ... ok
+test usb::tests::t655_concurrent_listener_fixtures_reserve_disjoint_pairs ... ok
+test usb::tests::t657_redelivery_waits_for_each_complete_interval ... ok
+test usb::tests::t691_absent_inventory_cleanup_requires_reconfirmed_identity ... ok
+test usb::tests::t691_network_reconnect_rereads_saved_address_and_bounds_inventory ... ok
+test usb::tests::t691_network_usb_migration_retires_routes_through_proven_alias ... ok
+test usb::tests::t691_replaced_physical_identity_does_not_remove_foreign_routes ... ok
+test usb::tests::t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownership ... ok
+test usb::tests::t702_shutdown_failure_still_retires_listeners_and_can_retry ... ok
+
+test result: ok. 55 passed; 0 failed; 0 ignored; 0 measured; 1066 filtered out; finished in 6.88s
+

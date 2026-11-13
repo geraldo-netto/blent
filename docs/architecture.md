@@ -240,8 +240,20 @@ fallible configuration save. Adapter command/cleanup unwinding preserves the
 existing session for retirement. Completion requires successful cleanup and actual
 thread exit; an unexpected outer panic/destructor failure cannot pass that fence.
 Eventual cleanup assumes native release eventually succeeds. Forced process
-termination cannot honor this in-process ownership contract; normal daemon-exit
-integration remains tracked in T1410.
+termination cannot honor this in-process ownership contract. The Windows process
+entry closes direct-input admission after destroying producers/runtime and waits
+for original input workers to settle before normal return. This wait has no elapsed
+time cutoff; pending native cleanup continues to consume bounded capacity.
+
+The portable USB monitor keeps at most one native retirement record per slot,
+installed before the first shutdown await. A pending record excludes its slot,
+serial and proven physical aliases; other slots continue polling. Normal shutdown
+waits for those original session completions. The original route owner also holds
+the session proof, preserving native device/local-port leases if the monitor is
+lost. Route cleanup and input completion must both settle before those leases are
+released. On setup/refresh failure the monitor stops the session before awaiting
+route retirement, avoiding a dependency cycle. Windows display-route cleanup
+failure handling/native acceptance remains separately tracked in T1352.
 
 While awaiting direct input, a socket reads ahead at most 16 frames of at most
 64 KiB each. Close, read failure or overflow revokes the controller; buffered

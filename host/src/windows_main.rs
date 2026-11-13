@@ -14,6 +14,7 @@ use tokio::sync::watch;
 
 pub(super) fn run() -> Result<()> {
     let _wifi_retirement = blent::wifi::ProcessExit;
+    let _input_retirement = blent::input::direct::ProcessExit;
     let cli = Cli::parse();
     let direct_start = matches!(cli.command, None | Some(Commands::Start)) && !cli.login;
     cli.validate_backend_options(blent_config::platform::capabilities(), direct_start)?;

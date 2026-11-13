@@ -43,8 +43,10 @@ pub trait Environment: 'static {
     fn save(&self, config: &Config) -> Result<()>;
 }
 
+mod ownership;
 mod state;
 mod worker;
+pub use ownership::ProcessExit;
 
 struct Authority(watch::Sender<bool>);
 impl Authority {
@@ -95,7 +97,7 @@ impl Backend {
         mouse: bool,
         factory: impl FnOnce() -> E + Send + 'static,
     ) -> Result<Self> {
-        let admission = reserve()?;
+        let admission = ownership::reserve()?;
         let status = Status {
             protocol: 1,
             monitor: config.monitor,
@@ -144,22 +146,6 @@ impl Backend {
     pub fn completion(&self) -> blent_config::retirement::Completion {
         self.completion.clone()
     }
-}
-
-fn reserve() -> Result<blent_config::retirement::Admission> {
-    use blent_config::retirement::Pool;
-    static POOL: std::sync::OnceLock<std::io::Result<Pool>> = std::sync::OnceLock::new();
-    let pool = POOL
-        .get_or_init(|| {
-            Pool::new(blent_config::retirement_limits::configured(
-                "BLENT_INPUT_WORKER_LIMIT",
-                16,
-                4096,
-            )?)
-        })
-        .as_ref()
-        .map_err(|error| anyhow::anyhow!("{error}"))?;
-    Ok(pool.reserve()?)
 }
 
 /// Dropping a pending reply revokes only its original authority, never a successor.

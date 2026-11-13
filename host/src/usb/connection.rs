@@ -10,6 +10,7 @@ pub struct Connection {
     routes: Option<Routes>,
     ready: bool,
     launch_ticket: Option<crate::launch_policy::Ticket>,
+    native: Option<blent_config::retirement::Completion>,
 }
 impl Connection {
     pub fn new(attachment: Attachment, ports: (u16, u16), launch: bool) -> Result<Self> {
@@ -21,7 +22,19 @@ impl Connection {
             routes: None,
             ready: false,
             launch_ticket: None,
+            native: None,
         })
+    }
+    pub(crate) fn with_native_retirement(
+        mut self,
+        proof: blent_config::retirement::Completion,
+    ) -> Result<Self> {
+        ensure!(
+            self.routes.is_none() && self.native.is_none(),
+            "Native connection lifetime already bound"
+        );
+        self.native = Some(proof);
+        Ok(self)
     }
     pub fn selected(&self) -> Option<String> {
         self.routes.as_ref().map(Routes::serial)
@@ -63,10 +76,13 @@ impl Connection {
     async fn connect_routes<C: Commands + Clone + 'static>(
         &mut self,
         adb: &Adb<C>,
-        routes: Routes,
+        mut routes: Routes,
         identity: String,
         transport: Transport,
     ) -> Result<()> {
+        if let Some(proof) = &self.native {
+            routes.retain_native(proof.clone())?;
+        }
         self.attachment
             .begin_with_transport(Some(identity), Some(transport));
         self.routes = Some(routes);
@@ -115,6 +131,12 @@ impl Connection {
     pub async fn disconnect<C: Commands + Clone + 'static>(&mut self, adb: &Adb<C>) -> Result<()> {
         self.ready = false;
         let _ = self.attachment.send(false);
+        ensure!(
+            self.native
+                .as_ref()
+                .is_none_or(blent_config::retirement::Completion::is_complete),
+            "Stop original native session before retiring display routes"
+        );
         if let Some(routes) = self.routes.as_mut() {
             routes.retire(adb).await?;
         }

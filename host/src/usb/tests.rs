@@ -18,7 +18,7 @@ struct State {
     identities: BTreeMap<String, String>,
 }
 #[derive(Clone, Default)]
-struct Fake(Arc<Mutex<State>>);
+pub(super) struct Fake(Arc<Mutex<State>>);
 fn output(code: u32, text: &str) -> Output {
     #[cfg(unix)]
     let status = {
@@ -148,7 +148,7 @@ fn reverse_reply(state: &mut State, args: &[String]) -> Output {
         _ => panic!("Unexpected reverse mutation: {args:?}"),
     }
 }
-fn fixture() -> (Adb<Fake>, connection::Connection) {
+pub(super) fn fixture() -> (Adb<Fake>, connection::Connection) {
     let fake = Fake::default();
     fake.0.lock().unwrap().installed = true;
     let settings = watch::channel(EncoderSettings {
@@ -382,7 +382,7 @@ fn t655_concurrent_listener_fixtures_reserve_disjoint_pairs() {
         }
     }
 }
-async fn monitor_fixture() -> (
+pub(super) async fn monitor_fixture() -> (
     Adb<Fake>,
     monitor::Monitor<Fake>,
     watch::Sender<bool>,
