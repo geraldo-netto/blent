@@ -66,10 +66,10 @@ impl Workers {
                 4096,
             )?)
         });
-        let slot = pool
+        let pool = pool
             .as_ref()
-            .map_err(|error| std::io::Error::new(error.kind(), error.to_string()))?
-            .reserve()?;
+            .map_err(|error| std::io::Error::new(error.kind(), error.to_string()))?;
+        let slot = crate::process_retirement::PROCESS.reserve(pool)?;
         let grace = Duration::from_millis(blent_config::retirement_limits::configured(
             "BLENT_SESSION_STOP_MS",
             5000,
@@ -124,6 +124,7 @@ impl Workers {
     async fn first(&mut self, stop: &mut watch::Receiver<bool>) -> Wake {
         tokio::select! {
             biased;
+            _ = crate::process_retirement::PROCESS.cancelled() => Wake::Stop,
             _ = stop.wait_for(|stop|*stop) => Wake::Stop,
             Some((name,result)) = self.tasks.next() => Wake::Other(name,result),
         }

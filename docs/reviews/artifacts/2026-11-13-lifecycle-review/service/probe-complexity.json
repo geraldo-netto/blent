@@ -1,0 +1,32 @@
+{
+  "source": "docs/reviews/artifacts/2026-11-13-lifecycle-review/service/route_exit_probe.rs",
+  "source_sha256": "2bc11aa8ac728567799698cc0f8cec31b8795d75829821ec195c5440dfdbc388",
+  "tool": "scripts/complexity/check.py; blent-rust-source 0.1.0; syn 2.0.119; source-record schema1",
+  "python": "3.12.3",
+  "metric": "cyclomatic complexity",
+  "maximum_allowed": 9,
+  "functions_measured": 4,
+  "exceeding_maximum": 0,
+  "functions": [
+    {
+      "line": 10,
+      "function": "output",
+      "complexity": 1
+    },
+    {
+      "line": 18,
+      "function": "execute",
+      "complexity": 4
+    },
+    {
+      "line": 29,
+      "function": "reverse",
+      "complexity": 7
+    },
+    {
+      "line": 50,
+      "function": "main",
+      "complexity": 1
+    }
+  ]
+}

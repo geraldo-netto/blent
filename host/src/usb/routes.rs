@@ -178,7 +178,7 @@ fn reserve() -> Result<Admission> {
         })
         .as_ref()
         .map_err(|error| anyhow::anyhow!("{error}"))?;
-    Ok(pool.reserve()?)
+    Ok(crate::process_retirement::PROCESS.reserve(pool)?)
 }
 struct Retiring {
     _report: watch::Sender<Option<String>>,

@@ -1,0 +1,75 @@
+Final permanent test source on pre-fix HEAD56250b92, isolated checkout /tmp/blent-t1411-before-56250b92.
+
+MODE=normal EXIT=101
+
+running 1 test
+test t1411_process_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    t1411_process_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.01s
+
+
+thread 't1411_process_exit_fixture' (782192) panicked at host/tests/process_exit/fixture.rs:109:5:
+T1411 process entry returned before original cleanup settled
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+MODE=error EXIT=101
+
+running 1 test
+test t1411_process_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    t1411_process_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.01s
+
+
+thread 't1411_process_exit_fixture' (782232) panicked at host/tests/process_exit/fixture.rs:109:5:
+T1411 process entry returned before original cleanup settled
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+MODE=cancel EXIT=101
+
+running 1 test
+test t1411_process_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    t1411_process_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.01s
+
+
+thread 't1411_process_exit_fixture' (782272) panicked at host/tests/process_exit/fixture.rs:109:5:
+T1411 process entry returned before original cleanup settled
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+MODE=panic EXIT=101
+
+running 1 test
+test t1411_process_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    t1411_process_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.01s
+
+
+thread '<unnamed>' (782313) panicked at host/tests/process_exit/fixture.rs:74:20:
+T1411 work panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 't1411_process_exit_fixture' (782312) panicked at host/tests/process_exit/fixture.rs:109:5:
+T1411 process entry returned before original cleanup settled

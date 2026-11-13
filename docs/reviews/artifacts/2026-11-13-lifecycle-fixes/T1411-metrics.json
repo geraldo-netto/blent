@@ -1,0 +1,137 @@
+{
+  "tool": "rustc1.100.0 native LLVM counters; cargo-llvm-cov0.8.7; project syn2.0.119 complexity frontend",
+  "objects": {
+    "runtime_exit": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/2893d16f6fe25cce/out/runtime_exit-2893d16f6fe25cce",
+    "shutdown_deadline": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/9082db3221594e36/out/shutdown_deadline-9082db3221594e36",
+    "wifi_exit": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/55efbfe8abbe0977/out/wifi_exit-55efbfe8abbe0977",
+    "session_failure": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/57a49cddd1eaa6bb/out/session_failure-57a49cddd1eaa6bb",
+    "process_exit": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/b315a4d32c4f1e56/out/process_exit-b315a4d32c4f1e56",
+    "blent": "/backups/disk2/projects/blent/target/llvm-cov-target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa"
+  },
+  "functions": [
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "reserve",
+      "first": 23,
+      "last": 41,
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 4,
+      "source_sha256": "e22d477df758963da58a5ea63cda289a1b85e29b1d64a9f538bd05ca84e82e9b"
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "cancelled",
+      "first": 42,
+      "last": 44,
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "e22d477df758963da58a5ea63cda289a1b85e29b1d64a9f538bd05ca84e82e9b"
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "close",
+      "first": 45,
+      "last": 48,
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "e22d477df758963da58a5ea63cda289a1b85e29b1d64a9f538bd05ca84e82e9b"
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "settled",
+      "first": 49,
+      "last": 53,
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "e22d477df758963da58a5ea63cda289a1b85e29b1d64a9f538bd05ca84e82e9b"
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "drain",
+      "first": 54,
+      "last": 59,
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "e22d477df758963da58a5ea63cda289a1b85e29b1d64a9f538bd05ca84e82e9b"
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "function": "run",
+      "first": 3,
+      "last": 19,
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 4,
+      "source_sha256": "71204ae531c6172d55784d43f2faad32cca14388ab99c6c8184edc95af1f77ab"
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "function": "reserve",
+      "first": 60,
+      "last": 87,
+      "covered": 26,
+      "total": 27,
+      "percent": 96.29629629629629,
+      "missing": [
+        71
+      ],
+      "complexity": 3,
+      "source_sha256": "31bc4667150db3c7ff6bc15091a6740bebe4d5d3f3bcd1cfa4ed0e27831b26ba"
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "function": "first",
+      "first": 124,
+      "last": 131,
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "31bc4667150db3c7ff6bc15091a6740bebe4d5d3f3bcd1cfa4ed0e27831b26ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "function": "reserve",
+      "first": 169,
+      "last": 182,
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "missing": [
+        180
+      ],
+      "complexity": 3,
+      "source_sha256": "17b2ca7504ca3547c2fb18ac817d3304e0ef7f81d253284646ef9dd3566a380f"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "function": "serve",
+      "first": 74,
+      "last": 90,
+      "covered": 13,
+      "total": 13,
+      "percent": 100.0,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "339533345cd073ef1117cf502deeb94a2c012a010f3a6e6ba3259b454fc23771"
+    }
+  ]
+}

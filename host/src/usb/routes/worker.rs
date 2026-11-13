@@ -79,6 +79,7 @@ impl<C: Commands> State<C> {
         while !*stop.borrow() {
             tokio::select! {
                 biased;
+                _ = crate::process_retirement::PROCESS.cancelled() => break,
                 _ = stop.changed() => break,
                 next = requests.recv() => {
                     let Some(reply) = next else { break; };

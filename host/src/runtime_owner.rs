@@ -7,7 +7,13 @@ pub fn run<T>(work: impl Future<Output = T>) -> std::io::Result<T> {
     let runtime = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()?;
-    let result = runtime.block_on(work);
+    // Keep the executor available to admitted asynchronous cleanup, including
+    // cleanup triggered by error returns, caller cancellation and unwinding.
+    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| runtime.block_on(work)));
+    runtime.block_on(crate::process_retirement::PROCESS.drain());
     runtime.shutdown_timeout(std::time::Duration::from_millis(budget as u64));
-    Ok(result)
+    match result {
+        Ok(result) => Ok(result),
+        Err(panic) => std::panic::resume_unwind(panic),
+    }
 }

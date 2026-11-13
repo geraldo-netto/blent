@@ -1,0 +1,5 @@
+HEAD: 56250b92
+Compile: rustc 1.100.0, cargo build --offline --locked -p blent --lib --features accessory-transport
+Final rerun after cohesive reverse helper extraction; no real ADB/device/service operations.
+Settled control=False: runtime_owner_returned=true completion=false remaining_fake_routes=2, exit=0
+Settled control=True: runtime_owner_returned=true completion=true remaining_fake_routes=0, exit=0

@@ -1,0 +1,186 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 30.91s
+
+RUN blent FILTER=process_retirement::
+
+running 3 tests
+test process_retirement::tests::t1411_completed_history_is_bounded_and_empty_exit_finishes ... ok
+test process_retirement::tests::t1411_cutoff_preserves_original_admissions_and_rejects_reuse ... ok
+test process_retirement::tests::t1411_observation_capacity_is_independent_of_pool_release ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1128 filtered out; finished in 0.25s
+
+
+RUN blent FILTER=session_supervision::
+
+running 5 tests
+test session_supervision::native_tests::t1026_dropped_owner_retains_late_original_creator_and_native ... ok
+test session_supervision::native_tests::t1026_success_error_panic_and_cancellation_retain_original_native ... 
+thread 'session_supervision::native_tests::t1026_success_error_panic_and_cancellation_retain_original_native' (788032) panicked at host/src/session_supervision/native_tests.rs:31:22:
+T1026 parent panicked with original native cleanup held
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test session_supervision::tests::t814_cleanup_error_and_panic_publish_failure ... 
+thread 'session_supervision::tests::t814_cleanup_error_and_panic_publish_failure' (788041) panicked at host/src/session_supervision.rs:308:17:
+T814 cleanup panic
+ok
+test session_supervision::tests::t814_retiring_session_keeps_slot_until_native_cleanup_and_siblings_progress ... ok
+test session_supervision::tests::t928_terminal_startup_worker_outcomes_remain_failures ... 
+thread 'session_supervision::tests::t928_terminal_startup_worker_outcomes_remain_failures' (788047) panicked at host/src/session_supervision.rs:290:13:
+T928 worker panic
+ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 1126 filtered out; finished in 0.12s
+
+
+RUN blent FILTER=usb::
+
+running 58 tests
+test audio::usb::tests::t992_audio_usb_native_boundary_rejects_invalid_original_request_in_both_directions ... ok
+test camera::usb::retirement_tests::t1126_failed_listener_creator_releases_unbound_original_observation ... ok
+test camera::usb::retirement_tests::t1126_invalid_original_credential_never_invokes_listener_creator ... ok
+test camera::usb::retirement_tests::t1126_usb_creation_requires_original_observation_before_native_setup ... ok
+test camera::usb::retirement_tests::t1126_usb_original_bridge_drop_not_logical_construction_settles_proof ... ok
+test usb::monitor::retirement::tests::t1410_original_physical_identity_blocks_alias_reuse ... ok
+test usb::monitor::retirement_tests::t1410_cancelled_stop_retains_reservation_before_first_await ... ok
+test usb::monitor::retirement_tests::t1410_pending_native_session_excludes_its_slot_and_serial ... ok
+test usb::monitor::retirement_tests::t1410_retirement_preserves_sibling_progress_and_original_slot_recovery ... ok
+test usb::monitor::retirement_tests::t1410_shutdown_waits_for_original_native_completion_and_can_resume ... ok
+test usb::network::queries::tests::t1381_absent_and_stale_completions_cannot_publish ... ok
+test usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation ... 
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (788129) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (788129) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+ok
+test usb::network::queries::tests::t1381_query_deadline_publishes_unknown_and_releases_worker ... ok
+test usb::preview::tests::t525_unavailable_native_sink_safely_discards_invalid_events ... ok
+test usb::route_command::tests::t1363_native_route_commands_preserve_spawn_and_exit_evidence ... ok
+test usb::route_lock::tests::t1344_display_lease_rejects_symlink_without_unlinking ... ok
+test usb::route_lock::tests::t1344_native_display_leases_retain_devices_and_local_ports ... ok
+test usb::route_lock::tests::t834_native_lease_refuses_symlink ... ok
+test usb::route_lock::tests::t834_native_lease_rejects_overlap_and_retains_stable_bounded_files ... ok
+test usb::routes::retirement_tests::t1410_connection_loss_keeps_original_native_lease_fence ... ok
+test usb::routes::retirement_tests::t1410_native_lifetime_cannot_rebind_after_admission ... ok
+test usb::routes::retirement_tests::t1410_route_thread_exit_preserves_lease_until_original_native_session_settles ... ok
+test usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup ... ok
+test usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority ... ok
+test usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries ... ok
+test usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish ... ok
+test usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal ... ok
+test usb::tests::progress::t1381_removed_query_cannot_publish_into_reused_endpoint ... ok
+test usb::tests::reconnect::t1387_dropped_poll_and_network_retain_original_creator ... ok
+test usb::tests::reconnect::t1387_stalled_wifi_preserves_usb_progress_and_cancellation_cleanup ... ok
+test usb::tests::reconnect::t1394_fixture_loss_releases_admitted_creator ... ok
+test usb::tests::route_ownership::t1344_caller_loss_cannot_delete_a_different_physical_tablet ... ok
+test usb::tests::route_ownership::t1344_cancelled_waiter_and_owner_drop_retain_late_creator ... ok
+test usb::tests::route_ownership::t1344_empty_snapshot_cannot_release_unacknowledged_creator ... ok
+test usb::tests::route_ownership::t1344_lost_creation_acknowledgement_keeps_mapping_owned ... ok
+test usb::tests::route_ownership::t1344_network_without_physical_identity_fails_before_mutation ... ok
+test usb::tests::t1358_removed_authentication_toggle_cannot_disable_preview_credentials ... ok
+test usb::tests::t1386_malformed_serial_preserves_connected_attachment_and_credential ... ok
+test usb::tests::t525_attachment_rotates_credentials_and_retires_owned_routes ... ok
+test usb::tests::t525_bounded_invalid_tokens_serials_and_ports_cause_no_commands ... ok
+test usb::tests::t525_cleanup_preserves_foreign_routes_and_retains_failed_ownership ... ok
+test usb::tests::t525_failed_device_does_not_starve_next_eligible_usb_device ... ok
+test usb::tests::t525_monitor_partial_bind_command_failure_and_invalid_config ... ok
+test usb::tests::t525_monitor_reconnect_uses_shared_authenticated_protocol_and_retires_old_clients ... ok
+test usb::tests::t525_monitor_repairs_redelivers_and_reports_failed_cleanup ... ok
+test usb::tests::t525_partial_startup_and_failed_delivery_never_publish_ready ... ok
+test usb::tests::t525_preview_rejects_unavailable_display_mode ... ok
+test usb::tests::t525_two_slots_preserve_assignments_and_cleanup_independently ... ok
+test usb::tests::t525_usb_inventory_rejects_unknown_failed_and_nonready_observations ... ok
+test usb::tests::t654_inventory_status_and_size_are_independent_requirements ... ok
+test usb::tests::t655_concurrent_listener_fixtures_reserve_disjoint_pairs ... ok
+test usb::tests::t657_redelivery_waits_for_each_complete_interval ... ok
+test usb::tests::t691_absent_inventory_cleanup_requires_reconfirmed_identity ... ok
+test usb::tests::t691_network_reconnect_rereads_saved_address_and_bounds_inventory ... ok
+test usb::tests::t691_network_usb_migration_retires_routes_through_proven_alias ... ok
+test usb::tests::t691_replaced_physical_identity_does_not_remove_foreign_routes ... ok
+test usb::tests::t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownership ... ok
+test usb::tests::t702_shutdown_failure_still_retires_listeners_and_can_retry ... ok
+
+test result: ok. 58 passed; 0 failed; 0 ignored; 0 measured; 1073 filtered out; finished in 7.09s
+
+
+RUN process_exit FILTER=
+
+running 2 tests
+test t1411_process_exit_fixture ... ok
+test t1411_process_exit_retains_routes_and_async_native_session_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+
+
+RUN runtime_exit FILTER=
+
+running 2 tests
+test t819_final_runtime_exit_is_bounded_after_started_native_work ... ok
+test t819_runtime_exit_fixture ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+RUN wifi_exit FILTER=
+
+running 2 tests
+test t1365_exit_fixture ... ok
+test t1365_process_exit_waits_for_original_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+
+RUN session_failure FILTER=
+
+running 16 tests
+test t813_already_requested_daemon_shutdown_is_not_failure ... ok
+test t813_capture_error_retires_attachment_and_siblings ... ok
+test t813_capture_panic_retires_attachment_and_siblings ... 
+thread 't813_capture_panic_retires_attachment_and_siblings' (788905) panicked at host/tests/session_failure.rs:65:26:
+T813 capture panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test t813_failed_session_cannot_be_reactivated_by_late_transport ... ok
+test t813_native_input_completion_is_a_session_failure ... 
+thread 't813_native_input_completion_is_a_session_failure' (788907) panicked at host/tests/session_failure.rs:336:13:
+T813: native input panic
+ok
+test t813_normal_shutdown_aborts_unresponsive_async_capture_after_grace ... ok
+test t813_owner_drop_closes_status_with_terminal_value ... ok
+test t813_retirement_rejects_bounded_invalid_and_late_transport_values ... ok
+test t813_service_outcomes_publish_failure_without_stopping_other_sessions ... 
+thread 't813_service_outcomes_publish_failure_without_stopping_other_sessions' (788911) panicked at host/tests/session_failure.rs:220:18:
+T813 service panic
+
+thread 't813_service_outcomes_publish_failure_without_stopping_other_sessions' (788911) panicked at host/tests/session_failure.rs:220:18:
+T813 service panic
+
+thread 't813_service_outcomes_publish_failure_without_stopping_other_sessions' (788911) panicked at host/tests/session_failure.rs:220:18:
+T813 service panic
+ok
+test t813_startup_panic_returns_error_and_releases_listeners ... 
+thread 't813_startup_panic_returns_error_and_releases_listeners' (788912) panicked at host/tests/session_failure.rs:162:9:
+T813 startup panic
+ok
+test t813_unexpected_capture_success_retires_attachment_and_siblings ... ok
+test t813_worker_panic_during_generation_action_still_retires_session ... 
+thread 't813_worker_panic_during_generation_action_still_retires_session' (788914) panicked at host/tests/session_failure.rs:483:24:
+T813 action panic
+ok
+test t912_ephemeral_session_reports_actual_owned_listener_ports ... ok
+test t912_exported_listener_capabilities_outlive_actual_session_retirement ... ok
+test t912_legacy_server_start_keeps_its_listeners_after_export_is_dropped ... ok
+test t912_partial_bind_failure_rolls_back_before_capture_or_endpoint_publication ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+RUN shutdown_deadline FILTER=
+
+running 1 test
+test t814_started_native_capture_cannot_hold_control_shutdown ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.11s
+

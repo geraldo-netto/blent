@@ -1,0 +1,492 @@
+{
+  "tool": "project scripts/complexity/check.py; blent-rust-source0.1.0 syn2.0.119",
+  "maximum": 9,
+  "functions": [
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 23,
+      "function": "reserve",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 42,
+      "function": "cancelled",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 45,
+      "function": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 49,
+      "function": "settled",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 54,
+      "function": "drain",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 67,
+      "function": "t1411_cutoff_preserves_original_admissions_and_rejects_reuse",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 84,
+      "function": "t1411_completed_history_is_bounded_and_empty_exit_finishes",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 96,
+      "function": "t1411_observation_capacity_is_independent_of_pool_release",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 3,
+      "function": "run",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 29,
+      "function": "poll",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 36,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 50,
+      "function": "completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 60,
+      "function": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 88,
+      "function": "new",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 101,
+      "function": "empty",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 108,
+      "function": "add",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 111,
+      "function": "capture_lifetime",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 121,
+      "function": "completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 124,
+      "function": "first",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 132,
+      "function": "abort",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 139,
+      "function": "drain",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 144,
+      "function": "retire",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 158,
+      "function": "drop",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 177,
+      "function": "poll_complete",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 190,
+      "function": "publish_cleanup",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 211,
+      "function": "publish_retirement",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 232,
+      "function": "failure",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 245,
+      "function": "run",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 271,
+      "function": "admission",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 282,
+      "function": "t928_terminal_startup_worker_outcomes_remain_failures",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 303,
+      "function": "t814_cleanup_error_and_panic_publish_failure",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/session_supervision.rs",
+      "line": 322,
+      "function": "t814_retiring_session_keeps_slot_until_native_cleanup_and_siblings_progress",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 35,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 39,
+      "function": "for_transport",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 51,
+      "function": "retarget",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 56,
+      "function": "serial",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 61,
+      "function": "retain_native",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 70,
+      "function": "prepare",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 93,
+      "function": "start",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 128,
+      "function": "retire",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 151,
+      "function": "completion",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 156,
+      "function": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 162,
+      "function": "check_serial",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 169,
+      "function": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "line": 189,
+      "function": "poll_complete",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 11,
+      "function": "run",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 38,
+      "function": "new",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 60,
+      "function": "serial",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 74,
+      "function": "serve",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 91,
+      "function": "respond",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 103,
+      "function": "prepare",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 130,
+      "function": "create",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 156,
+      "function": "cleanup",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 175,
+      "function": "cleanup_once",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 193,
+      "function": "cleanup_route",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 220,
+      "function": "checked",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 229,
+      "function": "listing",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "line": 232,
+      "function": "physical",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit.rs",
+      "line": 9,
+      "function": "t1411_process_exit_fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/process_exit.rs",
+      "line": 16,
+      "function": "t1411_process_exit_retains_routes_and_async_native_session_cleanup",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/process_exit/fixture.rs",
+      "line": 34,
+      "function": "create",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/fixture.rs",
+      "line": 53,
+      "function": "hold",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/fixture.rs",
+      "line": 58,
+      "function": "work",
+      "complexity": 5
+    },
+    {
+      "file": "host/tests/process_exit/fixture.rs",
+      "line": 78,
+      "function": "run",
+      "complexity": 5
+    },
+    {
+      "file": "host/tests/process_exit/fixture.rs",
+      "line": 138,
+      "function": "check_outcome",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 14,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 20,
+      "function": "count",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 23,
+      "function": "reverse",
+      "complexity": 7
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 48,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 53,
+      "function": "execute_route",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 70,
+      "function": "display_route_lease",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 73,
+      "function": "execute",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/process_exit/routes.rs",
+      "line": 83,
+      "function": "output",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 16,
+      "function": "release_all",
+      "complexity": 0
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 17,
+      "function": "touch",
+      "complexity": 0
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 18,
+      "function": "pen",
+      "complexity": 0
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 21,
+      "function": "sink",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 24,
+      "function": "follow",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 35,
+      "function": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 50,
+      "function": "create",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/process_exit/session.rs",
+      "line": 71,
+      "function": "settings",
+      "complexity": 1
+    }
+  ]
+}
