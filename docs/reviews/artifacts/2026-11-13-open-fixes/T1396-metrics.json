@@ -1,0 +1,108 @@
+{
+  "complexity_tool": "Blent Kotlin PSI 1.9.20",
+  "functions": [
+    {
+      "path": "android/app/src/main/java/com/blent/MainActivity.kt",
+      "line": 45,
+      "name": "onCreate",
+      "complexity": 2
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 19,
+      "name": "<clinit>",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 20,
+      "name": "<clinit>",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 22,
+      "name": "t1396RestoredAttachmentKeepsDisconnect",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 23,
+      "name": "t1396RestoredAttachmentKeepsDenial",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 24,
+      "name": "t1396RestoredAttachmentKeepsRevocation",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 25,
+      "name": "t1396OrdinaryLauncherRestorationKeepsCutoff",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 27,
+      "name": "t1396FreshAttachmentStillStartsAfterRetirement",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 29,
+      "name": "t1396ExplicitConnectStillStartsAfterRestoration",
+      "complexity": 1
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 32,
+      "name": "stop",
+      "complexity": 4
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 45,
+      "name": "restored",
+      "complexity": 5
+    },
+    {
+      "path": "android/app/src/test/java/com/blent/connection/AttachmentRecreationTest.kt",
+      "line": 47,
+      "name": "<lambda>",
+      "complexity": 5
+    }
+  ],
+  "coverage_tool": "JaCoCo 0.8.15",
+  "onCreate_counters": [
+    {
+      "type": "INSTRUCTION",
+      "missed": "27",
+      "covered": "198"
+    },
+    {
+      "type": "BRANCH",
+      "missed": "3",
+      "covered": "5"
+    },
+    {
+      "type": "LINE",
+      "missed": "0",
+      "covered": "24"
+    },
+    {
+      "type": "COMPLEXITY",
+      "missed": "3",
+      "covered": "2"
+    },
+    {
+      "type": "METHOD",
+      "missed": "0",
+      "covered": "1"
+    }
+  ],
+  "tests": 12,
+  "failures": 0,
+  "scope": "API 27 and 34 Robolectric; physical USB freshness belongs to T1405"
+}
