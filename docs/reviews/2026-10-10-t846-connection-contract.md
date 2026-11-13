@@ -1537,8 +1537,11 @@ control/video while preserving the application-owned connection and independent
 camera/audio owners. Resuming checks the latest route before reconnecting;
 recreation creates fresh Activity bindings against the retained connection.
 A revoked route cannot be restored by background resume or persisted ADB
-credentials. Fresh legacy token delivery can select ADB after USB route revocation;
-it cannot replace an available USB display. A newly opened Activity with no active
+credentials. The DUMP-protected token boundary publishes a monotonic delivery
+revision with each accepted token, including unchanged tokens. Only a delivery
+after the latest USB selection/revocation can select ADB; launcher events cannot
+create that authority. Delivery while stopped is consumed on resume. It cannot
+replace an available USB display, and delivery revision exhaustion rejects delivery. A newly opened Activity with no active
 USB selection retains ordinary ADB startup. USB credentials never enter the
 legacy preference store. Route revisions span backend changes within a session.
 

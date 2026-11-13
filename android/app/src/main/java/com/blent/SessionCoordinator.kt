@@ -93,6 +93,7 @@ internal class SessionCoordinator(
     private var decoderSupport by mutableStateOf(DecoderSupport())
     private var externalDisplay = false
     private var externalAvailable = false
+    private var deliveryCutoff = prefs.hostTokenDelivery
     val presentation = StreamPresentation(videoReceiver, touchCapture)
 
     private data class WakeLocal(
@@ -171,12 +172,12 @@ internal class SessionCoordinator(
     }
 
     fun start() {
+        applyToken(restart = false)
         started = true
         activityDelivery.start()
         updates.start()
         stopTokenObservation?.invoke()
         stopTokenObservation = prefs.observeHostToken { if (started) applyToken(restart = true) }
-        applyToken(restart = false)
         connectControl()
     }
     private fun connectControl() {
@@ -318,7 +319,7 @@ internal class SessionCoordinator(
 
     fun applyToken(restart: Boolean) {
         val token = prefs.hostToken
-        if (externalDisplay) { legacyAfterExternal(token, restart); return }
+        if (externalDisplay) { adbAfterExternal(token); return }
         if (token == null) { retireToken(); return }
         val changed = touchCapture?.token != token
         touchCapture?.token = token
@@ -340,6 +341,7 @@ internal class SessionCoordinator(
     override fun selectDisplay(endpoint: DisplayEndpoint?) {
         externalDisplay = true
         externalAvailable = false
+        deliveryCutoff = prefs.hostTokenDelivery
         try {
             clearRoutes()
             if (endpoint == null) return
@@ -366,10 +368,10 @@ internal class SessionCoordinator(
         externalAvailable = false
         settings = settings.copy(streamError = failure.message ?: "Display route unavailable")
     }
-    private fun legacyAfterExternal(token: String?, restart: Boolean) {
-        // Fresh legacy delivery may select ADB after USB revocation. Background
-        // resume and persisted credentials alone never restore a revoked route.
-        if (externalAvailable || !restart || token == null) return
+    private fun adbAfterExternal(token: String?) {
+        // Only a protected delivery accepted after the latest USB cutoff can
+        // select ADB. Launcher/resume events cannot manufacture this authority.
+        if (externalAvailable || prefs.hostTokenDelivery <= deliveryCutoff || token == null) return
         try {
             clearRoutes()
             val adb = AdbDisplayRoutes.create(token)

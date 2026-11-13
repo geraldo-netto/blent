@@ -78,7 +78,7 @@ class SessionDisplayRouteTest {
                 session.start(); assertEquals(1, sockets.size)
                 session.stop(); session.selectDisplay(null); session.start()
                 assertEquals(1, sockets.size); assertNull(control.routes); assertNull(receiver.routes)
-                prefs.hostToken = "c".repeat(64); shadowOf(Looper.getMainLooper()).idle()
+                assertTrue(TokenDelivery.store(RuntimeEnvironment.getApplication(), android.content.Intent().putExtra("token", "c".repeat(64)))); shadowOf(Looper.getMainLooper()).idle()
                 assertEquals(2, sockets.size); assertEquals(AdbDisplayRoutes.create().controlPort, sockets.last().first.request().url.port)
                 assertEquals(3L, control.routes?.revision)
                 session.selectDisplay(endpoint); assertEquals(4L, control.routes?.revision)
@@ -108,7 +108,7 @@ class SessionDisplayRouteTest {
                 session.selectDisplay(endpoint)
                 assertNull(control.routes); assertNull(receiver.routes); assertTrue(sockets.single().first.cancelled)
                 assertEquals("Display route revisions exhausted", session.settings.streamError)
-                prefs.hostToken = "c".repeat(64); session.applyToken(true)
+                assertTrue(TokenDelivery.store(RuntimeEnvironment.getApplication(), android.content.Intent().putExtra("token", "c".repeat(64)))); session.applyToken(true)
                 assertNull(control.routes); assertEquals(1, sockets.size)
             } finally { session.stop() }
         }

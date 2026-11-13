@@ -15,7 +15,6 @@ internal object TokenDelivery {
     fun store(context: Context, intent: Intent): Boolean {
         val token = intent.getStringExtra("token") ?: return false
         if (!token.matches(Regex("[0-9a-f]{64}"))) return false
-        Prefs(context).hostToken = token
-        return true
+        return Prefs(context).recordHostTokenDelivery(token)
     }
 }

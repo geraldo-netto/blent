@@ -9,6 +9,7 @@ class Prefs(context: Context) {
         context.getSharedPreferences("blent", Context.MODE_PRIVATE)
 
     companion object {
+        private val deliveryGate = Any()
         /**
          * Defaults deliberately match the host's own defaults. They used to be
          * 200 Mbps / 90 fps, which the app pushed to the host on every start —
@@ -99,10 +100,23 @@ class Prefs(context: Context) {
         get() = sp.getString("host_token", null)
         set(v) = sp.edit().putString("host_token", v).apply()
 
+    /** Monotonic accepted shell-delivery identity, independent of token equality.
+     * One process owns this preferences file; a single edit publishes both fields.
+     * Exhaustion fails closed rather than reusing a delivery identity. */
+    internal val hostTokenDelivery: Long
+        get() = sp.getLong("host_token_delivery", 0)
+
+    internal fun recordHostTokenDelivery(token: String): Boolean = synchronized(deliveryGate) {
+        val previous = hostTokenDelivery
+        if (previous < 0 || previous == Long.MAX_VALUE) return false
+        sp.edit().putString("host_token", token).putLong("host_token_delivery", previous + 1).apply()
+        true
+    }
+
     /** The returned cleanup retains the listener until its owner stops. */
     internal fun observeHostToken(changed: () -> Unit): () -> Unit {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == "host_token") changed()
+            if (key == "host_token" || key == "host_token_delivery") changed()
         }
         sp.registerOnSharedPreferenceChangeListener(listener)
         return { sp.unregisterOnSharedPreferenceChangeListener(listener) }
