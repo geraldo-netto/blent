@@ -1,0 +1,54 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "source_sha256": "46739ee2f1ee1b7d5ff4e6f9e92a2f8524a7f8ed9667f4b738d46e4a04731ac3",
+  "functions": [
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 59,
+      "name": "control",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 116,
+      "name": "finish",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 154,
+      "name": "session",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 262,
+      "name": "finish",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 333,
+      "name": "trial",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 369,
+      "name": "isolated",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 389,
+      "name": "t391_one_two_four_sessions_release_resources",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/stream/resources.rs",
+      "line": 402,
+      "name": "t1426_concurrent_controls_settle_original_native_lifetimes",
+      "complexity": 3
+    }
+  ]
+}

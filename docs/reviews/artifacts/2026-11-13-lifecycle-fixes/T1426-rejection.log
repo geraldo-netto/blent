@@ -1,0 +1,38 @@
+warning: Missing auto-load script at offset 0 in section .debug_gdb_scripts
+of file /backups/disk2/projects/blent/target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa.
+Use `info auto-load python-scripts [REGEXP]' to list them.
+Breakpoint 1 at 0x11674cf: file host/src/input/linux/lifetime.rs, line 25.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+running 1 test
+test stream::resources::t391_one_two_four_sessions_release_resources ... [New Thread 0x7ffff7bff6c0 (LWP 1150958)]
+[New Thread 0x7ffff79fe6c0 (LWP 1150959)]
+T391 resources {"sessions":1,"before":{"fds":10,"tasks":0,"rss_kib":11588},"peak":{"fds":22,"tasks":9,"rss_kib":31812},"after":{"fds":10,"tasks":0,"rss_kib":32196},"retained_peak_bytes":[655361],"readers":[{"frames":120,"configs":2,"arrival_us":[655,460,590,656,445,405,334,375,337,493,389,301,421,286,399,547,295,239,449,414,268,427,420,403,251,236,333,375,346,455,447,259,267,380,268,420,430,240,361,379,271,551,357,413,344,356,242,408,252,390,414,253,349,354,332,237,456,246,246,403,322,232,518,399,330,246,227,327,394,330,534,489,674,410,485,461,245,229,278,411,288,438,228,243,255,246,276,234,260,256,364,421,542,541,332,261,381,734,474,381,530,394,300,321,273,364,371,242,285,424,580,1007,463,781,536,425,490,380,296,263]}],"allocations":{"allocations":3518,"reallocations":731,"requested_bytes":8533379,"explicit_copy_bytes":0,"scanner_input_bytes":0}}
+[Switching to Thread 0x7ffff7bff6c0 (LWP 1150958)]
+T1426 input follower error branch
+$1 = 0
+#0  blent::input::linux::lifetime::Identity::claim (instance=0) at host/src/input/linux/lifetime.rs:25
+#1  0x00005555566bd399 in blent::input::linux::lifetime::Lifetime::claim (self=0x7ffff000d120, instance=0) at host/src/input/linux/lifetime.rs:57
+#2  0x00005555578f24ba in blent::input::linux::{impl#1}::follow (self=0x7ffff0028ca0, tablet=..., mode=..., config=...) at host/src/input/linux.rs:47
+#3  0x000055555663ca8f in blent::input::{impl#2}::run_with_listener::{async_fn#0} () at host/src/input.rs:222
+#4  0x000055555762b457 in blent::stream::resources::control::{async_fn#0}::{async_block#0} () at host/src/stream/resources.rs:80
+#5  0x000055555776c196 in tokio::runtime::task::core::{impl#6}::poll::{closure#0}<blent::stream::resources::control::{async_fn#0}::{async_block_env#0}, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle, alloc::alloc::Global>> (ptr=0x7ffff0039f30) at /home/netto/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/core.rs:375
+
+thread 'stream::resources::t391_one_two_four_sessions_release_resources' (1150958) panicked at host/src/stream/resources.rs:81:52:
+called `Result::unwrap()` on an `Err` value: Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    stream::resources::t391_one_two_four_sessions_release_resources
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1136 filtered out; finished in 2.10s
+
+[Thread 0x7ffff7bff6c0 (LWP 1150958) exited]
+[Thread 0x7ffff7e7ee00 (LWP 1150955) exited]
+[Thread 0x7ffff79fe6c0 (LWP 1150959) exited]
+[New process 1150955]
+[Inferior 1 (process 1150955) exited with code 0145]

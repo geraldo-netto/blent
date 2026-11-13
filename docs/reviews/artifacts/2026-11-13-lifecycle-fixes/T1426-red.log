@@ -1,0 +1,33 @@
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa', 'stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes', '--nocapture', '--test-threads=1']
+
+running 1 test
+test stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes ...
+thread 'stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes' (1152427) panicked at host/src/stream/resources.rs:361:5:
+
+running 1 test
+test stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes ... FAILED
+
+failures:
+
+failures:
+    stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1137 filtered out; finished in 0.00s
+
+
+thread 'stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes' (1152429) panicked at host/src/stream/resources.rs:81:52:
+called `Result::unwrap()` on an `Err` value: Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1137 filtered out; finished in 0.01s
+
+
+EXIT 101

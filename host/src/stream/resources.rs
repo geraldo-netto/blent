@@ -48,6 +48,7 @@ fn resources() -> Resources {
 
 struct Control {
     task: ServerTask,
+    original: blent_config::retirement::Completion,
     address: std::net::SocketAddr,
     _mode: watch::Sender<bool>,
     _card: watch::Sender<Option<u32>>,
@@ -55,12 +56,13 @@ struct Control {
     _client: tokio_tungstenite::WebSocketStream<TcpStream>,
 }
 
-async fn control() -> Control {
+async fn control(instance: u32) -> Control {
     let (mode, _) = watch::channel(false);
     let (card, card_rx) = watch::channel(None);
     let (tablet, tablet_rx) = watch::channel(false);
     let server = InputServer::new(
         InputConfig {
+            instance,
             port: 0,
             touch: false,
             pen: false,
@@ -74,7 +76,11 @@ async fn control() -> Control {
         Default::default(),
         card_rx,
         tablet_rx,
-    ).unwrap();
+    )
+    .unwrap();
+    let original = server
+        .native_completion()
+        .expect("T1426: Linux input lifetime");
     let listener = server.bind().await.unwrap();
     let address = listener.local_addr().unwrap();
     let task = tokio::spawn(async move { server.run_with_listener(listener).await });
@@ -97,11 +103,27 @@ async fn control() -> Control {
         .contains("connected"));
     Control {
         _client: client,
+        original,
         task,
         address,
         _mode: mode,
         _card: card,
         _tablet: tablet,
+    }
+}
+
+impl Control {
+    async fn finish(self) {
+        self.task.abort();
+        assert!(self.task.await.unwrap_err().is_cancelled());
+        // T1426: logical server cancellation does not release its native identity.
+        timeout(Duration::from_secs(5), async {
+            while !self.original.is_complete() {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .expect("T1426: original input lifetime did not settle");
     }
 }
 
@@ -129,7 +151,7 @@ async fn authenticated(address: std::net::SocketAddr, slow: bool) -> TcpStream {
     socket
 }
 
-async fn session() -> Session {
+async fn session(instance: u32) -> Session {
     let config = Bytes::from(vec![1]);
     let cache = CodecConfig::new(Some(config.clone()));
     let server = Arc::new(StreamServer::new(
@@ -150,7 +172,7 @@ async fn session() -> Session {
     let starts = Arc::new(Mutex::new(vec![Instant::now(); FRAMES]));
     let fast = authenticated(address, false).await;
     let reader = tokio::spawn(receive(fast, starts.clone()));
-    let control = control().await;
+    let control = control(instance).await;
     let peers = vec![
         authenticated(address, true).await,
         TcpStream::connect(address).await.unwrap(),
@@ -249,8 +271,7 @@ impl Session {
             .unwrap()
             .unwrap()
             .unwrap();
-        self.control.task.abort();
-        assert!(self.control.task.await.unwrap_err().is_cancelled());
+        self.control.finish().await;
         drop(self.peers);
         timeout(Duration::from_secs(1), self.reader)
             .await
@@ -312,8 +333,8 @@ fn update_peak(peak: &mut Resources, current: Resources) {
 async fn trial(count: usize) -> Trial {
     let before = resources();
     let mut sessions = Vec::new();
-    for _ in 0..count {
-        sessions.push(session().await);
+    for instance in 0..count {
+        sessions.push(session(u32::try_from(instance).unwrap()).await);
     }
     let ((peak, retained_peak_bytes), allocations) =
         crate::allocation_probe::measure_async(traffic(&mut sessions)).await;
@@ -345,16 +366,12 @@ async fn trial(count: usize) -> Trial {
     }
 }
 
-fn isolated() -> bool {
+fn isolated(test: &str) -> bool {
     if std::env::var_os("BLENT_T391_REPLAY_CHILD").is_some() {
         return false;
     }
     let output = std::process::Command::new(std::env::current_exe().unwrap())
-        .args([
-            "--exact",
-            "stream::resources::t391_one_two_four_sessions_release_resources",
-            "--nocapture",
-        ])
+        .args(["--exact", test, "--nocapture"])
         .env("BLENT_T391_REPLAY_CHILD", "1")
         .output()
         .unwrap();
@@ -370,7 +387,7 @@ fn isolated() -> bool {
 
 #[tokio::test]
 async fn t391_one_two_four_sessions_release_resources() {
-    if isolated() {
+    if isolated("stream::resources::t391_one_two_four_sessions_release_resources") {
         return;
     }
     for count in [1, 2, 4] {
@@ -378,5 +395,16 @@ async fn t391_one_two_four_sessions_release_resources() {
             "T391 resources {}",
             serde_json::to_string(&trial(count).await).unwrap()
         );
+    }
+}
+
+#[tokio::test]
+async fn t1426_concurrent_controls_settle_original_native_lifetimes() {
+    if isolated("stream::resources::t1426_concurrent_controls_settle_original_native_lifetimes") {
+        return;
+    }
+    // Each trial must admit distinct concurrent identities and settle before reuse.
+    for _ in 0..2 {
+        trial(2).await;
     }
 }
