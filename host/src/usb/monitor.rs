@@ -71,7 +71,7 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
                         .slots
                         .iter()
                         .flatten()
-                        .filter_map(|a| a.connection.serial().map(str::to_string))
+                        .filter_map(|a| a.connection.serial())
                         .collect::<Vec<_>>(),
                 ),
             )
@@ -99,10 +99,13 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
             let present = active
                 .connection
                 .serial()
-                .is_some_and(|serial| devices.iter().any(|device| device == serial));
+                .is_some_and(|serial| devices.iter().any(|device| device == &serial));
             let identity_current = self.network.as_ref().is_none_or(|network| {
-                active.connection.serial().and_then(|s| network.identity(s))
-                    == active.identity.as_ref()
+                active
+                    .connection
+                    .serial()
+                    .and_then(|s| network.identity(&s).cloned())
+                    == active.identity
             });
             if present && identity_current {
                 return self.maintain(index).await;
@@ -140,7 +143,7 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
         self.slots
             .iter()
             .flatten()
-            .any(|active| active.connection.selected() == Some(serial))
+            .any(|active| active.connection.selected().as_deref() == Some(serial))
     }
     async fn attach(&mut self, index: usize, serial: &str) -> Result<()> {
         let runtime =
@@ -226,7 +229,7 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
                 None => true,
             };
             let available =
-                present.is_none_or(|devices| devices.iter().any(|s| s == routes.serial()));
+                present.is_none_or(|devices| devices.iter().any(|s| *s == routes.serial()));
             if safe && available && routes.retire(&self.adb).await.is_ok() {
                 self.pending.swap_remove(index);
             } else {

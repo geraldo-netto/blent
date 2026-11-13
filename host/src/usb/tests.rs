@@ -37,6 +37,23 @@ fn output(code: u32, text: &str) -> Output {
     }
 }
 impl Commands for Fake {
+    fn execute_route(&self, arguments: Vec<String>) -> RouteFuture<'_> {
+        Box::pin(async move {
+            // This independent adapter injects failure before any effect is started.
+            let rejected = self
+                .0
+                .lock()
+                .unwrap()
+                .fail
+                .as_ref()
+                .is_some_and(|failure| arguments.join(" ").contains(failure));
+            RouteCommand {
+                output: self.execute(arguments, None).await,
+                started: !rejected,
+            }
+        })
+    }
+
     fn execute(&self, arguments: Vec<String>, input: Option<Vec<u8>>) -> CommandFuture<'_> {
         Box::pin(async move {
             let mut state = self.0.lock().unwrap();
@@ -207,8 +224,8 @@ async fn t525_attachment_rotates_credentials_and_retires_owned_routes() {
     assert!(connection.refresh(&adb).await.is_err());
     let presence = connection.attachment.subscribe();
     connection.connect(&adb, "USB").await.unwrap();
-    assert_eq!(connection.serial(), Some("USB"));
-    assert_eq!(connection.selected(), Some("USB"));
+    assert_eq!(connection.serial().as_deref(), Some("USB"));
+    assert_eq!(connection.selected().as_deref(), Some("USB"));
     let first = connection.attachment.token().unwrap().unwrap();
     assert_ne!(first, "a".repeat(64));
     assert!(*presence.borrow());
@@ -904,6 +921,12 @@ async fn t691_network_reconnect_rereads_saved_address_and_bounds_inventory() {
         .unwrap();
     let (adb, monitor, _stop, ports) = monitor_fixture().await;
     adb.0 .0.lock().unwrap().inventory = "List of devices attached\n".into();
+    adb.0
+         .0
+        .lock()
+        .unwrap()
+        .identities
+        .insert("192.0.2.2:5555".into(), "tablet".into());
     let mut monitor = monitor.with_network(store.clone());
     reconnect::wait_for_attachment(&mut monitor).await;
     assert_eq!(
@@ -985,3 +1008,5 @@ fn t1358_removed_authentication_toggle_cannot_disable_preview_credentials() {
 mod identity;
 mod progress;
 mod reconnect;
+
+mod route_ownership;

@@ -29,6 +29,12 @@ pub trait Commands: Send + Sync {
         Ok(Box::new(()))
     }
 
+    /// Retain a native display endpoint/port namespace through exact settlement.
+    /// In-memory adapters have no external namespace; shared fixtures may override.
+    fn display_route_lease(&self, _identity: &str, _ports: (u16, u16)) -> Result<Box<dyn Send>> {
+        Ok(Box::new(()))
+    }
+
     fn execute(&self, arguments: Vec<String>, input: Option<Vec<u8>>) -> CommandFuture<'_>;
 
     /// In-memory adapters have no separate native lifetime. Native adapters must
@@ -50,6 +56,10 @@ pub trait Commands: Send + Sync {
 #[derive(Clone)]
 pub struct NativeCommands(pub PathBuf);
 impl Commands for NativeCommands {
+    fn display_route_lease(&self, identity: &str, ports: (u16, u16)) -> Result<Box<dyn Send>> {
+        route_lock::display(identity, ports)
+    }
+
     fn execute_route(&self, arguments: Vec<String>) -> RouteFuture<'_> {
         Box::pin(route_command::native(&self.0, arguments))
     }
@@ -160,6 +170,12 @@ mod tests;
 
 /// A missing optional executable still permits local configuration retirement.
 impl<C: Commands> Commands for Option<C> {
+    fn display_route_lease(&self, identity: &str, ports: (u16, u16)) -> Result<Box<dyn Send>> {
+        self.as_ref()
+            .context("ADB executable unavailable")?
+            .display_route_lease(identity, ports)
+    }
+
     fn is_configured(&self) -> bool {
         self.as_ref().is_some_and(Commands::is_configured)
     }

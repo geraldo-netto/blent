@@ -1,0 +1,350 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.45
+   Compiling libc v0.2.186
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.228
+   Compiling pin-project-lite v0.2.17
+   Compiling serde v1.0.228
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling winnow v1.0.3
+   Compiling futures-core v0.3.32
+   Compiling crossbeam-utils v0.8.21
+   Compiling parking v2.2.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling toml_datetime v1.1.1+spec-1.1.0
+   Compiling smallvec v1.15.1
+   Compiling futures-io v0.3.32
+   Compiling fastrand v2.4.1
+   Compiling autocfg v1.5.1
+   Compiling once_cell v1.21.4
+   Compiling version_check v0.9.5
+   Compiling rustix v1.1.4
+   Compiling bitflags v2.13.0
+   Compiling linux-raw-sys v0.12.1
+   Compiling endi v1.1.1
+   Compiling shlex v2.0.1
+   Compiling find-msvc-tools v0.1.11
+   Compiling typenum v1.20.1
+   Compiling litemap v0.8.2
+   Compiling writeable v0.6.3
+   Compiling parking_lot_core v0.9.12
+   Compiling slab v0.4.12
+   Compiling log v0.4.32
+   Compiling icu_properties_data v2.2.0
+   Compiling icu_normalizer_data v2.2.0
+   Compiling zerocopy v0.8.52
+   Compiling bytes v1.11.1
+   Compiling utf8_iter v1.0.4
+   Compiling scopeguard v1.2.0
+   Compiling async-task v4.7.1
+   Compiling futures-lite v2.6.1
+   Compiling tracing-core v0.1.36
+   Compiling memchr v2.8.1
+   Compiling cc v1.4.4
+   Compiling lock_api v0.4.14
+   Compiling atomic-waker v1.1.2
+   Compiling itoa v1.0.18
+   Compiling zmij v1.0.21
+   Compiling cpufeatures v0.2.17
+   Compiling utf8parse v0.2.2
+   Compiling untrusted v0.9.0
+   Compiling zeroize v1.9.0
+   Compiling futures-sink v0.3.32
+   Compiling piper v0.2.5
+   Compiling anstyle-parse v1.0.0
+   Compiling serde_json v1.0.150
+   Compiling generic-array v0.14.7
+   Compiling httparse v1.10.1
+   Compiling anstyle-query v1.1.5
+   Compiling futures-task v0.3.32
+   Compiling cfg_aliases v0.2.1
+   Compiling colorchoice v1.0.5
+   Compiling thiserror v1.0.69
+   Compiling async-io v2.6.0
+   Compiling memoffset v0.9.1
+   Compiling getrandom v0.4.2
+   Compiling rustls-pki-types v1.15.1
+   Compiling percent-encoding v2.3.2
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling anstyle v1.0.14
+   Compiling nix v0.29.0
+   Compiling ordered-stream v0.2.0
+   Compiling strsim v0.11.1
+   Compiling concurrent-queue v2.5.0
+   Compiling static_assertions v1.1.0
+   Compiling regex-syntax v0.8.11
+   Compiling winnow v0.7.15
+   Compiling num-conv v0.2.2
+   Compiling powerfmt v0.2.0
+   Compiling indexmap v2.14.0
+   Compiling form_urlencoded v1.2.2
+   Compiling anstream v1.0.0
+   Compiling time-core v0.1.9
+   Compiling event-listener v5.4.1
+   Compiling hex v0.4.3
+   Compiling rustls v0.23.45
+   Compiling toml_write v0.1.2
+   Compiling heck v0.5.0
+   Compiling getrandom v0.3.4
+   Compiling deranged v0.5.8
+   Compiling anyhow v1.0.102
+   Compiling clap_lex v1.1.0
+   Compiling http v1.4.2
+   Compiling data-encoding v2.11.0
+   Compiling utf-8 v0.7.6
+   Compiling subtle v2.6.1
+   Compiling event-listener-strategy v0.5.4
+   Compiling lazy_static v1.5.0
+   Compiling byteorder v1.5.0
+   Compiling clap_builder v4.6.0
+   Compiling tracing-log v0.2.0
+   Compiling task-local v0.1.1
+   Compiling thread_local v1.1.9
+   Compiling sharded-slab v0.1.7
+   Compiling futures-channel v0.3.32
+   Compiling syn v2.0.117
+   Compiling nu-ansi-term v0.50.3
+   Compiling pastey v0.2.3
+   Compiling semver v1.0.28
+   Compiling simd-adler32 v0.3.9
+   Compiling async-channel v2.5.0
+   Compiling async-lock v3.4.2
+   Compiling async-executor v1.14.0
+   Compiling async-broadcast v0.7.2
+   Compiling blocking v1.6.2
+   Compiling toml_parser v1.1.2+spec-1.1.0
+   Compiling ring v0.17.14
+   Compiling async-fs v2.2.0
+   Compiling toml_edit v0.25.12+spec-1.1.0
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling digest v0.10.7
+   Compiling regex-automata v0.4.14
+   Compiling sha1 v0.10.6
+   Compiling sha2 v0.10.9
+   Compiling time v0.3.55
+   Compiling errno v0.3.14
+   Compiling getrandom v0.2.17
+   Compiling mio v1.2.1
+   Compiling socket2 v0.6.4
+   Compiling xdg-home v1.3.0
+   Compiling signal-hook-registry v1.4.8
+   Compiling rand_core v0.6.4
+   Compiling parking_lot v0.12.5
+   Compiling proc-macro-crate v3.5.0
+   Compiling yasna v0.6.0
+   Compiling uuid v1.23.3
+   Compiling matchers v0.2.0
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling synstructure v0.13.2
+   Compiling zvariant_utils v2.1.0
+   Compiling rand v0.8.6
+   Compiling serde_derive v1.0.228
+   Compiling zerofrom-derive v0.1.7
+   Compiling yoke-derive v0.8.2
+   Compiling zerovec-derive v0.11.3
+   Compiling displaydoc v0.2.6
+   Compiling enumflags2_derive v0.7.12
+   Compiling tokio-macros v2.7.0
+   Compiling tracing-attributes v0.1.31
+   Compiling futures-macro v0.3.32
+   Compiling thiserror-impl v1.0.69
+   Compiling zvariant_derive v4.2.0
+   Compiling async-trait v0.1.89
+   Compiling serde_repr v0.1.20
+   Compiling clap_derive v4.6.1
+   Compiling async-recursion v1.1.1
+   Compiling zbus_macros v4.4.0
+   Compiling polling v3.11.0
+   Compiling tempfile v3.27.0
+   Compiling tokio v1.52.3
+   Compiling futures-util v0.3.32
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling async-signal v0.2.14
+   Compiling zerovec v0.11.6
+   Compiling zerotrie v0.2.4
+   Compiling tracing v0.1.44
+   Compiling async-process v2.5.0
+   Compiling rustls-webpki v0.103.15
+   Compiling rcgen v0.14.10
+   Compiling tinystr v0.8.3
+   Compiling potential_utf v0.1.5
+   Compiling icu_collections v2.2.0
+   Compiling icu_locale_core v2.2.0
+   Compiling clap v4.6.1
+   Compiling icu_provider v2.2.0
+   Compiling icu_properties v2.2.0
+   Compiling icu_normalizer v2.2.0
+   Compiling enumflags2 v0.7.12
+   Compiling zvariant_utils v3.4.0
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling tracing-serde v0.2.0
+   Compiling tracing-subscriber v0.3.23
+   Compiling zvariant v4.2.0
+   Compiling toml_edit v0.22.27
+   Compiling zvariant_derive v5.12.0
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling zvariant v5.12.0
+   Compiling tungstenite v0.21.0
+   Compiling toml v0.8.23
+   Compiling zbus_names v3.0.0
+   Compiling tokio-rustls v0.26.5
+   Compiling tokio-util v0.7.18
+   Compiling blent-config v1.2.3 (/backups/disk2/projects/blent/common)
+   Compiling tokio-tungstenite v0.21.0
+   Compiling zbus v4.4.0
+   Compiling zbus_names v4.3.2
+   Compiling zbus_macros v5.16.0
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+   Compiling zbus v5.16.0
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling ksni v0.3.6
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:30:10
+   |
+30 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+30 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+30 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/auxiliary_source/tests/fixture.rs:87:10
+   |
+87 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+87 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+87 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: `blent` (lib test) generated 5 warnings (run `cargo fix --lib -p blent --tests` to apply 5 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 35.86s
+     Running unittests src/lib.rs (target/llvm-cov-target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa)
+
+running 50 tests
+test audio::usb::tests::t992_audio_usb_native_boundary_rejects_invalid_original_request_in_both_directions ... ok
+test camera::usb::retirement_tests::t1126_failed_listener_creator_releases_unbound_original_observation ... ok
+test camera::usb::retirement_tests::t1126_invalid_original_credential_never_invokes_listener_creator ... ok
+test camera::usb::retirement_tests::t1126_usb_creation_requires_original_observation_before_native_setup ... ok
+test camera::usb::retirement_tests::t1126_usb_original_bridge_drop_not_logical_construction_settles_proof ... ok
+test usb::network::queries::tests::t1381_absent_and_stale_completions_cannot_publish ... ok
+test usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation ... 
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (327575) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation' (327575) panicked at host/src/usb/network/queries.rs:147:17:
+T1381 injected query task failure
+ok
+test usb::network::queries::tests::t1381_query_deadline_publishes_unknown_and_releases_worker ... ok
+test usb::preview::tests::t525_unavailable_native_sink_safely_discards_invalid_events ... ok
+test usb::route_command::tests::t1363_native_route_commands_preserve_spawn_and_exit_evidence ... ok
+test usb::route_lock::tests::t1344_display_lease_rejects_symlink_without_unlinking ... ok
+test usb::route_lock::tests::t1344_native_display_leases_retain_devices_and_local_ports ... ok
+test usb::route_lock::tests::t834_native_lease_refuses_symlink ... ok
+test usb::route_lock::tests::t834_native_lease_rejects_overlap_and_retains_stable_bounded_files ... ok
+test usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup ... ok
+test usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority ... ok
+test usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries ... ok
+test usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish ... ok
+test usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal ... ok
+test usb::tests::progress::t1381_removed_query_cannot_publish_into_reused_endpoint ... ok
+test usb::tests::reconnect::t1387_dropped_poll_and_network_retain_original_creator ... ok
+test usb::tests::reconnect::t1387_stalled_wifi_preserves_usb_progress_and_cancellation_cleanup ... ok
+test usb::tests::reconnect::t1394_fixture_loss_releases_admitted_creator ... ok
+test usb::tests::route_ownership::t1344_caller_loss_cannot_delete_a_different_physical_tablet ... ok
+test usb::tests::route_ownership::t1344_cancelled_waiter_and_owner_drop_retain_late_creator ... ok
+test usb::tests::route_ownership::t1344_empty_snapshot_cannot_release_unacknowledged_creator ... ok
+test usb::tests::route_ownership::t1344_lost_creation_acknowledgement_keeps_mapping_owned ... ok
+test usb::tests::route_ownership::t1344_network_without_physical_identity_fails_before_mutation ... ok
+test usb::tests::t1358_removed_authentication_toggle_cannot_disable_preview_credentials ... ok
+test usb::tests::t1386_malformed_serial_preserves_connected_attachment_and_credential ... ok
+test usb::tests::t525_attachment_rotates_credentials_and_retires_owned_routes ... ok
+test usb::tests::t525_bounded_invalid_tokens_serials_and_ports_cause_no_commands ... ok
+test usb::tests::t525_cleanup_preserves_foreign_routes_and_retains_failed_ownership ... ok
+test usb::tests::t525_failed_device_does_not_starve_next_eligible_usb_device ... ok
+test usb::tests::t525_monitor_partial_bind_command_failure_and_invalid_config ... ok
+test usb::tests::t525_monitor_reconnect_uses_shared_authenticated_protocol_and_retires_old_clients ... ok
+test usb::tests::t525_monitor_repairs_redelivers_and_reports_failed_cleanup ... ok
+test usb::tests::t525_partial_startup_and_failed_delivery_never_publish_ready ... ok
+test usb::tests::t525_preview_rejects_unavailable_display_mode ... ok
+test usb::tests::t525_two_slots_preserve_assignments_and_cleanup_independently ... ok
+test usb::tests::t525_usb_inventory_rejects_unknown_failed_and_nonready_observations ... ok
+test usb::tests::t654_inventory_status_and_size_are_independent_requirements ... ok
+test usb::tests::t655_concurrent_listener_fixtures_reserve_disjoint_pairs ... ok
+test usb::tests::t657_redelivery_waits_for_each_complete_interval ... ok
+test usb::tests::t691_absent_inventory_cleanup_requires_reconfirmed_identity ... ok
+test usb::tests::t691_network_reconnect_rereads_saved_address_and_bounds_inventory ... ok
+test usb::tests::t691_network_usb_migration_retires_routes_through_proven_alias ... ok
+test usb::tests::t691_replaced_physical_identity_does_not_remove_foreign_routes ... ok
+test usb::tests::t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownership ... ok
+test usb::tests::t702_shutdown_failure_still_retires_listeners_and_can_retry ... ok
+
+test result: ok. 50 passed; 0 failed; 0 ignored; 0 measured; 1046 filtered out; finished in 5.49s
+
+
+    Finished report saved to /home/netto/.cache/blent-fixes-20261113/T1344.lcov

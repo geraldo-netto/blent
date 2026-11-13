@@ -1,0 +1,737 @@
+{
+  "tool": {
+    "coverage": "cargo-llvm-cov 0.8.7; LLVM tools bundled with rustc 1.100.0 (0ef1bc386 2026-11-09)",
+    "complexity": "Blent syn 2.0.119 Rust frontend"
+  },
+  "scope": "Linux-executed shared/native methods. Native Windows branches remain blocked under T1352.",
+  "counter_artifact": "T1344-current.lcov.gz: native export of the exact executed test executable, retaining USB source records. Stale unrelated executables auto-discovered by cargo-llvm-cov were not used.",
+  "binary": "target/llvm-cov-target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa",
+  "functions": [
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "new",
+      "line": 33,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "for_transport",
+      "line": 37,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "retarget",
+      "line": 48,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "serial",
+      "line": 53,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "prepare",
+      "line": 57,
+      "language": "rust",
+      "covered": 20,
+      "total": 22,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        63,
+        74
+      ],
+      "complexity": 5,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "start",
+      "line": 80,
+      "language": "rust",
+      "covered": 34,
+      "total": 34,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "retire",
+      "line": 114,
+      "language": "rust",
+      "covered": 15,
+      "total": 17,
+      "percent": 88.23529411764706,
+      "passes": true,
+      "missing": [
+        126,
+        132
+      ],
+      "complexity": 5,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "completion",
+      "line": 137,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "drop",
+      "line": 142,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "check_serial",
+      "line": 148,
+      "language": "rust",
+      "covered": 5,
+      "total": 6,
+      "percent": 83.33333333333333,
+      "passes": true,
+      "missing": [
+        151
+      ],
+      "complexity": 1,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "reserve",
+      "line": 155,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        166
+      ],
+      "complexity": 3,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes.rs",
+      "name": "poll_complete",
+      "line": 175,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "a1783edb510e69ba5a3e1caaae5600b36bfe364481a617269e1987b63ec827ba"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "run",
+      "line": 11,
+      "language": "rust",
+      "covered": 18,
+      "total": 20,
+      "percent": 90.0,
+      "passes": true,
+      "missing": [
+        19,
+        20
+      ],
+      "complexity": 4,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "new",
+      "line": 38,
+      "language": "rust",
+      "covered": 19,
+      "total": 19,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 3,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "serial",
+      "line": 60,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        69
+      ],
+      "complexity": 3,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "serve",
+      "line": 74,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "respond",
+      "line": 90,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 3,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "prepare",
+      "line": 102,
+      "language": "rust",
+      "covered": 21,
+      "total": 23,
+      "percent": 91.30434782608695,
+      "passes": true,
+      "missing": [
+        113,
+        125
+      ],
+      "complexity": 3,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "create",
+      "line": 129,
+      "language": "rust",
+      "covered": 25,
+      "total": 25,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "cleanup",
+      "line": 155,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 7,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "cleanup_once",
+      "line": 174,
+      "language": "rust",
+      "covered": 16,
+      "total": 16,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 5,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "cleanup_route",
+      "line": 192,
+      "language": "rust",
+      "covered": 22,
+      "total": 22,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 4,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "checked",
+      "line": 219,
+      "language": "rust",
+      "covered": 7,
+      "total": 8,
+      "percent": 87.5,
+      "passes": true,
+      "missing": [
+        224
+      ],
+      "complexity": 1,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "listing",
+      "line": 228,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/routes/worker.rs",
+      "name": "physical",
+      "line": 231,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "e898f29bacb6ed127ead15c9f3d7b25bbdd2f0106718cacc153f99244d661f42"
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "name": "display",
+      "line": 47,
+      "language": "rust",
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 4,
+      "source_sha256": "a1fe529ef9a1e19295bf6b2cce7f50fed3958119d730eb26828e5d76dd1fc6f2"
+    },
+    {
+      "file": "host/src/usb/route_lock.rs",
+      "name": "display_file",
+      "line": 76,
+      "language": "rust",
+      "covered": 11,
+      "total": 12,
+      "percent": 91.66666666666667,
+      "passes": true,
+      "missing": [
+        87
+      ],
+      "complexity": 1,
+      "source_sha256": "a1fe529ef9a1e19295bf6b2cce7f50fed3958119d730eb26828e5d76dd1fc6f2"
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "display_route_lease",
+      "line": 34,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "134fa30ff369d9b6f7cc3f2bceed6461228854146993a3987503ac181d92117b"
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "display_route_lease",
+      "line": 59,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "134fa30ff369d9b6f7cc3f2bceed6461228854146993a3987503ac181d92117b"
+    },
+    {
+      "file": "host/src/usb.rs",
+      "name": "display_route_lease",
+      "line": 173,
+      "language": "rust",
+      "covered": 5,
+      "total": 5,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "134fa30ff369d9b6f7cc3f2bceed6461228854146993a3987503ac181d92117b"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "selected",
+      "line": 26,
+      "language": "rust",
+      "covered": 3,
+      "total": 3,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "serial",
+      "line": 29,
+      "language": "rust",
+      "covered": 4,
+      "total": 4,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "connect",
+      "line": 34,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "connect_network",
+      "line": 47,
+      "language": "rust",
+      "covered": 14,
+      "total": 15,
+      "percent": 93.33333333333333,
+      "passes": true,
+      "missing": [
+        56
+      ],
+      "complexity": 1,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "connect_routes",
+      "line": 63,
+      "language": "rust",
+      "covered": 18,
+      "total": 18,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "prepare",
+      "line": 81,
+      "language": "rust",
+      "covered": 17,
+      "total": 17,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 3,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "refresh",
+      "line": 99,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "redeliver",
+      "line": 107,
+      "language": "rust",
+      "covered": 8,
+      "total": 8,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 1,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/connection.rs",
+      "name": "disconnect",
+      "line": 115,
+      "language": "rust",
+      "covered": 9,
+      "total": 9,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "10076c14faf1f8fea46c70bdf465f0d2d2a1c3673fd53d0f5ed17b381dd68868"
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "sessions",
+      "line": 46,
+      "language": "rust",
+      "covered": 12,
+      "total": 12,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "38807b8e687e60603105951eca7c77071d102a33817d67dcfe7261455f5d5731"
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "poll",
+      "line": 64,
+      "language": "rust",
+      "covered": 26,
+      "total": 26,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 7,
+      "source_sha256": "38807b8e687e60603105951eca7c77071d102a33817d67dcfe7261455f5d5731"
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "update",
+      "line": 97,
+      "language": "rust",
+      "covered": 23,
+      "total": 23,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 9,
+      "source_sha256": "38807b8e687e60603105951eca7c77071d102a33817d67dcfe7261455f5d5731"
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "assigned",
+      "line": 142,
+      "language": "rust",
+      "covered": 6,
+      "total": 6,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 2,
+      "source_sha256": "38807b8e687e60603105951eca7c77071d102a33817d67dcfe7261455f5d5731"
+    },
+    {
+      "file": "host/src/usb/monitor.rs",
+      "name": "retry_routes",
+      "line": 219,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 9,
+      "source_sha256": "38807b8e687e60603105951eca7c77071d102a33817d67dcfe7261455f5d5731"
+    },
+    {
+      "file": "host/src/usb/network.rs",
+      "name": "can_retire",
+      "line": 51,
+      "language": "rust",
+      "covered": 14,
+      "total": 14,
+      "percent": 100.0,
+      "passes": true,
+      "missing": [],
+      "complexity": 3,
+      "source_sha256": "e93f16002942df0fd2ae572e2ac7a902f6bcc76b5b01342030c3ba440a99b7de"
+    }
+  ],
+  "test_function_complexity": [
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 5,
+      "name": "fixture",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 36,
+      "name": "prepare",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 42,
+      "name": "listing",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 47,
+      "name": "t705_conflicting_initial_routes_remain_foreign",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 58,
+      "name": "t705_matching_external_and_replaced_routes_survive_retirement",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 70,
+      "name": "t705_partial_preparation_retains_unacknowledged_creation_until_observed",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 100,
+      "name": "t705_repaired_routes_are_owned_and_retired",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 114,
+      "name": "t705_offline_cleanup_releases_slot_and_revokes_the_old_lease",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 152,
+      "name": "t705_invalid_route_owners_fail_before_native_commands",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 15,
+      "name": "execute",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 37,
+      "name": "removed",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 51,
+      "name": "t1344_lost_creation_acknowledgement_keeps_mapping_owned",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 66,
+      "name": "t1344_cancelled_waiter_and_owner_drop_retain_late_creator",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 90,
+      "name": "execute",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 99,
+      "name": "complete",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 110,
+      "name": "t1344_empty_snapshot_cannot_release_unacknowledged_creator",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 130,
+      "name": "t1344_caller_loss_cannot_delete_a_different_physical_tablet",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/usb/tests/route_ownership.rs",
+      "line": 162,
+      "name": "t1344_network_without_physical_identity_fails_before_mutation",
+      "complexity": 1
+    }
+  ],
+  "validation": {
+    "shared_usb_tests": 50,
+    "linux_route_tests": 6,
+    "independent_creation_policy_tests": 3,
+    "windows_default_compile": "passed; x86_64-pc-windows-gnu, library and application",
+    "windows_accessory_compile": "unavailable: ring requires missing x86_64-w64-mingw32-gcc; default feature build passed; native acceptance retained in T1352"
+  }
+}

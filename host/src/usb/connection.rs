@@ -23,15 +23,19 @@ impl Connection {
             launch_ticket: None,
         })
     }
-    pub fn selected(&self) -> Option<&str> {
+    pub fn selected(&self) -> Option<String> {
         self.routes.as_ref().map(Routes::serial)
     }
-    pub fn serial(&self) -> Option<&str> {
+    pub fn serial(&self) -> Option<String> {
         self.ready
             .then(|| self.routes.as_ref().map(Routes::serial))
             .flatten()
     }
-    pub async fn connect<C: Commands>(&mut self, adb: &Adb<C>, serial: &str) -> Result<()> {
+    pub async fn connect<C: Commands + Clone + 'static>(
+        &mut self,
+        adb: &Adb<C>,
+        serial: &str,
+    ) -> Result<()> {
         ensure!(
             self.routes.is_none(),
             "Previous attachment still needs cleanup"
@@ -40,7 +44,7 @@ impl Connection {
         self.connect_routes(adb, routes, format!("usb:{serial}"), Transport::Usb)
             .await
     }
-    pub(crate) async fn connect_network<C: Commands>(
+    pub(crate) async fn connect_network<C: Commands + Clone + 'static>(
         &mut self,
         adb: &Adb<C>,
         serial: &str,
@@ -56,7 +60,7 @@ impl Connection {
         self.connect_routes(adb, routes, identity, transport_of(serial))
             .await
     }
-    async fn connect_routes<C: Commands>(
+    async fn connect_routes<C: Commands + Clone + 'static>(
         &mut self,
         adb: &Adb<C>,
         routes: Routes,
@@ -74,10 +78,10 @@ impl Connection {
         let _ = self.attachment.send(true);
         Ok(())
     }
-    async fn prepare<C: Commands>(&mut self, adb: &Adb<C>) -> Result<()> {
+    async fn prepare<C: Commands + Clone + 'static>(&mut self, adb: &Adb<C>) -> Result<()> {
         let routes = self.routes.as_mut().context("No attachment selected")?;
         ensure!(
-            adb.installed(routes.serial()).await == Some(true),
+            adb.installed(&routes.serial()).await == Some(true),
             "Matching Android app is unavailable"
         );
         routes.prepare(adb).await?;
@@ -90,9 +94,9 @@ impl Connection {
                 .launch_ticket
                 .as_ref()
                 .is_none_or(|ticket| ticket.take());
-        adb.deliver(routes.serial(), &token, launch).await
+        adb.deliver(&routes.serial(), &token, launch).await
     }
-    pub async fn refresh<C: Commands>(&mut self, adb: &Adb<C>) -> Result<()> {
+    pub async fn refresh<C: Commands + Clone + 'static>(&mut self, adb: &Adb<C>) -> Result<()> {
         ensure!(self.ready, "Attachment is not prepared");
         self.routes
             .as_mut()
@@ -100,15 +104,15 @@ impl Connection {
             .prepare(adb)
             .await
     }
-    pub async fn redeliver<C: Commands>(&self, adb: &Adb<C>) -> Result<()> {
+    pub async fn redeliver<C: Commands + Clone + 'static>(&self, adb: &Adb<C>) -> Result<()> {
         let serial = self.serial().context("No prepared attachment")?;
         let token = self
             .attachment
             .token()?
             .context("Attachment credential unavailable")?;
-        adb.deliver(serial, &token, false).await
+        adb.deliver(&serial, &token, false).await
     }
-    pub async fn disconnect<C: Commands>(&mut self, adb: &Adb<C>) -> Result<()> {
+    pub async fn disconnect<C: Commands + Clone + 'static>(&mut self, adb: &Adb<C>) -> Result<()> {
         self.ready = false;
         let _ = self.attachment.send(false);
         if let Some(routes) = self.routes.as_mut() {

@@ -57,12 +57,12 @@ impl Network {
         if self.retarget(routes, identity) {
             return true;
         }
-        if self.identities.contains_key(routes.serial()) {
+        if self.identities.contains_key(&routes.serial()) {
             return false;
         }
         // Inventory absence alone is not proof that a still-reachable route is
         // foreign. Recheck physical identity before touching its owned mapping.
-        adb.identity(routes.serial()).await.as_ref() == identity
+        adb.identity(&routes.serial()).await.as_ref() == identity
     }
     pub async fn devices<C: Commands + Clone + 'static>(
         &mut self,

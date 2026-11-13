@@ -67,11 +67,14 @@ async fn t705_matching_external_and_replaced_routes_survive_retirement() {
 }
 
 #[tokio::test]
-async fn t705_partial_preparation_retires_only_successfully_owned_routes() {
+async fn t705_partial_preparation_retains_unacknowledged_creation_until_observed() {
     let foreign = "UsbFfs tcp:9999 localabstract:external\n";
     let (_root, mut state, adb) = fixture(foreign);
     std::fs::write(adb.with_extension("fail-input"), "").unwrap();
-    prepare(&mut state).await;
+    state.prepare_primary();
+    let owner = state.routes["USB"].clone();
+    let (serial, result) = state.mutations.next().await;
+    state.mutation_ready(serial, result);
     assert!(!state.ready.contains("USB"));
     state.stop().await;
     assert_eq!(listing(&adb), foreign);
@@ -81,6 +84,16 @@ async fn t705_partial_preparation_retires_only_successfully_owned_routes() {
         !log.contains("--remove tcp:8891"),
         "T705: attempted unowned removal"
     );
+    // T1344: a failed native client cannot prove its delegated creator did nothing.
+    // An empty listing must retain that outcome; publish it before fixture teardown.
+    std::fs::remove_file(adb.with_extension("fail-input")).unwrap();
+    std::fs::write(
+        adb.with_extension("listing"),
+        format!("{foreign}UsbFfs tcp:8891 tcp:18001\n"),
+    )
+    .unwrap();
+    owner.retire(adb.to_str().unwrap()).await.unwrap();
+    assert_eq!(listing(&adb), foreign);
 }
 
 #[tokio::test]
@@ -109,6 +122,7 @@ async fn t705_offline_cleanup_releases_slot_and_revokes_the_old_lease() {
     .prepare(state.config.extra.mode_tx.clone())
     .tablet;
     prepare(&mut state).await;
+    let owner = state.routes["USB"].clone();
     let lease = state.config.tablet.lease();
     assert!(lease.apply(|| ()));
     std::fs::write(adb.with_extension("offline"), "").unwrap();
@@ -129,6 +143,9 @@ async fn t705_offline_cleanup_releases_slot_and_revokes_the_old_lease() {
         .unwrap()
         .contains("--remove"));
     state.stop().await;
+    std::fs::remove_file(adb.with_extension("offline")).unwrap();
+    owner.retire(adb.to_str().unwrap()).await.unwrap();
+    assert!(listing(&adb).is_empty());
 }
 
 #[tokio::test]

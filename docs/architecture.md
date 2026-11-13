@@ -200,10 +200,22 @@ systemd user-service environment override.
 | `BLENT_SESSION_LIMIT` | 64 | 1..4096 | Session supervisors, including unfinished worker handles. |
 | `BLENT_TASK_LIMIT` | 64 | 1..4096 | Independently owned capture/media tasks, including started blocking work. |
 | `BLENT_ADB_MAPPING_LIMIT` | 16 | 1..4096 | Active and retiring temporary camera/audio mappings; each retains its cleanup worker and endpoint reservation. |
+| `BLENT_DISPLAY_ROUTE_LIMIT` | 16 | 1..4096 | Active and retiring display ADB route owners; each retains its original worker and device/local-port leases until settlement. |
 | `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
 | `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after control returns. |
 | `BLENT_ENCODER_STOP_MS` | 1000 ms | 1..60000 ms | Encoder-task completion wait before refusing replacement. |
+
+Display ADB routes keep one original worker through creation, repair and cleanup.
+Caller cancellation and Activity/session stop do not settle an unacknowledged ADB
+server effect. Empty snapshots cannot retire an unknown creator; cleanup waits for
+its original effect, and failed removal retains its outcome. Matching preexisting
+and unrelated mappings remain externally owned. Network aliases require a physical
+tablet identity before admission, and cleanup rechecks that identity. Stable USB
+serial ownership remains available when the device exposes no separate identity.
+Native device/local-port leases use 256 persistent lock stripes; collisions reject
+admission conservatively. Leases remain held through cleanup and original native
+thread exit. Higher capacity cannot override an unresolved endpoint reservation.
 
 Larger capacities allow more concurrent work and retain more memory/handles when
 resources stall. Shorter waits return control sooner but can report incomplete
