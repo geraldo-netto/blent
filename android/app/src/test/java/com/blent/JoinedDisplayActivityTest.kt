@@ -32,6 +32,7 @@ class JoinedDisplayActivityTest {
         val receipts = ArrayList<RenderAcknowledgement>()
         val originalRender = native.receiver.onFrameRendered
         native.receiver.onFrameRendered = { receipts.add(it); originalRender?.invoke(it) }
+        rig.prefs.cutOffAdbDelivery()
         rig.session.selectDisplay(DisplayEndpoint("cd".repeat(32), videoPort = 23456, controlPort = 23457))
         rig.session.surfaceReady(native.view)
         binding.start(rig.session.powerDemandNow(), rig.session.powerDemandUpdates())
@@ -54,6 +55,7 @@ class JoinedDisplayActivityTest {
             repeat(16) { rig.signal(true, 4L+it, 2L+it, false) }
             rig.drain(); assertEquals(1, native.originals.size)
             val prior = rig.sockets.last()
+            rig.prefs.cutOffAdbDelivery()
             rig.session.selectDisplay(DisplayEndpoint("ef".repeat(32), videoPort = 34567, controlPort = 34568))
             rig.opened(); rig.signal(true)
             rig.until { writes.last() }

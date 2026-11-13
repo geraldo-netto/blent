@@ -19,6 +19,7 @@ internal class ConnectionBinding(
     private val create: (ConnectionWorkerSpec, (ConnectionWorkerEvent) -> Unit) -> ConnectionWorker,
     cleanupNoticeMs: Long = 5000,
     private val access: ConnectionAccess = ConnectionAccess(),
+    cutOffDisplay: () -> Unit = {},
 ) {
     private class Attempt(val token: Any) {
         @Volatile var worker: ConnectionWorker? = null
@@ -29,7 +30,7 @@ internal class ConnectionBinding(
         suspend fun retireMedia() { cameras.retire(); microphones.retire(); speakers.retire() }
     }
     private val projectionGate = Any()
-    private val presentation = ConnectionPresentation()
+    private val presentation = ConnectionPresentation(cutOffDisplay)
     val state = presentation.state
     private val mutableCameraTarget = MutableStateFlow<CameraCaptureTarget?>(null)
     val cameraTarget = mutableCameraTarget.asStateFlow()

@@ -1,0 +1,207 @@
+{
+  "tools": {
+    "coverage": "JaCoCo 0.8.15, Gradle 8.5, Robolectric 4.17",
+    "complexity": "Blent Kotlin PSI 1.9.20 local checker"
+  },
+  "coverage_scope": "Changed maintained methods, constructor variants and compiled callbacks with native line counters. Kotlin inline bodies measured in enclosing methods. No exclusions beyond native JaCoCo supported filters. Unchanged methods are not claimed.",
+  "coverage": [
+    {
+      "class": "com/blent/connection/ConnectionOwner$get$1",
+      "method": "invoke",
+      "descriptor": "(Lcom/blent/connection/ConnectionWorkerSpec;Lkotlin/jvm/functions/Function1;)Lcom/blent/connection/ConnectionWorker;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionOwner$get$1$1",
+      "method": "invoke",
+      "descriptor": "()Landroid/content/Context;",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionBinding$1",
+      "method": "invoke",
+      "descriptor": "()V",
+      "covered_lines": 1,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionOwner",
+      "method": "get",
+      "descriptor": "(Landroid/content/Context;)Lcom/blent/connection/ConnectionBinding;",
+      "covered_lines": 4,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;)V",
+      "covered_lines": 8,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "<init>",
+      "descriptor": "(Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 2,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "publish",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;)V",
+      "covered_lines": 4,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionPresentation",
+      "method": "displayTransition",
+      "descriptor": "(Lcom/blent/connection/ConnectionView;Lcom/blent/connection/ConnectionView;)Z",
+      "covered_lines": 2,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;JLcom/blent/connection/ConnectionAccess;Lkotlin/jvm/functions/Function0;)V",
+      "covered_lines": 13,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/connection/ConnectionBinding",
+      "method": "<init>",
+      "descriptor": "(Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;JLcom/blent/connection/ConnectionAccess;Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V",
+      "covered_lines": 5,
+      "missed_lines": 0,
+      "percent": 100.0
+    },
+    {
+      "class": "com/blent/SessionCoordinator",
+      "method": "selectDisplay",
+      "descriptor": "(Lcom/blent/DisplayEndpoint;)V",
+      "covered_lines": 11,
+      "missed_lines": 0,
+      "percent": 100.0
+    }
+  ],
+  "tests": [
+    {
+      "name": "com.blent.BackgroundAdbDeliveryTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.JoinedDisplayActivityTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.RetainedAdbCutoffTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.RevokedAdbDeliveryTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.SessionDisplayRouteTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionBindingTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionCutoffTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayActivityTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayBindingTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionDisplayTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionOwnerTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.blent.connection.ConnectionPresentationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "source_sha256": {
+    "android/app/src/main/java/com/blent/DisplayRoutes.kt": "7496f5817203e0c0f1dfa46cb8d921b209f8b79e951878c93d67096ca908da53",
+    "android/app/src/main/java/com/blent/SessionCoordinator.kt": "591030c727a4cbd0dabd3fe52472fefc13e942dae5b96e580b17b02778b632b4",
+    "android/app/src/main/java/com/blent/connection/ConnectionBinding.kt": "52eabbdaadd854a2690c54ac7252afb1a6cf02ebef7da19e653c31273586bada",
+    "android/app/src/main/java/com/blent/connection/ConnectionOwner.kt": "5393964558d22b1d1417e04ec335f8fe41d0b1f937990e22442a133b4529fbfb",
+    "android/app/src/main/java/com/blent/connection/ConnectionPresentation.kt": "b44dff0dedfb125330ef5117adf4eaa5318ab78aaa5130c8b25b5b4d217b3909",
+    "android/app/src/test/java/com/blent/RetainedAdbCutoffTest.kt": "b12932842f26b79b4516b0fb4f13a3c4f89154bdf548abc16483fe301c0f7529",
+    "android/app/src/test/java/com/blent/RevokedAdbDeliveryTest.kt": "677b537a2f5d1218bc95c7731c27a4ae4dad94a266d2dd7a8413ea405203e25f",
+    "android/app/src/test/java/com/blent/SessionDisplayRouteTest.kt": "15969c66be4756f3d44db1ae9673bb51c9c2dade89d04234a8223c6e6eee0a27",
+    "android/app/src/test/java/com/blent/connection/ConnectionUiFixture.kt": "8a44908059bbf975fc6a7586a8ac4016e17170646502d6dee69c4216a9c237aa",
+    "android/app/src/test/java/com/blent/BackgroundAdbDeliveryTest.kt": "9d7572ff1ef1b5ae82bb5b8dbed088732e6d8cbd8bca38045bee97aba97208e7",
+    "android/app/src/test/java/com/blent/connection/ConnectionCutoffTest.kt": "b44ec58e85d2ede942898555627396f0c2d0da688af5dae7f005b67bda2a02d6",
+    "android/app/src/test/java/com/blent/connection/ConnectionOwnerTest.kt": "bd0314f1a40868d0f8f534303ac16f8c593dfde826edc84bd994606849ac41f6",
+    "android/app/src/test/java/com/blent/JoinedDisplayActivityTest.kt": "6a44b94fd443f845e247705e8e73ac89ff1e0f1642884700576beefa8d162767"
+  },
+  "documentation_only_after_measurement": "DisplayRoutes target comment corrected without code or line-number change; counters and signatures unchanged."
+}

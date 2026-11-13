@@ -31,7 +31,9 @@ internal data class DisplayEndpoint(val token: String, val videoPort: Int, val c
 }
 
 internal fun interface DisplayRouteTarget {
-    /** Null revokes a previously selected destination; it cannot select ADB. */
+    /** Project an already ordered selection without advancing its source cutoff.
+     * Null clears external routing and may reconcile a separately admitted fresh
+     * ADB credential; observing/replaying a selection grants no new authority. */
     fun selectDisplay(endpoint: DisplayEndpoint?)
 }
 

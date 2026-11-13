@@ -34,6 +34,10 @@ internal class SessionDisplayRig(sequence: DisplayRouteSequence = DisplayRouteSe
     val callbacks = java.util.concurrent.ConcurrentLinkedQueue<() -> Unit>()
     val session = SessionCoordinator(prefs, { callbacks.add(it) }, receiver, control, routeSequence = sequence)
     val endpoint = DisplayEndpoint("b".repeat(64), 23456, 23457)
+    fun selectDisplay(endpoint: DisplayEndpoint?) {
+        prefs.cutOffAdbDelivery()
+        session.selectDisplay(endpoint)
+    }
     fun job(): Job? = ReflectionHelpers.getField(receiver, "job")
     fun drain() { while (true) { val action = callbacks.poll() ?: return; action() } }
     suspend fun greet() {
@@ -56,7 +60,7 @@ class SessionDisplayRouteTest {
             control.onModeKnown!!.invoke(false)
             val old = sockets.single().first
             try {
-                session.selectDisplay(endpoint)
+                selectDisplay(endpoint)
                 assertTrue(old.cancelled); assertTrue(oldJob.isCancelled)
                 assertEquals(endpoint.token, control.token); assertEquals(endpoint.token, receiver.token)
                 assertEquals(endpoint.controlPort, sockets.last().first.request().url.port)
@@ -64,7 +68,7 @@ class SessionDisplayRouteTest {
                 assertEquals(control.routes, receiver.routes); assertEquals(2L, receiver.routes?.revision)
                 drain(); assertNull(job())
                 greet(); assertNotNull(job())
-                session.selectDisplay(null); drain()
+                selectDisplay(null); drain()
                 assertNull(control.routes); assertNull(receiver.routes); assertNull(job())
                 assertTrue(sockets.last().first.cancelled)
             } finally { session.stop() }
@@ -74,14 +78,14 @@ class SessionDisplayRouteTest {
         val rig = SessionDisplayRig()
         with(rig) {
             try {
-                session.selectDisplay(endpoint); assertTrue(sockets.isEmpty()); assertNull(job())
+                selectDisplay(endpoint); assertTrue(sockets.isEmpty()); assertNull(job())
                 session.start(); assertEquals(1, sockets.size)
-                session.stop(); session.selectDisplay(null); session.start()
+                session.stop(); selectDisplay(null); session.start()
                 assertEquals(1, sockets.size); assertNull(control.routes); assertNull(receiver.routes)
                 assertTrue(TokenDelivery.store(RuntimeEnvironment.getApplication(), android.content.Intent().putExtra("token", "c".repeat(64)))); shadowOf(Looper.getMainLooper()).idle()
                 assertEquals(2, sockets.size); assertEquals(AdbDisplayRoutes.create().controlPort, sockets.last().first.request().url.port)
                 assertEquals(3L, control.routes?.revision)
-                session.selectDisplay(endpoint); assertEquals(4L, control.routes?.revision)
+                selectDisplay(endpoint); assertEquals(4L, control.routes?.revision)
                 prefs.hostToken = "d".repeat(64); shadowOf(Looper.getMainLooper()).idle()
                 assertEquals(endpoint.token, control.token); assertEquals(3, sockets.size)
                 prefs.hostToken = null; shadowOf(Looper.getMainLooper()).idle()
@@ -93,8 +97,8 @@ class SessionDisplayRouteTest {
         val rig = SessionDisplayRig()
         with(rig) {
             try {
-                session.start(); session.stop(); session.selectDisplay(endpoint)
-                session.selectDisplay(endpoint.copy(controlPort = 34567))
+                session.start(); session.stop(); selectDisplay(endpoint)
+                selectDisplay(endpoint.copy(controlPort = 34567))
                 assertEquals(1, sockets.size); assertNull(job()); assertEquals(34567, control.routes?.controlPort)
                 session.start(); assertEquals(2, sockets.size); assertEquals(34567, sockets.last().first.request().url.port)
             } finally { session.stop() }
@@ -105,7 +109,7 @@ class SessionDisplayRouteTest {
         with(rig) {
             session.start()
             try {
-                session.selectDisplay(endpoint)
+                selectDisplay(endpoint)
                 assertNull(control.routes); assertNull(receiver.routes); assertTrue(sockets.single().first.cancelled)
                 assertEquals("Display route revisions exhausted", session.settings.streamError)
                 assertTrue(TokenDelivery.store(RuntimeEnvironment.getApplication(), android.content.Intent().putExtra("token", "c".repeat(64)))); session.applyToken(true)
@@ -123,6 +127,7 @@ class SessionDisplayRouteTest {
         val session = SessionCoordinator(rig.prefs, {}, broken, rig.control)
         session.start()
         try {
+            rig.prefs.cutOffAdbDelivery()
             session.selectDisplay(rig.endpoint)
             assertNull(rig.control.routes); assertNull(rig.receiver.routes)
             assertEquals("endpoint rejected", session.settings.streamError)

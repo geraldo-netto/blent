@@ -1,6 +1,7 @@
 package com.blent.connection
 
 import android.content.Context
+import com.blent.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,7 +18,8 @@ internal object ConnectionOwner {
     @Synchronized fun get(context: Context): ConnectionBinding {
         val app = context.applicationContext
         return binding ?: ConnectionBinding(CoroutineScope(SupervisorJob() + Dispatchers.Default),
-            { spec, report -> androidUsbConnection({ app }, spec, report) }, access = access).also { binding = it }
+            { spec, report -> androidUsbConnection({ app }, spec, report) }, access = access,
+            cutOffDisplay = Prefs(app)::cutOffAdbDelivery).also { binding = it }
     }
 
     @Synchronized fun getSaved(context: Context): SavedTrustBinding {

@@ -32,9 +32,10 @@ internal data class ConnectionView(
     val speakers: ConnectionAudioRouteChoice? = null,
 )
 
-/** Portable presentation reducer. No UI, native work, storage or media consent.
- * A fresh object is the generation token: no wrapping counters or stale aliases. */
-internal class ConnectionPresentation {
+/** Portable transition owner. Storage stays behind the injected cutoff port;
+ * authority is recorded before publishing a changed selection. No UI or native
+ * work is performed here. Generation tokens never wrap or reuse identities. */
+internal class ConnectionPresentation(private val cutOffDisplay: () -> Unit = {}) {
     private val mutable = MutableStateFlow(ConnectionView())
     val state = mutable.asStateFlow()
     private var generation: Any? = null
@@ -96,9 +97,13 @@ internal class ConnectionPresentation {
     private fun resetMedia() { camera.reset(); microphone.reset(); speakers.reset() }
     private fun clearMedia() { camera.clear(); microphone.clear(); speakers.clear() }
     private fun publish(value: ConnectionView) {
+        if (displayTransition(mutable.value, value)) cutOffDisplay()
         mutable.value = value.copy(retryPeer = rememberedPeer(value), microphoneOffer = microphone.offer, microphone = microphone.route,
             speakersOffer = speakers.offer, speakers = speakers.route)
     }
+    private fun displayTransition(previous: ConnectionView, next: ConnectionView): Boolean =
+        previous.attempt !== next.attempt || previous.active != next.active ||
+            previous.reconnectAllowed != next.reconnectAllowed || previous.display !== next.display
     /** Durable same-attempt eligibility survives conflated authenticated/end
      * observations. A cached pin alone cannot produce it. */
     private fun rememberedPeer(value: ConnectionView): ConnectionPeer? = when {

@@ -84,8 +84,8 @@ class RetainedAdbCutoffTest {
     @Test fun t1414FreshProcessCompositionRetainsPersistedCutoff() {
         val original = SessionDisplayRig()
         deliver()
-        original.session.selectDisplay(original.endpoint)
-        original.session.selectDisplay(null)
+        original.selectDisplay(original.endpoint)
+        original.selectDisplay(null)
         original.session.stop()
         // New coordinator and empty process-owned USB state; only settings survive.
         val restored = SessionDisplayRig()

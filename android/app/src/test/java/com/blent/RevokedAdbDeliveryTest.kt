@@ -26,8 +26,8 @@ class RevokedAdbDeliveryTest {
             ReflectionHelpers.setField(activity.get(), "session", rig.session)
             try {
                 assertTrue(deliver())
-                rig.session.selectDisplay(rig.endpoint)
-                rig.session.selectDisplay(null)
+                rig.selectDisplay(rig.endpoint)
+                rig.selectDisplay(null)
                 activity.newIntent(Intent(Intent.ACTION_MAIN))
                 assertNull("T1404 launcher is not credential delivery", rig.control.routes)
                 assertNull(rig.receiver.routes)
@@ -44,9 +44,9 @@ class RevokedAdbDeliveryTest {
         val rig = SessionDisplayRig()
         try {
             assertTrue(deliver())
-            rig.session.selectDisplay(rig.endpoint)
+            rig.selectDisplay(rig.endpoint)
             assertTrue(deliver("b".repeat(64))) // Superseded by the later cutoff.
-            rig.session.selectDisplay(null)
+            rig.selectDisplay(null)
             rig.session.applyToken(true)
             assertNull("T1404 pre-cutoff delivery cannot restore routes", rig.control.routes)
             assertFalse(deliver("invalid"))
@@ -79,8 +79,8 @@ class RevokedAdbDeliveryTest {
         try {
             assertTrue(deliver())
             rig.session.start()
-            rig.session.selectDisplay(rig.endpoint)
-            rig.session.selectDisplay(null)
+            rig.selectDisplay(rig.endpoint)
+            rig.selectDisplay(null)
             assertTrue(deliver())
             shadowOf(Looper.getMainLooper()).idle()
             assertEquals(AdbDisplayRoutes.create().controlPort, rig.control.routes?.controlPort)

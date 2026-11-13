@@ -16,11 +16,14 @@ class ConnectionOwnerTest {
         val previous = ReflectionHelpers.getStaticField<ConnectionBinding?>(ConnectionOwner::class.java, "binding")
         ReflectionHelpers.setStaticField(ConnectionOwner::class.java, "binding", null)
         val app = RuntimeEnvironment.getApplication()
+        val prefs = com.blent.Prefs(app)
+        assertTrue(com.blent.TokenDelivery.store(app, android.content.Intent().putExtra("token", "a".repeat(64))))
         val owner = ConnectionOwner.get(android.content.ContextWrapper(app))
         try {
             assertSame(owner, ConnectionOwner.get(app))
             assertFalse(owner.state.value.active)
             owner.connect(ConnectionWorkerSpec("usb", timerMs = 1))
+            assertFalse("T1419 application owner cuts off delivery without an Activity", prefs.adbDeliveryPermitted)
             withTimeout(5000) { while (owner.state.value.active || owner.state.value.cleanup != null) delay(1) }
             assertNull(owner.state.value.peer)
             assertFalse(owner.state.value.authenticated)

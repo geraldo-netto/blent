@@ -21,7 +21,8 @@ internal class ConnectionUiFixture : AutoCloseable {
     val workers = mutableListOf<Worker>()
     val specifications = mutableListOf<ConnectionWorkerSpec>()
     private val access = ReflectionHelpers.getStaticField<ConnectionAccess>(ConnectionOwner::class.java, "access")
-    val binding = ConnectionBinding(scope, { spec, report -> specifications.add(spec); Worker(report).also { workers.add(it) } }, access = access)
+    val binding = ConnectionBinding(scope, { spec, report -> specifications.add(spec); Worker(report).also { workers.add(it) } },
+        access = access, cutOffDisplay = com.blent.Prefs(org.robolectric.RuntimeEnvironment.getApplication())::cutOffAdbDelivery)
     val savedRequests = mutableListOf<SavedTrustRequest>()
     val savedRuns = mutableListOf<SavedTrustUiRun>()
     val saved = SavedTrustBinding(scope, access, SavedTrustRunFactory { request, report ->

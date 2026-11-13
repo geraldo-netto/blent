@@ -345,10 +345,12 @@ internal class SessionCoordinator(
     override fun selectDisplay(endpoint: DisplayEndpoint?) {
         externalDisplay = true
         externalAvailable = false
-        prefs.cutOffAdbDelivery()
         try {
             clearRoutes()
-            if (endpoint == null) return
+            if (endpoint == null) {
+                adbAfterExternal(prefs.hostToken)
+                return
+            }
             installRoutes(routeSequence.next(endpoint.token, endpoint.videoPort, endpoint.controlPort))
             externalAvailable = true
         } catch (failure: Exception) { routeFailure(failure) }
