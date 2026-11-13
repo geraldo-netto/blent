@@ -348,8 +348,10 @@ The DUMP-protected Android receiver admits an invitation over the authorized ADB
 connection. The authenticated 76-byte bootstrap is `BLAUREQ2`; obsolete
 `BLAUREQ1` requests are rejected before audio admission. It carries the invitation
 credential (64 hex bytes), capability bits (speech/raw/background), AEC-enabled
-flag, direction and effective processing. Human consent has a separate 90-second
-budget; it does not consume native startup's five seconds. The host echoes the
+flag, direction and effective processing. Waiting for the tablet response, including any Android permission prompt, has a
+separate 90-second budget; it does not consume native startup's five seconds.
+ADB accepts immediately when the app is visible and permission is already granted;
+this budget does not imply an additional per-invitation consent prompt. The host echoes the
 invitation credential followed by the 92-byte grant after PipeWire readiness.
 Android gives that complete nonce/grant one five-second deadline; partial reads
 cannot renew it ([T724 regression evidence](reviews/artifacts/2026-09-29-audio-grant-deadline/README.md)).

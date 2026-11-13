@@ -17,10 +17,11 @@ after comparing their fingerprints.
 flowchart LR
     ADB[Authorized ADB route] --> Token[Attachment token check]
     USB[Selected direct USB peer] --> Pair[Approval and mutual TLS]
-    Token --> Session[Current session authority]
-    Pair --> Session
-    Session --> Consent[Independent media consent and permission]
-    Consent --> Media[Admitted media work]
+    Token --> A[Authorized ADB media invitation]
+    Pair --> U[Local Start for the USB media offer]
+    A --> Permission[Current Android permission and resource admission]
+    U --> Permission
+    Permission --> Media[Admitted media work]
 ```
 
 Neither route protects against software already controlling your desktop user
@@ -75,6 +76,14 @@ hosts and privileged Android apps are also inside the trust boundary: the
 Android token-update activity requires the system DUMP permission, available
 to adb shell and privileged apps. The ordinary launcher ignores token extras.
 This is not isolation from compromised software running as your own user.
+
+ADB camera/audio invitations use DUMP-protected receivers. With Blent visible
+and Android camera/microphone permission already granted, an authorized request
+can start media without another tablet Start. Speakers need no runtime permission.
+ADB background camera follows the host request; background audio additionally
+requires the tablet’s saved preference for that direction. Direct USB has a
+separate per-offer local Start/background-consent policy. See the [camera](docs/cameras.md)
+and [audio](docs/audio.md) guides for foreground and shutdown behavior.
 
 ### Wi-Fi debugging
 

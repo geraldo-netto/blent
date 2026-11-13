@@ -37,15 +37,22 @@ until cleanup finishes. Other ADB operations and unrelated mappings remain usabl
 
 1. In the desktop **Audio** tab, select the direction, connection and preferences.
    **Apply** only saves them; it does not start audio or restart the display.
-2. Choose **Start** for that direction. On the tablet, approve the offered audio
-   session. Microphone capture also needs Android microphone permission;
-   speaker playback does not.
+2. Open Blent on the tablet and choose **Start** for that direction on the
+   computer. Direct USB requires local Start for the offered session. An authorized
+   ADB invitation starts immediately if Android permission is already granted;
+   it has no additional per-invitation approval. Microphone capture needs Android
+   microphone permission; speaker playback needs no runtime permission.
 3. In your calling/recording application, choose **Blent Microphone** as its input
    or **Blent Speakers** as its output. Blent does not reroute other applications
    or mirror the existing system mix automatically.
 4. Choose **Stop** when finished. The session's Linux device is removed. If status
    remains **Stopping**, cleanup is still pending; that direction cannot restart
    until its original workers and connection have retired.
+
+For ADB background audio, enable that direction’s background preference on the
+tablet before accepting a computer request for background sharing. This saved
+preference is distinct from direct USB’s per-offer consent. Start with the app
+visible; an invitation received while hidden does not start a new audio session.
 
 The two directions remain independent. Pairing trusts a computer; it does not
 consent to recording or playback. A new USB offer needs fresh local Start.

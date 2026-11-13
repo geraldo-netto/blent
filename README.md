@@ -2,7 +2,9 @@
 
 Blent turns an Android tablet into an extra Linux display over a USB cable.
 Move windows onto it and use touch/mouse input. You can also share the tablet's
-camera, microphone and speakers through separate controls and consent.
+camera, microphone and speakers through separate controls. Tablet approval
+depends on the connection: direct USB requires local Start for each offer;
+authorized ADB requests can start media when Android permission is already granted.
 
 **Start here:** [Installation](docs/installation.md) · [Compatibility](docs/compatibility.md)
 · [Troubleshooting](docs/troubleshooting.md) · [FAQ](docs/faq.md)
@@ -20,8 +22,8 @@ before setup. Windows is an incomplete preview; macOS and iPad clients are unsup
 flowchart LR
     H[Linux desktop] -->|Display video| T[Android tablet]
     T -->|Touch and mouse| H
-    T -->|Camera or microphone: separate consent| H
-    H -->|Speaker audio: separate consent| T
+    T -->|Camera or microphone: separate controls| H
+    H -->|Speaker audio: separate controls| T
 ```
 
 The EVDI kernel driver creates a real extra display, visible in Linux display
@@ -42,8 +44,9 @@ checks contact GitHub; see [security and privacy](SECURITY.md).
 3. **Choose a USB route.** Use the table below. A data-capable cable is required.
 4. **Start sharing.** Select the tablet in the desktop **Tablets** workspace.
    Resource Start/Stop affects that tablet. If the global display service is
-   stopped, start it in **Settings**. Camera/audio also need local tablet consent;
-   keep the desktop window open while using them.
+   stopped, start it in **Settings**. For direct USB camera/audio, approve the offer
+   on the tablet. ADB invitations can start immediately with existing permission.
+   Keep the desktop window open while using camera/audio.
 5. **Check the desktop output.** Place/enable it in Display settings if needed.
    KDE Wayland has the most automation; X11 input mapping needs `xinput` and
    `xrandr`. Other Wayland desktops depend on compositor support.

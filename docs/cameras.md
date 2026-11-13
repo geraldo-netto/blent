@@ -1,12 +1,17 @@
 # Use a tablet camera as a Linux webcam
 
 Blent can send the tablet's front or rear camera to a Linux calling application.
-Start requires a request on the computer and separate consent on the tablet.
+Start requires a request on the computer and Android camera permission.
+Direct USB also requires a separate tablet Start for each offer. An authorized
+ADB request can start capture immediately when permission is already granted.
 
 ```mermaid
 flowchart LR
-    A[Computer requests front or rear camera] --> B[Tablet user starts and grants permission]
-    B --> C[Selected camera streams to Linux]
+    A[Computer requests front or rear camera] --> B{Connection}
+    B -->|Direct USB| U[Tablet user starts this offer]
+    B -->|ADB| P[Check Android camera permission]
+    U --> P
+    P --> C[Selected camera streams to Linux]
     C --> D[Blent Front or Blent Rear webcam]
     D --> E[Your calling app]
 ```
@@ -22,9 +27,11 @@ profile controls are under **Advanced camera settings**. Android shows status,
 its required camera permission prompt, and explicit **Start camera** / **Stop
 camera** actions; camera profile configuration stays on the computer.
 
-Choose a lens and press **Start camera** on the computer. Open Blent on the
-tablet, then press its separate **Start camera** and grant camera permission
-if requested. Pairing alone does not start capture. In Google Meet or another application, select
+Open Blent on the tablet, then choose a lens and press **Start camera** on the
+computer. For direct USB, press **Start camera** on the tablet for this offer.
+For ADB, the invitation starts capture once Android camera permission is granted;
+there is no additional per-invitation Start prompt. Grant camera permission if
+requested. Pairing alone does not start capture. In Google Meet or another application, select
 **Blent Front** or **Blent Rear**, matching the host selection. Both ordinary
 Linux webcams exist while sharing runs, but only the selected lens is live;
 the inactive endpoint is black. A browser's webcam picker does not switch lenses.
@@ -55,7 +62,10 @@ available. Its Start action is disabled without a request. Tablet Stop ends
 capture without stopping display/input or deleting the computer’s camera outputs;
 use Stop on the computer to retire the entire camera session.
 
-**Continue while hidden or locked** defaults off. When enabled, Android starts a
+**Continue while hidden or locked** defaults off. For ADB, the computer
+request selects this setting; a previously granted camera permission is not a
+per-request tablet approval. Direct USB additionally requires the tablet’s
+**Allow camera in background** choice for the current offer. When enabled, Android starts a
 camera foreground service with a persistent notification and holds a CPU wake
 lock until capture ends. Start with Blent visible on the tablet; Android's
 [camera service restrictions](https://developer.android.com/develop/background-work/services/fgs/service-types#camera)
@@ -63,8 +73,9 @@ require foreground permission to initiate this service. Once running, the
 Activity may hide or the screen may lock. Lock/sleep actions can require a
 manual Android unlock before later foreground-only sharing; the host does not
 bypass the tablet’s lock. Foreground-only mode stops when the
-Activity hides; reopening it can resume an outstanding host request while its
-session remains available. Background mode costs additional tablet power.
+Activity hides. With ADB, reopening the app can resume an outstanding host
+request while its session remains available and permission remains granted.
+Direct USB requires a new local Start after its foreground-only offer is withdrawn. Background mode costs additional tablet power.
 
 Camera sharing carries video only. Optional [tablet microphone and speaker
 sessions](audio.md) are implemented separately on Linux/Android, with independent
