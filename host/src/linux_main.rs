@@ -17,7 +17,7 @@ mod capture;
 use blent::config;
 mod daemon_activity;
 mod desktop;
-mod device_tasks;
+use blent::device_tasks;
 mod discovery;
 mod doctor;
 mod edid;

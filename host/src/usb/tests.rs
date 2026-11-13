@@ -977,3 +977,4 @@ fn t1358_removed_authentication_toggle_cannot_disable_preview_credentials() {
 }
 
 mod identity;
+mod progress;

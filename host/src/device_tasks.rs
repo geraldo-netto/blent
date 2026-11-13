@@ -7,7 +7,7 @@ use tokio::task::{JoinError, JoinHandle};
 
 type Pending<T> = (String, Pin<Box<dyn Future<Output = T> + Send>>);
 
-pub(crate) struct DeviceTasks<T> {
+pub struct DeviceTasks<T> {
     limit: usize,
     queued: VecDeque<Pending<T>>,
     active: HashMap<String, JoinHandle<T>>,

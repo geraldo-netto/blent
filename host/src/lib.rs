@@ -28,6 +28,7 @@ pub mod adb_inventory;
 pub mod attachment;
 pub mod config;
 pub mod connection_discovery;
+pub mod device_tasks;
 pub mod display_connections;
 pub mod display_quiescence;
 pub mod display_slots;

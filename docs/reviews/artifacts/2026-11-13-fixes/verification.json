@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-13",
+  "resolved": [
+    "T1378",
+    "T1380",
+    "T1379",
+    "T1381"
+  ],
+  "host_tests": {
+    "usb": 35,
+    "linux_monitor": 55,
+    "linux_discovery": 8,
+    "scheduler_drop": 1,
+    "passed": 99,
+    "failed": 0,
+    "ignored": 0
+  },
+  "common_cli_removal_tests": {
+    "passed": 430,
+    "failed": 0,
+    "artifact": "T1379/tests.log.gz"
+  },
+  "t1381_function_measurements": {
+    "functions": 22,
+    "changed_or_new": 13,
+    "shared_scheduler_unchanged_bodies": 9,
+    "all_pass": true,
+    "minimum_line_percent": 84.61538461538461,
+    "maximum_complexity": 9
+  },
+  "project_complexity": {
+    "functions": 28921,
+    "over_nine": 0,
+    "artifact": "complexity.log.gz"
+  },
+  "checks": {
+    "rust_format": 0,
+    "linux_clippy_warnings_denied": 0,
+    "windows_gnu_cross_compile": 0
+  },
+  "native_windows_execution": false,
+  "physical_adb_execution": false,
+  "coverage_commands": [
+    "cargo llvm-cov --locked -p blent --lib --lcov --output-path T1381.lcov -- usb::",
+    "cargo llvm-cov --locked -p blent --bin blent --no-clean --lcov --output-path T1381.lcov -- monitor::",
+    "cargo llvm-cov --locked -p blent --bin blent --no-clean --lcov --output-path T1381.lcov -- discovery_tests::",
+    "cargo llvm-cov --locked -p blent --lib --no-clean --lcov --output-path T1381.lcov -- device_tasks::"
+  ],
+  "source_sha256": {
+    "host/src/usb/network.rs": "7dc4fe5da363ff1a35ee8e36d292c9acdd36c084237342463a8483eb058dfe90",
+    "host/src/usb/network/queries.rs": "b6bc2c87597d15e2c2eab42928fa86c828338d28eb2de5999fe0206324822630",
+    "host/src/usb/monitor.rs": "4912332c9695f28f561cc7def23de612a463f0ddfeccf1751a903fe2edb71c04",
+    "host/src/device_tasks.rs": "2c4c7e0ca18487398adba736e8e3fa8f8f42b8757b97fd1b2671ab19cba3cab7"
+  },
+  "remaining_ledger": {
+    "open": 0,
+    "blocked": 11,
+    "wont_fix": 4,
+    "native_followup": "T1382"
+  }
+}

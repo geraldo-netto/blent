@@ -2,9 +2,11 @@ use super::*;
 use blent_config::storage::ConfigStore;
 use std::collections::HashMap;
 use tokio::time::Instant;
+mod queries;
 
 pub(super) struct Network {
     store: ConfigStore,
+    queries: queries::Queries,
     identities: HashMap<String, String>,
     launches: crate::launch_policy::Launches,
     next_retry: Instant,
@@ -13,6 +15,7 @@ impl Network {
     pub fn new(store: ConfigStore) -> Self {
         Self {
             store,
+            queries: queries::Queries::new(),
             identities: HashMap::new(),
             launches: Default::default(),
             next_retry: Instant::now(),
@@ -87,25 +90,36 @@ impl Network {
             )
         });
         self.observe(adb, &devices).await;
-        Some(crate::transport::select_device_transports(
-            &devices,
-            None,
-            &self.identities,
-        ))
+        Some(self.select(devices))
     }
-    async fn observe<C: Commands>(&mut self, adb: &Adb<C>, devices: &[String]) {
-        // Current observations alone authorize alias selection and cleanup.
-        // Active sessions retain their original identity/debt independently.
-        self.identities.clear();
+    fn select(&self, devices: Vec<String>) -> Vec<String> {
+        let devices: Vec<_> = devices
+            .into_iter()
+            .filter(|serial| self.queries.ready(serial))
+            .collect();
+        crate::transport::select_device_transports(&devices, None, &self.identities)
+    }
+    async fn observe<C: Commands + Clone + 'static>(&mut self, adb: &Adb<C>, devices: &[String]) {
+        self.identities.retain(|serial, _| devices.contains(serial));
+        self.queries.refresh(adb, devices);
         self.launches.refresh(devices);
-        for serial in devices {
-            if let Some(identity) = adb.identity(serial).await {
+        // Let admitted workers progress; a pending query never forms a barrier.
+        tokio::task::yield_now().await;
+        while let Some((serial, identity)) = self.queries.next() {
+            if let Some(identity) = identity {
                 self.identities.insert(serial.clone(), identity);
+            } else {
+                self.identities.remove(&serial);
             }
             self.launches
-                .observe(serial, self.identities.get(serial).map(String::as_str));
+                .observe(&serial, self.identities.get(&serial).map(String::as_str));
         }
-        self.identities.retain(|s, _| devices.contains(s));
-        self.launches.retain(devices);
+        if self.queries.complete() {
+            self.launches.retain(devices);
+        }
+    }
+    pub async fn stop(&mut self) {
+        self.queries.stop().await;
+        self.identities.clear();
     }
 }

@@ -1,0 +1,46 @@
+info: cargo-llvm-cov currently setting cfg(coverage); you can opt-out it by passing --no-cfg-coverage
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.36s
+     Running unittests src/lib.rs (/home/netto/.cache/blent-fixes-20261112-followup/host-coverage/debug/deps/blent-d512991ead5280bc)
+
+running 35 tests
+test usb::network::queries::tests::t1381_absent_and_stale_completions_cannot_publish ... ok
+test usb::network::queries::tests::t1381_failed_task_only_invalidates_its_current_observation ... ok
+test usb::network::queries::tests::t1381_query_deadline_publishes_unknown_and_releases_worker ... ok
+test usb::preview::tests::t525_unavailable_native_sink_safely_discards_invalid_events ... ok
+test usb::route_command::tests::t1363_native_route_commands_preserve_spawn_and_exit_evidence ... ok
+test usb::route_lock::tests::t834_native_lease_refuses_symlink ... ok
+test usb::route_lock::tests::t834_native_lease_rejects_overlap_and_retains_stable_bounded_files ... ok
+test usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup ... ok
+test usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority ... ok
+test usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries ... ok
+test usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish ... ok
+test usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal ... ok
+test usb::tests::progress::t1381_removed_query_cannot_publish_into_reused_endpoint ... ok
+test usb::tests::t1358_removed_authentication_toggle_cannot_disable_preview_credentials ... ok
+test usb::tests::t525_attachment_rotates_credentials_and_retires_owned_routes ... ok
+test usb::tests::t525_bounded_invalid_tokens_serials_and_ports_cause_no_commands ... ok
+test usb::tests::t525_cleanup_preserves_foreign_routes_and_retains_failed_ownership ... ok
+test usb::tests::t525_failed_device_does_not_starve_next_eligible_usb_device ... ok
+test usb::tests::t525_monitor_partial_bind_command_failure_and_invalid_config ... ok
+test usb::tests::t525_monitor_reconnect_uses_shared_authenticated_protocol_and_retires_old_clients ... ok
+test usb::tests::t525_monitor_repairs_redelivers_and_reports_failed_cleanup ... ok
+test usb::tests::t525_partial_startup_and_failed_delivery_never_publish_ready ... ok
+test usb::tests::t525_preview_rejects_unavailable_display_mode ... ok
+test usb::tests::t525_two_slots_preserve_assignments_and_cleanup_independently ... ok
+test usb::tests::t525_usb_inventory_rejects_unknown_failed_and_nonready_observations ... ok
+test usb::tests::t650_malformed_serial_preserves_connected_attachment_and_credential ... ok
+test usb::tests::t654_inventory_status_and_size_are_independent_requirements ... ok
+test usb::tests::t655_concurrent_listener_fixtures_reserve_disjoint_pairs ... ok
+test usb::tests::t657_redelivery_waits_for_each_complete_interval ... ok
+test usb::tests::t691_absent_inventory_cleanup_requires_reconfirmed_identity ... ok
+test usb::tests::t691_network_reconnect_rereads_saved_address_and_bounds_inventory ... ok
+test usb::tests::t691_network_usb_migration_retires_routes_through_proven_alias ... ok
+test usb::tests::t691_replaced_physical_identity_does_not_remove_foreign_routes ... ok
+test usb::tests::t702_offline_route_failure_releases_slot_and_preserves_cleanup_ownership ... ok
+test usb::tests::t702_shutdown_failure_still_retires_listeners_and_can_retry ... ok
+
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 733 filtered out; finished in 0.14s
+
+
+    Finished report saved to /home/netto/.cache/blent-fixes-20261113/T1381.lcov

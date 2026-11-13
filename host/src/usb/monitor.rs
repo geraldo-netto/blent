@@ -236,6 +236,9 @@ impl<C: Commands + Clone + 'static> Monitor<C> {
     }
 
     pub async fn shutdown(&mut self) -> Result<()> {
+        if let Some(network) = self.network.as_mut() {
+            network.stop().await;
+        }
         self.retry_routes(None).await;
         for index in 0..self.slots.len() {
             self.retire(index).await;

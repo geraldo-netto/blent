@@ -1,0 +1,41 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.60s
+     Running unittests src/lib.rs (target/debug/deps/blent-d512991ead5280bc)
+
+running 4 tests
+test usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries ... FAILED
+test usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish ... FAILED
+test usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal ... FAILED
+test usb::tests::progress::t1381_removed_query_cannot_publish_into_reused_endpoint ... ok
+
+failures:
+
+---- usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries stdout ----
+
+thread 'usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries' (1461837) panicked at host/src/usb/tests/progress.rs:115:5:
+assertion `left == right` failed: T1381: missing bounded per-device work
+  left: 1
+ right: 4
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish stdout ----
+
+thread 'usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish' (1461838) panicked at host/src/usb/tests/progress.rs:88:5:
+T1381: unrelated slow queries discarded discovery
+
+---- usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal stdout ----
+
+thread 'usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal' (1461839) panicked at host/src/usb/tests/progress.rs:183:5:
+assertion `left == right` failed: T1381: healthy attachment starved
+  left: 0
+ right: 1
+
+
+failures:
+    usb::tests::progress::t1381_cancelled_poll_retains_bounded_original_queries
+    usb::tests::progress::t1381_healthy_device_progresses_before_slow_identity_queries_finish
+    usb::tests::progress::t1381_monitor_attaches_healthy_device_and_observes_its_removal
+
+test result: FAILED. 1 passed; 3 failed; 0 ignored; 0 measured; 760 filtered out; finished in 12.01s
+
+error: test failed, to rerun pass `-p blent --lib`
