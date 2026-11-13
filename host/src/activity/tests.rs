@@ -32,6 +32,8 @@ pub(super) struct Values {
     lock: AtomicBool,
     display: AtomicI32,
     mode: AtomicU8,
+    fail_lock: AtomicBool,
+    fail_display: AtomicBool,
 }
 struct Manager(Arc<Values>);
 #[zbus::interface(name = "org.freedesktop.login1.Manager")]
@@ -62,8 +64,11 @@ struct Session(Arc<Values>);
 #[zbus::interface(name = "org.freedesktop.login1.Session")]
 impl Session {
     #[zbus(property)]
-    fn locked_hint(&self) -> bool {
-        self.0.lock.load(Ordering::Acquire)
+    fn locked_hint(&self) -> zbus::fdo::Result<bool> {
+        if self.0.fail_lock.load(Ordering::Acquire) {
+            return Err(zbus::fdo::Error::Failed("T1427 lock query failure".into()));
+        }
+        Ok(self.0.lock.load(Ordering::Acquire))
     }
     #[zbus(property)]
     fn user(&self) -> (u32, OwnedObjectPath) {
@@ -83,8 +88,13 @@ struct Display(Arc<Values>);
 #[zbus::interface(name = "org.cinnamon.Muffin.DisplayConfig")]
 impl Display {
     #[zbus(property)]
-    fn power_save_mode(&self) -> i32 {
-        self.0.display.load(Ordering::Acquire)
+    fn power_save_mode(&self) -> zbus::fdo::Result<i32> {
+        if self.0.fail_display.load(Ordering::Acquire) {
+            return Err(zbus::fdo::Error::Failed(
+                "T1427 display query failure".into(),
+            ));
+        }
+        Ok(self.0.display.load(Ordering::Acquire))
     }
 }
 pub(super) struct Fixture {

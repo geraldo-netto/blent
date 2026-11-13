@@ -1,0 +1,52 @@
+
+running 2 tests
+test activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement ...
+thread 'activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement' (1188975) panicked at host/src/activity/tests.rs:209:5:
+
+running 1 test
+test activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1139 filtered out; finished in 3.01s
+
+
+thread 'activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement' (1188979) panicked at host/src/activity/tests.rs:496:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires ...
+thread 'activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires' (1189015) panicked at host/src/activity/tests.rs:209:5:
+
+running 1 test
+test activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires ... FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1139 filtered out; finished in 3.01s
+
+
+thread 'activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires' (1189020) panicked at host/src/activity/tests.rs:496:6:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+FAILED
+
+failures:
+
+failures:
+    activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement
+    activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 1138 filtered out; finished in 6.04s
+
+
+EXIT 101

@@ -1,0 +1,70 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "sources": {
+    "host/src/activity/native.rs": "a42d3d935afab8760a9075a03bb47d3e344803381f11050e89d1827602711385",
+    "host/src/activity/tests.rs": "3998a9d51e6aa5c6be3f2b807c79de7ba18884871d654a36ed1bb294dbb8d7ac",
+    "host/src/activity/continuity_tests.rs": "f3a6b927c3e8217593f833d0b7286522624de297249a0ad050e9833c1b7103ce"
+  },
+  "functions": [
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 298,
+      "name": "apply_signal",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "line": 310,
+      "name": "refresh",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 67,
+      "name": "locked_hint",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/tests.rs",
+      "line": 91,
+      "name": "power_save_mode",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 31,
+      "name": "start",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 34,
+      "name": "start_held",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 270,
+      "name": "invalidated",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 283,
+      "name": "refresh_failure",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 311,
+      "name": "t1427_failed_lock_and_display_refresh_recover_after_original_settlement",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/activity/continuity_tests.rs",
+      "line": 318,
+      "name": "t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires",
+      "complexity": 4
+    }
+  ]
+}

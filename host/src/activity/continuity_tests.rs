@@ -29,11 +29,17 @@ impl SourceFactory for Counted {
     }
 }
 fn start(native: Arc<dyn SourceFactory>) -> (Arc<Counted>, crate::activity_follow::Following) {
+    start_held(native, None)
+}
+fn start_held(
+    native: Arc<dyn SourceFactory>,
+    held: Option<Completion>,
+) -> (Arc<Counted>, crate::activity_follow::Following) {
     let factory = Arc::new(Counted {
         native,
         calls: AtomicUsize::new(0),
         proofs: Mutex::new(Vec::new()),
-        held: Mutex::new(None),
+        held: Mutex::new(held),
     });
     let following = crate::activity_follow::Following::start(
         factory.clone(),
@@ -258,5 +264,69 @@ async fn t1418_rejected_partial_source_retains_native_debt_through_stop() {
     );
     drop(held);
     finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+
+async fn invalidated(fixture: &Fixture, display: bool) {
+    if display {
+        fixture.values.fail_display.store(true, Ordering::Release);
+        fixture
+            .changed(DISPLAY_PATH, DISPLAY, "PowerSaveMode", None)
+            .await;
+    } else {
+        fixture.values.fail_lock.store(true, Ordering::Release);
+        fixture
+            .changed(SESSION_PATH, SESSION, "LockedHint", None)
+            .await;
+    }
+}
+async fn refresh_failure(display: bool) {
+    let fixture = Fixture::new().await;
+    let pool = blent_config::retirement::Pool::new(1).unwrap();
+    let held = pool.reserve().unwrap();
+    let (factory, following) = start_held(Arc::new(Factory::default()), Some(held.completion()));
+    let mut reader = following.subscribe();
+    let first = followed(&mut reader, |s| s.demand.display).await;
+    invalidated(&fixture, display).await;
+    followed(&mut reader, |s| s.source_lost).await;
+    conservative(&mut reader).await;
+    assert_eq!(
+        factory.calls.load(Ordering::Acquire),
+        1,
+        "T1427 original native debt fences retry"
+    );
+    assert!(!factory.proofs.lock().unwrap()[0].is_complete());
+    fixture.values.fail_display.store(false, Ordering::Release);
+    fixture.values.fail_lock.store(false, Ordering::Release);
+    drop(held);
+    let fresh = followed(&mut reader, |s| {
+        s.demand.display && s.demand.stamp.epoch > first.demand.stamp.epoch
+    })
+    .await;
+    assert!(!fresh.source_lost);
+    finish(&factory, following).await;
+    fixture.server.close().await.unwrap();
+}
+#[tokio::test]
+async fn t1427_failed_lock_and_display_refresh_recover_after_original_settlement() {
+    if !private("activity::tests::continuity::t1427_failed_lock_and_display_refresh_recover_after_original_settlement") { return; }
+    for display in [false, true] {
+        refresh_failure(display).await;
+    }
+}
+#[tokio::test]
+async fn t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires() {
+    if !private("activity::tests::continuity::t1427_prolonged_refresh_failure_stays_conservative_and_stop_retires") { return; }
+    let fixture = Fixture::new().await;
+    let (factory, following) = start(Arc::new(Factory::default()));
+    let mut reader = following.subscribe();
+    followed(&mut reader, |s| s.demand.display).await;
+    invalidated(&fixture, true).await;
+    followed(&mut reader, |s| s.source_lost).await;
+    conservative(&mut reader).await;
+    attempts(&factory, 3).await;
+    assert_eq!(*reader.borrow(), Publication::Failed);
+    finish(&factory, following).await;
+    assert_eq!(*reader.borrow(), Publication::Stopped);
     fixture.server.close().await.unwrap();
 }

@@ -1,0 +1,40 @@
+{
+  "tool": "cargo-llvm-cov0.8.7 / Rust1.100.0 LLVM23.1.5 native counters",
+  "sources": {
+    "host/src/activity/native.rs": "a42d3d935afab8760a9075a03bb47d3e344803381f11050e89d1827602711385"
+  },
+  "objects": {
+    "library-tests": {
+      "path": "/tmp/blent-t1427-coverage/library-tests",
+      "sha256": "ba9b7abfabc1218b40cb7f9b1b1c6e0a4f2b05863ea443c2dd6c128fd6d49f87"
+    }
+  },
+  "functions": [
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "apply_signal",
+      "line": 298,
+      "language": "rust",
+      "covered": 10,
+      "total": 11,
+      "percent": 90.9090909090909,
+      "passes": true,
+      "missing": [
+        306
+      ]
+    },
+    {
+      "file": "host/src/activity/native.rs",
+      "name": "refresh",
+      "line": 310,
+      "language": "rust",
+      "covered": 26,
+      "total": 27,
+      "percent": 96.29629629629629,
+      "passes": true,
+      "missing": [
+        329
+      ]
+    }
+  ]
+}

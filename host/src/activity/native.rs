@@ -301,15 +301,21 @@ impl Actor {
         };
         shared.update(patch)?;
         if matches!(patch, Patch::Lock(None) | Patch::Display(None)) {
-            if let Some(fresh) = self.refresh().await {
+            if let Some(fresh) = self.refresh().await? {
                 shared.update(fresh)?;
             }
         }
         Ok(())
     }
-    async fn refresh(&mut self) -> Option<Patch> {
+    async fn refresh(&mut self) -> Result<Option<Patch>> {
         let (path, interface, name) = match &self.kind {
-            Kind::Logind(data) => (data.session.as_deref()?, SESSION, "LockedHint"),
+            Kind::Logind(data) => (
+                data.session
+                    .as_deref()
+                    .context("lock observation has no session")?,
+                SESSION,
+                "LockedHint",
+            ),
             Kind::Display { target, .. } => (target.path, target.name, "PowerSaveMode"),
         };
         let owner_name = match &self.kind {
@@ -324,22 +330,21 @@ impl Actor {
             );
             Ok::<_, anyhow::Error>(snapshot)
         };
-        let (value, position) = tokio::time::timeout(self.deadline, fresh)
-            .await
-            .ok()?
-            .ok()?;
-        match &mut self.kind {
+        // Failed refresh must reach the retained replacement path. Unknown state
+        // alone has no future event that guarantees another authoritative query.
+        let (value, position) = tokio::time::timeout(self.deadline, fresh).await??;
+        Ok(match &mut self.kind {
             Kind::Logind(data) => {
-                let value = bool::try_from(value).ok()?;
+                let value = bool::try_from(value)?;
                 data.locked
                     .set(Some(value), position)
                     .then_some(Patch::Lock(Some(value)))
             }
             Kind::Display { state, .. } => {
-                let value = display_mode(i32::try_from(value).ok()?).ok()?;
+                let value = display_mode(i32::try_from(value)?)?;
                 state.set(value, position).then_some(Patch::Display(value))
             }
-        }
+        })
     }
     fn owner_change(&self, message: Message) -> Result<()> {
         let (_, previous, current): (String, String, String) = payload(&message)?;
