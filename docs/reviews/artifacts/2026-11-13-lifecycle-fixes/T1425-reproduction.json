@@ -1,0 +1,9 @@
+{
+  "baseline": "d4d48d5ba18005f7dba633f95d8c980d28b02223",
+  "test": "monitor::route_tests::t1346_failed_removals_keep_ticket_until_original_effects_arrive",
+  "baseline_exit": 101,
+  "current_exit": 101,
+  "trace": "The first fake getprop returns empty stdout. USB serial fallback is supported. Native lock acquisition then opens /run/user/1000/blent/display-route-112.lock and flock(LOCK_EX|LOCK_NB) fails with EAGAIN against a preexisting unrelated owner.",
+  "cleanup": "The combined route suite stopped making progress in repaired-route waiting for a mutation after rejected preparation left no ready routes. Its owned process1090592 was terminated/reaped. No abandoned fake-native debt is established by that observation; the live conflicting owner was unrelated.",
+  "control": "Identical unmodified test passes with a private XDG_RUNTIME_DIR."
+}

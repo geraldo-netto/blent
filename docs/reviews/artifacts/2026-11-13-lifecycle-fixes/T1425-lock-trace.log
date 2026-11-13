@@ -1,0 +1,101 @@
+1129463 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+1129463 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libgcc_s.so.1", O_RDONLY|O_CLOEXEC) = 3
+1129463 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libm.so.6", O_RDONLY|O_CLOEXEC) = 3
+1129463 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+1129463 openat(AT_FDCWD, "/proc/self/maps", O_RDONLY|O_CLOEXEC) = 3
+1129463 openat(AT_FDCWD, "/usr/share/terminfo/d/dumb", O_RDONLY|O_CLOEXEC) = 3
+1129464 fcntl(3, F_DUPFD_CLOEXEC, 3)    = 5
+1129464 fcntl(6, F_DUPFD_CLOEXEC, 3)    = 8
+1129464 openat(AT_FDCWD, "/tmp/.tmpY8hxwC/adb.listing", O_WRONLY|O_CREAT|O_TRUNC|O_CLOEXEC, 0666) = 9
+1129464 openat(AT_FDCWD, "/tmp/.tmpY8hxwC/adb", O_WRONLY|O_CREAT|O_TRUNC|O_CLOEXEC, 0666) = 9
+1129464 fcntl(9, F_DUPFD_CLOEXEC, 3)    = 11
+1129464 fcntl(6, F_DUPFD_CLOEXEC, 3)    = 12
+1129467 fcntl(13, F_GETFL)              = 0 (flags O_RDONLY)
+1129467 fcntl(13, F_SETFL, O_RDONLY|O_NONBLOCK) = 0
+1129467 fcntl(15, F_GETFL)              = 0 (flags O_RDONLY)
+1129467 fcntl(15, F_SETFL, O_RDONLY|O_NONBLOCK) = 0
+1129467 openat(AT_FDCWD, "/dev/null", O_RDONLY|O_CLOEXEC) = 17
+1129471 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+1129471 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+1129471 openat(AT_FDCWD, "/tmp/.tmpY8hxwC/adb", O_RDONLY) = 3
+1129471 fcntl(3, F_DUPFD, 10)           = 10
+1129471 fcntl(10, F_SETFD, FD_CLOEXEC)  = 0
+1129471 openat(AT_FDCWD, "/tmp/.tmpY8hxwC/adb.log", O_WRONLY|O_CREAT|O_APPEND, 0666) = 3
+1129471 fcntl(1, F_DUPFD, 10)           = 11
+1129471 fcntl(11, F_SETFD, FD_CLOEXEC)  = 0
+1129471 openat(AT_FDCWD, "/dev/null", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
+1129471 fcntl(1, F_DUPFD, 10)           = 11
+1129471 fcntl(11, F_SETFD, FD_CLOEXEC)  = 0
+1129472 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/share/locale/locale.alias", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_NAME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_NAME", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_PAPER", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_PAPER", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_TIME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_TIME", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = 3
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+1129472 openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = 3
+1129472 +++ exited with 0 +++
+1129471 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=1129472, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+1129471 +++ exited with 0 +++
+1129467 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=1129471, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+1129467 fcntl(17, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129469 fcntl(13, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129469 fcntl(15, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 fcntl(14, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 fcntl(16, F_GETFD <unfinished ...>
+1129469 +++ exited with 0 +++
+1129467 <... fcntl resumed>)            = 0x1 (flags FD_CLOEXEC)
+1129473 +++ exited with 0 +++
+1129467 openat(AT_FDCWD, "/run/user/1000", O_RDONLY|O_NOFOLLOW|O_CLOEXEC|O_DIRECTORY) = 13
+1129467 fcntl(13, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 openat(AT_FDCWD, "/run/user/1000/blent", O_RDONLY|O_NOFOLLOW|O_CLOEXEC|O_DIRECTORY) = 13
+1129467 fcntl(13, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 openat(AT_FDCWD, "/run/user/1000/blent/display-route-64.lock", O_RDWR|O_CREAT|O_NOFOLLOW|O_CLOEXEC, 0600) = 13
+1129467 flock(13, LOCK_EX|LOCK_NB)      = 0
+1129467 openat(AT_FDCWD, "/run/user/1000/blent/display-route-112.lock", O_RDWR|O_CREAT|O_NOFOLLOW|O_CLOEXEC, 0600) = 14
+1129467 flock(14, LOCK_EX|LOCK_NB)      = -1 EAGAIN (Resource temporarily unavailable)
+1129467 fcntl(14, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 fcntl(13, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 fcntl(9, F_GETFD)               = 0x1 (flags FD_CLOEXEC)
+1129467 fcntl(12, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 fcntl(11, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 fcntl(10, F_GETFD)              = 0x1 (flags FD_CLOEXEC)
+1129467 +++ exited with 0 +++
+1129464 openat(AT_FDCWD, "/tmp/.tmpY8hxwC", O_RDONLY|O_NOFOLLOW|O_CLOEXEC|O_DIRECTORY) = 9
+1129464 fcntl(9, F_GETFL)               = 0x38000 (flags O_RDONLY|O_LARGEFILE|O_NOFOLLOW|O_DIRECTORY)
+1129464 fcntl(9, F_SETFD, FD_CLOEXEC)   = 0
+1129464 fcntl(3, F_GETFD)               = 0x1 (flags FD_CLOEXEC)
+1129464 fcntl(8, F_GETFD)               = 0x1 (flags FD_CLOEXEC)
+1129464 fcntl(5, F_GETFD)               = 0x1 (flags FD_CLOEXEC)
+1129464 fcntl(4, F_GETFD)               = 0x1 (flags FD_CLOEXEC)
+1129464 +++ exited with 0 +++
+1129463 openat(AT_FDCWD, "/tmp/blent-t1422-coverage/route-lock-1129463-7644939866664347395_0.profraw", O_RDWR|O_CREAT, 0666) = 3
+1129463 fcntl(3, F_SETLKW, {l_type=F_WRLCK, l_whence=SEEK_SET, l_start=0, l_len=0}) = 0
+1129463 fcntl(3, F_GETFL)               = 0x8002 (flags O_RDWR|O_LARGEFILE)
+1129465 +++ exited with 101 +++
+1129470 +++ exited with 101 +++
+1129468 +++ exited with 101 +++
+1129466 +++ exited with 101 +++
+1129463 +++ exited with 101 +++

@@ -2,6 +2,65 @@
 use super::*;
 use std::os::unix::fs::PermissionsExt;
 
+fn private(test: &str) -> bool {
+    if std::env::var_os("BLENT_T1425_PRIVATE_RUNTIME").is_some() {
+        return true;
+    }
+    successful(isolated(test, "BLENT_T1425_PRIVATE_RUNTIME"));
+    false
+}
+
+fn isolated(test: &str, marker: &str) -> std::process::Output {
+    let root = tempfile::Builder::new()
+        .permissions(std::fs::Permissions::from_mode(0o700))
+        .tempdir()
+        .unwrap();
+    std::process::Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", test, "--nocapture"])
+        .env(marker, "1")
+        .env("XDG_RUNTIME_DIR", root.path())
+        .env("HOME", root.path())
+        .env("XDG_CONFIG_HOME", root.path())
+        .env("DBUS_SESSION_BUS_ADDRESS", "unix:path=/missing-t1425-bus")
+        .output()
+        .unwrap()
+}
+
+fn successful(result: std::process::Output) {
+    assert!(
+        result.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&result.stdout),
+        String::from_utf8_lossy(&result.stderr)
+    );
+}
+
+#[test]
+fn t1425_route_fixture_ignores_an_owned_foreign_runtime_namespace() {
+    use blent::usb::{Commands, NativeCommands};
+    const TEST: &str =
+        "monitor::route_tests::t1425_route_fixture_ignores_an_owned_foreign_runtime_namespace";
+    if std::env::var_os("BLENT_T1425_LOCK_HOLDER").is_none() {
+        successful(isolated(TEST, "BLENT_T1425_LOCK_HOLDER"));
+        return;
+    }
+    // Hold the actual native namespace, using the public lease contract rather
+    // than duplicating its stripe algorithm. Every path is this child's own.
+    let _held = NativeCommands("unused".into())
+        .display_route_lease("USB", (18000, 18001))
+        .unwrap();
+    let result = std::process::Command::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "monitor::route_tests::t1346_failed_removals_keep_ticket_until_original_effects_arrive",
+            "--nocapture",
+        ])
+        .env_remove("BLENT_T1425_PRIVATE_RUNTIME")
+        .output()
+        .unwrap();
+    successful(result);
+}
+
 fn fixture(listing: &str) -> (tempfile::TempDir, Monitor, PathBuf) {
     let root = tempfile::tempdir().unwrap();
     let adb = root.path().join("adb");
@@ -45,6 +104,9 @@ fn listing(adb: &std::path::Path) -> String {
 
 #[tokio::test]
 async fn t705_conflicting_initial_routes_remain_foreign() {
+    if !private("monitor::route_tests::t705_conflicting_initial_routes_remain_foreign") {
+        return;
+    }
     let foreign = "UsbFfs tcp:8891 tcp:2222\n";
     let (_root, mut state, adb) = fixture(foreign);
     prepare(&mut state).await;
@@ -56,18 +118,31 @@ async fn t705_conflicting_initial_routes_remain_foreign() {
 
 #[tokio::test]
 async fn t705_matching_external_and_replaced_routes_survive_retirement() {
+    if !private(
+        "monitor::route_tests::t705_matching_external_and_replaced_routes_survive_retirement",
+    ) {
+        return;
+    }
     let external = "UsbFfs tcp:8890 tcp:18000\n";
     let (_root, mut state, adb) = fixture(external);
     prepare(&mut state).await;
-    assert!(state.ready.contains("USB"));
-    let replaced = format!("{external}UsbFfs tcp:8891 tcp:2222\n");
-    std::fs::write(adb.with_extension("listing"), &replaced).unwrap();
+    let ready = state.ready.contains("USB");
+    // T1425/T1345: external owners may replace their own preexisting mapping,
+    // never the input endpoint admitted by Blent under exclusive ownership.
+    let replaced = "UsbFfs tcp:8890 tcp:2222\nUsbFfs tcp:9999 localabstract:external\n";
+    std::fs::write(
+        adb.with_extension("listing"),
+        format!("{replaced}UsbFfs tcp:8891 tcp:18001\n"),
+    )
+    .unwrap();
     state.stop().await;
+    assert!(ready);
     assert_eq!(listing(&adb), replaced, "T705: retired external mappings");
 }
 
 #[tokio::test]
 async fn t705_partial_preparation_retains_unacknowledged_creation_until_observed() {
+    if !private("monitor::route_tests::t705_partial_preparation_retains_unacknowledged_creation_until_observed") { return; }
     let foreign = "UsbFfs tcp:9999 localabstract:external\n";
     let (_root, mut state, adb) = fixture(foreign);
     std::fs::write(adb.with_extension("fail-input"), "").unwrap();
@@ -100,20 +175,31 @@ async fn t705_partial_preparation_retains_unacknowledged_creation_until_observed
 
 #[tokio::test]
 async fn t705_repaired_routes_are_owned_and_retired() {
+    if !private("monitor::route_tests::t705_repaired_routes_are_owned_and_retired") {
+        return;
+    }
     let external = "UsbFfs tcp:8890 tcp:18000\n";
     let (_root, mut state, adb) = fixture(external);
     prepare(&mut state).await;
-    std::fs::write(adb.with_extension("listing"), "").unwrap();
+    // Only the externally owned video mapping disappears. Blent's admitted
+    // input endpoint remains intact until its original owner retires it.
+    std::fs::write(adb.with_extension("listing"), "UsbFfs tcp:8891 tcp:18001\n").unwrap();
     state.check_forwarding();
     let (serial, result) = state.mutations.next().await;
     state.mutation_ready(serial, result);
-    assert!(listing(&adb).contains("tcp:8890 tcp:18000"));
+    let repaired = listing(&adb).contains("tcp:8890 tcp:18000");
     state.stop().await;
+    assert!(repaired);
     assert_eq!(listing(&adb), "");
 }
 
 #[tokio::test]
 async fn t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease() {
+    if !private(
+        "monitor::route_tests::t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease",
+    ) {
+        return;
+    }
     let (_root, mut state, adb) = fixture("");
     state.config.tablet = session::Spec {
         capture: Default::default(),
@@ -121,7 +207,8 @@ async fn t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease() {
         token: Some("a".repeat(64)),
         devices: (false, false, false),
     }
-    .prepare(state.config.extra.mode_tx.clone()).unwrap()
+    .prepare(state.config.extra.mode_tx.clone())
+    .unwrap()
     .tablet;
     prepare(&mut state).await;
     let owner = state.routes["USB"].clone();
@@ -154,6 +241,9 @@ async fn t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease() {
 
 #[tokio::test]
 async fn t705_invalid_route_owners_fail_before_native_commands() {
+    if !private("monitor::route_tests::t705_invalid_route_owners_fail_before_native_commands") {
+        return;
+    }
     let (_root, _state, adb) = fixture("");
     let command = adb.to_str().unwrap();
     for byte in 0..=31u8 {
@@ -180,6 +270,11 @@ async fn t705_invalid_route_owners_fail_before_native_commands() {
 
 #[tokio::test]
 async fn t1346_failed_removals_keep_ticket_until_original_effects_arrive() {
+    if !private(
+        "monitor::route_tests::t1346_failed_removals_keep_ticket_until_original_effects_arrive",
+    ) {
+        return;
+    }
     let foreign = "UsbFfs tcp:9999 localabstract:external\n";
     let (_root, mut state, adb) = fixture(foreign);
     prepare(&mut state).await;
@@ -246,6 +341,11 @@ async fn namespace_released() {
 
 #[tokio::test]
 async fn t1346_monitor_loss_retains_cleanup_and_namespace_until_reconnect() {
+    if !private(
+        "monitor::route_tests::t1346_monitor_loss_retains_cleanup_and_namespace_until_reconnect",
+    ) {
+        return;
+    }
     use blent::usb::{Commands, NativeCommands};
     let (_root, mut state, adb) = fixture("");
     prepare(&mut state).await;

@@ -1,0 +1,78 @@
+{
+  "tool": "Blent syn 2.0.119 frontend",
+  "source_sha256": "1f9a31c301d8a862bb76bd1054908d0e6c87a1bac7cd8931ee7e50579ce875b2",
+  "functions": [
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 5,
+      "name": "private",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 13,
+      "name": "isolated",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 29,
+      "name": "successful",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 39,
+      "name": "t1425_route_fixture_ignores_an_owned_foreign_runtime_namespace",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 106,
+      "name": "t705_conflicting_initial_routes_remain_foreign",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 120,
+      "name": "t705_matching_external_and_replaced_routes_survive_retirement",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 144,
+      "name": "t705_partial_preparation_retains_unacknowledged_creation_until_observed",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 177,
+      "name": "t705_repaired_routes_are_owned_and_retired",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 197,
+      "name": "t1346_offline_cleanup_retains_slot_and_revokes_the_old_lease",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 243,
+      "name": "t705_invalid_route_owners_fail_before_native_commands",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 272,
+      "name": "t1346_failed_removals_keep_ticket_until_original_effects_arrive",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/monitor/route_tests.rs",
+      "line": 343,
+      "name": "t1346_monitor_loss_retains_cleanup_and_namespace_until_reconnect",
+      "complexity": 2
+    }
+  ]
+}

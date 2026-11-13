@@ -1,0 +1,253 @@
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::admission::tests::', '--nocapture']
+
+running 3 tests
+test monitor::admission::tests::t917_free_usb_slot_preserves_adb_primary ... ok
+test monitor::admission::tests::t917_full_capacity_retires_extra_without_invalidating_primary ... ok
+test monitor::admission::tests::t917_usb_preempts_adb_only_after_owned_cleanup_and_rejects_stale_retirement ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 622 filtered out; finished in 0.03s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::probe_tests::', '--nocapture']
+
+running 3 tests
+test monitor::probe_tests::t413_package_probe_requires_known_exit_and_response_shape ... ok
+test monitor::probe_tests::t413_unknown_initial_probe_is_not_eligible_and_absence_is_confirmed ... ok
+test monitor::probe_tests::t413_unknown_package_probe_preserves_assignment_and_geometry ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 622 filtered out; finished in 0.02s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::credential_tests::', '--nocapture']
+
+running 8 tests
+test monitor::credential_tests::t444_auth_retry_uses_current_key_with_bounded_background_delivery ... ok
+test monitor::credential_tests::t444_changed_physical_identity_on_same_serial_retires_credentials ... ok
+test monitor::credential_tests::t444_delivery_rotation_retry_and_known_route_migration_preserve_focus ... ok
+test monitor::credential_tests::t444_failed_credential_delivery_retries_before_first_launch ... ok
+test monitor::credential_tests::t444_failed_owned_job_retires_pending_route_and_rejects_late_completion ...
+thread 'monitor::credential_tests::t444_failed_owned_job_retires_pending_route_and_rejects_late_completion' (1144246) panicked at host/src/monitor/credential_tests.rs:306:9:
+injected device worker failure
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test monitor::credential_tests::t444_inflight_creator_settles_before_replacement ... ok
+test monitor::credential_tests::t444_replacement_removes_both_old_routes_before_slot_reuse ... ok
+test monitor::credential_tests::t444_unwritable_token_publication_never_prepares_a_route ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 617 filtered out; finished in 3.55s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::usb_display::tests::', '--nocapture']
+
+running 20 tests
+test monitor::usb_display::tests::activity::t1051_machine_publication_wakes_native_usb_without_polling_delay_or_closed_source_spin ... ok
+test monitor::usb_display::tests::activity::t1051_missing_original_native_capability_is_explicitly_unsupported ... ok
+test monitor::usb_display::tests::activity::t1051_primary_native_pause_retains_capacity_and_configuration_through_fresh_registration ... ok
+test monitor::usb_display::tests::listener_fixture::t1267_fixture_pins_all_slots_and_releases_every_guard ... ok
+test monitor::usb_display::tests::listener_fixture::t1267_fixture_rejects_an_occupied_derived_endpoint ... ok
+test monitor::usb_display::tests::t908_active_native_status_and_usb_steps_do_not_queue_adb_inventory ... ok
+test monitor::usb_display::tests::t908_bind_failure_releases_only_unpublished_start_and_retries_later ... USB fixture startup instance 1 on [(41959, 37249), (41961, 37251)]: Failed to bind input server to 127.0.0.1:37251: Address already in use (os error 98)
+ok
+test monitor::usb_display::tests::t908_invalid_extra_instance_rolls_back_before_native_work ... ok
+test monitor::usb_display::tests::t908_native_event_has_bounded_ticks_and_independent_startup_completion ... ok
+test monitor::usb_display::tests::t908_panicked_startup_quarantines_capacity_and_other_peer_still_progresses ...
+thread 'monitor::usb_display::tests::t908_panicked_startup_quarantines_capacity_and_other_peer_still_progresses' (1144550) panicked at host/src/monitor/usb_display/tests.rs:519:9:
+T908 startup death
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test monitor::usb_display::tests::t908_primary_and_extra_start_independently_and_retain_real_ports ... ok
+test monitor::usb_display::tests::t908_primary_handoff_rejects_unrelated_listener_capabilities ... ok
+test monitor::usb_display::tests::t908_selected_usb_preempts_adb_after_cleanup_and_ambiguity_preserves_it ... ok
+test monitor::usb_display::tests::t908_shutdown_joins_pending_startup_without_admitting_late_binding ... ok
+test monitor::usb_display::tests::t908_stuck_startup_does_not_stall_another_peer_and_late_cancel_is_owned ... USB fixture startup instance 0 on [(41057, 37683), (41059, 37685)]: T908 unpublished cancelled startup
+ok
+test monitor::usb_display::tests::t928_cancelled_unpublished_start_joins_original_task_before_reclaim ... ok
+test monitor::usb_display::tests::t928_exhausted_native_startup_capacity_releases_only_unexposed_ticket ... ok
+test monitor::usb_display::tests::t928_panicked_startup_reclaims_only_after_original_native_retirement ...
+thread 'monitor::usb_display::tests::t928_panicked_startup_reclaims_only_after_original_native_retirement' (1144586) panicked at host/src/monitor/usb_display/tests.rs:588:9:
+T928 startup death with actual held native work
+ok
+test monitor::usb_display::tests::t928_shared_primary_starts_with_one_native_session_slot ... ok
+test monitor::usb_display::tests::t928_shared_startup_capacity_failure_releases_unexposed_binding ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 605 filtered out; finished in 0.26s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::forwarding::tests::', '--nocapture']
+
+running 4 tests
+test monitor::forwarding::tests::t557_conflicts_malformed_lists_and_backend_failures_never_rebind ... ok
+test monitor::forwarding::tests::t557_extra_repair_uses_its_existing_slot_ports ... ok
+test monitor::forwarding::tests::t557_periodic_repair_preserves_assignment_and_joins_existing_mutations ... ok
+test monitor::forwarding::tests::t557_repairs_only_missing_routes_and_uses_no_rebind ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 621 filtered out; finished in 0.67s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::tests::', '--nocapture']
+
+running 2 tests
+test monitor::tests::t388_route_follows_adb_transport_not_physical_identity ... ok
+test monitor::tests::t390_promoting_an_extra_retires_its_previous_slot ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 623 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor_test_support::', '--nocapture']
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 625 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'discovery_tests::', '--nocapture']
+
+running 8 tests
+test discovery_tests::t390_device_jobs_cancel_without_ever_starting_queued_work ... ok
+test discovery_tests::t390_device_jobs_complete_independently_and_bound_concurrency ... ok
+test discovery_tests::t390_initial_discovery_connects_fast_tablet_before_slow_probe ...
+running 1 test
+test discovery_tests::t390_initial_discovery_connects_fast_tablet_before_slow_probe ... 2026-11-13T18:27:21.344641Z  INFO blent: ADB forwarding ready for FAST (18000, 18001)
+2026-11-13T18:27:21.345941Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.346027Z  INFO blent::monitor: Tablet 1 connected over USB (FAST)
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 624 filtered out; finished in 0.12s
+
+ok
+test discovery_tests::t390_one_two_four_tablets_connect_and_stop_while_probe_is_stalled ...
+running 1 test
+test discovery_tests::t390_one_two_four_tablets_connect_and_stop_while_probe_is_stalled ... 2026-11-13T18:27:21.471799Z  INFO blent: ADB forwarding ready for FAST1 (34011, 34012)
+2026-11-13T18:27:21.473146Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.473254Z  INFO blent::monitor: Tablet 1 connected over USB (FAST1)
+T390 scaling clients=1 connect_us=86375 stop_us=37915
+2026-11-13T18:27:21.575743Z  INFO blent::stream: Stream server on tcp://127.0.0.1:42849
+2026-11-13T18:27:21.575798Z  INFO blent::input: Input server on ws://127.0.0.1:42850
+2026-11-13T18:27:21.576031Z  INFO blent: Tablet slot 2 ready: video port 42849, input port 42850
+2026-11-13T18:27:21.576148Z  INFO blent::input: Virtual input devices are all off (input_touch / input_pen / input_pointer in config.toml) — the tablet is display-only
+2026-11-13T18:27:21.612098Z  INFO blent: ADB forwarding ready for FAST1 (42847, 42848)
+2026-11-13T18:27:21.613406Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.613526Z  INFO blent::monitor: Tablet 1 connected over USB (FAST1)
+2026-11-13T18:27:21.613861Z  INFO blent: ADB forwarding ready for FAST2 (42849, 42850)
+2026-11-13T18:27:21.615124Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.615198Z  INFO blent::monitor: Tablet 2 connected over USB (FAST2)
+2026-11-13T18:27:21.621359Z  INFO blent::input::linux: Tablet detached — virtual input devices removed
+T390 scaling clients=2 connect_us=54407 stop_us=36949
+2026-11-13T18:27:21.717114Z  INFO blent::stream: Stream server on tcp://127.0.0.1:34737
+2026-11-13T18:27:21.717156Z  INFO blent::input: Input server on ws://127.0.0.1:34738
+2026-11-13T18:27:21.717249Z  INFO blent: Tablet slot 2 ready: video port 34737, input port 34738
+2026-11-13T18:27:21.717337Z  INFO blent::input: Virtual input devices are all off (input_touch / input_pen / input_pointer in config.toml) — the tablet is display-only
+2026-11-13T18:27:21.719200Z  INFO blent::stream: Stream server on tcp://127.0.0.1:34739
+2026-11-13T18:27:21.719226Z  INFO blent::input: Input server on ws://127.0.0.1:34740
+2026-11-13T18:27:21.719326Z  INFO blent: Tablet slot 3 ready: video port 34739, input port 34740
+2026-11-13T18:27:21.719403Z  INFO blent::input: Virtual input devices are all off (input_touch / input_pen / input_pointer in config.toml) — the tablet is display-only
+2026-11-13T18:27:21.720114Z  INFO blent::stream: Stream server on tcp://127.0.0.1:34741
+2026-11-13T18:27:21.720140Z  INFO blent::input: Input server on ws://127.0.0.1:34742
+2026-11-13T18:27:21.720244Z  INFO blent: Tablet slot 4 ready: video port 34741, input port 34742
+2026-11-13T18:27:21.720326Z  INFO blent::input: Virtual input devices are all off (input_touch / input_pen / input_pointer in config.toml) — the tablet is display-only
+2026-11-13T18:27:21.752522Z  INFO blent: ADB forwarding ready for FAST1 (34735, 34736)
+2026-11-13T18:27:21.753188Z  INFO blent: ADB forwarding ready for FAST2 (34737, 34738)
+2026-11-13T18:27:21.753743Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.753816Z  INFO blent::monitor: Tablet 1 connected over USB (FAST1)
+2026-11-13T18:27:21.754384Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.754434Z  INFO blent::monitor: Tablet 2 connected over USB (FAST2)
+2026-11-13T18:27:21.756150Z  INFO blent: ADB forwarding ready for FAST3 (34739, 34740)
+2026-11-13T18:27:21.757026Z  INFO blent: ADB forwarding ready for FAST4 (34741, 34742)
+2026-11-13T18:27:21.757346Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.757396Z  INFO blent::monitor: Tablet 3 connected over USB (FAST3)
+2026-11-13T18:27:21.758217Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.758269Z  INFO blent::monitor: Tablet 4 connected over USB (FAST4)
+2026-11-13T18:27:21.765039Z  INFO blent::input::linux: Tablet detached — virtual input devices removed
+2026-11-13T18:27:21.765247Z  INFO blent::input::linux: Tablet detached — virtual input devices removed
+2026-11-13T18:27:21.765356Z  INFO blent::input::linux: Tablet detached — virtual input devices removed
+T390 scaling clients=4 connect_us=55105 stop_us=37192
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 624 filtered out; finished in 0.47s
+
+ok
+test discovery_tests::t390_slow_token_delivery_cannot_delay_another_tablet ... ok
+test discovery_tests::t435_shared_umask_keeps_monitor_fixture_private ... ok
+test discovery_tests::t511_tablet_routes_require_valid_non_loopback_ipv4 ... ok
+test discovery_tests::t708_scaling_fixture_avoids_an_occupied_pid_derived_slot ...
+running 1 test
+test discovery_tests::t708_scaling_fixture_avoids_an_occupied_pid_derived_slot ... 2026-11-13T18:27:21.902002Z  INFO blent::stream: Stream server on tcp://127.0.0.1:33895
+2026-11-13T18:27:21.902053Z  INFO blent::input: Input server on ws://127.0.0.1:33896
+2026-11-13T18:27:21.902258Z  INFO blent: Tablet slot 2 ready: video port 33895, input port 33896
+2026-11-13T18:27:21.902366Z  INFO blent::input: Virtual input devices are all off (input_touch / input_pen / input_pointer in config.toml) — the tablet is display-only
+2026-11-13T18:27:21.937781Z  INFO blent: ADB forwarding ready for FAST1 (33893, 33894)
+2026-11-13T18:27:21.939027Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.939082Z  INFO blent::monitor: Tablet 1 connected over USB (FAST1)
+2026-11-13T18:27:21.939511Z  INFO blent: ADB forwarding ready for FAST2 (33895, 33896)
+2026-11-13T18:27:21.940739Z  INFO blent: Blent token delivery command completed on tablet
+2026-11-13T18:27:21.940800Z  INFO blent::monitor: Tablet 2 connected over USB (FAST2)
+2026-11-13T18:27:21.946686Z  INFO blent::input::linux: Tablet detached — virtual input devices removed
+T390 scaling clients=2 connect_us=54156 stop_us=37562
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 624 filtered out; finished in 0.15s
+
+ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 617 filtered out; finished in 0.78s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'daemon_activity::tests::', '--nocapture']
+
+running 5 tests
+test daemon_activity::tests::t1027_daemon_owns_one_source_and_preserves_preferences_edges_and_native_retirement ... ok
+test daemon_activity::tests::t1027_isolated_daemon_joins_original_source_and_handles_shutdown_requests ... ok
+test daemon_activity::tests::t1027_primary_and_adb_usb_extra_builders_forward_the_original_channel ... ok
+test daemon_activity::tests::t1027_unsupported_capabilities_and_loss_remain_visible_without_recreation ... ok
+test daemon_activity::tests::t1045_extra_adb_usb_sessions_keep_saved_viewer_preferences ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 620 filtered out; finished in 0.47s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'stream::resources::', '--nocapture']
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 625 filtered out; finished in 0.00s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 't1016_registration_pause_waits_for_actual_native_generation_and_resumes_fresh_codec_keyframe', '--nocapture']
+
+running 1 test
+test capture::activity_tests::registered::t1016_registration_pause_waits_for_actual_native_generation_and_resumes_fresh_codec_keyframe ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 624 filtered out; finished in 0.31s
+
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/66c07be479eae2be/out/blent-66c07be479eae2be', 'monitor::test_support::', '--nocapture']
+
+running 3 tests
+test monitor::test_support::t420_token_retry_does_not_launch_over_another_foreground_app ... ok
+test monitor::test_support::t431_inflight_mutation_does_not_consume_token_backoff ... ok
+test monitor::test_support::t431_reassignment_rejects_late_recovery_and_cancels_work ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 622 filtered out; finished in 0.01s
+
+PROCESS EXIT 0
+COMMAND ['/backups/disk2/projects/blent/target/debug/build/blent/4a4e48b452121ffa/out/blent-4a4e48b452121ffa', 'stream::resources::t391_one_two_four_sessions_release_resources', '--nocapture']
+
+running 1 test
+test stream::resources::t391_one_two_four_sessions_release_resources ...
+thread 'stream::resources::t391_one_two_four_sessions_release_resources' (1147238) panicked at host/src/stream/resources.rs:361:5:
+
+running 1 test
+test stream::resources::t391_one_two_four_sessions_release_resources ... T391 resources {"sessions":1,"before":{"fds":10,"tasks":0,"rss_kib":11776},"peak":{"fds":22,"tasks":9,"rss_kib":31928},"after":{"fds":10,"tasks":0,"rss_kib":32540},"retained_peak_bytes":[655361],"readers":[{"frames":120,"configs":2,"arrival_us":[946,741,743,670,697,667,722,854,714,731,685,641,701,742,757,731,634,553,607,559,540,635,580,716,528,579,450,428,420,309,474,300,293,401,285,409,302,305,380,347,412,455,558,599,636,803,627,670,624,657,615,600,629,614,631,603,634,625,640,614,746,775,677,794,1048,934,912,922,865,686,990,657,559,522,485,574,399,392,342,342,384,579,373,342,365,426,794,685,516,396,556,471,467,343,330,322,295,449,322,321,357,344,326,424,306,446,300,413,422,422,420,318,392,512,300,528,416,316,320,292]}],"allocations":{"allocations":3518,"reallocations":731,"requested_bytes":8533379,"explicit_copy_bytes":0,"scanner_input_bytes":0}}
+FAILED
+
+failures:
+
+failures:
+    stream::resources::t391_one_two_four_sessions_release_resources
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1136 filtered out; finished in 2.06s
+
+
+thread 'stream::resources::t391_one_two_four_sessions_release_resources' (1147240) panicked at host/src/stream/resources.rs:81:52:
+called `Result::unwrap()` on an `Err` value: Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    stream::resources::t391_one_two_four_sessions_release_resources
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1136 filtered out; finished in 2.07s
+
+PROCESS EXIT 101

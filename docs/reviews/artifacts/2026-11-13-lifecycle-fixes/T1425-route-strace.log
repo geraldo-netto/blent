@@ -1,0 +1,52 @@
+1097836 execve("/tmp/blent-t1422-coverage/objects/blent-66c07be479eae2be", ["/tmp/blent-t1422-coverage/object"..., "--exact", "monitor::route_tests::t1346_fail"..., "--nocapture"], 0x7ffe4b938fb0 /* 105 vars */) = 0
+1097836 write(1, "\nrunning 1 test\n", 16) = 16
+1097836 write(1, "test monitor::route_tests::t1346"..., 95) = 95
+1097837 write(9, "UsbFfs tcp:9999 localabstract:ex"..., 39) = 39
+1097837 write(9, "#!/bin/sh\nprintf '%s\\n' \"$*\" >> "..., 600) = 600
+1097844 execve("/tmp/.tmpFDmT73/adb", ["/tmp/.tmpFDmT73/adb", "-s", "USB", "shell", "getprop", "ro.serialno"], 0x60a3b287f2e0 /* 106 vars */) = 0
+1097840 write(10, "\1\0\0\0\0\0\0\0", 8) = 8
+1097844 write(1, "-s USB shell getprop ro.serialno"..., 33) = 33
+1097845 execve("/usr/bin/cat", ["cat"], 0x56e457b9faa8 /* 106 vars */ <unfinished ...>
+1097844 wait4(-1,  <unfinished ...>
+1097845 <... execve resumed>)           = 0
+1097845 +++ exited with 0 +++
+1097844 <... wait4 resumed>[{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 1097845
+1097844 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=1097845, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+1097844 wait4(-1, 0x7fff5bceae1c, WNOHANG, NULL) = -1 ECHILD (No child processes)
+1097844 +++ exited with 0 +++
+1097840 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=1097844, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+1097840 wait4(1097844, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], WNOHANG, NULL) = 1097844
+1097842 write(10, "\1\0\0\0\0\0\0\0", 8) = 8
+1097840 write(10, "\1\0\0\0\0\0\0\0", 8) = 8
+1097842 +++ exited with 0 +++
+1097846 +++ exited with 0 +++
+1097840 write(10, "\1\0\0\0\0\0\0\0", 8) = 8
+1097840 write(4, "\1\0\0\0\0\0\0\0", 8) = 8
+1097837 write(2, "\nthread 'monitor::route_tests::t"..., 181) = 181
+1097837 write(2, "note: run with `RUST_BACKTRACE=1"..., 78) = 78
+1097840 +++ exited with 0 +++
+1097847 +++ exited with 0 +++
+1097837 +++ exited with 0 +++
+1097836 write(1, "FAILED", 6)           = 6
+1097836 write(1, "\n", 1)               = 1
+1097836 write(1, "\nfailures:\n", 11)   = 11
+1097836 write(1, "\nfailures:\n", 11)   = 11
+1097836 write(1, "    monitor::route_tests::t1346_"..., 90) = 90
+1097836 write(1, "\n", 1)               = 1
+1097836 write(1, "test result: ", 13)   = 13
+1097836 write(1, "FAILED", 6)           = 6
+1097836 write(1, ". 0 passed; 1 failed; 0 ignored;"..., 61) = 61
+1097836 write(1, "; finished in 0.02s", 19) = 19
+1097836 write(1, "\n\n", 2)             = 2
+1097836 write(3, "\201rforpl\377\v\0\0\0\0\0\0\0 \0\0\0\0\0\0\0C\32\0\0\0\0\0\0"..., 4096) = 4096
+1097836 write(3, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 479232) = 479232
+1097836 write(3, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 4096) = 4096
+1097836 write(3, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 155648) = 155648
+1097836 write(3, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1168) = 1168
+1097836 write(3, "\352\16\243\3x\332\265TAn\3330\20D\177$\311\266\24\35\233\34\v8@\321\\rY\254\250\265"..., 167936) = 167936
+1097836 write(3, "\263\322Y+P\255\324\377\251\\\256\234\247\351\355\215rk\235\346@S\27\303\20\0034.\242\322\252\250"..., 160) = 160
+1097841 +++ exited with 101 +++
+1097839 +++ exited with 101 +++
+1097843 +++ exited with 101 +++
+1097838 +++ exited with 101 +++
+1097836 +++ exited with 101 +++
