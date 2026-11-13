@@ -1,0 +1,31 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.82s
+     Running unittests src/lib.rs (target/debug/deps/blent-d512991ead5280bc)
+
+running 2 tests
+test usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup ... FAILED
+test usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority ... FAILED
+
+failures:
+
+---- usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup stdout ----
+
+thread 'usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup' (1383375) panicked at host/src/usb/tests/identity.rs:15:5:
+T1378: failed identity kept old session
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority stdout ----
+
+thread 'usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority' (1383380) panicked at host/src/usb/tests/identity.rs:46:9:
+assertion `left == right` failed: T1378: invalid observation retained identity
+  left: Some("original")
+ right: None
+
+
+failures:
+    usb::tests::identity::t1378_failed_identity_revokes_session_but_preserves_original_cleanup
+    usb::tests::identity::t1378_invalid_identity_never_reuses_cached_retirement_authority
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 758 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p blent --lib`

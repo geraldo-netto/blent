@@ -94,6 +94,9 @@ impl Network {
         ))
     }
     async fn observe<C: Commands>(&mut self, adb: &Adb<C>, devices: &[String]) {
+        // Current observations alone authorize alias selection and cleanup.
+        // Active sessions retain their original identity/debt independently.
+        self.identities.clear();
         self.launches.refresh(devices);
         for serial in devices {
             if let Some(identity) = adb.identity(serial).await {

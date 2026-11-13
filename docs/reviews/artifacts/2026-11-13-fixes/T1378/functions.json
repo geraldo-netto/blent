@@ -1,0 +1,19 @@
+[
+  {
+    "file": "host/src/usb/network.rs",
+    "name": "observe",
+    "line": 96,
+    "language": "rust",
+    "covered": 12,
+    "total": 15,
+    "percent": 80.0,
+    "passes": true,
+    "missing": [
+      97,
+      98,
+      107
+    ],
+    "source_sha256": "30391c336f5e856fbf05dd2cca0625bceadffcca7b85673ecf1189eb78690d1f",
+    "complexity": 4
+  }
+]

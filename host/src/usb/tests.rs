@@ -975,3 +975,5 @@ fn t1358_removed_authentication_toggle_cannot_disable_preview_credentials() {
     assert!(!toml::to_string(&config).unwrap().contains("require_token"));
     assert!(monitor::Monitor::new(Adb(Fake::default()), config, watch::channel(false).1).is_ok());
 }
+
+mod identity;
