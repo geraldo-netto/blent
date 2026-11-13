@@ -1,0 +1,237 @@
+{
+  "tool": "LLVM (http://llvm.org/):\n  LLVM version 23.1.5-rust-1.100.0-stable\n  Optimized build.",
+  "source_sha256": {
+    "host/src/control_workers.rs": "7f75e0f50b6566a8a9688621343908742252eb7b1a0566957f010b5b389aad06",
+    "host/src/runtime_owner.rs": "be703311dd966c577c8a228de272581f3825614cda5f923293697be9dfa6fa82",
+    "host/src/process_retirement.rs": "f943d70cfe2296280932e996371d424c32f1fce4e6608d5ff7a2a599b469d2ed",
+    "host/src/config_jobs.rs": "9493e5df6f73b122c5a6c75162452770b2d85d17978a31ecc83e3e21c0a41f36"
+  },
+  "object_sha256": {
+    "control_exit:test:True": "b4ae7f5647bc3c46968380fcf0ad6312d6c8f40b970987c32bd0f836a04a38c3",
+    "activity_exit:test:True": "91d3595adbdb545bb50486e1009bfafadfab17ef61a1d19f9c96c5ab4f372cb9",
+    "runtime_exit:test:True": "ded8de4171dfdb32d2ef4a4cd001c51175f6fef8cd96a0a5163827ca9c01e3d4",
+    "wifi_exit:test:True": "55eec82e05d8c38d71a20f8f95b07a3ec895d37a61ac631f4e07ad9720deac56",
+    "process_exit:test:True": "95f513f4bc4267944254ebcde4c486817c2ebcdb99c9e49dad7f93328df37585",
+    "blent:lib:True": "4a1560f39f5ce8c9fb9ca098c99e16500234de2e9b64d8ca985f491c438fb4ae",
+    "blent:bin:False": "cc24402247a09aa92631725a387af41cc313366b5cb0ba3b71c63a5e148490e3",
+    "blent:bin:True": "2397b54860e40bd2564ae6dab7511633e9a752da8463637fd1ed2d029798d02b"
+  },
+  "functions": [
+    {
+      "file": "host/src/control_workers.rs",
+      "function": "spawn",
+      "first": 54,
+      "last": 64,
+      "covered": 11,
+      "executable": 11,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "function": "request_shutdown",
+      "first": 15,
+      "last": 19,
+      "covered": 4,
+      "executable": 4,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "function": "run",
+      "first": 26,
+      "last": 43,
+      "covered": 14,
+      "executable": 14,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "function": "reserve",
+      "first": 25,
+      "last": 38,
+      "covered": 14,
+      "executable": 14,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "drop",
+      "first": 33,
+      "last": 35,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "drop",
+      "first": 39,
+      "last": 41,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "new",
+      "first": 53,
+      "last": 82,
+      "covered": 28,
+      "executable": 28,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "submit",
+      "first": 83,
+      "last": 94,
+      "covered": 7,
+      "executable": 8,
+      "percent": 87.5
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "close",
+      "first": 95,
+      "last": 103,
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "drop",
+      "first": 106,
+      "last": 108,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "new",
+      "first": 117,
+      "last": 119,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "with_pool",
+      "first": 121,
+      "last": 126,
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "on",
+      "first": 127,
+      "last": 133,
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "reserve",
+      "first": 134,
+      "last": 141,
+      "covered": 8,
+      "executable": 8,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "request",
+      "first": 142,
+      "last": 154,
+      "covered": 13,
+      "executable": 13,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "snapshot",
+      "first": 157,
+      "last": 159,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "transact",
+      "first": 162,
+      "last": 164,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "run",
+      "first": 166,
+      "last": 180,
+      "covered": 9,
+      "executable": 9,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "execute",
+      "first": 181,
+      "last": 190,
+      "covered": 9,
+      "executable": 9,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "get",
+      "first": 197,
+      "last": 213,
+      "covered": 15,
+      "executable": 15,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "close",
+      "first": 214,
+      "last": 219,
+      "covered": 6,
+      "executable": 6,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "executor",
+      "first": 227,
+      "last": 229,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "shutdown",
+      "first": 230,
+      "last": 232,
+      "covered": 3,
+      "executable": 3,
+      "percent": 100.0
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "function": "configured_pool",
+      "first": 233,
+      "last": 240,
+      "covered": 7,
+      "executable": 7,
+      "percent": 100.0
+    }
+  ]
+}

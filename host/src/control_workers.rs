@@ -56,7 +56,7 @@ impl Worker {
         name: &str,
         run: impl FnOnce() + Send + 'static,
     ) -> io::Result<Self> {
-        let slot = pool.0.reserve()?;
+        let slot = crate::process_retirement::PROCESS.reserve(&pool.0)?;
         let handle = std::thread::Builder::new().name(name.into()).spawn(run)?;
         Ok(Self {
             owned: Some((Thread::new(handle), slot)),

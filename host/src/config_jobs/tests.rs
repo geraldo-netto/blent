@@ -303,3 +303,90 @@ async fn t826_cancellation_during_commit_retains_real_outcome() {
         "T826: cancellation cannot roll back an in-progress commit"
     );
 }
+
+struct DiscardProbe {
+    discarded: Arc<AtomicUsize>,
+    panic: bool,
+}
+impl Drop for DiscardProbe {
+    fn drop(&mut self) {
+        self.discarded.fetch_add(1, Ordering::AcqRel);
+        assert!(!self.panic, "T1432 opaque queued destructor panic");
+    }
+}
+fn discarded_request(discarded: Arc<AtomicUsize>, panic: bool) -> Request {
+    let probe = DiscardProbe { discarded, panic };
+    let (reply, _response) = oneshot::channel();
+    Request {
+        backend: Arc::new(blent_config::storage::ConfigStore::default()),
+        operation: Operation::Edit(Box::new(move |_| {
+            let _borrow = &probe;
+            Ok(())
+        })),
+        cancelled: Arc::new(AtomicBool::new(false)),
+        reply,
+        _admission: Admission(Arc::new(AtomicUsize::new(1))),
+    }
+}
+#[test]
+fn t1432_closed_queue_contains_discard_panic_and_continues_original_worker() {
+    let discarded = Arc::new(AtomicUsize::new(0));
+    let (sender, receiver) = mpsc::sync_channel(2);
+    for panic in [true, false] {
+        sender
+            .send(discarded_request(discarded.clone(), panic))
+            .ok()
+            .unwrap();
+    }
+    drop(sender);
+    run(
+        Arc::new(Mutex::new(receiver)),
+        Arc::new(AtomicBool::new(true)),
+    );
+    assert_eq!(discarded.load(Ordering::Acquire), 2);
+}
+
+#[test]
+fn t1432_cutoff_gate_fixture() {
+    if std::env::var_os("BLENT_T1432_GATE").is_none() {
+        return;
+    }
+    let held_initializer = SHARED.lock().unwrap();
+    let (started, entered) = mpsc::channel();
+    let closing = std::thread::spawn(move || {
+        started.send(()).unwrap();
+        crate::runtime_owner::request_shutdown();
+    });
+    entered.recv().unwrap();
+    let end = std::time::Instant::now() + std::time::Duration::from_secs(2);
+    while crate::runtime_owner::check_running().is_ok() && std::time::Instant::now() < end {
+        std::thread::yield_now();
+    }
+    let cutoff = crate::runtime_owner::check_running().is_err();
+    drop(held_initializer);
+    closing.join().unwrap();
+    assert!(
+        cutoff,
+        "T1432 held shared initialization gate delayed process-wide cutoff"
+    );
+}
+
+#[test]
+fn t1432_held_shared_initialization_cannot_delay_process_cutoff() {
+    use blent_config::commands::SyncCommandExt;
+    let output = std::process::Command::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "config_jobs::tests::t1432_cutoff_gate_fixture",
+            "--nocapture",
+        ])
+        .env("BLENT_T1432_GATE", "1")
+        .output_timeout(std::time::Duration::from_secs(20))
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+}

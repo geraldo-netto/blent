@@ -11,7 +11,7 @@ use blent_config::{
 };
 use std::sync::{
     atomic::{AtomicBool, AtomicUsize, Ordering},
-    mpsc, Arc, Mutex, OnceLock,
+    mpsc, Arc, Mutex,
 };
 use tokio::sync::oneshot;
 
@@ -41,9 +41,13 @@ impl Drop for Cancellation {
     }
 }
 
-struct Executor {
+struct QueueOwner {
     sender: Option<mpsc::SyncSender<Request>>,
     workers: Vec<Worker>,
+}
+struct Executor {
+    queue: Mutex<QueueOwner>,
+    stopped: Arc<AtomicBool>,
 }
 impl Executor {
     fn new(pool: WorkerPool, count: usize) -> Result<Arc<Self>> {
@@ -54,24 +58,53 @@ impl Executor {
         let (sender, receiver) = mpsc::sync_channel(count);
         let receiver = Arc::new(Mutex::new(receiver));
         let mut executor = Self {
-            sender: Some(sender),
-            workers: Vec::new(),
+            queue: Mutex::new(QueueOwner {
+                sender: Some(sender),
+                workers: Vec::new(),
+            }),
+            stopped: Arc::new(AtomicBool::new(false)),
         };
         for _ in 0..count {
             let receiver = receiver.clone();
-            executor.workers.push(Worker::spawn(
-                pool.clone(),
-                "blent-config-query",
-                move || run(receiver),
-            )?);
+            let stopped = executor.stopped.clone();
+            executor
+                .queue
+                .get_mut()
+                .unwrap()
+                .workers
+                .push(Worker::spawn(
+                    pool.clone(),
+                    "blent-config-query",
+                    move || run(receiver, stopped),
+                )?);
         }
         Ok(Arc::new(executor))
+    }
+    fn submit(&self, request: Request) -> Result<()> {
+        crate::process_retirement::PROCESS.check_running()?;
+        let result = {
+            let queue = self.queue.lock().unwrap();
+            match &queue.sender {
+                Some(sender) => sender.try_send(request),
+                None => Err(mpsc::TrySendError::Disconnected(request)),
+            }
+        };
+        // Rejected closures/backends are dropped after the queue lock is released.
+        result.map_err(|_| anyhow::anyhow!("Configuration worker queue busy or unavailable"))
+    }
+    fn close(&self) {
+        let workers = {
+            let mut queue = self.queue.lock().unwrap();
+            self.stopped.store(true, Ordering::Release);
+            drop(queue.sender.take());
+            std::mem::take(&mut queue.workers)
+        };
+        drop(workers); // Reaper retains original thread/TLS ownership, without joining here.
     }
 }
 impl Drop for Executor {
     fn drop(&mut self) {
-        drop(self.sender.take());
-        self.workers.clear(); // Reaper retains active native ownership and joins.
+        self.close();
     }
 }
 
@@ -110,18 +143,13 @@ impl Store {
         let admission = self.reserve()?;
         let cancelled = Cancellation(Arc::new(AtomicBool::new(false)));
         let (reply, response) = oneshot::channel();
-        self.executor
-            .sender
-            .as_ref()
-            .context("Configuration executor retired")?
-            .try_send(Request {
-                backend: self.backend.clone(),
-                operation,
-                cancelled: cancelled.0.clone(),
-                reply,
-                _admission: admission,
-            })
-            .map_err(|_| anyhow::anyhow!("Configuration worker queue busy or unavailable"))?;
+        self.executor.submit(Request {
+            backend: self.backend.clone(),
+            operation,
+            cancelled: cancelled.0.clone(),
+            reply,
+            _admission: admission,
+        })?;
         response.await.context("Configuration request failed")?
     }
 }
@@ -135,13 +163,19 @@ impl AsyncTransactions for Store {
         Box::pin(self.request(Operation::Edit(edit)))
     }
 }
-fn run(receiver: Arc<Mutex<mpsc::Receiver<Request>>>) {
+fn run(receiver: Arc<Mutex<mpsc::Receiver<Request>>>, stopped: Arc<AtomicBool>) {
     loop {
         let received = { receiver.lock().unwrap().recv() };
         let Ok(request) = received else { return };
-        // No user/storage code runs with the queue lock. A request panic closes
-        // only its reply; sibling requests and workers remain usable.
-        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| execute(request)));
+        // No user/storage code runs with the queue lock. Discarding a queued
+        // closure/backend is also user code and retains the same panic boundary.
+        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            if stopped.load(Ordering::Acquire) {
+                drop(request);
+            } else {
+                execute(request);
+            }
+        }));
     }
 }
 fn execute(request: Request) {
@@ -154,16 +188,47 @@ fn execute(request: Request) {
     };
     let _ = request.reply.send(result);
 }
+#[derive(Default)]
+struct Shared {
+    closed: bool,
+    executor: Option<Result<Arc<Executor>, String>>,
+}
+impl Shared {
+    fn get(&mut self) -> Result<Arc<Executor>> {
+        if self.closed {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::BrokenPipe,
+                crate::runtime_owner::AdmissionClosed,
+            )
+            .into());
+        }
+        self.executor
+            .get_or_insert_with(|| {
+                configured_pool(std::env::var("BLENT_CONFIG_WORKERS"))
+                    .map_err(|error| error.to_string())
+            })
+            .as_ref()
+            .cloned()
+            .map_err(|error| anyhow::anyhow!(error.clone()))
+    }
+    fn close(&mut self) {
+        self.closed = true;
+        if let Some(Ok(executor)) = &self.executor {
+            executor.close();
+        }
+    }
+}
+// The gate serializes original construction with process cutoff. A late
+// initializer cannot publish a static worker after shutdown inspected the slot.
+static SHARED: Mutex<Shared> = Mutex::new(Shared {
+    closed: false,
+    executor: None,
+});
 fn executor() -> Result<Arc<Executor>> {
-    static EXECUTOR: OnceLock<Result<Arc<Executor>, String>> = OnceLock::new();
-    EXECUTOR
-        .get_or_init(|| {
-            configured_pool(std::env::var("BLENT_CONFIG_WORKERS"))
-                .map_err(|error| error.to_string())
-        })
-        .as_ref()
-        .cloned()
-        .map_err(|error| anyhow::anyhow!(error.clone()))
+    SHARED.lock().unwrap().get()
+}
+pub(crate) fn shutdown() {
+    SHARED.lock().unwrap().close();
 }
 fn configured_pool(value: Result<String, std::env::VarError>) -> Result<Arc<Executor>> {
     let capacity = match value {

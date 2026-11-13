@@ -1,0 +1,165 @@
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 26s
+
+RUN blent:lib:True FILTER=process_retirement::
+
+running 3 tests
+test process_retirement::tests::t1411_completed_history_is_bounded_and_empty_exit_finishes ... ok
+test process_retirement::tests::t1411_cutoff_preserves_original_admissions_and_rejects_reuse ... ok
+test process_retirement::tests::t1411_observation_capacity_is_independent_of_pool_release ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1154 filtered out; finished in 0.58s
+
+
+RUN blent:lib:True FILTER=control_workers::
+
+running 3 tests
+test control_workers::tests::t811_capacity_rejects_invalid_values_and_preserves_bounded_admission ... ok
+test control_workers::tests::t811_held_retirement_keeps_capacity_until_join_and_never_blocks_other_completions ...
+thread 'panic' (1294851) panicked at host/src/control_workers.rs:107:62:
+fixture panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test control_workers::tests::t814_thread_local_cleanup_cannot_block_other_retirements ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1154 filtered out; finished in 0.05s
+
+
+RUN blent:lib:True FILTER=config_jobs::
+
+running 9 tests
+test config_jobs::tests::t1432_closed_queue_contains_discard_panic_and_continues_original_worker ...
+thread 'config_jobs::tests::t1432_closed_queue_contains_discard_panic_and_continues_original_worker' (1294860) panicked at host/src/config_jobs/tests.rs:314:9:
+T1432 opaque queued destructor panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test config_jobs::tests::t1432_cutoff_gate_fixture ... ok
+test config_jobs::tests::t1432_held_shared_initialization_cannot_delay_process_cutoff ... ok
+test config_jobs::tests::t826_abandoned_active_read_retains_capacity_until_native_exit ... ok
+test config_jobs::tests::t826_cancellation_during_commit_retains_real_outcome ... ok
+test config_jobs::tests::t826_cancelled_lock_wait_never_commits_and_worker_failure_is_observed ...
+thread 'blent-config-query' (1294903) panicked at host/src/config_jobs/tests.rs:160:13:
+broken snapshot
+ok
+test config_jobs::tests::t826_held_store_bounds_queue_cancels_queued_work_and_retains_worker ... ok
+test config_jobs::tests::t826_reusable_sibling_progress_and_partial_construction_retirement ... ok
+test config_jobs::tests::t826_worker_capacity_rejects_invalid_or_nonunicode_configuration ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 1148 filtered out; finished in 0.29s
+
+
+RUN blent:lib:True FILTER=camera_control::
+
+running 10 tests
+test camera_control::retirement_tests::owned_future::t1125_original_future_drops_before_its_own_native_settlement_wait ...
+thread 'blent-camera' (1294969) panicked at host/src/camera_control/retirement_tests.rs:76:14:
+T1125 original factory panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test camera_control::retirement_tests::scopes::t1125_nested_scope_preserves_original_cutoff_and_inflight_reservation ... ok
+test camera_control::retirement_tests::t1125_group_bounds_reserve_before_effects_and_share_original_scopes ... ok
+test camera_control::retirement_tests::t1125_owner_loss_keeps_native_fence_without_blocking_sibling ... ok
+test camera_control::retirement_tests::t1125_success_failure_and_panic_cannot_replace_unretired_original ...
+thread 'blent-camera' (1294995) panicked at host/src/camera_control/retirement_tests.rs:76:14:
+T1125 original factory panic
+
+thread 'blent-camera' (1294995) panicked at host/src/camera_control/retirement_tests.rs:76:14:
+T1125 original factory panic
+ok
+test camera_control::tests::t543_controller_owns_worker_and_validates_before_start ... ok
+test camera_control::tests::t543_failed_session_waits_for_explicit_retry ... ok
+test camera_control::tests::t543_manual_start_switch_stop_and_owner_exit_retire_in_order ... ok
+test camera_control::tests::t811_drop_returns_while_native_retirement_is_held ... ok
+test camera_control::workspace_close_tests::t1272_camera_close_returns_the_original_worker_fence ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 1147 filtered out; finished in 0.19s
+
+
+RUN blent:lib:True FILTER=audio_control::
+
+running 9 tests
+test audio_control::retirement::panic_tests::t995_panicking_backend_future_drops_owned_native_guard_before_retirement_wait ...
+thread 'blent-audio-control' (1295018) panicked at host/src/audio_control/retirement.rs:175:13:
+T995 panic while original future owns native proof
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test audio_control::retirement::tests::t995_audio_error_keeps_original_admission_until_actual_completion_without_stalling_sibling ... ok
+test audio_control::retirement::tests::t995_audio_observation_capacity_and_replacement_require_real_completion ... ok
+test audio_control::retirement::tests::t995_audio_success_and_panic_keep_original_admission_until_actual_completion ...
+thread 'blent-audio-control' (1295038) panicked at host/src/audio_control/retirement.rs:82:26:
+T995 backend failure with original native cleanup pending
+ok
+test audio_control::tests::t718_explicit_start_stop_failure_and_drop_retire ... ok
+test audio_control::tests::t718_pending_start_reserves_admission_before_worker_status ... ok
+test audio_control::tests::t811_drop_returns_while_native_retirement_is_held ... ok
+test audio_control::tests::t977_invalid_target_is_rejected_before_control_admission ... ok
+test audio_control::workspace_close_tests::t1272_audio_close_returns_the_original_worker_fence ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 1148 filtered out; finished in 0.11s
+
+
+RUN blent:bin:True FILTER=persistence::
+
+running 4 tests
+test persistence::retirement_tests::t814_held_commit_does_not_hold_control_shutdown ... ok
+test persistence::tests::t385_settings_and_mode_transactions_share_one_ordered_worker ... ok
+test persistence::tests::t385_shutdown_cancels_lock_wait_and_queued_work_then_joins ... ok
+test persistence::tests::t824_owned_writer_uses_an_independent_transaction_adapter ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 624 filtered out; finished in 0.18s
+
+
+RUN blent:bin:True FILTER=daemon_shutdown::
+
+running 2 tests
+test daemon_shutdown::tests::t1423_only_requested_admission_rejection_becomes_graceful_stop ... ok
+test daemon_shutdown::tests::t1423_owner_drop_aborts_original_signal_observer ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 626 filtered out; finished in 0.00s
+
+
+RUN control_exit:test:True FILTER=
+
+running 4 tests
+test t1432_configuration_exit_fixture ... ok
+test t1432_control_exit_fixture ... ok
+test t1432_exit_waits_for_original_control_work_and_tls ... ok
+test t1432_shared_configuration_pool_closes_without_static_deadlock ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.07s
+
+
+RUN activity_exit:test:True FILTER=
+
+running 2 tests
+test t1421_activity_exit_fixture ... ok
+test t1421_exit_retains_delayed_activity_creation_and_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.96s
+
+
+RUN process_exit:test:True FILTER=
+
+running 2 tests
+test t1411_process_exit_fixture ... ok
+test t1411_process_exit_retains_routes_and_async_native_session_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+
+
+RUN runtime_exit:test:True FILTER=
+
+running 2 tests
+test t819_final_runtime_exit_is_bounded_after_started_native_work ... ok
+test t819_runtime_exit_fixture ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+RUN wifi_exit:test:True FILTER=
+
+running 2 tests
+test t1365_exit_fixture ... ok
+test t1365_process_exit_waits_for_original_cleanup ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s

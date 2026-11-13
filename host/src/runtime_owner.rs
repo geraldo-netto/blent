@@ -13,7 +13,9 @@ impl std::error::Error for AdmissionClosed {}
 
 /// Stop new admissions and wake owners; `run` retains the executor until settlement.
 pub fn request_shutdown() {
+    // Cut off all producers before waiting for an original shared initializer.
     crate::process_retirement::PROCESS.close();
+    crate::config_jobs::shutdown();
 }
 
 /// Startup checkpoint only; each later admission still checks cutoff atomically.
@@ -31,6 +33,7 @@ pub fn run<T>(work: impl Future<Output = T>) -> std::io::Result<T> {
     // Keep the executor available to admitted asynchronous cleanup, including
     // cleanup triggered by error returns, caller cancellation and unwinding.
     let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| runtime.block_on(work)));
+    request_shutdown();
     runtime.block_on(crate::process_retirement::PROCESS.drain());
     runtime.shutdown_timeout(std::time::Duration::from_millis(budget as u64));
     match result {

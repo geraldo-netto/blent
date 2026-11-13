@@ -195,7 +195,7 @@ systemd user-service environment override.
 | --- | --- | --- | --- |
 | `BLENT_MONITOR_WORKERS` | 1 | 1..64 | GUI monitor-discovery owners, including stalled or retiring workers. |
 | `BLENT_WIFI_ATTEMPTS` | 8 | 1..64 | Active/retiring Wi-Fi attempts; one owner per address until native join. |
-| `BLENT_CONTROL_WORKERS` | 8 | 1..64 | Shared camera/audio/config control threads, including retiring owners. |
+| `BLENT_CONTROL_WORKERS` | 8 | 1..64 | Shared camera/audio/persistence control threads, including retiring owners. |
 | `BLENT_CONFIG_WORKERS` | 2 | 1..64 | Independent reusable configuration snapshot/edit threads and their bounded queue; more workers permit concurrent storage calls, while unfinished calls retain their original slots. |
 | `BLENT_PROCESS_LIMIT` | 128 | 1..4096 | Owned command/media children, including unreaped children and dependent cleanup. |
 | `BLENT_INPUT_LIMIT` | 64 | 1..4096 | Linux input backends, including unfinished constructors and original device identity cleanup. |
@@ -206,7 +206,7 @@ systemd user-service environment override.
 | `BLENT_DISPLAY_ROUTE_LIMIT` | 16 | 1..4096 | Active and retiring display ADB route owners; each retains its original worker and device/local-port leases until settlement. |
 | `BLENT_REAP_TIMEOUT_MS` | 100 ms | 1..60000 ms | Additional control wait after signalling; persistence uses this as its shutdown wait. |
 | `BLENT_SESSION_STOP_MS` | 5000 ms | 1..60000 ms | Session capture grace before abort and bounded final observation. |
-| `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after admitted session/display-route/activity/input cleanup settles. |
+| `BLENT_RUNTIME_STOP_MS` | 1000 ms | 1..60000 ms | Linux final Tokio shutdown wait after admitted session/display-route/activity/input/control cleanup settles. |
 | `BLENT_ENCODER_STOP_MS` | 1000 ms | 1..60000 ms | Encoder-task completion wait before refusing replacement. |
 
 Linux input reserves its backend admission before session startup, and publishes
@@ -306,12 +306,14 @@ typed admission-cutoff rejection caused by a requested stop becomes a graceful
 exit. A startup checkpoint precedes runtime/PID publication; later admissions
 serialize against the same cutoff. Existing owners retain their original cleanup
 proofs, and a remembered stop reaches the normal shutdown workflow after startup.
-The Linux entry point closes session/display-route/activity/input admission on normal
+The Linux entry point closes session/display-route/activity/input/control admission on normal
 return, error return or unwind. It asks active session/route owners to stop and
 keeps Tokio running until all original completion tickets settle, including the
 activity source stopped or cancelled by daemon teardown. Its process registry
-retains at most 12292 pending observations (session/route/input maxima of 4096 each plus
-four activity sources), with explicit exhaustion rejection even during the gap
+retains at most 12420 pending observations (session/route/input maxima of 4096 each,
+four activity sources, and shared/config control-pool maxima of 64 each). Custom
+control pools consume the same total observation bound; they are not collectively
+limited to the shared pool's 64 slots. Explicit exhaustion rejects new work even during the gap
 between pool release and completion publication. The pools remain the resource owners; the registry retains only
 original completion observations. Failed cleanup keeps the process alive and
 prevents new admission. Eventual exit requires original cleanup to succeed and
@@ -319,7 +321,15 @@ native/task retirement to become observable; a deadline does not grant release.
 Only after this drain does the final Tokio shutdown budget apply. Any unrelated,
 unadmitted blocking work still running after that budget ends with process exit,
 as covered by the separate bounded-runtime fixture; this is not a successful
-native-retirement report. The Wi-Fi process-exit fence remains independent.
+native-retirement report. Control worker observations include original thread and
+TLS destruction. Before draining these proofs, shutdown closes the static shared
+configuration executor's queue and transfers its original workers to retirement.
+Initialization and queue cutoff are serialized; process admission closes first,
+so an unfinished initializer cannot delay the other producers' cutoff. Queued
+requests are discarded under the existing panic boundary; already-started storage
+calls retain their actual outcomes. Idle shared workers no longer pin exit, and
+retained Store views cannot submit work after process cutoff.
+The Wi-Fi process-exit fence remains independent.
 Windows job/reaper acceptance and native counters are not established by these
 Linux results. Their former T737 tracking was retired without claiming completion;
 the current Windows validation obligations are listed in [TODO.md](../TODO.md).

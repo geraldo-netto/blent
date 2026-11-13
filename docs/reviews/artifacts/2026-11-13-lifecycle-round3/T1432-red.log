@@ -1,0 +1,29 @@
+
+running 1 test
+test t1432_exit_waits_for_original_control_work_and_tls ...
+thread 't1432_exit_waits_for_original_control_work_and_tls' (1203490) panicked at host/tests/control_exit.rs:120:5:
+T1432 normal TLS=false:
+running 1 test
+test t1432_control_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    t1432_control_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.01s
+
+
+thread 't1432_control_exit_fixture' (1203495) panicked at host/tests/control_exit.rs:78:5:
+T1432: runtime returned before original control worker/TLS exit
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    t1432_exit_waits_for_original_control_work_and_tls
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.02s

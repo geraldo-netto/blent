@@ -1,0 +1,98 @@
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> common/src/retirement.rs:96:14
+   |
+96 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+96 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+96 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: `blent-config` (lib) generated 1 warning (run `cargo fix --lib -p blent-config` to apply 1 suggestion)
+   Compiling blent v1.2.3 (/backups/disk2/projects/blent/host)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/activity.rs:31:10
+   |
+31 |         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |          ^^^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+   |
+31 -         .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+31 +         .try_update(Ordering::AcqRel, Ordering::Acquire, |value| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+   --> host/src/config_jobs.rs:103:14
+    |
+103 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |              ^^^^^^^^^^^^
+    |
+help: replace the use of the deprecated method
+    |
+103 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+103 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |count| {
+    |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<usize>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/media_storage.rs:26:14
+   |
+26 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+26 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+26 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+   |
+
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+  --> host/src/video_queue.rs:74:14
+   |
+74 |             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |              ^^^^^^^^^^^^
+   |
+help: replace the use of the deprecated method
+   |
+74 -             .fetch_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+74 +             .try_update(Ordering::AcqRel, Ordering::Acquire, |epoch| {
+   |
+
+warning: `blent` (lib) generated 4 warnings (run `cargo fix --lib -p blent` to apply 4 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 23.26s
+     Running tests/control_exit.rs (target/debug/build/blent/193d97decc7e2fbb/out/control_exit-193d97decc7e2fbb)
+
+running 1 test
+test t1432_shared_configuration_pool_closes_without_static_deadlock ...
+thread 't1432_shared_configuration_pool_closes_without_static_deadlock' (1272831) panicked at host/tests/control_exit.rs:151:9:
+T1432 shared config normal:
+running 1 test
+test t1432_configuration_exit_fixture ... FAILED
+
+failures:
+
+failures:
+    t1432_configuration_exit_fixture
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+
+thread 't1432_configuration_exit_fixture' (1272836) panicked at host/tests/control_exit/config.rs:98:5:
+T1432 shared executor reopened after cutoff
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    t1432_shared_configuration_pool_closes_without_static_deadlock
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p blent --test control_exit`

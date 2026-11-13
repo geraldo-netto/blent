@@ -1,0 +1,507 @@
+{
+  "tool": "scripts/complexity/check.py; blent-rust-source0.1.0 / syn2.0.119",
+  "maximum": 9,
+  "source_sha256": {
+    "host/src/control_workers.rs": "7f75e0f50b6566a8a9688621343908742252eb7b1a0566957f010b5b389aad06",
+    "host/src/config_jobs.rs": "9493e5df6f73b122c5a6c75162452770b2d85d17978a31ecc83e3e21c0a41f36",
+    "host/src/config_jobs/tests.rs": "00ecec573e501f18f08028cda3e67e53f65a76435cd11c701748cc1a51a97c64",
+    "host/src/process_retirement.rs": "f943d70cfe2296280932e996371d424c32f1fce4e6608d5ff7a2a599b469d2ed",
+    "host/src/runtime_owner.rs": "be703311dd966c577c8a228de272581f3825614cda5f923293697be9dfa6fa82",
+    "host/tests/control_exit.rs": "44df376bd6fbb71359776c72dc49e89faaf9ffa748350422df1b04b6c7f9c402",
+    "host/tests/control_exit/config.rs": "8bc94b1ed48cec82e9c7a3ec27eef75ae296f41666dbba8dbe76d60cf6b8e323"
+  },
+  "functions": [
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 11,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 15,
+      "function": "active",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 18,
+      "function": "shared",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 33,
+      "function": "validate_capacity",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 42,
+      "function": "parse_capacity",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 54,
+      "function": "spawn",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 65,
+      "function": "completion",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 70,
+      "function": "drop",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 79,
+      "function": "completed",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 87,
+      "function": "t811_held_retirement_keeps_capacity_until_join_and_never_blocks_other_completions",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 114,
+      "function": "t814_thread_local_cleanup_cannot_block_other_retirements",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 121,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/control_workers.rs",
+      "line": 160,
+      "function": "t811_capacity_rejects_invalid_values_and_preserves_bounded_admission",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 33,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 39,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 53,
+      "function": "new",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 83,
+      "function": "submit",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 95,
+      "function": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 106,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 117,
+      "function": "new",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 121,
+      "function": "with_pool",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 127,
+      "function": "on",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 134,
+      "function": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 142,
+      "function": "request",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 157,
+      "function": "snapshot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 162,
+      "function": "transact",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 166,
+      "function": "run",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 181,
+      "function": "execute",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 197,
+      "function": "get",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 214,
+      "function": "close",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 227,
+      "function": "executor",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 230,
+      "function": "shutdown",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs.rs",
+      "line": 233,
+      "function": "configured_pool",
+      "complexity": 4
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 10,
+      "function": "snapshot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 17,
+      "function": "transact",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 25,
+      "function": "t826_held_store_bounds_queue_cancels_queued_work_and_retains_worker",
+      "complexity": 8
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 85,
+      "function": "t826_worker_capacity_rejects_invalid_or_nonunicode_configuration",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 95,
+      "function": "t826_abandoned_active_read_retains_capacity_until_native_exit",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 132,
+      "function": "t826_cancelled_lock_wait_never_commits_and_worker_failure_is_observed",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 159,
+      "function": "snapshot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 164,
+      "function": "transact",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 179,
+      "function": "t826_reusable_sibling_progress_and_partial_construction_retirement",
+      "complexity": 7
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 244,
+      "function": "t826_cancellation_during_commit_retains_real_outcome",
+      "complexity": 6
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 251,
+      "function": "snapshot",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 256,
+      "function": "transact",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 312,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 317,
+      "function": "discarded_request",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 332,
+      "function": "t1432_closed_queue_contains_discard_panic_and_continues_original_worker",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 350,
+      "function": "t1432_cutoff_gate_fixture",
+      "complexity": 5
+    },
+    {
+      "file": "host/src/config_jobs/tests.rs",
+      "line": 375,
+      "function": "t1432_held_shared_initialization_cannot_delay_process_cutoff",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 25,
+      "function": "reserve",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 39,
+      "function": "cancelled",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 42,
+      "function": "require_open",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 51,
+      "function": "check_running",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 54,
+      "function": "close",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 58,
+      "function": "settled",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 63,
+      "function": "drain",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 76,
+      "function": "t1411_cutoff_preserves_original_admissions_and_rejects_reuse",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 93,
+      "function": "t1411_completed_history_is_bounded_and_empty_exit_finishes",
+      "complexity": 2
+    },
+    {
+      "file": "host/src/process_retirement.rs",
+      "line": 105,
+      "function": "t1411_observation_capacity_is_independent_of_pool_release",
+      "complexity": 3
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 8,
+      "function": "fmt",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 15,
+      "function": "request_shutdown",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 22,
+      "function": "check_running",
+      "complexity": 1
+    },
+    {
+      "file": "host/src/runtime_owner.rs",
+      "line": 26,
+      "function": "run",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 9,
+      "function": "drop",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 16,
+      "function": "native",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 23,
+      "function": "workflow",
+      "complexity": 5
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 41,
+      "function": "held_exit",
+      "complexity": 7
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 88,
+      "function": "assert_outcome",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 97,
+      "function": "t1432_control_exit_fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 104,
+      "function": "t1432_exit_waits_for_original_control_work_and_tls",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 112,
+      "function": "run_child",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 135,
+      "function": "t1432_configuration_exit_fixture",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/control_exit.rs",
+      "line": 142,
+      "function": "t1432_shared_configuration_pool_closes_without_static_deadlock",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 22,
+      "function": "snapshot",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 38,
+      "function": "transact",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 45,
+      "function": "memory",
+      "complexity": 1
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 54,
+      "function": "result",
+      "complexity": 4
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 62,
+      "function": "run",
+      "complexity": 5
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 117,
+      "function": "observe_exit",
+      "complexity": 3
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 134,
+      "function": "queue",
+      "complexity": 2
+    },
+    {
+      "file": "host/tests/control_exit/config.rs",
+      "line": 163,
+      "function": "invalid",
+      "complexity": 2
+    }
+  ]
+}
