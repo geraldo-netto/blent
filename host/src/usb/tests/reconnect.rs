@@ -54,7 +54,17 @@ impl Commands for Stalled {
         })
     }
 }
-fn fixture() -> (Adb<Stalled>, network::Network, tempfile::TempDir) {
+struct FixtureRoot {
+    _directory: tempfile::TempDir,
+    creator: Arc<State>,
+}
+impl Drop for FixtureRoot {
+    fn drop(&mut self) {
+        // Failure/unwind must not strand the independent native Attempt.
+        self.creator.release.notify_one();
+    }
+}
+fn fixture() -> (Adb<Stalled>, network::Network, FixtureRoot) {
     let root = tempfile::tempdir().unwrap();
     let store = blent_config::storage::ConfigStore::new(root.path().join("config.toml"));
     store
@@ -63,7 +73,12 @@ fn fixture() -> (Adb<Stalled>, network::Network, tempfile::TempDir) {
             Ok(())
         })
         .unwrap();
-    (Adb(Stalled::default()), network::Network::new(store), root)
+    let adb = Adb(Stalled::default());
+    let root = FixtureRoot {
+        _directory: root,
+        creator: adb.0 .0.clone(),
+    };
+    (adb, network::Network::new(store), root)
 }
 async fn observed(counter: &AtomicUsize) {
     tokio::time::timeout(Duration::from_secs(5), async {
@@ -123,4 +138,24 @@ async fn t1387_dropped_poll_and_network_retain_original_creator() {
     observed(&adb.0 .0.retired).await;
     observed(&adb.0 .0.settled).await;
     assert!(!adb.0 .0.connected.load(Ordering::SeqCst));
+}
+
+#[tokio::test]
+async fn t1394_fixture_loss_releases_admitted_creator() {
+    let (adb, mut network, root) = fixture();
+    network.devices(&adb, &[]).await;
+    observed(&adb.0 .0.started).await;
+    network.stop().await;
+    drop(root);
+    let settled = tokio::time::timeout(Duration::from_secs(2), async {
+        observed(&adb.0 .0.settled).await;
+    })
+    .await;
+    // Always settle the original faulty control before asserting its result.
+    adb.0 .0.release.notify_one();
+    observed(&adb.0 .0.settled).await;
+    assert!(
+        settled.is_ok(),
+        "T1394: fixture loss stranded native creator"
+    );
 }
